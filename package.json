@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "native-base": "^2.15.0",
     "react": "16.13.1",
     "react-native": "0.63.3"
   },
