@@ -36,4 +36,12 @@ export const styles = StyleSheet.create({
     width: 24.5,
     height: 28,
   },
+  smileIcon: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    left: '50%',
+    marginLeft: -40,
+    top: 51,
+  },
 });

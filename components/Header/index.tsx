@@ -6,6 +6,7 @@ import {
   StarIcon,
   CircleIcon,
   LinesIcon,
+  SmileIcon,
 } from './imports';
 
 const Header = () => {
@@ -22,6 +23,9 @@ const Header = () => {
       </View>
       <View style={styles.verticalLinesIcon}>
         <LinesIcon />
+      </View>
+      <View style={styles.smileIcon}>
+        <SmileIcon />
       </View>
     </View>
   );
