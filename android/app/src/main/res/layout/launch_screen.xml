@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lunes_black"
+    >
+
+    <ImageView 
+    android:layout_width="123dp" 
+    android:layout_height="101dp" 
+    android:scaleType="centerCrop"
+    android:layout_centerInParent="true"
+    android:src="@drawable/lunes_logo"
+    />
+
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="32dp"
+    android:layout_marginRight="36.5dp"
+    android:src="@drawable/icon_sign_1"
+    />
+
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="105.5dp"
+    android:layout_marginRight="36.5dp"
+    android:src="@drawable/icon_sign_2"
+    />
+    
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_marginBottom="38.5dp"
+    android:layout_marginLeft="119.5dp"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentBottom="true"
+    android:src="@drawable/icon_sign_3"
+    />
+    
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="135.5dp"
+    android:layout_marginLeft="38.5dp"
+    android:src="@drawable/icon_sign_4"
+    />
+    
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="135dp"
+    android:layout_marginRight="93.5dp"
+    android:src="@drawable/icon_sign_5"
+    />
+    
+    <ImageView 
+    android:layout_width="38dp" 
+    android:layout_height="38dp" 
+    android:scaleType="centerCrop"
+    android:layout_alignParentLeft="true"
+    android:layout_marginTop="67dp"
+    android:layout_marginLeft="38dp"
+    android:src="@drawable/icon_sign_6"
+    />
+    
+</RelativeLayout>
