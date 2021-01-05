@@ -1,15 +1,30 @@
-import {React, ScrollView, styles, Text, View} from './imports';
+import {
+  React,
+  styles,
+  View,
+  IListViewProps,
+  FlatList,
+  ListItem,
+} from './imports';
 
-const ListView = () => {
+const ListView = ({title, listData}: IListViewProps) => {
+  const renderItem = ({item}: any) => (
+    <ListItem
+      title={item.title}
+      description={item.description}
+      Icon={item.Icon}
+    />
+  );
+
   return (
-    <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-      <View style={styles.welcome}>
-        <Text style={styles.text}>Welcome to Lunes!</Text>
-        <Text style={styles.text}>
-          Learn German vocabulary for your profession.
-        </Text>
-      </View>
-    </ScrollView>
+    <View style={styles.root}>
+      <View style={styles.title}>{title}</View>
+      <FlatList
+        data={listData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    </View>
   );
 };
 
