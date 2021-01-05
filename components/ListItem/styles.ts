@@ -31,12 +31,14 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
   },
   description: {
     fontSize: 14,
     fontWeight: 'normal',
     letterSpacing: undefined,
     color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
   },
   arrow: {
     width: 24,
@@ -60,11 +62,13 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.white,
+    fontFamily: 'SourceSansPro-SemiBold',
   },
   clickedItemDescription: {
     fontSize: 14,
     fontWeight: 'normal',
     letterSpacing: undefined,
     color: COLORS.white,
+    fontFamily: 'SourceSansPro-Regular',
   },
 });

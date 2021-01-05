@@ -11,5 +11,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
   },
 });
