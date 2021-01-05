@@ -20,9 +20,11 @@ const ListItem = ({title, description, Icon}: IListItemProps) => {
         return true;
       }}>
       <View style={styles.item}>
-        <View style={styles.icon}>
-          <Icon width={24} height={24} />
-        </View>
+        {Icon && (
+          <View style={styles.icon}>
+            <Icon width={24} height={24} />
+          </View>
+        )}
         <View style={styles.text}>
           <Text style={isItemClicked ? styles.clickedItemTitle : styles.title}>
             {title}

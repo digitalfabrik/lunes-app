@@ -8,5 +8,5 @@ export interface IListViewProps {
 export interface IListItemProps {
   title: string;
   description: string;
-  Icon: any;
+  Icon?: any;
 }
