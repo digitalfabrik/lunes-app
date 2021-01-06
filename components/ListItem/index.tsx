@@ -10,11 +10,22 @@ import {
   useEffect,
 } from './imports';
 
-const ListItem = ({title, description, Icon, navigation}: IListItemProps) => {
+const ListItem = ({
+  id,
+  title,
+  description,
+  Icon,
+  navigation,
+}: IListItemProps) => {
   const [isItemClicked, setIsItemClicked] = useState(false);
 
   const handleNavigation = () => {
-    navigation.navigate('ProfessionSubcategory');
+    navigation.navigate('ProfessionSubcategory', {
+      id: id,
+      title: title,
+      description: description,
+      Icon: Icon,
+    });
   };
 
   useEffect(() => {

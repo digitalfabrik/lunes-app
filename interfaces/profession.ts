@@ -7,6 +7,7 @@ export interface IListViewProps {
 }
 
 export interface IListItemProps {
+  id: string;
   title: string;
   description: string;
   Icon?: any;
