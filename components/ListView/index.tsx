@@ -7,12 +7,13 @@ import {
   ListItem,
 } from './imports';
 
-const ListView = ({title, listData}: IListViewProps) => {
+const ListView = ({title, listData, navigation}: IListViewProps) => {
   const renderItem = ({item}: any) => (
     <ListItem
       title={item.title}
       description={item.description}
       Icon={item.Icon}
+      navigation={navigation}
     />
   );
 

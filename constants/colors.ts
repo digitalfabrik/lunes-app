@@ -4,4 +4,5 @@ export const COLORS = {
   lunesGreyMedium: '#5b616a',
   lunesGreyDark: '#3a4049',
   white: '#ffffff',
+  lunesBlackUltralight: '#e0e4ed',
 };

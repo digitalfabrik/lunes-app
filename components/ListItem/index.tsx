@@ -7,16 +7,28 @@ import {
   Text,
   useState,
   RedArrow,
+  useEffect,
 } from './imports';
 
-const ListItem = ({title, description, Icon}: IListItemProps) => {
+const ListItem = ({title, description, Icon, navigation}: IListItemProps) => {
   const [isItemClicked, setIsItemClicked] = useState(false);
+
+  const handleNavigation = () => {
+    navigation.navigate('ProfessionSubcategory');
+  };
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      setIsItemClicked(false);
+    });
+  }, [navigation]);
 
   return (
     <View
       style={isItemClicked ? styles.clickedItem : styles.container}
       onTouchEnd={() => {
         setIsItemClicked(true);
+        handleNavigation();
         return true;
       }}>
       <View style={styles.item}>

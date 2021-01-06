@@ -13,6 +13,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: 310,
     backgroundColor: COLORS.white,
+    borderColor: COLORS.lunesBlackUltralight,
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
   item: {
     display: 'flex',
@@ -55,6 +58,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: 310,
     backgroundColor: COLORS.lunesBlack,
+    borderColor: COLORS.white,
   },
   clickedItemTitle: {
     fontSize: 16,

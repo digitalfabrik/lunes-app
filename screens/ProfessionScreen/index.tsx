@@ -47,11 +47,12 @@ const DATA = [
   },
 ];
 
-const ProfessionScreen = () => {
+const ProfessionScreen = ({navigation}: any) => {
   return (
     <View style={styles.root}>
       <Header />
       <ListView
+        navigation={navigation}
         title={
           <>
             <Text style={styles.text}>Welcome to Lunes!</Text>

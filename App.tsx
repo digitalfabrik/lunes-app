@@ -8,17 +8,19 @@
  * @format
  */
 
+import 'react-native-gesture-handler';
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
-import ProfessionScreen from './screens/ProfessionScreen';
+import {StatusBar} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import Navigation from './navigation';
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ProfessionScreen />
-      </SafeAreaView>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
     </>
   );
 };
