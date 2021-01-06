@@ -15,8 +15,6 @@ import Navigation from './navigation';
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 
-declare const global: {HermesInternal: null | {}};
-
 const App = () => {
   useEffect(() => {
     setTimeout(() => {
