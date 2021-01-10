@@ -9,7 +9,7 @@ import {
   useFocusEffect,
   useState,
   IProfessionsProps,
-  getProfessionsIcons,
+  getProfessionsWithIcons,
   ICONS,
   ENDPOINTS,
 } from './imports';
@@ -26,7 +26,7 @@ const ProfessionScreen = ({navigation}: any) => {
           const professions = await axios.get(ENDPOINTS.professions.all);
 
           if (isActive) {
-            setProfessions(getProfessionsIcons(ICONS, professions.data));
+            setProfessions(getProfessionsWithIcons(ICONS, professions.data));
           }
         } catch (error) {
           console.error(error);

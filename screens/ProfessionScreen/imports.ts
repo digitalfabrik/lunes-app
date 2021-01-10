@@ -7,7 +7,7 @@ import axios from '../../utils/axios';
 import {useFocusEffect} from '@react-navigation/native';
 import {IProfessionsProps} from '../../interfaces/profession';
 import {ICONS} from '../../constants/data';
-import {getProfessionsIcons} from '../../utils/helpers';
+import {getProfessionsWithIcons} from '../../utils/helpers';
 import {ENDPOINTS} from '../../constants/endpoints';
 
 export {
@@ -21,7 +21,7 @@ export {
   useFocusEffect,
   useState,
   ICONS,
-  getProfessionsIcons,
+  getProfessionsWithIcons,
   ENDPOINTS,
 };
 

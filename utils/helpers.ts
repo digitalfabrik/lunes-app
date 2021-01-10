@@ -1,6 +1,6 @@
 import {IIconsProps, IProfessionsProps} from '../interfaces/profession';
 
-export const getProfessionsIcons = (
+export const getProfessionsWithIcons = (
   iconsList: IIconsProps[],
   professionsList: IProfessionsProps[],
 ): IProfessionsProps[] => {
