@@ -19,7 +19,7 @@ const ProfessionSubcategoryScreen = ({
   //This is only for test passing params with navigation, and will be replaced with profession subcategory screen in separate PR
   return (
     <View style={styles.container}>
-      <Icon width={50} height={50} />
+      {Icon && <Icon width={50} height={50} />}
       <Text style={styles.text}>{`id: ${id}`}</Text>
       <Text style={styles.text}>{`title: ${title}`}</Text>
       <Text style={styles.text}>{`description: ${description}`}</Text>

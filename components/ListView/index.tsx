@@ -24,7 +24,7 @@ const ListView = ({title, listData, navigation}: IListViewProps) => {
       <FlatList
         data={listData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `${item.id}`}
       />
     </View>
   );

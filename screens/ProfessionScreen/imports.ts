@@ -1,7 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../../components/Header';
 import ListView from '../../components/ListView';
 import {View, Text} from 'react-native';
 import {styles} from './styles';
+import axios from '../../utils/axios';
+import {useFocusEffect} from '@react-navigation/native';
+import {IProfessionsProps} from '../../interfaces/profession';
+import {ICONS} from '../../constants/data';
+import {getProfessionsIcons} from '../../utils/helpers';
+import {ENDPOINTS} from '../../constants/endpoints';
 
-export {React, Header, ListView, View, styles, Text};
+export {
+  React,
+  Header,
+  ListView,
+  View,
+  styles,
+  Text,
+  axios,
+  useFocusEffect,
+  useState,
+  ICONS,
+  getProfessionsIcons,
+  ENDPOINTS,
+};
+
+export type {IProfessionsProps};
