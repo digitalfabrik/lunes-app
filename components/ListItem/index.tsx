@@ -7,7 +7,7 @@ import {
   Text,
   useState,
   RedArrow,
-  useEffect,
+  useFocusEffect,
 } from './imports';
 
 const ListItem = ({
@@ -28,11 +28,11 @@ const ListItem = ({
     });
   };
 
-  useEffect(() => {
-    navigation.addListener('focus', () => {
+  useFocusEffect(
+    React.useCallback(() => {
       setIsItemClicked(false);
-    });
-  }, [navigation]);
+    }, []),
+  );
 
   return (
     <View
