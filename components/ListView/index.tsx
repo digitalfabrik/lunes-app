@@ -7,7 +7,13 @@ import {
   ListItem,
 } from './imports';
 
-const ListView = ({title, listData, navigation}: IListViewProps) => {
+const ListView = ({
+  title,
+  listData,
+  navigation,
+  nextScreen,
+  extraParams,
+}: IListViewProps) => {
   const renderItem = ({item}: any) => (
     <ListItem
       id={item.id}
@@ -15,6 +21,8 @@ const ListView = ({title, listData, navigation}: IListViewProps) => {
       description={item.description}
       Icon={item.Icon}
       navigation={navigation}
+      nextScreen={nextScreen}
+      extraParams={extraParams}
     />
   );
 

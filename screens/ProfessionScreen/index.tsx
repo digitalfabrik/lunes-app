@@ -12,6 +12,7 @@ import {
   getProfessionsWithIcons,
   ICONS,
   ENDPOINTS,
+  SCREENS,
 } from './imports';
 
 const ProfessionScreen = ({navigation}: any) => {
@@ -23,10 +24,10 @@ const ProfessionScreen = ({navigation}: any) => {
 
       const getProfessions = async () => {
         try {
-          const professions = await axios.get(ENDPOINTS.professions.all);
+          const professionsRes = await axios.get(ENDPOINTS.professions.all);
 
           if (isActive) {
-            setProfessions(getProfessionsWithIcons(ICONS, professions.data));
+            setProfessions(getProfessionsWithIcons(ICONS, professionsRes.data));
           }
         } catch (error) {
           console.error(error);
@@ -55,6 +56,7 @@ const ProfessionScreen = ({navigation}: any) => {
           </>
         }
         listData={professions}
+        nextScreen={SCREENS.professionSubcategory}
       />
     </View>
   );

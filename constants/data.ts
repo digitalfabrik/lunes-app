@@ -32,3 +32,9 @@ export const ICONS = [
     Icon: icon5,
   },
 ];
+
+export const SCREENS = {
+  profession: 'Profession',
+  professionSubcategory: 'ProfessionSubcategory',
+  excercise: 'Excercise',
+};
