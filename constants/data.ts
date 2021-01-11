@@ -36,5 +36,5 @@ export const ICONS = [
 export const SCREENS = {
   profession: 'Profession',
   professionSubcategory: 'ProfessionSubcategory',
-  excercise: 'Excercise',
+  exercises: 'Exercises',
 };

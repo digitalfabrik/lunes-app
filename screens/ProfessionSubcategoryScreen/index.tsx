@@ -70,7 +70,7 @@ const ProfessionSubcategoryScreen = ({
           </>
         }
         listData={DATA}
-        nextScreen={SCREENS.excercise}
+        nextScreen={SCREENS.exercises}
         extraParams={title}
       />
     </View>

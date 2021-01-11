@@ -4,14 +4,14 @@ import {
   View,
   Text,
   LogBox,
-  IExcerciseScreenProps,
+  IExercisesScreenProps,
 } from './imports';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-const ExcerciseScreen = ({route}: IExcerciseScreenProps) => {
+const ExercisesScreen = ({route}: IExercisesScreenProps) => {
   const {extraParams} = route.params;
 
   return (
@@ -22,4 +22,4 @@ const ExcerciseScreen = ({route}: IExcerciseScreenProps) => {
   );
 };
 
-export default ExcerciseScreen;
+export default ExercisesScreen;

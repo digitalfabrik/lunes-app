@@ -3,7 +3,7 @@ import {
   createStackNavigator,
   ProfessionScreen,
   ProfessionSubcategoryScreen,
-  ExcerciseScreen,
+  ExercisesScreen,
   BackButton,
   styles,
   ProfessionParamList,
@@ -35,8 +35,8 @@ const Navigation = () => {
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
         }}
-        name="Excercise"
-        component={ExcerciseScreen}
+        name="Exercises"
+        component={ExercisesScreen}
       />
     </ProfessionStack.Navigator>
   );
