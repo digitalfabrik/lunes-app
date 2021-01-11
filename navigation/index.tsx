@@ -30,11 +30,13 @@ const Navigation = () => {
         component={ProfessionSubcategoryScreen}
       />
       <ProfessionStack.Screen
-        options={{
+        options={({route}: any) => ({
+          headerTitle: route.params.extraParams,
           headerBackImage: () => <BackButton />,
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
-        }}
+          headerRightContainerStyle: styles.rightHeaderComponent,
+        })}
         name="Exercises"
         component={ExercisesScreen}
       />
