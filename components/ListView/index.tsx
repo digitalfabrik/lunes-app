@@ -33,6 +33,7 @@ const ListView = ({
         data={listData}
         renderItem={renderItem}
         keyExtractor={(item) => `${item.id}`}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
