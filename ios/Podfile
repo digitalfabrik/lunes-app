@@ -10,6 +10,8 @@ target 'LunesAppUI' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
+
   target 'LunesAppUITests' do
     inherit! :complete
     # Pods for testing
