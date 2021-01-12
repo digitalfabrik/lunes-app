@@ -7,6 +7,7 @@ import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerc
 import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen/index';
 import {ProfessionParamList} from '../types';
 import BackButton from '../assets/images/back-button.svg';
+import CloseButton from '../assets/images/close.svg';
 import {styles} from './styles';
 
 export {
@@ -18,6 +19,7 @@ export {
   VocabularyOverviewExerciseScreen,
   VocabularyTrainerExerciseScreen,
   BackButton,
+  CloseButton,
   styles,
 };
 

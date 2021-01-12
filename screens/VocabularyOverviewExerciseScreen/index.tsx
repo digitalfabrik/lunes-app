@@ -1,6 +1,26 @@
-import {React, Text, View, styles} from './imports';
+import {
+  React,
+  Text,
+  View,
+  styles,
+  IVocabularyOverviewScreen,
+  TouchableOpacity,
+  Home,
+} from './imports';
 
-const VocabularyOverviewExerciseScreen = () => {
+const VocabularyOverviewExerciseScreen = ({
+  navigation,
+}: IVocabularyOverviewScreen) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.popToTop()}>
+          <Home />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.root}>
       <Text>Vocabulary Overview Exercise Screen</Text>
