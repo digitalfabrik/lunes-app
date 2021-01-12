@@ -39,7 +39,8 @@ export const SCREENS = {
   profession: 'Profession',
   professionSubcategory: 'ProfessionSubcategory',
   exercises: 'Exercises',
-  exercise: 'Exercise',
+  vocabularyOverview: 'VocabularyOverview',
+  vocabularyTrainer: 'VocabularyTrainer',
 };
 
 export const EXERCISES = [
@@ -48,11 +49,13 @@ export const EXERCISES = [
     title: 'Vocabulary Overview',
     description: 'All Words',
     Level: easy,
+    nextScreen: SCREENS.vocabularyOverview,
   },
   {
     id: 2,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
+    nextScreen: SCREENS.vocabularyTrainer,
   },
 ];

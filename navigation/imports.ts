@@ -3,7 +3,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import ProfessionScreen from '../screens/ProfessionScreen/index';
 import ProfessionSubcategoryScreen from '../screens/ProfessionSubcategoryScreen/index';
 import ExercisesScreen from '../screens/ExercisesScreen/index';
-import ExerciseScreen from '../screens/ExerciseScreen/index';
+import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerciseScreen/index';
+import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen/index';
 import {ProfessionParamList} from '../types';
 import BackButton from '../assets/images/back-button.svg';
 import {styles} from './styles';
@@ -14,7 +15,8 @@ export {
   ProfessionScreen,
   ProfessionSubcategoryScreen,
   ExercisesScreen,
-  ExerciseScreen,
+  VocabularyOverviewExerciseScreen,
+  VocabularyTrainerExerciseScreen,
   BackButton,
   styles,
 };

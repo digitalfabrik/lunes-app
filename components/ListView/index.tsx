@@ -21,7 +21,7 @@ const ListView = ({
       description={item.description}
       Icon={item.Icon}
       navigation={navigation}
-      nextScreen={nextScreen}
+      nextScreen={nextScreen ? nextScreen : item.nextScreen}
       extraParams={extraParams}
       Level={item.Level}
     />

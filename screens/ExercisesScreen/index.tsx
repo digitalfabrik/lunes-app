@@ -9,7 +9,6 @@ import {
   Home,
   ListView,
   EXERCISES,
-  SCREENS,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -40,7 +39,6 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         }
         listData={EXERCISES}
         navigation={navigation}
-        nextScreen={SCREENS.exercise}
       />
     </View>
   );

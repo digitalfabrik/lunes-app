@@ -4,7 +4,7 @@ export interface IListViewProps {
   title: ReactNode;
   listData: any;
   navigation: any;
-  nextScreen: string;
+  nextScreen?: string;
   extraParams?: any;
 }
 
@@ -14,7 +14,7 @@ export interface IListItemProps {
   description: string;
   Icon?: any;
   navigation: any;
-  nextScreen: string;
+  nextScreen?: string;
   extraParams?: any;
   Level?: any;
 }
