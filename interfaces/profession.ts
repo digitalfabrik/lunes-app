@@ -16,6 +16,7 @@ export interface IListItemProps {
   navigation: any;
   nextScreen: string;
   extraParams?: any;
+  Level?: any;
 }
 
 export interface IProfessionsProps {

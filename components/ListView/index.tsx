@@ -23,6 +23,7 @@ const ListView = ({
       navigation={navigation}
       nextScreen={nextScreen}
       extraParams={extraParams}
+      Level={item.Level}
     />
   );
 

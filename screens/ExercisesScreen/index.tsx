@@ -7,6 +7,9 @@ import {
   IExercisesScreenProps,
   TouchableOpacity,
   Home,
+  ListView,
+  EXERCISES,
+  SCREENS,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -27,9 +30,18 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
   }, [navigation]);
 
   return (
-    //This will be changed in excercis overview branch
     <View style={styles.root}>
-      <Text>{extraParams}</Text>
+      <ListView
+        title={
+          <>
+            <Text style={styles.title}>{extraParams}</Text>
+            <Text style={styles.description}>2 Excercises</Text>
+          </>
+        }
+        listData={EXERCISES}
+        navigation={navigation}
+        nextScreen={SCREENS.exercise}
+      />
     </View>
   );
 };

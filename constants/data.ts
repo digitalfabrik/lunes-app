@@ -4,6 +4,8 @@ import icon2 from '../assets/images/icon-sign-4.svg';
 import icon3 from '../assets/images/icon-sign-3.svg';
 import icon4 from '../assets/images/icon-sign-2.svg';
 import icon5 from '../assets/images/icon-sign-5.svg';
+import easy from '../assets/images/level-easy.svg';
+import hard from '../assets/images/level-hard.svg';
 
 //Need to be replaced with icons from API
 export const ICONS = [
@@ -37,4 +39,20 @@ export const SCREENS = {
   profession: 'Profession',
   professionSubcategory: 'ProfessionSubcategory',
   exercises: 'Exercises',
+  exercise: 'Exercise',
 };
+
+export const EXERCISES = [
+  {
+    id: 1,
+    title: 'Vocabulary Overview',
+    description: 'All Words',
+    Level: easy,
+  },
+  {
+    id: 2,
+    title: 'Vocabulary Trainer',
+    description: 'Write words with articles',
+    Level: hard,
+  },
+];
