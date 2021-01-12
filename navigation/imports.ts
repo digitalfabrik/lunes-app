@@ -6,7 +6,7 @@ import ExercisesScreen from '../screens/ExercisesScreen/index';
 import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerciseScreen/index';
 import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen/index';
 import {ProfessionParamList} from '../types';
-import BackButton from '../assets/images/back-button.svg';
+import {BackButton} from '../assets/images/imports';
 import {styles} from './styles';
 
 export {
