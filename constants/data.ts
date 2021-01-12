@@ -1,9 +1,4 @@
-//Need to be replaced with icons from API
-import icon1 from '../assets/images/icon-sign-6.svg';
-import icon2 from '../assets/images/icon-sign-4.svg';
-import icon3 from '../assets/images/icon-sign-3.svg';
-import icon4 from '../assets/images/icon-sign-2.svg';
-import icon5 from '../assets/images/icon-sign-5.svg';
+import {icon1, icon2, icon3, icon4, icon5} from '../assets/images/imports';
 
 //Need to be replaced with icons from API
 export const ICONS = [
