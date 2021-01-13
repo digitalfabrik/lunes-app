@@ -67,7 +67,8 @@ const VocabularyOverviewExerciseScreen = ({
         title={
           <>
             <Text style={styles.title}>Vocabulary Overview</Text>
-            <Text style={styles.description}>10 Words</Text>
+            <Text
+              style={styles.description}>{`${documents.length} words`}</Text>
           </>
         }
         navigation={navigation}
