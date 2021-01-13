@@ -7,6 +7,12 @@ import {
   LogBox,
   ListView,
   SCREENS,
+  ENDPOINTS,
+  axios,
+  IProfessionSubcategoryProps,
+  useState,
+  useFocusEffect,
+  getProfessionSubcategoryWithIcon,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -17,47 +23,44 @@ const ProfessionSubcategoryScreen = ({
   route,
   navigation,
 }: IProfessionSubcategoryScreenProps) => {
-  const {title, description, Icon} = route.params;
+  const {id, title, description, Icon} = route.params;
+  const [professionSubcategories, setProfessionSubcategories] = useState<
+    IProfessionSubcategoryProps[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  //Need to be replaced with data from API
-  const DATA = [
-    {
-      id: 1,
-      title: 'test1',
-      description: 'test',
-      Icon: Icon,
-    },
-    {
-      id: 2,
-      title: 'test2',
-      description: 'test',
-      Icon: Icon,
-    },
-    {
-      id: 3,
-      title: 'test3',
-      description: 'test',
-      Icon: Icon,
-    },
-    {
-      id: 4,
-      title: 'test4',
-      description: 'test',
-      Icon: Icon,
-    },
-    {
-      id: 5,
-      title: 'test5',
-      description: 'test',
-      Icon: Icon,
-    },
-    {
-      id: 6,
-      title: 'test6',
-      description: 'test',
-      Icon: Icon,
-    },
-  ];
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      let isActive: boolean = true;
+
+      const getProfessionSubcategories = async () => {
+        try {
+          const professionSubcategoriesRes = await axios.get(
+            ENDPOINTS.subCategories.all.replace(':id', `${id}`),
+          );
+
+          if (isActive) {
+            setProfessionSubcategories(
+              getProfessionSubcategoryWithIcon(
+                Icon,
+                professionSubcategoriesRes.data,
+              ),
+            );
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      getProfessionSubcategories();
+
+      return () => {
+        isActive = false;
+      };
+    }, [id, Icon]),
+  );
 
   return (
     <View style={styles.root}>
@@ -69,9 +72,10 @@ const ProfessionSubcategoryScreen = ({
             <Text style={styles.description}>{description}</Text>
           </>
         }
-        listData={DATA}
+        listData={professionSubcategories}
         nextScreen={SCREENS.exercises}
         extraParams={title}
+        isLoading={isLoading}
       />
     </View>
   );
