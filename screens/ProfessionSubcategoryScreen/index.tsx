@@ -28,6 +28,7 @@ const ProfessionSubcategoryScreen = ({
     IProfessionSubcategoryProps[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -47,6 +48,7 @@ const ProfessionSubcategoryScreen = ({
                 professionSubcategoriesRes.data,
               ),
             );
+            setCount(professionSubcategoriesRes.data.length);
             setIsLoading(false);
           }
         } catch (error) {
@@ -69,10 +71,9 @@ const ProfessionSubcategoryScreen = ({
         title={
           <>
             <Text style={styles.title}>{title}</Text>
-            <Text
-              style={
-                styles.description
-              }>{`${professionSubcategories.length} Kategories`}</Text>
+            <Text style={styles.description}>
+              {count} {count == 1 ? 'Kategory' : 'Kategories'}
+            </Text>
           </>
         }
         listData={professionSubcategories}
