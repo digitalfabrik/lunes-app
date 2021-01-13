@@ -1,4 +1,5 @@
 import {IIconsProps, IProfessionsProps} from '../interfaces/profession';
+import {IProfessionSubcategoryProps} from '../interfaces/professionSubcategory';
 
 export const getProfessionsWithIcons = (
   iconsList: IIconsProps[],
@@ -10,6 +11,20 @@ export const getProfessionsWithIcons = (
         (icon) => icon.id === profession.id,
       )?.Icon;
       return profession;
+    },
+  );
+
+  return mappedProfessions;
+};
+
+export const getProfessionSubcategoryWithIcon = (
+  icon: IIconsProps,
+  professionSubcategoriesList: IProfessionSubcategoryProps[],
+): IProfessionSubcategoryProps[] => {
+  const mappedProfessions: IProfessionSubcategoryProps[] = professionSubcategoriesList.map(
+    (subcategory) => {
+      subcategory.Icon = icon;
+      return subcategory;
     },
   );
 
