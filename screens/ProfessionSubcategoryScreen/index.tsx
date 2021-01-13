@@ -23,7 +23,7 @@ const ProfessionSubcategoryScreen = ({
   route,
   navigation,
 }: IProfessionSubcategoryScreenProps) => {
-  const {id, title, description, Icon} = route.params;
+  const {id, title, Icon} = route.params;
   const [professionSubcategories, setProfessionSubcategories] = useState<
     IProfessionSubcategoryProps[]
   >([]);
@@ -69,7 +69,10 @@ const ProfessionSubcategoryScreen = ({
         title={
           <>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text
+              style={
+                styles.description
+              }>{`${professionSubcategories.length} Kategories`}</Text>
           </>
         }
         listData={professionSubcategories}
