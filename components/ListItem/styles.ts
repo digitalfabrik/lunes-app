@@ -75,4 +75,7 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: 'SourceSansPro-Regular',
   },
+  level: {
+    marginTop: 11,
+  },
 });

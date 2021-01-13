@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
+    marginBottom: 4,
   },
   description: {
     textAlign: 'center',

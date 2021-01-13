@@ -13,4 +13,7 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '600',
   },
+  rightHeaderComponent: {
+    paddingRight: 10,
+  },
 });

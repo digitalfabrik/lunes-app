@@ -18,6 +18,7 @@ const ListItem = ({
   navigation,
   nextScreen,
   extraParams,
+  Level,
 }: IListItemProps) => {
   const [isItemClicked, setIsItemClicked] = useState(false);
 
@@ -61,6 +62,7 @@ const ListItem = ({
             }>
             {description}
           </Text>
+          {Level && <Level style={styles.level} />}
         </View>
       </View>
       <View style={styles.arrow}>

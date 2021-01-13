@@ -4,6 +4,8 @@ import {
   ProfessionScreen,
   ProfessionSubcategoryScreen,
   ExercisesScreen,
+  VocabularyOverviewExerciseScreen,
+  VocabularyTrainerExerciseScreen,
   BackButton,
   styles,
   ProfessionParamList,
@@ -30,13 +32,33 @@ const Navigation = () => {
         component={ProfessionSubcategoryScreen}
       />
       <ProfessionStack.Screen
+        options={({route}: any) => ({
+          headerTitle: route.params.extraParams,
+          headerBackImage: () => <BackButton />,
+          headerTitleStyle: styles.title,
+          headerStyle: styles.header,
+          headerRightContainerStyle: styles.rightHeaderComponent,
+        })}
+        name="Exercises"
+        component={ExercisesScreen}
+      />
+      <ProfessionStack.Screen
         options={{
           headerBackImage: () => <BackButton />,
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
         }}
-        name="Exercises"
-        component={ExercisesScreen}
+        name="VocabularyOverview"
+        component={VocabularyOverviewExerciseScreen}
+      />
+      <ProfessionStack.Screen
+        options={{
+          headerBackImage: () => <BackButton />,
+          headerTitleStyle: styles.title,
+          headerStyle: styles.header,
+        }}
+        name="VocabularyTrainer"
+        component={VocabularyTrainerExerciseScreen}
       />
     </ProfessionStack.Navigator>
   );

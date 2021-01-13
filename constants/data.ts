@@ -1,4 +1,12 @@
-import {icon1, icon2, icon3, icon4, icon5} from '../assets/images/imports';
+import {
+  icon1,
+  icon2,
+  icon3,
+  icon4,
+  icon5,
+  easy,
+  hard,
+} from '../assets/images/imports';
 
 //Need to be replaced with icons from API
 export const ICONS = [
@@ -32,4 +40,23 @@ export const SCREENS = {
   profession: 'Profession',
   professionSubcategory: 'ProfessionSubcategory',
   exercises: 'Exercises',
+  vocabularyOverview: 'VocabularyOverview',
+  vocabularyTrainer: 'VocabularyTrainer',
 };
+
+export const EXERCISES = [
+  {
+    id: 1,
+    title: 'Vocabulary Overview',
+    description: 'All Words',
+    Level: easy,
+    nextScreen: SCREENS.vocabularyOverview,
+  },
+  {
+    id: 2,
+    title: 'Vocabulary Trainer',
+    description: 'Write words with articles',
+    Level: hard,
+    nextScreen: SCREENS.vocabularyTrainer,
+  },
+];
