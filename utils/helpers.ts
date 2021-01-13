@@ -1,5 +1,6 @@
 import {IIconsProps, IProfessionsProps} from '../interfaces/profession';
 import {IProfessionSubcategoryProps} from '../interfaces/professionSubcategory';
+import {BADGES_COLORS} from '../constants/data';
 
 export const getProfessionsWithIcons = (
   iconsList: IIconsProps[],
@@ -29,4 +30,9 @@ export const getProfessionSubcategoryWithIcon = (
   );
 
   return mappedProfessionSubcategories;
+};
+
+export const getBadgeColor = (): string => {
+  const index = Math.floor(Math.random() * Math.floor(8));
+  return BADGES_COLORS[index];
 };

@@ -5,7 +5,19 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {COLORS} from '../../constants/colors';
 import Tts from 'react-native-tts';
+import {getBadgeColor} from '../../utils/helpers';
 
-export {React, styles, View, Text, Image, Icon, COLORS, TouchableOpacity, Tts};
+export {
+  React,
+  styles,
+  View,
+  Text,
+  Image,
+  Icon,
+  COLORS,
+  TouchableOpacity,
+  Tts,
+  getBadgeColor,
+};
 
 export type {IVocabularyOverviewListItemProps};

@@ -9,6 +9,7 @@ import {
   COLORS,
   TouchableOpacity,
   Tts,
+  getBadgeColor,
 } from './imports';
 
 //German language
@@ -40,8 +41,10 @@ const VocabularyOverviewListItem = ({
           height={24}
           style={styles.image}
         />
-        <View style={styles.text}>
-          <Text style={styles.title}>{article}</Text>
+        <View>
+          <View style={[styles.badge, {backgroundColor: getBadgeColor()}]}>
+            <Text style={styles.title}>{article}</Text>
+          </View>
           <Text style={styles.description}>{word}</Text>
         </View>
       </View>

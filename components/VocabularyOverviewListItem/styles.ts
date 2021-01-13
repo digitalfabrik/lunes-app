@@ -22,9 +22,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  text: {
-    display: 'flex',
-  },
   image: {
     marginRight: 15,
     width: 52,
@@ -32,19 +29,18 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },
   title: {
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.11,
+    fontSize: 14,
+    fontWeight: 'normal',
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-Regular',
   },
   description: {
     fontSize: 14,
     fontWeight: 'normal',
-    letterSpacing: undefined,
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
+    marginLeft: 5,
   },
   speaker: {
     width: 32,
@@ -54,5 +50,12 @@ export const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  badge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 15,
+    marginBottom: 2,
   },
 });
