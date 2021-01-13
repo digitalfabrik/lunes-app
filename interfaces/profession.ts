@@ -7,6 +7,7 @@ export interface IListViewProps {
   nextScreen?: string;
   extraParams?: any;
   isLoading: boolean;
+  fromExercises?: boolean;
 }
 
 export interface IListItemProps {
