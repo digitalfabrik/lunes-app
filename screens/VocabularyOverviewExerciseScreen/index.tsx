@@ -21,6 +21,7 @@ const VocabularyOverviewExerciseScreen = ({
   const {extraParams} = route.params;
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,6 +46,7 @@ const VocabularyOverviewExerciseScreen = ({
 
           if (isActive) {
             setDocuments(documentsRes.data);
+            setCount(documentsRes.data.length);
             setIsLoading(false);
           }
         } catch (error) {
@@ -67,8 +69,9 @@ const VocabularyOverviewExerciseScreen = ({
         title={
           <>
             <Text style={styles.title}>Vocabulary Overview</Text>
-            <Text
-              style={styles.description}>{`${documents.length} words`}</Text>
+            <Text style={styles.description}>
+              {count} {count == 1 ? 'Word' : 'Words'}
+            </Text>
           </>
         }
         navigation={navigation}
