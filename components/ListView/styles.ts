@@ -14,4 +14,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
+  indicator: {
+    height: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

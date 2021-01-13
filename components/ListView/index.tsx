@@ -5,9 +5,11 @@ import {
   IListViewProps,
   FlatList,
   ListItem,
+  ActivityIndicator,
+  COLORS,
 } from './imports';
 
-const ListView = ({title, listData, navigation}: IListViewProps) => {
+const ListView = ({title, listData, navigation, isLoading}: IListViewProps) => {
   const renderItem = ({item}: any) => (
     <ListItem
       id={item.id}
@@ -21,12 +23,18 @@ const ListView = ({title, listData, navigation}: IListViewProps) => {
   return (
     <View style={styles.root}>
       <View style={styles.title}>{title}</View>
-      <FlatList
-        data={listData}
-        renderItem={renderItem}
-        keyExtractor={(item) => `${item.id}`}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <View style={styles.indicator}>
+          <ActivityIndicator size="large" color={COLORS.lunesBlack} />
+        </View>
+      ) : (
+        <FlatList
+          data={listData}
+          renderItem={renderItem}
+          keyExtractor={(item) => `${item.id}`}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };

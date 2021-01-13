@@ -16,9 +16,11 @@ import {
 
 const ProfessionScreen = ({navigation}: any) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
+      setIsLoading(true);
       let isActive: boolean = true;
 
       const getProfessions = async () => {
@@ -27,6 +29,7 @@ const ProfessionScreen = ({navigation}: any) => {
 
           if (isActive) {
             setProfessions(getProfessionsWithIcons(ICONS, professions.data));
+            setIsLoading(false);
           }
         } catch (error) {
           console.error(error);
@@ -55,6 +58,7 @@ const ProfessionScreen = ({navigation}: any) => {
           </>
         }
         listData={professions}
+        isLoading={isLoading}
       />
     </View>
   );

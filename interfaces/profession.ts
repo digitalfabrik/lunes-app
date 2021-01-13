@@ -4,6 +4,7 @@ export interface IListViewProps {
   title: ReactNode;
   listData: any;
   navigation: any;
+  isLoading: boolean;
 }
 
 export interface IListItemProps {
