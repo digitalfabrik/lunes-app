@@ -1,14 +1,22 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../constants/colors';
 
 export const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  root: {
+    backgroundColor: COLORS.lunesWhite,
     height: '100%',
+    paddingBottom: 0,
   },
-  text: {
+  title: {
+    textAlign: 'center',
     fontSize: 20,
-    marginVertical: 10,
+    color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
+  },
+  description: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
   },
 });

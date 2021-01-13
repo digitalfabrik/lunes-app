@@ -4,6 +4,8 @@ export interface IListViewProps {
   title: ReactNode;
   listData: any;
   navigation: any;
+  nextScreen: string;
+  extraParams?: any;
   isLoading: boolean;
 }
 
@@ -13,6 +15,8 @@ export interface IListItemProps {
   description: string;
   Icon?: any;
   navigation: any;
+  nextScreen: string;
+  extraParams?: any;
 }
 
 export interface IProfessionsProps {

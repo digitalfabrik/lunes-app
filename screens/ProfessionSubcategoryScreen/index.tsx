@@ -5,6 +5,14 @@ import {
   Text,
   IProfessionSubcategoryScreenProps,
   LogBox,
+  ListView,
+  SCREENS,
+  ENDPOINTS,
+  axios,
+  IProfessionSubcategoryProps,
+  useState,
+  useFocusEffect,
+  getProfessionSubcategoryWithIcon,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -13,16 +21,66 @@ LogBox.ignoreLogs([
 
 const ProfessionSubcategoryScreen = ({
   route,
+  navigation,
 }: IProfessionSubcategoryScreenProps) => {
-  const {id, title, description, Icon} = route.params;
+  const {id, title, Icon} = route.params;
+  const [professionSubcategories, setProfessionSubcategories] = useState<
+    IProfessionSubcategoryProps[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
-  //This is only for test passing params with navigation, and will be replaced with profession subcategory screen in separate PR
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      let isActive: boolean = true;
+
+      const getProfessionSubcategories = async () => {
+        try {
+          const professionSubcategoriesRes = await axios.get(
+            ENDPOINTS.subCategories.all.replace(':id', `${id}`),
+          );
+
+          if (isActive) {
+            setProfessionSubcategories(
+              getProfessionSubcategoryWithIcon(
+                Icon,
+                professionSubcategoriesRes.data,
+              ),
+            );
+            setCount(professionSubcategoriesRes.data.length);
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      getProfessionSubcategories();
+
+      return () => {
+        isActive = false;
+      };
+    }, [id, Icon]),
+  );
+
   return (
-    <View style={styles.container}>
-      {Icon && <Icon width={50} height={50} />}
-      <Text style={styles.text}>{`id: ${id}`}</Text>
-      <Text style={styles.text}>{`title: ${title}`}</Text>
-      <Text style={styles.text}>{`description: ${description}`}</Text>
+    <View style={styles.root}>
+      <ListView
+        navigation={navigation}
+        title={
+          <>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>
+              {count} {count == 1 ? 'Kategory' : 'Kategories'}
+            </Text>
+          </>
+        }
+        listData={professionSubcategories}
+        nextScreen={SCREENS.exercises}
+        extraParams={title}
+        isLoading={isLoading}
+      />
     </View>
   );
 };

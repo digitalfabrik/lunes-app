@@ -9,7 +9,14 @@ import {
   COLORS,
 } from './imports';
 
-const ListView = ({title, listData, navigation, isLoading}: IListViewProps) => {
+const ListView = ({
+  title,
+  listData,
+  navigation,
+  nextScreen,
+  extraParams,
+  isLoading,
+}: IListViewProps) => {
   const renderItem = ({item}: any) => (
     <ListItem
       id={item.id}
@@ -17,6 +24,8 @@ const ListView = ({title, listData, navigation, isLoading}: IListViewProps) => {
       description={item.description}
       Icon={item.Icon}
       navigation={navigation}
+      nextScreen={nextScreen}
+      extraParams={extraParams}
     />
   );
 

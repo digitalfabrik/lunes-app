@@ -16,15 +16,18 @@ const ListItem = ({
   description,
   Icon,
   navigation,
+  nextScreen,
+  extraParams,
 }: IListItemProps) => {
   const [isItemClicked, setIsItemClicked] = useState(false);
 
   const handleNavigation = () => {
-    navigation.navigate('ProfessionSubcategory', {
+    navigation.navigate(nextScreen, {
       id: id,
       title: title,
       description: description,
       Icon: Icon,
+      extraParams,
     });
   };
 

@@ -9,6 +9,7 @@ import {IProfessionsProps} from '../../interfaces/profession';
 import {ICONS} from '../../constants/data';
 import {getProfessionsWithIcons} from '../../utils/helpers';
 import {ENDPOINTS} from '../../constants/endpoints';
+import {SCREENS} from '../../constants/data';
 
 export {
   React,
@@ -23,6 +24,7 @@ export {
   ICONS,
   getProfessionsWithIcons,
   ENDPOINTS,
+  SCREENS,
 };
 
 export type {IProfessionsProps};
