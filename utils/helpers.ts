@@ -21,12 +21,12 @@ export const getProfessionSubcategoryWithIcon = (
   icon: IIconsProps,
   professionSubcategoriesList: IProfessionSubcategoryProps[],
 ): IProfessionSubcategoryProps[] => {
-  const mappedProfessions: IProfessionSubcategoryProps[] = professionSubcategoriesList.map(
+  const mappedProfessionSubcategories: IProfessionSubcategoryProps[] = professionSubcategoriesList.map(
     (subcategory) => {
       subcategory.Icon = icon;
       return subcategory;
     },
   );
 
-  return mappedProfessions;
+  return mappedProfessionSubcategories;
 };
