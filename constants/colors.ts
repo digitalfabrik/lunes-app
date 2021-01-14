@@ -5,4 +5,13 @@ export const COLORS = {
   lunesGreyDark: '#3a4049',
   white: '#ffffff',
   lunesBlackUltralight: '#e0e4ed',
+  lunesFunctionalIncorrectDark: '#ff5252',
+  lunesRedLight: '#f57f7a',
+  lunesGreenLight: '#7ae6d8',
+  lunesBlueLight: '#97aef1',
+  lunesOrangeLight: '#ffbb4a',
+  lunesArtikelDas: '#72f399',
+  lunesArtikelDiePlural: '#eee12d',
+  lunesArtikelDie: '#faa7a7',
+  lunesArtikelDer: '#8cc8f3',
 };

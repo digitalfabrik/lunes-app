@@ -7,6 +7,7 @@ import {
   VocabularyOverviewExerciseScreen,
   VocabularyTrainerExerciseScreen,
   BackButton,
+  CloseButton,
   styles,
   ProfessionParamList,
 } from './imports';
@@ -44,9 +45,11 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={{
-          headerBackImage: () => <BackButton />,
+          headerTitle: 'Excercise Overview',
+          headerBackImage: () => <CloseButton />,
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
+          headerRightContainerStyle: styles.rightHeaderComponent,
         }}
         name="VocabularyOverview"
         component={VocabularyOverviewExerciseScreen}

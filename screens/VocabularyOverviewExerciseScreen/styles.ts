@@ -6,8 +6,18 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
     paddingBottom: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
+    marginBottom: 4,
+  },
+  description: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
   },
 });

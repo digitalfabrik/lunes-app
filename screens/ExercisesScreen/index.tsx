@@ -16,7 +16,7 @@ LogBox.ignoreLogs([
 ]);
 
 const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, id} = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -39,6 +39,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         }
         listData={EXERCISES}
         navigation={navigation}
+        extraParams={id}
       />
     </View>
   );

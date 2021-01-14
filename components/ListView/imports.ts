@@ -4,6 +4,7 @@ import {styles} from './styles';
 import {IListViewProps} from '../../interfaces/profession';
 import ListItem from '../ListItem';
 import {COLORS} from '../../constants/colors';
+import VocabularyOverviewListItem from '../VocabularyOverviewListItem';
 
 export {
   React,
@@ -13,6 +14,7 @@ export {
   FlatList,
   ListItem,
   useState,
+  VocabularyOverviewListItem,
   ActivityIndicator,
   COLORS,
 };
