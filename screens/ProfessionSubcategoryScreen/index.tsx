@@ -72,7 +72,7 @@ const ProfessionSubcategoryScreen = ({
           <>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.description}>
-              {count} {count == 1 ? 'Kategory' : 'Kategories'}
+              {count} {count === 1 ? 'Kategory' : 'Kategories'}
             </Text>
           </>
         }

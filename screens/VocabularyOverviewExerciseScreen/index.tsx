@@ -70,7 +70,7 @@ const VocabularyOverviewExerciseScreen = ({
           <>
             <Text style={styles.title}>Vocabulary Overview</Text>
             <Text style={styles.description}>
-              {count} {count == 1 ? 'Word' : 'Words'}
+              {count} {count === 1 ? 'Word' : 'Words'}
             </Text>
           </>
         }

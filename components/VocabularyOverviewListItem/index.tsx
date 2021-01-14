@@ -5,11 +5,10 @@ import {
   View,
   Text,
   Image,
-  Icon,
-  COLORS,
   TouchableOpacity,
   Tts,
   getBadgeColor,
+  VolumeUp,
 } from './imports';
 
 //German language
@@ -49,7 +48,7 @@ const VocabularyOverviewListItem = ({
         </View>
       </View>
       <TouchableOpacity style={styles.speaker} onPress={handlaSpeakerClick}>
-        <Icon name="volume-up" color={COLORS.white} size={18} />
+        <VolumeUp />
       </TouchableOpacity>
     </View>
   );
