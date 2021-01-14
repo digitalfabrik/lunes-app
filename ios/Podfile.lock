@@ -236,8 +236,10 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
+
   - react-native-safe-area-context (3.1.9):
     - React-Core
+
   - react-native-splash-screen (3.2.0):
     - React
   - React-RCTActionSheet (0.63.3):
