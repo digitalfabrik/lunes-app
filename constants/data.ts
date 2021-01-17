@@ -7,7 +7,6 @@ import {
   easy,
   hard,
 } from '../assets/images/imports';
-import {COLORS} from './colors';
 
 //Need to be replaced with icons from API
 export const ICONS = [
@@ -60,15 +59,4 @@ export const EXERCISES = [
     Level: hard,
     nextScreen: SCREENS.vocabularyTrainer,
   },
-];
-
-export const BADGES_COLORS = [
-  COLORS.lunesBlueLight,
-  COLORS.lunesGreenLight,
-  COLORS.lunesRedLight,
-  COLORS.lunesOrangeLight,
-  COLORS.lunesArtikelDas,
-  COLORS.lunesArtikelDie,
-  COLORS.lunesArtikelDer,
-  COLORS.lunesArtikelDiePlural,
 ];

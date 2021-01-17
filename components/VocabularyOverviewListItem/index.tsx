@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Tts,
-  getBadgeColor,
+  getArticleColor,
   VolumeUp,
 } from './imports';
 
@@ -41,7 +41,8 @@ const VocabularyOverviewListItem = ({
           style={styles.image}
         />
         <View>
-          <View style={[styles.badge, {backgroundColor: getBadgeColor()}]}>
+          <View
+            style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
             <Text style={styles.title}>{article}</Text>
           </View>
           <Text style={styles.description}>{word}</Text>
