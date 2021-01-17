@@ -26,6 +26,7 @@ const ListView = ({
         word={item.word}
         article={item.article}
         image={item.image}
+        audio={item.audio}
       />
     ) : (
       <ListItem

@@ -6,6 +6,7 @@ import {COLORS} from '../../constants/colors';
 import Tts from 'react-native-tts';
 import {getArticleColor} from '../../utils/helpers';
 import {VolumeUp} from '../../assets/images/imports';
+import SoundPlayer from 'react-native-sound-player';
 
 export {
   React,
@@ -18,6 +19,7 @@ export {
   Tts,
   getArticleColor,
   VolumeUp,
+  SoundPlayer,
 };
 
 export type {IVocabularyOverviewListItemProps};

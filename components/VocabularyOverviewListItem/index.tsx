@@ -9,6 +9,7 @@ import {
   Tts,
   getArticleColor,
   VolumeUp,
+  SoundPlayer,
 } from './imports';
 
 //German language
@@ -18,15 +19,21 @@ const VocabularyOverviewListItem = ({
   image,
   article,
   word,
+  audio,
 }: IVocabularyOverviewListItemProps) => {
-  const handlaSpeakerClick = () => {
-    Tts.speak(word, {
-      androidParams: {
-        KEY_PARAM_PAN: -1,
-        KEY_PARAM_VOLUME: 0.5,
-        KEY_PARAM_STREAM: 'STREAM_MUSIC',
-      },
-    });
+  const handlaSpeakerClick = (audio: string) => {
+    if (audio) {
+      //audio from API
+      SoundPlayer.playUrl(audio);
+    } else {
+      Tts.speak(word, {
+        androidParams: {
+          KEY_PARAM_PAN: -1,
+          KEY_PARAM_VOLUME: 0.5,
+          KEY_PARAM_STREAM: 'STREAM_MUSIC',
+        },
+      });
+    }
   };
 
   return (
@@ -48,7 +55,9 @@ const VocabularyOverviewListItem = ({
           <Text style={styles.description}>{word}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.speaker} onPress={handlaSpeakerClick}>
+      <TouchableOpacity
+        style={styles.speaker}
+        onPress={() => handlaSpeakerClick(audio)}>
         <VolumeUp />
       </TouchableOpacity>
     </View>

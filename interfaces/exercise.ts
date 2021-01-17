@@ -15,4 +15,5 @@ export interface IVocabularyOverviewListItemProps {
   word: string;
   article: string;
   image: any;
+  audio: string;
 }
