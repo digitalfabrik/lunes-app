@@ -27,6 +27,8 @@ export const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    width: 24,
+    height: 24,
   },
   title: {
     fontSize: 16,

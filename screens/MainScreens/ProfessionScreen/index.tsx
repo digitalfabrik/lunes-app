@@ -9,8 +9,6 @@ import {
   useFocusEffect,
   useState,
   IProfessionsProps,
-  getProfessionsWithIcons,
-  ICONS,
   ENDPOINTS,
   SCREENS,
 } from './imports';
@@ -29,7 +27,7 @@ const ProfessionScreen = ({navigation}: any) => {
           const professionsRes = await axios.get(ENDPOINTS.professions.all);
 
           if (isActive) {
-            setProfessions(getProfessionsWithIcons(ICONS, professionsRes.data));
+            setProfessions(professionsRes.data);
             setIsLoading(false);
           }
         } catch (error) {

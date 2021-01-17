@@ -23,7 +23,7 @@ const ProfessionSubcategoryScreen = ({
   route,
   navigation,
 }: IProfessionSubcategoryScreenProps) => {
-  const {id, title, Icon} = route.params;
+  const {id, title, icon} = route.params;
   const [professionSubcategories, setProfessionSubcategories] = useState<
     IProfessionSubcategoryProps[]
   >([]);
@@ -44,7 +44,7 @@ const ProfessionSubcategoryScreen = ({
           if (isActive) {
             setProfessionSubcategories(
               getProfessionSubcategoryWithIcon(
-                Icon,
+                icon,
                 professionSubcategoriesRes.data,
               ),
             );
@@ -61,7 +61,7 @@ const ProfessionSubcategoryScreen = ({
       return () => {
         isActive = false;
       };
-    }, [id, Icon]),
+    }, [id, icon]),
   );
 
   return (

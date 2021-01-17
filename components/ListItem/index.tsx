@@ -9,13 +9,14 @@ import {
   RedArrow,
   useFocusEffect,
   Pressable,
+  Image,
 } from './imports';
 
 const ListItem = ({
   id,
   title,
   description,
-  Icon,
+  icon,
   navigation,
   nextScreen,
   extraParams,
@@ -28,7 +29,7 @@ const ListItem = ({
       id: id,
       title: title,
       description: description,
-      Icon: Icon,
+      icon: icon,
       extraParams,
     });
   };
@@ -48,11 +49,7 @@ const ListItem = ({
         return true;
       }}>
       <View style={styles.item}>
-        {Icon && (
-          <View style={styles.icon}>
-            <Icon width={24} height={24} />
-          </View>
-        )}
+        {icon && <Image source={{uri: icon}} style={styles.icon} />}
         <View style={styles.text}>
           <Text style={isItemClicked ? styles.clickedItemTitle : styles.title}>
             {title}
