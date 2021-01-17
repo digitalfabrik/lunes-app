@@ -8,6 +8,7 @@ import {
   useState,
   RedArrow,
   useFocusEffect,
+  Pressable,
 } from './imports';
 
 const ListItem = ({
@@ -39,9 +40,9 @@ const ListItem = ({
   );
 
   return (
-    <View
+    <Pressable
       style={isItemClicked ? styles.clickedItem : styles.container}
-      onTouchEnd={() => {
+      onPress={() => {
         setIsItemClicked(true);
         handleNavigation();
         return true;
@@ -68,7 +69,7 @@ const ListItem = ({
       <View style={styles.arrow}>
         {isItemClicked ? <RedArrow /> : <Arrow />}
       </View>
-    </View>
+    </Pressable>
   );
 };
 
