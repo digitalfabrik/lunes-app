@@ -1,10 +1,30 @@
-import {React, Text, View, styles} from './imports';
+import {React, TouchableOpacity, CloseButton, useState, Modal} from './imports';
 
-const VocabularyTrainerExerciseScreen = () => {
+const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackImage: () => (
+        <TouchableOpacity onPress={showModal}>
+          <CloseButton />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
-    <View style={styles.root}>
-      <Text>Vocabulary Trainer Exercise Screen</Text>
-    </View>
+    <>
+      <Modal
+        visible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        navigation={navigation}
+      />
+    </>
   );
 };
 

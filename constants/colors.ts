@@ -14,4 +14,5 @@ export const COLORS = {
   lunesArtikelDiePlural: '#eee12d',
   lunesArtikelDie: '#faa7a7',
   lunesArtikelDer: '#8cc8f3',
+  lunesOverlay: 'rgba(0, 14, 56, 0.8)',
 };

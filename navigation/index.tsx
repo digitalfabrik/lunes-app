@@ -56,7 +56,7 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={{
-          headerBackImage: () => <BackButton />,
+          headerTitle: 'End Session',
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
         }}

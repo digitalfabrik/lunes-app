@@ -16,3 +16,9 @@ export interface IVocabularyOverviewListItemProps {
   article: string;
   image: any;
 }
+
+export interface IConfirmationModalProps {
+  visible: boolean;
+  setIsModalVisible: Function;
+  navigation: any;
+}

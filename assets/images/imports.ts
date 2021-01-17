@@ -17,6 +17,7 @@ import hard from './level-hard.svg';
 import Home from './home.svg';
 import CloseButton from './close.svg';
 import VolumeUp from './volume_up.svg';
+import CloseIcon from './close-icon.svg';
 
 export {
   icon1,
@@ -37,4 +38,5 @@ export {
   Home,
   CloseButton,
   VolumeUp,
+  CloseIcon,
 };
