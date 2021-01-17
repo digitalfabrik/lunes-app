@@ -14,7 +14,7 @@ export interface IListItemProps {
   id: number;
   title: string;
   description: string;
-  icon?: any;
+  icon?: string;
   navigation: any;
   nextScreen?: string;
   extraParams?: any;

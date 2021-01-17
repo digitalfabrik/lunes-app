@@ -14,6 +14,6 @@ export interface IVocabularyOverviewListItemProps {
   id: number;
   word: string;
   article: string;
-  image: any;
+  image: string;
   audio: string;
 }

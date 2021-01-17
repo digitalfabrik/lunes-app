@@ -7,5 +7,5 @@ export interface IProfessionSubcategoryProps {
   id: number;
   title: string;
   description: string;
-  icon: any;
+  icon: string;
 }
