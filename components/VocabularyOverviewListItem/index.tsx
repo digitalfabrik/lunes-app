@@ -50,7 +50,9 @@ const VocabularyOverviewListItem = ({
         <View>
           <View
             style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
-            <Text style={styles.title}>{article}</Text>
+            <Text style={styles.title}>
+              {article.toLowerCase() == 'die (plural)' ? 'die' : article}
+            </Text>
           </View>
           <Text style={styles.description}>{word}</Text>
         </View>

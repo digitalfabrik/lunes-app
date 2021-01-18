@@ -27,7 +27,10 @@ export const getArticleColor = (article: string): string => {
     case 'die':
       return COLORS.lunesArtikelDie;
 
-    default:
+    case 'die (plural)':
       return COLORS.lunesArtikelDiePlural;
+
+    default:
+      return COLORS.lunesArtikelDer;
   }
 };
