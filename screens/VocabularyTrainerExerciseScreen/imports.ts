@@ -10,6 +10,11 @@ import {
 import Modal from '../../components/Modal';
 import {ProgressBar} from 'react-native-paper';
 import {COLORS} from '../../constants/colors';
+import {IDocumentProps} from '../../interfaces/exercise';
+import {useFocusEffect} from '@react-navigation/native';
+import axios from '../../utils/axios';
+import {ENDPOINTS} from '../../constants/endpoints';
+import {IVocabularyTrainerScreen} from '../../interfaces/exercise';
 
 export {
   React,
@@ -27,4 +32,9 @@ export {
   NextArrow,
   CloseIcon,
   VolumeUpDisabled,
+  useFocusEffect,
+  ENDPOINTS,
+  axios,
 };
+
+export type {IDocumentProps, IVocabularyTrainerScreen};

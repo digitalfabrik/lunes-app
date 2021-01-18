@@ -3,6 +3,11 @@ export interface IVocabularyOverviewScreen {
   route: any;
 }
 
+export interface IVocabularyTrainerScreen {
+  navigation: any;
+  route: any;
+}
+
 export interface IDocumentProps {
   id: number;
   word: string;

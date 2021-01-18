@@ -14,13 +14,27 @@ import {
   NextArrow,
   CloseIcon,
   VolumeUpDisabled,
+  IDocumentProps,
+  useFocusEffect,
+  ENDPOINTS,
+  axios,
+  IVocabularyTrainerScreen,
 } from './imports';
 
-const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
+const VocabularyTrainerExerciseScreen = ({
+  navigation,
+  route,
+}: IVocabularyTrainerScreen) => {
+  const {extraParams} = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [word, setWord] = useState('');
-  const [correctAnswersNumber] = useState(5);
-  const [totalWordsNumber] = useState(10);
+  const [currentWordNumber, setCurrentWordNumber] = useState(1);
+  const [documents, setDocuments] = useState<IDocumentProps[]>([]);
+  const [count, setCount] = useState(0);
+  const [progressValue, setProgressValue] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [document, setDocument] = useState<IDocumentProps>();
+  const [progressStep, setProgressStep] = useState(0);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -29,6 +43,18 @@ const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
   const clearTextInput = () => {
     setWord('');
   };
+
+  const getNextWord = () => {
+    if (index < count - 1) {
+      setIndex(index + 1);
+      setCurrentWordNumber(currentWordNumber + 1);
+    }
+  };
+
+  React.useEffect(() => {
+    setDocument(documents[index]);
+    setProgressValue(progressValue + progressStep);
+  }, [index, progressStep, documents, progressValue]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,35 +68,66 @@ const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
           <Text
             style={
               styles.headerText
-            }>{`${correctAnswersNumber} of ${totalWordsNumber}`}</Text>
+            }>{`${currentWordNumber} of ${count}`}</Text>
         </View>
       ),
     });
-  }, [navigation, correctAnswersNumber, totalWordsNumber]);
+  }, [navigation, currentWordNumber, count]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let isActive: boolean = true;
+
+      const getProfessions = async () => {
+        try {
+          const documentsRes = await axios.get(
+            ENDPOINTS.documents.all.replace(':id', `${extraParams}`),
+          );
+
+          if (isActive) {
+            setDocuments(documentsRes.data);
+            setCount(documentsRes.data.length);
+            setDocument(documentsRes.data[index]);
+            setProgressStep(
+              documentsRes.data.length && 1 / documentsRes.data.length,
+            );
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      getProfessions();
+
+      return () => {
+        isActive = false;
+      };
+    }, [extraParams, index]),
+  );
 
   return (
     <>
       <View>
-        {/* progress value will change dynamically when implement the logic */}
         <ProgressBar
-          progress={0.5}
+          progress={progressValue}
           color={COLORS.lunesGreenMedium}
           style={styles.progressBar}
           accessibilityComponentType
           accessibilityTraits
         />
 
-        {/* this is a placeholder image, will be changed to one from the API */}
         <Image
           source={{
-            uri:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpWWrw3YJAfkwF3tECvAGyjyQ8lOgxnyat0Q&usqp=CAU',
+            uri: document?.image,
           }}
           style={styles.image}
         />
-        <TouchableOpacity style={styles.volumeIcon}>
+
+        {/* this is disabled for now, until finish implementing the logic */}
+        <TouchableOpacity disabled style={styles.volumeIcon}>
           <VolumeUpDisabled />
         </TouchableOpacity>
+
         <View style={styles.container}>
           <View style={styles.textInputContainer}>
             <TextInput
@@ -80,7 +137,6 @@ const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
               value={word}
               onChangeText={(text) => setWord(text)}
             />
-
             {word !== '' && (
               <TouchableOpacity onPress={clearTextInput}>
                 <CloseIcon />
@@ -104,7 +160,7 @@ const VocabularyTrainerExerciseScreen = ({navigation}: any) => {
             <Text style={styles.giveUpLabel}>I give up!</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.tryLaterButton}>
+          <TouchableOpacity style={styles.tryLaterButton} onPress={getNextWord}>
             <Text style={styles.giveUpLabel}>Try later</Text>
             <NextArrow />
           </TouchableOpacity>
