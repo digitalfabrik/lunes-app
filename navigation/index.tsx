@@ -59,6 +59,7 @@ const Navigation = () => {
           headerTitle: 'End Session',
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
+          headerRightContainerStyle: styles.rightHeaderComponent,
         }}
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}

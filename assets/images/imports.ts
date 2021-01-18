@@ -18,6 +18,8 @@ import Home from './home.svg';
 import CloseButton from './close.svg';
 import VolumeUp from './volume_up.svg';
 import CloseIcon from './close-icon.svg';
+import NextArrow from './next-arrow.svg';
+import VolumeUpDisabled from './volume-up-disabled.svg';
 
 export {
   icon1,
@@ -39,4 +41,6 @@ export {
   CloseButton,
   VolumeUp,
   CloseIcon,
+  NextArrow,
+  VolumeUpDisabled,
 };

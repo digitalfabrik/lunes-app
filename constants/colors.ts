@@ -8,6 +8,7 @@ export const COLORS = {
   lunesFunctionalIncorrectDark: '#ff5252',
   lunesRedLight: '#f57f7a',
   lunesGreenLight: '#7ae6d8',
+  lunesGreenMedium: '#20c5b4',
   lunesBlueLight: '#97aef1',
   lunesOrangeLight: '#ffbb4a',
   lunesArtikelDas: '#72f399',
@@ -15,4 +16,5 @@ export const COLORS = {
   lunesArtikelDie: '#faa7a7',
   lunesArtikelDer: '#8cc8f3',
   lunesOverlay: 'rgba(0, 14, 56, 0.8)',
+  lunesBlackLight: '#777e91',
 };
