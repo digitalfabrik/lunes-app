@@ -26,13 +26,14 @@ const ListView = ({
         word={item.word}
         article={item.article}
         image={item.image}
+        audio={item.audio}
       />
     ) : (
       <ListItem
         id={item.id}
         title={item.title}
         description={item.description}
-        Icon={item.Icon}
+        icon={item.icon}
         navigation={navigation}
         nextScreen={nextScreen ? nextScreen : item.nextScreen}
         extraParams={extraParams}

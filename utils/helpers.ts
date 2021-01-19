@@ -1,30 +1,13 @@
-import {IIconsProps, IProfessionsProps} from '../interfaces/profession';
 import {IProfessionSubcategoryProps} from '../interfaces/professionSubcategory';
-import {BADGES_COLORS} from '../constants/data';
-
-export const getProfessionsWithIcons = (
-  iconsList: IIconsProps[],
-  professionsList: IProfessionsProps[],
-): IProfessionsProps[] => {
-  const mappedProfessions: IProfessionsProps[] = professionsList.map(
-    (profession) => {
-      profession.Icon = iconsList.find(
-        (icon) => icon.id === profession.id,
-      )?.Icon;
-      return profession;
-    },
-  );
-
-  return mappedProfessions;
-};
+import {COLORS} from '../constants/colors';
 
 export const getProfessionSubcategoryWithIcon = (
-  icon: IIconsProps,
+  icon: string,
   professionSubcategoriesList: IProfessionSubcategoryProps[],
 ): IProfessionSubcategoryProps[] => {
   const mappedProfessionSubcategories: IProfessionSubcategoryProps[] = professionSubcategoriesList.map(
     (subcategory) => {
-      subcategory.Icon = icon;
+      subcategory.icon = icon;
       return subcategory;
     },
   );
@@ -32,7 +15,22 @@ export const getProfessionSubcategoryWithIcon = (
   return mappedProfessionSubcategories;
 };
 
-export const getBadgeColor = (): string => {
-  const index = Math.floor(Math.random() * Math.floor(8));
-  return BADGES_COLORS[index];
+//We still need to handle "Die plural" case
+export const getArticleColor = (article: string): string => {
+  switch (article.toLowerCase()) {
+    case 'der':
+      return COLORS.lunesArtikelDer;
+
+    case 'das':
+      return COLORS.lunesArtikelDas;
+
+    case 'die':
+      return COLORS.lunesArtikelDie;
+
+    case 'die (plural)':
+      return COLORS.lunesArtikelDiePlural;
+
+    default:
+      return COLORS.lunesArtikelDer;
+  }
 };

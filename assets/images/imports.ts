@@ -16,11 +16,12 @@ import easy from './level-easy.svg';
 import hard from './level-hard.svg';
 import Home from './home.svg';
 import CloseButton from './close.svg';
-import VolumeUp from './volume_up.svg';
 import CloseIcon from './close-icon.svg';
 import NextArrow from './next-arrow.svg';
 import VolumeUpDisabled from './volume-up-disabled.svg';
 import InfoIcon from './info.svg';
+import VolumeUp from './active-volume-up.svg';
+import InActiveVolumeUp from './inactive-volume-up.svg';
 
 export {
   icon1,
@@ -45,4 +46,5 @@ export {
   NextArrow,
   VolumeUpDisabled,
   InfoIcon,
+  InActiveVolumeUp,
 };

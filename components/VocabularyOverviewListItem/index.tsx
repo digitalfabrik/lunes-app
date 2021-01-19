@@ -7,8 +7,11 @@ import {
   Image,
   TouchableOpacity,
   Tts,
-  getBadgeColor,
+  getArticleColor,
   VolumeUp,
+  SoundPlayer,
+  InActiveVolumeUp,
+  Platform,
 } from './imports';
 
 //German language
@@ -18,16 +21,48 @@ const VocabularyOverviewListItem = ({
   image,
   article,
   word,
+  audio,
 }: IVocabularyOverviewListItemProps) => {
-  const handlaSpeakerClick = () => {
-    Tts.speak(word, {
-      androidParams: {
-        KEY_PARAM_PAN: -1,
-        KEY_PARAM_VOLUME: 0.5,
-        KEY_PARAM_STREAM: 'STREAM_MUSIC',
-      },
-    });
+  const [active, setActive] = React.useState(false);
+
+  const handlaSpeakerClick = (audio: string) => {
+    setActive(true);
+
+    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
+    if (audio && Platform.OS !== 'ios') {
+      //audio from API
+      SoundPlayer.playUrl(audio);
+    } else {
+      Tts.speak(word, {
+        androidParams: {
+          KEY_PARAM_PAN: -1,
+          KEY_PARAM_VOLUME: 0.5,
+          KEY_PARAM_STREAM: 'STREAM_MUSIC',
+        },
+      });
+    }
   };
+
+  React.useEffect(() => {
+    let _onSoundPlayerFinishPlaying: any = null;
+    let _onTtsFinishPlaying: any = null;
+
+    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => {
+        setActive(false);
+      },
+    );
+
+    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setActive(false),
+    );
+
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -41,14 +76,19 @@ const VocabularyOverviewListItem = ({
           style={styles.image}
         />
         <View>
-          <View style={[styles.badge, {backgroundColor: getBadgeColor()}]}>
-            <Text style={styles.title}>{article}</Text>
+          <View
+            style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
+            <Text style={styles.title}>
+              {article.toLowerCase() == 'die (plural)' ? 'die' : article}
+            </Text>
           </View>
           <Text style={styles.description}>{word}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.speaker} onPress={handlaSpeakerClick}>
-        <VolumeUp />
+      <TouchableOpacity
+        style={styles.speaker}
+        onPress={() => handlaSpeakerClick(audio)}>
+        {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
       </TouchableOpacity>
     </View>
   );

@@ -12,6 +12,8 @@ target 'LunesAppUI' do
 
   pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
 
+  pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
+
   target 'LunesAppUITests' do
     inherit! :complete
     # Pods for testing
