@@ -11,6 +11,7 @@ import {
   VolumeUp,
   SoundPlayer,
   InActiveVolumeUp,
+  Platform,
 } from './imports';
 
 //German language
@@ -27,7 +28,8 @@ const VocabularyOverviewListItem = ({
   const handlaSpeakerClick = (audio: string) => {
     setActive(true);
 
-    if (audio) {
+    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
+    if (audio && Platform.OS !== 'ios') {
       //audio from API
       SoundPlayer.playUrl(audio);
     } else {
