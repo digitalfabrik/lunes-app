@@ -10,6 +10,7 @@ import {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
+  Platform,
 } from './imports';
 
 //German language
@@ -22,7 +23,8 @@ const VocabularyOverviewListItem = ({
   audio,
 }: IVocabularyOverviewListItemProps) => {
   const handlaSpeakerClick = (audio: string) => {
-    if (audio) {
+    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
+    if (audio && Platform.OS !== 'ios') {
       //audio from API
       SoundPlayer.playUrl(audio);
     } else {
