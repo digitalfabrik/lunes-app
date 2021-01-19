@@ -8,17 +8,15 @@ import {
   ProgressBar,
   COLORS,
   styles,
-  TextInput,
   Image,
   Text,
-  NextArrow,
-  CloseIcon,
   VolumeUpDisabled,
   IDocumentProps,
   useFocusEffect,
   ENDPOINTS,
   axios,
   IVocabularyTrainerScreen,
+  AnswerSection,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -27,7 +25,6 @@ const VocabularyTrainerExerciseScreen = ({
 }: IVocabularyTrainerScreen) => {
   const {extraParams} = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [word, setWord] = useState('');
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [count, setCount] = useState(0);
@@ -38,17 +35,6 @@ const VocabularyTrainerExerciseScreen = ({
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const clearTextInput = () => {
-    setWord('');
-  };
-
-  const getNextWord = () => {
-    if (index < count - 1) {
-      setIndex(index + 1);
-      setCurrentWordNumber(currentWordNumber + 1);
-    }
   };
 
   React.useEffect(() => {
@@ -128,43 +114,13 @@ const VocabularyTrainerExerciseScreen = ({
           <VolumeUpDisabled />
         </TouchableOpacity>
 
-        <View style={styles.container}>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter Word with article"
-              placeholderTextColor={COLORS.lunesBlackLight}
-              value={word}
-              onChangeText={(text) => setWord(text)}
-            />
-            {word !== '' && (
-              <TouchableOpacity onPress={clearTextInput}>
-                <CloseIcon />
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <TouchableOpacity
-            disabled={!word}
-            style={[styles.checkEntryButton, !word && styles.disabledButton]}>
-            <Text
-              style={[
-                styles.checkEntryLabel,
-                !word && styles.disabledButtonLabel,
-              ]}>
-              Check entry
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.giveUpButton}>
-            <Text style={styles.giveUpLabel}>I give up!</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.tryLaterButton} onPress={getNextWord}>
-            <Text style={styles.giveUpLabel}>Try later</Text>
-            <NextArrow />
-          </TouchableOpacity>
-        </View>
+        <AnswerSection
+          count={count}
+          index={index}
+          setIndex={setIndex}
+          currentWordNumber={currentWordNumber}
+          setCurrentWordNumber={setCurrentWordNumber}
+        />
       </View>
       <Modal
         visible={isModalVisible}

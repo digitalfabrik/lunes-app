@@ -27,3 +27,11 @@ export interface IConfirmationModalProps {
   setIsModalVisible: Function;
   navigation: any;
 }
+
+export interface IAnswerSectionProps {
+  count: number;
+  index: number;
+  setIndex: Function;
+  currentWordNumber: number;
+  setCurrentWordNumber: Function;
+}
