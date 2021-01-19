@@ -20,6 +20,7 @@ import VolumeUp from './volume_up.svg';
 import CloseIcon from './close-icon.svg';
 import NextArrow from './next-arrow.svg';
 import VolumeUpDisabled from './volume-up-disabled.svg';
+import InfoIcon from './info.svg';
 
 export {
   icon1,
@@ -43,4 +44,5 @@ export {
   CloseIcon,
   NextArrow,
   VolumeUpDisabled,
+  InfoIcon,
 };

@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     paddingVertical: 40,
     alignItems: 'center',
+    position: 'relative',
   },
   textInputContainer: {
     width: 260,
@@ -76,5 +77,11 @@ export const styles = StyleSheet.create({
   },
   disabledButtonLabel: {
     color: COLORS.lunesBlackLight,
+  },
+  arrow: {
+    backgroundColor: COLORS.lunesBlack,
+  },
+  overlay: {
+    backgroundColor: 'transparent',
   },
 });

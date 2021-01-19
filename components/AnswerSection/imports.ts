@@ -4,6 +4,8 @@ import {styles} from './styles';
 import {NextArrow, CloseIcon} from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
 import {IAnswerSectionProps} from '../../interfaces/exercise';
+import Popover, {PopoverPlacement} from 'react-native-popover-view';
+import PopoverContent from '../PopoverContent';
 
 export {
   React,
@@ -16,6 +18,9 @@ export {
   TextInput,
   NextArrow,
   CloseIcon,
+  Popover,
+  PopoverPlacement,
+  PopoverContent,
 };
 
 export type {IAnswerSectionProps};

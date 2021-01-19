@@ -10,6 +10,9 @@ import {
   NextArrow,
   CloseIcon,
   IAnswerSectionProps,
+  Popover,
+  PopoverPlacement,
+  PopoverContent,
 } from './imports';
 
 const AnswerSection = ({
@@ -20,6 +23,8 @@ const AnswerSection = ({
   setCurrentWordNumber,
 }: IAnswerSectionProps) => {
   const [word, setWord] = useState('');
+  const touchable: any = React.useRef();
+  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
 
   const clearTextInput = () => {
     setWord('');
@@ -32,9 +37,28 @@ const AnswerSection = ({
     }
   };
 
+  const checkEntry = () => {
+    if (word.split(' ').length < 2) {
+      setIsPopoverVisible(true);
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <Popover
+        isVisible={isPopoverVisible}
+        onRequestClose={() => setIsPopoverVisible(false)}
+        from={touchable}
+        placement={PopoverPlacement.TOP}
+        arrowStyle={styles.arrow}
+        arrowShift={-0.8}
+        verticalOffset={-10}
+        backgroundStyle={styles.overlay}>
+        <PopoverContent />
+      </Popover>
+
       <View
+        ref={touchable}
         style={[styles.textInputContainer, !!word && styles.activeTextInput]}>
         <TextInput
           style={styles.textInput}
@@ -51,6 +75,7 @@ const AnswerSection = ({
       </View>
 
       <TouchableOpacity
+        onPress={checkEntry}
         disabled={!word}
         style={[styles.checkEntryButton, !word && styles.disabledButton]}>
         <Text
