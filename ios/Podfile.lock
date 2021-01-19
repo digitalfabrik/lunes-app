@@ -236,10 +236,8 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-
   - react-native-safe-area-context (3.1.9):
     - React-Core
-
   - react-native-splash-screen (3.2.0):
     - React
   - React-RCTActionSheet (0.63.3):
@@ -310,6 +308,8 @@ PODS:
     - React-Core
   - RNScreens (2.16.1):
     - React-Core
+  - RNSoundPlayer (0.10.3):
+    - React
   - RNSVG (12.1.0):
     - React
   - TextToSpeech (2.0.0):
@@ -371,6 +371,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSoundPlayer (from `../node_modules/react-native-sound-player`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - TextToSpeech (from `../node_modules/react-native-tts`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -453,6 +454,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSoundPlayer:
+    :path: "../node_modules/react-native-sound-player"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   TextToSpeech:
@@ -503,11 +506,12 @@ SPEC CHECKSUMS:
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNSoundPlayer: 36fe7b7390a62c81a7eb4deeca07420399699872
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   TextToSpeech: 4e2fc50c7495416c6da5a1662ad3f750c58d3c85
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b0fc24eb95f547999cc21ddbdc8fd598dcc0338c
+PODFILE CHECKSUM: d3a1f0b98f0ec43337132c23bce1134d70203d91
 
 COCOAPODS: 1.10.0
