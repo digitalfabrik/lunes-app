@@ -42,11 +42,24 @@ const VocabularyOverviewListItem = ({
   };
 
   React.useEffect(() => {
-    SoundPlayer.addEventListener('FinishedPlaying', () => {
-      setActive(false);
-    });
+    let _onSoundPlayerFinishPlaying: any = null;
+    let _onTtsFinishPlaying: any = null;
 
-    Tts.addEventListener('tts-finish', () => setActive(false));
+    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => {
+        setActive(false);
+      },
+    );
+
+    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setActive(false),
+    );
+
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
   }, []);
 
   return (
