@@ -10,6 +10,7 @@ import {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
+  InActiveVolumeUp,
 } from './imports';
 
 //German language
@@ -21,7 +22,11 @@ const VocabularyOverviewListItem = ({
   word,
   audio,
 }: IVocabularyOverviewListItemProps) => {
+  const [active, setActive] = React.useState(false);
+
   const handlaSpeakerClick = (audio: string) => {
+    setActive(true);
+
     if (audio) {
       //audio from API
       SoundPlayer.playUrl(audio);
@@ -35,6 +40,14 @@ const VocabularyOverviewListItem = ({
       });
     }
   };
+
+  React.useEffect(() => {
+    SoundPlayer.addEventListener('FinishedPlaying', () => {
+      setActive(false);
+    });
+
+    Tts.addEventListener('tts-finish', () => setActive(false));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -60,7 +73,7 @@ const VocabularyOverviewListItem = ({
       <TouchableOpacity
         style={styles.speaker}
         onPress={() => handlaSpeakerClick(audio)}>
-        <VolumeUp />
+        {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
       </TouchableOpacity>
     </View>
   );
