@@ -53,8 +53,8 @@ const VocabularyTrainerExerciseScreen = ({
 
   React.useEffect(() => {
     setDocument(documents[index]);
-    setProgressValue(progressValue + progressStep);
-  }, [index, progressStep, documents, progressValue]);
+    setProgressValue((prevValue) => prevValue + progressStep);
+  }, [index, progressStep, documents]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -87,7 +87,7 @@ const VocabularyTrainerExerciseScreen = ({
           if (isActive) {
             setDocuments(documentsRes.data);
             setCount(documentsRes.data.length);
-            setDocument(documentsRes.data[index]);
+            setDocument(documentsRes.data[0]);
             setProgressStep(
               documentsRes.data.length && 1 / documentsRes.data.length,
             );
@@ -102,7 +102,7 @@ const VocabularyTrainerExerciseScreen = ({
       return () => {
         isActive = false;
       };
-    }, [extraParams, index]),
+    }, [extraParams]),
   );
 
   return (
