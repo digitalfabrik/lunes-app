@@ -38,7 +38,7 @@ const AnswerSection = ({
   };
 
   const checkEntry = () => {
-    if (word.split(' ').length < 2) {
+    if (word.trim().split(' ').length < 2) {
       setIsPopoverVisible(true);
     }
   };
