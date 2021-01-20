@@ -7,13 +7,19 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.lunesBlack,
-    marginLeft: -20,
     fontFamily: 'SourceSansPro-SemiBold',
     fontSize: 14,
     textTransform: 'uppercase',
     fontWeight: '600',
+    marginLeft: 15,
   },
-  rightHeaderComponent: {
+  headerLeft: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 200,
+  },
+  headerRight: {
     paddingRight: 10,
   },
 });

@@ -13,6 +13,7 @@ import {
   useState,
   useFocusEffect,
   getProfessionSubcategoryWithIcon,
+  StatusBar,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -66,6 +67,8 @@ const ProfessionSubcategoryScreen = ({
 
   return (
     <View style={styles.root}>
+      <StatusBar backgroundColor="blue" barStyle="dark-content" />
+
       <ListView
         navigation={navigation}
         title={

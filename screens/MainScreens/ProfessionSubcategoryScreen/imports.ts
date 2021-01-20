@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {styles} from './styles';
-import {View, Text, LogBox} from 'react-native';
+import {View, Text, LogBox, StatusBar} from 'react-native';
 import {
   IProfessionSubcategoryScreenProps,
   IProfessionSubcategoryProps,
@@ -25,6 +25,7 @@ export {
   useFocusEffect,
   useState,
   getProfessionSubcategoryWithIcon,
+  StatusBar,
 };
 
 export type {IProfessionSubcategoryScreenProps, IProfessionSubcategoryProps};
