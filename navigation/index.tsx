@@ -10,6 +10,8 @@ import {
   CloseButton,
   styles,
   ProfessionParamList,
+  Text,
+  TouchableOpacity,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -24,9 +26,13 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={{
-          headerTitle: 'Profession Overview',
-          headerBackImage: () => <BackButton />,
-          headerTitleStyle: styles.title,
+          headerLeft: (props) => (
+            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+              <BackButton />
+              <Text style={styles.title}>Profession Overview</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: ' ',
           headerStyle: styles.header,
         }}
         name="ProfessionSubcategory"
@@ -34,22 +40,30 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={({route}: any) => ({
-          headerTitle: route.params.extraParams,
-          headerBackImage: () => <BackButton />,
-          headerTitleStyle: styles.title,
+          headerLeft: (props) => (
+            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+              <BackButton />
+              <Text style={styles.title}>{route.params.extraParams}</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: ' ',
           headerStyle: styles.header,
-          headerRightContainerStyle: styles.rightHeaderComponent,
+          headerRightContainerStyle: styles.headerRight,
         })}
         name="Exercises"
         component={ExercisesScreen}
       />
       <ProfessionStack.Screen
         options={{
-          headerTitle: 'Excercise Overview',
-          headerBackImage: () => <CloseButton />,
-          headerTitleStyle: styles.title,
+          headerLeft: (props) => (
+            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+              <CloseButton />
+              <Text style={styles.title}>Exercise Overview</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: ' ',
           headerStyle: styles.header,
-          headerRightContainerStyle: styles.rightHeaderComponent,
+          headerRightContainerStyle: styles.headerRight,
         }}
         name="VocabularyOverview"
         component={VocabularyOverviewExerciseScreen}
@@ -59,6 +73,7 @@ const Navigation = () => {
           headerBackImage: () => <BackButton />,
           headerTitleStyle: styles.title,
           headerStyle: styles.header,
+          headerRightContainerStyle: styles.headerRight,
         }}
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}
