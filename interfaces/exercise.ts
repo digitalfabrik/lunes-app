@@ -13,6 +13,7 @@ export interface IDocumentProps {
   word: string;
   article: string;
   image: string;
+  audio: string;
 }
 
 export interface IVocabularyOverviewListItemProps {
@@ -35,4 +36,5 @@ export interface IAnswerSectionProps {
   setIndex: Function;
   currentWordNumber: number;
   setCurrentWordNumber: Function;
+  document?: IDocumentProps;
 }

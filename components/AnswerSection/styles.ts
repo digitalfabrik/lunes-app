@@ -88,5 +88,12 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: -20,
     left: '45%',
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: COLORS.lunesFunctionalIncorrectDark,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

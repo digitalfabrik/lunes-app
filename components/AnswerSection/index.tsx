@@ -14,6 +14,11 @@ import {
   PopoverPlacement,
   PopoverContent,
   VolumeUpDisabled,
+  InActiveVolumeUp,
+  VolumeUp,
+  Platform,
+  SoundPlayer,
+  Tts,
 } from './imports';
 
 const AnswerSection = ({
@@ -22,13 +27,17 @@ const AnswerSection = ({
   setIndex,
   currentWordNumber,
   setCurrentWordNumber,
+  document,
 }: IAnswerSectionProps) => {
   const [word, setWord] = useState('');
   const touchable: any = React.useRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [isValidEntry, setIsValidEntry] = useState(false);
 
   const clearTextInput = () => {
     setWord('');
+    setIsValidEntry(false);
   };
 
   const getNextWord = () => {
@@ -41,8 +50,52 @@ const AnswerSection = ({
   const checkEntry = () => {
     if (word.trim().split(' ').length < 2) {
       setIsPopoverVisible(true);
+      setIsValidEntry(false);
+    } else {
+      setIsValidEntry(true);
+      setIsActive(true);
+      handlaSpeakerClick(document?.audio);
     }
   };
+
+  const handlaSpeakerClick = (audio?: string) => {
+    setIsActive(true);
+
+    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
+    if (audio && Platform.OS !== 'ios') {
+      //audio from API
+      SoundPlayer.playUrl(document?.audio);
+    } else {
+      Tts.speak(document?.word, {
+        androidParams: {
+          KEY_PARAM_PAN: -1,
+          KEY_PARAM_VOLUME: 0.5,
+          KEY_PARAM_STREAM: 'STREAM_MUSIC',
+        },
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    let _onSoundPlayerFinishPlaying: any = null;
+    let _onTtsFinishPlaying: any = null;
+
+    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => {
+        setIsActive(false);
+      },
+    );
+
+    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setIsActive(false),
+    );
+
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -59,8 +112,19 @@ const AnswerSection = ({
       </Popover>
 
       {/* this is disabled for now, until finish implementing the logic */}
-      <TouchableOpacity disabled style={styles.volumeIcon}>
-        <VolumeUpDisabled />
+      <TouchableOpacity
+        disabled={!word}
+        style={styles.volumeIcon}
+        onPress={() => handlaSpeakerClick(document?.audio)}>
+        {isValidEntry && word ? (
+          isActive ? (
+            <VolumeUp />
+          ) : (
+            <InActiveVolumeUp />
+          )
+        ) : (
+          <VolumeUpDisabled />
+        )}
       </TouchableOpacity>
 
       <View
