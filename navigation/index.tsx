@@ -70,8 +70,13 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={{
-          headerBackImage: () => <BackButton />,
-          headerTitleStyle: styles.title,
+          headerLeft: (props) => (
+            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+              <BackButton />
+              <Text style={styles.title}>Exercise Overview</Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: ' ',
           headerStyle: styles.header,
           headerRightContainerStyle: styles.headerRight,
         }}

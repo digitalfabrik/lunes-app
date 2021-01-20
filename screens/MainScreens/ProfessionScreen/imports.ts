@@ -8,6 +8,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {IProfessionsProps} from '../../../interfaces/profession';
 import {ENDPOINTS} from '../../../constants/endpoints';
 import {SCREENS} from '../../../constants/data';
+import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
 
 export {
   React,
@@ -21,6 +22,7 @@ export {
   useState,
   ENDPOINTS,
   SCREENS,
+  SafeAreaInsetsContext,
 };
 
 export type {IProfessionsProps};

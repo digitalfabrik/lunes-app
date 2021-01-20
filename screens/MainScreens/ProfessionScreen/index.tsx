@@ -11,6 +11,7 @@ import {
   IProfessionsProps,
   ENDPOINTS,
   SCREENS,
+  SafeAreaInsetsContext,
 } from './imports';
 
 const ProfessionScreen = ({navigation}: any) => {
@@ -44,23 +45,27 @@ const ProfessionScreen = ({navigation}: any) => {
   );
 
   return (
-    <View style={styles.root}>
-      <Header />
-      <ListView
-        navigation={navigation}
-        title={
-          <>
-            <Text style={styles.text}>Welcome to Lunes!</Text>
-            <Text style={styles.text}>
-              Learn German vocabulary for your profession.
-            </Text>
-          </>
-        }
-        listData={professions}
-        nextScreen={SCREENS.professionSubcategory}
-        isLoading={isLoading}
-      />
-    </View>
+    <SafeAreaInsetsContext.Consumer>
+      {(insets) => (
+        <View style={styles.root}>
+          <Header top={insets.top} />
+          <ListView
+            navigation={navigation}
+            title={
+              <>
+                <Text style={styles.text}>Welcome to Lunes!</Text>
+                <Text style={styles.text}>
+                  Learn German vocabulary for your profession.
+                </Text>
+              </>
+            }
+            listData={professions}
+            nextScreen={SCREENS.professionSubcategory}
+            isLoading={isLoading}
+          />
+        </View>
+      )}
+    </SafeAreaInsetsContext.Consumer>
   );
 };
 
