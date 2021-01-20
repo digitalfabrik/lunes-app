@@ -38,6 +38,11 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
+  descriptionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   description: {
     fontSize: 14,
     fontWeight: 'normal',
@@ -79,5 +84,38 @@ export const styles = StyleSheet.create({
   },
   level: {
     marginTop: 11,
+  },
+  badge: {
+    minWidth: 24,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.lunesGreyMedium,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 4,
+    padding: 6,
+  },
+  badgeLabel: {
+    color: COLORS.lunesWhite,
+    fontFamily: 'SourceSansPro-Semibold',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  clickedItemBadge: {
+    minWidth: 24,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.lunesWhite,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 4,
+  },
+  clickedItemBadgeLabel: {
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Semibold',
+    fontSize: 12,
+    fontWeight: '600',
   },
 });

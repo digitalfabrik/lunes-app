@@ -8,4 +8,5 @@ export interface IProfessionSubcategoryProps {
   title: string;
   description: string;
   icon: string;
+  total_documents: number;
 }

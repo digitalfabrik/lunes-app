@@ -80,6 +80,7 @@ const ProfessionSubcategoryScreen = ({
         nextScreen={SCREENS.exercises}
         extraParams={title}
         isLoading={isLoading}
+        from={SCREENS.professionSubcategory}
       />
     </View>
   );

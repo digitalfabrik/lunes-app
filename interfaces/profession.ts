@@ -7,18 +7,21 @@ export interface IListViewProps {
   nextScreen?: string;
   extraParams?: any;
   isLoading: boolean;
-  fromExercises?: boolean;
+  from?: string;
 }
 
 export interface IListItemProps {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   icon?: string;
   navigation: any;
   nextScreen?: string;
   extraParams?: any;
   Level?: any;
+  numOfCategories?: number;
+  numOfWords?: number;
+  from?: string;
 }
 
 export interface IProfessionsProps {
@@ -26,4 +29,5 @@ export interface IProfessionsProps {
   title: string;
   description: string;
   icon?: string;
+  total_training_sets: number;
 }
