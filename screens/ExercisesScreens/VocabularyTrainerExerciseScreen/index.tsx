@@ -10,7 +10,6 @@ import {
   styles,
   Image,
   Text,
-  VolumeUpDisabled,
   IDocumentProps,
   useFocusEffect,
   ENDPOINTS,
@@ -108,11 +107,6 @@ const VocabularyTrainerExerciseScreen = ({
           }}
           style={styles.image}
         />
-
-        {/* this is disabled for now, until finish implementing the logic */}
-        <TouchableOpacity disabled style={styles.volumeIcon}>
-          <VolumeUpDisabled />
-        </TouchableOpacity>
 
         <AnswerSection
           count={count}

@@ -13,6 +13,7 @@ import {
   Popover,
   PopoverPlacement,
   PopoverContent,
+  VolumeUpDisabled,
 } from './imports';
 
 const AnswerSection = ({
@@ -56,6 +57,11 @@ const AnswerSection = ({
         backgroundStyle={styles.overlay}>
         <PopoverContent />
       </Popover>
+
+      {/* this is disabled for now, until finish implementing the logic */}
+      <TouchableOpacity disabled style={styles.volumeIcon}>
+        <VolumeUpDisabled />
+      </TouchableOpacity>
 
       <View
         ref={touchable}

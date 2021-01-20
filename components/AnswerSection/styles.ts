@@ -84,4 +84,9 @@ export const styles = StyleSheet.create({
   overlay: {
     backgroundColor: 'transparent',
   },
+  volumeIcon: {
+    position: 'absolute',
+    top: -20,
+    left: '45%',
+  },
 });

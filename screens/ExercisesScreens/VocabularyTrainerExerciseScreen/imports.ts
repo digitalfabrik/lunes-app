@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {styles} from './styles';
-import {CloseButton, VolumeUpDisabled} from '../../../assets/images/imports';
+import {CloseButton} from '../../../assets/images/imports';
 import Modal from '../../../components/Modal';
 import {ProgressBar} from 'react-native-paper';
 import {COLORS} from '../../../constants/colors';
@@ -24,7 +24,6 @@ export {
   ProgressBar,
   COLORS,
   Image,
-  VolumeUpDisabled,
   useFocusEffect,
   ENDPOINTS,
   axios,

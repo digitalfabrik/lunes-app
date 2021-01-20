@@ -18,11 +18,6 @@ export const styles = StyleSheet.create({
     height: 210,
     position: 'relative',
   },
-  volumeIcon: {
-    position: 'absolute',
-    top: 193,
-    left: '45%',
-  },
   headerText: {
     fontSize: 14,
     fontWeight: 'normal',
