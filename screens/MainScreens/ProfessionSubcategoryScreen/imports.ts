@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {styles} from './styles';
-import {View, Text, LogBox} from 'react-native';
+import {View, Text, LogBox, StatusBar} from 'react-native';
 import {
   IProfessionSubcategoryScreenProps,
   IProfessionSubcategoryProps,
@@ -11,6 +11,7 @@ import axios from '../../../utils/axios';
 import {ENDPOINTS} from '../../../constants/endpoints';
 import {useFocusEffect} from '@react-navigation/native';
 import {getProfessionSubcategoryWithIcon} from '../../../utils/helpers';
+import {COLORS} from '../../../constants/colors';
 
 export {
   React,
@@ -25,6 +26,8 @@ export {
   useFocusEffect,
   useState,
   getProfessionSubcategoryWithIcon,
+  StatusBar,
+  COLORS,
 };
 
 export type {IProfessionSubcategoryScreenProps, IProfessionSubcategoryProps};

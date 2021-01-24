@@ -8,6 +8,7 @@ import VocabularyTrainerExerciseScreen from '../screens/ExercisesScreens/Vocabul
 import {ProfessionParamList} from '../types';
 import {BackButton, CloseButton} from '../assets/images/imports';
 import {styles} from './styles';
+import {Text, TouchableOpacity} from 'react-native';
 
 export {
   React,
@@ -20,6 +21,8 @@ export {
   BackButton,
   CloseButton,
   styles,
+  Text,
+  TouchableOpacity,
 };
 
 export type {ProfessionParamList};

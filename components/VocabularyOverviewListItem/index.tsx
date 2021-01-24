@@ -25,7 +25,7 @@ const VocabularyOverviewListItem = ({
 }: IVocabularyOverviewListItemProps) => {
   const [active, setActive] = React.useState(false);
 
-  const handlaSpeakerClick = (audio: string) => {
+  const handleSpeakerClick = () => {
     setActive(true);
 
     // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
@@ -79,7 +79,7 @@ const VocabularyOverviewListItem = ({
           <View
             style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
             <Text style={styles.title}>
-              {article.toLowerCase() == 'die (plural)' ? 'die' : article}
+              {article.toLowerCase() === 'die (plural)' ? 'die' : article}
             </Text>
           </View>
           <Text style={styles.description}>{word}</Text>
@@ -87,7 +87,7 @@ const VocabularyOverviewListItem = ({
       </View>
       <TouchableOpacity
         style={styles.speaker}
-        onPress={() => handlaSpeakerClick(audio)}>
+        onPress={() => handleSpeakerClick(audio)}>
         {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
       </TouchableOpacity>
     </View>

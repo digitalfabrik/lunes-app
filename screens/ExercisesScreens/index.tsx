@@ -34,7 +34,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         title={
           <>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>2 Excercises</Text>
+            <Text style={styles.description}>2 Exercises</Text>
           </>
         }
         listData={EXERCISES}
