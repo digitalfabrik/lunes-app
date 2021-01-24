@@ -22,4 +22,7 @@ export const styles = StyleSheet.create({
   headerRight: {
     paddingRight: 10,
   },
+  headerLeftTitle: {
+    marginLeft: -15,
+  },
 });

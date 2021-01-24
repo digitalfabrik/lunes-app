@@ -71,7 +71,7 @@ const Navigation = () => {
       <ProfessionStack.Screen
         options={{
           headerTitle: 'End Session',
-          headerTitleStyle: styles.title,
+          headerTitleStyle: [styles.title, styles.headerLeftTitle],
           headerStyle: styles.header,
           headerRightContainerStyle: styles.headerRight,
         }}
