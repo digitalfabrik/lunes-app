@@ -171,7 +171,6 @@ const AnswerSection = ({
         <PopoverContent />
       </Popover>
 
-      {/* this is disabled for now, until finish implementing the logic */}
       <TouchableOpacity
         disabled={!word}
         style={styles.volumeIcon}
