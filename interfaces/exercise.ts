@@ -37,4 +37,5 @@ export interface IAnswerSectionProps {
   currentWordNumber: number;
   setCurrentWordNumber: Function;
   document?: IDocumentProps;
+  setDocuments: Function;
 }

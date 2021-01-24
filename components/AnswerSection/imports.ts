@@ -9,11 +9,12 @@ import {
   InActiveVolumeUp,
 } from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
-import {IAnswerSectionProps} from '../../interfaces/exercise';
+import {IAnswerSectionProps, IDocumentProps} from '../../interfaces/exercise';
 import Popover, {PopoverPlacement} from 'react-native-popover-view';
 import PopoverContent from '../PopoverContent';
 import SoundPlayer from 'react-native-sound-player';
 import Tts from 'react-native-tts';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -35,6 +36,7 @@ export {
   Platform,
   SoundPlayer,
   Tts,
+  AsyncStorage,
 };
 
-export type {IAnswerSectionProps};
+export type {IAnswerSectionProps, IDocumentProps};

@@ -117,6 +117,7 @@ const VocabularyTrainerExerciseScreen = ({
           currentWordNumber={currentWordNumber}
           setCurrentWordNumber={setCurrentWordNumber}
           document={document}
+          setDocuments={setDocuments}
         />
       </View>
       <Modal
