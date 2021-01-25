@@ -14,6 +14,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './navigation';
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
   useEffect(() => {
@@ -23,12 +24,12 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
+    <SafeAreaProvider>
+      <StatusBar barStyle="light-content" />
       <NavigationContainer>
         <Navigation />
       </NavigationContainer>
-    </>
+    </SafeAreaProvider>
   );
 };
 

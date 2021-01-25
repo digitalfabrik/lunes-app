@@ -2,11 +2,13 @@ import {StyleSheet} from 'react-native';
 import {COLORS} from '../../constants/colors';
 
 export const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: COLORS.lunesBlack,
+  },
   header: {
     backgroundColor: COLORS.lunesBlack,
     height: 91,
     width: '100%',
-    position: 'relative',
   },
   squareIcon: {
     position: 'absolute',
