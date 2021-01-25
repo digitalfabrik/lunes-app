@@ -58,38 +58,33 @@ const ListItem = ({
             {title}
           </Text>
           <View style={styles.descriptionContainer}>
-            {from == SCREENS.profession ? (
+            {from === SCREENS.profession ? (
               <Text
                 style={
                   isItemClicked
                     ? styles.clickedItemDescription
                     : styles.description
                 }>
-                {numOfCategories}{' '}
-                {numOfCategories == 1 ? 'Bereich' : 'Bereiche'}
+                {numOfCategories}
+                {numOfCategories === 1 ? ' Bereich' : ' Bereiche'}
               </Text>
-            ) : from == SCREENS.professionSubcategory ? (
+            ) : from === SCREENS.professionSubcategory ? (
               <>
-                <View
+                <Text
                   style={
-                    isItemClicked ? styles.clickedItemBadge : styles.badge
+                    isItemClicked
+                      ? styles.clickedItemBadgeLabel
+                      : styles.badgeLabel
                   }>
-                  <Text
-                    style={
-                      isItemClicked
-                        ? styles.clickedItemBadgeLabel
-                        : styles.badgeLabel
-                    }>
-                    {`${numOfWords}`}
-                  </Text>
-                </View>
+                  {numOfWords}
+                </Text>
                 <Text
                   style={
                     isItemClicked
                       ? styles.clickedItemDescription
                       : styles.description
                   }>
-                  {numOfWords == 1 ? 'Lektion' : 'Lektionen'}
+                  {numOfWords === 1 ? ' Lektion' : ' Lektionen'}
                 </Text>
               </>
             ) : (
