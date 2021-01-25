@@ -12,6 +12,7 @@ import {
   useFocusEffect,
   axios,
   ListView,
+  SCREENS,
 } from './imports';
 
 const VocabularyOverviewExerciseScreen = ({
@@ -75,7 +76,7 @@ const VocabularyOverviewExerciseScreen = ({
           </>
         }
         navigation={navigation}
-        fromExercises
+        from={SCREENS.vocabularyOverview}
         isLoading={isLoading}
       />
     </View>

@@ -8,6 +8,7 @@ import {IDocumentProps} from '../../../interfaces/exercise';
 import {useFocusEffect} from '@react-navigation/native';
 import axios from '../../../utils/axios';
 import ListView from '../../../components/ListView';
+import {SCREENS} from '../../../constants/data';
 
 export {
   React,
@@ -21,6 +22,7 @@ export {
   useFocusEffect,
   axios,
   ListView,
+  SCREENS,
 };
 
 export type {IVocabularyOverviewScreen, IDocumentProps};

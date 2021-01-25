@@ -5,6 +5,7 @@ import {IListViewProps} from '../../interfaces/profession';
 import ListItem from '../ListItem';
 import {COLORS} from '../../constants/colors';
 import VocabularyOverviewListItem from '../VocabularyOverviewListItem';
+import {SCREENS} from '../ListItem/imports';
 
 export {
   React,
@@ -17,6 +18,7 @@ export {
   VocabularyOverviewListItem,
   ActivityIndicator,
   COLORS,
+  SCREENS,
 };
 
 export type {IListViewProps};
