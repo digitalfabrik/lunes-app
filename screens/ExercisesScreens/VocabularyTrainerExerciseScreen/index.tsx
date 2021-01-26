@@ -45,9 +45,10 @@ const VocabularyTrainerExerciseScreen = ({
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerBackImage: () => (
-        <TouchableOpacity onPress={showModal}>
+      headerLeft: () => (
+        <TouchableOpacity onPress={showModal} style={styles.headerLeft}>
           <CloseButton />
+          <Text style={styles.title}>End Session</Text>
         </TouchableOpacity>
       ),
       headerRight: () => (

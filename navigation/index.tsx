@@ -57,12 +57,6 @@ const Navigation = () => {
       />
       <ProfessionStack.Screen
         options={{
-          headerLeft: (props) => (
-            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
-              <CloseButton />
-              <Text style={styles.title}>End Session</Text>
-            </TouchableOpacity>
-          ),
           headerTitle: '',
           headerStyle: styles.header,
           headerRightContainerStyle: styles.headerRight,
