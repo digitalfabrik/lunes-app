@@ -21,7 +21,7 @@ const ListView = ({
   from,
 }: IListViewProps) => {
   const renderItem = ({item}: any) =>
-    from == SCREENS.vocabularyOverview ? (
+    from === SCREENS.vocabularyOverview ? (
       <VocabularyOverviewListItem
         id={item.id}
         word={item.word}
