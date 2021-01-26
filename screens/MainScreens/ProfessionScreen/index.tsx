@@ -62,6 +62,7 @@ const ProfessionScreen = ({navigation}: any) => {
             listData={professions}
             nextScreen={SCREENS.professionSubcategory}
             isLoading={isLoading}
+            from={SCREENS.profession}
           />
         </View>
       )}
