@@ -63,32 +63,24 @@ const VocabularyTrainerExerciseScreen = ({
 
   useFocusEffect(
     React.useCallback(() => {
-      let isActive: boolean = true;
-
       const getProfessions = async () => {
         try {
           const documentsRes = await axios.get(
             ENDPOINTS.documents.all.replace(':id', `${extraParams}`),
           );
 
-          if (isActive) {
-            setDocuments(documentsRes.data);
-            setCount(documentsRes.data.length);
-            setDocument(documentsRes.data[0]);
-            setProgressStep(
-              documentsRes.data.length && 1 / documentsRes.data.length,
-            );
-          }
+          setDocuments(documentsRes.data);
+          setCount(documentsRes.data.length);
+          setDocument(documentsRes.data[0]);
+          setProgressStep(
+            documentsRes.data.length && 1 / documentsRes.data.length,
+          );
         } catch (error) {
           console.error(error);
         }
       };
 
       getProfessions();
-
-      return () => {
-        isActive = false;
-      };
     }, [extraParams]),
   );
 
