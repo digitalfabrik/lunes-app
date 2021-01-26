@@ -16,6 +16,20 @@ import {
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
 
+const defaultOptions = (title: string, Icon: any) => {
+  return {
+    headerLeft: (props: any) => (
+      <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+        <Icon />
+        <Text style={styles.title}>{title}</Text>
+      </TouchableOpacity>
+    ),
+    headerTitle: ' ',
+    headerStyle: styles.header,
+    headerRightContainerStyle: styles.headerRight,
+  };
+};
+
 const Navigation = () => {
   return (
     <ProfessionStack.Navigator initialRouteName="Profession">
@@ -25,61 +39,24 @@ const Navigation = () => {
         component={ProfessionScreen}
       />
       <ProfessionStack.Screen
-        options={{
-          headerLeft: (props) => (
-            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
-              <BackButton />
-              <Text style={styles.title}>Profession Overview</Text>
-            </TouchableOpacity>
-          ),
-          headerTitle: ' ',
-          headerStyle: styles.header,
-        }}
+        options={defaultOptions('Profession Overview', BackButton)}
         name="ProfessionSubcategory"
         component={ProfessionSubcategoryScreen}
       />
       <ProfessionStack.Screen
-        options={({route}: any) => ({
-          headerLeft: (props) => (
-            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
-              <BackButton />
-              <Text style={styles.title}>{route.params.extraParams}</Text>
-            </TouchableOpacity>
-          ),
-          headerTitle: ' ',
-          headerStyle: styles.header,
-          headerRightContainerStyle: styles.headerRight,
-        })}
+        options={({route}: any) =>
+          defaultOptions(route.params.extraParams, BackButton)
+        }
         name="Exercises"
         component={ExercisesScreen}
       />
       <ProfessionStack.Screen
-        options={{
-          headerLeft: (props) => (
-            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
-              <CloseButton />
-              <Text style={styles.title}>Exercise Overview</Text>
-            </TouchableOpacity>
-          ),
-          headerTitle: ' ',
-          headerStyle: styles.header,
-          headerRightContainerStyle: styles.headerRight,
-        }}
+        options={defaultOptions('Exercise Overview', CloseButton)}
         name="VocabularyOverview"
         component={VocabularyOverviewExerciseScreen}
       />
       <ProfessionStack.Screen
-        options={{
-          headerLeft: (props) => (
-            <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
-              <BackButton />
-              <Text style={styles.title}>Exercise Overview</Text>
-            </TouchableOpacity>
-          ),
-          headerTitle: ' ',
-          headerStyle: styles.header,
-          headerRightContainerStyle: styles.headerRight,
-        }}
+        options={defaultOptions('Exercise Overview', CloseButton)}
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}
       />
