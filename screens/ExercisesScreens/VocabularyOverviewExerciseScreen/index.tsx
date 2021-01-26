@@ -37,7 +37,6 @@ const VocabularyOverviewExerciseScreen = ({
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true);
-      let isActive: boolean = true;
 
       const getProfessions = async () => {
         try {
@@ -45,21 +44,15 @@ const VocabularyOverviewExerciseScreen = ({
             ENDPOINTS.documents.all.replace(':id', `${extraParams}`),
           );
 
-          if (isActive) {
-            setDocuments(documentsRes.data);
-            setCount(documentsRes.data.length);
-            setIsLoading(false);
-          }
+          setDocuments(documentsRes.data);
+          setCount(documentsRes.data.length);
+          setIsLoading(false);
         } catch (error) {
           console.error(error);
         }
       };
 
       getProfessions();
-
-      return () => {
-        isActive = false;
-      };
     }, [extraParams]),
   );
 

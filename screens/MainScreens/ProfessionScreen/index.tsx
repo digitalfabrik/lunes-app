@@ -21,26 +21,19 @@ const ProfessionScreen = ({navigation}: any) => {
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true);
-      let isActive: boolean = true;
 
       const getProfessions = async () => {
         try {
           const professionsRes = await axios.get(ENDPOINTS.professions.all);
 
-          if (isActive) {
-            setProfessions(professionsRes.data);
-            setIsLoading(false);
-          }
+          setProfessions(professionsRes.data);
+          setIsLoading(false);
         } catch (error) {
           console.error(error);
         }
       };
 
       getProfessions();
-
-      return () => {
-        isActive = false;
-      };
     }, []),
   );
 
