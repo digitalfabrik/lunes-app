@@ -21,26 +21,19 @@ const ProfessionScreen = ({navigation}: any) => {
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true);
-      let isActive: boolean = true;
 
       const getProfessions = async () => {
         try {
           const professionsRes = await axios.get(ENDPOINTS.professions.all);
 
-          if (isActive) {
-            setProfessions(professionsRes.data);
-            setIsLoading(false);
-          }
+          setProfessions(professionsRes.data);
+          setIsLoading(false);
         } catch (error) {
           console.error(error);
         }
       };
 
       getProfessions();
-
-      return () => {
-        isActive = false;
-      };
     }, []),
   );
 
@@ -48,20 +41,19 @@ const ProfessionScreen = ({navigation}: any) => {
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
         <View style={styles.root}>
-          <Header top={insets.top} />
+          <Header top={insets?.top} />
           <ListView
             navigation={navigation}
             title={
-              <>
-                <Text style={styles.text}>Welcome to Lunes!</Text>
-                <Text style={styles.text}>
-                  Learn German vocabulary for your profession.
-                </Text>
-              </>
+              <Text style={styles.text}>
+                Welcome to Lunes!{'\n'}
+                Learn German vocabulary for your profession.
+              </Text>
             }
             listData={professions}
             nextScreen={SCREENS.professionSubcategory}
             isLoading={isLoading}
+            from={SCREENS.profession}
           />
         </View>
       )}
