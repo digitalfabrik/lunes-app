@@ -45,12 +45,10 @@ const ProfessionScreen = ({navigation}: any) => {
           <ListView
             navigation={navigation}
             title={
-              <>
-                <Text style={styles.text}>Welcome to Lunes!</Text>
-                <Text style={styles.text}>
-                  Learn German vocabulary for your profession.
-                </Text>
-              </>
+              <Text style={styles.text}>
+                Welcome to Lunes!{'\n'}
+                Learn German vocabulary for your profession.
+              </Text>
             }
             listData={professions}
             nextScreen={SCREENS.professionSubcategory}
