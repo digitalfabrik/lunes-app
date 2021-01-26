@@ -48,7 +48,7 @@ const ProfessionScreen = ({navigation}: any) => {
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
         <View style={styles.root}>
-          <Header top={insets.top} />
+          <Header top={insets?.top} />
           <ListView
             navigation={navigation}
             title={

@@ -9,7 +9,7 @@ import {
   SmileIcon,
 } from './imports';
 
-const Header = ({top}) => {
+const Header = ({top}: any) => {
   return (
     <View style={{...styles.wrapper, paddingTop: top}}>
       <View style={styles.header}>
