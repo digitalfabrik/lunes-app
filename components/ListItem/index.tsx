@@ -10,6 +10,7 @@ import {
   useFocusEffect,
   Pressable,
   Image,
+  SCREENS,
 } from './imports';
 
 const ListItem = ({
@@ -21,6 +22,9 @@ const ListItem = ({
   nextScreen,
   extraParams,
   Level,
+  numOfCategories,
+  numOfWords,
+  from,
 }: IListItemProps) => {
   const [isItemClicked, setIsItemClicked] = useState(false);
 
@@ -28,7 +32,6 @@ const ListItem = ({
     navigation.navigate(nextScreen, {
       id: id,
       title: title,
-      description: description,
       icon: icon,
       extraParams,
     });
@@ -54,12 +57,47 @@ const ListItem = ({
           <Text style={isItemClicked ? styles.clickedItemTitle : styles.title}>
             {title}
           </Text>
-          <Text
-            style={
-              isItemClicked ? styles.clickedItemDescription : styles.description
-            }>
-            {description}
-          </Text>
+          <View style={styles.descriptionContainer}>
+            {from === SCREENS.profession ? (
+              <Text
+                style={
+                  isItemClicked
+                    ? styles.clickedItemDescription
+                    : styles.description
+                }>
+                {numOfCategories}
+                {numOfCategories === 1 ? ' Bereich' : ' Bereiche'}
+              </Text>
+            ) : from === SCREENS.professionSubcategory ? (
+              <>
+                <Text
+                  style={
+                    isItemClicked
+                      ? styles.clickedItemBadgeLabel
+                      : styles.badgeLabel
+                  }>
+                  {numOfWords}
+                </Text>
+                <Text
+                  style={
+                    isItemClicked
+                      ? styles.clickedItemDescription
+                      : styles.description
+                  }>
+                  {numOfWords === 1 ? ' Lektion' : ' Lektionen'}
+                </Text>
+              </>
+            ) : (
+              <Text
+                style={
+                  isItemClicked
+                    ? styles.clickedItemDescription
+                    : styles.description
+                }>
+                {description}
+              </Text>
+            )}
+          </View>
           {Level && <Level style={styles.level} />}
         </View>
       </View>

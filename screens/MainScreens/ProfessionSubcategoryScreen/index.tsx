@@ -35,7 +35,6 @@ const ProfessionSubcategoryScreen = ({
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true);
-      let isActive: boolean = true;
 
       const getProfessionSubcategories = async () => {
         try {
@@ -43,26 +42,21 @@ const ProfessionSubcategoryScreen = ({
             ENDPOINTS.subCategories.all.replace(':id', `${id}`),
           );
 
-          if (isActive) {
-            setProfessionSubcategories(
-              getProfessionSubcategoryWithIcon(
-                icon,
-                professionSubcategoriesRes.data,
-              ),
-            );
-            setCount(professionSubcategoriesRes.data.length);
-            setIsLoading(false);
-          }
+          setProfessionSubcategories(
+            getProfessionSubcategoryWithIcon(
+              icon,
+              professionSubcategoriesRes.data,
+            ),
+          );
+
+          setCount(professionSubcategoriesRes.data.length);
+          setIsLoading(false);
         } catch (error) {
           console.error(error);
         }
       };
 
       getProfessionSubcategories();
-
-      return () => {
-        isActive = false;
-      };
     }, [id, icon]),
   );
 
@@ -84,6 +78,7 @@ const ProfessionSubcategoryScreen = ({
         nextScreen={SCREENS.exercises}
         extraParams={title}
         isLoading={isLoading}
+        from={SCREENS.professionSubcategory}
       />
     </View>
   );

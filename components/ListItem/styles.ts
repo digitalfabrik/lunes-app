@@ -38,6 +38,11 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
+  descriptionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   description: {
     fontSize: 14,
     fontWeight: 'normal',
@@ -79,5 +84,29 @@ export const styles = StyleSheet.create({
   },
   level: {
     marginTop: 11,
+  },
+  badgeLabel: {
+    color: COLORS.lunesWhite,
+    fontFamily: 'SourceSansPro-Semibold',
+    fontSize: 12,
+    fontWeight: '600',
+    minWidth: 24,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.lunesGreyMedium,
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  clickedItemBadgeLabel: {
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Semibold',
+    fontSize: 12,
+    fontWeight: '600',
+    minWidth: 24,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.lunesGreyMedium,
+    overflow: 'hidden',
+    textAlign: 'center',
   },
 });

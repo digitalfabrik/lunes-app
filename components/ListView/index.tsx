@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   COLORS,
   VocabularyOverviewListItem,
+  SCREENS,
 } from './imports';
 
 const ListView = ({
@@ -17,10 +18,10 @@ const ListView = ({
   nextScreen,
   extraParams,
   isLoading,
-  fromExercises,
+  from,
 }: IListViewProps) => {
   const renderItem = ({item}: any) =>
-    fromExercises ? (
+    from === SCREENS.vocabularyOverview ? (
       <VocabularyOverviewListItem
         id={item.id}
         word={item.word}
@@ -38,6 +39,9 @@ const ListView = ({
         nextScreen={nextScreen ? nextScreen : item.nextScreen}
         extraParams={extraParams}
         Level={item.Level}
+        numOfCategories={item.total_training_sets}
+        numOfWords={item.total_documents}
+        from={from}
       />
     );
 
