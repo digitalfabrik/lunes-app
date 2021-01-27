@@ -52,6 +52,6 @@ export interface IFeedbackProps {
   isIncorrect: boolean;
   almostCorrect: boolean;
   document?: IDocumentProps;
-  word: string
-  article: string
+  word: string;
+  article: string;
 }

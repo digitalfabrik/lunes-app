@@ -54,12 +54,12 @@ const AnswerSection = ({
   const [correctDocuments, setCorrectDocuments] = useState<IDocumentProps[]>(
     [],
   );
-  const [word, setWord] = useState('')
-  const [article, setArticle] = useState('')
-  const [isAlmostCorrect, setIsAlmostCorrect] = useState(false)
-  const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<IDocumentProps[]>(
-    [],
-  );
+  const [word, setWord] = useState('');
+  const [article, setArticle] = useState('');
+  const [isAlmostCorrect, setIsAlmostCorrect] = useState(false);
+  const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<
+    IDocumentProps[]
+  >([]);
 
   const clearTextInput = () => {
     setInput('');
@@ -96,7 +96,7 @@ const AnswerSection = ({
       });
     }
 
-    if(document && correct) {
+    if (document && correct) {
       setIsCorrect(true);
       setIsIncorrect(false);
       setIsAlmostCorrect(false);
@@ -104,30 +104,37 @@ const AnswerSection = ({
     }
 
     return correct;
-  }
+  };
 
   const validateForSimilar = (article: string, word: string): boolean => {
-    if(isAlmostCorrect && document) {
+    if (isAlmostCorrect && document) {
       setIsCorrect(false);
       setIsIncorrect(true);
       setIsAlmostCorrect(false);
       setAlmostCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
       return true;
-    } else {      
+    } else {
       let similar: boolean = false;
-      
-      if (document && article === document.article && (stringSimilarity.compareTwoStrings(word, document.word) > 0.5)) {
+
+      if (
+        document &&
+        article === document.article &&
+        stringSimilarity.compareTwoStrings(word, document.word) > 0.5
+      ) {
         similar = true;
       } else {
-        document?.alternatives?.forEach(alternative => {
-          if (article === alternative.article && (stringSimilarity.compareTwoStrings(word, alternative.alt_word) > 0.5)) {
-            similar = true
+        document?.alternatives?.forEach((alternative) => {
+          if (
+            article === alternative.article &&
+            stringSimilarity.compareTwoStrings(word, alternative.alt_word) > 0.5
+          ) {
+            similar = true;
             return;
           }
         });
       }
-    
-      if(similar && document) {
+
+      if (similar && document) {
         setIsCorrect(false);
         setIsIncorrect(false);
         setIsAlmostCorrect(true);
@@ -135,16 +142,16 @@ const AnswerSection = ({
 
       return similar;
     }
-  }
+  };
 
   const validateForIncorrect = () => {
-    if(document) {
+    if (document) {
       setIsCorrect(false);
       setIsIncorrect(true);
       setIsAlmostCorrect(false);
       setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
     }
-  }
+  };
 
   const checkEntry = () => {
     if (input.trim().split(' ').length < 2) {
@@ -153,12 +160,12 @@ const AnswerSection = ({
     } else {
       let article = input.trim().split(' ')[0];
       let word = input.trim().split(' ')[1];
-      setWord(word)
-      setArticle(article)
+      setWord(word);
+      setArticle(article);
       setIsValidEntry(true);
 
-      if(!validateForCorrect(article, word)) {
-        if(!validateForSimilar(article, word)) {
+      if (!validateForCorrect(article, word)) {
+        if (!validateForSimilar(article, word)) {
           validateForIncorrect();
         }
       }
@@ -171,9 +178,9 @@ const AnswerSection = ({
     }
     getNextWord();
     modifyHeaderCounter();
-    setIsCorrect(false)
-    setIsIncorrect(false)
-    setIsAlmostCorrect(false)
+    setIsCorrect(false);
+    setIsIncorrect(false);
+    setIsAlmostCorrect(false);
   };
 
   const addToTryLater = () => {
@@ -232,7 +239,10 @@ const AnswerSection = ({
   React.useEffect(() => {
     AsyncStorage.setItem('incorrect', JSON.stringify(incorrectDocuments));
     AsyncStorage.setItem('correct', JSON.stringify(correctDocuments));
-    AsyncStorage.setItem('almost correct', JSON.stringify(almostCorrectDocuments));
+    AsyncStorage.setItem(
+      'almost correct',
+      JSON.stringify(almostCorrectDocuments),
+    );
 
     // This is just for testing
     AsyncStorage.getItem('incorrect').then((value) =>
@@ -276,7 +286,7 @@ const AnswerSection = ({
 
   React.useEffect(() => {
     if (isAlmostCorrect) {
-      clearTextInput()
+      clearTextInput();
     }
   }, [isAlmostCorrect]);
 
@@ -327,7 +337,9 @@ const AnswerSection = ({
         ]}>
         <TextInput
           style={styles.textInput}
-          placeholder={isAlmostCorrect ? "Try again" : "Enter Word with article"}
+          placeholder={
+            isAlmostCorrect ? 'Try again' : 'Enter Word with article'
+          }
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={(text) => setInput(text)}
@@ -340,7 +352,7 @@ const AnswerSection = ({
         )}
       </View>
 
-      {(isCorrect || isIncorrect || isAlmostCorrect) && 
+      {(isCorrect || isIncorrect || isAlmostCorrect) && (
         <Feedback
           isCorrect={isCorrect}
           isIncorrect={isIncorrect}
@@ -349,40 +361,44 @@ const AnswerSection = ({
           word={word}
           article={article}
         />
-      }
+      )}
 
-          {!isIncorrect && !isCorrect ? 
-            <>
-            <TouchableOpacity
-              onPress={checkEntry}
-              disabled={!input}
-              style={[styles.checkEntryButton, !input && styles.disabledButton]}
-              >
-              <Text
-               style={[styles.checkEntryLabel, !input && styles.disabledButtonLabel]}
-              >
-                Check entry
-              </Text>
-            </TouchableOpacity>
+      {!isIncorrect && !isCorrect ? (
+        <>
+          <TouchableOpacity
+            onPress={checkEntry}
+            disabled={!input}
+            style={[styles.checkEntryButton, !input && styles.disabledButton]}>
+            <Text
+              style={[
+                styles.checkEntryLabel,
+                !input && styles.disabledButtonLabel,
+              ]}>
+              Check entry
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.giveUpButton}
-              onPress={markAsIncorrect}>
-              <Text style={styles.giveUpLabel}>I give up!</Text>
-            </TouchableOpacity>
-            </> : 
-            <TouchableOpacity style={styles.nextWordButton} onPress={getNextWordAndModifyCounter}>
-              <Text style={styles.nextWordLabel}>Next Word</Text>
-              <WhiteNextArrow />
-            </TouchableOpacity>
-        }
+          <TouchableOpacity
+            style={styles.giveUpButton}
+            onPress={markAsIncorrect}>
+            <Text style={styles.giveUpLabel}>I give up!</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <TouchableOpacity
+          style={styles.nextWordButton}
+          onPress={getNextWordAndModifyCounter}>
+          <Text style={styles.nextWordLabel}>Next Word</Text>
+          <WhiteNextArrow />
+        </TouchableOpacity>
+      )}
 
-          {!isCorrect && !isIncorrect && !isAlmostCorrect && <TouchableOpacity
-            style={styles.tryLaterButton}
-            onPress={addToTryLater}>
-            <Text style={styles.giveUpLabel}>Try later</Text>
-            <NextArrow />
-          </TouchableOpacity>}      
+      {!isCorrect && !isIncorrect && !isAlmostCorrect && (
+        <TouchableOpacity style={styles.tryLaterButton} onPress={addToTryLater}>
+          <Text style={styles.giveUpLabel}>Try later</Text>
+          <NextArrow />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

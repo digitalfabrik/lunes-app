@@ -16,7 +16,7 @@ const Feedback = ({
   document,
   word,
   article,
-}: IFeedbackProps) => (  
+}: IFeedbackProps) => (
   <View style={styles.container}>
     {isCorrect && (
       <View style={[styles.messageContainer, styles.successMessage]}>
@@ -36,7 +36,9 @@ const Feedback = ({
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             What a pity! Your entry is incorrect,{'\n'}
-            {`the correct answer is: ${document?.article === 'die (Plural)' ? 'die' : document?.article} ${document?.word}`}
+            {`the correct answer is: ${
+              document?.article === 'die (Plural)' ? 'die' : document?.article
+            } ${document?.word}`}
           </Text>
         </View>
       </View>
