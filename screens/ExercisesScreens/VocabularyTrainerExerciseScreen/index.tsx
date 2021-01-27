@@ -36,9 +36,9 @@ const VocabularyTrainerExerciseScreen = ({
     setIsModalVisible(true);
   };
 
-  const increaseProgress = () => {
+  const increaseProgress = React.useCallback(() => {
     setProgressValue((prevValue) => prevValue + progressStep);
-  };
+  }, [progressStep]);
 
   React.useEffect(() => {
     setDocument(documents[index]);

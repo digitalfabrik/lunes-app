@@ -244,12 +244,13 @@ const AnswerSection = ({
         ref={touchable}
         style={[
           styles.textInputContainer,
-          !!input && styles.activeTextInput,
           {
             borderColor: isCorrect
               ? COLORS.lunesFunctionalCorrectDark
               : isIncorrect
               ? COLORS.lunesFunctionalIncorrectDark
+              : input
+              ? COLORS.lunesBlack
               : COLORS.lunesGreyMedium,
           },
         ]}>
