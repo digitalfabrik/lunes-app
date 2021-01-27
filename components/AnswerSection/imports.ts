@@ -15,6 +15,7 @@ import PopoverContent from '../PopoverContent';
 import SoundPlayer from 'react-native-sound-player';
 import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-community/async-storage';
+import Feedback from '../FeedbackSection';
 
 export {
   React,
@@ -37,6 +38,7 @@ export {
   SoundPlayer,
   Tts,
   AsyncStorage,
+  Feedback,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

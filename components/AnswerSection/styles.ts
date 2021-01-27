@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
     paddingHorizontal: 10,
-    marginBottom: 40,
   },
   activeTextInput: {
     borderColor: COLORS.lunesBlack,
@@ -28,6 +27,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'normal',
     letterSpacing: 0.11,
     fontFamily: 'SourceSansPro-Regular',
+    color: COLORS.lunesBlack,
   },
   checkEntryButton: {
     width: 192,
@@ -36,6 +36,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 16,
     paddingVertical: 10,
+    marginTop: 40,
   },
   checkEntryLabel: {
     textAlign: 'center',

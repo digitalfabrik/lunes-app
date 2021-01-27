@@ -8,12 +8,18 @@ export interface IVocabularyTrainerScreen {
   route: any;
 }
 
+export interface IAlternativeWordProps {
+  alt_word: string;
+  article: string;
+}
+
 export interface IDocumentProps {
   id: number;
   word: string;
   article: string;
   image: string;
   audio: string;
+  alternatives: IAlternativeWordProps[];
 }
 
 export interface IVocabularyOverviewListItemProps {
@@ -38,4 +44,12 @@ export interface IAnswerSectionProps {
   setCurrentWordNumber: Function;
   document?: IDocumentProps;
   setDocuments: Function;
+  increaseProgress: Function;
+}
+
+export interface IFeedbackProps {
+  isCorrect: boolean;
+  isIncorrect: boolean;
+  document?: IDocumentProps;
+  goToNextWord: () => void;
 }
