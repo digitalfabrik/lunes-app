@@ -7,6 +7,7 @@ import {
   VolumeUpDisabled,
   VolumeUp,
   InActiveVolumeUp,
+  WhiteNextArrow,
 } from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
 import {IAnswerSectionProps, IDocumentProps} from '../../interfaces/exercise';
@@ -16,6 +17,7 @@ import SoundPlayer from 'react-native-sound-player';
 import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
+import stringSimilarity from 'string-similarity'
 
 export {
   React,
@@ -39,6 +41,8 @@ export {
   Tts,
   AsyncStorage,
   Feedback,
+  stringSimilarity,
+  WhiteNextArrow,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

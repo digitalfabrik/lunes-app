@@ -1,28 +1,31 @@
 import {
   React,
   styles,
-  TouchableOpacity,
   View,
   Text,
   IFeedbackProps,
   CorrectIcon,
-  WhiteNextArrow,
   IncorrectIcon,
+  AlmostCorrectIcon,
 } from './imports';
 
 const Feedback = ({
   isCorrect,
+  almostCorrect,
   isIncorrect,
   document,
-  goToNextWord,
-}: IFeedbackProps) => (
+  word,
+  article,
+}: IFeedbackProps) => (  
   <View style={styles.container}>
     {isCorrect && (
       <View style={[styles.messageContainer, styles.successMessage]}>
         <CorrectIcon />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Great, keep it up!</Text>
-          <Text style={styles.text}>The Word you filled in is correct.</Text>
+          <Text style={styles.text}>
+            Great, keep it up!{'\n'}
+            The Word you filled in is correct.
+          </Text>
         </View>
       </View>
     )}
@@ -31,19 +34,25 @@ const Feedback = ({
       <View style={[styles.messageContainer, styles.failedMessage]}>
         <IncorrectIcon />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>What a pity! Your entry is incorrect,</Text>
-          <Text
-            style={
-              styles.text
-            }>{`the correct word is: ${document?.word}`}</Text>
+          <Text style={styles.text}>
+            What a pity! Your entry is incorrect,{'\n'}
+            {`the correct answer is: ${document?.article === 'die (Plural)' ? 'die' : document?.article} ${document?.word}`}
+          </Text>
         </View>
       </View>
     )}
 
-    <TouchableOpacity style={styles.nextWordButton} onPress={goToNextWord}>
-      <Text style={styles.nextWordLabel}>Next Word</Text>
-      <WhiteNextArrow />
-    </TouchableOpacity>
+    {almostCorrect && (
+      <View style={[styles.messageContainer, styles.almostCorrectMessage]}>
+        <AlmostCorrectIcon />
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            {`Your entry ${article} ${word} is almost correct.\n`}
+            Check for upper and lower case.
+          </Text>
+        </View>
+      </View>
+    )}
   </View>
 );
 

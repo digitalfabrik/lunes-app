@@ -22,6 +22,8 @@ import {
   AsyncStorage,
   IDocumentProps,
   Feedback,
+  stringSimilarity,
+  WhiteNextArrow,
 } from './imports';
 
 const AnswerSection = ({
@@ -52,6 +54,12 @@ const AnswerSection = ({
   const [correctDocuments, setCorrectDocuments] = useState<IDocumentProps[]>(
     [],
   );
+  const [word, setWord] = useState('')
+  const [article, setArticle] = useState('')
+  const [isAlmostCorrect, setIsAlmostCorrect] = useState(false)
+  const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<IDocumentProps[]>(
+    [],
+  );
 
   const clearTextInput = () => {
     setInput('');
@@ -74,29 +82,69 @@ const AnswerSection = ({
     }
   };
 
-  const validateAnswer = (article: string, word: string) => {
+  const validateForCorrect = (article: string, word: string): boolean => {
+    let correct: boolean = false;
+
     if (article === document?.article && word === document?.word) {
-      setIsCorrect(true);
-      setIsIncorrect(false);
-      setCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      correct = true;
     } else {
-      let foundCorrect: boolean = false;
-      document?.alternatives?.map((alternative) => {
+      document?.alternatives?.forEach((alternative) => {
         if (article === alternative.article && word === alternative.alt_word) {
-          foundCorrect = true;
+          correct = true;
           return;
         }
       });
-
-      if (foundCorrect && document) {
-        setCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
-      } else if (!foundCorrect && document) {
-        setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
-      }
-      setIsCorrect(foundCorrect);
-      setIsIncorrect(!foundCorrect);
     }
-  };
+
+    if(document && correct) {
+      setIsCorrect(true);
+      setIsIncorrect(false);
+      setIsAlmostCorrect(false);
+      setCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+    }
+
+    return correct;
+  }
+
+  const validateForSimilar = (article: string, word: string): boolean => {
+    if(isAlmostCorrect && document) {
+      setIsCorrect(false);
+      setIsIncorrect(true);
+      setIsAlmostCorrect(false);
+      setAlmostCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      return true;
+    } else {      
+      let similar: boolean = false;
+      
+      if (document && article === document.article && (stringSimilarity.compareTwoStrings(word, document.word) > 0.5)) {
+        similar = true;
+      } else {
+        document?.alternatives?.forEach(alternative => {
+          if (article === alternative.article && (stringSimilarity.compareTwoStrings(word, alternative.alt_word) > 0.5)) {
+            similar = true
+            return;
+          }
+        });
+      }
+    
+      if(similar && document) {
+        setIsCorrect(false);
+        setIsIncorrect(false);
+        setIsAlmostCorrect(true);
+      }
+
+      return similar;
+    }
+  }
+
+  const validateForIncorrect = () => {
+    if(document) {
+      setIsCorrect(false);
+      setIsIncorrect(true);
+      setIsAlmostCorrect(false);
+      setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+    }
+  }
 
   const checkEntry = () => {
     if (input.trim().split(' ').length < 2) {
@@ -105,9 +153,15 @@ const AnswerSection = ({
     } else {
       let article = input.trim().split(' ')[0];
       let word = input.trim().split(' ')[1];
+      setWord(word)
+      setArticle(article)
       setIsValidEntry(true);
 
-      validateAnswer(article, word);
+      if(!validateForCorrect(article, word)) {
+        if(!validateForSimilar(article, word)) {
+          validateForIncorrect();
+        }
+      }
     }
   };
 
@@ -117,6 +171,9 @@ const AnswerSection = ({
     }
     getNextWord();
     modifyHeaderCounter();
+    setIsCorrect(false)
+    setIsIncorrect(false)
+    setIsAlmostCorrect(false)
   };
 
   const addToTryLater = () => {
@@ -175,6 +232,7 @@ const AnswerSection = ({
   React.useEffect(() => {
     AsyncStorage.setItem('incorrect', JSON.stringify(incorrectDocuments));
     AsyncStorage.setItem('correct', JSON.stringify(correctDocuments));
+    AsyncStorage.setItem('almost correct', JSON.stringify(almostCorrectDocuments));
 
     // This is just for testing
     AsyncStorage.getItem('incorrect').then((value) =>
@@ -185,7 +243,12 @@ const AnswerSection = ({
     AsyncStorage.getItem('correct').then((value) =>
       console.log('correct', value && JSON.parse(value)),
     );
-  }, [incorrectDocuments, correctDocuments]);
+
+    // This is just for testing
+    AsyncStorage.getItem('almost correct').then((value) =>
+      console.log('almost correct', value && JSON.parse(value)),
+    );
+  }, [incorrectDocuments, correctDocuments, almostCorrectDocuments]);
 
   React.useEffect(() => {
     clearTextInput();
@@ -210,6 +273,12 @@ const AnswerSection = ({
       increaseProgress();
     }
   }, [isCorrect, increaseProgress]);
+
+  React.useEffect(() => {
+    if (isAlmostCorrect) {
+      clearTextInput()
+    }
+  }, [isAlmostCorrect]);
 
   return (
     <View style={styles.container}>
@@ -249,6 +318,8 @@ const AnswerSection = ({
               ? COLORS.lunesFunctionalCorrectDark
               : isIncorrect
               ? COLORS.lunesFunctionalIncorrectDark
+              : isAlmostCorrect
+              ? COLORS.lunesFunctionalAlmostCorrectDark
               : input
               ? COLORS.lunesBlack
               : COLORS.lunesGreyMedium,
@@ -256,7 +327,7 @@ const AnswerSection = ({
         ]}>
         <TextInput
           style={styles.textInput}
-          placeholder="Enter Word with article"
+          placeholder={isAlmostCorrect ? "Try again" : "Enter Word with article"}
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={(text) => setInput(text)}
@@ -269,42 +340,49 @@ const AnswerSection = ({
         )}
       </View>
 
-      {isCorrect || isIncorrect ? (
+      {(isCorrect || isIncorrect || isAlmostCorrect) && 
         <Feedback
           isCorrect={isCorrect}
           isIncorrect={isIncorrect}
+          almostCorrect={isAlmostCorrect}
           document={document}
-          goToNextWord={getNextWordAndModifyCounter}
+          word={word}
+          article={article}
         />
-      ) : (
-        <>
-          <TouchableOpacity
-            onPress={checkEntry}
-            disabled={!input}
-            style={[styles.checkEntryButton, !input && styles.disabledButton]}>
-            <Text
-              style={[
-                styles.checkEntryLabel,
-                !input && styles.disabledButtonLabel,
-              ]}>
-              Check entry
-            </Text>
-          </TouchableOpacity>
+      }
 
-          <TouchableOpacity
-            style={styles.giveUpButton}
-            onPress={markAsIncorrect}>
-            <Text style={styles.giveUpLabel}>I give up!</Text>
-          </TouchableOpacity>
+          {!isIncorrect && !isCorrect ? 
+            <>
+            <TouchableOpacity
+              onPress={checkEntry}
+              disabled={!input}
+              style={[styles.checkEntryButton, !input && styles.disabledButton]}
+              >
+              <Text
+               style={[styles.checkEntryLabel, !input && styles.disabledButtonLabel]}
+              >
+                Check entry
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
+            <TouchableOpacity
+              style={styles.giveUpButton}
+              onPress={markAsIncorrect}>
+              <Text style={styles.giveUpLabel}>I give up!</Text>
+            </TouchableOpacity>
+            </> : 
+            <TouchableOpacity style={styles.nextWordButton} onPress={getNextWordAndModifyCounter}>
+              <Text style={styles.nextWordLabel}>Next Word</Text>
+              <WhiteNextArrow />
+            </TouchableOpacity>
+        }
+
+          {!isCorrect && !isIncorrect && !isAlmostCorrect && <TouchableOpacity
             style={styles.tryLaterButton}
             onPress={addToTryLater}>
             <Text style={styles.giveUpLabel}>Try later</Text>
             <NextArrow />
-          </TouchableOpacity>
-        </>
-      )}
+          </TouchableOpacity>}      
     </View>
   );
 };

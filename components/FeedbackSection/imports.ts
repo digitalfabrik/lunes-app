@@ -1,11 +1,11 @@
 import React from 'react';
 import {styles} from './styles';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import {IFeedbackProps} from '../../interfaces/exercise';
 import {
   CorrectIcon,
-  WhiteNextArrow,
   IncorrectIcon,
+  AlmostCorrectIcon,
 } from '../../assets/images/imports';
 
 export {
@@ -13,10 +13,9 @@ export {
   styles,
   View,
   Text,
-  TouchableOpacity,
   CorrectIcon,
-  WhiteNextArrow,
   IncorrectIcon,
+  AlmostCorrectIcon,
 };
 
 export type {IFeedbackProps};

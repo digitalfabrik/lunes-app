@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
   },
   messageContainer: {
     width: 260,
-    height: 50,
+    minHeight: 50,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    padding: 10,
   },
   successMessage: {
     backgroundColor: COLORS.lunesFunctionalCorrectDark,
@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
   },
   textContainer: {
-    marginLeft: 8,
+    marginHorizontal: 8,
+    paddingRight: 4,
   },
   text: {
     fontSize: 12,
@@ -29,26 +30,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: COLORS.lunesBlack,
   },
-  nextWordButton: {
-    width: 160,
-    height: 40,
-    backgroundColor: COLORS.lunesBlack,
-    borderRadius: 20,
-    paddingVertical: 10,
-    marginTop: 40,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nextWordLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-Semibold',
-    fontSize: 14,
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600',
-    marginRight: 8,
+  almostCorrectMessage: {
+    backgroundColor: COLORS.lunesFunctionalAlmostCorrectDark,
   },
 });

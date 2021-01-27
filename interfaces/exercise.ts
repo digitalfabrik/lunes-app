@@ -50,6 +50,8 @@ export interface IAnswerSectionProps {
 export interface IFeedbackProps {
   isCorrect: boolean;
   isIncorrect: boolean;
+  almostCorrect: boolean;
   document?: IDocumentProps;
-  goToNextWord: () => void;
+  word: string
+  article: string
 }
