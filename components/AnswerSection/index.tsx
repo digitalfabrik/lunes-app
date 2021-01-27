@@ -82,14 +82,20 @@ const AnswerSection = ({
     }
   };
 
-  const validateForCorrect = (article: string, word: string): boolean => {
+  const validateForCorrect = (
+    inputArticle: string,
+    inputWord: string,
+  ): boolean => {
     let correct: boolean = false;
 
-    if (article === document?.article && word === document?.word) {
+    if (inputArticle === document?.article && inputWord === document?.word) {
       correct = true;
     } else {
       document?.alternatives?.forEach((alternative) => {
-        if (article === alternative.article && word === alternative.alt_word) {
+        if (
+          inputArticle === alternative.article &&
+          inputWord === alternative.alt_word
+        ) {
           correct = true;
           return;
         }
@@ -106,7 +112,10 @@ const AnswerSection = ({
     return correct;
   };
 
-  const validateForSimilar = (article: string, word: string): boolean => {
+  const validateForSimilar = (
+    inputArticle: string,
+    inputWord: string,
+  ): boolean => {
     if (isAlmostCorrect && document) {
       setIsCorrect(false);
       setIsIncorrect(true);
@@ -118,15 +127,18 @@ const AnswerSection = ({
 
       if (
         document &&
-        article === document.article &&
-        stringSimilarity.compareTwoStrings(word, document.word) > 0.5
+        inputArticle === document.article &&
+        stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.5
       ) {
         similar = true;
       } else {
         document?.alternatives?.forEach((alternative) => {
           if (
-            article === alternative.article &&
-            stringSimilarity.compareTwoStrings(word, alternative.alt_word) > 0.5
+            inputArticle === alternative.article &&
+            stringSimilarity.compareTwoStrings(
+              inputWord,
+              alternative.alt_word,
+            ) > 0.5
           ) {
             similar = true;
             return;
@@ -158,14 +170,14 @@ const AnswerSection = ({
       setIsPopoverVisible(true);
       setIsValidEntry(false);
     } else {
-      let article = input.trim().split(' ')[0];
-      let word = input.trim().split(' ')[1];
+      let inputArticle = input.trim().split(' ')[0];
+      let inputWord = input.trim().split(' ')[1];
       setWord(word);
       setArticle(article);
       setIsValidEntry(true);
 
-      if (!validateForCorrect(article, word)) {
-        if (!validateForSimilar(article, word)) {
+      if (!validateForCorrect(inputArticle, inputWord)) {
+        if (!validateForSimilar(inputArticle, inputWord)) {
           validateForIncorrect();
         }
       }
