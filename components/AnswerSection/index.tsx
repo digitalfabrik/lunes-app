@@ -128,7 +128,7 @@ const AnswerSection = ({
       if (
         document &&
         inputArticle === document.article &&
-        stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.5
+        stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
       ) {
         similar = true;
       } else {
@@ -138,7 +138,7 @@ const AnswerSection = ({
             stringSimilarity.compareTwoStrings(
               inputWord,
               alternative.alt_word,
-            ) > 0.5
+            ) > 0.4
           ) {
             similar = true;
             return;
@@ -172,8 +172,8 @@ const AnswerSection = ({
     } else {
       let inputArticle = input.trim().split(' ')[0];
       let inputWord = input.trim().split(' ')[1];
-      setWord(word);
-      setArticle(article);
+      setWord(inputWord);
+      setArticle(inputArticle);
       setIsValidEntry(true);
 
       if (!validateForCorrect(inputArticle, inputWord)) {
