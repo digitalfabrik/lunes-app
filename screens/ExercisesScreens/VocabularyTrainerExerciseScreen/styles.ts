@@ -15,8 +15,9 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 210,
+    height: '40%',
     position: 'relative',
+    resizeMode: 'cover',
   },
   headerText: {
     fontSize: 14,
