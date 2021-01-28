@@ -1,14 +1,21 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../constants/colors';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   container: {
     paddingVertical: 40,
     alignItems: 'center',
     position: 'relative',
+    width: '100%',
+    height: hp('65%'),
   },
   textInputContainer: {
-    width: 260,
+    width: wp('80%'),
+    height: hp('8%'),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -17,25 +24,26 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
     paddingHorizontal: 10,
-    marginBottom: 40,
+    marginBottom: hp('6%'),
   },
   activeTextInput: {
     borderColor: COLORS.lunesBlack,
   },
   textInput: {
-    height: 42,
     fontSize: 16,
     fontWeight: 'normal',
     letterSpacing: 0.11,
     fontFamily: 'SourceSansPro-Regular',
   },
   checkEntryButton: {
-    width: 192,
-    height: 40,
+    width: wp('55%'),
+    height: hp('7%'),
     backgroundColor: COLORS.lunesBlack,
     borderRadius: 20,
-    marginBottom: 16,
+    marginBottom: hp('3%'),
     paddingVertical: 10,
+    display: 'flex',
+    justifyContent: 'center',
   },
   checkEntryLabel: {
     textAlign: 'center',
@@ -47,14 +55,16 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   giveUpButton: {
-    width: 192,
-    height: 40,
+    width: wp('55%'),
+    height: hp('7%'),
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    marginBottom: 29,
+    marginBottom: hp('3%'),
     borderWidth: 1.5,
     borderColor: COLORS.lunesBlack,
     paddingVertical: 10,
+    display: 'flex',
+    justifyContent: 'center',
   },
   giveUpLabel: {
     textAlign: 'center',
