@@ -97,7 +97,7 @@ const VocabularyTrainerExerciseScreen = ({
           accessibilityTraits
         />
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Image
             source={{
               uri: document?.image,
