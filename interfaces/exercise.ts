@@ -56,7 +56,7 @@ export interface IFeedbackProps {
   article: string;
 }
 
-export interface IButtonsProps {
+export interface IActionsProps {
   isCorrect: boolean;
   isIncorrect: boolean;
   isAlmostCorrect: boolean;

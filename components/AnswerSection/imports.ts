@@ -16,7 +16,7 @@ import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
 import stringSimilarity from 'string-similarity';
-import Buttons from '../Buttons';
+import Actions from '../Actions';
 
 export {
   React,
@@ -39,7 +39,7 @@ export {
   AsyncStorage,
   Feedback,
   stringSimilarity,
-  Buttons,
+  Actions,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

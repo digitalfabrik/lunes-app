@@ -21,7 +21,7 @@ import {
   IDocumentProps,
   Feedback,
   stringSimilarity,
-  Buttons,
+  Actions,
 } from './imports';
 
 const AnswerSection = ({
@@ -371,7 +371,7 @@ const AnswerSection = ({
         article={article}
       />
 
-      <Buttons
+      <Actions
         input={input}
         isCorrect={isCorrect}
         isIncorrect={isIncorrect}

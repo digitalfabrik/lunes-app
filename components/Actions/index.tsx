@@ -5,10 +5,10 @@ import {
   styles,
   WhiteNextArrow,
   NextArrow,
-  IButtonsProps,
+  IActionsProps,
 } from './imports';
 
-const Buttons = ({
+const Actions = ({
   isCorrect,
   isIncorrect,
   isAlmostCorrect,
@@ -17,7 +17,7 @@ const Buttons = ({
   checkEntry,
   markAsIncorrect,
   input,
-}: IButtonsProps) => (
+}: IActionsProps) => (
   <>
     {!isIncorrect && !isCorrect ? (
       <>
@@ -56,4 +56,4 @@ const Buttons = ({
   </>
 );
 
-export default Buttons;
+export default Actions;
