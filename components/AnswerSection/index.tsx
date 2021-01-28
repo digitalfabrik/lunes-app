@@ -6,8 +6,6 @@ import {
   COLORS,
   styles,
   TextInput,
-  Text,
-  NextArrow,
   CloseIcon,
   IAnswerSectionProps,
   Popover,
@@ -23,7 +21,7 @@ import {
   IDocumentProps,
   Feedback,
   stringSimilarity,
-  WhiteNextArrow,
+  Buttons,
 } from './imports';
 
 const AnswerSection = ({
@@ -373,42 +371,16 @@ const AnswerSection = ({
         article={article}
       />
 
-      {!isIncorrect && !isCorrect ? (
-        <>
-          <TouchableOpacity
-            onPress={checkEntry}
-            disabled={!input}
-            style={[styles.checkEntryButton, !input && styles.disabledButton]}>
-            <Text
-              style={[
-                styles.checkEntryLabel,
-                !input && styles.disabledButtonLabel,
-              ]}>
-              Check entry
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.giveUpButton}
-            onPress={markAsIncorrect}>
-            <Text style={styles.giveUpLabel}>I give up!</Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <TouchableOpacity
-          style={styles.nextWordButton}
-          onPress={getNextWordAndModifyCounter}>
-          <Text style={styles.nextWordLabel}>Next Word</Text>
-          <WhiteNextArrow />
-        </TouchableOpacity>
-      )}
-
-      {!isCorrect && !isIncorrect && !isAlmostCorrect && (
-        <TouchableOpacity style={styles.tryLaterButton} onPress={addToTryLater}>
-          <Text style={styles.giveUpLabel}>Try later</Text>
-          <NextArrow />
-        </TouchableOpacity>
-      )}
+      <Buttons
+        input={input}
+        isCorrect={isCorrect}
+        isIncorrect={isIncorrect}
+        isAlmostCorrect={isAlmostCorrect}
+        checkEntry={checkEntry}
+        addToTryLater={addToTryLater}
+        getNextWordAndModifyCounter={getNextWordAndModifyCounter}
+        markAsIncorrect={markAsIncorrect}
+      />
     </View>
   );
 };

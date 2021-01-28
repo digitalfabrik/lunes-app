@@ -55,3 +55,14 @@ export interface IFeedbackProps {
   word: string;
   article: string;
 }
+
+export interface IButtonsProps {
+  isCorrect: boolean;
+  isIncorrect: boolean;
+  isAlmostCorrect: boolean;
+  checkEntry: () => void;
+  markAsIncorrect: () => void;
+  getNextWordAndModifyCounter: () => void;
+  addToTryLater: () => void;
+  input: string;
+}

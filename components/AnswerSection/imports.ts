@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Platform} from 'react-native';
+import {View, TouchableOpacity, TextInput, Platform} from 'react-native';
 import {styles} from './styles';
 import {
-  NextArrow,
   CloseIcon,
   VolumeUpDisabled,
   VolumeUp,
   InActiveVolumeUp,
-  WhiteNextArrow,
 } from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
 import {IAnswerSectionProps, IDocumentProps} from '../../interfaces/exercise';
@@ -18,17 +16,16 @@ import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
 import stringSimilarity from 'string-similarity';
+import Buttons from '../Buttons';
 
 export {
   React,
   View,
-  Text,
   styles,
   TouchableOpacity,
   useState,
   COLORS,
   TextInput,
-  NextArrow,
   CloseIcon,
   Popover,
   PopoverPlacement,
@@ -42,7 +39,7 @@ export {
   AsyncStorage,
   Feedback,
   stringSimilarity,
-  WhiteNextArrow,
+  Buttons,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};
