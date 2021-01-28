@@ -16,46 +16,37 @@ const Feedback = ({
   document,
   word,
   article,
-}: IFeedbackProps) => (
-  <View style={styles.container}>
-    {isCorrect && (
-      <View style={[styles.messageContainer, styles.successMessage]}>
-        <CorrectIcon />
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Great, keep it up!{'\n'}
-            The Word you filled in is correct.
-          </Text>
-        </View>
-      </View>
-    )}
+}: IFeedbackProps) => {
+  const Icon = isCorrect
+    ? CorrectIcon
+    : isIncorrect
+    ? IncorrectIcon
+    : AlmostCorrectIcon;
 
-    {isIncorrect && (
-      <View style={[styles.messageContainer, styles.failedMessage]}>
-        <IncorrectIcon />
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            What a pity! Your entry is incorrect,{'\n'}
-            {`the correct answer is: ${
-              document?.article === 'die (Plural)' ? 'die' : document?.article
-            } ${document?.word}`}
-          </Text>
-        </View>
-      </View>
-    )}
+  const messageStyle = isCorrect
+    ? styles.successMessage
+    : isIncorrect
+    ? styles.failedMessage
+    : styles.almostCorrectMessage;
 
-    {almostCorrect && (
-      <View style={[styles.messageContainer, styles.almostCorrectMessage]}>
-        <AlmostCorrectIcon />
+  const message = isCorrect
+    ? 'Great, keep it up! \nThe Word you filled in is correct.'
+    : isIncorrect
+    ? ` What a pity! Your entry is incorrect,\nthe correct answer is: ${
+        document?.article === 'die (Plural)' ? 'die' : document?.article
+      } ${document?.word}`
+    : `Your entry ${article} ${word} is almost correct.\nCheck for upper and lower case.`;
+
+  return isCorrect || isIncorrect || almostCorrect ? (
+    <View style={styles.container}>
+      <View style={[styles.messageContainer, messageStyle]}>
+        <Icon />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            {`Your entry ${article} ${word} is almost correct.\n`}
-            Check for upper and lower case.
-          </Text>
+          <Text style={styles.text}>{message}</Text>
         </View>
       </View>
-    )}
-  </View>
-);
+    </View>
+  ) : null;
+};
 
 export default Feedback;

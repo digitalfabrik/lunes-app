@@ -364,16 +364,14 @@ const AnswerSection = ({
         )}
       </View>
 
-      {(isCorrect || isIncorrect || isAlmostCorrect) && (
-        <Feedback
-          isCorrect={isCorrect}
-          isIncorrect={isIncorrect}
-          almostCorrect={isAlmostCorrect}
-          document={document}
-          word={word}
-          article={article}
-        />
-      )}
+      <Feedback
+        isCorrect={isCorrect}
+        isIncorrect={isIncorrect}
+        almostCorrect={isAlmostCorrect}
+        document={document}
+        word={word}
+        article={article}
+      />
 
       {!isIncorrect && !isCorrect ? (
         <>
