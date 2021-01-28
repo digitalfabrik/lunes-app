@@ -16,6 +16,7 @@ import {
   axios,
   IVocabularyTrainerScreen,
   AnswerSection,
+  ScrollView,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -96,22 +97,24 @@ const VocabularyTrainerExerciseScreen = ({
           accessibilityTraits
         />
 
-        <Image
-          source={{
-            uri: document?.image,
-          }}
-          style={styles.image}
-        />
+        <ScrollView>
+          <Image
+            source={{
+              uri: document?.image,
+            }}
+            style={styles.image}
+          />
 
-        <AnswerSection
-          count={count}
-          index={index}
-          setIndex={setIndex}
-          currentWordNumber={currentWordNumber}
-          setCurrentWordNumber={setCurrentWordNumber}
-          document={document}
-          setDocuments={setDocuments}
-        />
+          <AnswerSection
+            count={count}
+            index={index}
+            setIndex={setIndex}
+            currentWordNumber={currentWordNumber}
+            setCurrentWordNumber={setCurrentWordNumber}
+            document={document}
+            setDocuments={setDocuments}
+          />
+        </ScrollView>
       </View>
       <Modal
         visible={isModalVisible}
