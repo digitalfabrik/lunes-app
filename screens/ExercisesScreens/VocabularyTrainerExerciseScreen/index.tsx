@@ -16,7 +16,6 @@ import {
   axios,
   IVocabularyTrainerScreen,
   AnswerSection,
-  ScrollView,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -87,41 +86,37 @@ const VocabularyTrainerExerciseScreen = ({
   );
 
   return (
-    <>
-      <View>
-        <ProgressBar
-          progress={0} //This will be changed on success state
-          color={COLORS.lunesGreenMedium}
-          style={styles.progressBar}
-          accessibilityComponentType
-          accessibilityTraits
-        />
+    <View>
+      <ProgressBar
+        progress={0} //This will be changed on success state
+        color={COLORS.lunesGreenMedium}
+        style={styles.progressBar}
+        accessibilityComponentType
+        accessibilityTraits
+      />
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Image
-            source={{
-              uri: document?.image,
-            }}
-            style={styles.image}
-          />
+      <Image
+        source={{
+          uri: document?.image,
+        }}
+        style={styles.image}
+      />
 
-          <AnswerSection
-            count={count}
-            index={index}
-            setIndex={setIndex}
-            currentWordNumber={currentWordNumber}
-            setCurrentWordNumber={setCurrentWordNumber}
-            document={document}
-            setDocuments={setDocuments}
-          />
-        </ScrollView>
-      </View>
+      <AnswerSection
+        count={count}
+        index={index}
+        setIndex={setIndex}
+        currentWordNumber={currentWordNumber}
+        setCurrentWordNumber={setCurrentWordNumber}
+        document={document}
+        setDocuments={setDocuments}
+      />
       <Modal
         visible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         navigation={navigation}
       />
-    </>
+    </View>
   );
 };
 

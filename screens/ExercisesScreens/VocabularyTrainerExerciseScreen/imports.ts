@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {styles} from './styles';
 import {CloseButton} from '../../../assets/images/imports';
 import Modal from '../../../components/Modal';
@@ -28,7 +28,6 @@ export {
   ENDPOINTS,
   axios,
   AnswerSection,
-  ScrollView,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};
