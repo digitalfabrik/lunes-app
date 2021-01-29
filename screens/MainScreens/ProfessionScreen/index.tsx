@@ -1,60 +1,84 @@
 import {
   React,
   Header,
-  ListView,
+  FlatList,
+  SCREENS,
   View,
   styles,
   Text,
   axios,
-  useFocusEffect,
   useState,
+  useFocusEffect,
   IProfessionsProps,
   ENDPOINTS,
-  SCREENS,
   SafeAreaInsetsContext,
+  Loading,
+  MenuItem,
 } from './imports';
 
-const ProfessionScreen = ({navigation}: any) => {
+const ProfessionScreen = ({navigation}: StackNavigationProp) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
+  const [selectedId, setSelectedId] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true);
-
-      const getProfessions = async () => {
-        try {
-          const professionsRes = await axios.get(ENDPOINTS.professions.all);
-
-          setProfessions(professionsRes.data);
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      getProfessions();
+      axios.get(ENDPOINTS.professions.all).then((response) => {
+        setProfessions(response.data);
+        setIsLoading(false);
+      });
+      setSelectedId(-1);
     }, []),
   );
+
+  const itemTextStyle = (item: any) =>
+    item.id === selectedId ? styles.clickedItemDescription : styles.description;
+
+  const title = (
+    <Text style={styles.text}>
+      Welcome to Lunes!{'\n'}
+      Learn German vocabulary for your profession.
+    </Text>
+  );
+
+  const Item = ({item}: any) => (
+    <MenuItem
+      selected={item.id === selectedId}
+      title={item.title}
+      icon={item.icon}
+      onPress={() => handleNavigation(item)}>
+      <Text style={itemTextStyle(item)}>
+        {item.total_training_sets}
+        {item.total_training_sets === 1 ? ' Bereich' : ' Bereiche'}
+      </Text>
+    </MenuItem>
+  );
+
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+    navigation.navigate(SCREENS.professionSubcategory, {
+      id: item.id,
+      title: item.title,
+      icon: item.icon,
+    });
+  };
 
   return (
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
         <View style={styles.root}>
           <Header top={insets?.top} />
-          <ListView
-            navigation={navigation}
-            title={
-              <Text style={styles.text}>
-                Welcome to Lunes!{'\n'}
-                Learn German vocabulary for your profession.
-              </Text>
-            }
-            listData={professions}
-            nextScreen={SCREENS.professionSubcategory}
-            isLoading={isLoading}
-            from={SCREENS.profession}
-          />
+          <Loading isLoading={isLoading}>
+            <FlatList
+              data={professions}
+              style={styles.list}
+              ListHeaderComponent={title}
+              ListHeaderComponentStyle={styles.title}
+              renderItem={Item}
+              keyExtractor={(item) => `${item.id}`}
+              showsVerticalScrollIndicator={false}
+            />
+          </Loading>
         </View>
       )}
     </SafeAreaInsetsContext.Consumer>

@@ -16,10 +16,10 @@ import {
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
 
-const defaultOptions = (title: string, Icon: any) => {
+const defaultOptions = (title: string, Icon: any, navigation: any) => {
   return {
-    headerLeft: (props: any) => (
-      <TouchableOpacity onPress={props.onPress} style={styles.headerLeft}>
+    headerLeft: () => (
+      <TouchableOpacity onPress={navigation.goBack} style={styles.headerLeft}>
         <Icon />
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
@@ -39,24 +39,30 @@ const Navigation = () => {
         component={ProfessionScreen}
       />
       <ProfessionStack.Screen
-        options={defaultOptions('Profession Overview', BackButton)}
+        options={({navigation}) =>
+          defaultOptions('Profession Overview', BackButton, navigation)
+        }
         name="ProfessionSubcategory"
         component={ProfessionSubcategoryScreen}
       />
       <ProfessionStack.Screen
-        options={({route}: any) =>
-          defaultOptions(route.params.extraParams, BackButton)
+        options={({route, navigation}: any) =>
+          defaultOptions(route.params.extraParams, BackButton, navigation)
         }
         name="Exercises"
         component={ExercisesScreen}
       />
       <ProfessionStack.Screen
-        options={defaultOptions('Exercise Overview', CloseButton)}
+        options={({navigation}) =>
+          defaultOptions('Exercise Overview', CloseButton, navigation)
+        }
         name="VocabularyOverview"
         component={VocabularyOverviewExerciseScreen}
       />
       <ProfessionStack.Screen
-        options={defaultOptions('Exercise Overview', CloseButton)}
+        options={({navigation}) =>
+          defaultOptions('Exercise Overview', CloseButton, navigation)
+        }
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}
       />

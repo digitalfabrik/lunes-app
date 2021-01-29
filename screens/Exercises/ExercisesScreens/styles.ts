@@ -1,73 +1,68 @@
 import {StyleSheet} from 'react-native';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
+  root: {
+    backgroundColor: COLORS.lunesWhite,
+    height: '100%',
+    paddingBottom: 0,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
+    marginBottom: 40,
+  },
+  list: {
+    paddingTop: 16,
+    paddingHorizontal: 15,
+    flex: 1,
+  },
+  description: {
+    fontSize: 14,
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
+  },
+  screenTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
+  },
   container: {
+    alignSelf: 'center',
     paddingVertical: 17,
     paddingRight: 16,
     paddingLeft: 25,
     marginBottom: 8,
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: 310,
+    width: '80%',
+    justifyContent: 'space-between',
     backgroundColor: COLORS.white,
     borderColor: COLORS.lunesBlackUltralight,
     borderWidth: 1,
     borderStyle: 'solid',
   },
-  item: {
-    display: 'flex',
+  clickedContainer: {
+    alignSelf: 'center',
+    paddingVertical: 17,
+    paddingRight: 16,
+    paddingLeft: 25,
+    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  text: {
-    display: 'flex',
+    backgroundColor: COLORS.lunesBlack,
+    borderColor: COLORS.white,
   },
   icon: {
     marginRight: 10,
     width: 24,
     height: 24,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-  },
-  descriptionContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  description: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    letterSpacing: undefined,
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular',
-  },
-  arrow: {
-    width: 24,
-    height: 24,
-  },
-  clickedItem: {
-    paddingVertical: 17,
-    paddingRight: 16,
-    paddingLeft: 25,
-    marginBottom: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: 310,
-    backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white,
-  },
   clickedItemTitle: {
+    textAlign: 'left',
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: 0.11,
@@ -85,6 +80,20 @@ export const styles = StyleSheet.create({
   level: {
     marginTop: 11,
   },
+  descriptionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  title2: {
+    textAlign: 'left',
+    fontSize: 16,
+    fontWeight: '600',
+    letterSpacing: 0.11,
+    marginBottom: 2,
+    color: COLORS.lunesGreyDark,
+    fontFamily: 'SourceSansPro-SemiBold',
+  },
   badgeLabel: {
     color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-Semibold',
@@ -98,7 +107,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   clickedItemBadgeLabel: {
-    color: COLORS.lunesGreyMedium,
+    color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-Semibold',
     fontSize: 12,
     fontWeight: '600',
