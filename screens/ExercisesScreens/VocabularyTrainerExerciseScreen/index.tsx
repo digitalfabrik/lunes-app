@@ -97,12 +97,13 @@ const VocabularyTrainerExerciseScreen = ({
           accessibilityTraits
         />
 
-        <Image
-          source={{
-            uri: document?.image,
-          }}
-          style={styles.image}
-        />
+
+      <Image
+        source={{
+          uri: document?.image,
+        }}
+        style={styles.image}
+      />
 
         <AnswerSection
           count={count}
@@ -116,12 +117,13 @@ const VocabularyTrainerExerciseScreen = ({
           navigation={navigation}
         />
       </View>
+
       <Modal
         visible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         navigation={navigation}
       />
-    </>
+    </View>
   );
 };
 

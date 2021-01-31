@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../ListView/imports';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,7 +19,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 260,
-    width: 290,
+    width: wp('85%'),
     borderRadius: 4,
     position: 'relative',
   },
@@ -34,12 +35,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
-    width: 210,
+    width: wp('60%'),
     marginBottom: 31,
   },
   continueButton: {
     backgroundColor: COLORS.lunesBlack,
-    width: 190,
+    width: wp('50%'),
     borderRadius: 20,
     paddingVertical: 12,
     marginBottom: 16,
@@ -55,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   endButton: {
     backgroundColor: COLORS.lunesWhite,
-    width: 190,
+    width: wp('50%'),
     borderRadius: 20,
     paddingVertical: 10,
     borderWidth: 1.5,
