@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-SemiBold',
     marginBottom: 40,
   },
+  list: {
+    paddingTop: 16,
+    paddingHorizontal: 15,
+    flex: 1,
+  },
   description: {
     textAlign: 'center',
     fontSize: 14,

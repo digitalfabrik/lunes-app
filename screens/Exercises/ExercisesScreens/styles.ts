@@ -1,11 +1,28 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../constants/colors';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
     paddingBottom: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  item: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    display: 'flex',
+  },
+  icon: {
+    marginRight: 10,
+    width: 24,
+    height: 24,
   },
   title: {
     textAlign: 'center',
@@ -53,6 +70,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    width: wp('85%'),
     backgroundColor: COLORS.lunesBlack,
     borderColor: COLORS.white,
   },
