@@ -113,6 +113,7 @@ const VocabularyTrainerExerciseScreen = ({
           document={document}
           setDocuments={setDocuments}
           increaseProgress={increaseProgress}
+          navigation={navigation}
         />
       </View>
       <Modal

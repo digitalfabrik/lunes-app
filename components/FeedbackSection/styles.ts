@@ -21,8 +21,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
   },
   textContainer: {
-    marginHorizontal: 8,
-    paddingRight: 4,
+    marginHorizontal: 5,
+    paddingRight: 15,
   },
   text: {
     fontSize: 12,

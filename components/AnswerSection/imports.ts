@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
 import stringSimilarity from 'string-similarity';
 import Actions from '../Actions';
+import {SCREENS} from '../../constants/data';
 
 export {
   React,
@@ -40,6 +41,7 @@ export {
   Feedback,
   stringSimilarity,
   Actions,
+  SCREENS,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

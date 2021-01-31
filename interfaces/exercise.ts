@@ -45,6 +45,7 @@ export interface IAnswerSectionProps {
   document?: IDocumentProps;
   setDocuments: Function;
   increaseProgress: Function;
+  navigation: any;
 }
 
 export interface IFeedbackProps {
@@ -65,4 +66,6 @@ export interface IActionsProps {
   getNextWordAndModifyCounter: () => void;
   addToTryLater: () => void;
   input: string;
+  isFinished: boolean;
+  checkOut: () => void;
 }

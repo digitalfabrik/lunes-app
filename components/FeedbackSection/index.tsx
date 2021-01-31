@@ -32,7 +32,7 @@ const Feedback = ({
   const message = isCorrect
     ? 'Great, keep it up! \nThe Word you filled in is correct.'
     : isIncorrect
-    ? ` What a pity! Your entry is incorrect,\nthe correct answer is: ${
+    ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
         document?.article === 'die (Plural)' ? 'die' : document?.article
       } ${document?.word}`
     : `Your entry ${article} ${word} is almost correct.\nCheck for upper and lower case.`;
@@ -42,7 +42,9 @@ const Feedback = ({
       <View style={[styles.messageContainer, messageStyle]}>
         <Icon />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{message}</Text>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
+            {message}
+          </Text>
         </View>
       </View>
     </View>

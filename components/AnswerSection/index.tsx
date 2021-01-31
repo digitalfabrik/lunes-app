@@ -22,6 +22,7 @@ import {
   Feedback,
   stringSimilarity,
   Actions,
+  SCREENS,
 } from './imports';
 
 const AnswerSection = ({
@@ -33,6 +34,7 @@ const AnswerSection = ({
   document,
   setDocuments,
   increaseProgress,
+  navigation,
 }: IAnswerSectionProps) => {
   const [input, setInput] = useState('');
   const touchable: any = React.useRef();
@@ -58,6 +60,7 @@ const AnswerSection = ({
   const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<
     IDocumentProps[]
   >([]);
+  const [isFinished, setIsFinished] = useState(false);
 
   const clearTextInput = () => {
     setInput('');
@@ -179,6 +182,10 @@ const AnswerSection = ({
           validateForIncorrect();
         }
       }
+
+      if (currentWordNumber === count) {
+        setIsFinished(true);
+      }
     }
   };
 
@@ -186,11 +193,12 @@ const AnswerSection = ({
     if (document) {
       setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
     }
-    getNextWord();
-    modifyHeaderCounter();
-    setIsCorrect(false);
-    setIsIncorrect(false);
-    setIsAlmostCorrect(false);
+
+    if (currentWordNumber === count) {
+      handleCheckOutClick();
+    } else {
+      getNextWordAndModifyCounter();
+    }
   };
 
   const addToTryLater = () => {
@@ -223,6 +231,11 @@ const AnswerSection = ({
     modifyHeaderCounter();
     setIsCorrect(false);
     setIsIncorrect(false);
+    setIsAlmostCorrect(false);
+  };
+
+  const handleCheckOutClick = () => {
+    navigation.navigate(SCREENS.initialSummaryScreen);
   };
 
   React.useEffect(() => {
@@ -380,6 +393,8 @@ const AnswerSection = ({
         addToTryLater={addToTryLater}
         getNextWordAndModifyCounter={getNextWordAndModifyCounter}
         markAsIncorrect={markAsIncorrect}
+        isFinished={isFinished}
+        checkOut={handleCheckOutClick}
       />
     </View>
   );
