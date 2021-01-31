@@ -22,6 +22,10 @@ import VolumeUpDisabled from './volume-up-disabled.svg';
 import InfoIcon from './info.svg';
 import VolumeUp from './active-volume-up.svg';
 import InActiveVolumeUp from './inactive-volume-up.svg';
+import CorrectIcon from './correct-icon.svg';
+import WhiteNextArrow from './white-next-arrow.svg';
+import IncorrectIcon from './incorrect-icon.svg';
+import AlmostCorrectIcon from './almost-correcr-icon.svg';
 
 export {
   icon1,
@@ -47,4 +51,8 @@ export {
   VolumeUpDisabled,
   InfoIcon,
   InActiveVolumeUp,
+  CorrectIcon,
+  WhiteNextArrow,
+  IncorrectIcon,
+  AlmostCorrectIcon,
 };

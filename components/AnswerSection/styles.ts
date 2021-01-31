@@ -20,8 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: COLORS.lunesGreyMedium,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 2,
     paddingHorizontal: 10,
     marginBottom: hp('6%'),
@@ -69,24 +68,6 @@ export const styles = StyleSheet.create({
   giveUpLabel: {
     textAlign: 'center',
     color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-Semibold',
-    fontSize: 14,
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600',
-  },
-  tryLaterButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: 105,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  disabledButton: {
-    backgroundColor: COLORS.lunesBlackUltralight,
-  },
-  disabledButtonLabel: {
-    color: COLORS.lunesBlackLight,
   },
   arrow: {
     backgroundColor: COLORS.lunesBlack,
