@@ -1,4 +1,13 @@
-import {React, styles, View, Text, Pressable, Image, Arrow} from './imports';
+import {
+  React,
+  styles,
+  View,
+  Text,
+  Pressable,
+  Image,
+  Arrow,
+  COLORS,
+} from './imports';
 
 const MenuItem = (props: any) => {
   const {selected, onPress, icon, title, children} = props;
@@ -18,7 +27,7 @@ const MenuItem = (props: any) => {
         </View>
       </View>
 
-      <Arrow fill={selected ? 'red' : 'black'} />
+      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} />
     </Pressable>
   );
 };

@@ -63,6 +63,7 @@ const VocabularyOverviewExerciseScreen = ({
       audio={item.audio}
     />
   );
+
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>

@@ -15,10 +15,12 @@ import Title from '../../../components/Title';
 import {EXERCISES} from '../../../constants/data';
 import {Arrow} from '../../../assets/images/imports';
 import {useFocusEffect} from '@react-navigation/native';
+import {COLORS} from '../../../constants/colors';
 
 export {
   React,
   styles,
+  COLORS,
   View,
   useState,
   useFocusEffect,

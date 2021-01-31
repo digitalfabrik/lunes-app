@@ -14,6 +14,7 @@ import {
   EXERCISES,
   Title,
   Arrow,
+  COLORS,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -68,9 +69,12 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         <Text style={descriptionStyle(item)}>{item.description}</Text>
         <item.Level style={styles.level} />
       </View>
-      <Arrow fill={item.id === selectedId ? 'red' : 'black'} />
+      <Arrow
+        fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack}
+      />
     </Pressable>
   );
+
   return (
     <View style={styles.root}>
       <FlatList
