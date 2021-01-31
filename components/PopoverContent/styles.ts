@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {COLORS} from '../ListView/imports';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {COLORS} from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   container: {

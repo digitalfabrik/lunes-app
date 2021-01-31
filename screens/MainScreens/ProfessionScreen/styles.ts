@@ -13,4 +13,29 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
+  list: {
+    paddingTop: 16,
+    paddingHorizontal: 15,
+    flex: 1,
+  },
+  title: {
+    marginTop: 40,
+    height: 54,
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  clickedItemDescription: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    letterSpacing: undefined,
+    color: COLORS.white,
+    fontFamily: 'SourceSansPro-Regular',
+  },
+  description: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    letterSpacing: undefined,
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
+  },
 });

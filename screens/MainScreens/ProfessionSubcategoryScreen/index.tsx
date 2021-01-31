@@ -5,7 +5,8 @@ import {
   Text,
   IProfessionSubcategoryScreenProps,
   LogBox,
-  ListView,
+  MenuItem,
+  FlatList,
   SCREENS,
   ENDPOINTS,
   axios,
@@ -14,7 +15,8 @@ import {
   useFocusEffect,
   getProfessionSubcategoryWithIcon,
   StatusBar,
-  COLORS,
+  Loading,
+  Title,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -26,60 +28,80 @@ const ProfessionSubcategoryScreen = ({
   navigation,
 }: IProfessionSubcategoryScreenProps) => {
   const {id, title, icon} = route.params;
-  const [professionSubcategories, setProfessionSubcategories] = useState<
+  const [subcategories, setsubcategories] = useState<
     IProfessionSubcategoryProps[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState(-1);
   const [count, setCount] = useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true);
+      const url = ENDPOINTS.subCategories.all.replace(':id', id);
+      axios.get(url).then((response) => {
+        setsubcategories(getProfessionSubcategoryWithIcon(icon, response.data));
 
-      const getProfessionSubcategories = async () => {
-        try {
-          const professionSubcategoriesRes = await axios.get(
-            ENDPOINTS.subCategories.all.replace(':id', `${id}`),
-          );
+        setCount(response.data.length);
+        setIsLoading(false);
+      });
+      setSelectedId(-1);
+    }, [icon, id]),
+  );
 
-          setProfessionSubcategories(
-            getProfessionSubcategoryWithIcon(
-              icon,
-              professionSubcategoriesRes.data,
-            ),
-          );
+  const descriptionStyle = (item: any) =>
+    item.id === selectedId ? styles.clickedItemDescription : styles.description;
 
-          setCount(professionSubcategoriesRes.data.length);
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+  const badgeStyle = (item: any) =>
+    item.id === selectedId ? styles.clickedItemBadgeLabel : styles.badgeLabel;
 
-      getProfessionSubcategories();
-    }, [id, icon]),
+  const titleCOMP = (
+    <Title>
+      <Text style={styles.screenTitle}>{title}</Text>
+      <Text style={styles.description}>
+        {count} {count === 1 ? 'Kategory' : 'Kategories'}
+      </Text>
+    </Title>
+  );
+
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+    navigation.navigate(SCREENS.exercises, {
+      id: item.id,
+      title: item.title,
+      icon: item.icon,
+      extraParams: title,
+    });
+  };
+
+  const Item = ({item}: any) => (
+    <MenuItem
+      selected={item.id === selectedId}
+      title={item.title}
+      icon={item.icon}
+      onPress={() => handleNavigation(item)}>
+      <View style={styles.itemText}>
+        <Text style={badgeStyle(item)}>{item.total_documents}</Text>
+        <Text style={descriptionStyle(item)}>
+          {item.total_documents === 1 ? ' Lektion' : ' Lektionen'}
+        </Text>
+      </View>
+    </MenuItem>
   );
 
   return (
     <View style={styles.root}>
-      <StatusBar backgroundColor={COLORS.blue} barStyle="dark-content" />
-
-      <ListView
-        navigation={navigation}
-        title={
-          <>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>
-              {count} {count === 1 ? 'Kategory' : 'Kategories'}
-            </Text>
-          </>
-        }
-        listData={professionSubcategories}
-        nextScreen={SCREENS.exercises}
-        extraParams={title}
-        isLoading={isLoading}
-        from={SCREENS.professionSubcategory}
-      />
+      <StatusBar backgroundColor="blue" barStyle="dark-content" />
+      <Loading isLoading={isLoading}>
+        <FlatList
+          data={subcategories}
+          style={styles.list}
+          ListHeaderComponent={titleCOMP}
+          ListHeaderComponentStyle={styles.title}
+          renderItem={Item}
+          keyExtractor={(item) => `${item.id}`}
+          showsVerticalScrollIndicator={false}
+        />
+      </Loading>
     </View>
   );
 };

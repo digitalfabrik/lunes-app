@@ -11,7 +11,6 @@ import CircleIcon from './icon-sign-5.svg';
 import LinesIcon from './icon-sign-3.svg';
 import SmileIcon from './smile.svg';
 import Arrow from './arrow.svg';
-import RedArrow from './red-arrow.svg';
 import easy from './level-easy.svg';
 import hard from './level-hard.svg';
 import Home from './home.svg';
@@ -36,7 +35,6 @@ export {
   LinesIcon,
   SmileIcon,
   Arrow,
-  RedArrow,
   easy,
   hard,
   Home,
