@@ -56,7 +56,11 @@ const Navigation = () => {
         component={VocabularyOverviewExerciseScreen}
       />
       <ProfessionStack.Screen
-        options={defaultOptions('Exercise Overview', CloseButton)}
+        options={{
+          headerTitle: '',
+          headerStyle: styles.header,
+          headerRightContainerStyle: styles.headerRight,
+        }}
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}
       />
