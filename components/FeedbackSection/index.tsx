@@ -38,14 +38,12 @@ const Feedback = ({
     : `Your entry ${article} ${word} is almost correct.\nCheck for upper and lower case.`;
 
   return isCorrect || isIncorrect || almostCorrect ? (
-    <View style={styles.container}>
-      <View style={[styles.messageContainer, messageStyle]}>
-        <Icon />
-        <View style={styles.textContainer}>
-          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
-            {message}
-          </Text>
-        </View>
+    <View style={[styles.messageContainer, messageStyle]}>
+      <Icon />
+      <View style={styles.textContainer}>
+        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
+          {message}
+        </Text>
       </View>
     </View>
   ) : null;

@@ -1,18 +1,20 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../constants/colors';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
   messageContainer: {
-    width: 260,
-    minHeight: 50,
+    width: wp('80%'),
+    height: hp('9%'),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
+    marginTop: -hp('3.5%'),
+    marginBottom: hp('3%'),
   },
   successMessage: {
     backgroundColor: COLORS.lunesFunctionalCorrectDark,

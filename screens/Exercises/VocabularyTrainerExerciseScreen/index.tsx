@@ -87,16 +87,14 @@ const VocabularyTrainerExerciseScreen = ({
   );
 
   return (
-    <>
-      <View>
-        <ProgressBar
-          progress={progressValue}
-          color={COLORS.lunesGreenMedium}
-          style={styles.progressBar}
-          accessibilityComponentType
-          accessibilityTraits
-        />
-
+    <View>
+      <ProgressBar
+        progress={progressValue}
+        color={COLORS.lunesGreenMedium}
+        style={styles.progressBar}
+        accessibilityComponentType
+        accessibilityTraits
+      />
 
       <Image
         source={{
@@ -105,18 +103,17 @@ const VocabularyTrainerExerciseScreen = ({
         style={styles.image}
       />
 
-        <AnswerSection
-          count={count}
-          index={index}
-          setIndex={setIndex}
-          currentWordNumber={currentWordNumber}
-          setCurrentWordNumber={setCurrentWordNumber}
-          document={document}
-          setDocuments={setDocuments}
-          increaseProgress={increaseProgress}
-          navigation={navigation}
-        />
-      </View>
+      <AnswerSection
+        count={count}
+        index={index}
+        setIndex={setIndex}
+        currentWordNumber={currentWordNumber}
+        setCurrentWordNumber={setCurrentWordNumber}
+        document={document}
+        setDocuments={setDocuments}
+        increaseProgress={increaseProgress}
+        navigation={navigation}
+      />
 
       <Modal
         visible={isModalVisible}

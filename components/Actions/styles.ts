@@ -1,15 +1,20 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../constants/colors';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   checkEntryButton: {
-    width: 192,
-    height: 40,
+    width: wp('55%'),
+    height: hp('7%'),
     backgroundColor: COLORS.lunesBlack,
     borderRadius: 20,
-    marginBottom: 16,
+    marginBottom: hp('3%'),
     paddingVertical: 10,
-    marginTop: 40,
+    display: 'flex',
+    justifyContent: 'center',
   },
   checkEntryLabel: {
     textAlign: 'center',
@@ -21,11 +26,11 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   giveUpButton: {
-    width: 192,
-    height: 40,
+    width: wp('55%'),
+    height: hp('7%'),
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    marginBottom: 29,
+    marginBottom: hp('3%'),
     borderWidth: 1.5,
     borderColor: COLORS.lunesBlack,
     paddingVertical: 10,
@@ -53,12 +58,12 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesBlackLight,
   },
   nextWordButton: {
-    width: 160,
-    height: 40,
+    width: wp('55%'),
+    height: hp('7%'),
     backgroundColor: COLORS.lunesBlack,
     borderRadius: 20,
     paddingVertical: 10,
-    marginTop: 40,
+    marginTop: hp('5%'),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

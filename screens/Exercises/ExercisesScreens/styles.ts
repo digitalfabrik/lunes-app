@@ -6,39 +6,21 @@ export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
-    paddingBottom: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  item: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    display: 'flex',
-  },
-  icon: {
-    marginRight: 10,
-    width: 24,
-    height: 24,
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    marginBottom: 40,
   },
   list: {
-    paddingTop: 16,
     paddingHorizontal: 15,
     flex: 1,
+    width: wp('100%'),
+    marginTop: 50,
+  },
+  screenDescription: {
+    fontSize: 14,
+    color: COLORS.lunesGreyMedium,
+    fontFamily: 'SourceSansPro-Regular',
   },
   description: {
     fontSize: 14,
-    color: COLORS.lunesGreyMedium,
+    color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-Regular',
   },
   screenTitle: {
@@ -55,7 +37,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '80%',
+    width: wp('85%'),
     justifyContent: 'space-between',
     backgroundColor: COLORS.white,
     borderColor: COLORS.lunesBlackUltralight,
@@ -63,6 +45,7 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   clickedContainer: {
+    justifyContent: 'space-between',
     alignSelf: 'center',
     paddingVertical: 17,
     paddingRight: 16,
@@ -73,6 +56,8 @@ export const styles = StyleSheet.create({
     width: wp('85%'),
     backgroundColor: COLORS.lunesBlack,
     borderColor: COLORS.white,
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
   clickedItemTitle: {
     textAlign: 'left',
@@ -80,13 +65,12 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 0.11,
     marginBottom: 2,
-    color: COLORS.white,
+    color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-SemiBold',
   },
   clickedItemDescription: {
     fontSize: 14,
     fontWeight: 'normal',
-    letterSpacing: undefined,
     color: COLORS.white,
     fontFamily: 'SourceSansPro-Regular',
   },

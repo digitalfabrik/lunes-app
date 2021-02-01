@@ -4,7 +4,10 @@ import MenuItem from '../../../components/MenuItem';
 import {View, Text, FlatList, Pressable, Image} from 'react-native';
 import {styles} from './styles';
 import axios from '../../../utils/axios';
-import {IProfessionsProps} from '../../../interfaces/profession';
+import {
+  IProfessionsProps,
+  IProfessionScreenProps,
+} from '../../../interfaces/profession';
 import {ENDPOINTS} from '../../../constants/endpoints';
 import {SCREENS} from '../../../constants/data';
 import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
@@ -32,4 +35,4 @@ export {
   SafeAreaInsetsContext,
 };
 
-export type {IProfessionsProps};
+export type {IProfessionsProps, IProfessionScreenProps};
