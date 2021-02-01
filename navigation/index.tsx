@@ -12,6 +12,7 @@ import {
   ProfessionParamList,
   Text,
   TouchableOpacity,
+  InitialSummaryScreen,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -65,6 +66,11 @@ const Navigation = () => {
         }
         name="VocabularyTrainer"
         component={VocabularyTrainerExerciseScreen}
+      />
+      <ProfessionStack.Screen
+        options={{headerShown: false}}
+        name="InitialSummary"
+        component={InitialSummaryScreen}
       />
     </ProfessionStack.Navigator>
   );

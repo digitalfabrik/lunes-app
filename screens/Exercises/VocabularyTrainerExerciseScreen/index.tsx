@@ -27,8 +27,7 @@ const VocabularyTrainerExerciseScreen = ({
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [count, setCount] = useState(0);
-  //Line below will be used in success state:
-  // const [progressValue, setProgressValue] = useState(0);
+  const [progressValue, setProgressValue] = useState(0);
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<IDocumentProps>();
   const [progressStep, setProgressStep] = useState(0);
@@ -37,11 +36,13 @@ const VocabularyTrainerExerciseScreen = ({
     setIsModalVisible(true);
   };
 
+  const increaseProgress = React.useCallback(() => {
+    setProgressValue((prevValue) => prevValue + progressStep);
+  }, [progressStep]);
+
   React.useEffect(() => {
     setDocument(documents[index]);
-    //Line below will be used in success state
-    // setProgressValue((prevValue) => prevValue + progressStep);
-  }, [index, progressStep, documents]);
+  }, [index, documents]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -86,14 +87,16 @@ const VocabularyTrainerExerciseScreen = ({
   );
 
   return (
-    <View>
-      <ProgressBar
-        progress={0} //This will be changed on success state
-        color={COLORS.lunesGreenMedium}
-        style={styles.progressBar}
-        accessibilityComponentType
-        accessibilityTraits
-      />
+    <>
+      <View>
+        <ProgressBar
+          progress={progressValue}
+          color={COLORS.lunesGreenMedium}
+          style={styles.progressBar}
+          accessibilityComponentType
+          accessibilityTraits
+        />
+
 
       <Image
         source={{
@@ -102,15 +105,19 @@ const VocabularyTrainerExerciseScreen = ({
         style={styles.image}
       />
 
-      <AnswerSection
-        count={count}
-        index={index}
-        setIndex={setIndex}
-        currentWordNumber={currentWordNumber}
-        setCurrentWordNumber={setCurrentWordNumber}
-        document={document}
-        setDocuments={setDocuments}
-      />
+        <AnswerSection
+          count={count}
+          index={index}
+          setIndex={setIndex}
+          currentWordNumber={currentWordNumber}
+          setCurrentWordNumber={setCurrentWordNumber}
+          document={document}
+          setDocuments={setDocuments}
+          increaseProgress={increaseProgress}
+          navigation={navigation}
+        />
+      </View>
+
       <Modal
         visible={isModalVisible}
         setIsModalVisible={setIsModalVisible}

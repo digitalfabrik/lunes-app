@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Platform} from 'react-native';
+import {View, TouchableOpacity, TextInput, Platform} from 'react-native';
 import {styles} from './styles';
 import {
-  NextArrow,
   CloseIcon,
   VolumeUpDisabled,
   VolumeUp,
@@ -15,17 +14,19 @@ import PopoverContent from '../PopoverContent';
 import SoundPlayer from 'react-native-sound-player';
 import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-community/async-storage';
+import Feedback from '../FeedbackSection';
+import stringSimilarity from 'string-similarity';
+import Actions from '../Actions';
+import {SCREENS} from '../../constants/data';
 
 export {
   React,
   View,
-  Text,
   styles,
   TouchableOpacity,
   useState,
   COLORS,
   TextInput,
-  NextArrow,
   CloseIcon,
   Popover,
   PopoverPlacement,
@@ -37,6 +38,10 @@ export {
   SoundPlayer,
   Tts,
   AsyncStorage,
+  Feedback,
+  stringSimilarity,
+  Actions,
+  SCREENS,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

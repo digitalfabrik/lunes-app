@@ -87,7 +87,7 @@ const VocabularyOverviewListItem = ({
       </View>
       <TouchableOpacity
         style={styles.speaker}
-        onPress={() => handleSpeakerClick(audio)}>
+        onPress={() => handleSpeakerClick()}>
         {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
       </TouchableOpacity>
     </View>

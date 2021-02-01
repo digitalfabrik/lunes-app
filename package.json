@@ -15,6 +15,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "@types/string-similarity": "^4.0.0",
     "axios": "^0.21.1",
     "native-base": "^2.15.0",
     "react": "16.13.1",
@@ -30,7 +31,8 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-tts": "^3.2.0"
+    "react-native-tts": "^3.2.0",
+    "string-similarity": "^4.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
