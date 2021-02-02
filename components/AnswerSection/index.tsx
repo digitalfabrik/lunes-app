@@ -96,31 +96,39 @@ const AnswerSection = ({
     }
   };
 
-  const validateForCorrect = (
-    inputArticle: string,
-    inputWord: string,
-  ): boolean => {
-    let correct: boolean = false;
+  const modifyStates = (
+    newIsCorrect: boolean,
+    newIsIncorrect: boolean,
+    newIsAlmostCorrect: boolean,
+    newDocument?: IDocumentProps,
+    setState?: Function,
+  ) => {
+    setIsCorrect(newIsCorrect);
+    setIsIncorrect(newIsIncorrect);
+    setIsAlmostCorrect(newIsAlmostCorrect);
+    if (newDocument) {
+      setState &&
+        setState((oldDocuments: IDocumentProps[]) => [
+          ...oldDocuments,
+          newDocument,
+        ]);
+    }
+  };
+
+  const validateForCorrect = (inputArticle: string, inputWord: string) => {
+    let correct: boolean | undefined = false;
 
     if (inputArticle == document?.article && inputWord === document?.word) {
       correct = true;
     } else {
-      document?.alternatives?.forEach((alternative) => {
-        if (
-          inputArticle == alternative.article &&
-          inputWord === alternative.alt_word
-        ) {
-          correct = true;
-          return;
-        }
-      });
+      correct = document?.alternatives?.some(
+        ({article, alt_word}) =>
+          inputArticle === article && inputWord === alt_word,
+      );
     }
 
     if (document && correct) {
-      setIsCorrect(true);
-      setIsIncorrect(false);
-      setIsAlmostCorrect(false);
-      setCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      modifyStates(true, false, false, document, setCorrectDocuments);
 
       if (currentWordNumber === count) {
         setIsFinished(true);
@@ -130,18 +138,12 @@ const AnswerSection = ({
     return correct;
   };
 
-  const validateForSimilar = (
-    inputArticle: string,
-    inputWord: string,
-  ): boolean => {
+  const validateForSimilar = (inputArticle: string, inputWord: string) => {
     if (isAlmostCorrect && document) {
-      setIsCorrect(false);
-      setIsIncorrect(true);
-      setIsAlmostCorrect(false);
-      setAlmostCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      modifyStates(false, true, false, document, setAlmostCorrectDocuments);
       return true;
     } else {
-      let similar: boolean = false;
+      let similar: boolean | undefined = false;
 
       if (
         document &&
@@ -150,24 +152,15 @@ const AnswerSection = ({
       ) {
         similar = true;
       } else {
-        document?.alternatives?.forEach((alternative) => {
-          if (
-            inputArticle == alternative.article &&
-            stringSimilarity.compareTwoStrings(
-              inputWord,
-              alternative.alt_word,
-            ) > 0.4
-          ) {
-            similar = true;
-            return;
-          }
-        });
+        similar = document?.alternatives?.some(
+          ({article, alt_word}) =>
+            inputArticle == article &&
+            stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4,
+        );
       }
 
-      if (similar && document) {
-        setIsCorrect(false);
-        setIsIncorrect(false);
-        setIsAlmostCorrect(true);
+      if (similar) {
+        modifyStates(false, false, true);
       }
 
       return similar;
@@ -176,10 +169,7 @@ const AnswerSection = ({
 
   const validateForIncorrect = () => {
     if (document) {
-      setIsCorrect(false);
-      setIsIncorrect(true);
-      setIsAlmostCorrect(false);
-      setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      modifyStates(false, true, false, document, setIncorrectDocuments);
 
       if (currentWordNumber === count) {
         setIsFinished(true);
@@ -187,20 +177,26 @@ const AnswerSection = ({
     }
   };
 
+  const validateInput = (inputArticle: string, inputWord: string) => {
+    if (!validateForCorrect(inputArticle, inputWord)) {
+      if (!validateForSimilar(inputArticle, inputWord)) {
+        validateForIncorrect();
+      }
+    }
+  };
+
   const checkEntry = () => {
-    if (input.trim().split(' ').length < 2) {
+    const splitInput = input.trim().split(' ');
+
+    if (splitInput.length < 2) {
       setIsPopoverVisible(true);
     } else {
-      let inputArticle = input.trim().split(' ')[0];
-      let inputWord = input.trim().split(' ')[1];
+      let inputArticle = splitInput[0];
+      let inputWord = splitInput[1];
       setWord(inputWord);
       setArticle(inputArticle);
 
-      if (!validateForCorrect(inputArticle.toLowerCase(), inputWord)) {
-        if (!validateForSimilar(inputArticle.toLowerCase(), inputWord)) {
-          validateForIncorrect();
-        }
-      }
+      validateInput(inputArticle.toLowerCase(), inputWord);
     }
   };
 
@@ -244,9 +240,7 @@ const AnswerSection = ({
   const getNextWordAndModifyCounter = () => {
     getNextWord();
     modifyHeaderCounter();
-    setIsCorrect(false);
-    setIsIncorrect(false);
-    setIsAlmostCorrect(false);
+    modifyStates(false, false, false);
   };
 
   const handleCheckOutClick = () => {
