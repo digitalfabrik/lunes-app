@@ -11,8 +11,6 @@ import {
   Popover,
   PopoverPlacement,
   PopoverContent,
-  VolumeUpDisabled,
-  InActiveVolumeUp,
   VolumeUp,
   Platform,
   SoundPlayer,
@@ -70,6 +68,13 @@ const AnswerSection = ({
     : input
     ? COLORS.lunesBlack
     : COLORS.lunesGreyMedium;
+
+  const volumeIconColor =
+    !isCorrect && !isIncorrect
+      ? COLORS.lunesBlackUltralight
+      : isActive
+      ? COLORS.lunesRedDark
+      : COLORS.lunesRed;
 
   const clearTextInput = () => {
     setInput('');
@@ -341,15 +346,7 @@ const AnswerSection = ({
         disabled={isCorrect || isIncorrect ? false : true}
         style={styles.volumeIcon}
         onPress={() => handlaSpeakerClick(document?.audio)}>
-        {isCorrect || isIncorrect ? (
-          isActive ? (
-            <VolumeUp />
-          ) : (
-            <InActiveVolumeUp />
-          )
-        ) : (
-          <VolumeUpDisabled />
-        )}
+        <VolumeUp fill={volumeIconColor} />
       </TouchableOpacity>
 
       <View

@@ -1,12 +1,7 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, TextInput, Platform} from 'react-native';
 import {styles} from './styles';
-import {
-  CloseIcon,
-  VolumeUpDisabled,
-  VolumeUp,
-  InActiveVolumeUp,
-} from '../../assets/images/imports';
+import {CloseIcon, VolumeUp} from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
 import {IAnswerSectionProps, IDocumentProps} from '../../interfaces/exercise';
 import Popover, {PopoverPlacement} from 'react-native-popover-view';
@@ -31,8 +26,6 @@ export {
   Popover,
   PopoverPlacement,
   PopoverContent,
-  VolumeUpDisabled,
-  InActiveVolumeUp,
   VolumeUp,
   Platform,
   SoundPlayer,

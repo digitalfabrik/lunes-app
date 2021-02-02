@@ -10,8 +10,8 @@ import {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
-  InActiveVolumeUp,
   Platform,
+  COLORS,
 } from './imports';
 
 //German language
@@ -24,6 +24,8 @@ const VocabularyOverviewListItem = ({
   audio,
 }: IVocabularyOverviewListItemProps) => {
   const [active, setActive] = React.useState(false);
+
+  const volumeIconColor = active ? COLORS.lunesRedDark : COLORS.lunesRed;
 
   const handleSpeakerClick = () => {
     setActive(true);
@@ -88,7 +90,7 @@ const VocabularyOverviewListItem = ({
       <TouchableOpacity
         style={styles.speaker}
         onPress={() => handleSpeakerClick()}>
-        {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
+        <VolumeUp fill={volumeIconColor} width={32} height={32} />
       </TouchableOpacity>
     </View>
   );

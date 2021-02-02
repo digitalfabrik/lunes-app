@@ -20,4 +20,6 @@ export const COLORS = {
   blue: '#0000FF',
   lunesFunctionalCorrectDark: '#0adb75',
   lunesFunctionalAlmostCorrectDark: '#ffbb4a',
+  lunesRedDark: '#F1635F',
+  lunesRed: '#ffa3a3',
 };
