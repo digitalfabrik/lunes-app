@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: COLORS.lunesBlack,
     paddingVertical: 10,
+    justifyContent: 'center',
   },
   giveUpLabel: {
     textAlign: 'center',
