@@ -40,7 +40,6 @@ const AnswerSection = ({
   const touchable: any = React.useRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [isValidEntry, setIsValidEntry] = useState(false); //article + word
   const [incorrectDocuments, setIncorrectDocuments] = useState<
     IDocumentProps[]
   >([]);
@@ -64,7 +63,6 @@ const AnswerSection = ({
 
   const clearTextInput = () => {
     setInput('');
-    setIsValidEntry(false);
   };
 
   const modifyHeaderCounter = () => {
@@ -169,13 +167,11 @@ const AnswerSection = ({
   const checkEntry = () => {
     if (input.trim().split(' ').length < 2) {
       setIsPopoverVisible(true);
-      setIsValidEntry(false);
     } else {
       let inputArticle = input.trim().split(' ')[0];
       let inputWord = input.trim().split(' ')[1];
       setWord(inputWord);
       setArticle(inputArticle);
-      setIsValidEntry(true);
 
       if (!validateForCorrect(inputArticle.toLowerCase(), inputWord)) {
         if (!validateForSimilar(inputArticle.toLowerCase(), inputWord)) {
@@ -328,10 +324,10 @@ const AnswerSection = ({
       </Popover>
 
       <TouchableOpacity
-        disabled={!input}
+        disabled={isCorrect || isIncorrect ? false : true}
         style={styles.volumeIcon}
         onPress={() => handlaSpeakerClick(document?.audio)}>
-        {isValidEntry && input ? (
+        {isCorrect || isIncorrect ? (
           isActive ? (
             <VolumeUp />
           ) : (
