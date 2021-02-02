@@ -16,6 +16,7 @@ import {
   axios,
   IVocabularyTrainerScreen,
   AnswerSection,
+  BackHandler,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -34,6 +35,7 @@ const VocabularyTrainerExerciseScreen = ({
 
   const showModal = () => {
     setIsModalVisible(true);
+    return true;
   };
 
   const increaseProgress = React.useCallback(() => {
@@ -85,6 +87,13 @@ const VocabularyTrainerExerciseScreen = ({
       getProfessions();
     }, [extraParams]),
   );
+
+  React.useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', showModal);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', showModal);
+    };
+  }, []);
 
   return (
     <View>
