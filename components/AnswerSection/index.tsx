@@ -89,12 +89,12 @@ const AnswerSection = ({
   ): boolean => {
     let correct: boolean = false;
 
-    if (inputArticle === document?.article && inputWord === document?.word) {
+    if (inputArticle == document?.article && inputWord === document?.word) {
       correct = true;
     } else {
       document?.alternatives?.forEach((alternative) => {
         if (
-          inputArticle === alternative.article &&
+          inputArticle == alternative.article &&
           inputWord === alternative.alt_word
         ) {
           correct = true;
@@ -135,7 +135,7 @@ const AnswerSection = ({
       } else {
         document?.alternatives?.forEach((alternative) => {
           if (
-            inputArticle === alternative.article &&
+            inputArticle == alternative.article &&
             stringSimilarity.compareTwoStrings(
               inputWord,
               alternative.alt_word,
@@ -177,8 +177,8 @@ const AnswerSection = ({
       setArticle(inputArticle);
       setIsValidEntry(true);
 
-      if (!validateForCorrect(inputArticle, inputWord)) {
-        if (!validateForSimilar(inputArticle, inputWord)) {
+      if (!validateForCorrect(inputArticle.toLowerCase(), inputWord)) {
+        if (!validateForSimilar(inputArticle.toLowerCase(), inputWord)) {
           validateForIncorrect();
         }
       }
