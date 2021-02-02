@@ -61,6 +61,16 @@ const AnswerSection = ({
   >([]);
   const [isFinished, setIsFinished] = useState(false);
 
+  const borderColor = isCorrect
+    ? COLORS.lunesFunctionalCorrectDark
+    : isIncorrect
+    ? COLORS.lunesFunctionalIncorrectDark
+    : isAlmostCorrect
+    ? COLORS.lunesFunctionalAlmostCorrectDark
+    : input
+    ? COLORS.lunesBlack
+    : COLORS.lunesGreyMedium;
+
   const clearTextInput = () => {
     setInput('');
   };
@@ -347,15 +357,7 @@ const AnswerSection = ({
         style={[
           styles.textInputContainer,
           {
-            borderColor: isCorrect
-              ? COLORS.lunesFunctionalCorrectDark
-              : isIncorrect
-              ? COLORS.lunesFunctionalIncorrectDark
-              : isAlmostCorrect
-              ? COLORS.lunesFunctionalAlmostCorrectDark
-              : input
-              ? COLORS.lunesBlack
-              : COLORS.lunesGreyMedium,
+            borderColor: borderColor,
           },
         ]}>
         <TextInput
