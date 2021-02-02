@@ -106,6 +106,10 @@ const AnswerSection = ({
       setIsIncorrect(false);
       setIsAlmostCorrect(false);
       setCorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+
+      if (currentWordNumber === count) {
+        setIsFinished(true);
+      }
     }
 
     return correct;
@@ -161,6 +165,10 @@ const AnswerSection = ({
       setIsIncorrect(true);
       setIsAlmostCorrect(false);
       setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+
+      if (currentWordNumber === count) {
+        setIsFinished(true);
+      }
     }
   };
 
@@ -177,10 +185,6 @@ const AnswerSection = ({
         if (!validateForSimilar(inputArticle.toLowerCase(), inputWord)) {
           validateForIncorrect();
         }
-      }
-
-      if (currentWordNumber === count) {
-        setIsFinished(true);
       }
     }
   };
