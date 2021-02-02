@@ -218,7 +218,7 @@ const AnswerSection = ({
     getNextWord();
   };
 
-  const handlaSpeakerClick = (audio?: string) => {
+  const handleSpeakerClick = (audio?: string) => {
     setIsActive(true);
 
     // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
@@ -333,7 +333,7 @@ const AnswerSection = ({
       <TouchableOpacity
         disabled={isCorrect || isIncorrect ? false : true}
         style={styles.volumeIcon}
-        onPress={() => handlaSpeakerClick(document?.audio)}>
+        onPress={() => handleSpeakerClick(document?.audio)}>
         <VolumeUp fill={volumeIconColor} />
       </TouchableOpacity>
 
