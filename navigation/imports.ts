@@ -9,7 +9,7 @@ import {ProfessionParamList} from '../types';
 import {BackButton, CloseButton} from '../assets/images/imports';
 import {styles} from './styles';
 import {Text, TouchableOpacity} from 'react-native';
-import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen/imdex';
+import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
 
 export {
   React,
