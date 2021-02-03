@@ -38,13 +38,6 @@ export const styles = StyleSheet.create({
     width: wp('60%'),
     marginBottom: 31,
   },
-  continueButton: {
-    backgroundColor: COLORS.lunesBlack,
-    width: wp('50%'),
-    borderRadius: 20,
-    paddingVertical: 12,
-    marginBottom: 16,
-  },
   continueLabel: {
     color: COLORS.lunesWhite,
     fontSize: 14,
@@ -53,15 +46,6 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontFamily: 'SourceSansPro-SemiBold',
     letterSpacing: 0.4,
-  },
-  endButton: {
-    backgroundColor: COLORS.lunesWhite,
-    width: wp('50%'),
-    borderRadius: 20,
-    paddingVertical: 10,
-    borderWidth: 1.5,
-    borderColor: COLORS.lunesBlack,
-    borderStyle: 'solid',
   },
   endLabel: {
     color: COLORS.lunesBlack,
