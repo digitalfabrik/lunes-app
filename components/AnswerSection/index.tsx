@@ -52,7 +52,7 @@ const AnswerSection = ({
     [],
   );
   const [word, setWord] = useState('');
-  const [article, setArticle] = useState('');
+  const [documentArticle, setArticle] = useState('');
   const [isAlmostCorrect, setIsAlmostCorrect] = useState(false);
   const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<
     IDocumentProps[]
@@ -118,7 +118,7 @@ const AnswerSection = ({
   const validateForCorrect = (inputArticle: string, inputWord: string) => {
     let correct: boolean | undefined = false;
 
-    if (inputArticle == document?.article && inputWord === document?.word) {
+    if (inputArticle === document?.article && inputWord === document?.word) {
       correct = true;
     } else {
       correct = document?.alternatives?.some(
@@ -154,7 +154,7 @@ const AnswerSection = ({
       } else {
         similar = document?.alternatives?.some(
           ({article, alt_word}) =>
-            inputArticle == article &&
+            inputArticle === article &&
             stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4,
         );
       }
@@ -374,7 +374,7 @@ const AnswerSection = ({
         almostCorrect={isAlmostCorrect}
         document={document}
         word={word}
-        article={article}
+        article={documentArticle}
       />
 
       <Actions

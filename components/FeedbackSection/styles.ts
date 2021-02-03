@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     marginTop: -hp('3.5%'),
-    marginBottom: hp('3%'),
+    marginBottom: hp('4%'),
   },
   successMessage: {
     backgroundColor: COLORS.lunesFunctionalCorrectDark,

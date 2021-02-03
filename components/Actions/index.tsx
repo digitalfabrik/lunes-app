@@ -1,11 +1,12 @@
 import {
   React,
-  TouchableOpacity,
   Text,
   styles,
   WhiteNextArrow,
   NextArrow,
   IActionsProps,
+  Button,
+  BUTTONS_THEME,
 } from './imports';
 
 const Actions = ({
@@ -22,21 +23,18 @@ const Actions = ({
 }: IActionsProps) => (
   <>
     {isFinished ? (
-      <TouchableOpacity style={styles.nextWordButton} onPress={checkOut}>
+      <Button onPress={checkOut} theme={BUTTONS_THEME.dark}>
         <Text style={styles.nextWordLabel}>Check out</Text>
         <WhiteNextArrow />
-      </TouchableOpacity>
+      </Button>
     ) : (
       <>
         {!isIncorrect && !isCorrect ? (
           <>
-            <TouchableOpacity
+            <Button
               onPress={checkEntry}
               disabled={!input}
-              style={[
-                styles.checkEntryButton,
-                !input && styles.disabledButton,
-              ]}>
+              theme={BUTTONS_THEME.dark}>
               <Text
                 style={[
                   styles.checkEntryLabel,
@@ -44,30 +42,26 @@ const Actions = ({
                 ]}>
                 Check entry
               </Text>
-            </TouchableOpacity>
+            </Button>
 
-            <TouchableOpacity
-              style={styles.giveUpButton}
-              onPress={markAsIncorrect}>
+            <Button onPress={markAsIncorrect} theme={BUTTONS_THEME.light}>
               <Text style={styles.giveUpLabel}>I give up!</Text>
-            </TouchableOpacity>
+            </Button>
           </>
         ) : (
-          <TouchableOpacity
-            style={styles.nextWordButton}
-            onPress={getNextWordAndModifyCounter}>
+          <Button
+            onPress={getNextWordAndModifyCounter}
+            theme={BUTTONS_THEME.dark}>
             <Text style={styles.nextWordLabel}>Next Word</Text>
             <WhiteNextArrow />
-          </TouchableOpacity>
+          </Button>
         )}
 
         {!isCorrect && !isIncorrect && !isAlmostCorrect && (
-          <TouchableOpacity
-            style={styles.tryLaterButton}
-            onPress={addToTryLater}>
+          <Button onPress={addToTryLater}>
             <Text style={styles.giveUpLabel}>Try later</Text>
             <NextArrow />
-          </TouchableOpacity>
+          </Button>
         )}
       </>
     )}
