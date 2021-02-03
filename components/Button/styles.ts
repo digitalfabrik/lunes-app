@@ -4,39 +4,31 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {COLORS} from '../../constants/colors';
-
+const buttonBase = {
+  flexDirection: 'row',
+  paddingVertical: 10,
+  width: wp('70%'),
+  alignItems: 'center',
+  borderRadius: hp('7%'),
+  justifyContent: 'center',
+  height: hp('7%'),
+  marginBottom: hp('3%'),
+};
 export const styles = StyleSheet.create({
+  button: buttonBase,
   darkButton: {
-    width: wp('55%'),
-    height: hp('7%'),
+    ...buttonBase,
     backgroundColor: COLORS.lunesBlack,
-    borderRadius: 20,
-    paddingVertical: 10,
-    marginBottom: hp('3%'),
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   lightButton: {
-    width: wp('55%'),
-    height: hp('7%'),
+    ...buttonBase,
     backgroundColor: COLORS.white,
-    borderRadius: 20,
-    marginBottom: hp('3%'),
     borderWidth: 1.5,
     borderColor: COLORS.lunesBlack,
-    paddingVertical: 10,
-    justifyContent: 'center',
-  },
-  button: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: wp('30%'),
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   disabledButton: {
+    ...buttonBase,
     backgroundColor: COLORS.lunesBlackUltralight,
   },
 });

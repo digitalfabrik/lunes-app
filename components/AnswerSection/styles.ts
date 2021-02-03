@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
   textInputContainer: {
     width: wp('80%'),
     height: hp('8%'),
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -41,7 +40,6 @@ export const styles = StyleSheet.create({
     height: 40,
     borderRadius: 50,
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },

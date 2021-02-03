@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
     paddingBottom: 0,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },

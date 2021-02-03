@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   overlay: {
     marginTop: 0,
@@ -15,13 +14,12 @@ export const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: COLORS.white,
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 260,
     width: wp('85%'),
     borderRadius: 4,
     position: 'relative',
+    paddingVertical: 31,
   },
   closeIcon: {
     position: 'absolute',
@@ -37,6 +35,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-SemiBold',
     width: wp('60%'),
     marginBottom: 31,
+    paddingTop: 31,
   },
   continueLabel: {
     color: COLORS.lunesWhite,

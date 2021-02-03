@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   messageContainer: {
     width: wp('80%'),
     height: hp('9%'),
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
