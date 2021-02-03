@@ -31,12 +31,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     fontFamily: 'SourceSansPro-Regular',
     color: COLORS.lunesBlack,
-  },
-  arrow: {
-    backgroundColor: COLORS.lunesBlack,
-  },
-  overlay: {
-    backgroundColor: 'transparent',
+    width: wp('60%'),
   },
   volumeIcon: {
     position: 'absolute',

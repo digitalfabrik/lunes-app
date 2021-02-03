@@ -9,8 +9,6 @@ import {
   CloseIcon,
   IAnswerSectionProps,
   Popover,
-  PopoverPlacement,
-  PopoverContent,
   VolumeUp,
   Platform,
   SoundPlayer,
@@ -21,6 +19,7 @@ import {
   stringSimilarity,
   Actions,
   SCREENS,
+  PopoverContent,
 } from './imports';
 
 const AnswerSection = ({
@@ -35,7 +34,7 @@ const AnswerSection = ({
   navigation,
 }: IAnswerSectionProps) => {
   const [input, setInput] = useState('');
-  const touchable: any = React.useRef();
+  const touchable: any = React.createRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [incorrectDocuments, setIncorrectDocuments] = useState<
@@ -326,13 +325,8 @@ const AnswerSection = ({
     <View style={styles.container}>
       <Popover
         isVisible={isPopoverVisible}
-        onRequestClose={() => setIsPopoverVisible(false)}
-        from={touchable}
-        placement={PopoverPlacement.TOP}
-        arrowStyle={styles.arrow}
-        arrowShift={-0.8}
-        verticalOffset={-10}
-        backgroundStyle={styles.overlay}>
+        setIsPopoverVisible={setIsPopoverVisible}
+        ref={touchable}>
         <PopoverContent />
       </Popover>
 
