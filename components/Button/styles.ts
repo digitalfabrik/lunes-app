@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   button: {
     display: 'flex',
     flexDirection: 'row',
-    width: 105,
+    width: wp('30%'),
     justifyContent: 'space-between',
     alignItems: 'center',
   },
