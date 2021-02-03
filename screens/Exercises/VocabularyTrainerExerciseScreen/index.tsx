@@ -16,6 +16,7 @@ import {
   axios,
   IVocabularyTrainerScreen,
   AnswerSection,
+  BackHandler,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -27,21 +28,23 @@ const VocabularyTrainerExerciseScreen = ({
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [count, setCount] = useState(0);
-  //Line below will be used in success state:
-  // const [progressValue, setProgressValue] = useState(0);
+  const [progressValue, setProgressValue] = useState(0);
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<IDocumentProps>();
   const [progressStep, setProgressStep] = useState(0);
 
   const showModal = () => {
     setIsModalVisible(true);
+    return true;
   };
+
+  const increaseProgress = React.useCallback(() => {
+    setProgressValue((prevValue) => prevValue + progressStep);
+  }, [progressStep]);
 
   React.useEffect(() => {
     setDocument(documents[index]);
-    //Line below will be used in success state
-    // setProgressValue((prevValue) => prevValue + progressStep);
-  }, [index, progressStep, documents]);
+  }, [index, documents]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -85,10 +88,17 @@ const VocabularyTrainerExerciseScreen = ({
     }, [extraParams]),
   );
 
+  React.useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', showModal);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', showModal);
+    };
+  }, []);
+
   return (
     <View>
       <ProgressBar
-        progress={0} //This will be changed on success state
+        progress={progressValue}
         color={COLORS.lunesGreenMedium}
         style={styles.progressBar}
         accessibilityComponentType
@@ -110,7 +120,10 @@ const VocabularyTrainerExerciseScreen = ({
         setCurrentWordNumber={setCurrentWordNumber}
         document={document}
         setDocuments={setDocuments}
+        increaseProgress={increaseProgress}
+        navigation={navigation}
       />
+
       <Modal
         visible={isModalVisible}
         setIsModalVisible={setIsModalVisible}

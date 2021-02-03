@@ -6,7 +6,7 @@ import {COLORS} from '../../constants/colors';
 import Tts from 'react-native-tts';
 import {getArticleColor} from '../../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
-import {VolumeUp, InActiveVolumeUp} from '../../assets/images/imports';
+import {VolumeUp} from '../../assets/images/imports';
 
 export {
   React,
@@ -20,7 +20,6 @@ export {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
-  InActiveVolumeUp,
   Platform,
 };
 

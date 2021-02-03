@@ -58,7 +58,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
   const titleCOMP = (
     <Title>
       <Text style={styles.screenTitle}>{title}</Text>
-      <Text style={styles.description}>2 Exercises</Text>
+      <Text style={styles.screenDescription}>2 Exercises</Text>
     </Title>
   );
 
@@ -81,7 +81,6 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         data={EXERCISES}
         style={styles.list}
         ListHeaderComponent={titleCOMP}
-        ListHeaderComponentStyle={styles.title}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}

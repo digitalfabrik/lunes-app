@@ -17,10 +17,12 @@ import Home from './home.svg';
 import CloseButton from './close.svg';
 import CloseIcon from './close-icon.svg';
 import NextArrow from './next-arrow.svg';
-import VolumeUpDisabled from './volume-up-disabled.svg';
 import InfoIcon from './info.svg';
-import VolumeUp from './active-volume-up.svg';
-import InActiveVolumeUp from './inactive-volume-up.svg';
+import VolumeUp from './inactive-volume-up.svg';
+import CorrectIcon from './correct-icon.svg';
+import WhiteNextArrow from './white-next-arrow.svg';
+import IncorrectIcon from './incorrect-icon.svg';
+import AlmostCorrectIcon from './almost-correcr-icon.svg';
 
 export {
   icon1,
@@ -39,10 +41,12 @@ export {
   hard,
   Home,
   CloseButton,
-  VolumeUp,
   CloseIcon,
   NextArrow,
-  VolumeUpDisabled,
   InfoIcon,
-  InActiveVolumeUp,
+  VolumeUp,
+  CorrectIcon,
+  WhiteNextArrow,
+  IncorrectIcon,
+  AlmostCorrectIcon,
 };

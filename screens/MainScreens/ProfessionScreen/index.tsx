@@ -14,9 +14,10 @@ import {
   SafeAreaInsetsContext,
   Loading,
   MenuItem,
+  IProfessionScreenProps,
 } from './imports';
 
-const ProfessionScreen = ({navigation}: StackNavigationProp) => {
+const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
   const [selectedId, setSelectedId] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);

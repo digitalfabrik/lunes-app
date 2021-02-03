@@ -1,23 +1,17 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../constants/colors';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   root: {
+    backgroundColor: COLORS.lunesWhite,
     height: '100%',
-    paddingBottom: 0,
   },
   itemText: {flexDirection: 'row'},
-  title: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    marginBottom: 40,
-  },
   list: {
-    paddingTop: 16,
     paddingHorizontal: 15,
     flex: 1,
+    width: wp('100%'),
   },
   description: {
     textAlign: 'center',
@@ -25,73 +19,18 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
-  container: {
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 16,
-    paddingLeft: 25,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 310,
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.lunesBlackUltralight,
-    borderWidth: 1,
-    borderStyle: 'solid',
-  },
   screenTitle: {
     textAlign: 'center',
     fontSize: 20,
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
-  clickedContainer: {
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 16,
-    paddingLeft: 25,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 310,
-    backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white,
-  },
-  icon: {
-    marginRight: 10,
-    width: 24,
-    height: 24,
-  },
-  clickedItemTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.white,
-    fontFamily: 'SourceSansPro-SemiBold',
-  },
   clickedItemDescription: {
     fontSize: 14,
     fontWeight: 'normal',
     letterSpacing: undefined,
-    color: COLORS.white,
+    color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-Regular',
-  },
-  level: {
-    marginTop: 11,
-  },
-  descriptionContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
   },
   badgeLabel: {
     color: COLORS.lunesWhite,
@@ -106,14 +45,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   clickedItemBadgeLabel: {
-    color: COLORS.lunesWhite,
+    color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Semibold',
     fontSize: 12,
     fontWeight: '600',
     minWidth: 24,
     height: 16,
     borderRadius: 8,
-    backgroundColor: COLORS.lunesGreyMedium,
+    backgroundColor: COLORS.lunesWhite,
     overflow: 'hidden',
     textAlign: 'center',
   },

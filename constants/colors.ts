@@ -18,4 +18,8 @@ export const COLORS = {
   lunesOverlay: 'rgba(0, 14, 56, 0.8)',
   lunesBlackLight: '#777e91',
   blue: '#0000FF',
+  lunesFunctionalCorrectDark: '#0adb75',
+  lunesFunctionalAlmostCorrectDark: '#ffbb4a',
+  lunesRedDark: '#F1635F',
+  lunesRed: '#ffa3a3',
 };

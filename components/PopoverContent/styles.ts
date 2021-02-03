@@ -4,7 +4,6 @@ import {COLORS} from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.lunesBlack,

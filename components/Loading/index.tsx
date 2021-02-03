@@ -1,6 +1,13 @@
-import {React, styles, View, ActivityIndicator, COLORS} from './imports';
+import {
+  React,
+  styles,
+  View,
+  ActivityIndicator,
+  COLORS,
+  ILoadingProps,
+} from './imports';
 
-const Loading = ({children, isLoading}: any) => {
+const Loading = ({children, isLoading}: ILoadingProps) => {
   return (
     <View style={styles.root}>
       {isLoading ? (

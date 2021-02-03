@@ -71,10 +71,10 @@ const VocabularyOverviewExerciseScreen = ({
           data={documents}
           style={styles.list}
           ListHeaderComponent={titleComp}
-          ListHeaderComponentStyle={styles.title}
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
         />
       </Loading>
     </View>

@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 20,
     marginBottom: 8,
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -19,7 +18,6 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   item: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -48,7 +46,6 @@ export const styles = StyleSheet.create({
     height: 32,
     borderRadius: 50,
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },

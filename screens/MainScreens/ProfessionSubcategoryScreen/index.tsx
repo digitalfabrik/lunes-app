@@ -96,7 +96,6 @@ const ProfessionSubcategoryScreen = ({
           data={subcategories}
           style={styles.list}
           ListHeaderComponent={titleCOMP}
-          ListHeaderComponentStyle={styles.title}
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}

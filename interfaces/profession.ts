@@ -1,3 +1,7 @@
+export interface IProfessionScreenProps {
+  navigation: any;
+}
+
 export interface IProfessionsProps {
   id: number;
   title: string;

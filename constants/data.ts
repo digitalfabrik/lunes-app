@@ -6,6 +6,7 @@ export const SCREENS = {
   exercises: 'Exercises',
   vocabularyOverview: 'VocabularyOverview',
   vocabularyTrainer: 'VocabularyTrainer',
+  initialSummaryScreen: 'InitialSummary',
 };
 
 export const EXERCISES = [
@@ -24,3 +25,8 @@ export const EXERCISES = [
     nextScreen: SCREENS.vocabularyTrainer,
   },
 ];
+
+export const BUTTONS_THEME = {
+  light: 'light',
+  dark: 'dark',
+};

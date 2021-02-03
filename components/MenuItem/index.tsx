@@ -7,11 +7,16 @@ import {
   Image,
   Arrow,
   COLORS,
+  IMenuItemProps,
 } from './imports';
 
-const MenuItem = (props: any) => {
-  const {selected, onPress, icon, title, children} = props;
-
+const MenuItem = ({
+  selected,
+  onPress,
+  icon,
+  title,
+  children,
+}: IMenuItemProps) => {
   const itemStyle = selected ? styles.clickedContainer : styles.container;
 
   const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle;

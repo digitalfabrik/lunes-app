@@ -7,6 +7,8 @@ import {
   Modal,
   IConfirmationModalProps,
   CloseIcon,
+  Button,
+  BUTTONS_THEME,
 } from './imports';
 
 const ConfirmationModal = ({
@@ -34,14 +36,13 @@ const ConfirmationModal = ({
             <Text style={styles.message}>
               Do you really want to end this session?
             </Text>
-            <TouchableOpacity
-              style={styles.continueButton}
-              onPress={closeModal}>
+            <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
               <Text style={styles.continueLabel}>continue</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.endButton} onPress={goBack}>
+            </Button>
+
+            <Button onPress={goBack} theme={BUTTONS_THEME.light}>
               <Text style={styles.endLabel}>end</Text>
-            </TouchableOpacity>
+            </Button>
           </View>
         </View>
       </Modal>
