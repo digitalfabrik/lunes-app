@@ -114,6 +114,12 @@ const AnswerSection = ({
     }
   };
 
+  const checkIfLastWord = () => {
+    if (currentWordNumber === count) {
+      setIsFinished(true);
+    }
+  };
+
   const validateForCorrect = (inputArticle: string, inputWord: string) => {
     let correct: boolean | undefined = false;
 
@@ -129,9 +135,7 @@ const AnswerSection = ({
     if (document && correct) {
       modifyStates(true, false, false, document, setCorrectDocuments);
 
-      if (currentWordNumber === count) {
-        setIsFinished(true);
-      }
+      checkIfLastWord();
     }
 
     return correct;
@@ -140,6 +144,7 @@ const AnswerSection = ({
   const validateForSimilar = (inputArticle: string, inputWord: string) => {
     if (isAlmostCorrect && document) {
       modifyStates(false, true, false, document, setAlmostCorrectDocuments);
+      checkIfLastWord();
       return true;
     } else {
       let similar: boolean | undefined = false;
@@ -170,9 +175,7 @@ const AnswerSection = ({
     if (document) {
       modifyStates(false, true, false, document, setIncorrectDocuments);
 
-      if (currentWordNumber === count) {
-        setIsFinished(true);
-      }
+      checkIfLastWord();
     }
   };
 
