@@ -13,6 +13,7 @@ import stringSimilarity from 'string-similarity';
 import Actions from '../Actions';
 import {SCREENS} from '../../constants/data';
 import PopoverContent from '../PopoverContent';
+import {useFocusEffect} from '@react-navigation/native';
 
 export {
   React,
@@ -34,6 +35,7 @@ export {
   Actions,
   SCREENS,
   PopoverContent,
+  useFocusEffect,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

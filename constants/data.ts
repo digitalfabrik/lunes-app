@@ -7,6 +7,7 @@ export const SCREENS = {
   vocabularyOverview: 'VocabularyOverview',
   vocabularyTrainer: 'VocabularyTrainer',
   initialSummaryScreen: 'InitialSummary',
+  ResultsOverview: 'ResultsOverview',
 };
 
 export const EXERCISES = [

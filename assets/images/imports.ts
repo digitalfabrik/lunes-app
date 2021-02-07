@@ -23,6 +23,9 @@ import CorrectIcon from './correct-icon.svg';
 import WhiteNextArrow from './white-next-arrow.svg';
 import IncorrectIcon from './incorrect-icon.svg';
 import AlmostCorrectIcon from './almost-correcr-icon.svg';
+import CheckIcon from './check.svg';
+import RepeatIcon from './repeat.svg';
+import ListIcon from './list.svg';
 
 export {
   icon1,
@@ -49,4 +52,7 @@ export {
   WhiteNextArrow,
   IncorrectIcon,
   AlmostCorrectIcon,
+  CheckIcon,
+  ListIcon,
+  RepeatIcon,
 };
