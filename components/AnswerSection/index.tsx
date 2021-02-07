@@ -250,11 +250,22 @@ const AnswerSection = ({
     navigation.navigate(SCREENS.initialSummaryScreen);
   };
 
+  const resetStates = () => {
+    setCorrectDocuments([]);
+    setIncorrectDocuments([]);
+    setAlmostCorrectDocuments([]);
+    setTryLaterDocuments([]);
+    setIsCorrect(false);
+    setIsIncorrect(false);
+    setIsTryLater(false);
+    setIsAlmostCorrect(false);
+    setIsFinished(false);
+    setInput('');
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      setCorrectDocuments([]);
-      setIncorrectDocuments([]);
-      setAlmostCorrectDocuments([]);
+      resetStates();
     }, []),
   );
 
