@@ -206,6 +206,7 @@ const AnswerSection = ({
     if (document) {
       setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
     }
+    increaseProgress();
 
     if (currentWordNumber === count) {
       handleCheckOutClick();
