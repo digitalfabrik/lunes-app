@@ -206,6 +206,7 @@ const AnswerSection = ({
     if (document) {
       setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
     }
+    increaseProgress();
 
     if (currentWordNumber === count) {
       handleCheckOutClick();
@@ -313,10 +314,10 @@ const AnswerSection = ({
   }, [isTryLater, setIndex, setDocuments, tryLaterDocuments]);
 
   React.useEffect(() => {
-    if (isCorrect) {
+    if (isCorrect || isIncorrect) {
       increaseProgress();
     }
-  }, [isCorrect, increaseProgress]);
+  }, [isCorrect, isIncorrect, increaseProgress]);
 
   React.useEffect(() => {
     if (isAlmostCorrect) {
