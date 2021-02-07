@@ -4,7 +4,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {COLORS} from '../../constants/colors';
-const buttonBase = {
+
+const buttonBase: any = {
   flexDirection: 'row',
   paddingVertical: 10,
   width: wp('70%'),
@@ -14,8 +15,13 @@ const buttonBase = {
   height: hp('7%'),
   marginBottom: hp('3%'),
 };
+
 export const styles = StyleSheet.create({
-  button: buttonBase,
+  button: {
+    ...buttonBase,
+    width: wp('25%'),
+    justifyContent: 'space-between',
+  },
   darkButton: {
     ...buttonBase,
     backgroundColor: COLORS.lunesBlack,
