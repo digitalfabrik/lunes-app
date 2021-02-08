@@ -5,4 +5,5 @@ export type ProfessionParamList = {
   VocabularyOverview: undefined;
   VocabularyTrainer: undefined;
   InitialSummary: undefined;
+  ResultsOverview: undefined;
 };

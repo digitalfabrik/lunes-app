@@ -65,9 +65,17 @@ const VocabularyTrainerExerciseScreen = ({
     });
   }, [navigation, currentWordNumber, count]);
 
+  const resetStates = () => {
+    setCurrentWordNumber(1);
+    setIndex(0);
+    setProgressValue(0);
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      const getProfessions = async () => {
+      resetStates();
+
+      const getDocuments = async () => {
         try {
           const documentsRes = await axios.get(
             ENDPOINTS.documents.all.replace(':id', `${extraParams}`),
@@ -84,7 +92,7 @@ const VocabularyTrainerExerciseScreen = ({
         }
       };
 
-      getProfessions();
+      getDocuments();
     }, [extraParams]),
   );
 

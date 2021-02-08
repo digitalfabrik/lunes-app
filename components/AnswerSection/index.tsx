@@ -20,6 +20,7 @@ import {
   Actions,
   SCREENS,
   PopoverContent,
+  useFocusEffect,
 } from './imports';
 
 const AnswerSection = ({
@@ -249,6 +250,25 @@ const AnswerSection = ({
   const handleCheckOutClick = () => {
     navigation.navigate(SCREENS.initialSummaryScreen);
   };
+
+  const resetStates = () => {
+    setCorrectDocuments([]);
+    setIncorrectDocuments([]);
+    setAlmostCorrectDocuments([]);
+    setTryLaterDocuments([]);
+    setIsCorrect(false);
+    setIsIncorrect(false);
+    setIsTryLater(false);
+    setIsAlmostCorrect(false);
+    setIsFinished(false);
+    setInput('');
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      resetStates();
+    }, []),
+  );
 
   React.useEffect(() => {
     let _onSoundPlayerFinishPlaying: any = null;

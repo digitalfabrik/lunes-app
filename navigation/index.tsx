@@ -13,6 +13,7 @@ import {
   Text,
   TouchableOpacity,
   InitialSummaryScreen,
+  ResultsOverviewScreen,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -71,6 +72,10 @@ const Navigation = () => {
         options={{headerShown: false}}
         name="InitialSummary"
         component={InitialSummaryScreen}
+      />
+      <ProfessionStack.Screen
+        name="ResultsOverview"
+        component={ResultsOverviewScreen}
       />
     </ProfessionStack.Navigator>
   );
