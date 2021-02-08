@@ -120,4 +120,23 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     textTransform: 'uppercase',
   },
+  headerLeft: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 200,
+  },
+  headerText: {
+    fontSize: 14,
+    fontWeight: '600',
+    fontFamily: 'SourceSansPro-Semibold',
+    color: COLORS.lunesBlack,
+    textTransform: 'uppercase',
+    marginRight: 8,
+  },
+  rightHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

@@ -16,6 +16,10 @@ import {
   BUTTONS_THEME,
   SCREENS,
   RepeatIcon,
+  TouchableOpacity,
+  Home,
+  FinishIcon,
+  StatusBar,
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
@@ -107,8 +111,29 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     );
   });
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => navigation.popToTop()}
+          style={styles.headerLeft}>
+          <Home />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.rightHeader}
+          onPress={() => navigation.navigate(SCREENS.exercises)}>
+          <Text style={styles.headerText}>Finish Excercise</Text>
+          <FinishIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.root}>
+      <StatusBar barStyle="dark-content" />
       <FlatList
         data={RESULTS}
         style={styles.list}
