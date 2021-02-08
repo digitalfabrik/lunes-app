@@ -26,6 +26,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
   const [selectedId, setSelectedId] = useState(-1);
 
   useFocusEffect(() => setSelectedId(-1));
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -51,7 +52,12 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
       id: item.id,
       title: item.title,
       icon: item.icon,
-      extraParams: id,
+      extraParams: {
+        id,
+        title: item.title,
+        Level: item.Level,
+        description: item.description,
+      },
     });
   };
 

@@ -37,7 +37,7 @@ const VocabularyOverviewExerciseScreen = ({
   }, [navigation]);
 
   useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${extraParams}`);
+    const url = ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`);
     axios.get(url).then((response) => {
       setDocuments(response.data);
       setCount(response.data.length);

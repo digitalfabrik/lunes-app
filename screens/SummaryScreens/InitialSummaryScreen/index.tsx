@@ -10,11 +10,22 @@ import {
   BUTTONS_THEME,
   IInitialSummaryScreenProps,
   SCREENS,
+  COLORS,
 } from './imports';
 
-const InitialSummaryScreen = ({navigation}: IInitialSummaryScreenProps) => {
+const InitialSummaryScreen = ({
+  navigation,
+  route,
+}: IInitialSummaryScreenProps) => {
+  const {description, title, Level, totalCount} = route.params;
+
   const checkResults = () => {
-    navigation.navigate(SCREENS.ResultsOverview);
+    navigation.navigate(SCREENS.ResultsOverview, {
+      title,
+      description,
+      Level,
+      totalCount,
+    });
   };
 
   const repeatExercise = () => {
@@ -37,7 +48,7 @@ const InitialSummaryScreen = ({navigation}: IInitialSummaryScreenProps) => {
         <Text style={styles.checkResultsButtonLabel}>Check my results</Text>
       </Button>
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
-        <RepeatIcon />
+        <RepeatIcon fill={COLORS.lunesBlack} />
         <Text style={styles.repeatButtonLabel}>Repeat exercise</Text>
       </Button>
     </View>

@@ -1,4 +1,10 @@
-import {easy, hard} from '../assets/images/imports';
+import {
+  easy,
+  hard,
+  CorrectIcon,
+  IncorrectIcon,
+  AlmostCorrectIcon,
+} from '../assets/images/imports';
 
 export const SCREENS = {
   profession: 'Profession',
@@ -31,3 +37,21 @@ export const BUTTONS_THEME = {
   light: 'light',
   dark: 'dark',
 };
+
+export const RESULTS = [
+  {
+    id: 1,
+    title: 'Correct entries',
+    icon: CorrectIcon,
+  },
+  {
+    id: 2,
+    title: 'Almost correct entries',
+    icon: AlmostCorrectIcon,
+  },
+  {
+    id: 3,
+    title: 'Incorrect entries',
+    icon: IncorrectIcon,
+  },
+];

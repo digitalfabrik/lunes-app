@@ -33,6 +33,7 @@ const AnswerSection = ({
   setDocuments,
   increaseProgress,
   navigation,
+  extraParams,
 }: IAnswerSectionProps) => {
   const [input, setInput] = useState('');
   const touchable: any = React.createRef();
@@ -248,7 +249,7 @@ const AnswerSection = ({
   };
 
   const handleCheckOutClick = () => {
-    navigation.navigate(SCREENS.initialSummaryScreen);
+    navigation.navigate(SCREENS.initialSummaryScreen, extraParams);
   };
 
   const resetStates = () => {

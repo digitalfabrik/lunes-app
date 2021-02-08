@@ -78,7 +78,7 @@ const VocabularyTrainerExerciseScreen = ({
       const getDocuments = async () => {
         try {
           const documentsRes = await axios.get(
-            ENDPOINTS.documents.all.replace(':id', `${extraParams}`),
+            ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
           );
 
           setDocuments(documentsRes.data);
@@ -130,6 +130,7 @@ const VocabularyTrainerExerciseScreen = ({
         setDocuments={setDocuments}
         increaseProgress={increaseProgress}
         navigation={navigation}
+        extraParams={{...extraParams, totalCount: count}}
       />
 
       <Modal

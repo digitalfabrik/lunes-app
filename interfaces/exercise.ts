@@ -46,6 +46,7 @@ export interface IAnswerSectionProps {
   setDocuments: Function;
   increaseProgress: Function;
   navigation: any;
+  extraParams: any;
 }
 
 export interface IFeedbackProps {
