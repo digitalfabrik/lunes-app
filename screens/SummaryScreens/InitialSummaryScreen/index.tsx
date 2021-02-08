@@ -13,6 +13,7 @@ import {
   COLORS,
   useFocusEffect,
   AsyncStorage,
+  StatusBar,
 } from './imports';
 
 const InitialSummaryScreen = ({
@@ -57,6 +58,8 @@ const InitialSummaryScreen = ({
 
   return (
     <View style={styles.root}>
+      <StatusBar barStyle="light-content" />
+
       <View style={styles.upperSection}>
         <CheckIcon />
         <View style={styles.messageContainer}>
