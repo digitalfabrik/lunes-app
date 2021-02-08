@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upperSection: {
-    width: hp('60%'),
+    width: hp('70%'),
     height: hp('60%'),
     backgroundColor: COLORS.lunesBlack,
     borderBottomLeftRadius: hp('60%'),
