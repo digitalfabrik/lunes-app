@@ -85,20 +85,24 @@ const Navigation = () => {
         name="ResultsOverview"
         component={ResultsOverviewScreen}
       />
-
-      {/* Will be changed in next PRs */}
       <ProfessionStack.Screen
-        options={{headerShown: false}}
+        options={({navigation}) =>
+          defaultOptions('Exercise Overview', BackButton, navigation)
+        }
         name="CorrectResults"
         component={CorrectResultsScreen}
       />
       <ProfessionStack.Screen
-        options={{headerShown: false}}
+        options={({navigation}) =>
+          defaultOptions('Excercise Overview', BackButton, navigation)
+        }
         name="AlmostCorrectResults"
         component={AlmostCorrectResultsScreen}
       />
       <ProfessionStack.Screen
-        options={{headerShown: false}}
+        options={({navigation}) =>
+          defaultOptions('Excercise Overview', BackButton, navigation)
+        }
         name="IncorrectResults"
         component={IncorrectResultsScreen}
       />

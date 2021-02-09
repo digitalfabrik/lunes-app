@@ -1,8 +1,25 @@
-import {React, Text, IResultScreenProps} from './imports';
+import {
+  React,
+  Text,
+  IResultScreenProps,
+  CircularFinishIcon,
+  SCREENS,
+  TouchableOpacity,
+} from './imports';
 
-// Will be changed in its branch
-const IncorrectResults = ({route}: IResultScreenProps) => {
+const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
   const {title} = route.params;
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate(SCREENS.exercises)}>
+          <CircularFinishIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return <Text>{title}</Text>;
 };
