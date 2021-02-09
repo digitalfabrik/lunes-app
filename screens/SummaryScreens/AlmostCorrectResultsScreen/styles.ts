@@ -35,4 +35,16 @@ export const styles = StyleSheet.create({
   listContent: {
     alignItems: 'center',
   },
+  giveUpLabel: {
+    textAlign: 'center',
+    color: COLORS.lunesBlack,
+    fontFamily: 'SourceSansPro-Semibold',
+    fontSize: 14,
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+    fontWeight: '600',
+  },
+  arrow: {
+    marginLeft: 5,
+  },
 });

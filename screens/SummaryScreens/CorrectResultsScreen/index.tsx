@@ -16,6 +16,8 @@ import {
   IDocumentProps,
   COLORS,
   CorrectIcon,
+  Button,
+  NextArrow,
 } from './imports';
 
 const CorrectResults = ({route, navigation}: IResultScreenProps) => {
@@ -70,6 +72,12 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
     />
   );
 
+  const goToAlmostCorrectEntries = () => {
+    navigation.navigate(SCREENS.AlmostCorrectResults, {
+      extraParams,
+    });
+  };
+
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
@@ -82,6 +90,11 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
         />
+
+        <Button onPress={goToAlmostCorrectEntries}>
+          <Text style={styles.giveUpLabel}>View almost correct entries</Text>
+          <NextArrow style={styles.arrow} />
+        </Button>
       </Loading>
     </View>
   );
