@@ -19,13 +19,10 @@ const buttonBase: any = {
 export const styles = StyleSheet.create({
   button: {
     ...buttonBase,
-    width: wp('25%'),
-    justifyContent: 'space-between',
   },
   darkButton: {
     ...buttonBase,
     backgroundColor: COLORS.lunesBlack,
-    alignItems: 'center',
   },
   lightButton: {
     ...buttonBase,

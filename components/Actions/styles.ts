@@ -33,4 +33,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     marginRight: 8,
   },
+  arrow: {
+    marginLeft: 5,
+  },
 });

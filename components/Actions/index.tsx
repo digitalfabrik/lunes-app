@@ -60,7 +60,7 @@ const Actions = ({
         {!isCorrect && !isIncorrect && !isAlmostCorrect && (
           <Button onPress={addToTryLater}>
             <Text style={styles.giveUpLabel}>Try later</Text>
-            <NextArrow />
+            <NextArrow style={styles.arrow} />
           </Button>
         )}
       </>
