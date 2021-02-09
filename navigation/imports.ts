@@ -10,7 +10,7 @@ import {BackButton, CloseButton} from '../assets/images/imports';
 import {styles} from './styles';
 import {Text, TouchableOpacity} from 'react-native';
 import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
-import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsScreen';
+import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsOverviewScreen';
 
 export {
   React,
