@@ -44,19 +44,19 @@ export const BUTTONS_THEME = {
 export const RESULTS = [
   {
     id: 1,
-    title: 'Correct entries',
+    title: 'Correct Entries',
     icon: CorrectIcon,
     nextScreen: SCREENS.CorrectResults,
   },
   {
     id: 2,
-    title: 'Almost correct entries',
+    title: 'Almost correct Entries',
     icon: AlmostCorrectIcon,
     nextScreen: SCREENS.AlmostCorrectResults,
   },
   {
     id: 3,
-    title: 'Incorrect entries',
+    title: 'Incorrect Entries',
     icon: IncorrectIcon,
     nextScreen: SCREENS.IncorrectResults,
   },
