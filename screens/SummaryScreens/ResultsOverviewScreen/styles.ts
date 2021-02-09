@@ -96,9 +96,6 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
-  listTitle: {
-    marginBottom: hp('8%'),
-  },
   level: {
     marginTop: hp('1%'),
   },

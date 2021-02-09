@@ -55,7 +55,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     navigation.navigate(item.nextScreen, {
       id: item.id,
       title: item.title,
-      icon: item.icon,
+      Icon: item.icon,
       extraParams: {
         totalCount,
         correctAnswersCount,
@@ -93,7 +93,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
             <Text
               style={descriptionStyle(
                 item,
-              )}>{`${count} von ${totalCount} words`}</Text>
+              )}>{`${count} of ${totalCount} Words`}</Text>
           </View>
         </View>
         <Arrow
@@ -139,7 +139,6 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         data={RESULTS}
         style={styles.list}
         ListHeaderComponent={titleCOMP}
-        ListHeaderComponentStyle={styles.listTitle}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
