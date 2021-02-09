@@ -5,7 +5,7 @@ import {IResultScreenProps} from '../../../interfaces/summaryScreens';
 import {useFocusEffect} from '@react-navigation/native';
 import {SCREENS} from '../../../constants/data';
 import {COLORS} from '../../../constants/colors';
-import {CircularFinishIcon} from '../../../assets/images/imports';
+import {CircularFinishIcon, CorrectIcon} from '../../../assets/images/imports';
 import Title from '../../../components/Title';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loading from '../../../components/Loading';
@@ -27,6 +27,7 @@ export {
   Loading,
   VocabularyOverviewListItem,
   COLORS,
+  CorrectIcon,
 };
 
 export type {IResultScreenProps, IDocumentProps};

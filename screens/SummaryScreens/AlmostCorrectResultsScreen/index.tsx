@@ -15,10 +15,11 @@ import {
   VocabularyOverviewListItem,
   IDocumentProps,
   COLORS,
+  AlmostCorrectIcon,
 } from './imports';
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {title, extraParams, Icon} = route.params;
+  const {extraParams} = route.params;
   const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -46,13 +47,13 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const titleComp = (
     <Title>
-      <Icon
+      <AlmostCorrectIcon
         fill={COLORS.lunesGreyDark}
         stroke={COLORS.lunesGreyDark}
         width={36}
         height={36}
       />
-      <Text style={styles.screenTitle}>{title}</Text>
+      <Text style={styles.screenTitle}>Almost correct Entries</Text>
       <Text style={styles.description}>
         {`${extraParams.almostCorrectAnswersCount} of ${extraParams.totalCount} Words`}
       </Text>

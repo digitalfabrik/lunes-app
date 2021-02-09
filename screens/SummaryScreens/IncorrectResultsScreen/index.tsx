@@ -15,10 +15,11 @@ import {
   VocabularyOverviewListItem,
   IDocumentProps,
   COLORS,
+  IncorrectIcon,
 } from './imports';
 
 const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {title, extraParams, Icon} = route.params;
+  const {extraParams} = route.params;
   const [incorrectEntries, setIncorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -46,13 +47,13 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const titleComp = (
     <Title>
-      <Icon
+      <IncorrectIcon
         fill={COLORS.lunesGreyDark}
         stroke={COLORS.lunesGreyDark}
         width={36}
         height={36}
       />
-      <Text style={styles.screenTitle}>{title}</Text>
+      <Text style={styles.screenTitle}>Incorrect Entries</Text>
       <Text style={styles.description}>
         {`${extraParams.incorrectAnswersCount} of ${extraParams.totalCount} Words`}
       </Text>

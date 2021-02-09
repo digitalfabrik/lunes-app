@@ -53,9 +53,6 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     setSelectedId(item.id);
 
     navigation.navigate(item.nextScreen, {
-      id: item.id,
-      title: item.title,
-      Icon: item.icon,
       extraParams: {
         totalCount,
         correctAnswersCount,
