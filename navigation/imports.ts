@@ -11,6 +11,9 @@ import {styles} from './styles';
 import {Text, TouchableOpacity} from 'react-native';
 import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
 import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsOverviewScreen';
+import CorrectResultsScreen from '../screens/SummaryScreens/CorrectResultsScreen';
+import AlmostCorrectResultsScreen from '../screens/SummaryScreens/AlmostCorrectResultsScreen';
+import IncorrectResultsScreen from '../screens/SummaryScreens/IncorrectResultsScreen';
 
 export {
   React,
@@ -27,6 +30,9 @@ export {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
+  CorrectResultsScreen,
+  AlmostCorrectResultsScreen,
+  IncorrectResultsScreen,
 };
 
 export type {ProfessionParamList};

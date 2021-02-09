@@ -14,6 +14,9 @@ export const SCREENS = {
   vocabularyTrainer: 'VocabularyTrainer',
   initialSummaryScreen: 'InitialSummary',
   ResultsOverview: 'ResultsOverview',
+  CorrectResults: 'CorrectResults',
+  AlmostCorrectResults: 'AlmostCorrectResults',
+  IncorrectResults: 'IncorrectResults',
 };
 
 export const EXERCISES = [
@@ -43,15 +46,18 @@ export const RESULTS = [
     id: 1,
     title: 'Correct entries',
     icon: CorrectIcon,
+    nextScreen: SCREENS.CorrectResults,
   },
   {
     id: 2,
     title: 'Almost correct entries',
     icon: AlmostCorrectIcon,
+    nextScreen: SCREENS.AlmostCorrectResults,
   },
   {
     id: 3,
     title: 'Incorrect entries',
     icon: IncorrectIcon,
+    nextScreen: SCREENS.IncorrectResults,
   },
 ];
