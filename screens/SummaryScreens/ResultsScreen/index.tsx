@@ -17,7 +17,6 @@ import {
   SCREENS,
   RepeatIcon,
   TouchableOpacity,
-  Home,
   FinishIcon,
   StatusBar,
 } from './imports';
@@ -115,13 +114,6 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => navigation.popToTop()}
-          style={styles.headerLeft}>
-          <Home />
-        </TouchableOpacity>
-      ),
       headerRight: () => (
         <TouchableOpacity
           style={styles.rightHeader}

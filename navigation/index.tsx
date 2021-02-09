@@ -14,7 +14,6 @@ import {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
-  Home,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -75,7 +74,11 @@ const Navigation = () => {
         component={InitialSummaryScreen}
       />
       <ProfessionStack.Screen
-        options={({navigation}) => defaultOptions(' ', Home, navigation)}
+        options={{
+          headerLeft: () => null,
+          headerTitle: ' ',
+          headerRightContainerStyle: styles.headerRight,
+        }}
         name="ResultsOverview"
         component={ResultsOverviewScreen}
       />

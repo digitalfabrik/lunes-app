@@ -6,7 +6,7 @@ import ExercisesScreen from '../screens/Exercises/ExercisesScreens';
 import VocabularyOverviewExerciseScreen from '../screens/Exercises/VocabularyOverviewExerciseScreen';
 import VocabularyTrainerExerciseScreen from '../screens/Exercises/VocabularyTrainerExerciseScreen';
 import {ProfessionParamList} from '../types';
-import {BackButton, CloseButton, Home} from '../assets/images/imports';
+import {BackButton, CloseButton} from '../assets/images/imports';
 import {styles} from './styles';
 import {Text, TouchableOpacity} from 'react-native';
 import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
@@ -27,7 +27,6 @@ export {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
-  Home,
 };
 
 export type {ProfessionParamList};

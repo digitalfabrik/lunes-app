@@ -9,12 +9,7 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 import Title from '../../../components/Title';
-import {
-  Arrow,
-  RepeatIcon,
-  Home,
-  FinishIcon,
-} from '../../../assets/images/imports';
+import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images/imports';
 import {COLORS} from '../../../constants/colors';
 import {RESULTS, BUTTONS_THEME, SCREENS} from '../../../constants/data';
 import {IResultsOverviewScreenProps} from '../../../interfaces/summaryScreens';
@@ -40,7 +35,6 @@ export {
   SCREENS,
   RepeatIcon,
   TouchableOpacity,
-  Home,
   FinishIcon,
   StatusBar,
 };
