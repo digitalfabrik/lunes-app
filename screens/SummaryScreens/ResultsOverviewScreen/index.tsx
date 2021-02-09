@@ -106,6 +106,8 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   };
 
   useFocusEffect(() => {
+    setSelectedId(-1);
+
     AsyncStorage.getItem('correct').then((value) =>
       setCorrectAnswersCount(value && JSON.parse(value).length),
     );
@@ -123,7 +125,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         <TouchableOpacity
           style={styles.rightHeader}
           onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <Text style={styles.headerText}>Finish Excercise</Text>
+          <Text style={styles.headerText}>Finish Exercise</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
