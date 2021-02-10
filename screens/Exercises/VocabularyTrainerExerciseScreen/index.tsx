@@ -23,7 +23,7 @@ const VocabularyTrainerExerciseScreen = ({
   navigation,
   route,
 }: IVocabularyTrainerScreen) => {
-  const {extraParams} = route.params;
+  const {extraParams, retryData} = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
@@ -77,23 +77,24 @@ const VocabularyTrainerExerciseScreen = ({
 
       const getDocuments = async () => {
         try {
-          const documentsRes = await axios.get(
-            ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
-          );
+          const documentsRes = retryData
+            ? retryData
+            : await axios.get(
+                ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
+              );
+          const dataLength = documentsRes.data.length;
 
           setDocuments(documentsRes.data);
-          setCount(documentsRes.data.length);
+          setCount(dataLength);
           setDocument(documentsRes.data[0]);
-          setProgressStep(
-            documentsRes.data.length && 1 / documentsRes.data.length,
-          );
+          setProgressStep(dataLength && 1 / dataLength);
         } catch (error) {
           console.error(error);
         }
       };
 
       getDocuments();
-    }, [extraParams]),
+    }, [extraParams, retryData]),
   );
 
   React.useEffect(() => {

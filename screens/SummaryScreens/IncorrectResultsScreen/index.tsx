@@ -18,6 +18,8 @@ import {
   IncorrectIcon,
   Button,
   NextArrow,
+  RepeatIcon,
+  BUTTONS_THEME,
 } from './imports';
 
 const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
@@ -77,7 +79,18 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
       extraParams,
     });
   };
+  const repeatExercise = () =>
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retry: {data: incorrectEntries},
+    });
 
+  const retryButton =
+    extraParams.incorrectAnswersCount !== 0 ? (
+      <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <Text style={styles.lightLabel}>Repeate incorrect entries</Text>
+      </Button>
+    ) : null;
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
@@ -91,7 +104,8 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
           contentContainerStyle={styles.listContent}
         />
 
-        <Button onPress={goToCorrectEntries} style={styles.viewButton}>
+        {retryButton}
+        <Button onPress={goToCorrectEntries}>
           <Text style={styles.darkLabel}>View correct entries</Text>
           <NextArrow style={styles.arrow} />
         </Button>

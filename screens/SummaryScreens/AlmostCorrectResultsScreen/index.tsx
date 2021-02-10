@@ -18,6 +18,8 @@ import {
   AlmostCorrectIcon,
   Button,
   NextArrow,
+  RepeatIcon,
+  BUTTONS_THEME,
 } from './imports';
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
@@ -78,6 +80,19 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
     });
   };
 
+  const repeatExercise = () =>
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retry: {data: almostCorrectEntries},
+    });
+
+  const retryButton =
+    extraParams.almostCorrectAnswersCount !== 0 ? (
+      <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <Text style={styles.lightLabel}>Repeate almost correct entries</Text>
+      </Button>
+    ) : null;
+
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
@@ -91,7 +106,8 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           contentContainerStyle={styles.listContent}
         />
 
-        <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
+        {retryButton}
+        <Button onPress={goToIncorrectEntries}>
           <Text style={styles.darkLabel}>View incorrect entries</Text>
           <NextArrow style={styles.arrow} />
         </Button>
