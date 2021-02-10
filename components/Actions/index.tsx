@@ -24,7 +24,7 @@ const Actions = ({
   <>
     {isFinished ? (
       <Button onPress={checkOut} theme={BUTTONS_THEME.dark}>
-        <Text style={styles.nextWordLabel}>Check out</Text>
+        <Text style={[styles.lightLabel, styles.arrowLabel]}>Check out</Text>
         <WhiteNextArrow />
       </Button>
     ) : (
@@ -37,7 +37,7 @@ const Actions = ({
               theme={BUTTONS_THEME.dark}>
               <Text
                 style={[
-                  styles.checkEntryLabel,
+                  styles.lightLabel,
                   !input && styles.disabledButtonLabel,
                 ]}>
                 Check entry
@@ -45,22 +45,24 @@ const Actions = ({
             </Button>
 
             <Button onPress={markAsIncorrect} theme={BUTTONS_THEME.light}>
-              <Text style={styles.giveUpLabel}>I give up!</Text>
+              <Text style={styles.darkLabel}>I give up!</Text>
             </Button>
           </>
         ) : (
           <Button
             onPress={getNextWordAndModifyCounter}
             theme={BUTTONS_THEME.dark}>
-            <Text style={styles.nextWordLabel}>Next Word</Text>
+            <Text style={[styles.lightLabel, styles.arrowLabel]}>
+              Next Word
+            </Text>
             <WhiteNextArrow />
           </Button>
         )}
 
         {!isCorrect && !isIncorrect && !isAlmostCorrect && (
           <Button onPress={addToTryLater}>
-            <Text style={styles.giveUpLabel}>Try later</Text>
-            <NextArrow />
+            <Text style={styles.darkLabel}>Try later</Text>
+            <NextArrow style={styles.arrow} />
           </Button>
         )}
       </>

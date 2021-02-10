@@ -14,6 +14,9 @@ import {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
+  CorrectResultsScreen,
+  AlmostCorrectResultsScreen,
+  IncorrectResultsScreen,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -74,8 +77,34 @@ const Navigation = () => {
         component={InitialSummaryScreen}
       />
       <ProfessionStack.Screen
+        options={{
+          headerLeft: () => null,
+          headerTitle: ' ',
+          headerRightContainerStyle: styles.headerRight,
+        }}
         name="ResultsOverview"
         component={ResultsOverviewScreen}
+      />
+      <ProfessionStack.Screen
+        options={({navigation}) =>
+          defaultOptions('Results Overview', BackButton, navigation)
+        }
+        name="CorrectResults"
+        component={CorrectResultsScreen}
+      />
+      <ProfessionStack.Screen
+        options={({navigation}) =>
+          defaultOptions('Results Overview', BackButton, navigation)
+        }
+        name="AlmostCorrectResults"
+        component={AlmostCorrectResultsScreen}
+      />
+      <ProfessionStack.Screen
+        options={({navigation}) =>
+          defaultOptions('Results Overview', BackButton, navigation)
+        }
+        name="IncorrectResults"
+        component={IncorrectResultsScreen}
       />
     </ProfessionStack.Navigator>
   );

@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <g fill="none" fill-rule="evenodd">
-        <g fill="#000E38">
+        <g>
             <g>
-                <g>
-                    <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 1c-4.973 0-9 4.027-9 9s4.027 9 9 9 9-4.027 9-9-4.027-9-9-9zm3.194 5l.806.806L12.806 12 16 15.194l-.806.806L12 12.806 8.806 16 8 15.194 11.194 12 8 8.806 8.806 8 12 11.194 15.194 8z" transform="translate(-38 -361) translate(30 348) translate(8 13)"/>
+                <g transform="translate(-31 -409) translate(15 386) translate(16 23)">
+                    <circle cx="12" cy="12" r="11.5" fill="none"/>
+                    <g>
+                        <path d="M12 4.806L11.194 4 8 7.194 4.806 4 4 4.806 7.194 8 4 11.194 4.806 12 8 8.806 11.194 12 12 11.194 8.806 8z" transform="translate(4 4)"/>
+                    </g>
                 </g>
             </g>
         </g>
-    </g>
 </svg>

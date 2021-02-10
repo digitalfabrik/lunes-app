@@ -1,4 +1,3 @@
-import Loading from '../../../components/Loading';
 import {
   React,
   Text,
@@ -15,6 +14,7 @@ import {
   FlatList,
   Title,
   VocabularyOverviewListItem,
+  Loading,
 } from './imports';
 
 const VocabularyOverviewExerciseScreen = ({
@@ -37,7 +37,7 @@ const VocabularyOverviewExerciseScreen = ({
   }, [navigation]);
 
   useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${extraParams}`);
+    const url = ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`);
     axios.get(url).then((response) => {
       setDocuments(response.data);
       setCount(response.data.length);

@@ -7,6 +7,7 @@ import {
   CorrectIcon,
   IncorrectIcon,
   AlmostCorrectIcon,
+  COLORS,
 } from './imports';
 
 const Feedback = ({
@@ -39,7 +40,7 @@ const Feedback = ({
 
   return isCorrect || isIncorrect || almostCorrect ? (
     <View style={[styles.messageContainer, messageStyle]}>
-      <Icon />
+      <Icon fill={COLORS.lunesGreyDark} stroke={COLORS.lunesGreyDark} />
       <View style={styles.textContainer}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
           {message}

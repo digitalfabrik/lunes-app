@@ -10,6 +10,7 @@ export interface IButtonProps {
   disabled?: boolean;
   children: ReactNode;
   theme?: string;
+  style?: any;
 }
 export interface IPopoverProps {
   setIsPopoverVisible: (param: boolean) => void;

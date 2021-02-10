@@ -15,7 +15,6 @@ export const getProfessionSubcategoryWithIcon = (
   return mappedProfessionSubcategories;
 };
 
-//We still need to handle "Die plural" case
 export const getArticleColor = (article: string): string => {
   switch (article.toLowerCase()) {
     case 'der':

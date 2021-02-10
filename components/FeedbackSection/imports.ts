@@ -7,6 +7,7 @@ import {
   IncorrectIcon,
   AlmostCorrectIcon,
 } from '../../assets/images/imports';
+import {COLORS} from '../../constants/colors';
 
 export {
   React,
@@ -16,6 +17,7 @@ export {
   CorrectIcon,
   IncorrectIcon,
   AlmostCorrectIcon,
+  COLORS,
 };
 
 export type {IFeedbackProps};
