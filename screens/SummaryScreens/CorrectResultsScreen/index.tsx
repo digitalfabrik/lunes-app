@@ -1,10 +1,103 @@
-import {React, Text, IResultScreenProps} from './imports';
+import {
+  React,
+  Text,
+  IResultScreenProps,
+  CircularFinishIcon,
+  SCREENS,
+  TouchableOpacity,
+  View,
+  styles,
+  Title,
+  FlatList,
+  useFocusEffect,
+  AsyncStorage,
+  Loading,
+  VocabularyOverviewListItem,
+  IDocumentProps,
+  COLORS,
+  CorrectIcon,
+  Button,
+  NextArrow,
+} from './imports';
 
-// Will be changed in its branch
-const CorrectResults = ({route}: IResultScreenProps) => {
-  const {title} = route.params;
+const CorrectResults = ({route, navigation}: IResultScreenProps) => {
+  const {extraParams} = route.params;
+  const [correctEntries, setCorrectEntries] = React.useState<IDocumentProps[]>(
+    [],
+  );
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  return <Text>{title}</Text>;
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate(SCREENS.exercises)}>
+          <CircularFinishIcon />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem('correct').then((value) => {
+        setCorrectEntries(value && JSON.parse(value));
+        setIsLoading(false);
+      });
+    }, []),
+  );
+
+  const titleComp = (
+    <Title>
+      <CorrectIcon
+        fill={COLORS.lunesGreyDark}
+        stroke={COLORS.lunesGreyDark}
+        width={36}
+        height={36}
+      />
+      <Text style={styles.screenTitle}>Correct Entries</Text>
+      <Text style={styles.description}>
+        {`${extraParams.correctAnswersCount} of ${extraParams.totalCount} Words`}
+      </Text>
+    </Title>
+  );
+
+  const Item = ({item}: any) => (
+    <VocabularyOverviewListItem
+      id={item.id}
+      word={item.word}
+      article={item.article}
+      image={item.image}
+      audio={item.audio}
+    />
+  );
+
+  const goToAlmostCorrectEntries = () => {
+    navigation.navigate(SCREENS.AlmostCorrectResults, {
+      extraParams,
+    });
+  };
+
+  return (
+    <View style={styles.root}>
+      <Loading isLoading={isLoading}>
+        <FlatList
+          data={correctEntries}
+          style={styles.list}
+          ListHeaderComponent={titleComp}
+          renderItem={Item}
+          keyExtractor={(item) => `${item.id}`}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+        />
+
+        <Button onPress={goToAlmostCorrectEntries} style={styles.viewButton}>
+          <Text style={styles.darkLabel}>View almost correct entries</Text>
+          <NextArrow style={styles.arrow} />
+        </Button>
+      </Loading>
+    </View>
+  );
 };
 
 export default CorrectResults;

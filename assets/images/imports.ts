@@ -27,6 +27,7 @@ import CheckIcon from './check.svg';
 import RepeatIcon from './repeat.svg';
 import ListIcon from './list.svg';
 import FinishIcon from './finish.svg';
+import CircularFinishIcon from './circular-finish.svg';
 
 export {
   icon1,
@@ -57,4 +58,5 @@ export {
   ListIcon,
   RepeatIcon,
   FinishIcon,
+  CircularFinishIcon,
 };

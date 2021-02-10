@@ -6,7 +6,7 @@ import {
   BUTTONS_THEME,
 } from './imports';
 
-const Button = ({children, onPress, disabled, theme}: IButtonProps) => {
+const Button = ({children, onPress, disabled, theme, style}: IButtonProps) => {
   const buttonStyle = disabled
     ? [styles.darkButton, styles.disabledButton]
     : theme === BUTTONS_THEME.light
@@ -16,7 +16,10 @@ const Button = ({children, onPress, disabled, theme}: IButtonProps) => {
     : styles.button;
 
   return (
-    <TouchableOpacity style={buttonStyle} onPress={onPress} disabled={disabled}>
+    <TouchableOpacity
+      style={[buttonStyle, style]}
+      onPress={onPress}
+      disabled={disabled}>
       {children}
     </TouchableOpacity>
   );

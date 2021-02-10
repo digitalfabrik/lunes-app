@@ -1,4 +1,3 @@
-import Loading from '../../../components/Loading';
 import {
   React,
   Text,
@@ -15,6 +14,7 @@ import {
   FlatList,
   Title,
   VocabularyOverviewListItem,
+  Loading,
 } from './imports';
 
 const VocabularyOverviewExerciseScreen = ({

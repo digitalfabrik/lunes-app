@@ -53,9 +53,6 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     setSelectedId(item.id);
 
     navigation.navigate(item.nextScreen, {
-      id: item.id,
-      title: item.title,
-      icon: item.icon,
       extraParams: {
         totalCount,
         correctAnswersCount,
@@ -93,7 +90,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
             <Text
               style={descriptionStyle(
                 item,
-              )}>{`${count} von ${totalCount} words`}</Text>
+              )}>{`${count} of ${totalCount} Words`}</Text>
           </View>
         </View>
         <Arrow
@@ -106,6 +103,8 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   };
 
   useFocusEffect(() => {
+    setSelectedId(-1);
+
     AsyncStorage.getItem('correct').then((value) =>
       setCorrectAnswersCount(value && JSON.parse(value).length),
     );
@@ -123,7 +122,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         <TouchableOpacity
           style={styles.rightHeader}
           onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <Text style={styles.headerText}>Finish Excercise</Text>
+          <Text style={styles.headerText}>Finish Exercise</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
@@ -137,14 +136,13 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         data={RESULTS}
         style={styles.list}
         ListHeaderComponent={titleCOMP}
-        ListHeaderComponentStyle={styles.listTitle}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
       />
       <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.repeatButtonLabel}>Repeate whole exercise</Text>
+        <Text style={styles.lightLabel}>Repeate whole exercise</Text>
       </Button>
     </View>
   );

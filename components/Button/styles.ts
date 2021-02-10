@@ -8,6 +8,7 @@ import {COLORS} from '../../constants/colors';
 const buttonBase: any = {
   flexDirection: 'row',
   paddingVertical: 10,
+  paddingHorizontal: 20,
   width: wp('70%'),
   alignItems: 'center',
   borderRadius: hp('7%'),
@@ -19,13 +20,10 @@ const buttonBase: any = {
 export const styles = StyleSheet.create({
   button: {
     ...buttonBase,
-    width: wp('25%'),
-    justifyContent: 'space-between',
   },
   darkButton: {
     ...buttonBase,
     backgroundColor: COLORS.lunesBlack,
-    alignItems: 'center',
   },
   lightButton: {
     ...buttonBase,

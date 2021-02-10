@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  checkResultsButtonLabel: {
+  lightLabel: {
     fontSize: 14,
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     textTransform: 'uppercase',
   },
-  repeatButtonLabel: {
+  darkLabel: {
     fontSize: 14,
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesBlack,

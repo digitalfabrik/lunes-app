@@ -96,9 +96,6 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
-  listTitle: {
-    marginBottom: hp('8%'),
-  },
   level: {
     marginTop: hp('1%'),
   },
@@ -112,7 +109,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  repeatButtonLabel: {
+  lightLabel: {
     fontSize: 14,
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,

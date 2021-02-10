@@ -10,6 +10,7 @@ import axios from '../../../utils/axios';
 import Title from '../../../components/Title';
 import {SCREENS} from '../../../constants/data';
 import VocabularyOverviewListItem from '../../../components/VocabularyOverviewListItem';
+import Loading from '../../../components/Loading';
 
 export {
   React,
@@ -27,6 +28,7 @@ export {
   FlatList,
   Title,
   VocabularyOverviewListItem,
+  Loading,
 };
 
 export type {IVocabularyOverviewScreen, IDocumentProps};
