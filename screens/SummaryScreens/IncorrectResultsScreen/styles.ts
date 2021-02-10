@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingBottom: 0,
+    position: 'relative',
   },
   screenTitle: {
     textAlign: 'center',
@@ -46,5 +47,9 @@ export const styles = StyleSheet.create({
   },
   arrow: {
     marginLeft: 5,
+  },
+  viewButton: {
+    position: 'absolute',
+    bottom: hp('5%'),
   },
 });

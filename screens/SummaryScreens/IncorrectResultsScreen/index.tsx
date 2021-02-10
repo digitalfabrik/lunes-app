@@ -91,7 +91,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
           contentContainerStyle={styles.listContent}
         />
 
-        <Button onPress={goToCorrectEntries}>
+        <Button onPress={goToCorrectEntries} style={styles.viewButton}>
           <Text style={styles.giveUpLabel}>View correct entries</Text>
           <NextArrow style={styles.arrow} />
         </Button>

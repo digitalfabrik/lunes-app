@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
     width: '100%',
-    paddingBottom: hp('4%'),
+    paddingBottom: 0,
+    position: 'relative',
   },
   screenTitle: {
     textAlign: 'center',
@@ -46,5 +47,9 @@ export const styles = StyleSheet.create({
   },
   arrow: {
     marginLeft: 5,
+  },
+  viewButton: {
+    position: 'absolute',
+    bottom: hp('5%'),
   },
 });
