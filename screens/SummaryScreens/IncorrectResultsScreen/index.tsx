@@ -92,7 +92,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
         />
 
         <Button onPress={goToCorrectEntries} style={styles.viewButton}>
-          <Text style={styles.giveUpLabel}>View correct entries</Text>
+          <Text style={styles.darkLabel}>View correct entries</Text>
           <NextArrow style={styles.arrow} />
         </Button>
       </Loading>

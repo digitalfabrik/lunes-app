@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   listContent: {
     alignItems: 'center',
   },
-  giveUpLabel: {
+  darkLabel: {
     textAlign: 'center',
     color: COLORS.lunesBlack,
     fontFamily: 'SourceSansPro-Semibold',

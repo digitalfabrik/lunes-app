@@ -37,11 +37,11 @@ const ConfirmationModal = ({
               Do you really want to end this session?
             </Text>
             <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
-              <Text style={styles.continueLabel}>continue</Text>
+              <Text style={styles.lightLabel}>continue</Text>
             </Button>
 
             <Button onPress={goBack} theme={BUTTONS_THEME.light}>
-              <Text style={styles.endLabel}>end</Text>
+              <Text style={styles.darkLabel}>end</Text>
             </Button>
           </View>
         </View>

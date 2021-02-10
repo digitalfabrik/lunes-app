@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {COLORS} from '../../constants/colors';
 
 export const styles = StyleSheet.create({
-  checkEntryLabel: {
+  lightLabel: {
     textAlign: 'center',
     color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-Semibold',
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '600',
   },
-  giveUpLabel: {
+  darkLabel: {
     textAlign: 'center',
     color: COLORS.lunesBlack,
     fontFamily: 'SourceSansPro-Semibold',
@@ -23,14 +23,7 @@ export const styles = StyleSheet.create({
   disabledButtonLabel: {
     color: COLORS.lunesBlackLight,
   },
-  nextWordLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-Semibold',
-    fontSize: 14,
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600',
+  arrowLabel: {
     marginRight: 8,
   },
   arrow: {

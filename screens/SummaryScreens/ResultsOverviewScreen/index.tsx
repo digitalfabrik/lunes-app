@@ -142,7 +142,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       />
       <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.repeatButtonLabel}>Repeate whole exercise</Text>
+        <Text style={styles.lightLabel}>Repeate whole exercise</Text>
       </Button>
     </View>
   );

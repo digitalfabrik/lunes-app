@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     marginBottom: 31,
     paddingTop: 31,
   },
-  continueLabel: {
+  lightLabel: {
     color: COLORS.lunesWhite,
     fontSize: 14,
     fontWeight: '600',
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-SemiBold',
     letterSpacing: 0.4,
   },
-  endLabel: {
+  darkLabel: {
     color: COLORS.lunesBlack,
     fontSize: 14,
     fontWeight: '600',

@@ -109,7 +109,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
-  repeatButtonLabel: {
+  lightLabel: {
     fontSize: 14,
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,
