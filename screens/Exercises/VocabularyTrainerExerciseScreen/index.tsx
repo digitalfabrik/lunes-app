@@ -29,6 +29,7 @@ const VocabularyTrainerExerciseScreen = ({
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [count, setCount] = useState(0);
+  const [totalCount, settotalCount] = useState(0);
   const [progressValue, setProgressValue] = useState(0);
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<IDocumentProps>();
@@ -105,6 +106,7 @@ const VocabularyTrainerExerciseScreen = ({
 
             setDocuments(documentsRes.data);
             setCount(documentsRes.data.length);
+            settotalCount(documentsRes.data.length);
             setDocument(documentsRes.data[0]);
             setProgressStep(
               documentsRes.data.length && 1 / documentsRes.data.length,
@@ -156,7 +158,7 @@ const VocabularyTrainerExerciseScreen = ({
         setDocuments={setDocuments}
         increaseProgress={increaseProgress}
         navigation={navigation}
-        extraParams={{...extraParams, totalCount: count, id, title, icon}}
+        extraParams={{...extraParams, totalCount, id, title, icon}}
       />
 
       <Modal
