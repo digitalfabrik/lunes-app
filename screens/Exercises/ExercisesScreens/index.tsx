@@ -15,6 +15,7 @@ import {
   Title,
   Arrow,
   COLORS,
+  AsyncStorage,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -80,6 +81,12 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
       />
     </Pressable>
   );
+
+  React.useEffect(() => {
+    AsyncStorage.setItem('correct', JSON.stringify([]));
+    AsyncStorage.setItem('incorrect', JSON.stringify([]));
+    AsyncStorage.setItem('almost correct', JSON.stringify([]));
+  }, []);
 
   return (
     <View style={styles.root}>

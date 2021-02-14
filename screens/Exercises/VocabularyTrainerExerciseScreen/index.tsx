@@ -17,13 +17,14 @@ import {
   IVocabularyTrainerScreen,
   AnswerSection,
   BackHandler,
+  AsyncStorage,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
   navigation,
   route,
 }: IVocabularyTrainerScreen) => {
-  const {extraParams} = route.params;
+  const {extraParams, id, title, icon} = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
@@ -75,24 +76,49 @@ const VocabularyTrainerExerciseScreen = ({
     React.useCallback(() => {
       resetStates();
 
-      const getDocuments = async () => {
-        try {
-          const documentsRes = await axios.get(
-            ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
-          );
+      if (extraParams && extraParams.entries) {
+        let result: IDocumentProps[] = [];
 
-          setDocuments(documentsRes.data);
-          setCount(documentsRes.data.length);
-          setDocument(documentsRes.data[0]);
-          setProgressStep(
-            documentsRes.data.length && 1 / documentsRes.data.length,
-          );
-        } catch (error) {
-          console.error(error);
+        if (extraParams.entries === 'almostCorrect') {
+          AsyncStorage.getItem('almost correct').then((value) => {
+            result = value && JSON.parse(value);
+            setDocuments(result);
+            setCount(result.length);
+            setDocument(result[0]);
+            setProgressStep(result.length && 1 / result.length);
+          });
+        } else {
+          AsyncStorage.getItem('incorrect').then((value) => {
+            result = value && JSON.parse(value);
+            setDocuments(result);
+            setCount(result.length);
+            setDocument(result[0]);
+            setProgressStep(result.length && 1 / result.length);
+          });
         }
-      };
+      } else {
+        const getDocuments = async () => {
+          try {
+            const documentsRes = await axios.get(
+              ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
+            );
 
-      getDocuments();
+            setDocuments(documentsRes.data);
+            setCount(documentsRes.data.length);
+            setDocument(documentsRes.data[0]);
+            setProgressStep(
+              documentsRes.data.length && 1 / documentsRes.data.length,
+            );
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        getDocuments();
+        AsyncStorage.setItem('correct', JSON.stringify([]));
+        AsyncStorage.setItem('incorrect', JSON.stringify([]));
+        AsyncStorage.setItem('almost correct', JSON.stringify([]));
+      }
     }, [extraParams]),
   );
 
@@ -130,7 +156,7 @@ const VocabularyTrainerExerciseScreen = ({
         setDocuments={setDocuments}
         increaseProgress={increaseProgress}
         navigation={navigation}
-        extraParams={{...extraParams, totalCount: count}}
+        extraParams={{...extraParams, totalCount: count, id, title, icon}}
       />
 
       <Modal

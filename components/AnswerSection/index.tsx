@@ -39,9 +39,6 @@ const AnswerSection = ({
   const touchable: any = React.createRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [incorrectDocuments, setIncorrectDocuments] = useState<
-    IDocumentProps[]
-  >([]);
   const [dataLength, setDataLength] = useState(count); //for try later documents array
   const [tryLaterDocuments, setTryLaterDocuments] = useState<IDocumentProps[]>(
     [],
@@ -49,15 +46,9 @@ const AnswerSection = ({
   const [isTryLater, setIsTryLater] = useState(false); //repeat try later documents
   const [isCorrect, setIsCorrect] = useState(false);
   const [isIncorrect, setIsIncorrect] = useState(false);
-  const [correctDocuments, setCorrectDocuments] = useState<IDocumentProps[]>(
-    [],
-  );
   const [word, setWord] = useState('');
   const [documentArticle, setArticle] = useState('');
   const [isAlmostCorrect, setIsAlmostCorrect] = useState(false);
-  const [almostCorrectDocuments, setAlmostCorrectDocuments] = useState<
-    IDocumentProps[]
-  >([]);
   const [isFinished, setIsFinished] = useState(false);
 
   const borderColor = isCorrect
@@ -101,24 +92,109 @@ const AnswerSection = ({
     newIsCorrect: boolean,
     newIsIncorrect: boolean,
     newIsAlmostCorrect: boolean,
-    newDocument?: IDocumentProps,
-    setState?: Function,
   ) => {
     setIsCorrect(newIsCorrect);
     setIsIncorrect(newIsIncorrect);
     setIsAlmostCorrect(newIsAlmostCorrect);
-    if (newDocument) {
-      setState &&
-        setState((oldDocuments: IDocumentProps[]) => [
-          ...oldDocuments,
-          newDocument,
-        ]);
-    }
   };
 
   const checkIfLastWord = () => {
     if (currentWordNumber === count) {
       setIsFinished(true);
+    }
+  };
+
+  const storeCorrectResults = (checkedDocument: IDocumentProps) => {
+    try {
+      AsyncStorage.getItem('correct').then((value) => {
+        const results: IDocumentProps[] = value && JSON.parse(value);
+        results.push(checkedDocument);
+        AsyncStorage.setItem('correct', JSON.stringify(results));
+      });
+
+      AsyncStorage.getItem('incorrect').then((value) => {
+        const results: IDocumentProps[] = value && JSON.parse(value);
+        const index = results.findIndex(
+          (value) => value.id === checkedDocument.id,
+        );
+        if (index > -1) {
+          results.splice(index, 1);
+          AsyncStorage.setItem('incorrect', JSON.stringify(results));
+        }
+      });
+
+      AsyncStorage.getItem('almost correct').then((value) => {
+        const results: IDocumentProps[] = value && JSON.parse(value);
+        const index = results.findIndex(
+          (value) => value.id === checkedDocument.id,
+        );
+        if (index > -1) {
+          results.splice(index, 1);
+          AsyncStorage.setItem('almost correct', JSON.stringify(results));
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const storeAlmsotCorrectAnswers = (checkedDocument: IDocumentProps) => {
+    try {
+      AsyncStorage.getItem('almost correct').then((value) => {
+        const results: IDocumentProps[] = value && JSON.parse(value);
+        const index = results.findIndex(
+          (value) => value.id === checkedDocument.id,
+        );
+        if (index > -1) {
+          return;
+        } else {
+          results.push(checkedDocument);
+          AsyncStorage.setItem('almost correct', JSON.stringify(results));
+
+          AsyncStorage.getItem('incorrect').then((value) => {
+            const results: IDocumentProps[] = value && JSON.parse(value);
+            const index = results.findIndex(
+              (value) => value.id === checkedDocument.id,
+            );
+            if (index > -1) {
+              results.splice(index, 1);
+              AsyncStorage.setItem('incorrect', JSON.stringify(results));
+            }
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const storeIncorrectAnswers = (checkedDocument: IDocumentProps) => {
+    try {
+      AsyncStorage.getItem('incorrect').then((value) => {
+        const results: IDocumentProps[] = value && JSON.parse(value);
+        const index = results.findIndex(
+          (value) => value.id === checkedDocument.id,
+        );
+        if (index > -1) {
+          return;
+        } else {
+          results.push(checkedDocument);
+          AsyncStorage.setItem('incorrect', JSON.stringify(results));
+
+          AsyncStorage.getItem('almost correct').then((value) => {
+            const results: IDocumentProps[] = value && JSON.parse(value);
+            const index = results.findIndex(
+              (value) => value.id === checkedDocument.id,
+            );
+            if (index > -1) {
+              results.splice(index, 1);
+              AsyncStorage.setItem('almost correct', JSON.stringify(results));
+            }
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -135,8 +211,8 @@ const AnswerSection = ({
     }
 
     if (document && correct) {
-      modifyStates(true, false, false, document, setCorrectDocuments);
-
+      modifyStates(true, false, false);
+      storeCorrectResults(document);
       checkIfLastWord();
     }
 
@@ -145,7 +221,8 @@ const AnswerSection = ({
 
   const validateForSimilar = (inputArticle: string, inputWord: string) => {
     if (isAlmostCorrect && document) {
-      modifyStates(false, true, false, document, setAlmostCorrectDocuments);
+      modifyStates(false, true, false);
+      storeAlmsotCorrectAnswers(document);
       checkIfLastWord();
       return true;
     } else {
@@ -175,8 +252,8 @@ const AnswerSection = ({
 
   const validateForIncorrect = () => {
     if (document) {
-      modifyStates(false, true, false, document, setIncorrectDocuments);
-
+      modifyStates(false, true, false);
+      storeIncorrectAnswers(document);
       checkIfLastWord();
     }
   };
@@ -206,7 +283,7 @@ const AnswerSection = ({
 
   const markAsIncorrect = () => {
     if (document) {
-      setIncorrectDocuments((oldDocuments) => [...oldDocuments, document]);
+      storeIncorrectAnswers(document);
     }
     increaseProgress();
 
@@ -253,9 +330,6 @@ const AnswerSection = ({
   };
 
   const resetStates = () => {
-    setCorrectDocuments([]);
-    setIncorrectDocuments([]);
-    setAlmostCorrectDocuments([]);
     setTryLaterDocuments([]);
     setIsCorrect(false);
     setIsIncorrect(false);
@@ -291,30 +365,6 @@ const AnswerSection = ({
       _onTtsFinishPlaying.remove();
     };
   }, []);
-
-  React.useEffect(() => {
-    AsyncStorage.setItem('incorrect', JSON.stringify(incorrectDocuments));
-    AsyncStorage.setItem('correct', JSON.stringify(correctDocuments));
-    AsyncStorage.setItem(
-      'almost correct',
-      JSON.stringify(almostCorrectDocuments),
-    );
-
-    // This is just for testing
-    AsyncStorage.getItem('incorrect').then((value) =>
-      console.log('incorrect', value && JSON.parse(value)),
-    );
-
-    // This is just for testing
-    AsyncStorage.getItem('correct').then((value) =>
-      console.log('correct', value && JSON.parse(value)),
-    );
-
-    // This is just for testing
-    AsyncStorage.getItem('almost correct').then((value) =>
-      console.log('almost correct', value && JSON.parse(value)),
-    );
-  }, [incorrectDocuments, correctDocuments, almostCorrectDocuments]);
 
   React.useEffect(() => {
     clearTextInput();

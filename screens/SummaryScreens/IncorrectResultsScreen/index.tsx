@@ -18,10 +18,12 @@ import {
   IncorrectIcon,
   Button,
   NextArrow,
+  RepeatIcon,
+  BUTTONS_THEME,
 } from './imports';
 
 const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, title, description, Level} = route.params;
   const [incorrectEntries, setIncorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -74,7 +76,22 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const goToCorrectEntries = () => {
     navigation.navigate(SCREENS.CorrectResults, {
+      title,
+      description,
+      Level,
       extraParams,
+    });
+  };
+
+  const repeatIncorrectEntries = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      extraParams: {
+        ...extraParams,
+        entries: 'incorrect',
+        title,
+        description,
+        Level,
+      },
     });
   };
 
@@ -90,6 +107,16 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
         />
+
+        {extraParams.incorrectAnswersCount > 0 && (
+          <Button
+            onPress={repeatIncorrectEntries}
+            theme={BUTTONS_THEME.dark}
+            style={styles.fixedPositionButton}>
+            <RepeatIcon fill={COLORS.lunesWhite} />
+            <Text style={styles.lightLabel}>Repeate incorrect entries</Text>
+          </Button>
+        )}
 
         <Button onPress={goToCorrectEntries} style={styles.viewButton}>
           <Text style={styles.darkLabel}>View correct entries</Text>

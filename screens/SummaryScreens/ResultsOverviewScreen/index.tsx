@@ -22,7 +22,7 @@ import {
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
-  const {title, description, Level, totalCount} = route.params;
+  const {title, description, Level} = route.params;
   const [selectedId, setSelectedId] = React.useState(-1);
   const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
   const [incorrectAnswersCount, setIncorrectAnswersCount] = React.useState(0);
@@ -30,6 +30,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     almostCorrectAnswersCount,
     setAlmostCorrectAnswersCount,
   ] = React.useState(0);
+  const [totalCount, setTotalCount] = React.useState(0);
 
   const descriptionStyle = (item: any) =>
     item.id === selectedId ? styles.clickedItemDescription : styles.description;
@@ -53,6 +54,9 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     setSelectedId(item.id);
 
     navigation.navigate(item.nextScreen, {
+      title,
+      description,
+      Level,
       extraParams: {
         totalCount,
         correctAnswersCount,
@@ -115,6 +119,12 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       setAlmostCorrectAnswersCount(value && JSON.parse(value).length),
     );
   });
+
+  React.useEffect(() => {
+    setTotalCount(
+      correctAnswersCount + incorrectAnswersCount + almostCorrectAnswersCount,
+    );
+  }, [correctAnswersCount, incorrectAnswersCount, almostCorrectAnswersCount]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

@@ -50,6 +50,6 @@ export const styles = StyleSheet.create({
   },
   viewButton: {
     position: 'absolute',
-    bottom: hp('5%'),
+    bottom: 0,
   },
 });

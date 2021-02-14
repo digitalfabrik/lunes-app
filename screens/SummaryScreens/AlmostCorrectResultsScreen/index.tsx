@@ -18,10 +18,12 @@ import {
   AlmostCorrectIcon,
   Button,
   NextArrow,
+  RepeatIcon,
+  BUTTONS_THEME,
 } from './imports';
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, title, description, Level} = route.params;
   const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -74,7 +76,22 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const goToIncorrectEntries = () => {
     navigation.navigate(SCREENS.IncorrectResults, {
+      title,
+      description,
+      Level,
       extraParams,
+    });
+  };
+
+  const repeatAlmostCorrectEntries = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      extraParams: {
+        ...extraParams,
+        entries: 'almostCorrect',
+        title,
+        description,
+        Level,
+      },
     });
   };
 
@@ -90,6 +107,16 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
         />
+
+        {extraParams.almostCorrectAnswersCount > 0 && (
+          <Button
+            onPress={repeatAlmostCorrectEntries}
+            theme={BUTTONS_THEME.dark}
+            style={styles.fixedPositionButton}>
+            <RepeatIcon fill={COLORS.lunesWhite} />
+            <Text style={styles.lightLabel}>Repeat almost correct entries</Text>
+          </Button>
+        )}
 
         <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
           <Text style={styles.darkLabel}>View incorrect entries</Text>

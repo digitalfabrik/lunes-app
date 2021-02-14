@@ -21,7 +21,7 @@ import {
 } from './imports';
 
 const CorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, title, description, Level} = route.params;
   const [correctEntries, setCorrectEntries] = React.useState<IDocumentProps[]>(
     [],
   );
@@ -74,6 +74,9 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const goToAlmostCorrectEntries = () => {
     navigation.navigate(SCREENS.AlmostCorrectResults, {
+      title,
+      description,
+      Level,
       extraParams,
     });
   };

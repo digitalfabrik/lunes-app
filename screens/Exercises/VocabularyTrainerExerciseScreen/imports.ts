@@ -11,6 +11,7 @@ import axios from '../../../utils/axios';
 import {ENDPOINTS} from '../../../constants/endpoints';
 import {IVocabularyTrainerScreen} from '../../../interfaces/exercise';
 import AnswerSection from '../../../components/AnswerSection';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -29,6 +30,7 @@ export {
   axios,
   AnswerSection,
   BackHandler,
+  AsyncStorage,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

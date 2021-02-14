@@ -48,8 +48,20 @@ export const styles = StyleSheet.create({
   arrow: {
     marginLeft: 5,
   },
+  fixedPositionButton: {
+    position: 'absolute',
+    bottom: hp('7%'),
+  },
   viewButton: {
     position: 'absolute',
-    bottom: hp('5%'),
+    bottom: 0,
+  },
+  lightLabel: {
+    fontSize: 14,
+    fontFamily: 'SourceSansPro-Semibold',
+    color: COLORS.lunesWhite,
+    fontWeight: '600',
+    marginLeft: 10,
+    textTransform: 'uppercase',
   },
 });
