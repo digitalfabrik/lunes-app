@@ -17,17 +17,19 @@ import {
   IVocabularyTrainerScreen,
   AnswerSection,
   BackHandler,
+  AsyncStorage,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
   navigation,
   route,
 }: IVocabularyTrainerScreen) => {
-  const {extraParams, retryData} = route.params;
+  const {extraParams, title, icon, retryData} = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentWordNumber, setCurrentWordNumber] = useState(1);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [count, setCount] = useState(0);
+  const [totalCount, settotalCount] = useState(0);
   const [progressValue, setProgressValue] = useState(0);
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<IDocumentProps>();
@@ -77,12 +79,19 @@ const VocabularyTrainerExerciseScreen = ({
 
       const getDocuments = async () => {
         try {
-          const documentsRes = retryData
+          const documentsRes = retryData?.data?.length
             ? retryData
             : await axios.get(
                 ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`),
               );
           const dataLength = documentsRes.data.length;
+
+          if (!retryData?.data?.length) {
+            settotalCount(dataLength);
+            AsyncStorage.setItem('correct', JSON.stringify([]));
+            AsyncStorage.setItem('incorrect', JSON.stringify([]));
+            AsyncStorage.setItem('almost correct', JSON.stringify([]));
+          }
 
           setDocuments(documentsRes.data);
           setCount(dataLength);
@@ -94,7 +103,7 @@ const VocabularyTrainerExerciseScreen = ({
       };
 
       getDocuments();
-    }, [extraParams, retryData]),
+    }, [retryData, extraParams]),
   );
 
   React.useEffect(() => {
@@ -131,7 +140,7 @@ const VocabularyTrainerExerciseScreen = ({
         setDocuments={setDocuments}
         increaseProgress={increaseProgress}
         navigation={navigation}
-        extraParams={{...extraParams, totalCount: count}}
+        extraParams={{extraParams, totalCount, title, icon}}
       />
 
       <Modal

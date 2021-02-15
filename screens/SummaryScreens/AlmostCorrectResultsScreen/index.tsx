@@ -23,7 +23,7 @@ import {
 } from './imports';
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, title, description, Level} = route.params;
   const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -76,18 +76,30 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
 
   const goToIncorrectEntries = () => {
     navigation.navigate(SCREENS.IncorrectResults, {
+      title,
+      description,
+      Level,
       extraParams,
     });
   };
 
-  const repeatExercise = () =>
+  const repeatAlmostCorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
-      retry: {data: almostCorrectEntries},
+      retryData: {data: almostCorrectEntries},
+      extraParams: {
+        ...extraParams,
+        title,
+        description,
+        Level,
+      },
     });
 
   const retryButton =
     extraParams.almostCorrectAnswersCount !== 0 ? (
-      <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+      <Button
+        onPress={repeatAlmostCorrectEntries}
+        theme={BUTTONS_THEME.dark}
+        style={styles.fixedPositionButton}>
         <RepeatIcon fill={COLORS.lunesWhite} />
         <Text style={styles.lightLabel}>Repeate almost correct entries</Text>
       </Button>
@@ -107,7 +119,8 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
         />
 
         {retryButton}
-        <Button onPress={goToIncorrectEntries}>
+
+        <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
           <Text style={styles.darkLabel}>View incorrect entries</Text>
           <NextArrow style={styles.arrow} />
         </Button>

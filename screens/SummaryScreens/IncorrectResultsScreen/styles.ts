@@ -48,6 +48,14 @@ export const styles = StyleSheet.create({
   arrow: {
     marginLeft: 5,
   },
+  fixedPositionButton: {
+    position: 'absolute',
+    bottom: hp('7%'),
+  },
+  viewButton: {
+    position: 'absolute',
+    bottom: 0,
+  },
   lightLabel: {
     fontSize: 14,
     fontFamily: 'SourceSansPro-Semibold',
