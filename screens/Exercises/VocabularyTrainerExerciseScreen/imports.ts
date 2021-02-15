@@ -12,6 +12,7 @@ import {ENDPOINTS} from '../../../constants/endpoints';
 import {IVocabularyTrainerScreen} from '../../../interfaces/exercise';
 import AnswerSection from '../../../components/AnswerSection';
 import AsyncStorage from '@react-native-community/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export {
   React,
@@ -31,6 +32,7 @@ export {
   AnswerSection,
   BackHandler,
   AsyncStorage,
+  KeyboardAwareScrollView,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

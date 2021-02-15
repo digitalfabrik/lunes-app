@@ -18,6 +18,7 @@ import {
   AnswerSection,
   BackHandler,
   AsyncStorage,
+  KeyboardAwareScrollView,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -123,25 +124,31 @@ const VocabularyTrainerExerciseScreen = ({
         accessibilityTraits
       />
 
-      <Image
-        source={{
-          uri: document?.image,
-        }}
-        style={styles.image}
-      />
+      <KeyboardAwareScrollView
+        scrollEnabled={false}
+        resetScrollToCoords={{x: 0, y: 0}}
+        enableOnAndroid
+        keyboardShouldPersistTaps="always">
+        <Image
+          source={{
+            uri: document?.image,
+          }}
+          style={styles.image}
+        />
 
-      <AnswerSection
-        count={count}
-        index={index}
-        setIndex={setIndex}
-        currentWordNumber={currentWordNumber}
-        setCurrentWordNumber={setCurrentWordNumber}
-        document={document}
-        setDocuments={setDocuments}
-        increaseProgress={increaseProgress}
-        navigation={navigation}
-        extraParams={{extraParams, totalCount, title, icon}}
-      />
+        <AnswerSection
+          count={count}
+          index={index}
+          setIndex={setIndex}
+          currentWordNumber={currentWordNumber}
+          setCurrentWordNumber={setCurrentWordNumber}
+          document={document}
+          setDocuments={setDocuments}
+          increaseProgress={increaseProgress}
+          navigation={navigation}
+          extraParams={{extraParams, totalCount, title, icon}}
+        />
+      </KeyboardAwareScrollView>
 
       <Modal
         visible={isModalVisible}
