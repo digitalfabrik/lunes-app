@@ -22,7 +22,7 @@ import {
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
-  const {title, description, Level} = route.params;
+  const {extraParams} = route.params;
   const [selectedId, setSelectedId] = React.useState(-1);
   const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
   const [incorrectAnswersCount, setIncorrectAnswersCount] = React.useState(0);
@@ -44,9 +44,9 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   const titleCOMP = (
     <Title>
       <Text style={styles.screenTitle}>Results Overview</Text>
-      <Text style={styles.screenSubTitle}>{title}</Text>
-      <Text style={styles.screenDescription}>{description}</Text>
-      <Level style={styles.level} />
+      <Text style={styles.screenSubTitle}>{extraParams.title}</Text>
+      <Text style={styles.screenDescription}>{extraParams.description}</Text>
+      <extraParams.Level style={styles.level} />
     </Title>
   );
 
@@ -54,20 +54,24 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     setSelectedId(item.id);
 
     navigation.navigate(item.nextScreen, {
-      title,
-      description,
-      Level,
+      title: extraParams.title,
+      description: extraParams.description,
+      Level: extraParams.Level,
       extraParams: {
         totalCount,
         correctAnswersCount,
         incorrectAnswersCount,
         almostCorrectAnswersCount,
+        id: extraParams.id,
       },
     });
   };
 
   const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer);
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: []},
+      extraParams,
+    });
   };
 
   const Item = ({item}: any) => {

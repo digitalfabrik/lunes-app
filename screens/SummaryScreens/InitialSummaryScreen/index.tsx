@@ -20,7 +20,7 @@ const InitialSummaryScreen = ({
   navigation,
   route,
 }: IInitialSummaryScreenProps) => {
-  const {description, title, Level, totalCount} = route.params;
+  const {description, title, Level, totalCount, extraParams} = route.params;
   const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
   const [message, setMessage] = React.useState('');
 
@@ -30,11 +30,12 @@ const InitialSummaryScreen = ({
       description,
       Level,
       totalCount,
+      extraParams,
     });
   };
 
   const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer);
+    navigation.navigate(SCREENS.vocabularyTrainer, {extraParams});
   };
 
   useFocusEffect(

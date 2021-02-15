@@ -83,17 +83,27 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
     });
   };
 
-  const repeatAlmostCorrectEntries = () => {
+  const repeatAlmostCorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: almostCorrectEntries},
       extraParams: {
         ...extraParams,
-        entries: 'almostCorrect',
         title,
         description,
         Level,
       },
     });
-  };
+
+  const retryButton =
+    extraParams.almostCorrectAnswersCount !== 0 ? (
+      <Button
+        onPress={repeatAlmostCorrectEntries}
+        theme={BUTTONS_THEME.dark}
+        style={styles.fixedPositionButton}>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <Text style={styles.lightLabel}>Repeate almost correct entries</Text>
+      </Button>
+    ) : null;
 
   return (
     <View style={styles.root}>
@@ -108,15 +118,7 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           contentContainerStyle={styles.listContent}
         />
 
-        {extraParams.almostCorrectAnswersCount > 0 && (
-          <Button
-            onPress={repeatAlmostCorrectEntries}
-            theme={BUTTONS_THEME.dark}
-            style={styles.fixedPositionButton}>
-            <RepeatIcon fill={COLORS.lunesWhite} />
-            <Text style={styles.lightLabel}>Repeat almost correct entries</Text>
-          </Button>
-        )}
+        {retryButton}
 
         <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
           <Text style={styles.darkLabel}>View incorrect entries</Text>

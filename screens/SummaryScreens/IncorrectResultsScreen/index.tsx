@@ -83,17 +83,27 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
     });
   };
 
-  const repeatIncorrectEntries = () => {
+  const repeatIncorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: incorrectEntries},
       extraParams: {
         ...extraParams,
-        entries: 'incorrect',
         title,
         description,
         Level,
       },
     });
-  };
+
+  const retryButton =
+    extraParams.incorrectAnswersCount !== 0 ? (
+      <Button
+        onPress={repeatIncorrectEntries}
+        theme={BUTTONS_THEME.dark}
+        style={styles.fixedPositionButton}>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <Text style={styles.lightLabel}>Repeate incorrect entries</Text>
+      </Button>
+    ) : null;
 
   return (
     <View style={styles.root}>
@@ -108,15 +118,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
           contentContainerStyle={styles.listContent}
         />
 
-        {extraParams.incorrectAnswersCount > 0 && (
-          <Button
-            onPress={repeatIncorrectEntries}
-            theme={BUTTONS_THEME.dark}
-            style={styles.fixedPositionButton}>
-            <RepeatIcon fill={COLORS.lunesWhite} />
-            <Text style={styles.lightLabel}>Repeate incorrect entries</Text>
-          </Button>
-        )}
+        {retryButton}
 
         <Button onPress={goToCorrectEntries} style={styles.viewButton}>
           <Text style={styles.darkLabel}>View correct entries</Text>
