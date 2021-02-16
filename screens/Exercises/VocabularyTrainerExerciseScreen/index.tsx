@@ -19,6 +19,7 @@ import {
   BackHandler,
   AsyncStorage,
   KeyboardAwareScrollView,
+  ActivityIndicator,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -35,6 +36,7 @@ const VocabularyTrainerExerciseScreen = ({
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<IDocumentProps>();
   const [progressStep, setProgressStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -134,7 +136,10 @@ const VocabularyTrainerExerciseScreen = ({
             uri: document?.image,
           }}
           style={styles.image}
+          onLoadStart={() => setIsLoading(true)}
+          onLoad={() => setIsLoading(false)}
         />
+        {isLoading && <ActivityIndicator style={styles.spinner} />}
 
         <AnswerSection
           count={count}

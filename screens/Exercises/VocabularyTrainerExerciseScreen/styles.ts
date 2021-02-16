@@ -39,4 +39,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: 200,
   },
+  spinner: {
+    width: '100%',
+    height: hp('35%'),
+    position: 'absolute',
+    top: 0,
+    // zIndex: 1,
+    backgroundColor: COLORS.lunesWhite,
+  },
 });

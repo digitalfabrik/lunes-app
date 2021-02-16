@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, BackHandler} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  ActivityIndicator,
+} from 'react-native';
 import {styles} from './styles';
 import {CloseButton} from '../../../assets/images/imports';
 import Modal from '../../../components/Modal';
@@ -33,6 +40,7 @@ export {
   BackHandler,
   AsyncStorage,
   KeyboardAwareScrollView,
+  ActivityIndicator,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};
