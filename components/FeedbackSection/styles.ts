@@ -24,9 +24,10 @@ export const styles = StyleSheet.create({
   textContainer: {
     marginHorizontal: 5,
     paddingRight: 15,
+    paddingLeft: 5,
   },
   text: {
-    fontSize: 12,
+    fontSize: wp('3.5%'),
     fontFamily: 'SourceSansPro-Regular',
     fontWeight: 'normal',
     color: COLORS.lunesBlack,

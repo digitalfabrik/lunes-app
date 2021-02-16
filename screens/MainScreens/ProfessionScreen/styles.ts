@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
@@ -24,13 +24,13 @@ export const styles = StyleSheet.create({
     marginBottom: 32,
   },
   clickedItemDescription: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     color: COLORS.white,
     fontFamily: 'SourceSansPro-Regular',
   },
   description: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   message: {
     color: COLORS.lunesWhite,
-    fontSize: 12,
+    fontSize: wp('3.5%'),
     fontWeight: 'normal',
     fontFamily: 'SourceSansPro-Regular',
     width: wp('60%'),

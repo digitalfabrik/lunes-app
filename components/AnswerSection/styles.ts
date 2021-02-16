@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     marginBottom: hp('6%'),
   },
   textInput: {
-    fontSize: 16,
+    fontSize: wp('4.5%'),
     fontWeight: 'normal',
     letterSpacing: 0.11,
     fontFamily: 'SourceSansPro-Regular',

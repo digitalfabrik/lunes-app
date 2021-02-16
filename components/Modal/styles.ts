@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   message: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
     width: wp('60%'),
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   lightLabel: {
     color: COLORS.lunesWhite,
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: '600',
     textAlign: 'center',
     textTransform: 'uppercase',
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   },
   darkLabel: {
     color: COLORS.lunesBlack,
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: '600',
     textAlign: 'center',
     textTransform: 'uppercase',

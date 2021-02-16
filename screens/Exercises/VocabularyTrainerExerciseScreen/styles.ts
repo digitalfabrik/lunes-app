@@ -1,6 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../../constants/colors';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   root: {
@@ -20,7 +23,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   headerText: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     fontFamily: 'SourceSansPro-Regular',
     color: COLORS.lunesGreyMedium,
@@ -28,7 +31,7 @@ export const styles = StyleSheet.create({
   title: {
     color: COLORS.lunesBlack,
     fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: 14,
+    fontSize: wp('4%'),
     textTransform: 'uppercase',
     fontWeight: '600',
     marginLeft: 15,

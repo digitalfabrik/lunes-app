@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   screenTitle: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
     marginBottom: 4,
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   description: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.lunesBlack,
     fontFamily: 'SourceSansPro-Semibold',
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     letterSpacing: 0.4,
     textTransform: 'uppercase',
     fontWeight: '600',
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
   },
   lightLabel: {
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,
     fontWeight: '600',

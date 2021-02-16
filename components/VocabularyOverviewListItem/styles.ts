@@ -23,19 +23,19 @@ export const styles = StyleSheet.create({
   },
   image: {
     marginRight: 15,
-    width: 52,
-    height: 52,
+    width: wp('15%'),
+    height: wp('15%'),
     borderRadius: 50,
   },
   title: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-Regular',
   },
   description: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
