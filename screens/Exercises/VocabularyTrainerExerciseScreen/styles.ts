@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
     height: hp('35%'),
     position: 'absolute',
     top: 0,
-    // zIndex: 1,
     backgroundColor: COLORS.lunesWhite,
   },
 });
