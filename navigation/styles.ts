@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../constants/colors';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   header: {
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
   title: {
     color: COLORS.lunesBlack,
     fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: 14,
+    fontSize: wp('4%'),
     textTransform: 'uppercase',
     fontWeight: '600',
     marginLeft: 15,

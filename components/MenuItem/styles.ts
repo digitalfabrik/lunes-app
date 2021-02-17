@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.white,
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: wp('5%'),
     fontWeight: '600',
     letterSpacing: 0.11,
     marginBottom: 2,
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-SemiBold',
   },
   clickedItemTitle: {
-    fontSize: 16,
+    fontSize: wp('5%'),
     fontWeight: '600',
     letterSpacing: 0.11,
     marginBottom: 2,
@@ -50,8 +50,8 @@ export const styles = StyleSheet.create({
   icon: {
     justifyContent: 'center',
     marginRight: 10,
-    width: 24,
-    height: 24,
+    width: wp('7%'),
+    height: wp('7%'),
   },
   left: {flexDirection: 'row', alignItems: 'center'},
 });

@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, BackHandler} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  ActivityIndicator,
+} from 'react-native';
 import {styles} from './styles';
 import {CloseButton} from '../../../assets/images/imports';
 import Modal from '../../../components/Modal';
@@ -12,6 +19,7 @@ import {ENDPOINTS} from '../../../constants/endpoints';
 import {IVocabularyTrainerScreen} from '../../../interfaces/exercise';
 import AnswerSection from '../../../components/AnswerSection';
 import AsyncStorage from '@react-native-community/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export {
   React,
@@ -31,6 +39,8 @@ export {
   AnswerSection,
   BackHandler,
   AsyncStorage,
+  KeyboardAwareScrollView,
+  ActivityIndicator,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

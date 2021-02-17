@@ -20,25 +20,25 @@ export const styles = StyleSheet.create({
     marginBottom: hp('6%'),
   },
   screenDescription: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
   description: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-Regular',
   },
   screenTitle: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
     paddingBottom: hp('4%'),
   },
   screenSubTitle: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
   },
   clickedItemTitle: {
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: wp('5%'),
     fontWeight: '600',
     letterSpacing: 0.11,
     marginBottom: 2,
@@ -82,14 +82,14 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-SemiBold',
   },
   clickedItemDescription: {
-    fontSize: 14,
+    fontSize: wp('4%'),
     fontWeight: 'normal',
     color: COLORS.white,
     fontFamily: 'SourceSansPro-Regular',
   },
   title2: {
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: wp('4.5%'),
     fontWeight: '600',
     letterSpacing: 0.11,
     marginBottom: 2,
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   lightLabel: {
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
     width: 200,
   },
   headerText: {
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     fontWeight: '600',
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesBlack,

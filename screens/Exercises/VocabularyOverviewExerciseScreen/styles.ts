@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   screenTitle: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
     marginBottom: 4,
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   description: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },

@@ -46,17 +46,14 @@ const VocabularyOverviewListItem = ({
   };
 
   React.useEffect(() => {
-    let _onSoundPlayerFinishPlaying: any = null;
-    let _onTtsFinishPlaying: any = null;
-
-    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
       'FinishedPlaying',
       () => {
         setActive(false);
       },
     );
 
-    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
       setActive(false),
     );
 
@@ -78,19 +75,17 @@ const VocabularyOverviewListItem = ({
           style={styles.image}
         />
         <View>
-          <View
-            style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
-            <Text style={styles.title}>
-              {article.toLowerCase() === 'die (plural)' ? 'die' : article}
-            </Text>
-          </View>
+          <Text
+            style={[styles.title, {backgroundColor: getArticleColor(article)}]}>
+            {article.toLowerCase() === 'die (plural)' ? 'die' : article}
+          </Text>
           <Text style={styles.description}>{word}</Text>
         </View>
       </View>
       <TouchableOpacity
         style={styles.speaker}
         onPress={() => handleSpeakerClick()}>
-        <VolumeUp fill={volumeIconColor} width={32} height={32} />
+        <VolumeUp fill={volumeIconColor} />
       </TouchableOpacity>
     </View>
   );
