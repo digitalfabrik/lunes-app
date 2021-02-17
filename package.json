@@ -11,12 +11,14 @@
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "@types/string-similarity": "^4.0.0",
     "axios": "^0.21.1",
+    "jest-react-native": "^18.0.0",
+    "jest-transform-stub": "^2.0.0",
     "native-base": "^2.15.0",
     "react": "16.13.1",
     "react-native": "0.63.3",
@@ -54,6 +56,14 @@
     "typescript": "^3.8.3"
   },
   "jest": {
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js",
+      "./jest/jestSetup.js"
+    ],
+    "moduleNameMapper": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
     "preset": "react-native",
     "moduleFileExtensions": [
       "ts",
