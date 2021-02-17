@@ -61,3 +61,10 @@ export const RESULTS = [
     nextScreen: SCREENS.IncorrectResults,
   },
 ];
+
+export const ARTICLES = {
+  die: 'die',
+  der: 'der',
+  das: 'das',
+  diePlural: 'die (plural)',
+};
