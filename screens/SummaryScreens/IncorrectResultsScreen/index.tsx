@@ -10,7 +10,6 @@ import {
   Title,
   FlatList,
   useFocusEffect,
-  AsyncStorage,
   Loading,
   VocabularyOverviewListItem,
   IDocumentProps,
@@ -23,30 +22,29 @@ import {
 } from './imports';
 
 const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams, title, description, Level} = route.params;
+  const {extraParams} = route.params;
+  const {counts, results} = route.params.extraParams;
   const [incorrectEntries, setIncorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <CircularFinishIcon />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
+  React.useLayoutEffect(() => {}, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('incorrect').then((value) => {
-        setIncorrectEntries(value && JSON.parse(value));
-        setIsLoading(false);
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(SCREENS.exercises)}>
+            <CircularFinishIcon />
+          </TouchableOpacity>
+        ),
       });
-    }, []),
+
+      setIncorrectEntries(results.filter(({result}) => result === 'incorrect'));
+      setIsLoading(false);
+    }, [navigation, results]),
   );
 
   const titleComp = (
@@ -59,7 +57,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
       />
       <Text style={styles.screenTitle}>Incorrect Entries</Text>
       <Text style={styles.description}>
-        {`${extraParams.incorrectAnswersCount} of ${extraParams.totalCount} Words`}
+        {`${counts.incorrect} of ${counts.total} Words`}
       </Text>
     </Title>
   );
@@ -75,23 +73,13 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
   );
 
   const goToCorrectEntries = () => {
-    navigation.navigate(SCREENS.CorrectResults, {
-      title,
-      description,
-      Level,
-      extraParams,
-    });
+    navigation.navigate(SCREENS.CorrectResults, extraParams);
   };
 
   const repeatIncorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
       retryData: {data: incorrectEntries},
-      extraParams: {
-        ...extraParams,
-        title,
-        description,
-        Level,
-      },
+      extraParams,
     });
 
   const retryButton =
@@ -101,7 +89,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
         theme={BUTTONS_THEME.dark}
         style={styles.fixedPositionButton}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeate incorrect entries</Text>
+        <Text style={styles.lightLabel}>Repeat incorrect entries</Text>
       </Button>
     ) : null;
 

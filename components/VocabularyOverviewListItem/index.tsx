@@ -49,9 +49,7 @@ const VocabularyOverviewListItem = ({
   React.useEffect(() => {
     const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
       'FinishedPlaying',
-      () => {
-        setActive(false);
-      },
+      () => setActive(false),
     );
 
     const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>

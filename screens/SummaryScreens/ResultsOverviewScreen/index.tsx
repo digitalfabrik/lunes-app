@@ -11,7 +11,6 @@ import {
   RESULTS,
   FlatList,
   useFocusEffect,
-  AsyncStorage,
   Button,
   BUTTONS_THEME,
   SCREENS,
@@ -22,15 +21,51 @@ import {
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, results} = route.params;
+  const {Level, exercise, exerciseDescription} = route.params.extraParams;
   const [selectedId, setSelectedId] = React.useState(-1);
-  const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
-  const [incorrectAnswersCount, setIncorrectAnswersCount] = React.useState(0);
-  const [
-    almostCorrectAnswersCount,
-    setAlmostCorrectAnswersCount,
-  ] = React.useState(0);
-  const [totalCount, setTotalCount] = React.useState(0);
+  const [counts, setCounts] = React.useState({});
+
+  useFocusEffect(React.useCallback(() => setSelectedId(-1), []));
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.rightHeader}
+          onPress={() => navigation.navigate(SCREENS.exercises)}>
+          <Text style={styles.headerText}>Finish Exercise</Text>
+          <FinishIcon />
+        </TouchableOpacity>
+      ),
+    });
+
+    setCounts({
+      total: results.length,
+      correct: results.filter((res) => res.result === 'correct').length,
+      incorrect: results.filter((res) => res.result === 'incorrect').length,
+      almostCorrect: results.filter((res) => res.result === 'similar').length,
+    });
+  }, [results, navigation]);
+
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+
+    navigation.navigate(item.nextScreen, {
+      extraParams: {
+        results,
+        counts,
+        ...extraParams,
+      },
+    });
+  };
+
+  const repeatExercise = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: results},
+      extraParams,
+    });
+  };
 
   const descriptionStyle = (item: any) =>
     item.id === selectedId ? styles.clickedItemDescription : styles.description;
@@ -44,108 +79,44 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   const titleCOMP = (
     <Title>
       <Text style={styles.screenTitle}>Results Overview</Text>
-      <Text style={styles.screenSubTitle}>{extraParams.title}</Text>
-      <Text style={styles.screenDescription}>{extraParams.description}</Text>
-      <extraParams.Level style={styles.level} />
+      <Text style={styles.screenSubTitle}>{exercise}</Text>
+      <Text style={styles.screenDescription}>{exerciseDescription}</Text>
+      <Level style={styles.level} />
     </Title>
   );
-
-  const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
-
-    navigation.navigate(item.nextScreen, {
-      title: extraParams.title,
-      description: extraParams.description,
-      Level: extraParams.Level,
-      extraParams: {
-        totalCount,
-        correctAnswersCount,
-        incorrectAnswersCount,
-        almostCorrectAnswersCount,
-        id: extraParams.id,
-      },
-    });
-  };
-
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {
-      retryData: {data: []},
-      extraParams,
-    });
-  };
 
   const Item = ({item}: any) => {
     const count =
       item.id === 1
-        ? correctAnswersCount
+        ? counts.correct
         : item.id === 2
-        ? almostCorrectAnswersCount
-        : incorrectAnswersCount;
+        ? counts.almostCorrect
+        : counts.incorrect;
+
+    const selected = item.id === selectedId;
+    const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark;
+    const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack;
 
     return (
       <Pressable style={itemStyle(item)} onPress={() => handleNavigation(item)}>
         <View style={styles.leftSide}>
-          <item.icon
-            fill={
-              item.id === selectedId ? COLORS.lunesWhite : COLORS.lunesGreyDark
-            }
-            stroke={
-              item.id === selectedId ? COLORS.lunesWhite : COLORS.lunesGreyDark
-            }
-          />
+          <item.icon fill={iconColor} stroke={iconColor} />
           <View style={styles.text}>
             <Text style={itemTitleStyle(item)}>{item.title}</Text>
-            <Text
-              style={descriptionStyle(
-                item,
-              )}>{`${count} of ${totalCount} Words`}</Text>
+            <Text style={descriptionStyle(item)}>
+              {`${count} of ${counts.total} Words`}
+            </Text>
           </View>
         </View>
-        <Arrow
-          fill={
-            item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack
-          }
-        />
+        <Arrow fill={arrowColor} />
       </Pressable>
     );
   };
 
-  useFocusEffect(() => {
-    setSelectedId(-1);
-
-    AsyncStorage.getItem('correct').then((value) =>
-      setCorrectAnswersCount(value && JSON.parse(value).length),
-    );
-    AsyncStorage.getItem('incorrect').then((value) =>
-      setIncorrectAnswersCount(value && JSON.parse(value).length),
-    );
-    AsyncStorage.getItem('almost correct').then((value) =>
-      setAlmostCorrectAnswersCount(value && JSON.parse(value).length),
-    );
-  });
-
-  React.useEffect(() => {
-    setTotalCount(
-      correctAnswersCount + incorrectAnswersCount + almostCorrectAnswersCount,
-    );
-  }, [correctAnswersCount, incorrectAnswersCount, almostCorrectAnswersCount]);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={styles.rightHeader}
-          onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <Text style={styles.headerText}>Finish Exercise</Text>
-          <FinishIcon />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" />
+
       <FlatList
         data={RESULTS}
         style={styles.list}
@@ -154,9 +125,10 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
       />
+
       <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeate whole exercise</Text>
+        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
       </Button>
     </View>
   );

@@ -11,37 +11,33 @@ import {
   ARTICLES,
 } from './imports';
 
-const Feedback = ({
-  isCorrect,
-  almostCorrect,
-  isIncorrect,
-  document,
-  word,
-  article,
-}: IFeedbackProps) => {
-  const Icon = isCorrect
-    ? CorrectIcon
-    : isIncorrect
-    ? IncorrectIcon
-    : AlmostCorrectIcon;
+const Feedback = ({result, document, input}: IFeedbackProps) => {
+  const Icon =
+    result === 'correct'
+      ? CorrectIcon
+      : result === 'incorrect'
+      ? IncorrectIcon
+      : AlmostCorrectIcon;
 
-  const messageStyle = isCorrect
-    ? styles.successMessage
-    : isIncorrect
-    ? styles.failedMessage
-    : styles.almostCorrectMessage;
+  const messageStyle =
+    result === 'correct'
+      ? styles.successMessage
+      : result === 'incorrect'
+      ? styles.failedMessage
+      : styles.almostCorrectMessage;
 
-  const message = isCorrect
-    ? 'Great, keep it up! \nThe Word you filled in is correct.'
-    : isIncorrect
-    ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
-        document?.article?.toLowerCase() === ARTICLES.diePlural
-          ? 'die'
-          : document?.article
-      } ${document?.word}`
-    : `Your entry ${article} ${word} is almost correct.\nCheck for upper and lower case.`;
+  const message =
+    result === 'correct'
+      ? 'Great, keep it up! \nThe Word you filled in is correct.'
+      : result === 'incorrect'
+      ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
+          document?.article?.toLowerCase() === ARTICLES.diePlural
+            ? 'die'
+            : document?.article
+        } ${document?.word}`
+      : `Your entry ${input} is almost correct.\nCheck for upper and lower case.`;
 
-  return isCorrect || isIncorrect || almostCorrect ? (
+  return result !== '' ? (
     <View style={[styles.messageContainer, messageStyle]}>
       <Icon fill={COLORS.lunesGreyDark} stroke={COLORS.lunesGreyDark} />
       <View style={styles.textContainer}>

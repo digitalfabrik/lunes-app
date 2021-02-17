@@ -66,10 +66,10 @@ const ProfessionSubcategoryScreen = ({
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
     navigation.navigate(SCREENS.exercises, {
-      id: item.id,
-      title: item.title,
-      icon: item.icon,
-      extraParams: title,
+      subCategoryID: item.id,
+      subCategory: item.title,
+      profession: title,
+      professionID: id,
     });
   };
 
