@@ -16,7 +16,7 @@ import {EXERCISES} from '../../../constants/data';
 import {Arrow} from '../../../assets/images/imports';
 import {useFocusEffect} from '@react-navigation/native';
 import {COLORS} from '../../../constants/colors';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export {
   React,

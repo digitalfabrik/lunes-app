@@ -12,7 +12,7 @@ import {
   RepeatIcon,
 } from '../../../assets/images/imports';
 import Title from '../../../components/Title';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../components/Loading';
 import VocabularyOverviewListItem from '../../../components/VocabularyOverviewListItem';
 import {IDocumentProps} from '../../../interfaces/exercise';

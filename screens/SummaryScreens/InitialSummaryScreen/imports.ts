@@ -7,7 +7,7 @@ import {BUTTONS_THEME, SCREENS} from '../../../constants/data';
 import {IInitialSummaryScreenProps} from '../../../interfaces/summaryScreens';
 import {COLORS} from '../../../constants/colors';
 import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export {
   React,
