@@ -30,9 +30,15 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: wp('4%'),
     fontWeight: 'normal',
+    minWidth: wp('6%'),
+    borderRadius: wp('3%'),
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-Regular',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    overflow: 'hidden',
+    paddingVertical: 2,
   },
   description: {
     fontSize: wp('4%'),
@@ -48,12 +54,5 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  badge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 15,
-    marginBottom: 2,
   },
 });

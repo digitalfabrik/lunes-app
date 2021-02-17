@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   badgeLabel: {
     color: COLORS.lunesWhite,
     fontFamily: 'SourceSansPro-Semibold',
-    fontSize: 12,
+    fontSize: wp('3%'),
     fontWeight: '600',
     minWidth: wp('6%'),
     height: wp('4%'),
