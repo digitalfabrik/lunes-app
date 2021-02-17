@@ -8,6 +8,7 @@ import {
   IncorrectIcon,
   AlmostCorrectIcon,
   COLORS,
+  ARTICLES,
 } from './imports';
 
 const Feedback = ({
@@ -34,7 +35,9 @@ const Feedback = ({
     ? 'Great, keep it up! \nThe Word you filled in is correct.'
     : isIncorrect
     ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
-        document?.article === 'die (Plural)' ? 'die' : document?.article
+        document?.article?.toLowerCase() === ARTICLES.diePlural
+          ? 'die'
+          : document?.article
       } ${document?.word}`
     : `Your entry ${article} ${word} is almost correct.\nCheck for upper and lower case.`;
 

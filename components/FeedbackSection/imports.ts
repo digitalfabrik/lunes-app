@@ -8,6 +8,7 @@ import {
   AlmostCorrectIcon,
 } from '../../assets/images/imports';
 import {COLORS} from '../../constants/colors';
+import {ARTICLES} from '../../constants/data';
 
 export {
   React,
@@ -18,6 +19,7 @@ export {
   IncorrectIcon,
   AlmostCorrectIcon,
   COLORS,
+  ARTICLES,
 };
 
 export type {IFeedbackProps};

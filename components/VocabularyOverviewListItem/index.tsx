@@ -12,6 +12,7 @@ import {
   SoundPlayer,
   Platform,
   COLORS,
+  ARTICLES,
 } from './imports';
 
 //German language
@@ -77,7 +78,7 @@ const VocabularyOverviewListItem = ({
         <View>
           <Text
             style={[styles.title, {backgroundColor: getArticleColor(article)}]}>
-            {article.toLowerCase() === 'die (plural)' ? 'die' : article}
+            {article.toLowerCase() === ARTICLES.diePlural ? 'die' : article}
           </Text>
           <Text style={styles.description}>{word}</Text>
         </View>

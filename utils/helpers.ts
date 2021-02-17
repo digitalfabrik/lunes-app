@@ -1,5 +1,6 @@
 import {IProfessionSubcategoryProps} from '../interfaces/professionSubcategory';
 import {COLORS} from '../constants/colors';
+import {ARTICLES} from '../constants/data';
 
 export const getProfessionSubcategoryWithIcon = (
   icon: string,
@@ -17,16 +18,16 @@ export const getProfessionSubcategoryWithIcon = (
 
 export const getArticleColor = (article: string): string => {
   switch (article.toLowerCase()) {
-    case 'der':
+    case ARTICLES.der:
       return COLORS.lunesArtikelDer;
 
-    case 'das':
+    case ARTICLES.das:
       return COLORS.lunesArtikelDas;
 
-    case 'die':
+    case ARTICLES.die:
       return COLORS.lunesArtikelDie;
 
-    case 'die (plural)':
+    case ARTICLES.diePlural:
       return COLORS.lunesArtikelDiePlural;
 
     default:
