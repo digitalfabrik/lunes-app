@@ -25,8 +25,21 @@ const VocabularyOverviewListItem = ({
   audio,
 }: IVocabularyOverviewListItemProps) => {
   const [active, setActive] = React.useState(false);
+  React.useEffect(() => {
+    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => setActive(false),
+    );
 
-  const volumeIconColor = active ? COLORS.lunesRedDark : COLORS.lunesRed;
+    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setActive(false),
+    );
+
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
+  }, []);
 
   const handleSpeakerClick = () => {
     setActive(true);
@@ -46,21 +59,7 @@ const VocabularyOverviewListItem = ({
     }
   };
 
-  React.useEffect(() => {
-    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
-      'FinishedPlaying',
-      () => setActive(false),
-    );
-
-    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
-      setActive(false),
-    );
-
-    return () => {
-      _onSoundPlayerFinishPlaying.remove();
-      _onTtsFinishPlaying.remove();
-    };
-  }, []);
+  const volumeIconColor = active ? COLORS.lunesRedDark : COLORS.lunesRed;
 
   return (
     <View style={styles.container}>

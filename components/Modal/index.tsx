@@ -16,9 +16,7 @@ const ConfirmationModal = ({
   setIsModalVisible,
   navigation,
 }: IConfirmationModalProps) => {
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
+  const closeModal = () => setIsModalVisible(false);
 
   const goBack = () => {
     setIsModalVisible(false);

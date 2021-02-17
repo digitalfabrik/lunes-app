@@ -39,14 +39,35 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
     }, [navigation]),
   );
 
-  const descriptionStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
+  const titleCOMP = (
+    <Title>
+      <Text style={styles.screenTitle}>{subCategory}</Text>
+      <Text style={styles.screenDescription}>2 Exercises</Text>
+    </Title>
+  );
 
-  const itemStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedContainer : styles.container;
-
-  const itemTitleStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemTitle : styles.title2;
+  const Item = ({item}: any) => {
+    const selected = item.id === selectedId;
+    const itemStyle = selected ? styles.clickedContainer : styles.container;
+    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2;
+    const descriptionStyle = selected
+      ? styles.clickedItemDescription
+      : styles.description;
+    return (
+      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
+        <View>
+          <Text style={itemTitleStyle}>{item.title}</Text>
+          <Text style={descriptionStyle}>{item.description}</Text>
+          <item.Level style={styles.level} />
+        </View>
+        <Arrow
+          fill={
+            item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack
+          }
+        />
+      </Pressable>
+    );
+  };
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
@@ -62,26 +83,6 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
       },
     });
   };
-
-  const titleCOMP = (
-    <Title>
-      <Text style={styles.screenTitle}>{subCategory}</Text>
-      <Text style={styles.screenDescription}>2 Exercises</Text>
-    </Title>
-  );
-
-  const Item = ({item}: any) => (
-    <Pressable style={itemStyle(item)} onPress={() => handleNavigation(item)}>
-      <View>
-        <Text style={itemTitleStyle(item)}>{item.title}</Text>
-        <Text style={descriptionStyle(item)}>{item.description}</Text>
-        <item.Level style={styles.level} />
-      </View>
-      <Arrow
-        fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack}
-      />
-    </Pressable>
-  );
 
   return (
     <View style={styles.root}>

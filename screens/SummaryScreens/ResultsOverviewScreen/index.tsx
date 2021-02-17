@@ -42,39 +42,11 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
 
     setCounts({
       total: results.length,
-      correct: results.filter((res) => res.result === 'correct').length,
-      incorrect: results.filter((res) => res.result === 'incorrect').length,
-      almostCorrect: results.filter((res) => res.result === 'similar').length,
+      correct: results.filter(({result}) => result === 'correct').length,
+      incorrect: results.filter(({result}) => result === 'incorrect').length,
+      almostCorrect: results.filter(({result}) => result === 'similar').length,
     });
   }, [results, navigation]);
-
-  const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
-
-    navigation.navigate(item.nextScreen, {
-      extraParams: {
-        results,
-        counts,
-        ...extraParams,
-      },
-    });
-  };
-
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {
-      retryData: {data: results},
-      extraParams,
-    });
-  };
-
-  const descriptionStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
-
-  const itemStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedContainer : styles.container;
-
-  const itemTitleStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemTitle : styles.title2;
 
   const titleCOMP = (
     <Title>
@@ -96,14 +68,19 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     const selected = item.id === selectedId;
     const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark;
     const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack;
+    const itemStyle = selected ? styles.clickedContainer : styles.container;
+    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2;
+    const descriptionStyle = selected
+      ? styles.clickedItemDescription
+      : styles.description;
 
     return (
-      <Pressable style={itemStyle(item)} onPress={() => handleNavigation(item)}>
+      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
         <View style={styles.leftSide}>
           <item.icon fill={iconColor} stroke={iconColor} />
           <View style={styles.text}>
-            <Text style={itemTitleStyle(item)}>{item.title}</Text>
-            <Text style={descriptionStyle(item)}>
+            <Text style={itemTitleStyle}>{item.title}</Text>
+            <Text style={descriptionStyle}>
               {`${count} of ${counts.total} Words`}
             </Text>
           </View>
@@ -111,6 +88,25 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         <Arrow fill={arrowColor} />
       </Pressable>
     );
+  };
+
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+
+    navigation.navigate(item.nextScreen, {
+      extraParams: {
+        results,
+        counts,
+        ...extraParams,
+      },
+    });
+  };
+
+  const repeatExercise = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: results},
+      extraParams,
+    });
   };
 
   return (

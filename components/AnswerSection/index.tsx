@@ -54,23 +54,6 @@ const AnswerSection = ({
     };
   }, []);
 
-  const getBorderColor = () => {
-    switch (result) {
-      case 'correct':
-        return COLORS.lunesFunctionalCorrectDark;
-      case 'incorrect':
-        return COLORS.lunesFunctionalIncorrectDark;
-      case 'similar':
-        return COLORS.lunesFunctionalAlmostCorrectDark;
-    }
-  };
-
-  const volumeIconColor = isAlmostCorrect
-    ? COLORS.lunesBlackUltralight
-    : isActive
-    ? COLORS.lunesRedDark
-    : COLORS.lunesRed;
-
   const checkEntry = () => {
     const splitInput = input.trim().split(' ');
 
@@ -167,6 +150,23 @@ const AnswerSection = ({
       });
     }
   };
+
+  const getBorderColor = () => {
+    switch (result) {
+      case 'correct':
+        return COLORS.lunesFunctionalCorrectDark;
+      case 'incorrect':
+        return COLORS.lunesFunctionalIncorrectDark;
+      case 'similar':
+        return COLORS.lunesFunctionalAlmostCorrectDark;
+    }
+  };
+
+  const volumeIconColor = isAlmostCorrect
+    ? COLORS.lunesBlackUltralight
+    : isActive
+    ? COLORS.lunesRedDark
+    : COLORS.lunesRed;
 
   return (
     <View style={styles.container}>
