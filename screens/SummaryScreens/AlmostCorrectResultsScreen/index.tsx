@@ -105,6 +105,16 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
       </Button>
     ) : null;
 
+  const Footer = (
+    <>
+      {retryButton}
+      <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
+        <Text style={styles.darkLabel}>View incorrect entries</Text>
+        <NextArrow style={styles.arrow} />
+      </Button>
+    </>
+  );
+
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
@@ -116,14 +126,8 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
+          ListFooterComponent={Footer}
         />
-
-        {retryButton}
-
-        <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
-          <Text style={styles.darkLabel}>View incorrect entries</Text>
-          <NextArrow style={styles.arrow} />
-        </Button>
       </Loading>
     </View>
   );
