@@ -18,6 +18,7 @@ import {
   CorrectResultsScreen,
   AlmostCorrectResultsScreen,
   IncorrectResultsScreen,
+  TransitionPresets,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
@@ -45,7 +46,9 @@ const defaultOptions = (
 
 const Navigation = () => {
   return (
-    <ProfessionStack.Navigator initialRouteName="Profession">
+    <ProfessionStack.Navigator
+      initialRouteName="Profession"
+      screenOptions={TransitionPresets.SlideFromRightIOS}>
       <ProfessionStack.Screen
         options={{headerShown: false}}
         name="Profession"

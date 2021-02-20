@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import ProfessionScreen from '../screens/MainScreens/ProfessionScreen';
 import ProfessionSubcategoryScreen from '../screens/MainScreens/ProfessionSubcategoryScreen';
 import ExercisesScreen from '../screens/Exercises/ExercisesScreens';
@@ -33,6 +33,7 @@ export {
   CorrectResultsScreen,
   AlmostCorrectResultsScreen,
   IncorrectResultsScreen,
+  TransitionPresets,
 };
 
 export type {ProfessionParamList};
