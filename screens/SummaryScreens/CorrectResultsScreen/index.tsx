@@ -56,6 +56,22 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
       </Text>
     </Title>
   );
+  const Footer = () => {
+    const goToAlmostCorrectEntries = () => {
+      navigation.navigate(SCREENS.AlmostCorrectResults, {
+        title,
+        description,
+        Level,
+        extraParams,
+      });
+    };
+    return (
+      <Button onPress={goToAlmostCorrectEntries} style={styles.viewButton}>
+        <Text style={styles.darkLabel}>View almost correct entries</Text>
+        <NextArrow style={styles.arrow} />
+      </Button>
+    );
+  };
 
   const Item = ({item}: any) => (
     <VocabularyOverviewListItem
@@ -66,15 +82,6 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
       audio={item.audio}
     />
   );
-
-  const goToAlmostCorrectEntries = () => {
-    navigation.navigate(SCREENS.AlmostCorrectResults, {
-      title,
-      description,
-      Level,
-      extraParams,
-    });
-  };
 
   return (
     <View style={styles.root}>
@@ -87,12 +94,8 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
+          ListFooterComponent={Footer}
         />
-
-        <Button onPress={goToAlmostCorrectEntries} style={styles.viewButton}>
-          <Text style={styles.darkLabel}>View almost correct entries</Text>
-          <NextArrow style={styles.arrow} />
-        </Button>
       </Loading>
     </View>
   );
