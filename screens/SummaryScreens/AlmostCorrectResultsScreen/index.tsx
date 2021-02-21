@@ -10,7 +10,6 @@ import {
   Title,
   FlatList,
   useFocusEffect,
-  AsyncStorage,
   Loading,
   VocabularyOverviewListItem,
   IDocumentProps,
@@ -23,30 +22,30 @@ import {
 } from './imports';
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams, title, description, Level} = route.params;
+  const {extraParams} = route.params;
+  const {counts, results} = route.params.extraParams;
   const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <CircularFinishIcon />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
+  React.useLayoutEffect(() => {}, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('almost correct').then((value) => {
-        setAlmostCorrectEntries(value && JSON.parse(value));
-        setIsLoading(false);
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(SCREENS.exercises)}>
+            <CircularFinishIcon />
+          </TouchableOpacity>
+        ),
       });
-    }, []),
+      setAlmostCorrectEntries(
+        results.filter(({result}) => result === 'similar'),
+      );
+      setIsLoading(false);
+    }, [navigation, results]),
   );
 
   const titleComp = (
@@ -59,7 +58,7 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
       />
       <Text style={styles.screenTitle}>Almost correct Entries</Text>
       <Text style={styles.description}>
-        {`${extraParams.almostCorrectAnswersCount} of ${extraParams.totalCount} Words`}
+        {`${counts.almostCorrect} of ${counts.total} Words`}
       </Text>
     </Title>
   );
@@ -75,23 +74,13 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
   );
 
   const goToIncorrectEntries = () => {
-    navigation.navigate(SCREENS.IncorrectResults, {
-      title,
-      description,
-      Level,
-      extraParams,
-    });
+    navigation.navigate(SCREENS.IncorrectResults, extraParams);
   };
 
   const repeatAlmostCorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
       retryData: {data: almostCorrectEntries},
-      extraParams: {
-        ...extraParams,
-        title,
-        description,
-        Level,
-      },
+      extraParams,
     });
 
   const retryButton =
@@ -101,7 +90,7 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
         theme={BUTTONS_THEME.dark}
         style={styles.fixedPositionButton}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeate almost correct entries</Text>
+        <Text style={styles.lightLabel}>Repeat almost correct entries</Text>
       </Button>
     ) : null;
 

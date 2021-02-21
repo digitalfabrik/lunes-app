@@ -16,7 +16,6 @@ import {EXERCISES} from '../../../constants/data';
 import {Arrow} from '../../../assets/images/imports';
 import {useFocusEffect} from '@react-navigation/native';
 import {COLORS} from '../../../constants/colors';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -35,7 +34,6 @@ export {
   Image,
   FlatList,
   Arrow,
-  AsyncStorage,
 };
 
 export type {IExercisesScreenProps};

@@ -15,7 +15,6 @@ import {
   Title,
   Arrow,
   COLORS,
-  AsyncStorage,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -23,70 +22,67 @@ LogBox.ignoreLogs([
 ]);
 
 const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
-  const {title, id} = route.params;
+  const {subCategory, profession, subCategoryID, professionID} = route.params;
   const [selectedId, setSelectedId] = useState(-1);
 
-  useFocusEffect(() => setSelectedId(-1));
+  useFocusEffect(
+    React.useCallback(() => {
+      setSelectedId(-1);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.popToTop()}>
-          <Home />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
-  const descriptionStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
-
-  const itemStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedContainer : styles.container;
-
-  const itemTitleStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemTitle : styles.title2;
-
-  const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
-    navigation.navigate(item.nextScreen, {
-      id: item.id,
-      title: item.title,
-      icon: item.icon,
-      extraParams: {
-        id,
-        title: item.title,
-        Level: item.Level,
-        description: item.description,
-      },
-    });
-  };
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.popToTop()}>
+            <Home />
+          </TouchableOpacity>
+        ),
+      });
+    }, [navigation]),
+  );
 
   const titleCOMP = (
     <Title>
-      <Text style={styles.screenTitle}>{title}</Text>
+      <Text style={styles.screenTitle}>{subCategory}</Text>
       <Text style={styles.screenDescription}>2 Exercises</Text>
     </Title>
   );
 
-  const Item = ({item}: any) => (
-    <Pressable style={itemStyle(item)} onPress={() => handleNavigation(item)}>
-      <View>
-        <Text style={itemTitleStyle(item)}>{item.title}</Text>
-        <Text style={descriptionStyle(item)}>{item.description}</Text>
-        <item.Level style={styles.level} />
-      </View>
-      <Arrow
-        fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack}
-      />
-    </Pressable>
-  );
+  const Item = ({item}: any) => {
+    const selected = item.id === selectedId;
+    const itemStyle = selected ? styles.clickedContainer : styles.container;
+    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2;
+    const descriptionStyle = selected
+      ? styles.clickedItemDescription
+      : styles.description;
+    return (
+      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
+        <View>
+          <Text style={itemTitleStyle}>{item.title}</Text>
+          <Text style={descriptionStyle}>{item.description}</Text>
+          <item.Level style={styles.level} />
+        </View>
+        <Arrow
+          fill={
+            item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack
+          }
+        />
+      </Pressable>
+    );
+  };
 
-  React.useEffect(() => {
-    AsyncStorage.setItem('correct', JSON.stringify([]));
-    AsyncStorage.setItem('incorrect', JSON.stringify([]));
-    AsyncStorage.setItem('almost correct', JSON.stringify([]));
-  }, []);
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+    navigation.navigate(item.nextScreen, {
+      extraParams: {
+        profession: profession,
+        subCategory: subCategory,
+        professionId: professionID,
+        subCategoryId: subCategoryID,
+        exercise: item.title,
+        exerciseDescription: item.description,
+        Level: item.Level,
+      },
+    });
+  };
 
   return (
     <View style={styles.root}>

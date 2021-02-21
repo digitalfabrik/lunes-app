@@ -14,6 +14,7 @@ import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsOverviewScre
 import CorrectResultsScreen from '../screens/SummaryScreens/CorrectResultsScreen';
 import AlmostCorrectResultsScreen from '../screens/SummaryScreens/AlmostCorrectResultsScreen';
 import IncorrectResultsScreen from '../screens/SummaryScreens/IncorrectResultsScreen';
+import {NavigationContainer} from '@react-navigation/native';
 
 export {
   React,
@@ -23,6 +24,7 @@ export {
   ExercisesScreen,
   VocabularyOverviewExerciseScreen,
   VocabularyTrainerExerciseScreen,
+  NavigationContainer,
   BackButton,
   CloseButton,
   styles,

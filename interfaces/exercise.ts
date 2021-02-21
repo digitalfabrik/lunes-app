@@ -37,36 +37,28 @@ export interface IConfirmationModalProps {
 }
 
 export interface IAnswerSectionProps {
-  count: number;
-  index: number;
-  setIndex: Function;
-  currentWordNumber: number;
-  setCurrentWordNumber: Function;
+  tryLater: () => void;
+  totalNumbers: number;
+  currentDocumentNumber: number;
+  setCurrentDocumentNumber: Function;
   document?: IDocumentProps;
-  setDocuments: Function;
-  increaseProgress: Function;
-  navigation: any;
-  extraParams: any;
+  finishExercise: Function;
+  subCategory: string;
+  profession: string;
 }
 
 export interface IFeedbackProps {
-  isCorrect: boolean;
-  isIncorrect: boolean;
-  almostCorrect: boolean;
+  result: string;
   document?: IDocumentProps;
-  word: string;
-  article: string;
+  input: string;
 }
 
 export interface IActionsProps {
-  isCorrect: boolean;
-  isIncorrect: boolean;
-  isAlmostCorrect: boolean;
+  tryLater: () => void;
+  giveUp: () => void;
+  result: string;
   checkEntry: () => void;
-  markAsIncorrect: () => void;
-  getNextWordAndModifyCounter: () => void;
-  addToTryLater: () => void;
+  getNextWord: () => void;
   input: string;
   isFinished: boolean;
-  checkOut: () => void;
 }

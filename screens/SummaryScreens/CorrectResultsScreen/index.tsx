@@ -10,7 +10,6 @@ import {
   Title,
   FlatList,
   useFocusEffect,
-  AsyncStorage,
   Loading,
   VocabularyOverviewListItem,
   IDocumentProps,
@@ -21,30 +20,26 @@ import {
 } from './imports';
 
 const CorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams, title, description, Level} = route.params;
+  const {extraParams} = route.params;
+  const {title, description, Level, results, counts} = extraParams;
   const [correctEntries, setCorrectEntries] = React.useState<IDocumentProps[]>(
     [],
   );
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate(SCREENS.exercises)}>
-          <CircularFinishIcon />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('correct').then((value) => {
-        setCorrectEntries(value && JSON.parse(value));
-        setIsLoading(false);
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(SCREENS.exercises)}>
+            <CircularFinishIcon />
+          </TouchableOpacity>
+        ),
       });
-    }, []),
+      setCorrectEntries(results.filter(({result}) => result === 'correct'));
+      setIsLoading(false);
+    }, [navigation, results]),
   );
 
   const titleComp = (
@@ -57,7 +52,7 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
       />
       <Text style={styles.screenTitle}>Correct Entries</Text>
       <Text style={styles.description}>
-        {`${extraParams.correctAnswersCount} of ${extraParams.totalCount} Words`}
+        {`${counts.correct} of ${counts.total} Words`}
       </Text>
     </Title>
   );

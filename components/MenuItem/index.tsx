@@ -18,7 +18,6 @@ const MenuItem = ({
   children,
 }: IMenuItemProps) => {
   const itemStyle = selected ? styles.clickedContainer : styles.container;
-
   const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle;
 
   return (

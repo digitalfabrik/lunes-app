@@ -10,64 +10,41 @@ import {
 } from './imports';
 
 const Actions = ({
-  isCorrect,
-  isIncorrect,
-  isAlmostCorrect,
-  addToTryLater,
-  getNextWordAndModifyCounter,
+  result,
+  giveUp,
   checkEntry,
-  markAsIncorrect,
+  getNextWord,
   input,
   isFinished,
-  checkOut,
-}: IActionsProps) => (
-  <>
-    {isFinished ? (
-      <Button onPress={checkOut} theme={BUTTONS_THEME.dark}>
-        <Text style={[styles.lightLabel, styles.arrowLabel]}>Check out</Text>
-        <WhiteNextArrow />
+  tryLater,
+}: IActionsProps) => {
+  return ['correct', 'incorrect'].includes(result) ? (
+    <Button onPress={getNextWord} theme={BUTTONS_THEME.dark}>
+      <Text style={[styles.lightLabel, styles.arrowLabel]}>
+        {isFinished ? 'Check out' : 'Next Word'}
+      </Text>
+      <WhiteNextArrow />
+    </Button>
+  ) : (
+    <>
+      <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark}>
+        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>
+          Check entry
+        </Text>
       </Button>
-    ) : (
-      <>
-        {!isIncorrect && !isCorrect ? (
-          <>
-            <Button
-              onPress={checkEntry}
-              disabled={!input}
-              theme={BUTTONS_THEME.dark}>
-              <Text
-                style={[
-                  styles.lightLabel,
-                  !input && styles.disabledButtonLabel,
-                ]}>
-                Check entry
-              </Text>
-            </Button>
 
-            <Button onPress={markAsIncorrect} theme={BUTTONS_THEME.light}>
-              <Text style={styles.darkLabel}>I give up!</Text>
-            </Button>
-          </>
-        ) : (
-          <Button
-            onPress={getNextWordAndModifyCounter}
-            theme={BUTTONS_THEME.dark}>
-            <Text style={[styles.lightLabel, styles.arrowLabel]}>
-              Next Word
-            </Text>
-            <WhiteNextArrow />
-          </Button>
-        )}
+      <Button onPress={giveUp} theme={BUTTONS_THEME.light}>
+        <Text style={styles.darkLabel}>I give up!</Text>
+      </Button>
 
-        {!isCorrect && !isIncorrect && !isAlmostCorrect && (
-          <Button onPress={addToTryLater}>
-            <Text style={styles.darkLabel}>Try later</Text>
-            <NextArrow style={styles.arrow} />
-          </Button>
-        )}
-      </>
-    )}
-  </>
-);
+      {!isFinished && !result && (
+        <Button onPress={tryLater}>
+          <Text style={styles.darkLabel}>Try later</Text>
+          <NextArrow style={styles.arrow} />
+        </Button>
+      )}
+    </>
+  );
+};
 
 export default Actions;

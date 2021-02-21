@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
 import stringSimilarity from 'string-similarity';
 import Actions from '../Actions';
-import {SCREENS} from '../../constants/data';
 import PopoverContent from '../PopoverContent';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -33,7 +32,6 @@ export {
   Feedback,
   stringSimilarity,
   Actions,
-  SCREENS,
   PopoverContent,
   useFocusEffect,
 };
