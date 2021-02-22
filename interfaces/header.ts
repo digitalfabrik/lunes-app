@@ -1,3 +1,3 @@
-export interface IHeader {
-  top: number;
+export interface IHeaderProps {
+  top: number | undefined;
 }

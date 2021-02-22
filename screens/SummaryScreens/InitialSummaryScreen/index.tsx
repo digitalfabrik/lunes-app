@@ -28,7 +28,7 @@ const InitialSummaryScreen = ({
   useFocusEffect(
     React.useCallback(() => {
       AsyncStorage.getItem(exercise).then((value) => {
-        const jsonValue = JSON.parse(value);
+        const jsonValue = value && JSON.parse(value);
         setResults(Object.values(jsonValue[profession][subCategory]));
       });
     }, [exercise, profession, subCategory]),

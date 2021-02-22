@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import {
   React,
   TouchableOpacity,
@@ -18,6 +17,7 @@ import {
   stringSimilarity,
   Actions,
   PopoverContent,
+  AsyncStorage,
 } from './imports';
 
 const AnswerSection = ({
@@ -114,9 +114,12 @@ const AnswerSection = ({
         }
         jsonValue[profession][subCategory] = {};
       }
-      jsonValue[profession][subCategory][document.word] = result
-        ? {...document, result}
-        : {...document, result: 'incorrect'};
+
+      if (document) {
+        jsonValue[profession][subCategory][document.word] = result
+          ? {...document, result}
+          : {...document, result: 'incorrect'};
+      }
 
       await AsyncStorage.setItem(
         'Vocabulary Trainer',
