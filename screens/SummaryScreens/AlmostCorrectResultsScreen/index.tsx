@@ -23,7 +23,7 @@ import {
 
 const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
   const {extraParams} = route.params;
-  const {counts, results} = route.params.extraParams;
+  const {title, description, Level, results, counts} = extraParams;
   const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -74,7 +74,12 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
   );
 
   const goToIncorrectEntries = () => {
-    navigation.navigate(SCREENS.IncorrectResults, extraParams);
+    navigation.navigate(SCREENS.IncorrectResults, {
+      title,
+      description,
+      Level,
+      extraParams,
+    });
   };
 
   const repeatAlmostCorrectEntries = () =>

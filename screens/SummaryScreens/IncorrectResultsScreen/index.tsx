@@ -23,7 +23,7 @@ import {
 
 const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
   const {extraParams} = route.params;
-  const {counts, results} = route.params.extraParams;
+  const {title, description, Level, results, counts} = extraParams;
   const [incorrectEntries, setIncorrectEntries] = React.useState<
     IDocumentProps[]
   >([]);
@@ -73,7 +73,12 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
   );
 
   const goToCorrectEntries = () => {
-    navigation.navigate(SCREENS.CorrectResults, extraParams);
+    navigation.navigate(SCREENS.CorrectResults, {
+      title,
+      description,
+      Level,
+      extraParams,
+    });
   };
 
   const repeatIncorrectEntries = () =>
