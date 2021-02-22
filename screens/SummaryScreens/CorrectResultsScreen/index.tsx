@@ -66,7 +66,7 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
       });
     };
     return (
-      <Button onPress={goToAlmostCorrectEntries} style={styles.viewButton}>
+      <Button onPress={goToAlmostCorrectEntries}>
         <Text style={styles.darkLabel}>View almost correct entries</Text>
         <NextArrow style={styles.arrow} />
       </Button>
@@ -95,6 +95,7 @@ const CorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
           ListFooterComponent={Footer}
+          ListFooterComponentStyle={styles.footer}
         />
       </Loading>
     </View>

@@ -84,11 +84,8 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
     });
 
   const retryButton =
-    extraParams.almostCorrectAnswersCount !== 0 ? (
-      <Button
-        onPress={repeatAlmostCorrectEntries}
-        theme={BUTTONS_THEME.dark}
-        style={styles.fixedPositionButton}>
+    almostCorrectEntries.length > 0 ? (
+      <Button onPress={repeatAlmostCorrectEntries} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
         <Text style={styles.lightLabel}>Repeat almost correct entries</Text>
       </Button>
@@ -97,7 +94,7 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
   const Footer = (
     <>
       {retryButton}
-      <Button onPress={goToIncorrectEntries} style={styles.viewButton}>
+      <Button onPress={goToIncorrectEntries}>
         <Text style={styles.darkLabel}>View incorrect entries</Text>
         <NextArrow style={styles.arrow} />
       </Button>
@@ -116,6 +113,7 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
           ListFooterComponent={Footer}
+          ListFooterComponentStyle={styles.footer}
         />
       </Loading>
     </View>

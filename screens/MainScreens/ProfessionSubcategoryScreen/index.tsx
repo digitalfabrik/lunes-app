@@ -90,6 +90,7 @@ const ProfessionSubcategoryScreen = ({
       subCategory: item.title,
       profession: title,
       professionID: id,
+      extraParams: title,
     });
   };
 

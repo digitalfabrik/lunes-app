@@ -48,8 +48,7 @@ export const styles = StyleSheet.create({
   arrow: {
     marginLeft: 5,
   },
-  viewButton: {
-    position: 'absolute',
-    bottom: 0,
+  footer: {
+    marginTop: 15,
   },
 });

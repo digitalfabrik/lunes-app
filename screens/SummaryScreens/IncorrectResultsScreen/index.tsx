@@ -83,11 +83,8 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
     });
 
   const retryButton =
-    extraParams.incorrectAnswersCount !== 0 ? (
-      <Button
-        onPress={repeatIncorrectEntries}
-        theme={BUTTONS_THEME.dark}
-        style={styles.fixedPositionButton}>
+    incorrectEntries.length > 0 ? (
+      <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
         <Text style={styles.lightLabel}>Repeat incorrect entries</Text>
       </Button>
@@ -97,7 +94,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
     <>
       {retryButton}
 
-      <Button onPress={goToCorrectEntries} style={styles.viewButton}>
+      <Button onPress={goToCorrectEntries}>
         <Text style={styles.darkLabel}>View correct entries</Text>
         <NextArrow style={styles.arrow} />
       </Button>
@@ -116,6 +113,7 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
           ListFooterComponent={Footer}
+          ListFooterComponentStyle={styles.footer}
         />
       </Loading>
     </View>

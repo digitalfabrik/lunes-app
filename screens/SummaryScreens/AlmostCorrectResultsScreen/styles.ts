@@ -48,13 +48,8 @@ export const styles = StyleSheet.create({
   arrow: {
     marginLeft: 5,
   },
-  fixedPositionButton: {
-    position: 'absolute',
-    bottom: hp('7%'),
-  },
-  viewButton: {
-    position: 'absolute',
-    bottom: 0,
+  footer: {
+    marginTop: 15,
   },
   lightLabel: {
     fontSize: wp('3.5%'),
