@@ -7,9 +7,10 @@ import {
   CircleIcon,
   LinesIcon,
   SmileIcon,
+  IHeader,
 } from './imports';
 
-const Header = ({top}: any) => (
+const Header = ({top}: IHeader) => (
   <View style={{...styles.wrapper, paddingTop: top}}>
     <View style={styles.header}>
       <View style={styles.squareIcon}>

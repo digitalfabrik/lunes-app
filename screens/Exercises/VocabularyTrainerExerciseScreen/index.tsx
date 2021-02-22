@@ -1,4 +1,3 @@
-import {useFocusEffect} from '@react-navigation/native';
 import {
   React,
   useState,
@@ -20,6 +19,7 @@ import {
   TouchableOpacity,
   CloseButton,
   SCREENS,
+  useFocusEffect,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({

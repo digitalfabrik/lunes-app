@@ -15,6 +15,7 @@ import CorrectResultsScreen from '../screens/SummaryScreens/CorrectResultsScreen
 import AlmostCorrectResultsScreen from '../screens/SummaryScreens/AlmostCorrectResultsScreen';
 import IncorrectResultsScreen from '../screens/SummaryScreens/IncorrectResultsScreen';
 import {NavigationContainer} from '@react-navigation/native';
+import {SCREENS} from '../constants/data';
 
 export {
   React,
@@ -36,6 +37,7 @@ export {
   AlmostCorrectResultsScreen,
   IncorrectResultsScreen,
   TransitionPresets,
+  SCREENS,
 };
 
 export type {ProfessionParamList};

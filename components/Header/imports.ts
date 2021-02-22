@@ -8,6 +8,7 @@ import {
   LinesIcon,
   SmileIcon,
 } from '../../assets/images/imports';
+import {IHeader} from '../../interfaces/header';
 
 export {
   React,
@@ -19,3 +20,5 @@ export {
   LinesIcon,
   SmileIcon,
 };
+
+export type {IHeader};

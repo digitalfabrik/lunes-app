@@ -19,6 +19,7 @@ import AnswerSection from '../../../components/AnswerSection';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CloseButton} from '../../../assets/images/imports';
 import {SCREENS} from '../../../constants/data';
+import {useFocusEffect} from '@react-navigation/native';
 
 export {
   React,
@@ -39,6 +40,7 @@ export {
   TouchableOpacity,
   CloseButton,
   SCREENS,
+  useFocusEffect,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

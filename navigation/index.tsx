@@ -1,4 +1,3 @@
-import {SCREENS} from '../constants/data';
 import {
   React,
   createStackNavigator,
@@ -20,6 +19,7 @@ import {
   IncorrectResultsScreen,
   NavigationContainer,
   TransitionPresets,
+  SCREENS,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();

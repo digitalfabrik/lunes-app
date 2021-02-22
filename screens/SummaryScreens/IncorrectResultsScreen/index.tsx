@@ -29,8 +29,6 @@ const IncorrectResults = ({route, navigation}: IResultScreenProps) => {
   >([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useLayoutEffect(() => {}, [navigation]);
-
   useFocusEffect(
     React.useCallback(() => {
       navigation.setOptions({
