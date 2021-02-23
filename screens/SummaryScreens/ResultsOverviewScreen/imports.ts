@@ -11,7 +11,12 @@ import {styles} from './styles';
 import Title from '../../../components/Title';
 import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images/imports';
 import {COLORS} from '../../../constants/colors';
-import {RESULTS, BUTTONS_THEME, SCREENS} from '../../../constants/data';
+import {
+  RESULTS,
+  BUTTONS_THEME,
+  SCREENS,
+  RESULT_TYPE,
+} from '../../../constants/data';
 import {IResultsOverviewScreenProps} from '../../../interfaces/summaryScreens';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -28,6 +33,7 @@ export {
   COLORS,
   RESULTS,
   FlatList,
+  RESULT_TYPE,
   useFocusEffect,
   AsyncStorage,
   Button,

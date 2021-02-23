@@ -1,36 +1,35 @@
 import {
   React,
+  View,
   Text,
-  IResultScreenProps,
-  CircularFinishIcon,
+  styles,
+  useFocusEffect,
   SCREENS,
   TouchableOpacity,
-  View,
-  styles,
   Title,
   FlatList,
-  useFocusEffect,
   Loading,
   VocabularyOverviewListItem,
-  IDocumentProps,
   COLORS,
-  AlmostCorrectIcon,
   Button,
+  CircularFinishIcon,
+  RESULT_PRESETS,
   NextArrow,
   RepeatIcon,
   BUTTONS_THEME,
+  IDocumentProps,
+  IResultScreenProps,
 } from './imports';
 
-const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
-  const {extraParams} = route.params;
-  const {title, description, Level, results, counts} = extraParams;
-  const [almostCorrectEntries, setAlmostCorrectEntries] = React.useState<
-    IDocumentProps[]
-  >([]);
+const ResultScreen = ({route, navigation}: IResultScreenProps) => {
+  const {extraParams, results, counts, resultType} = route.params;
+  const [entries, setEntries] = React.useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const {next, Icon, title} = RESULT_PRESETS[resultType];
 
   useFocusEffect(
     React.useCallback(() => {
+      setEntries(results.filter(({result}: any) => result === resultType));
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
@@ -39,24 +38,22 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
           </TouchableOpacity>
         ),
       });
-      setAlmostCorrectEntries(
-        results.filter(({result}) => result === 'similar'),
-      );
+
       setIsLoading(false);
-    }, [navigation, results]),
+    }, [navigation, resultType, results]),
   );
 
-  const titleComp = (
+  const Header = (
     <Title>
-      <AlmostCorrectIcon
+      <Icon
         fill={COLORS.lunesGreyDark}
         stroke={COLORS.lunesGreyDark}
         width={36}
         height={36}
       />
-      <Text style={styles.screenTitle}>Almost correct Entries</Text>
+      <Text style={styles.screenTitle}> {title} Entries</Text>
       <Text style={styles.description}>
-        {`${counts.almostCorrect} of ${counts.total} Words`}
+        {`${counts[resultType]} of ${counts.total} Words`}
       </Text>
     </Title>
   );
@@ -71,34 +68,32 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
     />
   );
 
-  const goToIncorrectEntries = () => {
-    navigation.navigate(SCREENS.IncorrectResults, {
-      title,
-      description,
-      Level,
-      extraParams,
-    });
-  };
-
-  const repeatAlmostCorrectEntries = () =>
+  const repeatIncorrectEntries = () =>
     navigation.navigate(SCREENS.vocabularyTrainer, {
-      retryData: {data: almostCorrectEntries},
+      retryData: {data: entries},
       extraParams,
     });
 
   const retryButton =
-    almostCorrectEntries.length > 0 ? (
-      <Button onPress={repeatAlmostCorrectEntries} theme={BUTTONS_THEME.dark}>
+    entries.length > 0 && ['similar', 'incorrect'].includes(resultType) ? (
+      <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeat almost correct entries</Text>
+        <Text style={styles.lightLabel}>Repeat {resultType} entries</Text>
       </Button>
     ) : null;
 
   const Footer = (
     <>
       {retryButton}
-      <Button onPress={goToIncorrectEntries}>
-        <Text style={styles.darkLabel}>View incorrect entries</Text>
+
+      <Button
+        onPress={() =>
+          navigation.navigate(SCREENS.ResultScreen, {
+            ...route.params,
+            resultType: next.type,
+          })
+        }>
+        <Text style={styles.darkLabel}>View {next.title} entries</Text>
         <NextArrow style={styles.arrow} />
       </Button>
     </>
@@ -108,9 +103,9 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
         <FlatList
-          data={almostCorrectEntries}
+          data={entries}
           style={styles.list}
-          ListHeaderComponent={titleComp}
+          ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
@@ -123,4 +118,4 @@ const AlmostCorrectResults = ({route, navigation}: IResultScreenProps) => {
   );
 };
 
-export default AlmostCorrectResults;
+export default ResultScreen;

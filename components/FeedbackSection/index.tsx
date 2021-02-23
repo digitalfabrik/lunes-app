@@ -11,11 +11,11 @@ import {
   ARTICLES,
 } from './imports';
 
-const Feedback = ({result, document, input}: IFeedbackProps) => {
+const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
   const Icon =
     result === 'correct'
       ? CorrectIcon
-      : result === 'incorrect'
+      : result === 'incorrect' || !secondAttempt
       ? IncorrectIcon
       : AlmostCorrectIcon;
 
@@ -35,9 +35,9 @@ const Feedback = ({result, document, input}: IFeedbackProps) => {
             ? 'die'
             : document?.article
         } ${document?.word}`
-      : `Your entry ${input} is almost correct.\nCheck for upper and lower case.`;
+      : `Your entry ${input} is almost correct. Check for upper and lower case.`;
 
-  return result !== '' ? (
+  return result !== '' || secondAttempt ? (
     <View style={[styles.messageContainer, messageStyle]}>
       <Icon fill={COLORS.lunesGreyDark} stroke={COLORS.lunesGreyDark} />
       <View style={styles.textContainer}>

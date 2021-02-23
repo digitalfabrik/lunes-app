@@ -14,9 +14,7 @@ import {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
-  CorrectResultsScreen,
-  AlmostCorrectResultsScreen,
-  IncorrectResultsScreen,
+  ResultScreen,
   NavigationContainer,
   TransitionPresets,
   SCREENS,
@@ -109,32 +107,8 @@ const Navigation = () => {
               SCREENS.ResultsOverview,
             )
           }
-          name="CorrectResults"
-          component={CorrectResultsScreen}
-        />
-        <ProfessionStack.Screen
-          options={({navigation}) =>
-            defaultOptions(
-              'Results Overview',
-              BackButton,
-              navigation,
-              SCREENS.ResultsOverview,
-            )
-          }
-          name="AlmostCorrectResults"
-          component={AlmostCorrectResultsScreen}
-        />
-        <ProfessionStack.Screen
-          options={({navigation}) =>
-            defaultOptions(
-              'Results Overview',
-              BackButton,
-              navigation,
-              SCREENS.ResultsOverview,
-            )
-          }
-          name="IncorrectResults"
-          component={IncorrectResultsScreen}
+          name="ResultScreen"
+          component={ResultScreen}
         />
       </ProfessionStack.Navigator>
     </NavigationContainer>

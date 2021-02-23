@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   FinishIcon,
   StatusBar,
+  RESULT_TYPE,
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
@@ -44,11 +45,11 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       total: results.length,
       correct: results.filter(({result}) => result === 'correct').length,
       incorrect: results.filter(({result}) => result === 'incorrect').length,
-      almostCorrect: results.filter(({result}) => result === 'similar').length,
+      similar: results.filter(({result}) => result === 'similar').length,
     });
   }, [results, navigation]);
 
-  const titleCOMP = (
+  const Header = (
     <Title>
       <Text style={styles.screenTitle}>Results Overview</Text>
       <Text style={styles.screenSubTitle}>{exercise}</Text>
@@ -58,12 +59,19 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   );
 
   const Item = ({item}: any) => {
-    const count =
-      item.id === 1
-        ? counts.correct
-        : item.id === 2
-        ? counts.almostCorrect
-        : counts.incorrect;
+    const handleNavigation = ({id}: number) => {
+      setSelectedId(id);
+
+      navigation.navigate(SCREENS.ResultScreen, {
+        extraParams,
+        resultType: RESULT_TYPE[id - 1],
+        results,
+        counts,
+      });
+    };
+
+    const cID = RESULT_TYPE[item.id - 1];
+    const count = counts[cID];
 
     const selected = item.id === selectedId;
     const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark;
@@ -90,18 +98,6 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     );
   };
 
-  const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
-
-    navigation.navigate(item.nextScreen, {
-      extraParams: {
-        results,
-        counts,
-        ...extraParams,
-      },
-    });
-  };
-
   const repeatExercise = () => {
     navigation.navigate(SCREENS.vocabularyTrainer, {
       retryData: {data: results},
@@ -116,7 +112,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       <FlatList
         data={RESULTS}
         style={styles.list}
-        ListHeaderComponent={titleCOMP}
+        ListHeaderComponent={Header}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}

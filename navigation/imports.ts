@@ -11,9 +11,7 @@ import {styles} from './styles';
 import {Text, TouchableOpacity} from 'react-native';
 import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
 import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsOverviewScreen';
-import CorrectResultsScreen from '../screens/SummaryScreens/CorrectResultsScreen';
-import AlmostCorrectResultsScreen from '../screens/SummaryScreens/AlmostCorrectResultsScreen';
-import IncorrectResultsScreen from '../screens/SummaryScreens/IncorrectResultsScreen';
+import ResultScreen from '../screens/SummaryScreens/ResultScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {SCREENS} from '../constants/data';
 
@@ -33,9 +31,7 @@ export {
   TouchableOpacity,
   InitialSummaryScreen,
   ResultsOverviewScreen,
-  CorrectResultsScreen,
-  AlmostCorrectResultsScreen,
-  IncorrectResultsScreen,
+  ResultScreen,
   TransitionPresets,
   SCREENS,
 };

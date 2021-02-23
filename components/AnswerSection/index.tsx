@@ -35,8 +35,7 @@ const AnswerSection = ({
   const [isActive, setIsActive] = useState(false);
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
-  const [tryAgain, setTryAgain] = useState(false);
-  const isAlmostCorrect = !['correct', 'incorrect'].includes(result);
+  const [secondAttempt, setSecondAttempt] = useState(false);
 
   React.useEffect(() => {
     const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
@@ -65,19 +64,18 @@ const AnswerSection = ({
     const article = splitInput[0].toLowerCase();
     const word = splitInput[1];
 
-    if (validateForCorrect(article, word)) {
-      setResult('correct');
-    } else if (validateForSimilar(article, word)) {
-      if (tryAgain) {
-        getNextWord();
-      }
-      setResult('similar');
-      setTryAgain(true);
-      setInput('');
-    } else {
-      setTryAgain(false);
+    if (!validateForSimilar(article, word)) {
       setResult('incorrect');
+    } else if (validateForCorrect(article, word)) {
+      setResult('correct');
+    } else if (secondAttempt) {
+      setResult('similar');
+    } else {
+      setInput('');
+      setSecondAttempt(true);
+      return;
     }
+    setSecondAttempt(false);
   };
 
   const validateForCorrect = (inputArticle: string, inputWord: string) => {
@@ -126,13 +124,15 @@ const AnswerSection = ({
         JSON.stringify(jsonValue),
       );
 
+      setResult('');
+      setInput('');
+      setSecondAttempt(false);
+
       if (currentDocumentNumber === totalNumbers - 1) {
         finishExercise();
       }
 
       setCurrentDocumentNumber(currentDocumentNumber + 1);
-      setResult('');
-      setInput('');
     });
   };
 
@@ -155,21 +155,21 @@ const AnswerSection = ({
   };
 
   const getBorderColor = () => {
-    switch (result) {
-      case 'correct':
-        return COLORS.lunesFunctionalCorrectDark;
-      case 'incorrect':
-        return COLORS.lunesFunctionalIncorrectDark;
-      case 'similar':
-        return COLORS.lunesFunctionalAlmostCorrectDark;
+    if (result === 'similar' || (secondAttempt && !input)) {
+      return COLORS.lunesFunctionalAlmostCorrectDark;
+    } else if (result === 'correct') {
+      return COLORS.lunesFunctionalCorrectDark;
+    } else if (result === 'incorrect') {
+      return COLORS.lunesFunctionalIncorrectDark;
     }
   };
 
-  const volumeIconColor = isAlmostCorrect
-    ? COLORS.lunesBlackUltralight
-    : isActive
-    ? COLORS.lunesRedDark
-    : COLORS.lunesRed;
+  const volumeIconColor =
+    result === ''
+      ? COLORS.lunesBlackUltralight
+      : isActive
+      ? COLORS.lunesRedDark
+      : COLORS.lunesRed;
 
   return (
     <View style={styles.container}>
@@ -181,7 +181,7 @@ const AnswerSection = ({
       </Popover>
 
       <TouchableOpacity
-        disabled={isAlmostCorrect}
+        disabled={result === ''}
         style={styles.volumeIcon}
         onPress={() => handleSpeakerClick(document?.audio)}>
         <VolumeUp fill={volumeIconColor} />
@@ -197,22 +197,25 @@ const AnswerSection = ({
         ]}>
         <TextInput
           style={styles.textInput}
-          placeholder={
-            result === 'similar' ? 'Try again' : 'Enter Word with article'
-          }
+          placeholder={secondAttempt ? 'Try again' : 'Enter Word with article'}
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={(text) => setInput(text)}
-          editable={isAlmostCorrect}
+          editable={result === ''}
         />
-        {!!input && isAlmostCorrect && (
+        {result === '' && (
           <TouchableOpacity onPress={() => setInput('')}>
             <CloseIcon />
           </TouchableOpacity>
         )}
       </View>
 
-      <Feedback result={result} document={document} input={input} />
+      <Feedback
+        secondAttempt={secondAttempt}
+        result={result}
+        document={document}
+        input={input}
+      />
 
       <Actions
         tryLater={tryLater}
@@ -221,6 +224,7 @@ const AnswerSection = ({
         result={result}
         checkEntry={checkEntry}
         getNextWord={getNextWord}
+        secondAttempt={secondAttempt}
         isFinished={currentDocumentNumber === totalNumbers - 1}
       />
     </View>

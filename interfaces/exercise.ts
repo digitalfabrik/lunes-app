@@ -48,6 +48,7 @@ export interface IAnswerSectionProps {
 }
 
 export interface IFeedbackProps {
+  secondAttempt: boolean;
   result: string;
   document?: IDocumentProps;
   input: string;
@@ -61,4 +62,5 @@ export interface IActionsProps {
   getNextWord: () => void;
   input: string;
   isFinished: boolean;
+  secondAttempt: boolean;
 }

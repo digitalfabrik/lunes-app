@@ -45,7 +45,7 @@ const VocabularyOverviewExerciseScreen = ({
     });
   }, [subCategoryId]);
 
-  const titleComp = (
+  const Header = (
     <Title>
       <Text style={styles.screenTitle}>Vocabulary Overview</Text>
       <Text style={styles.description}>
@@ -70,7 +70,7 @@ const VocabularyOverviewExerciseScreen = ({
         <FlatList
           data={documents}
           style={styles.list}
-          ListHeaderComponent={titleComp}
+          ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}

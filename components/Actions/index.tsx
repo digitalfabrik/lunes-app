@@ -18,7 +18,7 @@ const Actions = ({
   isFinished,
   tryLater,
 }: IActionsProps) => {
-  return ['correct', 'incorrect'].includes(result) ? (
+  return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark}>
       <Text style={[styles.lightLabel, styles.arrowLabel]}>
         {isFinished ? 'Check out' : 'Next Word'}

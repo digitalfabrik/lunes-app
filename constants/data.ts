@@ -15,9 +15,12 @@ export const SCREENS = {
   initialSummaryScreen: 'InitialSummary',
   ResultsOverview: 'ResultsOverview',
   CorrectResults: 'CorrectResults',
+  ResultScreen: 'ResultScreen',
   AlmostCorrectResults: 'AlmostCorrectResults',
   IncorrectResults: 'IncorrectResults',
 };
+
+export const RESULT_TYPE = ['correct', 'similar', 'incorrect'];
 
 export const EXERCISES = [
   {
@@ -67,4 +70,22 @@ export const ARTICLES = {
   der: 'der',
   das: 'das',
   diePlural: 'die (plural)',
+};
+
+export const RESULT_PRESETS = {
+  similar: {
+    Icon: AlmostCorrectIcon,
+    title: 'Almost Correct',
+    next: {title: 'INCORRECT', type: 'incorrect'},
+  },
+  correct: {
+    Icon: CorrectIcon,
+    title: 'Correct',
+    next: {title: 'ALMOST CORRECT', type: 'similar'},
+  },
+  incorrect: {
+    Icon: IncorrectIcon,
+    title: 'Incorrect',
+    next: {title: 'CORRECT', type: 'correct'},
+  },
 };
