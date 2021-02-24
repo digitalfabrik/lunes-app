@@ -20,6 +20,7 @@ import {
   CloseButton,
   SCREENS,
   useFocusEffect,
+  AsyncStorage,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -74,8 +75,11 @@ const VocabularyTrainerExerciseScreen = ({
 
   React.useLayoutEffect(() => {
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal);
+
+    AsyncStorage.setItem('session', JSON.stringify(route.params));
+
     return () => bEvent.remove();
-  }, []);
+  }, [route.params]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -90,6 +94,7 @@ const VocabularyTrainerExerciseScreen = ({
   };
 
   const finishExercise = () => {
+    AsyncStorage.removeItem('session');
     navigation.navigate(SCREENS.initialSummaryScreen, {extraParams});
   };
 
@@ -120,10 +125,9 @@ const VocabularyTrainerExerciseScreen = ({
         {isLoading && <ActivityIndicator style={styles.spinner} />}
 
         <AnswerSection
-          totalNumbers={docsLength}
           currentDocumentNumber={currentDocumentNumber}
           setCurrentDocumentNumber={setCurrentDocumentNumber}
-          document={documents[currentDocumentNumber]}
+          documents={documents}
           finishExercise={finishExercise}
           tryLater={tryLater}
           subCategory={subCategory}

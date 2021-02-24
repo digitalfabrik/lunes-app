@@ -53,6 +53,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
     const descriptionStyle = selected
       ? styles.clickedItemDescription
       : styles.description;
+
     return (
       <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
         <View>

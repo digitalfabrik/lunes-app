@@ -9,6 +9,7 @@ import {
   CloseIcon,
   Button,
   BUTTONS_THEME,
+  AsyncStorage,
 } from './imports';
 
 const ConfirmationModal = ({
@@ -20,6 +21,7 @@ const ConfirmationModal = ({
 
   const goBack = () => {
     setIsModalVisible(false);
+    AsyncStorage.removeItem('session');
     navigation.goBack();
   };
 

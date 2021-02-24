@@ -15,6 +15,7 @@ import {
   Loading,
   MenuItem,
   IProfessionScreenProps,
+  AsyncStorage,
 } from './imports';
 
 const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
@@ -24,12 +25,18 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      AsyncStorage.getItem('session').then(async (value) => {
+        if (value) {
+          navigation.navigate(SCREENS.vocabularyTrainer, JSON.parse(value));
+        }
+      });
+
       axios.get(ENDPOINTS.professions.all).then((response) => {
         setProfessions(response.data);
         setIsLoading(false);
       });
       setSelectedId(-1);
-    }, []),
+    }, [navigation]),
   );
 
   const title = (

@@ -20,6 +20,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CloseButton} from '../../../assets/images/imports';
 import {SCREENS} from '../../../constants/data';
 import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -41,6 +42,7 @@ export {
   CloseButton,
   SCREENS,
   useFocusEffect,
+  AsyncStorage,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

@@ -38,10 +38,9 @@ export interface IConfirmationModalProps {
 
 export interface IAnswerSectionProps {
   tryLater: () => void;
-  totalNumbers: number;
   currentDocumentNumber: number;
   setCurrentDocumentNumber: Function;
-  document?: IDocumentProps;
+  documents: IDocumentProps[];
   finishExercise: Function;
   subCategory: string;
   profession: string;

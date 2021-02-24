@@ -16,6 +16,7 @@ import {
   BUTTONS_THEME,
   SCREENS,
   RESULT_TYPE,
+  EXERCISES,
 } from '../../../constants/data';
 import {IResultsOverviewScreenProps} from '../../../interfaces/summaryScreens';
 import {useFocusEffect} from '@react-navigation/native';
@@ -43,6 +44,7 @@ export {
   TouchableOpacity,
   FinishIcon,
   StatusBar,
+  EXERCISES,
 };
 
 export type {IResultsOverviewScreenProps};

@@ -21,14 +21,13 @@ import {
 } from './imports';
 
 const AnswerSection = ({
-  totalNumbers,
   currentDocumentNumber,
   setCurrentDocumentNumber,
-  document,
   finishExercise,
   tryLater,
   subCategory,
   profession,
+  documents,
 }: IAnswerSectionProps) => {
   const touchable: any = React.createRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
@@ -36,6 +35,8 @@ const AnswerSection = ({
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
   const [secondAttempt, setSecondAttempt] = useState(false);
+  const document = documents[currentDocumentNumber];
+  const totalNumbers = documents.length;
 
   React.useEffect(() => {
     const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
@@ -131,7 +132,16 @@ const AnswerSection = ({
       if (currentDocumentNumber === totalNumbers - 1) {
         finishExercise();
       }
-
+      await AsyncStorage.getItem('session').then(async (value) => {
+        const jsValue = JSON.parse(value);
+        const newData = JSON.stringify({
+          ...jsValue,
+          retryData: {
+            data: documents.slice(currentDocumentNumber + 1, totalNumbers),
+          },
+        });
+        AsyncStorage.setItem('session', newData);
+      });
       setCurrentDocumentNumber(currentDocumentNumber + 1);
     });
   };

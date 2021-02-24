@@ -19,11 +19,15 @@ import {
   FinishIcon,
   StatusBar,
   RESULT_TYPE,
+  EXERCISES,
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   const {extraParams, results} = route.params;
-  const {Level, exercise, exerciseDescription} = route.params.extraParams;
+  const {exercise} = extraParams;
+  const {Level, description, title} = EXERCISES.filter(
+    ({title}) => title === exercise,
+  )[0];
   const [selectedId, setSelectedId] = React.useState(-1);
   const [counts, setCounts] = React.useState({});
 
@@ -52,8 +56,8 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   const Header = (
     <Title>
       <Text style={styles.screenTitle}>Results Overview</Text>
-      <Text style={styles.screenSubTitle}>{exercise}</Text>
-      <Text style={styles.screenDescription}>{exerciseDescription}</Text>
+      <Text style={styles.screenSubTitle}>{title}</Text>
+      <Text style={styles.screenDescription}>{description}</Text>
       <Level style={styles.level} />
     </Title>
   );
