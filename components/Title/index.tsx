@@ -1,7 +1,7 @@
-import {React, styles, View} from './imports';
+import {React, styles, View, ITitleProps} from './imports';
 
-const Title = (props: any) => (
-  <View style={styles.title}>{props.children}</View>
+const Title = ({children}: ITitleProps) => (
+  <View style={styles.title}>{children}</View>
 );
 
 export default Title;

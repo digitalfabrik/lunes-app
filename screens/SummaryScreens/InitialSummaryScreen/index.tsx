@@ -20,42 +20,50 @@ const InitialSummaryScreen = ({
   navigation,
   route,
 }: IInitialSummaryScreenProps) => {
-  const {description, title, Level, totalCount, extraParams} = route.params;
-  const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
+  const {extraParams} = route.params;
+  const {exercise, profession, subCategory} = extraParams;
+  const [results, setResults] = React.useState([]);
   const [message, setMessage] = React.useState('');
-
-  const checkResults = () => {
-    navigation.navigate(SCREENS.ResultsOverview, {
-      title,
-      description,
-      Level,
-      totalCount,
-      extraParams,
-    });
-  };
-
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {extraParams});
-  };
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('correct').then((value) =>
-        setCorrectAnswersCount((value && JSON.parse(value)).length),
-      );
-    }, []),
+      AsyncStorage.getItem(exercise).then((value) => {
+        const jsonValue = value && JSON.parse(value);
+        setResults(Object.values(jsonValue[profession][subCategory]));
+      });
+    }, [exercise, profession, subCategory]),
   );
 
   React.useEffect(() => {
-    setMessage(
-      correctAnswersCount <= 0.35 * totalCount
-        ? 'You still have some trouble with the basics,\nplease retry! '
-        : correctAnswersCount > 0.35 * totalCount &&
-          correctAnswersCount <= 0.75 * totalCount
-        ? "You're getting there.\nPlease retry! "
-        : 'Keep it up!\nYou have mastered the exercise very well.',
-    );
-  }, [correctAnswersCount, totalCount]);
+    const correctResults = results.filter((doc) => doc.result === 'correct');
+    const percentageCorrect = (correctResults.length / results.length) * 100;
+    switch (true) {
+      case percentageCorrect > 66:
+        setMessage('Keep it up!\nYou have mastered the exercise very well.');
+        break;
+
+      case percentageCorrect > 33:
+        setMessage("You're getting there.\nPlease retry!");
+        break;
+
+      case percentageCorrect < 33:
+        setMessage(
+          'You still have some trouble with the basics,\nplease retry! ',
+        );
+        break;
+    }
+  }, [results]);
+
+  const checkResults = () => {
+    navigation.navigate(SCREENS.ResultsOverview, {extraParams, results});
+  };
+
+  const repeatExercise = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      extraParams,
+      retryData: null,
+    });
+  };
 
   return (
     <View style={styles.root}>
@@ -67,10 +75,12 @@ const InitialSummaryScreen = ({
           <Text style={styles.message}>{message}</Text>
         </View>
       </View>
+
       <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
         <ListIcon />
         <Text style={styles.lightLabel}>Check my results</Text>
       </Button>
+
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <RepeatIcon fill={COLORS.lunesBlack} />
         <Text style={styles.darkLabel}>Repeat exercise</Text>

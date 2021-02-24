@@ -11,7 +11,6 @@ import {
   RESULTS,
   FlatList,
   useFocusEffect,
-  AsyncStorage,
   Button,
   BUTTONS_THEME,
   SCREENS,
@@ -19,116 +18,20 @@ import {
   TouchableOpacity,
   FinishIcon,
   StatusBar,
+  RESULT_TYPE,
+  EXERCISES,
 } from './imports';
 
 const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
-  const {extraParams} = route.params;
+  const {extraParams, results} = route.params;
+  const {exercise} = extraParams;
+  const {Level, description, title} = EXERCISES.filter(
+    ({title}) => title === exercise,
+  )[0];
   const [selectedId, setSelectedId] = React.useState(-1);
-  const [correctAnswersCount, setCorrectAnswersCount] = React.useState(0);
-  const [incorrectAnswersCount, setIncorrectAnswersCount] = React.useState(0);
-  const [
-    almostCorrectAnswersCount,
-    setAlmostCorrectAnswersCount,
-  ] = React.useState(0);
-  const [totalCount, setTotalCount] = React.useState(0);
+  const [counts, setCounts] = React.useState({});
 
-  const descriptionStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
-
-  const itemStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedContainer : styles.container;
-
-  const itemTitleStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemTitle : styles.title2;
-
-  const titleCOMP = (
-    <Title>
-      <Text style={styles.screenTitle}>Results Overview</Text>
-      <Text style={styles.screenSubTitle}>{extraParams.title}</Text>
-      <Text style={styles.screenDescription}>{extraParams.description}</Text>
-      <extraParams.Level style={styles.level} />
-    </Title>
-  );
-
-  const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
-
-    navigation.navigate(item.nextScreen, {
-      title: extraParams.title,
-      description: extraParams.description,
-      Level: extraParams.Level,
-      extraParams: {
-        totalCount,
-        correctAnswersCount,
-        incorrectAnswersCount,
-        almostCorrectAnswersCount,
-        id: extraParams.id,
-      },
-    });
-  };
-
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {
-      retryData: {data: []},
-      extraParams,
-    });
-  };
-
-  const Item = ({item}: any) => {
-    const count =
-      item.id === 1
-        ? correctAnswersCount
-        : item.id === 2
-        ? almostCorrectAnswersCount
-        : incorrectAnswersCount;
-
-    return (
-      <Pressable style={itemStyle(item)} onPress={() => handleNavigation(item)}>
-        <View style={styles.leftSide}>
-          <item.icon
-            fill={
-              item.id === selectedId ? COLORS.lunesWhite : COLORS.lunesGreyDark
-            }
-            stroke={
-              item.id === selectedId ? COLORS.lunesWhite : COLORS.lunesGreyDark
-            }
-          />
-          <View style={styles.text}>
-            <Text style={itemTitleStyle(item)}>{item.title}</Text>
-            <Text
-              style={descriptionStyle(
-                item,
-              )}>{`${count} of ${totalCount} Words`}</Text>
-          </View>
-        </View>
-        <Arrow
-          fill={
-            item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack
-          }
-        />
-      </Pressable>
-    );
-  };
-
-  useFocusEffect(() => {
-    setSelectedId(-1);
-
-    AsyncStorage.getItem('correct').then((value) =>
-      setCorrectAnswersCount(value && JSON.parse(value).length),
-    );
-    AsyncStorage.getItem('incorrect').then((value) =>
-      setIncorrectAnswersCount(value && JSON.parse(value).length),
-    );
-    AsyncStorage.getItem('almost correct').then((value) =>
-      setAlmostCorrectAnswersCount(value && JSON.parse(value).length),
-    );
-  });
-
-  React.useEffect(() => {
-    setTotalCount(
-      correctAnswersCount + incorrectAnswersCount + almostCorrectAnswersCount,
-    );
-  }, [correctAnswersCount, incorrectAnswersCount, almostCorrectAnswersCount]);
+  useFocusEffect(React.useCallback(() => setSelectedId(-1), []));
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -141,22 +44,87 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+
+    setCounts({
+      total: results.length,
+      correct: results.filter(({result}) => result === 'correct').length,
+      incorrect: results.filter(({result}) => result === 'incorrect').length,
+      similar: results.filter(({result}) => result === 'similar').length,
+    });
+  }, [results, navigation]);
+
+  const Header = (
+    <Title>
+      <Text style={styles.screenTitle}>Results Overview</Text>
+      <Text style={styles.screenSubTitle}>{title}</Text>
+      <Text style={styles.screenDescription}>{description}</Text>
+      <Level style={styles.level} />
+    </Title>
+  );
+
+  const Item = ({item}: any) => {
+    const handleNavigation = ({id}: number) => {
+      setSelectedId(id);
+
+      navigation.navigate(SCREENS.ResultScreen, {
+        extraParams,
+        resultType: RESULT_TYPE[id - 1],
+        results,
+        counts,
+      });
+    };
+
+    const cID = RESULT_TYPE[item.id - 1];
+    const count = counts[cID];
+
+    const selected = item.id === selectedId;
+    const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark;
+    const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack;
+    const itemStyle = selected ? styles.clickedContainer : styles.container;
+    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2;
+    const descriptionStyle = selected
+      ? styles.clickedItemDescription
+      : styles.description;
+
+    return (
+      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
+        <View style={styles.leftSide}>
+          <item.icon fill={iconColor} stroke={iconColor} />
+          <View style={styles.text}>
+            <Text style={itemTitleStyle}>{item.title}</Text>
+            <Text style={descriptionStyle}>
+              {`${count} of ${counts.total} Words`}
+            </Text>
+          </View>
+        </View>
+        <Arrow fill={arrowColor} />
+      </Pressable>
+    );
+  };
+
+  const repeatExercise = () => {
+    navigation.navigate(SCREENS.vocabularyTrainer, {
+      retryData: {data: results},
+      extraParams,
+    });
+  };
 
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" />
+
       <FlatList
         data={RESULTS}
         style={styles.list}
-        ListHeaderComponent={titleCOMP}
+        ListHeaderComponent={Header}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
       />
+
       <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeate whole exercise</Text>
+        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
       </Button>
     </View>
   );

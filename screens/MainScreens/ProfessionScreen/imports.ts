@@ -14,6 +14,7 @@ import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
 import {Arrow} from '../../../assets/images/imports';
 import {useFocusEffect} from '@react-navigation/native';
 import Loading from '../../../components/Loading';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -33,6 +34,7 @@ export {
   Arrow,
   Image,
   SafeAreaInsetsContext,
+  AsyncStorage,
 };
 
 export type {IProfessionsProps, IProfessionScreenProps};

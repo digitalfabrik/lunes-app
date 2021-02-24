@@ -3,7 +3,7 @@ import {View, Text, StatusBar} from 'react-native';
 import {styles} from './styles';
 import Button from '../../../components/Button';
 import {CheckIcon, ListIcon, RepeatIcon} from '../../../assets/images/imports';
-import {BUTTONS_THEME, SCREENS} from '../../../constants/data';
+import {BUTTONS_THEME, SCREENS, EXERCISES} from '../../../constants/data';
 import {IInitialSummaryScreenProps} from '../../../interfaces/summaryScreens';
 import {COLORS} from '../../../constants/colors';
 import {useFocusEffect} from '@react-navigation/native';
@@ -24,6 +24,7 @@ export {
   useFocusEffect,
   AsyncStorage,
   StatusBar,
+  EXERCISES,
 };
 
 export type {IInitialSummaryScreenProps};

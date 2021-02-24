@@ -21,7 +21,7 @@ const VocabularyOverviewExerciseScreen = ({
   navigation,
   route,
 }: IVocabularyOverviewScreen) => {
-  const {extraParams} = route.params;
+  const {subCategoryId} = route.params.extraParams;
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
@@ -37,15 +37,15 @@ const VocabularyOverviewExerciseScreen = ({
   }, [navigation]);
 
   useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${extraParams.id}`);
+    const url = ENDPOINTS.documents.all.replace(':id', `${subCategoryId}`);
     axios.get(url).then((response) => {
       setDocuments(response.data);
       setCount(response.data.length);
       setIsLoading(false);
     });
-  }, [extraParams]);
+  }, [subCategoryId]);
 
-  const titleComp = (
+  const Header = (
     <Title>
       <Text style={styles.screenTitle}>Vocabulary Overview</Text>
       <Text style={styles.description}>
@@ -70,7 +70,7 @@ const VocabularyOverviewExerciseScreen = ({
         <FlatList
           data={documents}
           style={styles.list}
-          ListHeaderComponent={titleComp}
+          ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}

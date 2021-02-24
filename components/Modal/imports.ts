@@ -5,6 +5,7 @@ import {IConfirmationModalProps} from '../../interfaces/exercise';
 import {CloseIcon} from '../../assets/images/imports';
 import Button from '../Button';
 import {BUTTONS_THEME} from '../Button/imports';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export {
   React,
@@ -16,6 +17,7 @@ export {
   CloseIcon,
   Button,
   BUTTONS_THEME,
+  AsyncStorage,
 };
 
 export type {IConfirmationModalProps};

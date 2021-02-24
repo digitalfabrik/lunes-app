@@ -48,12 +48,6 @@ const ProfessionSubcategoryScreen = ({
     }, [icon, id]),
   );
 
-  const descriptionStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
-
-  const badgeStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemBadgeLabel : styles.badgeLabel;
-
   const titleCOMP = (
     <Title>
       <Text style={styles.screenTitle}>{title}</Text>
@@ -63,30 +57,42 @@ const ProfessionSubcategoryScreen = ({
     </Title>
   );
 
+  const Item = ({item}: any) => {
+    const selected = item.id === selectedId;
+    const descriptionStyle = selected
+      ? styles.clickedItemDescription
+      : styles.description;
+
+    const badgeStyle = selected
+      ? styles.clickedItemBadgeLabel
+      : styles.badgeLabel;
+
+    return (
+      <MenuItem
+        selected={item.id === selectedId}
+        title={item.title}
+        icon={item.icon}
+        onPress={() => handleNavigation(item)}>
+        <View style={styles.itemText}>
+          <Text style={badgeStyle}>{item.total_documents}</Text>
+          <Text style={descriptionStyle}>
+            {item.total_documents === 1 ? ' Lektion' : ' Lektionen'}
+          </Text>
+        </View>
+      </MenuItem>
+    );
+  };
+
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
     navigation.navigate(SCREENS.exercises, {
-      id: item.id,
-      title: item.title,
-      icon: item.icon,
+      subCategoryID: item.id,
+      subCategory: item.title,
+      profession: title,
+      professionID: id,
       extraParams: title,
     });
   };
-
-  const Item = ({item}: any) => (
-    <MenuItem
-      selected={item.id === selectedId}
-      title={item.title}
-      icon={item.icon}
-      onPress={() => handleNavigation(item)}>
-      <View style={styles.itemText}>
-        <Text style={badgeStyle(item)}>{item.total_documents}</Text>
-        <Text style={descriptionStyle(item)}>
-          {item.total_documents === 1 ? ' Lektion' : ' Lektionen'}
-        </Text>
-      </View>
-    </MenuItem>
-  );
 
   return (
     <View style={styles.root}>

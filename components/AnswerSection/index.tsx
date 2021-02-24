@@ -13,292 +13,137 @@ import {
   Platform,
   SoundPlayer,
   Tts,
-  AsyncStorage,
-  IDocumentProps,
   Feedback,
   stringSimilarity,
   Actions,
-  SCREENS,
   PopoverContent,
-  useFocusEffect,
+  AsyncStorage,
 } from './imports';
 
 const AnswerSection = ({
-  count,
-  index,
-  setIndex,
-  currentWordNumber,
-  setCurrentWordNumber,
-  document,
-  setDocuments,
-  increaseProgress,
-  navigation,
-  extraParams,
+  currentDocumentNumber,
+  setCurrentDocumentNumber,
+  finishExercise,
+  tryLater,
+  subCategory,
+  profession,
+  documents,
 }: IAnswerSectionProps) => {
-  const [input, setInput] = useState('');
   const touchable: any = React.createRef();
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [dataLength, setDataLength] = useState(count); //for try later documents array
-  const [tryLaterDocuments, setTryLaterDocuments] = useState<IDocumentProps[]>(
-    [],
-  );
-  const [isTryLater, setIsTryLater] = useState(false); //repeat try later documents
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [isIncorrect, setIsIncorrect] = useState(false);
-  const [word, setWord] = useState('');
-  const [documentArticle, setArticle] = useState('');
-  const [isAlmostCorrect, setIsAlmostCorrect] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
+  const [input, setInput] = useState('');
+  const [result, setResult] = useState('');
+  const [secondAttempt, setSecondAttempt] = useState(false);
+  const document = documents[currentDocumentNumber];
+  const totalNumbers = documents.length;
 
-  const borderColor = isCorrect
-    ? COLORS.lunesFunctionalCorrectDark
-    : isIncorrect
-    ? COLORS.lunesFunctionalIncorrectDark
-    : isAlmostCorrect
-    ? COLORS.lunesFunctionalAlmostCorrectDark
-    : input
-    ? COLORS.lunesBlack
-    : COLORS.lunesGreyMedium;
+  React.useEffect(() => {
+    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => setIsActive(false),
+    );
 
-  const volumeIconColor =
-    !isCorrect && !isIncorrect
-      ? COLORS.lunesBlackUltralight
-      : isActive
-      ? COLORS.lunesRedDark
-      : COLORS.lunesRed;
+    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setIsActive(false),
+    );
 
-  const clearTextInput = () => {
-    setInput('');
-  };
-
-  const modifyHeaderCounter = () => {
-    if (currentWordNumber < count) {
-      setCurrentWordNumber(currentWordNumber + 1);
-    }
-  };
-
-  const getNextWord = () => {
-    if (index < dataLength - 1) {
-      setIndex(index + 1);
-    } else {
-      if (currentWordNumber !== count) {
-        setIsTryLater(true);
-      }
-    }
-  };
-
-  const modifyStates = (
-    newIsCorrect: boolean,
-    newIsIncorrect: boolean,
-    newIsAlmostCorrect: boolean,
-  ) => {
-    setIsCorrect(newIsCorrect);
-    setIsIncorrect(newIsIncorrect);
-    setIsAlmostCorrect(newIsAlmostCorrect);
-  };
-
-  const checkIfLastWord = () => {
-    if (currentWordNumber === count) {
-      setIsFinished(true);
-    }
-  };
-
-  const storeCorrectResults = (checkedDocument: IDocumentProps) => {
-    try {
-      AsyncStorage.getItem('correct').then((value) => {
-        const results: IDocumentProps[] = value && JSON.parse(value);
-        results.push(checkedDocument);
-        AsyncStorage.setItem('correct', JSON.stringify(results));
-      });
-
-      AsyncStorage.getItem('incorrect').then((value) => {
-        const results: IDocumentProps[] = value && JSON.parse(value);
-        const index = results.findIndex(
-          (value) => value.id === checkedDocument.id,
-        );
-        if (index > -1) {
-          results.splice(index, 1);
-          AsyncStorage.setItem('incorrect', JSON.stringify(results));
-        }
-      });
-
-      AsyncStorage.getItem('almost correct').then((value) => {
-        const results: IDocumentProps[] = value && JSON.parse(value);
-        const index = results.findIndex(
-          (value) => value.id === checkedDocument.id,
-        );
-        if (index > -1) {
-          results.splice(index, 1);
-          AsyncStorage.setItem('almost correct', JSON.stringify(results));
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const storeAlmsotCorrectAnswers = (checkedDocument: IDocumentProps) => {
-    try {
-      AsyncStorage.getItem('almost correct').then((value) => {
-        const results: IDocumentProps[] = value && JSON.parse(value);
-        const index = results.findIndex(
-          (value) => value.id === checkedDocument.id,
-        );
-        if (index > -1) {
-          return;
-        } else {
-          results.push(checkedDocument);
-          AsyncStorage.setItem('almost correct', JSON.stringify(results));
-
-          AsyncStorage.getItem('incorrect').then((value) => {
-            const results: IDocumentProps[] = value && JSON.parse(value);
-            const index = results.findIndex(
-              (value) => value.id === checkedDocument.id,
-            );
-            if (index > -1) {
-              results.splice(index, 1);
-              AsyncStorage.setItem('incorrect', JSON.stringify(results));
-            }
-          });
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const storeIncorrectAnswers = (checkedDocument: IDocumentProps) => {
-    try {
-      AsyncStorage.getItem('incorrect').then((value) => {
-        const results: IDocumentProps[] = value && JSON.parse(value);
-        const index = results.findIndex(
-          (value) => value.id === checkedDocument.id,
-        );
-        if (index > -1) {
-          return;
-        } else {
-          results.push(checkedDocument);
-          AsyncStorage.setItem('incorrect', JSON.stringify(results));
-
-          AsyncStorage.getItem('almost correct').then((value) => {
-            const results: IDocumentProps[] = value && JSON.parse(value);
-            const index = results.findIndex(
-              (value) => value.id === checkedDocument.id,
-            );
-            if (index > -1) {
-              results.splice(index, 1);
-              AsyncStorage.setItem('almost correct', JSON.stringify(results));
-            }
-          });
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const validateForCorrect = (inputArticle: string, inputWord: string) => {
-    let correct: boolean | undefined = false;
-
-    if (inputArticle === document?.article && inputWord === document?.word) {
-      correct = true;
-    } else {
-      correct = document?.alternatives?.some(
-        ({article, alt_word}) =>
-          inputArticle === article && inputWord === alt_word,
-      );
-    }
-
-    if (document && correct) {
-      modifyStates(true, false, false);
-      storeCorrectResults(document);
-      checkIfLastWord();
-    }
-
-    return correct;
-  };
-
-  const validateForSimilar = (inputArticle: string, inputWord: string) => {
-    if (isAlmostCorrect && document) {
-      modifyStates(false, true, false);
-      storeAlmsotCorrectAnswers(document);
-      checkIfLastWord();
-      return true;
-    } else {
-      let similar: boolean | undefined = false;
-
-      if (
-        document &&
-        inputArticle === document.article &&
-        stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
-      ) {
-        similar = true;
-      } else {
-        similar = document?.alternatives?.some(
-          ({article, alt_word}) =>
-            inputArticle === article &&
-            stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4,
-        );
-      }
-
-      if (similar) {
-        modifyStates(false, false, true);
-      }
-
-      return similar;
-    }
-  };
-
-  const validateForIncorrect = () => {
-    if (document) {
-      modifyStates(false, true, false);
-      storeIncorrectAnswers(document);
-      checkIfLastWord();
-    }
-  };
-
-  const validateInput = (inputArticle: string, inputWord: string) => {
-    if (!validateForCorrect(inputArticle, inputWord)) {
-      if (!validateForSimilar(inputArticle, inputWord)) {
-        validateForIncorrect();
-      }
-    }
-  };
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
+  }, []);
 
   const checkEntry = () => {
     const splitInput = input.trim().split(' ');
 
     if (splitInput.length < 2) {
       setIsPopoverVisible(true);
-    } else {
-      let inputArticle = splitInput[0];
-      let inputWord = splitInput[1];
-      setWord(inputWord);
-      setArticle(inputArticle);
-
-      validateInput(inputArticle.toLowerCase(), inputWord);
+      return;
     }
+
+    const article = splitInput[0].toLowerCase();
+    const word = splitInput[1];
+
+    if (!validateForSimilar(article, word)) {
+      setResult('incorrect');
+    } else if (validateForCorrect(article, word)) {
+      setResult('correct');
+    } else if (secondAttempt) {
+      setResult('similar');
+    } else {
+      setInput('');
+      setSecondAttempt(true);
+      return;
+    }
+    setSecondAttempt(false);
   };
 
-  const markAsIncorrect = () => {
-    if (document) {
-      storeIncorrectAnswers(document);
-    }
-    increaseProgress();
+  const validateForCorrect = (inputArticle: string, inputWord: string) => {
+    const exactAnswer =
+      inputArticle === document?.article && inputWord === document?.word;
 
-    if (currentWordNumber === count) {
-      handleCheckOutClick();
-    } else {
-      getNextWordAndModifyCounter();
-    }
+    const altAnswer = document?.alternatives?.some(
+      ({article, alt_word}) =>
+        inputArticle === article && inputWord === alt_word,
+    );
+    return exactAnswer || altAnswer;
   };
 
-  const addToTryLater = () => {
-    if (document) {
-      setTryLaterDocuments((oldDocuments) => [...oldDocuments, document]);
-    }
-    getNextWord();
+  const validateForSimilar = (inputArticle: string, inputWord: string) => {
+    const origCheck =
+      document &&
+      inputArticle === document.article &&
+      stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4;
+
+    const altCheck = document?.alternatives?.some(
+      ({article, alt_word}) =>
+        inputArticle === article &&
+        stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4,
+    );
+    return origCheck || altCheck;
+  };
+
+  const getNextWord = () => {
+    AsyncStorage.getItem('Vocabulary Trainer').then(async (value) => {
+      let jsonValue = value ? JSON.parse(value) : {};
+      if (!jsonValue?.[profession]?.[subCategory]) {
+        if (!jsonValue?.[profession]) {
+          jsonValue[profession] = {};
+        }
+        jsonValue[profession][subCategory] = {};
+      }
+
+      if (document) {
+        jsonValue[profession][subCategory][document.word] = result
+          ? {...document, result}
+          : {...document, result: 'incorrect'};
+      }
+
+      await AsyncStorage.setItem(
+        'Vocabulary Trainer',
+        JSON.stringify(jsonValue),
+      );
+
+      setResult('');
+      setInput('');
+      setSecondAttempt(false);
+
+      if (currentDocumentNumber === totalNumbers - 1) {
+        finishExercise();
+      }
+      await AsyncStorage.getItem('session').then(async (value) => {
+        const jsValue = JSON.parse(value);
+        const newData = JSON.stringify({
+          ...jsValue,
+          retryData: {
+            data: documents.slice(currentDocumentNumber + 1, totalNumbers),
+          },
+        });
+        AsyncStorage.setItem('session', newData);
+      });
+      setCurrentDocumentNumber(currentDocumentNumber + 1);
+    });
   };
 
   const handleSpeakerClick = (audio?: string) => {
@@ -319,82 +164,22 @@ const AnswerSection = ({
     }
   };
 
-  const getNextWordAndModifyCounter = () => {
-    getNextWord();
-    modifyHeaderCounter();
-    modifyStates(false, false, false);
+  const getBorderColor = () => {
+    if (result === 'similar' || (secondAttempt && !input)) {
+      return COLORS.lunesFunctionalAlmostCorrectDark;
+    } else if (result === 'correct') {
+      return COLORS.lunesFunctionalCorrectDark;
+    } else if (result === 'incorrect') {
+      return COLORS.lunesFunctionalIncorrectDark;
+    }
   };
 
-  const handleCheckOutClick = () => {
-    navigation.navigate(SCREENS.initialSummaryScreen, extraParams);
-  };
-
-  const resetStates = () => {
-    setTryLaterDocuments([]);
-    setIsCorrect(false);
-    setIsIncorrect(false);
-    setIsTryLater(false);
-    setIsAlmostCorrect(false);
-    setIsFinished(false);
-    setInput('');
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      resetStates();
-    }, []),
-  );
-
-  React.useEffect(() => {
-    let _onSoundPlayerFinishPlaying: any = null;
-    let _onTtsFinishPlaying: any = null;
-
-    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
-      'FinishedPlaying',
-      () => {
-        setIsActive(false);
-      },
-    );
-
-    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
-      setIsActive(false),
-    );
-
-    return () => {
-      _onSoundPlayerFinishPlaying.remove();
-      _onTtsFinishPlaying.remove();
-    };
-  }, []);
-
-  React.useEffect(() => {
-    clearTextInput();
-  }, [index]);
-
-  React.useEffect(() => {
-    setDataLength(count);
-  }, [count]);
-
-  React.useEffect(() => {
-    if (isTryLater) {
-      setIndex(0);
-      setDocuments(tryLaterDocuments);
-      setDataLength(tryLaterDocuments.length);
-      setTryLaterDocuments([]);
-      setIsTryLater(false);
-    }
-  }, [isTryLater, setIndex, setDocuments, tryLaterDocuments]);
-
-  React.useEffect(() => {
-    if (isCorrect || isIncorrect) {
-      increaseProgress();
-    }
-  }, [isCorrect, isIncorrect, increaseProgress]);
-
-  React.useEffect(() => {
-    if (isAlmostCorrect) {
-      clearTextInput();
-    }
-  }, [isAlmostCorrect]);
+  const volumeIconColor =
+    result === ''
+      ? COLORS.lunesBlackUltralight
+      : isActive
+      ? COLORS.lunesRedDark
+      : COLORS.lunesRed;
 
   return (
     <View style={styles.container}>
@@ -406,7 +191,7 @@ const AnswerSection = ({
       </Popover>
 
       <TouchableOpacity
-        disabled={isCorrect || isIncorrect ? false : true}
+        disabled={result === ''}
         style={styles.volumeIcon}
         onPress={() => handleSpeakerClick(document?.audio)}>
         <VolumeUp fill={volumeIconColor} />
@@ -417,46 +202,40 @@ const AnswerSection = ({
         style={[
           styles.textInputContainer,
           {
-            borderColor: borderColor,
+            borderColor: getBorderColor(),
           },
         ]}>
         <TextInput
           style={styles.textInput}
-          placeholder={
-            isAlmostCorrect ? 'Try again' : 'Enter Word with article'
-          }
+          placeholder={secondAttempt ? 'Try again' : 'Enter Word with article'}
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={(text) => setInput(text)}
-          editable={!isCorrect && !isIncorrect}
+          editable={result === ''}
         />
-        {!!input && !isCorrect && !isIncorrect && (
-          <TouchableOpacity onPress={clearTextInput}>
+        {result === '' && (
+          <TouchableOpacity onPress={() => setInput('')}>
             <CloseIcon />
           </TouchableOpacity>
         )}
       </View>
 
       <Feedback
-        isCorrect={isCorrect}
-        isIncorrect={isIncorrect}
-        almostCorrect={isAlmostCorrect}
+        secondAttempt={secondAttempt}
+        result={result}
         document={document}
-        word={word}
-        article={documentArticle}
+        input={input}
       />
 
       <Actions
+        tryLater={tryLater}
+        giveUp={getNextWord}
         input={input}
-        isCorrect={isCorrect}
-        isIncorrect={isIncorrect}
-        isAlmostCorrect={isAlmostCorrect}
+        result={result}
         checkEntry={checkEntry}
-        addToTryLater={addToTryLater}
-        getNextWordAndModifyCounter={getNextWordAndModifyCounter}
-        markAsIncorrect={markAsIncorrect}
-        isFinished={isFinished}
-        checkOut={handleCheckOutClick}
+        getNextWord={getNextWord}
+        secondAttempt={secondAttempt}
+        isFinished={currentDocumentNumber === totalNumbers - 1}
       />
     </View>
   );

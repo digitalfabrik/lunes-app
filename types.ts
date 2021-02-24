@@ -9,4 +9,5 @@ export type ProfessionParamList = {
   CorrectResults: undefined;
   IncorrectResults: undefined;
   AlmostCorrectResults: undefined;
+  ResultScreen: undefined;
 };

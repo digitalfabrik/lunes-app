@@ -15,6 +15,7 @@ import {
   Loading,
   MenuItem,
   IProfessionScreenProps,
+  AsyncStorage,
 } from './imports';
 
 const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
@@ -24,16 +25,19 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      AsyncStorage.getItem('session').then(async (value) => {
+        if (value) {
+          navigation.navigate(SCREENS.vocabularyTrainer, JSON.parse(value));
+        }
+      });
+
       axios.get(ENDPOINTS.professions.all).then((response) => {
         setProfessions(response.data);
         setIsLoading(false);
       });
       setSelectedId(-1);
-    }, []),
+    }, [navigation]),
   );
-
-  const itemTextStyle = (item: any) =>
-    item.id === selectedId ? styles.clickedItemDescription : styles.description;
 
   const title = (
     <Text style={styles.text}>
@@ -42,26 +46,29 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
     </Text>
   );
 
-  const Item = ({item}: any) => (
-    <MenuItem
-      selected={item.id === selectedId}
-      title={item.title}
-      icon={item.icon}
-      onPress={() => handleNavigation(item)}>
-      <Text style={itemTextStyle(item)}>
-        {item.total_training_sets}
-        {item.total_training_sets === 1 ? ' Bereich' : ' Bereiche'}
-      </Text>
-    </MenuItem>
-  );
+  const Item = ({item}: any) => {
+    const itemTextStyle =
+      item.id === selectedId
+        ? styles.clickedItemDescription
+        : styles.description;
+
+    return (
+      <MenuItem
+        selected={item.id === selectedId}
+        title={item.title}
+        icon={item.icon}
+        onPress={() => handleNavigation(item)}>
+        <Text style={itemTextStyle}>
+          {item.total_training_sets}
+          {item.total_training_sets === 1 ? ' Bereich' : ' Bereiche'}
+        </Text>
+      </MenuItem>
+    );
+  };
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
-    navigation.navigate(SCREENS.professionSubcategory, {
-      id: item.id,
-      title: item.title,
-      icon: item.icon,
-    });
+    navigation.navigate(SCREENS.professionSubcategory, item);
   };
 
   return (

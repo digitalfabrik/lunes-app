@@ -9,6 +9,7 @@ import {
   CloseIcon,
   Button,
   BUTTONS_THEME,
+  AsyncStorage,
 } from './imports';
 
 const ConfirmationModal = ({
@@ -16,37 +17,38 @@ const ConfirmationModal = ({
   setIsModalVisible,
   navigation,
 }: IConfirmationModalProps) => {
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
+  const closeModal = () => setIsModalVisible(false);
 
   const goBack = () => {
     setIsModalVisible(false);
+    AsyncStorage.removeItem('session');
     navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-      <Modal visible={visible} transparent animationType="fade">
-        <View style={[styles.container, styles.overlay]}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
-              <CloseIcon />
-            </TouchableOpacity>
-            <Text style={styles.message}>
-              Do you really want to end this session?
-            </Text>
-            <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
-              <Text style={styles.lightLabel}>continue</Text>
-            </Button>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      style={styles.container}>
+      <View style={[styles.container, styles.overlay]}>
+        <View style={styles.modal}>
+          <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
+            <CloseIcon />
+          </TouchableOpacity>
+          <Text style={styles.message}>
+            Do you really want to end this session?
+          </Text>
+          <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
+            <Text style={styles.lightLabel}>continue</Text>
+          </Button>
 
-            <Button onPress={goBack} theme={BUTTONS_THEME.light}>
-              <Text style={styles.darkLabel}>end</Text>
-            </Button>
-          </View>
+          <Button onPress={goBack} theme={BUTTONS_THEME.light}>
+            <Text style={styles.darkLabel}>end</Text>
+          </Button>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
