@@ -33,14 +33,16 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => navigation.navigate(SCREENS.exercises)}>
+            onPress={() =>
+              navigation.navigate(SCREENS.exercises, {extraParams: extraParams})
+            }>
             <CircularFinishIcon />
           </TouchableOpacity>
         ),
       });
 
       setIsLoading(false);
-    }, [navigation, resultType, results]),
+    }, [extraParams, navigation, resultType, results]),
   );
 
   const Header = (

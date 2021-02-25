@@ -32,13 +32,12 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
   const [counts, setCounts] = React.useState({});
 
   useFocusEffect(React.useCallback(() => setSelectedId(-1), []));
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           style={styles.rightHeader}
-          onPress={() => navigation.navigate(SCREENS.exercises)}>
+          onPress={() => navigation.navigate(SCREENS.exercises, {extraParams})}>
           <Text style={styles.headerText}>Finish Exercise</Text>
           <FinishIcon />
         </TouchableOpacity>
@@ -51,7 +50,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       incorrect: results.filter(({result}) => result === 'incorrect').length,
       similar: results.filter(({result}) => result === 'similar').length,
     });
-  }, [results, navigation]);
+  }, [results, navigation, extraParams]);
 
   const Header = (
     <Title>

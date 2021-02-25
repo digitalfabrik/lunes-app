@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 import Title from '../../../components/Title';
-import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images/imports';
+import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images';
 import {COLORS} from '../../../constants/colors';
 import {
   RESULTS,

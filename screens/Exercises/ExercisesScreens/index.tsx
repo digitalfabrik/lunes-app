@@ -15,6 +15,8 @@ import {
   Title,
   Arrow,
   COLORS,
+  SCREENS,
+  BackButton,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -22,7 +24,8 @@ LogBox.ignoreLogs([
 ]);
 
 const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
-  const {subCategory, profession, subCategoryID, professionID} = route.params;
+  const {extraParams} = route.params;
+  const {trainingSet} = extraParams;
   const [selectedId, setSelectedId] = useState(-1);
 
   useFocusEffect(
@@ -31,17 +34,28 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
 
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.popToTop()}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(SCREENS.profession)}>
             <Home />
           </TouchableOpacity>
         ),
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(SCREENS.professionSubcategory, {extraParams})
+            }
+            style={styles.headerLeft}>
+            <BackButton />
+            <Text style={styles.title}>Exercise Overview</Text>
+          </TouchableOpacity>
+        ),
       });
-    }, [navigation]),
+    }, [extraParams, navigation]),
   );
 
-  const titleCOMP = (
+  const Header = (
     <Title>
-      <Text style={styles.screenTitle}>{subCategory}</Text>
+      <Text style={styles.screenTitle}>{trainingSet}</Text>
       <Text style={styles.screenDescription}>2 Exercises</Text>
     </Title>
   );
@@ -74,10 +88,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
     setSelectedId(item.id);
     navigation.navigate(item.nextScreen, {
       extraParams: {
-        profession: profession,
-        subCategory: subCategory,
-        professionId: professionID,
-        subCategoryId: subCategoryID,
+        ...extraParams,
         exercise: item.title,
         exerciseDescription: item.description,
         Level: item.Level,
@@ -90,7 +101,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
       <FlatList
         data={EXERCISES}
         style={styles.list}
-        ListHeaderComponent={titleCOMP}
+        ListHeaderComponent={Header}
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}

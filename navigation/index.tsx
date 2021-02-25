@@ -58,14 +58,24 @@ const Navigation = () => {
         />
         <ProfessionStack.Screen
           options={({navigation}) =>
-            defaultOptions('Profession Overview', BackButton, navigation)
+            defaultOptions(
+              'Profession Overview',
+              BackButton,
+              navigation,
+              'Profession',
+            )
           }
           name="ProfessionSubcategory"
           component={ProfessionSubcategoryScreen}
         />
         <ProfessionStack.Screen
           options={({route, navigation}: any) =>
-            defaultOptions(route.params.extraParams, BackButton, navigation)
+            defaultOptions(
+              route.params.extraParams.disciplineTitle,
+              BackButton,
+              navigation,
+              'ProfessionSubcategory',
+            )
           }
           name="Exercises"
           component={ExercisesScreen}

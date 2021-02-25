@@ -132,8 +132,8 @@ const AnswerSection = ({
       if (currentDocumentNumber === totalNumbers - 1) {
         finishExercise();
       }
-      await AsyncStorage.getItem('session').then(async (value) => {
-        const jsValue = JSON.parse(value);
+      await AsyncStorage.getItem('session').then(async (session) => {
+        const jsValue = JSON.parse(session);
         const newData = JSON.stringify({
           ...jsValue,
           retryData: {

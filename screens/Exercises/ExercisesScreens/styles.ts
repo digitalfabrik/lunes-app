@@ -86,4 +86,18 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
   },
+  title: {
+    color: COLORS.lunesBlack,
+    fontFamily: 'SourceSansPro-SemiBold',
+    fontSize: wp('4%'),
+    textTransform: 'uppercase',
+    fontWeight: '600',
+    marginLeft: 15,
+  },
+  headerLeft: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 200,
+  },
 });
