@@ -213,7 +213,7 @@ const AnswerSection = ({
           onChangeText={(text) => setInput(text)}
           editable={result === ''}
         />
-        {result === '' && (
+        {result === '' && input !== '' && (
           <TouchableOpacity onPress={() => setInput('')}>
             <CloseIcon />
           </TouchableOpacity>

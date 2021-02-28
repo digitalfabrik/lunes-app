@@ -27,8 +27,6 @@ const VocabularyTrainerExerciseScreen = ({
   navigation,
   route,
 }: IVocabularyTrainerScreen) => {
-  // AsyncStorage.removeItem('session')
-  // return <View></View>
   const {extraParams, retryData} = route.params;
   const {trainingSet, trainingSetId, profession} = extraParams;
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -68,7 +66,7 @@ const VocabularyTrainerExerciseScreen = ({
         ),
         headerRight: () => (
           <Text style={styles.headerText}>
-            {`${currentDocumentNumber} of ${documents.length}`}
+            {`${currentDocumentNumber + 1} of ${documents.length}`}
           </Text>
         ),
       }),
