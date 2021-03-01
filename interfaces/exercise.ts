@@ -43,7 +43,7 @@ export interface IAnswerSectionProps {
   documents: IDocumentProps[];
   finishExercise: Function;
   subCategory: string;
-  profession: string;
+  disciplineTitle: string;
 }
 
 export interface IFeedbackProps {

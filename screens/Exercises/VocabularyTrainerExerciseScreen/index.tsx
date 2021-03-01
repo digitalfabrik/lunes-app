@@ -28,7 +28,7 @@ const VocabularyTrainerExerciseScreen = ({
   route,
 }: IVocabularyTrainerScreen) => {
   const {extraParams, retryData} = route.params;
-  const {trainingSet, trainingSetId, profession} = extraParams;
+  const {trainingSet, trainingSetId, disciplineTitle} = extraParams;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -130,8 +130,8 @@ const VocabularyTrainerExerciseScreen = ({
           documents={documents}
           finishExercise={finishExercise}
           tryLater={tryLater}
-          subCategory={trainingSet}
-          profession={profession}
+          trainingSet={trainingSet}
+          disciplineTitle={disciplineTitle}
         />
       </KeyboardAwareScrollView>
 
