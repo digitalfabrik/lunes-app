@@ -21,7 +21,7 @@ const InitialSummaryScreen = ({
   route,
 }: IInitialSummaryScreenProps) => {
   const {extraParams} = route.params;
-  const {exercise, profession, subCategory} = extraParams;
+  const {exercise, disciplineTitle, trainingSet} = extraParams;
   const [results, setResults] = React.useState([]);
   const [message, setMessage] = React.useState('');
 
@@ -29,9 +29,9 @@ const InitialSummaryScreen = ({
     React.useCallback(() => {
       AsyncStorage.getItem(exercise).then((value) => {
         const jsonValue = value && JSON.parse(value);
-        setResults(Object.values(jsonValue[profession][subCategory]));
+        setResults(Object.values(jsonValue[disciplineTitle][trainingSet]));
       });
-    }, [exercise, profession, subCategory]),
+    }, [exercise, disciplineTitle, trainingSet]),
   );
 
   React.useEffect(() => {
@@ -55,6 +55,7 @@ const InitialSummaryScreen = ({
   }, [results]);
 
   const checkResults = () => {
+    AsyncStorage.removeItem('session');
     navigation.navigate(SCREENS.ResultsOverview, {extraParams, results});
   };
 

@@ -28,7 +28,7 @@ const VocabularyTrainerExerciseScreen = ({
   route,
 }: IVocabularyTrainerScreen) => {
   const {extraParams, retryData} = route.params;
-  const {subCategory, subCategoryId, profession} = extraParams;
+  const {trainingSet, trainingSetId, profession} = extraParams;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +42,7 @@ const VocabularyTrainerExerciseScreen = ({
           const documentsRes = retryData?.data?.length
             ? retryData
             : await axios.get(
-                ENDPOINTS.documents.all.replace(':id', `${subCategoryId}`),
+                ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`),
               );
           setDocuments(documentsRes.data);
           setCurrentDocumentNumber(0);
@@ -52,7 +52,7 @@ const VocabularyTrainerExerciseScreen = ({
       };
 
       getDocuments();
-    }, [retryData, subCategoryId]),
+    }, [retryData, trainingSetId]),
   );
 
   React.useLayoutEffect(
@@ -66,7 +66,7 @@ const VocabularyTrainerExerciseScreen = ({
         ),
         headerRight: () => (
           <Text style={styles.headerText}>
-            {`${currentDocumentNumber} of ${documents.length}`}
+            {`${currentDocumentNumber + 1} of ${documents.length}`}
           </Text>
         ),
       }),
@@ -130,7 +130,7 @@ const VocabularyTrainerExerciseScreen = ({
           documents={documents}
           finishExercise={finishExercise}
           tryLater={tryLater}
-          subCategory={subCategory}
+          subCategory={trainingSet}
           profession={profession}
         />
       </KeyboardAwareScrollView>

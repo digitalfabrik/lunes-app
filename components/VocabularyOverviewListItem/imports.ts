@@ -7,7 +7,7 @@ import {ARTICLES} from '../../constants/data';
 import Tts from 'react-native-tts';
 import {getArticleColor} from '../../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
-import {VolumeUp} from '../../assets/images/imports';
+import {VolumeUp} from '../../assets/images';
 
 export {
   React,

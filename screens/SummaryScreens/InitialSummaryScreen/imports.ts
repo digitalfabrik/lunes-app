@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StatusBar} from 'react-native';
 import {styles} from './styles';
 import Button from '../../../components/Button';
-import {CheckIcon, ListIcon, RepeatIcon} from '../../../assets/images/imports';
+import {CheckIcon, ListIcon, RepeatIcon} from '../../../assets/images';
 import {BUTTONS_THEME, SCREENS, EXERCISES} from '../../../constants/data';
 import {IInitialSummaryScreenProps} from '../../../interfaces/summaryScreens';
 import {COLORS} from '../../../constants/colors';

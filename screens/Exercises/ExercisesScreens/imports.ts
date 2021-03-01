@@ -10,12 +10,13 @@ import {
   Image,
 } from 'react-native';
 import {IExercisesScreenProps} from '../../../interfaces/exercises';
-import {Home} from '../../../assets/images/imports';
+import {Home} from '../../../assets/images';
 import Title from '../../../components/Title';
-import {EXERCISES} from '../../../constants/data';
-import {Arrow} from '../../../assets/images/imports';
+import {EXERCISES, SCREENS} from '../../../constants/data';
+import {Arrow} from '../../../assets/images';
 import {useFocusEffect} from '@react-navigation/native';
 import {COLORS} from '../../../constants/colors';
+import {BackButton} from '../../../assets/images';
 
 export {
   React,
@@ -34,6 +35,8 @@ export {
   Image,
   FlatList,
   Arrow,
+  SCREENS,
+  BackButton,
 };
 
 export type {IExercisesScreenProps};

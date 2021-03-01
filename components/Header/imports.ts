@@ -7,7 +7,7 @@ import {
   CircleIcon,
   LinesIcon,
   SmileIcon,
-} from '../../assets/images/imports';
+} from '../../assets/images';
 import {IHeaderProps} from '../../interfaces/header';
 
 export {

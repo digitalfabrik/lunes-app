@@ -68,7 +68,13 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
-    navigation.navigate(SCREENS.professionSubcategory, item);
+    navigation.navigate(SCREENS.professionSubcategory, {
+      extraParams: {
+        disciplineID: item.id,
+        disciplineTitle: item.title,
+        disciplineIcon: item.icon,
+      },
+    });
   };
 
   return (

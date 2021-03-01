@@ -27,7 +27,9 @@ const ProfessionSubcategoryScreen = ({
   route,
   navigation,
 }: IProfessionSubcategoryScreenProps) => {
-  const {id, title, icon} = route.params;
+  const {extraParams} = route.params;
+
+  const {disciplineID, disciplineTitle, disciplineIcon} = extraParams;
   const [subcategories, setsubcategories] = useState<
     IProfessionSubcategoryProps[]
   >([]);
@@ -37,20 +39,22 @@ const ProfessionSubcategoryScreen = ({
 
   useFocusEffect(
     React.useCallback(() => {
-      const url = ENDPOINTS.subCategories.all.replace(':id', id);
+      const url = ENDPOINTS.subCategories.all.replace(':id', disciplineID);
       axios.get(url).then((response) => {
-        setsubcategories(getProfessionSubcategoryWithIcon(icon, response.data));
+        setsubcategories(
+          getProfessionSubcategoryWithIcon(disciplineIcon, response.data),
+        );
 
         setCount(response.data.length);
         setIsLoading(false);
       });
       setSelectedId(-1);
-    }, [icon, id]),
+    }, [disciplineIcon, disciplineID]),
   );
 
   const titleCOMP = (
     <Title>
-      <Text style={styles.screenTitle}>{title}</Text>
+      <Text style={styles.screenTitle}>{disciplineTitle}</Text>
       <Text style={styles.description}>
         {count} {count === 1 ? 'Kategory' : 'Kategories'}
       </Text>
@@ -85,15 +89,15 @@ const ProfessionSubcategoryScreen = ({
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
+    // TODO: Can't place route params in extraParams
     navigation.navigate(SCREENS.exercises, {
-      subCategoryID: item.id,
-      subCategory: item.title,
-      profession: title,
-      professionID: id,
-      extraParams: title,
+      extraParams: {
+        ...extraParams,
+        trainingSetId: item.id,
+        trainingSet: item.title,
+      },
     });
   };
-
   return (
     <View style={styles.root}>
       <StatusBar backgroundColor="blue" barStyle="dark-content" />

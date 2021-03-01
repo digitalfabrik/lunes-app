@@ -4,7 +4,7 @@ import {
   CorrectIcon,
   IncorrectIcon,
   AlmostCorrectIcon,
-} from '../assets/images/imports';
+} from '../assets/images';
 
 export const SCREENS = {
   profession: 'Profession',

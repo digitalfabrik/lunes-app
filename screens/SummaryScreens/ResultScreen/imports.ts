@@ -9,7 +9,7 @@ import {
   CircularFinishIcon,
   NextArrow,
   RepeatIcon,
-} from '../../../assets/images/imports';
+} from '../../../assets/images';
 import Title from '../../../components/Title';
 import Loading from '../../../components/Loading';
 import VocabularyOverviewListItem from '../../../components/VocabularyOverviewListItem';

@@ -6,7 +6,7 @@ import {
   CorrectIcon,
   IncorrectIcon,
   AlmostCorrectIcon,
-} from '../../assets/images/imports';
+} from '../../assets/images';
 import {COLORS} from '../../constants/colors';
 import {ARTICLES} from '../../constants/data';
 
