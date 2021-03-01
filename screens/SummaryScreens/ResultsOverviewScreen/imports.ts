@@ -20,7 +20,7 @@ import {
 } from '../../../constants/data';
 import {IResultsOverviewScreenProps} from '../../../interfaces/summaryScreens';
 import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import Button from '../../../components/Button';
 
 export {

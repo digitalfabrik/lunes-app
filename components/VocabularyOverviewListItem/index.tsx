@@ -74,13 +74,17 @@ const VocabularyOverviewListItem = ({
         />
         <View>
           <Text
+            testID="article"
             style={[styles.title, {backgroundColor: getArticleColor(article)}]}>
-            {article.toLowerCase() === ARTICLES.diePlural ? 'die' : article}
+            {article?.toLowerCase() === ARTICLES.diePlural ? 'die' : article}
           </Text>
-          <Text style={styles.description}>{word}</Text>
+          <Text testID="word" style={styles.description}>
+            {word}
+          </Text>
         </View>
       </View>
       <TouchableOpacity
+        testID="volume-button"
         style={styles.speaker}
         onPress={() => handleSpeakerClick()}>
         <VolumeUp fill={volumeIconColor} />

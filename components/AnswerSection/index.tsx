@@ -191,6 +191,7 @@ const AnswerSection = ({
       </Popover>
 
       <TouchableOpacity
+        testID="volume-button"
         disabled={result === ''}
         style={styles.volumeIcon}
         onPress={() => handleSpeakerClick(document?.audio)}>
@@ -198,6 +199,7 @@ const AnswerSection = ({
       </TouchableOpacity>
 
       <View
+        testID="input-field"
         ref={touchable}
         style={[
           styles.textInputContainer,

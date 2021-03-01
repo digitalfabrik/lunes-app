@@ -7,7 +7,7 @@ import {IAnswerSectionProps, IDocumentProps} from '../../interfaces/exercise';
 import Popover from '../Popover';
 import SoundPlayer from 'react-native-sound-player';
 import Tts from 'react-native-tts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import Feedback from '../FeedbackSection';
 import stringSimilarity from 'string-similarity';
 import Actions from '../Actions';

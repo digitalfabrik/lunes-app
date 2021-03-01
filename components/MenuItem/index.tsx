@@ -26,12 +26,17 @@ const MenuItem = ({
         <Image source={{uri: icon}} style={styles.icon} />
 
         <View>
-          <Text style={itemTitleStyle}>{title}</Text>
+          <Text style={itemTitleStyle} testID="title">
+            {title}
+          </Text>
           {children}
         </View>
       </View>
 
-      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+      <Arrow
+        fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack}
+        testID="arrow"
+      />
     </Pressable>
   );
 };

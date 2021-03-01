@@ -27,6 +27,7 @@ const ConfirmationModal = ({
 
   return (
     <Modal
+      testID="modal"
       visible={visible}
       transparent
       animationType="fade"

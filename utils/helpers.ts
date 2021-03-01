@@ -17,7 +17,7 @@ export const getProfessionSubcategoryWithIcon = (
 };
 
 export const getArticleColor = (article: string): string => {
-  switch (article.toLowerCase()) {
+  switch (article?.toLowerCase()) {
     case ARTICLES.der:
       return COLORS.lunesArtikelDer;
 
