@@ -20,7 +20,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CloseButton} from '../../../assets/images';
 import {SCREENS} from '../../../constants/data';
 import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export {
   React,

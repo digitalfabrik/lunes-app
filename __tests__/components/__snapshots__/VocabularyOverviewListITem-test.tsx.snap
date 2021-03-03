@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components VocabularyOverviewListItem renders correctly across screens 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#ffffff",
+      "borderColor": "#e0e4ed",
+      "borderStyle": "solid",
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "marginBottom": 8,
+      "paddingLeft": 20,
+      "paddingRight": 16,
+      "paddingVertical": 17,
+      "width": 637.5,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Image
+      height={24}
+      source={
+        Object {
+          "uri": "",
+        }
+      }
+      style={
+        Object {
+          "borderRadius": 50,
+          "height": 112.5,
+          "marginRight": 15,
+          "width": 112.5,
+        }
+      }
+      width={24}
+    />
+    <View>
+      <Text
+        style={
+          Array [
+            Object {
+              "alignSelf": "flex-start",
+              "borderRadius": 22.5,
+              "color": "#3a4049",
+              "fontFamily": "SourceSansPro-Regular",
+              "fontSize": 30,
+              "fontWeight": "normal",
+              "marginBottom": 2,
+              "minWidth": 45,
+              "overflow": "hidden",
+              "paddingHorizontal": 10,
+              "paddingVertical": 2,
+            },
+            Object {
+              "backgroundColor": "#8cc8f3",
+            },
+          ]
+        }
+        testID="article"
+      />
+      <Text
+        style={
+          Object {
+            "color": "#5b616a",
+            "fontFamily": "SourceSansPro-Regular",
+            "fontSize": 30,
+            "fontWeight": "normal",
+            "marginLeft": 5,
+          }
+        }
+        testID="word"
+      />
+    </View>
+  </View>
+  <ForwardRef
+    onPress={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ff5252",
+        "borderRadius": 50,
+        "height": 32,
+        "justifyContent": "center",
+        "width": 32,
+      }
+    }
+    testID="volume-button"
+  >
+    <[object Object]
+      fill="#ffa3a3"
+    />
+  </ForwardRef>
+</View>
+`;

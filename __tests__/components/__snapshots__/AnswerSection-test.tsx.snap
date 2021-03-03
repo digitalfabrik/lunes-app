@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components AnswerSection renders correctly across screens 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "height": 867,
+      "paddingVertical": 40,
+      "position": "relative",
+      "width": "100%",
+    }
+  }
+>
+  <ForwardRef
+    isVisible={false}
+    setIsPopoverVisible={[Function]}
+  >
+    <PopoverContent />
+  </ForwardRef>
+  <ForwardRef
+    disabled={true}
+    onPress={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ff5252",
+        "borderRadius": 50,
+        "height": 40,
+        "justifyContent": "center",
+        "left": "45%",
+        "position": "absolute",
+        "top": -20,
+        "width": 40,
+      }
+    }
+    testID="volume-button"
+  >
+    <[object Object]
+      fill="#e0e4ed"
+    />
+  </ForwardRef>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "borderRadius": 2,
+          "borderWidth": 2,
+          "flexDirection": "row",
+          "height": 106.5,
+          "justifyContent": "space-between",
+          "marginBottom": 80,
+          "paddingHorizontal": 10,
+          "width": 600,
+        },
+        Object {
+          "borderColor": undefined,
+        },
+      ]
+    }
+    testID="input-field"
+  >
+    <Component
+      allowFontScaling={true}
+      editable={true}
+      onChangeText={[Function]}
+      placeholder="Enter Word with article"
+      placeholderTextColor="#777e91"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "color": "#000e38",
+          "fontFamily": "SourceSansPro-Regular",
+          "fontSize": 34,
+          "fontWeight": "normal",
+          "letterSpacing": 0.11,
+          "width": 450,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+  </View>
+  <Feedback
+    input=""
+    result=""
+    secondAttempt={false}
+  />
+  <Actions
+    checkEntry={[Function]}
+    getNextWord={[Function]}
+    giveUp={[Function]}
+    input=""
+    isFinished={false}
+    result=""
+    secondAttempt={false}
+    tryLater={[Function]}
+  />
+</View>
+`;
