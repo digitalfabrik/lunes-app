@@ -22,5 +22,32 @@ describe('Components', () => {
       );
       expect(toJson(component)).toMatchSnapshot();
     });
+
+    it('should have visible property passed to it', () => {
+      const modalProps: IConfirmationModalProps = {
+        ...defaultModalProps,
+      };
+
+      const component = shallow(
+        <View>
+          <Modal {...modalProps} />
+        </View>,
+      );
+      expect(component.children().props().visible).toBe(false);
+    });
+
+    it('should have visible property passed to it', () => {
+      const modalProps: IConfirmationModalProps = {
+        ...defaultModalProps,
+        visible: true,
+      };
+
+      const component = shallow(
+        <View>
+          <Modal {...modalProps} />
+        </View>,
+      );
+      expect(component.children().props().visible).toBe(true);
+    });
   });
 });
