@@ -88,7 +88,7 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
-    navigation.navigate(item.nextScreen, {
+    navigation.push(item.nextScreen, {
       extraParams: {
         ...extraParams,
         exercise: item.title,

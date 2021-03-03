@@ -25,8 +25,8 @@ const AnswerSection = ({
   setCurrentDocumentNumber,
   finishExercise,
   tryLater,
-  subCategory,
-  profession,
+  trainingSet,
+  disciplineTitle,
   documents,
 }: IAnswerSectionProps) => {
   const touchable: any = React.createRef();
@@ -107,15 +107,16 @@ const AnswerSection = ({
   const getNextWord = () => {
     AsyncStorage.getItem('Vocabulary Trainer').then(async (value) => {
       let jsonValue = value ? JSON.parse(value) : {};
-      if (!jsonValue?.[profession]?.[subCategory]) {
-        if (!jsonValue?.[profession]) {
-          jsonValue[profession] = {};
+
+      if (!jsonValue?.[disciplineTitle]?.[trainingSet]) {
+        if (!jsonValue?.[disciplineTitle]) {
+          jsonValue[disciplineTitle] = {};
         }
-        jsonValue[profession][subCategory] = {};
+        jsonValue[disciplineTitle][trainingSet] = {};
       }
 
       if (document) {
-        jsonValue[profession][subCategory][document.word] = result
+        jsonValue[disciplineTitle][trainingSet][document.word] = result
           ? {...document, result}
           : {...document, result: 'incorrect'};
       }
