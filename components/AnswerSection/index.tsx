@@ -33,6 +33,7 @@ const AnswerSection = ({
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [input, setInput] = useState('');
+  const [submission, setSubmission] = useState('');
   const [result, setResult] = useState('');
   const [secondAttempt, setSecondAttempt] = useState(false);
   const document = documents[currentDocumentNumber];
@@ -55,6 +56,7 @@ const AnswerSection = ({
   }, []);
 
   const checkEntry = () => {
+    setSubmission(input);
     const splitInput = input.trim().split(' ');
 
     if (splitInput.length < 2) {
@@ -67,10 +69,13 @@ const AnswerSection = ({
 
     if (!validateForSimilar(article, word)) {
       setResult('incorrect');
+      storeResult();
     } else if (validateForCorrect(article, word)) {
       setResult('correct');
+      storeResult();
     } else if (secondAttempt) {
       setResult('similar');
+      storeResult();
     } else {
       setInput('');
       setSecondAttempt(true);
@@ -105,6 +110,17 @@ const AnswerSection = ({
   };
 
   const getNextWord = () => {
+    setResult('');
+    setInput('');
+    setSecondAttempt(false);
+
+    if (currentDocumentNumber === totalNumbers - 1) {
+      finishExercise();
+    }
+    setCurrentDocumentNumber(currentDocumentNumber + 1);
+  };
+
+  const storeResult = () => {
     AsyncStorage.getItem('Vocabulary Trainer').then(async (value) => {
       let jsonValue = value ? JSON.parse(value) : {};
 
@@ -126,13 +142,10 @@ const AnswerSection = ({
         JSON.stringify(jsonValue),
       );
 
-      setResult('');
-      setInput('');
-      setSecondAttempt(false);
-
       if (currentDocumentNumber === totalNumbers - 1) {
         finishExercise();
       }
+
       await AsyncStorage.getItem('session').then(async (session) => {
         const jsValue = JSON.parse(session);
         const newData = JSON.stringify({
@@ -143,7 +156,6 @@ const AnswerSection = ({
         });
         AsyncStorage.setItem('session', newData);
       });
-      setCurrentDocumentNumber(currentDocumentNumber + 1);
     });
   };
 
@@ -227,7 +239,7 @@ const AnswerSection = ({
         secondAttempt={secondAttempt}
         result={result}
         document={document}
-        input={input}
+        input={submission}
       />
 
       <Actions

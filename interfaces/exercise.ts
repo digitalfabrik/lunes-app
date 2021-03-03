@@ -34,6 +34,7 @@ export interface IConfirmationModalProps {
   visible: boolean;
   setIsModalVisible: Function;
   navigation: any;
+  extraParams: any;
 }
 
 export interface IAnswerSectionProps {
@@ -42,7 +43,7 @@ export interface IAnswerSectionProps {
   setCurrentDocumentNumber: Function;
   documents: IDocumentProps[];
   finishExercise: Function;
-  subCategory: string;
+  trainingSet: string;
   disciplineTitle: string;
 }
 

@@ -91,7 +91,6 @@ const ProfessionSubcategoryScreen = ({
 
   const handleNavigation = (item: any) => {
     setSelectedId(item.id);
-    // TODO: Can't place route params in extraParams
     navigation.navigate(SCREENS.exercises, {
       extraParams: {
         ...extraParams,

@@ -139,6 +139,7 @@ const VocabularyTrainerExerciseScreen = ({
         visible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         navigation={navigation}
+        extraParams={extraParams}
       />
     </View>
   );

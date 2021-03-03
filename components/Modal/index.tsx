@@ -16,13 +16,14 @@ const ConfirmationModal = ({
   visible,
   setIsModalVisible,
   navigation,
+  extraParams,
 }: IConfirmationModalProps) => {
   const closeModal = () => setIsModalVisible(false);
 
   const goBack = () => {
     setIsModalVisible(false);
     AsyncStorage.removeItem('session');
-    navigation.goBack();
+    navigation.navigate('Exercises', {extraParams});
   };
 
   return (
