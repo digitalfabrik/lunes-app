@@ -1,19 +1,20 @@
-import {ReactNode} from 'react';
+import {ReactElement} from 'react';
 
 export interface ILoadingProps {
-  children: ReactNode;
+  children: ReactElement;
   isLoading: boolean;
 }
 
 export interface IButtonProps {
   onPress: () => void;
   disabled?: boolean;
-  children: ReactNode;
+  children: ReactElement;
   theme?: string;
   style?: any;
+  testID?: string;
 }
 export interface IPopoverProps {
   setIsPopoverVisible: (param: boolean) => void;
   isVisible: boolean;
-  children: ReactNode;
+  children: ReactElement;
 }

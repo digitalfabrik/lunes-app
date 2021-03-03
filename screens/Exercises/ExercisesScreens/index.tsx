@@ -55,8 +55,10 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
 
   const Header = (
     <Title>
-      <Text style={styles.screenTitle}>{trainingSet}</Text>
-      <Text style={styles.screenDescription}>2 Exercises</Text>
+      <>
+        <Text style={styles.screenTitle}>{trainingSet}</Text>
+        <Text style={styles.screenDescription}>2 Exercises</Text>
+      </>
     </Title>
   );
 

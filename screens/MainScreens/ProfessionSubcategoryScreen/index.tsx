@@ -54,10 +54,12 @@ const ProfessionSubcategoryScreen = ({
 
   const titleCOMP = (
     <Title>
-      <Text style={styles.screenTitle}>{disciplineTitle}</Text>
-      <Text style={styles.description}>
-        {count} {count === 1 ? 'Kategory' : 'Kategories'}
-      </Text>
+      <>
+        <Text style={styles.screenTitle}>{disciplineTitle}</Text>
+        <Text style={styles.description}>
+          {count} {count === 1 ? 'Kategory' : 'Kategories'}
+        </Text>
+      </>
     </Title>
   );
 

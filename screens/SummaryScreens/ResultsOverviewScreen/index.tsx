@@ -54,10 +54,12 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
 
   const Header = (
     <Title>
-      <Text style={styles.screenTitle}>Results Overview</Text>
-      <Text style={styles.screenSubTitle}>{title}</Text>
-      <Text style={styles.screenDescription}>{description}</Text>
-      <Level style={styles.level} />
+      <>
+        <Text style={styles.screenTitle}>Results Overview</Text>
+        <Text style={styles.screenSubTitle}>{title}</Text>
+        <Text style={styles.screenDescription}>{description}</Text>
+        <Level style={styles.level} />
+      </>
     </Title>
   );
 
@@ -122,8 +124,10 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
       />
 
       <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
-        <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
+        <>
+          <RepeatIcon fill={COLORS.lunesWhite} />
+          <Text style={styles.lightLabel}>Repeat whole exercise</Text>
+        </>
       </Button>
     </View>
   );

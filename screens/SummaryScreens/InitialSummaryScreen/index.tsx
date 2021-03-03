@@ -78,13 +78,17 @@ const InitialSummaryScreen = ({
       </View>
 
       <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
-        <ListIcon />
-        <Text style={styles.lightLabel}>Check my results</Text>
+        <>
+          <ListIcon />
+          <Text style={styles.lightLabel}>Check my results</Text>
+        </>
       </Button>
 
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
-        <RepeatIcon fill={COLORS.lunesBlack} />
-        <Text style={styles.darkLabel}>Repeat exercise</Text>
+        <>
+          <RepeatIcon fill={COLORS.lunesBlack} />
+          <Text style={styles.darkLabel}>Repeat exercise</Text>
+        </>
       </Button>
     </View>
   );

@@ -47,10 +47,12 @@ const VocabularyOverviewExerciseScreen = ({
 
   const Header = (
     <Title>
-      <Text style={styles.screenTitle}>Vocabulary Overview</Text>
-      <Text style={styles.description}>
-        {count} {count === 1 ? 'Word' : 'Words'}
-      </Text>
+      <>
+        <Text style={styles.screenTitle}>Vocabulary Overview</Text>
+        <Text style={styles.description}>
+          {count} {count === 1 ? 'Word' : 'Words'}
+        </Text>
+      </>
     </Title>
   );
 

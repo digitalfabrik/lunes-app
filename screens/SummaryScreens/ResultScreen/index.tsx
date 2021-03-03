@@ -47,16 +47,18 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
 
   const Header = (
     <Title>
-      <Icon
-        fill={COLORS.lunesGreyDark}
-        stroke={COLORS.lunesGreyDark}
-        width={36}
-        height={36}
-      />
-      <Text style={styles.screenTitle}> {title} Entries</Text>
-      <Text style={styles.description}>
-        {`${counts[resultType]} of ${counts.total} Words`}
-      </Text>
+      <>
+        <Icon
+          fill={COLORS.lunesGreyDark}
+          stroke={COLORS.lunesGreyDark}
+          width={36}
+          height={36}
+        />
+        <Text style={styles.screenTitle}> {title} Entries</Text>
+        <Text style={styles.description}>
+          {`${counts[resultType]} of ${counts.total} Words`}
+        </Text>
+      </>
     </Title>
   );
 
@@ -79,8 +81,10 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType) ? (
       <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
-        <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeat {resultType} entries</Text>
+        <>
+          <RepeatIcon fill={COLORS.lunesWhite} />
+          <Text style={styles.lightLabel}>Repeat {resultType} entries</Text>
+        </>
       </Button>
     ) : null;
 
@@ -95,8 +99,10 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
             resultType: next.type,
           })
         }>
-        <Text style={styles.darkLabel}>View {next.title} entries</Text>
-        <NextArrow style={styles.arrow} />
+        <>
+          <Text style={styles.darkLabel}>View {next.title} entries</Text>
+          <NextArrow style={styles.arrow} />
+        </>
       </Button>
     </>
   );

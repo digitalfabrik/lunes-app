@@ -11,7 +11,7 @@ import {
 } from './imports';
 
 const Header = ({top}: IHeaderProps) => (
-  <View style={{...styles.wrapper, paddingTop: top}}>
+  <View style={{...styles.wrapper, paddingTop: top}} testID="header">
     <View style={styles.header}>
       <View style={styles.squareIcon}>
         <SquareIcon />
