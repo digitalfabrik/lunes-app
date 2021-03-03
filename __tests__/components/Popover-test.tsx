@@ -18,14 +18,5 @@ describe('Components', () => {
       const component = shallow(<Popover {...defaultPopoverProps} />);
       expect(toJson(component)).toMatchSnapshot();
     });
-
-    // it('should not be rendered when isVisible is false', () => {
-    //   const popoverProps: IPopoverProps = {
-    //     ...defaultPopoverProps
-    //   };
-
-    //   const component = shallow(<Popover {...popoverProps}/>);
-    //   expect(component.contains(popoverProps.children)).toBe(false);
-    // });
   });
 });
