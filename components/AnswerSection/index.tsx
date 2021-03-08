@@ -178,12 +178,16 @@ const AnswerSection = ({
   };
 
   const getBorderColor = () => {
-    if (result === 'similar' || (secondAttempt && !input)) {
+    if (!secondAttempt && !input) {
+      return COLORS.lunesGreyMedium;
+    } else if (result === 'similar' || secondAttempt) {
       return COLORS.lunesFunctionalAlmostCorrectDark;
     } else if (result === 'correct') {
       return COLORS.lunesFunctionalCorrectDark;
     } else if (result === 'incorrect') {
       return COLORS.lunesFunctionalIncorrectDark;
+    } else {
+      return COLORS.lunesBlack;
     }
   };
 
