@@ -74,7 +74,7 @@ const AnswerSection = ({
       setResult('correct');
       storeResult();
     } else if (secondAttempt) {
-      setResult('similar');
+      setResult('incorrect');
       storeResult();
     } else {
       setInput('');
