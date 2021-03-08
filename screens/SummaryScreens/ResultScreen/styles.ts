@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
   },
   lightLabel: {
-    fontSize: wp('3.5%'),
+    fontSize: wp('3.2%'),
     fontFamily: 'SourceSansPro-Semibold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
