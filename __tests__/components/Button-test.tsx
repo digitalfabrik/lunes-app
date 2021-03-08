@@ -14,7 +14,6 @@ describe('Components', () => {
       children: <Text>Button children</Text>,
       onPress: () => {},
       disabled: false,
-      style: undefined,
       theme: '',
     };
 
@@ -42,7 +41,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         disabled: true,
       };
-      const style = [[styles.darkButton, styles.disabledButton], undefined];
+      const style = [styles.darkButton, styles.disabledButton];
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -52,7 +51,7 @@ describe('Components', () => {
       const buttonProps: IButtonProps = {
         ...defaultButtonProps,
       };
-      const style = [styles.button, undefined];
+      const style = styles.button;
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -63,7 +62,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         theme: BUTTONS_THEME.dark,
       };
-      const style = [styles.darkButton, undefined];
+      const style = styles.darkButton;
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -74,19 +73,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         theme: BUTTONS_THEME.light,
       };
-      const style = [styles.lightButton, undefined];
-
-      const component = shallow(<Button {...buttonProps} />);
-      expect(component.props().style).toStrictEqual(style);
-    });
-
-    it('should have style props passed to it', () => {
-      const customStyle = {color: 'red'};
-      const buttonProps: IButtonProps = {
-        ...defaultButtonProps,
-        style: customStyle,
-      };
-      const style = [styles.button, customStyle];
+      const style = styles.lightButton;
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);

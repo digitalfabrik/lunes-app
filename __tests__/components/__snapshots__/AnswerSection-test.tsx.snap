@@ -55,7 +55,7 @@ exports[`Components AnswerSection renders correctly across screens 1`] = `
           "width": 600,
         },
         Object {
-          "borderColor": undefined,
+          "borderColor": "#5b616a",
         },
       ]
     }

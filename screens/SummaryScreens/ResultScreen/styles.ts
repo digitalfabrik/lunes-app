@@ -51,10 +51,6 @@ export const styles = StyleSheet.create({
   footer: {
     marginTop: 15,
   },
-  viewButton: {
-    position: 'absolute',
-    bottom: 0,
-  },
   lightLabel: {
     fontSize: wp('3.2%'),
     fontFamily: 'SourceSansPro-Semibold',
