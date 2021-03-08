@@ -14,7 +14,7 @@ const buttonBase: any = {
   borderRadius: hp('7%'),
   justifyContent: 'center',
   height: hp('7%'),
-  marginBottom: hp('3%'),
+  marginBottom: hp('2%'),
 };
 
 export const styles = StyleSheet.create({
