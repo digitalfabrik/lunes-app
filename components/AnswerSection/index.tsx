@@ -69,13 +69,13 @@ const AnswerSection = ({
 
     if (!validateForSimilar(article, word)) {
       setResult('incorrect');
-      storeResult();
+      storeResult('incorrect');
     } else if (validateForCorrect(article, word)) {
       setResult('correct');
-      storeResult();
+      storeResult('correct');
     } else if (secondAttempt) {
-      setResult('incorrect');
-      storeResult();
+      setResult('similar');
+      storeResult('similar');
     } else {
       setInput('');
       setSecondAttempt(true);
@@ -113,7 +113,6 @@ const AnswerSection = ({
     setResult('');
     setInput('');
     setSecondAttempt(false);
-    storeResult();
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise();
@@ -121,8 +120,8 @@ const AnswerSection = ({
     setCurrentDocumentNumber(currentDocumentNumber + 1);
   };
 
-  const storeResult = () => {
-    AsyncStorage.getItem('Vocabulary Trainer').then(async (value) => {
+  const storeResult = async (score: string) => {
+    await AsyncStorage.getItem('Vocabulary Trainer').then((value) => {
       let jsonValue = value ? JSON.parse(value) : {};
 
       if (!jsonValue?.[disciplineTitle]?.[trainingSet]) {
@@ -133,17 +132,15 @@ const AnswerSection = ({
       }
 
       if (document) {
-        jsonValue[disciplineTitle][trainingSet][document.word] = result
-          ? {...document, result}
-          : {...document, result: 'incorrect'};
+        jsonValue[disciplineTitle][trainingSet][document.word] = {
+          ...document,
+          result: score,
+        };
       }
 
-      await AsyncStorage.setItem(
-        'Vocabulary Trainer',
-        JSON.stringify(jsonValue),
-      );
+      AsyncStorage.setItem('Vocabulary Trainer', JSON.stringify(jsonValue));
 
-      await AsyncStorage.getItem('session').then(async (session) => {
+      AsyncStorage.getItem('session').then((session) => {
         const jsValue = JSON.parse(session);
         const newData = JSON.stringify({
           ...jsValue,
@@ -245,7 +242,10 @@ const AnswerSection = ({
 
       <Actions
         tryLater={tryLater}
-        giveUp={getNextWord}
+        giveUp={async () => {
+          await storeResult('incorrect');
+          getNextWord();
+        }}
         input={input}
         result={result}
         checkEntry={checkEntry}
