@@ -99,6 +99,7 @@ const VocabularyTrainerExerciseScreen = ({
   };
 
   const docsLength = documents.length;
+
   return (
     <View>
       <ProgressBar

@@ -113,6 +113,7 @@ const AnswerSection = ({
     setResult('');
     setInput('');
     setSecondAttempt(false);
+    storeResult();
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise();
