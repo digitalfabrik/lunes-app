@@ -69,13 +69,13 @@ const AnswerSection = ({
 
     if (!validateForSimilar(article, word)) {
       setResult('incorrect');
-      storeResult();
+      storeResult('incorrect');
     } else if (validateForCorrect(article, word)) {
       setResult('correct');
-      storeResult();
+      storeResult('correct');
     } else if (secondAttempt) {
       setResult('similar');
-      storeResult();
+      storeResult('similar');
     } else {
       setInput('');
       setSecondAttempt(true);
@@ -120,8 +120,8 @@ const AnswerSection = ({
     setCurrentDocumentNumber(currentDocumentNumber + 1);
   };
 
-  const storeResult = () => {
-    AsyncStorage.getItem('Vocabulary Trainer').then(async (value) => {
+  const storeResult = async (score: string) => {
+    await AsyncStorage.getItem('Vocabulary Trainer').then((value) => {
       let jsonValue = value ? JSON.parse(value) : {};
 
       if (!jsonValue?.[disciplineTitle]?.[trainingSet]) {
@@ -132,21 +132,15 @@ const AnswerSection = ({
       }
 
       if (document) {
-        jsonValue[disciplineTitle][trainingSet][document.word] = result
-          ? {...document, result}
-          : {...document, result: 'incorrect'};
+        jsonValue[disciplineTitle][trainingSet][document.word] = {
+          ...document,
+          result: score,
+        };
       }
 
-      await AsyncStorage.setItem(
-        'Vocabulary Trainer',
-        JSON.stringify(jsonValue),
-      );
+      AsyncStorage.setItem('Vocabulary Trainer', JSON.stringify(jsonValue));
 
-      if (currentDocumentNumber === totalNumbers - 1) {
-        finishExercise();
-      }
-
-      await AsyncStorage.getItem('session').then(async (session) => {
+      AsyncStorage.getItem('session').then((session) => {
         const jsValue = JSON.parse(session);
         const newData = JSON.stringify({
           ...jsValue,
@@ -178,12 +172,16 @@ const AnswerSection = ({
   };
 
   const getBorderColor = () => {
-    if (result === 'similar' || (secondAttempt && !input)) {
+    if (!secondAttempt && !input) {
+      return COLORS.lunesGreyMedium;
+    } else if (result === 'similar' || secondAttempt) {
       return COLORS.lunesFunctionalAlmostCorrectDark;
     } else if (result === 'correct') {
       return COLORS.lunesFunctionalCorrectDark;
     } else if (result === 'incorrect') {
       return COLORS.lunesFunctionalIncorrectDark;
+    } else {
+      return COLORS.lunesBlack;
     }
   };
 
@@ -244,7 +242,10 @@ const AnswerSection = ({
 
       <Actions
         tryLater={tryLater}
-        giveUp={getNextWord}
+        giveUp={async () => {
+          await storeResult('incorrect');
+          getNextWord();
+        }}
         input={input}
         result={result}
         checkEntry={checkEntry}

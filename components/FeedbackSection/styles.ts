@@ -12,8 +12,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    marginTop: -hp('3.5%'),
-    marginBottom: hp('4%'),
+    marginTop: -hp('4%'),
+    marginBottom: hp('3%'),
   },
   successMessage: {
     backgroundColor: COLORS.lunesFunctionalCorrectDark,

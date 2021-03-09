@@ -10,7 +10,6 @@ export interface IButtonProps {
   disabled?: boolean;
   children: ReactElement;
   theme?: string;
-  style?: any;
   testID?: string;
 }
 export interface IPopoverProps {

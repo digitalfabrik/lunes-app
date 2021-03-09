@@ -5,20 +5,17 @@ exports[`Components Button should render without issues 1`] = `
   disabled={false}
   onPress={[Function]}
   style={
-    Array [
-      Object {
-        "alignItems": "center",
-        "borderRadius": 93.5,
-        "flexDirection": "row",
-        "height": 93.5,
-        "justifyContent": "center",
-        "marginBottom": 40,
-        "paddingHorizontal": 20,
-        "paddingVertical": 10,
-        "width": 525,
-      },
-      undefined,
-    ]
+    Object {
+      "alignItems": "center",
+      "borderRadius": 93.5,
+      "flexDirection": "row",
+      "height": 93.5,
+      "justifyContent": "center",
+      "marginBottom": 26.5,
+      "paddingHorizontal": 20,
+      "paddingVertical": 10,
+      "width": 525,
+    }
   }
 >
   <Text>
