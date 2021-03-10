@@ -63,7 +63,7 @@ describe('Components', () => {
       expect(component.contains(icon)).toBe(true);
     });
 
-    it('should render error feedback when the result is incorrect', () => {
+    it('should render error feedback when the result is incorrect and the second attempt is false', () => {
       const feedbackProps: IFeedbackProps = {
         ...defaultFeedbackProps,
         result: 'incorrect',
@@ -95,7 +95,7 @@ describe('Components', () => {
       expect(component.contains(icon)).toBe(true);
     });
 
-    it('should render try again feedback when the result is similar', () => {
+    it('should render almost correct feedback when the result is similar', () => {
       const feedbackProps: IFeedbackProps = {
         ...defaultFeedbackProps,
         result: 'similar',

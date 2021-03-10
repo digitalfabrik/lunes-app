@@ -174,14 +174,14 @@ const AnswerSection = ({
   const getBorderColor = () => {
     if (!secondAttempt && !input) {
       return COLORS.lunesGreyMedium;
-    } else if (result === 'similar' || secondAttempt) {
-      return COLORS.lunesFunctionalAlmostCorrectDark;
+    } else if (!result && !secondAttempt) {
+      return COLORS.lunesBlack;
     } else if (result === 'correct') {
       return COLORS.lunesFunctionalCorrectDark;
-    } else if (result === 'incorrect') {
+    } else if (result === 'incorrect' || !secondAttempt) {
       return COLORS.lunesFunctionalIncorrectDark;
     } else {
-      return COLORS.lunesBlack;
+      return COLORS.lunesFunctionalAlmostCorrectDark;
     }
   };
 
