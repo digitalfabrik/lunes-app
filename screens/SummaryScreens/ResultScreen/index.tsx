@@ -83,7 +83,10 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
       <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
-          <Text style={styles.lightLabel}>Repeat {resultType} entries</Text>
+          <Text style={styles.lightLabel}>
+            Repeat {resultType === 'similar' ? 'almost correct' : resultType}{' '}
+            entries
+          </Text>
         </>
       </Button>
     ) : null;

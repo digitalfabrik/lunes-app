@@ -22,14 +22,14 @@ const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
   const messageStyle =
     result === 'correct'
       ? styles.successMessage
-      : result === 'incorrect'
+      : result === 'incorrect' || !secondAttempt
       ? styles.failedMessage
       : styles.almostCorrectMessage;
 
   const message =
     result === 'correct'
       ? 'Great, keep it up! \nThe Word you filled in is correct.'
-      : result === 'incorrect'
+      : result === 'incorrect' || !secondAttempt
       ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
           document?.article?.toLowerCase() === ARTICLES.diePlural
             ? 'die'
