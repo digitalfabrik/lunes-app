@@ -8,6 +8,7 @@ import Tts from 'react-native-tts';
 import {getArticleColor} from '../../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
 import {VolumeUp} from '../../assets/images';
+import {capitalizeFirstLetter} from '../../utils/helpers';
 
 export {
   React,
@@ -23,6 +24,7 @@ export {
   SoundPlayer,
   Platform,
   ARTICLES,
+  capitalizeFirstLetter,
 };
 
 export type {IVocabularyOverviewListItemProps};
