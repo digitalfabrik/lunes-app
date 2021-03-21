@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 2,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     marginBottom: hp('6%'),
   },
   textInput: {
