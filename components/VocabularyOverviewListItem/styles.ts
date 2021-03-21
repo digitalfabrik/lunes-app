@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.lunesBlackUltralight,
     borderWidth: 1,
     borderStyle: 'solid',
+    borderRadius: 2,
   },
   item: {
     flexDirection: 'row',

@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.lunesBlackUltralight,
     borderWidth: 1,
     borderStyle: 'solid',
+    borderRadius: 2,
   },
   clickedContainer: {
     justifyContent: 'space-between',
@@ -71,6 +72,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.white,
     borderWidth: 1,
     borderStyle: 'solid',
+    borderRadius: 2,
   },
   clickedItemTitle: {
     textAlign: 'left',
