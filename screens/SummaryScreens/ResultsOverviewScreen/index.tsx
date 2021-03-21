@@ -42,6 +42,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
           <FinishIcon />
         </TouchableOpacity>
       ),
+      headerStyle: styles.header,
     });
 
     setCounts({

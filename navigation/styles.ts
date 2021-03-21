@@ -5,6 +5,10 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 export const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.lunesWhite,
+    shadowOpacity: 0,
+    elevation: 0,
+    borderBottomColor: COLORS.lunesBlackUltralight,
+    borderBottomWidth: 1,
   },
   title: {
     color: COLORS.lunesBlack,

@@ -138,4 +138,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  header: {
+    shadowOpacity: 0,
+    elevation: 0,
+    borderBottomColor: COLORS.lunesBlackUltralight,
+    borderBottomWidth: 1,
+  },
 });
