@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 2,
     paddingHorizontal: 10,
     marginBottom: hp('6%'),
