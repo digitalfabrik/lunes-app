@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Header from '../../../components/Header';
 import MenuItem from '../../../components/MenuItem';
-import {View, Text, FlatList, Pressable, Image} from 'react-native';
+import {Text, FlatList, Pressable, Image, ScrollView} from 'react-native';
 import {styles} from './styles';
 import axios from '../../../utils/axios';
 import {
@@ -23,7 +23,6 @@ export {
   Loading,
   FlatList,
   Pressable,
-  View,
   styles,
   Text,
   axios,
@@ -35,6 +34,7 @@ export {
   Image,
   SafeAreaInsetsContext,
   AsyncStorage,
+  ScrollView,
 };
 
 export type {IProfessionsProps, IProfessionScreenProps};

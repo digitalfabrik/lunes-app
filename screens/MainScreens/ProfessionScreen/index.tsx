@@ -3,7 +3,6 @@ import {
   Header,
   FlatList,
   SCREENS,
-  View,
   styles,
   Text,
   axios,
@@ -16,6 +15,7 @@ import {
   MenuItem,
   IProfessionScreenProps,
   AsyncStorage,
+  ScrollView,
 } from './imports';
 
 const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
@@ -80,7 +80,7 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   return (
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
-        <View style={styles.root}>
+        <ScrollView style={styles.root}>
           <Header top={insets?.top} />
           <Loading isLoading={isLoading}>
             <FlatList
@@ -90,10 +90,10 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
               ListHeaderComponentStyle={styles.title}
               renderItem={Item}
               keyExtractor={(item) => `${item.id}`}
-              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
             />
           </Loading>
-        </View>
+        </ScrollView>
       )}
     </SafeAreaInsetsContext.Consumer>
   );
