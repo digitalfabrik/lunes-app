@@ -2,7 +2,6 @@ import {
   React,
   useState,
   Modal,
-  View,
   ProgressBar,
   COLORS,
   styles,
@@ -21,6 +20,8 @@ import {
   SCREENS,
   useFocusEffect,
   AsyncStorage,
+  Keyboard,
+  Pressable,
 } from './imports';
 
 const VocabularyTrainerExerciseScreen = ({
@@ -101,7 +102,7 @@ const VocabularyTrainerExerciseScreen = ({
   const docsLength = documents.length;
 
   return (
-    <View>
+    <Pressable onPress={() => Keyboard.dismiss()}>
       <ProgressBar
         progress={docsLength > 0 ? currentDocumentNumber / docsLength : 0}
         color={COLORS.lunesGreenMedium}
@@ -142,7 +143,7 @@ const VocabularyTrainerExerciseScreen = ({
         navigation={navigation}
         extraParams={extraParams}
       />
-    </View>
+    </Pressable>
   );
 };
 
