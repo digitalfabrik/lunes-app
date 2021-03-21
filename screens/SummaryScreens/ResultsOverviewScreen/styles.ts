@@ -118,12 +118,6 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     textTransform: 'uppercase',
   },
-  headerLeft: {
-    paddingLeft: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 200,
-  },
   headerText: {
     fontSize: wp('3.5%'),
     fontWeight: '600',
