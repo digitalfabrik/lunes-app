@@ -6,10 +6,10 @@ export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
+    paddingTop: 32,
   },
   list: {
     width: '100%',
-    marginTop: 50,
     paddingHorizontal: 16,
   },
   screenDescription: {

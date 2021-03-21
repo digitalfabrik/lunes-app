@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
   },
   list: {
+    marginTop: 45,
     width: '100%',
   },
   title: {

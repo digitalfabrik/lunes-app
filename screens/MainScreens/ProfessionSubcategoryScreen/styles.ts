@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
+    paddingTop: 32,
   },
   itemText: {flexDirection: 'row', alignItems: 'center'},
   list: {

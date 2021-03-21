@@ -10,13 +10,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
     alignItems: 'center',
-    paddingBottom: hp('4%'),
     paddingHorizontal: 16,
+    paddingTop: 32,
   },
   list: {
     flexGrow: 0,
     width: '100%',
-    marginTop: hp('6%'),
     marginBottom: hp('6%'),
   },
   screenDescription: {
@@ -34,7 +33,7 @@ export const styles = StyleSheet.create({
     fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
     fontFamily: 'SourceSansPro-SemiBold',
-    paddingBottom: hp('4%'),
+    paddingBottom: hp('3%'),
   },
   screenSubTitle: {
     textAlign: 'center',
