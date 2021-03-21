@@ -82,7 +82,7 @@ const Navigation = () => {
         />
         <ProfessionStack.Screen
           options={({navigation}) =>
-            defaultOptions('Exercise Overview', CloseButton, navigation)
+            defaultOptions('Exercise Overview', BackButton, navigation)
           }
           name="VocabularyOverview"
           component={VocabularyOverviewExerciseScreen}
