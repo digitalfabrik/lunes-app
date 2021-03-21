@@ -76,7 +76,6 @@ const VocabularyOverviewExerciseScreen = ({
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
         />
       </Loading>
     </View>

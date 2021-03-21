@@ -120,7 +120,6 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
           renderItem={Item}
           keyExtractor={(item) => `${item.id}`}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
           ListFooterComponent={Footer}
           ListFooterComponentStyle={styles.footer}
         />

@@ -14,9 +14,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
   },
   list: {
-    paddingHorizontal: 15,
-    flex: 1,
-    width: wp('100%'),
+    width: '100%',
   },
   title: {
     height: 54,

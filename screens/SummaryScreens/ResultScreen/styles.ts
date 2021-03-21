@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingBottom: 0,
-    position: 'relative',
   },
   screenTitle: {
     textAlign: 'center',
@@ -28,13 +27,9 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
   },
   list: {
-    paddingHorizontal: 15,
     flexGrow: 0,
-    width: wp('100%'),
+    width: '100%',
     marginBottom: hp('6%'),
-  },
-  listContent: {
-    alignItems: 'center',
   },
   darkLabel: {
     textAlign: 'center',
@@ -50,6 +45,7 @@ export const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 15,
+    alignItems: 'center',
   },
   lightLabel: {
     fontSize: wp('3.2%'),
