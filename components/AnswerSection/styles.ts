@@ -43,4 +43,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  shadow: {
+    shadowColor: COLORS.shadow,
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 3,
+    shadowOpacity: 10,
+  },
 });

@@ -49,11 +49,14 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
   },
   speaker: {
-    width: 32,
-    height: 32,
     borderRadius: 50,
-    backgroundColor: COLORS.lunesFunctionalIncorrectDark,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: COLORS.shadow,
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 3,
+    shadowOpacity: 10,
   },
 });

@@ -7529,6 +7529,11 @@ react-native-screens@^2.16.1:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.16.1.tgz#b105a127378d90018a46daf0c2f6518fca60c06f"
   integrity sha512-WZ7m0sBDVaHbBnlHxwQnUlI6KNfQKHq+Unfw+VBuAlnSXvT+aw6Bb/K2bUlHzBgvrPjwY3Spc7ZERFuTwRLLwg==
 
+react-native-shadow@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-shadow/-/react-native-shadow-1.2.2.tgz#08991cd14b71e32f2fc6363911c139d231949a66"
+  integrity sha512-kwTmqRKmPEML9KbJi0uvvKd+67rOJQcr3IyNp9bg+qi/H+Wnwev/Mr8sUiUZlYEJ433ii2iNwpjc1ERMjHtMWw==
+
 react-native-sound-player@0.10.3:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/react-native-sound-player/-/react-native-sound-player-0.10.3.tgz#42f5c7c80d1d015dd89d01da8318a39900321f6f"
