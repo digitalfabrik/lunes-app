@@ -25,7 +25,7 @@ LogBox.ignoreLogs([
 
 const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
   const {extraParams} = route.params;
-  const {trainingSet} = extraParams;
+  const {trainingSet, disciplineTitle} = extraParams;
   const [selectedId, setSelectedId] = useState(-1);
 
   useFocusEffect(
@@ -46,11 +46,11 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
             }
             style={styles.headerLeft}>
             <BackButton />
-            <Text style={styles.title}>Exercise Overview</Text>
+            <Text style={styles.title}>{disciplineTitle}</Text>
           </TouchableOpacity>
         ),
       });
-    }, [extraParams, navigation]),
+    }, [extraParams, navigation, disciplineTitle]),
   );
 
   const Header = (
