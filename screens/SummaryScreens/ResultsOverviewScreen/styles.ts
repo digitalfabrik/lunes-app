@@ -22,6 +22,8 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
+    lineHeight: 18,
+    marginTop: 7,
   },
   description: {
     fontSize: wp('4%'),
