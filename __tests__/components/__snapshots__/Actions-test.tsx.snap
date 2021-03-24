@@ -13,7 +13,7 @@ exports[`Components Actions renders correctly across screens 1`] = `
         Array [
           Object {
             "color": "#f9fafb",
-            "fontFamily": "SourceSansPro-Semibold",
+            "fontFamily": "SourceSansPro-SemiBold",
             "fontSize": 30,
             "fontWeight": "600",
             "letterSpacing": 0.4,
@@ -38,7 +38,7 @@ exports[`Components Actions renders correctly across screens 1`] = `
       style={
         Object {
           "color": "#000e38",
-          "fontFamily": "SourceSansPro-Semibold",
+          "fontFamily": "SourceSansPro-SemiBold",
           "fontSize": 30,
           "fontWeight": "600",
           "letterSpacing": 0.4,
@@ -58,7 +58,7 @@ exports[`Components Actions renders correctly across screens 1`] = `
       style={
         Object {
           "color": "#000e38",
-          "fontFamily": "SourceSansPro-Semibold",
+          "fontFamily": "SourceSansPro-SemiBold",
           "fontSize": 30,
           "fontWeight": "600",
           "letterSpacing": 0.4,

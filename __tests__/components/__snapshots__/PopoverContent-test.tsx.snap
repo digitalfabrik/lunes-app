@@ -15,7 +15,10 @@ exports[`components PopoverContent renders correctly across screens 1`] = `
     }
   }
 >
-  <[object Object] />
+  <[object Object]
+    height={30}
+    width={30}
+  />
   <Text
     style={
       Object {
