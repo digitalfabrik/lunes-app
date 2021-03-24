@@ -22,6 +22,5 @@ export const COLORS = {
   lunesFunctionalAlmostCorrectDark: '#ffbb4a',
   lunesRedDark: '#F1635F',
   lunesRed: '#ffa3a3',
-  black: '#000000',
   shadow: 'rgba(0, 0, 0, 0.6)',
 };

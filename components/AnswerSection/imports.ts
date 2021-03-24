@@ -13,7 +13,6 @@ import stringSimilarity from 'string-similarity';
 import Actions from '../Actions';
 import PopoverContent from '../PopoverContent';
 import {useFocusEffect} from '@react-navigation/native';
-import {BoxShadow} from 'react-native-shadow';
 
 export {
   React,
@@ -35,7 +34,6 @@ export {
   Actions,
   PopoverContent,
   useFocusEffect,
-  BoxShadow,
 };
 
 export type {IAnswerSectionProps, IDocumentProps};

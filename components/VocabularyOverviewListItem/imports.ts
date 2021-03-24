@@ -9,7 +9,6 @@ import {getArticleColor} from '../../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
 import {VolumeUp} from '../../assets/images';
 import {capitalizeFirstLetter} from '../../utils/helpers';
-import {BoxShadow} from 'react-native-shadow';
 
 export {
   React,
@@ -26,7 +25,6 @@ export {
   Platform,
   ARTICLES,
   capitalizeFirstLetter,
-  BoxShadow,
 };
 
 export type {IVocabularyOverviewListItemProps};

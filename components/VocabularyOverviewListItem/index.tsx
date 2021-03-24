@@ -14,7 +14,6 @@ import {
   COLORS,
   ARTICLES,
   capitalizeFirstLetter,
-  BoxShadow,
 } from './imports';
 
 //German language
@@ -65,36 +64,6 @@ const VocabularyOverviewListItem = ({
 
   const volumeIconStyle = [styles.speaker, !active && styles.shadow];
 
-  const shadowOpt = {
-    width: 37,
-    height: 40,
-    color: COLORS.black,
-    border: 2,
-    radius: 17,
-    opacity: 0.4,
-    x: 0,
-    y: 2,
-    style: styles.speaker,
-  };
-
-  const volumeIconButton =
-    Platform.OS === 'android' && !active ? (
-      <BoxShadow setting={shadowOpt}>
-        <TouchableOpacity
-          testID="volume-button"
-          onPress={() => handleSpeakerClick()}>
-          <VolumeUp fill={volumeIconColor} />
-        </TouchableOpacity>
-      </BoxShadow>
-    ) : (
-      <TouchableOpacity
-        testID="volume-button"
-        style={volumeIconStyle}
-        onPress={() => handleSpeakerClick()}>
-        <VolumeUp fill={volumeIconColor} />
-      </TouchableOpacity>
-    );
-
   return (
     <View style={styles.container}>
       <View style={styles.item}>
@@ -119,7 +88,12 @@ const VocabularyOverviewListItem = ({
           </Text>
         </View>
       </View>
-      {volumeIconButton}
+      <TouchableOpacity
+        testID="volume-button"
+        style={volumeIconStyle}
+        onPress={() => handleSpeakerClick()}>
+        <VolumeUp fill={volumeIconColor} />
+      </TouchableOpacity>
     </View>
   );
 };

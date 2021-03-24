@@ -18,7 +18,6 @@ import {
   Actions,
   PopoverContent,
   AsyncStorage,
-  BoxShadow,
 } from './imports';
 
 const AnswerSection = ({
@@ -201,40 +200,6 @@ const AnswerSection = ({
     (result !== '' || secondAttempt) && !isActive && styles.shadow,
   ];
 
-  const shadowOpt = {
-    width: 37,
-    height: 40,
-    color: COLORS.black,
-    border: 2,
-    radius: 17,
-    opacity: 0.4,
-    x: 1.3,
-    y: 2,
-    style: styles.volumeIcon,
-  };
-
-  const volumeIconButton =
-    Platform.OS === 'android' &&
-    !isActive &&
-    (result !== '' || secondAttempt) ? (
-      <BoxShadow setting={shadowOpt}>
-        <TouchableOpacity
-          testID="volume-button"
-          disabled={result === '' && !secondAttempt}
-          onPress={() => handleSpeakerClick(document?.audio)}>
-          <VolumeUp fill={volumeIconColor} />
-        </TouchableOpacity>
-      </BoxShadow>
-    ) : (
-      <TouchableOpacity
-        testID="volume-button"
-        disabled={result === '' && !secondAttempt}
-        style={volumeIconStyle}
-        onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUp fill={volumeIconColor} />
-      </TouchableOpacity>
-    );
-
   return (
     <View style={styles.container}>
       <Popover
@@ -244,7 +209,13 @@ const AnswerSection = ({
         <PopoverContent />
       </Popover>
 
-      {volumeIconButton}
+      <TouchableOpacity
+        testID="volume-button"
+        disabled={result === '' && !secondAttempt}
+        style={volumeIconStyle}
+        onPress={() => handleSpeakerClick(document?.audio)}>
+        <VolumeUp fill={volumeIconColor} />
+      </TouchableOpacity>
 
       <View
         testID="input-field"
