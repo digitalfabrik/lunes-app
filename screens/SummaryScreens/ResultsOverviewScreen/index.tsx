@@ -111,6 +111,15 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     });
   };
 
+  const Footer = (
+    <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+      <>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
+      </>
+    </Button>
+  );
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" />
@@ -122,14 +131,9 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
         renderItem={Item}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={Footer}
+        ListFooterComponentStyle={styles.footer}
       />
-
-      <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
-        <>
-          <RepeatIcon fill={COLORS.lunesWhite} />
-          <Text style={styles.lightLabel}>Repeat whole exercise</Text>
-        </>
-      </Button>
     </View>
   );
 };

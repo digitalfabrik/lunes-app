@@ -137,4 +137,8 @@ export const styles = StyleSheet.create({
     borderBottomColor: COLORS.lunesBlackUltralight,
     borderBottomWidth: 1,
   },
+  footer: {
+    marginTop: 25,
+    alignItems: 'center',
+  },
 });
