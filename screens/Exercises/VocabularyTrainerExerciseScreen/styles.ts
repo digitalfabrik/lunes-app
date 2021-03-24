@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    width: 200,
+    zIndex: 100,
   },
   spinner: {
     width: '100%',
