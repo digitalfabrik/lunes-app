@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   lightLabel: {
     fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
     marginLeft: 10,
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
   headerText: {
     fontSize: wp('3.5%'),
     fontWeight: '600',
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesBlack,
     textTransform: 'uppercase',
     marginRight: 8,

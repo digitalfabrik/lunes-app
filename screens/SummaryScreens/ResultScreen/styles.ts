@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   darkLabel: {
     textAlign: 'center',
     color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: wp('3.5%'),
     letterSpacing: 0.4,
     textTransform: 'uppercase',
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   lightLabel: {
     fontSize: wp('3.2%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
     marginLeft: 10,

@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   badgeLabel: {
     color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: wp('3%'),
     fontWeight: '600',
     minWidth: wp('6%'),
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   clickedItemBadgeLabel: {
     color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: 12,
     fontWeight: '600',
     minWidth: wp('6%'),
