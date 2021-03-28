@@ -4,20 +4,19 @@ import {
   View,
   Text,
   IFeedbackProps,
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
-  COLORS,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
   ARTICLES,
 } from './imports';
 
 const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
   const Icon =
     result === 'correct'
-      ? CorrectIcon
+      ? CorrectFeedbackIcon
       : result === 'incorrect' || !secondAttempt
-      ? IncorrectIcon
-      : AlmostCorrectIcon;
+      ? IncorrectFeedbackIcon
+      : AlmostCorrectFeedbackIcon;
 
   const messageStyle =
     result === 'correct'
@@ -39,7 +38,7 @@ const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
 
   return result !== '' || secondAttempt ? (
     <View style={[styles.messageContainer, messageStyle]}>
-      <Icon fill={COLORS.lunesGreyDark} stroke={COLORS.lunesGreyDark} />
+      <Icon width={28} height={28} />
       <View style={styles.textContainer}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
           {message}

@@ -3,11 +3,10 @@ import {styles} from './styles';
 import {View, Text} from 'react-native';
 import {IFeedbackProps} from '../../interfaces/exercise';
 import {
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
 } from '../../assets/images';
-import {COLORS} from '../../constants/colors';
 import {ARTICLES} from '../../constants/data';
 
 export {
@@ -15,10 +14,9 @@ export {
   styles,
   View,
   Text,
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
-  COLORS,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
   ARTICLES,
 };
 

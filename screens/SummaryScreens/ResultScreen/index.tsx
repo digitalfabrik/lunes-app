@@ -48,12 +48,7 @@ const ResultScreen = ({route, navigation}: IResultScreenProps) => {
   const Header = (
     <Title>
       <>
-        <Icon
-          fill={COLORS.lunesGreyDark}
-          stroke={COLORS.lunesGreyDark}
-          width={36}
-          height={36}
-        />
+        <Icon width={38} height={38} />
         <Text style={styles.screenTitle}> {title} Entries</Text>
         <Text style={styles.description}>
           {`${counts[resultType]} of ${counts.total} Words`}

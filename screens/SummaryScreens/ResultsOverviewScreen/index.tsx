@@ -91,7 +91,7 @@ const ResultsOverview = ({navigation, route}: IResultsOverviewScreenProps) => {
     return (
       <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
         <View style={styles.leftSide}>
-          <item.icon fill={iconColor} stroke={iconColor} />
+          <item.icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
             <Text style={descriptionStyle}>
