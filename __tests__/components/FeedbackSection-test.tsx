@@ -3,7 +3,6 @@ import React from 'react';
 import FeedbackSection from '../../components/FeedbackSection';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {styles} from '../../components/FeedbackSection/styles';
 import {IFeedbackProps} from '../../interfaces/exercise';
 import {ARTICLES} from '../../constants/data';
 import {
@@ -48,12 +47,10 @@ describe('Components', () => {
         result: 'correct',
       };
       const message = 'Great, keep it up! \nThe Word you filled in is correct.';
-      const messageStyle = [styles.messageContainer, styles.successMessage];
       const icon = <CorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
 
@@ -75,12 +72,10 @@ describe('Components', () => {
           ? 'die'
           : feedbackProps.document?.article
       } ${feedbackProps.document?.word}`;
-      const messageStyle = [styles.messageContainer, styles.failedMessage];
       const icon = <IncorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
 
@@ -92,15 +87,10 @@ describe('Components', () => {
         secondAttempt: true,
       };
       const message = `Your entry ${feedbackProps.input} is almost correct. Check for upper and lower case.`;
-      const messageStyle = [
-        styles.messageContainer,
-        styles.almostCorrectMessage,
-      ];
       const icon = <AlmostCorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
   });

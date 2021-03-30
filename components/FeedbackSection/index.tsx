@@ -8,6 +8,10 @@ import {
   IncorrectFeedbackIcon,
   AlmostCorrectFeedbackIcon,
   ARTICLES,
+  ImageBackground,
+  incorrect_background,
+  hint_background,
+  correct_background,
 } from './imports';
 
 const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
@@ -18,12 +22,12 @@ const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
       ? IncorrectFeedbackIcon
       : AlmostCorrectFeedbackIcon;
 
-  const messageStyle =
+  const background =
     result === 'correct'
-      ? styles.successMessage
+      ? correct_background
       : result === 'incorrect' || !secondAttempt
-      ? styles.failedMessage
-      : styles.almostCorrectMessage;
+      ? incorrect_background
+      : hint_background;
 
   const message =
     result === 'correct'
@@ -37,13 +41,18 @@ const Feedback = ({result, document, input, secondAttempt}: IFeedbackProps) => {
       : `Your entry ${input} is almost correct. Check for upper and lower case.`;
 
   return result !== '' || secondAttempt ? (
-    <View style={[styles.messageContainer, messageStyle]}>
-      <Icon width={28} height={28} />
-      <View style={styles.textContainer}>
-        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
-          {message}
-        </Text>
-      </View>
+    <View style={styles.messageContainer}>
+      <ImageBackground
+        source={background}
+        style={styles.imageBackground}
+        testID="background-image">
+        <Icon width={28} height={28} />
+        <View style={styles.textContainer}>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text}>
+            {message}
+          </Text>
+        </View>
+      </ImageBackground>
     </View>
   ) : null;
 };

@@ -34,6 +34,9 @@ import AlmostCorrectEntriesIcon from './almost-correct-entries.svg';
 import CorrectFeedbackIcon from './correct-feedback.svg';
 import IncorrectFeedbackIcon from './incorrect-feedback.svg';
 import AlmostCorrectFeedbackIcon from './almost-correct-feedback.svg';
+import incorrect_background from './incorrect-background.png';
+import hint_background from './hint-background.png';
+import correct_background from './correct-background.png';
 
 export {
   icon1,
@@ -71,4 +74,7 @@ export {
   CorrectFeedbackIcon,
   AlmostCorrectFeedbackIcon,
   IncorrectFeedbackIcon,
+  incorrect_background,
+  correct_background,
+  hint_background,
 };

@@ -11,15 +11,15 @@ export const styles = StyleSheet.create({
     height: hp('9%'),
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
     marginTop: -hp('4%'),
     marginBottom: hp('3%'),
   },
-  successMessage: {
-    backgroundColor: COLORS.lunesFunctionalCorrectDark,
-  },
-  failedMessage: {
-    backgroundColor: COLORS.lunesFunctionalIncorrectDark,
+  imageBackground: {
+    width: wp('80%'),
+    height: hp('9%'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
   },
   textContainer: {
     marginHorizontal: 5,
@@ -31,8 +31,5 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
     fontWeight: 'normal',
     color: COLORS.lunesBlack,
-  },
-  almostCorrectMessage: {
-    backgroundColor: COLORS.lunesFunctionalAlmostCorrectDark,
   },
 });
