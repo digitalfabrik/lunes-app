@@ -9,15 +9,16 @@ exports[`Components MenuItem renders correctly across screens 1`] = `
       "alignSelf": "center",
       "backgroundColor": "#ffffff",
       "borderColor": "#e0e4ed",
+      "borderRadius": 2,
       "borderStyle": "solid",
       "borderWidth": 1,
       "flexDirection": "row",
       "justifyContent": "space-between",
       "marginBottom": 8,
-      "paddingLeft": 25,
-      "paddingRight": 16,
+      "paddingLeft": 16,
+      "paddingRight": 8,
       "paddingVertical": 17,
-      "width": 637.5,
+      "width": "100%",
     }
   }
 >

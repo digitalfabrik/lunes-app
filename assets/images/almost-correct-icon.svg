@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
     <defs>
-        <filter id="f77tzr9qua">
-            <feColorMatrix in="SourceGraphic" values="0 0 0 0 0.227451 0 0 0 0 0.250980 0 0 0 0 0.286275 0 0 0 1.000000 0"/>
+        <filter id="irueecwzka">
+            <feColorMatrix in="SourceGraphic" values="0 0 0 0 0.000000 0 0 0 0 0.054902 0 0 0 0 0.219608 0 0 0 1.000000 0"/>
         </filter>
     </defs>
+    <g fill="none" fill-rule="evenodd">
         <g>
             <g>
                 <g transform="translate(-31 -331) translate(15 308) translate(16 23)">
-                    <circle cx="12" cy="12" r="11.5" fill="none"/>
-                    <g filter="url(#f77tzr9qua)" transform="translate(4 4)">
-                        <g>
+                    <circle cx="12" cy="12" r="11.5" fill="#FFF" stroke="#E0E4ED"/>
+                    <g filter="url(#irueecwzka)" transform="translate(4 4)">
+                        <g fill="#000">
                             <path d="M-0.495 5.111L12.655 5.469 13.173 6.334 -1.013 5.976z" transform="translate(1.798 2.19) rotate(-45 6.08 5.723)"/>
                             <path d="M4.858.663L4.194 0 2.578 1.617.961 0 .298.663 1.914 2.28.298 3.897.961 4.56 2.578 2.943 4.194 4.56 4.858 3.897 3.241 2.28zM8.243 10.421L6.757 8.935 6.079 9.609 8.243 11.774 12.458 7.559 11.784 6.886z" transform="translate(1.798 2.19)"/>
                         </g>
@@ -17,4 +18,5 @@
                 </g>
             </g>
         </g>
+    </g>
 </svg>

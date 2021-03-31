@@ -18,11 +18,14 @@ import {
   NavigationContainer,
   TransitionPresets,
   SCREENS,
+  BackArrowPressed,
 } from './imports';
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
 
 const Navigation = () => {
+  const [isPressed, setIsPressed] = React.useState(false);
+
   const defaultOptions = (
     title: string,
     Icon: any,
@@ -35,8 +38,11 @@ const Navigation = () => {
           onPress={
             screen ? () => navigation.navigate(screen) : navigation.goBack
           }
+          onPressIn={() => setIsPressed(true)}
+          onPressOut={() => setIsPressed(false)}
+          activeOpacity={1}
           style={styles.headerLeft}>
-          <Icon />
+          {isPressed ? <BackArrowPressed /> : <Icon />}
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
       ),
@@ -82,7 +88,7 @@ const Navigation = () => {
         />
         <ProfessionStack.Screen
           options={({navigation}) =>
-            defaultOptions('Exercise Overview', CloseButton, navigation)
+            defaultOptions('Exercise Overview', BackButton, navigation)
           }
           name="VocabularyOverview"
           component={VocabularyOverviewExerciseScreen}

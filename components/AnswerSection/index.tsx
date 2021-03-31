@@ -38,6 +38,7 @@ const AnswerSection = ({
   const [secondAttempt, setSecondAttempt] = useState(false);
   const document = documents[currentDocumentNumber];
   const totalNumbers = documents.length;
+  const [isFocused, setIsFocused] = useState(false);
 
   React.useEffect(() => {
     const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
@@ -172,7 +173,9 @@ const AnswerSection = ({
   };
 
   const getBorderColor = () => {
-    if (!secondAttempt && !input) {
+    if (isFocused) {
+      return COLORS.lunesBlack;
+    } else if (!secondAttempt && !input) {
       return COLORS.lunesGreyMedium;
     } else if (!result && !secondAttempt) {
       return COLORS.lunesBlack;
@@ -186,11 +189,16 @@ const AnswerSection = ({
   };
 
   const volumeIconColor =
-    result === ''
+    result === '' && !secondAttempt
       ? COLORS.lunesBlackUltralight
       : isActive
-      ? COLORS.lunesRedDark
-      : COLORS.lunesRed;
+      ? COLORS.lunesRed
+      : COLORS.lunesRedDark;
+
+  const volumeIconStyle = [
+    styles.volumeIcon,
+    (result !== '' || secondAttempt) && !isActive && styles.shadow,
+  ];
 
   return (
     <View style={styles.container}>
@@ -203,8 +211,8 @@ const AnswerSection = ({
 
       <TouchableOpacity
         testID="volume-button"
-        disabled={result === ''}
-        style={styles.volumeIcon}
+        disabled={result === '' && !secondAttempt}
+        style={volumeIconStyle}
         onPress={() => handleSpeakerClick(document?.audio)}>
         <VolumeUp fill={volumeIconColor} />
       </TouchableOpacity>
@@ -225,8 +233,10 @@ const AnswerSection = ({
           value={input}
           onChangeText={(text) => setInput(text)}
           editable={result === ''}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
-        {result === '' && input !== '' && (
+        {(isFocused || (result === '' && input !== '')) && (
           <TouchableOpacity onPress={() => setInput('')}>
             <CloseIcon />
           </TouchableOpacity>

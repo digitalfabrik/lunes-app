@@ -34,3 +34,7 @@ export const getArticleColor = (article: string): string => {
       return COLORS.lunesArtikelDer;
   }
 };
+
+export const capitalizeFirstLetter = (article: string): string => {
+  return article.charAt(0).toUpperCase() + article.slice(1);
+};

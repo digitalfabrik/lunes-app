@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {
-  View,
   Text,
   TouchableOpacity,
   Image,
   BackHandler,
   ActivityIndicator,
+  Pressable,
+  Keyboard,
 } from 'react-native';
 import {styles} from './styles';
 import Modal from '../../../components/Modal';
@@ -26,7 +27,6 @@ export {
   React,
   useState,
   Modal,
-  View,
   ProgressBar,
   COLORS,
   styles,
@@ -43,6 +43,8 @@ export {
   SCREENS,
   useFocusEffect,
   AsyncStorage,
+  Keyboard,
+  Pressable,
 };
 
 export type {IDocumentProps, IVocabularyTrainerScreen};

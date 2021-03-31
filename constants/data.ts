@@ -4,6 +4,9 @@ import {
   CorrectIcon,
   IncorrectIcon,
   AlmostCorrectIcon,
+  CorrectEntriesIcon,
+  IncorrectEntriesIcon,
+  AlmostCorrectEntriesIcon,
 } from '../assets/images';
 
 export const SCREENS = {
@@ -74,17 +77,17 @@ export const ARTICLES = {
 
 export const RESULT_PRESETS = {
   similar: {
-    Icon: AlmostCorrectIcon,
+    Icon: AlmostCorrectEntriesIcon,
     title: 'Almost Correct',
     next: {title: 'INCORRECT', type: 'incorrect'},
   },
   correct: {
-    Icon: CorrectIcon,
+    Icon: CorrectEntriesIcon,
     title: 'Correct',
     next: {title: 'ALMOST CORRECT', type: 'similar'},
   },
   incorrect: {
-    Icon: IncorrectIcon,
+    Icon: IncorrectEntriesIcon,
     title: 'Incorrect',
     next: {title: 'CORRECT', type: 'correct'},
   },

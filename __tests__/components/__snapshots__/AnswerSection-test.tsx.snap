@@ -22,17 +22,20 @@ exports[`Components AnswerSection renders correctly across screens 1`] = `
     disabled={true}
     onPress={[Function]}
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#ff5252",
-        "borderRadius": 50,
-        "height": 40,
-        "justifyContent": "center",
-        "left": "45%",
-        "position": "absolute",
-        "top": -20,
-        "width": 40,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#ff5252",
+          "borderRadius": 50,
+          "height": 40,
+          "justifyContent": "center",
+          "left": "45%",
+          "position": "absolute",
+          "top": -20,
+          "width": 40,
+        },
+        false,
+      ]
     }
     testID="volume-button"
   >
@@ -46,12 +49,12 @@ exports[`Components AnswerSection renders correctly across screens 1`] = `
         Object {
           "alignItems": "center",
           "borderRadius": 2,
-          "borderWidth": 2,
+          "borderWidth": 1,
           "flexDirection": "row",
           "height": 106.5,
           "justifyContent": "space-between",
           "marginBottom": 80,
-          "paddingHorizontal": 10,
+          "paddingHorizontal": 15,
           "width": 600,
         },
         Object {
@@ -64,7 +67,9 @@ exports[`Components AnswerSection renders correctly across screens 1`] = `
     <Component
       allowFontScaling={true}
       editable={true}
+      onBlur={[Function]}
       onChangeText={[Function]}
+      onFocus={[Function]}
       placeholder="Enter Word with article"
       placeholderTextColor="#777e91"
       rejectResponderTermination={true}

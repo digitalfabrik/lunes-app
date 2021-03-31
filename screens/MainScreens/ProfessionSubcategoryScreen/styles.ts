@@ -6,12 +6,11 @@ export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
+    paddingTop: 32,
   },
   itemText: {flexDirection: 'row', alignItems: 'center'},
   list: {
-    paddingHorizontal: 15,
-    flex: 1,
-    width: wp('100%'),
+    width: '100%',
   },
   description: {
     textAlign: 'center',
@@ -34,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   badgeLabel: {
     color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: wp('3%'),
     fontWeight: '600',
     minWidth: wp('6%'),
@@ -46,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   clickedItemBadgeLabel: {
     color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: 12,
     fontWeight: '600',
     minWidth: wp('6%'),

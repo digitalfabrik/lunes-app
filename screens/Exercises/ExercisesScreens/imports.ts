@@ -16,7 +16,11 @@ import {EXERCISES, SCREENS} from '../../../constants/data';
 import {Arrow} from '../../../assets/images';
 import {useFocusEffect} from '@react-navigation/native';
 import {COLORS} from '../../../constants/colors';
-import {BackButton} from '../../../assets/images';
+import {
+  BackButton,
+  BackArrowPressed,
+  HomeButtonPressed,
+} from '../../../assets/images';
 
 export {
   React,
@@ -37,6 +41,8 @@ export {
   Arrow,
   SCREENS,
   BackButton,
+  BackArrowPressed,
+  HomeButtonPressed,
 };
 
 export type {IExercisesScreenProps};

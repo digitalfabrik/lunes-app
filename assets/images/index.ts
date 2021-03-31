@@ -22,12 +22,23 @@ import VolumeUp from './inactive-volume-up.svg';
 import CorrectIcon from './correct-icon.svg';
 import WhiteNextArrow from './white-next-arrow.svg';
 import IncorrectIcon from './incorrect-icon.svg';
-import AlmostCorrectIcon from './almost-correcr-icon.svg';
+import AlmostCorrectIcon from './almost-correct-icon.svg';
 import CheckIcon from './check.svg';
 import RepeatIcon from './repeat.svg';
 import ListIcon from './list.svg';
 import FinishIcon from './finish.svg';
 import CircularFinishIcon from './circular-finish.svg';
+import CorrectEntriesIcon from './correct-entries.svg';
+import IncorrectEntriesIcon from './incorrect-entries.svg';
+import AlmostCorrectEntriesIcon from './almost-correct-entries.svg';
+import CorrectFeedbackIcon from './correct-feedback.svg';
+import IncorrectFeedbackIcon from './incorrect-feedback.svg';
+import AlmostCorrectFeedbackIcon from './almost-correct-feedback.svg';
+import incorrect_background from './incorrect-background.png';
+import hint_background from './hint-background.png';
+import correct_background from './correct-background.png';
+import BackArrowPressed from './back-arrow-pressed.svg';
+import HomeButtonPressed from './home-pressed.svg';
 
 export {
   icon1,
@@ -59,4 +70,15 @@ export {
   RepeatIcon,
   FinishIcon,
   CircularFinishIcon,
+  AlmostCorrectEntriesIcon,
+  CorrectEntriesIcon,
+  IncorrectEntriesIcon,
+  CorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  incorrect_background,
+  correct_background,
+  hint_background,
+  BackArrowPressed,
+  HomeButtonPressed,
 };

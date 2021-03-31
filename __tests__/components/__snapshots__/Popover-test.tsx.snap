@@ -2,7 +2,7 @@
 
 exports[`Components Popover renders correctly across screens 1`] = `
 <Popover
-  arrowShift={-0.8}
+  arrowShift={-0.85}
   arrowStyle={
     Object {
       "backgroundColor": "#000e38",

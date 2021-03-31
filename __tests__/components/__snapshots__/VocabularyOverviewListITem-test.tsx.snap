@@ -7,15 +7,15 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
       "alignItems": "center",
       "backgroundColor": "#ffffff",
       "borderColor": "#e0e4ed",
+      "borderRadius": 2,
       "borderStyle": "solid",
       "borderWidth": 1,
       "flexDirection": "row",
       "justifyContent": "space-between",
       "marginBottom": 8,
-      "paddingLeft": 20,
-      "paddingRight": 16,
+      "paddingHorizontal": 16,
       "paddingVertical": 17,
-      "width": 637.5,
+      "width": "100%",
     }
   }
 >
@@ -50,16 +50,17 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
           Array [
             Object {
               "alignSelf": "flex-start",
-              "borderRadius": 22.5,
+              "borderRadius": 10,
               "color": "#3a4049",
               "fontFamily": "SourceSansPro-Regular",
-              "fontSize": 30,
+              "fontSize": 26.5,
               "fontWeight": "normal",
-              "marginBottom": 2,
-              "minWidth": 45,
+              "height": 37.5,
+              "lineHeight": 18,
+              "marginBottom": 6,
               "overflow": "hidden",
-              "paddingHorizontal": 10,
-              "paddingVertical": 2,
+              "textAlign": "center",
+              "width": 75,
             },
             Object {
               "backgroundColor": "#8cc8f3",
@@ -75,7 +76,7 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
             "fontFamily": "SourceSansPro-Regular",
             "fontSize": 30,
             "fontWeight": "normal",
-            "marginLeft": 5,
+            "marginLeft": 8,
           }
         }
         testID="word"
@@ -85,19 +86,27 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
   <ForwardRef
     onPress={[Function]}
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#ff5252",
-        "borderRadius": 50,
-        "height": 32,
-        "justifyContent": "center",
-        "width": 32,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "borderRadius": 50,
+          "justifyContent": "center",
+        },
+        Object {
+          "shadowColor": "rgba(0, 0, 0, 0.6)",
+          "shadowOffset": Object {
+            "height": 5,
+            "width": 0,
+          },
+          "shadowOpacity": 10,
+          "shadowRadius": 3,
+        },
+      ]
     }
     testID="volume-button"
   >
     <[object Object]
-      fill="#ffa3a3"
+      fill="#F1635F"
     />
   </ForwardRef>
 </View>

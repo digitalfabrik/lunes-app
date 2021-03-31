@@ -28,13 +28,13 @@ export const styles = StyleSheet.create({
   message: {
     color: COLORS.lunesWhite,
     fontSize: wp('5%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontWeight: '600',
     textAlign: 'center',
   },
   lightLabel: {
     fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
     marginLeft: 10,
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   darkLabel: {
     fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesBlack,
     fontWeight: '600',
     marginLeft: 10,

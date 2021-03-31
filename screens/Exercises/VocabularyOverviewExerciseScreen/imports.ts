@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles} from './styles';
 import {IVocabularyOverviewScreen} from '../../../interfaces/exercise';
-import {Home} from '../../../assets/images';
+import {Home, HomeButtonPressed} from '../../../assets/images';
 import {ENDPOINTS} from '../../../constants/endpoints';
 import {IDocumentProps} from '../../../interfaces/exercise';
 import {useFocusEffect} from '@react-navigation/native';
@@ -29,6 +29,7 @@ export {
   Title,
   VocabularyOverviewListItem,
   Loading,
+  HomeButtonPressed,
 };
 
 export type {IVocabularyOverviewScreen, IDocumentProps};

@@ -42,7 +42,7 @@ describe('Components', () => {
         ...defaultListItemProps,
         article: 'article',
       };
-      const article = 'article';
+      const article = 'Article';
 
       const component = shallow(
         <VocabularyOverviewListItem {...listItemProps} />,

@@ -19,9 +19,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 2,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     marginBottom: hp('6%'),
   },
   textInput: {
@@ -42,5 +42,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesFunctionalIncorrectDark,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: COLORS.shadow,
+    shadowOffset: {width: 0, height: 5},
+    shadowRadius: 3,
+    shadowOpacity: 10,
   },
 });

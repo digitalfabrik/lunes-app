@@ -3,15 +3,13 @@ import React from 'react';
 import FeedbackSection from '../../components/FeedbackSection';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {styles} from '../../components/FeedbackSection/styles';
 import {IFeedbackProps} from '../../interfaces/exercise';
 import {ARTICLES} from '../../constants/data';
 import {
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
 } from '../../assets/images';
-import {COLORS} from '../../constants/colors';
 
 describe('Components', () => {
   describe('Feedback section', () => {
@@ -49,17 +47,10 @@ describe('Components', () => {
         result: 'correct',
       };
       const message = 'Great, keep it up! \nThe Word you filled in is correct.';
-      const messageStyle = [styles.messageContainer, styles.successMessage];
-      const icon = (
-        <CorrectIcon
-          fill={COLORS.lunesGreyDark}
-          stroke={COLORS.lunesGreyDark}
-        />
-      );
+      const icon = <CorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
 
@@ -81,17 +72,10 @@ describe('Components', () => {
           ? 'die'
           : feedbackProps.document?.article
       } ${feedbackProps.document?.word}`;
-      const messageStyle = [styles.messageContainer, styles.failedMessage];
-      const icon = (
-        <IncorrectIcon
-          fill={COLORS.lunesGreyDark}
-          stroke={COLORS.lunesGreyDark}
-        />
-      );
+      const icon = <IncorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
 
@@ -103,20 +87,10 @@ describe('Components', () => {
         secondAttempt: true,
       };
       const message = `Your entry ${feedbackProps.input} is almost correct. Check for upper and lower case.`;
-      const messageStyle = [
-        styles.messageContainer,
-        styles.almostCorrectMessage,
-      ];
-      const icon = (
-        <AlmostCorrectIcon
-          fill={COLORS.lunesGreyDark}
-          stroke={COLORS.lunesGreyDark}
-        />
-      );
+      const icon = <AlmostCorrectFeedbackIcon width={28} height={28} />;
 
       const component = shallow(<FeedbackSection {...feedbackProps} />);
       expect(component.find('Text').props().children).toBe(message);
-      expect(component.props().style).toStrictEqual(messageStyle);
       expect(component.contains(icon)).toBe(true);
     });
   });

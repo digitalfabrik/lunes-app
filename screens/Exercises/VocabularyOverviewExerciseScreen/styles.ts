@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingBottom: 0,
+    paddingTop: 32,
   },
   screenTitle: {
     textAlign: 'center',
@@ -17,17 +18,12 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   list: {
-    paddingHorizontal: 15,
-    flex: 1,
-    width: wp('100%'),
+    width: '100%',
   },
   description: {
     textAlign: 'center',
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
-  },
-  listContent: {
-    alignItems: 'center',
   },
 });

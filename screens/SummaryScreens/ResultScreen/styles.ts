@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingBottom: 0,
-    position: 'relative',
+    paddingTop: 32,
   },
   screenTitle: {
     textAlign: 'center',
@@ -28,18 +28,14 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
   },
   list: {
-    paddingHorizontal: 15,
     flexGrow: 0,
-    width: wp('100%'),
+    width: '100%',
     marginBottom: hp('6%'),
-  },
-  listContent: {
-    alignItems: 'center',
   },
   darkLabel: {
     textAlign: 'center',
     color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     fontSize: wp('3.5%'),
     letterSpacing: 0.4,
     textTransform: 'uppercase',
@@ -50,10 +46,11 @@ export const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 15,
+    alignItems: 'center',
   },
   lightLabel: {
     fontSize: wp('3.2%'),
-    fontFamily: 'SourceSansPro-Semibold',
+    fontFamily: 'SourceSansPro-SemiBold',
     color: COLORS.lunesWhite,
     fontWeight: '600',
     marginLeft: 10,

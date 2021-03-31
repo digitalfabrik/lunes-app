@@ -13,6 +13,7 @@ import {
   Platform,
   COLORS,
   ARTICLES,
+  capitalizeFirstLetter,
 } from './imports';
 
 //German language
@@ -59,36 +60,45 @@ const VocabularyOverviewListItem = ({
     }
   };
 
-  const volumeIconColor = active ? COLORS.lunesRedDark : COLORS.lunesRed;
+  const volumeIconColor = active ? COLORS.lunesRed : COLORS.lunesRedDark;
+
+  const volumeIconStyle = [styles.speaker, !active && styles.shadow];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Image
-          source={{
-            uri: image,
-          }}
-          width={24}
-          height={24}
-          style={styles.image}
-        />
-        <View>
-          <Text
-            testID="article"
-            style={[styles.title, {backgroundColor: getArticleColor(article)}]}>
-            {article?.toLowerCase() === ARTICLES.diePlural ? 'die' : article}
-          </Text>
-          <Text testID="word" style={styles.description}>
-            {word}
-          </Text>
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <View style={styles.item}>
+          <Image
+            source={{
+              uri: image,
+            }}
+            width={24}
+            height={24}
+            style={styles.image}
+          />
+          <View>
+            <Text
+              testID="article"
+              style={[
+                styles.title,
+                {backgroundColor: getArticleColor(article)},
+              ]}>
+              {article?.toLowerCase() === ARTICLES.diePlural
+                ? 'Die'
+                : capitalizeFirstLetter(article)}
+            </Text>
+            <Text testID="word" style={styles.description}>
+              {word}
+            </Text>
+          </View>
         </View>
+        <TouchableOpacity
+          testID="volume-button"
+          style={volumeIconStyle}
+          onPress={() => handleSpeakerClick()}>
+          <VolumeUp fill={volumeIconColor} />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        testID="volume-button"
-        style={styles.speaker}
-        onPress={() => handleSpeakerClick()}>
-        <VolumeUp fill={volumeIconColor} />
-      </TouchableOpacity>
     </View>
   );
 };

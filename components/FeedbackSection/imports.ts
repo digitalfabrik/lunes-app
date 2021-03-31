@@ -1,13 +1,15 @@
 import React from 'react';
 import {styles} from './styles';
-import {View, Text} from 'react-native';
+import {View, Text, ImageBackground} from 'react-native';
 import {IFeedbackProps} from '../../interfaces/exercise';
 import {
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
+  incorrect_background,
+  hint_background,
+  correct_background,
 } from '../../assets/images';
-import {COLORS} from '../../constants/colors';
 import {ARTICLES} from '../../constants/data';
 
 export {
@@ -15,11 +17,14 @@ export {
   styles,
   View,
   Text,
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
-  COLORS,
+  CorrectFeedbackIcon,
+  IncorrectFeedbackIcon,
+  AlmostCorrectFeedbackIcon,
+  incorrect_background,
+  hint_background,
+  correct_background,
   ARTICLES,
+  ImageBackground,
 };
 
 export type {IFeedbackProps};

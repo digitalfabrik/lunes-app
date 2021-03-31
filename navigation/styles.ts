@@ -5,6 +5,10 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 export const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.lunesWhite,
+    shadowOpacity: 0,
+    elevation: 0,
+    borderBottomColor: COLORS.lunesBlackUltralight,
+    borderBottomWidth: 1,
   },
   title: {
     color: COLORS.lunesBlack,
@@ -15,15 +19,12 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
   },
   headerLeft: {
-    paddingLeft: 10,
+    paddingLeft: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    width: 200,
+    zIndex: 100,
   },
   headerRight: {
-    paddingRight: 10,
-  },
-  headerLeftTitle: {
-    marginLeft: -15,
+    paddingRight: 15,
   },
 });

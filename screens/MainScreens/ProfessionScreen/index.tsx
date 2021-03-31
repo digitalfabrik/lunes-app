@@ -3,7 +3,6 @@ import {
   Header,
   FlatList,
   SCREENS,
-  View,
   styles,
   Text,
   axios,
@@ -17,6 +16,8 @@ import {
   IProfessionScreenProps,
   AsyncStorage,
 } from './imports';
+
+import {View} from 'react-native';
 
 const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
@@ -39,11 +40,15 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
     }, [navigation]),
   );
 
-  const title = (
-    <Text style={styles.text}>
-      Welcome to Lunes!{'\n'}
-      Learn German vocabulary for your profession.
-    </Text>
+  const title = (top) => (
+    <>
+      <Header top={top} />
+
+      <Text style={styles.text}>
+        Welcome to Lunes!{'\n'}
+        Learn German vocabulary for your profession.
+      </Text>
+    </>
   );
 
   const Item = ({item}: any) => {
@@ -81,16 +86,15 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
         <View style={styles.root}>
-          <Header top={insets?.top} />
           <Loading isLoading={isLoading}>
             <FlatList
               data={professions}
               style={styles.list}
-              ListHeaderComponent={title}
+              ListHeaderComponent={title(insets?.top)}
               ListHeaderComponentStyle={styles.title}
               renderItem={Item}
               keyExtractor={(item) => `${item.id}`}
-              showsVerticalScrollIndicator={false}
+              scrollEnabled={true}
             />
           </Loading>
         </View>

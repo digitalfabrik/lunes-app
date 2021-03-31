@@ -1,6 +1,7 @@
 import {
   getArticleColor,
   getProfessionSubcategoryWithIcon,
+  capitalizeFirstLetter,
 } from '../../utils/helpers';
 import {COLORS} from '../../constants/colors';
 import {ARTICLES} from '../../constants/data';
@@ -106,6 +107,22 @@ describe('Utils: helpers', () => {
       const result: IProfessionSubcategoryProps[] = [];
 
       expect(subCategoriesWithIcon).toStrictEqual(result);
+    });
+  });
+
+  describe('capitalizeFirstLetter', () => {
+    it('should return the word passed to it with the first letter being capitalized', () => {
+      const word = 'word';
+      const result = capitalizeFirstLetter(word);
+
+      expect(result).toBe('Word');
+    });
+
+    it('should return empty string when passing empty string', () => {
+      const word = '';
+      const result = capitalizeFirstLetter(word);
+
+      expect(result).toBe('');
     });
   });
 });
