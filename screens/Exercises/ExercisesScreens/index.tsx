@@ -17,6 +17,8 @@ import {
   COLORS,
   SCREENS,
   BackButton,
+  BackArrowPressed,
+  HomeButtonPressed,
 } from './imports';
 
 LogBox.ignoreLogs([
@@ -27,6 +29,8 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
   const {extraParams} = route.params;
   const {trainingSet, disciplineTitle} = extraParams;
   const [selectedId, setSelectedId] = useState(-1);
+  const [isBackButtonPressed, setIsBackButtonPressed] = useState(false);
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -35,8 +39,11 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => navigation.navigate(SCREENS.profession)}>
-            <Home />
+            onPress={() => navigation.navigate(SCREENS.profession)}
+            onPressIn={() => setIsHomeButtonPressed(true)}
+            onPressOut={() => setIsHomeButtonPressed(false)}
+            activeOpacity={1}>
+            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
           </TouchableOpacity>
         ),
         headerLeft: () => (
@@ -44,13 +51,22 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
             onPress={() =>
               navigation.navigate(SCREENS.professionSubcategory, {extraParams})
             }
+            onPressIn={() => setIsBackButtonPressed(true)}
+            onPressOut={() => setIsBackButtonPressed(false)}
+            activeOpacity={1}
             style={styles.headerLeft}>
-            <BackButton />
+            {isBackButtonPressed ? <BackArrowPressed /> : <BackButton />}
             <Text style={styles.title}>{disciplineTitle}</Text>
           </TouchableOpacity>
         ),
       });
-    }, [extraParams, navigation, disciplineTitle]),
+    }, [
+      extraParams,
+      navigation,
+      disciplineTitle,
+      isBackButtonPressed,
+      isHomeButtonPressed,
+    ]),
   );
 
   const Header = (

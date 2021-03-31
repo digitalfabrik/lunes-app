@@ -37,6 +37,8 @@ import AlmostCorrectFeedbackIcon from './almost-correct-feedback.svg';
 import incorrect_background from './incorrect-background.png';
 import hint_background from './hint-background.png';
 import correct_background from './correct-background.png';
+import BackArrowPressed from './back-arrow-pressed.svg';
+import HomeButtonPressed from './home-pressed.svg';
 
 export {
   icon1,
@@ -77,4 +79,6 @@ export {
   incorrect_background,
   correct_background,
   hint_background,
+  BackArrowPressed,
+  HomeButtonPressed,
 };

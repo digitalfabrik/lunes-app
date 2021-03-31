@@ -15,6 +15,7 @@ import {
   Title,
   VocabularyOverviewListItem,
   Loading,
+  HomeButtonPressed,
 } from './imports';
 
 const VocabularyOverviewExerciseScreen = ({
@@ -25,16 +26,21 @@ const VocabularyOverviewExerciseScreen = ({
   const [documents, setDocuments] = useState<IDocumentProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.popToTop()}>
-          <Home />
+        <TouchableOpacity
+          onPress={() => navigation.popToTop()}
+          onPressIn={() => setIsHomeButtonPressed(true)}
+          onPressOut={() => setIsHomeButtonPressed(false)}
+          activeOpacity={1}>
+          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isHomeButtonPressed]);
 
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`);
