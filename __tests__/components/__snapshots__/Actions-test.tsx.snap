@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components Actions renders correctly across screens 1`] = `
+<Fragment>
+  <Button
+    disabled={true}
+    onPress={[Function]}
+    testID="check-entry"
+    theme="dark"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#f9fafb",
+            "fontFamily": "SourceSansPro-SemiBold",
+            "fontSize": 30,
+            "fontWeight": "600",
+            "letterSpacing": 0.4,
+            "textAlign": "center",
+            "textTransform": "uppercase",
+          },
+          Object {
+            "color": "#777e91",
+          },
+        ]
+      }
+    >
+      Check entry
+    </Text>
+  </Button>
+  <Button
+    onPress={[Function]}
+    testID="give-up"
+    theme="light"
+  >
+    <Text
+      style={
+        Object {
+          "color": "#000e38",
+          "fontFamily": "SourceSansPro-SemiBold",
+          "fontSize": 30,
+          "fontWeight": "600",
+          "letterSpacing": 0.4,
+          "textAlign": "center",
+          "textTransform": "uppercase",
+        }
+      }
+    >
+      I give up!
+    </Text>
+  </Button>
+  <Button
+    onPress={[Function]}
+    testID="try-later"
+  >
+    <Text
+      style={
+        Object {
+          "color": "#000e38",
+          "fontFamily": "SourceSansPro-SemiBold",
+          "fontSize": 30,
+          "fontWeight": "600",
+          "letterSpacing": 0.4,
+          "textAlign": "center",
+          "textTransform": "uppercase",
+        }
+      }
+    >
+      Try later
+    </Text>
+    <[object Object]
+      style={
+        Object {
+          "marginLeft": 5,
+        }
+      }
+    />
+  </Button>
+</Fragment>
+`;

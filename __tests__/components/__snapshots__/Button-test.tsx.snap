@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components Button should render without issues 1`] = `
+<ForwardRef
+  disabled={false}
+  onPress={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "borderRadius": 93.5,
+      "flexDirection": "row",
+      "height": 93.5,
+      "justifyContent": "center",
+      "marginBottom": 26.5,
+      "paddingHorizontal": 20,
+      "paddingVertical": 10,
+      "width": 525,
+    }
+  }
+>
+  <Text>
+    Button children
+  </Text>
+</ForwardRef>
+`;

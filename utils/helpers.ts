@@ -1,5 +1,6 @@
 import {IProfessionSubcategoryProps} from '../interfaces/professionSubcategory';
 import {COLORS} from '../constants/colors';
+import {ARTICLES} from '../constants/data';
 
 export const getProfessionSubcategoryWithIcon = (
   icon: string,
@@ -15,22 +16,25 @@ export const getProfessionSubcategoryWithIcon = (
   return mappedProfessionSubcategories;
 };
 
-//We still need to handle "Die plural" case
 export const getArticleColor = (article: string): string => {
-  switch (article.toLowerCase()) {
-    case 'der':
+  switch (article?.toLowerCase()) {
+    case ARTICLES.der:
       return COLORS.lunesArtikelDer;
 
-    case 'das':
+    case ARTICLES.das:
       return COLORS.lunesArtikelDas;
 
-    case 'die':
+    case ARTICLES.die:
       return COLORS.lunesArtikelDie;
 
-    case 'die (plural)':
+    case ARTICLES.diePlural:
       return COLORS.lunesArtikelDiePlural;
 
     default:
       return COLORS.lunesArtikelDer;
   }
+};
+
+export const capitalizeFirstLetter = (article: string): string => {
+  return article.charAt(0).toUpperCase() + article.slice(1);
 };

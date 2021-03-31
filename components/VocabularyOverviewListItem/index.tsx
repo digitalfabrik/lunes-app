@@ -10,8 +10,10 @@ import {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
-  InActiveVolumeUp,
   Platform,
+  COLORS,
+  ARTICLES,
+  capitalizeFirstLetter,
 } from './imports';
 
 //German language
@@ -24,6 +26,21 @@ const VocabularyOverviewListItem = ({
   audio,
 }: IVocabularyOverviewListItemProps) => {
   const [active, setActive] = React.useState(false);
+  React.useEffect(() => {
+    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      () => setActive(false),
+    );
+
+    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
+      setActive(false),
+    );
+
+    return () => {
+      _onSoundPlayerFinishPlaying.remove();
+      _onTtsFinishPlaying.remove();
+    };
+  }, []);
 
   const handleSpeakerClick = () => {
     setActive(true);
@@ -43,53 +60,45 @@ const VocabularyOverviewListItem = ({
     }
   };
 
-  React.useEffect(() => {
-    let _onSoundPlayerFinishPlaying: any = null;
-    let _onTtsFinishPlaying: any = null;
+  const volumeIconColor = active ? COLORS.lunesRed : COLORS.lunesRedDark;
 
-    _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener(
-      'FinishedPlaying',
-      () => {
-        setActive(false);
-      },
-    );
-
-    _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () =>
-      setActive(false),
-    );
-
-    return () => {
-      _onSoundPlayerFinishPlaying.remove();
-      _onTtsFinishPlaying.remove();
-    };
-  }, []);
+  const volumeIconStyle = [styles.speaker, !active && styles.shadow];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Image
-          source={{
-            uri: image,
-          }}
-          width={24}
-          height={24}
-          style={styles.image}
-        />
-        <View>
-          <View
-            style={[styles.badge, {backgroundColor: getArticleColor(article)}]}>
-            <Text style={styles.title}>
-              {article.toLowerCase() === 'die (plural)' ? 'die' : article}
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <View style={styles.item}>
+          <Image
+            source={{
+              uri: image,
+            }}
+            width={24}
+            height={24}
+            style={styles.image}
+          />
+          <View>
+            <Text
+              testID="article"
+              style={[
+                styles.title,
+                {backgroundColor: getArticleColor(article)},
+              ]}>
+              {article?.toLowerCase() === ARTICLES.diePlural
+                ? 'Die'
+                : capitalizeFirstLetter(article)}
+            </Text>
+            <Text testID="word" style={styles.description}>
+              {word}
             </Text>
           </View>
-          <Text style={styles.description}>{word}</Text>
         </View>
+        <TouchableOpacity
+          testID="volume-button"
+          style={volumeIconStyle}
+          onPress={() => handleSpeakerClick()}>
+          <VolumeUp fill={volumeIconColor} />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.speaker}
-        onPress={() => handleSpeakerClick(audio)}>
-        {active ? <VolumeUp /> : <InActiveVolumeUp width={32} height={32} />}
-      </TouchableOpacity>
     </View>
   );
 };

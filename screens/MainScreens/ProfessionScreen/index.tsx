@@ -1,60 +1,102 @@
 import {
   React,
   Header,
-  ListView,
-  View,
+  FlatList,
+  SCREENS,
   styles,
   Text,
   axios,
-  useFocusEffect,
   useState,
+  useFocusEffect,
   IProfessionsProps,
   ENDPOINTS,
-  SCREENS,
   SafeAreaInsetsContext,
+  Loading,
+  MenuItem,
+  IProfessionScreenProps,
+  AsyncStorage,
 } from './imports';
 
-const ProfessionScreen = ({navigation}: any) => {
+import {View} from 'react-native';
+
+const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
+  const [selectedId, setSelectedId] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true);
-
-      const getProfessions = async () => {
-        try {
-          const professionsRes = await axios.get(ENDPOINTS.professions.all);
-
-          setProfessions(professionsRes.data);
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
+      AsyncStorage.getItem('session').then(async (value) => {
+        if (value) {
+          navigation.navigate(SCREENS.vocabularyTrainer, JSON.parse(value));
         }
-      };
+      });
 
-      getProfessions();
-    }, []),
+      axios.get(ENDPOINTS.professions.all).then((response) => {
+        setProfessions(response.data);
+        setIsLoading(false);
+      });
+      setSelectedId(-1);
+    }, [navigation]),
   );
+
+  const title = (top) => (
+    <>
+      <Header top={top} />
+
+      <Text style={styles.text}>
+        Welcome to Lunes!{'\n'}
+        Learn German vocabulary for your profession.
+      </Text>
+    </>
+  );
+
+  const Item = ({item}: any) => {
+    const itemTextStyle =
+      item.id === selectedId
+        ? styles.clickedItemDescription
+        : styles.description;
+
+    return (
+      <MenuItem
+        selected={item.id === selectedId}
+        title={item.title}
+        icon={item.icon}
+        onPress={() => handleNavigation(item)}>
+        <Text style={itemTextStyle}>
+          {item.total_training_sets}
+          {item.total_training_sets === 1 ? ' Bereich' : ' Bereiche'}
+        </Text>
+      </MenuItem>
+    );
+  };
+
+  const handleNavigation = (item: any) => {
+    setSelectedId(item.id);
+    navigation.navigate(SCREENS.professionSubcategory, {
+      extraParams: {
+        disciplineID: item.id,
+        disciplineTitle: item.title,
+        disciplineIcon: item.icon,
+      },
+    });
+  };
 
   return (
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
         <View style={styles.root}>
-          <Header top={insets?.top} />
-          <ListView
-            navigation={navigation}
-            title={
-              <Text style={styles.text}>
-                Welcome to Lunes!{'\n'}
-                Learn German vocabulary for your profession.
-              </Text>
-            }
-            listData={professions}
-            nextScreen={SCREENS.professionSubcategory}
-            isLoading={isLoading}
-            from={SCREENS.profession}
-          />
+          <Loading isLoading={isLoading}>
+            <FlatList
+              data={professions}
+              style={styles.list}
+              ListHeaderComponent={title(insets?.top)}
+              ListHeaderComponentStyle={styles.title}
+              renderItem={Item}
+              keyExtractor={(item) => `${item.id}`}
+              scrollEnabled={true}
+            />
+          </Loading>
         </View>
       )}
     </SafeAreaInsetsContext.Consumer>

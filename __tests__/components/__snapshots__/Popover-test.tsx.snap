@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components Popover renders correctly across screens 1`] = `
+<Popover
+  arrowShift={-0.85}
+  arrowStyle={
+    Object {
+      "backgroundColor": "#000e38",
+    }
+  }
+  backgroundStyle={
+    Object {
+      "backgroundColor": "transparent",
+    }
+  }
+  debug={false}
+  from={null}
+  isVisible={true}
+  mode="rn-modal"
+  onCloseComplete={[Function]}
+  onCloseStart={[Function]}
+  onOpenComplete={[Function]}
+  onOpenStart={[Function]}
+  onRequestClose={[Function]}
+  placement="top"
+  verticalOffset={-10}
+>
+  <Text>
+    children
+  </Text>
+</Popover>
+`;

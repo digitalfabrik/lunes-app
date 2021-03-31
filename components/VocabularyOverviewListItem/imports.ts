@@ -3,10 +3,12 @@ import {styles} from './styles';
 import {IVocabularyOverviewListItemProps} from '../../interfaces/exercise';
 import {View, Text, Image, TouchableOpacity, Platform} from 'react-native';
 import {COLORS} from '../../constants/colors';
+import {ARTICLES} from '../../constants/data';
 import Tts from 'react-native-tts';
 import {getArticleColor} from '../../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
-import {VolumeUp, InActiveVolumeUp} from '../../assets/images/imports';
+import {VolumeUp} from '../../assets/images';
+import {capitalizeFirstLetter} from '../../utils/helpers';
 
 export {
   React,
@@ -20,8 +22,9 @@ export {
   getArticleColor,
   VolumeUp,
   SoundPlayer,
-  InActiveVolumeUp,
   Platform,
+  ARTICLES,
+  capitalizeFirstLetter,
 };
 
 export type {IVocabularyOverviewListItemProps};
