@@ -3,4 +3,5 @@
     <color name="primary_dark">#000000</color>
     <color name="primary_white">#ffffff</color>
     <color name="lunes_black">#000e38</color>
+    <color name="iconBackground">#000e38</color>
 </resources>
