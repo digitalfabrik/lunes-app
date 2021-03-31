@@ -8,18 +8,16 @@ export const styles = StyleSheet.create({
     height: '100%',
   },
   text: {
+    marginTop: 56,
     textAlign: 'center',
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
   },
   list: {
-    marginTop: 45,
     width: '100%',
   },
   title: {
-    height: 54,
-    alignItems: 'center',
     marginBottom: 32,
   },
   clickedItemDescription: {

@@ -21,23 +21,25 @@ const MenuItem = ({
   const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle;
 
   return (
-    <Pressable style={itemStyle} onPress={onPress}>
-      <View style={styles.left}>
-        <Image source={{uri: icon}} style={styles.icon} />
+    <View style={styles.wrapper}>
+      <Pressable style={itemStyle} onPress={onPress}>
+        <View style={styles.left}>
+          <Image source={{uri: icon}} style={styles.icon} />
 
-        <View>
-          <Text style={itemTitleStyle} testID="title">
-            {title}
-          </Text>
-          {children}
+          <View>
+            <Text style={itemTitleStyle} testID="title">
+              {title}
+            </Text>
+            {children}
+          </View>
         </View>
-      </View>
 
-      <Arrow
-        fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack}
-        testID="arrow"
-      />
-    </Pressable>
+        <Arrow
+          fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack}
+          testID="arrow"
+        />
+      </Pressable>
+    </View>
   );
 };
 

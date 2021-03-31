@@ -3,6 +3,7 @@ import {COLORS} from '../../constants/colors';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
+  wrapper: {paddingHorizontal: 16},
   container: {
     justifyContent: 'space-between',
     alignSelf: 'center',
@@ -20,6 +21,7 @@ export const styles = StyleSheet.create({
     borderRadius: 2,
   },
   clickedContainer: {
+    marginHorizontal: 16,
     justifyContent: 'space-between',
     alignSelf: 'center',
     paddingVertical: 17,

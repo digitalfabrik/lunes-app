@@ -3,6 +3,9 @@ import {COLORS} from '../../constants/colors';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: 16,
+  },
   container: {
     paddingVertical: 17,
     paddingHorizontal: 16,

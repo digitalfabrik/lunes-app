@@ -15,8 +15,9 @@ import {
   MenuItem,
   IProfessionScreenProps,
   AsyncStorage,
-  ScrollView,
 } from './imports';
+
+import {View} from 'react-native';
 
 const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([]);
@@ -39,11 +40,15 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
     }, [navigation]),
   );
 
-  const title = (
-    <Text style={styles.text}>
-      Welcome to Lunes!{'\n'}
-      Learn German vocabulary for your profession.
-    </Text>
+  const title = (top) => (
+    <>
+      <Header top={top} />
+
+      <Text style={styles.text}>
+        Welcome to Lunes!{'\n'}
+        Learn German vocabulary for your profession.
+      </Text>
+    </>
   );
 
   const Item = ({item}: any) => {
@@ -80,20 +85,19 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
   return (
     <SafeAreaInsetsContext.Consumer>
       {(insets) => (
-        <ScrollView style={styles.root}>
-          <Header top={insets?.top} />
+        <View style={styles.root}>
           <Loading isLoading={isLoading}>
             <FlatList
               data={professions}
               style={styles.list}
-              ListHeaderComponent={title}
+              ListHeaderComponent={title(insets?.top)}
               ListHeaderComponentStyle={styles.title}
               renderItem={Item}
               keyExtractor={(item) => `${item.id}`}
-              scrollEnabled={false}
+              scrollEnabled={true}
             />
           </Loading>
-        </ScrollView>
+        </View>
       )}
     </SafeAreaInsetsContext.Consumer>
   );
