@@ -31,9 +31,9 @@ describe('Components', () => {
 
       const component = shallow(<MenuItem {...menuItemProps} />);
       expect(menuItemProps.onPress).not.toHaveBeenCalled();
-      component.props().onPress();
+      component.children().props().onPress();
       expect((menuItemProps.onPress as jest.Mock).mock.calls.length).toBe(1);
-      expect(component.props().onPress()).toBe(result);
+      expect(component.children().props().onPress()).toBe(result);
     });
 
     it('should display title passed to it', () => {
@@ -66,7 +66,7 @@ describe('Components', () => {
         ...defaultMenuItemProps,
         selected: true,
       };
-      const containerStyle = styles.clickedContainer;
+      const containerStyle = styles.wrapper;
       const titleStyle = styles.clickedItemTitle;
 
       const component = shallow(<MenuItem {...menuItemProps} />);

@@ -4,18 +4,7 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
 <View
   style={
     Object {
-      "alignItems": "center",
-      "backgroundColor": "#ffffff",
-      "borderColor": "#e0e4ed",
-      "borderRadius": 2,
-      "borderStyle": "solid",
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "justifyContent": "space-between",
-      "marginBottom": 8,
       "paddingHorizontal": 16,
-      "paddingVertical": 17,
-      "width": "100%",
     }
   }
 >
@@ -23,91 +12,110 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
     style={
       Object {
         "alignItems": "center",
+        "backgroundColor": "#ffffff",
+        "borderColor": "#e0e4ed",
+        "borderRadius": 2,
+        "borderStyle": "solid",
+        "borderWidth": 1,
         "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 8,
+        "paddingHorizontal": 16,
+        "paddingVertical": 17,
+        "width": "100%",
       }
     }
   >
-    <Image
-      height={24}
-      source={
-        Object {
-          "uri": "",
-        }
-      }
+    <View
       style={
         Object {
-          "borderRadius": 50,
-          "height": 112.5,
-          "marginRight": 15,
-          "width": 112.5,
+          "alignItems": "center",
+          "flexDirection": "row",
         }
       }
-      width={24}
-    />
-    <View>
-      <Text
-        style={
-          Array [
-            Object {
-              "alignSelf": "flex-start",
-              "borderRadius": 10,
-              "color": "#3a4049",
-              "fontFamily": "SourceSansPro-Regular",
-              "fontSize": 26.5,
-              "fontWeight": "normal",
-              "height": 37.5,
-              "lineHeight": 18,
-              "marginBottom": 6,
-              "overflow": "hidden",
-              "textAlign": "center",
-              "width": 75,
-            },
-            Object {
-              "backgroundColor": "#8cc8f3",
-            },
-          ]
-        }
-        testID="article"
-      />
-      <Text
-        style={
+    >
+      <Image
+        height={24}
+        source={
           Object {
-            "color": "#5b616a",
-            "fontFamily": "SourceSansPro-Regular",
-            "fontSize": 30,
-            "fontWeight": "normal",
-            "marginLeft": 8,
+            "uri": "",
           }
         }
-        testID="word"
+        style={
+          Object {
+            "borderRadius": 50,
+            "height": 112.5,
+            "marginRight": 15,
+            "width": 112.5,
+          }
+        }
+        width={24}
       />
+      <View>
+        <Text
+          style={
+            Array [
+              Object {
+                "alignSelf": "flex-start",
+                "borderRadius": 10,
+                "color": "#3a4049",
+                "fontFamily": "SourceSansPro-Regular",
+                "fontSize": 26.5,
+                "fontWeight": "normal",
+                "height": 37.5,
+                "lineHeight": 18,
+                "marginBottom": 6,
+                "overflow": "hidden",
+                "textAlign": "center",
+                "width": 75,
+              },
+              Object {
+                "backgroundColor": "#8cc8f3",
+              },
+            ]
+          }
+          testID="article"
+        />
+        <Text
+          style={
+            Object {
+              "color": "#5b616a",
+              "fontFamily": "SourceSansPro-Regular",
+              "fontSize": 30,
+              "fontWeight": "normal",
+              "marginLeft": 8,
+            }
+          }
+          testID="word"
+        />
+      </View>
     </View>
-  </View>
-  <ForwardRef
-    onPress={[Function]}
-    style={
-      Array [
-        Object {
-          "alignItems": "center",
-          "borderRadius": 50,
-          "justifyContent": "center",
-        },
-        Object {
-          "shadowColor": "rgba(0, 0, 0, 0.6)",
-          "shadowOffset": Object {
-            "height": 5,
-            "width": 0,
+    <ForwardRef
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "borderRadius": 50,
+            "justifyContent": "center",
           },
-          "shadowOpacity": 10,
-          "shadowRadius": 3,
-        },
-      ]
-    }
-    testID="volume-button"
-  >
-    <[object Object]
-      fill="#F1635F"
-    />
-  </ForwardRef>
+          Object {
+            "shadowColor": "rgba(0, 0, 0, 0.6)",
+            "shadowOffset": Object {
+              "height": 5,
+              "width": 0,
+            },
+            "shadowOpacity": 10,
+            "shadowRadius": 3,
+          },
+        ]
+      }
+      testID="volume-button"
+    >
+      <[object Object]
+        fill="#F1635F"
+      />
+    </ForwardRef>
+  </View>
 </View>
 `;

@@ -6,7 +6,6 @@ exports[`Components Loading  renders correctly across screens 1`] = `
     Object {
       "alignItems": "center",
       "flex": 1,
-      "paddingHorizontal": 15,
     }
   }
 >

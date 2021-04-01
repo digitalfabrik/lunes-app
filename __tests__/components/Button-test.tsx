@@ -41,7 +41,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         disabled: true,
       };
-      const style = [styles.darkButton, styles.disabledButton];
+      const style = [[styles.darkButton, styles.disabledButton], false];
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -51,7 +51,7 @@ describe('Components', () => {
       const buttonProps: IButtonProps = {
         ...defaultButtonProps,
       };
-      const style = styles.button;
+      const style = [styles.button, false];
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -62,7 +62,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         theme: BUTTONS_THEME.dark,
       };
-      const style = styles.darkButton;
+      const style = [styles.darkButton, false];
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);
@@ -73,7 +73,7 @@ describe('Components', () => {
         ...defaultButtonProps,
         theme: BUTTONS_THEME.light,
       };
-      const style = styles.lightButton;
+      const style = [styles.lightButton, false];
 
       const component = shallow(<Button {...buttonProps} />);
       expect(component.props().style).toStrictEqual(style);

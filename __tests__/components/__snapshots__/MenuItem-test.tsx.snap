@@ -1,72 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components MenuItem renders correctly across screens 1`] = `
-<Pressable
-  onPress={[Function]}
+<View
   style={
     Object {
-      "alignItems": "center",
-      "alignSelf": "center",
-      "backgroundColor": "#ffffff",
-      "borderColor": "#e0e4ed",
-      "borderRadius": 2,
-      "borderStyle": "solid",
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "justifyContent": "space-between",
-      "marginBottom": 8,
-      "paddingLeft": 16,
-      "paddingRight": 8,
-      "paddingVertical": 17,
-      "width": "100%",
+      "paddingHorizontal": 16,
     }
   }
 >
-  <View
+  <Pressable
+    onPress={[Function]}
     style={
       Object {
         "alignItems": "center",
+        "alignSelf": "center",
+        "backgroundColor": "#ffffff",
+        "borderColor": "#e0e4ed",
+        "borderRadius": 2,
+        "borderStyle": "solid",
+        "borderWidth": 1,
         "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 8,
+        "paddingLeft": 16,
+        "paddingRight": 8,
+        "paddingVertical": 17,
+        "width": "100%",
       }
     }
   >
-    <Image
-      source={
-        Object {
-          "uri": "",
-        }
-      }
+    <View
       style={
         Object {
-          "height": 52.5,
-          "justifyContent": "center",
-          "marginRight": 10,
-          "width": 52.5,
+          "alignItems": "center",
+          "flexDirection": "row",
         }
       }
-    />
-    <View>
-      <Text
-        style={
+    >
+      <Image
+        source={
           Object {
-            "color": "#3a4049",
-            "fontFamily": "SourceSansPro-SemiBold",
-            "fontSize": 37.5,
-            "fontWeight": "600",
-            "letterSpacing": 0.11,
-            "marginBottom": 2,
+            "uri": "",
           }
         }
-        testID="title"
+        style={
+          Object {
+            "height": 52.5,
+            "justifyContent": "center",
+            "marginRight": 10,
+            "width": 52.5,
+          }
+        }
       />
-      <Text>
-        description
-      </Text>
+      <View>
+        <Text
+          style={
+            Object {
+              "color": "#3a4049",
+              "fontFamily": "SourceSansPro-SemiBold",
+              "fontSize": 37.5,
+              "fontWeight": "600",
+              "letterSpacing": 0.11,
+              "marginBottom": 2,
+            }
+          }
+          testID="title"
+        />
+        <Text>
+          description
+        </Text>
+      </View>
     </View>
-  </View>
-  <[object Object]
-    fill="#000e38"
-    testID="arrow"
-  />
-</Pressable>
+    <[object Object]
+      fill="#000e38"
+      testID="arrow"
+    />
+  </Pressable>
+</View>
 `;
