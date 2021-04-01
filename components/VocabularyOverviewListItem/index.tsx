@@ -50,7 +50,7 @@ const VocabularyOverviewListItem = ({
       //audio from API
       SoundPlayer.playUrl(audio);
     } else {
-      Tts.speak(word, {
+      Tts.speak(`${article} ${word}`, {
         androidParams: {
           KEY_PARAM_PAN: -1,
           KEY_PARAM_VOLUME: 0.5,
