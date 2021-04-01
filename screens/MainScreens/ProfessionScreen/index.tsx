@@ -95,6 +95,7 @@ const ProfessionScreen = ({navigation}: IProfessionScreenProps) => {
               renderItem={Item}
               keyExtractor={(item) => `${item.id}`}
               scrollEnabled={true}
+              bounces={false}
             />
           </Loading>
         </View>
