@@ -11,6 +11,9 @@ jobs:
       - run:
           name: Linting check
           command: yarn lint
+      - run:
+          name: Run tests
+          command: yarn test
 workflows:
   commit:
     jobs:
