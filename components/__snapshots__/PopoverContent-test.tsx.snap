@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components PopoverContent renders correctly across screens 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#000e38",
+      "borderRadius": 2,
+      "flexDirection": "row",
+      "height": 60,
+      "paddingHorizontal": 9,
+      "paddingVertical": 8,
+      "width": 600,
+    }
+  }
+>
+  <[object Object]
+    height={30}
+    width={30}
+  />
+  <Text
+    style={
+      Object {
+        "color": "#f9fafb",
+        "fontFamily": "SourceSansPro-Regular",
+        "fontSize": 26.5,
+        "fontWeight": "normal",
+        "marginLeft": 8,
+        "width": 450,
+      }
+    }
+  >
+    Ups, you forgot someting. You have to add an article to continue.
+  </Text>
+</View>
+`;

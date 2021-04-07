@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components Header renders correctly across screens 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#000e38",
+      "paddingTop": 5,
+    }
+  }
+  testID="header"
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#000e38",
+        "height": 91,
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "height": 28,
+          "left": 24.3,
+          "position": "absolute",
+          "top": 41.5,
+          "width": 28,
+        }
+      }
+    >
+      <[object Object] />
+    </View>
+    <View
+      style={
+        Object {
+          "height": 23.5,
+          "left": 98.3,
+          "position": "absolute",
+          "top": -5,
+          "width": 28,
+        }
+      }
+    >
+      <[object Object] />
+    </View>
+    <View
+      style={
+        Object {
+          "height": 29,
+          "position": "absolute",
+          "right": 68.8,
+          "top": 37.5,
+          "width": 28,
+        }
+      }
+    >
+      <[object Object] />
+    </View>
+    <View
+      style={
+        Object {
+          "height": 28,
+          "position": "absolute",
+          "right": 0,
+          "top": 16.5,
+          "width": 24.5,
+        }
+      }
+    >
+      <[object Object] />
+    </View>
+    <View
+      style={
+        Object {
+          "height": 80,
+          "left": "50%",
+          "marginLeft": -40,
+          "position": "absolute",
+          "top": 51,
+          "width": 80,
+        }
+      }
+    >
+      <[object Object] />
+    </View>
+  </View>
+</View>
+`;
