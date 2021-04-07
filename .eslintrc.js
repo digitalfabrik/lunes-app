@@ -3,7 +3,7 @@ module.exports = {
   extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  'env': {
-    'jest/globals': true
-  }
+  env: {
+    'jest/globals': true,
+  },
 };
