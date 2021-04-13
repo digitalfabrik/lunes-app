@@ -41,7 +41,7 @@ jobs:
                 command: yarn install --frozen-lockfile
                 name: Install dependencies
             - run:
-                command: yarn lint
+                command: yarn lint:ci
                 name: Linting check
 version: 2.1
 workflows:
