@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../../components/Button';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {styles} from '../../components/Button/styles';
+import {styles} from '../../components/Button';
 import {Text} from 'react-native';
 import {BUTTONS_THEME} from '../../constants/data';
 import {IButtonProps} from '../../interfaces/index';

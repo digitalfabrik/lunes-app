@@ -4,7 +4,7 @@ import Action from '../../components/Actions';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {IActionsProps} from '../../interfaces/exercise';
-import {styles} from '../../components/Actions/styles';
+import {styles} from '../../components/Actions';
 
 describe('Components', () => {
   describe('Actions', () => {
