@@ -1,0 +1,11 @@
+docker:
+  - image: circleci/node:12.16.3
+steps:
+  - checkout
+  - check_config
+  - run:
+      name: Install dependencies
+      command: yarn install --frozen-lockfile
+  - run:
+      name: Linting check
+      command: yarn lint:ci
