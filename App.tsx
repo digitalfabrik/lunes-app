@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
-import Navigation from './navigation';
+import Navigation from './Navigation';
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
