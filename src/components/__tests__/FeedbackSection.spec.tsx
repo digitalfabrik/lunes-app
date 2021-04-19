@@ -1,15 +1,15 @@
 import 'react-native';
 import React from 'react';
-import FeedbackSection from '../../src/components/FeedbackSection';
+import FeedbackSection from '../FeedbackSection';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {IFeedbackProps} from '../../src/interfaces/exercise';
-import {ARTICLES} from '../../src/constants/data';
+import {IFeedbackProps} from '../../interfaces/exercise';
+import {ARTICLES} from '../../constants/data';
 import {
   CorrectFeedbackIcon,
   IncorrectFeedbackIcon,
   AlmostCorrectFeedbackIcon,
-} from '../../assets/images';
+} from '../../../assets/images';
 
 describe('Components', () => {
   describe('Feedback section', () => {

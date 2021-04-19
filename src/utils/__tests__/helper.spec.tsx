@@ -2,10 +2,10 @@ import {
   getArticleColor,
   getProfessionSubcategoryWithIcon,
   capitalizeFirstLetter,
-} from '../../src/utils/helpers';
-import {COLORS} from '../../src/constants/colors';
-import {ARTICLES} from '../../src/constants/data';
-import {IProfessionSubcategoryProps} from '../../src/interfaces/professionSubcategory';
+} from '../helpers';
+import {COLORS} from '../../constants/colors';
+import {ARTICLES} from '../../constants/data';
+import {IProfessionSubcategoryProps} from '../../interfaces/professionSubcategory';
 
 describe('Utils: helpers', () => {
   describe('getArticleColor', () => {

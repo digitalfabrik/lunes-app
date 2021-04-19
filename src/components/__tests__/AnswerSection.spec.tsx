@@ -1,8 +1,8 @@
 import React from 'react';
-import AnswerSection from '../../src/components/AnswerSection';
+import AnswerSection from '../AnswerSection';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {IAnswerSectionProps} from '../../src/interfaces/exercise';
+import {IAnswerSectionProps} from '../../interfaces/exercise';
 
 describe('Components', () => {
   describe('AnswerSection', () => {

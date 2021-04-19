@@ -1,10 +1,6 @@
-/**
- * @format
- */
-
 import 'react-native';
 import React from 'react';
-import App from '../../src/App';
+import App from '../../App';
 import {shallow} from 'enzyme';
 
 describe('App', () => {

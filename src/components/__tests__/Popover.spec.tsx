@@ -1,9 +1,9 @@
 import 'react-native';
 import React from 'react';
-import Popover from '../../src/components/Popover';
+import Popover from '../Popover';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {IPopoverProps} from '../../src/interfaces/index';
+import {IPopoverProps} from '../../interfaces';
 import {Text} from 'react-native';
 
 describe('Components', () => {
