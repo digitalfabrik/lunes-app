@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import {IVocabularyOverviewScreen} from '../../interfaces/exercise';
-import {Home, HomeButtonPressed} from '../../../assets/images';
-import {ENDPOINTS} from '../../constants/endpoints';
-import {IDocumentProps} from '../../interfaces/exercise';
-import axios from '../../utils/axios';
-import Title from '../../components/Title';
-import VocabularyOverviewListItem from '../../components/VocabularyOverviewListItem';
-import Loading from '../../components/Loading';
+import {IVocabularyOverviewScreen} from '../interfaces/exercise';
+import {Home, HomeButtonPressed} from '../../assets/images';
+import {ENDPOINTS} from '../constants/endpoints';
+import {IDocumentProps} from '../interfaces/exercise';
+import axios from '../utils/axios';
+import Title from '../components/Title';
+import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem';
+import Loading from '../components/Loading';
 import {StyleSheet} from 'react-native';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../constants/colors';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({

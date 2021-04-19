@@ -7,20 +7,20 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import Title from '../../components/Title';
-import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images';
+import Title from '../components/Title';
+import {Arrow, RepeatIcon, FinishIcon} from '../../assets/images';
 import {
   RESULTS,
   BUTTONS_THEME,
   SCREENS,
   RESULT_TYPE,
   EXERCISES,
-} from '../../constants/data';
-import {IResultsOverviewScreenProps} from '../../interfaces/summaryScreens';
+} from '../constants/data';
+import {IResultsOverviewScreenProps} from '../interfaces/summaryScreens';
 import {useFocusEffect} from '@react-navigation/native';
-import Button from '../../components/Button';
+import Button from '../components/Button';
 import {StyleSheet} from 'react-native';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../constants/colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
