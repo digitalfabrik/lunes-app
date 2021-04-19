@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
-import Navigation from './Navigation';
+import Navigator from './components/Navigator';
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -15,7 +15,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle="light-content" />
-      <Navigation />
+      <Navigator />
     </SafeAreaProvider>
   );
 };

@@ -1,20 +1,20 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import ProfessionScreen from './screens/MainScreens/ProfessionScreen';
-import ProfessionSubcategoryScreen from './screens/MainScreens/ProfessionSubcategoryScreen';
-import ExercisesScreen from './screens/Exercises/ExercisesScreens';
-import VocabularyOverviewExerciseScreen from './screens/Exercises/VocabularyOverviewExerciseScreen';
-import VocabularyTrainerExerciseScreen from './screens/Exercises/VocabularyTrainerExerciseScreen';
-import {ProfessionParamList} from '../types';
-import {BackButton, CloseButton, BackArrowPressed} from '../assets/images';
+import ProfessionScreen from '../screens/MainScreens/ProfessionScreen';
+import ProfessionSubcategoryScreen from '../screens/MainScreens/ProfessionSubcategoryScreen';
+import ExercisesScreen from '../screens/Exercises/ExercisesScreens';
+import VocabularyOverviewExerciseScreen from '../screens/Exercises/VocabularyOverviewExerciseScreen';
+import VocabularyTrainerExerciseScreen from '../screens/Exercises/VocabularyTrainerExerciseScreen';
+import {ProfessionParamList} from '../../types';
+import {BackButton, CloseButton, BackArrowPressed} from '../../assets/images';
 import {Text, TouchableOpacity} from 'react-native';
-import InitialSummaryScreen from './screens/SummaryScreens/InitialSummaryScreen';
-import ResultsOverviewScreen from './screens/SummaryScreens/ResultsOverviewScreen';
-import ResultScreen from './screens/SummaryScreens/ResultScreen';
+import InitialSummaryScreen from '../screens/SummaryScreens/InitialSummaryScreen';
+import ResultsOverviewScreen from '../screens/SummaryScreens/ResultsOverviewScreen';
+import ResultScreen from '../screens/SummaryScreens/ResultScreen';
 import {NavigationContainer} from '@react-navigation/native';
-import {SCREENS} from './constants/data';
+import {SCREENS} from '../constants/data';
 import {StyleSheet} from 'react-native';
-import {COLORS} from './constants/colors';
+import {COLORS} from '../constants/colors';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
 
 const ProfessionStack = createStackNavigator<ProfessionParamList>();
 
-const Navigation = () => {
+const Navigator = () => {
   const [isPressed, setIsPressed] = React.useState(false);
 
   const defaultOptions = (
@@ -154,4 +154,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navigator;
