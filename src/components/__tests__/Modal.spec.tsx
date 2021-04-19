@@ -1,53 +1,53 @@
-import 'react-native';
-import React from 'react';
-import Modal from '../Modal';
-import {shallow} from 'enzyme';
-import toJson from 'enzyme-to-json';
-import {View} from 'react-native';
-import {IConfirmationModalProps} from '../../interfaces/exercise';
+import 'react-native'
+import React from 'react'
+import Modal from '../Modal'
+import { shallow } from 'enzyme'
+import toJson from 'enzyme-to-json'
+import { View } from 'react-native'
+import { IConfirmationModalProps } from '../../interfaces/exercise'
 
 describe('Components', () => {
   describe('Modal ', () => {
     const defaultModalProps: IConfirmationModalProps = {
       navigation: '',
       setIsModalVisible: () => {},
-      visible: false,
-    };
+      visible: false
+    }
 
     it('renders correctly across screens', () => {
       const component = shallow(
         <View>
           <Modal {...defaultModalProps} />
-        </View>,
-      );
-      expect(toJson(component)).toMatchSnapshot();
-    });
+        </View>
+      )
+      expect(toJson(component)).toMatchSnapshot()
+    })
 
     it('should have visible property passed to it', () => {
       const modalProps: IConfirmationModalProps = {
-        ...defaultModalProps,
-      };
+        ...defaultModalProps
+      }
 
       const component = shallow(
         <View>
           <Modal {...modalProps} />
-        </View>,
-      );
-      expect(component.children().props().visible).toBe(false);
-    });
+        </View>
+      )
+      expect(component.children().props().visible).toBe(false)
+    })
 
     it('should have visible property passed to it', () => {
       const modalProps: IConfirmationModalProps = {
         ...defaultModalProps,
-        visible: true,
-      };
+        visible: true
+      }
 
       const component = shallow(
         <View>
           <Modal {...modalProps} />
-        </View>,
-      );
-      expect(component.children().props().visible).toBe(true);
-    });
-  });
-});
+        </View>
+      )
+      expect(component.children().props().visible).toBe(true)
+    })
+  })
+})

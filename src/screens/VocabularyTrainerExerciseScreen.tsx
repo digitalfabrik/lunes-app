@@ -1,31 +1,20 @@
-import React, {useState} from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  ActivityIndicator,
-  Pressable,
-  Keyboard,
-} from 'react-native';
-import Modal from '../components/Modal';
-import {ProgressBar} from 'react-native-paper';
-import {COLORS} from '../constants/colors';
-import {IDocumentProps} from '../interfaces/exercise';
-import axios from '../utils/axios';
-import {ENDPOINTS} from '../constants/endpoints';
-import {IVocabularyTrainerScreen} from '../interfaces/exercise';
-import AnswerSection from '../components/AnswerSection';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {CloseButton} from '../../assets/images';
-import {SCREENS} from '../constants/data';
-import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet} from 'react-native';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+import React, { useState } from 'react'
+import { Text, TouchableOpacity, Image, BackHandler, ActivityIndicator, Pressable, Keyboard } from 'react-native'
+import Modal from '../components/Modal'
+import { ProgressBar } from 'react-native-paper'
+import { COLORS } from '../constants/colors'
+import { IDocumentProps } from '../interfaces/exercise'
+import axios from '../utils/axios'
+import { ENDPOINTS } from '../constants/endpoints'
+import { IVocabularyTrainerScreen } from '../interfaces/exercise'
+import AnswerSection from '../components/AnswerSection'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { CloseButton } from '../../assets/images'
+import { SCREENS } from '../constants/data'
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StyleSheet } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
   root: {
@@ -33,22 +22,22 @@ export const styles = StyleSheet.create({
     height: '100%',
     paddingBottom: 0,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   progressBar: {
-    backgroundColor: COLORS.lunesBlackUltralight,
+    backgroundColor: COLORS.lunesBlackUltralight
   },
   image: {
     width: '100%',
     height: hp('35%'),
     position: 'relative',
-    resizeMode: 'cover',
+    resizeMode: 'cover'
   },
   headerText: {
     fontSize: wp('4%'),
     fontWeight: 'normal',
     fontFamily: 'SourceSansPro-Regular',
-    color: COLORS.lunesGreyMedium,
+    color: COLORS.lunesGreyMedium
   },
   title: {
     color: COLORS.lunesBlack,
@@ -56,53 +45,48 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     textTransform: 'uppercase',
     fontWeight: '600',
-    marginLeft: 15,
+    marginLeft: 15
   },
   headerLeft: {
     paddingLeft: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    zIndex: 100,
+    zIndex: 100
   },
   spinner: {
     width: '100%',
     height: hp('35%'),
     position: 'absolute',
     top: 0,
-    backgroundColor: COLORS.lunesWhite,
-  },
-});
-const VocabularyTrainerExerciseScreen = ({
-  navigation,
-  route,
-}: IVocabularyTrainerScreen) => {
-  const {extraParams, retryData} = route.params;
-  const {trainingSet, trainingSetId, disciplineTitle} = extraParams;
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [documents, setDocuments] = useState<IDocumentProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(1);
+    backgroundColor: COLORS.lunesWhite
+  }
+})
+const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrainerScreen) => {
+  const { extraParams, retryData } = route.params
+  const { trainingSet, trainingSetId, disciplineTitle } = extraParams
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [documents, setDocuments] = useState<IDocumentProps[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(1)
 
   useFocusEffect(
     React.useCallback(() => {
-      setCurrentDocumentNumber(0);
+      setCurrentDocumentNumber(0)
       const getDocuments = async () => {
         try {
           const documentsRes = retryData?.data?.length
             ? retryData
-            : await axios.get(
-                ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`),
-              );
-          setDocuments(documentsRes.data);
-          setCurrentDocumentNumber(0);
+            : await axios.get(ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`))
+          setDocuments(documentsRes.data)
+          setCurrentDocumentNumber(0)
         } catch (error) {
-          console.error(error);
+          console.error(error)
         }
-      };
+      }
 
-      getDocuments();
-    }, [retryData, trainingSetId]),
-  );
+      getDocuments()
+    }, [retryData, trainingSetId])
+  )
 
   React.useLayoutEffect(
     () =>
@@ -114,40 +98,38 @@ const VocabularyTrainerExerciseScreen = ({
           </TouchableOpacity>
         ),
         headerRight: () => (
-          <Text style={styles.headerText}>
-            {`${currentDocumentNumber + 1} of ${documents.length}`}
-          </Text>
-        ),
+          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} of ${documents.length}`}</Text>
+        )
       }),
-    [navigation, currentDocumentNumber, documents],
-  );
+    [navigation, currentDocumentNumber, documents]
+  )
 
   React.useLayoutEffect(() => {
-    const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal);
+    const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
 
-    AsyncStorage.setItem('session', JSON.stringify(route.params));
+    AsyncStorage.setItem('session', JSON.stringify(route.params))
 
-    return () => bEvent.remove();
-  }, [route.params]);
+    return () => bEvent.remove()
+  }, [route.params])
 
   const showModal = () => {
-    setIsModalVisible(true);
-    return true;
-  };
+    setIsModalVisible(true)
+    return true
+  }
 
   const tryLater = () => {
-    const currDocument = documents[currentDocumentNumber];
-    let newDocuments = documents.filter((d) => d !== currDocument);
-    newDocuments.push(currDocument);
-    setDocuments(newDocuments);
-  };
+    const currDocument = documents[currentDocumentNumber]
+    let newDocuments = documents.filter(d => d !== currDocument)
+    newDocuments.push(currDocument)
+    setDocuments(newDocuments)
+  }
 
   const finishExercise = () => {
-    AsyncStorage.removeItem('session');
-    navigation.navigate(SCREENS.initialSummaryScreen, {extraParams});
-  };
+    AsyncStorage.removeItem('session')
+    navigation.navigate(SCREENS.initialSummaryScreen, { extraParams })
+  }
 
-  const docsLength = documents.length;
+  const docsLength = documents.length
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
@@ -161,12 +143,12 @@ const VocabularyTrainerExerciseScreen = ({
 
       <KeyboardAwareScrollView
         scrollEnabled={false}
-        resetScrollToCoords={{x: 0, y: 0}}
+        resetScrollToCoords={{ x: 0, y: 0 }}
         enableOnAndroid
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps='always'>
         <Image
           source={{
-            uri: documents[currentDocumentNumber]?.image,
+            uri: documents[currentDocumentNumber]?.image
           }}
           style={styles.image}
           onLoadStart={() => setIsLoading(true)}
@@ -192,7 +174,7 @@ const VocabularyTrainerExerciseScreen = ({
         extraParams={extraParams}
       />
     </Pressable>
-  );
-};
+  )
+}
 
-export default VocabularyTrainerExerciseScreen;
+export default VocabularyTrainerExerciseScreen

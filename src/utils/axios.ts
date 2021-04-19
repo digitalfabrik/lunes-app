@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseURL = 'https://lunes.tuerantuer.org/api';
+const baseURL = 'https://lunes.tuerantuer.org/api'
 
 const instance = axios.create({
-  baseURL: baseURL,
-});
+  baseURL: baseURL
+})
 
-export default instance;
+export default instance

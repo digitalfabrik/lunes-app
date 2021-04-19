@@ -1,4 +1,4 @@
 export interface IExercisesScreenProps {
-  route: any;
-  navigation: any;
+  route: any
+  navigation: any
 }

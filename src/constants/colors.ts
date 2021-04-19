@@ -23,5 +23,5 @@ export const COLORS = {
   lunesRedDark: '#F1635F',
   lunesRed: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
-  lunesBlackMedium: '#3d4662',
-};
+  lunesBlackMedium: '#3d4662'
+}

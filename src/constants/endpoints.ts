@@ -1,11 +1,11 @@
 export const ENDPOINTS = {
   professions: {
-    all: '/disciplines',
+    all: '/disciplines'
   },
   subCategories: {
-    all: '/training_set/:id',
+    all: '/training_set/:id'
   },
   documents: {
-    all: '/documents/:id',
-  },
-};
+    all: '/documents/:id'
+  }
+}

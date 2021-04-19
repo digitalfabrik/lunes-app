@@ -1,13 +1,13 @@
-import React from 'react';
-import {View, Text, Pressable, Image} from 'react-native';
-import {Arrow} from '../../assets/images';
-import {COLORS} from '../constants/colors';
-import {IMenuItemProps} from '../interfaces/menuItem';
-import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import React from 'react'
+import { View, Text, Pressable, Image } from 'react-native'
+import { Arrow } from '../../assets/images'
+import { COLORS } from '../constants/colors'
+import { IMenuItemProps } from '../interfaces/menuItem'
+import { StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
-  wrapper: {paddingHorizontal: 16},
+  wrapper: { paddingHorizontal: 16 },
   container: {
     justifyContent: 'space-between',
     alignSelf: 'center',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.lunesBlackUltralight,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 2,
+    borderRadius: 2
   },
   clickedContainer: {
     marginHorizontal: 16,
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white,
+    borderColor: COLORS.white
   },
   itemTitle: {
     fontSize: wp('5%'),
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-SemiBold'
   },
   clickedItemTitle: {
     fontSize: wp('5%'),
@@ -52,48 +52,39 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.white,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-SemiBold'
   },
   icon: {
     justifyContent: 'center',
     marginRight: 10,
     width: wp('7%'),
-    height: wp('7%'),
+    height: wp('7%')
   },
-  left: {flexDirection: 'row', alignItems: 'center'},
-});
+  left: { flexDirection: 'row', alignItems: 'center' }
+})
 
-const MenuItem = ({
-  selected,
-  onPress,
-  icon,
-  title,
-  children,
-}: IMenuItemProps) => {
-  const itemStyle = selected ? styles.clickedContainer : styles.container;
-  const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle;
+const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps) => {
+  const itemStyle = selected ? styles.clickedContainer : styles.container
+  const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle
 
   return (
     <View style={styles.wrapper}>
       <Pressable style={itemStyle} onPress={onPress}>
         <View style={styles.left}>
-          <Image source={{uri: icon}} style={styles.icon} />
+          <Image source={{ uri: icon }} style={styles.icon} />
 
           <View>
-            <Text style={itemTitleStyle} testID="title">
+            <Text style={itemTitleStyle} testID='title'>
               {title}
             </Text>
             {children}
           </View>
         </View>
 
-        <Arrow
-          fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack}
-          testID="arrow"
-        />
+        <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
       </Pressable>
     </View>
-  );
-};
+  )
+}
 
-export default MenuItem;
+export default MenuItem
