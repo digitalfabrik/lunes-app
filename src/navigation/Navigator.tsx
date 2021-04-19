@@ -5,7 +5,7 @@ import ProfessionSubcategoryScreen from '../screens/ProfessionSubcategoryScreen'
 import ExercisesScreen from '../screens/ExercisesScreens';
 import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerciseScreen';
 import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen';
-import {ProfessionParamList} from '../../types';
+import {ProfessionParamList} from './NavigationTypes';
 import {BackButton, CloseButton, BackArrowPressed} from '../../assets/images';
 import {Text, TouchableOpacity} from 'react-native';
 import InitialSummaryScreen from '../screens/InitialSummaryScreen';
