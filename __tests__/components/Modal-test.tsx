@@ -1,10 +1,10 @@
 import 'react-native';
 import React from 'react';
-import Modal from '../../components/Modal';
+import Modal from '../../src/components/Modal';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {View} from 'react-native';
-import {IConfirmationModalProps} from '../../interfaces/exercise';
+import {IConfirmationModalProps} from '../../src/interfaces/exercise';
 
 describe('Components', () => {
   describe('Modal ', () => {

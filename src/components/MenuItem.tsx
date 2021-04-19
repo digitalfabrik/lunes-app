@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Pressable, Image} from 'react-native';
-import {Arrow} from '../assets/images';
+import {Arrow} from '../../assets/images';
 import {COLORS} from '../constants/colors';
 import {IMenuItemProps} from '../interfaces/menuItem';
 import {StyleSheet} from 'react-native';

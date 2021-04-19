@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {IVocabularyOverviewScreen} from '../../interfaces/exercise';
-import {Home, HomeButtonPressed} from '../../assets/images';
+import {Home, HomeButtonPressed} from '../../../assets/images';
 import {ENDPOINTS} from '../../constants/endpoints';
 import {IDocumentProps} from '../../interfaces/exercise';
 import axios from '../../utils/axios';

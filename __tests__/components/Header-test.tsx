@@ -1,9 +1,9 @@
 import 'react-native';
 import React from 'react';
-import Header from '../../components/Header';
+import Header from '../../src/components/Header';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {IHeaderProps} from '../../interfaces/header';
+import {IHeaderProps} from '../../src/interfaces/header';
 
 describe('Components', () => {
   describe('Header', () => {

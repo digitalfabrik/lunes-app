@@ -7,7 +7,7 @@ import {
   CorrectEntriesIcon,
   IncorrectEntriesIcon,
   AlmostCorrectEntriesIcon,
-} from '../assets/images';
+} from '../../assets/images';
 
 export const SCREENS = {
   profession: 'Profession',

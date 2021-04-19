@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text} from 'react-native';
-import {WhiteNextArrow, NextArrow} from '../assets/images';
+import {WhiteNextArrow, NextArrow} from '../../assets/images';
 import {IActionsProps} from '../interfaces/exercise';
 import Button from './Button';
 import {BUTTONS_THEME} from '../constants/data';

@@ -1,9 +1,10 @@
 {
-  "name": "LunesAppUI",
+  "name": "lunes-app",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android --no-packager",
+    "android:production": "react-native run-android --no-packager --variant=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --silent --verbose",

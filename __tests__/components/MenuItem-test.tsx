@@ -1,11 +1,11 @@
 import React from 'react';
-import MenuItem from '../../components/MenuItem';
+import MenuItem from '../../src/components/MenuItem';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {IMenuItemProps} from '../../interfaces/menuItem';
-import {styles} from '../../components/MenuItem';
+import {IMenuItemProps} from '../../src/interfaces/menuItem';
+import {styles} from '../../src/components/MenuItem';
 import {Text} from 'react-native';
-import {COLORS} from '../../constants/colors';
+import {COLORS} from '../../src/constants/colors';
 
 describe('Components', () => {
   describe('MenuItem', () => {

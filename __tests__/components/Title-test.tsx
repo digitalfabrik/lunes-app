@@ -1,10 +1,10 @@
 import 'react-native';
 import React from 'react';
-import Title from '../../components/Title';
+import Title from '../../src/components/Title';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {Text} from 'react-native';
-import {ITitleProps} from '../../interfaces/title';
+import {ITitleProps} from '../../src/interfaces/title';
 
 describe('Components', () => {
   describe('Title', () => {

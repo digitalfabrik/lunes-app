@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import Title from '../../components/Title';
-import {Arrow, RepeatIcon, FinishIcon} from '../../assets/images';
+import {Arrow, RepeatIcon, FinishIcon} from '../../../assets/images';
 import {
   RESULTS,
   BUTTONS_THEME,

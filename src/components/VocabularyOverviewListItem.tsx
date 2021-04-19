@@ -6,7 +6,7 @@ import {ARTICLES} from '../constants/data';
 import Tts from 'react-native-tts';
 import {getArticleColor} from '../utils/helpers';
 import SoundPlayer from 'react-native-sound-player';
-import {VolumeUp} from '../assets/images';
+import {VolumeUp} from '../../assets/images';
 import {capitalizeFirstLetter} from '../utils/helpers';
 import {StyleSheet} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';

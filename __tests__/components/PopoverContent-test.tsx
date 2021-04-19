@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import PopoverContent from '../../components/PopoverContent';
+import PopoverContent from '../../src/components/PopoverContent';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 

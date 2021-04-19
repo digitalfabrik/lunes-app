@@ -8,7 +8,7 @@ import {
   incorrect_background,
   hint_background,
   correct_background,
-} from '../assets/images';
+} from '../../assets/images';
 import {ARTICLES} from '../constants/data';
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../constants/colors';

@@ -6,7 +6,7 @@ import {
   CircleIcon,
   LinesIcon,
   SmileIcon,
-} from '../assets/images';
+} from '../../assets/images';
 import {IHeaderProps} from '../interfaces/header';
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../constants/colors';

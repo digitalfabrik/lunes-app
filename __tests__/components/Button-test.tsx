@@ -1,12 +1,12 @@
 import 'react-native';
 import React from 'react';
-import Button from '../../components/Button';
+import Button from '../../src/components/Button';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {styles} from '../../components/Button';
+import {styles} from '../../src/components/Button';
 import {Text} from 'react-native';
-import {BUTTONS_THEME} from '../../constants/data';
-import {IButtonProps} from '../../interfaces/index';
+import {BUTTONS_THEME} from '../../src/constants/data';
+import {IButtonProps} from '../../src/interfaces/index';
 
 describe('Components', () => {
   describe('Button', () => {

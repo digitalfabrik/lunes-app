@@ -1,10 +1,10 @@
 import 'react-native';
 import React from 'react';
-import Loading from '../../components/Loading';
+import Loading from '../../src/components/Loading';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {Text} from 'react-native';
-import {ILoadingProps} from '../../interfaces/index';
+import {ILoadingProps} from '../../src/interfaces/index';
 
 describe('Components', () => {
   describe('Loading ', () => {

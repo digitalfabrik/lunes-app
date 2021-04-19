@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, TextInput, Platform} from 'react-native';
-import {CloseIcon, VolumeUp} from '../assets/images';
+import {CloseIcon, VolumeUp} from '../../assets/images';
 import {COLORS} from '../constants/colors';
 import {IAnswerSectionProps} from '../interfaces/exercise';
 import Popover from './Popover';
