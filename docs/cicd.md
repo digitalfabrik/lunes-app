@@ -21,5 +21,3 @@ Fastlane is a task-runner for triggering build relevant tasks. It offers integra
 
 ### Lanes
 To run a lane run `bundle exec fastlane [lane]`
-
-- 
