@@ -1,8 +1,7 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import { IButtonProps } from '../interfaces'
 import { BUTTONS_THEME } from '../constants/data'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/colors'
 

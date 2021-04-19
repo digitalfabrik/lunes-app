@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import { IResultScreenProps } from '../interfaces/summaryScreens'
 import { useFocusEffect } from '@react-navigation/native'
 import { SCREENS, BUTTONS_THEME, RESULT_PRESETS } from '../constants/data'
@@ -10,7 +10,6 @@ import Loading from '../components/Loading'
 import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
 import { IDocumentProps } from '../interfaces/exercise'
 import Button from '../components/Button'
-import { StyleSheet } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({

@@ -1,9 +1,8 @@
 import React from 'react'
-import MenuItem from '../MenuItem'
+import MenuItem, { styles } from '../MenuItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import { IMenuItemProps } from '../../interfaces/menuItem'
-import { styles } from '../MenuItem'
 import { Text } from 'react-native'
 import { COLORS } from '../../constants/colors'
 
@@ -32,7 +31,7 @@ describe('Components', () => {
       const component = shallow(<MenuItem {...menuItemProps} />)
       expect(menuItemProps.onPress).not.toHaveBeenCalled()
       component.children().props().onPress()
-      expect((menuItemProps.onPress as jest.Mock).mock.calls.length).toBe(1)
+      expect((menuItemProps.onPress as jest.Mock).mock.calls).toHaveLength(1)
       expect(component.children().props().onPress()).toBe(result)
     })
 

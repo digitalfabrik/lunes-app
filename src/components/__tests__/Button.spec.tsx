@@ -1,10 +1,8 @@
-import 'react-native'
+import { Text } from 'react-native'
 import React from 'react'
-import Button from '../Button'
+import Button, { styles } from '../Button'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { styles } from '../Button'
-import { Text } from 'react-native'
 import { BUTTONS_THEME } from '../../constants/data'
 import { IButtonProps } from '../../interfaces'
 
@@ -32,7 +30,7 @@ describe('Components', () => {
       const component = shallow(<Button {...buttonProps} />)
       expect(buttonProps.onPress).not.toHaveBeenCalled()
       component.props().onPress()
-      expect((buttonProps.onPress as jest.Mock).mock.calls.length).toBe(1)
+      expect((buttonProps.onPress as jest.Mock).mock.calls).toHaveLength(1)
       expect(component.props().onPress()).toBe(result)
     })
 

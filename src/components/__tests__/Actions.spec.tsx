@@ -1,10 +1,9 @@
 import 'react-native'
 import React from 'react'
-import Action from '../Actions'
+import Action, { styles } from '../Actions'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import { IActionsProps } from '../../interfaces/exercise'
-import { styles } from '../Actions'
 
 describe('Components', () => {
   describe('Actions', () => {
@@ -32,7 +31,7 @@ describe('Components', () => {
       }
 
       const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button').length).toBe(1)
+      expect(component.find('Button')).toHaveLength(1)
       expect(component.find('[testID="check-out"]')).toHaveLength(1)
     })
 
@@ -44,7 +43,7 @@ describe('Components', () => {
       }
 
       const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button').length).toBe(1)
+      expect(component.find('Button')).toHaveLength(1)
       expect(component.find('[testID="next-word"]')).toHaveLength(1)
     })
 
@@ -55,7 +54,7 @@ describe('Components', () => {
       }
 
       const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button').length).toBe(3)
+      expect(component.find('Button')).toHaveLength(3)
       expect(component.find('[testID="check-entry"]')).toHaveLength(1)
       expect(component.find('[testID="give-up"]')).toHaveLength(1)
       expect(component.find('[testID="try-later"]')).toHaveLength(1)
@@ -68,7 +67,7 @@ describe('Components', () => {
       }
 
       const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button').length).toBe(2)
+      expect(component.find('Button')).toHaveLength(2)
       expect(component.find('[testID="check-entry"]')).toHaveLength(1)
       expect(component.find('[testID="give-up"]')).toHaveLength(1)
     })

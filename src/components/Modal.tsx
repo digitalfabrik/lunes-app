@@ -1,11 +1,10 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
 import { IConfirmationModalProps } from '../interfaces/exercise'
 import { CloseIcon } from '../../assets/images'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 

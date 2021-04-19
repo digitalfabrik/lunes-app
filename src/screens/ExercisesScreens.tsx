@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable } from 'react-native'
+import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
 import { IExercisesScreenProps } from '../interfaces/exercises'
-import { Home } from '../../assets/images'
+import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, SCREENS } from '../constants/data'
-import { Arrow } from '../../assets/images'
 import { useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
-import { BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({

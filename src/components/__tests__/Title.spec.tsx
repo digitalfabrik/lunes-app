@@ -1,9 +1,8 @@
-import 'react-native'
+import { Text } from 'react-native'
 import React from 'react'
 import Title from '../Title'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { Text } from 'react-native'
 import { ITitleProps } from '../../interfaces/title'
 
 describe('Components', () => {

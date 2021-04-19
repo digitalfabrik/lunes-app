@@ -1,10 +1,9 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 import { WhiteNextArrow, NextArrow } from '../../assets/images'
 import { IActionsProps } from '../interfaces/exercise'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
-import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 

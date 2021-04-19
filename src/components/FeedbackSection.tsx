@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ImageBackground } from 'react-native'
+import { View, Text, ImageBackground, StyleSheet } from 'react-native'
 import { IFeedbackProps } from '../interfaces/exercise'
 import {
   CorrectFeedbackIcon,
@@ -10,7 +10,6 @@ import {
   correct_background
 } from '../../assets/images'
 import { ARTICLES } from '../constants/data'
-import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 

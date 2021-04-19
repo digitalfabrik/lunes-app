@@ -1,9 +1,8 @@
 import React from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable, Image, StyleSheet } from 'react-native'
 import { Arrow } from '../../assets/images'
 import { COLORS } from '../constants/colors'
 import { IMenuItemProps } from '../interfaces/menuItem'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({

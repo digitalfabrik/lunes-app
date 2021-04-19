@@ -1,4 +1,4 @@
-export type ProfessionParamList = {
+export interface ProfessionParamList {
   Profession: undefined
   ProfessionSubcategory: undefined
   Exercises: undefined

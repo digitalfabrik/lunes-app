@@ -1,7 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { ITitleProps } from '../interfaces/title'
-import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   title: {

@@ -1,8 +1,7 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
 import { IHeaderProps } from '../interfaces/header'
-import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 
 export const styles = StyleSheet.create({

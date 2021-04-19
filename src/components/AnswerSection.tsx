@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, Platform } from 'react-native'
+import { View, TouchableOpacity, TextInput, Platform, StyleSheet } from 'react-native'
 import { CloseIcon, VolumeUp } from '../../assets/images'
 import { COLORS } from '../constants/colors'
 import { IAnswerSectionProps } from '../interfaces/exercise'
@@ -11,7 +11,6 @@ import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
 import PopoverContent from './PopoverContent'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
@@ -154,7 +153,7 @@ const AnswerSection = ({
 
   const storeResult = async (score: string) => {
     await AsyncStorage.getItem('Vocabulary Trainer').then(value => {
-      let jsonValue = value ? JSON.parse(value) : {}
+      const jsonValue = value ? JSON.parse(value) : {}
 
       if (!jsonValue?.[disciplineTitle]?.[trainingSet]) {
         if (!jsonValue?.[disciplineTitle]) {
@@ -190,7 +189,7 @@ const AnswerSection = ({
 
     // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
     if (audio && Platform.OS !== 'ios') {
-      //audio from API
+      // audio from API
       SoundPlayer.playUrl(document?.audio)
     } else {
       Tts.speak(`${document?.article} ${document?.word}`, {

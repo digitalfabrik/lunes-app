@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { Text, FlatList } from 'react-native'
+import { Text, FlatList, StyleSheet, View } from 'react-native'
 import axios from '../utils/axios'
 import { IProfessionsProps, IProfessionScreenProps } from '../interfaces/profession'
 import { ENDPOINTS } from '../constants/endpoints'
@@ -10,10 +10,8 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import { useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { View } from 'react-native'
 
 export const styles = StyleSheet.create({
   root: {

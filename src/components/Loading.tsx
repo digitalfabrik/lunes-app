@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { ILoadingProps } from '../interfaces'
-import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   root: {

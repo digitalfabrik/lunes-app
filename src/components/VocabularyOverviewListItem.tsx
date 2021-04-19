@@ -1,14 +1,12 @@
 import React from 'react'
 import { IVocabularyOverviewListItemProps } from '../interfaces/exercise'
-import { View, Text, Image, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Platform, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
 import Tts from 'react-native-tts'
-import { getArticleColor } from '../utils/helpers'
+import { getArticleColor, capitalizeFirstLetter } from '../utils/helpers'
 import SoundPlayer from 'react-native-sound-player'
 import { VolumeUp } from '../../assets/images'
-import { capitalizeFirstLetter } from '../utils/helpers'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
@@ -73,7 +71,7 @@ export const styles = StyleSheet.create({
   }
 })
 
-//German language
+// German language
 Tts.setDefaultLanguage('de-DE')
 
 const VocabularyOverviewListItem = ({ image, article, word, audio }: IVocabularyOverviewListItemProps) => {
@@ -94,7 +92,7 @@ const VocabularyOverviewListItem = ({ image, article, word, audio }: IVocabulary
 
     // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
     if (audio && Platform.OS !== 'ios') {
-      //audio from API
+      // audio from API
       SoundPlayer.playUrl(audio)
     } else {
       Tts.speak(`${article} ${word}`, {

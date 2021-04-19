@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, Image, BackHandler, ActivityIndicator, Pressable, Keyboard } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  ActivityIndicator,
+  Pressable,
+  Keyboard
+} from 'react-native'
 import Modal from '../components/Modal'
 import { ProgressBar } from 'react-native-paper'
 import { COLORS } from '../constants/colors'
-import { IDocumentProps } from '../interfaces/exercise'
+import { IDocumentProps, IVocabularyTrainerScreen } from '../interfaces/exercise'
 import axios from '../utils/axios'
 import { ENDPOINTS } from '../constants/endpoints'
-import { IVocabularyTrainerScreen } from '../interfaces/exercise'
 import AnswerSection from '../components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { CloseButton } from '../../assets/images'
 import { SCREENS } from '../constants/data'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StyleSheet } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
@@ -119,7 +126,7 @@ const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrain
 
   const tryLater = () => {
     const currDocument = documents[currentDocumentNumber]
-    let newDocuments = documents.filter(d => d !== currDocument)
+    const newDocuments = documents.filter(d => d !== currDocument)
     newDocuments.push(currDocument)
     setDocuments(newDocuments)
   }

@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { InfoIcon } from '../../assets/images'
-import { StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/colors'
 

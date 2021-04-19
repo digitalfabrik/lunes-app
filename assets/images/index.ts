@@ -1,4 +1,4 @@
-//Need to be replaced with icons from API
+// Need to be replaced with icons from API
 import icon1 from './icon-sign-6.svg'
 import icon2 from './icon-sign-4.svg'
 import icon3 from './icon-sign-3.svg'
