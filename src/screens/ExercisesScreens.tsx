@@ -125,6 +125,8 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
+            // TODO LUN-5 Fix and remove disable eslint
+            // eslint-disable-next-line react/prop-types
             onPress={() => navigation.navigate(SCREENS.profession)}
             onPressIn={() => setIsHomeButtonPressed(true)}
             onPressOut={() => setIsHomeButtonPressed(false)}
@@ -134,6 +136,8 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
         ),
         headerLeft: () => (
           <TouchableOpacity
+            // TODO LUN-5 Fix and remove disable eslint
+            // eslint-disable-next-line react/prop-types
             onPress={() => navigation.navigate(SCREENS.professionSubcategory, { extraParams })}
             onPressIn={() => setIsBackButtonPressed(true)}
             onPressOut={() => setIsBackButtonPressed(false)}

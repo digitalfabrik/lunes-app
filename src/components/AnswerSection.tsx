@@ -122,6 +122,7 @@ const AnswerSection = ({
     const exactAnswer = inputArticle === document?.article && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       ({ article, alt_word }) => inputArticle === article && inputWord === alt_word
     )
     return exactAnswer || altAnswer
@@ -134,6 +135,7 @@ const AnswerSection = ({
       stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
 
     const altCheck = document?.alternatives?.some(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       ({ article, alt_word }) =>
         inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4
     )

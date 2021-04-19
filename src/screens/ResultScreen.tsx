@@ -76,6 +76,8 @@ const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
       setEntries(results.filter(({ result }: any) => result === resultType))
       navigation.setOptions({
         headerRight: () => (
+          // TODO LUN-5 Fix and remove disable eslint
+          // eslint-disable-next-line react/prop-types
           <TouchableOpacity onPress={() => navigation.navigate(SCREENS.exercises, { extraParams: extraParams })}>
             <CircularFinishIcon />
           </TouchableOpacity>

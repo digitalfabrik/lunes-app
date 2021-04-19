@@ -30,6 +30,15 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
 
+    // TODO Use errors again for these typescript rules
+    '@typescript-eslint/explicit-function-return-type': 'warn',
+    '@typescript-eslint/no-floating-promises': 'warn',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
+    '@typescript-eslint/strict-boolean-expressions': 'warn',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
+
+
     'jest/consistent-test-it': 'error',
     'jest/no-disabled-tests': 'error',
     'jest/no-focused-tests': 'error',

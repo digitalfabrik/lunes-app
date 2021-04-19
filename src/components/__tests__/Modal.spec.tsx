@@ -22,7 +22,7 @@ describe('Components', () => {
       expect(toJson(component)).toMatchSnapshot()
     })
 
-    it('should have visible property passed to it', () => {
+    it('should have visible property passed to it as default', () => {
       const modalProps: IConfirmationModalProps = {
         ...defaultModalProps
       }

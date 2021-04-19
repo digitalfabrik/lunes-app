@@ -162,6 +162,8 @@ const ResultsOverview = ({ navigation, route }: IResultsOverviewScreenProps) => 
       headerRight: () => (
         <TouchableOpacity
           style={styles.rightHeader}
+          // TODO LUN-5 Fix and remove disable eslint
+          // eslint-disable-next-line react/prop-types
           onPress={() => navigation.navigate(SCREENS.exercises, { extraParams })}>
           <Text style={styles.headerText}>Finish Exercise</Text>
           <FinishIcon />

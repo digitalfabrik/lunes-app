@@ -47,6 +47,8 @@ const VocabularyOverviewExerciseScreen = ({ navigation, route }: IVocabularyOver
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
+          // TODO LUN-5 Fix and remove disable eslint
+          // eslint-disable-next-line react/prop-types
           onPress={() => navigation.popToTop()}
           onPressIn={() => setIsHomeButtonPressed(true)}
           onPressOut={() => setIsHomeButtonPressed(false)}
