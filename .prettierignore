@@ -1,7 +1,8 @@
-.circleci/
+.circleci/config.yml
 
 android/**/*
 ios/**/*
+**/vendor
 
 # Ignore node_modules
 **/node_modules/**
