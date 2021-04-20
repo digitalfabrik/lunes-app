@@ -1,3 +1,3 @@
-# visual-vocabulary-trainer-app
+# Lunes App
 
-End user GUI for the visual vocabulary trainer
+Android and iOS React native Apps for [Lunes](https://lunes.app)

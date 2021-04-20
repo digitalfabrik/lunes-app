@@ -3,9 +3,7 @@ docker:
 steps:
   - checkout
   - check_config
-  - run:
-      name: Install dependencies
-      command: yarn install --frozen-lockfile
+  - restore_yarn_cache
   - run:
       name: Linting check
       command: yarn lint:ci

@@ -1,0 +1,16 @@
+description: Restores and saves fastlane cache of the passed directory.
+parameters:
+  directory:
+    type: string
+    default: android
+steps:
+  - restore_cache:
+      key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+  - run:
+      name: Install Fastlane
+      command: bundle check || bundle install --path vendor/bundle
+      working_directory: << parameters.directory >>
+  - save_cache:
+      key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+      paths:
+        - << parameters.directory >>/vendor/bundle

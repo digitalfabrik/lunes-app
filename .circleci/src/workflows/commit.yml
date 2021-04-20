@@ -1,2 +1,6 @@
 jobs:
   - check
+  - build_android
+  - deliver_android:
+      requires:
+        - build_android

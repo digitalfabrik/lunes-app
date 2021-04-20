@@ -30,26 +30,116 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    prepare_workspace:
+        description: Attach the workspace at ~/attached_workspace and list its contents
+        steps:
+            - attach_workspace:
+                at: ~/attached_workspace
+            - run:
+                command: ls ~/attached_workspace
+                name: Attached workspace contents
+            - run:
+                command: ls -R ~/attached_workspace
+                name: Recursively list attached workspace contents
+    restore_ruby_cache:
+        description: Restores and saves fastlane cache of the passed directory.
+        parameters:
+            directory:
+                default: android
+                type: string
+        steps:
+            - restore_cache:
+                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+            - run:
+                command: bundle check || bundle install --path vendor/bundle
+                name: Install Fastlane
+                working_directory: << parameters.directory >>
+            - save_cache:
+                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                paths:
+                    - << parameters.directory >>/vendor/bundle
+    restore_yarn_cache:
+        description: Restores and saves the node_modules directory
+        steps:
+            - restore_cache:
+                keys:
+                    - yarn-packages-{{ checksum "yarn.lock" }}
+                name: Restore Yarn Package Cache
+            - run:
+                command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+                name: Install Dependencies
+            - save_cache:
+                key: yarn-packages-{{ checksum "yarn.lock" }}
+                name: Save Yarn Package Cache
+                paths:
+                    - ~/.cache/yarn
 jobs:
+    build_android:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        resource_class: medium+
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - restore_ruby_cache:
+                directory: android
+            - restore_yarn_cache
+            - run:
+                command: bundle exec fastlane build
+                name: Build Android
+                working_directory: android
+            - run:
+                command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
+                name: Move apk
+                working_directory: android
+            - persist_to_workspace:
+                paths:
+                    - app-release.apk
+                root: android/attached_workspace
+            - store_artifacts:
+                path: android/attached_workspace/app-release.apk
     check:
         docker:
             - image: circleci/node:12.16.3
         steps:
             - checkout
             - check_config
-            - run:
-                command: yarn install --frozen-lockfile
-                name: Install dependencies
+            - restore_yarn_cache
             - run:
                 command: yarn lint:ci
                 name: Linting check
             - run:
                 command: yarn prettier --check .
                 name: Prettier check
+    deliver_android:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - restore_ruby_cache:
+                directory: android
+            - run:
+                command: bundle exec fastlane validate_play_store_key
+                name: Validate Play Store Key
+                working_directory: android
+            - prepare_workspace
+            - run:
+                command: bundle exec fastlane upload_to_browserstack
+                name: BrowserStack Upload
+                working_directory: android
 version: 2.1
 workflows:
     commit:
         jobs:
             - check
+            - build_android
+            - deliver_android:
+                requires:
+                    - build_android
     version: 2
 

@@ -1,0 +1,18 @@
+docker:
+  - image: circleci/android:api-29-node
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+shell: /bin/bash -eo pipefail
+steps:
+  - checkout
+  - restore_ruby_cache:
+      directory: android
+  - run:
+      name: Validate Play Store Key
+      command: bundle exec fastlane validate_play_store_key
+      working_directory: android
+  - prepare_workspace
+  - run:
+      name: 'BrowserStack Upload'
+      command: bundle exec fastlane upload_to_browserstack
+      working_directory: android
