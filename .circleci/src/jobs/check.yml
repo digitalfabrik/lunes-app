@@ -9,3 +9,6 @@ steps:
   - run:
       name: Linting check
       command: yarn lint:ci
+  - run:
+      name: Prettier check
+      command: yarn prettier --check .

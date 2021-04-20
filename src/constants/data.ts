@@ -6,8 +6,8 @@ import {
   AlmostCorrectIcon,
   CorrectEntriesIcon,
   IncorrectEntriesIcon,
-  AlmostCorrectEntriesIcon,
-} from '../../assets/images';
+  AlmostCorrectEntriesIcon
+} from '../../assets/images'
 
 export const SCREENS = {
   profession: 'Profession',
@@ -20,10 +20,10 @@ export const SCREENS = {
   CorrectResults: 'CorrectResults',
   ResultScreen: 'ResultScreen',
   AlmostCorrectResults: 'AlmostCorrectResults',
-  IncorrectResults: 'IncorrectResults',
-};
+  IncorrectResults: 'IncorrectResults'
+}
 
-export const RESULT_TYPE = ['correct', 'similar', 'incorrect'];
+export const RESULT_TYPE = ['correct', 'similar', 'incorrect']
 
 export const EXERCISES = [
   {
@@ -31,64 +31,64 @@ export const EXERCISES = [
     title: 'Vocabulary Overview',
     description: 'All Words',
     Level: easy,
-    nextScreen: SCREENS.vocabularyOverview,
+    nextScreen: SCREENS.vocabularyOverview
   },
   {
     id: 2,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
-    nextScreen: SCREENS.vocabularyTrainer,
-  },
-];
+    nextScreen: SCREENS.vocabularyTrainer
+  }
+]
 
 export const BUTTONS_THEME = {
   light: 'light',
-  dark: 'dark',
-};
+  dark: 'dark'
+}
 
 export const RESULTS = [
   {
     id: 1,
     title: 'Correct entries',
     icon: CorrectIcon,
-    nextScreen: SCREENS.CorrectResults,
+    nextScreen: SCREENS.CorrectResults
   },
   {
     id: 2,
     title: 'Almost correct entries',
     icon: AlmostCorrectIcon,
-    nextScreen: SCREENS.AlmostCorrectResults,
+    nextScreen: SCREENS.AlmostCorrectResults
   },
   {
     id: 3,
     title: 'Incorrect entries',
     icon: IncorrectIcon,
-    nextScreen: SCREENS.IncorrectResults,
-  },
-];
+    nextScreen: SCREENS.IncorrectResults
+  }
+]
 
 export const ARTICLES = {
   die: 'die',
   der: 'der',
   das: 'das',
-  diePlural: 'die (plural)',
-};
+  diePlural: 'die (plural)'
+}
 
 export const RESULT_PRESETS = {
   similar: {
     Icon: AlmostCorrectEntriesIcon,
     title: 'Almost Correct',
-    next: {title: 'INCORRECT', type: 'incorrect'},
+    next: { title: 'INCORRECT', type: 'incorrect' }
   },
   correct: {
     Icon: CorrectEntriesIcon,
     title: 'Correct',
-    next: {title: 'ALMOST CORRECT', type: 'similar'},
+    next: { title: 'ALMOST CORRECT', type: 'similar' }
   },
   incorrect: {
     Icon: IncorrectEntriesIcon,
     title: 'Incorrect',
-    next: {title: 'CORRECT', type: 'correct'},
-  },
-};
+    next: { title: 'CORRECT', type: 'correct' }
+  }
+}

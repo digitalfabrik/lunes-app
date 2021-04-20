@@ -1,52 +1,38 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  LogBox,
-  TouchableOpacity,
-  FlatList,
-  Pressable,
-} from 'react-native';
-import {IExercisesScreenProps} from '../interfaces/exercises';
-import {Home} from '../../assets/images';
-import Title from '../components/Title';
-import {EXERCISES, SCREENS} from '../constants/data';
-import {Arrow} from '../../assets/images';
-import {useFocusEffect} from '@react-navigation/native';
-import {COLORS} from '../constants/colors';
-import {
-  BackButton,
-  BackArrowPressed,
-  HomeButtonPressed,
-} from '../../assets/images';
-import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import React, { useState } from 'react'
+import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
+import { IExercisesScreenProps } from '../interfaces/exercises'
+import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
+import Title from '../components/Title'
+import { EXERCISES, SCREENS } from '../constants/data'
+import { useFocusEffect } from '@react-navigation/native'
+import { COLORS } from '../constants/colors'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
-    paddingTop: 32,
+    paddingTop: 32
   },
   list: {
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   screenDescription: {
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular',
+    fontFamily: 'SourceSansPro-Regular'
   },
   description: {
     fontSize: wp('4%'),
     color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-Regular',
+    fontFamily: 'SourceSansPro-Regular'
   },
   screenTitle: {
     textAlign: 'center',
     fontSize: wp('5%'),
     color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-SemiBold'
   },
   container: {
     alignSelf: 'center',
@@ -62,7 +48,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.lunesBlackUltralight,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 2,
+    borderRadius: 2
   },
   clickedContainer: {
     justifyContent: 'space-between',
@@ -78,7 +64,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.white,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 2,
+    borderRadius: 2
   },
   clickedItemTitle: {
     textAlign: 'left',
@@ -87,16 +73,16 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-SemiBold'
   },
   clickedItemDescription: {
     fontSize: wp('4%'),
     fontWeight: 'normal',
     color: COLORS.white,
-    fontFamily: 'SourceSansPro-Regular',
+    fontFamily: 'SourceSansPro-Regular'
   },
   level: {
-    marginTop: 11,
+    marginTop: 11
   },
   title2: {
     textAlign: 'left',
@@ -105,7 +91,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.11,
     marginBottom: 2,
     color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
+    fontFamily: 'SourceSansPro-SemiBold'
   },
   title: {
     color: COLORS.lunesBlack,
@@ -113,34 +99,34 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     textTransform: 'uppercase',
     fontWeight: '600',
-    marginLeft: 15,
+    marginLeft: 15
   },
   headerLeft: {
     paddingLeft: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    zIndex: 100,
-  },
-});
+    zIndex: 100
+  }
+})
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
-const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
-  const {extraParams} = route.params;
-  const {trainingSet, disciplineTitle} = extraParams;
-  const [selectedId, setSelectedId] = useState(-1);
-  const [isBackButtonPressed, setIsBackButtonPressed] = useState(false);
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false);
+const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
+  const { extraParams } = route.params
+  const { trainingSet, disciplineTitle } = extraParams
+  const [selectedId, setSelectedId] = useState(-1)
+  const [isBackButtonPressed, setIsBackButtonPressed] = useState(false)
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(-1);
+      setSelectedId(-1)
 
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
+            // TODO LUN-5 Fix and remove disable eslint
+            // eslint-disable-next-line react/prop-types
             onPress={() => navigation.navigate(SCREENS.profession)}
             onPressIn={() => setIsHomeButtonPressed(true)}
             onPressOut={() => setIsHomeButtonPressed(false)}
@@ -150,9 +136,9 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         ),
         headerLeft: () => (
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(SCREENS.professionSubcategory, {extraParams})
-            }
+            // TODO LUN-5 Fix and remove disable eslint
+            // eslint-disable-next-line react/prop-types
+            onPress={() => navigation.navigate(SCREENS.professionSubcategory, { extraParams })}
             onPressIn={() => setIsBackButtonPressed(true)}
             onPressOut={() => setIsBackButtonPressed(false)}
             activeOpacity={1}
@@ -160,16 +146,10 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
             {isBackButtonPressed ? <BackArrowPressed /> : <BackButton />}
             <Text style={styles.title}>{disciplineTitle}</Text>
           </TouchableOpacity>
-        ),
-      });
-    }, [
-      extraParams,
-      navigation,
-      disciplineTitle,
-      isBackButtonPressed,
-      isHomeButtonPressed,
-    ]),
-  );
+        )
+      })
+    }, [extraParams, navigation, disciplineTitle, isBackButtonPressed, isHomeButtonPressed])
+  )
 
   const Header = (
     <Title>
@@ -178,15 +158,13 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         <Text style={styles.screenDescription}>2 Exercises</Text>
       </>
     </Title>
-  );
+  )
 
-  const Item = ({item}: any) => {
-    const selected = item.id === selectedId;
-    const itemStyle = selected ? styles.clickedContainer : styles.container;
-    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2;
-    const descriptionStyle = selected
-      ? styles.clickedItemDescription
-      : styles.description;
+  const Item = ({ item }: any) => {
+    const selected = item.id === selectedId
+    const itemStyle = selected ? styles.clickedContainer : styles.container
+    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
+    const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
 
     return (
       <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
@@ -195,26 +173,22 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
           <Text style={descriptionStyle}>{item.description}</Text>
           <item.Level style={styles.level} />
         </View>
-        <Arrow
-          fill={
-            item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack
-          }
-        />
+        <Arrow fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Pressable>
-    );
-  };
+    )
+  }
 
   const handleNavigation = (item: any) => {
-    setSelectedId(item.id);
+    setSelectedId(item.id)
     navigation.push(item.nextScreen, {
       extraParams: {
         ...extraParams,
         exercise: item.title,
         exerciseDescription: item.description,
-        Level: item.Level,
-      },
-    });
-  };
+        Level: item.Level
+      }
+    })
+  }
 
   return (
     <View style={styles.root}>
@@ -223,11 +197,11 @@ const ExercisesScreen = ({route, navigation}: IExercisesScreenProps) => {
         style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={(item) => `${item.id}`}
+        keyExtractor={item => `${item.id}`}
         showsVerticalScrollIndicator={false}
       />
     </View>
-  );
-};
+  )
+}
 
-export default ExercisesScreen;
+export default ExercisesScreen

@@ -43,6 +43,9 @@ jobs:
             - run:
                 command: yarn lint:ci
                 name: Linting check
+            - run:
+                command: yarn prettier --check .
+                name: Prettier check
 version: 2.1
 workflows:
     commit:

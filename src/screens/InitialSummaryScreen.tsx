@@ -1,23 +1,19 @@
-import React from 'react';
-import {View, Text, StatusBar} from 'react-native';
-import Button from '../components/Button';
-import {CheckIcon, ListIcon, RepeatIcon} from '../../assets/images';
-import {BUTTONS_THEME, SCREENS} from '../constants/data';
-import {IInitialSummaryScreenProps} from '../interfaces/summaryScreens';
-import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet} from 'react-native';
-import {COLORS} from '../constants/colors';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import React from 'react'
+import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import Button from '../components/Button'
+import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
+import { BUTTONS_THEME, SCREENS } from '../constants/data'
+import { IInitialSummaryScreenProps } from '../interfaces/summaryScreens'
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { COLORS } from '../constants/colors'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
   root: {
     backgroundColor: COLORS.lunesWhite,
     height: '100%',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   upperSection: {
     width: hp('70%'),
@@ -27,18 +23,18 @@ export const styles = StyleSheet.create({
     borderBottomRightRadius: hp('60%'),
     marginBottom: hp('8%'),
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   messageContainer: {
     width: wp('60%'),
-    marginTop: hp('5%'),
+    marginTop: hp('5%')
   },
   message: {
     color: COLORS.lunesWhite,
     fontSize: wp('5%'),
     fontFamily: 'SourceSansPro-SemiBold',
     fontWeight: '600',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   lightLabel: {
     fontSize: wp('3.5%'),
@@ -46,7 +42,7 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesWhite,
     fontWeight: '600',
     marginLeft: 10,
-    textTransform: 'uppercase',
+    textTransform: 'uppercase'
   },
   darkLabel: {
     fontSize: wp('3.5%'),
@@ -54,62 +50,57 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesBlack,
     fontWeight: '600',
     marginLeft: 10,
-    textTransform: 'uppercase',
-  },
-});
-const InitialSummaryScreen = ({
-  navigation,
-  route,
-}: IInitialSummaryScreenProps) => {
-  const {extraParams} = route.params;
-  const {exercise, disciplineTitle, trainingSet} = extraParams;
-  const [results, setResults] = React.useState([]);
-  const [message, setMessage] = React.useState('');
+    textTransform: 'uppercase'
+  }
+})
+const InitialSummaryScreen = ({ navigation, route }: IInitialSummaryScreenProps) => {
+  const { extraParams } = route.params
+  const { exercise, disciplineTitle, trainingSet } = extraParams
+  const [results, setResults] = React.useState([])
+  const [message, setMessage] = React.useState('')
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem(exercise).then((value) => {
-        const jsonValue = value && JSON.parse(value);
-        setResults(Object.values(jsonValue[disciplineTitle][trainingSet]));
-      });
-    }, [exercise, disciplineTitle, trainingSet]),
-  );
+      AsyncStorage.getItem(exercise).then(value => {
+        const jsonValue = value && JSON.parse(value)
+        setResults(Object.values(jsonValue[disciplineTitle][trainingSet]))
+      })
+    }, [exercise, disciplineTitle, trainingSet])
+  )
 
   React.useEffect(() => {
-    const correctResults = results.filter((doc) => doc.result === 'correct');
-    const percentageCorrect = (correctResults.length / results.length) * 100;
+    const correctResults = results.filter(doc => doc.result === 'correct')
+    const percentageCorrect = (correctResults.length / results.length) * 100
     switch (true) {
       case percentageCorrect > 66:
-        setMessage('Keep it up!\nYou have mastered the exercise very well.');
-        break;
+        setMessage('Keep it up!\nYou have mastered the exercise very well.')
+        break
 
       case percentageCorrect > 33:
-        setMessage("You're getting there.\nPlease retry!");
-        break;
+        setMessage("You're getting there.\nPlease retry!")
+        break
 
       case percentageCorrect < 33:
-        setMessage(
-          'You still have some trouble with the basics,\nplease retry! ',
-        );
-        break;
+        setMessage('You still have some trouble with the basics,\nplease retry! ')
+        break
     }
-  }, [results]);
+  }, [results])
 
   const checkResults = () => {
-    AsyncStorage.removeItem('session');
-    navigation.navigate(SCREENS.ResultsOverview, {extraParams, results});
-  };
+    AsyncStorage.removeItem('session')
+    navigation.navigate(SCREENS.ResultsOverview, { extraParams, results })
+  }
 
   const repeatExercise = () => {
     navigation.navigate(SCREENS.vocabularyTrainer, {
       extraParams,
-      retryData: null,
-    });
-  };
+      retryData: null
+    })
+  }
 
   return (
     <View style={styles.root}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle='light-content' />
 
       <View style={styles.upperSection}>
         <CheckIcon />
@@ -132,7 +123,7 @@ const InitialSummaryScreen = ({
         </>
       </Button>
     </View>
-  );
-};
+  )
+}
 
-export default InitialSummaryScreen;
+export default InitialSummaryScreen
