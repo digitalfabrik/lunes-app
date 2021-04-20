@@ -155,7 +155,7 @@ const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrain
         keyboardShouldPersistTaps='always'>
         <Image
           source={{
-            uri: documents[currentDocumentNumber]?.image
+            uri: documents[currentDocumentNumber]?.document_image[0].image
           }}
           style={styles.image}
           onLoadStart={() => setIsLoading(true)}
