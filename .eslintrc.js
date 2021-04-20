@@ -30,7 +30,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
 
-    // TODO Use errors again for these typescript rules
+    // TODO LUN-55: Use errors again for these typescript rules
     '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/no-floating-promises': 'warn',
     '@typescript-eslint/restrict-template-expressions': 'warn',
