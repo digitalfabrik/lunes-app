@@ -36,11 +36,6 @@ import BackArrowPressed from './back-arrow-pressed.svg'
 import HomeButtonPressed from './home-pressed.svg'
 
 export {
-  icon1,
-  icon2,
-  icon3,
-  icon4,
-  icon5,
   BackButton,
   SquareIcon,
   StarIcon,
