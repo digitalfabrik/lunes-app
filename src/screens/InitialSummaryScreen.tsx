@@ -3,7 +3,6 @@ import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME, SCREENS } from '../constants/data'
-import { IInitialSummaryScreenProps } from '../interfaces/summaryScreens'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
@@ -53,6 +52,12 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase'
   }
 })
+
+export interface IInitialSummaryScreenProps {
+  navigation: any
+  route: any
+}
+
 const InitialSummaryScreen = ({ navigation, route }: IInitialSummaryScreenProps) => {
   const { extraParams } = route.params
   const { exercise, disciplineTitle, trainingSet } = extraParams

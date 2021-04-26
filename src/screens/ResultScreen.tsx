@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
-import { IResultScreenProps } from '../interfaces/summaryScreens'
 import { useFocusEffect } from '@react-navigation/native'
 import { SCREENS, BUTTONS_THEME, RESULT_PRESETS } from '../constants/data'
 import { COLORS } from '../constants/colors'
@@ -64,6 +63,11 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase'
   }
 })
+
+export interface IResultScreenProps {
+  navigation: any
+  route: any
+}
 
 const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
   const { extraParams, results, counts, resultType } = route.params
