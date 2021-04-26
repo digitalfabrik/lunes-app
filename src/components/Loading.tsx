@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
-import { ILoadingProps } from '../interfaces'
 
 export const styles = StyleSheet.create({
   root: {
@@ -14,6 +13,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+export interface ILoadingProps {
+  children: ReactElement
+  isLoading: boolean
+}
+
 const Loading = ({ children, isLoading }: ILoadingProps) => (
   <View style={styles.root}>
     {isLoading ? (

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 import { WhiteNextArrow, NextArrow } from '../../assets/images'
-import { IActionsProps } from '../interfaces/exercise'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
 import { COLORS } from '../constants/colors'
@@ -36,6 +35,17 @@ export const styles = StyleSheet.create({
     marginLeft: 5
   }
 })
+
+export interface IActionsProps {
+  tryLater: () => void
+  giveUp: () => void
+  result: string
+  checkEntry: () => void
+  getNextWord: () => void
+  input: string
+  isFinished: boolean
+  secondAttempt: boolean
+}
 
 const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, tryLater }: IActionsProps) => {
   return result ? (

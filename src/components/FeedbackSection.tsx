@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, ImageBackground, StyleSheet } from 'react-native'
-import { IFeedbackProps } from '../interfaces/exercise'
+import { IDocumentProps } from '../interfaces/exercise'
 import {
   CorrectFeedbackIcon,
   IncorrectFeedbackIcon,
@@ -41,6 +41,13 @@ export const styles = StyleSheet.create({
     color: COLORS.lunesBlack
   }
 })
+
+export interface IFeedbackProps {
+  secondAttempt: boolean
+  result: string
+  document?: IDocumentProps
+  input: string
+}
 
 const Feedback = ({ result, document, input, secondAttempt }: IFeedbackProps) => {
   const Icon =

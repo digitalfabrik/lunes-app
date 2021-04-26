@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, LogBox, StatusBar, FlatList, StyleSheet } from 'react-native'
-import { IProfessionSubcategoryScreenProps, IProfessionSubcategoryProps } from '../interfaces/professionSubcategory'
 import Title from '../components/Title'
 import { SCREENS } from '../constants/data'
 import axios from '../utils/axios'
@@ -66,6 +65,19 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
+
+export interface IProfessionSubcategoryScreenProps {
+  route: any
+  navigation: any
+}
+
+export interface IProfessionSubcategoryProps {
+  id: number
+  title: string
+  description: string
+  icon: string
+  total_documents: number
+}
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 

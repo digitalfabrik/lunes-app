@@ -1,9 +1,8 @@
 import 'react-native'
 import React from 'react'
-import VocabularyOverviewListItem from '../VocabularyOverviewListItem'
+import VocabularyOverviewListItem, { IVocabularyOverviewListItemProps } from '../VocabularyOverviewListItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IVocabularyOverviewListItemProps } from '../../interfaces/exercise'
 
 describe('Components', () => {
   describe('VocabularyOverviewListItem', () => {

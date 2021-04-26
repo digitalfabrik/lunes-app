@@ -1,5 +1,4 @@
 import React from 'react'
-import { IVocabularyOverviewListItemProps } from '../interfaces/exercise'
 import { View, Text, Image, TouchableOpacity, Platform, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
@@ -70,6 +69,14 @@ export const styles = StyleSheet.create({
     shadowOpacity: 10
   }
 })
+
+export interface IVocabularyOverviewListItemProps {
+  id: number
+  word: string
+  article: string
+  image: string
+  audio: string
+}
 
 // German language
 Tts.setDefaultLanguage('de-DE')

@@ -1,7 +1,7 @@
 import { getArticleColor, getProfessionSubcategoryWithIcon, capitalizeFirstLetter } from '../helpers'
 import { COLORS } from '../../constants/colors'
 import { ARTICLES } from '../../constants/data'
-import { IProfessionSubcategoryProps } from '../../interfaces/professionSubcategory'
+import { IProfessionSubcategoryProps } from '../../screens/ProfessionSubcategoryScreen'
 
 describe('Utils: helpers', () => {
   describe('getArticleColor', () => {

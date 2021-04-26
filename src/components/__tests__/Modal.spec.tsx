@@ -1,9 +1,8 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal from '../Modal'
+import Modal, { IConfirmationModalProps } from '../Modal'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IConfirmationModalProps } from '../../interfaces/exercise'
 
 describe('Components', () => {
   describe('Modal ', () => {

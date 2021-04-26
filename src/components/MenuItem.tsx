@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native'
 import { Arrow } from '../../assets/images'
 import { COLORS } from '../constants/colors'
-import { IMenuItemProps } from '../interfaces/menuItem'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
@@ -61,6 +60,14 @@ export const styles = StyleSheet.create({
   },
   left: { flexDirection: 'row', alignItems: 'center' }
 })
+
+export interface IMenuItemProps {
+  selected: boolean
+  onPress: () => void
+  icon: string
+  title: string
+  children: ReactElement
+}
 
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps) => {
   const itemStyle = selected ? styles.clickedContainer : styles.container

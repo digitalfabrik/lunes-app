@@ -1,8 +1,7 @@
 import React from 'react'
-import MenuItem, { styles } from '../MenuItem'
+import MenuItem, { styles, IMenuItemProps } from '../MenuItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IMenuItemProps } from '../../interfaces/menuItem'
 import { Text } from 'react-native'
 import { COLORS } from '../../constants/colors'
 

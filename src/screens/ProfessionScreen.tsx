@@ -3,7 +3,6 @@ import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
 import { Text, FlatList, StyleSheet, View } from 'react-native'
 import axios from '../utils/axios'
-import { IProfessionsProps, IProfessionScreenProps } from '../interfaces/profession'
 import { ENDPOINTS } from '../constants/endpoints'
 import { SCREENS } from '../constants/data'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
@@ -44,6 +43,18 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular'
   }
 })
+
+export interface IProfessionScreenProps {
+  navigation: any
+}
+
+export interface IProfessionsProps {
+  id: number
+  title: string
+  description: string
+  icon?: string
+  total_training_sets: number
+}
 
 const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
   const [professions, setProfessions] = useState<IProfessionsProps[]>([])

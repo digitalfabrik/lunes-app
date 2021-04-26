@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
-import { IConfirmationModalProps } from '../interfaces/exercise'
 import { CloseIcon } from '../../assets/images'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
@@ -62,6 +61,13 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.4
   }
 })
+
+export interface IConfirmationModalProps {
+  visible: boolean
+  setIsModalVisible: Function
+  navigation: any
+  extraParams: any
+}
 
 const ConfirmationModal = ({ visible, setIsModalVisible, navigation, extraParams }: IConfirmationModalProps) => {
   const closeModal = () => setIsModalVisible(false)

@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
-import { IHeaderProps } from '../interfaces/header'
 import { COLORS } from '../constants/colors'
 
 export const styles = StyleSheet.create({
@@ -50,6 +49,11 @@ export const styles = StyleSheet.create({
     top: 51
   }
 })
+
+export interface IHeaderProps {
+  top: number | undefined
+}
+
 const Header = ({ top }: IHeaderProps) => (
   <View style={{ ...styles.wrapper, paddingTop: top }} testID='header'>
     <View style={styles.header}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
-import { IVocabularyOverviewScreen, IDocumentProps } from '../interfaces/exercise'
+import { IDocumentProps } from '../interfaces/exercise'
 import { Home, HomeButtonPressed } from '../../assets/images'
 import { ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular'
   }
 })
+
+export interface IVocabularyOverviewScreen {
+  navigation: any
+  route: any
+}
 
 const VocabularyOverviewExerciseScreen = ({ navigation, route }: IVocabularyOverviewScreen) => {
   const { trainingSetId } = route.params.extraParams

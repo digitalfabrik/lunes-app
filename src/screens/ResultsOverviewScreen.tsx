@@ -3,7 +3,6 @@ import { View, Text, Pressable, FlatList, TouchableOpacity, StatusBar, StyleShee
 import Title from '../components/Title'
 import { Arrow, RepeatIcon, FinishIcon } from '../../assets/images'
 import { RESULTS, BUTTONS_THEME, SCREENS, RESULT_TYPE, EXERCISES } from '../constants/data'
-import { IResultsOverviewScreenProps } from '../interfaces/summaryScreens'
 import { useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/colors'
@@ -148,6 +147,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+export interface IResultsOverviewScreenProps {
+  navigation: any
+  route: any
+}
 
 const ResultsOverview = ({ navigation, route }: IResultsOverviewScreenProps) => {
   const { extraParams, results } = route.params

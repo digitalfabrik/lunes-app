@@ -1,4 +1,4 @@
-import { IProfessionSubcategoryProps } from '../interfaces/professionSubcategory'
+import { IProfessionSubcategoryProps } from '../screens/ProfessionSubcategoryScreen'
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
 

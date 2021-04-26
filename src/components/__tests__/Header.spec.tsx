@@ -1,9 +1,8 @@
 import 'react-native'
 import React from 'react'
-import Header from '../Header'
+import Header, { IHeaderProps } from '../Header'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IHeaderProps } from '../../interfaces/header'
 
 describe('Components', () => {
   describe('Header', () => {

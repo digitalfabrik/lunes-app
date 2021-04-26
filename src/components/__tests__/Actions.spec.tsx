@@ -1,9 +1,8 @@
 import 'react-native'
 import React from 'react'
-import Action, { styles } from '../Actions'
+import Action, { styles, IActionsProps } from '../Actions'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IActionsProps } from '../../interfaces/exercise'
 
 describe('Components', () => {
   describe('Actions', () => {
