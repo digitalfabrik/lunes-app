@@ -26,11 +26,6 @@ Validate Play Store Key
 fastlane android build
 ```
 Build Android App
-### android test_apk
-```
-fastlane android test_apk
-```
-Test APK to be removed
 ### android upload_to_browserstack
 ```
 fastlane android upload_to_browserstack
