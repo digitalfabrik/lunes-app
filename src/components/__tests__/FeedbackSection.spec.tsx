@@ -1,9 +1,8 @@
 import 'react-native'
 import React from 'react'
-import FeedbackSection from '../FeedbackSection'
+import FeedbackSection, { IFeedbackProps } from '../FeedbackSection'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IFeedbackProps } from '../../interfaces/exercise'
 import { ARTICLES } from '../../constants/data'
 import { CorrectFeedbackIcon, IncorrectFeedbackIcon, AlmostCorrectFeedbackIcon } from '../../../assets/images'
 

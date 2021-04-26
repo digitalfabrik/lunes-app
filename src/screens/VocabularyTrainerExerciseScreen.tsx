@@ -12,7 +12,7 @@ import {
 import Modal from '../components/Modal'
 import { ProgressBar } from 'react-native-paper'
 import { COLORS } from '../constants/colors'
-import { IDocumentProps, IVocabularyTrainerScreen } from '../interfaces/exercise'
+import { IDocumentProps } from '../interfaces/exercise'
 import axios from '../utils/axios'
 import { ENDPOINTS } from '../constants/endpoints'
 import AnswerSection from '../components/AnswerSection'
@@ -68,6 +68,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesWhite
   }
 })
+
+export interface IVocabularyTrainerScreen {
+  navigation: any
+  route: any
+}
+
 const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrainerScreen) => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams

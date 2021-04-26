@@ -1,8 +1,7 @@
 import React from 'react'
-import AnswerSection from '../AnswerSection'
+import AnswerSection, { IAnswerSectionProps } from '../AnswerSection'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { IAnswerSectionProps } from '../../interfaces/exercise'
 
 describe('Components', () => {
   describe('AnswerSection', () => {

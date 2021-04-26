@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, TouchableOpacity, TextInput, Platform, StyleSheet } from 'react-native'
 import { CloseIcon, VolumeUp } from '../../assets/images'
 import { COLORS } from '../constants/colors'
-import { IAnswerSectionProps } from '../interfaces/exercise'
+import { IDocumentProps} from '../interfaces/exercise'
 import Popover from './Popover'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
@@ -58,6 +58,17 @@ export const styles = StyleSheet.create({
     shadowOpacity: 10
   }
 })
+
+export interface IAnswerSectionProps {
+  tryLater: () => void
+  currentDocumentNumber: number
+  setCurrentDocumentNumber: Function
+  documents: IDocumentProps[]
+  finishExercise: Function
+  trainingSet: string
+  disciplineTitle: string
+}
+
 const AnswerSection = ({
   currentDocumentNumber,
   setCurrentDocumentNumber,
