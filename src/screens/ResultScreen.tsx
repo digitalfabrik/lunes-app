@@ -124,7 +124,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>
-            Repeat {resultType.key === 'similar' ? 'almost correct' : resultType} entries
+            Repeat {resultType.key === 'similar' ? 'almost correct' : resultType.key} entries
           </Text>
         </>
       </Button>
