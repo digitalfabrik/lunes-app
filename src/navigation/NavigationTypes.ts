@@ -1,14 +1,14 @@
 import { DocumentsType, DocumentType } from '../constants/endpoints'
+import { ResultType, SimpleResultType } from '../constants/data'
 
 export interface DocumentResultType extends DocumentType {
-  result: 'correct' | 'incorrect' | 'similar'
+  result: SimpleResultType
 }
 
-export interface CountsType {
+export type CountsType = {
+  [key in SimpleResultType]: number
+} & {
   total: number
-  correct: number
-  incorrect: number
-  similar: number
 }
 
 // https://github.com/Microsoft/TypeScript/issues/15300
@@ -99,7 +99,7 @@ export type RoutesParamsType = {
     }
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
-    resultType: string
+    resultType: ResultType
     counts: CountsType
   }
 }
