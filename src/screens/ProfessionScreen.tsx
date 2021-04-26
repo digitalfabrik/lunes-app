@@ -7,11 +7,11 @@ import { ENDPOINTS, ProfessionsType, ProfessionType } from '../constants/endpoin
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import AsyncStorage from '../utils/AsyncStorage'
 
 export const styles = StyleSheet.create({
   root: {
@@ -57,11 +57,13 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('session').then(async value => {
-        if (value) {
-          navigation.navigate('VocabularyTrainer', JSON.parse(value))
-        }
-      })
+      AsyncStorage.getSession()
+        .then(async value => {
+          if (value !== null) {
+            navigation.navigate('VocabularyTrainer', value)
+          }
+        })
+        .catch(e => console.error(e))
 
       axios.get(ENDPOINTS.professions.all).then(response => {
         setProfessions(response.data)
