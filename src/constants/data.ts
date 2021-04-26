@@ -10,20 +10,6 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-export const SCREENS = {
-  profession: 'Profession',
-  professionSubcategory: 'ProfessionSubcategory',
-  exercises: 'Exercises',
-  vocabularyOverview: 'VocabularyOverview',
-  vocabularyTrainer: 'VocabularyTrainer',
-  initialSummaryScreen: 'InitialSummary',
-  ResultsOverview: 'ResultsOverview',
-  CorrectResults: 'CorrectResults',
-  ResultScreen: 'ResultScreen',
-  AlmostCorrectResults: 'AlmostCorrectResults',
-  IncorrectResults: 'IncorrectResults'
-}
-
 export const RESULT_TYPE = ['correct', 'similar', 'incorrect']
 
 export interface ExerciseType {

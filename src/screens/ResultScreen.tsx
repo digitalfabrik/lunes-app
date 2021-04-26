@@ -9,7 +9,7 @@ import Loading from '../components/Loading'
 import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
 import Button from '../components/Button'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { DocumentResultType, RoutesParamsType } from "../navigation/NavigationTypes";
+import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({

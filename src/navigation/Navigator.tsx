@@ -12,7 +12,6 @@ import InitialSummaryScreen from '../screens/InitialSummaryScreen'
 import ResultsOverviewScreen from '../screens/ResultsOverviewScreen'
 import ResultScreen from '../screens/ResultScreen'
 import { NavigationContainer } from '@react-navigation/native'
-import { SCREENS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
@@ -104,9 +103,7 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) =>
-            defaultOptions('Results Overview', BackButton, navigation, SCREENS.ResultsOverview)
-          }
+          options={({ navigation }) => defaultOptions('Results Overview', BackButton, navigation, 'ResultsOverview')}
           name='ResultScreen'
           component={ResultScreen}
         />

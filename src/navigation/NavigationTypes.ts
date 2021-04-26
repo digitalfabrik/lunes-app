@@ -99,7 +99,7 @@ export type RoutesParamsType = {
     }
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
-    resultType: keyof RESULTS
+    resultType: string
     counts: CountsType
   }
 }
