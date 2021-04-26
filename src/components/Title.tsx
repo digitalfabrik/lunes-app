@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { ITitleProps } from '../interfaces/title'
 
 export const styles = StyleSheet.create({
   title: {
@@ -9,6 +8,10 @@ export const styles = StyleSheet.create({
     marginBottom: 32
   }
 })
+
+export interface ITitleProps {
+  children: ReactElement
+}
 
 const Title = ({ children }: ITitleProps) => <View style={styles.title}>{children}</View>
 
