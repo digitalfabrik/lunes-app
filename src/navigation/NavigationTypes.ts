@@ -1,4 +1,15 @@
-import { DocumentsType } from '../constants/endpoints'
+import { DocumentsType, DocumentType } from '../constants/endpoints'
+
+export interface DocumentResultType extends DocumentType {
+  result: 'correct' | 'incorrect' | 'similar'
+}
+
+export interface CountsType {
+  total: number
+  correct: number
+  incorrect: number
+  similar: number
+}
 
 // https://github.com/Microsoft/TypeScript/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -45,10 +56,50 @@ export type RoutesParamsType = {
     }
     retryData?: { data: DocumentsType }
   }
-  InitialSummary: undefined
-  ResultsOverview: undefined
+  InitialSummary: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+    retryData?: { data: DocumentsType }
+  }
+  ResultsOverview: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+    retryData?: { data: DocumentsType }
+    results: DocumentResultType[]
+  }
   CorrectResults: undefined
   IncorrectResults: undefined
   AlmostCorrectResults: undefined
-  ResultScreen: undefined
+  ResultScreen: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+    retryData?: { data: DocumentsType }
+    results: DocumentResultType[]
+    resultType: keyof RESULTS
+    counts: CountsType
+  }
 }

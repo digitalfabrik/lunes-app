@@ -2,11 +2,13 @@ import React from 'react'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, SCREENS } from '../constants/data'
-import { useFocusEffect } from '@react-navigation/native'
+import { BUTTONS_THEME } from '../constants/data'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -53,16 +55,16 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IInitialSummaryScreenProps {
-  navigation: any
-  route: any
+interface InitialSummaryScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'InitialSummary'>
+  navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
 }
 
-const InitialSummaryScreen = ({ navigation, route }: IInitialSummaryScreenProps) => {
+const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
   const { exercise, disciplineTitle, trainingSet } = extraParams
-  const [results, setResults] = React.useState([])
-  const [message, setMessage] = React.useState('')
+  const [results, setResults] = React.useState<DocumentResultType[]>([])
+  const [message, setMessage] = React.useState<string>('')
 
   useFocusEffect(
     React.useCallback(() => {
@@ -91,15 +93,14 @@ const InitialSummaryScreen = ({ navigation, route }: IInitialSummaryScreenProps)
     }
   }, [results])
 
-  const checkResults = () => {
+  const checkResults = (): void => {
     AsyncStorage.removeItem('session')
-    navigation.navigate(SCREENS.ResultsOverview, { extraParams, results })
+    navigation.navigate('ResultsOverview', { extraParams, results })
   }
 
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {
-      extraParams,
-      retryData: null
+  const repeatExercise = (): void => {
+    navigation.navigate('VocabularyTrainer', {
+      extraParams
     })
   }
 

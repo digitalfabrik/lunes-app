@@ -178,7 +178,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         <View>
           <Text style={itemTitleStyle}>{item.title}</Text>
           <Text style={descriptionStyle}>{item.description}</Text>
-          <item.level style={styles.level} />
+          <item.Level style={styles.level} />
         </View>
         <Arrow fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Pressable>
@@ -192,7 +192,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         ...extraParams,
         exercise: item.title,
         exerciseDescription: item.description,
-        level: item.level
+        level: item.Level
       }
     })
   }

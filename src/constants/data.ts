@@ -30,7 +30,7 @@ export interface ExerciseType {
   id: number
   title: string
   description: string
-  level: easy
+  Level: easy
   nextScreen: keyof RoutesParamsType
 }
 
@@ -39,14 +39,14 @@ export const EXERCISES: ExerciseType[] = [
     id: 1,
     title: 'Vocabulary Overview',
     description: 'All Words',
-    level: easy,
+    Level: easy,
     nextScreen: 'VocabularyOverview'
   },
   {
     id: 2,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
-    level: hard,
+    Level: hard,
     nextScreen: 'VocabularyTrainer'
   }
 ]
@@ -56,24 +56,31 @@ export const BUTTONS_THEME = {
   dark: 'dark'
 }
 
-export const RESULTS = [
+export interface ResultType {
+  id: number
+  title: string
+  icon: number
+  nextScreen: keyof RoutesParamsType
+}
+
+export const RESULTS: ResultType[] = [
   {
     id: 1,
     title: 'Correct entries',
     icon: CorrectIcon,
-    nextScreen: SCREENS.CorrectResults
+    nextScreen: 'CorrectResults'
   },
   {
     id: 2,
     title: 'Almost correct entries',
     icon: AlmostCorrectIcon,
-    nextScreen: SCREENS.AlmostCorrectResults
+    nextScreen: 'AlmostCorrectResults'
   },
   {
     id: 3,
     title: 'Incorrect entries',
     icon: IncorrectIcon,
-    nextScreen: SCREENS.IncorrectResults
+    nextScreen: 'IncorrectResults'
   }
 ]
 

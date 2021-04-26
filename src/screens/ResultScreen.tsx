@@ -1,15 +1,16 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
-import { SCREENS, BUTTONS_THEME, RESULT_PRESETS } from '../constants/data'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { BUTTONS_THEME, RESULT_PRESETS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
 import Loading from '../components/Loading'
 import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
-import { IDocumentProps } from '../interfaces/exercise'
 import Button from '../components/Button'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { DocumentResultType, RoutesParamsType } from "../navigation/NavigationTypes";
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -64,25 +65,23 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IResultScreenProps {
-  navigation: any
-  route: any
+interface ResultScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'ResultScreen'>
+  navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
 }
 
-const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
+const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
   const { extraParams, results, counts, resultType } = route.params
-  const [entries, setEntries] = React.useState<IDocumentProps[]>([])
+  const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { next, Icon, title } = RESULT_PRESETS[resultType]
 
   useFocusEffect(
     React.useCallback(() => {
-      setEntries(results.filter(({ result }: any) => result === resultType))
+      setEntries(results.filter(({ result }: DocumentResultType) => result === resultType))
       navigation.setOptions({
         headerRight: () => (
-          // TODO LUN-5 Fix and remove disable eslint
-          // eslint-disable-next-line react/prop-types
-          <TouchableOpacity onPress={() => navigation.navigate(SCREENS.exercises, { extraParams: extraParams })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { extraParams: extraParams })}>
             <CircularFinishIcon />
           </TouchableOpacity>
         )
@@ -102,7 +101,7 @@ const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
     </Title>
   )
 
-  const Item = ({ item }: any) => (
+  const Item = ({ item }: { item: DocumentResultType }) => (
     <VocabularyOverviewListItem
       id={item.id}
       word={item.word}
@@ -112,8 +111,8 @@ const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
     />
   )
 
-  const repeatIncorrectEntries = () =>
-    navigation.navigate(SCREENS.vocabularyTrainer, {
+  const repeatIncorrectEntries = (): void =>
+    navigation.navigate('VocabularyTrainer', {
       retryData: { data: entries },
       extraParams
     })
@@ -136,7 +135,7 @@ const ResultScreen = ({ route, navigation }: IResultScreenProps) => {
 
       <Button
         onPress={() =>
-          navigation.navigate(SCREENS.ResultScreen, {
+          navigation.navigate('ResultScreen', {
             ...route.params,
             resultType: next.type
           })
