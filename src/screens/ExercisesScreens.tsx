@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
-import { IExercisesScreenProps } from '../interfaces/exercises'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, SCREENS } from '../constants/data'
@@ -108,6 +107,11 @@ export const styles = StyleSheet.create({
     zIndex: 100
   }
 })
+
+export interface IExercisesScreenProps {
+  route: any
+  navigation: any
+}
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
