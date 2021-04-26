@@ -18,6 +18,22 @@ export interface ProfessionSubcategoryType {
 
 export type ProfessionSubcategoriesType = ProfessionSubcategoryType[]
 
+export interface AlternativeWordType {
+  alt_word: string
+  article: string
+}
+
+export interface DocumentType {
+  id: number
+  word: string
+  article: string
+  document_image: Array<{ id: number; image: string }>
+  audio: string
+  alternatives: AlternativeWordType[]
+}
+
+export type DocumentsType = DocumentType[]
+
 export const ENDPOINTS = {
   professions: {
     all: '/disciplines'

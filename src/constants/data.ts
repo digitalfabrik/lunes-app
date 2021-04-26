@@ -8,6 +8,7 @@ import {
   IncorrectEntriesIcon,
   AlmostCorrectEntriesIcon
 } from '../../assets/images'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export const SCREENS = {
   profession: 'Profession',
@@ -25,20 +26,28 @@ export const SCREENS = {
 
 export const RESULT_TYPE = ['correct', 'similar', 'incorrect']
 
-export const EXERCISES = [
+export interface ExerciseType {
+  id: number
+  title: string
+  description: string
+  level: easy
+  nextScreen: keyof RoutesParamsType
+}
+
+export const EXERCISES: ExerciseType[] = [
   {
     id: 1,
     title: 'Vocabulary Overview',
     description: 'All Words',
-    Level: easy,
-    nextScreen: SCREENS.vocabularyOverview
+    level: easy,
+    nextScreen: 'VocabularyOverview'
   },
   {
     id: 2,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
-    Level: hard,
-    nextScreen: SCREENS.vocabularyTrainer
+    level: hard,
+    nextScreen: 'VocabularyTrainer'
   }
 ]
 
