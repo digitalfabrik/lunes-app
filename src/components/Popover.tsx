@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
-import { IPopoverProps } from '../interfaces'
 import { StyleSheet } from 'react-native'
 import { COLORS } from '../constants/colors'
 
@@ -12,6 +11,13 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   }
 })
+
+export interface IPopoverProps {
+  setIsPopoverVisible: (param: boolean) => void
+  isVisible: boolean
+  children: ReactElement
+}
+
 const AlertPopover = React.forwardRef(({ children, isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
   <Popover
     isVisible={isVisible}

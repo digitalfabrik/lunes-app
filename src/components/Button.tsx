@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
-import { IButtonProps } from '../interfaces'
 import { BUTTONS_THEME } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/colors'
@@ -35,6 +34,14 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lunesBlackUltralight
   }
 })
+
+export interface IButtonProps {
+  onPress: () => void
+  disabled?: boolean
+  children: ReactElement
+  theme?: string
+  testID?: string
+}
 
 const Button = ({ children, onPress, disabled, theme }: IButtonProps) => {
   const [isPressed, setIsPressed] = React.useState(false)
