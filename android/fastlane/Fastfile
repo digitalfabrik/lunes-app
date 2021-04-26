@@ -32,7 +32,8 @@ platform :android do
         :"org.gradle.daemon" => false
       }
       gradle(
-        task: "assembleRelease"
+        task: "assemble",
+        build_type: "Release"
       )
     end
 
@@ -45,4 +46,12 @@ platform :android do
         )
     end
 
+    desc "Upload Android App to Google Play"
+    lane :upload_to_playstore do
+        upload_to_play_store(
+            track: "internal",
+            json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
+            apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
+        )
+    end
 end

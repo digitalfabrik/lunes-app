@@ -132,6 +132,10 @@ jobs:
                 command: bundle exec fastlane upload_to_browserstack
                 name: BrowserStack Upload
                 working_directory: android
+            - run:
+                command: bundle exec fastlane upload_to_playstore
+                name: Playstore Upload
+                working_directory: android
 version: 2.1
 workflows:
     commit:

@@ -16,3 +16,7 @@ steps:
       name: 'BrowserStack Upload'
       command: bundle exec fastlane upload_to_browserstack
       working_directory: android
+  - run:
+      name: 'Playstore Upload'
+      command: bundle exec fastlane upload_to_playstore
+      working_directory: android
