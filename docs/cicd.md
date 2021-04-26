@@ -24,3 +24,18 @@ Fastlane is a task-runner for triggering build relevant tasks. It offers integra
 ### Lanes
 
 To run a lane run `bundle exec fastlane [lane]`
+
+Lanes for Android live in [./android/fastlane](./android/fastlane) and for iOS in [./ios/fastlane](./ios/fastlane)
+
+## Environment Variables and Dependencies
+
+| Variable                | Description                 | Where do I get it from? | Example  | Reference                                                             |
+| ----------------------- | --------------------------- | ----------------------- | -------- | --------------------------------------------------------------------- |
+| BROWSERSTACK_ACCESS_KEY | Access Key for BrowserStack | Password Manager        | DEADBEEF | [Appium REST API](https://www.browserstack.com/app-automate/rest-api) |
+| BROWSERSTACK_USERNAME   | Username for BrowserStack   | Password Manager        | 123546   | [Appium REST API](https://www.browserstack.com/app-automate/rest-api) |
+
+### Android Variables
+
+| Variable                    | Description                                                                                                | Where do I get it from? | Example | Reference                                                                                              |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| GOOGLE_SERVICE_ACCOUNT_JSON | JSON for authentication in the Google Play Console as Release Manager. This should expire after two years. | Password Manager        | {...}   | [Service Account Docu](https://cloud.google.com/iam/docs/creating-managing-service-account-keys?hl=de) |

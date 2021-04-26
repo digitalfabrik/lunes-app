@@ -1,0 +1,25 @@
+docker:
+  - image: circleci/android:api-29-node
+resource_class: medium+
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+shell: /bin/bash -eo pipefail
+steps:
+  - checkout
+  - restore_ruby_cache:
+      directory: android
+  - restore_yarn_cache
+  - run:
+      name: Build Android
+      command: bundle exec fastlane build
+      working_directory: android
+  - run:
+      name: Move apk
+      command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
+      working_directory: android
+  - persist_to_workspace:
+      root: android/attached_workspace
+      paths:
+        - app-release.apk
+  - store_artifacts:
+      path: android/attached_workspace/app-release.apk

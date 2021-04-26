@@ -16,21 +16,21 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android test
+### android validate_play_store_key
 ```
-fastlane android test
+fastlane android validate_play_store_key
 ```
-Runs all the tests
-### android beta
+Validate Play Store Key
+### android build
 ```
-fastlane android beta
+fastlane android build
 ```
-Submit a new Beta Build to Crashlytics Beta
-### android deploy
+Build Android App
+### android upload_to_browserstack
 ```
-fastlane android deploy
+fastlane android upload_to_browserstack
 ```
-Deploy a new version to the Google Play
+Upload Android App to BrowserStack
 
 ----
 
