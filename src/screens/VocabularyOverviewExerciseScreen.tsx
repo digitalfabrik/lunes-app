@@ -84,7 +84,7 @@ const VocabularyOverviewExerciseScreen = ({ navigation, route }: IVocabularyOver
       id={item.id}
       word={item.word}
       article={item.article}
-      image={item.image}
+      image={item.document_image[0].image}
       audio={item.audio}
     />
   )
