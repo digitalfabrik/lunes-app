@@ -46,27 +46,23 @@ export interface ResultType {
   id: number
   title: string
   icon: number
-  nextScreen: keyof RoutesParamsType
 }
 
 export const RESULTS: ResultType[] = [
   {
     id: 1,
     title: 'Correct entries',
-    icon: CorrectIcon,
-    nextScreen: 'CorrectResults'
+    icon: CorrectIcon
   },
   {
     id: 2,
     title: 'Almost correct entries',
-    icon: AlmostCorrectIcon,
-    nextScreen: 'AlmostCorrectResults'
+    icon: AlmostCorrectIcon
   },
   {
     id: 3,
     title: 'Incorrect entries',
-    icon: IncorrectIcon,
-    nextScreen: 'IncorrectResults'
+    icon: IncorrectIcon
   }
 ]
 

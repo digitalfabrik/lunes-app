@@ -1,16 +1,5 @@
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
-import { ProfessionSubcategoriesType } from '../constants/endpoints'
-
-export const getProfessionSubcategoryWithIcon = (
-  icon: string,
-  professionSubcategoriesList: ProfessionSubcategoriesType
-): ProfessionSubcategoriesType => {
-  return professionSubcategoriesList.map(subcategory => {
-    subcategory.icon = icon
-    return subcategory
-  })
-}
 
 export const getArticleColor = (article: string): string => {
   switch (article?.toLowerCase()) {

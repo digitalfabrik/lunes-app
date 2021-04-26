@@ -50,56 +50,6 @@ describe('Utils: helpers', () => {
     })
   })
 
-  describe('getProfessionSubcategoryWithIcon', () => {
-    it('should return subcategories with icon passed to it', () => {
-      const icon = 'icon_url'
-      const subCategories: ProfessionSubcategoriesType = [
-        {
-          id: 0,
-          title: 'sub1',
-          description: 'with icon',
-          total_documents: 2,
-          icon: ''
-        },
-        {
-          id: 1,
-          title: 'sub2',
-          description: 'with icon',
-          total_documents: 3,
-          icon: ''
-        }
-      ]
-      const subCategoriesWithIcon = getProfessionSubcategoryWithIcon(icon, subCategories)
-      const result: ProfessionSubcategoriesType = [
-        {
-          id: 0,
-          title: 'sub1',
-          description: 'with icon',
-          total_documents: 2,
-          icon: 'icon_url'
-        },
-        {
-          id: 1,
-          title: 'sub2',
-          description: 'with icon',
-          total_documents: 3,
-          icon: 'icon_url'
-        }
-      ]
-
-      expect(subCategoriesWithIcon).toStrictEqual(result)
-    })
-
-    it('should return empty array when subcategories array is empty', () => {
-      const icon = 'icon_url'
-      const subCategories: ProfessionSubcategoriesType = []
-      const subCategoriesWithIcon = getProfessionSubcategoryWithIcon(icon, subCategories)
-      const result: ProfessionSubcategoriesType = []
-
-      expect(subCategoriesWithIcon).toStrictEqual(result)
-    })
-  })
-
   describe('capitalizeFirstLetter', () => {
     it('should return the word passed to it with the first letter being capitalized', () => {
       const word = 'word'
