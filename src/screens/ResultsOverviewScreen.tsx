@@ -159,10 +159,10 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const { extraParams, results } = route.params
   const { exercise } = extraParams
   const { Level, description, title } = EXERCISES.filter(({ title }) => title === exercise)[0]
-  const [selectedId, setSelectedId] = React.useState<string | null>(null)
+  const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
-  useFocusEffect(React.useCallback(() => setSelectedId(null), []))
+  useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -195,7 +195,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
 
   const Item = ({ item }: { item: ResultType }): JSX.Element => {
     const handleNavigation = ({ key }: ResultType): void => {
-      setSelectedId(key)
+      setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
         extraParams,
@@ -207,7 +207,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
 
     const count = counts[item.key]
 
-    const selected = item.key === selectedId
+    const selected = item.key === selectedKey
     const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark
     const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack
     const itemStyle = selected ? styles.clickedContainer : styles.container
