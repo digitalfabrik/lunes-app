@@ -1,7 +1,7 @@
 import { getArticleColor, getProfessionSubcategoryWithIcon, capitalizeFirstLetter } from '../helpers'
 import { COLORS } from '../../constants/colors'
 import { ARTICLES } from '../../constants/data'
-import { IProfessionSubcategoryProps } from '../../screens/ProfessionSubcategoryScreen'
+import { ProfessionSubcategoriesType } from "../../constants/endpoints";
 
 describe('Utils: helpers', () => {
   describe('getArticleColor', () => {
@@ -53,7 +53,7 @@ describe('Utils: helpers', () => {
   describe('getProfessionSubcategoryWithIcon', () => {
     it('should return subcategories with icon passed to it', () => {
       const icon = 'icon_url'
-      const subCategories: IProfessionSubcategoryProps[] = [
+      const subCategories: ProfessionSubcategoriesType = [
         {
           id: 0,
           title: 'sub1',
@@ -70,7 +70,7 @@ describe('Utils: helpers', () => {
         }
       ]
       const subCategoriesWithIcon = getProfessionSubcategoryWithIcon(icon, subCategories)
-      const result: IProfessionSubcategoryProps[] = [
+      const result: ProfessionSubcategoriesType = [
         {
           id: 0,
           title: 'sub1',
@@ -92,9 +92,9 @@ describe('Utils: helpers', () => {
 
     it('should return empty array when subcategories array is empty', () => {
       const icon = 'icon_url'
-      const subCategories: IProfessionSubcategoryProps[] = []
+      const subCategories: ProfessionSubcategoriesType = []
       const subCategoriesWithIcon = getProfessionSubcategoryWithIcon(icon, subCategories)
-      const result: IProfessionSubcategoryProps[] = []
+      const result: ProfessionSubcategoriesType = []
 
       expect(subCategoriesWithIcon).toStrictEqual(result)
     })

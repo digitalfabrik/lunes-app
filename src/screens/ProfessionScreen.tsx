@@ -3,14 +3,15 @@ import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
 import { Text, FlatList, StyleSheet, View } from 'react-native'
 import axios from '../utils/axios'
-import { ENDPOINTS } from '../constants/endpoints'
-import { SCREENS } from '../constants/data'
+import { ENDPOINTS, ProfessionsType, ProfessionType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
-import { useFocusEffect } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -44,28 +45,21 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IProfessionScreenProps {
-  navigation: any
+interface ProfessionScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'Profession'>
+  navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-export interface IProfessionsProps {
-  id: number
-  title: string
-  description: string
-  icon?: string
-  total_training_sets: number
-}
-
-const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
-  const [professions, setProfessions] = useState<IProfessionsProps[]>([])
-  const [selectedId, setSelectedId] = useState(-1)
-  const [isLoading, setIsLoading] = useState(true)
+const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
+  const [professions, setProfessions] = useState<ProfessionsType>([])
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useFocusEffect(
     React.useCallback(() => {
       AsyncStorage.getItem('session').then(async value => {
         if (value) {
-          navigation.navigate(SCREENS.vocabularyTrainer, JSON.parse(value))
+          navigation.navigate('VocabularyTrainer', JSON.parse(value))
         }
       })
 
@@ -77,10 +71,9 @@ const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
     }, [navigation])
   )
 
-  const title = top => (
+  const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
-
       <Text style={styles.text}>
         Welcome to Lunes!{'\n'}
         Learn German vocabulary for your profession.
@@ -88,7 +81,7 @@ const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
     </>
   )
 
-  const Item = ({ item }: any) => {
+  const Item = ({ item }: { item: ProfessionType }): JSX.Element => {
     const itemTextStyle = item.id === selectedId ? styles.clickedItemDescription : styles.description
 
     return (
@@ -105,9 +98,9 @@ const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
     )
   }
 
-  const handleNavigation = (item: any) => {
+  const handleNavigation = (item: ProfessionType): void => {
     setSelectedId(item.id)
-    navigation.navigate(SCREENS.professionSubcategory, {
+    navigation.navigate('ProfessionSubcategory', {
       extraParams: {
         disciplineID: item.id,
         disciplineTitle: item.title,
@@ -124,10 +117,10 @@ const ProfessionScreen = ({ navigation }: IProfessionScreenProps) => {
             <FlatList
               data={professions}
               style={styles.list}
-              ListHeaderComponent={title(insets?.top)}
+              ListHeaderComponent={Title(insets?.top)}
               ListHeaderComponentStyle={styles.title}
               renderItem={Item}
-              keyExtractor={item => `${item.id}`}
+              keyExtractor={item => item.id.toString()}
               scrollEnabled={true}
               bounces={false}
             />
