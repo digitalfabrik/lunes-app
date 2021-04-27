@@ -79,13 +79,19 @@ jobs:
             - image: circleci/android:api-29-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
-        resource_class: medium+
+        resource_class: medium
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
             - restore_ruby_cache:
                 directory: android
             - restore_yarn_cache
+            - run:
+                command: source .circleci/circle_env.sh && fetchKeystore
+                name: Fetch keystore
+            - run:
+                command: cd android && chmod +x gradlew
+                name: Setup gradlew execution rights
             - run:
                 command: bundle exec fastlane build
                 name: Build Android

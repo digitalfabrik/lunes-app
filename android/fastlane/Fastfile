@@ -33,7 +33,8 @@ platform :android do
       }
       gradle(
         task: "assemble",
-        build_type: "Release"
+        build_type: "Release",
+        print_command: false
       )
     end
 
@@ -50,6 +51,7 @@ platform :android do
     lane :upload_to_playstore do
         upload_to_play_store(
             track: "internal",
+            package_name: "com.lunesappui",
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
             apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
         )
