@@ -1,8 +1,12 @@
 jobs:
-  - check
+  - bump_version:
+      delivery: development
+  #- check
   - build_android:
       requires:
-        - check
+        #- check
+        - bump_version
   - deliver_android:
+      production_delivery: false
       requires:
         - build_android
