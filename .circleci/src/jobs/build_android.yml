@@ -17,7 +17,7 @@ steps:
       command: cd android && chmod +x gradlew
   - run:
       name: Build Android
-      command: bundle exec fastlane build
+      command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
   - run:
       name: Move apk

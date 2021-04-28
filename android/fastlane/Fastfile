@@ -25,15 +25,26 @@ platform :android do
     end
 
     desc "Build Android App"
-    lane :build do
-      gradle_system_properties = {
-        # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
-        :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
-        :"org.gradle.daemon" => false
-      }
+    lane :build do |options|
+        version_code = options[:version_code]
+        version_name = options[:version_name]
+
+        if [version_name, version_code].include?(nil)
+          raise "'nil' passed as parameter! Aborting..."
+        end
+
+        gradle_system_properties = {
+          # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
+          :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
+          :"org.gradle.daemon" => false
+        }
       gradle(
         task: "assemble",
         build_type: "Release",
+        properties: {
+            :VERSION_CODE => version_code,
+            :VERSION_NAME => version_name,
+        }
         print_command: false
       )
     end
