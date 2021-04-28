@@ -15,7 +15,7 @@ steps:
       command: source .circleci/circle_env.sh && fetchKeystore
   - run:
       name: Setup gradlew execution rights
-      command: cd android && chmod +x gradlew && echo ${NEW_VERSION_NAME}
+      command: cd android && chmod +x gradlew && echo "start" && echo ${NEW_VERSION_NAME} && echo "End"
   - run:
       name: Build Android
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
