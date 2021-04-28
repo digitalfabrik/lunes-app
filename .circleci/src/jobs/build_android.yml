@@ -9,6 +9,7 @@ steps:
   - restore_ruby_cache:
       directory: android
   - restore_yarn_cache
+  - restore_environment_variables
   - run:
       name: Fetch keystore
       command: source .circleci/circle_env.sh && fetchKeystore
