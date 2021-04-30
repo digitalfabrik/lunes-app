@@ -1,7 +1,6 @@
-import { getArticleColor, getProfessionSubcategoryWithIcon, capitalizeFirstLetter } from '../helpers'
+import { getArticleColor, capitalizeFirstLetter } from '../helpers'
 import { COLORS } from '../../constants/colors'
 import { ARTICLES } from '../../constants/data'
-import { ProfessionSubcategoriesType } from '../../constants/endpoints'
 
 describe('Utils: helpers', () => {
   describe('getArticleColor', () => {

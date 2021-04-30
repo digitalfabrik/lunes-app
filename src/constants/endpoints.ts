@@ -6,8 +6,6 @@ export interface ProfessionType {
   total_training_sets: number
 }
 
-export type ProfessionsType = ProfessionType[]
-
 export interface ProfessionSubcategoryType {
   id: number
   title: string
@@ -15,8 +13,6 @@ export interface ProfessionSubcategoryType {
   icon: string
   total_documents: number
 }
-
-export type ProfessionSubcategoriesType = ProfessionSubcategoryType[]
 
 export interface AlternativeWordType {
   alt_word: string
