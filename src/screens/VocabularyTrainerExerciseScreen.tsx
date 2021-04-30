@@ -12,16 +12,16 @@ import {
 import Modal from '../components/Modal'
 import { ProgressBar } from 'react-native-paper'
 import { COLORS } from '../constants/colors'
-import { IDocumentProps } from '../interfaces/exercise'
 import axios from '../utils/axios'
-import { ENDPOINTS } from '../constants/endpoints'
+import { DocumentsType, ENDPOINTS } from '../constants/endpoints'
 import AnswerSection from '../components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { CloseButton } from '../../assets/images'
-import { SCREENS } from '../constants/data'
-import { useFocusEffect } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -69,27 +69,31 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IVocabularyTrainerScreen {
-  navigation: any
-  route: any
+interface VocabularyTrainerExerciseScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'VocabularyTrainer'>
+  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyTrainer'>
 }
 
-const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrainerScreen) => {
+const VocabularyTrainerExerciseScreen = ({
+  navigation,
+  route
+}: VocabularyTrainerExerciseScreenPropsType): JSX.Element => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [documents, setDocuments] = useState<IDocumentProps[]>([])
+  const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(1)
 
   useFocusEffect(
     React.useCallback(() => {
       setCurrentDocumentNumber(0)
-      const getDocuments = async () => {
+      const getDocuments = async (): Promise<void> => {
         try {
-          const documentsRes = retryData?.data?.length
-            ? retryData
-            : await axios.get(ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`))
+          const documentsRes =
+            retryData !== undefined
+              ? retryData
+              : await axios.get(ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`))
           setDocuments(documentsRes.data)
           setCurrentDocumentNumber(0)
         } catch (error) {
@@ -125,21 +129,21 @@ const VocabularyTrainerExerciseScreen = ({ navigation, route }: IVocabularyTrain
     return () => bEvent.remove()
   }, [route.params])
 
-  const showModal = () => {
+  const showModal = (): boolean => {
     setIsModalVisible(true)
     return true
   }
 
-  const tryLater = () => {
+  const tryLater = (): void => {
     const currDocument = documents[currentDocumentNumber]
     const newDocuments = documents.filter(d => d !== currDocument)
     newDocuments.push(currDocument)
     setDocuments(newDocuments)
   }
 
-  const finishExercise = () => {
+  const finishExercise = (): void => {
     AsyncStorage.removeItem('session')
-    navigation.navigate(SCREENS.initialSummaryScreen, { extraParams })
+    navigation.navigate('InitialSummary', { extraParams })
   }
 
   const docsLength = documents.length

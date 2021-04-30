@@ -2,11 +2,13 @@ import React from 'react'
 import { View, Text, Pressable, FlatList, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import Title from '../components/Title'
 import { Arrow, RepeatIcon, FinishIcon } from '../../assets/images'
-import { RESULTS, BUTTONS_THEME, SCREENS, RESULT_TYPE, EXERCISES } from '../constants/data'
-import { useFocusEffect } from '@react-navigation/native'
+import { RESULTS, BUTTONS_THEME, RESULT_TYPE, EXERCISES, ResultType } from '../constants/data'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -148,27 +150,23 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IResultsOverviewScreenProps {
-  navigation: any
-  route: any
+interface ResultOverviewScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'ResultsOverview'>
+  navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>
 }
 
-const ResultsOverview = ({ navigation, route }: IResultsOverviewScreenProps) => {
+const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
   const { extraParams, results } = route.params
   const { exercise } = extraParams
   const { Level, description, title } = EXERCISES.filter(({ title }) => title === exercise)[0]
-  const [selectedId, setSelectedId] = React.useState(-1)
-  const [counts, setCounts] = React.useState({})
+  const [selectedId, setSelectedId] = React.useState<number | null>(null)
+  const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
-  useFocusEffect(React.useCallback(() => setSelectedId(-1), []))
+  useFocusEffect(React.useCallback(() => setSelectedId(null), []))
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          style={styles.rightHeader}
-          // TODO LUN-5 Fix and remove disable eslint
-          // eslint-disable-next-line react/prop-types
-          onPress={() => navigation.navigate(SCREENS.exercises, { extraParams })}>
+        <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
           <Text style={styles.headerText}>Finish Exercise</Text>
           <FinishIcon />
         </TouchableOpacity>
@@ -195,11 +193,11 @@ const ResultsOverview = ({ navigation, route }: IResultsOverviewScreenProps) => 
     </Title>
   )
 
-  const Item = ({ item }: any) => {
-    const handleNavigation = ({ id }: number) => {
+  const Item = ({ item }: { item: ResultType }): JSX.Element => {
+    const handleNavigation = ({ id }: ResultType): void => {
       setSelectedId(id)
 
-      navigation.navigate(SCREENS.ResultScreen, {
+      navigation.navigate('ResultScreen', {
         extraParams,
         resultType: RESULT_TYPE[id - 1],
         results,
@@ -231,8 +229,8 @@ const ResultsOverview = ({ navigation, route }: IResultsOverviewScreenProps) => 
     )
   }
 
-  const repeatExercise = () => {
-    navigation.navigate(SCREENS.vocabularyTrainer, {
+  const repeatExercise = (): void => {
+    navigation.navigate('VocabularyTrainer', {
       retryData: { data: results },
       extraParams
     })

@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { View, Text, LogBox, StatusBar, FlatList, StyleSheet } from 'react-native'
+import { FlatList, LogBox, StatusBar, StyleSheet, Text, View } from 'react-native'
 import Title from '../components/Title'
-import { SCREENS } from '../constants/data'
 import axios from '../utils/axios'
-import { ENDPOINTS } from '../constants/endpoints'
-import { getProfessionSubcategoryWithIcon } from '../utils/helpers'
-import { useFocusEffect } from '@react-navigation/native'
+import { ENDPOINTS, ProfessionSubcategoryType } from '../constants/endpoints'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -81,26 +81,31 @@ export interface IProfessionSubcategoryProps {
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
-const ProfessionSubcategoryScreen = ({ route, navigation }: IProfessionSubcategoryScreenProps) => {
+interface ProfessionSubcategoryScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'ProfessionSubcategory'>
+  navigation: StackNavigationProp<RoutesParamsType, 'ProfessionSubcategory'>
+}
+
+const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
 
-  const { disciplineID, disciplineTitle, disciplineIcon } = extraParams
-  const [subcategories, setsubcategories] = useState<IProfessionSubcategoryProps[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedId, setSelectedId] = useState(-1)
-  const [count, setCount] = useState(0)
+  const { disciplineID, disciplineTitle } = extraParams
+  const [subcategories, setSubcategories] = useState<ProfessionSubcategoryType[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [count, setCount] = useState<number>(0)
 
   useFocusEffect(
     React.useCallback(() => {
-      const url = ENDPOINTS.subCategories.all.replace(':id', disciplineID)
+      const url = ENDPOINTS.subCategories.all.replace(':id', disciplineID.toString())
       axios.get(url).then(response => {
-        setsubcategories(getProfessionSubcategoryWithIcon(disciplineIcon, response.data))
+        setSubcategories(response.data)
 
         setCount(response.data.length)
         setIsLoading(false)
       })
       setSelectedId(-1)
-    }, [disciplineIcon, disciplineID])
+    }, [disciplineID])
   )
 
   const titleCOMP = (
@@ -114,7 +119,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: IProfessionSubcatego
     </Title>
   )
 
-  const Item = ({ item }: any) => {
+  const Item = ({ item }: { item: ProfessionSubcategoryType }) => {
     const selected = item.id === selectedId
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
 
@@ -134,9 +139,9 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: IProfessionSubcatego
     )
   }
 
-  const handleNavigation = (item: any) => {
+  const handleNavigation = (item: ProfessionSubcategoryType): void => {
     setSelectedId(item.id)
-    navigation.navigate(SCREENS.exercises, {
+    navigation.navigate('Exercises', {
       extraParams: {
         ...extraParams,
         trainingSetId: item.id,
@@ -153,7 +158,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: IProfessionSubcatego
           style={styles.list}
           ListHeaderComponent={titleCOMP}
           renderItem={Item}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
         />
       </Loading>

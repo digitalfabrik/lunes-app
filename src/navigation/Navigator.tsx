@@ -5,14 +5,13 @@ import ProfessionSubcategoryScreen from '../screens/ProfessionSubcategoryScreen'
 import ExercisesScreen from '../screens/ExercisesScreens'
 import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerciseScreen'
 import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen'
-import { ProfessionParamList } from './NavigationTypes'
+import { RoutesParamsType } from './NavigationTypes'
 import { BackButton, CloseButton, BackArrowPressed } from '../../assets/images'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import InitialSummaryScreen from '../screens/InitialSummaryScreen'
 import ResultsOverviewScreen from '../screens/ResultsOverviewScreen'
 import ResultScreen from '../screens/ResultScreen'
 import { NavigationContainer } from '@react-navigation/native'
-import { SCREENS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
@@ -43,12 +42,12 @@ export const styles = StyleSheet.create({
   }
 })
 
-const ProfessionStack = createStackNavigator<ProfessionParamList>()
+const Stack = createStackNavigator<RoutesParamsType>()
 
-const Navigator = () => {
+const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, screen?: string) => {
+  const defaultOptions = (title: string, Icon: any, navigation: any, screen?: string): {} => {
     return {
       headerLeft: () => (
         <TouchableOpacity
@@ -69,36 +68,32 @@ const Navigator = () => {
 
   return (
     <NavigationContainer>
-      <ProfessionStack.Navigator initialRouteName='Profession' screenOptions={TransitionPresets.SlideFromRightIOS}>
-        <ProfessionStack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
-        <ProfessionStack.Screen
+      <Stack.Navigator initialRouteName='Profession' screenOptions={TransitionPresets.SlideFromRightIOS}>
+        <Stack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
+        <Stack.Screen
           options={({ navigation }) => defaultOptions('Profession Overview', BackButton, navigation, 'Profession')}
           name='ProfessionSubcategory'
           component={ProfessionSubcategoryScreen}
         />
-        <ProfessionStack.Screen
+        <Stack.Screen
           options={({ route, navigation }: any) =>
             defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation, 'ProfessionSubcategory')
           }
           name='Exercises'
           component={ExercisesScreen}
         />
-        <ProfessionStack.Screen
+        <Stack.Screen
           options={({ navigation }) => defaultOptions('Exercise Overview', BackButton, navigation)}
           name='VocabularyOverview'
           component={VocabularyOverviewExerciseScreen}
         />
-        <ProfessionStack.Screen
+        <Stack.Screen
           options={({ navigation }) => defaultOptions('Exercise Overview', CloseButton, navigation)}
           name='VocabularyTrainer'
           component={VocabularyTrainerExerciseScreen}
         />
-        <ProfessionStack.Screen
-          options={{ headerShown: false }}
-          name='InitialSummary'
-          component={InitialSummaryScreen}
-        />
-        <ProfessionStack.Screen
+        <Stack.Screen options={{ headerShown: false }} name='InitialSummary' component={InitialSummaryScreen} />
+        <Stack.Screen
           options={{
             headerLeft: () => null,
             headerTitle: ' ',
@@ -107,14 +102,12 @@ const Navigator = () => {
           name='ResultsOverview'
           component={ResultsOverviewScreen}
         />
-        <ProfessionStack.Screen
-          options={({ navigation }) =>
-            defaultOptions('Results Overview', BackButton, navigation, SCREENS.ResultsOverview)
-          }
+        <Stack.Screen
+          options={({ navigation }) => defaultOptions('Results Overview', BackButton, navigation, 'ResultsOverview')}
           name='ResultScreen'
           component={ResultScreen}
         />
-      </ProfessionStack.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }

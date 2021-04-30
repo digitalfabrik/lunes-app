@@ -1,18 +1,5 @@
-import { IProfessionSubcategoryProps } from '../screens/ProfessionSubcategoryScreen'
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
-
-export const getProfessionSubcategoryWithIcon = (
-  icon: string,
-  professionSubcategoriesList: IProfessionSubcategoryProps[]
-): IProfessionSubcategoryProps[] => {
-  const mappedProfessionSubcategories: IProfessionSubcategoryProps[] = professionSubcategoriesList.map(subcategory => {
-    subcategory.icon = icon
-    return subcategory
-  })
-
-  return mappedProfessionSubcategories
-}
 
 export const getArticleColor = (article: string): string => {
   switch (article?.toLowerCase()) {

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
-import { IDocumentProps } from '../interfaces/exercise'
 import { Home, HomeButtonPressed } from '../../assets/images'
-import { ENDPOINTS } from '../constants/endpoints'
+import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
 import Title from '../components/Title'
 import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
 import Loading from '../components/Loading'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RouteProp } from '@react-navigation/native'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -36,24 +38,25 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IVocabularyOverviewScreen {
-  navigation: any
-  route: any
+interface VocabularyOverviewExerciseScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'VocabularyOverview'>
+  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyOverview'>
 }
 
-const VocabularyOverviewExerciseScreen = ({ navigation, route }: IVocabularyOverviewScreen) => {
+const VocabularyOverviewExerciseScreen = ({
+  navigation,
+  route
+}: VocabularyOverviewExerciseScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [documents, setDocuments] = useState<IDocumentProps[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [count, setCount] = useState(0)
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
+  const [documents, setDocuments] = useState<DocumentsType>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [count, setCount] = useState<number>(0)
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          // TODO LUN-5 Fix and remove disable eslint
-          // eslint-disable-next-line react/prop-types
           onPress={() => navigation.popToTop()}
           onPressIn={() => setIsHomeButtonPressed(true)}
           onPressOut={() => setIsHomeButtonPressed(false)}
@@ -84,7 +87,7 @@ const VocabularyOverviewExerciseScreen = ({ navigation, route }: IVocabularyOver
     </Title>
   )
 
-  const Item = ({ item }: any) => (
+  const Item = ({ item }: { item: DocumentType }): JSX.Element => (
     <VocabularyOverviewListItem
       id={item.id}
       word={item.word}

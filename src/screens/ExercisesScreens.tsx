@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
-import { EXERCISES, SCREENS } from '../constants/data'
-import { useFocusEffect } from '@react-navigation/native'
+import { EXERCISES, ExerciseType } from '../constants/data'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export const styles = StyleSheet.create({
   root: {
@@ -115,23 +117,26 @@ export interface IExercisesScreenProps {
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
-const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
+interface ExercisesScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'Exercises'>
+  navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
+}
+
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
   const { trainingSet, disciplineTitle } = extraParams
-  const [selectedId, setSelectedId] = useState(-1)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
   const [isBackButtonPressed, setIsBackButtonPressed] = useState(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(-1)
+      setSelectedId(null)
 
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity
-            // TODO LUN-5 Fix and remove disable eslint
-            // eslint-disable-next-line react/prop-types
-            onPress={() => navigation.navigate(SCREENS.profession)}
+            onPress={() => navigation.navigate('Profession')}
             onPressIn={() => setIsHomeButtonPressed(true)}
             onPressOut={() => setIsHomeButtonPressed(false)}
             activeOpacity={1}>
@@ -140,9 +145,7 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
         ),
         headerLeft: () => (
           <TouchableOpacity
-            // TODO LUN-5 Fix and remove disable eslint
-            // eslint-disable-next-line react/prop-types
-            onPress={() => navigation.navigate(SCREENS.professionSubcategory, { extraParams })}
+            onPress={() => navigation.navigate('ProfessionSubcategory', { extraParams })}
             onPressIn={() => setIsBackButtonPressed(true)}
             onPressOut={() => setIsBackButtonPressed(false)}
             activeOpacity={1}
@@ -164,7 +167,7 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
     </Title>
   )
 
-  const Item = ({ item }: any) => {
+  const Item = ({ item }: { item: ExerciseType }): JSX.Element => {
     const selected = item.id === selectedId
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
@@ -182,14 +185,14 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
     )
   }
 
-  const handleNavigation = (item: any) => {
+  const handleNavigation = (item: ExerciseType): void => {
     setSelectedId(item.id)
     navigation.push(item.nextScreen, {
       extraParams: {
         ...extraParams,
         exercise: item.title,
         exerciseDescription: item.description,
-        Level: item.Level
+        level: item.Level
       }
     })
   }
@@ -201,7 +204,7 @@ const ExercisesScreen = ({ route, navigation }: IExercisesScreenProps) => {
         style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>
