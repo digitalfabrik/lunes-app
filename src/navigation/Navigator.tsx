@@ -15,6 +15,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SCREENS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import MultipleChoiceExerciseScreen from "../screens/MultipleChoiceExerciseScreen";
 
 export const styles = StyleSheet.create({
   header: {
@@ -90,8 +91,13 @@ const Navigator = () => {
         />
         <ProfessionStack.Screen
           options={({ navigation }) => defaultOptions('Exercise Overview', CloseButton, navigation)}
-          name='VocabularyTrainer'
-          component={VocabularyTrainerExerciseScreen}
+          name='MultipleChoice'
+          component={MultipleChoiceExerciseScreen}
+        />
+        <ProfessionStack.Screen
+            options={({ navigation }) => defaultOptions('Exercise Overview', CloseButton, navigation)}
+            name='VocabularyTrainer'
+            component={VocabularyTrainerExerciseScreen}
         />
         <ProfessionStack.Screen
           options={{ headerShown: false }}

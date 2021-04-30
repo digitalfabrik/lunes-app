@@ -3,6 +3,7 @@ export interface ProfessionParamList {
   ProfessionSubcategory: undefined
   Exercises: undefined
   VocabularyOverview: undefined
+  MultipleChoice: undefined
   VocabularyTrainer: undefined
   InitialSummary: undefined
   ResultsOverview: undefined

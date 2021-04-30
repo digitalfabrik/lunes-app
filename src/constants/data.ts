@@ -1,5 +1,6 @@
 import {
   easy,
+  mideasy,
   hard,
   CorrectIcon,
   IncorrectIcon,
@@ -14,6 +15,7 @@ export const SCREENS = {
   professionSubcategory: 'ProfessionSubcategory',
   exercises: 'Exercises',
   vocabularyOverview: 'VocabularyOverview',
+  multipleChoice: `MultipleChoice`,
   vocabularyTrainer: 'VocabularyTrainer',
   initialSummaryScreen: 'InitialSummary',
   ResultsOverview: 'ResultsOverview',
@@ -35,6 +37,13 @@ export const EXERCISES = [
   },
   {
     id: 2,
+    title: 'Multiple Choice',
+    description: 'Words with Articles',
+    Level: mideasy,
+    nextScreen: SCREENS.multipleChoice
+  },
+  {
+    id: 3,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
