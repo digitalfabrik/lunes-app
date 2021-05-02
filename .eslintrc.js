@@ -26,6 +26,7 @@ module.exports = {
     'react/no-unused-prop-types': 'warn',
     'react/no-typos': 'error',
     'react/prefer-es6-class': ['error', 'always'],
+    'react/prop-types': 'off',
 
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',

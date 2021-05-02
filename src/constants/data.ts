@@ -9,45 +9,39 @@ import {
   IncorrectEntriesIcon,
   AlmostCorrectEntriesIcon
 } from '../../assets/images'
-
-export const SCREENS = {
-  profession: 'Profession',
-  professionSubcategory: 'ProfessionSubcategory',
-  exercises: 'Exercises',
-  vocabularyOverview: 'VocabularyOverview',
-  multipleChoice: `MultipleChoice`,
-  vocabularyTrainer: 'VocabularyTrainer',
-  initialSummaryScreen: 'InitialSummary',
-  ResultsOverview: 'ResultsOverview',
-  CorrectResults: 'CorrectResults',
-  ResultScreen: 'ResultScreen',
-  AlmostCorrectResults: 'AlmostCorrectResults',
-  IncorrectResults: 'IncorrectResults'
-}
+import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export const RESULT_TYPE = ['correct', 'similar', 'incorrect']
 
-export const EXERCISES = [
+export interface ExerciseType {
+  id: number
+  title: string
+  description: string
+  Level: easy
+  nextScreen: keyof RoutesParamsType
+}
+
+export const EXERCISES: ExerciseType[] = [
   {
     id: 1,
     title: 'Vocabulary Overview',
     description: 'All Words',
     Level: easy,
-    nextScreen: SCREENS.vocabularyOverview
+    nextScreen: 'VocabularyOverview'
   },
   {
     id: 2,
-    title: 'Multiple Choice',
+    title: 'Single Choice',
     description: 'Words with Articles',
     Level: mideasy,
-    nextScreen: SCREENS.multipleChoice
+    nextScreen: 'SingleChoice'
   },
   {
     id: 3,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
-    nextScreen: SCREENS.vocabularyTrainer
+    nextScreen: 'VocabularyTrainer'
   }
 ]
 
@@ -56,24 +50,27 @@ export const BUTTONS_THEME = {
   dark: 'dark'
 }
 
-export const RESULTS = [
+export interface ResultType {
+  id: number
+  title: string
+  icon: number
+}
+
+export const RESULTS: ResultType[] = [
   {
     id: 1,
     title: 'Correct entries',
-    icon: CorrectIcon,
-    nextScreen: SCREENS.CorrectResults
+    icon: CorrectIcon
   },
   {
     id: 2,
     title: 'Almost correct entries',
-    icon: AlmostCorrectIcon,
-    nextScreen: SCREENS.AlmostCorrectResults
+    icon: AlmostCorrectIcon
   },
   {
     id: 3,
     title: 'Incorrect entries',
-    icon: IncorrectIcon,
-    nextScreen: SCREENS.IncorrectResults
+    icon: IncorrectIcon
   }
 ]
 

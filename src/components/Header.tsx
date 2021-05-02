@@ -54,7 +54,7 @@ export interface IHeaderProps {
   top: number | undefined
 }
 
-const Header = ({ top }: IHeaderProps) => (
+const Header = ({ top }: IHeaderProps): JSX.Element => (
   <View style={{ ...styles.wrapper, paddingTop: top }} testID='header'>
     <View style={styles.header}>
       <View style={styles.squareIcon}>

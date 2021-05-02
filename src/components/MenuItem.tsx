@@ -69,7 +69,7 @@ export interface IMenuItemProps {
   children: ReactElement
 }
 
-const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps) => {
+const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
   const itemStyle = selected ? styles.clickedContainer : styles.container
   const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle
 
