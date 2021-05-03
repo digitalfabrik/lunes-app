@@ -9,6 +9,7 @@ environment:
 shell: /bin/bash -eo pipefail
 steps:
   - checkout
+  - prepare_workspace
   - restore_ruby_cache:
       directory: android
   - run:
