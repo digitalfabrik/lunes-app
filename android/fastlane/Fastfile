@@ -38,9 +38,7 @@ platform :android do
           :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
           :"org.gradle.daemon" => false
         }
-        puts("Version_Code:")
-        puts(version_code)
-        puts(version_name)
+
         gradle(
           task: "assembleRelease",
           properties: {
@@ -73,12 +71,13 @@ platform :android do
             raise "'nil' passed as parameter! Aborting..."
         end
 
-        track = production_delivery === true ? "production" : "beta"
+        track = production_delivery === true ? "production" : "beta" # ToDo LUN-29
+
         upload_to_play_store(
             version_code: version_code,
             version_name: version_name,
-            track: "internal",
-            release_status: "draft",
+            track: "internal", # ToDo LUN-29
+            release_status: "draft", # ToDo LUN-29
             package_name: "com.lunesappui",
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
             apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
