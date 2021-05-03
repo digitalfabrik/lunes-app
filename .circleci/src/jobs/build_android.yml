@@ -15,9 +15,6 @@ steps:
       name: Fetch keystore
       command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
   - run:
-      name: Setup gradlew execution rights
-      command: cd android && chmod +x gradlew
-  - run:
       name: Build Android
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
