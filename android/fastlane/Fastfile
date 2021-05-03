@@ -79,7 +79,7 @@ platform :android do
             version_code: version_code,
             version_name: version_name,
             track: "internal",
-            release_status: "completed",
+            release_status: "draft",
             package_name: "com.lunesappui",
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
             apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
