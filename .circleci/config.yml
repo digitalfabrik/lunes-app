@@ -127,7 +127,7 @@ jobs:
             - prepare_workspace
             - restore_environment_variables
             - run:
-                command: source .circleci/circle_env.sh && fetchKeystore
+                command: gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
                 name: Fetch keystore
             - run:
                 command: cd android && chmod +x gradlew && echo "start:" && echo ${NEW_VERSION_NAME} && echo ${NEW_VERSION_CODE} && echo "End"
@@ -214,12 +214,34 @@ jobs:
             - restore_yarn_tools_cache
             - restore_yarn_cache
             - run:
-                command: bundle exec fastlane upload_to_browserstack
-                name: BrowserStack Upload
-                working_directory: android
-            - run:
                 command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}  production_delivery:"<< parameters.production_delivery >>"
                 name: PlayStore Upload
+                working_directory: android
+    deliver_browser_stack:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        parameters:
+            production_delivery:
+                description: Whether to deliver the build to production.
+                type: boolean
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - restore_ruby_cache:
+                directory: android
+            - run:
+                command: bundle exec fastlane validate_play_store_key
+                name: Validate Play Store Key
+                working_directory: android
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
+            - restore_yarn_cache
+            - run:
+                command: bundle exec fastlane upload_to_browserstack
+                name: BrowserStack Upload
                 working_directory: android
 version: 2.1
 workflows:
@@ -227,12 +249,20 @@ workflows:
         jobs:
             - bump_version:
                 delivery: development
+            - check
             - build_android:
                 requires:
+                    - check
                     - bump_version
+            - deliver_browserstack:
+                production_delivery: false
+                requires:
+                    - build_android
+                type: approval
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
+                type: approval
     version: 2
 

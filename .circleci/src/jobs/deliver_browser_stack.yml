@@ -20,6 +20,6 @@ steps:
   - restore_yarn_tools_cache
   - restore_yarn_cache
   - run:
-      name: 'PlayStore Upload'
-      command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}  production_delivery:"<< parameters.production_delivery >>"
+      name: 'BrowserStack Upload'
+      command: bundle exec fastlane upload_to_browserstack
       working_directory: android

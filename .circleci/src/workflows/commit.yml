@@ -1,12 +1,18 @@
 jobs:
   - bump_version:
       delivery: development
-  #- check
+  - check
   - build_android:
       requires:
-        #- check
+        - check
         - bump_version
+  - deliver_browserstack:
+      production_delivery: false
+      type: approval
+      requires:
+        - build_android
   - deliver_android:
       production_delivery: false
+      type: approval
       requires:
         - build_android
