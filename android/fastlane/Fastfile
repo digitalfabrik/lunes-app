@@ -44,8 +44,8 @@ platform :android do
         gradle(
           task: "assembleRelease",
           properties: {
-            versionCode: version_code,
-            versionName: version_name
+            "versionCode" => version_code,
+            "versionName" => version_name
           },
           print_command: false
         )
