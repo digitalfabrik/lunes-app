@@ -9,6 +9,7 @@ steps:
   - restore_ruby_cache:
       directory: android
   - restore_yarn_cache
+  - prepare_workspace
   - restore_environment_variables
   - run:
       name: Fetch keystore

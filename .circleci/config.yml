@@ -124,6 +124,7 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - restore_yarn_cache
+            - prepare_workspace
             - restore_environment_variables
             - run:
                 command: source .circleci/circle_env.sh && fetchKeystore
