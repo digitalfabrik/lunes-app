@@ -130,7 +130,7 @@ jobs:
                 command: source .circleci/circle_env.sh && fetchKeystore
                 name: Fetch keystore
             - run:
-                command: cd android && chmod +x gradlew && echo "start" && echo ${NEW_VERSION_NAME} && echo ${NEW_VERSION_CODE} && echo "End"
+                command: cd android && chmod +x gradlew && echo "start:" && echo ${NEW_VERSION_NAME} && echo ${NEW_VERSION_CODE} && echo "End"
                 name: Setup gradlew execution rights
             - run:
                 command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
