@@ -13,7 +13,7 @@ steps:
   - restore_environment_variables
   - run:
       name: Fetch keystore
-      command: gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
+      command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
   - run:
       name: Setup gradlew execution rights
       command: cd android && chmod +x gradlew

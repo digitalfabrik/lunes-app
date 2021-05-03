@@ -127,7 +127,7 @@ jobs:
             - prepare_workspace
             - restore_environment_variables
             - run:
-                command: gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
+                command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
                 name: Fetch keystore
             - run:
                 command: cd android && chmod +x gradlew
