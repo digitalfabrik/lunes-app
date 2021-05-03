@@ -46,8 +46,7 @@ platform :android do
           properties: {
             'versionCode' => version_code,
             'versionName' => version_name
-          },
-          print_command: false
+          }
         )
     end
 
