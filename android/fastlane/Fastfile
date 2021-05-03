@@ -74,7 +74,6 @@ platform :android do
         end
 
         track = production_delivery === true ? "production" : "beta"
-
         upload_to_play_store(
             version_code: version_code,
             version_name: version_name,
