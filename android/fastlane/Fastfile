@@ -44,9 +44,9 @@ platform :android do
         gradle(
           task: "assembleRelease",
           properties: {
-              :VERSION_CODE => version_code,
-              :VERSION_NAME => version_name,
-          }.compact,
+            version_code: version_code,
+            version_name: version_name
+          },
           print_command: false
         )
     end
