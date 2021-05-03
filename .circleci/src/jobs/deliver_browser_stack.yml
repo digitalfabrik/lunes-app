@@ -15,8 +15,6 @@ steps:
       name: Validate Play Store Key
       command: bundle exec fastlane validate_play_store_key
       working_directory: android
-  - prepare_workspace
-  - restore_environment_variables
   - restore_yarn_tools_cache
   - restore_yarn_cache
   - run:

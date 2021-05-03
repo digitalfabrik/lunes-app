@@ -130,7 +130,7 @@ jobs:
                 command: gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
                 name: Fetch keystore
             - run:
-                command: cd android && chmod +x gradlew && echo "start:" && echo ${NEW_VERSION_NAME} && echo ${NEW_VERSION_CODE} && echo "End"
+                command: cd android && chmod +x gradlew
                 name: Setup gradlew execution rights
             - run:
                 command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
@@ -235,8 +235,6 @@ jobs:
                 command: bundle exec fastlane validate_play_store_key
                 name: Validate Play Store Key
                 working_directory: android
-            - prepare_workspace
-            - restore_environment_variables
             - restore_yarn_tools_cache
             - restore_yarn_cache
             - run:
@@ -249,6 +247,7 @@ workflows:
         jobs:
             - bump_version:
                 delivery: development
+                type: approval
             - check
             - build_android:
                 requires:

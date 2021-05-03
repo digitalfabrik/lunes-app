@@ -2,8 +2,7 @@
   "version": "0.0.1",
   "name": "tools",
   "private": true,
-  "scripts": {
-  },
+  "scripts": {},
   "devDependencies": {
     "commander": "^5.1.0",
     "@octokit/rest": "^17.11.0",

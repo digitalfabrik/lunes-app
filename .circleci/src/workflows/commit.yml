@@ -1,6 +1,7 @@
 jobs:
   - bump_version:
       delivery: development
+      type: approval
   - check
   - build_android:
       requires:
