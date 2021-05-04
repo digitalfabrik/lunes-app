@@ -163,21 +163,20 @@ jobs:
             - checkout
             - restore_yarn_tools_cache
             - run:
-                command: tools/git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
-                name: Bump git version
-    calc_version:
-        docker:
-            - image: circleci/node:12.16.3
-        resource_class: small
-        steps:
-            - checkout
-            - restore_yarn_tools_cache
-            - run:
                 command: echo "export NEW_VERSION_NAME=$(tools/next-version calc | jq .versionName)" >> ${BASH_ENV}
                 name: Calculate next version name
             - run:
                 command: echo "export NEW_VERSION_CODE=$(tools/next-version calc | jq .versionCode)" >> ${BASH_ENV}
                 name: Calculate next version code
+            - unless:
+                condition:
+                    equal:
+                        - none
+                        - << parameters.delivery >>
+                steps:
+                    - run:
+                        command: tools/git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
+                        name: Bump git version
             - persist_environment_variables
     check:
         docker:
@@ -243,28 +242,46 @@ jobs:
                 command: bundle exec fastlane upload_to_browserstack
                 name: BrowserStack Upload
                 working_directory: android
+parameters:
+    run_commit:
+        default: true
+        type: boolean
+    run_dev_delivery:
+        default: false
+        type: boolean
 version: 2.1
 workflows:
     commit:
         jobs:
-            - calc_version
             - check
+            - bump_version:
+                delivery: none
             - build_android:
                 requires:
                     - check
-                    - calc_version
+                    - bump_version
             - deliver_browser_stack:
                 production_delivery: false
                 requires:
                     - build_android
+        when: << pipeline.parameters.run_commit >>
+    dev_delivery:
+        jobs:
+            - check
             - bump_version:
+                delivery: development
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_browser_stack:
+                production_delivery: false
                 requires:
                     - build_android
-                type: approval
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
-                    - bump_version
+        when: << pipeline.parameters.run_dev_delivery >>
     version: 2
 
