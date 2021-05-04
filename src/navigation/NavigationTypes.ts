@@ -43,6 +43,18 @@ export type RoutesParamsType = {
       level: number
     }
   }
+  SingleChoice: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+  }
   VocabularyTrainer: {
     extraParams: {
       disciplineID: number
@@ -83,6 +95,7 @@ export type RoutesParamsType = {
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
   }
+
   CorrectResults: undefined
   IncorrectResults: undefined
   AlmostCorrectResults: undefined

@@ -1,4 +1,4 @@
-import { easy, hard, CorrectEntriesIcon, IncorrectEntriesIcon, AlmostCorrectEntriesIcon } from '../../assets/images'
+import { easy, mideasy, hard, CorrectEntriesIcon, IncorrectEntriesIcon, AlmostCorrectEntriesIcon } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export interface ExerciseType {
@@ -19,6 +19,13 @@ export const EXERCISES: ExerciseType[] = [
   },
   {
     id: 2,
+    title: 'Single Choice',
+    description: 'Words with Articles',
+    Level: mideasy,
+    nextScreen: 'SingleChoice'
+  },
+  {
+    id: 3,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
