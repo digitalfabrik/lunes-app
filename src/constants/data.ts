@@ -1,6 +1,7 @@
 import {
   easy,
   mideasy,
+  midhard,
   hard,
   CorrectIcon,
   IncorrectIcon,
@@ -38,6 +39,13 @@ export const EXERCISES: ExerciseType[] = [
   },
   {
     id: 3,
+    title: 'Learn Articles',
+    description: 'Articles only',
+    Level: midhard,
+    nextScreen: 'LearnArticles'
+  },
+  {
+    id: 4,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,

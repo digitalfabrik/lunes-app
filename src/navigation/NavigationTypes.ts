@@ -55,6 +55,18 @@ export type RoutesParamsType = {
       level: number
     }
   }
+  LearnArticles: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+  }
   VocabularyTrainer: {
     extraParams: {
       disciplineID: number
