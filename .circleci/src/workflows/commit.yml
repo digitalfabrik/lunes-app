@@ -1,0 +1,12 @@
+when: << pipeline.parameters.run_commit >>
+jobs:
+  - check
+  - bump_version:
+      delivery: none
+  - build_android:
+      requires:
+        - check
+        - bump_version
+  - deliver_browser_stack:
+      requires:
+        - build_android

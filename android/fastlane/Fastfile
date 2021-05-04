@@ -1,0 +1,86 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+    desc "Validate Play Store Key"
+    lane :validate_play_store_key do
+        validate_play_store_json_key(
+          json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+        )
+    end
+
+    desc "Build Android App"
+    lane :build do |options|
+        version_code = options[:version_code]
+        version_name = options[:version_name]
+
+        if [version_name, version_code].include?(nil)
+          raise "'nil' passed as parameter! Aborting..."
+        end
+
+        gradle_system_properties = {
+          # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
+          :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
+          :"org.gradle.daemon" => false
+        }
+
+        gradle(
+          task: "assembleRelease",
+          properties: {
+              :VERSION_CODE => version_code,
+              :VERSION_NAME => version_name,
+          }
+        )
+    end
+
+    desc "Upload Android App to BrowserStack"
+    lane :upload_to_browserstack do
+        upload_to_browserstack_app_live(
+            browserstack_username: ENV["BROWSERSTACK_USERNAME"],
+            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+            file_path: "#{ENV['HOME']}/attached_workspace/app-release.apk"
+        )
+    end
+
+    desc "Upload Android App to Google Play"
+    lane :upload_to_playstore do |options|
+        ensure_env_vars(
+            env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+        )
+
+        version_code = options[:version_code]
+        version_name = options[:version_name]
+        production_delivery = options[:production_delivery]
+
+        if [version_name, version_code, production_delivery].include?(nil)
+            raise "'nil' passed as parameter! Aborting..."
+        end
+
+        track = production_delivery === true ? "production" : "beta" # ToDo LUN-29
+
+        upload_to_play_store(
+            version_code: version_code,
+            version_name: version_name,
+            track: "internal", # ToDo LUN-29
+            release_status: "draft", # ToDo LUN-29
+            package_name: "com.lunesappui",
+            json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
+            apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
+        )
+    end
+end
