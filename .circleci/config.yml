@@ -211,7 +211,6 @@ jobs:
                 working_directory: android
             - prepare_workspace
             - restore_environment_variables
-            - restore_yarn_tools_cache
             - restore_yarn_cache
             - run:
                 command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}  production_delivery:"<< parameters.production_delivery >>"
@@ -222,22 +221,12 @@ jobs:
             - image: circleci/android:api-29-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
-        parameters:
-            production_delivery:
-                description: Whether to deliver the build to production.
-                type: boolean
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
             - prepare_workspace
             - restore_ruby_cache:
                 directory: android
-            - run:
-                command: bundle exec fastlane validate_play_store_key
-                name: Validate Play Store Key
-                working_directory: android
-            - restore_yarn_tools_cache
-            - restore_yarn_cache
             - run:
                 command: bundle exec fastlane upload_to_browserstack
                 name: BrowserStack Upload
@@ -261,7 +250,6 @@ workflows:
                     - check
                     - bump_version
             - deliver_browser_stack:
-                production_delivery: false
                 requires:
                     - build_android
         when: << pipeline.parameters.run_commit >>
@@ -275,7 +263,6 @@ workflows:
                     - check
                     - bump_version
             - deliver_browser_stack:
-                production_delivery: false
                 requires:
                     - build_android
             - deliver_android:

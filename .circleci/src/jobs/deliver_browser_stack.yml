@@ -1,7 +1,3 @@
-parameters:
-  production_delivery:
-    description: Whether to deliver the build to production.
-    type: boolean
 docker:
   - image: circleci/android:api-29-node
 environment:
@@ -12,12 +8,6 @@ steps:
   - prepare_workspace
   - restore_ruby_cache:
       directory: android
-  - run:
-      name: Validate Play Store Key
-      command: bundle exec fastlane validate_play_store_key
-      working_directory: android
-  - restore_yarn_tools_cache
-  - restore_yarn_cache
   - run:
       name: 'BrowserStack Upload'
       command: bundle exec fastlane upload_to_browserstack
