@@ -12,6 +12,9 @@ steps:
   - prepare_workspace
   - restore_environment_variables
   - run:
+      name: Base64 decode keystore env var
+      command: echo ${KEYSTORE_BASE64} | base64 --decode > android/app/$KEYSTORE_FILENAME.gpg
+  - run:
       name: Fetch keystore
       command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
   - run:
