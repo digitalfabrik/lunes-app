@@ -258,6 +258,8 @@ workflows:
                 requires:
                     - build_android
             - bump_version:
+                requires:
+                    - build_android
                 type: approval
             - deliver_android:
                 production_delivery: false

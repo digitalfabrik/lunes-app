@@ -11,6 +11,8 @@ jobs:
         - build_android
   - bump_version:
       type: approval
+      requires:
+        - build_android
   - deliver_android:
       production_delivery: false
       requires:
