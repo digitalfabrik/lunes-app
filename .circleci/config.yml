@@ -127,11 +127,11 @@ jobs:
             - prepare_workspace
             - restore_environment_variables
             - run:
-                command: echo ${KEYSTORE_BASE64} | base64 --decode > android/app/$KEYSTORE_FILENAME.gpg
+                command: echo "${KEYSTORE_BASE64}" | base64 --decode > android/$KEYSTORE_FILENAME.gpg
                 name: Base64 decode keystore env var
             - run:
                 command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
-                name: Fetch keystore
+                name: Decrypt keystore
             - run:
                 command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: Build Android
