@@ -25,15 +25,27 @@ platform :android do
     end
 
     desc "Build Android App"
-    lane :build do
-      gradle_system_properties = {
-        # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
-        :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
-        :"org.gradle.daemon" => false
-      }
-      gradle(
-        task: "assembleRelease"
-      )
+    lane :build do |options|
+        version_code = options[:version_code]
+        version_name = options[:version_name]
+
+        if [version_name, version_code].include?(nil)
+          raise "'nil' passed as parameter! Aborting..."
+        end
+
+        gradle_system_properties = {
+          # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
+          :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
+          :"org.gradle.daemon" => false
+        }
+
+        gradle(
+          task: "assembleRelease",
+          properties: {
+              :VERSION_CODE => version_code,
+              :VERSION_NAME => version_name,
+          }
+        )
     end
 
     desc "Upload Android App to BrowserStack"
@@ -45,4 +57,30 @@ platform :android do
         )
     end
 
+    desc "Upload Android App to Google Play"
+    lane :upload_to_playstore do |options|
+        ensure_env_vars(
+            env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+        )
+
+        version_code = options[:version_code]
+        version_name = options[:version_name]
+        production_delivery = options[:production_delivery]
+
+        if [version_name, version_code, production_delivery].include?(nil)
+            raise "'nil' passed as parameter! Aborting..."
+        end
+
+        track = production_delivery === true ? "production" : "beta" # ToDo LUN-29
+
+        upload_to_play_store(
+            version_code: version_code,
+            version_name: version_name,
+            track: "internal", # ToDo LUN-29
+            release_status: "draft", # ToDo LUN-29
+            package_name: "com.lunesappui",
+            json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"],
+            apk: "#{ENV['HOME']}/attached_workspace/app-release.apk"
+        )
+    end
 end

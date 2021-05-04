@@ -31,6 +31,11 @@ Build Android App
 fastlane android upload_to_browserstack
 ```
 Upload Android App to BrowserStack
+### android upload_to_playstore
+```
+fastlane android upload_to_playstore
+```
+Upload Android App to Google Play
 
 ----
 

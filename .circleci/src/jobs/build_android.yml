@@ -1,6 +1,6 @@
 docker:
   - image: circleci/android:api-29-node
-resource_class: medium+
+resource_class: medium
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
 shell: /bin/bash -eo pipefail
@@ -9,9 +9,17 @@ steps:
   - restore_ruby_cache:
       directory: android
   - restore_yarn_cache
+  - prepare_workspace
+  - restore_environment_variables
+  - run:
+      name: Base64 decode keystore env var
+      command: echo "${KEYSTORE_BASE64}" | base64 -di --decode > android/$KEYSTORE_FILENAME.gpg
+  - run:
+      name: Decrypt keystore
+      command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
   - run:
       name: Build Android
-      command: bundle exec fastlane build
+      command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
   - run:
       name: Move apk
