@@ -1,4 +1,11 @@
-import { easy, mideasy, hard, CorrectEntriesIcon, IncorrectEntriesIcon, AlmostCorrectEntriesIcon } from '../../assets/images'
+import {
+  easy,
+  mideasy,
+  hard,
+  CorrectEntriesIcon,
+  IncorrectEntriesIcon,
+  AlmostCorrectEntriesIcon
+} from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export interface ExerciseType {
