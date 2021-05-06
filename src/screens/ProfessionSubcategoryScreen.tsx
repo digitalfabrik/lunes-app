@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FlatList, LogBox, StatusBar, StyleSheet, Text, View } from 'react-native'
 import Title from '../components/Title'
 import axios from '../utils/axios'
-import { ENDPOINTS, ProfessionSubcategoriesType, ProfessionSubcategoryType } from '../constants/endpoints'
+import { ENDPOINTS, ProfessionSubcategoryType } from '../constants/endpoints'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
@@ -77,7 +77,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
   const { extraParams } = route.params
 
   const { disciplineID, disciplineTitle } = extraParams
-  const [subcategories, setSubcategories] = useState<ProfessionSubcategoriesType>([])
+  const [subcategories, setSubcategories] = useState<ProfessionSubcategoryType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [count, setCount] = useState<number>(0)

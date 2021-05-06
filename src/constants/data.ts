@@ -1,4 +1,11 @@
-import { easy, hard, CorrectEntriesIcon, IncorrectEntriesIcon, AlmostCorrectEntriesIcon } from '../../assets/images'
+import {
+  easy,
+  mideasy,
+  hard,
+  CorrectEntriesIcon,
+  IncorrectEntriesIcon,
+  AlmostCorrectEntriesIcon
+} from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export type ExerciseKeyType = 'vocabularyOverview' | 'vocabularyTrainer'
@@ -18,6 +25,13 @@ export const EXERCISES: ExerciseType[] = [
     description: 'All Words',
     Level: easy,
     nextScreen: 'VocabularyOverview'
+  },
+  {
+    key: 'singleChoice',
+    title: 'Single Choice',
+    description: 'Words with Articles',
+    Level: mideasy,
+    nextScreen: 'SingleChoice'
   },
   {
     key: 'vocabularyTrainer',

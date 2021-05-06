@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { Text, FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import axios from '../utils/axios'
-import { ENDPOINTS, ProfessionsType, ProfessionType } from '../constants/endpoints'
+import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
@@ -51,7 +51,7 @@ interface ProfessionScreenPropsType {
 }
 
 const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
-  const [professions, setProfessions] = useState<ProfessionsType>([])
+  const [professions, setProfessions] = useState<ProfessionType[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
