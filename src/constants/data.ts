@@ -3,19 +3,22 @@ import {
   mideasy,
   midhard,
   hard,
-  CorrectIcon,
-  IncorrectIcon,
-  AlmostCorrectIcon,
   CorrectEntriesIcon,
   IncorrectEntriesIcon,
   AlmostCorrectEntriesIcon
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-export const RESULT_TYPE = ['correct', 'similar', 'incorrect']
+const ExerciseKeys = {
+  vocabularyOverview: 0,
+  singleChoice: 1,
+  learnArticles: 2,
+  vocabularyTrainer: 3
+}
+type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface ExerciseType {
-  id: number
+  key: ExerciseKeyType
   title: string
   description: string
   Level: easy
@@ -24,28 +27,28 @@ export interface ExerciseType {
 
 export const EXERCISES: ExerciseType[] = [
   {
-    id: 1,
+    key: ExerciseKeys.vocabularyOverview,
     title: 'Vocabulary Overview',
     description: 'All Words',
     Level: easy,
     nextScreen: 'VocabularyOverview'
   },
   {
-    id: 2,
+    key: ExerciseKeys.singleChoice,
     title: 'Single Choice',
     description: 'Words with Articles',
     Level: mideasy,
     nextScreen: 'SingleChoice'
   },
   {
-    id: 3,
+    key: ExerciseKeys.learnArticles,
     title: 'Learn Articles',
     description: 'Articles only',
     Level: midhard,
     nextScreen: 'LearnArticles'
   },
   {
-    id: 4,
+    key: ExerciseKeys.vocabularyTrainer,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
@@ -58,30 +61,6 @@ export const BUTTONS_THEME = {
   dark: 'dark'
 }
 
-export interface ResultType {
-  id: number
-  title: string
-  icon: number
-}
-
-export const RESULTS: ResultType[] = [
-  {
-    id: 1,
-    title: 'Correct entries',
-    icon: CorrectIcon
-  },
-  {
-    id: 2,
-    title: 'Almost correct entries',
-    icon: AlmostCorrectIcon
-  },
-  {
-    id: 3,
-    title: 'Incorrect entries',
-    icon: IncorrectIcon
-  }
-]
-
 export const ARTICLES = {
   die: 'die',
   der: 'der',
@@ -89,20 +68,32 @@ export const ARTICLES = {
   diePlural: 'die (plural)'
 }
 
-export const RESULT_PRESETS = {
-  similar: {
-    Icon: AlmostCorrectEntriesIcon,
-    title: 'Almost Correct',
-    next: { title: 'INCORRECT', type: 'incorrect' }
-  },
-  correct: {
+export type SimpleResultType = 'correct' | 'incorrect' | 'similar'
+
+export interface ResultType {
+  key: SimpleResultType
+  title: string
+  Icon: number
+  order: number
+}
+
+export const RESULTS: ResultType[] = [
+  {
+    key: 'correct',
     Icon: CorrectEntriesIcon,
     title: 'Correct',
-    next: { title: 'ALMOST CORRECT', type: 'similar' }
+    order: 0
   },
-  incorrect: {
+  {
+    key: 'similar',
+    Icon: AlmostCorrectEntriesIcon,
+    title: 'Almost Correct',
+    order: 1
+  },
+  {
+    key: 'incorrect',
     Icon: IncorrectEntriesIcon,
     title: 'Incorrect',
-    next: { title: 'CORRECT', type: 'correct' }
+    order: 2
   }
-}
+]

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Pressable, FlatList, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import Title from '../components/Title'
 import { Arrow, RepeatIcon, FinishIcon } from '../../assets/images'
-import { RESULTS, BUTTONS_THEME, RESULT_TYPE, EXERCISES, ResultType } from '../constants/data'
+import { RESULTS, BUTTONS_THEME, EXERCISES, ResultType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/colors'
@@ -159,10 +159,10 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const { extraParams, results } = route.params
   const { exercise } = extraParams
   const { Level, description, title } = EXERCISES.filter(({ title }) => title === exercise)[0]
-  const [selectedId, setSelectedId] = React.useState<number | null>(null)
+  const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
-  useFocusEffect(React.useCallback(() => setSelectedId(null), []))
+  useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -194,21 +194,20 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   )
 
   const Item = ({ item }: { item: ResultType }): JSX.Element => {
-    const handleNavigation = ({ id }: ResultType): void => {
-      setSelectedId(id)
+    const handleNavigation = ({ key }: ResultType): void => {
+      setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
         extraParams,
-        resultType: RESULT_TYPE[id - 1],
+        resultType: item,
         results,
         counts
       })
     }
 
-    const cID = RESULT_TYPE[item.id - 1]
-    const count = counts[cID]
+    const count = counts[item.key]
 
-    const selected = item.id === selectedId
+    const selected = item.key === selectedKey
     const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark
     const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack
     const itemStyle = selected ? styles.clickedContainer : styles.container
@@ -218,7 +217,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     return (
       <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
         <View style={styles.leftSide}>
-          <item.icon fill={iconColor} width={30} height={30} />
+          <item.Icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
             <Text style={descriptionStyle}>{`${count} of ${counts.total} Words`}</Text>
@@ -254,7 +253,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
         ListFooterComponentStyle={styles.footer}

@@ -110,11 +110,6 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IExercisesScreenProps {
-  route: any
-  navigation: any
-}
-
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 interface ExercisesScreenPropsType {
@@ -125,13 +120,13 @@ interface ExercisesScreenPropsType {
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
   const { trainingSet, disciplineTitle } = extraParams
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const [isBackButtonPressed, setIsBackButtonPressed] = useState(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(null)
+      setSelectedKey(null)
 
       navigation.setOptions({
         headerRight: () => (
@@ -168,7 +163,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   )
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element => {
-    const selected = item.id === selectedId
+    const selected = item.key === selectedKey
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
@@ -180,17 +175,17 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
           <Text style={descriptionStyle}>{item.description}</Text>
           <item.Level style={styles.level} />
         </View>
-        <Arrow fill={item.id === selectedId ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <Arrow fill={item.key === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Pressable>
     )
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    setSelectedId(item.id)
+    setSelectedKey(item.key)
     navigation.push(item.nextScreen, {
       extraParams: {
         ...extraParams,
-        exercise: item.title,
+        exercise: item.key,
         exerciseDescription: item.description,
         level: item.Level
       }
@@ -204,7 +199,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
       />
     </View>

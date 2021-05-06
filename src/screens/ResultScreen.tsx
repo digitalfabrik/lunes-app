@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { BUTTONS_THEME, RESULT_PRESETS } from '../constants/data'
+import { BUTTONS_THEME, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
@@ -74,11 +74,12 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   const { extraParams, results, counts, resultType } = route.params
   const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
-  const { next, Icon, title } = RESULT_PRESETS[resultType]
+  const { Icon, title, order } = resultType
+  const nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
 
   useFocusEffect(
     React.useCallback(() => {
-      setEntries(results.filter(({ result }: DocumentResultType) => result === resultType))
+      setEntries(results.filter(({ result }: DocumentResultType) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', { extraParams: extraParams })}>
@@ -96,12 +97,12 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       <>
         <Icon width={38} height={38} />
         <Text style={styles.screenTitle}> {title} Entries</Text>
-        <Text style={styles.description}>{`${counts[resultType]} of ${counts.total} Words`}</Text>
+        <Text style={styles.description}>{`${counts[resultType.key]} of ${counts.total} Words`}</Text>
       </>
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentResultType }) => (
+  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => (
     <VocabularyOverviewListItem
       id={item.id}
       word={item.word}
@@ -118,12 +119,12 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     })
 
   const retryButton =
-    entries.length > 0 && ['similar', 'incorrect'].includes(resultType) ? (
+    entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
       <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>
-            Repeat {resultType === 'similar' ? 'almost correct' : resultType} entries
+            Repeat {resultType.key === 'similar' ? 'almost correct' : resultType.key} entries
           </Text>
         </>
       </Button>
@@ -137,11 +138,11 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
         onPress={() =>
           navigation.navigate('ResultScreen', {
             ...route.params,
-            resultType: next.type
+            resultType: nextResultType
           })
         }>
         <>
-          <Text style={styles.darkLabel}>View {next.title} entries</Text>
+          <Text style={styles.darkLabel}>View {nextResultType.title} entries</Text>
           <NextArrow style={styles.arrow} />
         </>
       </Button>

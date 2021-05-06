@@ -18,10 +18,10 @@ import AnswerSection from '../components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { CloseButton } from '../../assets/images'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import AsyncStorage from '../utils/AsyncStorage'
 
 export const styles = StyleSheet.create({
   root: {
@@ -124,7 +124,7 @@ const VocabularyTrainerExerciseScreen = ({
   React.useLayoutEffect(() => {
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
 
-    AsyncStorage.setItem('session', JSON.stringify(route.params))
+    AsyncStorage.setSession(route.params).catch(e => console.error(e))
 
     return () => bEvent.remove()
   }, [route.params])
@@ -142,7 +142,7 @@ const VocabularyTrainerExerciseScreen = ({
   }
 
   const finishExercise = (): void => {
-    AsyncStorage.removeItem('session')
+    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('InitialSummary', { extraParams })
   }
 
