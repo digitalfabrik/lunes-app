@@ -1,6 +1,7 @@
 import {
   easy,
   mideasy,
+  midhard,
   hard,
   CorrectEntriesIcon,
   IncorrectEntriesIcon,
@@ -38,6 +39,13 @@ export const EXERCISES: ExerciseType[] = [
     description: 'Words with Articles',
     Level: mideasy,
     nextScreen: 'SingleChoice'
+  },
+  {
+    key: ExerciseKeys.learnArticles,
+    title: 'Learn Articles',
+    description: 'Articles only',
+    Level: midhard,
+    nextScreen: 'LearnArticles'
   },
   {
     key: ExerciseKeys.vocabularyTrainer,
