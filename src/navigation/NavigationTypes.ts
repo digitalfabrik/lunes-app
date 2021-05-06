@@ -1,5 +1,5 @@
 import { DocumentsType, DocumentType } from '../constants/endpoints'
-import { ResultType, SimpleResultType } from '../constants/data'
+import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
@@ -38,7 +38,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -62,7 +62,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -75,7 +75,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -88,7 +88,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -106,7 +106,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }

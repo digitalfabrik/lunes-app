@@ -8,8 +8,16 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
+const ExerciseKeys = {
+  vocabularyOverview: 0,
+  singleChoice: 1,
+  learnArticles: 2,
+  vocabularyTrainer: 3
+}
+type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+
 export interface ExerciseType {
-  id: number
+  key: ExerciseKeyType
   title: string
   description: string
   Level: easy
@@ -18,21 +26,21 @@ export interface ExerciseType {
 
 export const EXERCISES: ExerciseType[] = [
   {
-    id: 1,
+    key: ExerciseKeys.vocabularyOverview,
     title: 'Vocabulary Overview',
     description: 'All Words',
     Level: easy,
     nextScreen: 'VocabularyOverview'
   },
   {
-    id: 2,
+    key: ExerciseKeys.singleChoice,
     title: 'Single Choice',
     description: 'Words with Articles',
     Level: mideasy,
     nextScreen: 'SingleChoice'
   },
   {
-    id: 3,
+    key: ExerciseKeys.vocabularyTrainer,
     title: 'Vocabulary Trainer',
     description: 'Write words with articles',
     Level: hard,
