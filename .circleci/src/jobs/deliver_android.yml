@@ -20,5 +20,5 @@ steps:
   - restore_yarn_cache
   - run:
       name: 'PlayStore Upload'
-      command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}  production_delivery:"<< parameters.production_delivery >>"
+      command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
       working_directory: android
