@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
 import { CloseIcon } from '../../assets/images'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AsyncStorage from '../utils/AsyncStorage'
 
 export const styles = StyleSheet.create({
   container: {
@@ -62,19 +62,24 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IConfirmationModalProps {
+export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
   navigation: any
   extraParams: any
 }
 
-const ConfirmationModal = ({ visible, setIsModalVisible, navigation, extraParams }: IConfirmationModalProps) => {
-  const closeModal = () => setIsModalVisible(false)
+const ConfirmationModal = ({
+  visible,
+  setIsModalVisible,
+  navigation,
+  extraParams
+}: ConfirmationModalPropsType): JSX.Element => {
+  const closeModal = (): void => setIsModalVisible(false)
 
-  const goBack = () => {
+  const goBack = (): void => {
     setIsModalVisible(false)
-    AsyncStorage.removeItem('session')
+    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('Exercises', { extraParams })
   }
 

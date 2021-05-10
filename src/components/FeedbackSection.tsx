@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, ImageBackground, StyleSheet } from 'react-native'
-import { IDocumentProps } from '../interfaces/exercise'
 import {
   CorrectFeedbackIcon,
   IncorrectFeedbackIcon,
@@ -12,6 +11,7 @@ import {
 import { ARTICLES } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { DocumentType } from '../constants/endpoints'
 
 export const styles = StyleSheet.create({
   messageContainer: {
@@ -42,14 +42,14 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IFeedbackProps {
+export interface FeedbackPropsType {
   secondAttempt: boolean
   result: string
-  document?: IDocumentProps
+  document?: DocumentType
   input: string
 }
 
-const Feedback = ({ result, document, input, secondAttempt }: IFeedbackProps) => {
+const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): JSX.Element | null => {
   const Icon =
     result === 'correct'
       ? CorrectFeedbackIcon

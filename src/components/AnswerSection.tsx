@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import { View, TouchableOpacity, TextInput, Platform, StyleSheet } from 'react-native'
 import { CloseIcon, VolumeUp } from '../../assets/images'
 import { COLORS } from '../constants/colors'
-import { IDocumentProps } from '../interfaces/exercise'
 import Popover from './Popover'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
 import PopoverContent from './PopoverContent'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { DocumentType } from '../constants/endpoints'
+import AsyncStorage from '../utils/AsyncStorage'
+import { SimpleResultType } from '../constants/data'
 
 export const styles = StyleSheet.create({
   container: {
@@ -59,11 +60,11 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IAnswerSectionProps {
+export interface AnswerSectionPropsType {
   tryLater: () => void
   currentDocumentNumber: number
   setCurrentDocumentNumber: Function
-  documents: IDocumentProps[]
+  documents: DocumentType[]
   finishExercise: Function
   trainingSet: string
   disciplineTitle: string
@@ -77,7 +78,7 @@ const AnswerSection = ({
   trainingSet,
   disciplineTitle,
   documents
-}: IAnswerSectionProps) => {
+}: AnswerSectionPropsType): JSX.Element => {
   const touchable: any = React.createRef()
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
   const [isActive, setIsActive] = useState(false)
@@ -100,7 +101,7 @@ const AnswerSection = ({
     }
   }, [])
 
-  const checkEntry = () => {
+  const checkEntry = (): void => {
     setSubmission(input)
     const splitInput = input.trim().split(' ')
 
@@ -129,7 +130,7 @@ const AnswerSection = ({
     setSecondAttempt(false)
   }
 
-  const validateForCorrect = (inputArticle: string, inputWord: string) => {
+  const validateForCorrect = (inputArticle: string, inputWord: string): boolean => {
     const exactAnswer = inputArticle === document?.article && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
@@ -139,13 +140,11 @@ const AnswerSection = ({
     return exactAnswer || altAnswer
   }
 
-  const validateForSimilar = (inputArticle: string, inputWord: string) => {
+  const validateForSimilar = (inputArticle: string, inputWord: string): boolean => {
     const origCheck =
-      document &&
-      inputArticle === document.article &&
-      stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
+      inputArticle === document.article && stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
 
-    const altCheck = document?.alternatives?.some(
+    const altCheck = document.alternatives.some(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ({ article, alt_word }) =>
         inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4
@@ -153,7 +152,7 @@ const AnswerSection = ({
     return origCheck || altCheck
   }
 
-  const getNextWord = () => {
+  const getNextWord = (): void => {
     setResult('')
     setInput('')
     setSecondAttempt(false)
@@ -164,40 +163,36 @@ const AnswerSection = ({
     setCurrentDocumentNumber(currentDocumentNumber + 1)
   }
 
-  const storeResult = async (score: string) => {
-    await AsyncStorage.getItem('Vocabulary Trainer').then(value => {
-      const jsonValue = value ? JSON.parse(value) : {}
+  const storeResult = async (score: SimpleResultType): Promise<void> => {
+    try {
+      const exercise = (await AsyncStorage.getExercise('vocabularyTrainer')) ?? {}
+      exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
+      exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
 
-      if (!jsonValue?.[disciplineTitle]?.[trainingSet]) {
-        if (!jsonValue?.[disciplineTitle]) {
-          jsonValue[disciplineTitle] = {}
-        }
-        jsonValue[disciplineTitle][trainingSet] = {}
+      exercise[disciplineTitle][trainingSet][document.word] = {
+        ...document,
+        result: score
       }
 
-      if (document) {
-        jsonValue[disciplineTitle][trainingSet][document.word] = {
-          ...document,
-          result: score
+      await AsyncStorage.setExercise('vocabularyTrainer', exercise)
+
+      const session = await AsyncStorage.getSession()
+      if (session === null) {
+        throw new Error('Session is not saved correctly!')
+      }
+      const newSession = {
+        ...session,
+        retryData: {
+          data: documents.slice(currentDocumentNumber + 1, totalNumbers)
         }
       }
-
-      AsyncStorage.setItem('Vocabulary Trainer', JSON.stringify(jsonValue))
-
-      AsyncStorage.getItem('session').then(session => {
-        const jsValue = JSON.parse(session)
-        const newData = JSON.stringify({
-          ...jsValue,
-          retryData: {
-            data: documents.slice(currentDocumentNumber + 1, totalNumbers)
-          }
-        })
-        AsyncStorage.setItem('session', newData)
-      })
-    })
+      await AsyncStorage.setSession(newSession)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
-  const handleSpeakerClick = (audio?: string) => {
+  const handleSpeakerClick = (audio?: string): void => {
     setIsActive(true)
 
     // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
@@ -215,7 +210,7 @@ const AnswerSection = ({
     }
   }
 
-  const getBorderColor = () => {
+  const getBorderColor = (): string => {
     if (isFocused) {
       return COLORS.lunesBlack
     } else if (!secondAttempt && !input) {

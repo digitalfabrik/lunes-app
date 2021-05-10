@@ -1,14 +1,14 @@
 import { DocumentsType, DocumentType } from '../constants/endpoints'
+import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 
 export interface DocumentResultType extends DocumentType {
-  result: 'correct' | 'incorrect' | 'similar'
+  result: SimpleResultType
 }
 
-export interface CountsType {
+export type CountsType = {
+  [key in SimpleResultType]: number
+} & {
   total: number
-  correct: number
-  incorrect: number
-  similar: number
 }
 
 // https://github.com/Microsoft/TypeScript/issues/15300
@@ -38,12 +38,24 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
   }
   SingleChoice: {
+    extraParams: {
+      disciplineID: number
+      disciplineTitle: string
+      disciplineIcon: string
+      trainingSetId: number
+      trainingSet: string
+      exercise: string
+      exerciseDescription: string
+      level: number
+    }
+  }
+  LearnArticles: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -62,7 +74,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -75,7 +87,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -88,7 +100,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -106,13 +118,13 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
-    resultType: string
+    resultType: ResultType
     counts: CountsType
   }
 }
