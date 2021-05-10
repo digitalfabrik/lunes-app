@@ -213,10 +213,10 @@ jobs:
             - restore_environment_variables
             - restore_yarn_cache
             - run:
-                command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}  production_delivery:"<< parameters.production_delivery >>"
+                command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
                 name: PlayStore Upload
                 working_directory: android
-    deliver_browser_stack:
+    deliver_browserstack:
         docker:
             - image: circleci/android:api-29-node
         environment:
@@ -249,7 +249,7 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browser_stack:
+            - deliver_browserstack:
                 requires:
                     - build_android
         when: << pipeline.parameters.run_commit >>
@@ -262,7 +262,7 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browser_stack:
+            - deliver_browserstack:
                 requires:
                     - build_android
             - deliver_android:

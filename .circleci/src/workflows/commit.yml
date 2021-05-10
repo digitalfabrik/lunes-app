@@ -7,6 +7,6 @@ jobs:
       requires:
         - check
         - bump_version
-  - deliver_browser_stack:
+  - deliver_browserstack:
       requires:
         - build_android
