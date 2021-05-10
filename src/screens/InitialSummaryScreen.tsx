@@ -4,11 +4,11 @@ import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import AsyncStorage from '../utils/AsyncStorage'
 
 export const styles = StyleSheet.create({
   root: {
@@ -68,10 +68,13 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem(exercise).then(value => {
-        const jsonValue = value && JSON.parse(value)
-        setResults(Object.values(jsonValue[disciplineTitle][trainingSet]))
-      })
+      AsyncStorage.getExercise(exercise)
+        .then(value => {
+          if (value !== null) {
+            setResults(Object.values(value[disciplineTitle][trainingSet]))
+          }
+        })
+        .catch(e => console.error(e))
     }, [exercise, disciplineTitle, trainingSet])
   )
 
@@ -94,7 +97,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   }, [results])
 
   const checkResults = (): void => {
-    AsyncStorage.removeItem('session')
+    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('ResultsOverview', { extraParams, results })
   }
 

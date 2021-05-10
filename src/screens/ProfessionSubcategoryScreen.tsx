@@ -66,19 +66,6 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IProfessionSubcategoryScreenProps {
-  route: any
-  navigation: any
-}
-
-export interface IProfessionSubcategoryProps {
-  id: number
-  title: string
-  description: string
-  icon: string
-  total_documents: number
-}
-
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 interface ProfessionSubcategoryScreenPropsType {
@@ -119,7 +106,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     </Title>
   )
 
-  const Item = ({ item }: { item: ProfessionSubcategoryType }) => {
+  const Item = ({ item }: { item: ProfessionSubcategoryType }): JSX.Element => {
     const selected = item.id === selectedId
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
 
