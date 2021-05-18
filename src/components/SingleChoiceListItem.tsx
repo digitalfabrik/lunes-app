@@ -7,52 +7,52 @@ import styled from 'styled-components/native'
 
 const StyledContainer = styled.View`
   height: 55px;
-  marginbottom: 5px;
-  borderradius: 2px;
-  borderwidth: 1px;
-  bordercolor: ${COLORS.lunesBlackUltralight};
-  borderstyle: solid;
+  margin-bottom: 5px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: ${COLORS.lunesBlackUltralight};
+  border-style: solid;
   display: flex;
-  justifycontent: flex-start;
-  flexdirection: row;
+  justify-content: flex-start;
+  flex-direction: row;
   align-items: center;
 `
 
 const StyledContainerClicked = styled(StyledContainer)`
-  backgroundcolor: ${COLORS.lunesBlack};
-  bordercolor: ${COLORS.lunesBlackUltralight};
+  background-color: ${COLORS.lunesBlack};
+  border-color: ${COLORS.lunesBlackUltralight};
 `
 
 const StyledContainerCorrect = styled(StyledContainer)`
-  backgroundcolor: ${COLORS.lunesFunctionalCorrectDark};
-  bordercolor: ${COLORS.lunesBlackUltralight};
+  background-color: ${COLORS.lunesFunctionalCorrectDark};
+  border-color: ${COLORS.lunesBlackUltralight};
 `
 
 const StyledContainerIncorrect = styled(StyledContainer)`
-  backgroundcolor: ${COLORS.lunesFunctionalIncorrectDark};
-  bordercolor: ${COLORS.lunesBlackUltralight};
+  background-color: ${COLORS.lunesFunctionalIncorrectDark};
+  border-color: ${COLORS.lunesBlackUltralight};
 `
 
 const StyledArticle = styled.Text`
   width: 37px;
   height: 21px;
-  fontsize: 14px;
-  fontweight: normal;
-  borderradius: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  border-radius: 10px;
   color: ${COLORS.lunesGreyDark};
-  fontfamily: SourceSansPro-Regular;
+  font-family: SourceSansPro-Regular;
   overflow: hidden;
-  textalign: center;
-  marginright: 7px;
-  marginleft: 11px;
-  alignself: flex-start;
-  margintop: 17px;
-  backgroundcolor: ${(props: any) => getArticleColor(props.article)};
+  text-align: center;
+  margin-right: 7px;
+  margin-left: 11px;
+  align-self: flex-start;
+  margin-top: 17px;
+  background-color: ${(props: any) => getArticleColor(props.article)};
 `
 
 const StyledArticleClicked = styled(StyledArticle)`
   color: ${COLORS.lunesBlack};
-  backgroundcolor: ${COLORS.lunesWhite};
+  background-color: ${COLORS.lunesWhite};
 `
 
 const StyledArticleCorrect = styled(StyledArticle)`
@@ -67,10 +67,10 @@ const StyledArticleIncorrect = styled(StyledArticle)`
 
 const StyledWord = styled.Text`
   height: 18px;
-  fontfamily: SourceSansPro;
-  fontsize: 14px;
-  fontweight: normal;
-  fontstyle: normal;
+  font-family: SourceSansPro;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
   color: ${COLORS.lunesGreyDark};
 `
 const StyledWordClicked = styled(StyledWord)`
