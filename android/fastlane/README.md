@@ -36,6 +36,11 @@ Upload Android App to BrowserStack
 fastlane android upload_to_playstore
 ```
 Upload Android App to Google Play
+### android build_for_screengrab
+```
+fastlane android build_for_screengrab
+```
+Build debug and test APK for screenshots
 
 ----
 
