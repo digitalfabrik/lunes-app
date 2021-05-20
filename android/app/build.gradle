@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.lunesappui"
+        applicationId "app.lunes"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
