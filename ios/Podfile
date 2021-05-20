@@ -30,7 +30,7 @@ target 'Lunes' do
 end
 
 target 'Lunes-tvOS' do
-  # Pods for LunesAppUI-tvOS
+  # Pods for Lunes-tvOS
 
   target 'Lunes-tvOSTests' do
     inherit! :search_paths
