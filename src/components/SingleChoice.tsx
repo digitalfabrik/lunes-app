@@ -1,32 +1,22 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import SingleChoiceListItem, { ISingleChoiceListItemProps } from './SingleChoiceListItem'
+import SingleChoiceListItem, { SingleChoiceListItemPropsType } from './SingleChoiceListItem'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 35
-  }
-})
+export const StyledContainer = styled.View`
+  margin-horizontal: 8%;
+`
 
-export interface ISingleChoiceProps {
-  answerOptions: ISingleChoiceListItemProps[]
+export interface SingleChoicePropsType {
+  answerOptions: SingleChoiceListItemPropsType[]
 }
 
-export const SingleChoice = ({ answerOptions }: ISingleChoiceProps) => {
+export const SingleChoice = ({ answerOptions }: SingleChoicePropsType) => {
   return (
-    <View style={styles.container}>
-      {answerOptions.map((a, index) => {
-        return (
-          <SingleChoiceListItem
-            key={index}
-            word={a.word}
-            article={a.article}
-            correct={a.correct}
-            selected={a.selected}
-            addOpacity={a.addOpacity}
-          />
-        )
+    <StyledContainer>
+      {answerOptions.map((answerOption, index) => {
+        return <SingleChoiceListItem key={index} {...answerOption} />
       })}
-    </View>
+    </StyledContainer>
   )
 }
