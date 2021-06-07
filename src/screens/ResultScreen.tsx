@@ -96,8 +96,8 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title>
       <>
         <Icon width={38} height={38} />
-        <Text style={styles.screenTitle}> {title} Entries</Text>
-        <Text style={styles.description}>{`${counts[resultType.key]} of ${counts.total} Words`}</Text>
+        <Text style={styles.screenTitle}> {title} Eingaben</Text>
+        <Text style={styles.description}>{`${counts[resultType.key]} von ${counts.total} Wörtern`}</Text>
       </>
     </Title>
   )
@@ -124,7 +124,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>
-            Repeat {resultType.key === 'similar' ? 'almost correct' : resultType.key} entries
+            {resultType.key === 'similar' ? 'almost correct' : resultType.key} Eingaben anschauen.
           </Text>
         </>
       </Button>

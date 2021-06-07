@@ -167,7 +167,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
-          <Text style={styles.headerText}>Finish Exercise</Text>
+          <Text style={styles.headerText}>ÜBUNG BEENDEN</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
@@ -185,7 +185,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>Results Overview</Text>
+        <Text style={styles.screenTitle}>Ergebnis-Übersicht</Text>
         <Text style={styles.screenSubTitle}>{title}</Text>
         <Text style={styles.screenDescription}>{description}</Text>
         <Level style={styles.level} />
@@ -239,7 +239,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
+        <Text style={styles.lightLabel}>GESAMTE ÜBUNG WIEDERHOLEN</Text>
       </>
     </Button>
   )

@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
 const PopoverContent = () => (
   <View style={styles.container}>
     <InfoIcon width={30} height={30} />
-    <Text style={styles.message}>Ups, you forgot someting. You have to add an article to continue.</Text>
+    <Text style={styles.message}>Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.</Text>
   </View>
 )
 
