@@ -9,7 +9,7 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-const ExerciseKeys = {
+export const ExerciseKeys = {
   vocabularyOverview: 0,
   singleChoice: 1,
   learnArticles: 2,
