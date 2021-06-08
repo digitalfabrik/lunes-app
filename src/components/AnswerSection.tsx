@@ -12,7 +12,7 @@ import PopoverContent from './PopoverContent'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
 import AsyncStorage from '../utils/AsyncStorage'
-import {ExerciseKeys, SimpleResultType} from '../constants/data'
+import { ExerciseKeys, SimpleResultType } from '../constants/data'
 
 export const styles = StyleSheet.create({
   container: {
