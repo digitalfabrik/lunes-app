@@ -162,7 +162,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     </Title>
   )
 
-  const Item = ({ item }: { item: ExerciseType }): JSX.Element => {
+  const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
+    if(item.key === 1 || item.key === 2) {
+      return null
+    }
     const selected = item.key === selectedKey
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
