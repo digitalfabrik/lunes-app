@@ -90,13 +90,13 @@ const ConfirmationModal = ({
           <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
             <CloseIcon />
           </TouchableOpacity>
-          <Text style={styles.message}>Do you really want to end this session?</Text>
+          <Text style={styles.message}>Möchtest du diese Übung wirklich beenden?</Text>
           <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
-            <Text style={styles.lightLabel}>continue</Text>
+            <Text style={styles.lightLabel}>Weiter machen</Text>
           </Button>
 
           <Button onPress={goBack} theme={BUTTONS_THEME.light}>
-            <Text style={styles.darkLabel}>end</Text>
+            <Text style={styles.darkLabel}>Beenden</Text>
           </Button>
         </View>
       </View>

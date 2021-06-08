@@ -100,7 +100,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       <>
         <Text style={styles.screenTitle}>{disciplineTitle}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? 'Kategory' : 'Kategories'}
+          {count} {count === 1 ? 'Kategorie' : 'Kategorien'}
         </Text>
       </>
     </Title>

@@ -77,8 +77,8 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     <>
       <Header top={top} />
       <Text style={styles.text}>
-        Welcome to Lunes!{'\n'}
-        Learn German vocabulary for your profession.
+        Willkommen bei Lunes!{'\n'}
+        Lerne Vokabeln für deinen Beruf.
       </Text>
     </>
   )
