@@ -9,13 +9,13 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-const ExerciseKeys = {
+export const ExerciseKeys = {
   vocabularyOverview: 0,
   singleChoice: 1,
   learnArticles: 2,
   vocabularyTrainer: 3
 }
-type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface ExerciseType {
   key: ExerciseKeyType
