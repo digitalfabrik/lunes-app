@@ -15,7 +15,7 @@ const ExerciseKeys = {
   learnArticles: 2,
   vocabularyTrainer: 3
 }
-type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface ExerciseType {
   key: ExerciseKeyType

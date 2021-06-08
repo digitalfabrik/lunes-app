@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
-    lineHeight: 18,
+    lineHeight: 30,
     marginTop: 7
   },
   description: {
@@ -158,7 +158,7 @@ interface ResultOverviewScreenPropsType {
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
   const { extraParams, results } = route.params
   const { exercise } = extraParams
-  const { Level, description, title } = EXERCISES.filter(({ title }) => title === exercise)[0]
+  const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 

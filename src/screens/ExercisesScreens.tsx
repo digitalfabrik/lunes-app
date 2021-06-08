@@ -163,7 +163,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   )
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element => {
-    const selected = item.key === selectedKey
+    const selected = item.key.toString() === selectedKey
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
@@ -175,13 +175,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
           <Text style={descriptionStyle}>{item.description}</Text>
           <item.Level style={styles.level} />
         </View>
-        <Arrow fill={item.key === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Pressable>
     )
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    setSelectedKey(item.key)
+    setSelectedKey(item.key.toString())
     navigation.push(item.nextScreen, {
       extraParams: {
         ...extraParams,
@@ -199,7 +199,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => item.key}
+        keyExtractor={item => item.key.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>

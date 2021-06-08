@@ -165,7 +165,7 @@ const AnswerSection = ({
 
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
-      const exercise = (await AsyncStorage.getExercise('vocabularyTrainer')) ?? {}
+      const exercise = (await AsyncStorage.getExercise(3)) ?? {}
       exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
       exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
 
@@ -174,7 +174,7 @@ const AnswerSection = ({
         result: score
       }
 
-      await AsyncStorage.setExercise('vocabularyTrainer', exercise)
+      await AsyncStorage.setExercise(3, exercise)
 
       const session = await AsyncStorage.getSession()
       if (session === null) {
