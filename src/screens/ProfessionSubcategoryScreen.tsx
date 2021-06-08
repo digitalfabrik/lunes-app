@@ -107,7 +107,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
   )
 
   const Item = ({ item }: { item: ProfessionSubcategoryType }): JSX.Element | null => {
-    if(item.total_documents === 0) {
+    if (item.total_documents === 0) {
       return null
     }
     const selected = item.id === selectedId

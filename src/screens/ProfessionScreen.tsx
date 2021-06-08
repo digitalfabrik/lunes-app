@@ -86,8 +86,8 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   const Item = ({ item }: { item: ProfessionType }): JSX.Element | null => {
     const itemTextStyle = item.id === selectedId ? styles.clickedItemDescription : styles.description
 
-    if(item.total_training_sets === 0) {
-      return null;
+    if (item.total_training_sets === 0) {
+      return null
     }
 
     return (
