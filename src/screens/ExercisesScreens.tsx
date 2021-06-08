@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
-import { EXERCISES, ExerciseType } from '../constants/data'
+import { ExerciseKeys, EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -162,7 +162,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     </Title>
   )
 
-  const Item = ({ item }: { item: ExerciseType }): JSX.Element => {
+  const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
+    if (item.key === ExerciseKeys.learnArticles || item.key === ExerciseKeys.singleChoice) {
+      return null
+    }
     const selected = item.key.toString() === selectedKey
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2

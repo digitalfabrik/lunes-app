@@ -106,7 +106,10 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     </Title>
   )
 
-  const Item = ({ item }: { item: ProfessionSubcategoryType }): JSX.Element => {
+  const Item = ({ item }: { item: ProfessionSubcategoryType }): JSX.Element | null => {
+    if (item.total_documents === 0) {
+      return null
+    }
     const selected = item.id === selectedId
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
 
