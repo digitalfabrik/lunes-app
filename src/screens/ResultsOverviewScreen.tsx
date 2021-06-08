@@ -220,7 +220,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <item.Icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
-            <Text style={descriptionStyle}>{`${count} of ${counts.total} Words`}</Text>
+            <Text style={descriptionStyle}>{`${count} von ${counts.total} Wörter`}</Text>
           </View>
         </View>
         <Arrow fill={arrowColor} />
