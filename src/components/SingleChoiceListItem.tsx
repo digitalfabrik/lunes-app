@@ -15,14 +15,14 @@ const StyledContainer = styled.View`
   justify-content: flex-start;
   flex-direction: row;
   align-items: baseline;
-  border-color: ${(props: any) => {
+  border-color: ${(props: { pressed: boolean; selected: boolean }) => {
     if (props.pressed || props.selected) {
       return 'transparent'
     } else {
       return COLORS.lunesBlackUltralight
     }
   }};
-  background-color: ${(props: any) => {
+  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesBlack
     } else if (props.selected && props.correct) {
@@ -46,7 +46,7 @@ const StyledArticle = styled.Text`
   text-align: center;
   margin-right: 3%;
   margin-left: 3.5%;
-  color:  ${(props: any) => {
+  color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesBlack
     } else if (props.selected) {
@@ -113,10 +113,10 @@ const SingleChoiceListItem = ({
 }: SingleChoiceListItemPropsType) => {
   return (
     <StyledContainer pressed={pressed} correct={correct} selected={selected}>
-      <StyledArticle testID='article' article={article} selected={selected} correct={correct} pressed={pressed}>
+      <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>
-      <StyledWord testID='word' pressed={pressed} selected={selected} correct={correct}>
+      <StyledWord pressed={pressed} selected={selected} correct={correct}>
         {word}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
