@@ -31,7 +31,7 @@ commands:
                 command: circleci config validate
                 name: Validate circle config
     persist_environment_variables:
-        description: Sets the environment variables specified in the file 'environment_variables'. Make sure the file is persisted and has been attached.
+        description: Writes the environment variables to the file 'environment_variables'. Make sure the file is persisted and has been attached.
         steps:
             - run:
                 command: cat ${BASH_ENV}
@@ -271,4 +271,3 @@ workflows:
                     - build_android
         when: << pipeline.parameters.run_dev_delivery >>
     version: 2
-
