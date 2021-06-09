@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.lunesappui"
+        applicationId "app.lunes"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         if (project.hasProperty('VERSION_CODE')) {
@@ -146,17 +146,22 @@ android {
         }
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
         release {
-            storeFile file("$System.env.KEYSTORE_FILENAME")
-            storePassword "$System.env.KEYSTORE_PASSWORD"
-            keyAlias "$System.env.KEY_ALIAS"
-            keyPassword "$System.env.KEY_PASSWORD"
+            if (project.hasProperty('KEYSTORE_PATH')) {
+                storeFile file(project.KEYSTORE_PATH)
+                storePassword project.KEYSTORE_PASSWORD
+                keyAlias project.KEYSTORE_KEY_ALIAS
+                keyPassword project.KEYSTORE_KEY_PASSWORD
+            } else {
+                storeFile file('debug.keystore')
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
+
+                logger.warn("You should provide a keystore using the " +
+                        "KEYSTORE_PATH, KEYSTORE_PASSWORD, KEYSTORE_KEY_ALIAS and KEYSTORE_KEY_PASSWORD " +
+                        "project properties! Using a keystore for testing!")
+            }
         }
     }
 
