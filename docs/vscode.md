@@ -2,14 +2,14 @@
 
 - [Installation](#installation)
 - [Settings](#settings)
-    - [Optional settings](#optional-settings)
+  - [Optional settings](#optional-settings)
 - [Required Extensions](#required-extensions)
-    - [Eslint Code Formatter](#eslint-code-formatter)
+  - [Eslint Code Formatter](#eslint-code-formatter)
 - [Recommended Extensions](#recommended-extensions)
-    - [Git History](#git-history)
-    - [... Save your ass](#-save-your-ass)
-    - [Remote WSL](#remote-wsl)
-    - [.md-Files](#md-files)
+  - [Git History](#git-history)
+  - [... Save your ass](#-save-your-ass)
+  - [Remote WSL](#remote-wsl)
+  - [.md-Files](#md-files)
 
 ## Installation
 

@@ -19,7 +19,7 @@ If your are interested in contributing write an e-mail to [Steffi](mailto:metzge
 
 - Rate our Lunes app in the [PlayStore](https://play.google.com/store/apps/details?id=app.lunes)
   and the [Apple App Store](https://apps.apple.com/de/app/lunes/id1562834995).
-- Install [nodejs](https://nodejs.org/). 
+- Install [nodejs](https://nodejs.org/).
 - Install [yarn](https://yarnpkg.com/).
 
 ### Project setup
@@ -31,7 +31,6 @@ If you want to develop on Windows, follow the steps [here](./docs/setup-windows-
 - Import this project (VCS > Get from Version Control) and open it.
 - Run `yarn` in the terminal to install all dependencies.
 - Take a look at the [available scripts](package.json).
-
 
 #### Android
 
@@ -52,7 +51,7 @@ _Note: In order to work with the project in XCode, always open `ios/Lunes.xcwork
 - [optional] Install the following plugins:
   - [Styled Components](https://plugins.jetbrains.com/plugin/9997-styled-components--styled-jsx/)
   - [Ruby](https://plugins.jetbrains.com/plugin/1293-ruby) (if working with Fastlane)
-  
+
 ## Conventions
 
 Our [conventions](docs/conventions.md) can be found here

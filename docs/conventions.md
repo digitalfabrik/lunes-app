@@ -39,7 +39,6 @@ To merge a pull request, it has to match our Definition of Done. It includes amo
 
 **Creating a pull request from a fork prevents checks from the CI. It is a good way to make contact though.**
 
-
 ## Versioning
 
 Versions consist of a version name and a version code.
