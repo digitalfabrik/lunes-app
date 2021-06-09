@@ -66,12 +66,12 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
 
   const message =
     result === 'correct'
-      ? 'Great, keep it up! \nThe Word you filled in is correct.'
+      ? 'Toll, weiter so! \nDeine Eingabe ist richtig.'
       : result === 'incorrect' || !secondAttempt
-      ? `What a pity! Your entry is incorrect,\nthe correct answer is: ${
+      ? `Schade, deine Eingabe ist falsch. Die richtige Antwort ist: ${
           document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
         } ${document?.word}`
-      : `Your entry ${input} is almost correct. Check for upper and lower case.`
+      : `Deine Eingabe ${input} ist fast richtig. Überprüfe Groß- und Kleinschreibung.`
 
   return result !== '' || secondAttempt ? (
     <View style={styles.messageContainer}>

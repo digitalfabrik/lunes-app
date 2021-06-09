@@ -12,7 +12,7 @@ import PopoverContent from './PopoverContent'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
 import AsyncStorage from '../utils/AsyncStorage'
-import { SimpleResultType } from '../constants/data'
+import { ExerciseKeys, SimpleResultType } from '../constants/data'
 
 export const styles = StyleSheet.create({
   container: {
@@ -165,7 +165,7 @@ const AnswerSection = ({
 
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
-      const exercise = (await AsyncStorage.getExercise('vocabularyTrainer')) ?? {}
+      const exercise = (await AsyncStorage.getExercise(ExerciseKeys.vocabularyTrainer)) ?? {}
       exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
       exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
 
@@ -174,7 +174,7 @@ const AnswerSection = ({
         result: score
       }
 
-      await AsyncStorage.setExercise('vocabularyTrainer', exercise)
+      await AsyncStorage.setExercise(ExerciseKeys.vocabularyTrainer, exercise)
 
       const session = await AsyncStorage.getSession()
       if (session === null) {
@@ -256,7 +256,7 @@ const AnswerSection = ({
         ]}>
         <TextInput
           style={styles.textInput}
-          placeholder={secondAttempt ? 'Try again' : 'Enter Word with article'}
+          placeholder={secondAttempt ? 'Neuer Versuch' : 'Wort mit Artikel eingeben'}
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={text => setInput(text)}

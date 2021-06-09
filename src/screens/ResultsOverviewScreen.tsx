@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
     fontFamily: 'SourceSansPro-Regular',
-    lineHeight: 18,
+    lineHeight: 30,
     marginTop: 7
   },
   description: {
@@ -158,7 +158,7 @@ interface ResultOverviewScreenPropsType {
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
   const { extraParams, results } = route.params
   const { exercise } = extraParams
-  const { Level, description, title } = EXERCISES.filter(({ title }) => title === exercise)[0]
+  const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
@@ -167,7 +167,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
-          <Text style={styles.headerText}>Finish Exercise</Text>
+          <Text style={styles.headerText}>ÜBUNG BEENDEN</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
@@ -185,7 +185,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>Results Overview</Text>
+        <Text style={styles.screenTitle}>Ergebnis-Übersicht</Text>
         <Text style={styles.screenSubTitle}>{title}</Text>
         <Text style={styles.screenDescription}>{description}</Text>
         <Level style={styles.level} />
@@ -220,7 +220,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <item.Icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
-            <Text style={descriptionStyle}>{`${count} of ${counts.total} Words`}</Text>
+            <Text style={descriptionStyle}>{`${count} von ${counts.total} Wörter`}</Text>
           </View>
         </View>
         <Arrow fill={arrowColor} />
@@ -239,7 +239,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>Repeat whole exercise</Text>
+        <Text style={styles.lightLabel}>GESAMTE ÜBUNG WIEDERHOLEN</Text>
       </>
     </Button>
   )
