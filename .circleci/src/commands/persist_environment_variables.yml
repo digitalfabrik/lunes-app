@@ -1,4 +1,4 @@
-description: Sets the environment variables specified in the file 'environment_variables'. Make sure the file is persisted and has been attached.
+description: Writes the environment variables to the file 'environment_variables'. Make sure the file is persisted and has been attached.
 steps:
   - run:
       name: List environment variables
