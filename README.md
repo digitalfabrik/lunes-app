@@ -2,7 +2,7 @@
 
 Android and iOS React native Apps for [Lunes](https://lunes.app)
 
-If your are interested in contributing write an e-mail to [Steffi](mailto:metzger@integreat-app.de) for development issues or to [Daniel](mailto:info@lunes.app) for no-technical stuff.
+If your are interested in contributing write an e-mail to [Steffi](mailto:metzger@integreat-app.de) for development issues or to [Daniel](mailto:info@lunes.app) for non-technical stuff.
 
 ## Contents
 
