@@ -41,16 +41,16 @@ export const clearSession = async (): Promise<void> => {
 }
 
 export const setExercise = async (exerciseKey: ExerciseKeyType, exercise: ExerciseType): Promise<void> => {
-  await AsyncStorage.setItem(exerciseKey, JSON.stringify(exercise))
+  await AsyncStorage.setItem(exerciseKey.toString(), JSON.stringify(exercise))
 }
 
 export const getExercise = async (exerciseKey: ExerciseKeyType): Promise<ExerciseType | null> => {
-  const exerciseJson = await AsyncStorage.getItem(exerciseKey)
+  const exerciseJson = await AsyncStorage.getItem(exerciseKey.toString())
   return exerciseJson === null ? null : JSON.parse(exerciseJson)
 }
 
 export const clearExercise = async (exerciseKey: ExerciseKeyType): Promise<void> => {
-  await AsyncStorage.removeItem(exerciseKey)
+  await AsyncStorage.removeItem(exerciseKey.toString())
 }
 
 export default {

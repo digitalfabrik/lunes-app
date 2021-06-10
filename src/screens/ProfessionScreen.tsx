@@ -77,14 +77,18 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     <>
       <Header top={top} />
       <Text style={styles.text}>
-        Welcome to Lunes!{'\n'}
-        Learn German vocabulary for your profession.
+        Willkommen bei Lunes!{'\n'}
+        Lerne Vokabeln für deinen Beruf.
       </Text>
     </>
   )
 
-  const Item = ({ item }: { item: ProfessionType }): JSX.Element => {
+  const Item = ({ item }: { item: ProfessionType }): JSX.Element | null => {
     const itemTextStyle = item.id === selectedId ? styles.clickedItemDescription : styles.description
+
+    if (item.total_training_sets === 0) {
+      return null
+    }
 
     return (
       <MenuItem

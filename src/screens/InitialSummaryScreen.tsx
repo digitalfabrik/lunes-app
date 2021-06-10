@@ -83,15 +83,15 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
     const percentageCorrect = (correctResults.length / results.length) * 100
     switch (true) {
       case percentageCorrect > 66:
-        setMessage('Keep it up!\nYou have mastered the exercise very well.')
+        setMessage('Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.')
         break
 
       case percentageCorrect > 33:
-        setMessage("You're getting there.\nPlease retry!")
+        setMessage('Übung macht den Meister, \nversuche es noch einmal!')
         break
 
       case percentageCorrect < 33:
-        setMessage('You still have some trouble with the basics,\nplease retry! ')
+        setMessage('Nicht aufgeben! \nVersuche es noch einmal!')
         break
     }
   }, [results])
@@ -121,14 +121,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
         <>
           <ListIcon />
-          <Text style={styles.lightLabel}>Check my results</Text>
+          <Text style={styles.lightLabel}>Eingabe überprüfen</Text>
         </>
       </Button>
 
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <>
           <RepeatIcon fill={COLORS.lunesBlack} />
-          <Text style={styles.darkLabel}>Repeat exercise</Text>
+          <Text style={styles.darkLabel}>Übung wiederholen</Text>
         </>
       </Button>
     </View>

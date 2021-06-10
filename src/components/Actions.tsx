@@ -51,24 +51,24 @@ const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, t
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
-        <Text style={[styles.lightLabel, styles.arrowLabel]}>{isFinished ? 'Check out' : 'Next Word'}</Text>
+        <Text style={[styles.lightLabel, styles.arrowLabel]}>{isFinished ? 'Check out' : 'NÄCHSTES WORT'}</Text>
         <WhiteNextArrow />
       </>
     </Button>
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
-        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>Check entry</Text>
+        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>EINGABE ÜBERPRÜFEN</Text>
       </Button>
 
       <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
-        <Text style={styles.darkLabel}>I give up!</Text>
+        <Text style={styles.darkLabel}>LÖSUNG ANZEIGEN</Text>
       </Button>
 
       {!isFinished && !result && (
         <Button onPress={tryLater} testID='try-later'>
           <>
-            <Text style={styles.darkLabel}>Try later</Text>
+            <Text style={styles.darkLabel}>SPÄTER VERSUCHEN</Text>
             <NextArrow style={styles.arrow} />
           </>
         </Button>
