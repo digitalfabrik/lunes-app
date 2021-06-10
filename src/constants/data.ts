@@ -65,8 +65,10 @@ export const ARTICLES = {
   die: 'die',
   der: 'der',
   das: 'das',
-  diePlural: 'die (plural)'
-}
+  diePlural: 'die'
+} as const
+
+export type Article = typeof ARTICLES[keyof typeof ARTICLES]
 
 export type SimpleResultType = 'correct' | 'incorrect' | 'similar'
 
