@@ -65,7 +65,7 @@ export const ARTICLES = {
   die: 'die',
   der: 'der',
   das: 'das',
-  diePlural: 'die'
+  diePlural: 'Die'
 } as const
 
 export type Article = typeof ARTICLES[keyof typeof ARTICLES]

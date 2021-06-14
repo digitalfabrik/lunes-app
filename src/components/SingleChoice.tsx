@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import SingleChoiceListItem, { SingleChoiceListItemType } from './SingleChoiceListItem'
 import styled from 'styled-components/native'
-import {Article} from "../constants/data";
+import { Article } from '../constants/data'
 
 export const StyledContainer = styled.View`
+  padding-top: 10px;
   margin-horizontal: 8%;
 `
 
@@ -17,7 +17,7 @@ export const SingleChoice = ({ answerOptions, onClick }: SingleChoicePropsType) 
   return (
     <StyledContainer>
       {answerOptions.map((answerOption, index) => {
-        return <SingleChoiceListItem key={index} answerOption={answerOption} onClick={onClick}/>
+        return <SingleChoiceListItem key={index} answerOption={answerOption} onClick={onClick} />
       })}
     </StyledContainer>
   )

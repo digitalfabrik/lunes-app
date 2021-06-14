@@ -1,5 +1,5 @@
 import { COLORS } from '../constants/colors'
-import {Article, ARTICLES} from '../constants/data'
+import { Article, ARTICLES } from '../constants/data'
 
 export const getArticleColor = (article: Article): string => {
   switch (article?.toLowerCase()) {
