@@ -4,9 +4,9 @@ import { SingleChoiceListItemType } from '../components/SingleChoiceListItem'
 import { DocumentsType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
 import { RouteProp } from '@react-navigation/native'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Article, ARTICLES, BUTTONS_THEME } from '../constants/data'
+import { Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
 import Button from '../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../assets/images'
@@ -31,6 +31,9 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   const [count, setCount] = useState<number>(0)
   const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
   const [currentWord, setCurrentWord] = useState<number>(0)
+  const [results, setResults] = useState<DocumentResultType[]>([])
+
+  const { extraParams } = route.params
 
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
@@ -76,13 +79,29 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
         answer.selected = true
       }
     })
+    if (article === documents[currentWord].article) {
+      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
+      setResults([...results, result])
+    } else {
+      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
+      setResults([...results, result])
+    }
     setAnswerOptions(answerOptionsUpdated)
     setIsFinished(true)
   }
 
-  const getNextWord = () => {
-    setCurrentWord(prevState => prevState + 1)
-    setIsFinished(false)
+  const buttonClick = () => {
+    const exersiceFinished = currentWord + 1 >= count
+    const extraParamsWithResults: any = extraParams
+    extraParamsWithResults.results = results
+    if (exersiceFinished) {
+      setCurrentWord(0)
+      setResults([])
+      navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
+    } else {
+      setCurrentWord(prevState => prevState + 1)
+      setIsFinished(false)
+    }
   }
 
   return (
@@ -90,10 +109,10 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
       {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
       <ButtonContainer>
         {isFinished && (
-          <Button onPress={getNextWord} theme={BUTTONS_THEME.dark}>
+          <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
-                {currentWord >= count ? 'ERGEBNISE' : 'NÄCHSTES WORT'}
+                {currentWord + 1 >= count ? 'ERGEBNISE' : 'NÄCHSTES WORT'}
               </Text>
               <WhiteNextArrow />
             </>

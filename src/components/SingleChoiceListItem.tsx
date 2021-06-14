@@ -110,7 +110,6 @@ export interface SingleChoiceListItemType {
 
 const SingleChoiceListItem = ({ answerOption, onClick }: SingleChoiceListItemPropsType) => {
   const { word, article, pressed, correct, selected, addOpacity } = answerOption
-  console.log(correct, ' ', selected)
   return (
     <StyledContainer pressed={pressed} correct={correct} selected={selected} onPress={() => onClick(article)}>
       <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>

@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME } from '../constants/data'
+import { BUTTONS_THEME, EXERCISES } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
@@ -68,13 +68,18 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getExercise(exercise)
-        .then(value => {
-          if (value !== null) {
-            setResults(Object.values(value[disciplineTitle][trainingSet]))
-          }
-        })
-        .catch(e => console.error(e))
+      if (exercise === 3) {
+        AsyncStorage.getExercise(exercise)
+          .then(value => {
+            if (value !== null) {
+              setResults(Object.values(value[disciplineTitle][trainingSet]))
+            }
+          })
+          .catch(e => console.error(e))
+      } else {
+        console.log('not exercise 3: ', extraParams.results)
+        setResults(extraParams.results)
+      }
     }, [exercise, disciplineTitle, trainingSet])
   )
 
@@ -102,7 +107,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   }
 
   const repeatExercise = (): void => {
-    navigation.navigate('VocabularyTrainer', {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
       extraParams
     })
   }
