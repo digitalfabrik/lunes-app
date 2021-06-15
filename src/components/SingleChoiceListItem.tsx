@@ -96,7 +96,7 @@ const StyledOpacityOverlay = styled.View`
 export interface SingleChoiceListItemPropsType {
   answerOption: SingleChoiceListItemType
   onClick: (article: Article) => void
-    isAnswerClicked: boolean
+  isAnswerClicked: boolean
 }
 
 export interface SingleChoiceListItemType {

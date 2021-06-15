@@ -19,7 +19,12 @@ export const SingleChoice = ({ answerOptions, onClick, isAnswerClicked }: Single
     <StyledContainer>
       {answerOptions.map((answerOption, index) => {
         return (
-          <SingleChoiceListItem key={index} answerOption={answerOption} onClick={onClick} isAnswerClicked={isAnswerClicked} />
+          <SingleChoiceListItem
+            key={index}
+            answerOption={answerOption}
+            onClick={onClick}
+            isAnswerClicked={isAnswerClicked}
+          />
         )
       })}
     </StyledContainer>
