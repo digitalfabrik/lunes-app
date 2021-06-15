@@ -1,7 +1,7 @@
 import React from 'react'
 import SingleChoiceListItem, { SingleChoiceListItemType } from './SingleChoiceListItem'
 import styled from 'styled-components/native'
-import { Article } from '../constants/data'
+import {Answer, Article} from '../constants/data'
 
 export const StyledContainer = styled.View`
   padding-top: 10px;
@@ -9,7 +9,7 @@ export const StyledContainer = styled.View`
 `
 
 export interface SingleChoicePropsType {
-  onClick: (article: Article) => void
+  onClick: (answer: Answer) => void
   answerOptions: SingleChoiceListItemType[]
 }
 

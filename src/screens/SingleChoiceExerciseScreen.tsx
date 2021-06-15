@@ -4,13 +4,26 @@ import {SingleChoiceListItemType} from '../components/SingleChoiceListItem'
 import {DocumentsType, ENDPOINTS} from '../constants/endpoints'
 import axios from '../utils/axios'
 import {RouteProp} from '@react-navigation/native'
-import {RoutesParamsType} from '../navigation/NavigationTypes'
+import {DocumentResultType, RoutesParamsType} from '../navigation/NavigationTypes'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {BUTTONS_THEME, isArticle} from '../constants/data'
+import {Answer, BUTTONS_THEME, isArticle, SIMPLE_RESULTS} from '../constants/data'
 import Button from '../components/Button'
 import {Text} from 'react-native'
 import {WhiteNextArrow} from '../../assets/images'
 import {styles} from '../components/Actions'
+import styled from "styled-components/native";
+
+const ButtonContainer = styled.View`
+  align-items: center;
+  margin: 20px 0;
+`
+
+const StyledImage = styled.Image`
+    width: 100%;
+    height: 35%;
+    position: relative;
+    resizeMode: cover;
+`
 
 interface SingleChoiceExerciseScreenPropsType {
     route: RouteProp<RoutesParamsType, 'VocabularyOverview'>
@@ -25,6 +38,9 @@ const SingleChoiceExerciseScreen = ({navigation, route}: SingleChoiceExerciseScr
     const [count, setCount] = useState<number>(0)
     const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
     const [currentWord, setCurrentWord] = useState<number>(0)
+    const [results, setResults] = useState<DocumentResultType[]>([])
+
+    const {extraParams} = route.params
 
     useEffect(() => {
         const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
@@ -62,11 +78,9 @@ const SingleChoiceExerciseScreen = ({navigation, route}: SingleChoiceExerciseScr
 
     const buildAnswerOption = React.useCallback(() => {
         const {word, article} = documents[currentWord] || {}
-
         if (!word || !isArticle(article) || count === 0) {
             return
         }
-
         const answerOptions: SingleChoiceListItemType[] = []
         generateFalseAnswers(answerOptions)
 
@@ -86,26 +100,64 @@ const SingleChoiceExerciseScreen = ({navigation, route}: SingleChoiceExerciseScr
         buildAnswerOption()
     }, [documents, currentWord, buildAnswerOption])
 
-    const onClick = () => {
+    const onClick = (answer: Answer) => {
+        const answerOptionsUpdated = [...answerOptions]
+        const word = answer.word
+        answerOptionsUpdated.forEach(answer => {
+            if (answer.word === documents[currentWord].word) {
+                answer.correct = true
+            } else {
+                answer.addOpacity = true
+            }
+            if (answer.word === word) {
+                answer.selected = true
+            }
+        })
+        if (word === documents[currentWord].word) {
+            const result: DocumentResultType = {...documents[currentWord], result: SIMPLE_RESULTS.correct}
+            setResults([...results, result])
+        } else {
+            const result: DocumentResultType = {...documents[currentWord], result: SIMPLE_RESULTS.incorrect}
+            setResults([...results, result])
+        }
+        setAnswerOptions(answerOptionsUpdated)
+        setIsFinished(true)
     }
 
-    const getNextWord = () => {
-        setCurrentWord(prevState => prevState + 1)
+    const buttonClick = () => {
+        const exersiceFinished = currentWord + 1 >= count
+        const extraParamsWithResults: any = extraParams
+        extraParamsWithResults.results = results
+        if (exersiceFinished) {
+            setCurrentWord(0)
+            setResults([])
+            navigation.navigate('InitialSummary', {extraParams: extraParamsWithResults})
+        } else {
+            setCurrentWord(prevState => prevState + 1)
+            setIsFinished(false)
+        }
     }
 
     return (
         <>
+            <StyledImage
+                source={{
+                    uri: documents[currentWord]?.document_image[0].image
+                }}
+            />
             {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick}/>}
-            {isFinished && (
-                <Button onPress={getNextWord} theme={BUTTONS_THEME.dark}>
-                    <>
-                        <Text style={[styles.lightLabel, styles.arrowLabel]}>
-                            {currentWord >= count ? 'ERGEBNISE' : 'NÄCHSTES WORT'}
-                        </Text>
-                        <WhiteNextArrow/>
-                    </>
-                </Button>
-            )}
+            <ButtonContainer>
+                {isFinished && (
+                    <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>
+                        <>
+                            <Text style={[styles.lightLabel, styles.arrowLabel]}>
+                                {currentWord + 1 >= count ? 'ERGEBNISE' : 'NÄCHSTES WORT'}
+                            </Text>
+                            <WhiteNextArrow/>
+                        </>
+                    </Button>
+                )}
+            </ButtonContainer>
         </>
     )
 }

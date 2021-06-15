@@ -6,12 +6,19 @@ import axios from '../utils/axios'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
+import {Answer, Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS} from '../constants/data'
 import Button from '../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../assets/images'
 import { styles } from '../components/Actions'
 import styled from 'styled-components/native'
+
+const StyledImage = styled.Image`
+    width: 100%;
+    height: 35%;
+    position: relative;
+    resizeMode: cover;
+`
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -67,8 +74,9 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
     buildAnswerOption()
   }, [documents, currentWord, buildAnswerOption])
 
-  const onClick = (article: Article) => {
+  const onClick = (answer: Answer) => {
     const answerOptionsUpdated = [...answerOptions]
+    const article = answer.article
     answerOptionsUpdated.forEach(answer => {
       if (answer.article === documents[currentWord].article) {
         answer.correct = true
@@ -106,6 +114,11 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
 
   return (
     <>
+      <StyledImage
+          source={{
+            uri: documents[currentWord]?.document_image[0].image
+          }}
+      />
       {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
       <ButtonContainer>
         {isFinished && (
