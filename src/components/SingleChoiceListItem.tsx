@@ -96,7 +96,7 @@ const StyledOpacityOverlay = styled.View`
 export interface SingleChoiceListItemPropsType {
   answerOption: SingleChoiceListItemType
   onClick: (article: Article) => void
-  isFinished: boolean
+    isAnswerClicked: boolean
 }
 
 export interface SingleChoiceListItemType {
@@ -108,7 +108,7 @@ export interface SingleChoiceListItemType {
   addOpacity: boolean
 }
 
-const SingleChoiceListItem = ({ answerOption, onClick, isFinished }: SingleChoiceListItemPropsType) => {
+const SingleChoiceListItem = ({ answerOption, onClick, isAnswerClicked }: SingleChoiceListItemPropsType) => {
   const { word, article, pressed, correct, selected, addOpacity } = answerOption
   return (
     <StyledContainer
@@ -116,7 +116,7 @@ const SingleChoiceListItem = ({ answerOption, onClick, isFinished }: SingleChoic
       correct={correct}
       selected={selected}
       onPress={() => onClick(article)}
-      disabled={isFinished}>
+      disabled={isAnswerClicked}>
       <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>

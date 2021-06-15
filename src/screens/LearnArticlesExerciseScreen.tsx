@@ -27,7 +27,7 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   const { trainingSetId } = route.params.extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isFinished, setIsFinished] = useState<boolean>(false)
+  const [isAnswerClicked, setIsAnswerClicked] = useState<boolean>(false)
   const [count, setCount] = useState<number>(0)
   const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -87,7 +87,7 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
       setResults([...results, result])
     }
     setAnswerOptions(answerOptionsUpdated)
-    setIsFinished(true)
+    setIsAnswerClicked(true)
   }
 
   const buttonClick = () => {
@@ -99,15 +99,15 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
       navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
     } else {
       setCurrentWord(prevState => prevState + 1)
-      setIsFinished(false)
+      setIsAnswerClicked(false)
     }
   }
 
   return (
     <>
-      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isFinished={isFinished} />}
+      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked} />}
       <ButtonContainer>
-        {isFinished && (
+        {isAnswerClicked && (
           <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>

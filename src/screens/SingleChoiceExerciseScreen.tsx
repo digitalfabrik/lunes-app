@@ -21,7 +21,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
   const { trainingSetId } = route.params.extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isFinished, setIsFinished] = useState<boolean>(false)
+  const [isAnswerClicked, setIsAnswerClicked] = useState<boolean>(false)
   const [count, setCount] = useState<number>(0)
   const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -50,7 +50,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
   return (
     <>
       {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
-      {isFinished && (
+      {isAnswerClicked && (
         <Button onPress={getNextWord} theme={BUTTONS_THEME.dark}>
           <>
             <Text style={[styles.lightLabel, styles.arrowLabel]}>
