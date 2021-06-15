@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
 import axios from '../utils/axios'
 import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
@@ -54,6 +54,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   const [professions, setProfessions] = useState<ProfessionType[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -65,10 +66,17 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         })
         .catch(e => console.error(e))
 
-      axios.get(ENDPOINTS.professions.all).then(response => {
-        setProfessions(response.data)
-        setIsLoading(false)
-      })
+      axios
+        .get(ENDPOINTS.professions.all)
+        .then(response => {
+          setProfessions(response.data)
+        })
+        .catch(e => {
+          setError(e.message)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
       setSelectedId(-1)
     }, [navigation])
   )
@@ -113,6 +121,15 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         disciplineIcon: item.icon
       }
     })
+  }
+
+  if (error) {
+    return (
+      <View style={styles.root}>
+        <StatusBar backgroundColor='blue' barStyle='dark-content' />
+        <Text>{error}</Text>
+      </View>
+    )
   }
 
   return (

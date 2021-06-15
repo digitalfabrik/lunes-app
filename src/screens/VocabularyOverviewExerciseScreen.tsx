@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, StatusBar } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
 import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
@@ -52,6 +52,7 @@ const VocabularyOverviewExerciseScreen = ({
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [count, setCount] = useState<number>(0)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -69,11 +70,18 @@ const VocabularyOverviewExerciseScreen = ({
 
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-    axios.get(url).then(response => {
-      setDocuments(response.data)
-      setCount(response.data.length)
-      setIsLoading(false)
-    })
+    axios
+      .get(url)
+      .then(response => {
+        setDocuments(response.data)
+        setCount(response.data.length)
+      })
+      .catch(e => {
+        setError(e.message)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [trainingSetId])
 
   const Header = (
@@ -96,6 +104,15 @@ const VocabularyOverviewExerciseScreen = ({
       audio={item.audio}
     />
   )
+
+  if (error) {
+    return (
+      <View style={styles.root}>
+        <StatusBar backgroundColor='blue' barStyle='dark-content' />
+        <Text>{error}</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.root}>
