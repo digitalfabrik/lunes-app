@@ -77,10 +77,9 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
           })
           .catch(e => console.error(e))
       } else {
-        console.log('not exercise 3: ', extraParams.results)
         setResults(extraParams.results)
       }
-    }, [exercise, disciplineTitle, trainingSet])
+    }, [exercise, disciplineTitle, trainingSet, extraParams])
   )
 
   React.useEffect(() => {

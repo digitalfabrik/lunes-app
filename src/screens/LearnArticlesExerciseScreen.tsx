@@ -92,8 +92,7 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
 
   const buttonClick = () => {
     const exersiceFinished = currentWord + 1 >= count
-    const extraParamsWithResults: any = extraParams
-    extraParamsWithResults.results = results
+    const extraParamsWithResults: RoutesParamsType['InitialSummary']['extraParams'] = { ...extraParams, results }
     if (exersiceFinished) {
       setCurrentWord(0)
       setResults([])
@@ -106,7 +105,7 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
 
   return (
     <>
-      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
+      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isFinished={isFinished} />}
       <ButtonContainer>
         {isFinished && (
           <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>

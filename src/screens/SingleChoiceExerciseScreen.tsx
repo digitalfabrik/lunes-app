@@ -29,7 +29,6 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
     axios.get(url).then(response => {
-      console.log('get', trainingSetId)
       setDocuments(response.data)
       setCount(response.data.length)
       setIsLoading(false)
