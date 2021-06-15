@@ -115,7 +115,7 @@ const SingleChoiceListItem = ({ answerOption, onClick, isAnswerClicked }: Single
       pressed={pressed}
       correct={correct}
       selected={selected}
-      onPress={() => onClick({article, word})}
+      onPress={() => onClick({ article, word })}
       disabled={isAnswerClicked}>
       <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}

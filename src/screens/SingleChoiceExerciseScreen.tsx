@@ -147,7 +147,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
-      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked}/>}
+      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked} />}
 
       <ButtonContainer>
         {isAnswerClicked && (
@@ -161,7 +161,6 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
           </Button>
         )}
       </ButtonContainer>
-
     </>
   )
 }
