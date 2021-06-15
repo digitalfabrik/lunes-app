@@ -90,6 +90,7 @@ export type RoutesParamsType = {
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
+      results: DocumentResultType[]
     }
     retryData?: { data: DocumentsType }
   }

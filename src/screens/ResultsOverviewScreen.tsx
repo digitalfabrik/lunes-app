@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, Pressable, FlatList, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
+import { FlatList, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Title from '../components/Title'
-import { Arrow, RepeatIcon, FinishIcon } from '../../assets/images'
-import { RESULTS, BUTTONS_THEME, EXERCISES, ResultType } from '../constants/data'
+import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/colors'
@@ -193,7 +193,11 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     </Title>
   )
 
-  const Item = ({ item }: { item: ResultType }): JSX.Element => {
+  const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
+    const hideAlmostCorrect = exercise !== ExerciseKeys.vocabularyTrainer && item.key === SIMPLE_RESULTS.similar
+    if (hideAlmostCorrect) {
+      return null
+    }
     const handleNavigation = ({ key }: ResultType): void => {
       setSelectedKey(key)
 
@@ -229,7 +233,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }
 
   const repeatExercise = (): void => {
-    navigation.navigate('VocabularyTrainer', {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
       retryData: { data: results },
       extraParams
     })

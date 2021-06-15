@@ -163,7 +163,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   )
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
-    if (item.key === ExerciseKeys.learnArticles || item.key === ExerciseKeys.singleChoice) {
+    if (item.key === ExerciseKeys.singleChoice) {
       return null
     }
     const selected = item.key.toString() === selectedKey

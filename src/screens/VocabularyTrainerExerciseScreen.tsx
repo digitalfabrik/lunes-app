@@ -125,7 +125,6 @@ const VocabularyTrainerExerciseScreen = ({
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
 
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
-
     return () => bEvent.remove()
   }, [route.params])
 

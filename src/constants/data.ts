@@ -65,10 +65,13 @@ export const ARTICLES = {
   die: 'die',
   der: 'der',
   das: 'das',
-  diePlural: 'die (plural)'
-}
+  diePlural: 'Die'
+} as const
 
-export type SimpleResultType = 'correct' | 'incorrect' | 'similar'
+export type Article = typeof ARTICLES[keyof typeof ARTICLES]
+
+export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
+export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
 export interface ResultType {
   key: SimpleResultType
