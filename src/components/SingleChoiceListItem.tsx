@@ -1,6 +1,6 @@
 import React from 'react'
 import { capitalizeFirstLetter, getArticleColor } from '../utils/helpers'
-import {Answer, Article, ARTICLES} from '../constants/data'
+import { Answer, Article, ARTICLES } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import styled from 'styled-components/native'
 import { View, Text } from 'react-native'
@@ -111,7 +111,7 @@ export interface SingleChoiceListItemType {
 const SingleChoiceListItem = ({ answerOption, onClick }: SingleChoiceListItemPropsType) => {
   const { word, article, pressed, correct, selected, addOpacity } = answerOption
   return (
-    <StyledContainer pressed={pressed} correct={correct} selected={selected} onPress={() => onClick({article, word})}>
+    <StyledContainer pressed={pressed} correct={correct} selected={selected} onPress={() => onClick({ article, word })}>
       <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>

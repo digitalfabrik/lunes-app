@@ -1,116 +1,116 @@
 import {
-    AlmostCorrectEntriesIcon,
-    CorrectEntriesIcon,
-    easy,
-    hard,
-    IncorrectEntriesIcon,
-    mideasy,
-    midhard
+  AlmostCorrectEntriesIcon,
+  CorrectEntriesIcon,
+  easy,
+  hard,
+  IncorrectEntriesIcon,
+  mideasy,
+  midhard
 } from '../../assets/images'
-import {RoutesParamsType} from '../navigation/NavigationTypes'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 export const ExerciseKeys = {
-    vocabularyOverview: 0,
-    singleChoice: 1,
-    learnArticles: 2,
-    vocabularyTrainer: 3
+  vocabularyOverview: 0,
+  singleChoice: 1,
+  learnArticles: 2,
+  vocabularyTrainer: 3
 }
 export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface ExerciseType {
-    key: ExerciseKeyType
-    title: string
-    description: string
-    Level: easy
-    nextScreen: keyof RoutesParamsType
+  key: ExerciseKeyType
+  title: string
+  description: string
+  Level: easy
+  nextScreen: keyof RoutesParamsType
 }
 
 export const EXERCISES: ExerciseType[] = [
-    {
-        key: ExerciseKeys.vocabularyOverview,
-        title: 'Vokabelübersicht',
-        description: 'Alle Wörte anschauen',
-        Level: easy,
-        nextScreen: 'VocabularyOverview'
-    },
-    {
-        key: ExerciseKeys.singleChoice,
-        title: 'Wort auswählen',
-        description: 'Wähle das richtige Wort',
-        Level: mideasy,
-        nextScreen: 'SingleChoice'
-    },
-    {
-        key: ExerciseKeys.learnArticles,
-        title: 'Artikel üben',
-        description: 'Wähle den richtigen Artikel',
-        Level: midhard,
-        nextScreen: 'LearnArticles'
-    },
-    {
-        key: ExerciseKeys.vocabularyTrainer,
-        title: 'Wort schreiben',
-        description: 'Wort mit Artikel eingeben',
-        Level: hard,
-        nextScreen: 'VocabularyTrainer'
-    }
+  {
+    key: ExerciseKeys.vocabularyOverview,
+    title: 'Vokabelübersicht',
+    description: 'Alle Wörte anschauen',
+    Level: easy,
+    nextScreen: 'VocabularyOverview'
+  },
+  {
+    key: ExerciseKeys.singleChoice,
+    title: 'Wort auswählen',
+    description: 'Wähle das richtige Wort',
+    Level: mideasy,
+    nextScreen: 'SingleChoice'
+  },
+  {
+    key: ExerciseKeys.learnArticles,
+    title: 'Artikel üben',
+    description: 'Wähle den richtigen Artikel',
+    Level: midhard,
+    nextScreen: 'LearnArticles'
+  },
+  {
+    key: ExerciseKeys.vocabularyTrainer,
+    title: 'Wort schreiben',
+    description: 'Wort mit Artikel eingeben',
+    Level: hard,
+    nextScreen: 'VocabularyTrainer'
+  }
 ]
 
 export const BUTTONS_THEME = {
-    light: 'light',
-    dark: 'dark'
+  light: 'light',
+  dark: 'dark'
 }
 
 export const ARTICLES = {
-    die: 'die',
-    der: 'der',
-    das: 'das',
-    diePlural: 'Die'
+  die: 'die',
+  der: 'der',
+  das: 'das',
+  diePlural: 'Die'
 } as const
 
 export type Article = typeof ARTICLES[keyof typeof ARTICLES]
 
 export function isArticle(str: string): str is Article {
-    for (const article in ARTICLES) {
-        if (str === article) {
-            return true
-        }
+  for (const article in ARTICLES) {
+    if (str === article) {
+      return true
     }
-    return false
+  }
+  return false
 }
 
-export const SIMPLE_RESULTS = {correct: 'correct', incorrect: 'incorrect', similar: 'similar'} as const
+export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
 export interface ResultType {
-    key: SimpleResultType
-    title: string
-    Icon: number
-    order: number
+  key: SimpleResultType
+  title: string
+  Icon: number
+  order: number
 }
 
 export interface Answer {
-    word: string
-    article: Article
+  word: string
+  article: Article
 }
 
 export const RESULTS: ResultType[] = [
-    {
-        key: 'correct',
-        Icon: CorrectEntriesIcon,
-        title: 'Richtige',
-        order: 0
-    },
-    {
-        key: 'similar',
-        Icon: AlmostCorrectEntriesIcon,
-        title: 'Fast richtige',
-        order: 1
-    },
-    {
-        key: 'incorrect',
-        Icon: IncorrectEntriesIcon,
-        title: 'Falsche',
-        order: 2
-    }
+  {
+    key: 'correct',
+    Icon: CorrectEntriesIcon,
+    title: 'Richtige',
+    order: 0
+  },
+  {
+    key: 'similar',
+    Icon: AlmostCorrectEntriesIcon,
+    title: 'Fast richtige',
+    order: 1
+  },
+  {
+    key: 'incorrect',
+    Icon: IncorrectEntriesIcon,
+    title: 'Falsche',
+    order: 2
+  }
 ]

@@ -6,7 +6,7 @@ import axios from '../utils/axios'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import {Answer, Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS} from '../constants/data'
+import { Answer, Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
 import Button from '../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../assets/images'
@@ -14,10 +14,10 @@ import { styles } from '../components/Actions'
 import styled from 'styled-components/native'
 
 const StyledImage = styled.Image`
-    width: 100%;
-    height: 35%;
-    position: relative;
-    resizeMode: cover;
+  width: 100%;
+  height: 35%;
+  position: relative;
+  resizemode: cover;
 `
 
 const ButtonContainer = styled.View`
@@ -115,9 +115,9 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   return (
     <>
       <StyledImage
-          source={{
-            uri: documents[currentWord]?.document_image[0].image
-          }}
+        source={{
+          uri: documents[currentWord]?.document_image[0].image
+        }}
       />
       {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
       <ButtonContainer>
