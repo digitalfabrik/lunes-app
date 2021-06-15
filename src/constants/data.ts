@@ -70,6 +70,15 @@ export const ARTICLES = {
 
 export type Article = typeof ARTICLES[keyof typeof ARTICLES]
 
+export function isArticle(str: string): str is Article {
+  for(const article in ARTICLES) {
+    if(str === article) {
+      return true
+    }
+  }
+  return false
+}
+
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
