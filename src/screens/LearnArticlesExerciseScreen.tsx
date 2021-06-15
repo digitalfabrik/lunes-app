@@ -6,7 +6,7 @@ import axios from '../utils/axios'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Answer, Article, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
+import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
 import Button from '../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../assets/images'
@@ -17,7 +17,6 @@ const StyledImage = styled.Image`
   width: 100%;
   height: 35%;
   position: relative;
-  resizemode: cover;
 `
 
 const ButtonContainer = styled.View`
@@ -34,7 +33,7 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   const { trainingSetId } = route.params.extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isFinished, setIsFinished] = useState<boolean>(false)
+  const [isAnswerClicked, setIsAnswerClicked] = useState<boolean>(false)
   const [count, setCount] = useState<number>(0)
   const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -95,20 +94,19 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
       setResults([...results, result])
     }
     setAnswerOptions(answerOptionsUpdated)
-    setIsFinished(true)
+    setIsAnswerClicked(true)
   }
 
   const buttonClick = () => {
     const exersiceFinished = currentWord + 1 >= count
-    const extraParamsWithResults: any = extraParams
-    extraParamsWithResults.results = results
+    const extraParamsWithResults: RoutesParamsType['InitialSummary']['extraParams'] = { ...extraParams, results }
     if (exersiceFinished) {
       setCurrentWord(0)
       setResults([])
       navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
     } else {
       setCurrentWord(prevState => prevState + 1)
-      setIsFinished(false)
+      setIsAnswerClicked(false)
     }
   }
 
@@ -119,9 +117,9 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
-      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
+      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked} />}
       <ButtonContainer>
-        {isFinished && (
+        {isAnswerClicked && (
           <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>

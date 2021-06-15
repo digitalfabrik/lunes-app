@@ -11,13 +11,21 @@ export const StyledContainer = styled.View`
 export interface SingleChoicePropsType {
   onClick: (answer: Answer) => void
   answerOptions: SingleChoiceListItemType[]
+  isAnswerClicked: boolean
 }
 
-export const SingleChoice = ({ answerOptions, onClick }: SingleChoicePropsType) => {
+export const SingleChoice = ({ answerOptions, onClick, isAnswerClicked }: SingleChoicePropsType) => {
   return (
     <StyledContainer>
       {answerOptions.map((answerOption, index) => {
-        return <SingleChoiceListItem key={index} answerOption={answerOption} onClick={onClick} />
+        return (
+          <SingleChoiceListItem
+            key={index}
+            answerOption={answerOption}
+            onClick={onClick}
+            isAnswerClicked={isAnswerClicked}
+          />
+        )
       })}
     </StyledContainer>
   )

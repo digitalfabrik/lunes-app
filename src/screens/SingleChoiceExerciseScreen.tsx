@@ -22,7 +22,6 @@ const StyledImage = styled.Image`
   width: 100%;
   height: 35%;
   position: relative;
-  resizemode: cover;
 `
 
 interface SingleChoiceExerciseScreenPropsType {
@@ -34,7 +33,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
   const { trainingSetId } = route.params.extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isFinished, setIsFinished] = useState<boolean>(false)
+  const [isAnswerClicked, setIsAnswerClicked] = useState<boolean>(false)
   const [count, setCount] = useState<number>(0)
   const [answerOptions, setAnswerOptions] = useState<SingleChoiceListItemType[]>([])
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -124,7 +123,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
       setResults([...results, result])
     }
     setAnswerOptions(answerOptionsUpdated)
-    setIsFinished(true)
+    setIsAnswerClicked(true)
   }
 
   const buttonClick = () => {
@@ -137,7 +136,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
       navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
     } else {
       setCurrentWord(prevState => prevState + 1)
-      setIsFinished(false)
+      setIsAnswerClicked(false)
     }
   }
 
@@ -148,9 +147,10 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
-      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} />}
+      {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked}/>}
+
       <ButtonContainer>
-        {isFinished && (
+        {isAnswerClicked && (
           <Button onPress={buttonClick} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
@@ -161,6 +161,7 @@ const SingleChoiceExerciseScreen = ({ navigation, route }: SingleChoiceExerciseS
           </Button>
         )}
       </ButtonContainer>
+
     </>
   )
 }

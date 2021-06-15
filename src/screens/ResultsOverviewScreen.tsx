@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Title from '../components/Title'
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/colors'
@@ -194,7 +194,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   )
 
   const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
-    const hideAlmostCorrect = exercise !== 3 && item.key === SIMPLE_RESULTS.similar
+    const hideAlmostCorrect = exercise !== ExerciseKeys.vocabularyTrainer && item.key === SIMPLE_RESULTS.similar
     if (hideAlmostCorrect) {
       return null
     }

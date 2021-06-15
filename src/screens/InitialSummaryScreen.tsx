@@ -2,7 +2,7 @@ import React from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, EXERCISES } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -68,7 +68,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   useFocusEffect(
     React.useCallback(() => {
-      if (exercise === 3) {
+      if (exercise === ExerciseKeys.vocabularyTrainer) {
         AsyncStorage.getExercise(exercise)
           .then(value => {
             if (value !== null) {
@@ -77,10 +77,9 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
           })
           .catch(e => console.error(e))
       } else {
-        console.log('not exercise 3: ', extraParams.results)
         setResults(extraParams.results)
       }
-    }, [exercise, disciplineTitle, trainingSet])
+    }, [exercise, disciplineTitle, trainingSet, extraParams])
   )
 
   React.useEffect(() => {
