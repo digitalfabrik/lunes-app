@@ -1,11 +1,11 @@
 import {
-  easy,
-  mideasy,
-  midhard,
-  hard,
+  AlmostCorrectEntriesIcon,
   CorrectEntriesIcon,
+  easy,
+  hard,
   IncorrectEntriesIcon,
-  AlmostCorrectEntriesIcon
+  mideasy,
+  midhard
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
@@ -70,6 +70,11 @@ export const ARTICLES = {
 
 export type Article = typeof ARTICLES[keyof typeof ARTICLES]
 
+export function isArticle(str: string): str is Article {
+  const strArr: string[] = Object.values(ARTICLES)
+  return strArr.includes(str)
+}
+
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
@@ -78,6 +83,11 @@ export interface ResultType {
   title: string
   Icon: number
   order: number
+}
+
+export interface Answer {
+  word: string
+  article: Article
 }
 
 export const RESULTS: ResultType[] = [

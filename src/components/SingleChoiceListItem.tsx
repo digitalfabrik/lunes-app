@@ -1,6 +1,6 @@
 import React from 'react'
 import { capitalizeFirstLetter, getArticleColor } from '../utils/helpers'
-import { Article, ARTICLES } from '../constants/data'
+import { Answer, Article, ARTICLES } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import styled from 'styled-components/native'
 
@@ -95,7 +95,7 @@ const StyledOpacityOverlay = styled.View`
 
 export interface SingleChoiceListItemPropsType {
   answerOption: SingleChoiceListItemType
-  onClick: (article: Article) => void
+  onClick: (answer: Answer) => void
   isAnswerClicked: boolean
 }
 
@@ -115,7 +115,7 @@ const SingleChoiceListItem = ({ answerOption, onClick, isAnswerClicked }: Single
       pressed={pressed}
       correct={correct}
       selected={selected}
-      onPress={() => onClick(article)}
+      onPress={() => onClick({ article, word })}
       disabled={isAnswerClicked}>
       <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
