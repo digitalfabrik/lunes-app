@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { SingleChoice } from '../components/SingleChoice'
-import { SingleChoiceListItemType } from '../components/SingleChoiceListItem'
-import { DocumentsType, ENDPOINTS } from '../constants/endpoints'
-import axios from '../utils/axios'
+import React, { useEffect, useMemo, useState } from 'react'
+import { SingleChoice } from './components/SingleChoice'
+import { SingleChoiceListItemType } from './components/SingleChoiceListItem'
+import { DocumentsType, ENDPOINTS } from './../../constants/endpoints'
+import axios from './../../utils/axios'
 import { RouteProp } from '@react-navigation/native'
-import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { DocumentResultType, RoutesParamsType } from './../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../constants/data'
-import Button from '../components/Button'
+import { Answer, Article, BUTTONS_THEME, ExerciseKeys, SIMPLE_RESULTS } from './../../constants/data'
+import Button from './../../components/Button'
 import { Text } from 'react-native'
-import { WhiteNextArrow } from '../../assets/images'
-import { styles } from '../components/Actions'
+import { WhiteNextArrow } from './../../../assets/images'
+import { styles } from './../../components/Actions'
 import styled from 'styled-components/native'
+import WordChoiceExerciseService from './services/WordChoiceExerciseService'
+import ArticleChoiceExerciseService from './services/ArticleChoiceExerciseService'
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -29,8 +31,9 @@ interface LearnArticlesExerciseScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'VocabularyOverview'>
 }
 
-const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreenPropsType) => {
-  const { trainingSetId } = route.params.extraParams
+const ChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreenPropsType) => {
+  const { extraParams } = route.params
+  const { trainingSetId, exercise } = extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isAnswerClicked, setIsAnswerClicked] = useState<boolean>(false)
@@ -39,7 +42,11 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [results, setResults] = useState<DocumentResultType[]>([])
 
-  const { extraParams } = route.params
+  const service = useMemo(
+    () =>
+      exercise === ExerciseKeys.learnArticles ? new ArticleChoiceExerciseService() : new WordChoiceExerciseService(),
+    [exercise]
+  )
 
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
@@ -50,43 +57,31 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
     })
   }, [trainingSetId])
 
-  const buildAnswerOption = React.useCallback(() => {
-    const word: string = documents[currentWord]?.word
-    if (!word) {
-      return
-    }
-    const answerOptions: SingleChoiceListItemType[] = []
-    for (const article of Object.values(ARTICLES)) {
-      answerOptions.push({
-        article,
-        word,
-        correct: false,
-        pressed: false,
-        selected: false,
-        addOpacity: false
-      })
-    }
-    setAnswerOptions(answerOptions)
-  }, [currentWord, documents])
-
   useEffect(() => {
-    buildAnswerOption()
-  }, [documents, currentWord, buildAnswerOption])
+    setAnswerOptions(service.buildAnswerOptions(documents, currentWord, count))
+  }, [documents, currentWord, service, count])
 
-  const onClick = (answer: Answer) => {
+  function isAnswerEqual(answer1: Answer, answer2: SingleChoiceListItemType): boolean {
+    return answer1.article === answer2.article && answer1.word === answer2.word
+  }
+
+  const onClick = (selectedAnswer: Answer) => {
     const answerOptionsUpdated = [...answerOptions]
-    const article = answer.article
+    const correctAnswer: Answer = {
+      article: documents[currentWord].article as Article,
+      word: documents[currentWord].word
+    }
     answerOptionsUpdated.forEach(answer => {
-      if (answer.article === documents[currentWord].article) {
+      if (isAnswerEqual(correctAnswer, answer)) {
         answer.correct = true
       } else {
         answer.addOpacity = true
       }
-      if (answer.article === article) {
+      if (isAnswerEqual(selectedAnswer, answer)) {
         answer.selected = true
       }
     })
-    if (article === documents[currentWord].article) {
+    if (selectedAnswer.article === correctAnswer.article && selectedAnswer.word === correctAnswer.word) {
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
@@ -98,9 +93,9 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   }
 
   const buttonClick = () => {
-    const exersiceFinished = currentWord + 1 >= count
+    const exerciseFinished = currentWord + 1 >= count
     const extraParamsWithResults: RoutesParamsType['InitialSummary']['extraParams'] = { ...extraParams, results }
-    if (exersiceFinished) {
+    if (exerciseFinished) {
       setCurrentWord(0)
       setResults([])
       navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
@@ -134,4 +129,4 @@ const LearnArticlesExerciseScreen = ({ navigation, route }: LearnArticlesExercis
   )
 }
 
-export default LearnArticlesExerciseScreen
+export default ChoiceExerciseScreen

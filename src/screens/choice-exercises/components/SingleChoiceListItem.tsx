@@ -1,7 +1,7 @@
 import React from 'react'
-import { capitalizeFirstLetter, getArticleColor } from '../utils/helpers'
-import { Answer, Article, ARTICLES } from '../constants/data'
-import { COLORS } from '../constants/colors'
+import { capitalizeFirstLetter, getArticleColor } from '../../../utils/helpers'
+import { Answer, Article, ARTICLES } from '../../../constants/data'
+import { COLORS } from '../../../constants/colors'
 import styled from 'styled-components/native'
 
 const StyledContainer = styled.TouchableOpacity`
