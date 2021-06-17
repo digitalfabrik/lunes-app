@@ -61,7 +61,7 @@ const ChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreen
     setAnswerOptions(service.buildAnswerOptions(documents, currentWord, count))
   }, [documents, currentWord, service, count])
 
-  function isAnswerEqual(answer1: Answer, answer2: SingleChoiceListItemType): boolean {
+  const isAnswerEqual = (answer1: Answer, answer2: SingleChoiceListItemType): boolean => {
     return answer1.article === answer2.article && answer1.word === answer2.word
   }
 
