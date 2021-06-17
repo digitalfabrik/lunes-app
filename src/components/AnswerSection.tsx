@@ -194,9 +194,7 @@ const AnswerSection = ({
 
   const handleSpeakerClick = (audio?: string): void => {
     setIsActive(true)
-
-    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
-    if (audio && Platform.OS !== 'ios') {
+    if (audio) {
       // audio from API
       SoundPlayer.playUrl(document?.audio)
     } else {
