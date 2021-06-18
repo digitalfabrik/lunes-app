@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import axios from '../utils/axios'
 import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
@@ -70,6 +70,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         .get(ENDPOINTS.professions.all)
         .then(response => {
           setProfessions(response.data)
+          setError(null)
         })
         .catch(e => {
           setError(e.message)
@@ -123,20 +124,12 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     })
   }
 
-  if (error) {
-    return (
-      <View style={styles.root}>
-        <StatusBar backgroundColor='blue' barStyle='dark-content' />
-        <Text>{error}</Text>
-      </View>
-    )
-  }
-
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (
         <View style={styles.root}>
           <Loading isLoading={isLoading}>
+            {error !== null && <Text>{error}</Text>}
             <FlatList
               data={professions}
               style={styles.list}

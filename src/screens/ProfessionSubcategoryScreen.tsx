@@ -90,6 +90,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         .then(response => {
           setSubcategories(response.data)
           setCount(response.data.length)
+          setError(null)
         })
         .catch(e => {
           setError(e.message)
@@ -145,19 +146,11 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     })
   }
 
-  if (error) {
-    return (
-      <View style={styles.root}>
-        <StatusBar backgroundColor='blue' barStyle='dark-content' />
-        <Text>{error}</Text>
-      </View>
-    )
-  }
-
   return (
     <View style={styles.root}>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <Loading isLoading={isLoading}>
+        {error !== null && <Text>{error}</Text>}
         <FlatList
           data={subcategories}
           style={styles.list}

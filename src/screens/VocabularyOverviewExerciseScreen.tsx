@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, StatusBar } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
 import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
@@ -75,6 +75,7 @@ const VocabularyOverviewExerciseScreen = ({
       .then(response => {
         setDocuments(response.data)
         setCount(response.data.length)
+        setError(null)
       })
       .catch(e => {
         setError(e.message)
@@ -105,18 +106,10 @@ const VocabularyOverviewExerciseScreen = ({
     />
   )
 
-  if (error) {
-    return (
-      <View style={styles.root}>
-        <StatusBar backgroundColor='blue' barStyle='dark-content' />
-        <Text>{error}</Text>
-      </View>
-    )
-  }
-
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
+        {error !== null && <Text>{error}</Text>}
         <FlatList
           data={documents}
           style={styles.list}
