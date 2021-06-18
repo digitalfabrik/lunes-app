@@ -150,7 +150,6 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     <View style={styles.root}>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <Loading isLoading={isLoading}>
-        {error !== null && <Text>{error}</Text>}
         <FlatList
           data={subcategories}
           style={styles.list}
@@ -160,6 +159,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
           showsVerticalScrollIndicator={false}
         />
       </Loading>
+      <Text>{error}</Text>
     </View>
   )
 }

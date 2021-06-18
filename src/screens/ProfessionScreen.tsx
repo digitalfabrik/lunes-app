@@ -129,7 +129,6 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       {insets => (
         <View style={styles.root}>
           <Loading isLoading={isLoading}>
-            {error !== null && <Text>{error}</Text>}
             <FlatList
               data={professions}
               style={styles.list}
@@ -141,6 +140,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
               bounces={false}
             />
           </Loading>
+          <Text>{error}</Text>
         </View>
       )}
     </SafeAreaInsetsContext.Consumer>

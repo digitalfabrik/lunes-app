@@ -109,7 +109,6 @@ const VocabularyOverviewExerciseScreen = ({
   return (
     <View style={styles.root}>
       <Loading isLoading={isLoading}>
-        {error !== null && <Text>{error}</Text>}
         <FlatList
           data={documents}
           style={styles.list}
@@ -118,6 +117,7 @@ const VocabularyOverviewExerciseScreen = ({
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
         />
+        <Text>{error}</Text>
       </Loading>
     </View>
   )
