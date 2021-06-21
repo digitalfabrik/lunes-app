@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { capitalizeFirstLetter, getArticleColor } from '../../../utils/helpers'
 import { Answer, Article, ARTICLES } from '../../../constants/data'
 import { COLORS } from '../../../constants/colors'
@@ -21,7 +21,7 @@ const StyledContainer = styled.TouchableOpacity`
       return COLORS.lunesBlackUltralight
     }
   }};
-  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; onPress: any }) => {
+  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesBlack
     } else if (props.correct) {
@@ -94,33 +94,46 @@ const StyledOpacityOverlay = styled.View`
 `
 
 export interface SingleChoiceListItemPropsType {
-  answerOption: SingleChoiceListItemType
+  answer: Answer
   onClick: (answer: Answer) => void
-  isAnswerClicked: boolean
-}
-
-export interface SingleChoiceListItemType {
-  word: string
-  article: Article
-  pressed: boolean
   correct: boolean
   selected: boolean
-  addOpacity: boolean
+  anyAnswerSelected: boolean
 }
 
-const SingleChoiceListItem = ({ answerOption, onClick, isAnswerClicked }: SingleChoiceListItemPropsType) => {
-  const { word, article, pressed, correct, selected, addOpacity } = answerOption
+const SingleChoiceListItem = ({
+  answer,
+  onClick,
+  correct,
+  selected,
+  anyAnswerSelected
+}: SingleChoiceListItemPropsType) => {
+  const [pressed, setPressed] = useState<boolean>(false)
+  const { word, article } = answer
+  const addOpacity = anyAnswerSelected && !correct
+  const showCorrect = anyAnswerSelected && correct
+
+  const onPressIn = (): void => {
+    setPressed(true)
+  }
+
+  const onPressOut = (): void => {
+    setPressed(false)
+    onClick(answer)
+  }
+
   return (
     <StyledContainer
-      pressed={pressed}
-      correct={correct}
+      correct={showCorrect}
       selected={selected}
-      onPress={() => onClick({ article, word })}
-      disabled={isAnswerClicked}>
-      <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      pressed={pressed}
+      disabled={anyAnswerSelected}>
+      <StyledArticle article={article} selected={selected} correct={showCorrect} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>
-      <StyledWord pressed={pressed} selected={selected}>
+      <StyledWord selected={selected} pressed={pressed}>
         {word}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}

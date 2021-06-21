@@ -1,7 +1,7 @@
 import React from 'react'
-import SingleChoiceListItem, { SingleChoiceListItemType } from './SingleChoiceListItem'
+import SingleChoiceListItem from './SingleChoiceListItem'
 import styled from 'styled-components/native'
-import { Answer, Article } from '../../../constants/data'
+import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
   padding-top: 10px;
@@ -10,20 +10,27 @@ export const StyledContainer = styled.View`
 
 export interface SingleChoicePropsType {
   onClick: (answer: Answer) => void
-  answerOptions: SingleChoiceListItemType[]
-  isAnswerClicked: boolean
+  answers: Answer[]
+  correctAnswer: Answer
+  selectedAnswer: Answer | null
 }
 
-export const SingleChoice = ({ answerOptions, onClick, isAnswerClicked }: SingleChoicePropsType) => {
+export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer }: SingleChoicePropsType) => {
+  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
+    return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
+  }
+
   return (
     <StyledContainer>
-      {answerOptions.map((answerOption, index) => {
+      {answers.map((answer, index) => {
         return (
           <SingleChoiceListItem
             key={index}
-            answerOption={answerOption}
+            answer={answer}
             onClick={onClick}
-            isAnswerClicked={isAnswerClicked}
+            correct={isAnswerEqual(answer, correctAnswer)}
+            selected={isAnswerEqual(answer, selectedAnswer)}
+            anyAnswerSelected={selectedAnswer !== null}
           />
         )
       })}
