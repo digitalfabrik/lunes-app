@@ -10,9 +10,9 @@ export const loadFromEndpoint = async <T>(
   setLoading(true)
 
   try {
-    const data: T = await axios.get(url)
+    const response = await axios.get(url)
 
-    setData(data)
+    setData(response.data)
     setError(null)
   } catch (e) {
     setError(e)
