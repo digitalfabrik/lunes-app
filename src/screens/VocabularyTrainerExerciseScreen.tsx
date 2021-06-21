@@ -142,7 +142,7 @@ const VocabularyTrainerExerciseScreen = ({
 
   const finishExercise = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
-    navigation.navigate('InitialSummary', { extraParams })
+    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
 
   const docsLength = documents.length

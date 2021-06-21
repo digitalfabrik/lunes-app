@@ -6,7 +6,7 @@ import axios from './../../utils/axios'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from './../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Answer, Article, BUTTONS_THEME, ExerciseKeys, SIMPLE_RESULTS } from './../../constants/data'
+import { Answer, BUTTONS_THEME, ExerciseKeys, SIMPLE_RESULTS } from './../../constants/data'
 import Button from './../../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from './../../../assets/images'
@@ -14,6 +14,7 @@ import { styles } from './../../components/Actions'
 import styled from 'styled-components/native'
 import WordChoiceExerciseService from './services/WordChoiceExerciseService'
 import ArticleChoiceExerciseService from './services/ArticleChoiceExerciseService'
+import AudioPlayer from '../../components/AudioPlayer'
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -68,7 +69,7 @@ const ChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreen
   const onClick = (selectedAnswer: Answer) => {
     const answerOptionsUpdated = [...answerOptions]
     const correctAnswer: Answer = {
-      article: documents[currentWord].article as Article,
+      article: documents[currentWord].article,
       word: documents[currentWord].word
     }
     answerOptionsUpdated.forEach(answer => {
@@ -112,6 +113,8 @@ const ChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreen
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
+      <AudioPlayer document={documents[currentWord]} disabled={!isAnswerClicked} />
+
       {!isLoading && <SingleChoice answerOptions={answerOptions} onClick={onClick} isAnswerClicked={isAnswerClicked} />}
       <ButtonContainer>
         {isAnswerClicked && (

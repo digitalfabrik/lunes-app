@@ -98,7 +98,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         onPress={() => handleNavigation(item)}>
         <Text style={itemTextStyle}>
           {item.total_training_sets}
-          {item.total_training_sets === 1 ? ' Bereich' : ' Bereiche'}
+          {item.total_training_sets === 1 ? ' Lektion' : ' Lektionen'}
         </Text>
       </MenuItem>
     )

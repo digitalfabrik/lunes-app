@@ -100,7 +100,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       <>
         <Text style={styles.screenTitle}>{disciplineTitle}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? 'Kategorie' : 'Kategorien'}
+          {count} {count === 1 ? 'Lektion' : 'Lektionen'}
         </Text>
       </>
     </Title>
@@ -123,7 +123,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         onPress={() => handleNavigation(item)}>
         <View style={styles.itemText}>
           <Text style={badgeStyle}>{item.total_documents}</Text>
-          <Text style={descriptionStyle}>{item.total_documents === 1 ? ' Lektion' : ' Lektionen'}</Text>
+          <Text style={descriptionStyle}>{item.total_documents === 1 ? ' Wort' : ' Wörter'}</Text>
         </View>
       </MenuItem>
     )
