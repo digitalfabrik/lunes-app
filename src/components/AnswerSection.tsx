@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
-import { CloseIcon } from '../../assets/images'
+import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { CloseIcon, VolumeUp } from '../../assets/images'
 import { COLORS } from '../constants/colors'
 import Popover from './Popover'
+// @ts-expect-error
+import SoundPlayer from 'react-native-sound-player'
+// @ts-expect-error
+import Tts from 'react-native-tts'
 import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
@@ -51,6 +55,8 @@ export interface AnswerSectionPropsType {
   trainingSet: string
   disciplineTitle: string
 }
+
+const almostCorrectThreshold = 0.6
 
 const AnswerSection = ({
   currentDocumentNumber,
@@ -104,20 +110,20 @@ const AnswerSection = ({
     const exactAnswer = inputArticle === document?.article && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ({ article, alt_word }) => inputArticle === article && inputWord === alt_word
+      ({ article, alt_word: altWord }) => inputArticle === article && inputWord === altWord
     )
     return exactAnswer || altAnswer
   }
 
   const validateForSimilar = (inputArticle: string, inputWord: string): boolean => {
-    const origCheck =
-      inputArticle === document.article && stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
+    if (validateForCorrectWithoutArticle(inputWord)) {
+      return true
+    }
+    const origCheck = stringSimilarity.compareTwoStrings(inputWord, document.word) > almostCorrectThreshold
 
     const altCheck = document.alternatives.some(
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ({ article, alt_word }) =>
-        inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4
+      ({ article, alt_word: altWord }) =>
+        inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
     )
     return origCheck || altCheck
   }
@@ -125,6 +131,13 @@ const AnswerSection = ({
   const giveUp = (): void => {
     setResult('giveUp')
     storeResult(secondAttempt ? 'similar' : 'incorrect')
+  }
+
+  const validateForCorrectWithoutArticle = (inputWord: string): boolean => {
+    const exactAnswer = inputWord === document?.word
+
+    const altAnswer = document?.alternatives?.some(({ article, alt_word: altWord }) => inputWord === altWord)
+    return exactAnswer || altAnswer
   }
 
   const getNextWord = (): void => {
