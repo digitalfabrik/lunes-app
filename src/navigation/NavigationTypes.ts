@@ -50,7 +50,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
@@ -62,7 +62,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }

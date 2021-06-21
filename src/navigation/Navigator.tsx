@@ -14,7 +14,8 @@ import ResultScreen from '../screens/ResultScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import ChoiceExercisesScreen from '../screens/choice-exercises/ChoiceExercisesScreen'
+import WordChoiceExerciseScreen from '../screens/choice-exercises/WordChoiceExerciseScreen'
+import ArticleChoiceExerciseScreen from '../screens/choice-exercises/ArticleChoiceExerciseScreen'
 
 export const styles = StyleSheet.create({
   header: {
@@ -91,12 +92,12 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}
           name='SingleChoice'
-          component={ChoiceExercisesScreen}
+          component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}
           name='LearnArticles'
-          component={ChoiceExercisesScreen}
+          component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}

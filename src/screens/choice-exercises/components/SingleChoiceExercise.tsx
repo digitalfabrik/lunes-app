@@ -73,7 +73,12 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
-      <SingleChoice answers={answers} onClick={onClickAnswer} correctAnswer={correctAnswer} selectedAnswer={selectedAnswer} />
+      <SingleChoice
+        answers={answers}
+        onClick={onClickAnswer}
+        correctAnswer={correctAnswer}
+        selectedAnswer={selectedAnswer}
+      />
       <ButtonContainer>
         {selectedAnswer !== null && (
           <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
