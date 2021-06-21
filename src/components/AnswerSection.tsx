@@ -122,6 +122,11 @@ const AnswerSection = ({
     return origCheck || altCheck
   }
 
+  const giveUp = (): void => {
+    setResult('giveUp')
+    storeResult(secondAttempt ? 'similar' : 'incorrect')
+  }
+
   const getNextWord = (): void => {
     setResult('')
     setInput('')
@@ -216,10 +221,7 @@ const AnswerSection = ({
 
         <Actions
           tryLater={tryLater}
-          giveUp={async () => {
-            await storeResult('incorrect')
-            getNextWord()
-          }}
+          giveUp={giveUp}
           input={input}
           result={result}
           checkEntry={checkEntry}

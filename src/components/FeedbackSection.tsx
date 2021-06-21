@@ -51,7 +51,7 @@ export interface FeedbackPropsType {
 
 const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): JSX.Element | null => {
   const Icon =
-    result === 'correct'
+    result === 'correct' || result === 'giveUp'
       ? CorrectFeedbackIcon
       : result === 'incorrect' || !secondAttempt
       ? IncorrectFeedbackIcon
@@ -60,7 +60,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   const background =
     result === 'correct'
       ? correct_background
-      : result === 'incorrect' || !secondAttempt
+      : result === 'incorrect' || result === 'giveUp' || !secondAttempt
       ? incorrect_background
       : hint_background
 
@@ -68,7 +68,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
     result === 'correct'
       ? 'Toll, weiter so! \nDeine Eingabe ist richtig.'
       : result === 'incorrect' || !secondAttempt
-      ? `Schade, deine Eingabe ist falsch. Die richtige Antwort ist: ${
+      ? `${result === 'incorrect' ? `Schade, deine Eingabe ist falsch.` : ``} Die richtige Antwort ist: ${
           document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
         } ${document?.word}`
       : `Deine Eingabe ${input} ist fast richtig. Überprüfe Groß- und Kleinschreibung.`
