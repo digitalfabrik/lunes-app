@@ -1,0 +1,24 @@
+{
+  "exercises": {
+    "overview": {
+      "title": "Vokabelübersicht",
+      "description": "Alle Wörte anschauen"
+    },
+    "wordSingleChoice": {
+      "title": "Wort auswählen",
+      "description": "Wähle das richtige Wort"
+    },
+    "articleSingleChoice": {
+      "title": "Artikel üben",
+      "description": "Wähle den richtigen Artikel"
+    },
+    "write": {
+      "title": "Wort schreiben",
+      "description": "Wort mit Artikel eingeben"
+    }
+  },
+  "feedback": {
+    "newTry": "Neuer Versuch",
+    "insertAnswer": "Wort mit Artikel eingeben"
+  }
+}

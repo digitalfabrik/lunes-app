@@ -8,6 +8,7 @@ import {
   midhard
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import labels from './labels.json'
 
 export const ExerciseKeys = {
   vocabularyOverview: 0,
@@ -28,29 +29,29 @@ export interface ExerciseType {
 export const EXERCISES: ExerciseType[] = [
   {
     key: ExerciseKeys.vocabularyOverview,
-    title: 'Vokabelübersicht',
-    description: 'Alle Wörte anschauen',
+    title: labels.exercises.overview.title,
+    description: labels.exercises.overview.description,
     Level: easy,
     nextScreen: 'VocabularyOverview'
   },
   {
     key: ExerciseKeys.singleChoice,
-    title: 'Wort auswählen',
-    description: 'Wähle das richtige Wort',
+    title: labels.exercises.wordSingleChoice.title,
+    description: labels.exercises.wordSingleChoice.description,
     Level: mideasy,
     nextScreen: 'SingleChoice'
   },
   {
     key: ExerciseKeys.learnArticles,
-    title: 'Artikel üben',
-    description: 'Wähle den richtigen Artikel',
+    title: labels.exercises.articleSingleChoice.title,
+    description: labels.exercises.articleSingleChoice.description,
     Level: midhard,
     nextScreen: 'LearnArticles'
   },
   {
     key: ExerciseKeys.vocabularyTrainer,
-    title: 'Wort schreiben',
-    description: 'Wort mit Artikel eingeben',
+    title: labels.exercises.write.title,
+    description: labels.exercises.write.description,
     Level: hard,
     nextScreen: 'VocabularyTrainer'
   }

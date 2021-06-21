@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { CloseIcon, VolumeUp } from '../../assets/images'
+import { CloseIcon } from '../../assets/images'
 import { COLORS } from '../constants/colors'
 import Popover from './Popover'
-// @ts-expect-error
-import SoundPlayer from 'react-native-sound-player'
-// @ts-expect-error
-import Tts from 'react-native-tts'
 import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
@@ -15,6 +11,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { DocumentType } from '../constants/endpoints'
 import AsyncStorage from '../utils/AsyncStorage'
 import { ExerciseKeys, SimpleResultType } from '../constants/data'
+import labels from '../constants/labels.json'
 import AudioPlayer from './AudioPlayer'
 
 export const styles = StyleSheet.create({
@@ -215,7 +212,7 @@ const AnswerSection = ({
           ]}>
           <TextInput
             style={styles.textInput}
-            placeholder={secondAttempt ? 'Neuer Versuch' : 'Wort mit Artikel eingeben'}
+            placeholder={secondAttempt ? labels.feedback.newTry : 'Wort mit Artikel eingeben'}
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
             onChangeText={text => setInput(text)}
