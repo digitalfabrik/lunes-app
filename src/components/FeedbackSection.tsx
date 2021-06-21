@@ -31,7 +31,7 @@ const StyledText = styled.Text`
 export interface FeedbackPropsType {
   secondAttempt: boolean
   result: string
-  document: DocumentType
+  document?: DocumentType
   input: string
 }
 
@@ -45,8 +45,8 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
     message = `Die richtige Antwort ist: ${
-      document.article.toLowerCase() === ARTICLES.diePlural ? 'die' : document.article
-    } ${document.word}`
+      document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
+    } ${document?.word}`
   } else {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
