@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
@@ -30,9 +30,13 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [results, setResults] = useState<DocumentResultType[]>([])
+  const [answers, setAnswers] = useState<Answer[]>([])
 
   const currentDocument = documents[currentWord]
-  const answers = documentToAnswers(currentDocument)
+  // Prevent regenerating false answers on every render
+  useEffect(() => {
+    setAnswers(documentToAnswers(currentDocument))
+  }, [currentDocument, documentToAnswers])
 
   const correctAnswer: Answer = {
     article: currentDocument.article as Article,
