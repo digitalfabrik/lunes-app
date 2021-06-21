@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { capitalizeFirstLetter, getArticleColor } from '../../../utils/helpers'
 import { Answer, Article, ARTICLES } from '../../../constants/data'
 import { COLORS } from '../../../constants/colors'
@@ -15,14 +15,16 @@ const StyledContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: baseline;
   border-color: ${props => {
-    if (props.selected) {
+    if (props.pressed || props.selected) {
       return 'transparent'
     } else {
       return COLORS.lunesBlackUltralight
     }
   }};
-  background-color: ${(props: { selected: boolean; correct: boolean }) => {
-    if (props.correct) {
+  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
+    if (props.pressed) {
+      return COLORS.lunesBlack
+    } else if (props.correct) {
       return COLORS.lunesFunctionalCorrectDark
     } else if (props.selected && !props.correct) {
       return COLORS.lunesFunctionalIncorrectDark
@@ -43,8 +45,10 @@ const StyledArticle = styled.Text`
   text-align: center;
   margin-right: 3%;
   margin-left: 3.5%;
-  color:  ${(props: { selected: boolean; correct: boolean }) => {
-    if (props.selected) {
+  color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
+    if (props.pressed) {
+      return COLORS.lunesBlack
+    } else if (props.selected) {
       if (props.correct) {
         return COLORS.lunesFunctionalCorrectDark
       } else {
@@ -54,8 +58,10 @@ const StyledArticle = styled.Text`
       return COLORS.lunesGreyDark
     }
   }};
-  background-color: ${(props: { selected: boolean; article: Article; correct: boolean }) => {
-    if (props.selected) {
+  background-color: ${(props: { pressed: boolean; selected: boolean; article: Article; correct: boolean }) => {
+    if (props.pressed) {
+      return COLORS.lunesWhite
+    } else if (props.selected) {
       return COLORS.lunesBlack
     } else {
       return getArticleColor(props.article)
@@ -69,8 +75,10 @@ const StyledWord = styled.Text`
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
-  color: ${(props: { selected: boolean }) => {
-    if (props.selected) {
+  color: ${(props: { pressed: boolean; selected: boolean }) => {
+    if (props.pressed) {
+      return COLORS.lunesWhite
+    } else if (props.selected) {
       return COLORS.lunesBlack
     } else {
       return COLORS.lunesGreyDark
@@ -100,20 +108,34 @@ const SingleChoiceListItem = ({
   selected,
   anyAnswerSelected
 }: SingleChoiceListItemPropsType) => {
+  const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity = anyAnswerSelected && !correct
   const showCorrect = anyAnswerSelected && correct
+
+  const onPressIn = (): void => {
+    setPressed(true)
+  }
+
+  const onPressOut = (): void => {
+    setPressed(false)
+    onClick(answer)
+  }
 
   return (
     <StyledContainer
       correct={showCorrect}
       selected={selected}
-      onPress={() => onClick({ article, word })}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      pressed={pressed}
       disabled={anyAnswerSelected}>
-      <StyledArticle article={article} selected={selected} correct={showCorrect}>
+      <StyledArticle article={article} selected={selected} correct={showCorrect} pressed={pressed}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>
-      <StyledWord selected={selected}>{word}</StyledWord>
+      <StyledWord selected={selected} pressed={pressed}>
+        {word}
+      </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>
   )
