@@ -71,7 +71,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
       ? `Schade, deine Eingabe ist falsch. Die richtige Antwort ist: ${
           document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
         } ${document?.word}`
-      : `Deine Eingabe ${input} ist fast richtig.`
+      : `Deine Eingabe "${input}" ist fast richtig.`
 
   return result !== '' || secondAttempt ? (
     <View style={styles.messageContainer}>
