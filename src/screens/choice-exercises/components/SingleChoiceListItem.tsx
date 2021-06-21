@@ -15,16 +15,14 @@ const StyledContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: baseline;
   border-color: ${props => {
-    if (props.pressed || props.selected) {
+    if (props.selected) {
       return 'transparent'
     } else {
       return COLORS.lunesBlackUltralight
     }
   }};
-  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; onPress: any }) => {
-    if (props.pressed) {
-      return COLORS.lunesBlack
-    } else if (props.correct) {
+  background-color: ${(props: { selected: boolean; correct: boolean }) => {
+    if (props.correct) {
       return COLORS.lunesFunctionalCorrectDark
     } else if (props.selected && !props.correct) {
       return COLORS.lunesFunctionalIncorrectDark
@@ -45,10 +43,8 @@ const StyledArticle = styled.Text`
   text-align: center;
   margin-right: 3%;
   margin-left: 3.5%;
-  color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
-    if (props.pressed) {
-      return COLORS.lunesBlack
-    } else if (props.selected) {
+  color:  ${(props: { selected: boolean; correct: boolean }) => {
+    if (props.selected) {
       if (props.correct) {
         return COLORS.lunesFunctionalCorrectDark
       } else {
@@ -58,10 +54,8 @@ const StyledArticle = styled.Text`
       return COLORS.lunesGreyDark
     }
   }};
-  background-color: ${(props: { pressed: boolean; selected: boolean; article: Article; correct: boolean }) => {
-    if (props.pressed) {
-      return COLORS.lunesWhite
-    } else if (props.selected) {
+  background-color: ${(props: { selected: boolean; article: Article; correct: boolean }) => {
+    if (props.selected) {
       return COLORS.lunesBlack
     } else {
       return getArticleColor(props.article)
@@ -75,10 +69,8 @@ const StyledWord = styled.Text`
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
-  color: ${(props: { pressed: boolean; selected: boolean }) => {
-    if (props.pressed) {
-      return COLORS.lunesWhite
-    } else if (props.selected) {
+  color: ${(props: { selected: boolean }) => {
+    if (props.selected) {
       return COLORS.lunesBlack
     } else {
       return COLORS.lunesGreyDark
@@ -94,35 +86,33 @@ const StyledOpacityOverlay = styled.View`
 `
 
 export interface SingleChoiceListItemPropsType {
-  answerOption: SingleChoiceListItemType
+  answer: Answer
   onClick: (answer: Answer) => void
-  isAnswerClicked: boolean
-}
-
-export interface SingleChoiceListItemType {
-  word: string
-  article: Article
-  pressed: boolean
   correct: boolean
   selected: boolean
-  addOpacity: boolean
+  anyAnswerSelected: boolean
 }
 
-const SingleChoiceListItem = ({ answerOption, onClick, isAnswerClicked }: SingleChoiceListItemPropsType) => {
-  const { word, article, pressed, correct, selected, addOpacity } = answerOption
+const SingleChoiceListItem = ({
+  answer,
+  onClick,
+  correct,
+  selected,
+  anyAnswerSelected
+}: SingleChoiceListItemPropsType) => {
+  const { word, article } = answer
+  const addOpacity = anyAnswerSelected && !correct
+
   return (
     <StyledContainer
-      pressed={pressed}
       correct={correct}
       selected={selected}
       onPress={() => onClick({ article, word })}
-      disabled={isAnswerClicked}>
-      <StyledArticle article={article} selected={selected} correct={correct} pressed={pressed}>
+      disabled={anyAnswerSelected}>
+      <StyledArticle article={article} selected={selected} correct={correct}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>
-      <StyledWord pressed={pressed} selected={selected}>
-        {word}
-      </StyledWord>
+      <StyledWord selected={selected}>{word}</StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>
   )
