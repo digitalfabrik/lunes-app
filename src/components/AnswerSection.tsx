@@ -128,6 +128,11 @@ const AnswerSection = ({
     return origCheck || altCheck
   }
 
+  const giveUp = (): void => {
+    setResult('giveUp')
+    storeResult(secondAttempt ? 'similar' : 'incorrect')
+  }
+
   const validateForCorrectWithoutArticle = (inputWord: string): boolean => {
     const exactAnswer = inputWord === document?.word
 
@@ -229,10 +234,7 @@ const AnswerSection = ({
 
         <Actions
           tryLater={tryLater}
-          giveUp={async () => {
-            await storeResult(secondAttempt ? 'similar' : 'incorrect')
-            getNextWord()
-          }}
+          giveUp={giveUp}
           input={input}
           result={result}
           checkEntry={checkEntry}

@@ -1,89 +1,65 @@
 import React from 'react'
-import { View, Text, ImageBackground, StyleSheet } from 'react-native'
 import {
-  CorrectFeedbackIcon,
-  IncorrectFeedbackIcon,
   AlmostCorrectFeedbackIcon,
-  incorrect_background,
+  correct_background,
+  CorrectFeedbackIcon,
   hint_background,
-  correct_background
+  incorrect_background,
+  IncorrectFeedbackIcon
 } from '../../assets/images'
 import { ARTICLES } from '../constants/data'
 import { COLORS } from '../constants/colors'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  messageContainer: {
-    width: wp('80%'),
-    height: hp('9%'),
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: -hp('4%'),
-    marginBottom: hp('3%')
-  },
-  imageBackground: {
-    width: wp('80%'),
-    height: hp('9%'),
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10
-  },
-  textContainer: {
-    marginHorizontal: 5,
-    paddingRight: 15,
-    paddingLeft: 5
-  },
-  text: {
-    fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-Regular',
-    fontWeight: 'normal',
-    color: COLORS.lunesBlack
-  }
-})
+const Background = styled.ImageBackground`
+  width: ${wp(80)};
+  height: ${hp(9)};
+  margin-bottom: 40px;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+`
+
+const StyledText = styled.Text`
+  width: 100%;
+  color: ${COLORS.lunesBlack};
+  padding: 0 20px 0 10px;
+`
 
 export interface FeedbackPropsType {
   secondAttempt: boolean
   result: string
-  document?: DocumentType
+  document: DocumentType
   input: string
 }
 
 const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): JSX.Element | null => {
-  const Icon =
-    result === 'correct'
-      ? CorrectFeedbackIcon
-      : result === 'incorrect' || !secondAttempt
-      ? IncorrectFeedbackIcon
-      : AlmostCorrectFeedbackIcon
-
-  const background =
-    result === 'correct'
-      ? correct_background
-      : result === 'incorrect' || !secondAttempt
-      ? incorrect_background
-      : hint_background
-
-  const message =
-    result === 'correct'
-      ? 'Toll, weiter so! \nDeine Eingabe ist richtig.'
-      : result === 'incorrect' || !secondAttempt
-      ? `Schade, deine Eingabe ist falsch. Die richtige Antwort ist: ${
-          document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
-        } ${document?.word}`
-      : `Deine Eingabe "${input}" ist fast richtig.`
+  let Icon, background, message
+  if (result === 'correct') {
+    Icon = CorrectFeedbackIcon
+    background = correct_background
+    message = 'Toll, weiter so! \nDeine Eingabe ist richtig.'
+  } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
+    Icon = IncorrectFeedbackIcon
+    background = incorrect_background
+    message = `Die richtige Antwort ist: ${
+      document.article.toLowerCase() === ARTICLES.diePlural ? 'die' : document.article
+    } ${document.word}`
+  } else {
+    Icon = AlmostCorrectFeedbackIcon
+    background = hint_background
+    message = `Deine Eingabe ${input} ist fast richtig.`
+  }
 
   return result !== '' || secondAttempt ? (
-    <View style={styles.messageContainer}>
-      <ImageBackground source={background} style={styles.imageBackground} testID='background-image'>
-        <Icon width={28} height={28} />
-        <View style={styles.textContainer}>
-          <Text numberOfLines={2} ellipsizeMode='tail' style={styles.text}>
-            {message}
-          </Text>
-        </View>
-      </ImageBackground>
-    </View>
+    <Background source={background} testID='background-image'>
+      <Icon width={28} height={28} />
+      <StyledText numberOfLines={2} ellipsizeMode='tail'>
+        {message}
+      </StyledText>
+    </Background>
   ) : null
 }
 
