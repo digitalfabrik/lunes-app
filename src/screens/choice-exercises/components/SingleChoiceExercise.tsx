@@ -8,6 +8,7 @@ import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../../../assets/images'
 import { styles } from '../../../components/Actions'
 import styled from 'styled-components/native'
+import AudioPlayer from '../../../components/AudioPlayer'
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -77,6 +78,7 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
           uri: documents[currentWord]?.document_image[0].image
         }}
       />
+      <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
       <SingleChoice
         answers={answers}
         onClick={onClickAnswer}
