@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
-import { Answer, Article, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../../../assets/images'
@@ -40,7 +40,7 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   }, [currentDocument, documentToAnswers])
 
   const correctAnswer: Answer = {
-    article: currentDocument.article as Article,
+    article: currentDocument.article,
     word: currentDocument.word
   }
   const count = documents.length

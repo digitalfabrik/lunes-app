@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { DocumentType, ENDPOINTS } from '../../constants/endpoints'
-import axios from '../../utils/axios'
+import React from 'react'
+import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { Answer, Article } from '../../constants/data'
+import { Answer } from '../../constants/data'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
+import useLoadDocuments from '../../hooks/useLoadDocuments'
 
 interface WordChoiceExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'SingleChoice'>
@@ -15,8 +15,11 @@ interface WordChoiceExerciseScreenPropsType {
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType) => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const [documents, setDocuments] = useState<DocumentType[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { data: documents } = useLoadDocuments(trainingSetId)
+
+  if (documents === null) {
+    return null
+  }
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
     const answers = []
@@ -32,10 +35,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
       usedDocuments.push(documents[rand])
 
       const { word, article } = documents[rand]
-      answers.push({
-        article: article as Article,
-        word
-      })
+      answers.push({ article, word })
     }
     return answers
   }
@@ -46,28 +46,12 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
     // Insert correct answer on random position
     const positionOfCorrectAnswer = Math.floor(Math.random() * 4)
-    answers.splice(positionOfCorrectAnswer, 0, {
-      article: article as Article,
-      word
-    })
+    answers.splice(positionOfCorrectAnswer, 0, { article: article, word })
     return answers
   }
 
-  useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-    axios.get(url).then(response => {
-      setDocuments(response.data)
-      setIsLoading(false)
-    })
-  }, [trainingSetId])
-
-  const onExerciseFinished = (results: DocumentResultType[]) => {
-    const extraParamsWithResults: RoutesParamsType['InitialSummary']['extraParams'] = { ...extraParams, results }
-    navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
-  }
-
-  if (isLoading) {
-    return null
+  const onExerciseFinished = (results: DocumentResultType[]): void => {
+    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
   }
 
   return (

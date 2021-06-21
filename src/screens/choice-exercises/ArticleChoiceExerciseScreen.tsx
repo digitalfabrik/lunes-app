@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { DocumentType, ENDPOINTS } from '../../constants/endpoints'
-import axios from '../../utils/axios'
+import React from 'react'
+import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Answer, ARTICLES } from '../../constants/data'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
+import useLoadDocuments from '../../hooks/useLoadDocuments'
 
 interface LearnArticlesExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'LearnArticles'>
@@ -15,27 +15,17 @@ interface LearnArticlesExerciseScreenPropsType {
 const ArticleChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreenPropsType) => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const [documents, setDocuments] = useState<DocumentType[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { data: documents } = useLoadDocuments(trainingSetId)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return Object.values(ARTICLES).map(article => ({ article, word: document.word }))
   }
 
-  useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-    axios.get(url).then(response => {
-      setDocuments(response.data)
-      setIsLoading(false)
-    })
-  }, [trainingSetId])
-
-  const onExerciseFinished = (results: DocumentResultType[]) => {
-    const extraParamsWithResults: RoutesParamsType['InitialSummary']['extraParams'] = { ...extraParams, results }
-    navigation.navigate('InitialSummary', { extraParams: extraParamsWithResults })
+  const onExerciseFinished = (results: DocumentResultType[]): void => {
+    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
   }
 
-  if (isLoading) {
+  if (documents === null) {
     return null
   }
 
