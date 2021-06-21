@@ -102,14 +102,15 @@ const SingleChoiceListItem = ({
 }: SingleChoiceListItemPropsType) => {
   const { word, article } = answer
   const addOpacity = anyAnswerSelected && !correct
+  const showCorrect = anyAnswerSelected && correct
 
   return (
     <StyledContainer
-      correct={correct}
+      correct={showCorrect}
       selected={selected}
       onPress={() => onClick({ article, word })}
       disabled={anyAnswerSelected}>
-      <StyledArticle article={article} selected={selected} correct={correct}>
+      <StyledArticle article={article} selected={selected} correct={showCorrect}>
         {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
       </StyledArticle>
       <StyledWord selected={selected}>{word}</StyledWord>

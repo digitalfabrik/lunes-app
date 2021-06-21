@@ -16,6 +16,10 @@ export interface SingleChoicePropsType {
 }
 
 export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer }: SingleChoicePropsType) => {
+  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
+    return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
+  }
+
   return (
     <StyledContainer>
       {answers.map((answer, index) => {
@@ -24,8 +28,8 @@ export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer }
             key={index}
             answer={answer}
             onClick={onClick}
-            correct={answer === correctAnswer}
-            selected={answer === selectedAnswer}
+            correct={isAnswerEqual(answer, correctAnswer)}
+            selected={isAnswerEqual(answer, selectedAnswer)}
             anyAnswerSelected={selectedAnswer !== null}
           />
         )
