@@ -25,16 +25,14 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExercis
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
   }
 
-  if (documents === null) {
-    return null
-  }
-
   return (
-    <SingleChoiceExercise
-      documents={documents}
-      documentToAnswers={documentToAnswers}
-      onExerciseFinished={onExerciseFinished}
-    />
+    documents !== null && (
+      <SingleChoiceExercise
+        documents={documents}
+        documentToAnswers={documentToAnswers}
+        onExerciseFinished={onExerciseFinished}
+      />
+    )
   )
 }
 
