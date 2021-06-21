@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
 import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
@@ -87,15 +87,7 @@ const VocabularyOverviewExerciseScreen = ({
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentType }): JSX.Element => (
-    <VocabularyOverviewListItem
-      id={item.id}
-      word={item.word}
-      article={item.article}
-      image={item.document_image[0].image}
-      audio={item.audio}
-    />
-  )
+  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyOverviewListItem document={item} />
 
   return (
     <View style={styles.root}>

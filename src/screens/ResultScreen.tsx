@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/colors'
@@ -102,15 +102,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => (
-    <VocabularyOverviewListItem
-      id={item.id}
-      word={item.word}
-      article={item.article}
-      image={item.document_image[0].image}
-      audio={item.audio}
-    />
-  )
+  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyOverviewListItem document={item} />
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('VocabularyTrainer', {

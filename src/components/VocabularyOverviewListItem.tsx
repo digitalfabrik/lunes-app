@@ -1,12 +1,11 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, Platform, StyleSheet } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { ARTICLES } from '../constants/data'
-import Tts from 'react-native-tts'
-import { getArticleColor, capitalizeFirstLetter } from '../utils/helpers'
-import SoundPlayer from 'react-native-sound-player'
-import { VolumeUp } from '../../assets/images'
+import { capitalizeFirstLetter, getArticleColor } from '../utils/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AudioPlayer from './AudioPlayer'
+import { DocumentType } from '../constants/endpoints'
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -58,9 +57,8 @@ export const styles = StyleSheet.create({
     marginLeft: 8
   },
   speaker: {
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
+    paddingRight: 40,
+    paddingTop: 17
   },
   shadow: {
     shadowColor: COLORS.shadow,
@@ -71,48 +69,11 @@ export const styles = StyleSheet.create({
 })
 
 export interface IVocabularyOverviewListItemProps {
-  id: number
-  word: string
-  article: string
-  image: string
-  audio: string
+  document: DocumentType
 }
 
-// German language
-Tts.setDefaultLanguage('de-DE')
-
-const VocabularyOverviewListItem = ({ image, article, word, audio }: IVocabularyOverviewListItemProps) => {
-  const [active, setActive] = React.useState(false)
-  React.useEffect(() => {
-    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setActive(false))
-
-    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () => setActive(false))
-
-    return () => {
-      _onSoundPlayerFinishPlaying.remove()
-      _onTtsFinishPlaying.remove()
-    }
-  }, [])
-
-  const handleSpeakerClick = () => {
-    setActive(true)
-    if (audio) {
-      // audio from API
-      SoundPlayer.playUrl(audio)
-    } else {
-      Tts.speak(`${article} ${word}`, {
-        androidParams: {
-          KEY_PARAM_PAN: -1,
-          KEY_PARAM_VOLUME: 0.5,
-          KEY_PARAM_STREAM: 'STREAM_MUSIC'
-        }
-      })
-    }
-  }
-
-  const volumeIconColor = active ? COLORS.lunesRed : COLORS.lunesRedDark
-
-  const volumeIconStyle = [styles.speaker, !active && styles.shadow]
+const VocabularyOverviewListItem = ({ document }: IVocabularyOverviewListItemProps) => {
+  const { article, word } = document
 
   return (
     <View style={styles.wrapper}>
@@ -120,7 +81,7 @@ const VocabularyOverviewListItem = ({ image, article, word, audio }: IVocabulary
         <View style={styles.item}>
           <Image
             source={{
-              uri: image
+              uri: document.document_image[0].image
             }}
             width={24}
             height={24}
@@ -135,9 +96,9 @@ const VocabularyOverviewListItem = ({ image, article, word, audio }: IVocabulary
             </Text>
           </View>
         </View>
-        <TouchableOpacity testID='volume-button' style={volumeIconStyle} onPress={() => handleSpeakerClick()}>
-          <VolumeUp fill={volumeIconColor} />
-        </TouchableOpacity>
+        <View style={styles.speaker}>
+          <AudioPlayer document={document} disabled={false} />
+        </View>
       </View>
     </View>
   )
