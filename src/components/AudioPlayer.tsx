@@ -26,10 +26,10 @@ const VolumeIcon = styled.TouchableOpacity`
   left: 45%;
   width: 40px;
   height: 40px;
-  borderradius: 50px;
+  border-radius: 50px;
   background-color: ${COLORS.lunesFunctionalIncorrectDark};
-  justifycontent: center;
-  alignitems: center;
+  justify-content: center;
+  align-items: center;
 `
 
 function AudioPlayer(props: AudioPlayerProps) {
