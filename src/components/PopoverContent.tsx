@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { InfoIcon } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/colors'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   container: {
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
 const PopoverContent = () => (
   <View style={styles.container}>
     <InfoIcon width={30} height={30} />
-    <Text style={styles.message}>Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.</Text>
+    <Text style={styles.message}>{labels.exercises.write.feedback.articleMissing}</Text>
   </View>
 )
 
