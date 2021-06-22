@@ -1,5 +1,5 @@
 {
-  "overview": {
+  "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
     "unit": "Lektion",
     "units": "Lektionen",
@@ -7,36 +7,27 @@
     "words": "Wörter",
     "exercises": "Übungen"
   },
-  "header": {
-    "overview": "Übersicht",
-    "overviewExercises": "Übersicht der Übungen",
-    "cancelExercise": "Übung beenden"
-  },
   "exercises": {
-    "overview": {
+    "vocabularyList": {
       "title": "Vokabelübersicht",
-      "description": "Alle Wörte anschauen"
+      "description": "Alle Wörter anschauen"
     },
-    "wordSingleChoice": {
+    "wordChoice": {
       "title": "Wort auswählen",
       "description": "Wähle das richtige Wort"
     },
-    "articleSingleChoice": {
+    "articleChoice": {
       "title": "Artikel üben",
       "description": "Wähle den richtigen Artikel"
     },
     "write": {
       "title": "Wort schreiben",
       "description": "Wort mit Artikel eingeben",
-      "placeholder": {
-        "insertAnswer": "Wort mit Artikel eingeben",
-        "newTry": "Neuer Versuch"
-      },
-      "button": {
-        "checkInput": "Eingabe überprüfen",
-        "showSolution": "Lösung anzeigen",
-        "tryLater": "Später versuchen"
-      },
+      "checkInput": "Eingabe überprüfen",
+      "showSolution": "Lösung anzeigen",
+      "tryLater": "Später versuchen",
+      "insertAnswer": "Wort mit Artikel eingeben",
+      "newTry": "Neuer Versuch",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
         "wrong": "Die richtige Antwort ist: ",
@@ -45,9 +36,12 @@
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
-    "buttons": {
-      "next": "Nächstes Wort",
-      "showResults": "Ergebnisse anzeigen"
+    "next": "Nächstes Wort",
+    "showResults": "Ergebnisse anzeigen",
+    "cancelModal": {
+      "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
+      "cancel": "Beenden",
+      "continue": "Weiter machen"
     }
   },
   "results": {
@@ -65,9 +59,11 @@
     "show": "Zeige",
     "of": "von"
   },
-  "cancelModal": {
-    "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
-    "cancel": "Beenden",
-    "continue": "Weiter machen"
+  "general": {
+    "header": {
+      "overview": "Übersicht",
+      "overviewExercises": "Übersicht der Übungen",
+      "cancelExercise": "Übung beenden"
+    }
   }
 }

@@ -112,7 +112,7 @@ const VocabularyTrainerExerciseScreen = ({
         headerLeft: () => (
           <TouchableOpacity onPress={showModal} style={styles.headerLeft}>
             <CloseButton />
-            <Text style={styles.title}>{labels.header.cancelExercise}</Text>
+            <Text style={styles.title}>{labels.general.header.cancelExercise}</Text>
           </TouchableOpacity>
         ),
         headerRight: () => (

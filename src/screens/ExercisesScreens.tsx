@@ -158,7 +158,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 {labels.overview.exercises}</Text>
+        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
       </>
     </Title>
   )

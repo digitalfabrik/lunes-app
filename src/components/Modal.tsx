@@ -91,13 +91,13 @@ const ConfirmationModal = ({
           <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
             <CloseIcon />
           </TouchableOpacity>
-          <Text style={styles.message}>{labels.cancelModal.cancelAsk}</Text>
+          <Text style={styles.message}>{labels.exercises.cancelModal.cancelAsk}</Text>
           <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
-            <Text style={styles.lightLabel}>{labels.cancelModal.continue}</Text>
+            <Text style={styles.lightLabel}>{labels.exercises.cancelModal.continue}</Text>
           </Button>
 
           <Button onPress={goBack} theme={BUTTONS_THEME.light}>
-            <Text style={styles.darkLabel}>{labels.cancelModal.cancel}</Text>
+            <Text style={styles.darkLabel}>{labels.exercises.cancelModal.cancel}</Text>
           </Button>
         </View>
       </View>

@@ -29,22 +29,22 @@ export interface ExerciseType {
 export const EXERCISES: ExerciseType[] = [
   {
     key: ExerciseKeys.vocabularyOverview,
-    title: labels.exercises.overview.title,
-    description: labels.exercises.overview.description,
+    title: labels.exercises.vocabularyList.title,
+    description: labels.exercises.vocabularyList.description,
     Level: easy,
     nextScreen: 'VocabularyOverview'
   },
   {
     key: ExerciseKeys.singleChoice,
-    title: labels.exercises.wordSingleChoice.title,
-    description: labels.exercises.wordSingleChoice.description,
+    title: labels.exercises.wordChoice.title,
+    description: labels.exercises.wordChoice.description,
     Level: mideasy,
     nextScreen: 'SingleChoice'
   },
   {
     key: ExerciseKeys.learnArticles,
-    title: labels.exercises.articleSingleChoice.title,
-    description: labels.exercises.articleSingleChoice.description,
+    title: labels.exercises.articleChoice.title,
+    description: labels.exercises.articleChoice.description,
     Level: midhard,
     nextScreen: 'LearnArticles'
   },

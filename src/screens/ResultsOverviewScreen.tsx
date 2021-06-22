@@ -168,7 +168,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
-          <Text style={styles.headerText}>{labels.header.cancelExercise}</Text>
+          <Text style={styles.headerText}>{labels.general.header.cancelExercise}</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
@@ -225,8 +225,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <item.Icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
-            <Text
-              style={descriptionStyle}>{`${count} ${labels.results.of} ${counts.total} ${labels.overview.words}`}</Text>
+            <Text style={descriptionStyle}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Text>
           </View>
         </View>
         <Arrow fill={arrowColor} />
@@ -253,7 +252,6 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   return (
     <View style={styles.root}>
       <StatusBar barStyle='dark-content' />
-
       <FlatList
         data={RESULTS}
         style={styles.list}

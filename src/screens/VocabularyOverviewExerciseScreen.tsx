@@ -80,9 +80,9 @@ const VocabularyOverviewExerciseScreen = ({
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>{labels.exercises.overview.title}</Text>
+        <Text style={styles.screenTitle}>{labels.exercises.vocabularyList.title}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? labels.overview.word : labels.overview.words}
+          {count} {count === 1 ? labels.home.word : labels.home.words}
         </Text>
       </>
     </Title>

@@ -102,7 +102,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           {title} {labels.results.entries}
         </Text>
         <Text style={styles.description}>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
-          labels.overview.words
+          labels.home.words
         }`}</Text>
       </>
     </Title>

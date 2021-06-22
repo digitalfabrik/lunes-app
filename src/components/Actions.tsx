@@ -53,7 +53,7 @@ const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, t
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
         <Text style={[styles.lightLabel, styles.arrowLabel]}>
-          {isFinished ? labels.exercises.buttons.showResults : labels.exercises.buttons.next}
+          {isFinished ? labels.exercises.showResults : labels.exercises.next}
         </Text>
         <WhiteNextArrow />
       </>
@@ -62,18 +62,18 @@ const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, t
     <>
       <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
         <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>
-          {labels.exercises.write.button.checkInput}
+          {labels.exercises.write.checkInput}
         </Text>
       </Button>
 
       <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
-        <Text style={styles.darkLabel}>{labels.exercises.write.button.showSolution}</Text>
+        <Text style={styles.darkLabel}>{labels.exercises.write.showSolution}</Text>
       </Button>
 
       {!isFinished && !result && (
         <Button onPress={tryLater} testID='try-later'>
           <>
-            <Text style={styles.darkLabel}>{labels.exercises.write.button.tryLater}</Text>
+            <Text style={styles.darkLabel}>{labels.exercises.write.tryLater}</Text>
             <NextArrow style={styles.arrow} />
           </>
         </Button>

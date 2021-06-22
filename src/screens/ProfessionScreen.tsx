@@ -77,7 +77,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
-      <Text style={styles.text}>{labels.overview.welcome}</Text>
+      <Text style={styles.text}>{labels.home.welcome}</Text>
     </>
   )
 
@@ -95,7 +95,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
         <Text style={itemTextStyle}>
-          {item.total_training_sets} {item.total_training_sets === 1 ? labels.overview.unit : labels.overview.units}
+          {item.total_training_sets} {item.total_training_sets === 1 ? labels.home.unit : labels.home.units}
         </Text>
       </MenuItem>
     )

@@ -91,7 +91,7 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
           <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
-                {currentWord + 1 >= count ? labels.exercises.buttons.showResults : labels.exercises.buttons.next}
+                {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
               </Text>
               <WhiteNextArrow />
             </>
