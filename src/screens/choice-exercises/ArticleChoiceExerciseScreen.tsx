@@ -7,12 +7,12 @@ import { Answer, ARTICLES } from '../../constants/data'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 
-interface LearnArticlesExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'LearnArticles'>
-  navigation: StackNavigationProp<RoutesParamsType, 'LearnArticles'>
+interface ArticleChoiceExerciseScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParamsType, 'ArticleChoiceExercise'>
 }
 
-const ArticleChoiceExerciseScreen = ({ navigation, route }: LearnArticlesExerciseScreenPropsType) => {
+const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenPropsType) => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
   const { data: documents } = useLoadDocuments(trainingSetId)

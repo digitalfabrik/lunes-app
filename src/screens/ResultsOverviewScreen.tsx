@@ -195,7 +195,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   )
 
   const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
-    const hideAlmostCorrect = exercise !== ExerciseKeys.vocabularyTrainer && item.key === SIMPLE_RESULTS.similar
+    const hideAlmostCorrect = exercise !== ExerciseKeys.writeExercise && item.key === SIMPLE_RESULTS.similar
     if (hideAlmostCorrect) {
       return null
     }

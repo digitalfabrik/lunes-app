@@ -4,7 +4,7 @@ import { Home, HomeButtonPressed } from '../../assets/images'
 import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import axios from '../utils/axios'
 import Title from '../components/Title'
-import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
+import VocabularyListItem from '../components/VocabularyListItem'
 import Loading from '../components/Loading'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -39,15 +39,12 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface VocabularyOverviewExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'VocabularyOverview'>
-  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyOverview'>
+interface VocabularyListScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'VocabularyList'>
+  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyList'>
 }
 
-const VocabularyOverviewExerciseScreen = ({
-  navigation,
-  route
-}: VocabularyOverviewExerciseScreenPropsType): JSX.Element => {
+const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
   const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -88,7 +85,7 @@ const VocabularyOverviewExerciseScreen = ({
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyOverviewListItem document={item} />
+  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyListItem document={item} />
 
   return (
     <View style={styles.root}>
@@ -106,4 +103,4 @@ const VocabularyOverviewExerciseScreen = ({
   )
 }
 
-export default VocabularyOverviewExerciseScreen
+export default VocabularyListScreen
