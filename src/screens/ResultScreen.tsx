@@ -11,6 +11,7 @@ import Button from '../components/Button'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -96,8 +97,13 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title>
       <>
         <Icon width={38} height={38} />
-        <Text style={styles.screenTitle}> {title} Eingaben</Text>
-        <Text style={styles.description}>{`${counts[resultType.key]} von ${counts.total} Wörtern`}</Text>
+        <Text style={styles.screenTitle}>
+          {' '}
+          {title} {labels.results.entries}
+        </Text>
+        <Text style={styles.description}>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
+          labels.home.words
+        }`}</Text>
       </>
     </Title>
   )
@@ -116,7 +122,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>
-            {resultType.key === 'similar' ? 'almost correct' : resultType.key} Eingaben anschauen.
+            {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
           </Text>
         </>
       </Button>
@@ -134,7 +140,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           })
         }>
         <>
-          <Text style={styles.darkLabel}>View {nextResultType.title} entries</Text>
+          <Text style={styles.darkLabel}>
+            {labels.results.show} {nextResultType.title} {labels.results.entries}
+          </Text>
           <NextArrow style={styles.arrow} />
         </>
       </Button>
