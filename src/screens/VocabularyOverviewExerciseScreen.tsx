@@ -117,8 +117,8 @@ const VocabularyOverviewExerciseScreen = ({
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
         />
-        <Text>{error}</Text>
       </Loading>
+      <Text>{error}</Text>
     </View>
   )
 }
