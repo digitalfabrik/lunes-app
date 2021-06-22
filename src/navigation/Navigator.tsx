@@ -15,6 +15,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import ChoiceExercisesScreen from '../screens/choice-exercises/ChoiceExercisesScreen'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   header: {
@@ -72,7 +73,7 @@ const Navigator = (): JSX.Element => {
       <Stack.Navigator initialRouteName='Profession' screenOptions={TransitionPresets.SlideFromRightIOS}>
         <Stack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Übersicht', BackButton, navigation, 'Profession')}
+          options={({ navigation }) => defaultOptions(labels.header.overview, BackButton, navigation, 'Profession')}
           name='ProfessionSubcategory'
           component={ProfessionSubcategoryScreen}
         />
@@ -84,22 +85,22 @@ const Navigator = (): JSX.Element => {
           component={ExercisesScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Übersicht der Übungen', BackButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.header.overviewExercises, BackButton, navigation)}
           name='VocabularyOverview'
           component={VocabularyOverviewExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
           name='SingleChoice'
           component={ChoiceExercisesScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
           name='LearnArticles'
           component={ChoiceExercisesScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Übersicht der Übungen', CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
           name='VocabularyTrainer'
           component={VocabularyTrainerExerciseScreen}
         />

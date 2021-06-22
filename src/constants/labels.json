@@ -1,4 +1,17 @@
 {
+  "overview": {
+    "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
+    "unit": "Lektion",
+    "units": "Lektionen",
+    "word": "Wort",
+    "words": "Wörter",
+    "exercises": "Übungen"
+  },
+  "header": {
+    "overview": "Übersicht",
+    "overviewExercises": "Übersicht der Übungen",
+    "cancelExercise": ""
+  },
   "exercises": {
     "overview": {
       "title": "Vokabelübersicht",
@@ -14,11 +27,45 @@
     },
     "write": {
       "title": "Wort schreiben",
-      "description": "Wort mit Artikel eingeben"
+      "description": "Wort mit Artikel eingeben",
+      "placeholder": {
+        "insertAnswer": "Wort mit Artikel eingeben",
+        "newTry": "Neuer Versuch"
+      },
+      "button": {
+        "checkInput": "",
+        "showSolution": "",
+        "tryLater": ""
+      },
+      "feedback": {
+        "articleMissing": "",
+        "wrong": "",
+        "almost-correct": "",
+        "correct": ""
+      }
+    },
+    "buttons": {
+      "next": "",
+      "show-results": ""
     }
   },
-  "feedback": {
-    "newTry": "Neuer Versuch",
-    "insertAnswer": "Wort mit Artikel eingeben"
+  "results": {
+    "resultsOverview": "",
+    "feedbackGood": "",
+    "feedbackMedium": "",
+    "feedbackBad": "",
+    "checkEntries": "",
+    "retryExercise": "",
+    "wrong": "",
+    "almost-correct": "",
+    "correct": "",
+    "exit": "",
+    "show": "",
+    "entries": ""
+  },
+  "cancel-modal": {
+    "cancel-ask": "",
+    "confirm": "",
+    "cancel": ""
   }
 }
