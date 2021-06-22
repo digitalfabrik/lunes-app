@@ -212,7 +212,11 @@ const AnswerSection = ({
           ]}>
           <TextInput
             style={styles.textInput}
-            placeholder={secondAttempt ? labels.feedback.newTry : 'Wort mit Artikel eingeben'}
+            placeholder={
+              secondAttempt
+                ? labels.exercises.write.placeholder.newTry
+                : labels.exercises.write.placeholder.insertAnswer
+            }
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
             onChangeText={text => setInput(text)}

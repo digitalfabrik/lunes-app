@@ -9,6 +9,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -87,15 +88,15 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
     const percentageCorrect = (correctResults.length / results.length) * 100
     switch (true) {
       case percentageCorrect > 66:
-        setMessage('Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.')
+        setMessage(labels.results.feedbackGood)
         break
 
       case percentageCorrect > 33:
-        setMessage('Übung macht den Meister, \nversuche es noch einmal!')
+        setMessage(labels.results.feedbackMedium)
         break
 
       case percentageCorrect < 33:
-        setMessage('Nicht aufgeben! \nVersuche es noch einmal!')
+        setMessage(labels.results.feedbackBad)
         break
     }
   }, [results])
@@ -125,14 +126,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
         <>
           <ListIcon />
-          <Text style={styles.lightLabel}>Eingabe überprüfen</Text>
+          <Text style={styles.lightLabel}>{labels.results.checkEntries}</Text>
         </>
       </Button>
 
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <>
           <RepeatIcon fill={COLORS.lunesBlack} />
-          <Text style={styles.darkLabel}>Übung wiederholen</Text>
+          <Text style={styles.darkLabel}>{labels.results.retryExercise}</Text>
         </>
       </Button>
     </View>

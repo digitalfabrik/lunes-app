@@ -22,6 +22,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -111,7 +112,7 @@ const VocabularyTrainerExerciseScreen = ({
         headerLeft: () => (
           <TouchableOpacity onPress={showModal} style={styles.headerLeft}>
             <CloseButton />
-            <Text style={styles.title}>Übung beenden</Text>
+            <Text style={styles.title}>{labels.header.cancelExercise}</Text>
           </TouchableOpacity>
         ),
         headerRight: () => (

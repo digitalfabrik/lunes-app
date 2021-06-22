@@ -9,6 +9,7 @@ import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -167,7 +168,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
-          <Text style={styles.headerText}>ÜBUNG BEENDEN</Text>
+          <Text style={styles.headerText}>{labels.header.cancelExercise}</Text>
           <FinishIcon />
         </TouchableOpacity>
       ),
@@ -185,7 +186,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>Ergebnis-Übersicht</Text>
+        <Text style={styles.screenTitle}>{labels.results.resultsOverview}</Text>
         <Text style={styles.screenSubTitle}>{title}</Text>
         <Text style={styles.screenDescription}>{description}</Text>
         <Level style={styles.level} />
@@ -224,7 +225,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <item.Icon fill={iconColor} width={30} height={30} />
           <View style={styles.text}>
             <Text style={itemTitleStyle}>{item.title}</Text>
-            <Text style={descriptionStyle}>{`${count} von ${counts.total} Wörter`}</Text>
+            <Text
+              style={descriptionStyle}>{`${count} ${labels.results.of} ${counts.total} ${labels.overview.words}`}</Text>
           </View>
         </View>
         <Arrow fill={arrowColor} />
@@ -243,7 +245,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>GESAMTE ÜBUNG WIEDERHOLEN</Text>
+        <Text style={styles.lightLabel}>{labels.results.retryExercise}</Text>
       </>
     </Button>
   )

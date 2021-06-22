@@ -5,6 +5,7 @@ import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   lightLabel: {
@@ -51,24 +52,28 @@ const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, t
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
-        <Text style={[styles.lightLabel, styles.arrowLabel]}>{isFinished ? 'Check out' : 'NÄCHSTES WORT'}</Text>
+        <Text style={[styles.lightLabel, styles.arrowLabel]}>
+          {isFinished ? labels.exercises.buttons.showResults : labels.exercises.buttons.next}
+        </Text>
         <WhiteNextArrow />
       </>
     </Button>
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
-        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>EINGABE ÜBERPRÜFEN</Text>
+        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>
+          {labels.exercises.write.button.checkInput}
+        </Text>
       </Button>
 
       <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
-        <Text style={styles.darkLabel}>LÖSUNG ANZEIGEN</Text>
+        <Text style={styles.darkLabel}>{labels.exercises.write.button.showSolution}</Text>
       </Button>
 
       {!isFinished && !result && (
         <Button onPress={tryLater} testID='try-later'>
           <>
-            <Text style={styles.darkLabel}>SPÄTER VERSUCHEN</Text>
+            <Text style={styles.darkLabel}>{labels.exercises.write.button.tryLater}</Text>
             <NextArrow style={styles.arrow} />
           </>
         </Button>

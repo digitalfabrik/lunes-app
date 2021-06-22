@@ -10,7 +10,7 @@
   "header": {
     "overview": "Übersicht",
     "overviewExercises": "Übersicht der Übungen",
-    "cancelExercise": ""
+    "cancelExercise": "Übung beenden"
   },
   "exercises": {
     "overview": {
@@ -33,39 +33,41 @@
         "newTry": "Neuer Versuch"
       },
       "button": {
-        "checkInput": "",
-        "showSolution": "",
-        "tryLater": ""
+        "checkInput": "Eingabe überprüfen",
+        "showSolution": "Lösung anzeigen",
+        "tryLater": "Später versuchen"
       },
       "feedback": {
-        "articleMissing": "",
-        "wrong": "",
-        "almost-correct": "",
-        "correct": ""
+        "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
+        "wrong": "Die richtige Antwort ist: ",
+        "almostCorrect1": "Deine Eingabe ",
+        "almostCorrect2": " ist fast richtig.",
+        "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
     "buttons": {
-      "next": "",
-      "show-results": ""
+      "next": "Nächstes Wort",
+      "showResults": "Ergebnisse anzeigen"
     }
   },
   "results": {
-    "resultsOverview": "",
-    "feedbackGood": "",
-    "feedbackMedium": "",
-    "feedbackBad": "",
-    "checkEntries": "",
-    "retryExercise": "",
-    "wrong": "",
-    "almost-correct": "",
-    "correct": "",
-    "exit": "",
-    "show": "",
-    "entries": ""
+    "resultsOverview": "Ergebnis-Übersicht",
+    "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.",
+    "feedbackMedium": "Übung macht den Meister, \nversuche es noch einmal!",
+    "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
+    "checkEntries": "Eingaben überprüfen",
+    "retryExercise": "Übung wiederholen",
+    "wrong": "falsche",
+    "similar": "ähnliche",
+    "correct": "richtige",
+    "entries": "Eingaben",
+    "viewEntries": "Eingaben anschauen",
+    "show": "Zeige",
+    "of": "von"
   },
-  "cancel-modal": {
-    "cancel-ask": "",
-    "confirm": "",
-    "cancel": ""
+  "cancelModal": {
+    "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
+    "cancel": "Beenden",
+    "continue": "Weiter machen"
   }
 }

@@ -125,7 +125,9 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         onPress={() => handleNavigation(item)}>
         <View style={styles.itemText}>
           <Text style={badgeStyle}>{item.total_documents}</Text>
-          <Text style={descriptionStyle}>{item.total_documents === 1 ? labels.overview.word : labels.overview.words}</Text>
+          <Text style={descriptionStyle}>
+            {item.total_documents === 1 ? labels.overview.word : labels.overview.words}
+          </Text>
         </View>
       </MenuItem>
     )

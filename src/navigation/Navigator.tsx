@@ -14,7 +14,8 @@ import ResultScreen from '../screens/ResultScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import ChoiceExercisesScreen from '../screens/choice-exercises/ChoiceExercisesScreen'
+import WordChoiceExerciseScreen from '../screens/choice-exercises/WordChoiceExerciseScreen'
+import ArticleChoiceExerciseScreen from '../screens/choice-exercises/ArticleChoiceExerciseScreen'
 import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
@@ -92,12 +93,12 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
           name='SingleChoice'
-          component={ChoiceExercisesScreen}
+          component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
           name='LearnArticles'
-          component={ChoiceExercisesScreen}
+          component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.header.overviewExercises, CloseButton, navigation)}
@@ -115,7 +116,9 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions('Ergebnis-Übersicht', BackButton, navigation, 'ResultsOverview')}
+          options={({ navigation }) =>
+            defaultOptions(labels.results.resultsOverview, BackButton, navigation, 'ResultsOverview')
+          }
           name='ResultScreen'
           component={ResultScreen}
         />
