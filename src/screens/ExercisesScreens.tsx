@@ -8,6 +8,7 @@ import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -157,7 +158,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 Übungen</Text>
+        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
       </>
     </Title>
   )

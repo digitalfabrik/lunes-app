@@ -12,6 +12,7 @@ import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
+import labels from '../constants/labels.json'
 
 const Background = styled.ImageBackground`
   width: ${wp(80)};
@@ -40,17 +41,17 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
     background = correct_background
-    message = 'Toll, weiter so! \nDeine Eingabe ist richtig.'
+    message = labels.exercises.write.feedback.correct
   } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
-    message = `Die richtige Antwort ist: ${
+    message = `${labels.exercises.write.feedback.wrong} ${
       document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
     } ${document?.word}`
   } else {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
-    message = `Deine Eingabe ${input} ist fast richtig.`
+    message = `${labels.exercises.write.feedback.almostCorrect1} ${input} ${labels.exercises.write.feedback.almostCorrect2}`
   }
 
   return result !== '' || secondAttempt ? (

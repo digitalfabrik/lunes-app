@@ -9,6 +9,7 @@ import { WhiteNextArrow } from '../../../../assets/images'
 import { styles } from '../../../components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
+import labels from '../../../constants/labels.json'
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -103,7 +104,7 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
           <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
-                {currentWord + 1 >= count ? 'ERGEBNISSE' : 'NÄCHSTES WORT'}
+                {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
               </Text>
               <WhiteNextArrow />
             </>
