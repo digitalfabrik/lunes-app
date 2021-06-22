@@ -11,6 +11,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -79,9 +80,9 @@ const VocabularyOverviewExerciseScreen = ({
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>Vokabelübersicht</Text>
+        <Text style={styles.screenTitle}>{labels.exercises.vocabularyList.title}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? 'Wort' : 'Wörter'}
+          {count} {count === 1 ? labels.home.word : labels.home.words}
         </Text>
       </>
     </Title>

@@ -10,6 +10,7 @@ import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -25,7 +26,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: wp('4%'),
     color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
+    fontFamily: 'SourceSansPro-Regular',
+    paddingLeft: 5
   },
   screenTitle: {
     textAlign: 'center',
@@ -100,7 +102,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       <>
         <Text style={styles.screenTitle}>{disciplineTitle}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? 'Lektion' : 'Lektionen'}
+          {count} {count === 1 ? labels.home.unit : labels.home.units}
         </Text>
       </>
     </Title>
@@ -123,7 +125,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         onPress={() => handleNavigation(item)}>
         <View style={styles.itemText}>
           <Text style={badgeStyle}>{item.total_documents}</Text>
-          <Text style={descriptionStyle}>{item.total_documents === 1 ? ' Wort' : ' Wörter'}</Text>
+          <Text style={descriptionStyle}>{item.total_documents === 1 ? labels.home.word : labels.home.words}</Text>
         </View>
       </MenuItem>
     )
