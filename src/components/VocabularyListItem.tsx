@@ -68,11 +68,11 @@ export const styles = StyleSheet.create({
   }
 })
 
-export interface IVocabularyOverviewListItemProps {
+export interface VocabularyListItemPropType {
   document: DocumentType
 }
 
-const VocabularyOverviewListItem = ({ document }: IVocabularyOverviewListItemProps) => {
+const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
   const { article, word } = document
 
   return (
@@ -104,4 +104,4 @@ const VocabularyOverviewListItem = ({ document }: IVocabularyOverviewListItemPro
   )
 }
 
-export default VocabularyOverviewListItem
+export default VocabularyListItem

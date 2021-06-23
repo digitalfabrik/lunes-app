@@ -6,7 +6,7 @@ import { COLORS } from '../constants/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
 import Loading from '../components/Loading'
-import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
+import VocabularyListItem from '../components/VocabularyListItem'
 import Button from '../components/Button'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
@@ -108,10 +108,10 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyOverviewListItem document={item} />
+  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />
 
   const repeatIncorrectEntries = (): void =>
-    navigation.navigate('VocabularyTrainer', {
+    navigation.navigate('WriteExercise', {
       retryData: { data: entries },
       extraParams
     })

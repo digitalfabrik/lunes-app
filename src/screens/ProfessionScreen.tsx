@@ -61,7 +61,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       AsyncStorage.getSession()
         .then(async value => {
           if (value !== null) {
-            navigation.navigate('VocabularyTrainer', value)
+            navigation.navigate('WriteExercise', value)
           }
         })
         .catch(e => console.error(e))

@@ -69,7 +69,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   useFocusEffect(
     React.useCallback(() => {
-      if (exercise === ExerciseKeys.vocabularyTrainer) {
+      if (exercise === ExerciseKeys.writeExercise) {
         AsyncStorage.getExercise(exercise)
           .then(value => {
             if (value !== null) {
