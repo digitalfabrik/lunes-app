@@ -92,11 +92,6 @@ export const ARTICLES: ArticleType[] = [
 
 export type Article = typeof ARTICLES[number]
 
-// export function isArticle(str: string): str is Article {
-//     const strArr: string[] = Object.values(ARTICLES)
-//     return strArr.includes(str)
-// }
-
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 

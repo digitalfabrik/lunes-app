@@ -1,8 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../constants/colors'
-import { ARTICLES } from '../constants/data'
-import { capitalizeFirstLetter, getArticleColor } from '../utils/helpers'
+import { getArticleColor } from '../utils/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from './AudioPlayer'
 import { DocumentType } from '../constants/endpoints'
@@ -81,7 +80,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
         <View style={styles.item}>
           <Image
             source={{
-              uri: document.document_image[0].image
+              uri: document?.document_image[0].image
             }}
             width={24}
             height={24}
@@ -89,7 +88,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
           />
           <View>
             <Text testID='article' style={[styles.title, { backgroundColor: getArticleColor(article) }]}>
-              {capitalizeFirstLetter(article.value)}
+              {article.value}
             </Text>
             <Text testID='word' style={styles.description}>
               {word}

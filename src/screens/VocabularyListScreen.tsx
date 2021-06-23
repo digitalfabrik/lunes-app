@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
-import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
-import axios from '../utils/axios'
+import { DocumentType } from '../constants/endpoints'
 import Title from '../components/Title'
 import VocabularyListItem from '../components/VocabularyListItem'
 import Loading from '../components/Loading'
@@ -12,6 +11,7 @@ import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import useLoadDocuments from '../hooks/useLoadDocuments'
 
 export const styles = StyleSheet.create({
   root: {
@@ -46,8 +46,6 @@ interface VocabularyListScreenPropsType {
 
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [documents, setDocuments] = useState<DocumentsType>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [count, setCount] = useState<number>(0)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
 
@@ -65,15 +63,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     })
   }, [navigation, isHomeButtonPressed])
 
-  useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-    axios.get(url).then(response => {
-      // TODO replace with useLoadDocumentsFunc
-      setDocuments(response.data)
-      setCount(response.data.length)
-      setIsLoading(false)
-    })
-  }, [trainingSetId])
+  const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
   const Header = (
     <Title>
@@ -90,7 +80,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
 
   return (
     <View style={styles.root}>
-      <Loading isLoading={isLoading}>
+      <Loading isLoading={loading}>
         <FlatList
           data={documents}
           style={styles.list}

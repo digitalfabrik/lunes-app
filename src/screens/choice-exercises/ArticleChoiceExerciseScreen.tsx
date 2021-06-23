@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'

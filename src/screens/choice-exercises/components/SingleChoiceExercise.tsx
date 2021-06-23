@@ -35,8 +35,6 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   const [answers, setAnswers] = useState<Answer[]>([])
 
   const currentDocument = documents[currentWord]
-  console.log('SingleChoice')
-  console.log(documents)
   // Prevent regenerating false answers on every render
   useEffect(() => {
     setAnswers(documentToAnswers(currentDocument))
@@ -68,6 +66,9 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
       onExerciseFinished(results)
+      setCurrentWord(0)
+      setResults([])
+      setSelectedAnswer(null)
     } else {
       setCurrentWord(prevState => prevState + 1)
       setSelectedAnswer(null)

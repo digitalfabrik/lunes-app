@@ -1,26 +1,21 @@
 import { COLORS } from '../constants/colors'
-import { Article, ARTICLES } from '../constants/data'
+import { Article } from '../constants/data'
 
 export const getArticleColor = (article: Article): string => {
-  return COLORS.lunesArtikelDer
-  // switch (article?.toLowerCase()) {
-  //   case ARTICLES.der:
-  //     return COLORS.lunesArtikelDer
-  //
-  //   case ARTICLES.das:
-  //     return COLORS.lunesArtikelDas
-  //
-  //   case ARTICLES.die:
-  //     return COLORS.lunesArtikelDie
-  //
-  //   case ARTICLES.diePlural:
-  //     return COLORS.lunesArtikelDiePlural
-  //
-  //   default:
-  //     return COLORS.lunesArtikelDer
-  // }
-}
+  switch (article.id) {
+    case 1:
+      return COLORS.lunesArtikelDer
 
-export const capitalizeFirstLetter = (article: string): string => {
-  return article.charAt(0).toUpperCase() + article.slice(1)
+    case 2:
+      return COLORS.lunesArtikelDas
+
+    case 3:
+      return COLORS.lunesArtikelDie
+
+    case 4:
+      return COLORS.lunesArtikelDiePlural
+
+    default:
+      return COLORS.lunesArtikelDer
+  }
 }

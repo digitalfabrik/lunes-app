@@ -7,7 +7,6 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../assets/images'
-import { ARTICLES } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
