@@ -45,9 +45,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} ${
-      document?.article?.toLowerCase() === ARTICLES.diePlural ? 'die' : document?.article
-    } ${document?.word}`
+    message = `${labels.exercises.write.feedback.wrong} ${document?.article.value} ${document?.word}`
   } else {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background

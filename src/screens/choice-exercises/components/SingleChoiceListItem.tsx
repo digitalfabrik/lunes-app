@@ -131,7 +131,7 @@ const SingleChoiceListItem = ({
       pressed={pressed}
       disabled={anyAnswerSelected}>
       <StyledArticle article={article} selected={selected} correct={showCorrect} pressed={pressed}>
-        {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
+        {capitalizeFirstLetter(article.value)}
       </StyledArticle>
       <StyledWord selected={selected} pressed={pressed}>
         {word}

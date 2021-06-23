@@ -89,7 +89,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
           />
           <View>
             <Text testID='article' style={[styles.title, { backgroundColor: getArticleColor(article) }]}>
-              {article?.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
+              {capitalizeFirstLetter(article.value)}
             </Text>
             <Text testID='word' style={styles.description}>
               {word}

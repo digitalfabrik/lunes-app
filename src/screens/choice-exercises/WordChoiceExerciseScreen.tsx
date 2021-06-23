@@ -55,11 +55,14 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   }
 
   return (
-    <SingleChoiceExercise
-      documents={documents}
-      documentToAnswers={documentToAnswers}
-      onExerciseFinished={onExerciseFinished}
-    />
+    documents !== null &&
+    documents.length !== 0 && (
+      <SingleChoiceExercise
+        documents={documents}
+        documentToAnswers={documentToAnswers}
+        onExerciseFinished={onExerciseFinished}
+      />
+    )
   )
 }
 

@@ -68,6 +68,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
   useEffect(() => {
     const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
     axios.get(url).then(response => {
+      // TODO replace with useLoadDocumentsFunc
       setDocuments(response.data)
       setCount(response.data.length)
       setIsLoading(false)

@@ -35,6 +35,8 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   const [answers, setAnswers] = useState<Answer[]>([])
 
   const currentDocument = documents[currentWord]
+  console.log('SingleChoice')
+  console.log(documents)
   // Prevent regenerating false answers on every render
   useEffect(() => {
     setAnswers(documentToAnswers(currentDocument))

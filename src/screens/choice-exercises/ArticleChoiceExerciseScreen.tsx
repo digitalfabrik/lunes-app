@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -18,7 +18,7 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
   const { data: documents } = useLoadDocuments(trainingSetId)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
-    return Object.values(ARTICLES).map(article => ({ article, word: document.word }))
+    return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
   }
 
   const onExerciseFinished = (results: DocumentResultType[]): void => {
@@ -26,7 +26,8 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
   }
 
   return (
-    documents !== null && (
+    documents !== null &&
+    documents.length !== 0 && (
       <SingleChoiceExercise
         documents={documents}
         documentToAnswers={documentToAnswers}
