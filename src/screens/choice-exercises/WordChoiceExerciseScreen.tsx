@@ -8,8 +8,8 @@ import SingleChoiceExercise from './components/SingleChoiceExercise'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 
 interface WordChoiceExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'SingleChoice'>
-  navigation: StackNavigationProp<RoutesParamsType, 'SingleChoice'>
+  route: RouteProp<RoutesParamsType, 'WordChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise'>
 }
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType) => {

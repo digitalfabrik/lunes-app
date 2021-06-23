@@ -70,15 +70,12 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface VocabularyTrainerExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'VocabularyTrainer'>
-  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyTrainer'>
+interface WriteExerciseScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'WriteExercise'>
+  navigation: StackNavigationProp<RoutesParamsType, 'WriteExercise'>
 }
 
-const VocabularyTrainerExerciseScreen = ({
-  navigation,
-  route
-}: VocabularyTrainerExerciseScreenPropsType): JSX.Element => {
+const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -194,4 +191,4 @@ const VocabularyTrainerExerciseScreen = ({
   )
 }
 
-export default VocabularyTrainerExerciseScreen
+export default WriteExerciseScreen

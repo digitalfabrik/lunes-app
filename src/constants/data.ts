@@ -11,10 +11,10 @@ import { RoutesParamsType } from '../navigation/NavigationTypes'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
-  vocabularyOverview: 0,
-  singleChoice: 1,
-  learnArticles: 2,
-  vocabularyTrainer: 3
+  vocabularyList: 0,
+  wordChoiceExercise: 1,
+  articleChoiceExercise: 2,
+  writeExercise: 3
 }
 export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
@@ -28,32 +28,32 @@ export interface ExerciseType {
 
 export const EXERCISES: ExerciseType[] = [
   {
-    key: ExerciseKeys.vocabularyOverview,
+    key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     Level: easy,
-    nextScreen: 'VocabularyOverview'
+    nextScreen: 'VocabularyList'
   },
   {
-    key: ExerciseKeys.singleChoice,
+    key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     Level: mideasy,
-    nextScreen: 'SingleChoice'
+    nextScreen: 'WordChoiceExercise'
   },
   {
-    key: ExerciseKeys.learnArticles,
+    key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
     Level: midhard,
-    nextScreen: 'LearnArticles'
+    nextScreen: 'ArticleChoiceExercise'
   },
   {
-    key: ExerciseKeys.vocabularyTrainer,
+    key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
     Level: hard,
-    nextScreen: 'VocabularyTrainer'
+    nextScreen: 'WriteExercise'
   }
 ]
 
