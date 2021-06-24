@@ -63,10 +63,18 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
     return found
   }
 
+  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
+    article: it.article,
+    word: it.alt_word
+  }))
+
   const onClickAnswer = (selectedAnswer: Answer) => {
     setSelectedAnswer(selectedAnswer)
+    const correctSelected = [correctAnswer, ...correctAlternatives].find(
+      it => isAnswerEqual(it, selectedAnswer) ?? null
+    )
 
-    if (isAnswerEqual(selectedAnswer, correctAnswer) || isCorrectAlternative(selectedAnswer)) {
+    if (correctSelected !== null) {
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
