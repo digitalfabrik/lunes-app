@@ -15,7 +15,7 @@ interface WordChoiceExerciseScreenPropsType {
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType) => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const { data: documents } = useLoadDocuments(trainingSetId)
+  const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
   if (documents === null) {
     return null
@@ -56,7 +56,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     documents !== null &&
-    documents.length !== 0 && (
+    !loading && (
       <SingleChoiceExercise
         documents={documents}
         documentToAnswers={documentToAnswers}

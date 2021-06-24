@@ -15,7 +15,7 @@ interface ArticleChoiceExerciseScreenPropsType {
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenPropsType) => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const { data: documents } = useLoadDocuments(trainingSetId)
+  const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
@@ -27,7 +27,7 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
 
   return (
     documents !== null &&
-    documents.length !== 0 && (
+    !loading && (
       <SingleChoiceExercise
         documents={documents}
         documentToAnswers={documentToAnswers}
