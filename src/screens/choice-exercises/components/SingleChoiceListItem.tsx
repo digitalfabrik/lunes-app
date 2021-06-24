@@ -71,7 +71,7 @@ const StyledArticle = styled.Text`
 
 const StyledWord = styled.Text`
   margin-top: 17px;
-  font-family: SourceSansPro;
+  font-family: SourceSansPro-Regular;
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
