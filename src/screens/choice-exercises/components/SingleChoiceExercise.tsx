@@ -29,31 +29,52 @@ interface SingleChoiceExercisePropsType {
 }
 
 const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished }: SingleChoiceExercisePropsType) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [currentWord, setCurrentWord] = useState<number>(0)
+  const currentDocument = documents[currentWord]
+
+  const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
+  const [correctAnswer, setCorrectAnswer] = useState<Answer>({
+    article: currentDocument.article,
+    word: currentDocument.word
+  })
 
-  const currentDocument = documents[currentWord]
   // Prevent regenerating false answers on every render
   useEffect(() => {
     setAnswers(documentToAnswers(currentDocument))
+    setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
   }, [currentDocument, documentToAnswers])
 
-  const correctAnswer: Answer = {
-    article: currentDocument.article,
-    word: currentDocument.word
-  }
   const count = documents.length
 
   const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
     return answer1.article === answer2.article && answer1.word === answer2.word
   }
 
+  const isCorrectAlternative = (selectedAnswer: Answer): boolean => {
+    let found = false
+    currentDocument.alternatives.forEach(alternative => {
+      if (alternative.article === selectedAnswer.article && alternative.alt_word === selectedAnswer.word) {
+        setCorrectAnswer(selectedAnswer)
+        found = true
+      }
+    })
+    return found
+  }
+
+  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
+    article: it.article,
+    word: it.alt_word
+  }))
+
   const onClickAnswer = (selectedAnswer: Answer) => {
     setSelectedAnswer(selectedAnswer)
+    const correctSelected = [correctAnswer, ...correctAlternatives].find(
+      it => isAnswerEqual(it, selectedAnswer) ?? null
+    )
 
-    if (isAnswerEqual(selectedAnswer, correctAnswer)) {
+    if (correctSelected !== null) {
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
