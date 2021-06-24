@@ -1,7 +1,6 @@
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 import { AlternativeWordType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { ARTICLES } from '../constants/data'
-import { useEffect, useState } from 'react'
 
 export interface DocumentTypeFromServer {
   id: number

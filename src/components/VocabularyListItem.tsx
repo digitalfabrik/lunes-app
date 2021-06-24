@@ -81,7 +81,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
           {document.document_image.length > 0 && (
             <Image
               source={{
-                uri: document?.document_image[0].image
+                uri: document.document_image[0].image
               }}
               width={24}
               height={24}

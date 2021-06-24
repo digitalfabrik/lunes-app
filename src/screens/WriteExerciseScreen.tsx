@@ -130,7 +130,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
 
-  const docsLength = documents ? documents.length : 0
+  const docsLength = documents?.length ?? 0
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>

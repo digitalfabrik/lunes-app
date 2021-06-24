@@ -74,19 +74,19 @@ export const ARTICLES: ArticleType[] = [
   },
   {
     id: 1,
-    value: 'der'
+    value: 'Der'
   },
   {
     id: 2,
-    value: 'die'
+    value: 'Die'
   },
   {
     id: 3,
-    value: 'das'
+    value: 'Das'
   },
   {
     id: 4,
-    value: 'die'
+    value: 'Die'
   }
 ]
 
