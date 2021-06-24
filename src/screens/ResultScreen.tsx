@@ -1,16 +1,17 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { BUTTONS_THEME, RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
 import Loading from '../components/Loading'
-import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
+import VocabularyListItem from '../components/VocabularyListItem'
 import Button from '../components/Button'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -72,10 +73,18 @@ interface ResultScreenPropsType {
 
 const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
   const { extraParams, results, counts, resultType } = route.params
+  const { exercise } = extraParams
   const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
-  const nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+
+  let nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+  if (
+    nextResultType.key === 'similar' &&
+    (exercise === ExerciseKeys.articleChoiceExercise || exercise === ExerciseKeys.wordChoiceExercise)
+  ) {
+    nextResultType = RESULTS[2]
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -96,24 +105,21 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title>
       <>
         <Icon width={38} height={38} />
-        <Text style={styles.screenTitle}> {title} Eingaben</Text>
-        <Text style={styles.description}>{`${counts[resultType.key]} von ${counts.total} Wörtern`}</Text>
+        <Text style={styles.screenTitle}>
+          {' '}
+          {title} {labels.results.entries}
+        </Text>
+        <Text style={styles.description}>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
+          labels.home.words
+        }`}</Text>
       </>
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => (
-    <VocabularyOverviewListItem
-      id={item.id}
-      word={item.word}
-      article={item.article}
-      image={item.document_image[0].image}
-      audio={item.audio}
-    />
-  )
+  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />
 
   const repeatIncorrectEntries = (): void =>
-    navigation.navigate('VocabularyTrainer', {
+    navigation.navigate('WriteExercise', {
       retryData: { data: entries },
       extraParams
     })
@@ -124,7 +130,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>
-            {resultType.key === 'similar' ? 'almost correct' : resultType.key} Eingaben anschauen.
+            {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
           </Text>
         </>
       </Button>
@@ -132,7 +138,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const Footer = (
     <>
-      {retryButton}
+      {exercise === ExerciseKeys.writeExercise && retryButton}
 
       <Button
         onPress={() =>
@@ -142,7 +148,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           })
         }>
         <>
-          <Text style={styles.darkLabel}>View {nextResultType.title} entries</Text>
+          <Text style={styles.darkLabel}>
+            {labels.results.show} {nextResultType.title} {labels.results.entries}
+          </Text>
           <NextArrow style={styles.arrow} />
         </>
       </Button>

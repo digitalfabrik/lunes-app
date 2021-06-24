@@ -1,14 +1,15 @@
 import React from 'react'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -68,14 +69,18 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getExercise(exercise)
-        .then(value => {
-          if (value !== null) {
-            setResults(Object.values(value[disciplineTitle][trainingSet]))
-          }
-        })
-        .catch(e => console.error(e))
-    }, [exercise, disciplineTitle, trainingSet])
+      if (exercise === ExerciseKeys.writeExercise) {
+        AsyncStorage.getExercise(exercise)
+          .then(value => {
+            if (value !== null) {
+              setResults(Object.values(value[disciplineTitle][trainingSet]))
+            }
+          })
+          .catch(e => console.error(e))
+      } else {
+        setResults(extraParams.results)
+      }
+    }, [exercise, disciplineTitle, trainingSet, extraParams])
   )
 
   React.useEffect(() => {
@@ -83,15 +88,15 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
     const percentageCorrect = (correctResults.length / results.length) * 100
     switch (true) {
       case percentageCorrect > 66:
-        setMessage('Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.')
+        setMessage(labels.results.feedbackGood)
         break
 
       case percentageCorrect > 33:
-        setMessage('Übung macht den Meister, \nversuche es noch einmal!')
+        setMessage(labels.results.feedbackMedium)
         break
 
       case percentageCorrect < 33:
-        setMessage('Nicht aufgeben! \nVersuche es noch einmal!')
+        setMessage(labels.results.feedbackBad)
         break
     }
   }, [results])
@@ -102,7 +107,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   }
 
   const repeatExercise = (): void => {
-    navigation.navigate('VocabularyTrainer', {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
       extraParams
     })
   }
@@ -121,14 +126,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
         <>
           <ListIcon />
-          <Text style={styles.lightLabel}>Eingabe überprüfen</Text>
+          <Text style={styles.lightLabel}>{labels.results.checkEntries}</Text>
         </>
       </Button>
 
       <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <>
           <RepeatIcon fill={COLORS.lunesBlack} />
-          <Text style={styles.darkLabel}>Übung wiederholen</Text>
+          <Text style={styles.darkLabel}>{labels.results.retryExercise}</Text>
         </>
       </Button>
     </View>

@@ -1,27 +1,27 @@
 import React, { useState } from 'react'
 import {
+  ActivityIndicator,
+  BackHandler,
+  Image,
+  Keyboard,
+  Pressable,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  ActivityIndicator,
-  Pressable,
-  Keyboard
+  TouchableOpacity
 } from 'react-native'
 import Modal from '../components/Modal'
 import { ProgressBar } from 'react-native-paper'
 import { COLORS } from '../constants/colors'
-import axios from '../utils/axios'
-import { DocumentsType, ENDPOINTS } from '../constants/endpoints'
 import AnswerSection from '../components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { CloseButton } from '../../assets/images'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
+import labels from '../constants/labels.json'
+import useLoadDocuments from '../hooks/useLoadDocuments'
 
 export const styles = StyleSheet.create({
   root: {
@@ -69,41 +69,23 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface VocabularyTrainerExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'VocabularyTrainer'>
-  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyTrainer'>
+interface WriteExerciseScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'WriteExercise'>
+  navigation: StackNavigationProp<RoutesParamsType, 'WriteExercise'>
 }
 
-const VocabularyTrainerExerciseScreen = ({
-  navigation,
-  route
-}: VocabularyTrainerExerciseScreenPropsType): JSX.Element => {
+const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [documents, setDocuments] = useState<DocumentsType>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(1)
+  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setCurrentDocumentNumber(0)
-      const getDocuments = async (): Promise<void> => {
-        try {
-          const documentsRes =
-            retryData !== undefined
-              ? retryData
-              : await axios.get(ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`))
-          setDocuments(documentsRes.data)
-          setCurrentDocumentNumber(0)
-        } catch (error) {
-          console.error(error)
-        }
-      }
+  let documents = useLoadDocuments(trainingSetId).data
 
-      getDocuments()
-    }, [retryData, trainingSetId])
-  )
+  if (retryData) {
+    documents = retryData.data
+  }
 
   React.useLayoutEffect(
     () =>
@@ -111,11 +93,11 @@ const VocabularyTrainerExerciseScreen = ({
         headerLeft: () => (
           <TouchableOpacity onPress={showModal} style={styles.headerLeft}>
             <CloseButton />
-            <Text style={styles.title}>Übung beenden</Text>
+            <Text style={styles.title}>{labels.general.header.cancelExercise}</Text>
           </TouchableOpacity>
         ),
         headerRight: () => (
-          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} of ${documents.length}`}</Text>
+          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} of ${documents?.length}`}</Text>
         )
       }),
     [navigation, currentDocumentNumber, documents]
@@ -125,7 +107,6 @@ const VocabularyTrainerExerciseScreen = ({
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
 
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
-
     return () => bEvent.remove()
   }, [route.params])
 
@@ -135,18 +116,21 @@ const VocabularyTrainerExerciseScreen = ({
   }
 
   const tryLater = (): void => {
-    const currDocument = documents[currentDocumentNumber]
-    const newDocuments = documents.filter(d => d !== currDocument)
-    newDocuments.push(currDocument)
-    setDocuments(newDocuments)
+    if (documents !== null) {
+      const currDocument = documents[currentDocumentNumber]
+      const newDocuments = documents.filter(d => d !== currDocument)
+      newDocuments.push(currDocument)
+      documents = newDocuments
+    }
   }
 
   const finishExercise = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
-    navigation.navigate('InitialSummary', { extraParams })
+    setCurrentDocumentNumber(0)
+    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
 
-  const docsLength = documents.length
+  const docsLength = documents?.length ?? 0
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
@@ -158,31 +142,35 @@ const VocabularyTrainerExerciseScreen = ({
         accessibilityTraits
       />
 
-      <KeyboardAwareScrollView
-        scrollEnabled={false}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        enableOnAndroid
-        keyboardShouldPersistTaps='always'>
-        <Image
-          source={{
-            uri: documents[currentDocumentNumber]?.document_image[0].image
-          }}
-          style={styles.image}
-          onLoadStart={() => setIsLoading(true)}
-          onLoad={() => setIsLoading(false)}
-        />
-        {isLoading && <ActivityIndicator style={styles.spinner} />}
+      {documents !== null && (
+        <KeyboardAwareScrollView
+          scrollEnabled={false}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          enableOnAndroid
+          keyboardShouldPersistTaps='always'>
+          {documents[currentDocumentNumber]?.document_image.length > 0 && (
+            <Image
+              source={{
+                uri: documents[currentDocumentNumber]?.document_image[0].image
+              }}
+              style={styles.image}
+              onLoadStart={() => setIsLoading(true)}
+              onLoad={() => setIsLoading(false)}
+            />
+          )}
+          {isLoading && <ActivityIndicator style={styles.spinner} />}
 
-        <AnswerSection
-          currentDocumentNumber={currentDocumentNumber}
-          setCurrentDocumentNumber={setCurrentDocumentNumber}
-          documents={documents}
-          finishExercise={finishExercise}
-          tryLater={tryLater}
-          trainingSet={trainingSet}
-          disciplineTitle={disciplineTitle}
-        />
-      </KeyboardAwareScrollView>
+          <AnswerSection
+            currentDocumentNumber={currentDocumentNumber}
+            setCurrentDocumentNumber={setCurrentDocumentNumber}
+            documents={documents}
+            finishExercise={finishExercise}
+            tryLater={tryLater}
+            trainingSet={trainingSet}
+            disciplineTitle={disciplineTitle}
+          />
+        </KeyboardAwareScrollView>
+      )}
 
       <Modal
         visible={isModalVisible}
@@ -194,4 +182,4 @@ const VocabularyTrainerExerciseScreen = ({
   )
 }
 
-export default VocabularyTrainerExerciseScreen
+export default WriteExerciseScreen

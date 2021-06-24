@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, Platform, StyleSheet } from 'react-native'
-import { CloseIcon, VolumeUp } from '../../assets/images'
+import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { CloseIcon } from '../../assets/images'
 import { COLORS } from '../constants/colors'
 import Popover from './Popover'
-import SoundPlayer from 'react-native-sound-player'
-import Tts from 'react-native-tts'
 import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
 import PopoverContent from './PopoverContent'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
 import AsyncStorage from '../utils/AsyncStorage'
-import { ExerciseKeys, SimpleResultType } from '../constants/data'
+import { ARTICLES, ExerciseKeys, SimpleResultType } from '../constants/data'
+import labels from '../constants/labels.json'
+import AudioPlayer from './AudioPlayer'
 
 export const styles = StyleSheet.create({
   container: {
-    paddingVertical: 40,
+    paddingVertical: 20,
     alignItems: 'center',
     position: 'relative',
     width: '100%',
@@ -40,23 +40,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular',
     color: COLORS.lunesBlack,
     width: wp('60%')
-  },
-  volumeIcon: {
-    position: 'absolute',
-    top: -20,
-    left: '45%',
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    backgroundColor: COLORS.lunesFunctionalIncorrectDark,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  shadow: {
-    shadowColor: COLORS.shadow,
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 3,
-    shadowOpacity: 10
   }
 })
 
@@ -70,6 +53,8 @@ export interface AnswerSectionPropsType {
   disciplineTitle: string
 }
 
+const almostCorrectThreshold = 0.6
+
 const AnswerSection = ({
   currentDocumentNumber,
   setCurrentDocumentNumber,
@@ -81,7 +66,6 @@ const AnswerSection = ({
 }: AnswerSectionPropsType): JSX.Element => {
   const touchable: any = React.createRef()
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
-  const [isActive, setIsActive] = useState(false)
   const [input, setInput] = useState('')
   const [submission, setSubmission] = useState('')
   const [result, setResult] = useState('')
@@ -90,16 +74,9 @@ const AnswerSection = ({
   const totalNumbers = documents.length
   const [isFocused, setIsFocused] = useState(false)
 
-  React.useEffect(() => {
-    const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
-
-    const _onTtsFinishPlaying = Tts.addEventListener('tts-finish', () => setIsActive(false))
-
-    return () => {
-      _onSoundPlayerFinishPlaying.remove()
-      _onTtsFinishPlaying.remove()
-    }
-  }, [])
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
 
   const checkEntry = (): void => {
     setSubmission(input)
@@ -110,7 +87,7 @@ const AnswerSection = ({
       return
     }
 
-    const article = splitInput[0].toLowerCase()
+    const article = capitalizeFirstLetter(splitInput[0])
     const word = splitInput[1]
 
     if (!validateForSimilar(article, word)) {
@@ -131,25 +108,38 @@ const AnswerSection = ({
   }
 
   const validateForCorrect = (inputArticle: string, inputWord: string): boolean => {
-    const exactAnswer = inputArticle === document?.article && inputWord === document?.word
+    const exactAnswer = inputArticle === document?.article.value && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ({ article, alt_word }) => inputArticle === article && inputWord === alt_word
+      ({ article, alt_word: altWord }) => inputArticle === ARTICLES[article].value && inputWord === altWord
     )
     return exactAnswer || altAnswer
   }
 
   const validateForSimilar = (inputArticle: string, inputWord: string): boolean => {
-    const origCheck =
-      inputArticle === document.article && stringSimilarity.compareTwoStrings(inputWord, document.word) > 0.4
+    if (validateForCorrectWithoutArticle(inputWord)) {
+      return true
+    }
+    const origCheck = stringSimilarity.compareTwoStrings(inputWord, document.word) > almostCorrectThreshold
 
     const altCheck = document.alternatives.some(
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ({ article, alt_word }) =>
-        inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, alt_word) > 0.4
+      ({ article, alt_word: altWord }) =>
+        inputArticle === ARTICLES[article].value &&
+        stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
     )
     return origCheck || altCheck
+  }
+
+  const giveUp = (): void => {
+    setResult('giveUp')
+    storeResult(secondAttempt ? 'similar' : 'incorrect')
+  }
+
+  const validateForCorrectWithoutArticle = (inputWord: string): boolean => {
+    const exactAnswer = inputWord === document?.word
+
+    const altAnswer = document?.alternatives?.some(({ article, alt_word: altWord }) => inputWord === altWord)
+    return exactAnswer || altAnswer
   }
 
   const getNextWord = (): void => {
@@ -159,13 +149,14 @@ const AnswerSection = ({
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise()
+      return
     }
     setCurrentDocumentNumber(currentDocumentNumber + 1)
   }
 
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
-      const exercise = (await AsyncStorage.getExercise(ExerciseKeys.vocabularyTrainer)) ?? {}
+      const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
       exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
       exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
 
@@ -174,7 +165,7 @@ const AnswerSection = ({
         result: score
       }
 
-      await AsyncStorage.setExercise(ExerciseKeys.vocabularyTrainer, exercise)
+      await AsyncStorage.setExercise(ExerciseKeys.writeExercise, exercise)
 
       const session = await AsyncStorage.getSession()
       if (session === null) {
@@ -189,24 +180,6 @@ const AnswerSection = ({
       await AsyncStorage.setSession(newSession)
     } catch (e) {
       console.error(e)
-    }
-  }
-
-  const handleSpeakerClick = (audio?: string): void => {
-    setIsActive(true)
-
-    // Don't use soundplayer for IOS, since IOS doesn't support .ogg files
-    if (audio && Platform.OS !== 'ios') {
-      // audio from API
-      SoundPlayer.playUrl(document?.audio)
-    } else {
-      Tts.speak(`${document?.article} ${document?.word}`, {
-        androidParams: {
-          KEY_PARAM_PAN: -1,
-          KEY_PARAM_VOLUME: 0.5,
-          KEY_PARAM_STREAM: 'STREAM_MUSIC'
-        }
-      })
     }
   }
 
@@ -226,67 +199,54 @@ const AnswerSection = ({
     }
   }
 
-  const volumeIconColor =
-    result === '' && !secondAttempt ? COLORS.lunesBlackUltralight : isActive ? COLORS.lunesRed : COLORS.lunesRedDark
-
-  const volumeIconStyle = [styles.volumeIcon, (result !== '' || secondAttempt) && !isActive && styles.shadow]
-
   return (
-    <View style={styles.container}>
-      <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
-        <PopoverContent />
-      </Popover>
+    <>
+      <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
+      <View style={styles.container}>
+        <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
+          <PopoverContent />
+        </Popover>
 
-      <TouchableOpacity
-        testID='volume-button'
-        disabled={result === '' && !secondAttempt}
-        style={volumeIconStyle}
-        onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUp fill={volumeIconColor} />
-      </TouchableOpacity>
+        <View
+          testID='input-field'
+          ref={touchable}
+          style={[
+            styles.textInputContainer,
+            {
+              borderColor: getBorderColor()
+            }
+          ]}>
+          <TextInput
+            style={styles.textInput}
+            placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
+            placeholderTextColor={COLORS.lunesBlackLight}
+            value={input}
+            onChangeText={text => setInput(text)}
+            editable={result === ''}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
+          {(isFocused || (result === '' && input !== '')) && (
+            <TouchableOpacity onPress={() => setInput('')}>
+              <CloseIcon />
+            </TouchableOpacity>
+          )}
+        </View>
 
-      <View
-        testID='input-field'
-        ref={touchable}
-        style={[
-          styles.textInputContainer,
-          {
-            borderColor: getBorderColor()
-          }
-        ]}>
-        <TextInput
-          style={styles.textInput}
-          placeholder={secondAttempt ? 'Neuer Versuch' : 'Wort mit Artikel eingeben'}
-          placeholderTextColor={COLORS.lunesBlackLight}
-          value={input}
-          onChangeText={text => setInput(text)}
-          editable={result === ''}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+        <Feedback secondAttempt={secondAttempt} result={result} document={document} input={submission} />
+
+        <Actions
+          tryLater={tryLater}
+          giveUp={giveUp}
+          input={input}
+          result={result}
+          checkEntry={checkEntry}
+          getNextWord={getNextWord}
+          secondAttempt={secondAttempt}
+          isFinished={currentDocumentNumber === totalNumbers - 1}
         />
-        {(isFocused || (result === '' && input !== '')) && (
-          <TouchableOpacity onPress={() => setInput('')}>
-            <CloseIcon />
-          </TouchableOpacity>
-        )}
       </View>
-
-      <Feedback secondAttempt={secondAttempt} result={result} document={document} input={submission} />
-
-      <Actions
-        tryLater={tryLater}
-        giveUp={async () => {
-          await storeResult('incorrect')
-          getNextWord()
-        }}
-        input={input}
-        result={result}
-        checkEntry={checkEntry}
-        getNextWord={getNextWord}
-        secondAttempt={secondAttempt}
-        isFinished={currentDocumentNumber === totalNumbers - 1}
-      />
-    </View>
+    </>
   )
 }
 

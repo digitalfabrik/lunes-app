@@ -1,11 +1,11 @@
 import React from 'react'
-import AnswerSection, { IAnswerSectionProps } from '../AnswerSection'
+import AnswerSection, { AnswerSectionPropsType } from '../AnswerSection'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 
 describe('Components', () => {
   describe('AnswerSection', () => {
-    const defaultAnswerSectionProps: IAnswerSectionProps = {
+    const defaultAnswerSectionProps: AnswerSectionPropsType = {
       documents: [],
       profession: '',
       subCategory: '',

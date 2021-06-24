@@ -31,7 +31,7 @@ export type RoutesParamsType = {
       trainingSet: string
     }
   }
-  VocabularyOverview: {
+  VocabularyList: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -43,31 +43,31 @@ export type RoutesParamsType = {
       level: number
     }
   }
-  SingleChoice: {
+  WordChoiceExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
   }
-  LearnArticles: {
+  ArticleChoiceExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      exercise: string
+      exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
     }
   }
-  VocabularyTrainer: {
+  WriteExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -90,6 +90,7 @@ export type RoutesParamsType = {
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: number
+      results: DocumentResultType[]
     }
     retryData?: { data: DocumentsType }
   }
