@@ -10,7 +10,7 @@ import PopoverContent from './PopoverContent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../constants/endpoints'
 import AsyncStorage from '../utils/AsyncStorage'
-import { ExerciseKeys, SimpleResultType } from '../constants/data'
+import { ARTICLES, ExerciseKeys, SimpleResultType } from '../constants/data'
 import labels from '../constants/labels.json'
 import AudioPlayer from './AudioPlayer'
 
@@ -74,6 +74,10 @@ const AnswerSection = ({
   const totalNumbers = documents.length
   const [isFocused, setIsFocused] = useState(false)
 
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
   const checkEntry = (): void => {
     setSubmission(input)
     const splitInput = input.trim().split(' ')
@@ -83,7 +87,7 @@ const AnswerSection = ({
       return
     }
 
-    const article = splitInput[0].toLowerCase()
+    const article = capitalizeFirstLetter(splitInput[0])
     const word = splitInput[1]
 
     if (!validateForSimilar(article, word)) {
@@ -107,7 +111,7 @@ const AnswerSection = ({
     const exactAnswer = inputArticle === document?.article.value && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
-      ({ article, alt_word: altWord }) => inputArticle === article.value && inputWord === altWord
+      ({ article, alt_word: altWord }) => inputArticle === ARTICLES[article].value && inputWord === altWord
     )
     return exactAnswer || altAnswer
   }
@@ -120,7 +124,7 @@ const AnswerSection = ({
 
     const altCheck = document.alternatives.some(
       ({ article, alt_word: altWord }) =>
-        inputArticle === article.value &&
+        inputArticle === ARTICLES[article].value &&
         stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
     )
     return origCheck || altCheck

@@ -81,7 +81,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   let nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
   if (
     nextResultType.key === 'similar' &&
-    (exercise === ExerciseKeys.learnArticles || exercise === ExerciseKeys.singleChoice)
+    (exercise === ExerciseKeys.articleChoiceExercise || exercise === ExerciseKeys.wordChoiceExercise)
   ) {
     nextResultType = RESULTS[2]
   }
@@ -138,7 +138,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const Footer = (
     <>
-      {exercise === ExerciseKeys.vocabularyTrainer && retryButton}
+      {exercise === ExerciseKeys.writeExercise && retryButton}
 
       <Button
         onPress={() =>
