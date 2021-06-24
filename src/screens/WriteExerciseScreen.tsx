@@ -148,14 +148,16 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           resetScrollToCoords={{ x: 0, y: 0 }}
           enableOnAndroid
           keyboardShouldPersistTaps='always'>
-          <Image
-            source={{
-              uri: documents[currentDocumentNumber]?.document_image[0].image
-            }}
-            style={styles.image}
-            onLoadStart={() => setIsLoading(true)}
-            onLoad={() => setIsLoading(false)}
-          />
+          {documents[currentDocumentNumber]?.document_image.length > 0 && (
+            <Image
+              source={{
+                uri: documents[currentDocumentNumber]?.document_image[0].image
+              }}
+              style={styles.image}
+              onLoadStart={() => setIsLoading(true)}
+              onLoad={() => setIsLoading(false)}
+            />
+          )}
           {isLoading && <ActivityIndicator style={styles.spinner} />}
 
           <AnswerSection

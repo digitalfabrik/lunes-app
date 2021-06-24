@@ -78,14 +78,16 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <View style={styles.item}>
-          <Image
-            source={{
-              uri: document?.document_image[0].image
-            }}
-            width={24}
-            height={24}
-            style={styles.image}
-          />
+          {document.document_image.length > 0 && (
+            <Image
+              source={{
+                uri: document?.document_image[0].image
+              }}
+              width={24}
+              height={24}
+              style={styles.image}
+            />
+          )}
           <View>
             <Text testID='article' style={[styles.title, { backgroundColor: getArticleColor(article) }]}>
               {article.value}
