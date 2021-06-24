@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { capitalizeFirstLetter, getArticleColor } from '../../../utils/helpers'
-import { Answer, Article, ARTICLES } from '../../../constants/data'
+import { getArticleColor } from '../../../utils/helpers'
+import { Answer, Article } from '../../../constants/data'
 import { COLORS } from '../../../constants/colors'
 import styled from 'styled-components/native'
 
@@ -107,7 +107,7 @@ const SingleChoiceListItem = ({
   correct,
   selected,
   anyAnswerSelected
-}: SingleChoiceListItemPropsType) => {
+}: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity = anyAnswerSelected && !correct
@@ -131,7 +131,7 @@ const SingleChoiceListItem = ({
       pressed={pressed}
       disabled={anyAnswerSelected}>
       <StyledArticle article={article} selected={selected} correct={showCorrect} pressed={pressed}>
-        {article.toLowerCase() === ARTICLES.diePlural ? 'Die' : capitalizeFirstLetter(article)}
+        {article.value}
       </StyledArticle>
       <StyledWord selected={selected} pressed={pressed}>
         {word}

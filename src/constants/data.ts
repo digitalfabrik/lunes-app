@@ -62,19 +62,35 @@ export const BUTTONS_THEME = {
   dark: 'dark'
 }
 
-export const ARTICLES = {
-  die: 'die',
-  der: 'der',
-  das: 'das',
-  diePlural: 'Die'
-} as const
-
-export type Article = typeof ARTICLES[keyof typeof ARTICLES]
-
-export function isArticle(str: string): str is Article {
-  const strArr: string[] = Object.values(ARTICLES)
-  return strArr.includes(str)
+interface ArticleType {
+  readonly id: number
+  readonly value: string
 }
+
+export const ARTICLES: ArticleType[] = [
+  {
+    id: 0,
+    value: 'keiner'
+  },
+  {
+    id: 1,
+    value: 'Der'
+  },
+  {
+    id: 2,
+    value: 'Die'
+  },
+  {
+    id: 3,
+    value: 'Das'
+  },
+  {
+    id: 4,
+    value: 'Die'
+  }
+]
+
+export type Article = typeof ARTICLES[number]
 
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]

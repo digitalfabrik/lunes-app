@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
-import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../../../assets/images'
@@ -49,32 +49,20 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   const count = documents.length
 
   const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
-    return answer1.article === answer2.article && answer1.word === answer2.word
-  }
-
-  const isCorrectAlternative = (selectedAnswer: Answer): boolean => {
-    let found = false
-    currentDocument.alternatives.forEach(alternative => {
-      if (alternative.article === selectedAnswer.article && alternative.alt_word === selectedAnswer.word) {
-        setCorrectAnswer(selectedAnswer)
-        found = true
-      }
-    })
-    return found
+    return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
   const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
-    article: it.article,
+    article: ARTICLES[it.article],
     word: it.alt_word
   }))
 
   const onClickAnswer = (selectedAnswer: Answer) => {
     setSelectedAnswer(selectedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(
-      it => isAnswerEqual(it, selectedAnswer) ?? null
-    )
+    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
 
-    if (correctSelected !== null) {
+    if (correctSelected !== undefined) {
+      setCorrectAnswer(selectedAnswer)
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
@@ -89,6 +77,9 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
       setCurrentWord(0)
       setSelectedAnswer(null)
       onExerciseFinished(results)
+      setCurrentWord(0)
+      setResults([])
+      setSelectedAnswer(null)
     } else {
       setCurrentWord(prevState => prevState + 1)
       setSelectedAnswer(null)
@@ -97,11 +88,13 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
 
   return (
     <>
-      <StyledImage
-        source={{
-          uri: documents[currentWord]?.document_image[0].image
-        }}
-      />
+      {documents[currentWord].document_image.length > 0 && (
+        <StyledImage
+          source={{
+            uri: documents[currentWord]?.document_image[0].image
+          }}
+        />
+      )}
       <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
       <SingleChoice
         answers={answers}

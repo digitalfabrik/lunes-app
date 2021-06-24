@@ -104,10 +104,10 @@ const AnswerSection = ({
   }
 
   const validateForCorrect = (inputArticle: string, inputWord: string): boolean => {
-    const exactAnswer = inputArticle === document?.article && inputWord === document?.word
+    const exactAnswer = inputArticle === document?.article.value && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
-      ({ article, alt_word: altWord }) => inputArticle === article && inputWord === altWord
+      ({ article, alt_word: altWord }) => inputArticle === article.value && inputWord === altWord
     )
     return exactAnswer || altAnswer
   }
@@ -120,7 +120,8 @@ const AnswerSection = ({
 
     const altCheck = document.alternatives.some(
       ({ article, alt_word: altWord }) =>
-        inputArticle === article && stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
+        inputArticle === article.value &&
+        stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
     )
     return origCheck || altCheck
   }
@@ -144,6 +145,7 @@ const AnswerSection = ({
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise()
+      return
     }
     setCurrentDocumentNumber(currentDocumentNumber + 1)
   }

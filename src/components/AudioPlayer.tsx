@@ -54,7 +54,7 @@ function AudioPlayer(props: AudioPlayerProps) {
     if (audio) {
       SoundPlayer.playUrl(document?.audio)
     } else {
-      Tts.speak(`${document?.article} ${document?.word}`, {
+      Tts.speak(`${document?.article.value} ${document?.word}`, {
         androidParams: {
           KEY_PARAM_PAN: -1,
           KEY_PARAM_VOLUME: 0.5,
