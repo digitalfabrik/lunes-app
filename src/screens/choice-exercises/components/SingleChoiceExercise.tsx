@@ -86,6 +86,8 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
   const onFinishWord = () => {
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
+      setCurrentWord(0)
+      setSelectedAnswer(null)
       onExerciseFinished(results)
     } else {
       setCurrentWord(prevState => prevState + 1)

@@ -3,8 +3,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import ProfessionScreen from '../screens/ProfessionScreen'
 import ProfessionSubcategoryScreen from '../screens/ProfessionSubcategoryScreen'
 import ExercisesScreen from '../screens/ExercisesScreens'
-import VocabularyOverviewExerciseScreen from '../screens/VocabularyOverviewExerciseScreen'
-import VocabularyTrainerExerciseScreen from '../screens/VocabularyTrainerExerciseScreen'
+import VocabularyListScreen from '../screens/VocabularyListScreen'
+import WriteExerciseScreen from '../screens/WriteExerciseScreen'
 import { RoutesParamsType } from './NavigationTypes'
 import { BackButton, CloseButton, BackArrowPressed } from '../../assets/images'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
@@ -89,23 +89,23 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, BackButton, navigation)}
-          name='VocabularyOverview'
-          component={VocabularyOverviewExerciseScreen}
+          name='VocabularyList'
+          component={VocabularyListScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
-          name='SingleChoice'
+          name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
-          name='LearnArticles'
+          name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
-          name='VocabularyTrainer'
-          component={VocabularyTrainerExerciseScreen}
+          name='WriteExercise'
+          component={WriteExerciseScreen}
         />
         <Stack.Screen options={{ headerShown: false }} name='InitialSummary' component={InitialSummaryScreen} />
         <Stack.Screen

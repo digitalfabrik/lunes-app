@@ -31,7 +31,7 @@ export type RoutesParamsType = {
       trainingSet: string
     }
   }
-  VocabularyOverview: {
+  VocabularyList: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -43,7 +43,7 @@ export type RoutesParamsType = {
       level: number
     }
   }
-  SingleChoice: {
+  WordChoiceExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -55,7 +55,7 @@ export type RoutesParamsType = {
       level: number
     }
   }
-  LearnArticles: {
+  ArticleChoiceExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
@@ -67,7 +67,7 @@ export type RoutesParamsType = {
       level: number
     }
   }
-  VocabularyTrainer: {
+  WriteExercise: {
     extraParams: {
       disciplineID: number
       disciplineTitle: string
