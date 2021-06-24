@@ -93,12 +93,12 @@ const Navigator = (): JSX.Element => {
           component={VocabularyOverviewExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
           name='SingleChoice'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
           name='LearnArticles'
           component={ArticleChoiceExerciseScreen}
         />
