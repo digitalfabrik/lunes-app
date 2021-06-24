@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { BUTTONS_THEME, RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
@@ -73,10 +73,18 @@ interface ResultScreenPropsType {
 
 const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
   const { extraParams, results, counts, resultType } = route.params
+  const { exercise } = extraParams
   const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
-  const nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+
+  let nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+  if (
+    nextResultType.key === 'similar' &&
+    (exercise === ExerciseKeys.learnArticles || exercise === ExerciseKeys.singleChoice)
+  ) {
+    nextResultType = RESULTS[2]
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -130,7 +138,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const Footer = (
     <>
-      {retryButton}
+      {exercise === ExerciseKeys.vocabularyTrainer && retryButton}
 
       <Button
         onPress={() =>
