@@ -1,3 +1,5 @@
+import { Article } from './data'
+
 export interface ProfessionType {
   id: number
   title: string
@@ -16,13 +18,13 @@ export interface ProfessionSubcategoryType {
 
 export interface AlternativeWordType {
   alt_word: string
-  article: string
+  article: number
 }
 
 export interface DocumentType {
   id: number
   word: string
-  article: string
+  article: Article
   document_image: Array<{ id: number; image: string }>
   audio: string
   alternatives: AlternativeWordType[]

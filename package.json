@@ -50,6 +50,7 @@
     "react-native-svg-transformer": "^0.14.3",
     "react-native-tts": "^3.2.0",
     "string-similarity": "^4.0.4",
+    "styled-components": "^5.3.0",
     "ts-jest": "^26.5.2"
   },
   "devDependencies": {
@@ -59,6 +60,7 @@
     "@types/jest": "^26.0.20",
     "@types/react-native": "^0.63.2",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/styled-components-react-native": "^5.1.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-jest": "^25.1.0",

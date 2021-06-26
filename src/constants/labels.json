@@ -1,0 +1,69 @@
+{
+  "home": {
+    "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
+    "unit": "Lektion",
+    "units": "Lektionen",
+    "word": "Wort",
+    "words": "Wörter",
+    "exercises": "Übungen"
+  },
+  "exercises": {
+    "vocabularyList": {
+      "title": "Vokabelübersicht",
+      "description": "Alle Wörter anschauen"
+    },
+    "wordChoice": {
+      "title": "Wort auswählen",
+      "description": "Wähle das richtige Wort"
+    },
+    "articleChoice": {
+      "title": "Artikel üben",
+      "description": "Wähle den richtigen Artikel"
+    },
+    "write": {
+      "title": "Wort schreiben",
+      "description": "Wort mit Artikel eingeben",
+      "checkInput": "Eingabe überprüfen",
+      "showSolution": "Lösung anzeigen",
+      "tryLater": "Später versuchen",
+      "insertAnswer": "Wort mit Artikel eingeben",
+      "newTry": "Neuer Versuch",
+      "feedback": {
+        "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
+        "wrong": "Die richtige Antwort ist: ",
+        "almostCorrect1": "Deine Eingabe ",
+        "almostCorrect2": " ist fast richtig.",
+        "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
+      }
+    },
+    "next": "Nächstes Wort",
+    "showResults": "Ergebnisse anzeigen",
+    "cancelModal": {
+      "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
+      "cancel": "Beenden",
+      "continue": "Weiter machen"
+    }
+  },
+  "results": {
+    "resultsOverview": "Ergebnis-Übersicht",
+    "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.",
+    "feedbackMedium": "Übung macht den Meister, \nversuche es noch einmal!",
+    "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
+    "checkEntries": "Eingaben überprüfen",
+    "retryExercise": "Übung wiederholen",
+    "wrong": "falsche",
+    "similar": "ähnliche",
+    "correct": "richtige",
+    "entries": "Eingaben",
+    "viewEntries": "Eingaben anschauen",
+    "show": "Zeige",
+    "of": "von"
+  },
+  "general": {
+    "header": {
+      "overview": "Übersicht",
+      "overviewExercises": "Übersicht der Übungen",
+      "cancelExercise": "Übung beenden"
+    }
+  }
+}

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
-import { DocumentsType, DocumentType, ENDPOINTS } from '../constants/endpoints'
-import axios from '../utils/axios'
+import { DocumentType } from '../constants/endpoints'
 import Title from '../components/Title'
-import VocabularyOverviewListItem from '../components/VocabularyOverviewListItem'
+import VocabularyListItem from '../components/VocabularyListItem'
 import Loading from '../components/Loading'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
+import useLoadDocuments from '../hooks/useLoadDocuments'
 
 export const styles = StyleSheet.create({
   root: {
@@ -38,21 +39,15 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface VocabularyOverviewExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'VocabularyOverview'>
-  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyOverview'>
+interface VocabularyListScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'VocabularyList'>
+  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyList'>
 }
 
-const VocabularyOverviewExerciseScreen = ({
-  navigation,
-  route
-}: VocabularyOverviewExerciseScreenPropsType): JSX.Element => {
+const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [documents, setDocuments] = useState<DocumentsType>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [count, setCount] = useState<number>(0)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -68,47 +63,24 @@ const VocabularyOverviewExerciseScreen = ({
     })
   }, [navigation, isHomeButtonPressed])
 
-  useEffect(() => {
-    const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-    axios
-      .get(url)
-      .then(response => {
-        setDocuments(response.data)
-        setCount(response.data.length)
-        setError(null)
-      })
-      .catch(e => {
-        setError(e.message)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [trainingSetId])
+  const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>Vokabelübersicht</Text>
+        <Text style={styles.screenTitle}>{labels.exercises.vocabularyList.title}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? 'Wort' : 'Wörter'}
+          {count} {count === 1 ? labels.home.word : labels.home.words}
         </Text>
       </>
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentType }): JSX.Element => (
-    <VocabularyOverviewListItem
-      id={item.id}
-      word={item.word}
-      article={item.article}
-      image={item.document_image[0].image}
-      audio={item.audio}
-    />
-  )
+  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyListItem document={item} />
 
   return (
     <View style={styles.root}>
-      <Loading isLoading={isLoading}>
+      <Loading isLoading={loading}>
         <FlatList
           data={documents}
           style={styles.list}
@@ -118,9 +90,8 @@ const VocabularyOverviewExerciseScreen = ({
           showsVerticalScrollIndicator={false}
         />
       </Loading>
-      <Text>{error}</Text>
     </View>
   )
 }
 
-export default VocabularyOverviewExerciseScreen
+export default VocabularyListScreen

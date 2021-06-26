@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
-import { ExerciseKeys, EXERCISES, ExerciseType } from '../constants/data'
+import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
+import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
   root: {
@@ -157,15 +158,12 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 Übungen</Text>
+        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
       </>
     </Title>
   )
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
-    if (item.key === ExerciseKeys.learnArticles || item.key === ExerciseKeys.singleChoice) {
-      return null
-    }
     const selected = item.key.toString() === selectedKey
     const itemStyle = selected ? styles.clickedContainer : styles.container
     const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
@@ -185,7 +183,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const handleNavigation = (item: ExerciseType): void => {
     setSelectedKey(item.key.toString())
-    navigation.push(item.nextScreen, {
+    navigation.navigate(item.nextScreen, {
       extraParams: {
         ...extraParams,
         exercise: item.key,

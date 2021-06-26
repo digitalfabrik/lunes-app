@@ -1,19 +1,20 @@
 import {
-  easy,
-  mideasy,
-  midhard,
-  hard,
+  AlmostCorrectEntriesIcon,
   CorrectEntriesIcon,
+  easy,
+  hard,
   IncorrectEntriesIcon,
-  AlmostCorrectEntriesIcon
+  mideasy,
+  midhard
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import labels from './labels.json'
 
 export const ExerciseKeys = {
-  vocabularyOverview: 0,
-  singleChoice: 1,
-  learnArticles: 2,
-  vocabularyTrainer: 3
+  vocabularyList: 0,
+  wordChoiceExercise: 1,
+  articleChoiceExercise: 2,
+  writeExercise: 3
 }
 export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
@@ -27,32 +28,32 @@ export interface ExerciseType {
 
 export const EXERCISES: ExerciseType[] = [
   {
-    key: ExerciseKeys.vocabularyOverview,
-    title: 'Vokabelübersicht',
-    description: 'Alle Wörte anschauen',
+    key: ExerciseKeys.vocabularyList,
+    title: labels.exercises.vocabularyList.title,
+    description: labels.exercises.vocabularyList.description,
     Level: easy,
-    nextScreen: 'VocabularyOverview'
+    nextScreen: 'VocabularyList'
   },
   {
-    key: ExerciseKeys.singleChoice,
-    title: 'Wort auswählen',
-    description: 'Wähle das richtige Wort',
+    key: ExerciseKeys.wordChoiceExercise,
+    title: labels.exercises.wordChoice.title,
+    description: labels.exercises.wordChoice.description,
     Level: mideasy,
-    nextScreen: 'SingleChoice'
+    nextScreen: 'WordChoiceExercise'
   },
   {
-    key: ExerciseKeys.learnArticles,
-    title: 'Artikel üben',
-    description: 'Wähle den richtigen Artikel',
+    key: ExerciseKeys.articleChoiceExercise,
+    title: labels.exercises.articleChoice.title,
+    description: labels.exercises.articleChoice.description,
     Level: midhard,
-    nextScreen: 'LearnArticles'
+    nextScreen: 'ArticleChoiceExercise'
   },
   {
-    key: ExerciseKeys.vocabularyTrainer,
-    title: 'Wort schreiben',
-    description: 'Wort mit Artikel eingeben',
+    key: ExerciseKeys.writeExercise,
+    title: labels.exercises.write.title,
+    description: labels.exercises.write.description,
     Level: hard,
-    nextScreen: 'VocabularyTrainer'
+    nextScreen: 'WriteExercise'
   }
 ]
 
@@ -61,20 +62,49 @@ export const BUTTONS_THEME = {
   dark: 'dark'
 }
 
-export const ARTICLES = {
-  die: 'die',
-  der: 'der',
-  das: 'das',
-  diePlural: 'die (plural)'
+interface ArticleType {
+  readonly id: number
+  readonly value: string
 }
 
-export type SimpleResultType = 'correct' | 'incorrect' | 'similar'
+export const ARTICLES: ArticleType[] = [
+  {
+    id: 0,
+    value: 'keiner'
+  },
+  {
+    id: 1,
+    value: 'Der'
+  },
+  {
+    id: 2,
+    value: 'Die'
+  },
+  {
+    id: 3,
+    value: 'Das'
+  },
+  {
+    id: 4,
+    value: 'Die'
+  }
+]
+
+export type Article = typeof ARTICLES[number]
+
+export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
+export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
 export interface ResultType {
   key: SimpleResultType
   title: string
   Icon: number
   order: number
+}
+
+export interface Answer {
+  word: string
+  article: Article
 }
 
 export const RESULTS: ResultType[] = [
