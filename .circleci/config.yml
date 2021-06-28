@@ -191,6 +191,9 @@ jobs:
             - run:
                 command: yarn prettier --check .
                 name: Prettier check
+            - run:
+                command: yarn test
+                name: Run unit tests
     deliver_android:
         docker:
             - image: circleci/android:api-29-node
