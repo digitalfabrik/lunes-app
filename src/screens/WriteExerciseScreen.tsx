@@ -97,7 +97,9 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           </TouchableOpacity>
         ),
         headerRight: () => (
-          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} of ${documents?.length}`}</Text>
+          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} ${labels.general.header.of} ${
+            documents?.length
+          }`}</Text>
         )
       }),
     [navigation, currentDocumentNumber, documents]

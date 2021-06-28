@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Home, HomeButtonPressed } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
@@ -46,7 +46,6 @@ interface VocabularyListScreenPropsType {
 
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [count, setCount] = useState<number>(0)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
 
   React.useLayoutEffect(() => {
@@ -70,7 +69,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
       <>
         <Text style={styles.screenTitle}>{labels.exercises.vocabularyList.title}</Text>
         <Text style={styles.description}>
-          {count} {count === 1 ? labels.home.word : labels.home.words}
+          {documents?.length} {documents?.length === 1 ? labels.home.word : labels.home.words}
         </Text>
       </>
     </Title>
