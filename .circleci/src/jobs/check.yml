@@ -10,3 +10,6 @@ steps:
   - run:
       name: Prettier check
       command: yarn prettier --check .
+  - run:
+      name: Run unit tests
+      command: yarn test

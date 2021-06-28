@@ -1,63 +1,38 @@
 import 'react-native'
 import React from 'react'
-import VocabularyOverviewListItem, { IVocabularyOverviewListItemProps } from '../VocabularyOverviewListItem'
+import VocabularyListItem from '../VocabularyListItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
+import { ARTICLES } from '../../constants/data'
+import { DocumentType } from '../../constants/endpoints'
 
-describe('Components', () => {
-  describe('VocabularyOverviewListItem', () => {
-    const defaultListItemProps: IVocabularyOverviewListItemProps = {
-      article: '',
-      audio: '',
-      id: 0,
-      image: '',
-      word: ''
-    }
+describe('VocabularyListItem', () => {
+  const document: DocumentType = {
+    article: ARTICLES[1],
+    audio: '',
+    id: 0,
+    document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
+    word: 'Winkelmesser',
+    alternatives: []
+  }
 
-    it('renders correctly across screens', () => {
-      const component = shallow(<VocabularyOverviewListItem {...defaultListItemProps} />)
-      expect(toJson(component)).toMatchSnapshot()
-    })
+  it('renders correctly across screens', () => {
+    const component = shallow(<VocabularyListItem document={document} />)
+    expect(toJson(component)).toMatchSnapshot()
+  })
 
-    it('should display image passed to it', () => {
-      const listItemProps: IVocabularyOverviewListItemProps = {
-        ...defaultListItemProps,
-        image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg'
-      }
+  it('should display image passed to it', () => {
+    const component = shallow(<VocabularyListItem document={document} />)
+    expect(component.find('Image').prop('source')).toHaveProperty('uri', document.document_image[0].image)
+  })
 
-      const component = shallow(<VocabularyOverviewListItem {...listItemProps} />)
-      expect(component.find('Image').prop('source')).toHaveProperty('uri', listItemProps.image)
-    })
+  it('should display article passed to it', () => {
+    const component = shallow(<VocabularyListItem document={document} />)
+    expect(component.find('[testID="article"]').props().children).toBe(document.article.value)
+  })
 
-    it('should display article passed to it', () => {
-      const listItemProps: IVocabularyOverviewListItemProps = {
-        ...defaultListItemProps,
-        article: 'article'
-      }
-      const article = 'Article'
-
-      const component = shallow(<VocabularyOverviewListItem {...listItemProps} />)
-      expect(component.find('[testID="article"]').props().children).toBe(article)
-    })
-
-    it('should display word passed to it', () => {
-      const listItemProps: IVocabularyOverviewListItemProps = {
-        ...defaultListItemProps,
-        word: 'word'
-      }
-      const word = 'word'
-
-      const component = shallow(<VocabularyOverviewListItem {...listItemProps} />)
-      expect(component.find('[testID="word"]').props().children).toBe(word)
-    })
-
-    it('should render volume button', () => {
-      const listItemProps: IVocabularyOverviewListItemProps = {
-        ...defaultListItemProps
-      }
-
-      const component = shallow(<VocabularyOverviewListItem {...listItemProps} />)
-      expect(component.find('[testID="volume-button"]')).toHaveLength(1)
-    })
+  it('should display word passed to it', () => {
+    const component = shallow(<VocabularyListItem document={document} />)
+    expect(component.find('[testID="word"]').props().children).toBe(document.word)
   })
 })
