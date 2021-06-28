@@ -1,1 +1,10 @@
 version: 2.1
+
+parameters:
+  run_commit:
+    default: true
+    type: boolean
+
+  run_dev_delivery:
+    default: false
+    type: boolean
