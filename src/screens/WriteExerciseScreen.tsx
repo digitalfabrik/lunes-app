@@ -22,6 +22,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../utils/AsyncStorage'
 import labels from '../constants/labels.json'
 import useLoadDocuments from '../hooks/useLoadDocuments'
+import ExerciseHeader from "../components/ExerciseHeader";
 
 export const styles = StyleSheet.create({
   root: {
@@ -87,24 +88,6 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     documents = retryData.data
   }
 
-  React.useLayoutEffect(
-    () =>
-      navigation.setOptions({
-        headerLeft: () => (
-          <TouchableOpacity onPress={showModal} style={styles.headerLeft}>
-            <CloseButton />
-            <Text style={styles.title}>{labels.general.header.cancelExercise}</Text>
-          </TouchableOpacity>
-        ),
-        headerRight: () => (
-          <Text style={styles.headerText}>{`${currentDocumentNumber + 1} ${labels.general.header.of} ${
-            documents?.length
-          }`}</Text>
-        )
-      }),
-    [navigation, currentDocumentNumber, documents]
-  )
-
   React.useLayoutEffect(() => {
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
 
@@ -136,6 +119,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
+      <ExerciseHeader navigation={navigation} extraParams={route?.params} currentWord={currentDocumentNumber} numberOfWords={docsLength} />
       <ProgressBar
         progress={docsLength > 0 ? currentDocumentNumber / docsLength : 0}
         color={COLORS.lunesGreenMedium}
@@ -173,13 +157,6 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           />
         </KeyboardAwareScrollView>
       )}
-
-      <Modal
-        visible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        navigation={navigation}
-        extraParams={extraParams}
-      />
     </Pressable>
   )
 }

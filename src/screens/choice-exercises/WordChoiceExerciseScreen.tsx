@@ -61,6 +61,8 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
         documents={documents}
         documentToAnswers={documentToAnswers}
         onExerciseFinished={onExerciseFinished}
+        navigation={navigation}
+        route={route}
       />
     )
   )
