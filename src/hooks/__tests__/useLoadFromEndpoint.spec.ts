@@ -15,7 +15,9 @@ describe('loadFromEndpoint', () => {
   })
 
   it('should set everything correctly if loading from endpoint succeeds', async () => {
-    mocked(axios.get).mockImplementationOnce(async () => 'myData')
+    mocked(axios.get).mockImplementationOnce(async () => {
+      return { data: 'myData' }
+    })
 
     await loadFromEndpoint(apiUrl, setData, setError, setLoading)
 

@@ -11,7 +11,6 @@ export const loadFromEndpoint = async <T>(
 
   try {
     const response = await axios.get(url)
-
     setData(response.data)
     setError(null)
   } catch (e) {
