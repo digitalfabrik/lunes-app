@@ -31,7 +31,7 @@ exports[`components PopoverContent renders correctly across screens 1`] = `
       }
     }
   >
-    Ups, you forgot someting. You have to add an article to continue.
+    Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.
   </Text>
 </View>
 `;
