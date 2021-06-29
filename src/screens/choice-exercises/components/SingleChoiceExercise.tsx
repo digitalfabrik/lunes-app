@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { DocumentType } from '../../../constants/endpoints'
-import { DocumentResultType } from '../../../navigation/NavigationTypes'
+import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
@@ -10,6 +10,9 @@ import { styles } from '../../../components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
 import labels from '../../../constants/labels.json'
+import ExerciseHeader from '../../../components/ExerciseHeader'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -26,12 +29,19 @@ interface SingleChoiceExercisePropsType {
   documents: DocumentType[]
   documentToAnswers: (document: DocumentType) => Answer[]
   onExerciseFinished: (results: DocumentResultType[]) => void
+  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
 }
 
-const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished }: SingleChoiceExercisePropsType) => {
+const ChoiceExerciseScreen = ({
+  documents,
+  documentToAnswers,
+  onExerciseFinished,
+  navigation,
+  route
+}: SingleChoiceExercisePropsType) => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
-
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
@@ -88,7 +98,13 @@ const ChoiceExerciseScreen = ({ documents, documentToAnswers, onExerciseFinished
 
   return (
     <>
-      {documents[currentWord].document_image.length > 0 && (
+      <ExerciseHeader
+        navigation={navigation}
+        route={route}
+        currentWord={currentWord}
+        numberOfWords={documents.length}
+      />
+      {documents[currentWord]?.document_image.length > 0 && (
         <StyledImage
           source={{
             uri: documents[currentWord]?.document_image[0].image

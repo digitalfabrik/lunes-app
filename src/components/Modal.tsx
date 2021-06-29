@@ -7,6 +7,9 @@ import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AsyncStorage from '../utils/AsyncStorage'
 import labels from '../constants/labels.json'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp } from '@react-navigation/native'
 
 export const styles = StyleSheet.create({
   container: {
@@ -66,22 +69,32 @@ export const styles = StyleSheet.create({
 export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
-  navigation: any
-  extraParams: any
+  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
+  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
 }
 
 const ConfirmationModal = ({
-  visible,
-  setIsModalVisible,
   navigation,
-  extraParams
+  route,
+  visible,
+  setIsModalVisible
 }: ConfirmationModalPropsType): JSX.Element => {
   const closeModal = (): void => setIsModalVisible(false)
 
   const goBack = (): void => {
     setIsModalVisible(false)
     AsyncStorage.clearSession().catch(e => console.error(e))
-    navigation.navigate('Exercises', { extraParams })
+    const { disciplineID, disciplineTitle, disciplineIcon, trainingSetId, trainingSet } = route.params.extraParams
+    const extraParams = {
+      extraParams: {
+        disciplineID: disciplineID,
+        disciplineTitle: disciplineTitle,
+        disciplineIcon: disciplineIcon,
+        trainingSetId: trainingSetId,
+        trainingSet: trainingSet
+      }
+    }
+    navigation.navigate('Exercises', extraParams)
   }
 
   return (
