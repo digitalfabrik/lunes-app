@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getArticleColor } from '../../../utils/helpers'
+import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
 import { COLORS } from '../../../constants/colors'
 import styled from 'styled-components/native'

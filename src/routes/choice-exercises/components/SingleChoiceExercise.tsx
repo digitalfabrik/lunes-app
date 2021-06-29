@@ -6,7 +6,7 @@ import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../consta
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
 import { WhiteNextArrow } from '../../../../assets/images'
-import { styles } from '../../../components/Actions'
+import { styles } from '../../write-exercise/components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
 import labels from '../../../constants/labels.json'

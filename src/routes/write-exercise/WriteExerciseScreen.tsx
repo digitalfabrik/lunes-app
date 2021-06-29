@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, Keyboard, Pressable, StyleSheet } from 'react-native'
-import { COLORS } from '../constants/colors'
-import AnswerSection from '../components/AnswerSection'
+import { COLORS } from '../../constants/colors'
+import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../utils/AsyncStorage'
-import useLoadDocuments from '../hooks/useLoadDocuments'
-import ExerciseHeader from '../components/ExerciseHeader'
+import AsyncStorage from '../../services/AsyncStorage'
+import useLoadDocuments from '../../hooks/useLoadDocuments'
+import ExerciseHeader from '../../components/ExerciseHeader'
 
 export const styles = StyleSheet.create({
   root: {
