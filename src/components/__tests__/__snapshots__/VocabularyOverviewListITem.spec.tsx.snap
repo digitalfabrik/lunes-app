@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Components VocabularyOverviewListItem renders correctly across screens 1`] = `
+exports[`VocabularyListItem renders correctly across screens 1`] = `
 <View
   style={
     Object {
@@ -38,7 +38,7 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
         height={24}
         source={
           Object {
-            "uri": "",
+            "uri": "https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg",
           }
         }
         style={
@@ -75,7 +75,9 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
             ]
           }
           testID="article"
-        />
+        >
+          Der
+        </Text>
         <Text
           style={
             Object {
@@ -87,35 +89,41 @@ exports[`Components VocabularyOverviewListItem renders correctly across screens 
             }
           }
           testID="word"
-        />
+        >
+          Winkelmesser
+        </Text>
       </View>
     </View>
-    <ForwardRef
-      onPress={[Function]}
+    <View
       style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "borderRadius": 50,
-            "justifyContent": "center",
-          },
-          Object {
-            "shadowColor": "rgba(0, 0, 0, 0.6)",
-            "shadowOffset": Object {
-              "height": 5,
-              "width": 0,
-            },
-            "shadowOpacity": 10,
-            "shadowRadius": 3,
-          },
-        ]
+        Object {
+          "paddingRight": 40,
+          "paddingTop": 17,
+        }
       }
-      testID="volume-button"
     >
-      <[object Object]
-        fill="#F1635F"
+      <AudioPlayer
+        disabled={false}
+        document={
+          Object {
+            "alternatives": Array [],
+            "article": Object {
+              "id": 1,
+              "value": "Der",
+            },
+            "audio": "",
+            "document_image": Array [
+              Object {
+                "id": 1,
+                "image": "https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg",
+              },
+            ],
+            "id": 0,
+            "word": "Winkelmesser",
+          }
+        }
       />
-    </ForwardRef>
+    </View>
   </View>
 </View>
 `;
