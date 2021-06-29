@@ -43,7 +43,7 @@ interface ExerciseHeaderPropsType {
   numberOfWords: number
 }
 
-function ExerciseHeader({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType) {
+const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(
