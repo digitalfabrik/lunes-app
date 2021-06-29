@@ -4,7 +4,7 @@ import SoundPlayer from 'react-native-sound-player'
 // @ts-expect-error
 import Tts from 'react-native-tts'
 import { COLORS } from '../constants/colors'
-import { styles } from './AnswerSection'
+import { styles } from '../routes/write-exercise/components/AnswerSection'
 import { TouchableOpacity } from 'react-native'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'

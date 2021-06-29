@@ -1,10 +1,10 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { COLORS } from '../constants/colors'
-import { getArticleColor } from '../utils/helpers'
+import { COLORS } from '../../../constants/colors'
+import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import AudioPlayer from './AudioPlayer'
-import { DocumentType } from '../constants/endpoints'
+import AudioPlayer from '../../../components/AudioPlayer'
+import { DocumentType } from '../../../constants/endpoints'
 
 export const styles = StyleSheet.create({
   wrapper: {

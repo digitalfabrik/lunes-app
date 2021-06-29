@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { InfoIcon } from '../../assets/images'
+import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../constants/colors'
-import labels from '../constants/labels.json'
+import { COLORS } from '../../../constants/colors'
+import labels from '../../../constants/labels.json'
 
 export const styles = StyleSheet.create({
   container: {

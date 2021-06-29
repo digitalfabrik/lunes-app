@@ -8,7 +8,7 @@ import { COLORS } from '../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../utils/AsyncStorage'
+import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
