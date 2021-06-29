@@ -11,10 +11,10 @@ src
 └───routes
 │ └───someRoute
 │ │   │ SomeRoutePage.tsx
-│ └───component
+│ └───components
 │ │   │ SomeRouteItem.tsx
 │ │   │ SomeRouteList.tsx
-│ └───service
+│ └───services
 │     │ SomeRouteSpecificService.ts
 └───components
 │   │ Button.tsx
