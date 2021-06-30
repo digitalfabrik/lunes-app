@@ -3,8 +3,8 @@ import React from 'react'
 import VocabularyListItem from '../VocabularyListItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { ARTICLES } from '../../constants/data'
-import { DocumentType } from '../../constants/endpoints'
+import { ARTICLES } from '../../../../constants/data'
+import { DocumentType } from '../../../../constants/endpoints'
 
 describe('VocabularyListItem', () => {
   const document: DocumentType = {

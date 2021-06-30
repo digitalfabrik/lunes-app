@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FlatList, LogBox, StatusBar, StyleSheet, Text, View } from 'react-native'
 import Title from '../components/Title'
-import axios from '../utils/axios'
+import axios from '../services/axios'
 import { ENDPOINTS, ProfessionSubcategoryType } from '../constants/endpoints'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'

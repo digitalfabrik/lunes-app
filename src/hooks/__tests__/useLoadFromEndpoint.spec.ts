@@ -1,8 +1,8 @@
 import { loadFromEndpoint } from '../useLoadFromEndpoint'
-import axios from '../../utils/axios'
+import axios from '../../services/axios'
 import { mocked } from 'ts-jest/utils'
 
-jest.mock('../../utils/axios', () => ({ get: jest.fn() }))
+jest.mock('../../services/axios', () => ({ get: jest.fn() }))
 
 describe('loadFromEndpoint', () => {
   const apiUrl = 'https://my-cust.om/api-url'

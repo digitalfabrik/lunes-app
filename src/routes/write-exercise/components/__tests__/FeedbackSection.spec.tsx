@@ -3,9 +3,9 @@ import React from 'react'
 import FeedbackSection, { FeedbackPropsType } from '../FeedbackSection'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { ARTICLES } from '../../constants/data'
-import { AlmostCorrectFeedbackIcon, CorrectFeedbackIcon, IncorrectFeedbackIcon } from '../../../assets/images'
-import labels from '../../constants/labels.json'
+import { ARTICLES } from '../../../../constants/data'
+import { AlmostCorrectFeedbackIcon, CorrectFeedbackIcon, IncorrectFeedbackIcon } from '../../../../../assets/images'
+import labels from '../../../../constants/labels.json'
 
 describe('Feedback section', () => {
   const defaultFeedbackProps: FeedbackPropsType = {

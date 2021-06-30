@@ -1,11 +1,11 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
-import { WhiteNextArrow, NextArrow } from '../../assets/images'
-import Button from './Button'
-import { BUTTONS_THEME } from '../constants/data'
-import { COLORS } from '../constants/colors'
+import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
+import Button from '../../../components/Button'
+import { BUTTONS_THEME } from '../../../constants/data'
+import { COLORS } from '../../../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import labels from '../constants/labels.json'
+import labels from '../../../constants/labels.json'
 
 export const styles = StyleSheet.create({
   lightLabel: {

@@ -32,6 +32,8 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
         documents={documents}
         documentToAnswers={documentToAnswers}
         onExerciseFinished={onExerciseFinished}
+        navigation={navigation}
+        route={route}
       />
     )
   )

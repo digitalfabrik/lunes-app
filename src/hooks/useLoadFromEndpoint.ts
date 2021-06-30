@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import axios from '../utils/axios'
+import axios from '../services/axios'
 
 export const loadFromEndpoint = async <T>(
   url: string,
