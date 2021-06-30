@@ -62,7 +62,7 @@ describe('Feedback section', () => {
         document_image: []
       }
     }
-    const message = `${labels.exercises.write.feedback.wrong} ${feedbackProps.document?.article.value} ${feedbackProps.document?.word}`
+    const message = `${labels.exercises.write.feedback.wrong} „${feedbackProps.document?.article.value} ${feedbackProps.document?.word}“`
     const icon = <IncorrectFeedbackIcon width={28} height={28} />
 
     const component = shallow(<FeedbackSection {...feedbackProps} />)
@@ -77,7 +77,7 @@ describe('Feedback section', () => {
       input: 'der winkel',
       secondAttempt: true
     }
-    const message = `${labels.exercises.write.feedback.almostCorrect1} ${feedbackProps.input} ${labels.exercises.write.feedback.almostCorrect2}`
+    const message = `${labels.exercises.write.feedback.almostCorrect1} „${feedbackProps.input}“ ${labels.exercises.write.feedback.almostCorrect2}`
     const icon = <AlmostCorrectFeedbackIcon width={28} height={28} />
 
     const component = shallow(<FeedbackSection {...feedbackProps} />)
