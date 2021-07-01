@@ -3,13 +3,13 @@ docker:
 steps:
   - checkout
   - check_config
-  - restore_yarn_cache
-  - run:
-      name: Linting check
-      command: yarn lint:ci
-  - run:
-      name: Prettier check
-      command: yarn prettier --check .
-  - run:
-      name: Run unit tests
-      command: yarn test
+#  - restore_yarn_cache
+#  - run:
+#      name: Linting check
+#      command: yarn lint:ci
+#  - run:
+#      name: Prettier check
+#      command: yarn prettier --check .
+#  - run:
+#      name: Run unit tests
+#      command: yarn test

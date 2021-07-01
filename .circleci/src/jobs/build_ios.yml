@@ -15,15 +15,14 @@ steps:
   - restore_environment_variables
   - restore_yarn_cache
   - restore_ruby_cache:
-      directory: native/ios
+      directory: ios
   - restore_cocoa_pods_cache
   - run:
       name: Build iOS
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
-      working_directory: native/ios
+      working_directory: ios
   - store_artifacts:
-      path: native/ios/output/gym/app-release.ipa
+      path: ios/output/gym/app-release.ipa
   - persist_to_workspace:
-      root: native/ios/output/gym
-      path:
-        - app-release.ipa
+      root: ios/output/gym
+      path: app-release.ipa
