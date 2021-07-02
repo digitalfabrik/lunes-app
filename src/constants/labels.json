@@ -1,8 +1,8 @@
 {
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
-    "unit": "Lektion",
-    "units": "Lektionen",
+    "unit": "Modul",
+    "units": "Module",
     "word": "Wort",
     "words": "Wörter",
     "exercises": "Übungen"
@@ -30,9 +30,9 @@
       "newTry": "Neuer Versuch",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
-        "wrong": "Die richtige Antwort ist: ",
-        "almostCorrect1": "Deine Eingabe ",
-        "almostCorrect2": " ist fast richtig.",
+        "wrong": "Die richtige Antwort ist:",
+        "almostCorrect1": "Deine Eingabe",
+        "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
@@ -63,7 +63,8 @@
     "header": {
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
-      "cancelExercise": "Übung beenden"
+      "cancelExercise": "Übung beenden",
+      "of": "von"
     }
   }
 }

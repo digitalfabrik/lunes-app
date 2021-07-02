@@ -1,21 +1,21 @@
 import React from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-import ProfessionScreen from '../screens/ProfessionScreen'
-import ProfessionSubcategoryScreen from '../screens/ProfessionSubcategoryScreen'
-import ExercisesScreen from '../screens/ExercisesScreens'
-import VocabularyListScreen from '../screens/VocabularyListScreen'
-import WriteExerciseScreen from '../screens/WriteExerciseScreen'
+import ProfessionScreen from '../routes/ProfessionScreen'
+import ProfessionSubcategoryScreen from '../routes/ProfessionSubcategoryScreen'
+import ExercisesScreen from '../routes/ExercisesScreens'
+import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
+import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParamsType } from './NavigationTypes'
 import { BackButton, CloseButton, BackArrowPressed } from '../../assets/images'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import InitialSummaryScreen from '../screens/InitialSummaryScreen'
-import ResultsOverviewScreen from '../screens/ResultsOverviewScreen'
-import ResultScreen from '../screens/ResultScreen'
+import InitialSummaryScreen from '../routes/InitialSummaryScreen'
+import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
+import ResultScreen from '../routes/ResultScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import WordChoiceExerciseScreen from '../screens/choice-exercises/WordChoiceExerciseScreen'
-import ArticleChoiceExerciseScreen from '../screens/choice-exercises/ArticleChoiceExerciseScreen'
+import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
+import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import labels from '../constants/labels.json'
 
 export const styles = StyleSheet.create({
@@ -93,12 +93,12 @@ const Navigator = (): JSX.Element => {
           component={VocabularyListScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
           name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
+          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
           name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />

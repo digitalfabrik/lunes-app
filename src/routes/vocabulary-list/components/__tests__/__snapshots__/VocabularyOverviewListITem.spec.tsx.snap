@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VocabularyListItem renders correctly across screens 1`] = `
+<View
+  style={
+    Object {
+      "paddingHorizontal": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ffffff",
+        "borderColor": "#e0e4ed",
+        "borderRadius": 2,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 8,
+        "paddingHorizontal": 16,
+        "paddingVertical": 17,
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Image
+        height={24}
+        source={
+          Object {
+            "uri": "https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg",
+          }
+        }
+        style={
+          Object {
+            "borderRadius": 50,
+            "height": 112.5,
+            "marginRight": 15,
+            "width": 112.5,
+          }
+        }
+        width={24}
+      />
+      <View>
+        <Text
+          style={
+            Array [
+              Object {
+                "alignSelf": "flex-start",
+                "borderRadius": 10,
+                "color": "#3a4049",
+                "fontFamily": "SourceSansPro-Regular",
+                "fontSize": 26.5,
+                "fontWeight": "normal",
+                "height": 37.5,
+                "lineHeight": 18,
+                "marginBottom": 6,
+                "overflow": "hidden",
+                "textAlign": "center",
+                "width": 75,
+              },
+              Object {
+                "backgroundColor": "#8cc8f3",
+              },
+            ]
+          }
+          testID="article"
+        >
+          Der
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#5b616a",
+              "fontFamily": "SourceSansPro-Regular",
+              "fontSize": 30,
+              "fontWeight": "normal",
+              "marginLeft": 8,
+            }
+          }
+          testID="word"
+        >
+          Winkelmesser
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "paddingRight": 40,
+          "paddingTop": 17,
+        }
+      }
+    >
+      <AudioPlayer
+        disabled={false}
+        document={
+          Object {
+            "alternatives": Array [],
+            "article": Object {
+              "id": 1,
+              "value": "Der",
+            },
+            "audio": "",
+            "document_image": Array [
+              Object {
+                "id": 1,
+                "image": "https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg",
+              },
+            ],
+            "id": 0,
+            "word": "Winkelmesser",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

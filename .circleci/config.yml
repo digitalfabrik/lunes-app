@@ -30,6 +30,19 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    persist_environment_variables:
+        description: Writes the environment variables to the file 'environment_variables'. Make sure the file is persisted and has been attached.
+        steps:
+            - run:
+                command: cat ${BASH_ENV}
+                name: List environment variables
+            - run:
+                command: cat ${BASH_ENV} >> environment_variables
+                name: Save environment variables to file
+            - persist_to_workspace:
+                paths:
+                    - environment_variables
+                root: ./
     prepare_workspace:
         description: Attach the workspace at ~/attached_workspace and list its contents
         steps:
@@ -41,6 +54,15 @@ commands:
             - run:
                 command: ls -R ~/attached_workspace
                 name: Recursively list attached workspace contents
+    restore_environment_variables:
+        description: Sets the environment variables specified in the file 'environment_variables'. Make sure the file is persisted and has been attached.
+        steps:
+            - run:
+                command: cat ~/attached_workspace/environment_variables
+                name: List environment variables
+            - run:
+                command: cat ~/attached_workspace/environment_variables >> ${BASH_ENV}
+                name: Restore environment variables
     restore_ruby_cache:
         description: Restores and saves fastlane cache of the passed directory.
         parameters:
@@ -73,6 +95,22 @@ commands:
                 name: Save Yarn Package Cache
                 paths:
                     - ~/.cache/yarn
+    restore_yarn_tools_cache:
+        description: Restores and saves the node_modules directories of the tools package.
+        steps:
+            - restore_cache:
+                key: 2-yarn-{{ arch }}-{{ checksum "tools/yarn.lock" }}-{{ checksum "tools/package.json" }}
+                name: Restore Yarn Tools Package Cache
+            - run:
+                command: yarn --frozen-lockfile --cache-folder ~/.cache/yarn-tools
+                name: Yarn tools
+                working_directory: tools
+            - save_cache:
+                key: 2-yarn-{{ arch }}-{{ checksum "tools/yarn.lock" }}-{{ checksum "tools/package.json" }}
+                name: Save Yarn Tools Package Cache
+                paths:
+                    - ~/.cache/yarn-tools
+                    - tools/node_modules
 jobs:
     build_android:
         docker:
@@ -86,8 +124,16 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - restore_yarn_cache
+            - prepare_workspace
+            - restore_environment_variables
             - run:
-                command: bundle exec fastlane build
+                command: echo "${KEYSTORE_BASE64}" | base64 -di --decode > android/$KEYSTORE_FILENAME.gpg
+                name: Base64 decode keystore env var
+            - run:
+                command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
+                name: Decrypt keystore
+            - run:
+                command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: Build Android
                 working_directory: android
             - run:
@@ -100,6 +146,38 @@ jobs:
                 root: android/attached_workspace
             - store_artifacts:
                 path: android/attached_workspace/app-release.apk
+    bump_version:
+        docker:
+            - image: circleci/node:12.16.3
+        parameters:
+            delivery:
+                default: none
+                description: Which type of delivery is made. If none, the bumped version is not committed.
+                enum:
+                    - none
+                    - development
+                    - production
+                type: enum
+        resource_class: small
+        steps:
+            - checkout
+            - restore_yarn_tools_cache
+            - run:
+                command: echo "export NEW_VERSION_NAME=$(tools/next-version calc | jq .versionName)" >> ${BASH_ENV}
+                name: Calculate next version name
+            - run:
+                command: echo "export NEW_VERSION_CODE=$(tools/next-version calc | jq .versionCode)" >> ${BASH_ENV}
+                name: Calculate next version code
+            - unless:
+                condition:
+                    equal:
+                        - none
+                        - << parameters.delivery >>
+                steps:
+                    - run:
+                        command: tools/git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
+                        name: Bump git version
+            - persist_environment_variables
     check:
         docker:
             - image: circleci/node:12.16.3
@@ -113,11 +191,18 @@ jobs:
             - run:
                 command: yarn prettier --check .
                 name: Prettier check
+            - run:
+                command: yarn test
+                name: Run unit tests
     deliver_android:
         docker:
             - image: circleci/android:api-29-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
+        parameters:
+            production_delivery:
+                description: Whether to deliver the build to production.
+                type: boolean
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
@@ -128,20 +213,65 @@ jobs:
                 name: Validate Play Store Key
                 working_directory: android
             - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_cache
+            - run:
+                command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
+                name: PlayStore Upload
+                working_directory: android
+    deliver_browserstack:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_ruby_cache:
+                directory: android
             - run:
                 command: bundle exec fastlane upload_to_browserstack
                 name: BrowserStack Upload
                 working_directory: android
+parameters:
+    run_commit:
+        default: true
+        type: boolean
+    run_dev_delivery:
+        default: false
+        type: boolean
 version: 2.1
 workflows:
     commit:
         jobs:
             - check
+            - bump_version:
+                delivery: none
             - build_android:
                 requires:
                     - check
-            - deliver_android:
+                    - bump_version
+            - deliver_browserstack:
                 requires:
                     - build_android
+        when: << pipeline.parameters.run_commit >>
+    dev_delivery:
+        jobs:
+            - check
+            - bump_version:
+                delivery: development
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_browserstack:
+                requires:
+                    - build_android
+            - deliver_android:
+                production_delivery: false
+                requires:
+                    - build_android
+        when: << pipeline.parameters.run_dev_delivery >>
     version: 2
 

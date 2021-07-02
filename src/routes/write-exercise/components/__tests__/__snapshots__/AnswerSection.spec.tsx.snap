@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnswerSection renders correctly across screens 1`] = `
+<Fragment>
+  <AudioPlayer
+    disabled={true}
+  />
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "height": 867,
+        "paddingVertical": 20,
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <ForwardRef
+      isVisible={false}
+      setIsPopoverVisible={[Function]}
+    >
+      <PopoverContent />
+    </ForwardRef>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "borderRadius": 2,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "height": 106.5,
+            "justifyContent": "space-between",
+            "marginBottom": 80,
+            "paddingHorizontal": 15,
+            "width": 600,
+          },
+          Object {
+            "borderColor": "#5b616a",
+          },
+        ]
+      }
+      testID="input-field"
+    >
+      <Component
+        allowFontScaling={true}
+        editable={true}
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        placeholder="Wort mit Artikel eingeben"
+        placeholderTextColor="#777e91"
+        rejectResponderTermination={true}
+        style={
+          Object {
+            "color": "#000e38",
+            "fontFamily": "SourceSansPro-Regular",
+            "fontSize": 34,
+            "fontWeight": "normal",
+            "letterSpacing": 0.11,
+            "width": 450,
+          }
+        }
+        underlineColorAndroid="transparent"
+        value=""
+      />
+    </View>
+    <Feedback
+      input=""
+      result=""
+      secondAttempt={false}
+    />
+    <Actions
+      checkEntry={[Function]}
+      getNextWord={[Function]}
+      giveUp={[Function]}
+      input=""
+      isFinished={false}
+      result=""
+      secondAttempt={false}
+      tryLater={[Function]}
+    />
+  </View>
+</Fragment>
+`;

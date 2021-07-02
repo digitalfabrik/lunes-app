@@ -1,8 +1,8 @@
 import { loadFromEndpoint } from '../useLoadFromEndpoint'
-import axios from '../../utils/axios'
+import axios from '../../services/axios'
 import { mocked } from 'ts-jest/utils'
 
-jest.mock('../../utils/axios', () => ({ get: jest.fn() }))
+jest.mock('../../services/axios', () => ({ get: jest.fn() }))
 
 describe('loadFromEndpoint', () => {
   const apiUrl = 'https://my-cust.om/api-url'
@@ -15,7 +15,9 @@ describe('loadFromEndpoint', () => {
   })
 
   it('should set everything correctly if loading from endpoint succeeds', async () => {
-    mocked(axios.get).mockImplementationOnce(async () => 'myData')
+    mocked(axios.get).mockImplementationOnce(async () => {
+      return { data: 'myData' }
+    })
 
     await loadFromEndpoint(apiUrl, setData, setError, setLoading)
 
