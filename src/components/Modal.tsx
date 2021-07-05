@@ -109,7 +109,7 @@ const ConfirmationModal = ({
             <Text style={styles.lightLabel}>{labels.exercises.cancelModal.continue}</Text>
           </Button>
 
-          <Button onPress={goBack} theme={BUTTONS_THEME.light}>
+          <Button onPress={goBack} theme={BUTTONS_THEME.dark}>
             <Text style={styles.darkLabel}>{labels.exercises.cancelModal.cancel}</Text>
           </Button>
         </View>
