@@ -11,6 +11,7 @@ jobs:
       requires:
         - check
         - bump_version
-#  - deliver_browser_stack:
-#      requires:
-#        - build_android
+  - deliver_browser_stack:
+      requires:
+        #- build_android
+        - build_ios

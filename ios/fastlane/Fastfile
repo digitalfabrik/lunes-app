@@ -43,8 +43,8 @@ platform :ios do
 
     ENV["EXTRA_PACKAGER_ARGS"] = "--sourcemap-output ios/output/app-release.ios.bundle.map"
 
-    # match(type: "development", app_identifier: "app.lunes", readonly: true, )
-    match(type: "appstore", git_branch: "main", app_identifier: "app.lunes", readonly: true)
+    match(type: "development", app_identifier: "app.lunes", readonly: true, )
+    match(type: "appstore", app_identifier: "app.lunes", readonly: true)
 
     increment_build_number(build_number: version_code)
     increment_version_number(version_number: version_name)
@@ -60,12 +60,16 @@ platform :ios do
     )
     end
 
-    desc "Upload Android App to BrowserStack"
+    desc "Upload iOS App to BrowserStack"
     lane :upload_to_browserstack do
+        ensure_env_vars(
+            env_vars: ["BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
+        )
         upload_to_browserstack_app_live(
             browserstack_username: ENV["BROWSERSTACK_USERNAME"],
             browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
             file_path: "#{ENV['HOME']}/attached_workspace/app-release.ipa"
         )
     end
+
 end

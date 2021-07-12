@@ -25,4 +25,5 @@ steps:
       path: ios/output/gym/app-release.ipa
   - persist_to_workspace:
       root: ios/output/gym
-      path: app-release.ipa
+      paths:
+        - app-release.ipa

@@ -88,13 +88,15 @@ commands:
                 type: string
         steps:
             - restore_cache:
-                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                keys:
+                    - 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                    - 3-gems-{{ arch }}-
             - run:
-                command: bundle check || bundle install --path vendor/bundle
+                command: bundle check || bundle install
                 name: Install Fastlane
                 working_directory: << parameters.directory >>
             - save_cache:
-                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                key: 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
                 paths:
                     - << parameters.directory >>/vendor/bundle
     restore_yarn_cache:
@@ -190,7 +192,8 @@ jobs:
             - store_artifacts:
                 path: ios/output/gym/app-release.ipa
             - persist_to_workspace:
-                path: app-release.ipa
+                paths:
+                    - app-release.ipa
                 root: ios/output/gym
     bump_version:
         docker:
@@ -262,19 +265,19 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
         steps:
+            - add_ssh_keys:
+                fingerprints:
+                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
             - checkout
             - prepare_workspace
             - restore_ruby_cache:
                 directory: android
-            - run:
-                command: bundle exec fastlane android upload_to_browserstack
-                name: BrowserStack Upload android
-                working_directory: android
             - restore_ruby_cache:
                 directory: ios
             - run:
                 command: bundle exec fastlane ios upload_to_browserstack
                 name: BrowserStack Upload iOS
+                working_directory: ios
 parameters:
     run_commit:
         default: true
@@ -293,6 +296,9 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - deliver_browser_stack:
+                requires:
+                    - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
