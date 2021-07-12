@@ -1,5 +1,9 @@
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile
 
-apple_id "app-team@integreat-app.de"
-team_id "7272KE28TJ" # Developer Portal Team ID
+
+# apple_id "app-team@integreat-app.de"
+# team_id "7272KE28TJ" # Developer Portal Team ID
+
+app_identifier("app.lunes") # The bundle identifier of your app
+apple_id("delivery@lunes.app") # Your Apple email address
