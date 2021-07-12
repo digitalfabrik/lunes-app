@@ -43,8 +43,8 @@ platform :ios do
 
     ENV["EXTRA_PACKAGER_ARGS"] = "--sourcemap-output ios/output/app-release.ios.bundle.map"
 
-    # match(type: "development", app_identifier: "app.lunes", readonly: true)
-    match(type: "appstore", app_identifier: "app.lunes", readonly: true)
+    # match(type: "development", app_identifier: "app.lunes", readonly: true, )
+    match(type: "appstore", git_branch: "main", app_identifier: "app.lunes", readonly: true)
 
     increment_build_number(build_number: version_code)
     increment_version_number(version_number: version_name)
