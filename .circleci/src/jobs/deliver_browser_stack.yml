@@ -11,10 +11,10 @@ steps:
   - prepare_workspace
   - restore_ruby_cache:
       directory: android
-#  - run:
- #     name: 'BrowserStack Upload android'
-  #    command: bundle exec fastlane android upload_to_browserstack
-   #   working_directory: android
+  - run:
+      name: 'BrowserStack Upload android'
+      command: bundle exec fastlane android upload_to_browserstack
+      working_directory: android
   - restore_ruby_cache:
       directory: ios
   - run:

@@ -233,6 +233,16 @@ jobs:
         steps:
             - checkout
             - check_config
+            - restore_yarn_cache
+            - run:
+                command: yarn lint:ci
+                name: Linting check
+            - run:
+                command: yarn prettier --check .
+                name: Prettier check
+            - run:
+                command: yarn test
+                name: Run unit tests
     deliver_android:
         docker:
             - image: circleci/android:api-29-node
@@ -272,6 +282,10 @@ jobs:
             - prepare_workspace
             - restore_ruby_cache:
                 directory: android
+            - run:
+                command: bundle exec fastlane android upload_to_browserstack
+                name: BrowserStack Upload android
+                working_directory: android
             - restore_ruby_cache:
                 directory: ios
             - run:
@@ -292,12 +306,17 @@ workflows:
             - check
             - bump_version:
                 delivery: none
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
             - build_ios:
                 requires:
                     - check
                     - bump_version
             - deliver_browser_stack:
                 requires:
+                    - build_android
                     - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
