@@ -77,22 +77,29 @@ interface ProfessionSubcategoryScreenPropsType {
 
 const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
-
   const { disciplineID, disciplineTitle } = extraParams
   const [subcategories, setSubcategories] = useState<ProfessionSubcategoryType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [count, setCount] = useState<number>(0)
+  const [error, setError] = useState<string | null>(null)
 
   useFocusEffect(
     React.useCallback(() => {
       const url = ENDPOINTS.subCategories.all.replace(':id', disciplineID.toString())
-      axios.get(url).then(response => {
-        setSubcategories(response.data)
-
-        setCount(response.data.length)
-        setIsLoading(false)
-      })
+      axios
+        .get(url)
+        .then(response => {
+          setSubcategories(response.data)
+          setCount(response.data.length)
+          setError(null)
+        })
+        .catch(e => {
+          setError(e.message)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
       setSelectedId(-1)
     }, [disciplineID])
   )
@@ -114,7 +121,6 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     }
     const selected = item.id === selectedId
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
-
     const badgeStyle = selected ? styles.clickedItemBadgeLabel : styles.badgeLabel
 
     return (
@@ -141,6 +147,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       }
     })
   }
+
   return (
     <View style={styles.root}>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
@@ -154,6 +161,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
           showsVerticalScrollIndicator={false}
         />
       </Loading>
+      <Text>{error}</Text>
     </View>
   )
 }
