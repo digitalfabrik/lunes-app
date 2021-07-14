@@ -4,7 +4,8 @@ import styled from 'styled-components/native'
 import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
-  padding-top: 10px;
+  padding-top: 6%;
+  height: 42%;
   margin-horizontal: 8%;
 `
 
@@ -13,9 +14,10 @@ export interface SingleChoicePropsType {
   answers: Answer[]
   correctAnswer: Answer
   selectedAnswer: Answer | null
+  delayPassed: boolean
 }
 
-export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer }: SingleChoicePropsType) => {
+export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer, delayPassed }: SingleChoicePropsType) => {
   const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
     return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
   }
@@ -31,6 +33,7 @@ export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer }
             correct={isAnswerEqual(answer, correctAnswer)}
             selected={isAnswerEqual(answer, selectedAnswer)}
             anyAnswerSelected={selectedAnswer !== null}
+            delayPassed={delayPassed}
           />
         )
       })}

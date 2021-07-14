@@ -5,7 +5,6 @@ import { DocumentResultType, RoutesParamsType } from '../../../navigation/Naviga
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
-import { WhiteNextArrow } from '../../../../assets/images'
 import { styles } from '../../write-exercise/components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -13,6 +12,13 @@ import labels from '../../../constants/labels.json'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import {COLORS} from "../../../constants/colors";
+
+const Root = styled.View`
+  backgroundColor: ${COLORS.lunesWhite};
+  height: 100%;
+  width: 100%;
+`
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -22,7 +28,7 @@ const StyledImage = styled.Image`
 
 const ButtonContainer = styled.View`
   align-items: center;
-  margin: 20px 0;
+  margin: 7% 0;
 `
 
 interface SingleChoiceExercisePropsType {
@@ -45,6 +51,7 @@ const ChoiceExerciseScreen = ({
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
+  const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [correctAnswer, setCorrectAnswer] = useState<Answer>({
     article: currentDocument.article,
     word: currentDocument.word
@@ -79,6 +86,7 @@ const ChoiceExerciseScreen = ({
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
       setResults([...results, result])
     }
+    setTimeout(() => { setDelayPassed(true) } ,700)
   }
 
   const onFinishWord = () => {
@@ -90,14 +98,16 @@ const ChoiceExerciseScreen = ({
       setCurrentWord(0)
       setResults([])
       setSelectedAnswer(null)
+      setDelayPassed(false)
     } else {
       setCurrentWord(prevState => prevState + 1)
       setSelectedAnswer(null)
+      setDelayPassed(false)
     }
   }
 
   return (
-    <>
+    <Root>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -117,6 +127,7 @@ const ChoiceExerciseScreen = ({
         onClick={onClickAnswer}
         correctAnswer={correctAnswer}
         selectedAnswer={selectedAnswer}
+        delayPassed={delayPassed}
       />
       <ButtonContainer>
         {selectedAnswer !== null && (
@@ -125,12 +136,11 @@ const ChoiceExerciseScreen = ({
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
               </Text>
-              <WhiteNextArrow />
             </>
           </Button>
         )}
       </ButtonContainer>
-    </>
+    </Root>
   )
 }
 
