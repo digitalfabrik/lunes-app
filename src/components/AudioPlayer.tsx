@@ -4,8 +4,6 @@ import SoundPlayer from 'react-native-sound-player'
 // @ts-expect-error
 import Tts from 'react-native-tts'
 import { COLORS } from '../constants/colors'
-import { styles } from '../routes/write-exercise/components/AnswerSection'
-import { TouchableOpacity } from 'react-native'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
@@ -30,6 +28,11 @@ const VolumeIcon = styled.TouchableOpacity`
   background-color: ${COLORS.lunesFunctionalIncorrectDark};
   justify-content: center;
   align-items: center;
+  shadowColor: ${COLORS.shadow};
+  elevation: 8;
+  shadowRadius: 5px;
+  shadowOffset: { width: 1, height: 1 };
+  shadowOpacity: 0.5;
 `
 
 function AudioPlayer(props: AudioPlayerProps) {
