@@ -3,15 +3,19 @@ jobs:
   - check
   - bump_version:
       delivery: none
-  - build_android:
-      requires:
-        - check
-        - bump_version
+  #  - build_android:
+  #     requires:
+  #      - check
+  #     - bump_version
   - build_ios:
       requires:
         - check
         - bump_version
-  - deliver_browser_stack:
+  #  - deliver_browser_stack:
+  #     requires:
+  #      - build_android
+  #     - build_ios
+  - deliver_ios: # TO BE DELETED!
+      production_delivery: false
       requires:
-        - build_android
         - build_ios

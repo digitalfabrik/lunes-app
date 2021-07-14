@@ -1,5 +1,5 @@
 macos:
-  xcode: 12.4.0
+  xcode: 12.5.1
 resource_class: medium
 environment:
   FL_OUTPUT_DIR: output
@@ -21,6 +21,9 @@ steps:
       name: Build iOS
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: ios
+#  - run:
+#      name: Build dummy iOS
+#      command: mkdir -p ios/output/gym && cd ios/output/gym && touch app-release.ipa && cd ../../..
   - store_artifacts:
       path: ios/output/gym/app-release.ipa
   - persist_to_workspace:
