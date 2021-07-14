@@ -275,9 +275,6 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
         steps:
-            - add_ssh_keys:
-                fingerprints:
-                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
             - checkout
             - prepare_workspace
             - restore_ruby_cache:
