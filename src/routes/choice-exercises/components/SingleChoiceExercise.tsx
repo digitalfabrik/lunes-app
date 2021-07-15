@@ -5,7 +5,7 @@ import { DocumentResultType, RoutesParamsType } from '../../../navigation/Naviga
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
-import { WhiteNextArrow } from '../../../../assets/images'
+import { NextArrow, WhiteNextArrow } from '../../../../assets/images'
 import { styles } from '../../write-exercise/components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -119,7 +119,14 @@ const ChoiceExerciseScreen = ({
         selectedAnswer={selectedAnswer}
       />
       <ButtonContainer>
-        {selectedAnswer !== null && (
+        {selectedAnswer === null ? (
+          <Button onPress={() => {}}>
+            <>
+              <Text style={styles.darkLabel}>{labels.exercises.write.tryLater}</Text>
+              <NextArrow style={styles.arrow} />
+            </>
+          </Button>
+        ) : (
           <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
