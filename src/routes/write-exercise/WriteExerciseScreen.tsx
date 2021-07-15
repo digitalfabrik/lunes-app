@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
+import { DocumentsType, DocumentType } from '../../constants/endpoints'
 
 export const styles = StyleSheet.create({
   root: {
@@ -44,23 +45,24 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
-
-  let documents = useLoadDocuments(trainingSetId).data
+  const [documents, setDocuments] = useState<DocumentType[] | null>(useLoadDocuments(trainingSetId).data)
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
 
-  if (retryData) {
-    documents = retryData.data
-  }
+  useEffect(() => {
+    if (retryData) {
+      setDocuments(retryData.data)
+    }
+  }, [])
 
   const tryLater = (): void => {
     if (documents !== null) {
       const currDocument = documents[currentDocumentNumber]
       const newDocuments = documents.filter(d => d !== currDocument)
       newDocuments.push(currDocument)
-      documents = newDocuments
+      setDocuments(newDocuments)
     }
   }
 
