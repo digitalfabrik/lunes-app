@@ -233,6 +233,16 @@ jobs:
         steps:
             - checkout
             - check_config
+            - restore_yarn_cache
+            - run:
+                command: yarn lint:ci
+                name: Linting check
+            - run:
+                command: yarn prettier --check .
+                name: Prettier check
+            - run:
+                command: yarn test
+                name: Run unit tests
     deliver_android:
         docker:
             - image: circleci/android:api-29-node
@@ -326,13 +336,17 @@ workflows:
             - check
             - bump_version:
                 delivery: none
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
             - build_ios:
                 requires:
                     - check
                     - bump_version
-            - deliver_ios:
-                production_delivery: false
+            - deliver_browser_stack:
                 requires:
+                    - build_android
                     - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
@@ -344,13 +358,22 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
             - deliver_browser_stack:
                 requires:
                     - build_android
+                    - build_ios
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
+            - deliver_ios:
+                production_delivery: false
+                requires:
+                    - build_ios
         when: << pipeline.parameters.run_dev_delivery >>
     version: 2
 
