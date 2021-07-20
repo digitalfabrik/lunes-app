@@ -1,0 +1,29 @@
+macos:
+  xcode: 12.4.0
+resource_class: medium
+environment:
+  FL_OUTPUT_DIR: output
+  FASTLANE_SKIP_UPDATE_CHECK: true
+  TOTAL_CPUS: 4 # For mac with resource_class medium, used in metro.config.ci.js.
+shell: /bin/bash --login -o pipefail
+steps:
+  - add_ssh_keys: # Needed for credentials repo
+      fingerprints:
+        - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - restore_yarn_cache
+  - restore_ruby_cache:
+      directory: ios
+  - restore_cocoa_pods_cache
+  - run:
+      name: Build iOS
+      command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+      working_directory: ios
+  - store_artifacts:
+      path: ios/output/gym/app-release.ipa
+  - persist_to_workspace:
+      root: ios/output/gym
+      paths:
+        - app-release.ipa

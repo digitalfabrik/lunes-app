@@ -7,6 +7,11 @@ jobs:
       requires:
         - check
         - bump_version
-  - deliver_browserstack:
+  - build_ios:
+      requires:
+        - check
+        - bump_version
+  - deliver_browser_stack:
       requires:
         - build_android
+        - build_ios
