@@ -10,7 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import { DocumentsType, DocumentType } from '../../constants/endpoints'
+import {DocumentType} from "../../constants/endpoints";
 
 export const styles = StyleSheet.create({
   root: {
@@ -45,24 +45,31 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
-  const [documents, setDocuments] = useState<DocumentType[] | null>(useLoadDocuments(trainingSetId).data)
+  const [docs, setDocs] = useState<DocumentType[]>([])
+  const documents = useLoadDocuments(trainingSetId).data
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
 
-  useEffect(() => {
-    if (retryData) {
-      setDocuments(retryData.data)
+
+  useEffect(()=>{
+    if (documents && documents.length !== 0 && docs.length===0){
+      setDocs(documents)
     }
-  }, [])
+  }, [documents])
+
+
+  if (retryData) {
+    setDocs(retryData.data)
+  }
 
   const tryLater = (): void => {
-    if (documents !== null) {
-      const currDocument = documents[currentDocumentNumber]
-      const newDocuments = documents.filter(d => d !== currDocument)
+    if (docs !== null) {
+      const currDocument = docs[currentDocumentNumber]
+      const newDocuments = docs.filter(d => d !== currDocument)
       newDocuments.push(currDocument)
-      setDocuments(newDocuments)
+      setDocs(newDocuments)
     }
   }
 
@@ -75,44 +82,44 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <Pressable onPress={() => Keyboard.dismiss()}>
-      <ExerciseHeader
-        navigation={navigation}
-        route={route}
-        currentWord={currentDocumentNumber}
-        numberOfWords={docsLength}
-      />
+      <Pressable onPress={() => Keyboard.dismiss()}>
+        <ExerciseHeader
+            navigation={navigation}
+            route={route}
+            currentWord={currentDocumentNumber}
+            numberOfWords={docsLength}
+        />
 
-      {documents !== null && (
-        <KeyboardAwareScrollView
-          scrollEnabled={false}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          enableOnAndroid
-          keyboardShouldPersistTaps='always'>
-          {documents[currentDocumentNumber]?.document_image.length > 0 && (
-            <Image
-              source={{
-                uri: documents[currentDocumentNumber]?.document_image[0].image
-              }}
-              style={styles.image}
-              onLoadStart={() => setIsLoading(true)}
-              onLoad={() => setIsLoading(false)}
-            />
-          )}
-          {isLoading && <ActivityIndicator style={styles.spinner} />}
+        {docs !== null && (
+            <KeyboardAwareScrollView
+                scrollEnabled={false}
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                enableOnAndroid
+                keyboardShouldPersistTaps='always'>
+              {docs[currentDocumentNumber]?.document_image.length > 0 && (
+                  <Image
+                      source={{
+                        uri: docs[currentDocumentNumber]?.document_image[0].image
+                      }}
+                      style={styles.image}
+                      onLoadStart={() => setIsLoading(true)}
+                      onLoad={() => setIsLoading(false)}
+                  />
+              )}
+              {isLoading && <ActivityIndicator style={styles.spinner} />}
 
-          <AnswerSection
-            currentDocumentNumber={currentDocumentNumber}
-            setCurrentDocumentNumber={setCurrentDocumentNumber}
-            documents={documents}
-            finishExercise={finishExercise}
-            tryLater={tryLater}
-            trainingSet={trainingSet}
-            disciplineTitle={disciplineTitle}
-          />
-        </KeyboardAwareScrollView>
-      )}
-    </Pressable>
+              <AnswerSection
+                  currentDocumentNumber={currentDocumentNumber}
+                  setCurrentDocumentNumber={setCurrentDocumentNumber}
+                  documents={docs}
+                  finishExercise={finishExercise}
+                  tryLater={tryLater}
+                  trainingSet={trainingSet}
+                  disciplineTitle={disciplineTitle}
+              />
+            </KeyboardAwareScrollView>
+        )}
+      </Pressable>
   )
 }
 
