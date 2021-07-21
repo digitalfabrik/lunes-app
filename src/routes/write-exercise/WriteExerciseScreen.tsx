@@ -4,13 +4,13 @@ import { COLORS } from '../../constants/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import {DocumentType} from "../../constants/endpoints";
+import { DocumentType } from '../../constants/endpoints'
 
 export const styles = StyleSheet.create({
   root: {
@@ -45,31 +45,31 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
-  const [docs, setDocs] = useState<DocumentType[]>([])
-  const documents = useLoadDocuments(trainingSetId).data
+  const [documents, setDocuments] = useState<DocumentType[]>([])
+  const response = useLoadDocuments(trainingSetId)
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
 
-
-  useEffect(()=>{
-    if (documents && documents.length !== 0 && docs.length===0){
-      setDocs(documents)
+  useEffect(() => {
+    if (response.data) {
+      setDocuments(response.data)
     }
-  }, [documents])
+  }, [response.loading])
 
-
-  if (retryData) {
-    setDocs(retryData.data)
-  }
+  useEffect(() => {
+    if (retryData) {
+      setDocuments(retryData.data)
+    }
+  }, [retryData])
 
   const tryLater = (): void => {
-    if (docs !== null) {
-      const currDocument = docs[currentDocumentNumber]
-      const newDocuments = docs.filter(d => d !== currDocument)
+    if (documents !== null) {
+      const currDocument = documents[currentDocumentNumber]
+      const newDocuments = documents.filter(d => d !== currDocument)
       newDocuments.push(currDocument)
-      setDocs(newDocuments)
+      setDocuments(newDocuments)
     }
   }
 
@@ -79,47 +79,47 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
 
-  const docsLength = documents?.length ?? 0
+  const docsLength = documents?.length
 
   return (
-      <Pressable onPress={() => Keyboard.dismiss()}>
-        <ExerciseHeader
-            navigation={navigation}
-            route={route}
-            currentWord={currentDocumentNumber}
-            numberOfWords={docsLength}
-        />
+    <Pressable onPress={() => Keyboard.dismiss()}>
+      <ExerciseHeader
+        navigation={navigation}
+        route={route}
+        currentWord={currentDocumentNumber}
+        numberOfWords={docsLength}
+      />
 
-        {docs !== null && (
-            <KeyboardAwareScrollView
-                scrollEnabled={false}
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                enableOnAndroid
-                keyboardShouldPersistTaps='always'>
-              {docs[currentDocumentNumber]?.document_image.length > 0 && (
-                  <Image
-                      source={{
-                        uri: docs[currentDocumentNumber]?.document_image[0].image
-                      }}
-                      style={styles.image}
-                      onLoadStart={() => setIsLoading(true)}
-                      onLoad={() => setIsLoading(false)}
-                  />
-              )}
-              {isLoading && <ActivityIndicator style={styles.spinner} />}
+      {documents !== null && (
+        <KeyboardAwareScrollView
+          scrollEnabled={false}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          enableOnAndroid
+          keyboardShouldPersistTaps='always'>
+          {documents[currentDocumentNumber]?.document_image.length > 0 && (
+            <Image
+              source={{
+                uri: documents[currentDocumentNumber]?.document_image[0].image
+              }}
+              style={styles.image}
+              onLoadStart={() => setIsLoading(true)}
+              onLoad={() => setIsLoading(false)}
+            />
+          )}
+          {isLoading && <ActivityIndicator style={styles.spinner} />}
 
-              <AnswerSection
-                  currentDocumentNumber={currentDocumentNumber}
-                  setCurrentDocumentNumber={setCurrentDocumentNumber}
-                  documents={docs}
-                  finishExercise={finishExercise}
-                  tryLater={tryLater}
-                  trainingSet={trainingSet}
-                  disciplineTitle={disciplineTitle}
-              />
-            </KeyboardAwareScrollView>
-        )}
-      </Pressable>
+          <AnswerSection
+            currentDocumentNumber={currentDocumentNumber}
+            setCurrentDocumentNumber={setCurrentDocumentNumber}
+            documents={documents}
+            finishExercise={finishExercise}
+            tryLater={tryLater}
+            trainingSet={trainingSet}
+            disciplineTitle={disciplineTitle}
+          />
+        </KeyboardAwareScrollView>
+      )}
+    </Pressable>
   )
 }
 
