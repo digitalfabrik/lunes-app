@@ -14,7 +14,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import {COLORS} from "../../../constants/colors";
 
-const Root = styled.View`
+const ExerciseContainer = styled.View`
   backgroundColor: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
@@ -51,6 +51,7 @@ const ChoiceExerciseScreen = ({
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
+  const correctAnswerDelay = 700
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [correctAnswer, setCorrectAnswer] = useState<Answer>({
     article: currentDocument.article,
@@ -86,7 +87,7 @@ const ChoiceExerciseScreen = ({
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
       setResults([...results, result])
     }
-    setTimeout(() => { setDelayPassed(true) } ,700)
+    setTimeout(() => { setDelayPassed(true) }, correctAnswerDelay)
   }
 
   const onFinishWord = () => {
@@ -97,17 +98,15 @@ const ChoiceExerciseScreen = ({
       onExerciseFinished(results)
       setCurrentWord(0)
       setResults([])
-      setSelectedAnswer(null)
-      setDelayPassed(false)
     } else {
       setCurrentWord(prevState => prevState + 1)
-      setSelectedAnswer(null)
-      setDelayPassed(false)
     }
+    setSelectedAnswer(null)
+    setDelayPassed(false)
   }
 
   return (
-    <Root>
+    <ExerciseContainer>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -140,7 +139,7 @@ const ChoiceExerciseScreen = ({
           </Button>
         )}
       </ButtonContainer>
-    </Root>
+    </ExerciseContainer>
   )
 }
 

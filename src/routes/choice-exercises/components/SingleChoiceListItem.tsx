@@ -10,7 +10,7 @@ const StyledContainer = styled.TouchableOpacity`
   margin-bottom: 1.5%;
   border-radius: 2px;
   border-width: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
-    if ((props.pressed || props.selected) || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
+    if ((props.pressed || props.selected) || (props.correct && props.delayPassed)) {
       return '0px';
     } else {
       return '1px';
@@ -25,9 +25,9 @@ const StyledContainer = styled.TouchableOpacity`
   background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesBlack
-    } else if (props.correct && (props.selected || (!props.selected && props.delayPassed))) {
+    } else if (props.correct && (props.selected || props.delayPassed)) {
       return COLORS.lunesFunctionalCorrectDark
-    } else if (props.selected && !props.correct) {
+    } else if (props.selected) {
       return COLORS.lunesFunctionalIncorrectDark
     } else {
       return COLORS.white
@@ -66,7 +66,7 @@ const StyledArticleBox = styled.View`
   background-color: ${(props: { pressed: boolean; selected: boolean; article: Article; correct: boolean; delayPassed: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesWhite
-    } else if (props.selected || (props.correct && (props.selected || props.delayPassed))) {
+    } else if (props.selected || (props.correct && props.delayPassed)) {
       return COLORS.lunesBlack
     } else {
       return getArticleColor(props.article)
