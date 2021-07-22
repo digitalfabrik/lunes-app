@@ -5,6 +5,13 @@ import { COLORS } from '../../../constants/colors'
 import styled from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
+const ButtonFontStyle = styled.Text`
+  font-family: SourceSansPro-Regular;
+  font-size: ${wp('4.3%')};
+  font-weight: normal;
+  font-style: normal;
+`
+
 const StyledContainer = styled.TouchableOpacity`
   height: 23.5%;
   margin-bottom: 1.5%;
@@ -75,9 +82,6 @@ const StyledArticleBox = styled.View`
 `
 
 const StyledArticleText = styled.Text`
-  font-size: ${wp('4.3%')};
-  font-weight: normal;
-  font-family: SourceSansPro-Regular;
   text-align: center;
   color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
   if (props.pressed) {
@@ -93,10 +97,6 @@ const StyledArticleText = styled.Text`
 `
 
 const StyledWord = styled.Text`
-  font-family: SourceSansPro-Regular;
-  font-size: ${wp('4.3%')};
-  font-weight: normal;
-  font-style: normal;
   color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesWhite
@@ -156,11 +156,12 @@ const SingleChoiceListItem = ({
       delayPassed={delayPassed}
       disabled={anyAnswerSelected}>
       <StyledArticleBox article={article} selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
-        <StyledArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
+        <StyledArticleText as={ButtonFontStyle} selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
         </StyledArticleText>
       </StyledArticleBox>
-      <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
+      <StyledWord as={ButtonFontStyle}
+        selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
