@@ -62,7 +62,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     })
   }, [navigation, isHomeButtonPressed])
 
-  const { data: documents, loading } = useLoadDocuments(trainingSetId)
+  const { data: documents, error, loading } = useLoadDocuments(trainingSetId)
 
   const Header = (
     <Title>
@@ -89,6 +89,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
           showsVerticalScrollIndicator={false}
         />
       </Loading>
+      {error && <Text>{error.message}</Text>}
     </View>
   )
 }

@@ -16,8 +16,60 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+
+  private_lane :apple_auth do |options|
+    ensure_env_vars(
+        env_vars: ["APP_STORE_CONNECT_API_KEY_ID", "APP_STORE_CONNECT_API_ISSUER_ID", "APP_STORE_CONNECT_API_KEY_CONTENT"]
+    )
+
+    app_store_connect_api_key(
+        key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
+        issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
+        key_content: Base64.decode64(ENV['APP_STORE_CONNECT_API_KEY_CONTENT'])
+    )
   end
+
+  desc "Create a release build"
+  lane :build do |options|
+    setup_circle_ci
+    version_code = options[:version_code]
+    version_name = options[:version_name]
+
+    if [version_code, version_name].include?(nil)
+        raise "'nil' passed as parameter! Aborting..."
+    end
+
+    apple_auth
+
+    ENV["EXTRA_PACKAGER_ARGS"] = "--sourcemap-output ios/output/app-release.ios.bundle.map"
+
+    match(type: "development", app_identifier: "app.lunes", readonly: true, )
+    match(type: "appstore", app_identifier: "app.lunes", readonly: true)
+
+    increment_build_number(build_number: version_code)
+    increment_version_number(version_number: version_name)
+
+    scheme_name = "Lunes"
+
+    build_app(
+        workspace: "Lunes.xcworkspace",
+        scheme: "Lunes",
+        output_name: "app-release.ipa",
+        export_method: "app-store",
+        include_bitcode: false # Uploading to BrowserStack does not work when including Bitcode
+    )
+    end
+
+    desc "Upload iOS App to BrowserStack"
+    lane :upload_to_browserstack do
+        ensure_env_vars(
+            env_vars: ["BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
+        )
+        upload_to_browserstack_app_live(
+            browserstack_username: ENV["BROWSERSTACK_USERNAME"],
+            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+            file_path: "#{ENV['HOME']}/attached_workspace/app-release.ipa"
+        )
+    end
+
 end

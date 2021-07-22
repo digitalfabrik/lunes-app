@@ -54,6 +54,23 @@ commands:
             - run:
                 command: ls -R ~/attached_workspace
                 name: Recursively list attached workspace contents
+    restore_cocoa_pods_cache:
+        description: Restores and saves the cocoa pods cache.
+        steps:
+            - restore_cache:
+                keys:
+                    - 3-pods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
+                    - 3-pods-{{ arch }}-
+                name: Restore CocoaPods Cache
+            - run:
+                command: bundle exec pod install
+                name: '[CP] Install CocoaPods'
+                working_directory: ios
+            - save_cache:
+                key: 3-pods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
+                name: Save CocoaPods Cache
+                paths:
+                    - ~/Library/Caches/CocoaPods/
     restore_environment_variables:
         description: Sets the environment variables specified in the file 'environment_variables'. Make sure the file is persisted and has been attached.
         steps:
@@ -71,13 +88,15 @@ commands:
                 type: string
         steps:
             - restore_cache:
-                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                keys:
+                    - 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                    - 3-gems-{{ arch }}-
             - run:
-                command: bundle check || bundle install --path vendor/bundle
+                command: bundle check || bundle install
                 name: Install Fastlane
                 working_directory: << parameters.directory >>
             - save_cache:
-                key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                key: 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
                 paths:
                     - << parameters.directory >>/vendor/bundle
     restore_yarn_cache:
@@ -85,13 +104,13 @@ commands:
         steps:
             - restore_cache:
                 keys:
-                    - yarn-packages-{{ checksum "yarn.lock" }}
+                    - yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
                 name: Restore Yarn Package Cache
             - run:
                 command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
                 name: Install Dependencies
             - save_cache:
-                key: yarn-packages-{{ checksum "yarn.lock" }}
+                key: yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
                 name: Save Yarn Package Cache
                 paths:
                     - ~/.cache/yarn
@@ -146,6 +165,36 @@ jobs:
                 root: android/attached_workspace
             - store_artifacts:
                 path: android/attached_workspace/app-release.apk
+    build_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+            FL_OUTPUT_DIR: output
+            TOTAL_CPUS: 4
+        macos:
+            xcode: 12.4.0
+        resource_class: medium
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - add_ssh_keys:
+                fingerprints:
+                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_cache
+            - restore_ruby_cache:
+                directory: ios
+            - restore_cocoa_pods_cache
+            - run:
+                command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+                name: Build iOS
+                working_directory: ios
+            - store_artifacts:
+                path: ios/output/gym/app-release.ipa
+            - persist_to_workspace:
+                paths:
+                    - app-release.ipa
+                root: ios/output/gym
     bump_version:
         docker:
             - image: circleci/node:12.16.3
@@ -219,7 +268,7 @@ jobs:
                 command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
                 name: PlayStore Upload
                 working_directory: android
-    deliver_browserstack:
+    deliver_browser_stack:
         docker:
             - image: circleci/android:api-29-node
         environment:
@@ -231,9 +280,15 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - run:
-                command: bundle exec fastlane upload_to_browserstack
-                name: BrowserStack Upload
+                command: bundle exec fastlane android upload_to_browserstack
+                name: BrowserStack Upload android
                 working_directory: android
+            - restore_ruby_cache:
+                directory: ios
+            - run:
+                command: bundle exec fastlane ios upload_to_browserstack
+                name: BrowserStack Upload iOS
+                working_directory: ios
 parameters:
     run_commit:
         default: true
@@ -252,9 +307,14 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browserstack:
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_browser_stack:
                 requires:
                     - build_android
+                    - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
@@ -265,7 +325,7 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browserstack:
+            - deliver_browser_stack:
                 requires:
                     - build_android
             - deliver_android:

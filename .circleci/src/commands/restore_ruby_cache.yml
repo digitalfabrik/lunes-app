@@ -5,12 +5,14 @@ parameters:
     default: android
 steps:
   - restore_cache:
-      key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+      keys:
+        - 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+        - 3-gems-{{ arch }}-
   - run:
       name: Install Fastlane
-      command: bundle check || bundle install --path vendor/bundle
+      command: bundle check || bundle install
       working_directory: << parameters.directory >>
   - save_cache:
-      key: 1-gems-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+      key: 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
       paths:
         - << parameters.directory >>/vendor/bundle
