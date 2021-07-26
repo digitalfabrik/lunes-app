@@ -171,7 +171,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 4
         macos:
-            xcode: 12.4.0
+            xcode: 12.5.1
         resource_class: medium
         shell: /bin/bash --login -o pipefail
         steps:
@@ -289,6 +289,36 @@ jobs:
                 command: bundle exec fastlane ios upload_to_browserstack
                 name: BrowserStack Upload iOS
                 working_directory: ios
+    deliver_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        macos:
+            xcode: 12.5.1
+        parameters:
+            production_delivery:
+                default: false
+                description: Whether to deliver the build to production.
+                type: boolean
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_ruby_cache:
+                directory: ios
+            - when:
+                condition: << parameters.production_delivery >>
+                steps:
+                    - run:
+                        command: echo "tbd"
+                        name: TDB App Store upload
+            - unless:
+                condition: << parameters.production_delivery >>
+                steps:
+                    - run:
+                        command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
+                        name: '[FL] TestFlight Upload'
+                        working_directory: ios
 parameters:
     run_commit:
         default: true
@@ -325,13 +355,22 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
             - deliver_browser_stack:
                 requires:
                     - build_android
+                    - build_ios
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
+            - deliver_ios:
+                production_delivery: false
+                requires:
+                    - build_ios
         when: << pipeline.parameters.run_dev_delivery >>
     version: 2
 
