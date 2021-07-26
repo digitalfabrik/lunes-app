@@ -55,6 +55,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   const [professions, setProfessions] = useState<ProfessionType[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -66,10 +67,18 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         })
         .catch(e => console.error(e))
 
-      axios.get(ENDPOINTS.professions.all).then(response => {
-        setProfessions(response.data)
-        setIsLoading(false)
-      })
+      axios
+        .get(ENDPOINTS.professions.all)
+        .then(response => {
+          setProfessions(response.data)
+          setError(null)
+        })
+        .catch(e => {
+          setError(e.message)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
       setSelectedId(-1)
     }, [navigation])
   )
@@ -128,6 +137,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
               bounces={false}
             />
           </Loading>
+          <Text>{error}</Text>
         </View>
       )}
     </SafeAreaInsetsContext.Consumer>
