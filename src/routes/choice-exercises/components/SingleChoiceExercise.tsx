@@ -13,13 +13,7 @@ import labels from '../../../constants/labels.json'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import ImageCarousel from "../../../components/ImageCarousel";
-
-const StyledImage = styled.Image`
-  width: 100%;
-  height: 35%;
-  position: relative;
-`
+import ImageCarousel from '../../../components/ImageCarousel'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -40,7 +34,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType) => {
+}: SingleChoiceExercisePropsType): JSX.Element => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -105,15 +99,9 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={documents.length}
       />
-      {/*{documents[currentWord]?.document_image.length > 0 && (*/}
-      {/*    <ImageCarousel images={documents[currentWord].document_image}/>*/}
-
-      {/*  // <StyledImage*/}
-      {/*  //   source={{*/}
-      {/*  //     uri: documents[currentWord]?.document_image[0].image*/}
-      {/*  //   }}*/}
-      {/*  // />*/}
-      {/*)}*/}
+      {documents[currentWord]?.document_image.length > 0 && (
+        <ImageCarousel images={documents[currentWord]?.document_image} />
+      )}
       <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
       <SingleChoice
         answers={answers}
