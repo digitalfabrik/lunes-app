@@ -1,5 +1,5 @@
 macos:
-  xcode: 12.4.0
+  xcode: 12.5.1
 resource_class: medium
 environment:
   FL_OUTPUT_DIR: output
