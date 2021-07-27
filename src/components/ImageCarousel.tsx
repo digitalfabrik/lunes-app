@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import { ImagesType, ImageType } from '../constants/endpoints'
 import styled from 'styled-components/native'
@@ -10,6 +10,10 @@ const StyledImage = styled.Image`
   width: 100%;
   height: 100%;
   position: relative;
+`
+
+const Container = styled.View`
+  height: 35%;
 `
 
 const styles = StyleSheet.create({
@@ -36,7 +40,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
   }
 
   return (
-    <>
+    <Container>
       <Carousel
         layout={'default'}
         layoutCardOffset={20}
@@ -47,7 +51,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
         itemWidth={viewportWidth}
       />
       <Pagination dotsLength={images.length} activeDotIndex={activeImage} containerStyle={styles.container} />
-    </>
+    </Container>
   )
 }
 
