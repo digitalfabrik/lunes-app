@@ -5,7 +5,7 @@ import { COLORS } from '../../../constants/colors'
 import styled from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
-const ButtonFontStyle = styled.Text`
+const StyledText = styled.Text`
   font-family: SourceSansPro-Regular;
   font-size: ${wp('4.3%')};
   font-weight: normal;
@@ -81,7 +81,7 @@ const StyledArticleBox = styled.View`
   }};
 `
 
-const StyledArticleText = styled.Text`
+const StyledArticleText = styled(StyledText)`
   text-align: center;
   color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
   if (props.pressed) {
@@ -96,7 +96,7 @@ const StyledArticleText = styled.Text`
 }};
 `
 
-const StyledWord = styled.Text`
+const StyledWord = styled(StyledText)`
   color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
     if (props.pressed) {
       return COLORS.lunesWhite
@@ -156,11 +156,11 @@ const SingleChoiceListItem = ({
       delayPassed={delayPassed}
       disabled={anyAnswerSelected}>
       <StyledArticleBox article={article} selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
-        <StyledArticleText as={ButtonFontStyle} selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
+        <StyledArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
         </StyledArticleText>
       </StyledArticleBox>
-      <StyledWord as={ButtonFontStyle}
+      <StyledWord
         selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
       </StyledWord>
