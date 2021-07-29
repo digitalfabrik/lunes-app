@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, useWindowDimensions, View } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import { ImagesType, ImageType } from '../constants/endpoints'
 import styled from 'styled-components/native'
-
-const { width: viewportWidth } = Dimensions.get('window')
 
 const StyledImage = styled.Image`
   width: 100%;
@@ -34,6 +32,7 @@ interface ItemType {
 
 const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
   const [activeImage, setActiveImage] = useState(0)
+  const { width: viewportWidth } = useWindowDimensions()
 
   const renderItem = ({ item }: ItemType) => {
     return <StyledImage source={{ uri: item.image }} testID={'carousel-image'} />
@@ -46,7 +45,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
         layoutCardOffset={20}
         data={images}
         renderItem={renderItem}
-        onSnapToItem={(index: number) => setActiveImage(index)}
+        onSnapToItem={setActiveImage}
         sliderWidth={viewportWidth}
         itemWidth={viewportWidth}
       />
