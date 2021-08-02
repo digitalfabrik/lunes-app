@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, TextInput, StyleSheet, Pressable, Keyboard } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/colors'
 import Popover from './Popover'
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     width: '100%',
-    height: hp('65%')
+    height: hp('85%')
   },
   textInputContainer: {
     width: wp('80%'),
@@ -200,7 +200,7 @@ const AnswerSection = ({
   }
 
   return (
-    <>
+    <Pressable onPress={() => Keyboard.dismiss()}>
       <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
       <View style={styles.container}>
         <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
@@ -246,7 +246,7 @@ const AnswerSection = ({
           isFinished={currentDocumentNumber === totalNumbers - 1}
         />
       </View>
-    </>
+    </Pressable>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Keyboard, Pressable, StyleSheet } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -20,12 +20,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  image: {
-    width: '100%',
-    height: hp('35%'),
-    position: 'relative',
-    resizeMode: 'cover'
-  },
   spinner: {
     width: '100%',
     height: hp('35%'),
@@ -45,7 +39,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
 
-  let documents = useLoadDocuments(trainingSetId).data
+  let { loading, data: documents } = useLoadDocuments(trainingSetId)
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
@@ -83,12 +77,13 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
       {documents !== null && documents[currentDocumentNumber]?.document_image.length > 0 && (
         <>
-          <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
           <KeyboardAwareScrollView
             scrollEnabled={false}
             resetScrollToCoords={{ x: 0, y: 0 }}
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
+            {loading && <ActivityIndicator style={styles.spinner} />}
+            <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
