@@ -1,0 +1,31 @@
+# Deliver the app to Testflight
+# TODO add Apple App Store delivery with parameter
+parameters:
+  production_delivery:
+    description: Whether to deliver the build to production.
+    type: boolean
+    default: false
+macos:
+  xcode: 12.5.1
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+shell: /bin/bash --login -o pipefail
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - restore_ruby_cache:
+      directory: ios
+  - when:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: 'TDB App Store upload'
+            command: echo "tbd"
+  - unless:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: '[FL] TestFlight Upload'
+            command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
+            working_directory: ios

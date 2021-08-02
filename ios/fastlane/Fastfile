@@ -72,4 +72,23 @@ platform :ios do
         )
     end
 
+
+  desc "Deliver iOS App to TestFlight for testers"
+  lane :upload_to_test_flight do |options|
+    apple_auth()
+    ipa_path = options[:ipa_path]
+
+    if [ipa_path].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    # https://docs.fastlane.tools/actions/upload_to_testflight/
+    upload_to_testflight(
+        skip_waiting_for_build_processing: true,
+        apple_id: '1562834995',
+        ipa: "#{ENV['HOME']}/#{ipa_path}",
+        distribute_external: false
+    )
+  end
+
 end
