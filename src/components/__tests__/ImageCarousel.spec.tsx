@@ -13,10 +13,11 @@ describe('Components', () => {
       image: '2'
     }
   ]
+
   describe('ImageCarousel', () => {
     it('should render correctly', function () {
-      const { getAllByTestId } = render(<ImageCarousel images={images} />)
-      expect(getAllByTestId('carousel-image')).toHaveLength(2)
+      const { getAllByRole } = render(<ImageCarousel images={images} />)
+      expect(getAllByRole('image')).toHaveLength(2)
     })
   })
 })

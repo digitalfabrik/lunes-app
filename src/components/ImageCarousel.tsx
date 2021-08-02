@@ -35,7 +35,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
   const { width: viewportWidth } = useWindowDimensions()
 
   const renderItem = ({ item }: ItemType) => {
-    return <StyledImage source={{ uri: item.image }} testID={'carousel-image'} />
+    return <StyledImage source={{ uri: item.image }} accessibilityRole='image' />
   }
 
   return (
