@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
+import ImageCarousel from '../../components/ImageCarousel'
 
 export const styles = StyleSheet.create({
   root: {
@@ -42,7 +43,6 @@ interface WriteExerciseScreenPropsType {
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
-  const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
 
   let documents = useLoadDocuments(trainingSetId).data
@@ -73,7 +73,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <Pressable onPress={() => Keyboard.dismiss()}>
+    <>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -81,36 +81,27 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      {documents !== null && (
-        <KeyboardAwareScrollView
-          scrollEnabled={false}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          enableOnAndroid
-          keyboardShouldPersistTaps='always'>
-          {documents[currentDocumentNumber]?.document_image.length > 0 && (
-            <Image
-              source={{
-                uri: documents[currentDocumentNumber]?.document_image[0].image
-              }}
-              style={styles.image}
-              onLoadStart={() => setIsLoading(true)}
-              onLoad={() => setIsLoading(false)}
+      {documents !== null && documents[currentDocumentNumber]?.document_image.length > 0 && (
+        <>
+          <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
+          <KeyboardAwareScrollView
+            scrollEnabled={false}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            enableOnAndroid
+            keyboardShouldPersistTaps='always'>
+            <AnswerSection
+              currentDocumentNumber={currentDocumentNumber}
+              setCurrentDocumentNumber={setCurrentDocumentNumber}
+              documents={documents}
+              finishExercise={finishExercise}
+              tryLater={tryLater}
+              trainingSet={trainingSet}
+              disciplineTitle={disciplineTitle}
             />
-          )}
-          {isLoading && <ActivityIndicator style={styles.spinner} />}
-
-          <AnswerSection
-            currentDocumentNumber={currentDocumentNumber}
-            setCurrentDocumentNumber={setCurrentDocumentNumber}
-            documents={documents}
-            finishExercise={finishExercise}
-            tryLater={tryLater}
-            trainingSet={trainingSet}
-            disciplineTitle={disciplineTitle}
-          />
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </>
       )}
-    </Pressable>
+    </>
   )
 }
 
