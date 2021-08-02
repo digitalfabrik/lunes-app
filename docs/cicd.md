@@ -32,7 +32,7 @@ The easiest way to deliver a new build to production or development is to trigge
 Several workflows exist for different purposes:
 
 - **commit**: Executed for all commits of PRs to ensure good code quality and working code.
-- **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development (currently only android).
+- **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development.
 - **prod_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development (not available yet).
 
 ## Services
@@ -52,10 +52,15 @@ You can visit the management website for the Play Store [here](https://play.goog
 
 The Play Store has the concept of tracks to manage released versions of the app. The beta track is for public tests. Tests can be added via their Google E-Mail or by signing up at [play.google.com/apps/testing/tuerantuer.app.integreat](https://play.google.com/apps/testing/tuerantuer.app.integreat).
 
+### App Store Connect
+
+#### Authenticating
+
+Authentication happens by setting the `APP_STORE_CONNECT_API_KEY_CONTENT` environment variable as documented [below](#ios-variables).
+
 ### BrowserStack
 
 We are using BrowserStack to run our E2E tests on real iOS and Android devices.
-The general documentation about E2E tests and BrowserStack for native development can be found [here](../native/docs/e2e-testing.md).
 
 ## Fastlane
 
@@ -75,10 +80,10 @@ Lanes for Android live in [./android/fastlane](./android/fastlane) and for iOS i
 
 ## Environment Variables and Dependencies
 
-| Variable                | Description                    | Where do I get it from? | Reference                                                                                  |
+| Variable                | Description                    | Where do I get it from? | Reference                                                                                  |                                                  |
 | ----------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| BROWSERSTACK_ACCESS_KEY | Access Key for BrowserStack    | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |
-| BROWSERSTACK_USERNAME   | Username for BrowserStack      | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |
+| BROWSERSTACK_ACCESS_KEY | Access Key for BrowserStack    | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |                                                  |
+| BROWSERSTACK_USERNAME   | Username for BrowserStack      | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |                                                  |
 | DELIVERINO_PRIVATE_KEY  | Base64 encoded PEM private key | Password Manager        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
 
 ### Android Variables
@@ -91,3 +96,12 @@ Lanes for Android live in [./android/fastlane](./android/fastlane) and for iOS i
 | KEY_ALIAS                   | Alias of the key within the Java Keystore                                                                  | You should look in the JKS file using `keytool -list -v -keystore <jks>` | -                                                                                                      |
 | KEY_PASSWORD                | Password of the key within the Java Keystore                                                               | Password Manager                                                         | -                                                                                                      |
 | KEYSTORE_PASSWORD           | Password of the JKS which can contain multiple keys                                                        | Password Manager                                                         | -                                                                                                      |
+
+### iOS Variables
+
+| Variable                          | Description                                                                                                                | Where do I get it from?                  | Example                                                                    | Reference                                                                                   |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| APP_STORE_CONNECT_API_KEY_ID      | Key ID for App Store Connect API                                                                                           | AppStoreConnect                          | D83848D23                                                                  | [app_store_connect_api_key](https://docs.fastlane.tools/actions/app_store_connect_api_key/) |
+| APP_STORE_CONNECT_API_ISSUER_ID   | Issuer ID for App Store Connect API                                                                                        | AppStoreConnect                          | 227b0bbf-ada8-458c-9d62-3d8022b7d07f                                       | [app_store_connect_api_key](https://docs.fastlane.tools/actions/app_store_connect_api_key/) |
+| APP_STORE_CONNECT_API_KEY_CONTENT | Key content for App Store Connect API                                                                                      | Password Manager (same as for Integreat) | -----BEGIN EC PRIVATE KEY-----\nfewfawefawfe\n-----END EC PRIVATE KEY----- | [app_store_connect_api_key](https://docs.fastlane.tools/actions/app_store_connect_api_key/) |
+| MATCH_PASSWORD                    | Password for accessing the certificates for the iOS app using [Fastlane Match](https://docs.fastlane.tools/actions/match/) | Password Manager                         | 123456                                                                     | [Using a Git Repo](https://docs.fastlane.tools/actions/match/#git-repo-encryption-password) |
