@@ -17,7 +17,13 @@ export interface SingleChoicePropsType {
   delayPassed: boolean
 }
 
-export const SingleChoice = ({ answers, onClick, correctAnswer, selectedAnswer, delayPassed }: SingleChoicePropsType) => {
+export const SingleChoice = ({
+  answers,
+  onClick,
+  correctAnswer,
+  selectedAnswer,
+  delayPassed
+}: SingleChoicePropsType) => {
   const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
     return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
   }

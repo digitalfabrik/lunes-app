@@ -17,10 +17,10 @@ const StyledContainer = styled.TouchableOpacity`
   margin-bottom: 1.5%;
   border-radius: 2px;
   border-width: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
-    if ((props.pressed || props.selected) || (props.correct && props.delayPassed)) {
-      return '0px';
+    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
+      return '0px'
     } else {
-      return '1px';
+      return '1px'
     }
   }};
   border-style: solid;
@@ -50,7 +50,7 @@ const StyledContainer = styled.TouchableOpacity`
     }
   }};
   ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
-    if ((props.pressed || props.selected) || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
+    if (props.pressed || props.selected || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
       return 'elevation: 6; shadowOpacity: 0.5;'
     } else {
       return 'elevation: 0; shadowOpacity: 0;'
@@ -70,7 +70,13 @@ const StyledArticleBox = styled.View`
   align-items: center;
   margin-right: 3%;
   margin-left: 3.5%;
-  background-color: ${(props: { pressed: boolean; selected: boolean; article: Article; correct: boolean; delayPassed: boolean }) => {
+  background-color: ${(props: {
+    pressed: boolean
+    selected: boolean
+    article: Article
+    correct: boolean
+    delayPassed: boolean
+  }) => {
     if (props.pressed) {
       return COLORS.lunesWhite
     } else if (props.selected || (props.correct && props.delayPassed)) {
@@ -83,17 +89,17 @@ const StyledArticleBox = styled.View`
 
 const StyledArticleText = styled(StyledText)`
   text-align: center;
-  color:  ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
-  if (props.pressed) {
-    return COLORS.lunesBlack
-  } else if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-    return COLORS.lunesFunctionalCorrectDark
-  } else if (props.selected) {
-    return COLORS.lunesFunctionalIncorrectDark
-  } else {
-    return COLORS.lunesGreyDark
-  }
-}};
+  color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+    if (props.pressed) {
+      return COLORS.lunesBlack
+    } else if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
+      return COLORS.lunesFunctionalCorrectDark
+    } else if (props.selected) {
+      return COLORS.lunesFunctionalIncorrectDark
+    } else {
+      return COLORS.lunesGreyDark
+    }
+  }};
 `
 
 const StyledWord = styled(StyledText)`
@@ -134,7 +140,9 @@ const SingleChoiceListItem = ({
 }: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
-  const addOpacity = anyAnswerSelected && ((!correct && !selected) || (correct && !delayPassed && !selected) || (!correct && selected && delayPassed))
+  const addOpacity =
+    anyAnswerSelected &&
+    ((!correct && !selected) || (correct && !delayPassed && !selected) || (!correct && selected && delayPassed))
   const showCorrect = anyAnswerSelected && correct
 
   const onPressIn = (): void => {
@@ -147,7 +155,8 @@ const SingleChoiceListItem = ({
   }
 
   return (
-    <StyledContainer activeOpacity={1}
+    <StyledContainer
+      activeOpacity={1}
       correct={showCorrect}
       selected={selected}
       onPressIn={onPressIn}
@@ -155,13 +164,17 @@ const SingleChoiceListItem = ({
       pressed={pressed}
       delayPassed={delayPassed}
       disabled={anyAnswerSelected}>
-      <StyledArticleBox article={article} selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
+      <StyledArticleBox
+        article={article}
+        selected={selected}
+        correct={showCorrect}
+        pressed={pressed}
+        delayPassed={delayPassed}>
         <StyledArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
         </StyledArticleText>
       </StyledArticleBox>
-      <StyledWord
-        selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
+      <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}

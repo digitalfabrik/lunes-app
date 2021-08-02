@@ -12,10 +12,10 @@ import labels from '../../../constants/labels.json'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import {COLORS} from "../../../constants/colors";
+import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  backgroundColor: ${COLORS.lunesWhite};
+  backgroundcolor: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -87,7 +87,9 @@ const ChoiceExerciseScreen = ({
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
       setResults([...results, result])
     }
-    setTimeout(() => { setDelayPassed(true) }, correctAnswerDelay)
+    setTimeout(() => {
+      setDelayPassed(true)
+    }, correctAnswerDelay)
   }
 
   const onFinishWord = () => {
