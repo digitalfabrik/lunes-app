@@ -139,6 +139,9 @@ jobs:
         resource_class: medium+
         shell: /bin/bash -eo pipefail
         steps:
+            - add_ssh_keys:
+                fingerprints:
+                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
             - checkout
             - restore_ruby_cache:
                 directory: android
@@ -337,14 +340,9 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - build_ios:
-                requires:
-                    - check
-                    - bump_version
             - deliver_browser_stack:
                 requires:
                     - build_android
-                    - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
@@ -355,22 +353,10 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - build_ios:
-                requires:
-                    - check
-                    - bump_version
-            - deliver_browser_stack:
-                requires:
-                    - build_android
-                    - build_ios
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
-            - deliver_ios:
-                production_delivery: false
-                requires:
-                    - build_ios
         when: << pipeline.parameters.run_dev_delivery >>
     version: 2
 
