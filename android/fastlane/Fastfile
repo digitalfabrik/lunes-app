@@ -126,7 +126,7 @@ platform :android do
       next
     end
 
-    puts("promoting #{build_config_name} v#{beta_version_codes[0]} to production track")
+    puts("promoting v#{beta_version_codes[0]} to production track")
 
     # https://docs.fastlane.tools/actions/supply/
     upload_to_play_store(

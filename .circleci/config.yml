@@ -342,6 +342,12 @@ parameters:
     run_dev_delivery:
         default: false
         type: boolean
+    run_prod_delivery:
+        default: false
+        type: boolean
+    run_promote:
+        default: false
+        type: boolean
 version: 2.1
 workflows:
     commit:
@@ -384,9 +390,10 @@ workflows:
                 production_delivery: true
                 requires:
                     - build_android
-        when: << pipeline.parameters.run_dev_delivery >>
+        when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:
             - promote_android
+        when: << pipeline.parameters.run_promote >>
     version: 2
 
