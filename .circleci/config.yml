@@ -139,9 +139,6 @@ jobs:
         resource_class: medium+
         shell: /bin/bash -eo pipefail
         steps:
-            - add_ssh_keys:
-                fingerprints:
-                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
             - checkout
             - restore_ruby_cache:
                 directory: android
@@ -322,6 +319,22 @@ jobs:
                         command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
                         name: '[FL] TestFlight Upload'
                         working_directory: ios
+    promote_android:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        resource_class: small
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - restore_yarn_cache
+            - restore_ruby_cache:
+                directory: android
+            - run:
+                command: bundle exec fastlane android playstore_promote
+                name: '[FL] Play Store Promotion'
+                working_directory: android
 parameters:
     run_commit:
         default: true
@@ -358,5 +371,22 @@ workflows:
                 requires:
                     - build_android
         when: << pipeline.parameters.run_dev_delivery >>
+    prod_delivery:
+        jobs:
+            - check
+            - bump_version:
+                delivery: production
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_android:
+                production_delivery: true
+                requires:
+                    - build_android
+        when: << pipeline.parameters.run_dev_delivery >>
+    promote:
+        jobs:
+            - promote_android
     version: 2
 

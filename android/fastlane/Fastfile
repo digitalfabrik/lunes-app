@@ -101,4 +101,46 @@ platform :android do
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
         )
     end
+
+  desc "Promote the most recent version in the beta track to the production track in the Play Store."
+  lane :playstore_promote do |options|
+    ensure_env_vars(
+      env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+
+    application_id = "app.lunes"
+
+    production_version_codes = google_play_track_version_codes(
+      track: "production",
+      package_name: application_id,
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+    beta_version_codes = google_play_track_version_codes(
+      track: "beta",
+      package_name: application_id,
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+
+    if beta_version_codes.length == 0 || beta_version_codes[0] <= production_version_codes[0]
+      puts("Nothing to do, latest version already available in production track...")
+      next
+    end
+
+    puts("promoting #{build_config_name} v#{beta_version_codes[0]} to production track")
+
+    # https://docs.fastlane.tools/actions/supply/
+    upload_to_play_store(
+      version_code: beta_version_codes[0],
+      package_name: application_id,
+      track: "beta",
+      track_promote_to: "production",
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_metadata: true,
+      skip_upload_apk: true,
+      release_status: "completed",
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+  end
 end
