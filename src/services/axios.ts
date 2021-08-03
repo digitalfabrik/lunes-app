@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 let baseURL: string
 
 if (__DEV__) {
