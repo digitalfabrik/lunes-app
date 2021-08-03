@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AnswerSection renders correctly across screens 1`] = `
-<Fragment>
+<Pressable
+  onPress={[Function]}
+>
   <AudioPlayer
     disabled={true}
   />
@@ -9,7 +11,7 @@ exports[`AnswerSection renders correctly across screens 1`] = `
     style={
       Object {
         "alignItems": "center",
-        "height": 867,
+        "height": 1134,
         "paddingVertical": 20,
         "position": "relative",
         "width": "100%",
@@ -82,5 +84,5 @@ exports[`AnswerSection renders correctly across screens 1`] = `
       tryLater={[Function]}
     />
   </View>
-</Fragment>
+</Pressable>
 `;

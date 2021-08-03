@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Keyboard, Pressable, StyleSheet } from 'react-native'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
+import ImageCarousel from '../../components/ImageCarousel'
 
 export const styles = StyleSheet.create({
   root: {
@@ -18,12 +19,6 @@ export const styles = StyleSheet.create({
     paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  image: {
-    width: '100%',
-    height: hp('35%'),
-    position: 'relative',
-    resizeMode: 'cover'
   },
   spinner: {
     width: '100%',
@@ -42,10 +37,9 @@ interface WriteExerciseScreenPropsType {
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { extraParams, retryData } = route.params
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
-  const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
 
-  let documents = useLoadDocuments(trainingSetId).data
+  let { loading, data: documents } = useLoadDocuments(trainingSetId)
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
@@ -73,7 +67,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <Pressable onPress={() => Keyboard.dismiss()}>
+    <>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -81,36 +75,28 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      {documents !== null && (
-        <KeyboardAwareScrollView
-          scrollEnabled={false}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          enableOnAndroid
-          keyboardShouldPersistTaps='always'>
-          {documents[currentDocumentNumber]?.document_image.length > 0 && (
-            <Image
-              source={{
-                uri: documents[currentDocumentNumber]?.document_image[0].image
-              }}
-              style={styles.image}
-              onLoadStart={() => setIsLoading(true)}
-              onLoad={() => setIsLoading(false)}
+      {documents !== null && documents[currentDocumentNumber]?.document_image.length > 0 && (
+        <>
+          <KeyboardAwareScrollView
+            scrollEnabled={false}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            enableOnAndroid
+            keyboardShouldPersistTaps='always'>
+            {loading && <ActivityIndicator style={styles.spinner} />}
+            <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
+            <AnswerSection
+              currentDocumentNumber={currentDocumentNumber}
+              setCurrentDocumentNumber={setCurrentDocumentNumber}
+              documents={documents}
+              finishExercise={finishExercise}
+              tryLater={tryLater}
+              trainingSet={trainingSet}
+              disciplineTitle={disciplineTitle}
             />
-          )}
-          {isLoading && <ActivityIndicator style={styles.spinner} />}
-
-          <AnswerSection
-            currentDocumentNumber={currentDocumentNumber}
-            setCurrentDocumentNumber={setCurrentDocumentNumber}
-            documents={documents}
-            finishExercise={finishExercise}
-            tryLater={tryLater}
-            trainingSet={trainingSet}
-            disciplineTitle={disciplineTitle}
-          />
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </>
       )}
-    </Pressable>
+    </>
   )
 }
 

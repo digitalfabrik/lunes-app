@@ -21,11 +21,18 @@ export interface AlternativeWordType {
   article: number
 }
 
+export interface ImageType {
+  id: number
+  image: string
+}
+
+export type ImagesType = ImageType[]
+
 export interface DocumentType {
   id: number
   word: string
   article: Article
-  document_image: Array<{ id: number; image: string }>
+  document_image: ImagesType
   audio: string
   alternatives: AlternativeWordType[]
 }
