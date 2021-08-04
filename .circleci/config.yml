@@ -359,9 +359,14 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
             - deliver_browser_stack:
                 requires:
                     - build_android
+                    - build_ios
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
@@ -372,10 +377,22 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_browser_stack:
+                requires:
+                    - build_android
+                    - build_ios
             - deliver_android:
                 production_delivery: false
                 requires:
                     - build_android
+            - deliver_ios:
+                production_delivery: false
+                requires:
+                    - build_ios
         when: << pipeline.parameters.run_dev_delivery >>
     prod_delivery:
         jobs:

@@ -7,19 +7,19 @@ jobs:
       requires:
         - check
         - bump_version
-  #  - build_ios:
-  #      requires:
-  #        - check
-  #        - bump_version
-  #  - deliver_browser_stack:
-  #      requires:
-  #        - build_android
-  #        - build_ios
+  - build_ios:
+      requires:
+        - check
+        - bump_version
+  - deliver_browser_stack:
+      requires:
+        - build_android
+        - build_ios
   - deliver_android:
       production_delivery: false
       requires:
         - build_android
-#  - deliver_ios:
-#      production_delivery: false
-#      requires:
-#        - build_ios
+  - deliver_ios:
+      production_delivery: false
+      requires:
+        - build_ios
