@@ -35,7 +35,7 @@ const VolumeIcon = styled.TouchableOpacity`
   shadowOpacity: 0.5;
 `
 
-function AudioPlayer(props: AudioPlayerProps) {
+const AudioPlayer = (props: AudioPlayerProps) => {
   Tts.setDefaultLanguage('de-DE')
 
   const { document, disabled } = props

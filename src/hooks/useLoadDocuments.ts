@@ -1,6 +1,11 @@
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
-import { AlternativeWordType, DocumentType, ENDPOINTS } from '../constants/endpoints'
+import { DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { ARTICLES } from '../constants/data'
+
+export interface AlternativeWordTypeFromServer {
+  article: number
+  alt_word: string
+}
 
 export interface DocumentTypeFromServer {
   id: number
@@ -8,24 +13,22 @@ export interface DocumentTypeFromServer {
   article: number
   document_image: Array<{ id: number; image: string }>
   audio: string
-  alternatives: AlternativeWordType[]
+  alternatives: AlternativeWordTypeFromServer[]
 }
 
 const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): ReturnType<DocumentType[]> => {
-  const documentsWithTransformedArticle: DocumentType[] = []
-  documents.data?.forEach(doc => {
-    const { article, ...rest } = doc
-    const formattedArticle = ARTICLES.find(article => {
-      return article.id === doc.article
-    })
-    if (!formattedArticle) {
-      throw new Error('Invalid Server Response')
-    }
-    const formattedDocument: DocumentType = { ...rest, article: formattedArticle }
-    documentsWithTransformedArticle.push(formattedDocument)
-  })
-  const { data, ...rest } = documents
-  return { ...rest, data: documentsWithTransformedArticle }
+  let formattedDocuments: DocumentType[] = []
+  if (documents.data) {
+    formattedDocuments = documents.data?.map(document => ({
+      ...document,
+      article: ARTICLES[document.article],
+      alternatives: document.alternatives.map(it => ({
+        article: ARTICLES[it.article],
+        word: it.alt_word
+      }))
+    }))
+  }
+  return { ...documents, data: formattedDocuments }
 }
 
 const useLoadDocuments = (trainingSetId: number): ReturnType<DocumentType[]> => {

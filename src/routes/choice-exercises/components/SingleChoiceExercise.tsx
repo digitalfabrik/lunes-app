@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
-import { DocumentType } from '../../../constants/endpoints'
+import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
@@ -16,7 +16,7 @@ import ImageCarousel from '../../../components/ImageCarousel'
 import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  backgroundcolor: ${COLORS.lunesWhite};
+  background-color: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -61,18 +61,15 @@ const ChoiceExerciseScreen = ({
 
   const count = documents.length
 
-  const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
-    article: ARTICLES[it.article],
-    word: it.alt_word
-  }))
-
   const onClickAnswer = (selectedAnswer: Answer) => {
     setSelectedAnswer(selectedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
+    const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
+      isAnswerEqual(it, selectedAnswer)
+    )
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(selectedAnswer)
