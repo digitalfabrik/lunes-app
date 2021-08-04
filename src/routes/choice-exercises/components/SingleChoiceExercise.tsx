@@ -12,18 +12,13 @@ import labels from '../../../constants/labels.json'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import ImageCarousel from '../../../components/ImageCarousel'
 import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
   backgroundcolor: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
-`
-
-const StyledImage = styled.Image`
-  width: 100%;
-  height: 35%;
-  position: relative;
 `
 
 const ButtonContainer = styled.View`
@@ -45,7 +40,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType) => {
+}: SingleChoiceExercisePropsType): JSX.Element => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -116,11 +111,7 @@ const ChoiceExerciseScreen = ({
         numberOfWords={documents.length}
       />
       {documents[currentWord]?.document_image.length > 0 && (
-        <StyledImage
-          source={{
-            uri: documents[currentWord]?.document_image[0].image
-          }}
-        />
+        <ImageCarousel images={documents[currentWord]?.document_image} />
       )}
       <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
       <SingleChoice
