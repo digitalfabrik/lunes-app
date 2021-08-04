@@ -328,7 +328,6 @@ jobs:
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
-            - restore_yarn_cache
             - restore_ruby_cache:
                 directory: android
             - run:
