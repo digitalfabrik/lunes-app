@@ -45,39 +45,31 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [isLoading, setIsLoading] = useState(true)
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
-  const [documents, setDocuments] = useState<DocumentType[]>([])
+  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   const response = useLoadDocuments(trainingSetId)
+
+  const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
-
-  useEffect(() => {
-    if (response.data) {
-      setDocuments(response.data)
-    }
-  }, [response.loading])
-
-  useEffect(() => {
-    if (retryData) {
-      setDocuments(retryData.data)
-    }
-  }, [retryData])
 
   const tryLater = (): void => {
     if (documents !== null) {
       const currDocument = documents[currentDocumentNumber]
       const newDocuments = documents.filter(d => d !== currDocument)
       newDocuments.push(currDocument)
-      setDocuments(newDocuments)
+      setNewDocuments(newDocuments)
     }
   }
 
   const finishExercise = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
     setCurrentDocumentNumber(0)
+    setNewDocuments(null)
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
+
 
   const docsLength = documents?.length
 
