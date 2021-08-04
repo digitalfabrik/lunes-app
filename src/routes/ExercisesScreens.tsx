@@ -120,7 +120,7 @@ interface ExercisesScreenPropsType {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
-  const { trainingSet, disciplineTitle } = extraParams
+  const { trainingSet, disciplineTitle, documents } = extraParams
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const [isBackButtonPressed, setIsBackButtonPressed] = useState(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
@@ -158,7 +158,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
+        <Text style={styles.screenDescription}>{documents} {labels.home.words}</Text>
       </>
     </Title>
   )

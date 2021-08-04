@@ -143,7 +143,8 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       extraParams: {
         ...extraParams,
         trainingSetId: item.id,
-        trainingSet: item.title
+        trainingSet: item.title,
+        documents: item.total_documents
       }
     })
   }
