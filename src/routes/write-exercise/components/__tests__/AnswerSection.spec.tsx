@@ -62,7 +62,6 @@ describe('AnswerSection', () => {
   })
 
   it('should show correct-feedback for alternative article', async () => {
-    // const { getByPlaceholderText, getByText } = render(<AnswerSection {...defaultAnswerSectionProps} />)
     await evaluate('Die Spachtel', labels.exercises.write.feedback.correct)
   })
 
