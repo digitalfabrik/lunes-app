@@ -9,6 +9,11 @@ We follow the [airbnb style](https://github.com/airbnb/javascript/tree/master/re
 We use [prettier](https://prettier.io) to format code. Run `yarn prettier --check .` to show formatting problems or `yarn prettier --write .` to fix them.
 We use [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint) for TypeScript linting. Run `yarn lint` to show linting problems.
 
+### Hints
+
+- Preferr arrow functions
+- Use functional components
+
 ## Folder structure
 
 Tests should always be positioned in a `__tests__` directory on the same level as the file which is tested.

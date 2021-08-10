@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://lunes.tuerantuer.org/api'
-// const baseURL = 'https://lunes-test.tuerantuer.org/api'
+const baseURL = __DEV__ ? 'https://lunes-test.tuerantuer.org/api' : 'https://lunes.tuerantuer.org/api'
 
 const instance = axios.create({
   baseURL: baseURL
