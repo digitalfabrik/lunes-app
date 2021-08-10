@@ -29,7 +29,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      documents: number
+      documentsLength: number
     }
   }
   VocabularyList: {
