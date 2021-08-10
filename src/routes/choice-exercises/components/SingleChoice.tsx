@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import SingleChoiceListItem from './SingleChoiceListItem'
 import styled from 'styled-components/native'
 import { Answer } from '../../../constants/data'
@@ -23,7 +23,7 @@ export const SingleChoice = ({
   correctAnswer,
   selectedAnswer,
   delayPassed
-}: SingleChoicePropsType) => {
+}: SingleChoicePropsType): ReactElement => {
   const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
     return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
   }

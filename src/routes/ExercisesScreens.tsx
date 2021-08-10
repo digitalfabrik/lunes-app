@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
@@ -118,7 +118,7 @@ interface ExercisesScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): ReactElement => {
   const { extraParams } = route.params
   const { trainingSet, disciplineTitle } = extraParams
   const [selectedKey, setSelectedKey] = useState<string | null>(null)

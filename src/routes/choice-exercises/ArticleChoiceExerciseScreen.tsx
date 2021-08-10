@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -12,7 +12,7 @@ interface ArticleChoiceExerciseScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'ArticleChoiceExercise'>
 }
 
-const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenPropsType) => {
+const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
   const { data: documents, loading } = useLoadDocuments(trainingSetId)
@@ -25,18 +25,17 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
   }
 
-  return (
-    documents !== null &&
-    !loading && (
-      <SingleChoiceExercise
+  if (documents === null || loading) {
+    return null
+  }
+
+  return <SingleChoiceExercise
         documents={documents}
         documentToAnswers={documentToAnswers}
         onExerciseFinished={onExerciseFinished}
         navigation={navigation}
         route={route}
       />
-    )
-  )
 }
 
 export default ArticleChoiceExerciseScreen

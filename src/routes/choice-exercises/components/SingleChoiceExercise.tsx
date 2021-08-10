@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
@@ -16,7 +16,7 @@ import ImageCarousel from '../../../components/ImageCarousel'
 import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  backgroundcolor: ${COLORS.lunesWhite};
+  background-color: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -40,7 +40,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType): JSX.Element => {
+}: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -70,7 +70,7 @@ const ChoiceExerciseScreen = ({
     word: it.alt_word
   }))
 
-  const onClickAnswer = (selectedAnswer: Answer) => {
+  const onClickAnswer = (selectedAnswer: Answer): void => {
     setSelectedAnswer(selectedAnswer)
     const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
 
@@ -87,7 +87,7 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const onFinishWord = () => {
+  const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
       setCurrentWord(0)
