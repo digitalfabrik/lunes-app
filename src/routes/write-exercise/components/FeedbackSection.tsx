@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   AlmostCorrectFeedbackIcon,
   correct_background,
@@ -14,8 +14,8 @@ import styled from 'styled-components/native'
 import labels from '../../../constants/labels.json'
 
 const Background = styled.ImageBackground`
-  width: ${wp(80)};
-  height: ${hp(9)};
+  width: ${wp(80)}px;
+  height: ${hp(9)}px;
   margin-bottom: 40px;
   flex-direction: row;
   align-items: center;
@@ -35,7 +35,7 @@ export interface FeedbackPropsType {
   input: string
 }
 
-const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): JSX.Element | null => {
+const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): ReactElement | null => {
   let Icon, background, message
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
@@ -44,7 +44,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value} ${document?.word}“`
+    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value ?? ''} ${document?.word ?? ''}“`
   } else {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
