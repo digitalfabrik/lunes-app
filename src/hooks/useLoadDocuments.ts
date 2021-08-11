@@ -17,7 +17,8 @@ export interface DocumentTypeFromServer {
 }
 
 const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): ReturnType<DocumentType[]> => {
-  const formattedDocuments: DocumentType[] = documents.data?.map(document => ({
+  const formattedDocuments: DocumentType[] =
+    documents.data?.map(document => ({
       ...document,
       article: ARTICLES[document.article],
       alternatives: document.alternatives.map(it => ({
