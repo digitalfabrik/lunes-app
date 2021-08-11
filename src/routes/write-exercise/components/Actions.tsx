@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text, StyleSheet } from 'react-native'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
@@ -48,7 +48,15 @@ export interface IActionsProps {
   secondAttempt: boolean
 }
 
-const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, tryLater }: IActionsProps) => {
+const Actions = ({
+  result,
+  giveUp,
+  checkEntry,
+  getNextWord,
+  input,
+  isFinished,
+  tryLater
+}: IActionsProps): ReactElement => {
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>

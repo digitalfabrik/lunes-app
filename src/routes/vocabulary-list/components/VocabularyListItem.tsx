@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/colors'
 import { getArticleColor } from '../../../services/helpers'
@@ -71,7 +71,7 @@ export interface VocabularyListItemPropType {
   document: DocumentType
 }
 
-const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
+const VocabularyListItem = ({ document }: VocabularyListItemPropType): ReactElement => {
   const { article, word } = document
 
   return (
