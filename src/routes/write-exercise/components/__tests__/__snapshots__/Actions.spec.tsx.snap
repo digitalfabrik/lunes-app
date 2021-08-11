@@ -69,7 +69,7 @@ exports[`Components Actions renders correctly across screens 1`] = `
     >
       Später versuchen
     </Text>
-    <[object Object]
+    <SvgrURL
       style={
         Object {
           "marginLeft": 5,

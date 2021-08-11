@@ -33,7 +33,7 @@ const VolumeIcon = styled.TouchableOpacity`
   shadowOpacity: 0.5;
 `
 
-function AudioPlayer(props: AudioPlayerProps): ReactElement {
+const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const { document, disabled } = props
   const [isInitialized, setIsInitialized] = useState(false)
   const [ttsError, setTtsError] = useState<TtsError | null>(null)
