@@ -9,6 +9,8 @@ jest.mock('../../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
+jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
 describe('AnswerSection', () => {
   const defaultAnswerSectionProps: AnswerSectionPropsType = {
     documents: [
