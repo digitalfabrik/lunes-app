@@ -128,6 +128,7 @@ export interface SingleChoiceListItemPropsType {
   selected: boolean
   anyAnswerSelected: boolean
   delayPassed: boolean
+  disabled?: boolean
 }
 
 const SingleChoiceListItem = ({
@@ -136,7 +137,8 @@ const SingleChoiceListItem = ({
   correct,
   selected,
   anyAnswerSelected,
-  delayPassed
+  delayPassed,
+  disabled = false
 }: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
@@ -163,7 +165,7 @@ const SingleChoiceListItem = ({
       onPressOut={onPressOut}
       pressed={pressed}
       delayPassed={delayPassed}
-      disabled={anyAnswerSelected}>
+      disabled={anyAnswerSelected || disabled}>
       <StyledArticleBox
         article={article}
         selected={selected}

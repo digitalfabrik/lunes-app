@@ -16,9 +16,7 @@ import ImageCarousel from '../../../components/ImageCarousel'
 import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  backgroundcolor: ${COLORS.lunesWhite};
-  height: 100%;
-  width: 100%;
+  background-color: ${COLORS.lunesWhite};
 `
 
 const ButtonContainer = styled.View`
