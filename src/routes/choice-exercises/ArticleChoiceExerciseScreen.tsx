@@ -12,7 +12,10 @@ interface ArticleChoiceExerciseScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'ArticleChoiceExercise'>
 }
 
-const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
+const ArticleChoiceExerciseScreen = ({
+  navigation,
+  route
+}: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
   const { data: documents, loading } = useLoadDocuments(trainingSetId)
@@ -29,13 +32,15 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
     return null
   }
 
-  return <SingleChoiceExercise
-        documents={documents}
-        documentToAnswers={documentToAnswers}
-        onExerciseFinished={onExerciseFinished}
-        navigation={navigation}
-        route={route}
-      />
+  return (
+    <SingleChoiceExercise
+      documents={documents}
+      documentToAnswers={documentToAnswers}
+      onExerciseFinished={onExerciseFinished}
+      navigation={navigation}
+      route={route}
+    />
+  )
 }
 
 export default ArticleChoiceExerciseScreen

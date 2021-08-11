@@ -54,13 +54,15 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
   }
 
-  return <SingleChoiceExercise
-        documents={documents}
-        documentToAnswers={documentToAnswers}
-        onExerciseFinished={onExerciseFinished}
-        navigation={navigation}
-        route={route}
-      />
+  return (
+    <SingleChoiceExercise
+      documents={documents}
+      documentToAnswers={documentToAnswers}
+      onExerciseFinished={onExerciseFinished}
+      navigation={navigation}
+      route={route}
+    />
+  )
 }
 
 export default WordChoiceExerciseScreen

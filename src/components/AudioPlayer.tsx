@@ -43,20 +43,20 @@ function AudioPlayer(props: AudioPlayerProps): ReactElement {
     if (ttsError?.code === 'no_engine') {
       return
     }
-    Tts.getInitStatus().then(async status => {
-
-      if (status === 'success') {
-        setIsInitialized(true)
-        await Tts.setDefaultLanguage('de-DE')
-      }
-    }).catch(async (error: TtsError) => {
-      console.error(`Tts-Error: ${error.code}`)
-      if (error.code === 'no_engine') {
-        await Tts.requestInstallEngine().catch(() => setTtsError(error))
-      }
-    })
+    Tts.getInitStatus()
+      .then(async status => {
+        if (status === 'success') {
+          setIsInitialized(true)
+          await Tts.setDefaultLanguage('de-DE')
+        }
+      })
+      .catch(async (error: TtsError) => {
+        console.error(`Tts-Error: ${error.code}`)
+        if (error.code === 'no_engine') {
+          await Tts.requestInstallEngine().catch(() => setTtsError(error))
+        }
+      })
   }, [isInitialized, ttsError])
-
 
   React.useEffect(() => {
     if (isInitialized) {

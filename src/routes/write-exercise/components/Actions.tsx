@@ -48,7 +48,15 @@ export interface IActionsProps {
   secondAttempt: boolean
 }
 
-const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, tryLater }: IActionsProps): ReactElement => {
+const Actions = ({
+  result,
+  giveUp,
+  checkEntry,
+  getNextWord,
+  input,
+  isFinished,
+  tryLater
+}: IActionsProps): ReactElement => {
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>

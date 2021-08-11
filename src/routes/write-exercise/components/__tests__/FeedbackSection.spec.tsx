@@ -63,7 +63,9 @@ describe('Feedback section', () => {
         document_image: []
       }
     }
-    const message = `${labels.exercises.write.feedback.wrong} „${feedbackProps.document!.article.value} ${feedbackProps.document!.word}“`
+    const message = `${labels.exercises.write.feedback.wrong} „${feedbackProps.document!.article.value} ${
+      feedbackProps.document!.word
+    }“`
     const icon = <IncorrectFeedbackIcon width={28} height={28} />
 
     const component = shallow(<FeedbackSection {...feedbackProps} />)
