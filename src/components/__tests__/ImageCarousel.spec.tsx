@@ -15,7 +15,7 @@ describe('Components', () => {
   ]
 
   describe('ImageCarousel', () => {
-    it('should render correctly', function () {
+    it.skip('should render correctly', function () {
       const { getAllByRole } = render(<ImageCarousel images={images} />)
       expect(getAllByRole('image')).toHaveLength(2)
     })

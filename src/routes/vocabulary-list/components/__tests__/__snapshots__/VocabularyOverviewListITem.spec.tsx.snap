@@ -26,7 +26,8 @@ exports[`VocabularyListItem renders correctly across screens 1`] = `
       }
     }
   >
-    <View
+    <Pressable
+      onPress={[Function]}
       style={
         Object {
           "alignItems": "center",
@@ -93,7 +94,7 @@ exports[`VocabularyListItem renders correctly across screens 1`] = `
           Winkelmesser
         </Text>
       </View>
-    </View>
+    </Pressable>
     <View
       style={
         Object {

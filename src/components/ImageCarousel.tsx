@@ -15,7 +15,7 @@ const PaginationView = styled.View`
   left: 0;
   right: 0;
   top: -10;
-  backgroundcolor: transparent;
+  background-color: transparent;
 `
 
 interface ImageCarouselPropsType {
