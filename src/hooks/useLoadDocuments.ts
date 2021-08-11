@@ -17,17 +17,14 @@ export interface DocumentTypeFromServer {
 }
 
 const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): ReturnType<DocumentType[]> => {
-  let formattedDocuments: DocumentType[] = []
-  if (documents.data) {
-    formattedDocuments = documents.data?.map(document => ({
+  const formattedDocuments: DocumentType[] = documents.data?.map(document => ({
       ...document,
       article: ARTICLES[document.article],
       alternatives: document.alternatives.map(it => ({
         article: ARTICLES[it.article],
         word: it.alt_word
       }))
-    }))
-  }
+    })) ?? []
   return { ...documents, data: formattedDocuments }
 }
 
