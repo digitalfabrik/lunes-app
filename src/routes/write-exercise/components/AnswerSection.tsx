@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Keyboard, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/colors'
@@ -63,7 +63,7 @@ const AnswerSection = ({
   trainingSet,
   disciplineTitle,
   documents
-}: AnswerSectionPropsType): JSX.Element => {
+}: AnswerSectionPropsType): ReactElement => {
   const touchable: any = React.createRef()
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
   const [input, setInput] = useState('')
@@ -74,11 +74,11 @@ const AnswerSection = ({
   const totalNumbers = documents.length
   const [isFocused, setIsFocused] = useState(false)
 
-  function capitalizeFirstLetter(string: string) {
+  function capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
-  const checkEntry = (): void => {
+  const checkEntry = async (): Promise<void> => {
     setSubmission(input)
     const splitInput = input.trim().split(' ')
 
@@ -92,13 +92,13 @@ const AnswerSection = ({
 
     if (!validateForSimilar(article, word)) {
       setResult('incorrect')
-      storeResult('incorrect')
+      await storeResult('incorrect')
     } else if (validateForCorrect(article, word)) {
       setResult('correct')
-      storeResult('correct')
+      await storeResult('correct')
     } else if (secondAttempt) {
       setResult('similar')
-      storeResult('similar')
+      await storeResult('similar')
     } else {
       setInput('')
       setSecondAttempt(true)
@@ -129,9 +129,9 @@ const AnswerSection = ({
     return origCheck || altCheck
   }
 
-  const giveUp = (): void => {
+  const giveUp = async (): Promise<void> => {
     setResult('giveUp')
-    storeResult(secondAttempt ? 'similar' : 'incorrect')
+    await storeResult(secondAttempt ? 'similar' : 'incorrect')
   }
 
   const validateForCorrectWithoutArticle = (inputWord: string): boolean => {

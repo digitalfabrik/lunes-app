@@ -43,7 +43,7 @@ export interface IButtonProps {
   testID?: string
 }
 
-const Button = ({ children, onPress, disabled, theme }: IButtonProps) => {
+const Button = ({ children, onPress, disabled, theme }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
 
   const buttonStyle = disabled

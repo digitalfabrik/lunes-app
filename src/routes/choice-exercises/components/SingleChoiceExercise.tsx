@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
@@ -40,7 +40,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType): JSX.Element => {
+}: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -65,7 +65,7 @@ const ChoiceExerciseScreen = ({
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const onClickAnswer = (selectedAnswer: Answer) => {
+  const onClickAnswer = (selectedAnswer: Answer): void => {
     setSelectedAnswer(selectedAnswer)
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, selectedAnswer)
@@ -84,7 +84,7 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const onFinishWord = () => {
+  const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
       setCurrentWord(0)
