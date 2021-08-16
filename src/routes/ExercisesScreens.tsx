@@ -4,11 +4,11 @@ import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '..
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   root: {
