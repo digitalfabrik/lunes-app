@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { BUTTONS_THEME } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 
 const buttonBase: any = {
   flexDirection: 'row',

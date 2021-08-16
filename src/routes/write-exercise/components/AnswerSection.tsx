@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import { View, TouchableOpacity, TextInput, StyleSheet, Pressable, Keyboard } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import Popover from './Popover'
 import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'

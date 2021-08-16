@@ -13,7 +13,7 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 
 const ExerciseContainer = styled.View`
   background-color: ${COLORS.lunesWhite};

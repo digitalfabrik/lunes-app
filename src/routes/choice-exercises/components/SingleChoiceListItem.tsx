@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import styled from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 

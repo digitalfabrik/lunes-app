@@ -1,12 +1,12 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal, { IConfirmationModalProps } from '../Modal'
+import Modal, { ConfirmationModalPropsType } from '../Modal'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 
 describe('Components', () => {
   describe('Modal ', () => {
-    const defaultModalProps: IConfirmationModalProps = {
+    const defaultModalProps: ConfirmationModalPropsType = {
       navigation: '',
       setIsModalVisible: () => {},
       visible: false
@@ -22,7 +22,7 @@ describe('Components', () => {
     })
 
     it('should have visible property passed to it as default', () => {
-      const modalProps: IConfirmationModalProps = {
+      const modalProps: ConfirmationModalPropsType = {
         ...defaultModalProps
       }
 
@@ -35,7 +35,7 @@ describe('Components', () => {
     })
 
     it('should have visible property passed to it', () => {
-      const modalProps: IConfirmationModalProps = {
+      const modalProps: ConfirmationModalPropsType = {
         ...defaultModalProps,
         visible: true
       }
