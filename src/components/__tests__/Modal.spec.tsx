@@ -3,11 +3,28 @@ import React from 'react'
 import Modal, { ConfirmationModalPropsType } from '../Modal'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
+import createNavigationPropMock from '../../testing/createNavigationPropMock'
 
 describe('Components', () => {
   describe('Modal ', () => {
     const defaultModalProps: ConfirmationModalPropsType = {
-      navigation: '',
+      navigation: createNavigationPropMock(),
+      route: {
+        key: '',
+        name: 'WordChoiceExercise',
+        params: {
+          extraParams: {
+            disciplineID: 0,
+            disciplineTitle: 'Title',
+            disciplineIcon: 'Icon',
+            trainingSetId: 0,
+            trainingSet: 'Set',
+            exercise: 1,
+            exerciseDescription: 'Description',
+            level: jest.fn()
+          }
+        }
+      },
       setIsModalVisible: () => {},
       visible: false
     }

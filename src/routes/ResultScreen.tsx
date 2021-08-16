@@ -126,7 +126,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
-      <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
+      <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <Text style={styles.lightLabel}>

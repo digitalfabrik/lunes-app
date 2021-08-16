@@ -123,14 +123,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
         </View>
       </View>
 
-      <Button theme={BUTTONS_THEME.dark} onPress={checkResults}>
+      <Button buttonTheme={BUTTONS_THEME.dark} onPress={checkResults}>
         <>
           <ListIcon />
           <Text style={styles.lightLabel}>{labels.results.checkEntries}</Text>
         </>
       </Button>
 
-      <Button theme={BUTTONS_THEME.light} onPress={repeatExercise}>
+      <Button buttonTheme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <>
           <RepeatIcon fill={COLORS.lunesBlack} />
           <Text style={styles.darkLabel}>{labels.results.retryExercise}</Text>

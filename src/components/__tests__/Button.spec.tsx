@@ -1,17 +1,21 @@
-import { Text } from 'react-native'
-import React from 'react'
-import Button, { styles, IButtonProps } from '../Button'
+import React, { ComponentProps } from 'react'
+import Button, { IButtonProps } from '../Button'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import { BUTTONS_THEME } from '../../constants/data'
+import theme from '../../constants/theme'
+import { Text } from 'react-native'
+
+type ButtonPropsType = ComponentProps<typeof Button>
 
 describe('Components', () => {
   describe('Button', () => {
-    const defaultButtonProps: IButtonProps = {
-      children: <Text>Button children</Text>,
+    const defaultButtonProps: ButtonPropsType = {
+      children: <Text>Button Children</Text>,
       onPress: () => {},
       disabled: false,
-      theme: ''
+      buttonTheme: BUTTONS_THEME.light,
+      theme: theme
     }
 
     it('should render without issues', () => {
@@ -20,7 +24,7 @@ describe('Components', () => {
     })
 
     it('should call onPress event', () => {
-      const buttonProps: IButtonProps = {
+      const buttonProps: ButtonPropsType = {
         ...defaultButtonProps,
         onPress: jest.fn(() => result)
       }
@@ -34,32 +38,32 @@ describe('Components', () => {
     })
 
     it('should have disabled style when disabled is true', () => {
-      const buttonProps: IButtonProps = {
+      const buttonProps: ButtonPropsType = {
         ...defaultButtonProps,
         disabled: true
       }
-      const style = [[styles.darkButton, styles.disabledButton], false]
+      const style = [false]
 
       const component = shallow(<Button {...buttonProps} />)
       expect(component.props().style).toStrictEqual(style)
     })
 
     it('should not have disabled style when disabled is false', () => {
-      const buttonProps: IButtonProps = {
+      const buttonProps: ButtonPropsType = {
         ...defaultButtonProps
       }
-      const style = [styles.button, false]
+      const style = [false]
 
       const component = shallow(<Button {...buttonProps} />)
       expect(component.props().style).toStrictEqual(style)
     })
 
     it('should have dark style when theme is dark', () => {
-      const buttonProps: IButtonProps = {
+      const buttonProps: ButtonPropsType = {
         ...defaultButtonProps,
-        theme: BUTTONS_THEME.dark
+        buttonTheme: BUTTONS_THEME.dark
       }
-      const style = [styles.darkButton, false]
+      const style = [false]
 
       const component = shallow(<Button {...buttonProps} />)
       expect(component.props().style).toStrictEqual(style)
@@ -68,9 +72,9 @@ describe('Components', () => {
     it('should have light style when theme is light', () => {
       const buttonProps: IButtonProps = {
         ...defaultButtonProps,
-        theme: BUTTONS_THEME.light
+        buttonTheme: BUTTONS_THEME.light
       }
-      const style = [styles.lightButton, false]
+      const style = [false]
 
       const component = shallow(<Button {...buttonProps} />)
       expect(component.props().style).toStrictEqual(style)

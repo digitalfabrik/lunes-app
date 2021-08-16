@@ -13,10 +13,9 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { COLORS } from '../../../constants/theme/colors'
 
 const ExerciseContainer = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -70,12 +69,12 @@ const ChoiceExerciseScreen = ({
     word: it.alt_word
   }))
 
-  const onClickAnswer = (selectedAnswer: Answer): void => {
-    setSelectedAnswer(selectedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
+  const onClickAnswer = (clickedAnswer: Answer): void => {
+    setSelectedAnswer(clickedAnswer)
+    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, clickedAnswer))
 
     if (correctSelected !== undefined) {
-      setCorrectAnswer(selectedAnswer)
+      setCorrectAnswer(clickedAnswer)
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
@@ -123,7 +122,7 @@ const ChoiceExerciseScreen = ({
       />
       <ButtonContainer>
         {selectedAnswer !== null && (
-          <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
+          <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}

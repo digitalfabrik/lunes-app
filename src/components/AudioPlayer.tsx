@@ -3,7 +3,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 export interface AudioPlayerProps {
   document: DocumentType
@@ -25,15 +25,20 @@ const VolumeIcon = styled.TouchableOpacity`
   background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
   justify-content: center;
   align-items: center;
-  shadowColor: ${props => props.theme.colors.shadow};
+  shadow-color: ${props => props.theme.colors.shadow};
   elevation: 8;
-  shadowRadius: 5px;
-  shadowOffset: { width: 1, height: 1 };
-  shadowOpacity: 0.5;
+  shadow-radius: 5px;
+  shadow-offset: 1px 1px;
+  shadow-opacity: 0.5;
 `
 
-const VolumeUpIcon = styled(VolumeUp)<{disabled: boolean, isActive: boolean}>`
-  fill: ${props => props.disabled ? props.theme.colors.lunesBlackUltralight : props.isActive ? props.theme.colors.lunesRed : props.theme.colors.lunesRedDark};
+const VolumeUpIcon = styled(VolumeUp)<{ disabled: boolean; isActive: boolean }>`
+  color: ${props =>
+    props.disabled
+      ? props.theme.colors.lunesBlackUltralight
+      : props.isActive
+      ? props.theme.colors.lunesRed
+      : props.theme.colors.lunesRedDark};
 `
 
 function AudioPlayer(props: AudioPlayerProps): ReactElement {
@@ -41,6 +46,7 @@ function AudioPlayer(props: AudioPlayerProps): ReactElement {
   const [isInitialized, setIsInitialized] = useState(false)
   const [ttsError, setTtsError] = useState<TtsError | null>(null)
   const [isActive, setIsActive] = useState(false)
+  const theme = useTheme()
 
   React.useEffect(() => {
     if (ttsError?.code === 'no_engine') {
@@ -94,8 +100,12 @@ function AudioPlayer(props: AudioPlayerProps): ReactElement {
 
   return (
     <StyledView>
-      <VolumeIcon testID='volume-button' disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUpIcon disabled={disabled} isActive={isActive} />
+      <VolumeIcon
+        theme={theme}
+        testID='volume-button'
+        disabled={disabled}
+        onPress={() => handleSpeakerClick(document?.audio)}>
+        <VolumeUpIcon theme={theme} disabled={disabled} isActive={isActive} />
       </VolumeIcon>
     </StyledView>
   )

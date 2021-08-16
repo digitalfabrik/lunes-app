@@ -58,7 +58,7 @@ const Actions = ({
   tryLater
 }: IActionsProps): ReactElement => {
   return result ? (
-    <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
+    <Button onPress={getNextWord} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
         <Text style={[styles.lightLabel, styles.arrowLabel]}>
           {isFinished ? labels.exercises.showResults : labels.exercises.next}
@@ -68,13 +68,13 @@ const Actions = ({
     </Button>
   ) : (
     <>
-      <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
+      <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
         <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>
           {labels.exercises.write.checkInput}
         </Text>
       </Button>
 
-      <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
+      <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>
         <Text style={styles.darkLabel}>{labels.exercises.write.showSolution}</Text>
       </Button>
 

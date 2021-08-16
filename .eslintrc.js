@@ -4,7 +4,7 @@ module.exports = {
     project: `./tsconfig.json`
   },
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest'],
-  extends: ['standard-with-typescript', 'plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
+  extends: ['@react-native-community', 'standard-with-typescript', 'plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
   env: {
     es6: true,
     'jest/globals': true
@@ -32,6 +32,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'error',
 
     // TODO LUN-55: Use errors again for these typescript rules
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/no-floating-promises': 'warn',
     '@typescript-eslint/restrict-template-expressions': 'warn',

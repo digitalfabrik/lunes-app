@@ -105,11 +105,11 @@ const ConfirmationModal = ({
             <CloseIcon />
           </TouchableOpacity>
           <Text style={styles.message}>{labels.exercises.cancelModal.cancelAsk}</Text>
-          <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
+          <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
             <Text style={styles.lightLabel}>{labels.exercises.cancelModal.continue}</Text>
           </Button>
 
-          <Button onPress={goBack} theme={BUTTONS_THEME.light}>
+          <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
             <Text style={styles.darkLabel}>{labels.exercises.cancelModal.cancel}</Text>
           </Button>
         </View>
