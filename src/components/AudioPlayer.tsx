@@ -41,7 +41,7 @@ const VolumeUpIcon = styled(VolumeUp)<{ disabled: boolean; isActive: boolean }>`
       : props.theme.colors.lunesRedDark};
 `
 
-function AudioPlayer(props: AudioPlayerProps): ReactElement {
+const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const { document, disabled } = props
   const [isInitialized, setIsInitialized] = useState(false)
   const [ttsError, setTtsError] = useState<TtsError | null>(null)

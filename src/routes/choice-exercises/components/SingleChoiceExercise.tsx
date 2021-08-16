@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
-import { DocumentType } from '../../../constants/endpoints'
+import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
@@ -60,18 +60,15 @@ const ChoiceExerciseScreen = ({
 
   const count = documents.length
 
-  const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
-    article: ARTICLES[it.article],
-    word: it.alt_word
-  }))
-
   const onClickAnswer = (clickedAnswer: Answer): void => {
     setSelectedAnswer(clickedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, clickedAnswer))
+    const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
+      isAnswerEqual(it, clickedAnswer)
+    )
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)

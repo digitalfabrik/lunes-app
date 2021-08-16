@@ -87,7 +87,8 @@
     ],
     "moduleNameMapper": {
       ".+\\.(styl|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "\\.svg": "<rootDir>/src/__mocks__/svgrMock.js"
     },
     "preset": "react-native",
     "moduleFileExtensions": [

@@ -71,7 +71,7 @@ exports[`Components MenuItem renders correctly across screens 1`] = `
         </Text>
       </View>
     </View>
-    <[object Object]
+    <SvgrURL
       fill="#000e38"
       testID="arrow"
     />

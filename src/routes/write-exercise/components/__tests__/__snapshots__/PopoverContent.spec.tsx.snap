@@ -15,7 +15,7 @@ exports[`components PopoverContent renders correctly across screens 1`] = `
     }
   }
 >
-  <[object Object]
+  <SvgrURL
     height={30}
     width={30}
   />

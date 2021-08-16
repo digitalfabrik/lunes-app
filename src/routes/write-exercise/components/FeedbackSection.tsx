@@ -53,7 +53,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   return result !== '' || secondAttempt ? (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={2} ellipsizeMode='tail'>
+      <StyledText numberOfLines={2} ellipsizeMode='tail' testID={'feedback-write-exercise'}>
         {message}
       </StyledText>
     </Background>
