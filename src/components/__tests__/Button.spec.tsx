@@ -3,7 +3,6 @@ import { Text } from 'react-native'
 import Button from '../Button'
 import { shallow, ShallowWrapper } from 'enzyme'
 import { BUTTONS_THEME } from '../../constants/data'
-import theme from '../../constants/theme'
 import { COLORS } from '../../constants/theme/colors'
 import { mocked } from 'ts-jest/utils'
 import wrapWithTheme from '../../testing/wrapWithTheme'
@@ -31,8 +30,7 @@ describe('Components', () => {
       children: <Text>Button Children</Text>,
       onPress: () => {},
       disabled: false,
-      buttonTheme: BUTTONS_THEME.light,
-      theme
+      buttonTheme: BUTTONS_THEME.light
     }
 
     const renderButton = (overrideProps: Partial<ButtonPropsType> = {}): ShallowWrapper<ButtonPropsType> => {
