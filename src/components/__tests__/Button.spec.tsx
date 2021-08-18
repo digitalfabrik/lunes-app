@@ -1,12 +1,29 @@
 import React, { ComponentProps } from 'react'
-import Button, { IButtonProps } from '../Button'
-import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
+import { Text } from 'react-native'
+import Button from '../Button'
+import { shallow, ShallowWrapper } from 'enzyme'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
-import { Text } from 'react-native'
+import { COLORS } from '../../constants/theme/colors'
+import { mocked } from 'ts-jest/utils'
+import wrapWithTheme from '../../testing/wrapWithTheme'
 
 type ButtonPropsType = ComponentProps<typeof Button>
+
+const expectStylesToMatch = (component: ShallowWrapper<ButtonPropsType>, expectedStyles: Record<string, any>): void => {
+  expect(component.dive().dive().dive().prop<Record<string, any>>('style')[0]).toEqual(
+    expect.objectContaining(expectedStyles)
+  )
+}
+
+const expectStylesNotToMatch = (
+  component: ShallowWrapper<ButtonPropsType>,
+  expectedStyles: Record<string, any>
+): void => {
+  expect(component.dive().dive().dive().prop<Record<string, any>>('style')[0]).not.toEqual(
+    expect.objectContaining(expectedStyles)
+  )
+}
 
 describe('Components', () => {
   describe('Button', () => {
@@ -15,78 +32,62 @@ describe('Components', () => {
       onPress: () => {},
       disabled: false,
       buttonTheme: BUTTONS_THEME.light,
-      theme: theme
+      theme
     }
 
-    it('should render without issues', () => {
-      const component = shallow(<Button {...defaultButtonProps} />)
-      expect(toJson(component)).toMatchSnapshot()
-    })
+    const renderButton = (overrideProps: Partial<ButtonPropsType> = {}): ShallowWrapper<ButtonPropsType> => {
+      const buttonProps = {
+        ...defaultButtonProps,
+        ...overrideProps
+      }
+      return shallow(<Button {...buttonProps} />, {
+        wrappingComponent: wrapWithTheme
+      })
+    }
 
     it('should call onPress event', () => {
-      const buttonProps: ButtonPropsType = {
-        ...defaultButtonProps,
-        onPress: jest.fn(() => result)
-      }
-      const result = 'I was Pressed'
-
-      const component = shallow(<Button {...buttonProps} />)
-      expect(buttonProps.onPress).not.toHaveBeenCalled()
+      const onPress = jest.fn()
+      const component = renderButton({ onPress })
+      expect(onPress).not.toHaveBeenCalled()
       component.props().onPress()
-      expect((buttonProps.onPress as jest.Mock).mock.calls).toHaveLength(1)
-      expect(component.props().onPress()).toBe(result)
+      expect(mocked(onPress).mock.calls).toHaveLength(1)
     })
 
     it('should have disabled style when disabled is true', () => {
-      const buttonProps: ButtonPropsType = {
-        ...defaultButtonProps,
-        disabled: true
-      }
-      const style = [false]
-
-      const component = shallow(<Button {...buttonProps} />)
-      expect(component.props().style).toStrictEqual(style)
+      const component = renderButton({ disabled: true })
+      expectStylesToMatch(component, {
+        backgroundColor: COLORS.lunesBlackUltralight
+      })
     })
 
     it('should not have disabled style when disabled is false', () => {
-      const buttonProps: ButtonPropsType = {
-        ...defaultButtonProps
-      }
-      const style = [false]
-
-      const component = shallow(<Button {...buttonProps} />)
-      expect(component.props().style).toStrictEqual(style)
+      const component = renderButton()
+      expectStylesNotToMatch(component, {
+        backgroundColor: COLORS.lunesBlackUltralight
+      })
     })
 
     it('should have dark style when theme is dark', () => {
-      const buttonProps: ButtonPropsType = {
-        ...defaultButtonProps,
-        buttonTheme: BUTTONS_THEME.dark
-      }
-      const style = [false]
-
-      const component = shallow(<Button {...buttonProps} />)
-      expect(component.props().style).toStrictEqual(style)
+      const component = renderButton({ buttonTheme: BUTTONS_THEME.dark })
+      expectStylesToMatch(component, {
+        backgroundColor: COLORS.lunesBlack
+      })
     })
 
     it('should have light style when theme is light', () => {
-      const buttonProps: IButtonProps = {
-        ...defaultButtonProps,
-        buttonTheme: BUTTONS_THEME.light
-      }
-      const style = [false]
+      const component = renderButton({ buttonTheme: BUTTONS_THEME.light })
 
-      const component = shallow(<Button {...buttonProps} />)
-      expect(component.props().style).toStrictEqual(style)
+      expectStylesNotToMatch(component, {
+        backgroundColor: COLORS.lunesBlack
+      })
+      expectStylesToMatch(component, {
+        borderColor: COLORS.lunesBlack
+      })
     })
 
     it('should render children passed to it', () => {
-      const buttonProps: IButtonProps = {
-        ...defaultButtonProps
-      }
-
-      const component = shallow(<Button {...buttonProps} />)
-      expect(component.contains(buttonProps.children)).toBe(true)
+      const component = renderButton()
+      expect(component.contains(defaultButtonProps.children)).toBe(true)
     })
   })
 })
