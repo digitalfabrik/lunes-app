@@ -1,0 +1,21 @@
+when: << pipeline.parameters.run_prod_delivery >>
+jobs:
+  - check
+  - bump_version:
+      delivery: production
+  - build_android:
+      requires:
+        - check
+        - bump_version
+  #  - build_ios: # LUN-29
+  #      requires:
+  #        - check
+  #        - bump_version
+  - deliver_android:
+      production_delivery: true # TODO test in mid of august
+      requires:
+        - build_android
+#  - deliver_ios: # LUN-29
+#      production_delivery: true
+#      requires:
+#        - build_ios

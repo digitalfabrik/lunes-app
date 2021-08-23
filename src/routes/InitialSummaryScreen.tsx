@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
@@ -61,7 +61,7 @@ interface InitialSummaryScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
 }
 
-const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): JSX.Element => {
+const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): ReactElement => {
   const { extraParams } = route.params
   const { exercise, disciplineTitle, trainingSet } = extraParams
   const [results, setResults] = React.useState<DocumentResultType[]>([])

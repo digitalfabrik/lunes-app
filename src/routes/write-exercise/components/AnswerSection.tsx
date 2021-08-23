@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, StyleSheet, Pressable, Keyboard } from 'react-native'
+import React, { ReactElement, useState } from 'react'
+import { Keyboard, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/colors'
 import Popover from './Popover'
@@ -10,7 +10,7 @@ import PopoverContent from './PopoverContent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
 import AsyncStorage from '../../../services/AsyncStorage'
-import { ARTICLES, ExerciseKeys, SimpleResultType } from '../../../constants/data'
+import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import AudioPlayer from '../../../components/AudioPlayer'
 
@@ -63,7 +63,7 @@ const AnswerSection = ({
   trainingSet,
   disciplineTitle,
   documents
-}: AnswerSectionPropsType): JSX.Element => {
+}: AnswerSectionPropsType): ReactElement => {
   const touchable: any = React.createRef()
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
   const [input, setInput] = useState('')
@@ -74,11 +74,11 @@ const AnswerSection = ({
   const totalNumbers = documents.length
   const [isFocused, setIsFocused] = useState(false)
 
-  function capitalizeFirstLetter(string: string) {
+  function capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
-  const checkEntry = (): void => {
+  const checkEntry = async (): Promise<void> => {
     setSubmission(input)
     const splitInput = input.trim().split(' ')
 
@@ -92,13 +92,13 @@ const AnswerSection = ({
 
     if (!validateForSimilar(article, word)) {
       setResult('incorrect')
-      storeResult('incorrect')
+      await storeResult('incorrect')
     } else if (validateForCorrect(article, word)) {
       setResult('correct')
-      storeResult('correct')
+      await storeResult('correct')
     } else if (secondAttempt) {
       setResult('similar')
-      storeResult('similar')
+      await storeResult('similar')
     } else {
       setInput('')
       setSecondAttempt(true)
@@ -111,7 +111,7 @@ const AnswerSection = ({
     const exactAnswer = inputArticle === document?.article.value && inputWord === document?.word
 
     const altAnswer = document?.alternatives?.some(
-      ({ article, alt_word: altWord }) => inputArticle === ARTICLES[article].value && inputWord === altWord
+      ({ article, word }) => inputArticle === article.value && inputWord === word
     )
     return exactAnswer || altAnswer
   }
@@ -123,22 +123,21 @@ const AnswerSection = ({
     const origCheck = stringSimilarity.compareTwoStrings(inputWord, document.word) > almostCorrectThreshold
 
     const altCheck = document.alternatives.some(
-      ({ article, alt_word: altWord }) =>
-        inputArticle === ARTICLES[article].value &&
-        stringSimilarity.compareTwoStrings(inputWord, altWord) > almostCorrectThreshold
+      ({ article, word }) =>
+        inputArticle === article.value && stringSimilarity.compareTwoStrings(inputWord, word) > almostCorrectThreshold
     )
     return origCheck || altCheck
   }
 
-  const giveUp = (): void => {
+  const giveUp = async (): Promise<void> => {
     setResult('giveUp')
-    storeResult(secondAttempt ? 'similar' : 'incorrect')
+    await storeResult(secondAttempt ? 'similar' : 'incorrect')
   }
 
   const validateForCorrectWithoutArticle = (inputWord: string): boolean => {
     const exactAnswer = inputWord === document?.word
 
-    const altAnswer = document?.alternatives?.some(({ article, alt_word: altWord }) => inputWord === altWord)
+    const altAnswer = document?.alternatives?.some(({ word }) => inputWord === word)
     return exactAnswer || altAnswer
   }
 

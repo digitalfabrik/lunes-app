@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/colors'
 import { getArticleColor } from '../../../services/helpers'
@@ -72,7 +72,7 @@ export interface VocabularyListItemPropType {
   setIsModalVisible?: (document: DocumentType) => void
 }
 
-const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType) => {
+const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType): ReactElement => {
   const { article, word } = document
 
   return (

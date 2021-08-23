@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
@@ -51,7 +51,7 @@ interface ProfessionScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
+const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactElement => {
   const [professions, setProfessions] = useState<ProfessionType[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)

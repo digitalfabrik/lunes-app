@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -12,12 +12,12 @@ interface WordChoiceExerciseScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise'>
 }
 
-const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType) => {
+const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
   const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
-  if (documents === null) {
+  if (documents === null || loading) {
     return null
   }
 
@@ -55,16 +55,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   }
 
   return (
-    documents !== null &&
-    !loading && (
-      <SingleChoiceExercise
-        documents={documents}
-        documentToAnswers={documentToAnswers}
-        onExerciseFinished={onExerciseFinished}
-        navigation={navigation}
-        route={route}
-      />
-    )
+    <SingleChoiceExercise
+      documents={documents}
+      documentToAnswers={documentToAnswers}
+      onExerciseFinished={onExerciseFinished}
+      navigation={navigation}
+      route={route}
+    />
   )
 }
 
