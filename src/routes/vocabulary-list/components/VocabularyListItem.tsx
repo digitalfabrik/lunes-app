@@ -1,15 +1,10 @@
-import React, { useState } from 'react'
-import { Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/colors'
 import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
-import ImageCarousel from '../../../components/ImageCarousel'
-import styled from 'styled-components/native'
-import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
-import { CloseButton } from '../../../../assets/images'
-import labels from '../../../constants/labels.json'
 
 export const styles = StyleSheet.create({
   wrapper: {

@@ -6,7 +6,7 @@ import SingleChoiceListItem from '../../choice-exercises/components/SingleChoice
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
-import { Modal } from 'react-native'
+import { Modal, SafeAreaView, StatusBar, View } from 'react-native'
 import { DocumentsType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 import { COLORS } from '../../../constants/colors'
@@ -68,48 +68,51 @@ const VocabularyListModal = ({
     }
   }
 
+  console.log(StatusBar.currentHeight)
   return (
-    <Modal animationType='slide' transparent={true} visible={isModalVisible}>
-      <ModalContainer>
-        <ModalHeader>
-          <CloseButton onPress={() => setIsModalVisible(false)} />
-        </ModalHeader>
-        <ImageCarouselContainer>
-          <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
-        </ImageCarouselContainer>
-        <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
-        <ItemContainer>
-          <SingleChoiceListItem
-            answer={{
-              word: documents[selectedDocumentIndex].word,
-              article: documents[selectedDocumentIndex].article
-            }}
-            onClick={() => {}}
-            correct={false}
-            selected={false}
-            anyAnswerSelected={false}
-            delayPassed={false}
-            disabled={true}
-          />
-        </ItemContainer>
-        <ButtonContainer>
-          {documents.length > selectedDocumentIndex + 1 ? (
-            <Button onPress={goToNextWord} theme={BUTTONS_THEME.dark}>
-              <>
-                <ButtonText>{labels.exercises.next}</ButtonText>
-                <WhiteNextArrow />
-              </>
-            </Button>
-          ) : (
-            <Button onPress={() => setIsModalVisible(false)} theme={BUTTONS_THEME.dark}>
-              <>
-                <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
-              </>
-            </Button>
-          )}
-        </ButtonContainer>
-      </ModalContainer>
-    </Modal>
+    <View style={{ paddingTop: StatusBar.currentHeight }}>
+      <Modal animationType='slide' transparent={true} visible={isModalVisible}>
+        <ModalContainer>
+          <ModalHeader>
+            <CloseButton onPress={() => setIsModalVisible(false)} />
+          </ModalHeader>
+          <ImageCarouselContainer>
+            <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
+          </ImageCarouselContainer>
+          <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
+          <ItemContainer>
+            <SingleChoiceListItem
+              answer={{
+                word: documents[selectedDocumentIndex].word,
+                article: documents[selectedDocumentIndex].article
+              }}
+              onClick={() => {}}
+              correct={false}
+              selected={false}
+              anyAnswerSelected={false}
+              delayPassed={false}
+              disabled={true}
+            />
+          </ItemContainer>
+          <ButtonContainer>
+            {documents.length > selectedDocumentIndex + 1 ? (
+              <Button onPress={goToNextWord} theme={BUTTONS_THEME.dark}>
+                <>
+                  <ButtonText>{labels.exercises.next}</ButtonText>
+                  <WhiteNextArrow />
+                </>
+              </Button>
+            ) : (
+              <Button onPress={() => setIsModalVisible(false)} theme={BUTTONS_THEME.dark}>
+                <>
+                  <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
+                </>
+              </Button>
+            )}
+          </ButtonContainer>
+        </ModalContainer>
+      </Modal>
+    </View>
   )
 }
 
