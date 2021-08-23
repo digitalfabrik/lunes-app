@@ -68,7 +68,6 @@ const VocabularyListModal = ({
     }
   }
 
-  console.log(StatusBar.currentHeight)
   return (
     <View style={{ paddingTop: StatusBar.currentHeight }}>
       <Modal animationType='slide' transparent={true} visible={isModalVisible}>

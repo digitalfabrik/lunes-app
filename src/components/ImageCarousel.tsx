@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { ImagesType, ImageType } from '../constants/endpoints'
+import { ImagesType } from '../constants/endpoints'
 import { useWindowDimensions } from 'react-native'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
@@ -27,7 +27,9 @@ interface ImageCarouselPropsType {
 }
 
 interface ItemType {
-  item: ImageType
+  source: {
+    uri: string
+  }
 }
 
 interface ImageUrlType {
@@ -53,8 +55,8 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
     )
   }
 
-  const renderItem = ({ item }: ItemType): ReactElement => {
-    return <StyledImage source={{ uri: item.image }} accessibilityRole='image' />
+  const renderItem = ({ source }: ItemType): ReactElement => {
+    return <StyledImage source={source} accessibilityRole='image' />
   }
 
   return (
