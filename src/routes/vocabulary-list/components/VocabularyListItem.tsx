@@ -81,9 +81,9 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <View style={styles.wrapper}>
+    <Pressable style={styles.wrapper} onPress={setIsModalVisible ? () => setIsModalVisible(document) : () => {}}>
       <View style={styles.container}>
-        <Pressable style={styles.item} onPress={setIsModalVisible ? () => setIsModalVisible(document) : () => {}}>
+        <View style={styles.item}>
           {document.document_image.length > 0 && (
             <Image
               source={{
@@ -102,12 +102,12 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
               {word}
             </Text>
           </View>
-        </Pressable>
+        </View>
         <View style={styles.speaker}>
           <AudioPlayer document={document} disabled={false} />
         </View>
       </View>
-    </View>
+    </Pressable>
   )
 }
 

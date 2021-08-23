@@ -16,11 +16,6 @@ describe('VocabularyListItem', () => {
     alternatives: []
   }
 
-  it('renders correctly across screens', () => {
-    const component = shallow(<VocabularyListItem document={document} />)
-    expect(toJson(component)).toMatchSnapshot()
-  })
-
   it('should display image passed to it', () => {
     const component = shallow(<VocabularyListItem document={document} />)
     expect(component.find('Image').prop('source')).toHaveProperty('uri', document.document_image[0].image)

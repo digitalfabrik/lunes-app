@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { CloseButton, Home, HomeButtonPressed, WhiteNextArrow } from '../../../assets/images'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Home, HomeButtonPressed } from '../../../assets/images'
 import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
@@ -12,12 +12,7 @@ import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import ImageCarousel from '../../components/ImageCarousel'
-import AudioPlayer from '../../components/AudioPlayer'
-import SingleChoiceListItem from '../choice-exercises/components/SingleChoiceListItem'
-import styled from 'styled-components/native'
-import Button from '../../components/Button'
-import { BUTTONS_THEME } from '../../constants/data'
+import VocabularyListModal from './components/VocabularyListModal'
 
 export const styles = StyleSheet.create({
   root: {
@@ -44,44 +39,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'SourceSansPro-Regular'
   }
 })
-
-const ModalContainer = styled.View`
-  background-color: ${COLORS.lunesWhite};
-  height: 100%;
-  width: 100%;
-`
-
-const ModalHeader = styled.View`
-  display: flex;
-  align-items: flex-end;
-  padding: 10px;
-  border-bottom-color: ${COLORS.lunesBlackUltralight};
-  border-bottom-width: 1px;
-`
-
-const ImageCarouselContainer = styled.View`
-  padding-top: 15px;
-  height: 50%;
-`
-
-const ItemContainer = styled.View`
-  padding: 5%;
-  padding-bottom: 0%;
-  height: 45%;
-`
-
-const ButtonContainer = styled.View`
-  display: flex;
-  align-items: center;
-  margin-top: -40%;
-`
-
-const ButtonText = styled.Text`
-  color: ${COLORS.lunesWhite};
-  font-weight: 600;
-  margin-left: 10;
-  text-transform: uppercase;
-`
 
 interface VocabularyListScreenPropsType {
   route: RouteProp<RoutesParamsType, 'VocabularyList'>
@@ -131,58 +88,18 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     />
   )
 
-  const goToNextWord = () => {
-    if (documents && selectedDocumentIndex + 1 < documents.length) {
-      setSelectedDocumentIndex(selectedDocumentIndex + 1)
-    }
-  }
-
   return (
     <View style={styles.root}>
       {!documents || !documents[selectedDocumentIndex] ? (
         <></>
       ) : (
-        <Modal animationType='slide' transparent={true} visible={isModalVisible}>
-          <ModalContainer>
-            <ModalHeader>
-              <CloseButton onPress={() => setIsModalVisible(false)} />
-            </ModalHeader>
-            <ImageCarouselContainer>
-              <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
-            </ImageCarouselContainer>
-            <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
-            <ItemContainer>
-              <SingleChoiceListItem
-                answer={{
-                  word: documents[selectedDocumentIndex].word,
-                  article: documents[selectedDocumentIndex].article
-                }}
-                onClick={() => {}}
-                correct={false}
-                selected={false}
-                anyAnswerSelected={false}
-                delayPassed={false}
-                disabled={true}
-              />
-            </ItemContainer>
-            <ButtonContainer>
-              {documents.length > selectedDocumentIndex + 1 ? (
-                <Button onPress={goToNextWord} theme={BUTTONS_THEME.dark}>
-                  <>
-                    <ButtonText>{labels.exercises.next}</ButtonText>
-                    <WhiteNextArrow />
-                  </>
-                </Button>
-              ) : (
-                <Button onPress={() => setIsModalVisible(false)} theme={BUTTONS_THEME.dark}>
-                  <>
-                    <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
-                  </>
-                </Button>
-              )}
-            </ButtonContainer>
-          </ModalContainer>
-        </Modal>
+        <VocabularyListModal
+          documents={documents}
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          selectedDocumentIndex={selectedDocumentIndex}
+          setSelectedDocumentIndex={setSelectedDocumentIndex}
+        />
       )}
 
       <Loading isLoading={loading}>
