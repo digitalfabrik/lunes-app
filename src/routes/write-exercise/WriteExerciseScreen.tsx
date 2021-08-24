@@ -50,6 +50,10 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
   const documents = newDocuments ?? retryData?.data ?? response.data
 
+  useEffect(()=>{
+    console.log("helloe", route)
+  },[])
+
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
