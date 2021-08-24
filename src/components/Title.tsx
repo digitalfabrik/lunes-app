@@ -13,6 +13,6 @@ export interface ITitleProps {
   children: ReactElement
 }
 
-const Title = ({ children }: ITitleProps) => <View style={styles.title}>{children}</View>
+const Title = ({ children }: ITitleProps): ReactElement => <View style={styles.title}>{children}</View>
 
 export default Title

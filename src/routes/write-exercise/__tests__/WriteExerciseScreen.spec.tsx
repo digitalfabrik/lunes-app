@@ -46,16 +46,16 @@ describe('WriteExerciseScreen', () => {
             }
         }
         it('allows to skip an exercise and try it out later (except for last exercise)', () => {
-            const {queryByRole, queryByText, queryByTestId, getByTestId} = render(<WriteExerciseScreen route={route} navigation={navigation}/>)
+           // const {queryByRole, queryByText, queryByTestId, getByTestId} = render(<WriteExerciseScreen route={route} navigation={navigation}/>)
 
-            /*    mockUseLoadFromEndpointWitData(testDocuments)
+                mockUseLoadFromEndpointWitData(testDocuments)
                 const {queryByRole, queryByText, queryByTestId, getByTestId} = render(<WriteExerciseScreen route={route} navigation={navigation}/>)
                 let tryLaterButton = getByTestId("try-later")
                 let i1 = queryByRole("image")
                 fireEvent.press(tryLaterButton)
                 expect(i1).not.toEqual(queryByRole("image"))
 
-             */
+
             });
 
         it("does not allow to skip last exercise", ()=>{

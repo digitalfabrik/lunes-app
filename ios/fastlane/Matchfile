@@ -1,0 +1,4 @@
+git_url("git@github.com:digitalfabrik/lunes-credentials.git")
+storage_mode("git")
+
+username("delivery@lunes.app")
