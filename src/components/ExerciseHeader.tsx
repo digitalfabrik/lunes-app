@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Modal from './Modal'
+import ConfirmationModal from './Modal'
 import { BackHandler, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -83,7 +83,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
         accessibilityTraits
       />
 
-      <Modal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
+      <ConfirmationModal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
     </>
   )
 }

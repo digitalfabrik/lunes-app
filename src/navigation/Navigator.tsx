@@ -53,8 +53,7 @@ const Navigator = (): JSX.Element => {
   const defaultOptions = (title: string, Icon: any, navigation: any, screen?: string): {} => {
     return {
       headerLeft: () => (
-        <TouchableOpacity
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        <TouchableOpacity onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}
@@ -75,14 +74,14 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overview, BackButton, navigation, 'Profession')
+            defaultOptions(labels.general.header.overview, BackButton, navigation)
           }
           name='ProfessionSubcategory'
           component={ProfessionSubcategoryScreen}
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation, 'ProfessionSubcategory')
+            defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation)
           }
           name='Exercises'
           component={ExercisesScreen}
