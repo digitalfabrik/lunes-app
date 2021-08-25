@@ -62,8 +62,6 @@ const VocabularyListModal = ({
   selectedDocumentIndex,
   setSelectedDocumentIndex
 }: VocabularyListModalPropsType) => {
-
-
   const goToNextWord = () => {
     if (documents && selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
@@ -71,8 +69,8 @@ const VocabularyListModal = ({
   }
 
   return (
-      <Modal animationType='slide' transparent={true} visible={isModalVisible}>
-            <SafeAreaView>
+    <Modal animationType='slide' transparent={true} visible={isModalVisible}>
+      <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
             <CloseButton onPress={() => setIsModalVisible(false)} />
@@ -112,8 +110,8 @@ const VocabularyListModal = ({
             )}
           </ButtonContainer>
         </ModalContainer>
-        </SafeAreaView>
-      </Modal>
+      </SafeAreaView>
+    </Modal>
   )
 }
 
