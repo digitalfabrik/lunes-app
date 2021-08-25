@@ -6,7 +6,7 @@ import SingleChoiceListItem from '../../choice-exercises/components/SingleChoice
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
-import { Modal, SafeAreaView, StatusBar, View } from 'react-native'
+import { Modal, SafeAreaView } from 'react-native'
 import { DocumentsType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 import { COLORS } from '../../../constants/colors'
@@ -62,6 +62,8 @@ const VocabularyListModal = ({
   selectedDocumentIndex,
   setSelectedDocumentIndex
 }: VocabularyListModalPropsType) => {
+
+
   const goToNextWord = () => {
     if (documents && selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
@@ -69,8 +71,8 @@ const VocabularyListModal = ({
   }
 
   return (
-    <View style={{ paddingTop: StatusBar.currentHeight }}>
       <Modal animationType='slide' transparent={true} visible={isModalVisible}>
+            <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
             <CloseButton onPress={() => setIsModalVisible(false)} />
@@ -110,8 +112,8 @@ const VocabularyListModal = ({
             )}
           </ButtonContainer>
         </ModalContainer>
+        </SafeAreaView>
       </Modal>
-    </View>
   )
 }
 
