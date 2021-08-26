@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
 import { CloseIcon } from '../../assets/images'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'

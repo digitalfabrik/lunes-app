@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { COLORS } from '../constants/colors'
 import styled from 'styled-components/native'
 

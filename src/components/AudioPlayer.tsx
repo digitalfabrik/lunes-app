@@ -6,11 +6,6 @@ import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
 
-export interface AudioPlayerProps {
-  document: DocumentType
-  disabled: boolean
-}
-
 const StyledView = styled.View`
   align-items: center;
   margin-bottom: 20px;
@@ -32,6 +27,11 @@ const VolumeIcon = styled.TouchableOpacity`
   shadowOffset: { width: 1, height: 1 };
   shadowOpacity: 0.5;
 `
+
+export interface AudioPlayerProps {
+  document: DocumentType
+  disabled: boolean
+}
 
 const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const { document, disabled } = props

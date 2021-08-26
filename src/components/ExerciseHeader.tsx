@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from './Modal'
-import { BackHandler, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { BackHandler } from 'react-native'
 import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/colors'
