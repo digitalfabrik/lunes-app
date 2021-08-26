@@ -3,7 +3,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 export interface AudioPlayerProps {
   document: DocumentType
@@ -46,7 +46,6 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const [isInitialized, setIsInitialized] = useState(false)
   const [ttsError, setTtsError] = useState<TtsError | null>(null)
   const [isActive, setIsActive] = useState(false)
-  const theme = useTheme()
 
   React.useEffect(() => {
     if (ttsError?.code === 'no_engine') {
@@ -100,12 +99,8 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon
-        theme={theme}
-        testID='volume-button'
-        disabled={disabled}
-        onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUpIcon theme={theme} disabled={disabled} isActive={isActive} />
+      <VolumeIcon disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
+        <VolumeUpIcon disabled={disabled} isActive={isActive} />
       </VolumeIcon>
     </StyledView>
   )

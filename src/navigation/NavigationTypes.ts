@@ -1,7 +1,7 @@
+import { ComponentType } from 'react'
 import { DocumentsType, DocumentType } from '../constants/endpoints'
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 import { SvgProps } from 'react-native-svg'
-import { ComponentType } from 'enzyme'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
