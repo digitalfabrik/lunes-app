@@ -10,61 +10,64 @@ import labels from '../constants/labels.json'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  overlay: {
-    marginTop: 0,
-    backgroundColor: COLORS.lunesOverlay
-  },
-  modal: {
-    backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: wp('85%'),
-    borderRadius: 4,
-    position: 'relative',
-    paddingVertical: 31
-  },
-  closeIcon: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 24,
-    height: 24
-  },
-  message: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    width: wp('60%'),
-    marginBottom: 31,
-    paddingTop: 31
-  },
-  lightLabel: {
-    color: COLORS.lunesWhite,
-    fontSize: wp('4%'),
-    fontWeight: '600',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    fontFamily: 'SourceSansPro-SemiBold',
-    letterSpacing: 0.4
-  },
-  darkLabel: {
-    color: COLORS.lunesBlack,
-    fontSize: wp('4%'),
-    fontWeight: '600',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    fontFamily: 'SourceSansPro-SemiBold',
-    letterSpacing: 0.4
-  }
-})
+const ModalContainer = styled.Modal`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`;
+const Container = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    background-color: ${COLORS.lunesOverlay};
+`;
+const ModalStyle = styled.View`
+    background-color: ${COLORS.white};
+    align-items: center;
+    justify-content: center;
+    width: ${wp('85%')};
+    border-radius: 4;
+    position: relative;
+    padding-top: 31;
+    padding-bottom: 31;
+`;
+const CloseIconStyle = styled.TouchableOpacity`
+    position: absolute;
+    top: 8;
+    right: 8;
+    width: 24;
+    height: 24;
+`;
+const Message = styled.Text`
+    text-align: center;
+    font-size: ${wp('5%')};
+    color: ${COLORS.lunesGreyDark};
+    font-family: 'SourceSansPro-SemiBold';
+    width: ${wp('60%')};
+    margin-bottom: 31;
+    padding-top: 31;
+`;
+const LightLabel = styled.Text`
+    color: ${COLORS.lunesWhite};
+    font-size: ${wp('4%')};
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'SourceSansPro-SemiBold';
+    letter-spacing: 0.4;
+`;
+const DarkLabel = styled.Text`
+    color: ${COLORS.lunesBlack};
+    font-size: ${wp('4%')};
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'SourceSansPro-SemiBold';
+    letter-spacing: 0.4;
+`;
 
 export interface ConfirmationModalPropsType {
   visible: boolean
@@ -80,7 +83,6 @@ const ConfirmationModal = ({
   setIsModalVisible
 }: ConfirmationModalPropsType): JSX.Element => {
   const closeModal = (): void => setIsModalVisible(false)
-
   const goBack = (): void => {
     setIsModalVisible(false)
     AsyncStorage.clearSession().catch(e => console.error(e))
@@ -96,26 +98,23 @@ const ConfirmationModal = ({
     }
     navigation.navigate('Exercises', extraParams)
   }
-
   return (
-    <Modal testID='modal' visible={visible} transparent animationType='fade' style={styles.container}>
-      <View style={[styles.container, styles.overlay]}>
-        <View style={styles.modal}>
-          <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
+    <ModalContainer testID='modal' visible={visible} transparent animationType='fade' >
+      <Container>
+        <ModalStyle>
+          <CloseIconStyle onPress={closeModal}>
             <CloseIcon />
-          </TouchableOpacity>
-          <Text style={styles.message}>{labels.exercises.cancelModal.cancelAsk}</Text>
+          </CloseIconStyle>
+          <Message>{labels.exercises.cancelModal.cancelAsk}</Message>
           <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
-            <Text style={styles.lightLabel}>{labels.exercises.cancelModal.continue}</Text>
+            <LightLabel>{labels.exercises.cancelModal.continue}</LightLabel>
           </Button>
-
           <Button onPress={goBack} theme={BUTTONS_THEME.light}>
-            <Text style={styles.darkLabel}>{labels.exercises.cancelModal.cancel}</Text>
+            <DarkLabel>{labels.exercises.cancelModal.cancel}</DarkLabel>
           </Button>
-        </View>
-      </View>
-    </Modal>
+        </ModalStyle>
+      </Container>
+    </ModalContainer>
   )
 }
-
 export default ConfirmationModal
