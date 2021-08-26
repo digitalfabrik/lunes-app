@@ -4,7 +4,13 @@ module.exports = {
     project: `./tsconfig.json`
   },
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest'],
-  extends: ['@react-native-community', 'standard-with-typescript', 'plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
+  extends: [
+    '@react-native-community',
+    'standard-with-typescript',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'prettier'
+  ],
   env: {
     es6: true,
     'jest/globals': true
