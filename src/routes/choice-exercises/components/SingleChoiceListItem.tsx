@@ -56,8 +56,9 @@ const StyledContainer = styled.TouchableOpacity`
       return 'elevation: 0; shadowOpacity: 0;'
     }
   }};
+  
   shadowRadius: 5px;
-  shadowOffset: { width: 5, height: 5 };
+  shadowOffset: {width: 5, height: 5};
 `
 
 const StyledArticleBox = styled.View`

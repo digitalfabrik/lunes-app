@@ -1,43 +1,43 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Text, TouchableOpacity} from 'react-native'
 import { Home, HomeButtonPressed } from '../../../assets/images'
 import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
 import Loading from '../../components/Loading'
 import { COLORS } from '../../constants/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    width: '100%',
-    paddingBottom: 0,
-    paddingTop: 32
-  },
-  screenTitle: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    marginBottom: 4
-  },
-  list: {
-    width: '100%'
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  }
-})
+const Root = styled.View` 
+  background-color: ${COLORS.lunesWhite};
+  height: 100%;
+  width: 100%;
+  padding-bottom: 0;
+  padding-top: ${hp('5.6%')};
+`
+const ScreenTitle = styled.Text` 
+  text-align: center;
+  font-size: ${wp('5%')};
+  color: ${COLORS.lunesGreyDark};
+  font-family: 'SourceSansPro-SemiBold';
+  margin-bottom: 4;
+`
+const StyledList = (styled.FlatList`
+  width: 100%;
+`as unknown) as typeof FlatList; 
+
+const Description = styled.Text` 
+  text-align: center;
+  font-size: ${wp('4%')};
+  color: ${COLORS.lunesGreyMedium};
+  font-family: 'SourceSansPro-Regular';
+`
 
 interface VocabularyListScreenPropsType {
   route: RouteProp<RoutesParamsType, 'VocabularyList'>
@@ -67,10 +67,10 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>{labels.exercises.vocabularyList.title}</Text>
-        <Text style={styles.description}>
+        <ScreenTitle>{labels.exercises.vocabularyList.title}</ScreenTitle>
+        <Description>
           {documents?.length} {documents?.length === 1 ? labels.home.word : labels.home.words}
-        </Text>
+        </Description>
       </>
     </Title>
   )
@@ -78,11 +78,10 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
   const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyListItem document={item} />
 
   return (
-    <View style={styles.root}>
+    <Root>
       <Loading isLoading={loading}>
-        <FlatList
+        <StyledList
           data={documents}
-          style={styles.list}
           ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={item => `${item.id}`}
@@ -90,7 +89,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
         />
       </Loading>
       {error && <Text>{error.message}</Text>}
-    </View>
+    </Root>
   )
 }
 

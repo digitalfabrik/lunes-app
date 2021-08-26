@@ -98,7 +98,7 @@ export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS
 export interface ResultType {
   key: SimpleResultType
   title: string
-  Icon: number
+  Icon: any
   order: number
 }
 

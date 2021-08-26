@@ -4,11 +4,11 @@ import styled from 'styled-components/native'
 import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
-  padding-top: 6%;
-  height: 42%;
-  margin-horizontal: 8%;
+padding-top: 6%;
+height: 42%;
+margin-left: 8%;
+margin-right: 8%;
 `
-
 export interface SingleChoicePropsType {
   onClick: (answer: Answer) => void
   answers: Answer[]

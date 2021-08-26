@@ -10,150 +10,132 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import styled from 'styled-components/native'
+
+const Root = styled.View`
+  background-color: ${COLORS.lunesWhite};
+  height: 100%;
+  align-items: center;
+  padding-left: ${wp('5%')};
+  padding-right: ${wp('5%')}; 
+  padding-top: ${hp('4.5%')};
+`
+const StyledList = (styled.FlatList`
+  flex-grow: 0;
+  width: ${wp('100%')};
+  margin-bottom: ${hp('6%')};
+`as unknown) as typeof FlatList;
+
+const ScreenDescription = styled.Text` 
+  font-size: ${wp('4%')};
+  color: ${COLORS.lunesGreyMedium};
+  font-family: 'SourceSansPro-Regular';
+  line-height: 30;
+  margin-top: 7;
+`
+const Description = styled.Text` 
+  font-size: ${wp('4%')};
+  font-weight: normal;
+  font-family: 'SourceSansPro-Regular'; 
+  color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesGreyDark}; 
+`
+const ScreenTitle = styled.Text`
+  text-align: center;
+  font-size: ${wp('5%')};
+  color: ${COLORS.lunesGreyDark};
+  font-family: 'SourceSansPro-SemiBold';
+  padding-bottom: ${hp('3%')};
+`
+const ScreenSubTitle = styled.Text`
+  text-align: center;
+  font-size: ${wp('4%')};
+  color: ${COLORS.lunesGreyDark};
+  font-family: 'SourceSansPro-SemiBold';
+`
+const Contained = styled.Pressable`
+  align-self: center;
+  padding-top: 17;
+  padding-bottom: 17;
+  padding-right: 8;
+  padding-left: 16;
+  margin-bottom: 8;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  justify-content: space-between;
+  border-width: 1;
+  border-style: solid;
+  border-radius: 2;
+  background-color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesBlack : COLORS.white}; 
+  border-color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesBlackUltralight};
+`
+const ItemTitle2 = styled.Text` 
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.11;
+  margin-bottom: 2;
+  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${(prop: StyledProps) => prop.selected ? wp('5%') : wp('4.5%')};
+  color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark};
+`
+const StyledLevel = styled.View`
+  margin-top: ${hp('1%')};
+`
+const LeftSide = styled.View` 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+`
+const StyledText = styled.View`
+  margin-left: 10;
+  display: flex;
+  flex-direction: column;
+`
+const LightLabel = styled.Text`
+  font-size: ${wp('3.5%')};
+  font-family: 'SourceSansPro-SemiBold';
+  color: ${COLORS.lunesWhite};
+  font-weight: 600;
+  margin-left: 10;
+  text-transform: uppercase;
+`
+const HeaderText = styled.Text` 
+  font-size: ${wp('3.5%')};
+  font-weight: 600;
+  font-family: 'SourceSansPro-SemiBold';
+  color: ${COLORS.lunesBlack};
+  text-transform: uppercase;
+  margin-right: 8;
+`
+const RightHeader = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+const StyledTitle = styled(Title)`
+  shadowOpacity: 0;
+  elevation: 0;
+  border-bottom-color: ${COLORS.lunesBlackUltralight};
+  border-bottom-width: 1;
+`
 
 export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 32
-  },
-  list: {
-    flexGrow: 0,
-    width: '100%',
-    marginBottom: hp('6%')
-  },
-  screenDescription: {
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular',
-    lineHeight: 30,
-    marginTop: 7
-  },
-  description: {
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  screenTitle: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    paddingBottom: hp('3%')
-  },
-  screenSubTitle: {
-    textAlign: 'center',
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  container: {
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.lunesBlackUltralight,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 2
-  },
-  clickedContainer: {
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 2
-  },
-  clickedItemTitle: {
-    textAlign: 'left',
-    fontSize: wp('5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  clickedItemDescription: {
-    fontSize: wp('4%'),
-    fontWeight: 'normal',
-    color: COLORS.white,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  title2: {
-    textAlign: 'left',
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  level: {
-    marginTop: hp('1%')
-  },
-  leftSide: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  text: {
-    marginLeft: 10,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  lightLabel: {
-    fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesWhite,
-    fontWeight: '600',
-    marginLeft: 10,
-    textTransform: 'uppercase'
-  },
-  headerText: {
-    fontSize: wp('3.5%'),
-    fontWeight: '600',
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesBlack,
-    textTransform: 'uppercase',
-    marginRight: 8
-  },
-  rightHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   header: {
     shadowOpacity: 0,
     elevation: 0,
     borderBottomColor: COLORS.lunesBlackUltralight,
     borderBottomWidth: 1
   },
-  footer: {
-    marginTop: 25,
-    alignItems: 'center'
-  }
 })
 
+interface StyledProps {
+  selected: boolean;
+}
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>
+  selected: boolean
 }
 
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
@@ -162,15 +144,14 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
-
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('Exercises', { extraParams })}>
-          <Text style={styles.headerText}>{labels.general.header.cancelExercise}</Text>
+        <RightHeader onPress={() => navigation.navigate('Exercises', { extraParams })}>
+          <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <FinishIcon />
-        </TouchableOpacity>
+        </RightHeader>
       ),
       headerStyle: styles.header
     })
@@ -184,14 +165,14 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }, [results, navigation, extraParams])
 
   const Header = (
-    <Title>
+    <StyledTitle>
       <>
-        <Text style={styles.screenTitle}>{labels.results.resultsOverview}</Text>
-        <Text style={styles.screenSubTitle}>{title}</Text>
-        <Text style={styles.screenDescription}>{description}</Text>
-        <Level style={styles.level} />
+        <ScreenTitle>{labels.results.resultsOverview}</ScreenTitle>
+        <ScreenSubTitle>{title}</ScreenSubTitle>
+        <ScreenDescription>{description}</ScreenDescription>
+        <StyledLevel as={Level} />
       </>
-    </Title>
+    </StyledTitle>
   )
 
   const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
@@ -215,21 +196,17 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     const selected = item.key === selectedKey
     const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark
     const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack
-    const itemStyle = selected ? styles.clickedContainer : styles.container
-    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
-    const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
-
     return (
-      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
-        <View style={styles.leftSide}>
+      <Contained selected={selected} onPress={() => handleNavigation(item)}>
+        <LeftSide>
           <item.Icon fill={iconColor} width={30} height={30} />
-          <View style={styles.text}>
-            <Text style={itemTitleStyle}>{item.title}</Text>
-            <Text style={descriptionStyle}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Text>
-          </View>
-        </View>
+          <StyledText>
+            <ItemTitle2 selected={selected}>{item.title}</ItemTitle2>
+            <Description selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+          </StyledText>
+        </LeftSide>
         <Arrow fill={arrowColor} />
-      </Pressable>
+      </Contained>
     )
   }
 
@@ -241,28 +218,28 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }
 
   const Footer = (
-    <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+    < Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
-        <Text style={styles.lightLabel}>{labels.results.retryExercise}</Text>
+        <LightLabel>{labels.results.retryExercise}</LightLabel>
       </>
     </Button>
   )
 
   return (
-    <View style={styles.root}>
+    <Root>
       <StatusBar barStyle='dark-content' />
-      <FlatList
+      <StyledList
         data={RESULTS}
-        style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
         keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
-        ListFooterComponentStyle={styles.footer}
+        ListFooterComponentStyle={{ alignItems: 'center',  marginTop: 25}}
+        contentContainerStyle={{alignItems: 'center'}}
       />
-    </View>
+    </Root>
   )
 }
 

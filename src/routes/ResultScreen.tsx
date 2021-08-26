@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/colors'
@@ -12,60 +12,60 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    width: '100%',
-    paddingBottom: 0,
-    paddingTop: 32
-  },
-  screenTitle: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    marginBottom: 4,
-    marginTop: 11
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  list: {
-    flexGrow: 0,
-    width: '100%',
-    marginBottom: hp('6%')
-  },
-  darkLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('3.5%'),
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600'
-  },
-  arrow: {
-    marginLeft: 5
-  },
-  footer: {
-    marginTop: 15,
-    alignItems: 'center'
-  },
-  lightLabel: {
-    fontSize: wp('3.2%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesWhite,
-    fontWeight: '600',
-    marginLeft: 10,
-    textTransform: 'uppercase'
-  }
-})
+const Root = styled.View`
+    background-color: ${COLORS.lunesWhite};
+    height: 100%;
+    width: 100%;
+    padding-bottom: ${hp('0%')};
+    padding-top: ${hp('4%')};
+`;
 
+const ScreenTitle = styled.Text`
+    text-align: center;
+    font-size: ${wp('5%')};
+    color: ${COLORS.lunesGreyDark};
+    font-family: 'SourceSansPro-SemiBold';
+    margin-bottom: ${hp('1%')};
+    margin-top: ${hp('2%')};
+`;
+
+const Description = styled.Text`
+    text-align: center;
+    font-size: ${wp('4%')};
+    color: ${COLORS.lunesGreyMedium};
+    font-family: 'SourceSansPro-Regular';
+`;
+
+const StyledList = (styled.FlatList`
+    flex-grow: 0;
+    width: 100%;
+    margin-bottom: ${hp('6%')};
+`as unknown) as typeof FlatList;
+
+const DarkLabel = styled.Text`
+    text-align: center;
+    color: ${COLORS.lunesBlack};
+    font-family: 'SourceSansPro-SemiBold';
+    font-size: ${wp('3.5%')};
+    letter-spacing: 0.4;
+    text-transform: uppercase;
+    font-weight: 600;
+`;
+
+const Arrow = styled(NextArrow)`
+    margin-left: 5;
+`;
+
+const LightLabel = styled.Text`
+    font-size: ${wp('3.2%')};
+    font-family: 'SourceSansPro-SemiBold';
+    color: ${COLORS.lunesWhite};
+    font-weight: 600;
+    margin-left: 10;
+    text-transform: uppercase;
+`;
 interface ResultScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultScreen'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
@@ -105,13 +105,13 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title>
       <>
         <Icon width={38} height={38} />
-        <Text style={styles.screenTitle}>
+        <ScreenTitle>
           {' '}
           {title} {labels.results.entries}
-        </Text>
-        <Text style={styles.description}>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
+        </ScreenTitle>
+        <Description>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
           labels.home.words
-        }`}</Text>
+        }`}</Description>
       </>
     </Title>
   )
@@ -129,9 +129,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
-          <Text style={styles.lightLabel}>
+          <LightLabel>
             {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
-          </Text>
+          </LightLabel>
         </>
       </Button>
     ) : null
@@ -148,30 +148,29 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           })
         }>
         <>
-          <Text style={styles.darkLabel}>
+          <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}
-          </Text>
-          <NextArrow style={styles.arrow} />
+          </DarkLabel>
+          <Arrow/>
         </>
       </Button>
     </>
   )
 
   return (
-    <View style={styles.root}>
+    <Root>
       <Loading isLoading={isLoading}>
-        <FlatList
+        <StyledList
           data={entries}
-          style={styles.list}
           ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
-          ListFooterComponentStyle={styles.footer}
+          ListFooterComponentStyle={{ alignItems: 'center',  marginTop: 15}}
         />
       </Loading>
-    </View>
+    </Root>
   )
 }
 

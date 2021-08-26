@@ -31,7 +31,7 @@ const VolumeIcon = styled.TouchableOpacity`
   shadowColor: ${COLORS.shadow};
   elevation: 8;
   shadowRadius: 5px;
-  shadowOffset: { width: 1, height: 1 };
+  shadowOffset: { width: 1, height: 1};
   shadowOpacity: 0.5;
 `
 

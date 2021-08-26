@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, TextInput, StyleSheet, Pressable, Keyboard } from 'react-native'
+import { TouchableOpacity, Pressable, Keyboard } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/colors'
 import Popover from './Popover'
@@ -13,35 +13,38 @@ import AsyncStorage from '../../../services/AsyncStorage'
 import { ARTICLES, ExerciseKeys, SimpleResultType } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import AudioPlayer from '../../../components/AudioPlayer'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 20,
-    alignItems: 'center',
-    position: 'relative',
-    width: '100%',
-    height: hp('85%')
-  },
-  textInputContainer: {
-    width: wp('80%'),
-    height: hp('8%'),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 2,
-    paddingHorizontal: 15,
-    marginBottom: hp('6%')
-  },
-  textInput: {
-    fontSize: wp('4.5%'),
-    fontWeight: 'normal',
-    letterSpacing: 0.11,
-    fontFamily: 'SourceSansPro-Regular',
-    color: COLORS.lunesBlack,
-    width: wp('60%')
-  }
-})
+const StyledContainer = styled.View`
+    padding-top: 20;
+    padding-bottom: 20;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: ${hp('85%')};
+`
+const TextInputContainer = styled.View`
+    width: ${wp('80%')};
+    height: ${hp('8%')};
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-width: 1;
+    border-radius: 2;
+    padding-right: 15;
+    padding-left: 15;
+    margin-top: ${hp('6%')};
+    margin-bottom: ${hp('6%')};
+    border-color: ${(prop: StyledProps) => prop.StyledBorder};
+`
+const StyledTextInput = styled.TextInput`
+  font-size: ${wp('4.5%')};
+  font-weight: normal;
+  letter-spacing: 0.11;
+  font-family: 'SourceSansPro-Regular';
+  color: ${COLORS.lunesBlack};
+  width: ${wp('60%')};
+`
 
 export interface AnswerSectionPropsType {
   tryLater: () => void
@@ -51,6 +54,10 @@ export interface AnswerSectionPropsType {
   finishExercise: Function
   trainingSet: string
   disciplineTitle: string
+}
+
+interface StyledProps {
+  StyledBorder: string;
 }
 
 const almostCorrectThreshold = 0.6
@@ -202,22 +209,17 @@ const AnswerSection = ({
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
       <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
-      <View style={styles.container}>
+      <StyledContainer>
         <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
           <PopoverContent />
         </Popover>
 
-        <View
+        <TextInputContainer
           testID='input-field'
           ref={touchable}
-          style={[
-            styles.textInputContainer,
-            {
-              borderColor: getBorderColor()
-            }
-          ]}>
-          <TextInput
-            style={styles.textInput}
+          StyledBorder={getBorderColor()}
+          >
+          <StyledTextInput
             placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
@@ -231,7 +233,7 @@ const AnswerSection = ({
               <CloseIcon />
             </TouchableOpacity>
           )}
-        </View>
+        </TextInputContainer>
 
         <Feedback secondAttempt={secondAttempt} result={result} document={document} input={submission} />
 
@@ -245,7 +247,7 @@ const AnswerSection = ({
           secondAttempt={secondAttempt}
           isFinished={currentDocumentNumber === totalNumbers - 1}
         />
-      </View>
+      </StyledContainer>
     </Pressable>
   )
 }
