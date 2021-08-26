@@ -37,8 +37,10 @@ interface ImageUrlType {
 }
 
 const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
-  const imagesUrls: ImageUrlType[] = []
-  images.forEach(it => imagesUrls.push({ url: it.image }))
+  const imagesUrls: ImageUrlType[] = images.map(image => ({
+    url: image.image
+  }))
+
   const { height: viewportHeight } = useWindowDimensions()
 
   const renderIndicator = (currentIndex?: number, allSize?: number) => {
@@ -55,8 +57,8 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
     )
   }
 
-  const renderItem = ({ source }: ItemType): ReactElement => {
-    return <StyledImage source={source} accessibilityRole='image' />
+  const renderItem = (item: ItemType): ReactElement => {
+    return <StyledImage source={item.source} accessibilityRole='image' />
   }
 
   return (

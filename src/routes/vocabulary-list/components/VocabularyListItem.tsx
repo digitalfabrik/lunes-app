@@ -69,14 +69,14 @@ export const styles = StyleSheet.create({
 
 export interface VocabularyListItemPropType {
   document: DocumentType
-  setIsModalVisible?: (document: DocumentType) => void
+  setIsModalVisible?: () => void
 }
 
 const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType): ReactElement => {
   const { article, word } = document
 
   return (
-    <Pressable style={styles.wrapper} onPress={setIsModalVisible ? () => setIsModalVisible(document) : () => {}}>
+    <Pressable style={styles.wrapper} onPress={setIsModalVisible ? () => setIsModalVisible() : () => {}}>
       <View style={styles.container}>
         <View style={styles.item}>
           {document.document_image.length > 0 && (

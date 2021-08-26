@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CloseButton, WhiteNextArrow } from '../../../../assets/images'
 import ImageCarousel from '../../../components/ImageCarousel'
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -53,6 +53,7 @@ interface VocabularyListModalPropsType {
   setIsModalVisible: (isModalVisible: boolean) => void
   selectedDocumentIndex: number
   setSelectedDocumentIndex: (selectedDocumentIndex: number) => void
+  goToNextWord: () => void
 }
 
 const VocabularyListModal = ({
@@ -60,14 +61,9 @@ const VocabularyListModal = ({
   isModalVisible,
   setIsModalVisible,
   selectedDocumentIndex,
-  setSelectedDocumentIndex
+  setSelectedDocumentIndex,
+  goToNextWord
 }: VocabularyListModalPropsType) => {
-  const goToNextWord = () => {
-    if (documents && selectedDocumentIndex + 1 < documents.length) {
-      setSelectedDocumentIndex(selectedDocumentIndex + 1)
-    }
-  }
-
   return (
     <Modal animationType='slide' transparent={true} visible={isModalVisible}>
       <SafeAreaView>
