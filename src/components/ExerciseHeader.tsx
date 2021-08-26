@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from './Modal'
 import { BackHandler, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { CloseButton } from '../../assets/images'
@@ -65,7 +65,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
   )
 
   useEffect(() => {
-    const showModal = () => {
+    const showModal = (): boolean => {
       setIsModalVisible(true)
       return true
     }

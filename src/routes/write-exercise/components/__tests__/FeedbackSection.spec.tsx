@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'react-native'
 import React from 'react'
 import FeedbackSection, { FeedbackPropsType } from '../FeedbackSection'
@@ -62,7 +63,9 @@ describe('Feedback section', () => {
         document_image: []
       }
     }
-    const message = `${labels.exercises.write.feedback.wrong} „${feedbackProps.document?.article.value} ${feedbackProps.document?.word}“`
+    const message = `${labels.exercises.write.feedback.wrong} „${feedbackProps.document!.article.value} ${
+      feedbackProps.document!.word
+    }“`
     const icon = <IncorrectFeedbackIcon width={28} height={28} />
 
     const component = shallow(<FeedbackSection {...feedbackProps} />)

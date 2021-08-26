@@ -280,15 +280,27 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - run:
-                command: bundle exec fastlane android upload_to_browserstack
+                command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH}.apk
+                name: Rename apk
+            - run:
+                command: mv ~/attached_workspace/app-release.ipa ~/attached_workspace/${CIRCLE_BRANCH}.ipa
+                name: Rename ipa
+            - run:
+                command: bundle exec fastlane android upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH}.apk
                 name: BrowserStack Upload android
                 working_directory: android
             - restore_ruby_cache:
                 directory: ios
             - run:
-                command: bundle exec fastlane ios upload_to_browserstack
+                command: bundle exec fastlane ios upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH}.ipa
                 name: BrowserStack Upload iOS
                 working_directory: ios
+            - run:
+                command: mv ~/attached_workspace/${CIRCLE_BRANCH}.apk ~/attached_workspace/app-release.apk
+                name: Undo rename apk
+            - run:
+                command: mv ~/attached_workspace/${CIRCLE_BRANCH}.ipa ~/attached_workspace/app-release.ipa
+                name: Undo raname ipa
     deliver_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -319,11 +331,32 @@ jobs:
                         command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
                         name: '[FL] TestFlight Upload'
                         working_directory: ios
+    promote_android:
+        docker:
+            - image: circleci/android:api-29-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        resource_class: small
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - restore_ruby_cache:
+                directory: android
+            - run:
+                command: bundle exec fastlane android playstore_promote
+                name: '[FL] Play Store Promotion'
+                working_directory: android
 parameters:
     run_commit:
         default: true
         type: boolean
     run_dev_delivery:
+        default: false
+        type: boolean
+    run_prod_delivery:
+        default: false
+        type: boolean
+    run_promote:
         default: false
         type: boolean
 version: 2.1
@@ -372,5 +405,23 @@ workflows:
                 requires:
                     - build_ios
         when: << pipeline.parameters.run_dev_delivery >>
+    prod_delivery:
+        jobs:
+            - check
+            - bump_version:
+                delivery: production
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
+            - deliver_android:
+                production_delivery: true
+                requires:
+                    - build_android
+        when: << pipeline.parameters.run_prod_delivery >>
+    promote:
+        jobs:
+            - promote_android
+        when: << pipeline.parameters.run_promote >>
     version: 2
 

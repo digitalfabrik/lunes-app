@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const StyledText = styled.Text`
   font-family: SourceSansPro-Regular;
-  font-size: ${wp('4.3%')};
+  font-size: ${wp('4.3%')}px;
   font-weight: normal;
   font-style: normal;
 `

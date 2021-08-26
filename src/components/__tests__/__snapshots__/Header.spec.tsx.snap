@@ -30,7 +30,7 @@ exports[`Components Header renders correctly across screens 1`] = `
         }
       }
     >
-      <[object Object] />
+      <SvgrURL />
     </View>
     <View
       style={
@@ -43,7 +43,7 @@ exports[`Components Header renders correctly across screens 1`] = `
         }
       }
     >
-      <[object Object] />
+      <SvgrURL />
     </View>
     <View
       style={
@@ -56,7 +56,7 @@ exports[`Components Header renders correctly across screens 1`] = `
         }
       }
     >
-      <[object Object] />
+      <SvgrURL />
     </View>
     <View
       style={
@@ -69,7 +69,7 @@ exports[`Components Header renders correctly across screens 1`] = `
         }
       }
     >
-      <[object Object] />
+      <SvgrURL />
     </View>
     <View
       style={
@@ -83,7 +83,7 @@ exports[`Components Header renders correctly across screens 1`] = `
         }
       }
     >
-      <[object Object] />
+      <SvgrURL />
     </View>
   </View>
 </View>

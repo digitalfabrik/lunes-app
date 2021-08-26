@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
-import { DocumentType } from '../../../constants/endpoints'
+import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
@@ -39,7 +39,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType): JSX.Element => {
+}: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -60,18 +60,15 @@ const ChoiceExerciseScreen = ({
 
   const count = documents.length
 
-  const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
-    article: ARTICLES[it.article],
-    word: it.alt_word
-  }))
-
-  const onClickAnswer = (selectedAnswer: Answer) => {
+  const onClickAnswer = (selectedAnswer: Answer): void => {
     setSelectedAnswer(selectedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
+    const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
+      isAnswerEqual(it, selectedAnswer)
+    )
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(selectedAnswer)
@@ -86,7 +83,7 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const onFinishWord = () => {
+  const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
       setCurrentWord(0)

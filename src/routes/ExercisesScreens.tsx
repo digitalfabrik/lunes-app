@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, LogBox, TouchableOpacity, FlatList } from 'react-native'
+import { View,LogBox, TouchableOpacity, FlatList} from 'react-native'
 import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'

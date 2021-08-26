@@ -17,8 +17,8 @@ export interface ProfessionSubcategoryType {
 }
 
 export interface AlternativeWordType {
-  alt_word: string
-  article: number
+  word: string
+  article: Article
 }
 
 export interface ImageType {

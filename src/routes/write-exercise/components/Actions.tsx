@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
@@ -53,7 +53,15 @@ interface StyledProps {
   styledInput?: string;
 }
 
-const Actions = ({ result, giveUp, checkEntry, getNextWord, input, isFinished, tryLater }: IActionsProps) => {
+const Actions = ({
+  result,
+  giveUp,
+  checkEntry,
+  getNextWord,
+  input,
+  isFinished,
+  tryLater
+}: IActionsProps): ReactElement => {
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
