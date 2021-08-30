@@ -1,5 +1,7 @@
-import useLoadFromEndpoint from "../hooks/useLoadFromEndpoint";
-import {mocked} from "ts-jest/utils";
+import useLoadFromEndpoint from '../hooks/useLoadFromEndpoint'
+import { mocked } from 'ts-jest/utils'
+
+jest.mock('../hooks/useLoadFromEndpoint')
 
 const mockData = (data: unknown): typeof useLoadFromEndpoint => {
     return (() => ({
