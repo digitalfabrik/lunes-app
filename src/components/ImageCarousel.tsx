@@ -6,20 +6,19 @@ import styled from 'styled-components/native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { COLORS } from '../constants/colors'
 
-const ImageView = styled.View<{ viewportHeight: number }>`
-  height: ${props => 0.4 * props.viewportHeight}px;
+const ImageView = styled.View`
+  height: 35%;
 `
 
 const StyledImage = styled.Image`
   height: 100%;
 `
 
-const PaginationView = styled.View<{ viewportHeight: number }>`
+const PaginationView = styled.View`
   position: absolute;
   left: 0;
   right: 0;
-  top: ${props => props.viewportHeight * -0.01}px;
-  background-color: transparent;
+  top: 10px;
 `
 
 interface ImageCarouselPropsType {
@@ -47,7 +46,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
     return !currentIndex || !allSize ? (
       <></>
     ) : (
-      <PaginationView viewportHeight={viewportHeight}>
+      <PaginationView>
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}
@@ -62,7 +61,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
   }
 
   return (
-    <ImageView viewportHeight={viewportHeight}>
+    <ImageView>
       <ImageViewer
         key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}

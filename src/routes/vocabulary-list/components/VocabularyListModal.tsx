@@ -23,10 +23,7 @@ const ModalHeader = styled.View`
   padding: 10px;
   border-bottom-color: ${COLORS.lunesBlackUltralight};
   border-bottom-width: 1px;
-`
-
-const ImageCarouselContainer = styled.View`
-  padding-top: 15px;
+  margin-bottom: 10px;
 `
 
 const ItemContainer = styled.View`
@@ -75,9 +72,7 @@ const VocabularyListModal = ({
           <ModalHeader>
             <CloseButton onPress={() => setIsModalVisible(false)} />
           </ModalHeader>
-          <ImageCarouselContainer>
-            <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
-          </ImageCarouselContainer>
+          <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
           <ItemContainer>
             <SingleChoiceListItem
