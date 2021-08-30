@@ -156,7 +156,7 @@ const AnswerSection = ({
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
       const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
-      exercise[disciplineTitle] = exercise[disciplineTitle] ?? {} //TODO adjust
+      exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
       exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
 
       exercise[disciplineTitle][trainingSet][document.word] = {

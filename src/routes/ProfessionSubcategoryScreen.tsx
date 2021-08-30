@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
   }
 })
 
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']) // TODO why?
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 interface ProfessionSubcategoryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ProfessionSubcategory'>
@@ -77,7 +77,7 @@ interface ProfessionSubcategoryScreenPropsType {
 
 const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
-  const { module } = extraParams // TODO rename item1
+  const { module } = extraParams
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const { data: disciplines, error, loading } = useLoadDisciplines(module)
@@ -92,7 +92,6 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       </>
     </Title>
   )
-  // TODO adjust number of children in the header if empty stuff is filtered out or create ticket for it or talk to lukas about it
 
   const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
