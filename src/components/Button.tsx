@@ -43,7 +43,7 @@ export interface IButtonProps {
   testID?: string
 }
 
-const Button = ({ children, onPress, disabled, theme }: IButtonProps): ReactElement => {
+const Button = ({ children, onPress, disabled, theme, testID }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
 
   const buttonStyle = disabled
@@ -58,6 +58,7 @@ const Button = ({ children, onPress, disabled, theme }: IButtonProps): ReactElem
 
   return (
     <TouchableOpacity
+      testID={testID}
       style={[buttonStyle, isPressed && { backgroundColor: pressedButtonBackground }]}
       onPress={onPress}
       disabled={disabled}
