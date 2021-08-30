@@ -1,3 +1,5 @@
+import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
+
 import React from 'react'
 import { fireEvent, render } from '@testing-library/react-native'
 
@@ -5,7 +7,7 @@ import WriteExerciseScreen from '../WriteExerciseScreen'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
-import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
+
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 
 
