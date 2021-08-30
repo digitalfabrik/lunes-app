@@ -49,7 +49,7 @@ const StyledTitle = styled.Text`
   overflow: hidden;
   height: ${wp('5%')};
   text-align: center;
-  line-height: 18;
+
 `
 const Description = styled.Text` 
   font-size: ${wp('4%')};
