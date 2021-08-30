@@ -21,18 +21,15 @@
 		40B164F70E7D4FEE82BD9606 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BE88ACDF44242A79F381E35 /* SourceSansPro-Light.ttf */; };
 		48103CCAE64E4B54A8BD0C8C /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED45C262CF141B981FD2CB6 /* SourceSansPro-SemiBoldItalic.ttf */; };
 		5E0B7EAB596A4035A1549427 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B79239CD3DE946A0BE953DCC /* SourceSansPro-Regular.ttf */; };
-		6BDEB88E3BCF46A294045A63 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC9A36740305450E9E13F4D4 /* Roboto.ttf */; };
 		75799BA0DF94878B8118834F /* libPods-Lunes-LunesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42F6386771C637F027A40A /* libPods-Lunes-LunesTests.a */; };
 		87A466CFEE17407CAB2AC921 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */; };
 		8B2742D73CAE4F48896CED3E /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18CD2FA065EC4EFFB6F0212B /* SourceSansPro-ExtraLight.ttf */; };
-		90D09980B5F94EADBFF78911 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2278F345EAE14CE7B1CEED6D /* rubicon-icon-font.ttf */; };
 		961F0746F19745779C0FC013 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73CBB64724D84F818FE6A37A /* SourceSansPro-Black.ttf */; };
 		A0B43A5C4131185060982C0F /* libPods-Lunes-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2721D3D75EF455F92B9452BA /* libPods-Lunes-tvOSTests.a */; };
 		A2FD8237265506B300572C26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8236265506B300572C26 /* Images.xcassets */; };
 		A2FD8239265506C400572C26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8238265506C400572C26 /* LaunchScreen.storyboard */; };
 		B1C5BFD5DE9F4EF9A3A2ED30 /* SourceSansPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA2E84947F15410887178E3A /* SourceSansPro-BlackItalic.ttf */; };
 		B5FC35564B2D4B4AA46B58B8 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC7F38E52EE2434E87FD7AD1 /* SourceSansPro-LightItalic.ttf */; };
-		BE907DF6867740D3A04126B8 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9236C43035F84B7280C8147F /* Roboto_medium.ttf */; };
 		CABFFD7A6CCA89CDBAC48946 /* libPods-Lunes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A281F4D831FE70F48D7CEADC /* libPods-Lunes-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -427,9 +424,6 @@
 			files = (
 				A2FD8239265506C400572C26 /* LaunchScreen.storyboard in Resources */,
 				A2FD8237265506B300572C26 /* Images.xcassets in Resources */,
-				BE907DF6867740D3A04126B8 /* Roboto_medium.ttf in Resources */,
-				6BDEB88E3BCF46A294045A63 /* Roboto.ttf in Resources */,
-				90D09980B5F94EADBFF78911 /* rubicon-icon-font.ttf in Resources */,
 				961F0746F19745779C0FC013 /* SourceSansPro-Black.ttf in Resources */,
 				B1C5BFD5DE9F4EF9A3A2ED30 /* SourceSansPro-BlackItalic.ttf in Resources */,
 				33D4D410B3E64F4DB1368910 /* SourceSansPro-Bold.ttf in Resources */,
