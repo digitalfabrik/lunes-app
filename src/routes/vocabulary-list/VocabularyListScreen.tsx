@@ -78,12 +78,6 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     </Title>
   )
 
-  const goToNextWord = () => {
-    if (documents && selectedDocumentIndex + 1 < documents.length) {
-      setSelectedDocumentIndex(prevVal => prevVal + 1)
-    }
-  }
-
   const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (
     <VocabularyListItem
       document={item}
@@ -105,7 +99,6 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
           setIsModalVisible={setIsModalVisible}
           selectedDocumentIndex={selectedDocumentIndex}
           setSelectedDocumentIndex={setSelectedDocumentIndex}
-          goToNextWord={goToNextWord}
         />
       )}
 

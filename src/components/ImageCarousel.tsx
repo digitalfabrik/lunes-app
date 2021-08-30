@@ -36,14 +36,14 @@ interface ImageUrlType {
   url: string
 }
 
-const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
+const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
   const imagesUrls: ImageUrlType[] = images.map(image => ({
     url: image.image
   }))
 
   const { height: viewportHeight } = useWindowDimensions()
 
-  const renderIndicator = (currentIndex?: number, allSize?: number) => {
+  const renderIndicator = (currentIndex?: number, allSize?: number): JSX.Element => {
     return !currentIndex || !allSize ? (
       <></>
     ) : (
@@ -64,6 +64,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType) => {
   return (
     <ImageView viewportHeight={viewportHeight}>
       <ImageViewer
+        key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}
         renderImage={renderItem}
         renderIndicator={renderIndicator}
