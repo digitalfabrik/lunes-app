@@ -6,7 +6,7 @@ import ExercisesScreen from '../routes/ExercisesScreens'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParamsType } from './NavigationTypes'
-import { BackButton, CloseButton, BackArrowPressed } from '../../assets/images'
+import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import InitialSummaryScreen from '../routes/InitialSummaryScreen'
 import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
@@ -49,11 +49,13 @@ const Stack = createStackNavigator<RoutesParamsType>()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState(false)
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, screen?: string): {} => {
+  const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
     return {
       headerLeft: () => (
-        <TouchableOpacity onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        <TouchableOpacity
+          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}
@@ -62,6 +64,17 @@ const Navigator = (): JSX.Element => {
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
       ),
+      ...(showHomeButton && {
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Profession')}
+            onPressIn={() => setIsHomeButtonPressed(true)}
+            onPressOut={() => setIsHomeButtonPressed(false)}
+            activeOpacity={1}>
+            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
+          </TouchableOpacity>
+        )
+      }),
       headerTitle: ' ',
       headerStyle: styles.header,
       headerRightContainerStyle: styles.headerRight
@@ -73,36 +86,51 @@ const Navigator = (): JSX.Element => {
       <Stack.Navigator initialRouteName='Profession' screenOptions={TransitionPresets.SlideFromRightIOS}>
         <Stack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
         <Stack.Screen
-          options={({ navigation }) =>
-            defaultOptions(labels.general.header.overview, BackButton, navigation)
+          options={({ route, navigation }) =>
+            defaultOptions(
+              route.params.extraParams.parentTitle
+                ? route.params.extraParams.parentTitle
+                : labels.general.header.overview,
+              BackButton,
+              navigation,
+              !!route.params.extraParams.parentTitle
+            )
           }
           name='ProfessionSubcategory'
           component={ProfessionSubcategoryScreen}
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation)
+            defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, BackButton, navigation)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overviewExercises, BackButton, navigation, false)
+          }
           name='VocabularyList'
           component={VocabularyListScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+          }
           name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+          }
           name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation, false)
+          }
           name='WriteExercise'
           component={WriteExerciseScreen}
         />
@@ -118,7 +146,7 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.results.resultsOverview, BackButton, navigation, 'ResultsOverview')
+            defaultOptions(labels.results.resultsOverview, BackButton, navigation, false, 'ResultsOverview')
           }
           name='ResultScreen'
           component={ResultScreen}

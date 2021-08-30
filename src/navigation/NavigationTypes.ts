@@ -1,4 +1,4 @@
-import {DisciplineType, DocumentsType, DocumentType} from '../constants/endpoints'
+import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 
 export interface DocumentResultType extends DocumentType {
@@ -17,7 +17,8 @@ export type RoutesParamsType = {
   Profession: undefined
   ProfessionSubcategory: {
     extraParams: {
-      item1: DisciplineType
+      module: DisciplineType
+      parentTitle?: string
     }
   }
   Exercises: {
@@ -27,7 +28,6 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
-      item1: DisciplineType //TODO remove from extra params what is not needed
     }
   }
   VocabularyList: {

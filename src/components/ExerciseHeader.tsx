@@ -83,7 +83,12 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
         accessibilityTraits
       />
 
-      <ConfirmationModal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
+      <ConfirmationModal
+        visible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        navigation={navigation}
+        route={route}
+      />
     </>
   )
 }

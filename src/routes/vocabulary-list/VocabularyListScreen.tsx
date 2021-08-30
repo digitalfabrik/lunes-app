@@ -46,21 +46,6 @@ interface VocabularyListScreenPropsType {
 
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.popToTop()}
-          onPressIn={() => setIsHomeButtonPressed(true)}
-          onPressOut={() => setIsHomeButtonPressed(false)}
-          activeOpacity={1}>
-          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-        </TouchableOpacity>
-      )
-    })
-  }, [navigation, isHomeButtonPressed])
 
   const { data: documents, error, loading } = useLoadDocuments(trainingSetId)
 
