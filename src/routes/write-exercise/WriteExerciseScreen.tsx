@@ -47,17 +47,14 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
 
-  const tryLater = useCallback(
-    () => {
-      if (documents !== null) {
-        const currDocument = documents[currentDocumentNumber]
-        const newDocuments = documents.filter(d => d !== currDocument)
-        newDocuments.push(currDocument)
-        setNewDocuments(newDocuments)
-      }
-    },
-    [documents, currentDocumentNumber],
-  );
+  const tryLater = useCallback(() => {
+    if (documents !== null) {
+      const currDocument = documents[currentDocumentNumber]
+      const newDocuments = documents.filter(d => d !== currDocument)
+      newDocuments.push(currDocument)
+      setNewDocuments(newDocuments)
+    }
+  }, [documents, currentDocumentNumber])
 
   const finishExercise = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
