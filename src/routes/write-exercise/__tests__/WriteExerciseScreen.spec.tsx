@@ -9,6 +9,8 @@ import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
+import labels from '../../../constants/labels.json'
+import {ReactTestInstance} from "react-test-renderer";
 
 jest.mock('../../../components/AudioPlayer', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -53,14 +55,19 @@ describe('WriteExerciseScreen', () => {
       }
     }
   }
-  it('allows to skip an exercise and try it out later (except for last exercise)', () => {
+  it('allows to skip an exercise and try it out later (except for last exercise)', async () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByRole, getByTestId, debug } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
-    debug()
-    let tryLaterButton = getByTestId('try-later')
-    let i1 = queryByRole('image')
-    fireEvent.press(tryLaterButton)
-    // check if image changed, maybe compare uri from source
+      // @ts-expect-error
+      const getUri = (image: ReactTestInstance) => image._fiber.stateNode.props.source.uri
+
+    const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
+      const image = await getByRole('image')
+      expect(getUri(image)).toBe('Arbeitshose')
+      fireEvent.press(getByText(labels.exercises.write.tryLater))
+      expect(getUri(image)).toBe('Arbeitsschuhe')
+      fireEvent.press(getByText(labels.exercises.write.showSolution))
+      fireEvent.press(getByText(labels.exercises.next))
+      expect(getUri(image)).toBe('Arbeitshose')
   })
 
   it('does not allow to skip last exercise', () => {
