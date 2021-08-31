@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import AnswerSection from './components/AnswerSection'
@@ -12,7 +12,6 @@ import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import { DocumentType } from '../../constants/endpoints'
 import ImageCarousel from '../../components/ImageCarousel'
-
 
 export const styles = StyleSheet.create({
   root: {
@@ -42,21 +41,23 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   const response = useLoadDocuments(trainingSetId)
-    const documents = newDocuments ?? retryData?.data ?? response.data
-
+  const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {
     AsyncStorage.setSession(route.params).catch(e => console.error(e))
   }, [route.params])
 
-  const tryLater = (): void => {
-    if (documents !== null) {
-      const currDocument = documents[currentDocumentNumber]
-      const newDocuments = documents.filter(d => d !== currDocument)
-      newDocuments.push(currDocument)
-      setNewDocuments(newDocuments)
-    }
-  }
+  const tryLater = useCallback(
+    () => {
+      if (documents !== null) {
+        const currDocument = documents[currentDocumentNumber]
+        const newDocuments = documents.filter(d => d !== currDocument)
+        newDocuments.push(currDocument)
+        setNewDocuments(newDocuments)
+      }
+    },
+    [documents, currentDocumentNumber],
+  );
 
   const finishExercise = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
@@ -65,8 +66,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
   }
 
-
-  const docsLength = documents?.length
+  const docsLength = documents?.length ?? 0
 
   return (
     <>
