@@ -1,28 +1,18 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal, { IConfirmationModalProps } from '../Modal'
+import Modal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
 
 describe('Components', () => {
-  describe('Modal ', () => {
-    const defaultModalProps: IConfirmationModalProps = {
+  describe('ConfirmationModal ', () => {
+    const defaultModalProps: ConfirmationModalPropsType = {
       navigation: '',
       setIsModalVisible: () => {},
       visible: false
     }
 
-    it('renders correctly across screens', () => {
-      const component = shallow(
-        <View>
-          <Modal {...defaultModalProps} />
-        </View>
-      )
-      expect(toJson(component)).toMatchSnapshot()
-    })
-
     it('should have visible property passed to it as default', () => {
-      const modalProps: IConfirmationModalProps = {
+      const modalProps: ConfirmationModalPropsType = {
         ...defaultModalProps
       }
 
@@ -35,7 +25,7 @@ describe('Components', () => {
     })
 
     it('should have visible property passed to it', () => {
-      const modalProps: IConfirmationModalProps = {
+      const modalProps: ConfirmationModalPropsType = {
         ...defaultModalProps,
         visible: true
       }
