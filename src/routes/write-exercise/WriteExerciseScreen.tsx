@@ -13,13 +13,6 @@ import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
 
 export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    paddingBottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   spinner: {
     width: '100%',
     height: hp('35%'),
@@ -67,7 +60,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <>
+    <View>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -83,7 +76,9 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
             {loading && <ActivityIndicator style={styles.spinner} />}
+
             <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
+
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
@@ -96,7 +91,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           </KeyboardAwareScrollView>
         </>
       )}
-    </>
+    </View>
   )
 }
 
