@@ -6,7 +6,7 @@ steps:
   - restore_yarn_cache
   - run:
       name: Linting check
-      command: yarn lint:ci
+      command: yarn lint
   - run:
       name: Prettier check
       command: yarn prettier --check .
