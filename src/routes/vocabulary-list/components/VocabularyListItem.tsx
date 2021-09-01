@@ -76,7 +76,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <Pressable style={styles.wrapper} onPress={setIsModalVisible ? () => setIsModalVisible() : () => {}}>
+    <Pressable style={styles.wrapper} onPress={setIsModalVisible ?? (() => {})}>
       <View style={styles.container}>
         <View style={styles.item}>
           {document.document_image.length > 0 && (

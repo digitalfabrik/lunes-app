@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { ImagesType } from '../constants/endpoints'
-import { useWindowDimensions } from 'react-native'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
 import ImageViewer from 'react-native-image-zoom-viewer'
@@ -40,9 +39,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
     url: image.image
   }))
 
-  const { height: viewportHeight } = useWindowDimensions()
-
-  const renderIndicator = (currentIndex?: number, allSize?: number): JSX.Element => {
+  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => {
     return !currentIndex || !allSize ? (
       <></>
     ) : (

@@ -5,7 +5,6 @@ import { render, fireEvent } from '@testing-library/react-native'
 import labels from '../../../../constants/labels.json'
 
 jest.mock('../../../../components/AudioPlayer', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
