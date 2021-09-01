@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
 const Stack = createStackNavigator<RoutesParamsType>()
 
 const Navigator = (): JSX.Element => {
-  const [isPressed, setIsPressed] = React.useState(false)
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState(false)
+  const [isPressed, setIsPressed] = React.useState<boolean>(false)
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
   const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
     return {

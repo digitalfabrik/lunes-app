@@ -100,13 +100,9 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     const selected = item.id === selectedId
     const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
     const badgeStyle = selected ? styles.clickedItemBadgeLabel : styles.badgeLabel
-    const description = module.isLeaf
-      ? item.numberOfChildren === 1
-        ? labels.home.word
-        : labels.home.words
-      : item.numberOfChildren === 1
-      ? labels.home.unit
-      : labels.home.units
+    const descriptionForWord = item.numberOfChildren === 1 ? labels.home.word : labels.home.words
+    const descriptionForUnit = item.numberOfChildren === 1 ? labels.home.unit : labels.home.units
+    const description = module.isLeaf ? descriptionForWord : descriptionForUnit
 
     return (
       <MenuItem

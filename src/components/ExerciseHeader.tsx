@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ConfirmationModal from './Modal'
+import ConfirmationModal from './ConfirmationModal'
 import { BackHandler, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'

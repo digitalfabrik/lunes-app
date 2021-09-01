@@ -101,9 +101,7 @@ const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): Rea
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
       extraParams: {
-        module: {
-          ...item
-        }
+        module: item
       }
     })
   }
