@@ -236,7 +236,7 @@ jobs:
             - check_config
             - restore_yarn_cache
             - run:
-                command: yarn lint:ci
+                command: yarn lint
                 name: Linting check
             - run:
                 command: yarn prettier --check .
