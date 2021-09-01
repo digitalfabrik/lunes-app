@@ -12,6 +12,7 @@ import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
+import VocabularyListModal from './components/VocabularyListModal'
 
 export const styles = StyleSheet.create({
   root: {
@@ -47,6 +48,8 @@ interface VocabularyListScreenPropsType {
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -75,16 +78,36 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyListItem document={item} />
+  const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (
+    <VocabularyListItem
+      document={item}
+      setIsModalVisible={() => {
+        setIsModalVisible(true)
+        setSelectedDocumentIndex(index)
+      }}
+    />
+  )
 
   return (
     <View style={styles.root}>
+      {!documents || !documents[selectedDocumentIndex] ? (
+        <></>
+      ) : (
+        <VocabularyListModal
+          documents={documents}
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          selectedDocumentIndex={selectedDocumentIndex}
+          setSelectedDocumentIndex={setSelectedDocumentIndex}
+        />
+      )}
+
       <Loading isLoading={loading}>
         <FlatList
           data={documents}
           style={styles.list}
           ListHeaderComponent={Header}
-          renderItem={Item}
+          renderItem={renderItem}
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
         />
