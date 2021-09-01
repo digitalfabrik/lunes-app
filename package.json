@@ -9,7 +9,7 @@
     "start": "react-native start",
     "test": "jest --silent --verbose",
     "test:update": "yarn run test -u",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "lint:ci": "yarn run eslint --quiet --format junit -o reports/lint/junit-lint.xml",
     "prettier:check": "yarn prettier --check .",
