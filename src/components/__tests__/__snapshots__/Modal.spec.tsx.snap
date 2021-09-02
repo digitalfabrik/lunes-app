@@ -3,7 +3,44 @@
 exports[`Components Modal  renders correctly across screens 1`] = `
 <View>
   <ConfirmationModal
-    navigation=""
+    navigation={
+      Object {
+        "addListener": [MockFunction],
+        "canGoBack": [MockFunction],
+        "dangerouslyGetParent": [MockFunction],
+        "dangerouslyGetState": [MockFunction],
+        "dispatch": [MockFunction],
+        "goBack": [MockFunction],
+        "isFocused": [MockFunction],
+        "navigate": [MockFunction],
+        "pop": [MockFunction],
+        "popToTop": [MockFunction],
+        "push": [MockFunction],
+        "removeListener": [MockFunction],
+        "replace": [MockFunction],
+        "reset": [MockFunction],
+        "setOptions": [MockFunction],
+        "setParams": [MockFunction],
+      }
+    }
+    route={
+      Object {
+        "key": "",
+        "name": "WordChoiceExercise",
+        "params": Object {
+          "extraParams": Object {
+            "disciplineID": 0,
+            "disciplineIcon": "Icon",
+            "disciplineTitle": "Title",
+            "exercise": 1,
+            "exerciseDescription": "Description",
+            "level": [MockFunction],
+            "trainingSet": "Set",
+            "trainingSetId": 0,
+          },
+        },
+      }
+    }
     setIsModalVisible={[Function]}
     visible={false}
   />

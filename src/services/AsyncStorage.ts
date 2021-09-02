@@ -2,6 +2,8 @@ import { DocumentsType } from '../constants/endpoints'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ExerciseKeyType } from '../constants/data'
 import { DocumentResultType } from '../navigation/NavigationTypes'
+import { ComponentType } from 'react'
+import { SvgProps } from 'react-native-svg'
 
 const SESSION_KEY = 'session'
 
@@ -14,7 +16,7 @@ export interface SessionType {
     trainingSet: string
     exercise: ExerciseKeyType
     exerciseDescription: string
-    level: number
+    level: ComponentType<SvgProps>
   }
   retryData?: { data: DocumentsType }
 }

@@ -7,7 +7,6 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../../../assets/images'
-import { COLORS } from '../../../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
@@ -24,7 +23,7 @@ const Background = styled.ImageBackground`
 
 const StyledText = styled.Text`
   width: 100%;
-  color: ${COLORS.lunesBlack};
+  color: ${props => props.theme.colors.lunesBlack};
   padding: 0 20px 0 10px;
 `
 
