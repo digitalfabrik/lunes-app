@@ -9,10 +9,9 @@ import labels from '../../../constants/labels.json'
 import { Modal, SafeAreaView } from 'react-native'
 import { DocumentsType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
-import { COLORS } from '../../../constants/colors'
 
 const ModalContainer = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -21,7 +20,7 @@ const ModalHeader = styled.View`
   display: flex;
   align-items: flex-end;
   padding: 10px;
-  border-bottom-color: ${COLORS.lunesBlackUltralight};
+  border-bottom-color: ${props => props.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
   margin-bottom: 10px;
 `
@@ -38,7 +37,7 @@ const ButtonContainer = styled.View`
 `
 
 const ButtonText = styled.Text`
-  color: ${COLORS.lunesWhite};
+  color: ${props => props.theme.colors.lunesWhite};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;
@@ -90,14 +89,14 @@ const VocabularyListModal = ({
           </ItemContainer>
           <ButtonContainer>
             {documents.length > selectedDocumentIndex + 1 ? (
-              <Button onPress={goToNextWord} theme={BUTTONS_THEME.dark}>
+              <Button onPress={goToNextWord} buttonTheme={BUTTONS_THEME.dark}>
                 <>
                   <ButtonText>{labels.exercises.next}</ButtonText>
                   <WhiteNextArrow />
                 </>
               </Button>
             ) : (
-              <Button onPress={() => setIsModalVisible(false)} theme={BUTTONS_THEME.dark}>
+              <Button onPress={() => setIsModalVisible(false)} buttonTheme={BUTTONS_THEME.dark}>
                 <>
                   <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
                 </>

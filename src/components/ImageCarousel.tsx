@@ -3,7 +3,7 @@ import { ImagesType } from '../constants/endpoints'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View`
   height: 35%;
