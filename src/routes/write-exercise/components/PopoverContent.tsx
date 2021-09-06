@@ -17,7 +17,7 @@ const StyledComponent = styled.View`
   padding-right: 9;
   border-radius: 2;
 `
-const StyledMessage = styled.Text` 
+const StyledMessage = styled.Text`
   color: ${COLORS.lunesWhite};
   font-size: ${wp('3.5%')};
   font-weight: normal;

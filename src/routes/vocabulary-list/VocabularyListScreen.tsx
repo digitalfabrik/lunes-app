@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, Text, TouchableOpacity} from 'react-native'
+import { FlatList, Text, TouchableOpacity } from 'react-native'
 import { Home, HomeButtonPressed } from '../../../assets/images'
 import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
@@ -14,25 +14,25 @@ import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import styled from 'styled-components/native'
 
-const Root = styled.View` 
+const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
   padding-bottom: 0;
   padding-top: ${hp('5.6%')};
 `
-const ScreenTitle = styled.Text` 
+const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')};
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
   margin-bottom: 4;
 `
-const StyledList = (styled.FlatList`
+const StyledList = styled.FlatList`
   width: 100%;
-`as unknown) as typeof FlatList; 
+` as unknown as typeof FlatList
 
-const Description = styled.Text` 
+const Description = styled.Text`
   text-align: center;
   font-size: ${wp('4%')};
   color: ${COLORS.lunesGreyMedium};

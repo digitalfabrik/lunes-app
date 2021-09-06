@@ -1,4 +1,4 @@
-import React, { useState, ReactElement} from 'react'
+import React, { useState, ReactElement } from 'react'
 import { TouchableOpacity, Pressable, Keyboard } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/colors'
@@ -16,26 +16,26 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import styled from 'styled-components/native'
 
 const StyledContainer = styled.View`
-    padding-top: 20;
-    padding-bottom: 20;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    height: ${hp('85%')};
+  padding-top: 20;
+  padding-bottom: 20;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: ${hp('85%')};
 `
 const TextInputContainer = styled.View`
-    width: ${wp('80%')};
-    height: ${hp('8%')};
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border-width: 1;
-    border-radius: 2;
-    padding-right: 15;
-    padding-left: 15;
-    margin-top: ${hp('6%')};
-    margin-bottom: ${hp('6%')};
-    border-color: ${(prop: StyledProps) => prop.StyledBorder};
+  width: ${wp('80%')};
+  height: ${hp('8%')};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-width: 1;
+  border-radius: 2;
+  padding-right: 15;
+  padding-left: 15;
+  margin-top: ${hp('6%')};
+  margin-bottom: ${hp('6%')};
+  border-color: ${(prop: StyledProps) => prop.StyledBorder};
 `
 const StyledTextInput = styled.TextInput`
   font-size: ${wp('4.5%')};
@@ -57,7 +57,7 @@ export interface AnswerSectionPropsType {
 }
 
 interface StyledProps {
-  StyledBorder: string;
+  StyledBorder: string
 }
 
 const almostCorrectThreshold = 0.6
@@ -213,11 +213,7 @@ const AnswerSection = ({
           <PopoverContent />
         </Popover>
 
-        <TextInputContainer
-          testID='input-field'
-          ref={touchable}
-          StyledBorder={getBorderColor()}
-          >
+        <TextInputContainer testID='input-field' ref={touchable} StyledBorder={getBorderColor()}>
           <StyledTextInput
             placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
             placeholderTextColor={COLORS.lunesBlackLight}

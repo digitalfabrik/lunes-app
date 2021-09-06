@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { FlatList, Text} from 'react-native'
+import { FlatList, Text } from 'react-native'
 import axios from '../services/axios'
 import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
@@ -16,35 +16,35 @@ import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-background-color: ${COLORS.lunesWhite};
-height: 100%;
-`;
+  background-color: ${COLORS.lunesWhite};
+  height: 100%;
+`
 const TextStyle = styled.Text`
-    margin-top: ${hp('8.5%')};
-    text-align: center;
-    font-size: ${wp('4%')};
-    color: ${COLORS.lunesGreyMedium};
-    font-family: 'SourceSansPro-Regular';
-    margin-bottom: 32;
-`;
-const List = (styled.FlatList`
+  margin-top: ${hp('8.5%')};
+  text-align: center;
+  font-size: ${wp('4%')};
+  color: ${COLORS.lunesGreyMedium};
+  font-family: 'SourceSansPro-Regular';
+  margin-bottom: 32;
+`
+const List = styled.FlatList`
   width: ${wp('100%')};
-` as unknown) as typeof FlatList;
+` as unknown as typeof FlatList
 
 const Description = styled.Text`
-    font-size: ${wp('4%')};
-    font-weight: normal;
-    font-family: 'SourceSansPro-Regular';
-    color: ${(prop: StyledProps) => (prop.item.id === prop.selectedId) ? COLORS.white : COLORS.lunesGreyMedium};
-`;
+  font-size: ${wp('4%')};
+  font-weight: normal;
+  font-family: 'SourceSansPro-Regular';
+  color: ${(prop: StyledProps) => (prop.item.id === prop.selectedId ? COLORS.white : COLORS.lunesGreyMedium)};
+`
 interface ProfessionScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Profession'>
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-interface StyledProps{
-  selectedId: number | null;
-  item: ProfessionType;
+interface StyledProps {
+  selectedId: number | null
+  item: ProfessionType
 }
 
 const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
@@ -94,7 +94,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         onPress={() => handleNavigation(item)}>
         <Description item={item} selectedId={selectedId}>
           {item.total_training_sets} {item.total_training_sets === 1 ? labels.home.unit : labels.home.units}
-          </Description>
+        </Description>
       </MenuItem>
     )
   }
@@ -113,17 +113,16 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       {insets => (
         <Root>
           <Loading isLoading={isLoading}>
-        <List
-          data={professions}
-          ListHeaderComponent={Title(insets?.top)}
-          renderItem={Item}
-          keyExtractor={item => item.id.toString()}
-          scrollEnabled={true}
-          bounces={false}
-        ></List>
-      </Loading>
-      <Text>{error}</Text>
-      </Root>
+            <List
+              data={professions}
+              ListHeaderComponent={Title(insets?.top)}
+              renderItem={Item}
+              keyExtractor={item => item.id.toString()}
+              scrollEnabled={true}
+              bounces={false}></List>
+          </Loading>
+          <Text>{error}</Text>
+        </Root>
       )}
     </SafeAreaInsetsContext.Consumer>
   )

@@ -7,11 +7,11 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 
-const Wrapper = styled.View` 
-  padding-right: ${wp('5%')}; 
-  padding-left: ${wp('5%')}; 
+const Wrapper = styled.View`
+  padding-right: ${wp('5%')};
+  padding-left: ${wp('5%')};
 `
-const Container = styled.View` 
+const Container = styled.View`
   padding-top: 17;
   padding-bottom: 17;
   padding-right: 16;
@@ -27,17 +27,17 @@ const Container = styled.View`
   border-style: solid;
   border-radius: 2;
 `
-const StyledItem = styled.View` 
+const StyledItem = styled.View`
   flex-direction: row;
   align-items: center;
 `
-const StyledImage = styled.Image` 
+const StyledImage = styled.Image`
   margin-right: 15;
   width: ${wp('15%')};
   height: ${wp('15%')};
   border-radius: 50;
 `
-const StyledTitle = styled.Text` 
+const StyledTitle = styled.Text`
   font-size: ${wp('3.5%')};
   font-weight: normal;
   border-radius: 10;
@@ -49,16 +49,15 @@ const StyledTitle = styled.Text`
   overflow: hidden;
   height: ${wp('5%')};
   text-align: center;
-
 `
-const Description = styled.Text` 
+const Description = styled.Text`
   font-size: ${wp('4%')};
   font-weight: normal;
   color: ${COLORS.lunesGreyMedium};
   font-family: 'SourceSansPro-Regular';
   margin-left: 8;
 `
-const Speaker = styled.View` 
+const Speaker = styled.View`
   padding-right: 40;
   padding-top: 17;
 `
@@ -87,9 +86,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType): ReactElem
             <StyledTitle testID='article' style={[{ backgroundColor: getArticleColor(article) }]}>
               {article.value}
             </StyledTitle>
-            <Description testID='word'>
-              {word}
-            </Description>
+            <Description testID='word'>{word}</Description>
           </View>
         </StyledItem>
         <Speaker>

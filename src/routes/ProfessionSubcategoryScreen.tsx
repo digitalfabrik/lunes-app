@@ -22,16 +22,16 @@ const ItemText = styled.View`
   flex-direction: row;
   align-items: center;
 `
-const List = (styled.FlatList`
+const List = styled.FlatList`
   width: ${wp('100%')};
-  `as unknown) as typeof FlatList;
+` as unknown as typeof FlatList
 const Description = styled.Text`
   text-align: center;
   font-size: ${wp('4%')};
   font-family: 'SourceSansPro-Regular';
   padding-left: 5px;
   font-weight: normal;
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium};
+  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
@@ -47,10 +47,10 @@ const BadgeLabel = styled.Text`
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesGreyMedium : COLORS.lunesWhite};
-  font-size: ${(prop: StyledProps) => prop.selected ? 12 : wp('3%')};
-  background-color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium};
-`;
+  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesGreyMedium : COLORS.lunesWhite)};
+  font-size: ${(prop: StyledProps) => (prop.selected ? 12 : wp('3%'))};
+  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium)};
+`
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 interface ProfessionSubcategoryScreenPropsType {
@@ -59,7 +59,7 @@ interface ProfessionSubcategoryScreenPropsType {
 }
 
 interface StyledProps {
-  selected: boolean;
+  selected: boolean
 }
 
 const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {
@@ -112,7 +112,9 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.total_documents}</BadgeLabel>
-          <Description selected={selected}>{item.total_documents === 1 ? labels.home.word : labels.home.words}</Description>
+          <Description selected={selected}>
+            {item.total_documents === 1 ? labels.home.word : labels.home.words}
+          </Description>
         </ItemText>
       </MenuItem>
     )
@@ -144,4 +146,3 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
   )
 }
 export default ProfessionSubcategoryScreen
-

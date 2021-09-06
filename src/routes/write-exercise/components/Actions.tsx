@@ -24,7 +24,7 @@ export const LightLabelInput = styled.Text`
   letter-spacing: 0.4;
   text-transform: uppercase;
   font-weight: 600;
-  color: ${(prop: StyledProps) => (prop.styledInput) ? COLORS.lunesBlackLight : COLORS.lunesWhite};
+  color: ${(prop: StyledProps) => (prop.styledInput ? COLORS.lunesBlackLight : COLORS.lunesWhite)};
 `
 const DarkLabel = styled.Text`
   text-align: center;
@@ -50,7 +50,7 @@ export interface IActionsProps {
 }
 
 interface StyledProps {
-  styledInput?: string;
+  styledInput?: string
 }
 
 const Actions = ({
@@ -65,18 +65,14 @@ const Actions = ({
   return result ? (
     <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
-        <LightLabelArrow>
-          {isFinished ? labels.exercises.showResults : labels.exercises.next}
-        </LightLabelArrow>
+        <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
         <WhiteNextArrow />
       </>
     </Button>
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
-        <LightLabelInput styledInput={input}>
-          {labels.exercises.write.checkInput}
-        </LightLabelInput>
+        <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
       </Button>
 
       <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
@@ -87,7 +83,7 @@ const Actions = ({
         <Button onPress={tryLater} testID='try-later'>
           <>
             <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
-            <StyledArrow/>
+            <StyledArrow />
           </>
         </Button>
       )}

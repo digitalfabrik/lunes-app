@@ -19,7 +19,7 @@ const Root = styled.View`
 `
 const UpperSection = styled.View`
   width: ${hp('100%')};
-  height: ${hp('60%')}; 
+  height: ${hp('60%')};
   background-color: ${COLORS.lunesBlack};
   border-bottom-left-radius: ${hp('60%')};
   border-bottom-right-radius: ${hp('60%')};
