@@ -1,12 +1,29 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal, { ConfirmationModalPropsType } from '../ConfirmationModal'
+import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 import { shallow } from 'enzyme'
+import createNavigationPropMock from '../../testing/createNavigationPropMock'
 
 describe('Components', () => {
   describe('ConfirmationModal ', () => {
     const defaultModalProps: ConfirmationModalPropsType = {
-      navigation: '',
+      navigation: createNavigationPropMock(),
+      route: {
+        key: '',
+        name: 'WordChoiceExercise',
+        params: {
+          extraParams: {
+            disciplineID: 0,
+            disciplineTitle: 'Title',
+            disciplineIcon: 'Icon',
+            trainingSetId: 0,
+            trainingSet: 'Set',
+            exercise: 1,
+            exerciseDescription: 'Description',
+            level: jest.fn()
+          }
+        }
+      },
       setIsModalVisible: () => {},
       visible: false
     }
@@ -18,7 +35,7 @@ describe('Components', () => {
 
       const component = shallow(
         <View>
-          <Modal {...modalProps} />
+          <ConfirmationModal {...modalProps} />
         </View>
       )
       expect(component.children().props().visible).toBe(false)
@@ -32,7 +49,7 @@ describe('Components', () => {
 
       const component = shallow(
         <View>
-          <Modal {...modalProps} />
+          <ConfirmationModal {...modalProps} />
         </View>
       )
       expect(component.children().props().visible).toBe(true)

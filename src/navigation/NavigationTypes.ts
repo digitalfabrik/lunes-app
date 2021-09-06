@@ -1,5 +1,7 @@
+import { ComponentType } from 'react'
 import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
+import { SvgProps } from 'react-native-svg'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
@@ -39,7 +41,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
   }
   WordChoiceExercise: {
@@ -51,7 +53,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
   }
   ArticleChoiceExercise: {
@@ -63,7 +65,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
   }
   WriteExercise: {
@@ -75,7 +77,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
     retryData?: { data: DocumentsType }
   }
@@ -88,7 +90,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
       results: DocumentResultType[]
     }
     retryData?: { data: DocumentsType }
@@ -102,7 +104,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
@@ -120,7 +122,7 @@ export type RoutesParamsType = {
       trainingSet: string
       exercise: ExerciseKeyType
       exerciseDescription: string
-      level: number
+      level: ComponentType<SvgProps>
     }
     retryData?: { data: DocumentsType }
     results: DocumentResultType[]
