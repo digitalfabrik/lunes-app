@@ -1,0 +1,6 @@
+issue_key: <jira issue key> # e.g. LUN-123
+show_in_stores: <boolean> # whether this note should be shown in the stores, either true or false
+platforms: # relevant platforms, possible values: android and ios
+  - android
+  - ios
+de: <your german note> # release note in german language

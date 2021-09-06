@@ -1,3 +1,6 @@
+const RELEASE_NOTES_DIR = 'release-notes'
+const UNRELEASED_DIR = 'unreleased'
+const GITKEEP_FILE = '.gitkeep'
 const VERSION_FILE = 'version.json'
 
 const PLATFORM_ANDROID = 'android'
@@ -7,4 +10,13 @@ const PLATFORMS = [PLATFORM_IOS, PLATFORM_ANDROID]
 
 const tagId = ({ platform, versionName }) => `${versionName}-${platform}`
 
-module.exports = { VERSION_FILE, PLATFORM_IOS, PLATFORM_ANDROID, PLATFORMS, tagId }
+module.exports = {
+  RELEASE_NOTES_DIR,
+  UNRELEASED_DIR,
+  GITKEEP_FILE,
+  VERSION_FILE,
+  PLATFORM_IOS,
+  PLATFORM_ANDROID,
+  PLATFORMS,
+  tagId
+}

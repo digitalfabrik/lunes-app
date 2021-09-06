@@ -98,4 +98,18 @@ platform :ios do
     )
   end
 
+    # The following parameters have to be passed:
+    # version_name: The version name of the release notes to prepare
+    desc "Prepare release notes"
+    lane :prepare_release_notes do |options|
+      version_name = options[:version_name]
+
+      if [version_name].include?(nil)
+        raise "'nil' passed as parameter! Aborting..."
+      end
+
+      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/lunes/metadata/de-DE/release_notes.txt --language de --source ../../release-notes/#{version_name} --production`
+      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/lunes/metadata/en-US/release_notes.txt --language en --source ../../release-notes/#{version_name} --production`
+    end
+
 end

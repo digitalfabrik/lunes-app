@@ -259,6 +259,9 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - run:
+                command: tools/parse-release-notes parse --android --destination native/android/fastlane/lunes/metadata/de-DE/changelogs/default.txt --production
+                name: Parse german android release notes
+            - run:
                 command: bundle exec fastlane validate_play_store_key
                 name: Validate Play Store Key
                 working_directory: android
@@ -332,6 +335,18 @@ jobs:
                         command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
                         name: '[FL] TestFlight Upload'
                         working_directory: ios
+    move_release_notes:
+        docker:
+            - image: circleci/node:14.9.0
+        resource_class: small
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
+            - run:
+                command: tools/move-release-notes move-to ${NEW_VERSION_NAME} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
+                name: Move release notes
     promote_android:
         docker:
             - image: circleci/android:api-29-node
@@ -419,6 +434,10 @@ workflows:
                 production_delivery: true
                 requires:
                     - build_android
+            - move_release_notes:
+                context:
+                    - mattermost
+                    - deliverino
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:

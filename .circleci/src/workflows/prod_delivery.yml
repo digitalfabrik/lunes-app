@@ -19,3 +19,11 @@ jobs:
 #      production_delivery: true
 #      requires:
 #        - build_ios
+  - move_release_notes:
+      context:
+        - mattermost
+        - deliverino
+      #requires: TBD in LUN-30
+      #  - notify_web
+      #  - notify_android
+      #  - notify_ios
