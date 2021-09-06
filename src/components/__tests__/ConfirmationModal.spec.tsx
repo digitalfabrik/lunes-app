@@ -1,12 +1,11 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal, { ConfirmationModalPropsType } from '../Modal'
+import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
 import createNavigationPropMock from '../../testing/createNavigationPropMock'
 
 describe('Components', () => {
-  describe('Modal ', () => {
+  describe('ConfirmationModal ', () => {
     const defaultModalProps: ConfirmationModalPropsType = {
       navigation: createNavigationPropMock(),
       route: {
@@ -29,15 +28,6 @@ describe('Components', () => {
       visible: false
     }
 
-    it('renders correctly across screens', () => {
-      const component = shallow(
-        <View>
-          <Modal {...defaultModalProps} />
-        </View>
-      )
-      expect(toJson(component)).toMatchSnapshot()
-    })
-
     it('should have visible property passed to it as default', () => {
       const modalProps: ConfirmationModalPropsType = {
         ...defaultModalProps
@@ -45,7 +35,7 @@ describe('Components', () => {
 
       const component = shallow(
         <View>
-          <Modal {...modalProps} />
+          <ConfirmationModal {...modalProps} />
         </View>
       )
       expect(component.children().props().visible).toBe(false)
@@ -59,7 +49,7 @@ describe('Components', () => {
 
       const component = shallow(
         <View>
-          <Modal {...modalProps} />
+          <ConfirmationModal {...modalProps} />
         </View>
       )
       expect(component.children().props().visible).toBe(true)

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Home, HomeButtonPressed } from '../../../assets/images'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
@@ -47,23 +46,8 @@ interface VocabularyListScreenPropsType {
 
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.popToTop()}
-          onPressIn={() => setIsHomeButtonPressed(true)}
-          onPressOut={() => setIsHomeButtonPressed(false)}
-          activeOpacity={1}>
-          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-        </TouchableOpacity>
-      )
-    })
-  }, [navigation, isHomeButtonPressed])
 
   const { data: documents, error, loading } = useLoadDocuments(trainingSetId)
 

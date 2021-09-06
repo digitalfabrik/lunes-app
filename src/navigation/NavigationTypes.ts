@@ -1,5 +1,5 @@
 import { ComponentType } from 'react'
-import { DocumentsType, DocumentType } from '../constants/endpoints'
+import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 import { SvgProps } from 'react-native-svg'
 
@@ -19,9 +19,8 @@ export type RoutesParamsType = {
   Profession: undefined
   ProfessionSubcategory: {
     extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
+      module: DisciplineType
+      parentTitle?: string
     }
   }
   Exercises: {
