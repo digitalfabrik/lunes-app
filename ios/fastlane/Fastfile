@@ -80,6 +80,42 @@ platform :ios do
     end
 
 
+  # The following parameters have to be passed:
+  # version_name: The version name of the app
+  # ipa_path: The path of the ipa to upload (relative to home dir)
+  desc "Deliver the app to App Store Connect. The app is submitted for review and released automatically."
+  lane :upload_to_appstoreconnect do |options|
+    apple_auth()
+
+    version_name = options[:version_name]
+    ipa_path = options[:ipa_path]
+
+    if [version_name, ipa_path].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    puts("delivering v#{version_name}")
+
+    # https://docs.fastlane.tools/actions/deliver/
+    deliver(
+        ipa: "#{ENV['HOME']}/#{ipa_path}",
+        app_version: version_name,
+        submit_for_review: true,
+        automatic_release: true,
+        force: true,
+        skip_screenshots: true,
+        skip_metadata: false,
+        overwrite_screenshots: true,
+        skip_app_version_update: false,
+        metadata_path: "./ios/fastlane/lunes/metadata",
+        screenshots_path: "./ios/fastlane/lunes/screenshots",
+        precheck_include_in_app_purchases: false, # We do not have inapp purchases
+        submission_information: { add_id_info_uses_idfa: false }  # https://firebase.google.com/docs/analytics/configure-data-collection?platform=ios
+                                                                  # https://support.google.com/firebase/answer/6318039?hl=en
+    )
+  end
+
+
   desc "Deliver iOS App to TestFlight for testers"
   lane :upload_to_test_flight do |options|
     apple_auth()
