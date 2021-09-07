@@ -25,7 +25,7 @@ steps:
         - run:
             name: '[FL] App Store Connect Upload'
             command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-            working_directory: native
+            working_directory: ios
   - unless:
       condition: << parameters.production_delivery >>
       steps:
