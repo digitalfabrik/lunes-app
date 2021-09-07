@@ -129,6 +129,9 @@ platform :android do
             metadata_path: "./android/fastlane/metadata",
             track: track,
             skip_upload_changelogs: false,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true,
             release_status: "completed",
             apk: "#{ENV['HOME']}/attached_workspace/app-release.apk",
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
