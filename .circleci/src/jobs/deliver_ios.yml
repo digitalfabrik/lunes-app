@@ -18,7 +18,7 @@ steps:
       directory: ios
   - run:
       name: Parse german ios release notes
-      command: tools/parse-release-notes parse --ios --destination native/ios/fastlane/lunes/metadata/de-DE/release_notes.txt --production
+      command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
   - when:
       condition: << parameters.production_delivery >>
       steps:
