@@ -436,7 +436,6 @@ workflows:
                     - build_android
             - move_release_notes:
                 context:
-                    - mattermost
                     - deliverino
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
