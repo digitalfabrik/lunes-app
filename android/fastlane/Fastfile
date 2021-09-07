@@ -126,7 +126,7 @@ platform :android do
             version_code: version_code,
             version_name: version_name,
             package_name: "app.lunes",
-            metadata_path: "./android/fastlane/metadata",
+            metadata_path: "./fastlane/metadata",
             track: track,
             skip_upload_changelogs: false,
             skip_upload_images: true,
