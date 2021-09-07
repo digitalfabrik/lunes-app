@@ -9,6 +9,9 @@ environment:
 shell: /bin/bash -eo pipefail
 steps:
   - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - restore_yarn_tools_cache
   - restore_ruby_cache:
       directory: android
   - run:
