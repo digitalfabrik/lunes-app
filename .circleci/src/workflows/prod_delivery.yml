@@ -7,18 +7,18 @@ jobs:
       requires:
         - check
         - bump_version
-  #  - build_ios: # TODO LUN-29
-  #      requires:
-  #        - check
-  #        - bump_version
+  - build_ios:
+      requires:
+        - check
+        - bump_version
   - deliver_android:
-      production_delivery: true # TODO test in mid of august
+      production_delivery: true # TODO test in mid of september
       requires:
         - build_android
-  #  - deliver_ios: # TODO LUN-29
-  #      production_delivery: true
-  #      requires:
-  #        - build_ios
+  - deliver_ios:
+      production_delivery: true # TODO test in mid of september
+      requires:
+        - build_ios
   - move_release_notes:
       context:
         #- mattermost
