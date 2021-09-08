@@ -45,8 +45,7 @@ export const styles = StyleSheet.create({
     width: wp('10%'),
     overflow: 'hidden',
     height: wp('5%'),
-    textAlign: 'center',
-    lineHeight: 18
+    textAlign: 'center'
   },
   description: {
     fontSize: wp('4%'),
