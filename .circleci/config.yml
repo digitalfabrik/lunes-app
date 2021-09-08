@@ -256,10 +256,13 @@ jobs:
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
             - restore_ruby_cache:
                 directory: android
             - run:
-                command: tools/parse-release-notes parse --android --destination native/android/fastlane/lunes/metadata/de-DE/changelogs/default.txt --production
+                command: tools/parse-release-notes parse --android --destination android/fastlane/metadata/de-DE/changelogs/default.txt --production
                 name: Parse german android release notes
             - run:
                 command: bundle exec fastlane validate_play_store_key
@@ -322,12 +325,16 @@ jobs:
             - restore_environment_variables
             - restore_ruby_cache:
                 directory: ios
+            - run:
+                command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
+                name: Parse german ios release notes
             - when:
                 condition: << parameters.production_delivery >>
                 steps:
                     - run:
-                        command: echo "tbd"
-                        name: TDB App Store upload
+                        command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+                        name: '[FL] App Store Connect Upload'
+                        working_directory: ios
             - unless:
                 condition: << parameters.production_delivery >>
                 steps:
@@ -430,10 +437,18 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
             - deliver_android:
                 production_delivery: true
                 requires:
                     - build_android
+            - deliver_ios:
+                production_delivery: true
+                requires:
+                    - build_ios
             - move_release_notes:
                 context:
                     - deliverino

@@ -16,12 +16,16 @@ steps:
   - restore_environment_variables
   - restore_ruby_cache:
       directory: ios
+  - run:
+      name: Parse german ios release notes
+      command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
   - when:
       condition: << parameters.production_delivery >>
       steps:
         - run:
-            name: 'TDB App Store upload'
-            command: echo "tbd"
+            name: '[FL] App Store Connect Upload'
+            command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+            working_directory: ios
   - unless:
       condition: << parameters.production_delivery >>
       steps:
