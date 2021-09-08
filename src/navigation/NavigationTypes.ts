@@ -95,6 +95,7 @@ export type RoutesParamsType = {
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
+      documentsLength: number
       results: DocumentResultType[]
     }
     retryData?: { data: DocumentsType }
