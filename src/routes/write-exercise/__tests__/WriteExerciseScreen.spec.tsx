@@ -35,12 +35,13 @@ describe('WriteExerciseScreen', () => {
     }
   ]
 
-  const navigation = createNavigationMock()
+  const navigation = createNavigationMock<'WriteExercise'>()
   const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {
       extraParams: {
+        documentsLength: 2,
         disciplineID: 0,
         disciplineIcon: 'Icon',
         disciplineTitle: 'Title',
@@ -48,7 +49,7 @@ describe('WriteExerciseScreen', () => {
         exerciseDescription: 'Description',
         trainingSet: 'Set',
         trainingSetId: 0,
-        level: 0
+        level: jest.fn()
       }
     }
   }
