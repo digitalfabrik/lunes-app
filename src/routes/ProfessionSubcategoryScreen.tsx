@@ -135,7 +135,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
           disciplineIcon: module.icon,
           trainingSetId: selectedItem.id,
           trainingSet: selectedItem.title,
-          documentsLength: selectedItem.numberOfChildren,
+          documentsLength: selectedItem.numberOfChildren
         }
       })
     }

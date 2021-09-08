@@ -127,7 +127,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): React
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>{documentsLength} {labels.home.words}</Text>
+        <Text style={styles.screenDescription}>
+          {documentsLength} {labels.home.words}
+        </Text>
       </>
     </Title>
   )
