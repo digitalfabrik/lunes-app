@@ -66,5 +66,8 @@
       "cancelExercise": "Übung beenden",
       "of": "von"
     }
+  },
+  "pluralArticle": {
+    "plurals": "Plural"
   }
 }
