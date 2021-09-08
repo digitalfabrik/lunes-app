@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
 import { CloseIcon } from '../../assets/images'
 import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
@@ -84,14 +84,22 @@ const ConfirmationModal = ({
   const goBack = (): void => {
     setIsModalVisible(false)
     AsyncStorage.clearSession().catch(e => console.error(e))
-    const { disciplineID, disciplineTitle, disciplineIcon, trainingSetId, trainingSet } = route.params.extraParams
+    const {
+      disciplineID,
+      disciplineTitle,
+      disciplineIcon,
+      trainingSetId,
+      trainingSet,
+      documentsLength
+    } = route.params.extraParams
     const extraParams = {
       extraParams: {
         disciplineID: disciplineID,
         disciplineTitle: disciplineTitle,
         disciplineIcon: disciplineIcon,
         trainingSetId: trainingSetId,
-        trainingSet: trainingSet
+        trainingSet: trainingSet,
+        documentsLength: documentsLength
       }
     }
     navigation.navigate('Exercises', extraParams)
@@ -105,11 +113,11 @@ const ConfirmationModal = ({
             <CloseIcon />
           </TouchableOpacity>
           <Text style={styles.message}>{labels.exercises.cancelModal.cancelAsk}</Text>
-          <Button onPress={closeModal} theme={BUTTONS_THEME.dark}>
+          <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
             <Text style={styles.lightLabel}>{labels.exercises.cancelModal.continue}</Text>
           </Button>
 
-          <Button onPress={goBack} theme={BUTTONS_THEME.light}>
+          <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
             <Text style={styles.darkLabel}>{labels.exercises.cancelModal.cancel}</Text>
           </Button>
         </View>

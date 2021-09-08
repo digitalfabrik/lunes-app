@@ -13,15 +13,37 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+CREDENTIALS_GIT_REPOSITORY_URL = ENV['CREDENTIALS_GIT_REPOSITORY_URL']
+CREDENTIALS_DIRECTORY_PATH = ENV['CREDENTIALS_DIRECTORY_PATH']
+CREDENTIALS_KEYSTORE_PATH = ENV['CREDENTIALS_KEYSTORE_PATH']
+CREDENTIALS_KEYSTORE_PASSWORD = ENV['CREDENTIALS_KEYSTORE_PASSWORD']
 
-KEYSTORE_PATH = ENV['KEYSTORE_FILENAME']
-KEYSTORE_KEY_ALIAS = ENV['KEY_ALIAS']
+KEYSTORE_PATH = ENV['KEYSTORE_PATH']
 KEYSTORE_PASSWORD = ENV['KEYSTORE_PASSWORD']
-KEYSTORE_KEY_PASSWORD = ENV['KEY_PASSWORD']
+KEYSTORE_KEY_ALIAS = ENV['KEYSTORE_KEY_ALIAS']
+KEYSTORE_KEY_PASSWORD = ENV['KEYSTORE_KEY_PASSWORD']
 
 default_platform(:android)
 
 platform :android do
+
+    desc "Download and decrypt the JKS"
+    lane :keystore do
+      ensure_env_vars(
+          env_vars: ['CREDENTIALS_GIT_REPOSITORY_URL', 'CREDENTIALS_KEYSTORE_PATH', 'CREDENTIALS_DIRECTORY_PATH', 'CREDENTIALS_KEYSTORE_PASSWORD']
+      )
+
+      puts("Cloning repository with keystore")
+
+      unless File.exists? File.expand_path(CREDENTIALS_DIRECTORY_PATH)
+        sh("git clone #{CREDENTIALS_GIT_REPOSITORY_URL} #{CREDENTIALS_DIRECTORY_PATH}")
+      end
+
+      puts("Decrypting keystore")
+
+      sh("sudo gpg --passphrase #{CREDENTIALS_KEYSTORE_PASSWORD} --pinentry-mode loopback \\
+                -o #{KEYSTORE_PATH} -d #{CREDENTIALS_KEYSTORE_PATH}")
+    end
 
     desc "Validate Play Store Key"
     lane :validate_play_store_key do
@@ -104,8 +126,12 @@ platform :android do
             version_code: version_code,
             version_name: version_name,
             package_name: "app.lunes",
+            metadata_path: "./fastlane/metadata",
             track: track,
             skip_upload_changelogs: false,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true,
             release_status: "completed",
             apk: "#{ENV['HOME']}/attached_workspace/app-release.apk",
             json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, StyleSheet } from 'react-native'
-import { COLORS } from '../../constants/colors'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { COLORS } from '../../constants/theme/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
@@ -14,13 +14,6 @@ import { DocumentType } from '../../constants/endpoints'
 import ImageCarousel from '../../components/ImageCarousel'
 
 export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    paddingBottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   spinner: {
     width: '100%',
     height: hp('35%'),
@@ -66,7 +59,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <>
+    <View>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -95,7 +88,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           </KeyboardAwareScrollView>
         </>
       )}
-    </>
+    </View>
   )
 }
 

@@ -1,4 +1,7 @@
-const createNavigationMock = (): any => ({
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+
+const createNavigationMock = <T extends keyof RoutesParamsType>(): StackNavigationProp<RoutesParamsType, T> => ({
   dispatch: jest.fn(),
   canGoBack: jest.fn(),
   goBack: jest.fn(),
