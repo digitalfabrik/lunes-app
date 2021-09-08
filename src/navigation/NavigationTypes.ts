@@ -52,6 +52,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -64,6 +65,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -76,6 +78,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -103,6 +106,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -122,6 +126,7 @@ export type RoutesParamsType = {
       trainingSetId: number
       trainingSet: string
       exercise: ExerciseKeyType
+      documentsLength: number
       exerciseDescription: string
       level: ComponentType<SvgProps>
     }
