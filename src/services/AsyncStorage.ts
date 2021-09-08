@@ -17,6 +17,7 @@ export interface SessionType {
     exercise: ExerciseKeyType
     exerciseDescription: string
     level: ComponentType<SvgProps>
+    documentsLength: number
   }
   retryData?: { data: DocumentsType }
 }

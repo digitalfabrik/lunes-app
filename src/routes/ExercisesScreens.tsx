@@ -114,7 +114,7 @@ interface ExercisesScreenPropsType {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): ReactElement => {
   const { extraParams } = route.params
-  const { trainingSet } = extraParams
+  const { trainingSet, documentsLength } = extraParams
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   useFocusEffect(
@@ -127,7 +127,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): React
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
+        <Text style={styles.screenDescription}>
+          {documentsLength} {labels.home.words}
+        </Text>
       </>
     </Title>
   )

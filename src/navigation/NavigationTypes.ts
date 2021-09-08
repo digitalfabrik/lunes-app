@@ -30,6 +30,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
     }
   }
   VocabularyList: {
@@ -51,6 +52,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -63,6 +65,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -75,6 +78,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -91,6 +95,7 @@ export type RoutesParamsType = {
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
+      documentsLength: number
       results: DocumentResultType[]
     }
     retryData?: { data: DocumentsType }
@@ -102,6 +107,7 @@ export type RoutesParamsType = {
       disciplineIcon: string
       trainingSetId: number
       trainingSet: string
+      documentsLength: number
       exercise: ExerciseKeyType
       exerciseDescription: string
       level: ComponentType<SvgProps>
@@ -121,6 +127,7 @@ export type RoutesParamsType = {
       trainingSetId: number
       trainingSet: string
       exercise: ExerciseKeyType
+      documentsLength: number
       exerciseDescription: string
       level: ComponentType<SvgProps>
     }

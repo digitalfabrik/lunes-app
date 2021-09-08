@@ -20,7 +20,8 @@ describe('Components', () => {
             trainingSet: 'Set',
             exercise: 1,
             exerciseDescription: 'Description',
-            level: jest.fn()
+            level: jest.fn(),
+            documentsLength: 0
           }
         }
       },
