@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { DocumentType } from '../../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -15,14 +15,11 @@ interface WordChoiceExerciseScreenPropsType {
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const response = useLoadDocuments(trainingSetId)
-  const [documents, setDocuments] = useState<DocumentType[] | null>(null)
+  const { data: documents, loading } = useLoadDocuments(trainingSetId)
 
-  if (documents === null || response.loading) {
+  if (documents === null || loading) {
     return null
   }
-
-  useEffect(() => {}, [])
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
     const answers = []

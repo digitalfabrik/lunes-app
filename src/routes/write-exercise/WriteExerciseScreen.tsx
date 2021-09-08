@@ -81,7 +81,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             resetScrollToCoords={{ x: 0, y: 0 }}
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
-            {response.loading && <ActivityIndicator style={styles.spinner} />}
+            {!newDocuments && <ActivityIndicator style={styles.spinner} />}
             <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}

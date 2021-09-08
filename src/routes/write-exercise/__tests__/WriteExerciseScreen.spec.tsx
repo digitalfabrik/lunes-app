@@ -54,7 +54,7 @@ describe('WriteExerciseScreen', () => {
   }
   it('should allow to skip an exercise and try it out later', async () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    // @ts-expect-error
+    // @ts-expect-error because typescript does not know FiberNode
     const getUri = (image: ReactTestInstance) => image._fiber.stateNode.props.source.uri
 
     const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
