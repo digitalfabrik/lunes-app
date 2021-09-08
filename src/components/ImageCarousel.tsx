@@ -1,56 +1,72 @@
-import React, { ReactElement, useState } from 'react'
-import { StyleSheet, useWindowDimensions } from 'react-native'
-import Carousel, { Pagination } from 'react-native-snap-carousel'
-import { ImagesType, ImageType } from '../constants/endpoints'
+import React, { ReactElement } from 'react'
+import { ImagesType } from '../constants/endpoints'
+import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
+import ImageViewer from 'react-native-image-zoom-viewer'
+import { COLORS } from '../constants/theme/colors'
 
-const StyledImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  position: relative;
-`
-
-const Container = styled.View`
+const ImageView = styled.View`
   height: 35%;
 `
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    marginTop: -10,
-    alignSelf: 'center'
-  }
-})
+const StyledImage = styled.Image`
+  height: 100%;
+`
+
+const PaginationView = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+`
 
 interface ImageCarouselPropsType {
   images: ImagesType
 }
 
 interface ItemType {
-  item: ImageType
+  source: {
+    uri: string
+  }
+}
+
+interface ImageUrlType {
+  url: string
 }
 
 const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
-  const [activeImage, setActiveImage] = useState(0)
-  const { width: viewportWidth } = useWindowDimensions()
+  const imagesUrls: ImageUrlType[] = images.map(image => ({
+    url: image.image
+  }))
 
-  const renderItem = ({ item }: ItemType): ReactElement => {
-    return <StyledImage source={{ uri: item.image }} accessibilityRole='image' />
+  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => {
+    return !currentIndex || !allSize ? (
+      <></>
+    ) : (
+      <PaginationView>
+        <Pagination
+          activeDotIndex={currentIndex - 1}
+          dotsLength={allSize}
+          dotStyle={{ backgroundColor: COLORS.lunesBlack }}
+        />
+      </PaginationView>
+    )
+  }
+
+  const renderItem = (item: ItemType): ReactElement => {
+    return <StyledImage source={item.source} accessibilityRole='image' />
   }
 
   return (
-    <Container>
-      <Carousel
-        layout={'default'}
-        layoutCardOffset={20}
-        data={images}
-        renderItem={renderItem}
-        onSnapToItem={setActiveImage}
-        sliderWidth={viewportWidth}
-        itemWidth={viewportWidth}
+    <ImageView>
+      <ImageViewer
+        key={imagesUrls.map(elem => elem.url).join()}
+        imageUrls={imagesUrls}
+        renderImage={renderItem}
+        renderIndicator={renderIndicator}
+        backgroundColor={COLORS.lunesWhite}
       />
-      <Pagination dotsLength={images.length} activeDotIndex={activeImage} containerStyle={styles.container} />
-    </Container>
+    </ImageView>
   )
 }
 

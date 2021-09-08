@@ -2,17 +2,17 @@ import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import axios from '../services/axios'
-import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
+import { DisciplineType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
+import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
 export const styles = StyleSheet.create({
   root: {
@@ -51,11 +51,10 @@ interface ProfessionScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactElement => {
-  const [professions, setProfessions] = useState<ProfessionType[]>([])
+const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): ReactElement => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+
+  const { data: disciplines, error, loading } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -67,18 +66,6 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactEleme
         })
         .catch(e => console.error(e))
 
-      axios
-        .get(ENDPOINTS.professions.all)
-        .then(response => {
-          setProfessions(response.data)
-          setError(null)
-        })
-        .catch(e => {
-          setError(e.message)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
       setSelectedId(-1)
     }, [navigation])
   )
@@ -90,10 +77,10 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactEleme
     </>
   )
 
-  const Item = ({ item }: { item: ProfessionType }): JSX.Element | null => {
+  const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     const itemTextStyle = item.id === selectedId ? styles.clickedItemDescription : styles.description
 
-    if (item.total_training_sets === 0) {
+    if (item.numberOfChildren === 0) {
       return null
     }
 
@@ -104,19 +91,17 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactEleme
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
         <Text style={itemTextStyle}>
-          {item.total_training_sets} {item.total_training_sets === 1 ? labels.home.unit : labels.home.units}
+          {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Text>
       </MenuItem>
     )
   }
 
-  const handleNavigation = (item: ProfessionType): void => {
+  const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
       extraParams: {
-        disciplineID: item.id,
-        disciplineTitle: item.title,
-        disciplineIcon: item.icon
+        module: item
       }
     })
   }
@@ -125,9 +110,9 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): ReactEleme
     <SafeAreaInsetsContext.Consumer>
       {insets => (
         <View style={styles.root}>
-          <Loading isLoading={isLoading}>
+          <Loading isLoading={loading}>
             <FlatList
-              data={professions}
+              data={disciplines}
               style={styles.list}
               ListHeaderComponent={Title(insets?.top)}
               ListHeaderComponentStyle={styles.title}

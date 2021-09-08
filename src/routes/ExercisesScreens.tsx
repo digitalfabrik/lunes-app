@@ -1,14 +1,14 @@
 import React, { ReactElement, useState } from 'react'
-import { View, Text, LogBox, TouchableOpacity, FlatList, Pressable, StyleSheet } from 'react-native'
-import { Home, Arrow, BackButton, BackArrowPressed, HomeButtonPressed } from '../../assets/images'
+import { FlatList, LogBox, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { COLORS } from '../constants/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   root: {
@@ -102,12 +102,6 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '600',
     marginLeft: 15
-  },
-  headerLeft: {
-    paddingLeft: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 100
   }
 })
 
@@ -120,45 +114,22 @@ interface ExercisesScreenPropsType {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): ReactElement => {
   const { extraParams } = route.params
-  const { trainingSet, disciplineTitle } = extraParams
+  const { trainingSet, documentsLength } = extraParams
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  const [isBackButtonPressed, setIsBackButtonPressed] = useState(false)
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedKey(null)
-
-      navigation.setOptions({
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Profession')}
-            onPressIn={() => setIsHomeButtonPressed(true)}
-            onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
-            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-          </TouchableOpacity>
-        ),
-        headerLeft: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ProfessionSubcategory', { extraParams })}
-            onPressIn={() => setIsBackButtonPressed(true)}
-            onPressOut={() => setIsBackButtonPressed(false)}
-            activeOpacity={1}
-            style={styles.headerLeft}>
-            {isBackButtonPressed ? <BackArrowPressed /> : <BackButton />}
-            <Text style={styles.title}>{disciplineTitle}</Text>
-          </TouchableOpacity>
-        )
-      })
-    }, [extraParams, navigation, disciplineTitle, isBackButtonPressed, isHomeButtonPressed])
+    }, [])
   )
 
   const Header = (
     <Title>
       <>
         <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>4 {labels.home.exercises}</Text>
+        <Text style={styles.screenDescription}>
+          {documentsLength} {labels.home.words}
+        </Text>
       </>
     </Title>
   )

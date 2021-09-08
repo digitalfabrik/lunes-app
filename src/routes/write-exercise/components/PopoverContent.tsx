@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import labels from '../../../constants/labels.json'
 
 export const styles = StyleSheet.create({
