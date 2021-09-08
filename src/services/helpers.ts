@@ -1,4 +1,4 @@
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { Article } from '../constants/data'
 
 export const getArticleColor = (article: Article): string => {

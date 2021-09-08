@@ -5,7 +5,7 @@ import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -241,7 +241,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }
 
   const Footer = (
-    <Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+    <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
         <Text style={styles.lightLabel}>{labels.results.retryExercise}</Text>

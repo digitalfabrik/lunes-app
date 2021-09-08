@@ -1,6 +1,6 @@
-import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { COLORS } from '../../../constants/colors'
+import React, { ReactElement } from 'react'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { COLORS } from '../../../constants/theme/colors'
 import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -69,13 +69,14 @@ export const styles = StyleSheet.create({
 
 export interface VocabularyListItemPropType {
   document: DocumentType
+  setIsModalVisible?: () => void
 }
 
-const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
+const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType): ReactElement => {
   const { article, word } = document
 
   return (
-    <View style={styles.wrapper}>
+    <Pressable style={styles.wrapper} onPress={setIsModalVisible ?? (() => {})}>
       <View style={styles.container}>
         <View style={styles.item}>
           {document.document_image.length > 0 && (
@@ -101,7 +102,7 @@ const VocabularyListItem = ({ document }: VocabularyListItemPropType) => {
           <AudioPlayer document={document} disabled={false} />
         </View>
       </View>
-    </View>
+    </Pressable>
   )
 }
 

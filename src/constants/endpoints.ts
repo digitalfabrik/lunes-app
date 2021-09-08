@@ -1,24 +1,17 @@
 import { Article } from './data'
 
-export interface ProfessionType {
+export interface DisciplineType {
   id: number
   title: string
   description: string
   icon: string
-  total_training_sets: number
-}
-
-export interface ProfessionSubcategoryType {
-  id: number
-  title: string
-  description: string
-  icon: string
-  total_documents: number
+  numberOfChildren: number
+  isLeaf: boolean
 }
 
 export interface AlternativeWordType {
-  alt_word: string
-  article: number
+  word: string
+  article: Article
 }
 
 export interface ImageType {
@@ -41,10 +34,10 @@ export type DocumentsType = DocumentType[]
 
 export const ENDPOINTS = {
   professions: {
-    all: '/disciplines'
+    all: '/disciplines_by_level'
   },
   subCategories: {
-    all: '/training_set/:id'
+    all: '/training_set'
   },
   documents: {
     all: '/documents/:id'

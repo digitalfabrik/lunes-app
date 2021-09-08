@@ -12,6 +12,9 @@ steps:
   - restore_ruby_cache:
       directory: android
   - run:
+      name: Parse german android release notes
+      command: tools/parse-release-notes parse --android --destination native/android/fastlane/lunes/metadata/de-DE/changelogs/default.txt --production
+  - run:
       name: Validate Play Store Key
       command: bundle exec fastlane validate_play_store_key
       working_directory: android

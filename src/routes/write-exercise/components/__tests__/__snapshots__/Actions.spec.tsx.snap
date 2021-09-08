@@ -3,10 +3,10 @@
 exports[`Components Actions renders correctly across screens 1`] = `
 <Fragment>
   <Button
+    buttonTheme="dark"
     disabled={true}
     onPress={[Function]}
     testID="check-entry"
-    theme="dark"
   >
     <Text
       style={
@@ -30,9 +30,9 @@ exports[`Components Actions renders correctly across screens 1`] = `
     </Text>
   </Button>
   <Button
+    buttonTheme="light"
     onPress={[Function]}
     testID="give-up"
-    theme="light"
   >
     <Text
       style={
@@ -69,7 +69,7 @@ exports[`Components Actions renders correctly across screens 1`] = `
     >
       Später versuchen
     </Text>
-    <[object Object]
+    <SvgrURL
       style={
         Object {
           "marginLeft": 5,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   AlmostCorrectFeedbackIcon,
   correct_background,
@@ -7,15 +7,14 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../../../assets/images'
-import { COLORS } from '../../../constants/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 import labels from '../../../constants/labels.json'
 
 const Background = styled.ImageBackground`
-  width: ${wp(80)};
-  height: ${hp(9)};
+  width: ${wp(80)}px;
+  height: ${hp(9)}px;
   margin-bottom: 40px;
   flex-direction: row;
   align-items: center;
@@ -24,7 +23,7 @@ const Background = styled.ImageBackground`
 
 const StyledText = styled.Text`
   width: 100%;
-  color: ${COLORS.lunesBlack};
+  color: ${props => props.theme.colors.lunesBlack};
   padding: 0 20px 0 10px;
 `
 
@@ -35,7 +34,7 @@ export interface FeedbackPropsType {
   input: string
 }
 
-const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): JSX.Element | null => {
+const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): ReactElement | null => {
   let Icon, background, message
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
@@ -44,7 +43,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value} ${document?.word}“`
+    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value ?? ''} ${document?.word ?? ''}“`
   } else {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
@@ -54,7 +53,7 @@ const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType)
   return result !== '' || secondAttempt ? (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={2} ellipsizeMode='tail'>
+      <StyledText numberOfLines={2} ellipsizeMode='tail' testID={'feedback-write-exercise'}>
         {message}
       </StyledText>
     </Background>

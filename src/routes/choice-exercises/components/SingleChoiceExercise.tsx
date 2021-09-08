@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
-import { DocumentType } from '../../../constants/endpoints'
+import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
-import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { Text } from 'react-native'
 import { styles } from '../../write-exercise/components/Actions'
@@ -13,10 +13,9 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  backgroundcolor: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -40,7 +39,7 @@ const ChoiceExerciseScreen = ({
   onExerciseFinished,
   navigation,
   route
-}: SingleChoiceExercisePropsType): JSX.Element => {
+}: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -61,21 +60,18 @@ const ChoiceExerciseScreen = ({
 
   const count = documents.length
 
-  const isAnswerEqual = (answer1: Answer, answer2: Answer): boolean => {
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const correctAlternatives: Answer[] = currentDocument.alternatives.map(it => ({
-    article: ARTICLES[it.article],
-    word: it.alt_word
-  }))
-
-  const onClickAnswer = (selectedAnswer: Answer) => {
-    setSelectedAnswer(selectedAnswer)
-    const correctSelected = [correctAnswer, ...correctAlternatives].find(it => isAnswerEqual(it, selectedAnswer))
+  const onClickAnswer = (clickedAnswer: Answer): void => {
+    setSelectedAnswer(clickedAnswer)
+    const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
+      isAnswerEqual(it, clickedAnswer)
+    )
 
     if (correctSelected !== undefined) {
-      setCorrectAnswer(selectedAnswer)
+      setCorrectAnswer(clickedAnswer)
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
@@ -87,7 +83,7 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const onFinishWord = () => {
+  const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count
     if (exerciseFinished) {
       setCurrentWord(0)
@@ -123,7 +119,7 @@ const ChoiceExerciseScreen = ({
       />
       <ButtonContainer>
         {selectedAnswer !== null && (
-          <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
+          <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
               <Text style={[styles.lightLabel, styles.arrowLabel]}>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}

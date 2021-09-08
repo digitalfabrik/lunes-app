@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import labels from '../../../constants/labels.json'
 
 export const styles = StyleSheet.create({
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     marginLeft: 8
   }
 })
-const PopoverContent = () => (
+const PopoverContent = (): ReactElement => (
   <View style={styles.container}>
     <InfoIcon width={30} height={30} />
     <Text style={styles.message}>{labels.exercises.write.feedback.articleMissing}</Text>

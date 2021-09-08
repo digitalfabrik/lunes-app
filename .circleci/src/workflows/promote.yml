@@ -1,0 +1,3 @@
+when: << pipeline.parameters.run_promote >>
+jobs:
+  - promote_android

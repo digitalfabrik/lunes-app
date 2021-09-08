@@ -61,14 +61,21 @@ platform :ios do
     end
 
     desc "Upload iOS App to BrowserStack"
-    lane :upload_to_browserstack do
+    lane :upload_to_browserstack do |options|
+        file_path = options[:file_path]
+
+        if [file_path].include?(nil)
+            raise "'nil' passed as parameter! Aborting..."
+        end
+
         ensure_env_vars(
             env_vars: ["BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
         )
+
         upload_to_browserstack_app_live(
             browserstack_username: ENV["BROWSERSTACK_USERNAME"],
             browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
-            file_path: "#{ENV['HOME']}/attached_workspace/app-release.ipa"
+            file_path: "#{ENV['HOME']}/#{file_path}"
         )
     end
 
@@ -90,5 +97,19 @@ platform :ios do
         distribute_external: false
     )
   end
+
+    # The following parameters have to be passed:
+    # version_name: The version name of the release notes to prepare
+    desc "Prepare release notes"
+    lane :prepare_release_notes do |options|
+      version_name = options[:version_name]
+
+      if [version_name].include?(nil)
+        raise "'nil' passed as parameter! Aborting..."
+      end
+
+      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/lunes/metadata/de-DE/release_notes.txt --language de --source ../../release-notes/#{version_name} --production`
+      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/lunes/metadata/en-US/release_notes.txt --language en --source ../../release-notes/#{version_name} --production`
+    end
 
 end

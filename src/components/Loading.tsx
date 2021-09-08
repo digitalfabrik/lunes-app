@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   root: {
@@ -19,7 +19,7 @@ export interface ILoadingProps {
   isLoading: boolean
 }
 
-const Loading = ({ children, isLoading }: ILoadingProps) => (
+const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
   <View style={styles.root}>
     {isLoading ? (
       <View style={styles.indicator}>

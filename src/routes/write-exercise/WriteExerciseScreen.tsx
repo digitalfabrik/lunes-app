@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../constants/theme/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../../services/AsyncStorage'
@@ -13,13 +13,6 @@ import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
 
 export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    paddingBottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   spinner: {
     width: '100%',
     height: hp('35%'),
@@ -67,7 +60,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const docsLength = documents?.length ?? 0
 
   return (
-    <>
+    <View>
       <ExerciseHeader
         navigation={navigation}
         route={route}
@@ -83,7 +76,9 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
             {loading && <ActivityIndicator style={styles.spinner} />}
+
             <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
+
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
@@ -96,7 +91,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
           </KeyboardAwareScrollView>
         </>
       )}
-    </>
+    </View>
   )
 }
 
