@@ -185,7 +185,7 @@ const SingleChoiceListItem = ({
       </StyledArticleBox>
       <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
-        {article.id === 4 && ` (${labels.pluralArticle.plurals})`}
+        {article.id === 4 && ` (${labels.general.plurals})`}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>
