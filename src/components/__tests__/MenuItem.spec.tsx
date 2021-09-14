@@ -3,7 +3,7 @@ import MenuItem, { styles, IMenuItemProps } from '../MenuItem'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import { Text } from 'react-native'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../constants/theme/colors'
 
 describe('Components', () => {
   describe('MenuItem', () => {

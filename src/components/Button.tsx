@@ -1,48 +1,71 @@
 import React, { ReactElement } from 'react'
-import { BUTTONS_THEME } from '../constants/data'
+import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { COLORS } from '../constants/colors'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
-const ButtonStyleTouchableOpacity = styled.TouchableOpacity`
-  flex-direction: row;
-  padding-top: 10;
-  padding-bottom: 10;
-  padding-left: 20;
-  padding-right: 20;
-  width: ${wp('70%')};
-  align-items: center;
-  border-radius: ${hp('7%')};
-  justify-content: center;
-  height: ${hp('7%')};
-  margin-bottom: ${hp('2%')};
-  background-color: ${(prop: IButtonProps) => prop.disabled ? COLORS.lunesBlackUltralight :
-    prop.theme === BUTTONS_THEME.dark ? (prop.isPressed ? COLORS.lunesBlackMedium : COLORS.lunesBlack) : prop.theme === BUTTONS_THEME.light ? (prop.isPressed ? 'transparent' : COLORS.white ) : 'transparent'};
-  border-color: ${(prop: IButtonProps) => (prop.theme === BUTTONS_THEME.light) ? COLORS.lunesBlack : COLORS.white};
-  border-width: ${(prop: IButtonProps) => (prop.theme === BUTTONS_THEME.light) ? 1 : 0};
-`;
-export interface IButtonProps {
-  onPress: () => void
-  disabled?: boolean
-  children: ReactElement
-  theme?: string
-  testID?: string
+interface ThemedButtonProps {
+  buttonTheme?: ButtonThemeType
   isPressed: boolean
+  disabled?: boolean
 }
 
-const Button = ({ children, onPress, disabled, theme }: IButtonProps) => {
+const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
+  ${props => {
+    if (props.disabled) {
+      return css`
+        background-color: ${props.theme.colors.lunesBlackUltralight};
+      `
+    }
+    if (props.isPressed) {
+      return css`
+        background-color: ${props.buttonTheme === BUTTONS_THEME.dark
+          ? props.theme.colors.lunesBlackMedium
+          : 'transparent'};
+      `
+    }
+    if (props.buttonTheme === 'dark') {
+      return css`
+        background-color: ${props.theme.colors.lunesBlack};
+      `
+    }
+  }};
+  ${props =>
+    props.buttonTheme === BUTTONS_THEME.light &&
+    !props.disabled &&
+    css`
+      border-color: ${props.theme.colors.lunesBlack};
+      border-width: 1px;
+    `};
+  flex-direction: row;
+  padding: 10px 20px;
+  width: ${wp('70%')}px;
+  align-items: center;
+  border-radius: ${hp('7%')}px;
+  justify-content: center;
+  height: ${hp('7%')}px;
+  margin-bottom: ${hp('2%')}px;
+`
+export interface IButtonProps {
+  onPress: () => void
+  buttonTheme?: ButtonThemeType
+  disabled?: boolean
+  children: ReactElement
+  testID?: string
+}
+
+const Button = ({ children, onPress, disabled, buttonTheme }: IButtonProps) => {
   const [isPressed, setIsPressed] = React.useState(false)
   return (
-    <ButtonStyleTouchableOpacity
-      theme={theme}
-      onPress={onPress}
+    <ThemedButton
       isPressed={isPressed}
+      buttonTheme={buttonTheme}
+      onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
       {children}
-    </ButtonStyleTouchableOpacity>
+    </ThemedButton>
   )
 }
 export default Button

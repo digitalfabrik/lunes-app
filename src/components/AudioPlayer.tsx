@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
-import { COLORS } from '../constants/colors'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
@@ -18,14 +17,23 @@ const VolumeIcon = styled.TouchableOpacity`
   width: 40px;
   height: 40px;
   border-radius: 50px;
-  background-color: ${COLORS.lunesFunctionalIncorrectDark};
+  background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
   justify-content: center;
   align-items: center;
-  shadowColor: ${COLORS.shadow};
+  shadow-color: ${props => props.theme.colors.shadow};
   elevation: 8;
-  shadowRadius: 5px;
-  shadowOffset: { width: 1, height: 1 };
-  shadowOpacity: 0.5;
+  shadow-radius: 5px;
+  shadow-offset: 1px 1px;
+  shadow-opacity: 0.5;
+`
+
+const VolumeUpIcon = styled(VolumeUp)<{ disabled: boolean; isActive: boolean }>`
+  color: ${props =>
+    props.disabled
+      ? props.theme.colors.lunesBlackUltralight
+      : props.isActive
+      ? props.theme.colors.lunesRed
+      : props.theme.colors.lunesRedDark};
 `
 
 export interface AudioPlayerProps {
@@ -91,8 +99,8 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon testID='volume-button' disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUp fill={disabled ? COLORS.lunesBlackUltralight : isActive ? COLORS.lunesRed : COLORS.lunesRedDark} />
+      <VolumeIcon disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
+        <VolumeUpIcon disabled={disabled} isActive={isActive} />
       </VolumeIcon>
     </StyledView>
   )

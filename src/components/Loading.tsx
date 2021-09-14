@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react'
 import { ActivityIndicator } from 'react-native'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-    flex: 1;
-    align-items: center;
-`;
+  flex: 1;
+  align-items: center;
+`
 const Indicator = styled.View`
-    height: 50%;
-    justify-content: center;
-    align-items: center;
-`;
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+`
 
 export interface ILoadingProps {
   children: ReactElement
