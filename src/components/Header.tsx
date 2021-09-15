@@ -1,6 +1,6 @@
 import React from 'react'
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Wrapper = styled.View`

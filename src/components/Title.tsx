@@ -13,4 +13,3 @@ export interface ITitleProps {
 
 const Title = ({ children }: ITitleProps) => <TitleStyle>{children}</TitleStyle>
 export default Title
-

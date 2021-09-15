@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Modal from './Modal'
+import ConfirmationModal from './ConfirmationModal'
 import { BackHandler } from 'react-native'
 import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
 import { ProgressBar } from 'react-native-paper'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -25,6 +25,7 @@ const TextTitle = styled.Text`
     font-weight: 600;
     margin-left: 15;
 `;
+
 const ProgressBarStyle = styled(ProgressBar)`
    background-color: ${COLORS.lunesBlackUltralight};
 `;
@@ -78,7 +79,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
         accessibilityComponentType
         accessibilityTraits
       />
-      <Modal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
+      <ConfirmationModal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
     </>
   )
 }

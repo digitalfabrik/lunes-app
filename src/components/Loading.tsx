@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { ActivityIndicator } from 'react-native'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
