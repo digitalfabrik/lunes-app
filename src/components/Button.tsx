@@ -12,7 +12,7 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   justify-content: center;
   height: ${hp('7%')}px;
   margin-bottom: ${hp('2%')}px;
-  
+
   ${props => {
     if (props.disabled) {
       return css`
@@ -39,8 +39,8 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
       border-color: ${props.theme.colors.lunesBlack};
       border-width: 1px;
     `};
-
 `
+
 export interface IButtonProps {
   onPress: () => void
   disabled?: boolean

@@ -13,11 +13,6 @@ import styled from 'styled-components/native'
 import { Color } from 'react-native-svg'
 import { Modal } from 'react-native'
 
-const ModalContainer = styled.Modal`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-`;
 const Container = styled.View`
     flex: 1;
     justify-content: center;
@@ -101,7 +96,7 @@ const ConfirmationModal = ({
     navigation.navigate('Exercises', extraParams)
   }
   return (
-    <ModalContainer testID='modal' visible={visible} transparent animationType='fade' >
+    <Modal testID='modal' visible={visible} transparent animationType='fade'>
       <Container>
         <ModalStyle>
           <CloseIconStyle onPress={closeModal}>
@@ -116,7 +111,7 @@ const ConfirmationModal = ({
           </Button>
         </ModalStyle>
       </Container>
-    </ModalContainer>
+    </Modal>
   )
 }
 export default ConfirmationModal
