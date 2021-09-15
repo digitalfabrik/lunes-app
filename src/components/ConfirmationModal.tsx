@@ -44,23 +44,14 @@ const Message = styled.Text`
     margin-bottom: 31;
     padding-top: 31;
 `;
-const LightLabel = styled.Text`
-    color: ${COLORS.lunesWhite};
-    font-size: ${wp('4%')};
+const Label = styled.Text`
+  color: ${(prop: LabelProps) => prop.LColor};
+  font-size: ${wp('4%')}px;
     font-weight: 600;
     text-align: center;
     text-transform: uppercase;
     font-family: 'SourceSansPro-SemiBold';
-    letter-spacing: 0.4;
-`;
-const DarkLabel = styled.Text`
-    color: ${COLORS.lunesBlack};
-    font-size: ${wp('4%')};
-    font-weight: 600;
-    text-align: center;
-    text-transform: uppercase;
-    font-family: 'SourceSansPro-SemiBold';
-    letter-spacing: 0.4;
+  letter-spacing: 0.4px;
 `;
 
 interface LabelProps {
@@ -106,10 +97,10 @@ const ConfirmationModal = ({
           </CloseIconStyle>
           <Message>{labels.exercises.cancelModal.cancelAsk}</Message>
           <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
-            <LightLabel>{labels.exercises.cancelModal.continue}</LightLabel>
+            <Label LColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
           <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
-            <DarkLabel>{labels.exercises.cancelModal.cancel}</DarkLabel>
+            <Label LColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
         </ModalStyle>
       </Container>
