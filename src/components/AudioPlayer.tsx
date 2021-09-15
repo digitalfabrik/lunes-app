@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
-import { COLORS } from '../constants/theme/colors'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
@@ -101,7 +100,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   return (
     <StyledView>
       <VolumeIcon disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
-      <VolumeUpIcon disabled={disabled} isActive={isActive} />
+        <VolumeUpIcon disabled={disabled} isActive={isActive} />
       </VolumeIcon>
     </StyledView>
   )

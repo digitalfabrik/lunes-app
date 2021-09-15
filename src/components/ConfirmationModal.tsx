@@ -10,6 +10,8 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
 import styled from 'styled-components/native'
+import { Color } from 'react-native-svg'
+import { Modal } from 'react-native'
 
 const ModalContainer = styled.Modal`
     flex: 1;
