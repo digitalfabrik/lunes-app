@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Image, Pressable, View } from 'react-native'
+import { View } from 'react-native'
 import { COLORS } from '../../../constants/theme/colors'
 import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'

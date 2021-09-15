@@ -5,7 +5,7 @@ import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
@@ -66,20 +66,6 @@ const StyledItemTitle = styled.Text`
   font-family: 'SourceSansPro-SemiBold';
 
   color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
-`
-const StyledTitle = styled.Text`
-  color: ${COLORS.lunesBlack};
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')}px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-left: 15px;
-`
-const HeaderLeft = styled.TouchableOpacity`
-  padding-left: 15;
-  flex-direction: row;
-  align-items: center;
-  z-index: 100;
 `
 const StyledLevel = styled.View`
   margin-top: 11px;

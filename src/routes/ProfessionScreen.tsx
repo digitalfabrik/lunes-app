@@ -11,7 +11,7 @@ import AsyncStorage from '../services/AsyncStorage'
 import Loading from '../components/Loading'
 import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
