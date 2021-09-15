@@ -13,7 +13,6 @@ import styled from 'styled-components/native'
 
 const HeaderText = styled.Text`
     font-size: ${wp('4%')};
-    font-weight: normal;
     font-family: 'SourceSansPro-Regular';
     color: ${COLORS.lunesGreyMedium};
 `;
@@ -34,8 +33,7 @@ const HeaderLeftTouchableOpacity = styled.TouchableOpacity`
     padding-left: 15;
     flex-direction: row;
     align-items: center;
-    z-index: 100;
-`;
+`
 
 interface ExerciseHeaderPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>

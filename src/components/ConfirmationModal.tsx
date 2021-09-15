@@ -17,13 +17,11 @@ const Container = styled.View`
     flex: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 0;
     background-color: ${COLORS.lunesOverlay};
 `;
 const ModalStyle = styled.View`
     background-color: ${COLORS.white};
     align-items: center;
-    justify-content: center;
     width: ${wp('85%')};
     border-radius: 4;
     position: relative;
