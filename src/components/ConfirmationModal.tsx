@@ -63,6 +63,10 @@ const DarkLabel = styled.Text`
     letter-spacing: 0.4;
 `;
 
+interface LabelProps {
+  LColor: Color;
+}
+
 export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
