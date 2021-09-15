@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { FlatList, Text, TouchableOpacity} from 'react-native'
+import { FlatList, Text, TouchableOpacity } from 'react-native'
 import { Home, HomeButtonPressed } from '../../../assets/images'
 import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
 import Loading from '../../components/Loading'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../constants/theme/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -13,28 +13,29 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import styled from 'styled-components/native'
+import VocabularyListModal from './components/VocabularyListModal'
 
-const Root = styled.View` 
+const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
-  padding-bottom: 0;
-  padding-top: ${hp('5.6%')};
+  padding-bottom: 0px;
+  padding-top: 5.6%;
 `
-const ScreenTitle = styled.Text` 
+const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')};
+  font-size: ${wp('5%')}px;
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
-  margin-bottom: 4;
+  margin-bottom: 4px;
 `
-const StyledList = (styled.FlatList`
+const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
   width: 100%;
-`as unknown) as typeof FlatList; 
+`
 
-const Description = styled.Text` 
+const Description = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   color: ${COLORS.lunesGreyMedium};
   font-family: 'SourceSansPro-Regular';
 `
@@ -46,21 +47,8 @@ interface VocabularyListScreenPropsType {
 
 const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.popToTop()}
-          onPressIn={() => setIsHomeButtonPressed(true)}
-          onPressOut={() => setIsHomeButtonPressed(false)}
-          activeOpacity={1}>
-          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-        </TouchableOpacity>
-      )
-    })
-  }, [navigation, isHomeButtonPressed])
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
   const { data: documents, error, loading } = useLoadDocuments(trainingSetId)
 
@@ -75,15 +63,35 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
     </Title>
   )
 
-  const Item = ({ item }: { item: DocumentType }): JSX.Element => <VocabularyListItem document={item} />
+  const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (
+    <VocabularyListItem
+      document={item}
+      setIsModalVisible={() => {
+        setIsModalVisible(true)
+        setSelectedDocumentIndex(index)
+      }}
+    />
+  )
 
   return (
     <Root>
+      {!documents || !documents[selectedDocumentIndex] ? (
+        <></>
+      ) : (
+        <VocabularyListModal
+          documents={documents}
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          selectedDocumentIndex={selectedDocumentIndex}
+          setSelectedDocumentIndex={setSelectedDocumentIndex}
+        />
+      )}
+
       <Loading isLoading={loading}>
         <StyledList
           data={documents}
           ListHeaderComponent={Header}
-          renderItem={Item}
+          renderItem={renderItem}
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
         />

@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
 import Loading from '../components/Loading'
@@ -15,57 +15,57 @@ import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-    background-color: ${COLORS.lunesWhite};
-    height: 100%;
-    width: 100%;
-    padding-bottom: ${hp('0%')};
-    padding-top: ${hp('4%')};
-`;
+  background-color: ${COLORS.lunesWhite};
+  height: 100%;
+  width: 100%;
+  padding-bottom: 0px;
+  padding-top: 4%;
+`
 
 const ScreenTitle = styled.Text`
-    text-align: center;
-    font-size: ${wp('5%')};
-    color: ${COLORS.lunesGreyDark};
-    font-family: 'SourceSansPro-SemiBold';
-    margin-bottom: ${hp('1%')};
-    margin-top: ${hp('2%')};
-`;
+  text-align: center;
+  font-size: ${wp('5%')}px;
+  color: ${COLORS.lunesGreyDark};
+  font-family: 'SourceSansPro-SemiBold';
+  margin-bottom: 1%;
+  margin-top: 6%;
+`
 
 const Description = styled.Text`
-    text-align: center;
-    font-size: ${wp('4%')};
-    color: ${COLORS.lunesGreyMedium};
-    font-family: 'SourceSansPro-Regular';
-`;
+  text-align: center;
+  font-size: ${wp('4%')}px;
+  color: ${COLORS.lunesGreyMedium};
+  font-family: 'SourceSansPro-Regular';
+`
 
-const StyledList = (styled.FlatList`
-    flex-grow: 0;
-    width: 100%;
-    margin-bottom: ${hp('6%')};
-`as unknown) as typeof FlatList;
+const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
+  flex-grow: 0;
+  width: 100%;
+  margin-bottom: 6%;
+`
 
 const DarkLabel = styled.Text`
-    text-align: center;
-    color: ${COLORS.lunesBlack};
-    font-family: 'SourceSansPro-SemiBold';
-    font-size: ${wp('3.5%')};
-    letter-spacing: 0.4;
-    text-transform: uppercase;
-    font-weight: 600;
-`;
+  text-align: center;
+  color: ${COLORS.lunesBlack};
+  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('3.5%')}px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+`
 
 const Arrow = styled(NextArrow)`
-    margin-left: 5;
-`;
+  margin-left: 5px;
+`
 
 const LightLabel = styled.Text`
-    font-size: ${wp('3.2%')};
-    font-family: 'SourceSansPro-SemiBold';
-    color: ${COLORS.lunesWhite};
-    font-weight: 600;
-    margin-left: 10;
-    text-transform: uppercase;
-`;
+  font-size: ${wp('3.2%')}px;
+  font-family: 'SourceSansPro-SemiBold';
+  color: ${COLORS.lunesWhite};
+  font-weight: 600;
+  margin-left: 10px;
+  text-transform: uppercase;
+`
 interface ResultScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultScreen'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
@@ -126,7 +126,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
-      <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
+      <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <LightLabel>
@@ -151,7 +151,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}
           </DarkLabel>
-          <Arrow/>
+          <Arrow />
         </>
       </Button>
     </>
@@ -167,7 +167,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
-          ListFooterComponentStyle={{ alignItems: 'center',  marginTop: 15}}
+          ListFooterComponentStyle={{ alignItems: 'center', marginTop: 15 }}
         />
       </Loading>
     </Root>

@@ -1,57 +1,57 @@
 import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
 import MenuItem from '../components/MenuItem'
-import { FlatList, Text} from 'react-native'
-import axios from '../services/axios'
-import { ENDPOINTS, ProfessionType } from '../constants/endpoints'
+import { FlatList, Text } from 'react-native'
+import { DisciplineType } from '../constants/endpoints'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import Loading from '../components/Loading'
-import { COLORS } from '../constants/colors'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../services/AsyncStorage'
+import Loading from '../components/Loading'
+import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
+import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
 const Root = styled.View`
-background-color: ${COLORS.lunesWhite};
-height: 100%;
-`;
-const TextStyle = styled.Text`
-    margin-top: ${hp('8.5%')};
-    text-align: center;
-    font-size: ${wp('4%')};
-    color: ${COLORS.lunesGreyMedium};
-    font-family: 'SourceSansPro-Regular';
-    margin-bottom: 32;
-`;
-const List = (styled.FlatList`
-  width: ${wp('100%')};
-` as unknown) as typeof FlatList;
+  background-color: ${COLORS.lunesWhite};
+  height: 100%;
+`
+const StyledText = styled.Text`
+  margin-top: 8.5%;
+  text-align: center;
+  font-size: ${wp('4%')}px;
+  color: ${COLORS.lunesGreyMedium};
+  font-family: 'SourceSansPro-Regular';
+  margin-bottom: 32px;
+`
+const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
+  width: 100%;
+`
 
 const Description = styled.Text`
-    font-size: ${wp('4%')};
-    font-weight: normal;
-    font-family: 'SourceSansPro-Regular';
-    color: ${(prop: StyledProps) => (prop.item.id === prop.selectedId) ? COLORS.white : COLORS.lunesGreyMedium};
-`;
+  font-size: ${wp('4%')}px;
+  font-weight: normal;
+  font-family: 'SourceSansPro-Regular';
+  color: ${(prop: StyledProps) => (prop.item.id === prop.selectedId ? COLORS.white : COLORS.lunesGreyMedium)};
+`
 interface ProfessionScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Profession'>
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-interface StyledProps{
-  selectedId: number | null;
-  item: ProfessionType;
+interface StyledProps {
+  selectedId: number | null
+  item: DisciplineType
 }
 
-const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
-  const [professions, setProfessions] = useState<ProfessionType[]>([])
+const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): ReactElement => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+
+  const { data: disciplines, error, loading } = useLoadDisciplines(null)
+
   useFocusEffect(
     React.useCallback(() => {
       AsyncStorage.getSession()
@@ -61,29 +61,17 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
           }
         })
         .catch(e => console.error(e))
-      axios
-        .get(ENDPOINTS.professions.all)
-        .then(response => {
-          setProfessions(response.data)
-          setError(null)
-        })
-        .catch(e => {
-          setError(e.message)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
       setSelectedId(-1)
     }, [navigation])
   )
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
-      <TextStyle>{labels.home.welcome}</TextStyle>
+      <StyledText>{labels.home.welcome}</StyledText>
     </>
   )
-  const Item = ({ item }: { item: ProfessionType }): JSX.Element | null => {
-    if (item.total_training_sets === 0) {
+  const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
+    if (item.numberOfChildren === 0) {
       return null
     }
     return (
@@ -93,18 +81,16 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
         <Description item={item} selectedId={selectedId}>
-          {item.total_training_sets} {item.total_training_sets === 1 ? labels.home.unit : labels.home.units}
-          </Description>
+          {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+        </Description>
       </MenuItem>
     )
   }
-  const handleNavigation = (item: ProfessionType): void => {
+  const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
       extraParams: {
-        disciplineID: item.id,
-        disciplineTitle: item.title,
-        disciplineIcon: item.icon
+        module: item
       }
     })
   }
@@ -112,18 +98,18 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     <SafeAreaInsetsContext.Consumer>
       {insets => (
         <Root>
-          <Loading isLoading={isLoading}>
-        <List
-          data={professions}
-          ListHeaderComponent={Title(insets?.top)}
-          renderItem={Item}
-          keyExtractor={item => item.id.toString()}
-          scrollEnabled={true}
-          bounces={false}
-        ></List>
-      </Loading>
-      <Text>{error}</Text>
-      </Root>
+          <Loading isLoading={loading}>
+            <StyledList
+              data={disciplines}
+              ListHeaderComponent={Title(insets?.top)}
+              renderItem={Item}
+              keyExtractor={item => item.id.toString()}
+              scrollEnabled={true}
+              bounces={false}
+            />
+          </Loading>
+          <Text>{error}</Text>
+        </Root>
       )}
     </SafeAreaInsetsContext.Consumer>
   )

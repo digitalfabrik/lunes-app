@@ -1,22 +1,21 @@
 import React, { useState } from 'react'
 import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
-import { COLORS } from '../../../constants/colors'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const StyledText = styled.Text`
-  font-family: SourceSansPro-Regular;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${wp('4.3%')}px;
   font-weight: normal;
   font-style: normal;
 `
 
-const StyledContainer = styled.TouchableOpacity`
+const StyledContainer = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
   margin-bottom: 1.5%;
   border-radius: 2px;
-  border-width: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+  border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
     } else {
@@ -28,40 +27,45 @@ const StyledContainer = styled.TouchableOpacity`
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  border-color: ${COLORS.lunesBlackUltralight};
-  background-color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+  border-color: ${props => props.theme.colors.lunesBlackUltralight};
+  background-color: ${props => {
     if (props.pressed) {
-      return COLORS.lunesBlack
+      return props.theme.colors.lunesBlack
     } else if (props.correct && (props.selected || props.delayPassed)) {
-      return COLORS.lunesFunctionalCorrectDark
+      return props.theme.colors.lunesFunctionalCorrectDark
     } else if (props.selected) {
-      return COLORS.lunesFunctionalIncorrectDark
+      return props.theme.colors.lunesFunctionalIncorrectDark
     } else {
-      return COLORS.white
+      return props.theme.colors.white
     }
   }};
-  shadowColor: ${(props: { pressed: boolean; selected: boolean; correct: boolean }) => {
+  shadow-color: ${props => {
     if (props.correct) {
-      return COLORS.lunesFunctionalCorrectDark
+      return props.theme.colors.lunesFunctionalCorrectDark
     } else if (props.selected && !props.correct) {
-      return COLORS.lunesFunctionalIncorrectDark
+      return props.theme.colors.lunesFunctionalIncorrectDark
     } else {
-      return COLORS.shadow
+      return props.theme.colors.shadow
     }
   }};
-  ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+  ${props => {
     if (props.pressed || props.selected || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return 'elevation: 6; shadowOpacity: 0.5;'
+      return css`
+        elevation: 6;
+        shadow-opacity: 0.5;
+      `
     } else {
-      return 'elevation: 0; shadowOpacity: 0;'
+      return css`
+        elevation: 0;
+        shadow-opacity: 0;
+      `
     }
   }};
-  
-  shadowRadius: 5px;
-  shadowOffset: {width: 5, height: 5};
+  shadow-radius: 5px;
+  shadow-offset: 5px 5px;
 `
 
-const StyledArticleBox = styled.View`
+const StyledArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   width: 11.5%;
   height: 38%;
   border-radius: 10px;
@@ -71,46 +75,40 @@ const StyledArticleBox = styled.View`
   align-items: center;
   margin-right: 3%;
   margin-left: 3.5%;
-  background-color: ${(props: {
-    pressed: boolean
-    selected: boolean
-    article: Article
-    correct: boolean
-    delayPassed: boolean
-  }) => {
+  background-color: ${props => {
     if (props.pressed) {
-      return COLORS.lunesWhite
+      return props.theme.colors.lunesWhite
     } else if (props.selected || (props.correct && props.delayPassed)) {
-      return COLORS.lunesBlack
+      return props.theme.colors.lunesBlack
     } else {
       return getArticleColor(props.article)
     }
   }};
 `
 
-const StyledArticleText = styled(StyledText)`
+const StyledArticleText = styled(StyledText)<StyledListElementProps>`
   text-align: center;
-  color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+  color: ${props => {
     if (props.pressed) {
-      return COLORS.lunesBlack
+      return props.theme.colors.lunesBlack
     } else if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return COLORS.lunesFunctionalCorrectDark
+      return props.theme.colors.lunesFunctionalCorrectDark
     } else if (props.selected) {
-      return COLORS.lunesFunctionalIncorrectDark
+      return props.theme.colors.lunesFunctionalIncorrectDark
     } else {
-      return COLORS.lunesGreyDark
+      return props.theme.colors.lunesGreyDark
     }
   }};
 `
 
-const StyledWord = styled(StyledText)`
-  color: ${(props: { pressed: boolean; selected: boolean; correct: boolean; delayPassed: boolean }) => {
+const StyledWord = styled(StyledText)<StyledListElementProps>`
+  color: ${props => {
     if (props.pressed) {
-      return COLORS.lunesWhite
+      return props.theme.colors.lunesWhite
     } else if (props.selected || (props.correct && props.delayPassed)) {
-      return COLORS.lunesBlack
+      return props.theme.colors.lunesBlack
     } else {
-      return COLORS.lunesGreyDark
+      return props.theme.colors.lunesGreyDark
     }
   }};
 `
@@ -129,6 +127,14 @@ export interface SingleChoiceListItemPropsType {
   selected: boolean
   anyAnswerSelected: boolean
   delayPassed: boolean
+  disabled?: boolean
+}
+
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
 }
 
 const SingleChoiceListItem = ({
@@ -137,7 +143,8 @@ const SingleChoiceListItem = ({
   correct,
   selected,
   anyAnswerSelected,
-  delayPassed
+  delayPassed,
+  disabled = false
 }: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
@@ -164,7 +171,7 @@ const SingleChoiceListItem = ({
       onPressOut={onPressOut}
       pressed={pressed}
       delayPassed={delayPassed}
-      disabled={anyAnswerSelected}>
+      disabled={anyAnswerSelected || disabled}>
       <StyledArticleBox
         article={article}
         selected={selected}

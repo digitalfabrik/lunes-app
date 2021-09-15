@@ -1,12 +1,12 @@
 import React from 'react'
-import { FlatList, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import Title from '../components/Title'
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
-import { COLORS } from '../constants/colors'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { COLORS } from '../constants/theme/colors'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
@@ -16,97 +16,97 @@ const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
   align-items: center;
-  padding-left: ${wp('5%')};
-  padding-right: ${wp('5%')}; 
-  padding-top: ${hp('4.5%')};
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-top: 4.5%;
 `
-const StyledList = (styled.FlatList`
+const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
   flex-grow: 0;
-  width: ${wp('100%')};
-  margin-bottom: ${hp('6%')};
-`as unknown) as typeof FlatList;
+  width: 100%;
+  margin-bottom: 6%;
+`
 
-const ScreenDescription = styled.Text` 
-  font-size: ${wp('4%')};
+const ScreenDescription = styled.Text`
+  font-size: ${wp('4%')}px;
   color: ${COLORS.lunesGreyMedium};
   font-family: 'SourceSansPro-Regular';
-  line-height: 30;
-  margin-top: 7;
+  line-height: 18px;
+  margin-top: 7px;
 `
-const Description = styled.Text` 
-  font-size: ${wp('4%')};
+const Description = styled.Text`
+  font-size: ${wp('4%')}px;
   font-weight: normal;
-  font-family: 'SourceSansPro-Regular'; 
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesGreyDark}; 
+  font-family: 'SourceSansPro-Regular';
+  color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')};
+  font-size: ${wp('5%')}px;
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
-  padding-bottom: ${hp('3%')};
+  padding-bottom: 7%;
 `
 const ScreenSubTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
 `
 const Contained = styled.Pressable`
   align-self: center;
-  padding-top: 17;
-  padding-bottom: 17;
-  padding-right: 8;
-  padding-left: 16;
-  margin-bottom: 8;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  padding-right: 8px;
+  padding-left: 16px;
+  margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
   width: 90%;
   justify-content: space-between;
-  border-width: 1;
+  border-width: 1px;
   border-style: solid;
-  border-radius: 2;
-  background-color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesBlack : COLORS.white}; 
-  border-color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesBlackUltralight};
+  border-radius: 2px;
+  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
+  border-color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesBlackUltralight)};
 `
-const ItemTitle2 = styled.Text` 
+const StyledItemTitle = styled.Text`
   text-align: left;
   font-weight: 600;
-  letter-spacing: 0.11;
-  margin-bottom: 2;
+  letter-spacing: 0.11px;
+  margin-bottom: 2px;
   font-family: 'SourceSansPro-SemiBold';
-  font-size: ${(prop: StyledProps) => prop.selected ? wp('5%') : wp('4.5%')};
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark};
+  font-size: ${(prop: StyledProps) => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
-  margin-top: ${hp('1%')};
+  margin-top: 7%;
 `
-const LeftSide = styled.View` 
+const LeftSide = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
 `
 const StyledText = styled.View`
-  margin-left: 10;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
 `
 const LightLabel = styled.Text`
-  font-size: ${wp('3.5%')};
+  font-size: ${wp('3.5%')}px;
   font-family: 'SourceSansPro-SemiBold';
   color: ${COLORS.lunesWhite};
   font-weight: 600;
-  margin-left: 10;
+  margin-left: 10px;
   text-transform: uppercase;
 `
-const HeaderText = styled.Text` 
-  font-size: ${wp('3.5%')};
+const HeaderText = styled.Text`
+  font-size: ${wp('3.5%')}px;
   font-weight: 600;
   font-family: 'SourceSansPro-SemiBold';
   color: ${COLORS.lunesBlack};
   text-transform: uppercase;
-  margin-right: 8;
+  margin-right: 8px;
 `
 const RightHeader = styled.TouchableOpacity`
   display: flex;
@@ -114,10 +114,9 @@ const RightHeader = styled.TouchableOpacity`
   align-items: center;
 `
 const StyledTitle = styled(Title)`
-  shadowOpacity: 0;
   elevation: 0;
   border-bottom-color: ${COLORS.lunesBlackUltralight};
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
 `
 
 export const styles = StyleSheet.create({
@@ -126,11 +125,11 @@ export const styles = StyleSheet.create({
     elevation: 0,
     borderBottomColor: COLORS.lunesBlackUltralight,
     borderBottomWidth: 1
-  },
+  }
 })
 
 interface StyledProps {
-  selected: boolean;
+  selected: boolean
 }
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
@@ -201,8 +200,9 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         <LeftSide>
           <item.Icon fill={iconColor} width={30} height={30} />
           <StyledText>
-            <ItemTitle2 selected={selected}>{item.title}</ItemTitle2>
-            <Description selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+            <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
+            <Description
+              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />
@@ -218,7 +218,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }
 
   const Footer = (
-    < Button onPress={repeatExercise} theme={BUTTONS_THEME.dark}>
+    <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
       <>
         <RepeatIcon fill={COLORS.lunesWhite} />
         <LightLabel>{labels.results.retryExercise}</LightLabel>
@@ -236,8 +236,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
-        ListFooterComponentStyle={{ alignItems: 'center',  marginTop: 25}}
-        contentContainerStyle={{alignItems: 'center'}}
+        ListFooterComponentStyle={{ alignItems: 'center', marginTop: 25 }}
+        contentContainerStyle={{ alignItems: 'center' }}
       />
     </Root>
   )

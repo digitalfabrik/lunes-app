@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { SingleChoice } from './SingleChoice'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
-import { Answer, ARTICLES, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
 import { LightLabelInput } from '../../write-exercise/components/Actions'
 import styled from 'styled-components/native'
@@ -12,10 +12,9 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { COLORS } from '../../../constants/colors'
 
 const ExerciseContainer = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
 `
@@ -64,14 +63,14 @@ const ChoiceExerciseScreen = ({
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
-  const onClickAnswer = (selectedAnswer: Answer): void => {
-    setSelectedAnswer(selectedAnswer)
+  const onClickAnswer = (clickedAnswer: Answer): void => {
+    setSelectedAnswer(clickedAnswer)
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
-      isAnswerEqual(it, selectedAnswer)
+      isAnswerEqual(it, clickedAnswer)
     )
 
     if (correctSelected !== undefined) {
-      setCorrectAnswer(selectedAnswer)
+      setCorrectAnswer(clickedAnswer)
       const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
@@ -119,7 +118,7 @@ const ChoiceExerciseScreen = ({
       />
       <ButtonContainer>
         {selectedAnswer !== null && (
-          <Button onPress={onFinishWord} theme={BUTTONS_THEME.dark}>
+          <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
               <LightLabelInput>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
