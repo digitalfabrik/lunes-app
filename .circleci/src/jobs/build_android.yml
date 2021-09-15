@@ -5,6 +5,9 @@ environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
 shell: /bin/bash -eo pipefail
 steps:
+  - add_ssh_keys: # Needed for credentials repo
+      fingerprints:
+        - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
   - checkout
   - restore_ruby_cache:
       directory: android
@@ -12,13 +15,11 @@ steps:
   - prepare_workspace
   - restore_environment_variables
   - run:
-      name: Base64 decode keystore env var
-      command: echo "${KEYSTORE_BASE64}" | base64 -di --decode > android/$KEYSTORE_FILENAME.gpg
+      name: '[FL] Prepare Android Keystore'
+      command: bundle exec fastlane keystore
+      working_directory: android
   - run:
-      name: Decrypt keystore
-      command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
-  - run:
-      name: Build Android
+      name: '[FL] Build Android'
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
   - run:

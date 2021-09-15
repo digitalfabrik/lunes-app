@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native'
 import { Arrow } from '../../assets/images'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import { StyleSheet } from 'react-native'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   arrow: {
