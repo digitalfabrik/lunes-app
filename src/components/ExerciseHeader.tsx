@@ -64,7 +64,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
   useEffect(() => {
-    const showModal = () => {
+    const showModal = (): boolean => {
       setIsModalVisible(true)
       return true
     }

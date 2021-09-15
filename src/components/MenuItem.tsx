@@ -49,10 +49,11 @@ const Left = styled.View`
 
 export interface IMenuItemProps {
   selected: boolean
-  onPress?: () => void
-  icon?: string
-  title?: string
-  children: ReactElement[] | string | undefined
+  onPress: () => void
+  icon: string
+  title: string
+  children: ReactElement
+}
 }
 
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
