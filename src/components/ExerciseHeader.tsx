@@ -23,12 +23,10 @@ const Title = styled.Text`
     text-transform: uppercase;
     font-weight: 600;
     margin-left: 15;
-`;
-
+`
 const ProgressBar = styled(RNProgressBar)`
    background-color: ${COLORS.lunesBlackUltralight};
-`;
-
+`
 const HeaderLeft = styled.TouchableOpacity`
     padding-left: 15;
     flex-direction: row;
@@ -53,11 +51,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
             <Title>{labels.general.header.cancelExercise}</Title>
           </HeaderLeft>
         ),
-        headerRight: () => (
-          <HeaderText>{`${currentWord + 1} ${
-            labels.general.header.of
-          } ${numberOfWords}`}</HeaderText>
-        )
+        headerRight: () => <HeaderText>{`${currentWord + 1} ${labels.general.header.of} ${numberOfWords}`}</HeaderText>
       }),
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
@@ -77,7 +71,13 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
         accessibilityComponentType
         accessibilityTraits
       />
-      <ConfirmationModal visible={isModalVisible} setIsModalVisible={setIsModalVisible} navigation={navigation} route={route} />
+
+      <ConfirmationModal
+        visible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        navigation={navigation}
+        route={route}
+      />
     </>
   )
 }

@@ -5,7 +5,7 @@ const TitleStyle = styled.View`
     min-height: 54;
     align-items: center;
     margin-bottom: 32;
-`;
+`
 
 export interface ITitleProps {
   children: ReactElement

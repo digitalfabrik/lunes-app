@@ -18,6 +18,7 @@ const Overlay  = styled.View`
     justify-content: center;
     align-items: center;
     background-color: ${COLORS.lunesOverlay};
+`
 const ModalContainer  = styled.View`
     background-color: ${COLORS.white};
     align-items: center;
@@ -26,14 +27,14 @@ const ModalContainer  = styled.View`
     position: relative;
     padding-top: 31;
     padding-bottom: 31;
-`;
+`
 const CloseIconStyle = styled.TouchableOpacity`
     position: absolute;
     top: 8;
     right: 8;
     width: 24;
     height: 24;
-`;
+`
 const Message = styled.Text`
     text-align: center;
     font-size: ${wp('5%')};
@@ -42,7 +43,7 @@ const Message = styled.Text`
     width: ${wp('60%')};
     margin-bottom: 31;
     padding-top: 31;
-`;
+`
 const Label = styled.Text`
   color: ${(prop: LabelProps) => prop.LColor};
   font-size: ${wp('4%')}px;
@@ -51,12 +52,11 @@ const Label = styled.Text`
     text-transform: uppercase;
     font-family: 'SourceSansPro-SemiBold';
   letter-spacing: 0.4px;
-`;
+`
 
 interface LabelProps {
   LColor: Color;
 }
-
 export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
@@ -74,7 +74,14 @@ const ConfirmationModal = ({
   const goBack = (): void => {
     setIsModalVisible(false)
     AsyncStorage.clearSession().catch(e => console.error(e))
-    const { disciplineID, disciplineTitle, disciplineIcon, trainingSetId, trainingSet, documentsLength } = route.params.extraParams
+    const {
+      disciplineID,
+      disciplineTitle,
+      disciplineIcon,
+      trainingSetId,
+      trainingSet,
+      documentsLength
+    } = route.params.extraParams
     const extraParams = {
       extraParams: {
         disciplineID: disciplineID,
