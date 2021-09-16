@@ -15,8 +15,8 @@ const HeaderText = styled.Text`
     font-size: ${wp('4%')};
     font-family: 'SourceSansPro-Regular';
     color: ${COLORS.lunesGreyMedium};
-`;
-const TextTitle = styled.Text`
+`
+const Title = styled.Text`
     color: ${COLORS.lunesBlack};
     font-family: 'SourceSansPro-SemiBold';
     font-size: ${wp('4%')};
@@ -25,11 +25,11 @@ const TextTitle = styled.Text`
     margin-left: 15;
 `;
 
-const ProgressBarStyle = styled(ProgressBar)`
+const ProgressBar = styled(RNProgressBar)`
    background-color: ${COLORS.lunesBlackUltralight};
 `;
 
-const HeaderLeftTouchableOpacity = styled.TouchableOpacity`
+const HeaderLeft = styled.TouchableOpacity`
     padding-left: 15;
     flex-direction: row;
     align-items: center;
@@ -48,10 +48,10 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     () =>
       navigation.setOptions({
         headerLeft: () => (
-          <HeaderLeftTouchableOpacity onPress={() => setIsModalVisible(true)} >
+          <HeaderLeft onPress={() => setIsModalVisible(true)}>
             <CloseButton />
-            <TextTitle>{labels.general.header.cancelExercise}</TextTitle>
-          </HeaderLeftTouchableOpacity>
+            <Title>{labels.general.header.cancelExercise}</Title>
+          </HeaderLeft>
         ),
         headerRight: () => (
           <HeaderText>{`${currentWord + 1} ${
@@ -71,7 +71,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
   }, [])
   return (
     <>
-      <ProgressBarStyle
+      <ProgressBar
         progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
         color={COLORS.lunesGreenMedium}
         accessibilityComponentType

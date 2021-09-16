@@ -20,7 +20,7 @@ const ItemStyle = styled(Pressable)`
   border-style: solid;
   border-radius: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 2 : 0)};
 `;
-const ItemTitleStyle = styled.Text`
+const ItemTitle = styled.Text`
     font-size: ${wp('5%')};
     letter-spacing: 0.11;
     margin-bottom: 2;
@@ -56,9 +56,9 @@ const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps):
         <Left>
           <Icon source={{ uri: icon }}  />
           <View>
-          <ItemTitleStyle selected={selected} testID='title'>
+            <ItemTitle selected={selected} testID='title'>
               {title}
-          </ItemTitleStyle>
+            </ItemTitle>
             {children}
           </View>
         </Left>

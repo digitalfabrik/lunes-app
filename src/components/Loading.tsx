@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native'
 import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
-const Root = styled.View`
+const LoadingContainer = styled.View`
     flex: 1;
     align-items: center;
 `;
@@ -19,7 +19,7 @@ export interface ILoadingProps {
 }
 
 const Loading = ({ children, isLoading }: ILoadingProps) => (
-  <Root>
+  <LoadingContainer>
     {isLoading ? (
       <Indicator>
         <ActivityIndicator size='large' color={COLORS.lunesBlack} />
@@ -27,6 +27,6 @@ const Loading = ({ children, isLoading }: ILoadingProps) => (
     ) : (
       children
     )}
-  </Root>
+  </LoadingContainer>
 )
 export default Loading
