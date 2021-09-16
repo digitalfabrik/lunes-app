@@ -25,7 +25,7 @@ const Title = styled.Text`
   margin-left: 15px;
 `
 const ProgressBar = styled(RNProgressBar)`
-background-color: ${COLORS.lunesBlackUltralight};
+  background-color: ${COLORS.lunesBlackUltralight};
 `
 const HeaderLeft = styled.TouchableOpacity`
   padding-left: 15px;

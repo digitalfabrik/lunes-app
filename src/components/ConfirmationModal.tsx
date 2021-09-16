@@ -13,13 +13,13 @@ import styled from 'styled-components/native'
 import { Color } from 'react-native-svg'
 import { Modal } from 'react-native'
 
-const Overlay  = styled.View`
+const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${COLORS.lunesOverlay};
 `
-const ModalContainer  = styled.View`
+const ModalContainer = styled.View`
   background-color: ${COLORS.white};
   align-items: center;
   width: ${wp('85%')}px;
@@ -55,7 +55,7 @@ const Label = styled.Text`
 `
 
 interface LabelProps {
-  LColor: Color;
+  LColor: Color
 }
 export interface ConfirmationModalPropsType {
   visible: boolean
@@ -96,8 +96,8 @@ const ConfirmationModal = ({
   }
   return (
     <Modal testID='modal' visible={visible} transparent animationType='fade'>
-      <Overlay >
-        <ModalContainer >
+      <Overlay>
+        <ModalContainer>
           <CloseIconStyle onPress={closeModal}>
             <CloseIcon />
           </CloseIconStyle>

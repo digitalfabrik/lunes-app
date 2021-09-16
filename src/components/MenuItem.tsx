@@ -18,7 +18,7 @@ const ItemStyle = styled(Pressable)`
   border-width: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 1 : 0)}px;
   border-style: solid;
   border-radius: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 2 : 0)}px;
-  `
+`
 const ItemTitle = styled.Text`
   font-size: ${wp('5%')}px;
   letter-spacing: 0.11px;
@@ -51,17 +51,17 @@ interface IMenuItemStyleProps {
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
   return (
     <ItemStyle onPress={onPress} selected={selected}>
-        <Left>
-          <Icon source={{ uri: icon }} />
-          <View>
-            <ItemTitle selected={selected} testID='title'>
-              {title}
-            </ItemTitle>
-            {children}
-          </View>
-        </Left>
-        <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
-      </ItemStyle>
+      <Left>
+        <Icon source={{ uri: icon }} />
+        <View>
+          <ItemTitle selected={selected} testID='title'>
+            {title}
+          </ItemTitle>
+          {children}
+        </View>
+      </Left>
+      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+    </ItemStyle>
   )
 }
 export default MenuItem
