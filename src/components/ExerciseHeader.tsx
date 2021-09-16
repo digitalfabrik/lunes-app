@@ -12,25 +12,25 @@ import { RouteProp } from '@react-navigation/native'
 import styled from 'styled-components/native'
 
 const HeaderText = styled.Text`
-    font-size: ${wp('4%')};
-    font-family: 'SourceSansPro-Regular';
-    color: ${COLORS.lunesGreyMedium};
+  font-size: ${wp('4%')}px;
+  font-family: 'SourceSansPro-Regular';
+  color: ${COLORS.lunesGreyMedium};
 `
 const Title = styled.Text`
-    color: ${COLORS.lunesBlack};
-    font-family: 'SourceSansPro-SemiBold';
-    font-size: ${wp('4%')};
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-left: 15;
+  color: ${COLORS.lunesBlack};
+  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('4%')}px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-left: 15px;
 `
 const ProgressBar = styled(RNProgressBar)`
-   background-color: ${COLORS.lunesBlackUltralight};
+background-color: ${COLORS.lunesBlackUltralight};
 `
 const HeaderLeft = styled.TouchableOpacity`
-    padding-left: 15;
-    flex-direction: row;
-    align-items: center;
+  padding-left: 15px;
+  flex-direction: row;
+  align-items: center;
 `
 
 interface ExerciseHeaderPropsType {

@@ -7,34 +7,34 @@ import styled from 'styled-components/native'
 
 const ItemStyle = styled(Pressable)`
   margin: 0px 16px 8px 16px;
-    justify-content: space-between;
+  justify-content: space-between;
   padding: 17px 8px 17px 16px;
-    flex-direction: row;
-    align-items: center;
-  margin-left: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)};
-  margin-right: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)};
+  flex-direction: row;
+  align-items: center;
+  margin-left: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
+  margin-right: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
   background-color: ${(prop: IMenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
   border-color: ${COLORS.white};
-  border-width: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 1 : 0)};
+  border-width: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 1 : 0)}px;
   border-style: solid;
-  border-radius: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 2 : 0)};
+  border-radius: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 2 : 0)}px;
   `
 const ItemTitle = styled.Text`
-    font-size: ${wp('5%')};
-    letter-spacing: 0.11;
-    margin-bottom: 2;
-    font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('5%')}px;
+  letter-spacing: 0.11px;
+  margin-bottom: 2px;
+  font-family: 'SourceSansPro-SemiBold';
   color: ${(prop: IMenuItemStyleProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
 `
 const Icon = styled.Image`
-    justify-content: center;
-    margin-right: 10;
-    width: ${wp('7%')};
-    height: ${wp('7%')};
+  justify-content: center;
+  margin-right: 10px;
+  width: ${wp('7%')}px;
+  height: ${wp('7%')}px;
 `
 const Left = styled.View`
-    flex-direction: row;
-    align-items: center;
+  flex-direction: row;
+  align-items: center;
 `
 
 export interface IMenuItemProps {
@@ -50,7 +50,7 @@ interface IMenuItemStyleProps {
 
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
   return (
-      <ItemStyle onPress={onPress} selected={selected}>
+    <ItemStyle onPress={onPress} selected={selected}>
         <Left>
           <Icon source={{ uri: icon }} />
           <View>

@@ -13,8 +13,8 @@ const StyledImage = styled.Image`
 `
 const PaginationView = styled.View`
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0px;
+  right: 0px;
   top: 10px;
 `
 

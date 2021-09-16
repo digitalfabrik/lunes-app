@@ -14,43 +14,43 @@ import { Color } from 'react-native-svg'
 import { Modal } from 'react-native'
 
 const Overlay  = styled.View`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    background-color: ${COLORS.lunesOverlay};
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLORS.lunesOverlay};
 `
 const ModalContainer  = styled.View`
-    background-color: ${COLORS.white};
-    align-items: center;
-    width: ${wp('85%')};
-    border-radius: 4;
-    position: relative;
-    padding-top: 31;
-    padding-bottom: 31;
+  background-color: ${COLORS.white};
+  align-items: center;
+  width: ${wp('85%')}px;
+  border-radius: 4px;
+  position: relative;
+  padding-top: 31px;
+  padding-bottom: 31px;
 `
 const CloseIconStyle = styled.TouchableOpacity`
-    position: absolute;
-    top: 8;
-    right: 8;
-    width: 24;
-    height: 24;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
 `
 const Message = styled.Text`
-    text-align: center;
-    font-size: ${wp('5%')};
-    color: ${COLORS.lunesGreyDark};
-    font-family: 'SourceSansPro-SemiBold';
-    width: ${wp('60%')};
-    margin-bottom: 31;
-    padding-top: 31;
+  text-align: center;
+  font-size: ${wp('5%')}px;
+  color: ${COLORS.lunesGreyDark};
+  font-family: 'SourceSansPro-SemiBold';
+  width: ${wp('60%')}px;
+  margin-bottom: 31px;
+  padding-top: 31px;
 `
 const Label = styled.Text`
   color: ${(prop: LabelProps) => prop.LColor};
   font-size: ${wp('4%')}px;
-    font-weight: 600;
-    text-align: center;
-    text-transform: uppercase;
-    font-family: 'SourceSansPro-SemiBold';
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'SourceSansPro-SemiBold';
   letter-spacing: 0.4px;
 `
 
