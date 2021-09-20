@@ -1,8 +1,16 @@
-import React, { useState } from 'react'
-import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
-import styled, { css } from 'styled-components/native'
+import labels from '../../../constants/labels.json'
+import { getArticleColor } from '../../../services/helpers'
+import React, { useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { css } from 'styled-components/native'
+
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
+}
 
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
@@ -184,6 +192,7 @@ const SingleChoiceListItem = ({
       </StyledArticleBox>
       <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
+        {article.id === 4 && ` (${labels.general.plurals})`}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>

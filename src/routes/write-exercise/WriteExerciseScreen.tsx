@@ -17,8 +17,8 @@ const Spinner = styled(ActivityIndicator)`
   width: 100%;
   height: ${hp('35%')}px;
   position: absolute;
-  top: 0px;
-  background-color: ${COLORS.lunesWhite};
+  top: 0;
+  background-color: ${props => props.theme.colors.lunesWhite};
 `
 
 interface WriteExerciseScreenPropsType {

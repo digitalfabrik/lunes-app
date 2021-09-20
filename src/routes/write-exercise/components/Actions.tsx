@@ -67,7 +67,9 @@ const Actions = ({
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
-        <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
+        <LightLabelInput styledInput={input}>
+          {labels.exercises.write.checkInput}
+        </LightLabelInput>
       </Button>
 
       <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>

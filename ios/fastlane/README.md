@@ -26,11 +26,21 @@ Create a release build
 fastlane ios upload_to_browserstack
 ```
 Upload iOS App to BrowserStack
+### ios upload_to_appstoreconnect
+```
+fastlane ios upload_to_appstoreconnect
+```
+Deliver the app to App Store Connect. The app is submitted for review and released automatically.
 ### ios upload_to_test_flight
 ```
 fastlane ios upload_to_test_flight
 ```
 Deliver iOS App to TestFlight for testers
+### ios prepare_release_notes
+```
+fastlane ios prepare_release_notes
+```
+Prepare release notes
 
 ----
 

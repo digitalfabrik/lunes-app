@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
@@ -24,27 +24,24 @@ const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
 
 const ScreenDescription = styled.Text`
   font-size: ${wp('4%')}px;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
-const Description = styled.Text`
+const Description = styled.Text<{ selected: boolean }>`
   font-size: ${wp('4%')}px;
-  font-family: 'SourceSansPro-Regular';
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: normal;
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Container = styled.Pressable`
+const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 8px;
-  padding-left: 16px;
+  padding: 17px 8px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
@@ -54,19 +51,20 @@ const Container = styled.Pressable`
   border-style: solid;
   border-radius: 2px;
 
-  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
-  border-color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesBlackUltralight)};
+  background-color: ${props => (props.selected ? props.theme.colors.lunesBlack : props.theme.colors.white)};
+  border-color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesBlackUltralight)};
 `
-const StyledItemTitle = styled.Text`
+const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
   font-size: ${wp('4.5%')}px;
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
-  font-family: 'SourceSansPro-SemiBold';
+  font-family: ${props => props.theme.fonts.contentFontBold};
 
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
 `
+
 const StyledLevel = styled.View`
   margin-top: 11px;
 `
@@ -74,10 +72,6 @@ const StyledLevel = styled.View`
 interface ExercisesScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Exercises'>
   navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
-}
-
-interface StyledProps {
-  selected: boolean
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {

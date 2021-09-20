@@ -1,24 +1,24 @@
+import Loading from '../../components/Loading'
+import Title from '../../components/Title'
+import { DocumentType } from '../../constants/endpoints'
+import labels from '../../constants/labels.json'
+import { COLORS } from '../../constants/theme/colors'
+import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import VocabularyListItem from './components/VocabularyListItem'
+import VocabularyListModal from './components/VocabularyListModal'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { DocumentType } from '../../constants/endpoints'
-import Title from '../../components/Title'
-import VocabularyListItem from './components/VocabularyListItem'
-import Loading from '../../components/Loading'
-import { COLORS } from '../../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RouteProp } from '@react-navigation/native'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import labels from '../../constants/labels.json'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
 import styled from 'styled-components/native'
-import VocabularyListModal from './components/VocabularyListModal'
 
 const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
   width: 100%;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 5.6%;
 `
 const ScreenTitle = styled.Text`
@@ -85,7 +85,6 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
           setSelectedDocumentIndex={setSelectedDocumentIndex}
         />
       )}
-
       <Loading isLoading={loading}>
         <StyledList
           data={documents}

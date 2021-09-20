@@ -1,15 +1,15 @@
+import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
+import Button from '../components/Button'
+import Title from '../components/Title'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
+import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import Title from '../components/Title'
-import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import Button from '../components/Button'
-import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
@@ -52,7 +52,7 @@ const ScreenSubTitle = styled.Text`
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
 `
-const Contained = styled.Pressable`
+const Contained = styled.Pressable<StyledProps>`
   align-self: center;
   padding-top: 17px;
   padding-bottom: 17px;
@@ -66,17 +66,17 @@ const Contained = styled.Pressable`
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
-  border-color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesBlackUltralight)};
+  background-color: ${prop => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
+  border-color: ${prop => (prop.selected ? COLORS.white : COLORS.lunesBlackUltralight)};
 `
-const StyledItemTitle = styled.Text`
+const StyledItemTitle = styled.Text<StyledProps>`
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
   font-family: 'SourceSansPro-SemiBold';
-  font-size: ${(prop: StyledProps) => (prop.selected ? wp('5%') : wp('4.5%'))}px;
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
+  font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  color: ${prop => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
   margin-top: 7%;
@@ -131,6 +131,7 @@ export const styles = StyleSheet.create({
 interface StyledProps {
   selected: boolean
 }
+
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>

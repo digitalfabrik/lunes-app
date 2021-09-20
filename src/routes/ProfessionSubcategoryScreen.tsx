@@ -1,20 +1,19 @@
-import React, { useState } from 'react'
-import { FlatList, LogBox, StatusBar, Text } from 'react-native'
-import Title from '../components/Title'
-import { DisciplineType } from '../constants/endpoints'
-import { RouteProp } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import Title from '../components/Title'
+import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { FlatList, LogBox, StatusBar, Text } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   padding-top: 5%;
 `
@@ -22,45 +21,44 @@ const ItemText = styled.View`
   flex-direction: row;
   align-items: center;
 `
+
 const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
   width: 100%;
 `
 
-const Description = styled.Text`
+const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
   font-size: ${wp('4%')}px;
-  font-family: 'SourceSansPro-Regular';
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: 5px;
   font-weight: normal;
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium)};
+  color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
+
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const BadgeLabel = styled.Text`
-  font-family: 'SourceSansPro-SemiBold';
+const BadgeLabel = styled.Text<{ selected: boolean }>`
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: 600;
   min-width: ${wp('6%')}px;
   height: ${wp('4%')}px;
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesGreyMedium : COLORS.lunesWhite)};
-  font-size: ${(prop: StyledProps) => (prop.selected ? wp('12') : wp('3%'))}px;
-  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyMedium)};
+  color: ${prop => (prop.selected ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
+  font-size: ${prop => (prop.selected ? wp('12') : wp('3%'))}px;
+  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+
 interface ProfessionSubcategoryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ProfessionSubcategory'>
   navigation: StackNavigationProp<RoutesParamsType, 'ProfessionSubcategory'>
-}
-
-interface StyledProps {
-  selected: boolean
 }
 
 const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {

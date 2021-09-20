@@ -1,21 +1,18 @@
-import React, { ReactElement } from 'react'
-import { View } from 'react-native'
-import { COLORS } from '../../../constants/theme/colors'
-import { getArticleColor } from '../../../services/helpers'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
+import { COLORS } from '../../../constants/theme/colors'
+import { getArticleColor } from '../../../services/helpers'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-const Wrapper = styled.View`
+const Wrapper = styled.Pressable`
   padding-right: 5%;
   padding-left: 5%;
 `
 const Container = styled.View`
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding: 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   justify-content: space-between;
@@ -72,7 +69,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <Wrapper>
+    <Wrapper onPress={setIsModalVisible ?? (() => {})}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (
