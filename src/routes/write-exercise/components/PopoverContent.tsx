@@ -1,7 +1,6 @@
 import React from 'react'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../../../constants/theme/colors'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 

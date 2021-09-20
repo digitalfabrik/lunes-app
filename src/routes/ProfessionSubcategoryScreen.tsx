@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, LogBox, StatusBar, Text } from 'react-native'
+import { FlatList, StatusBar, Text } from 'react-native'
 import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
 import { RouteProp } from '@react-navigation/native'
@@ -51,8 +51,6 @@ const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-size: ${prop => (prop.selected ? 12 : wp('3%'))};
   background-color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
-
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 interface ProfessionSubcategoryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ProfessionSubcategory'>

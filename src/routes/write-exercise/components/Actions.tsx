@@ -6,14 +6,14 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 
-export const LightLabelInput = styled.Text`
+export const LightLabelInput = styled.Text<{styledInput?: string}>`
   text-align: center;
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${wp('4%')}px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   font-weight: 600;
-  color: ${(prop: StyledProps) => (prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite)};
+  color: ${prop => (prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite)};
 `
 
 const LightLabelArrow = styled(LightLabelInput)`
@@ -41,10 +41,6 @@ export interface IActionsProps {
   input: string
   isFinished: boolean
   secondAttempt: boolean
-}
-
-interface StyledProps {
-  styledInput?: string
 }
 
 const Actions = ({

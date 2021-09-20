@@ -33,11 +33,11 @@ const ScreenDescription = styled.Text`
   line-height: 18px;
   margin-top: 7px;
 `
-const Description = styled.Text`
+const Description = styled.Text<{selected: boolean}>`
   font-size: ${wp('4%')}px;
   font-weight: normal;
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${(prop: StyledProps) => (prop.selected ? prop=> prop.theme.colors.white : prop=> prop.theme.colors.lunesGreyDark)};
+  color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
@@ -52,7 +52,7 @@ const ScreenSubTitle = styled.Text`
   color: ${prop=> prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Contained = styled.Pressable<StyledProps>`
+const Contained = styled.Pressable<{selected: boolean}>`
   align-self: center;
   padding-top: 17px;
   padding-bottom: 17px;
@@ -66,17 +66,17 @@ const Contained = styled.Pressable<StyledProps>`
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  background-color: ${(prop: StyledProps) => (prop.selected ? prop=> prop.theme.colors.lunesBlack : prop=> prop.theme.colors.white)};
-  border-color: ${(prop: StyledProps) => (prop.selected ? prop=> prop.theme.colors.white : prop=> prop.theme.colors.lunesBlackUltralight)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
+  border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesBlackUltralight)};
 `
-const StyledItemTitle = styled.Text`
+const StyledItemTitle = styled.Text<{selected: boolean}>`
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${(prop: StyledProps) => (prop.selected ? wp('5%') : wp('4.5%'))}px;
-  color: ${(prop: StyledProps) => (prop.selected ? prop=> prop.theme.colors.lunesWhite : prop=> prop.theme.colors.lunesGreyDark)};
+  font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
   margin-top: 7%;
@@ -127,10 +127,6 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1
   }
 })
-
-interface StyledProps {
-  selected: boolean
-}
 
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>

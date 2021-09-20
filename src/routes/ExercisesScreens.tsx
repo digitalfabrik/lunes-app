@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, LogBox, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
@@ -14,28 +14,28 @@ import styled from 'styled-components/native'
 const Root = styled.View`
   background-color: ${prop=> prop.theme.colors.lunesWhite};
   height: 100%;
-  padding-top: ${hp('5.6%')};
+  padding-top: ${hp('5.6%')}px;
 `
 const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
-  width: ${wp('100%')};
-  padding-right: ${wp('5%')};
-  padding-left: ${wp('5%')};
+  width: ${wp('100%')}px;
+  padding-right: ${wp('5%')}px;
+  padding-left: ${wp('5%')}px;
 `
 
 const ScreenDescription = styled.Text`
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: normal;
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')};
+  font-size: ${wp('5%')}px;
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
@@ -68,8 +68,6 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
 const StyledLevel = styled.View`
   margin-top: 11px;
 `
-
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
 interface ExercisesScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Exercises'>
