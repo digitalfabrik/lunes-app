@@ -9,6 +9,8 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import labels from './labels.json'
+import { ComponentType } from 'react'
+import { SvgProps } from 'react-native-svg'
 
 export const ExerciseKeys = {
   vocabularyList: 0,
@@ -22,7 +24,7 @@ export interface ExerciseType {
   key: ExerciseKeyType
   title: string
   description: string
-  Level: easy
+  Level: typeof easy
   nextScreen: keyof RoutesParamsType
 }
 
@@ -60,7 +62,9 @@ export const EXERCISES: ExerciseType[] = [
 export const BUTTONS_THEME = {
   light: 'light',
   dark: 'dark'
-}
+} as const
+
+export type ButtonThemeType = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
 interface ArticleType {
   readonly id: number
@@ -98,7 +102,7 @@ export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS
 export interface ResultType {
   key: SimpleResultType
   title: string
-  Icon: any
+  Icon: ComponentType<SvgProps>
   order: number
 }
 

@@ -2,7 +2,6 @@ import 'react-native'
 import React from 'react'
 import VocabularyListItem from '../VocabularyListItem'
 import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
 import { ARTICLES } from '../../../../constants/data'
 import { DocumentType } from '../../../../constants/endpoints'
 
@@ -15,11 +14,6 @@ describe('VocabularyListItem', () => {
     word: 'Winkelmesser',
     alternatives: []
   }
-
-  it('renders correctly across screens', () => {
-    const component = shallow(<VocabularyListItem document={document} />)
-    expect(toJson(component)).toMatchSnapshot()
-  })
 
   it('should display image passed to it', () => {
     const component = shallow(<VocabularyListItem document={document} />)

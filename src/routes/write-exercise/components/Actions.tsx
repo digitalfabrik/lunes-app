@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
@@ -63,7 +63,7 @@ const Actions = ({
   tryLater
 }: IActionsProps): ReactElement => {
   return result ? (
-    <Button onPress={getNextWord} theme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
+    <Button onPress={getNextWord} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
         <LightLabelArrow>
           {isFinished ? labels.exercises.showResults : labels.exercises.next}
@@ -73,13 +73,13 @@ const Actions = ({
     </Button>
   ) : (
     <>
-      <Button onPress={checkEntry} disabled={!input} theme={BUTTONS_THEME.dark} testID='check-entry'>
+      <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
         <LightLabelInput styledInput={input}>
           {labels.exercises.write.checkInput}
         </LightLabelInput>
       </Button>
 
-      <Button onPress={giveUp} theme={BUTTONS_THEME.light} testID='give-up'>
+      <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>
         <DarkLabel>{labels.exercises.write.showSolution}</DarkLabel>
       </Button>
 

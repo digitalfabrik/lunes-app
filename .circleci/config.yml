@@ -139,6 +139,9 @@ jobs:
         resource_class: medium+
         shell: /bin/bash -eo pipefail
         steps:
+            - add_ssh_keys:
+                fingerprints:
+                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
             - checkout
             - restore_ruby_cache:
                 directory: android
@@ -146,14 +149,12 @@ jobs:
             - prepare_workspace
             - restore_environment_variables
             - run:
-                command: echo "${KEYSTORE_BASE64}" | base64 -di --decode > android/$KEYSTORE_FILENAME.gpg
-                name: Base64 decode keystore env var
-            - run:
-                command: sudo gpg --passphrase ${KEYSTORE_ENCRYPTION_KEY} --pinentry-mode loopback -o "android/app/$KEYSTORE_FILENAME" -d "android/$KEYSTORE_FILENAME.gpg"
-                name: Decrypt keystore
+                command: bundle exec fastlane keystore
+                name: '[FL] Prepare Android Keystore'
+                working_directory: android
             - run:
                 command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
-                name: Build Android
+                name: '[FL] Build Android'
                 working_directory: android
             - run:
                 command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
@@ -197,7 +198,7 @@ jobs:
                 root: ios/output/gym
     bump_version:
         docker:
-            - image: circleci/node:12.16.3
+            - image: circleci/node:14.16.0
         parameters:
             delivery:
                 default: none
@@ -229,13 +230,13 @@ jobs:
             - persist_environment_variables
     check:
         docker:
-            - image: circleci/node:12.16.3
+            - image: circleci/node:14.16.0
         steps:
             - checkout
             - check_config
             - restore_yarn_cache
             - run:
-                command: yarn lint:ci
+                command: yarn lint
                 name: Linting check
             - run:
                 command: yarn prettier --check .
@@ -255,8 +256,14 @@ jobs:
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
             - restore_ruby_cache:
                 directory: android
+            - run:
+                command: tools/parse-release-notes parse --android --destination android/fastlane/metadata/de-DE/changelogs/default.txt --production
+                name: Parse german android release notes
             - run:
                 command: bundle exec fastlane validate_play_store_key
                 name: Validate Play Store Key
@@ -318,12 +325,16 @@ jobs:
             - restore_environment_variables
             - restore_ruby_cache:
                 directory: ios
+            - run:
+                command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
+                name: Parse german ios release notes
             - when:
                 condition: << parameters.production_delivery >>
                 steps:
                     - run:
-                        command: echo "tbd"
-                        name: TDB App Store upload
+                        command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+                        name: '[FL] App Store Connect Upload'
+                        working_directory: ios
             - unless:
                 condition: << parameters.production_delivery >>
                 steps:
@@ -331,6 +342,18 @@ jobs:
                         command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
                         name: '[FL] TestFlight Upload'
                         working_directory: ios
+    move_release_notes:
+        docker:
+            - image: circleci/node:14.9.0
+        resource_class: small
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
+            - run:
+                command: tools/move-release-notes move-to ${NEW_VERSION_NAME} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
+                name: Move release notes
     promote_android:
         docker:
             - image: circleci/android:api-29-node
@@ -414,10 +437,21 @@ workflows:
                 requires:
                     - check
                     - bump_version
+            - build_ios:
+                requires:
+                    - check
+                    - bump_version
             - deliver_android:
                 production_delivery: true
                 requires:
                     - build_android
+            - deliver_ios:
+                production_delivery: true
+                requires:
+                    - build_ios
+            - move_release_notes:
+                context:
+                    - deliverino
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:

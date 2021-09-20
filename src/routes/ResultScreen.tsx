@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../constants/theme/colors'
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Title from '../components/Title'
 import Loading from '../components/Loading'
@@ -126,7 +126,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
-      <Button onPress={repeatIncorrectEntries} theme={BUTTONS_THEME.dark}>
+      <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
           <LightLabel>

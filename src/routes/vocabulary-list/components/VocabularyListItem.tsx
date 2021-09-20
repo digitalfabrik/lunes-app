@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../constants/theme/colors'
 import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 
-const Wrapper = styled.View` 
-  padding-right: ${wp('5%')}; 
-  padding-left: ${wp('5%')}; 
+const Wrapper = styled.Pressable`
+  padding-right: ${wp('5%')};
+  padding-left: ${wp('5%')};
 `
-const Container = styled.View` 
+const Container = styled.View`
   padding-top: 17;
   padding-bottom: 17;
   padding-right: 16;
@@ -27,17 +27,17 @@ const Container = styled.View`
   border-style: solid;
   border-radius: 2;
 `
-const StyledItem = styled.View` 
+const StyledItem = styled.View`
   flex-direction: row;
   align-items: center;
 `
-const StyledImage = styled.Image` 
+const StyledImage = styled.Image`
   margin-right: 15;
   width: ${wp('15%')};
   height: ${wp('15%')};
   border-radius: 50;
 `
-const StyledTitle = styled.Text` 
+const StyledTitle = styled.Text`
   font-size: ${wp('3.5%')};
   font-weight: normal;
   border-radius: 10;
@@ -51,27 +51,29 @@ const StyledTitle = styled.Text`
   text-align: center;
   line-height: 18;
 `
-const Description = styled.Text` 
+const Description = styled.Text`
   font-size: ${wp('4%')};
   font-weight: normal;
   color: ${COLORS.lunesGreyMedium};
   font-family: 'SourceSansPro-Regular';
   margin-left: 8;
 `
-const Speaker = styled.View` 
+const Speaker = styled.View`
   padding-right: 40;
   padding-top: 17;
 `
 
 export interface VocabularyListItemPropType {
   document: DocumentType
+  setIsModalVisible?: () => void
 }
 
-const VocabularyListItem = ({ document }: VocabularyListItemPropType): ReactElement => {
+const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType): ReactElement => {
   const { article, word } = document
 
   return (
-    <Wrapper>
+    <Wrapper onPress={setIsModalVisible ?? (() => {
+    })}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (

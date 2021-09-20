@@ -2,6 +2,7 @@ import React from 'react'
 import AnswerSection, { AnswerSectionPropsType } from '../AnswerSection'
 import { fireEvent, render } from '@testing-library/react-native'
 import labels from '../../../../constants/labels.json'
+import wrapWithTheme from '../../../../testing/wrapWithTheme'
 
 jest.mock('../../../../components/AudioPlayer', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -49,8 +50,10 @@ describe('AnswerSection', () => {
     setCurrentDocumentNumber: () => {}
   }
 
-  const evaluate = async (input: string, expectedFeedback: string) => {
-    const { getByPlaceholderText, getByText, getByTestId } = render(<AnswerSection {...defaultAnswerSectionProps} />)
+  const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {
+    const { getByPlaceholderText, getByText, getByTestId } = render(<AnswerSection {...defaultAnswerSectionProps} />, {
+      wrapper: wrapWithTheme
+    })
     const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
     await fireEvent.changeText(inputField, input)
     const button = await getByText(labels.exercises.write.checkInput)
@@ -80,9 +83,9 @@ describe('AnswerSection', () => {
   })
 
   it('should show wrong feedback', async () => {
-    evaluate(
+    await evaluate(
       'Das Falsche',
-      `${labels.exercises.write.feedback.wrong} ${defaultAnswerSectionProps.documents[0].article.value} ${defaultAnswerSectionProps.documents[0].word}`
+      `${labels.exercises.write.feedback.wrong} „${defaultAnswerSectionProps.documents[0].article.value} ${defaultAnswerSectionProps.documents[0].word}“`
     )
   })
 })
