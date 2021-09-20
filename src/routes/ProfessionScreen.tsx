@@ -74,8 +74,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         selected={item.id === selectedId}
         title={item.title}
         icon={item.icon}
-        onPress={() => handleNavigation(item)}
-      >
+        onPress={() => handleNavigation(item)}>
         <Description item={item} selectedId={selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>

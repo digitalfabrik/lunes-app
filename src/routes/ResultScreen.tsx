@@ -146,8 +146,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
             ...route.params,
             resultType: nextResultType
           })
-        }
-      >
+        }>
         <>
           <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}
