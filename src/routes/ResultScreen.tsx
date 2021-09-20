@@ -15,7 +15,7 @@ import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-  background-color: ${prop=> prop.theme.colors.lunesWhite};
+  background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
   padding-bottom: 0px;
@@ -25,7 +25,7 @@ const Root = styled.View`
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')}px;
-  color: ${prop=> prop.theme.colors.lunesGreyDark};
+  color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 1%;
   margin-top: 6%;
@@ -34,7 +34,7 @@ const ScreenTitle = styled.Text`
 const Description = styled.Text`
   text-align: center;
   font-size: ${wp('4%')}px;
-  color: ${prop=> prop.theme.colors.lunesGreyMedium};
+  color: ${prop => prop.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
@@ -46,7 +46,7 @@ const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
 
 const DarkLabel = styled.Text`
   text-align: center;
-  color: ${prop=> prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${wp('3.5%')}px;
   letter-spacing: 0.4px;
@@ -61,7 +61,7 @@ const Arrow = styled(NextArrow)`
 const LightLabel = styled.Text`
   font-size: ${wp('3.2%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${prop=> prop.theme.colors.lunesWhite};
+  color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;
@@ -146,7 +146,8 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
             ...route.params,
             resultType: nextResultType
           })
-        }>
+        }
+      >
         <>
           <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}

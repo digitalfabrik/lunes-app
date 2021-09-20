@@ -89,7 +89,8 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         selected={item.id === selectedId}
         title={item.title}
         icon={item.icon}
-        onPress={() => handleNavigation(item)}>
+        onPress={() => handleNavigation(item)}
+      >
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{description}</Description>

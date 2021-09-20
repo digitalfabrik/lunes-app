@@ -33,7 +33,7 @@ const ScreenDescription = styled.Text`
   line-height: 18px;
   margin-top: 7px;
 `
-const Description = styled.Text<{selected: boolean}>`
+const Description = styled.Text<{ selected: boolean }>`
   font-size: ${wp('4%')}px;
   font-weight: normal;
   font-family: ${props => props.theme.fonts.contentFontRegular};
@@ -42,17 +42,17 @@ const Description = styled.Text<{selected: boolean}>`
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')}px;
-  color: ${prop=> prop.theme.colors.lunesGreyDark};
+  color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   padding-bottom: 7%;
 `
 const ScreenSubTitle = styled.Text`
   text-align: center;
   font-size: ${wp('4%')}px;
-  color: ${prop=> prop.theme.colors.lunesGreyDark};
+  color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Contained = styled.Pressable<{selected: boolean}>`
+const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
   padding: 17px 8px 17px 16px;
   margin-bottom: 8px;
@@ -66,7 +66,7 @@ const Contained = styled.Pressable<{selected: boolean}>`
   background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
   border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesBlackUltralight)};
 `
-const StyledItemTitle = styled.Text<{selected: boolean}>`
+const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -92,7 +92,7 @@ const StyledText = styled.View`
 const LightLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${prop=> prop.theme.colors.lunesWhite};
+  color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;
@@ -101,7 +101,7 @@ const HeaderText = styled.Text`
   font-size: ${wp('3.5%')}px;
   font-weight: 600;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${prop=> prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;
   margin-right: 8px;
 `
@@ -112,7 +112,7 @@ const RightHeader = styled.TouchableOpacity`
 `
 const StyledTitle = styled(Title)`
   elevation: 0;
-  border-bottom-color: ${prop=> prop.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
 `
 
@@ -196,7 +196,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
-              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+              selected={selected}
+            >{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />
