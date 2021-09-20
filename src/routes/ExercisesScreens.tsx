@@ -16,35 +16,32 @@ const Root = styled.View`
   height: 100%;
   padding-top: ${hp('5.6%')};
 `
-const List = (styled.FlatList`
+const List = styled(FlatList as new () => FlatList<ExerciseType>)`
   width: ${wp('100%')};
   padding-right: ${wp('5%')};
   padding-left: ${wp('5%')};
-` as unknown) as typeof FlatList
+`
 
 const ScreenDescription = styled.Text`
   font-size: ${wp('4%')};
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
-const Description = styled.Text`
+const Description = styled.Text<{ selected: boolean }>`
   font-size: ${wp('4%')};
-  font-family: 'SourceSansPro-Regular';
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: normal;
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesGreyDark};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')};
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Container = styled.Pressable`
+const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 8px;
-  padding-left: 16px;
+  padding: 17px 8px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
@@ -54,33 +51,20 @@ const Container = styled.Pressable`
   border-style: solid;
   border-radius: 2px;
 
-  background-color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesBlack : COLORS.white};
-  border-color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesBlackUltralight};
+  background-color: ${props => (props.selected ? props.theme.colors.lunesBlack : props.theme.colors.white)};
+  border-color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesBlackUltralight)};
 `
-const Title2 = styled.Text`
+const Title2 = styled.Text<{ selected: boolean }>`
   text-align: left;
   font-size: ${wp('4.5%')};
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
-  font-family: 'SourceSansPro-SemiBold';
+  font-family: ${props => props.theme.fonts.contentFontBold};
 
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark};
+  color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
 `
-const StyledTitle = styled.Text`
-  color: ${COLORS.lunesBlack};
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')};
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-left: 15px;
-`
-const HeaderLeft = styled.TouchableOpacity`
-  padding-left: 15px;
-  flex-direction: row;
-  align-items: center;
-  z-index: 100;
-`
+
 const StyledLevel = styled.View`
   margin-top: 11px;
 `
@@ -90,10 +74,6 @@ LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']
 interface ExercisesScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Exercises'>
   navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
-}
-
-interface StyledProps {
-  selected: boolean;
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
@@ -111,7 +91,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     <Title>
       <>
         <ScreenTitle>{trainingSet}</ScreenTitle>
-        <ScreenDescription>{documentsLength} {labels.home.words}</ScreenDescription>
+        <ScreenDescription>
+          {documentsLength} {labels.home.words}
+        </ScreenDescription>
       </>
     </Title>
   )
@@ -124,7 +106,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         <View>
           <Title2 selected={selected}>{item.title}</Title2>
           <Description selected={selected}>{item.description}</Description>
-          <StyledLevel as={item.Level}></StyledLevel>
+          <StyledLevel as={item.Level} />
         </View>
         <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Container>
@@ -151,7 +133,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         renderItem={Item}
         keyExtractor={item => item.key.toString()}
         showsVerticalScrollIndicator={false}
-      ></List>
+      />
     </Root>
   )
 }

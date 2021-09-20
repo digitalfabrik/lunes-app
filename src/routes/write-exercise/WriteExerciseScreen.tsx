@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, View } from 'react-native'
-import { COLORS } from '../../constants/theme/colors'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
@@ -15,10 +14,10 @@ import styled from 'styled-components/native'
 
 const Spinner = styled(ActivityIndicator)`
   width: 100%;
-  height: ${hp('35%')};
+  height: ${hp('35%')}px;
   position: absolute;
   top: 0;
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
 `
 
 interface WriteExerciseScreenPropsType {
