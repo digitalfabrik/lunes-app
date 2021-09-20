@@ -1,6 +1,6 @@
 import 'react-native'
 import React from 'react'
-import Action, { styles, IActionsProps } from '../Actions'
+import Action, { IActionsProps } from '../Actions'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 
@@ -76,11 +76,9 @@ describe('Components', () => {
         ...defaultActionProps
       }
       const isButtonDisabled = true
-      const style = [styles.lightLabel, styles.disabledButtonLabel]
 
       const component = shallow(<Action {...actionProps} />)
       expect(component.find('[testID="check-entry"]').props().disabled).toBe(isButtonDisabled)
-      expect(component.find('[testID="check-entry"]').children().props().style).toStrictEqual(style)
     })
   })
 })

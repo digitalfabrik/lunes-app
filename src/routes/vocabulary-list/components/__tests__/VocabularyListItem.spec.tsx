@@ -17,7 +17,7 @@ describe('VocabularyListItem', () => {
 
   it('should display image passed to it', () => {
     const component = shallow(<VocabularyListItem document={document} />)
-    expect(component.find('Image').prop('source')).toHaveProperty('uri', document.document_image[0].image)
+    expect(component.find('[testID="image"]').prop('source')).toHaveProperty('uri', document.document_image[0].image)
   })
 
   it('should display article passed to it', () => {

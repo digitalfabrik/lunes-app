@@ -77,6 +77,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
         <StyledItem>
           {document.document_image.length > 0 && (
             <StyledImage
+              testID='image'
               source={{
                 uri: document.document_image[0].image
               }}
