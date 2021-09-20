@@ -11,10 +11,7 @@ const Wrapper = styled.Pressable`
   padding-left: ${wp('5%')};
 `
 const Container = styled.View`
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding: 17px 16px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   justify-content: space-between;

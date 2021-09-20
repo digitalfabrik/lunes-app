@@ -10,10 +10,7 @@ const StyledContainer = styled.View`
   background-color: ${prop=> prop.theme.colors.lunesBlack};
   width: ${wp('80%')}px;
   height: 60px;
-  padding-right: 8px;
-  padding-left: 8px;
-  padding-top: 9px;
-  padding-right: 9px;
+  padding: 9px 8px 9px 8px;
   border-radius: 2px;
 `
 const StyledMessage = styled.Text`

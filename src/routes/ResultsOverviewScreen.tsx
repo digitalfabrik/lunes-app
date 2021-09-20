@@ -54,10 +54,7 @@ const ScreenSubTitle = styled.Text`
 `
 const Contained = styled.Pressable<{selected: boolean}>`
   align-self: center;
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 8px;
-  padding-left: 16px;
+  padding: 17px 8px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
