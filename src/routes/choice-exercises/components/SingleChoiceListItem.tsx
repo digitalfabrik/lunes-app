@@ -3,6 +3,14 @@ import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
 import styled, { css } from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import labels from '../../../constants/labels.json'
+
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
+}
 
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
@@ -130,22 +138,15 @@ export interface SingleChoiceListItemPropsType {
   disabled?: boolean
 }
 
-interface StyledListElementProps {
-  pressed: boolean
-  selected: boolean
-  correct: boolean
-  delayPassed: boolean
-}
-
 const SingleChoiceListItem = ({
-  answer,
-  onClick,
-  correct,
-  selected,
-  anyAnswerSelected,
-  delayPassed,
-  disabled = false
-}: SingleChoiceListItemPropsType): JSX.Element => {
+                                answer,
+                                onClick,
+                                correct,
+                                selected,
+                                anyAnswerSelected,
+                                delayPassed,
+                                disabled = false
+                              }: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity =
@@ -184,6 +185,7 @@ const SingleChoiceListItem = ({
       </StyledArticleBox>
       <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
+        {article.id === 4 && ` (${labels.general.plurals})`}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>

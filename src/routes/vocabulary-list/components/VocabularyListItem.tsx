@@ -7,16 +7,16 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
 
-const Wrapper = styled.View`
-  padding-right: 5%;
-  padding-left: 5%;
+const Wrapper = styled.Pressable`
+  padding-right: ${wp('5%')};
+  padding-left: ${wp('5%')};
 `
 const Container = styled.View`
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 16px;
-  padding-left: 16px;
-  margin-bottom: 8px;
+  padding-top: 17;
+  padding-bottom: 17;
+  padding-right: 16;
+  padding-left: 16;
+  margin-bottom: 8;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -72,7 +72,8 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <Wrapper>
+    <Wrapper onPress={setIsModalVisible ?? (() => {
+    })}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (

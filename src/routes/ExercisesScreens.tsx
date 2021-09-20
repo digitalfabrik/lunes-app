@@ -1,50 +1,47 @@
 import React, { useState } from 'react'
-import { View, FlatList } from 'react-native'
+import { FlatList, LogBox, View } from 'react-native'
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
-  padding-top: 10%;
+  padding-top: ${hp('5.6%')};
 `
 const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
-  width: 100%;
-  padding-right: 5%;
-  padding-left: 5%;
+  width: ${wp('100%')};
+  padding-right: ${wp('5%')};
+  padding-left: ${wp('5%')};
 `
 
 const ScreenDescription = styled.Text`
-  font-size: ${wp('4%')}px;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  font-size: ${wp('4%')};
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
-const Description = styled.Text`
-  font-size: ${wp('4%')}px;
-  font-family: 'SourceSansPro-Regular';
+const Description = styled.Text<{ selected: boolean }>`
+  font-size: ${wp('4%')};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: normal;
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('5%')};
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Container = styled.Pressable`
+const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding-top: 17px;
-  padding-bottom: 17px;
-  padding-right: 8px;
-  padding-left: 16px;
+  padding: 17px 8px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
@@ -54,30 +51,29 @@ const Container = styled.Pressable`
   border-style: solid;
   border-radius: 2px;
 
-  background-color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
-  border-color: ${(prop: StyledProps) => (prop.selected ? COLORS.white : COLORS.lunesBlackUltralight)};
+  background-color: ${props => (props.selected ? props.theme.colors.lunesBlack : props.theme.colors.white)};
+  border-color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesBlackUltralight)};
 `
-const StyledItemTitle = styled.Text`
+const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
   font-size: ${wp('4.5%')}px;
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
-  font-family: 'SourceSansPro-SemiBold';
+  font-family: ${props => props.theme.fonts.contentFontBold};
 
-  color: ${(prop: StyledProps) => (prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
 `
+
 const StyledLevel = styled.View`
   margin-top: 11px;
 `
 
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+
 interface ExercisesScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Exercises'>
   navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
-}
-
-interface StyledProps {
-  selected: boolean
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {

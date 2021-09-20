@@ -6,7 +6,7 @@ import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RES
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
 import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
@@ -16,9 +16,9 @@ const Root = styled.View`
   background-color: ${COLORS.lunesWhite};
   height: 100%;
   align-items: center;
-  padding-left: 4%;
-  padding-right: 4%;
-  padding-top: 4.5%;
+  padding-left: ${wp('5%')};
+  padding-right: ${wp('5%')};
+  padding-top: ${hp('4.5%')};
 `
 const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
   flex-grow: 0;
@@ -52,7 +52,7 @@ const ScreenSubTitle = styled.Text`
   color: ${COLORS.lunesGreyDark};
   font-family: 'SourceSansPro-SemiBold';
 `
-const Contained = styled.Pressable`
+const Contained = styled.Pressable<StyledProps>`
   align-self: center;
   padding-top: 17px;
   padding-bottom: 17px;
@@ -131,6 +131,7 @@ export const styles = StyleSheet.create({
 interface StyledProps {
   selected: boolean
 }
+
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>

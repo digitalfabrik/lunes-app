@@ -5,7 +5,7 @@ import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
 import Loading from '../../components/Loading'
 import { COLORS } from '../../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -85,7 +85,6 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
           setSelectedDocumentIndex={setSelectedDocumentIndex}
         />
       )}
-
       <Loading isLoading={loading}>
         <StyledList
           data={documents}

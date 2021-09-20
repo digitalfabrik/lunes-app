@@ -1,53 +1,49 @@
-import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
-import MenuItem from '../components/MenuItem'
-import { FlatList, Text } from 'react-native'
-import { DisciplineType } from '../constants/endpoints'
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../services/AsyncStorage'
 import Loading from '../components/Loading'
-import { COLORS } from '../constants/theme/colors'
+import MenuItem from '../components/MenuItem'
+import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { FlatList, Text } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
 `
 const StyledText = styled.Text`
-  margin-top: 8.5%;
+  margin-top: ${hp('8.5%')}px;
   text-align: center;
-  font-size: ${wp('4%')}px;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  font-size: ${wp('4%')};
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
 `
 const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
-  width: 100%;
+  width: ${wp('100%')}px;
 `
 
-const Description = styled.Text`
-  font-size: ${wp('4%')}px;
+const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
+  font-size: ${wp('4%')};
   font-weight: normal;
-  font-family: 'SourceSansPro-Regular';
-  color: ${(prop: StyledProps) => (prop.item.id === prop.selectedId ? COLORS.white : COLORS.lunesGreyMedium)};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props =>
+    props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
+
 interface ProfessionScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Profession'>
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-interface StyledProps {
-  selectedId: number | null
-  item: DisciplineType
-}
-
-const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): ReactElement => {
+const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
   const { data: disciplines, error, loading } = useLoadDisciplines(null)
