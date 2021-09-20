@@ -1,27 +1,27 @@
+import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
+import Button from '../components/Button'
+import Title from '../components/Title'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
+import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import Title from '../components/Title'
-import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import Button from '../components/Button'
-import { COLORS } from '../constants/theme/colors'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import labels from '../constants/labels.json'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   align-items: center;
-  padding-left: ${wp('5%')}px;
-  padding-right: ${wp('5%')}px;
-  padding-top: ${hp('4.5%')}px;
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-top: 4.5%;
 `
 const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
-  flex-grow: 0px;
+  flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
 `
@@ -196,8 +196,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
-              selected={selected}
-            >{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />

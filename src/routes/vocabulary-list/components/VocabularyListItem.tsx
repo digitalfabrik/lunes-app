@@ -1,17 +1,17 @@
-import React, { ReactElement } from 'react'
-import { View } from 'react-native'
-import { getArticleColor } from '../../../services/helpers'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
+import { getArticleColor } from '../../../services/helpers'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Wrapper = styled.Pressable`
-  padding-right: ${wp('5%')};
-  padding-left: ${wp('5%')};
+  padding-right: 5%;
+  padding-left: 5%;
 `
 const Container = styled.View`
-  padding: 17px 16px 17px 16px;
+  padding: 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   justify-content: space-between;

@@ -1,15 +1,15 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
 import { CloseIcon } from '../../assets/images'
-import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+import Button from './Button'
 import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React from 'react'
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const styles = StyleSheet.create({
   container: {

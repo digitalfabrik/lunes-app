@@ -1,16 +1,9 @@
-import React, { useState } from 'react'
-import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
-import styled, { css } from 'styled-components/native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
-
-interface StyledListElementProps {
-  pressed: boolean
-  selected: boolean
-  correct: boolean
-  delayPassed: boolean
-}
+import { getArticleColor } from '../../../services/helpers'
+import React, { useState } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { css } from 'styled-components/native'
 
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
@@ -138,6 +131,13 @@ export interface SingleChoiceListItemPropsType {
   disabled?: boolean
 }
 
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
+}
+
 const SingleChoiceListItem = ({
   answer,
   onClick,
@@ -172,15 +172,13 @@ const SingleChoiceListItem = ({
       onPressOut={onPressOut}
       pressed={pressed}
       delayPassed={delayPassed}
-      disabled={anyAnswerSelected || disabled}
-    >
+      disabled={anyAnswerSelected || disabled}>
       <StyledArticleBox
         article={article}
         selected={selected}
         correct={showCorrect}
         pressed={pressed}
-        delayPassed={delayPassed}
-      >
+        delayPassed={delayPassed}>
         <StyledArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
         </StyledArticleText>

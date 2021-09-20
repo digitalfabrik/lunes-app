@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { FlatList, StatusBar, Text } from 'react-native'
-import Title from '../components/Title'
-import { DisciplineType } from '../constants/endpoints'
-import { RouteProp } from '@react-navigation/native'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
+import Title from '../components/Title'
+import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import styled from 'styled-components/native'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { FlatList, StatusBar, Text } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -21,21 +21,23 @@ const ItemText = styled.View`
   flex-direction: row;
   align-items: center;
 `
+
 const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
-  width: ${wp('100%')}px;
+  width: 100%;
 `
 
 const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: 5px;
   font-weight: normal;
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
+
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')};
+  font-size: ${wp('5%')}px;
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
@@ -48,7 +50,7 @@ const BadgeLabel = styled.Text<{ selected: boolean }>`
   overflow: hidden;
   text-align: center;
   color: ${prop => (prop.selected ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
-  font-size: ${prop => (prop.selected ? 12 : wp('3%'))};
+  font-size: ${prop => (prop.selected ? wp('12') : wp('3%'))}px;
   background-color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
 
@@ -89,8 +91,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         selected={item.id === selectedId}
         title={item.title}
         icon={item.icon}
-        onPress={() => handleNavigation(item)}
-      >
+        onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{description}</Description>

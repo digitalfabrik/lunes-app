@@ -4,17 +4,17 @@ import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { COLORS } from '../constants/theme/colors'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
-  padding-top: ${hp('5.6%')}px;
+  padding-top: 10%;
 `
 const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
   width: ${wp('100%')}px;

@@ -5,11 +5,11 @@ import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
@@ -19,19 +19,19 @@ const Root = styled.View`
   height: 100%;
 `
 const StyledText = styled.Text`
-  margin-top: ${hp('8.5%')}px;
+  margin-top: 8.5%;
   text-align: center;
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
 `
 const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
-  width: ${wp('100%')}px;
+  width: 100%;
 `
 
 const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   font-weight: normal;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${props =>
@@ -74,8 +74,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
         selected={item.id === selectedId}
         title={item.title}
         icon={item.icon}
-        onPress={() => handleNavigation(item)}
-      >
+        onPress={() => handleNavigation(item)}>
         <Description item={item} selectedId={selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>
