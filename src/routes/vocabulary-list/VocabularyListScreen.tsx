@@ -4,8 +4,7 @@ import { DocumentType } from '../../constants/endpoints'
 import Title from '../../components/Title'
 import VocabularyListItem from './components/VocabularyListItem'
 import Loading from '../../components/Loading'
-import { COLORS } from '../../constants/theme/colors'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RouteProp } from '@react-navigation/native'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -15,7 +14,7 @@ import styled from 'styled-components/native'
 import VocabularyListModal from './components/VocabularyListModal'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
   padding-bottom: 0px;
@@ -24,8 +23,8 @@ const Root = styled.View`
 const ScreenTitle = styled.Text`
   text-align: center;
   font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 4px;
 `
 const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
@@ -35,8 +34,8 @@ const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
 const Description = styled.Text`
   text-align: center;
   font-size: ${wp('4%')}px;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
 interface VocabularyListScreenPropsType {

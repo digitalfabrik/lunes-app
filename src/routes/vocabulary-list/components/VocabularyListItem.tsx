@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { COLORS } from '../../../constants/theme/colors'
 import { getArticleColor } from '../../../services/helpers'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -12,17 +11,17 @@ const Wrapper = styled.Pressable`
   padding-left: ${wp('5%')};
 `
 const Container = styled.View`
-  padding-top: 17;
-  padding-bottom: 17;
-  padding-right: 16;
-  padding-left: 16;
-  margin-bottom: 8;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  padding-right: 16px;
+  padding-left: 16px;
+  margin-bottom: 8px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: ${COLORS.white};
-  border-color: ${COLORS.lunesBlackUltralight};
+  background-color: ${props => props.theme.colors.white};
+  border-color: ${props => props.theme.colors.lunesBlackUltralight};
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
@@ -42,8 +41,8 @@ const StyledTitle = styled.Text`
   font-weight: normal;
   border-radius: 10px;
   margin-bottom: 6px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-Regular';
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
   width: ${wp('10%')}px;
   overflow: hidden;
@@ -54,8 +53,8 @@ const StyledTitle = styled.Text`
 const Description = styled.Text`
   font-size: ${wp('4%')}px;
   font-weight: normal;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-left: 8px;
 `
 const Speaker = styled.View`

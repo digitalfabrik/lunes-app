@@ -2,19 +2,18 @@ import React, { ReactElement } from 'react'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { COLORS } from '../../../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 
 export const LightLabelInput = styled.Text`
   text-align: center;
-  font-family: 'SourceSansPro-SemiBold';
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${wp('4%')}px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   font-weight: 600;
-  color: ${(prop: StyledProps) => (prop.styledInput ? COLORS.lunesBlackLight : COLORS.lunesWhite)};
+  color: ${(prop: StyledProps) => (prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite)};
 `
 
 const LightLabelArrow = styled(LightLabelInput)`
@@ -23,8 +22,8 @@ const LightLabelArrow = styled(LightLabelInput)`
 
 const DarkLabel = styled.Text`
   text-align: center;
-  color: ${COLORS.lunesBlack};
-  font-family: 'SourceSansPro-SemiBold';
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${wp('4%')}px;
   letter-spacing: 0.4px;
   text-transform: uppercase;

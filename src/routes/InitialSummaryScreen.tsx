@@ -13,14 +13,14 @@ import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${prop=> prop.theme.colors.lunesWhite};
   height: 100%;
   align-items: center;
 `
 const UpperSection = styled.View`
   width: 140%;
   height: 60%;
-  background-color: ${COLORS.lunesBlack};
+  background-color: ${prop=> prop.theme.colors.lunesBlack};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
   margin-bottom: 8%;
@@ -32,24 +32,24 @@ const MessageContainer = styled.View`
   margin-top: 5%;
 `
 const Message = styled.Text`
-  color: ${COLORS.lunesWhite};
+  color: ${prop=> prop.theme.colors.lunesWhite};
   font-size: ${wp('5%')}px;
-  font-family: 'SourceSansPro-SemiBold';
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: 600;
   text-align: center;
 `
 const LightLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
-  font-family: 'SourceSansPro-SemiBold';
-  color: ${COLORS.lunesWhite};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop=> prop.theme.colors.lunesWhite};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;
 `
 const DarkLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
-  font-family: 'SourceSansPro-SemiBold';
-  color: ${COLORS.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop=> prop.theme.colors.lunesBlack};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;

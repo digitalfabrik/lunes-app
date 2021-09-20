@@ -23,7 +23,7 @@ const StyledContainer = styled.View`
   width: 100%;
   height: 85%;
 `
-const TextInputContainer = styled.View`
+const TextInputContainer = styled.View<{ styledBorderColor: string}>`
   width: 80%;
   height: 16%;
   flex-direction: row;
@@ -35,14 +35,14 @@ const TextInputContainer = styled.View`
   padding-left: 15px;
   margin-top: 12%;
   margin-bottom: 12%;
-  border-color: ${(prop: StyledProps) => prop.StyledBorder};
+  border-color: ${prop => prop.styledBorderColor };
 `
 const StyledTextInput = styled.TextInput`
   font-size: ${wp('4.5%')}px;
   font-weight: normal;
   letter-spacing: 0.11px;
-  font-family: 'SourceSansPro-Regular';
-  color: ${COLORS.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop =>prop.theme.colors.lunesBlack};
   width: 60%;
 `
 
@@ -54,10 +54,6 @@ export interface AnswerSectionPropsType {
   finishExercise: Function
   trainingSet: string
   disciplineTitle: string
-}
-
-interface StyledProps {
-  StyledBorder: string
 }
 
 const almostCorrectThreshold = 0.6
@@ -213,7 +209,7 @@ const AnswerSection = ({
           <PopoverContent />
         </Popover>
 
-        <TextInputContainer testID='input-field' ref={touchable} StyledBorder={getBorderColor()}>
+        <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
           <StyledTextInput
             placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
             placeholderTextColor={COLORS.lunesBlackLight}

@@ -8,7 +8,7 @@ import styled from 'styled-components/native'
 const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: ${COLORS.lunesBlack};
+  background-color: ${prop=> prop.theme.colors.lunesBlack};
   width: ${wp('80%')}px;
   height: 60px;
   padding-right: 8px;
@@ -18,10 +18,10 @@ const StyledContainer = styled.View`
   border-radius: 2px;
 `
 const StyledMessage = styled.Text`
-  color: ${COLORS.lunesWhite};
+  color: ${prop=> prop.theme.colors.lunesWhite};
   font-size: ${wp('3.5%')}px;
   font-weight: normal;
-  font-family: SourceSansPro-Regular;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   width: ${wp('60%')}px;
   margin-left: 8px;
 `

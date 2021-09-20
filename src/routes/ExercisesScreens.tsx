@@ -12,7 +12,7 @@ import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${prop=> prop.theme.colors.lunesWhite};
   height: 100%;
   padding-top: ${hp('5.6%')};
 `
