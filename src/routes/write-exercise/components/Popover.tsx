@@ -27,7 +27,8 @@ const AlertPopover = React.forwardRef(({ children, isVisible, setIsPopoverVisibl
     arrowStyle={styles.arrow}
     arrowShift={-0.85}
     verticalOffset={-10}
-    backgroundStyle={styles.overlay}>
+    backgroundStyle={styles.overlay}
+  >
     {children}
   </Popover>
 ))

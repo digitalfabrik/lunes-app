@@ -72,7 +72,8 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             scrollEnabled={false}
             resetScrollToCoords={{ x: 0, y: 0 }}
             enableOnAndroid
-            keyboardShouldPersistTaps='always'>
+            keyboardShouldPersistTaps='always'
+          >
             {loading && <Spinner />}
             <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
 
