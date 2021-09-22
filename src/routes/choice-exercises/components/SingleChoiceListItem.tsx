@@ -3,6 +3,7 @@ import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
 import styled, { css } from 'styled-components/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import labels from '../../../constants/labels.json'
 
 interface StyledListElementProps {
   pressed: boolean
@@ -184,6 +185,7 @@ const SingleChoiceListItem = ({
       </StyledArticleBox>
       <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
+        {article.id === 4 && ` (${labels.general.plurals})`}
       </StyledWord>
       {addOpacity && <StyledOpacityOverlay />}
     </StyledContainer>
