@@ -7,7 +7,7 @@ import { COLORS } from '../constants/theme/colors'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -109,6 +109,10 @@ const RightHeader = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
+  shadow-opacity: 0;
+  elevation: 0;
+  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-width: 1px;
 `
 const StyledTitle = styled(Title)`
   elevation: 0;
@@ -117,21 +121,18 @@ const StyledTitle = styled(Title)`
 `
 
 export const styles = StyleSheet.create({
-  header: {
-    shadowOpacity: 0,
-    elevation: 0,
-    borderBottomColor: COLORS.lunesBlackUltralight,
-    borderBottomWidth: 1
+  footer: {
+    marginTop: 25,
+    alignItems: 'center'
   }
 })
 
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>
-  selected: boolean
 }
 
-const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
+const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
   const { extraParams, results } = route.params
   const { exercise } = extraParams
   const { Level, description, title } = EXERCISES[exercise]
@@ -145,8 +146,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <FinishIcon />
         </RightHeader>
-      ),
-      headerStyle: styles.header
+      )
     })
 
     setCounts({
@@ -168,7 +168,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     </StyledTitle>
   )
 
-  const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
+  const Item = ({ item }: { item: ResultType }): ReactElement | null => {
     const hideAlmostCorrect = exercise !== ExerciseKeys.writeExercise && item.key === SIMPLE_RESULTS.similar
     if (hideAlmostCorrect) {
       return null
@@ -230,8 +230,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
-        ListFooterComponentStyle={{ alignItems: 'center', marginTop: 25 }}
-        contentContainerStyle={{ alignItems: 'center' }}
+        ListFooterComponentStyle={styles.footer}
       />
     </Root>
   )

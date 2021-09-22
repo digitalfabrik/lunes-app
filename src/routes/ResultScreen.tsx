@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/theme/colors'
@@ -18,7 +18,7 @@ const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
   width: 100%;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-top: 4%;
 `
 
@@ -66,6 +66,14 @@ const LightLabel = styled.Text`
   margin-left: 10px;
   text-transform: uppercase;
 `
+
+export const styles = StyleSheet.create({
+  footer: {
+    marginTop: 25,
+    alignItems: 'center'
+  }
+})
+
 interface ResultScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultScreen'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
@@ -167,7 +175,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
-          ListFooterComponentStyle={{ alignItems: 'center', marginTop: 15 }}
+          ListFooterComponentStyle={styles.footer}
         />
       </Loading>
     </Root>

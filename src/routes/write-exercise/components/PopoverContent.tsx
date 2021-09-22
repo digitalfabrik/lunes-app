@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
@@ -22,7 +22,7 @@ const StyledMessage = styled.Text`
   margin-left: 8px;
 `
 
-const PopoverContent = () => (
+const PopoverContent = (): ReactElement => (
   <StyledContainer>
     <InfoIcon width={30} height={30} />
     <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
