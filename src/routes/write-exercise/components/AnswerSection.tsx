@@ -100,7 +100,7 @@ const AnswerSection = ({
       setResult('similar')
       await storeResult('similar')
     } else {
-      setInput('')
+      setInput(input)
       setSecondAttempt(true)
       return
     }

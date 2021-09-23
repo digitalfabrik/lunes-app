@@ -47,14 +47,15 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
 `
 export interface IButtonProps {
   onPress: () => void
-  buttonTheme?: ButtonThemeType
   disabled?: boolean
   children: ReactElement
+  buttonTheme?: ButtonThemeType
   testID?: string
 }
 
-const Button = ({ children, onPress, disabled, buttonTheme }: IButtonProps) => {
+const Button = ({ children, onPress, disabled, buttonTheme }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
+
   return (
     <ThemedButton
       isPressed={isPressed}

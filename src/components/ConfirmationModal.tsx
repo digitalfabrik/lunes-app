@@ -11,19 +11,15 @@ import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import { Color } from 'react-native-svg'
+import { Modal } from 'react-native'
 
-const ModalContainer = styled.Modal`
-  /* flex: 1;
-  justify-content: center;
-  align-items: center; */
-`
-const Container = styled.View`
+const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${COLORS.lunesOverlay};
 `
-const ModalStyle = styled.View`
+const ModalContainer = styled.View`
   background-color: ${COLORS.white};
   align-items: center;
   width: ${wp('85%')}px;
@@ -59,9 +55,8 @@ const Label = styled.Text`
 `
 
 interface LabelProps {
-  LColor: Color;
+  LColor: Color
 }
-
 export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
@@ -100,9 +95,9 @@ const ConfirmationModal = ({
     navigation.navigate('Exercises', extraParams)
   }
   return (
-    <ModalContainer testID='modal' visible={visible} transparent animationType='fade'>
-      <Container>
-        <ModalStyle>
+    <Modal testID='modal' visible={visible} transparent animationType='fade'>
+      <Overlay>
+        <ModalContainer>
           <CloseIconStyle onPress={closeModal}>
             <CloseIcon />
           </CloseIconStyle>
@@ -113,9 +108,9 @@ const ConfirmationModal = ({
           <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
             <Label LColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
-        </ModalStyle>
-      </Container>
-    </ModalContainer>
+        </ModalContainer>
+      </Overlay>
+    </Modal>
   )
 }
 export default ConfirmationModal
