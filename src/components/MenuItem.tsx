@@ -5,7 +5,6 @@ import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-
 const ItemStyle = styled(Pressable)`
   justify-content: space-between;
   padding: 17px 8px 17px 16px;
@@ -50,17 +49,17 @@ export interface IMenuItemProps {
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
   return (
     <ItemStyle onPress={onPress} selected={selected}>
-        <Left>
-          <Icon source={{ uri: icon }} />
-          <View>
-            <ItemTitleStyle selected={selected} testID='title'>
-              {title}
-            </ItemTitleStyle>
-            {children}
-          </View>
-        </Left>
-        <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
-      </ItemStyle>
+      <Left>
+        <Icon source={{ uri: icon }} />
+        <View>
+          <ItemTitleStyle selected={selected} testID='title'>
+            {title}
+          </ItemTitleStyle>
+          {children}
+        </View>
+      </Left>
+      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+    </ItemStyle>
   )
 }
 export default MenuItem
