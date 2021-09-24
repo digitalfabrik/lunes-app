@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Keyboard, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/theme/colors'
 import Popover from './Popover'
