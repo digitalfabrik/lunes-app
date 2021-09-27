@@ -6,10 +6,12 @@ import CircleIcon from './icon-sign-5.svg'
 import LinesIcon from './icon-sign-3.svg'
 import SmileIcon from './smile.svg'
 import Arrow from './arrow.svg'
+
 import easy from './level-easy.svg'
 import hard from './level-hard.svg'
 import mideasy from './level-mid-easy.svg'
 import midhard from './level-mid-hard.svg'
+
 import Home from './home.svg'
 import CloseButton from './close.svg'
 import CloseIcon from './close-icon.svg'

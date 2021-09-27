@@ -100,7 +100,7 @@ const AnswerSection = ({
       setResult('similar')
       await storeResult('similar')
     } else {
-      setInput('')
+      setInput(input)
       setSecondAttempt(true)
       return
     }
@@ -224,6 +224,7 @@ const AnswerSection = ({
             editable={result === ''}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onSubmitEditing={checkEntry}
           />
           {(isFocused || (result === '' && input !== '')) && (
             <TouchableOpacity onPress={() => setInput('')}>

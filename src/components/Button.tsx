@@ -3,6 +3,12 @@ import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
 
+interface ThemedButtonProps {
+  buttonTheme?: ButtonThemeType
+  isPressed: boolean
+  disabled?: boolean
+}
+
 const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   flex-direction: row;
   padding: 10px 20px;
@@ -41,7 +47,7 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
     `};
 `
 
-export interface IButtonProps {
+interface IButtonProps {
   onPress: () => void
   disabled?: boolean
   children: ReactElement
@@ -49,11 +55,6 @@ export interface IButtonProps {
   testID?: string
 }
 
-interface ThemedButtonProps {
-  buttonTheme?: ButtonThemeType
-  isPressed: boolean
-  disabled?: boolean
-}
 
 const Button = ({ children, onPress, disabled = false, buttonTheme }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)

@@ -105,10 +105,8 @@ platform :ios do
         force: true,
         skip_screenshots: true,
         skip_metadata: false,
-        overwrite_screenshots: true,
         skip_app_version_update: false,
-        metadata_path: "./ios/fastlane/metadata",
-        screenshots_path: "./ios/fastlane/lunes/screenshots",
+        metadata_path: "./metadata",
         precheck_include_in_app_purchases: false, # We do not have inapp purchases
         submission_information: { add_id_info_uses_idfa: false }  # https://firebase.google.com/docs/analytics/configure-data-collection?platform=ios
                                                                   # https://support.google.com/firebase/answer/6318039?hl=en
@@ -144,8 +142,7 @@ platform :ios do
         raise "'nil' passed as parameter! Aborting..."
       end
 
-      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/metadata/de-DE/release_notes.txt --language de --source ../../release-notes/#{version_name} --production`
-      `../../tools/parse-release-notes parse --ios --destination ../ios/fastlane/metadata/en-US/release_notes.txt --language en --source ../../release-notes/#{version_name} --production`
+      `../../tools/parse-release-notes parse --ios --destination ./metadata/de-DE/release_notes.txt --source ../../release-notes/#{version_name} --production`
     end
 
 end
