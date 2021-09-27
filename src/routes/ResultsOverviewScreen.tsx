@@ -1,85 +1,82 @@
-import React from 'react'
-import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import Title from '../components/Title'
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Button from '../components/Button'
-import { COLORS } from '../constants/theme/colors'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
+import Title from '../components/Title'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
+import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { ReactElement } from 'react'
+import { FlatList, StatusBar, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-  background-color: ${COLORS.lunesWhite};
+  background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   align-items: center;
-  padding-left: ${wp('5%')};
-  padding-right: ${wp('5%')};
-  padding-top: ${hp('4.5%')};
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-top: 4.5%;
 `
-const StyledList = (styled.FlatList`
+const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
   flex-grow: 0;
-  width: ${wp('100%')};
-  margin-bottom: ${hp('6%')};
-` as unknown) as typeof FlatList
+  width: 100%;
+  margin-bottom: 6%;
+`
 
 const ScreenDescription = styled.Text`
-  font-size: ${wp('4%')};
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
-  line-height: 30;
-  margin-top: 7;
+  font-size: ${wp('4%')}px;
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  line-height: 18px;
+  margin-top: 7px;
 `
-const Description = styled.Text`
-  font-size: ${wp('4%')};
+const Description = styled.Text<{ selected: boolean }>`
+  font-size: ${wp('4%')}px;
   font-weight: normal;
-  font-family: 'SourceSansPro-Regular';
-  color: ${(prop: StyledProps) => prop.selected ? COLORS.white : COLORS.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')};
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
-  padding-bottom: ${hp('3%')};
+  font-size: ${wp('5%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  padding-bottom: 7%;
 `
 const ScreenSubTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')};
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('4%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
 `
-const Contained = styled.Pressable<StyledProps>`
+const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding-top: 17;
-  padding-bottom: 17;
-  padding-right: 8;
-  padding-left: 16;
-  margin-bottom: 8;
+  padding: 17px 8px 17px 16px;
+  margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
   width: 90%;
   justify-content: space-between;
-  border-width: 1;
+  border-width: 1px;
   border-style: solid;
-  border-radius: 2;
-  background-color: ${(prop) => prop.selected ? COLORS.lunesBlack : COLORS.white};
-  border-color: ${(prop) => prop.selected ? COLORS.white : COLORS.lunesBlackUltralight};
+  border-radius: 2px;
+  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
+  border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesBlackUltralight)};
 `
-const ItemTitle2 = styled.Text<StyledProps>`
+const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${(prop) => prop.selected ? wp('5%') : wp('4.5%')};
-  color: ${(prop) => prop.selected ? COLORS.lunesWhite : COLORS.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
-  margin-top: ${hp('1%')};
+  margin-top: 7%;
 `
 const LeftSide = styled.View`
   display: flex;
@@ -93,18 +90,18 @@ const StyledText = styled.View`
   flex-direction: column;
 `
 const LightLabel = styled.Text`
-  font-size: ${wp('3.5%')};
-  font-family: 'SourceSansPro-SemiBold';
-  color: ${COLORS.lunesWhite};
+  font-size: ${wp('3.5%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: 600;
   margin-left: 10px;
   text-transform: uppercase;
 `
 const HeaderText = styled.Text`
-  font-size: ${wp('3.5%')};
+  font-size: ${wp('3.5%')}px;
   font-weight: 600;
-  font-family: 'SourceSansPro-SemiBold';
-  color: ${COLORS.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;
   margin-right: 8px;
 `
@@ -112,34 +109,30 @@ const RightHeader = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
+  shadow-opacity: 0;
+  elevation: 0;
+  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-width: 1px;
 `
 const StyledTitle = styled(Title)`
-  shadowOpacity: 0;
   elevation: 0;
-  border-bottom-color: ${COLORS.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
 `
 
 export const styles = StyleSheet.create({
-  header: {
-    shadowOpacity: 0,
-    elevation: 0,
-    borderBottomColor: COLORS.lunesBlackUltralight,
-    borderBottomWidth: 1
+  footer: {
+    marginTop: 25,
+    alignItems: 'center'
   }
 })
-
-interface StyledProps {
-  selected: boolean;
-}
 
 interface ResultOverviewScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultsOverview'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>
-  selected: boolean
 }
 
-const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): JSX.Element => {
+const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
   const { extraParams, results } = route.params
   const { exercise } = extraParams
   const { Level, description, title } = EXERCISES[exercise]
@@ -153,8 +146,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <FinishIcon />
         </RightHeader>
-      ),
-      headerStyle: styles.header
+      )
     })
 
     setCounts({
@@ -176,7 +168,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     </StyledTitle>
   )
 
-  const Item = ({ item }: { item: ResultType }): JSX.Element | null => {
+  const Item = ({ item }: { item: ResultType }): ReactElement | null => {
     const hideAlmostCorrect = exercise !== ExerciseKeys.writeExercise && item.key === SIMPLE_RESULTS.similar
     if (hideAlmostCorrect) {
       return null
@@ -202,7 +194,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         <LeftSide>
           <item.Icon fill={iconColor} width={30} height={30} />
           <StyledText>
-            <ItemTitle2 selected={selected}>{item.title}</ItemTitle2>
+            <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
               selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
           </StyledText>
@@ -238,8 +230,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         keyExtractor={item => item.key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
-        ListFooterComponentStyle={{ alignItems: 'center', marginTop: 25 }}
-        contentContainerStyle={{ alignItems: 'center' }}
+        ListFooterComponentStyle={styles.footer}
       />
     </Root>
   )

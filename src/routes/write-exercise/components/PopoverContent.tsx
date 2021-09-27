@@ -1,36 +1,32 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../../../constants/theme/colors'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 
-const StyledComponent = styled.View`
+const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: ${COLORS.lunesBlack};
-  width: ${wp('80%')};
-  height: 60;
-  padding-right: 8;
-  padding-left: 8;
-  padding-top: 9;
-  padding-right: 9;
-  border-radius: 2;
+  background-color: ${prop => prop.theme.colors.lunesBlack};
+  width: ${wp('80%')}px;
+  height: 60px;
+  padding: 9px 8px 9px 8px;
+  border-radius: 2px;
 `
-const StyledMessage = styled.Text` 
-  color: ${COLORS.lunesWhite};
-  font-size: ${wp('3.5%')};
+const StyledMessage = styled.Text`
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-size: ${wp('3.5%')}px;
   font-weight: normal;
-  font-family: SourceSansPro-Regular;
-  width: ${wp('60%')};
-  margin-left: 8;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  width: ${wp('60%')}px;
+  margin-left: 8px;
 `
 
-const PopoverContent = () => (
-  <StyledComponent>
+const PopoverContent = (): ReactElement => (
+  <StyledContainer>
     <InfoIcon width={30} height={30} />
     <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
-  </StyledComponent>
+  </StyledContainer>
 )
 
 export default PopoverContent

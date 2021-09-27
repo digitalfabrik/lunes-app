@@ -3,35 +3,35 @@ import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
 `
-const TextStyle = styled.Text`
-  margin-top: ${hp('8.5%')}px;
+const StyledText = styled.Text`
+  margin-top: 8.5%;
   text-align: center;
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
 `
-const List = styled(FlatList as new () => FlatList<DisciplineType>)`
-  width: ${wp('100%')}px;
+const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
+  width: 100%;
 `
 
 const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   font-weight: normal;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${props =>
@@ -39,7 +39,6 @@ const Description = styled.Text<{ item: DisciplineType; selectedId: number | nul
 `
 
 interface ProfessionScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'Profession'>
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
@@ -57,17 +56,15 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
           }
         })
         .catch(e => console.error(e))
-
       setSelectedId(-1)
     }, [navigation])
   )
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
-      <TextStyle>{labels.home.welcome}</TextStyle>
+      <StyledText>{labels.home.welcome}</StyledText>
     </>
   )
-
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
@@ -84,7 +81,6 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       </MenuItem>
     )
   }
-
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
@@ -98,7 +94,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       {insets => (
         <Root>
           <Loading isLoading={loading}>
-            <List
+            <StyledList
               data={disciplines}
               ListHeaderComponent={Title(insets?.top)}
               renderItem={Item}

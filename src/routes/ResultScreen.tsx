@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/theme/colors'
@@ -8,64 +8,72 @@ import Title from '../components/Title'
 import Loading from '../components/Loading'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 import Button from '../components/Button'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
-    background-color: ${COLORS.lunesWhite};
-    height: 100%;
-    width: 100%;
-    padding-bottom: ${hp('0%')};
-    padding-top: ${hp('4%')};
-`;
+  background-color: ${prop => prop.theme.colors.lunesWhite};
+  height: 100%;
+  width: 100%;
+  padding-bottom: 0;
+  padding-top: 4%;
+`
 
 const ScreenTitle = styled.Text`
-    text-align: center;
-    font-size: ${wp('5%')};
-    color: ${COLORS.lunesGreyDark};
-    font-family: 'SourceSansPro-SemiBold';
-    margin-bottom: ${hp('1%')};
-    margin-top: ${hp('2%')};
-`;
+  text-align: center;
+  font-size: ${wp('5%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  margin-bottom: 1%;
+  margin-top: 6%;
+`
 
 const Description = styled.Text`
-    text-align: center;
-    font-size: ${wp('4%')};
-    color: ${COLORS.lunesGreyMedium};
-    font-family: 'SourceSansPro-Regular';
-`;
+  text-align: center;
+  font-size: ${wp('4%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+`
 
-const StyledList = (styled.FlatList`
-    flex-grow: 0;
-    width: 100%;
-    margin-bottom: ${hp('6%')};
-`as unknown) as typeof FlatList;
+const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
+  flex-grow: 0;
+  width: 100%;
+  margin-bottom: 6%;
+`
 
 const DarkLabel = styled.Text`
-    text-align: center;
-    color: ${COLORS.lunesBlack};
-    font-family: 'SourceSansPro-SemiBold';
-    font-size: ${wp('3.5%')};
-    letter-spacing: 0.4;
-    text-transform: uppercase;
-    font-weight: 600;
-`;
+  text-align: center;
+  color: ${prop => prop.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('3.5%')}px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+`
 
 const Arrow = styled(NextArrow)`
-    margin-left: 5;
-`;
+  margin-left: 5px;
+`
 
 const LightLabel = styled.Text`
-    font-size: ${wp('3.2%')};
-    font-family: 'SourceSansPro-SemiBold';
-    color: ${COLORS.lunesWhite};
-    font-weight: 600;
-    margin-left: 10;
-    text-transform: uppercase;
-`;
+  font-size: ${wp('3.2%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-weight: 600;
+  margin-left: 10px;
+  text-transform: uppercase;
+`
+
+export const styles = StyleSheet.create({
+  footer: {
+    marginTop: 25,
+    alignItems: 'center'
+  }
+})
+
 interface ResultScreenPropsType {
   route: RouteProp<RoutesParamsType, 'ResultScreen'>
   navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
@@ -151,7 +159,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}
           </DarkLabel>
-          <Arrow/>
+          <Arrow />
         </>
       </Button>
     </>
@@ -167,7 +175,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
-          ListFooterComponentStyle={{ alignItems: 'center',  marginTop: 15}}
+          ListFooterComponentStyle={styles.footer}
         />
       </Loading>
     </Root>

@@ -1,66 +1,62 @@
-import React, { ReactElement } from 'react'
-import { View } from 'react-native'
-import { COLORS } from '../../../constants/theme/colors'
-import { getArticleColor } from '../../../services/helpers'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AudioPlayer from '../../../components/AudioPlayer'
 import { DocumentType } from '../../../constants/endpoints'
+import { getArticleColor } from '../../../services/helpers'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Wrapper = styled.Pressable`
-  padding-right: ${wp('5%')};
-  padding-left: ${wp('5%')};
+  padding-right: 5%;
+  padding-left: 5%;
 `
 const Container = styled.View`
-  padding-top: 17;
-  padding-bottom: 17;
-  padding-right: 16;
-  padding-left: 16;
-  margin-bottom: 8;
+  padding: 17px 16px;
+  margin-bottom: 8px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: ${COLORS.white};
-  border-color: ${COLORS.lunesBlackUltralight};
-  border-width: 1;
+  background-color: ${props => props.theme.colors.white};
+  border-color: ${props => props.theme.colors.lunesBlackUltralight};
+  border-width: 1px;
   border-style: solid;
-  border-radius: 2;
+  border-radius: 2px;
 `
 const StyledItem = styled.View`
   flex-direction: row;
   align-items: center;
 `
 const StyledImage = styled.Image`
-  margin-right: 15;
-  width: ${wp('15%')};
-  height: ${wp('15%')};
-  border-radius: 50;
+  margin-right: 15px;
+  width: ${wp('15%')}px;
+  height: ${wp('15%')}px;
+  border-radius: 50px;
 `
 const StyledTitle = styled.Text`
-  font-size: ${wp('3.5%')};
+  font-size: ${wp('3.5%')}px;
   font-weight: normal;
-  border-radius: 10;
-  margin-bottom: 6;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-Regular';
+  border-radius: 10px;
+  margin-bottom: 6px;
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
-  width: ${wp('10%')};
+  width: ${wp('10%')}px;
   overflow: hidden;
-  height: ${wp('5%')};
+  height: ${wp('5%')}px;
   text-align: center;
-  line-height: 18;
+  line-height: 18px;
 `
 const Description = styled.Text`
-  font-size: ${wp('4%')};
+  font-size: ${wp('4%')}px;
   font-weight: normal;
-  color: ${COLORS.lunesGreyMedium};
-  font-family: 'SourceSansPro-Regular';
-  margin-left: 8;
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  margin-left: 8px;
 `
 const Speaker = styled.View`
-  padding-right: 40;
-  padding-top: 17;
+  padding-right: 40px;
+  padding-top: 17px;
 `
 
 export interface VocabularyListItemPropType {
@@ -72,12 +68,12 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <Wrapper onPress={setIsModalVisible ?? (() => {
-    })}>
+    <Wrapper onPress={setIsModalVisible ?? (() => {})}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (
             <StyledImage
+              testID='image'
               source={{
                 uri: document.document_image[0].image
               }}
@@ -89,9 +85,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
             <StyledTitle testID='article' style={[{ backgroundColor: getArticleColor(article) }]}>
               {article.value}
             </StyledTitle>
-            <Description testID='word'>
-              {word}
-            </Description>
+            <Description testID='word'>{word}</Description>
           </View>
         </StyledItem>
         <Speaker>

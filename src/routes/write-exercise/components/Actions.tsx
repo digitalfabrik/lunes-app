@@ -2,41 +2,36 @@ import React, { ReactElement } from 'react'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { COLORS } from '../../../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 
-const LightLabelArrow = styled.Text`
+export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   text-align: center;
-  color: ${COLORS.lunesWhite};
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')};
-  letter-spacing: 0.4;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('4%')}px;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   font-weight: 600;
-  margin-right: 8;
+  color: ${prop =>
+    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
 `
-export const LightLabelInput = styled.Text`
-  text-align: center;
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')};
-  letter-spacing: 0.4;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: ${(prop: StyledProps) => (prop.styledInput) ? COLORS.lunesBlackLight : COLORS.lunesWhite};
+
+const LightLabelArrow = styled(LightLabelInput)`
+  margin-right: 8px;
 `
+
 const DarkLabel = styled.Text`
   text-align: center;
-  color: ${COLORS.lunesBlack};
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')};
-  letter-spacing: 0.4;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('4%')}px;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   font-weight: 600;
 `
 const StyledArrow = styled(NextArrow)`
-  margin-left: 5;
+  margin-left: 5px;
 `
 export interface IActionsProps {
   tryLater: () => void
@@ -47,10 +42,6 @@ export interface IActionsProps {
   input: string
   isFinished: boolean
   secondAttempt: boolean
-}
-
-interface StyledProps {
-  styledInput?: string;
 }
 
 const Actions = ({
@@ -65,18 +56,14 @@ const Actions = ({
   return result ? (
     <Button onPress={getNextWord} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
-        <LightLabelArrow>
-          {isFinished ? labels.exercises.showResults : labels.exercises.next}
-        </LightLabelArrow>
+        <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
         <WhiteNextArrow />
       </>
     </Button>
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
-        <LightLabelInput styledInput={input}>
-          {labels.exercises.write.checkInput}
-        </LightLabelInput>
+        <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
       </Button>
 
       <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>
@@ -87,7 +74,7 @@ const Actions = ({
         <Button onPress={tryLater} testID='try-later'>
           <>
             <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
-            <StyledArrow/>
+            <StyledArrow />
           </>
         </Button>
       )}
