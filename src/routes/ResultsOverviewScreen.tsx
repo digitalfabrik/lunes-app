@@ -54,11 +54,11 @@ const ScreenSubTitle = styled.Text`
 `
 const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding: 17px 8px 17px 16px;
+  padding: 17px 28px 17px 16px;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
-  width: 90%;
+  width: 100%;
   justify-content: space-between;
   border-width: 1px;
   border-style: solid;
@@ -196,7 +196,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
-              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+              selected={selected}
+            >{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />
