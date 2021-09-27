@@ -224,6 +224,7 @@ const AnswerSection = ({
             editable={result === ''}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onSubmitEditing={checkEntry}
           />
           {(isFocused || (result === '' && input !== '')) && (
             <TouchableOpacity onPress={() => setInput('')}>
