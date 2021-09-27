@@ -4,7 +4,6 @@ import Tts, { TtsError } from 'react-native-tts'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
-import { EventListenerCallback } from '@react-navigation/native'
 import { EmitterSubscription } from 'react-native'
 
 export interface AudioPlayerProps {
