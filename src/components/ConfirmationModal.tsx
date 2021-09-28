@@ -1,17 +1,17 @@
 import React from 'react'
 import { CloseIcon } from '../../assets/images'
-import Button from './Button'
 import { BUTTONS_THEME } from '../constants/data'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+import Button from './Button'
 import { RouteProp } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import { Color } from 'react-native-svg'
 import { Modal } from 'react-native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const Overlay = styled.View`
   flex: 1;

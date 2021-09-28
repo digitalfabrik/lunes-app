@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import { COLORS } from '../constants/theme/colors'
@@ -8,61 +8,69 @@ import Title from '../components/Title'
 import Loading from '../components/Loading'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 import Button from '../components/Button'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
+import styled from 'styled-components/native'
+
+const Root = styled.View`
+  background-color: ${prop => prop.theme.colors.lunesWhite};
+  height: 100%;
+  width: 100%;
+  padding-bottom: 0;
+  padding-top: 4%;
+`
+
+const ScreenTitle = styled.Text`
+  text-align: center;
+  font-size: ${wp('5%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  margin-bottom: 1%;
+  margin-top: 6%;
+`
+
+const Description = styled.Text`
+  text-align: center;
+  font-size: ${wp('4%')}px;
+  color: ${prop => prop.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+`
+
+const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
+  flex-grow: 0;
+  width: 100%;
+  margin-bottom: 6%;
+`
+
+const DarkLabel = styled.Text`
+  text-align: center;
+  color: ${prop => prop.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('3.5%')}px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+`
+
+const Arrow = styled(NextArrow)`
+  margin-left: 5px;
+`
+
+const LightLabel = styled.Text`
+  font-size: ${wp('3.2%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-weight: 600;
+  margin-left: 10px;
+  text-transform: uppercase;
+`
 
 export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    width: '100%',
-    paddingBottom: 0,
-    paddingTop: 32
-  },
-  screenTitle: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold',
-    marginBottom: 4,
-    marginTop: 11
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  list: {
-    flexGrow: 0,
-    width: '100%',
-    marginBottom: hp('6%')
-  },
-  darkLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('3.5%'),
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600'
-  },
-  arrow: {
-    marginLeft: 5
-  },
   footer: {
-    marginTop: 15,
+    marginTop: 25,
     alignItems: 'center'
-  },
-  lightLabel: {
-    fontSize: wp('3.2%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesWhite,
-    fontWeight: '600',
-    marginLeft: 10,
-    textTransform: 'uppercase'
   }
 })
 
@@ -105,13 +113,13 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title>
       <>
         <Icon width={38} height={38} />
-        <Text style={styles.screenTitle}>
+        <ScreenTitle>
           {' '}
           {title} {labels.results.entries}
-        </Text>
-        <Text style={styles.description}>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
+        </ScreenTitle>
+        <Description>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
           labels.home.words
-        }`}</Text>
+        }`}</Description>
       </>
     </Title>
   )
@@ -129,9 +137,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
         <>
           <RepeatIcon fill={COLORS.lunesWhite} />
-          <Text style={styles.lightLabel}>
+          <LightLabel>
             {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
-          </Text>
+          </LightLabel>
         </>
       </Button>
     ) : null
@@ -148,21 +156,20 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           })
         }>
         <>
-          <Text style={styles.darkLabel}>
+          <DarkLabel>
             {labels.results.show} {nextResultType.title} {labels.results.entries}
-          </Text>
-          <NextArrow style={styles.arrow} />
+          </DarkLabel>
+          <Arrow />
         </>
       </Button>
     </>
   )
 
   return (
-    <View style={styles.root}>
+    <Root>
       <Loading isLoading={isLoading}>
-        <FlatList
+        <StyledList
           data={entries}
-          style={styles.list}
           ListHeaderComponent={Header}
           renderItem={Item}
           keyExtractor={item => `${item.id}`}
@@ -171,7 +178,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           ListFooterComponentStyle={styles.footer}
         />
       </Loading>
-    </View>
+    </Root>
   )
 }
 

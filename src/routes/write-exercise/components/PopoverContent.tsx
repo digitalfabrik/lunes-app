@@ -1,35 +1,32 @@
 import React, { ReactElement } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
 import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { COLORS } from '../../../constants/theme/colors'
 import labels from '../../../constants/labels.json'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.lunesBlack,
-    width: wp('80%'),
-    height: 60,
-    paddingVertical: 8,
-    paddingHorizontal: 9,
-    borderRadius: 2
-  },
-  message: {
-    color: COLORS.lunesWhite,
-    fontSize: wp('3.5%'),
-    fontWeight: 'normal',
-    fontFamily: 'SourceSansPro-Regular',
-    width: wp('60%'),
-    marginLeft: 8
-  }
-})
+const StyledContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${prop => prop.theme.colors.lunesBlack};
+  width: ${wp('80%')}px;
+  height: 60px;
+  padding: 9px 8px 9px 8px;
+  border-radius: 2px;
+`
+const StyledMessage = styled.Text`
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-size: ${wp('3.5%')}px;
+  font-weight: normal;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  width: ${wp('60%')}px;
+  margin-left: 8px;
+`
+
 const PopoverContent = (): ReactElement => (
-  <View style={styles.container}>
+  <StyledContainer>
     <InfoIcon width={30} height={30} />
-    <Text style={styles.message}>{labels.exercises.write.feedback.articleMissing}</Text>
-  </View>
+    <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
+  </StyledContainer>
 )
 
 export default PopoverContent

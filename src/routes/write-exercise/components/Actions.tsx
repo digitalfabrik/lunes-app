@@ -1,42 +1,38 @@
 import React, { ReactElement } from 'react'
-import { Text, StyleSheet } from 'react-native'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { COLORS } from '../../../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  lightLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('4%'),
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600'
-  },
-  darkLabel: {
-    textAlign: 'center',
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('4%'),
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    fontWeight: '600'
-  },
-  disabledButtonLabel: {
-    color: COLORS.lunesBlackLight
-  },
-  arrowLabel: {
-    marginRight: 8
-  },
-  arrow: {
-    marginLeft: 5
-  }
-})
+export const LightLabelInput = styled.Text<{ styledInput?: string }>`
+  text-align: center;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('4%')}px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: ${prop =>
+    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
+`
 
+const LightLabelArrow = styled(LightLabelInput)`
+  margin-right: 8px;
+`
+
+const DarkLabel = styled.Text`
+  text-align: center;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${wp('4%')}px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+`
+const StyledArrow = styled(NextArrow)`
+  margin-left: 5px;
+`
 export interface IActionsProps {
   tryLater: () => void
   giveUp: () => void
@@ -60,29 +56,25 @@ const Actions = ({
   return result ? (
     <Button onPress={getNextWord} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
       <>
-        <Text style={[styles.lightLabel, styles.arrowLabel]}>
-          {isFinished ? labels.exercises.showResults : labels.exercises.next}
-        </Text>
+        <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
         <WhiteNextArrow />
       </>
     </Button>
   ) : (
     <>
       <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
-        <Text style={[styles.lightLabel, !input && styles.disabledButtonLabel]}>
-          {labels.exercises.write.checkInput}
-        </Text>
+        <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
       </Button>
 
       <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>
-        <Text style={styles.darkLabel}>{labels.exercises.write.showSolution}</Text>
+        <DarkLabel>{labels.exercises.write.showSolution}</DarkLabel>
       </Button>
 
       {!isFinished && !result && (
         <Button onPress={tryLater} testID='try-later'>
           <>
-            <Text style={styles.darkLabel}>{labels.exercises.write.tryLater}</Text>
-            <NextArrow style={styles.arrow} />
+            <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
+            <StyledArrow />
           </>
         </Button>
       )}
