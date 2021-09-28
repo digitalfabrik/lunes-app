@@ -5,7 +5,7 @@ import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
-import { ProgressBar } from 'react-native-paper'
+import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
@@ -16,7 +16,8 @@ const HeaderText = styled.Text`
   font-family: 'SourceSansPro-Regular';
   color: ${COLORS.lunesGreyMedium};
 `
-const TextTitle = styled.Text`
+
+const Title = styled.Text`
   color: ${COLORS.lunesBlack};
   font-family: 'SourceSansPro-SemiBold';
   font-size: ${wp('4%')}px;
@@ -24,11 +25,12 @@ const TextTitle = styled.Text`
   font-weight: 600;
   margin-left: 15px;
 `
-const ProgressBarStyle = styled(ProgressBar)`
+
+const ProgressBar = styled(RNProgressBar)`
   background-color: ${COLORS.lunesBlackUltralight};
 `
 
-const HeaderLeftTouchableOpacity = styled.TouchableOpacity`
+const HeaderLeft = styled.TouchableOpacity`
   padding-left: 15px;
   flex-direction: row;
   align-items: center;
@@ -47,17 +49,17 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     () =>
       navigation.setOptions({
         headerLeft: () => (
-          <HeaderLeftTouchableOpacity onPress={() => setIsModalVisible(true)}>
+          <HeaderLeft onPress={() => setIsModalVisible(true)}>
             <CloseButton />
-            <TextTitle>{labels.general.header.cancelExercise}</TextTitle>
-          </HeaderLeftTouchableOpacity>
+            <Title>{labels.general.header.cancelExercise}</Title>
+          </HeaderLeft>
         ),
         headerRight: () => <HeaderText>{`${currentWord + 1} ${labels.general.header.of} ${numberOfWords}`}</HeaderText>
       }),
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
   useEffect(() => {
-    const showModal = () => {
+    const showModal = (): boolean => {
       setIsModalVisible(true)
       return true
     }
@@ -66,7 +68,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
   }, [])
   return (
     <>
-      <ProgressBarStyle
+      <ProgressBar
         progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
         color={COLORS.lunesGreenMedium}
         accessibilityComponentType

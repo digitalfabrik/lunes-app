@@ -12,6 +12,13 @@ interface StyledListElementProps {
   delayPassed: boolean
 }
 
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
+}
+
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${wp('4.3%')}px;
