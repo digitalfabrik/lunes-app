@@ -1,118 +1,80 @@
-import React, { ReactElement, useState } from 'react'
-import { FlatList, LogBox, Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { FlatList, View } from 'react-native'
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    paddingTop: 32
-  },
-  list: {
-    width: '100%',
-    paddingHorizontal: 16
-  },
-  screenDescription: {
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  description: {
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  screenTitle: {
-    textAlign: 'center',
-    fontSize: wp('5%'),
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  container: {
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.lunesBlackUltralight,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 2
-  },
-  clickedContainer: {
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 2
-  },
-  clickedItemTitle: {
-    textAlign: 'left',
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesWhite,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  clickedItemDescription: {
-    fontSize: wp('4%'),
-    fontWeight: 'normal',
-    color: COLORS.white,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  level: {
-    marginTop: 11
-  },
-  title2: {
-    textAlign: 'left',
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  title: {
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('4%'),
-    textTransform: 'uppercase',
-    fontWeight: '600',
-    marginLeft: 15
-  }
-})
+const Root = styled.View`
+  background-color: ${prop => prop.theme.colors.lunesWhite};
+  height: 100%;
+  padding-top: 10%;
+`
+const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
+  width: ${wp('100%')}px;
+  padding-right: ${wp('5%')}px;
+  padding-left: ${wp('5%')}px;
+`
 
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+const ScreenDescription = styled.Text`
+  font-size: ${wp('4%')}px;
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+`
+const Description = styled.Text<{ selected: boolean }>`
+  font-size: ${wp('4%')}px;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-weight: normal;
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
+`
+const ScreenTitle = styled.Text`
+  text-align: center;
+  font-size: ${wp('5%')}px;
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+`
+const Container = styled.Pressable<{ selected: boolean }>`
+  align-self: center;
+  padding: 17px 8px 17px 16px;
+  margin-bottom: 8px;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+
+  background-color: ${props => (props.selected ? props.theme.colors.lunesBlack : props.theme.colors.white)};
+  border-color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesBlackUltralight)};
+`
+const StyledItemTitle = styled.Text<{ selected: boolean }>`
+  text-align: left;
+  font-size: ${wp('4.5%')}px;
+  font-weight: 600;
+  letter-spacing: 0.11px;
+  margin-bottom: 2px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+
+  color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
+`
+
+const StyledLevel = styled.View`
+  margin-top: 11px;
+`
 
 interface ExercisesScreenPropsType {
   route: RouteProp<RoutesParamsType, 'Exercises'>
   navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): ReactElement => {
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
   const { trainingSet, documentsLength } = extraParams
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -126,29 +88,26 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): React
   const Header = (
     <Title>
       <>
-        <Text style={styles.screenTitle}>{trainingSet}</Text>
-        <Text style={styles.screenDescription}>
+        <ScreenTitle>{trainingSet}</ScreenTitle>
+        <ScreenDescription>
           {documentsLength} {labels.home.words}
-        </Text>
+        </ScreenDescription>
       </>
     </Title>
   )
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
-    const itemStyle = selected ? styles.clickedContainer : styles.container
-    const itemTitleStyle = selected ? styles.clickedItemTitle : styles.title2
-    const descriptionStyle = selected ? styles.clickedItemDescription : styles.description
 
     return (
-      <Pressable style={itemStyle} onPress={() => handleNavigation(item)}>
+      <Container selected={selected} onPress={() => handleNavigation(item)}>
         <View>
-          <Text style={itemTitleStyle}>{item.title}</Text>
-          <Text style={descriptionStyle}>{item.description}</Text>
-          <item.Level style={styles.level} />
+          <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
+          <Description selected={selected}>{item.description}</Description>
+          <StyledLevel as={item.Level} />
         </View>
         <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
-      </Pressable>
+      </Container>
     )
   }
 
@@ -165,16 +124,15 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): React
   }
 
   return (
-    <View style={styles.root}>
-      <FlatList
+    <Root>
+      <ItemTitle
         data={EXERCISES}
-        style={styles.list}
         ListHeaderComponent={Header}
         renderItem={Item}
         keyExtractor={item => item.key.toString()}
         showsVerticalScrollIndicator={false}
       />
-    </View>
+    </Root>
   )
 }
 
