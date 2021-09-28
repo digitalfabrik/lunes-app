@@ -92,7 +92,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
         // @ts-expect-error ios params should be optional
         Tts.speak(`${document?.article.value} ${document?.word}`, {
           androidParams: {
-            KEY_PARAM_PAN: -1,
+            KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,
             KEY_PARAM_STREAM: 'STREAM_MUSIC'
           }
