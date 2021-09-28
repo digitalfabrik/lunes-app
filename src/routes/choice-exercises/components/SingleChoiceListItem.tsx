@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { getArticleColor } from '../../../services/helpers'
 import { Answer, Article } from '../../../constants/data'
-import styled, { css } from 'styled-components/native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
+import { getArticleColor } from '../../../services/helpers'
+import React, { useState } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { css } from 'styled-components/native'
 
 interface StyledListElementProps {
   pressed: boolean
@@ -143,6 +143,13 @@ export interface SingleChoiceListItemPropsType {
   anyAnswerSelected: boolean
   delayPassed: boolean
   disabled?: boolean
+}
+
+interface StyledListElementProps {
+  pressed: boolean
+  selected: boolean
+  correct: boolean
+  delayPassed: boolean
 }
 
 const SingleChoiceListItem = ({

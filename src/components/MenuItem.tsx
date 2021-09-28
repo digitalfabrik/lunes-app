@@ -11,20 +11,20 @@ const ItemStyle = styled(Pressable)`
   padding: 17px 8px 17px 16px;
   flex-direction: row;
   align-items: center;
-  margin-left: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
-  margin-right: ${(prop: IMenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
-  background-color: ${(prop: IMenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
+  margin-left: ${(prop: MenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
+  margin-right: ${(prop: MenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
+  background-color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
   border-color: ${COLORS.white};
-  border-width: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 1 : 0)}px;
+  border-width: ${(prop: MenuItemStyleProps) => (!prop.selected ? 1 : 0)}px;
   border-style: solid;
-  border-radius: ${(prop: IMenuItemStyleProps) => (!prop.selected ? 2 : 0)}px;
+  border-radius: ${(prop: MenuItemStyleProps) => (!prop.selected ? 2 : 0)}px;
 `
 const ItemTitle = styled.Text`
   font-size: ${wp('5%')}px;
   letter-spacing: 0.11px;
   margin-bottom: 2px;
   font-family: 'SourceSansPro-SemiBold';
-  color: ${(prop: IMenuItemStyleProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
+  color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
 `
 const Icon = styled.Image`
   justify-content: center;
@@ -37,15 +37,16 @@ const Left = styled.View`
   align-items: center;
 `
 
+interface MenuItemStyleProps {
+  selected: boolean
+}
+
 export interface IMenuItemProps {
   selected: boolean
   onPress: () => void
   icon: string
   title: string
   children: ReactElement
-}
-interface IMenuItemStyleProps {
-  selected: boolean
 }
 
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {

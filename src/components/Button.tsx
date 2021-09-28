@@ -10,15 +10,6 @@ interface ThemedButtonProps {
 }
 
 const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
-  flex-direction: row;
-  padding: 10px 20px;
-  width: ${wp('70%')}px;
-  align-items: center;
-  border-radius: ${hp('7%')}px;
-  justify-content: center;
-  height: ${hp('7%')}px;
-  margin-bottom: ${hp('2%')}px;
-
   ${props => {
     if (props.disabled) {
       return css`
@@ -45,9 +36,17 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
       border-color: ${props.theme.colors.lunesBlack};
       border-width: 1px;
     `};
+  flex-direction: row;
+  padding: 10px 20px;
+  width: ${wp('70%')}px;
+  align-items: center;
+  border-radius: ${hp('7%')}px;
+  justify-content: center;
+  height: ${hp('7%')}px;
+  margin-bottom: ${hp('2%')}px;
 `
 
-interface IButtonProps {
+export interface IButtonProps {
   onPress: () => void
   disabled?: boolean
   children: ReactElement
@@ -55,14 +54,13 @@ interface IButtonProps {
   testID?: string
 }
 
-
 const Button = ({ children, onPress, disabled = false, buttonTheme }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      onPress={onPress}
       isPressed={isPressed}
+      onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}

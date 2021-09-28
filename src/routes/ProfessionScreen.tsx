@@ -1,57 +1,48 @@
-import React, { ReactElement, useState } from 'react'
 import Header from '../components/Header'
-import MenuItem from '../components/MenuItem'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import { DisciplineType } from '../constants/endpoints'
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import Loading from '../components/Loading'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../services/AsyncStorage'
+import MenuItem from '../components/MenuItem'
+import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+import { useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { FlatList, Text } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
+import styled from 'styled-components/native'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 
-export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%'
-  },
-  text: {
-    marginTop: 56,
-    textAlign: 'center',
-    fontSize: wp('4%'),
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  list: {
-    width: '100%'
-  },
-  title: {
-    marginBottom: 32
-  },
-  clickedItemDescription: {
-    fontSize: wp('4%'),
-    fontWeight: 'normal',
-    color: COLORS.white,
-    fontFamily: 'SourceSansPro-Regular'
-  },
-  description: {
-    fontSize: wp('4%'),
-    fontWeight: 'normal',
-    color: COLORS.lunesGreyMedium,
-    fontFamily: 'SourceSansPro-Regular'
-  }
-})
+const Root = styled.View`
+  background-color: ${props => props.theme.colors.lunesWhite};
+  height: 100%;
+`
+const StyledText = styled.Text`
+  margin-top: 8.5%;
+  text-align: center;
+  font-size: ${wp('4%')}px;
+  color: ${props => props.theme.colors.lunesGreyMedium};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  margin-bottom: 32px;
+`
+const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
+  width: 100%;
+`
+
+const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
+  font-size: ${wp('4%')}px;
+  font-weight: normal;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props =>
+    props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
+`
 
 interface ProfessionScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'Profession'>
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
 
-const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): ReactElement => {
+const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
   const { data: disciplines, error, loading } = useLoadDisciplines(null)
@@ -65,38 +56,31 @@ const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): Rea
           }
         })
         .catch(e => console.error(e))
-
       setSelectedId(-1)
     }, [navigation])
   )
-
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
-      <Text style={styles.text}>{labels.home.welcome}</Text>
+      <StyledText>{labels.home.welcome}</StyledText>
     </>
   )
-
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
-    const itemTextStyle = item.id === selectedId ? styles.clickedItemDescription : styles.description
-
     if (item.numberOfChildren === 0) {
       return null
     }
-
     return (
       <MenuItem
         selected={item.id === selectedId}
         title={item.title}
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
-        <Text style={itemTextStyle}>
+        <Description item={item} selectedId={selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-        </Text>
+        </Description>
       </MenuItem>
     )
   }
-
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
@@ -105,17 +89,14 @@ const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): Rea
       }
     })
   }
-
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (
-        <View style={styles.root}>
+        <Root>
           <Loading isLoading={loading}>
-            <FlatList
+            <StyledList
               data={disciplines}
-              style={styles.list}
               ListHeaderComponent={Title(insets?.top)}
-              ListHeaderComponentStyle={styles.title}
               renderItem={Item}
               keyExtractor={item => item.id.toString()}
               scrollEnabled={true}
@@ -123,10 +104,9 @@ const ProfessionScreen = ({ navigation, route }: ProfessionScreenPropsType): Rea
             />
           </Loading>
           <Text>{error}</Text>
-        </View>
+        </Root>
       )}
     </SafeAreaInsetsContext.Consumer>
   )
 }
-
 export default ProfessionScreen

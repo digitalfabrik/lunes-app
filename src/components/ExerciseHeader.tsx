@@ -16,6 +16,7 @@ const HeaderText = styled.Text`
   font-family: 'SourceSansPro-Regular';
   color: ${COLORS.lunesGreyMedium};
 `
+
 const Title = styled.Text`
   color: ${COLORS.lunesBlack};
   font-family: 'SourceSansPro-SemiBold';
@@ -24,9 +25,11 @@ const Title = styled.Text`
   font-weight: 600;
   margin-left: 15px;
 `
+
 const ProgressBar = styled(RNProgressBar)`
   background-color: ${COLORS.lunesBlackUltralight};
 `
+
 const HeaderLeft = styled.TouchableOpacity`
   padding-left: 15px;
   flex-direction: row;

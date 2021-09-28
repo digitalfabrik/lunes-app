@@ -1,29 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components Loading  renders correctly across screens 1`] = `
-<View
-  style={
-    Object {
-      "alignItems": "center",
-      "flex": 1,
-    }
-  }
->
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "height": "50%",
-        "justifyContent": "center",
-      }
-    }
-  >
+<Styled(View)>
+  <Styled(View)>
     <ActivityIndicator
       animating={true}
       color="#000e38"
       hidesWhenStopped={true}
       size="large"
     />
-  </View>
-</View>
+  </Styled(View)>
+</Styled(View)>
 `;

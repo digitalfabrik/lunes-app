@@ -1,23 +1,33 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
 
+export interface AudioPlayerProps {
+  document: DocumentType
+  disabled: boolean
+}
+
 const StyledView = styled.View`
   align-items: center;
   margin-bottom: 20px;
 `
 
-const VolumeIcon = styled.TouchableOpacity`
+const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolean }>`
   position: absolute;
   top: -20px;
   left: 45%;
   width: 40px;
   height: 40px;
   border-radius: 50px;
-  background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
+  background-color: ${props =>
+    props.disabled
+      ? props.theme.colors.lunesBlackUltralight
+      : props.isActive
+      ? props.theme.colors.lunesRed
+      : props.theme.colors.lunesRedDark};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -27,30 +37,13 @@ const VolumeIcon = styled.TouchableOpacity`
   shadow-opacity: 0.5;
 `
 
-const VolumeUpIcon = styled(VolumeUp)<{ disabled: boolean; isActive: boolean }>`
-  color: ${props =>
-    props.disabled
-      ? props.theme.colors.lunesBlackUltralight
-      : props.isActive
-      ? props.theme.colors.lunesRed
-      : props.theme.colors.lunesRedDark};
-`
-
-export interface AudioPlayerProps {
-  document: DocumentType
-  disabled: boolean
-}
-
 const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const { document, disabled } = props
-  const [isInitialized, setIsInitialized] = useState(false)
-  const [ttsError, setTtsError] = useState<TtsError | null>(null)
+  const { audio } = document
+  const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
 
-  React.useEffect(() => {
-    if (ttsError?.code === 'no_engine') {
-      return
-    }
+  const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
       .then(async status => {
         if (status === 'success') {
@@ -61,34 +54,45 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
       .catch(async (error: TtsError) => {
         console.error(`Tts-Error: ${error.code}`)
         if (error.code === 'no_engine') {
-          await Tts.requestInstallEngine().catch(() => setTtsError(error))
+          await Tts.requestInstallEngine().catch(e => console.error('Failed to install tts engine: ', e))
         }
       })
-  }, [isInitialized, ttsError])
+  }, [])
 
   React.useEffect(() => {
-    if (isInitialized) {
+    if (audio) {
+      const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+        SoundPlayer.play()
+      })
       const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
+      setIsInitialized(true)
+
+      return () => {
+        _onFinishedLoadingSubscription.remove()
+        _onSoundPlayerFinishPlaying.remove()
+      }
+    } else {
+      initializeTts()
+
       const ttsHandler = (): void => setIsActive(false)
       Tts.addEventListener('tts-finish', ttsHandler)
 
       return () => {
-        _onSoundPlayerFinishPlaying.remove()
         Tts.removeEventListener('tts-finish', ttsHandler)
       }
     }
-  }, [isActive, isInitialized])
+  }, [audio, initializeTts])
 
-  const handleSpeakerClick = (audio?: string): void => {
+  const handleSpeakerClick = (): void => {
     if (isInitialized) {
       setIsActive(true)
-      if (audio) {
-        SoundPlayer.playUrl(document?.audio)
+      if (document.audio) {
+        SoundPlayer.loadUrl(document.audio)
       } else {
         // @ts-expect-error ios params should be optional
         Tts.speak(`${document?.article.value} ${document?.word}`, {
           androidParams: {
-            KEY_PARAM_PAN: -1,
+            KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,
             KEY_PARAM_STREAM: 'STREAM_MUSIC'
           }
@@ -99,8 +103,8 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon disabled={disabled} onPress={() => handleSpeakerClick(document?.audio)}>
-        <VolumeUpIcon disabled={disabled} isActive={isActive} />
+      <VolumeIcon disabled={disabled} isActive={isActive} onPress={handleSpeakerClick}>
+        <VolumeUp />
       </VolumeIcon>
     </StyledView>
   )
