@@ -1,10 +1,9 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import styled from 'styled-components/native'
-import { EmitterSubscription } from 'react-native'
 
 export interface AudioPlayerProps {
   document: DocumentType
@@ -40,23 +39,11 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
 
 const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   const { document, disabled } = props
-  const [isInitialized, setIsInitialized] = useState(false)
-  const [ttsError, setTtsError] = useState<TtsError | null>(null)
+  const { audio } = document
+  const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
-  let _onFinishedLoadingSubscription: EmitterSubscription | null = null
 
-  React.useEffect(() => {
-    return () => {
-      if (_onFinishedLoadingSubscription) {
-        _onFinishedLoadingSubscription.remove()
-      }
-    }
-  }, [_onFinishedLoadingSubscription])
-
-  React.useEffect(() => {
-    if (ttsError?.code === 'no_engine') {
-      return
-    }
+  const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
       .then(async status => {
         if (status === 'success') {
@@ -67,32 +54,40 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
       .catch(async (error: TtsError) => {
         console.error(`Tts-Error: ${error.code}`)
         if (error.code === 'no_engine') {
-          await Tts.requestInstallEngine().catch(() => setTtsError(error))
+          await Tts.requestInstallEngine().catch(e => console.error('Failed to install tts engine: ', e))
         }
       })
-  }, [isInitialized, ttsError])
+  }, [])
 
   React.useEffect(() => {
-    if (isInitialized) {
+    if (audio) {
+      const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+        SoundPlayer.play()
+      })
       const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
+      setIsInitialized(true)
+
+      return () => {
+        _onFinishedLoadingSubscription.remove()
+        _onSoundPlayerFinishPlaying.remove()
+      }
+    } else {
+      initializeTts()
+
       const ttsHandler = (): void => setIsActive(false)
       Tts.addEventListener('tts-finish', ttsHandler)
 
       return () => {
-        _onSoundPlayerFinishPlaying.remove()
         Tts.removeEventListener('tts-finish', ttsHandler)
       }
     }
-  }, [isActive, isInitialized])
+  }, [audio, initializeTts])
 
-  const handleSpeakerClick = (audio?: string): void => {
+  const handleSpeakerClick = (): void => {
     if (isInitialized) {
       setIsActive(true)
-      if (audio) {
-        SoundPlayer.loadUrl(audio)
-        _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
-          SoundPlayer.play()
-        })
+      if (document.audio) {
+        SoundPlayer.loadUrl(document.audio)
       } else {
         // @ts-expect-error ios params should be optional
         Tts.speak(`${document?.article.value} ${document?.word}`, {
@@ -108,7 +103,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon disabled={disabled} isActive={isActive} onPress={() => handleSpeakerClick(document?.audio)}>
+      <VolumeIcon disabled={disabled} isActive={isActive} onPress={handleSpeakerClick}>
         <VolumeUp />
       </VolumeIcon>
     </StyledView>
