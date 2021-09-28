@@ -28,7 +28,7 @@ const ModalContainer = styled.View`
   padding-top: 31px;
   padding-bottom: 31px;
 `
-const CloseIconStyle = styled.TouchableOpacity`
+const Icon = styled.TouchableOpacity`
   position: absolute;
   top: 8px;
   right: 8px;
@@ -45,7 +45,7 @@ const Message = styled.Text`
   padding-top: 31px;
 `
 const Label = styled.Text`
-  color: ${(prop: LabelProps) => prop.LColor};
+  color: ${(prop: LabelProps) => prop.labelColor};
   font-size: ${wp('4%')}px;
   font-weight: 600;
   text-align: center;
@@ -55,8 +55,9 @@ const Label = styled.Text`
 `
 
 interface LabelProps {
-  LColor: Color
+  labelColor: Color
 }
+
 export interface ConfirmationModalPropsType {
   visible: boolean
   setIsModalVisible: Function
@@ -92,15 +93,15 @@ const ConfirmationModal = ({
     <Modal testID='modal' visible={visible} transparent animationType='fade'>
       <Overlay>
         <ModalContainer>
-          <CloseIconStyle onPress={closeModal}>
+          <Icon onPress={closeModal}>
             <CloseIcon />
-          </CloseIconStyle>
+          </Icon>
           <Message>{labels.exercises.cancelModal.cancelAsk}</Message>
           <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
-            <Label LColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
+            <Label labelColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
           <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
-            <Label LColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.continue}</Label>
+            <Label labelColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
         </ModalContainer>
       </Overlay>

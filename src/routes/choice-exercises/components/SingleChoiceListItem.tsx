@@ -5,20 +5,6 @@ import React, { useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
 
-interface StyledListElementProps {
-  pressed: boolean
-  selected: boolean
-  correct: boolean
-  delayPassed: boolean
-}
-
-interface StyledListElementProps {
-  pressed: boolean
-  selected: boolean
-  correct: boolean
-  delayPassed: boolean
-}
-
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${wp('4.3%')}px;
@@ -26,7 +12,7 @@ const StyledText = styled.Text`
   font-style: normal;
 `
 
-const StyledContainer = styled.TouchableOpacity<StyledListElementProps>`
+const Container = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
   margin-bottom: 1.5%;
   border-radius: 2px;
@@ -80,7 +66,7 @@ const StyledContainer = styled.TouchableOpacity<StyledListElementProps>`
   shadow-offset: 5px 5px;
 `
 
-const StyledArticleBox = styled.View<StyledListElementProps & { article: Article }>`
+const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   width: 11.5%;
   height: 38%;
   border-radius: 10px;
@@ -101,7 +87,7 @@ const StyledArticleBox = styled.View<StyledListElementProps & { article: Article
   }};
 `
 
-const StyledArticleText = styled(StyledText)<StyledListElementProps>`
+const ArticleText = styled(StyledText)<StyledListElementProps>`
   text-align: center;
   color: ${props => {
     if (props.pressed) {
@@ -116,7 +102,7 @@ const StyledArticleText = styled(StyledText)<StyledListElementProps>`
   }};
 `
 
-const StyledWord = styled(StyledText)<StyledListElementProps>`
+const Word = styled(StyledText)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
       return props.theme.colors.lunesWhite
@@ -128,7 +114,7 @@ const StyledWord = styled(StyledText)<StyledListElementProps>`
   }};
 `
 
-const StyledOpacityOverlay = styled.View`
+const Overlay = styled.View`
   background-color: rgba(255, 255, 255, 0.6);
   position: absolute;
   width: 100%;
@@ -178,7 +164,7 @@ const SingleChoiceListItem = ({
   }
 
   return (
-    <StyledContainer
+    <Container
       activeOpacity={1}
       correct={showCorrect}
       selected={selected}
@@ -187,22 +173,22 @@ const SingleChoiceListItem = ({
       pressed={pressed}
       delayPassed={delayPassed}
       disabled={anyAnswerSelected || disabled}>
-      <StyledArticleBox
+      <ArticleBox
         article={article}
         selected={selected}
         correct={showCorrect}
         pressed={pressed}
         delayPassed={delayPassed}>
-        <StyledArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
+        <ArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
-        </StyledArticleText>
-      </StyledArticleBox>
-      <StyledWord selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
+        </ArticleText>
+      </ArticleBox>
+      <Word selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
         {article.id === 4 && ` (${labels.general.plurals})`}
-      </StyledWord>
-      {addOpacity && <StyledOpacityOverlay />}
-    </StyledContainer>
+      </Word>
+      {addOpacity && <Overlay />}
+    </Container>
   )
 }
 

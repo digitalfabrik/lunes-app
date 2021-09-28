@@ -46,7 +46,7 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   margin-bottom: ${hp('2%')}px;
 `
 
-export interface IButtonProps {
+interface IButtonProps {
   onPress: () => void
   disabled?: boolean
   children: ReactElement
