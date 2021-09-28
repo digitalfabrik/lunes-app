@@ -4,8 +4,7 @@ import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import Button from '../../../components/Button'
-import { Text } from 'react-native'
-import { styles } from '../../write-exercise/components/Actions'
+import { LightLabelInput } from '../../write-exercise/components/Actions'
 import styled from 'styled-components/native'
 import AudioPlayer from '../../../components/AudioPlayer'
 import labels from '../../../constants/labels.json'
@@ -121,9 +120,9 @@ const ChoiceExerciseScreen = ({
         {selectedAnswer !== null && (
           <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
-              <Text style={[styles.lightLabel, styles.arrowLabel]}>
+              <LightLabelInput>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
-              </Text>
+              </LightLabelInput>
             </>
           </Button>
         )}

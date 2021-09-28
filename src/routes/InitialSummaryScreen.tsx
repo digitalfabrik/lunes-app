@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { StatusBar } from 'react-native'
 import Button from '../components/Button'
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
@@ -10,52 +10,50 @@ import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTy
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../services/AsyncStorage'
 import labels from '../constants/labels.json'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  root: {
-    backgroundColor: COLORS.lunesWhite,
-    height: '100%',
-    alignItems: 'center'
-  },
-  upperSection: {
-    width: hp('70%'),
-    height: hp('60%'),
-    backgroundColor: COLORS.lunesBlack,
-    borderBottomLeftRadius: hp('60%'),
-    borderBottomRightRadius: hp('60%'),
-    marginBottom: hp('8%'),
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  messageContainer: {
-    width: wp('60%'),
-    marginTop: hp('5%')
-  },
-  message: {
-    color: COLORS.lunesWhite,
-    fontSize: wp('5%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontWeight: '600',
-    textAlign: 'center'
-  },
-  lightLabel: {
-    fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesWhite,
-    fontWeight: '600',
-    marginLeft: 10,
-    textTransform: 'uppercase'
-  },
-  darkLabel: {
-    fontSize: wp('3.5%'),
-    fontFamily: 'SourceSansPro-SemiBold',
-    color: COLORS.lunesBlack,
-    fontWeight: '600',
-    marginLeft: 10,
-    textTransform: 'uppercase'
-  }
-})
-
+const Root = styled.View`
+  background-color: ${prop => prop.theme.colors.lunesWhite};
+  height: 100%;
+  align-items: center;
+`
+const UpperSection = styled.View`
+  width: 140%;
+  height: 60%;
+  background-color: ${prop => prop.theme.colors.lunesBlack};
+  border-bottom-left-radius: ${hp('60%')}px;
+  border-bottom-right-radius: ${hp('60%')}px;
+  margin-bottom: 8%;
+  justify-content: center;
+  align-items: center;
+`
+const MessageContainer = styled.View`
+  width: 60%;
+  margin-top: 5%;
+`
+const Message = styled.Text`
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-size: ${wp('5%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-weight: 600;
+  text-align: center;
+`
+const LightLabel = styled.Text`
+  font-size: ${wp('3.5%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesWhite};
+  font-weight: 600;
+  margin-left: 10px;
+  text-transform: uppercase;
+`
+const DarkLabel = styled.Text`
+  font-size: ${wp('3.5%')}px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${prop => prop.theme.colors.lunesBlack};
+  font-weight: 600;
+  margin-left: 10px;
+  text-transform: uppercase;
+`
 interface InitialSummaryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'InitialSummary'>
   navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
@@ -113,30 +111,30 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   }
 
   return (
-    <View style={styles.root}>
+    <Root>
       <StatusBar barStyle='light-content' />
 
-      <View style={styles.upperSection}>
+      <UpperSection>
         <CheckIcon />
-        <View style={styles.messageContainer}>
-          <Text style={styles.message}>{message}</Text>
-        </View>
-      </View>
+        <MessageContainer>
+          <Message>{message}</Message>
+        </MessageContainer>
+      </UpperSection>
 
       <Button buttonTheme={BUTTONS_THEME.dark} onPress={checkResults}>
         <>
           <ListIcon />
-          <Text style={styles.lightLabel}>{labels.results.checkEntries}</Text>
+          <LightLabel>{labels.results.checkEntries}</LightLabel>
         </>
       </Button>
 
       <Button buttonTheme={BUTTONS_THEME.light} onPress={repeatExercise}>
         <>
           <RepeatIcon fill={COLORS.lunesBlack} />
-          <Text style={styles.darkLabel}>{labels.results.retryExercise}</Text>
+          <DarkLabel>{labels.results.retryExercise}</DarkLabel>
         </>
       </Button>
-    </View>
+    </Root>
   )
 }
 

@@ -8,74 +8,29 @@ exports[`Components Actions renders correctly across screens 1`] = `
     onPress={[Function]}
     testID="check-entry"
   >
-    <Text
-      style={
-        Array [
-          Object {
-            "color": "#f9fafb",
-            "fontFamily": "SourceSansPro-SemiBold",
-            "fontSize": 30,
-            "fontWeight": "600",
-            "letterSpacing": 0.4,
-            "textAlign": "center",
-            "textTransform": "uppercase",
-          },
-          Object {
-            "color": "#777e91",
-          },
-        ]
-      }
+    <Styled(Text)
+      styledInput=""
     >
       Eingabe überprüfen
-    </Text>
+    </Styled(Text)>
   </Button>
   <Button
     buttonTheme="light"
     onPress={[Function]}
     testID="give-up"
   >
-    <Text
-      style={
-        Object {
-          "color": "#000e38",
-          "fontFamily": "SourceSansPro-SemiBold",
-          "fontSize": 30,
-          "fontWeight": "600",
-          "letterSpacing": 0.4,
-          "textAlign": "center",
-          "textTransform": "uppercase",
-        }
-      }
-    >
+    <Styled(Text)>
       Lösung anzeigen
-    </Text>
+    </Styled(Text)>
   </Button>
   <Button
     onPress={[Function]}
     testID="try-later"
   >
-    <Text
-      style={
-        Object {
-          "color": "#000e38",
-          "fontFamily": "SourceSansPro-SemiBold",
-          "fontSize": 30,
-          "fontWeight": "600",
-          "letterSpacing": 0.4,
-          "textAlign": "center",
-          "textTransform": "uppercase",
-        }
-      }
-    >
+    <Styled(Text)>
       Später versuchen
-    </Text>
-    <SvgrURL
-      style={
-        Object {
-          "marginLeft": 5,
-        }
-      }
-    />
+    </Styled(Text)>
+    <Styled(SvgrURL) />
   </Button>
 </Fragment>
 `;
