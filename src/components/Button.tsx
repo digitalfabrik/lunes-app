@@ -19,7 +19,7 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
       return css`
         background-color: ${props.buttonTheme === BUTTONS_THEME.dark
           ? props.theme.colors.lunesBlackMedium
-          : 'transparent'};
+          : props.theme.colors.lunesBlackLight};
       `
     }
     if (props.buttonTheme === 'dark') {
