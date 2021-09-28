@@ -17,6 +17,8 @@ const createNavigationMock = <T extends keyof RoutesParamsType>(): StackNavigati
   isFocused: jest.fn(),
   reset: jest.fn(),
   removeListener: jest.fn(),
+  getParent: jest.fn(),
+  getState: jest.fn(),
   setOptions: jest.fn()
 })
 
