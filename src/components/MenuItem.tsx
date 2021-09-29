@@ -1,65 +1,45 @@
 import React, { ReactElement } from 'react'
-import { View, Text, Pressable, Image, StyleSheet } from 'react-native'
+import { View, Pressable } from 'react-native'
 import { Arrow } from '../../assets/images'
 import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  wrapper: { paddingHorizontal: 16 },
-  container: {
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.lunesBlackUltralight,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 2
-  },
-  clickedContainer: {
-    marginHorizontal: 16,
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    paddingVertical: 17,
-    paddingRight: 8,
-    paddingLeft: 16,
-    marginBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: COLORS.lunesBlack,
-    borderColor: COLORS.white
-  },
-  itemTitle: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.lunesGreyDark,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  clickedItemTitle: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
-    letterSpacing: 0.11,
-    marginBottom: 2,
-    color: COLORS.white,
-    fontFamily: 'SourceSansPro-SemiBold'
-  },
-  icon: {
-    justifyContent: 'center',
-    marginRight: 10,
-    width: wp('7%'),
-    height: wp('7%')
-  },
-  left: { flexDirection: 'row', alignItems: 'center' }
-})
+const Container = styled(Pressable)`
+  margin: 0px 16px 8px 16px;
+  justify-content: space-between;
+  padding: 17px 8px 17px 16px;
+  flex-direction: row;
+  align-items: center;
+  margin-left: ${(prop: MenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
+  margin-right: ${(prop: MenuItemStyleProps) => (prop.selected ? wp('5%') : 16)}px;
+  background-color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
+  border-color: ${COLORS.white};
+  border-width: ${(prop: MenuItemStyleProps) => (!prop.selected ? 1 : 0)}px;
+  border-style: solid;
+  border-radius: ${(prop: MenuItemStyleProps) => (!prop.selected ? 2 : 0)}px;
+`
+const Title = styled.Text`
+  font-size: ${wp('5%')}px;
+  letter-spacing: 0.11px;
+  margin-bottom: 2px;
+  font-family: 'SourceSansPro-SemiBold';
+  color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
+`
+const Icon = styled.Image`
+  justify-content: center;
+  margin-right: 10px;
+  width: ${wp('7%')}px;
+  height: ${wp('7%')}px;
+`
+const Left = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+interface MenuItemStyleProps {
+  selected: boolean
+}
 
 export interface IMenuItemProps {
   selected: boolean
@@ -70,27 +50,19 @@ export interface IMenuItemProps {
 }
 
 const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
-  const itemStyle = selected ? styles.clickedContainer : styles.container
-  const itemTitleStyle = selected ? styles.clickedItemTitle : styles.itemTitle
-
   return (
-    <View style={styles.wrapper}>
-      <Pressable style={itemStyle} onPress={onPress}>
-        <View style={styles.left}>
-          <Image source={{ uri: icon }} style={styles.icon} />
-
-          <View>
-            <Text style={itemTitleStyle} testID='title'>
-              {title}
-            </Text>
-            {children}
-          </View>
+    <Container onPress={onPress} selected={selected}>
+      <Left>
+        <Icon source={{ uri: icon }} />
+        <View>
+          <Title selected={selected} testID='title'>
+            {title}
+          </Title>
+          {children}
         </View>
-
-        <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
-      </Pressable>
-    </View>
+      </Left>
+      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+    </Container>
   )
 }
-
 export default MenuItem

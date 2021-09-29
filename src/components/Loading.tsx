@@ -1,34 +1,32 @@
 import React, { ReactElement } from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { COLORS } from '../constants/theme/colors'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  indicator: {
-    height: '50%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+const LoadingContainer = styled.View`
+  flex: 1;
+  align-items: center;
+`
+const Indicator = styled.View`
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+`
 
 export interface ILoadingProps {
   children: ReactElement
   isLoading: boolean
 }
 
-const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
-  <View style={styles.root}>
+const Loading = ({ children, isLoading }: ILoadingProps) => (
+  <LoadingContainer>
     {isLoading ? (
-      <View style={styles.indicator}>
+      <Indicator>
         <ActivityIndicator size='large' color={COLORS.lunesBlack} />
-      </View>
+      </Indicator>
     ) : (
       children
     )}
-  </View>
+  </LoadingContainer>
 )
-
 export default Loading

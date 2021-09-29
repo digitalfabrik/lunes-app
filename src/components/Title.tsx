@@ -1,18 +1,15 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet } from 'react-native'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  title: {
-    minHeight: 54,
-    alignItems: 'center',
-    marginBottom: 32
-  }
-})
+const Container = styled.View`
+  min-height: 54px;
+  align-items: center;
+  margin-bottom: 32px;
+`
 
 export interface ITitleProps {
   children: ReactElement
 }
 
-const Title = ({ children }: ITitleProps): ReactElement => <View style={styles.title}>{children}</View>
-
+const Title = ({ children }: ITitleProps) => <Container>{children}</Container>
 export default Title
