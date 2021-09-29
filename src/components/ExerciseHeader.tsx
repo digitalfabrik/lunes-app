@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import ConfirmationModal from './ConfirmationModal'
-import { BackHandler, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { BackHandler } from 'react-native'
 import { CloseButton } from '../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
-import { ProgressBar } from 'react-native-paper'
+import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
+import styled from 'styled-components/native'
 
-const HeaderStyle = StyleSheet.create({
-  headerText: {
-    fontSize: wp('4%'),
-    fontWeight: 'normal',
-    fontFamily: 'SourceSansPro-Regular',
-    color: COLORS.lunesGreyMedium
-  },
-  title: {
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('4%'),
-    textTransform: 'uppercase',
-    fontWeight: '600',
-    marginLeft: 15
-  },
-  headerLeft: {
-    paddingLeft: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 100
-  },
-  progressBar: {
-    backgroundColor: COLORS.lunesBlackUltralight
-  }
-})
+const HeaderText = styled.Text`
+  font-size: ${wp('4%')}px;
+  font-family: 'SourceSansPro-Regular';
+  color: ${COLORS.lunesGreyMedium};
+`
+
+const Title = styled.Text`
+  color: ${COLORS.lunesBlack};
+  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${wp('4%')}px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-left: 15px;
+`
+
+const ProgressBar = styled(RNProgressBar)`
+  background-color: ${COLORS.lunesBlackUltralight};
+`
+
+const HeaderLeft = styled.TouchableOpacity`
+  padding-left: 15px;
+  flex-direction: row;
+  align-items: center;
+`
 
 interface ExerciseHeaderPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
@@ -45,25 +45,19 @@ interface ExerciseHeaderPropsType {
 
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-
   useEffect(
     () =>
       navigation.setOptions({
         headerLeft: () => (
-          <TouchableOpacity onPress={() => setIsModalVisible(true)} style={HeaderStyle.headerLeft}>
+          <HeaderLeft onPress={() => setIsModalVisible(true)}>
             <CloseButton />
-            <Text style={HeaderStyle.title}>{labels.general.header.cancelExercise}</Text>
-          </TouchableOpacity>
+            <Title>{labels.general.header.cancelExercise}</Title>
+          </HeaderLeft>
         ),
-        headerRight: () => (
-          <Text style={HeaderStyle.headerText}>{`${currentWord + 1} ${
-            labels.general.header.of
-          } ${numberOfWords}`}</Text>
-        )
+        headerRight: () => <HeaderText>{`${currentWord + 1} ${labels.general.header.of} ${numberOfWords}`}</HeaderText>
       }),
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
-
   useEffect(() => {
     const showModal = (): boolean => {
       setIsModalVisible(true)
@@ -72,13 +66,11 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
     return () => bEvent.remove()
   }, [])
-
   return (
     <>
       <ProgressBar
         progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
         color={COLORS.lunesGreenMedium}
-        style={HeaderStyle.progressBar}
         accessibilityComponentType
         accessibilityTraits
       />
@@ -92,5 +84,4 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     </>
   )
 }
-
 export default ExerciseHeader
