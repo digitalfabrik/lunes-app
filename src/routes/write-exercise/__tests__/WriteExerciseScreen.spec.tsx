@@ -62,7 +62,7 @@ describe('WriteExerciseScreen', () => {
     const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    const image = await getByRole('image')
+    const image = getByRole('image')
     expect(getUri(image)).toBe('Arbeitshose')
     fireEvent.press(getByText(labels.exercises.write.tryLater))
     expect(getUri(image)).toBe('Arbeitsschuhe')
