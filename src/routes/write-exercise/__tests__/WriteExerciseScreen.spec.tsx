@@ -8,6 +8,7 @@ import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import labels from '../../../constants/labels.json'
 import { ReactTestInstance } from 'react-test-renderer'
+import wrapWithTheme from "../../../testing/wrapWithTheme";
 
 jest.mock('../../../components/AudioPlayer', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -58,7 +59,9 @@ describe('WriteExerciseScreen', () => {
     // @ts-expect-error because typescript does not know FiberNode
     const getUri = (image: ReactTestInstance) => image._fiber.stateNode.props.source.uri
 
-    const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
+    const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
     const image = await getByRole('image')
     expect(getUri(image)).toBe('Arbeitshose')
     fireEvent.press(getByText(labels.exercises.write.tryLater))
@@ -70,7 +73,10 @@ describe('WriteExerciseScreen', () => {
 
   it('should not allow to skip last exercise', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
+    const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
+
     expect(queryByText('Später versuchen')).not.toBeNull()
     fireEvent.press(getByText('Lösung anzeigen'))
     fireEvent.press(getByText('Nächstes Wort'))
