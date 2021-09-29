@@ -101,7 +101,7 @@ const ConfirmationModal = ({
             <Label labelColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
           </Button>
           <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
-            <Label labelColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.continue}</Label>
+            <Label labelColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.cancel}</Label>
           </Button>
         </ModalContainer>
       </Overlay>
