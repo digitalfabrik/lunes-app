@@ -27,28 +27,28 @@ const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
 `
 
 const ScreenDescription = styled.Text`
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   line-height: 18px;
   margin-top: 7px;
 `
 const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${wp('4%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   padding-bottom: 7%;
 `
 const ScreenSubTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
@@ -68,8 +68,7 @@ const Contained = styled.Pressable<{ selected: boolean }>`
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
-  font-weight: 600;
-  letter-spacing: 0.11px;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
@@ -93,13 +92,13 @@ const LightLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `
 const HeaderText = styled.Text`
   font-size: ${wp('3.5%')}px;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import ConfirmationModal from './ConfirmationModal'
 import { BackHandler } from 'react-native'
 import { CloseButton } from '../../assets/images'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { COLORS } from '../constants/theme/colors'
 import labels from '../constants/labels.json'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
@@ -12,22 +11,22 @@ import { RouteProp } from '@react-navigation/native'
 import styled from 'styled-components/native'
 
 const HeaderText = styled.Text`
-  font-size: ${wp('4%')}px;
-  font-family: 'SourceSansPro-Regular';
-  color: ${COLORS.lunesGreyMedium};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props => props.theme.colors.lunesGreyMedium};
 `
 
 const Title = styled.Text`
-  color: ${COLORS.lunesBlack};
-  font-family: 'SourceSansPro-SemiBold';
-  font-size: ${wp('4%')}px;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 15px;
 `
 
 const ProgressBar = styled(RNProgressBar)`
-  background-color: ${COLORS.lunesBlackUltralight};
+  background-color: ${props => props.theme.colors.lunesBlackUltralight};
 `
 
 const HeaderLeft = styled.TouchableOpacity`

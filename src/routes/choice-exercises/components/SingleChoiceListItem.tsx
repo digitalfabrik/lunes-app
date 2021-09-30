@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components/native'
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${wp('4.3%')}px;
-  font-weight: normal;
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-style: normal;
 `
 

@@ -2,17 +2,16 @@ import React, { ReactElement } from 'react'
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
 
 export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   text-align: center;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   color: ${prop =>
     prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
 `
@@ -25,10 +24,10 @@ const DarkLabel = styled.Text`
   text-align: center;
   color: ${props => props.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
 const StyledArrow = styled(NextArrow)`
   margin-left: 5px;

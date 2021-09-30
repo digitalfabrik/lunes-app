@@ -24,7 +24,7 @@ const Root = styled.View`
 
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 1%;
@@ -33,7 +33,7 @@ const ScreenTitle = styled.Text`
 
 const Description = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${prop => prop.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
@@ -51,7 +51,7 @@ const DarkLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
 
 const Arrow = styled(NextArrow)`
@@ -62,7 +62,7 @@ const LightLabel = styled.Text`
   font-size: ${wp('3.2%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `

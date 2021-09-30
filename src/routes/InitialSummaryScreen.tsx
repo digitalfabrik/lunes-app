@@ -33,16 +33,16 @@ const MessageContainer = styled.View`
 `
 const Message = styled.Text`
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   text-align: center;
 `
 const LightLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `
@@ -50,7 +50,7 @@ const DarkLabel = styled.Text`
   font-size: ${wp('3.5%')}px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesBlack};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `

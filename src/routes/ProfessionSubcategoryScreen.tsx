@@ -28,22 +28,22 @@ const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
 
 const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: 5px;
-  font-weight: normal;
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
 
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   min-width: ${wp('6%')}px;
   height: ${wp('4%')}px;
   border-radius: 8px;

@@ -39,7 +39,7 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
 `
 const StyledTextInput = styled.TextInput`
   font-size: ${wp('4.5%')}px;
-  font-weight: normal;
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: 0.11px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};

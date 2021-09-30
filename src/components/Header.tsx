@@ -1,14 +1,13 @@
 import React from 'react'
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
 import styled from 'styled-components/native'
 
 const Wrapper = styled.View`
-  background-color: ${COLORS.lunesBlack};
+  background-color: ${props => props.theme.colors.lunesBlack};
   padding-top: ${(prop: IHeaderProps) => prop.top};
 `
 const HeaderStyle = styled.View`
-  background-color: ${COLORS.lunesBlack};
+  background-color: ${props => props.theme.colors.lunesBlack};
   height: 91px;
   width: 100%;
 `
