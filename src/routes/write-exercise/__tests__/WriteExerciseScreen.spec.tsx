@@ -8,13 +8,15 @@ import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import labels from '../../../constants/labels.json'
 import { ReactTestInstance } from 'react-test-renderer'
-import wrapWithTheme from "../../../testing/wrapWithTheme";
+import wrapWithTheme from '../../../testing/wrapWithTheme'
 
 jest.mock('../../../components/AudioPlayer', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
+
+jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WriteExerciseScreen', () => {
   const testDocuments: DocumentTypeFromServer[] = [
