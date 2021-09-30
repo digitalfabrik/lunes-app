@@ -10,8 +10,15 @@ import labels from '../../../constants/labels.json'
 import { ReactTestInstance } from 'react-test-renderer'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 
+jest.mock('react-native/Libraries/Image/Image', () => {
+  return {
+    ...jest.requireActual('react-native/Libraries/Image/Image'),
+    getSize: (uri: string, success: (w: number, h: number) => void) => {
+      success(1234, 1234)
+    }
+  }
+})
 jest.mock('../../../components/AudioPlayer', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
@@ -25,6 +32,10 @@ jest.mock('react-native-keyboard-aware-scroll-view', () => {
 })
 
 describe('WriteExerciseScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const testDocuments: DocumentTypeFromServer[] = [
     {
       audio: '',
@@ -62,21 +73,22 @@ describe('WriteExerciseScreen', () => {
       }
     }
   }
-  it('should allow to skip an exercise and try it out later', async () => {
+  it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
     // @ts-expect-error because typescript does not know FiberNode
-    const getUri = (image: ReactTestInstance) => image._fiber.stateNode.props.source.uri
+    const getUri = (image: ReactTestInstance): string => image._fiber.stateNode.props.source[0].uri
 
     const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    const image = getByRole('image')
-    expect(getUri(image)).toBe('Arbeitshose')
-    fireEvent.press(getByText(labels.exercises.write.tryLater))
-    expect(getUri(image)).toBe('Arbeitsschuhe')
+
+    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
+    const tryLater = getByText(labels.exercises.write.tryLater)
+    fireEvent.press(tryLater)
+    expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
-    expect(getUri(image)).toBe('Arbeitshose')
+    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
   })
 
   it('should not allow to skip last exercise', () => {
