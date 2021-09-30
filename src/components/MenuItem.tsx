@@ -37,7 +37,7 @@ const Left = styled.View`
   align-items: center;
 `
 
-export interface IMenuItemProps {
+interface IMenuItemProps {
   selected: boolean
   onPress: () => void
   icon: string
@@ -51,9 +51,7 @@ const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps):
       <Left>
         <Icon source={{ uri: icon }} />
         <View>
-          <Title selected={selected} testID='title'>
-            {title}
-          </Title>
+          <Title selected={selected}>{title}</Title>
           {children}
         </View>
       </Left>
