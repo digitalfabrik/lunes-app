@@ -1,16 +1,17 @@
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { StatusBar } from 'react-native'
-import Button from '../components/Button'
-import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { COLORS } from '../constants/theme/colors'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../services/AsyncStorage'
-import labels from '../constants/labels.json'
 import styled from 'styled-components/native'
+
+import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
+import Button from '../components/Button'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
+import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
+import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};

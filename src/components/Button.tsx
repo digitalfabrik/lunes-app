@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
+
+import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 
 interface ThemedButtonProps {
   buttonTheme?: ButtonThemeType

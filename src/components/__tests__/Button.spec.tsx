@@ -1,11 +1,12 @@
+import { shallow, ShallowWrapper } from 'enzyme'
 import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
-import Button from '../Button'
-import { shallow, ShallowWrapper } from 'enzyme'
+import { mocked } from 'ts-jest/utils'
+
 import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
-import { mocked } from 'ts-jest/utils'
 import wrapWithTheme from '../../testing/wrapWithTheme'
+import Button from '../Button'
 
 type ButtonPropsType = ComponentProps<typeof Button>
 

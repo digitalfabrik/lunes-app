@@ -5,5 +5,7 @@
   "arrowParens": "avoid",
   "printWidth": 120,
   "bracketSameLine": true,
-  "jsxSingleQuote": true
+  "jsxSingleQuote": true,
+  "importOrder": ["^(\\.)+(\\/)+"],
+  "importOrderSeparation": true
 }

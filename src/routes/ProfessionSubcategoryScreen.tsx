@@ -1,3 +1,10 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { FlatList, StatusBar, Text } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import Title from '../components/Title'
@@ -5,12 +12,6 @@ import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
-import { FlatList, StatusBar, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};

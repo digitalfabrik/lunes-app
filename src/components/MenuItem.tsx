@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react'
 import { View, Pressable } from 'react-native'
-import { Arrow } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
+
+import { Arrow } from '../../assets/images'
+import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)`
   margin: 0px 16px 8px 16px;

@@ -1,7 +1,8 @@
 import React from 'react'
+import styled from 'styled-components/native'
+
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
 import { COLORS } from '../constants/theme/colors'
-import styled from 'styled-components/native'
 
 const Wrapper = styled.View`
   background-color: ${COLORS.lunesBlack};

@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import SingleChoiceListItem from './SingleChoiceListItem'
 import styled from 'styled-components/native'
+
 import { Answer } from '../../../constants/data'
+import SingleChoiceListItem from './SingleChoiceListItem'
 
 export const StyledContainer = styled.View`
   padding-top: 6%;

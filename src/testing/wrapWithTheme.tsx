@@ -1,6 +1,7 @@
-import { ThemeProvider } from 'styled-components/native'
-import theme from '../constants/theme'
 import React, { ReactElement } from 'react'
+import { ThemeProvider } from 'styled-components/native'
+
+import theme from '../constants/theme'
 
 interface InnerComponent {
   children: ReactElement

@@ -1,8 +1,9 @@
-import 'react-native'
-import React from 'react'
-import PopoverContent from '../PopoverContent'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
+import React from 'react'
+import 'react-native'
+
+import PopoverContent from '../PopoverContent'
 
 describe('components', () => {
   describe('PopoverContent', () => {

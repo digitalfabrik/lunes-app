@@ -1,8 +1,9 @@
-import { View } from 'react-native'
-import React from 'react'
-import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 import { shallow } from 'enzyme'
+import React from 'react'
+import { View } from 'react-native'
+
 import createNavigationPropMock from '../../testing/createNavigationPropMock'
+import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 
 describe('Components', () => {
   describe('ConfirmationModal ', () => {

@@ -1,9 +1,10 @@
-import React from 'react'
-import VocabularyListModal from '../VocabularyListModal'
-import { DocumentsType } from '../../../../constants/endpoints'
 import { fireEvent, render } from '@testing-library/react-native'
+import React from 'react'
+
+import { DocumentsType } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import VocabularyListModal from '../VocabularyListModal'
 
 jest.mock('../../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
