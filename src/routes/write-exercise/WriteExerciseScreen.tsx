@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { COLORS } from '../../constants/theme/colors'
+import { ActivityIndicator, View } from 'react-native'
 import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RouteProp } from '@react-navigation/native'
@@ -12,16 +11,15 @@ import useLoadDocuments from '../../hooks/useLoadDocuments'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import { DocumentType } from '../../constants/endpoints'
 import ImageCarousel from '../../components/ImageCarousel'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  spinner: {
-    width: '100%',
-    height: hp('35%'),
-    position: 'absolute',
-    top: 0,
-    backgroundColor: COLORS.lunesWhite
-  }
-})
+const Spinner = styled(ActivityIndicator)`
+  width: 100%;
+  height: ${hp('35%')}px;
+  position: absolute;
+  top: 0;
+  background-color: ${props => props.theme.colors.lunesWhite};
+`
 
 interface WriteExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'WriteExercise'>
@@ -74,7 +72,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             resetScrollToCoords={{ x: 0, y: 0 }}
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
-            {!newDocuments && <ActivityIndicator style={styles.spinner} />}
+            {!newDocuments && <Spinner />}
             <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}

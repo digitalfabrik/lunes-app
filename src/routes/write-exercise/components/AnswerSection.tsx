@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from 'react'
-import { Keyboard, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState, ReactElement } from 'react'
+import { TouchableOpacity, Pressable, Keyboard } from 'react-native'
 import { CloseIcon } from '../../../../assets/images'
 import { COLORS } from '../../../constants/theme/colors'
 import Popover from './Popover'
@@ -7,41 +7,44 @@ import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
 import PopoverContent from './PopoverContent'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import AudioPlayer from '../../../components/AudioPlayer'
+import styled from 'styled-components/native'
 
-export const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 20,
-    alignItems: 'center',
-    position: 'relative',
-    width: '100%',
-    height: hp('85%')
-  },
-  textInputContainer: {
-    width: wp('80%'),
-    height: hp('8%'),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 2,
-    paddingHorizontal: 15,
-    marginBottom: hp('6%')
-  },
-  textInput: {
-    fontSize: wp('4.5%'),
-    fontWeight: 'normal',
-    letterSpacing: 0.11,
-    fontFamily: 'SourceSansPro-Regular',
-    color: COLORS.lunesBlack,
-    width: wp('60%')
-  }
-})
+const StyledContainer = styled.View`
+  padding-top: 20px;
+  padding-bottom: 30px;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 85%;
+`
+const TextInputContainer = styled.View<{ styledBorderColor: string }>`
+  width: 80%;
+  height: 16%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-width: 1px;
+  border-radius: 2px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-top: 12%;
+  margin-bottom: 12%;
+  border-color: ${prop => prop.styledBorderColor};
+`
+const StyledTextInput = styled.TextInput`
+  font-size: ${wp('4.5%')}px;
+  font-weight: normal;
+  letter-spacing: 0.11px;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop => prop.theme.colors.lunesBlack};
+  width: 60%;
+`
 
 export interface AnswerSectionPropsType {
   tryLater: () => void
@@ -100,7 +103,7 @@ const AnswerSection = ({
       setResult('similar')
       await storeResult('similar')
     } else {
-      setInput('')
+      setInput(input)
       setSecondAttempt(true)
       return
     }
@@ -201,22 +204,13 @@ const AnswerSection = ({
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
       <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
-      <View style={styles.container}>
+      <StyledContainer>
         <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
           <PopoverContent />
         </Popover>
 
-        <View
-          testID='input-field'
-          ref={touchable}
-          style={[
-            styles.textInputContainer,
-            {
-              borderColor: getBorderColor()
-            }
-          ]}>
-          <TextInput
-            style={styles.textInput}
+        <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
+          <StyledTextInput
             placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
@@ -224,13 +218,14 @@ const AnswerSection = ({
             editable={result === ''}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onSubmitEditing={checkEntry}
           />
           {(isFocused || (result === '' && input !== '')) && (
             <TouchableOpacity onPress={() => setInput('')}>
               <CloseIcon />
             </TouchableOpacity>
           )}
-        </View>
+        </TextInputContainer>
 
         <Feedback secondAttempt={secondAttempt} result={result} document={document} input={submission} />
 
@@ -244,7 +239,7 @@ const AnswerSection = ({
           secondAttempt={secondAttempt}
           isFinished={currentDocumentNumber === totalNumbers - 1}
         />
-      </View>
+      </StyledContainer>
     </Pressable>
   )
 }

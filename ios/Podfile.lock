@@ -259,11 +259,11 @@ PODS:
     - React-Core
   - RNScreens (2.16.1):
     - React-Core
-  - RNSoundPlayer (0.10.3):
+  - RNSoundPlayer (0.11.0):
     - React
   - RNSVG (12.1.0):
     - React
-  - TextToSpeech (2.0.0):
+  - TextToSpeech (4.1.0):
     - React
   - Yoga (1.14.0)
 
@@ -419,11 +419,11 @@ SPEC CHECKSUMS:
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
-  RNSoundPlayer: 36fe7b7390a62c81a7eb4deeca07420399699872
+  RNSoundPlayer: 82f62dab0d14eff221a2f55dda3094abd50085d4
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  TextToSpeech: 4e2fc50c7495416c6da5a1662ad3f750c58d3c85
+  TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
 PODFILE CHECKSUM: 45e1fbfd567e0e8b52c9d50a75a22d525eb1b406
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2

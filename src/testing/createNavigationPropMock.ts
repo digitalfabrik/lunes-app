@@ -8,6 +8,8 @@ const createNavigationMock = <T extends keyof RoutesParamsType>(): StackNavigati
   dangerouslyGetParent: jest.fn(),
   dangerouslyGetState: jest.fn(),
   navigate: jest.fn(),
+  getParent: jest.fn(),
+  getState: jest.fn(),
   setParams: jest.fn(),
   addListener: jest.fn(),
   push: jest.fn(),

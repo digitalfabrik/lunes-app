@@ -323,6 +323,7 @@ jobs:
             - checkout
             - prepare_workspace
             - restore_environment_variables
+            - restore_yarn_tools_cache
             - restore_ruby_cache:
                 directory: ios
             - run:

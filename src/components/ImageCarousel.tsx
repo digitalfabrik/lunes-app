@@ -8,28 +8,24 @@ import { COLORS } from '../constants/theme/colors'
 const ImageView = styled.View`
   height: 35%;
 `
-
 const StyledImage = styled.Image`
   height: 100%;
 `
-
 const PaginationView = styled.View`
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0px;
+  right: 0px;
   top: 10px;
 `
 
 interface ImageCarouselPropsType {
   images: ImagesType
 }
-
 interface ItemType {
   source: {
     uri: string
   }
 }
-
 interface ImageUrlType {
   url: string
 }

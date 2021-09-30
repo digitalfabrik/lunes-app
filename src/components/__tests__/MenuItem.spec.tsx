@@ -1,37 +1,31 @@
 import React from 'react'
-import MenuItem, { styles, IMenuItemProps } from '../MenuItem'
+import MenuItem, { IMenuItemProps } from '../MenuItem'
 import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
 import { Text } from 'react-native'
 import { COLORS } from '../../constants/theme/colors'
+import { fireEvent, render } from '@testing-library/react-native'
 
 describe('Components', () => {
   describe('MenuItem', () => {
     const defaultMenuItemProps: IMenuItemProps = {
       selected: false,
       icon: '',
-      title: '',
+      title: 'MenuItemTitle',
       children: <Text>description</Text>,
       onPress: () => {}
     }
 
-    it('renders correctly across screens', () => {
-      const component = shallow(<MenuItem {...defaultMenuItemProps} />)
-      expect(toJson(component)).toMatchSnapshot()
-    })
-
     it('should call onPress event', () => {
       const menuItemProps: IMenuItemProps = {
         ...defaultMenuItemProps,
-        onPress: jest.fn(() => result)
+        onPress: jest.fn()
       }
-      const result = 'I was Pressed'
 
-      const component = shallow(<MenuItem {...menuItemProps} />)
+      const { getByText } = render(<MenuItem {...menuItemProps} />)
       expect(menuItemProps.onPress).not.toHaveBeenCalled()
-      component.children().props().onPress()
-      expect((menuItemProps.onPress as jest.Mock).mock.calls).toHaveLength(1)
-      expect(component.children().props().onPress()).toBe(result)
+      const element = getByText('MenuItemTitle')
+      fireEvent.press(element)
+      expect(menuItemProps.onPress).toHaveBeenCalled()
     })
 
     it('should display title passed to it', () => {
@@ -42,29 +36,6 @@ describe('Components', () => {
 
       const component = shallow(<MenuItem {...menuItemProps} />)
       expect(component.find('[testID="title"]').props().children).toBe(menuItemProps.title)
-    })
-
-    it('should display image passed to it', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps,
-        icon: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg'
-      }
-
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.find('Image').prop('source')).toHaveProperty('uri', menuItemProps.icon)
-    })
-
-    it('should apply selected style when selected is true', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps,
-        selected: true
-      }
-      const containerStyle = styles.wrapper
-      const titleStyle = styles.clickedItemTitle
-
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.props().style).toStrictEqual(containerStyle)
-      expect(component.find('[testID="title"]').props().style).toStrictEqual(titleStyle)
     })
 
     it('should render children passed to it', () => {
