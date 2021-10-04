@@ -55,11 +55,12 @@ interface IButtonProps {
   testID?: string
 }
 
-const Button = ({ children, onPress, disabled = false, buttonTheme }: IButtonProps): ReactElement => {
+const Button = ({ children, onPress, disabled = false, buttonTheme, testID }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
+      testID={testID}
       isPressed={isPressed}
       onPress={onPress}
       disabled={disabled}
