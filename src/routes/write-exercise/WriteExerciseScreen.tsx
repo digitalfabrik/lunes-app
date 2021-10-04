@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
+import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
 import { DocumentType } from '../../constants/endpoints'
@@ -32,6 +33,8 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { trainingSet, trainingSetId, disciplineTitle } = extraParams
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
+  // Hints (e.g. audio) are only enabled after an answer was entered and validated
+  const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
   const response = useLoadDocuments(trainingSetId)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
@@ -56,6 +59,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   }
 
   const docsLength = documents?.length ?? 0
+  const document = documents?.[currentDocumentNumber]
 
   return (
     <View>
@@ -66,7 +70,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      {documents !== null && documents[currentDocumentNumber]?.document_image.length > 0 && (
+      {documents && document?.document_image && (
         <>
           <KeyboardAwareScrollView
             scrollEnabled={false}
@@ -74,7 +78,8 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             enableOnAndroid
             keyboardShouldPersistTaps='always'>
             {!newDocuments && <Spinner />}
-            <ImageCarousel images={documents[currentDocumentNumber]?.document_image} />
+            <ImageCarousel images={document?.document_image} />
+            <AudioPlayer document={document} disabled={!hintsEnabled} />
             <AnswerSection
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
@@ -83,6 +88,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
               tryLater={tryLater}
               trainingSet={trainingSet}
               disciplineTitle={disciplineTitle}
+              setHintsEnabled={setHintsEnabled}
             />
           </KeyboardAwareScrollView>
         </>

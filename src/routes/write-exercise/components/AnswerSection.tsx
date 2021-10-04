@@ -5,7 +5,6 @@ import stringSimilarity from 'string-similarity'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
 import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
@@ -14,7 +13,7 @@ import AsyncStorage from '../../../services/AsyncStorage'
 import Actions from './Actions'
 import Feedback from './FeedbackSection'
 import Popover from './Popover'
-import PopoverContent from './PopoverContent'
+import ArticleMissingPopoverContent from './PopoverContent'
 
 const StyledContainer = styled.View`
   padding-top: 20px;
@@ -55,6 +54,7 @@ export interface AnswerSectionPropsType {
   finishExercise: Function
   trainingSet: string
   disciplineTitle: string
+  setHintsEnabled: (hintsEnabled: boolean) => void
 }
 
 const almostCorrectThreshold = 0.6
@@ -66,95 +66,89 @@ const AnswerSection = ({
   tryLater,
   trainingSet,
   disciplineTitle,
-  documents
+  documents,
+  setHintsEnabled
 }: AnswerSectionPropsType): ReactElement => {
+  const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
+  // The currently entered answer
+  const [input, setInput] = useState<string>('')
+  // The last submitted answer
+  const [submission, setSubmission] = useState<string | null>(null)
+  // The result of the submitted answer
+  const [result, setResult] = useState<SimpleResultType | null>(null)
+  const [isFocused, setIsFocused] = useState<boolean>(false)
+
   const touchable: any = React.createRef()
-  const [isPopoverVisible, setIsPopoverVisible] = useState(false)
-  const [input, setInput] = useState('')
-  const [submission, setSubmission] = useState('')
-  const [result, setResult] = useState('')
-  const [secondAttempt, setSecondAttempt] = useState(false)
+
   const document = documents[currentDocumentNumber]
   const totalNumbers = documents.length
-  const [isFocused, setIsFocused] = useState(false)
+  const secondAttempt = !!submission
 
-  function capitalizeFirstLetter(string: string): string {
+  const capitalizeFirstLetter = (string: string): string => {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
   const checkEntry = async (): Promise<void> => {
-    setSubmission(input)
     const splitInput = input.trim().split(' ')
 
     if (splitInput.length < 2) {
-      setIsPopoverVisible(true)
+      setIsArticleMissing(true)
       return
     }
+
+    setSubmission(input)
+    setIsArticleMissing(false)
 
     const article = capitalizeFirstLetter(splitInput[0])
     const word = splitInput[1]
 
-    if (!validateForSimilar(article, word)) {
-      setResult('incorrect')
-      await storeResult('incorrect')
-    } else if (validateForCorrect(article, word)) {
-      setResult('correct')
-      await storeResult('correct')
-    } else if (secondAttempt) {
-      setResult('similar')
-      await storeResult('similar')
-    } else {
-      setInput(input)
-      setSecondAttempt(true)
-      return
+    const newResult = validateAnswer(article, word)
+    setResult(newResult)
+
+    if (newResult !== 'similar') {
+      // Users get unlimited tries if the submission is similar to an answer, so do not save a result
+      await storeResult(newResult)
+      setHintsEnabled(true)
     }
-    setSecondAttempt(false)
   }
 
-  const validateForCorrect = (inputArticle: string, inputWord: string): boolean => {
-    const exactAnswer = inputArticle === document?.article.value && inputWord === document?.word
-
-    const altAnswer = document?.alternatives?.some(
-      ({ article, word }) => inputArticle === article.value && inputWord === word
-    )
-    return exactAnswer || altAnswer
-  }
-
-  const validateForSimilar = (inputArticle: string, inputWord: string): boolean => {
-    if (validateForCorrectWithoutArticle(inputWord)) {
-      return true
+  const validateAnswer = (article: string, word: string): SimpleResultType => {
+    const validAnswers = [{ article: document.article, word: document.word }, ...document.alternatives]
+    if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
+      // Article and word are an exact match with either the document or an alternative
+      return 'correct'
+    } else if (validAnswers.some(answer => answer.word === word)) {
+      // Word is an exact match with either the document or an alternative -> just the article is wrong
+      return 'similar'
+    } else if (
+      validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)
+    ) {
+      // TODO Is the article relevant here? Before article was checked for alternatives but not for default word
+      // Word is similar to either the document or an alternative
+      return 'similar'
     }
-    const origCheck = stringSimilarity.compareTwoStrings(inputWord, document.word) > almostCorrectThreshold
 
-    const altCheck = document.alternatives.some(
-      ({ article, word }) =>
-        inputArticle === article.value && stringSimilarity.compareTwoStrings(inputWord, word) > almostCorrectThreshold
-    )
-    return origCheck || altCheck
+    return 'incorrect'
   }
 
   const giveUp = async (): Promise<void> => {
-    setResult('giveUp')
-    await storeResult(secondAttempt ? 'similar' : 'incorrect')
+    const previousResult = result
+    setResult('incorrect')
+    await storeResult(previousResult ?? 'incorrect')
+    setHintsEnabled(true)
   }
 
-  const validateForCorrectWithoutArticle = (inputWord: string): boolean => {
-    const exactAnswer = inputWord === document?.word
-
-    const altAnswer = document?.alternatives?.some(({ word }) => inputWord === word)
-    return exactAnswer || altAnswer
-  }
-
-  const getNextWord = (): void => {
-    setResult('')
+  const continueExercise = (): void => {
+    setResult(null)
+    setSubmission(null)
     setInput('')
-    setSecondAttempt(false)
+    setHintsEnabled(false)
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise()
-      return
+    } else {
+      setCurrentDocumentNumber(currentDocumentNumber + 1)
     }
-    setCurrentDocumentNumber(currentDocumentNumber + 1)
   }
 
   const storeResult = async (score: SimpleResultType): Promise<void> => {
@@ -203,11 +197,10 @@ const AnswerSection = ({
   }
 
   return (
-    <Pressable onPress={() => Keyboard.dismiss()}>
-      <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
+    <Pressable onPress={Keyboard.dismiss}>
       <StyledContainer>
-        <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
-          <PopoverContent />
+        <Popover isVisible={isArticleMissing} setIsPopoverVisible={setIsArticleMissing} ref={touchable}>
+          <ArticleMissingPopoverContent />
         </Popover>
 
         <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
@@ -215,20 +208,20 @@ const AnswerSection = ({
             placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
-            onChangeText={text => setInput(text)}
-            editable={result === ''}
+            onChangeText={setInput}
+            editable={result === null || result === 'similar'}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onSubmitEditing={checkEntry}
           />
-          {(isFocused || (result === '' && input !== '')) && (
+          {(result === null || result === 'similar') && (
             <TouchableOpacity onPress={() => setInput('')}>
               <CloseIcon />
             </TouchableOpacity>
           )}
         </TextInputContainer>
 
-        <Feedback secondAttempt={secondAttempt} result={result} document={document} input={submission} />
+        {result && <Feedback result={result} document={document} submission={submission} />}
 
         <Actions
           tryLater={tryLater}
@@ -236,7 +229,7 @@ const AnswerSection = ({
           input={input}
           result={result}
           checkEntry={checkEntry}
-          getNextWord={getNextWord}
+          continueExercise={continueExercise}
           secondAttempt={secondAttempt}
           isFinished={currentDocumentNumber === totalNumbers - 1}
         />
