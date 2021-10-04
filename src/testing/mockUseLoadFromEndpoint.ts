@@ -1,5 +1,6 @@
-import useLoadFromEndpoint from '../hooks/useLoadFromEndpoint'
 import { mocked } from 'ts-jest/utils'
+
+import useLoadFromEndpoint from '../hooks/useLoadFromEndpoint'
 
 jest.mock('../hooks/useLoadFromEndpoint')
 
