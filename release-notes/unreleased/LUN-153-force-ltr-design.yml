@@ -1,0 +1,6 @@
+issue_key: LUN-153
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Verbessertes Design für Endgeräte mit RTL Systemsprache
