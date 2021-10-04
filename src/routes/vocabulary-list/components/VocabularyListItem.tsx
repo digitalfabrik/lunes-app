@@ -34,19 +34,19 @@ const StyledImage = styled.Image`
   height: ${wp('15%')}px;
   border-radius: 50px;
 `
-const StyledTitle = styled.Text`
+const StyledTitle = styled.Text<{ articleColor: string }>`
   font-size: ${wp('3.5%')}px;
   font-weight: normal;
   border-radius: 10px;
   margin-bottom: 6px;
   color: ${props => props.theme.colors.lunesGreyDark};
+  background-color: ${props => props.articleColor};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
   width: ${wp('10%')}px;
   overflow: hidden;
   height: ${wp('5%')}px;
   text-align: center;
-  line-height: 18px;
 `
 const Description = styled.Text`
   font-size: ${wp('4%')}px;
@@ -83,7 +83,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
             />
           )}
           <View>
-            <StyledTitle testID='article' style={[{ backgroundColor: getArticleColor(article) }]}>
+            <StyledTitle testID='article' articleColor={getArticleColor(article)}>
               {article.value}
             </StyledTitle>
             <Description testID='word'>{word}</Description>
