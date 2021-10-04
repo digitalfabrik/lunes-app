@@ -23,6 +23,7 @@ jobs:
       production_delivery: false
       requires:
         - build_ios
+
   - move_release_notes:
       requires:
         - deliver_android
