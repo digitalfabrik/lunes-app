@@ -1,5 +1,4 @@
 import { fireEvent, render } from '@testing-library/react-native'
-import { shallow } from 'enzyme'
 import React from 'react'
 import { Text } from 'react-native'
 
@@ -12,7 +11,7 @@ describe('Components', () => {
       selected: false,
       icon: '',
       title: 'MenuItemTitle',
-      children: <Text>description</Text>,
+      children: <Text>Text of children</Text>,
       onPress: () => {}
     }
 
@@ -21,7 +20,6 @@ describe('Components', () => {
         ...defaultMenuItemProps,
         onPress: jest.fn()
       }
-
       const { getByText } = render(<MenuItem {...menuItemProps} />)
       expect(menuItemProps.onPress).not.toHaveBeenCalled()
       const element = getByText('MenuItemTitle')
@@ -35,8 +33,9 @@ describe('Components', () => {
         title: 'Menu item title'
       }
 
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.find('[testID="title"]').props().children).toBe(menuItemProps.title)
+      const { queryByText } = render(<MenuItem {...menuItemProps} />)
+      const title = queryByText('Menu item title')
+      expect(title).not.toBeNull()
     })
 
     it('should render children passed to it', () => {
@@ -44,8 +43,9 @@ describe('Components', () => {
         ...defaultMenuItemProps
       }
 
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.contains(menuItemProps.children)).toBe(true)
+      const { queryByText } = render(<MenuItem {...menuItemProps} />)
+      const title = queryByText('Text of children')
+      expect(title).not.toBeNull()
     })
 
     it('should render black arrow icon when selected is false', () => {
@@ -53,8 +53,12 @@ describe('Components', () => {
         ...defaultMenuItemProps
       }
 
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.find('[testID="arrow"]').props().fill).toBe(COLORS.lunesBlack)
+      const { getByTestId, getByText } = render(<MenuItem {...menuItemProps} />)
+      const arrowIcon = getByTestId('arrow')
+      expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
+      const title = getByText('MenuItemTitle')
+      // @ts-expect-error
+      expect(title._fiber.pendingProps.style[0].color).toBe(COLORS.lunesGreyDark)
     })
 
     it('should render red arrow icon when selected is true', () => {
@@ -63,8 +67,12 @@ describe('Components', () => {
         selected: true
       }
 
-      const component = shallow(<MenuItem {...menuItemProps} />)
-      expect(component.find('[testID="arrow"]').props().fill).toBe(COLORS.lunesRedLight)
+      const { getByTestId, getByText } = render(<MenuItem {...menuItemProps} />)
+      const arrowIcon = getByTestId('arrow')
+      expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
+      const title = getByText('MenuItemTitle')
+      // @ts-expect-error
+      expect(title._fiber.pendingProps.style[0].color).toBe(COLORS.white)
     })
   })
 })

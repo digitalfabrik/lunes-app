@@ -51,7 +51,7 @@ const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps):
     <Container onPress={onPress} selected={selected}>
       <Icon source={{ uri: icon }} />
       <TextContainer>
-        <Title selected={selected} testID='title' numberOfLines={3}>
+        <Title selected={selected} numberOfLines={3}>
           {title}
         </Title>
         {children}
