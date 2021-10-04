@@ -444,7 +444,10 @@ workflows:
                 production_delivery: false
                 requires:
                     - build_ios
-            - move_release_notes
+            - move_release_notes:
+                requires:
+                    - deliver_android
+                    - deliver_ios
         when: << pipeline.parameters.run_dev_delivery >>
     prod_delivery:
         jobs:
