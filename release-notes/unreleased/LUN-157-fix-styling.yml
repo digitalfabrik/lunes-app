@@ -1,0 +1,6 @@
+issue_key: LUN-157
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die Ausrichtung der Artikel in der Vokabelübersicht wurde behoben.
