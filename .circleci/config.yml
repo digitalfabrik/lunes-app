@@ -471,8 +471,9 @@ workflows:
                 requires:
                     - build_ios
             - move_release_notes:
-                context:
-                    - deliverino
+                requires:
+                    - deliver_android
+                    - deliver_ios
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:
