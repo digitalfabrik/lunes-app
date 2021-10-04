@@ -23,6 +23,4 @@ jobs:
       production_delivery: false
       requires:
         - build_ios
-  - move_release_notes:
-      context:
-        - deliverino
+  - move_release_notes
