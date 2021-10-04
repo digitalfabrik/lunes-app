@@ -83,10 +83,8 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
             />
           )}
           <View>
-            <StyledTitle testID='article' articleColor={getArticleColor(article)}>
-              {article.value}
-            </StyledTitle>
-            <Description testID='word'>{word}</Description>
+            <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
+            <Description>{word}</Description>
           </View>
         </StyledItem>
         <Speaker>
