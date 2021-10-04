@@ -1,8 +1,9 @@
-import React from 'react'
-import AnswerSection, { AnswerSectionPropsType } from '../AnswerSection'
 import { fireEvent, render } from '@testing-library/react-native'
+import React from 'react'
+
 import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import AnswerSection, { AnswerSectionPropsType } from '../AnswerSection'
 
 jest.mock('../../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text

@@ -1,17 +1,18 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, View } from 'react-native'
-import AnswerSection from './components/AnswerSection'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { RouteProp } from '@react-navigation/native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
-import AsyncStorage from '../../services/AsyncStorage'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
-import ExerciseHeader from '../../components/ExerciseHeader'
-import { DocumentType } from '../../constants/endpoints'
-import ImageCarousel from '../../components/ImageCarousel'
 import styled from 'styled-components/native'
+
+import ExerciseHeader from '../../components/ExerciseHeader'
+import ImageCarousel from '../../components/ImageCarousel'
+import { DocumentType } from '../../constants/endpoints'
+import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
+import AnswerSection from './components/AnswerSection'
 
 const Spinner = styled(ActivityIndicator)`
   width: 100%;

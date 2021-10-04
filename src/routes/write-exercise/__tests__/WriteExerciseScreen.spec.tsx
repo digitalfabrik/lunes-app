@@ -1,14 +1,15 @@
-import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
-import React from 'react'
-import { fireEvent, render } from '@testing-library/react-native'
-import WriteExerciseScreen from '../WriteExerciseScreen'
-import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { RouteProp } from '@react-navigation/native'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
-import labels from '../../../constants/labels.json'
+import { fireEvent, render } from '@testing-library/react-native'
+import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
+
+import labels from '../../../constants/labels.json'
+import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
+import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
+import WriteExerciseScreen from '../WriteExerciseScreen'
 
 jest.mock('react-native/Libraries/Image/Image', () => {
   return {

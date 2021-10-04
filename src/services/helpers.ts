@@ -1,5 +1,5 @@
-import { COLORS } from '../constants/theme/colors'
 import { Article } from '../constants/data'
+import { COLORS } from '../constants/theme/colors'
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {

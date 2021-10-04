@@ -1,9 +1,10 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
+import styled from 'styled-components/native'
+
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
-import styled from 'styled-components/native'
 
 export interface AudioPlayerProps {
   document: DocumentType

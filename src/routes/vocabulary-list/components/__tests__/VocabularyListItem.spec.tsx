@@ -1,9 +1,10 @@
-import 'react-native'
-import React from 'react'
-import VocabularyListItem from '../VocabularyListItem'
 import { shallow } from 'enzyme'
+import React from 'react'
+import 'react-native'
+
 import { ARTICLES } from '../../../../constants/data'
 import { DocumentType } from '../../../../constants/endpoints'
+import VocabularyListItem from '../VocabularyListItem'
 
 describe('VocabularyListItem', () => {
   const document: DocumentType = {
