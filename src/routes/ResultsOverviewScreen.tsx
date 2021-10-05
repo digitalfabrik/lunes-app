@@ -1,3 +1,10 @@
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { ReactElement } from 'react'
+import { FlatList, StatusBar, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
@@ -5,11 +12,6 @@ import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RES
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
-import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import styled from 'styled-components/native'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};

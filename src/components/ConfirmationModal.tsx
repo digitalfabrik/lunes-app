@@ -1,15 +1,16 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { Modal } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 import Button from './Button'
-import { RouteProp } from '@react-navigation/native'
-import styled from 'styled-components/native'
-import { Modal } from 'react-native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const Overlay = styled.View`
   flex: 1;

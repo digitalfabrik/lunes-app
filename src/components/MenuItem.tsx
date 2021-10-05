@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react'
-import { Pressable, View } from 'react-native'
-import { Arrow } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
+import { View, Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-const Container = styled(Pressable)<{ selected: boolean }>`
+import { Arrow } from '../../assets/images'
+import { COLORS } from '../constants/theme/colors'
+
+const Container = styled(Pressable)`
   margin: 0px 16px 8px 16px;
   justify-content: space-between;
   padding: 17px 8px 17px 16px;

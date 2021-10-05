@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
-import MenuItem from '../MenuItem'
-import { Text } from 'react-native'
-import { COLORS } from '../../constants/theme/colors'
 import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import React, { ComponentProps } from 'react'
+import { Text } from 'react-native'
+
+import { COLORS } from '../../constants/theme/colors'
+import MenuItem from '../MenuItem'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 
 describe('MenuItem', () => {

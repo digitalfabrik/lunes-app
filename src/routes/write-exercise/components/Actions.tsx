@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import { WhiteNextArrow, NextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
-import styled from 'styled-components/native'
 
 export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   text-align: center;

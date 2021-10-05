@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
-import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import { StyleSheet } from 'react-native'
+import Popover, { PopoverPlacement } from 'react-native-popover-view'
+
 import { COLORS } from '../../../constants/theme/colors'
 
 export const styles = StyleSheet.create({

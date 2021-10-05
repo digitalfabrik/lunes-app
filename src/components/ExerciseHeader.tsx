@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import ConfirmationModal from './ConfirmationModal'
-import { BackHandler } from 'react-native'
-import { CloseButton } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
-import labels from '../constants/labels.json'
-import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useEffect, useState } from 'react'
+import { BackHandler } from 'react-native'
+import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import styled from 'styled-components/native'
+
+import { CloseButton } from '../../assets/images'
+import labels from '../constants/labels.json'
+import { COLORS } from '../constants/theme/colors'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import ConfirmationModal from './ConfirmationModal'
 
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};

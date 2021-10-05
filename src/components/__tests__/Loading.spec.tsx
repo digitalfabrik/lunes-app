@@ -1,8 +1,9 @@
-import { Text } from 'react-native'
-import React from 'react'
-import Loading, { ILoadingProps } from '../Loading'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
+import React from 'react'
+import { Text } from 'react-native'
+
+import Loading, { ILoadingProps } from '../Loading'
 
 describe('Components', () => {
   describe('Loading ', () => {

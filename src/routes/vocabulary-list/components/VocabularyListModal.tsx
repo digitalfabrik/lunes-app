@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react'
-import { CloseButton, WhiteNextArrow } from '../../../../assets/images'
-import ImageCarousel from '../../../components/ImageCarousel'
-import AudioPlayer from '../../../components/AudioPlayer'
-import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
-import Button from '../../../components/Button'
-import { BUTTONS_THEME } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import { Modal, SafeAreaView } from 'react-native'
-import { DocumentsType } from '../../../constants/endpoints'
 import styled from 'styled-components/native'
+
+import { CloseButton, WhiteNextArrow } from '../../../../assets/images'
+import AudioPlayer from '../../../components/AudioPlayer'
+import Button from '../../../components/Button'
+import ImageCarousel from '../../../components/ImageCarousel'
+import { BUTTONS_THEME } from '../../../constants/data'
+import { DocumentsType } from '../../../constants/endpoints'
+import labels from '../../../constants/labels.json'
+import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
 
 const ModalContainer = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};

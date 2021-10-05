@@ -1,8 +1,9 @@
+import React, { useState } from 'react'
+import styled, { css } from 'styled-components/native'
+
 import { Answer, Article } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { getArticleColor } from '../../../services/helpers'
-import React, { useState } from 'react'
-import styled, { css } from 'styled-components/native'
 
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};

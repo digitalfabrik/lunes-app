@@ -1,6 +1,7 @@
-import { loadFromEndpoint } from '../useLoadFromEndpoint'
-import axios from '../../services/axios'
 import { mocked } from 'ts-jest/utils'
+
+import axios from '../../services/axios'
+import { loadFromEndpoint } from '../useLoadFromEndpoint'
 
 jest.mock('../../services/axios', () => ({ get: jest.fn() }))
 

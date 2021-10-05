@@ -1,17 +1,18 @@
-import Header from '../components/Header'
-import Loading from '../components/Loading'
-import MenuItem from '../components/MenuItem'
-import { DisciplineType } from '../constants/endpoints'
-import labels from '../constants/labels.json'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+
+import Header from '../components/Header'
+import Loading from '../components/Loading'
+import MenuItem from '../components/MenuItem'
+import { DisciplineType } from '../constants/endpoints'
+import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};

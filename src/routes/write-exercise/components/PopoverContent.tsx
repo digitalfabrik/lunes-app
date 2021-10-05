@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { InfoIcon } from '../../../../assets/images'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import labels from '../../../constants/labels.json'
 import styled from 'styled-components/native'
+
+import { InfoIcon } from '../../../../assets/images'
+import labels from '../../../constants/labels.json'
 
 const StyledContainer = styled.View`
   flex-direction: row;
