@@ -33,8 +33,8 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   border-radius: 2px;
   padding-right: 15px;
   padding-left: 15px;
-  margin-top: 12%;
-  margin-bottom: 12%;
+  margin-top: 5%;
+  margin-bottom: 5%;
   border-color: ${prop => prop.styledBorderColor};
 `
 const StyledTextInput = styled.TextInput`
