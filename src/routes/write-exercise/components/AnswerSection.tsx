@@ -38,6 +38,7 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   border-color: ${prop => prop.styledBorderColor};
 `
 const StyledTextInput = styled.TextInput`
+  flex: 1;
   font-size: ${wp('4.5%')}px;
   font-weight: normal;
   letter-spacing: 0.11px;
