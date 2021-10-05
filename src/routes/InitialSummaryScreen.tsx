@@ -5,7 +5,7 @@ import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { COLORS } from '../constants/theme/colors'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '../services/AsyncStorage'
@@ -33,22 +33,24 @@ const MessageContainer = styled.View`
 `
 const Message = styled.Text`
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.headingFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   text-align: center;
 `
 const LightLabel = styled.Text`
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `
 const DarkLabel = styled.Text`
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesBlack};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;

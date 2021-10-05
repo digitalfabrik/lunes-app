@@ -21,7 +21,7 @@ const Container = styled(Pressable)<{ selected: boolean }>`
 `
 const Title = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.largeFontSize};
-  letter-spacing: 0.11px;
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};

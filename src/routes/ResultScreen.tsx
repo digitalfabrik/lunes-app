@@ -8,7 +8,6 @@ import Title from '../components/Title'
 import Loading from '../components/Loading'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 import Button from '../components/Button'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
@@ -24,7 +23,7 @@ const Root = styled.View`
 
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 1%;
@@ -48,8 +47,8 @@ const DarkLabel = styled.Text`
   text-align: center;
   color: ${prop => prop.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${wp('3.5%')}px;
-  letter-spacing: 0.4px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
@@ -59,7 +58,7 @@ const Arrow = styled(NextArrow)`
 `
 
 const LightLabel = styled.Text`
-  font-size: ${wp('3.2%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};

@@ -15,7 +15,7 @@ const StyledContainer = styled.View`
 `
 const StyledMessage = styled.Text`
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.smallFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   width: ${wp('60%')}px;

@@ -34,7 +34,7 @@ const StyledImage = styled.Image`
   border-radius: 50px;
 `
 const StyledTitle = styled.Text`
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   border-radius: 10px;
   margin-bottom: 6px;

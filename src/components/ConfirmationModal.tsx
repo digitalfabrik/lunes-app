@@ -35,7 +35,7 @@ const Icon = styled.TouchableOpacity`
 `
 const Message = styled.Text`
   text-align: center;
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
@@ -49,7 +49,7 @@ const Label = styled.Text<{ light: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: 0.4px;
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
 `
 
 export interface ConfirmationModalPropsType {

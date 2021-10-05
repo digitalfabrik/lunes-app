@@ -9,7 +9,7 @@ export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   text-align: center;
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: 0.4px;
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   color: ${prop =>
@@ -25,7 +25,7 @@ const DarkLabel = styled.Text`
   color: ${props => props.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: 0.4px;
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `

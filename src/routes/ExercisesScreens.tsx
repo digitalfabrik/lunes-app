@@ -35,7 +35,7 @@ const Description = styled.Text<{ selected: boolean }>`
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
@@ -56,9 +56,9 @@ const Container = styled.Pressable<{ selected: boolean }>`
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
-  font-size: ${wp('4.5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  letter-spacing: 0.11px;
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
 

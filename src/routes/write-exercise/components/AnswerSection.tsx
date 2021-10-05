@@ -7,7 +7,6 @@ import Feedback from './FeedbackSection'
 import stringSimilarity from 'string-similarity'
 import Actions from './Actions'
 import PopoverContent from './PopoverContent'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
@@ -38,12 +37,12 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   border-color: ${prop => prop.styledBorderColor};
 `
 const StyledTextInput = styled.TextInput`
-  font-size: ${wp('4.5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  letter-spacing: 0.11px;
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};
-  width: 60%;
+  width: 90%;
 `
 
 export interface AnswerSectionPropsType {

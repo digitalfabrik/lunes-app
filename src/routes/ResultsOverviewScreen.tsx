@@ -9,7 +9,6 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 const Root = styled.View`
@@ -41,7 +40,7 @@ const Description = styled.Text<{ selected: boolean }>`
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   padding-bottom: 7%;
@@ -71,7 +70,8 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
@@ -89,17 +89,19 @@ const StyledText = styled.View`
   flex-direction: column;
 `
 const LightLabel = styled.Text`
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesWhite};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `
 const HeaderText = styled.Text`
-  font-size: ${wp('3.5%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;
   margin-right: 8px;

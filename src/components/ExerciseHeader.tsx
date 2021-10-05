@@ -20,6 +20,7 @@ const Title = styled.Text`
   color: ${props => props.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 15px;
