@@ -85,7 +85,7 @@ describe('WriteExerciseScreen', () => {
     expect(getUri(getByRole('image'))).toBe('Arbeitshose')
   })
 
-  it('should not allow to skip last exercise', () => {
+  it('should not allow to skip last document', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
     const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
