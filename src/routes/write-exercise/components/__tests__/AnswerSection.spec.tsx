@@ -47,7 +47,8 @@ describe('AnswerSection', () => {
     currentDocumentNumber: 0,
     tryLater: () => {},
     finishExercise: () => {},
-    setCurrentDocumentNumber: () => {}
+    setCurrentDocumentNumber: () => {},
+    setHintsEnabled: () => undefined
   }
 
   const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {

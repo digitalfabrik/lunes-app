@@ -31,7 +31,7 @@ const StyledText = styled.Text`
 
 export interface FeedbackPropsType {
   result: SimpleResultType
-  document?: DocumentType
+  document: DocumentType
   submission: string | null
 }
 
@@ -41,24 +41,24 @@ const Feedback = ({ result, document, submission }: FeedbackPropsType): ReactEle
     Icon = CorrectFeedbackIcon
     background = correct_background
     message = labels.exercises.write.feedback.correct
-  } else if (result === 'incorrect' || submission === null) {
-    Icon = IncorrectFeedbackIcon
-    background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value ?? ''} ${document?.word ?? ''}“`
-  } else {
+  } else if (result === 'similar' && submission) {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
     message = `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+  } else {
+    Icon = IncorrectFeedbackIcon
+    background = incorrect_background
+    message = `${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`
   }
 
-  return result !== null || submission !== null ? (
+  return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
       <StyledText numberOfLines={2} ellipsizeMode='tail' testID={'feedback-write-exercise'}>
         {message}
       </StyledText>
     </Background>
-  ) : null
+  )
 }
 
 export default Feedback
