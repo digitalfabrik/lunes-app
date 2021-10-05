@@ -10,7 +10,7 @@ const StyledContainer = styled.View`
   align-items: center;
   background-color: ${prop => prop.theme.colors.lunesBlack};
   width: ${wp('80%')}px;
-  height: 60px;
+  height: 80px;
   padding: 9px 8px 9px 8px;
   border-radius: 2px;
 `
