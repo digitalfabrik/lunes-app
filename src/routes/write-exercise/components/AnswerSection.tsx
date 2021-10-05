@@ -196,6 +196,8 @@ const AnswerSection = ({
     }
   }
 
+  const editable = result === null || result === 'similar'
+
   return (
     <Pressable onPress={Keyboard.dismiss}>
       <StyledContainer>
@@ -209,12 +211,12 @@ const AnswerSection = ({
             placeholderTextColor={COLORS.lunesBlackLight}
             value={input}
             onChangeText={setInput}
-            editable={result === null || result === 'similar'}
+            editable={editable}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onSubmitEditing={checkEntry}
           />
-          {(result === null || result === 'similar') && (
+          {editable && input !== '' && (
             <TouchableOpacity onPress={() => setInput('')}>
               <CloseIcon />
             </TouchableOpacity>
