@@ -58,6 +58,7 @@ export interface AnswerSectionPropsType {
 }
 
 const almostCorrectThreshold = 0.6
+const playTTSThreshold = 0.5
 
 const AnswerSection = ({
   currentDocumentNumber,
@@ -77,6 +78,7 @@ const AnswerSection = ({
   const document = documents[currentDocumentNumber]
   const totalNumbers = documents.length
   const [isFocused, setIsFocused] = useState(false)
+  const [TTSToPlay, setTTSToPlay] = useState('')
 
   function capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -117,6 +119,12 @@ const AnswerSection = ({
     const altAnswer = document?.alternatives?.some(
       ({ article, word }) => inputArticle === article.value && inputWord === word
     )
+    if (altAnswer) {
+      const playTTS = stringSimilarity.compareTwoStrings(inputWord, document.word) < playTTSThreshold
+      if (playTTS) {
+        setTTSToPlay(`${inputArticle} ${inputWord}`)
+      }
+    }
     return exactAnswer || altAnswer
   }
 
@@ -204,7 +212,7 @@ const AnswerSection = ({
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
-      <AudioPlayer document={document} disabled={result === '' && !secondAttempt} />
+      <AudioPlayer document={document} disabled={result === '' && !secondAttempt} TTSToPlay={TTSToPlay} />
       <StyledContainer>
         <Popover isVisible={isPopoverVisible} setIsPopoverVisible={setIsPopoverVisible} ref={touchable}>
           <PopoverContent />

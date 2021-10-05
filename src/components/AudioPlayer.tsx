@@ -9,6 +9,7 @@ import { DocumentType } from '../constants/endpoints'
 export interface AudioPlayerProps {
   document: DocumentType
   disabled: boolean
+  TTSToPlay?: string
 }
 
 const StyledView = styled.View`
@@ -39,7 +40,7 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
 `
 
 const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
-  const { document, disabled } = props
+  const { document, disabled, TTSToPlay } = props
   const { audio } = document
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
@@ -61,7 +62,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   }, [])
 
   React.useEffect(() => {
-    if (audio) {
+    if (audio && !TTSToPlay) {
       const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()
       })
@@ -82,16 +83,16 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
         Tts.removeEventListener('tts-finish', ttsHandler)
       }
     }
-  }, [audio, initializeTts])
+  }, [audio, initializeTts, TTSToPlay])
 
   const handleSpeakerClick = (): void => {
     if (isInitialized) {
       setIsActive(true)
-      if (document.audio) {
+      if (document.audio && !TTSToPlay) {
         SoundPlayer.loadUrl(document.audio)
       } else {
         // @ts-expect-error ios params should be optional
-        Tts.speak(`${document?.article.value} ${document?.word}`, {
+        Tts.speak(TTSToPlay, {
           androidParams: {
             KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,
@@ -104,7 +105,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon disabled={disabled} isActive={isActive} onPress={handleSpeakerClick}>
+      <VolumeIcon disabled={disabled || !isInitialized} isActive={isActive} onPress={handleSpeakerClick}>
         <VolumeUp />
       </VolumeIcon>
     </StyledView>
