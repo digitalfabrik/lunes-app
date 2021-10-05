@@ -11,9 +11,9 @@ import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 import AsyncStorage from '../../../services/AsyncStorage'
 import Actions from './Actions'
+import ArticleMissingPopoverContent from './ArticleMissingPopoverContent'
 import Feedback from './FeedbackSection'
 import Popover from './Popover'
-import ArticleMissingPopoverContent from './PopoverContent'
 
 const StyledContainer = styled.View`
   padding-top: 20px;

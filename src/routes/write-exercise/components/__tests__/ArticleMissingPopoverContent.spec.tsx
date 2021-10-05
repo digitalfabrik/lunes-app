@@ -3,12 +3,12 @@ import toJson from 'enzyme-to-json'
 import React from 'react'
 import 'react-native'
 
-import PopoverContent from '../PopoverContent'
+import ArticleMissingPopoverContent from '../ArticleMissingPopoverContent'
 
 describe('components', () => {
-  describe('PopoverContent', () => {
+  describe('ArticleMissingPopoverContent', () => {
     it('renders correctly across screens', () => {
-      const component = shallow(<PopoverContent />)
+      const component = shallow(<ArticleMissingPopoverContent />)
       expect(toJson(component)).toMatchSnapshot()
     })
   })

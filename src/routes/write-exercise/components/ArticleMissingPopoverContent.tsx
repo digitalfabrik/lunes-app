@@ -23,11 +23,11 @@ const StyledMessage = styled.Text`
   margin-left: 8px;
 `
 
-const PopoverContent = (): ReactElement => (
+const ArticleMissingPopoverContent = (): ReactElement => (
   <StyledContainer>
     <InfoIcon width={30} height={30} />
     <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
   </StyledContainer>
 )
 
-export default PopoverContent
+export default ArticleMissingPopoverContent

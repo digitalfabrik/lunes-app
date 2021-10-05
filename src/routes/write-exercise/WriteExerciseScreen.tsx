@@ -76,7 +76,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             flexGrow: 1
           }}
           keyboardShouldPersistTaps='always'>
-          <ImageCarousel images={document?.document_image} />
+          <ImageCarousel images={document.document_image} />
           <AudioPlayer document={document} disabled={!hintsEnabled} />
           <AnswerSection
             currentDocumentNumber={currentDocumentNumber}
