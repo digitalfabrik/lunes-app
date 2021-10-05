@@ -26,12 +26,6 @@ jest.mock('../../../components/AudioPlayer', () => {
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
-jest.mock('react-native-keyboard-aware-scroll-view', () => {
-  return {
-    KeyboardAwareScrollView: jest.fn().mockImplementation(({ children }) => children)
-  }
-})
-
 describe('WriteExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
