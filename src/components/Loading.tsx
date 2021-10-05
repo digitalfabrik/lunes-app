@@ -19,7 +19,7 @@ export interface ILoadingProps {
   isLoading: boolean
 }
 
-const Loading = ({ children, isLoading }: ILoadingProps) => (
+const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
   <LoadingContainer>
     {isLoading ? (
       <Indicator>

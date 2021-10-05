@@ -2,7 +2,6 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'

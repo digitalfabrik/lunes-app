@@ -11,5 +11,5 @@ export interface ITitleProps {
   children: ReactElement
 }
 
-const Title = ({ children }: ITitleProps) => <Container>{children}</Container>
+const Title = ({ children }: ITitleProps): ReactElement => <Container>{children}</Container>
 export default Title

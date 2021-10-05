@@ -3,8 +3,8 @@ import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
 import { COLORS } from '../../constants/theme/colors'
-import MenuItem from '../MenuItem'
 import wrapWithTheme from '../../testing/wrapWithTheme'
+import MenuItem from '../MenuItem'
 
 describe('MenuItem', () => {
   beforeEach(() => {
