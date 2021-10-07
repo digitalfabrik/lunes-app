@@ -36,6 +36,11 @@ Deliver the app to App Store Connect. The app is submitted for review and releas
 fastlane ios upload_to_test_flight
 ```
 Deliver iOS App to TestFlight for testers
+### ios appstoreconnect_promote
+```
+fastlane ios appstoreconnect_promote
+```
+Promote the app from testflight to production in App Store Connect.
 ### ios prepare_release_notes
 ```
 fastlane ios prepare_release_notes
