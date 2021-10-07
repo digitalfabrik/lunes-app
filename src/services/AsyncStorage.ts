@@ -31,6 +31,15 @@ export interface ExerciseType {
   }
 }
 
+export const getIndividualAreas = async (): Promise<string[]> => {
+  const areas = await AsyncStorage.getItem('individualAreas')
+  return areas ? JSON.parse(areas) : null
+}
+
+export const setIndividualAreas = async (areas: string[]): Promise<void> => {
+  await AsyncStorage.setItem('individualAreas', JSON.stringify(areas))
+}
+
 export const setSession = async (session: SessionType): Promise<void> => {
   await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session))
 }
@@ -63,5 +72,7 @@ export default {
   clearSession,
   setExercise,
   getExercise,
-  clearExercise
+  clearExercise,
+  getIndividualAreas,
+  setIndividualAreas
 }

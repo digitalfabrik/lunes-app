@@ -18,6 +18,7 @@ export type CountsType = {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParamsType = {
   Profession: undefined
+  AddArea: undefined
   ProfessionSubcategory: {
     extraParams: {
       module: DisciplineType

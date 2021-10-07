@@ -1,11 +1,12 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
+import { BackButton, PlusIcon } from '../../assets/images'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
@@ -39,6 +40,19 @@ const Description = styled.Text<{ item: DisciplineType; selectedId: number | nul
     props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
 
+const AddAreaContainer = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 16px;
+`
+
+const AddAreaText = styled.Text`
+  text-transform: uppercase;
+  padding-left: 10px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+`
+
 interface ProfessionScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
 }
@@ -60,12 +74,18 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       setSelectedId(-1)
     }, [navigation])
   )
+
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
       <StyledText>{labels.home.welcome}</StyledText>
+      <AddAreaContainer onPress={navigateToNewScreen}>
+        <PlusIcon />
+        <AddAreaText>{labels.home.addArea}</AddAreaText>
+      </AddAreaContainer>
     </>
   )
+
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
@@ -82,6 +102,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       </MenuItem>
     )
   }
+
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('ProfessionSubcategory', {
@@ -90,6 +111,11 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
       }
     })
   }
+
+  const navigateToNewScreen = (): void => {
+    navigation.navigate('AddArea')
+  }
+
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (

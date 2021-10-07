@@ -5,7 +5,15 @@
     "units": "Module",
     "word": "Wort",
     "words": "Wörter",
-    "exercises": "Übungen"
+    "exercises": "Übungen",
+    "addArea": "Code eingeben"
+  },
+  "addArea": {
+    "heading": "Individuellen Bereich hinzufügen",
+    "description": "Gibt hier den Zugangscode ein",
+    "placeholder": "Code eingeben",
+    "submitLabel": "Code eingeben",
+    "backNavigation": "Zurück zur Übersicht"
   },
   "exercises": {
     "vocabularyList": {
