@@ -25,7 +25,7 @@ const StyledContainer = styled.View`
 `
 const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   width: 80%;
-  height: ${hp('7%')}px;
+  height: ${hp('8%')}px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
