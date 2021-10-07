@@ -1,8 +1,9 @@
 import { fireEvent, render } from '@testing-library/react-native'
-import React from 'react'
+import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
 import { COLORS } from '../../constants/theme/colors'
+import wrapWithTheme from '../../testing/wrapWithTheme'
 import MenuItem, { IMenuItemProps } from '../MenuItem'
 
 describe('Components', () => {
@@ -15,64 +16,47 @@ describe('Components', () => {
       onPress: () => {}
     }
 
+    const renderMenuItem = (overrideProps: Partial<ComponentProps<typeof MenuItem>> = {}) => {
+      return render(<MenuItem {...defaultMenuItemProps} {...overrideProps} />, {
+        wrapper: wrapWithTheme
+      })
+    }
+
     it('should call onPress event', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps,
-        onPress: jest.fn()
-      }
-      const { getByText } = render(<MenuItem {...menuItemProps} />)
-      expect(menuItemProps.onPress).not.toHaveBeenCalled()
+      const onPress = jest.fn()
+      const { getByText } = renderMenuItem({ onPress: onPress })
+      expect(onPress).not.toHaveBeenCalled()
       const element = getByText('MenuItemTitle')
       fireEvent.press(element)
-      expect(menuItemProps.onPress).toHaveBeenCalled()
+      expect(onPress).toHaveBeenCalled()
     })
 
     it('should display title passed to it', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps,
-        title: 'Menu item title'
-      }
-
-      const { queryByText } = render(<MenuItem {...menuItemProps} />)
+      const { queryByText } = renderMenuItem({ title: 'Menu item title' })
       const title = queryByText('Menu item title')
       expect(title).not.toBeNull()
     })
 
     it('should render children passed to it', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps
-      }
-
-      const { queryByText } = render(<MenuItem {...menuItemProps} />)
+      const { queryByText } = renderMenuItem()
       const title = queryByText('Text of children')
       expect(title).not.toBeNull()
     })
 
     it('should render black arrow icon when selected is false', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps
-      }
-
-      const { getByTestId, getByText } = render(<MenuItem {...menuItemProps} />)
+      const { getByTestId, getByText } = renderMenuItem()
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
       const title = getByText('MenuItemTitle')
-      // @ts-expect-error
-      expect(title._fiber.pendingProps.style[0].color).toBe(COLORS.lunesGreyDark)
+      expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
     })
 
     it('should render red arrow icon when selected is true', () => {
-      const menuItemProps: IMenuItemProps = {
-        ...defaultMenuItemProps,
-        selected: true
-      }
-
-      const { getByTestId, getByText } = render(<MenuItem {...menuItemProps} />)
+      const { getByTestId, getByText } = renderMenuItem({ selected: true })
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
       const title = getByText('MenuItemTitle')
-      // @ts-expect-error
-      expect(title._fiber.pendingProps.style[0].color).toBe(COLORS.white)
+      expect(title.instance.props.style[0].color).toBe(COLORS.white)
     })
   })
 })
