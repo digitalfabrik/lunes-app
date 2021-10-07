@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from 'react'
 import { TouchableOpacity, Pressable, Keyboard } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
 import styled from 'styled-components/native'
 
@@ -25,7 +25,7 @@ const StyledContainer = styled.View`
 `
 const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   width: 80%;
-  height: 16%;
+  height: ${hp('7%')}px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +33,6 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   border-radius: 2px;
   padding-right: 15px;
   padding-left: 15px;
-  margin-top: 5%;
   margin-bottom: 5%;
   border-color: ${prop => prop.styledBorderColor};
 `
