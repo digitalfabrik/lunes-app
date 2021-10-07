@@ -106,9 +106,10 @@ const AnswerSection = ({
     const newResult = validateAnswer(article, word)
     setResult(newResult)
 
-    if (newResult !== 'similar') {
-      // Users get unlimited tries if the submission is similar to an answer, so do not save a result
+    if (!secondAttempt) {
       await storeResult(newResult)
+    }
+    if (newResult !== 'similar') {
       setHintsEnabled(true)
     }
   }
