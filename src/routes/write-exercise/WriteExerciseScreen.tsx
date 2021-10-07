@@ -70,12 +70,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
       />
 
       {documents && document ? (
-        <ScrollView
-          contentContainerStyle={{
-            flex: 1,
-            flexGrow: 1
-          }}
-          keyboardShouldPersistTaps='always'>
+        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
           <ImageCarousel images={document.document_image} />
           <AudioPlayer document={document} disabled={!hintsEnabled} />
           <AnswerSection
