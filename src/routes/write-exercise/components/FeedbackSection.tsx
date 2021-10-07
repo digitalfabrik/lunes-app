@@ -1,4 +1,7 @@
 import React, { ReactElement } from 'react'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import {
   AlmostCorrectFeedbackIcon,
   correct_background,
@@ -7,9 +10,7 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../../../assets/images'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DocumentType } from '../../../constants/endpoints'
-import styled from 'styled-components/native'
 import labels from '../../../constants/labels.json'
 
 const Background = styled.ImageBackground`

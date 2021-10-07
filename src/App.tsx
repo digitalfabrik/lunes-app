@@ -1,11 +1,12 @@
-import 'react-native-gesture-handler'
-import { StatusBar } from 'react-native'
-import Navigator from './navigation/Navigator'
 import React, { ReactElement, useEffect } from 'react'
-import SplashScreen from 'react-native-splash-screen'
+import { StatusBar } from 'react-native'
+import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import SplashScreen from 'react-native-splash-screen'
 import { ThemeProvider } from 'styled-components/native'
+
 import theme from './constants/theme'
+import Navigator from './navigation/Navigator'
 
 const App = (): ReactElement => {
   useEffect(() => {

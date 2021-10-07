@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
+
+import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
 
 interface ThemedButtonProps {
   buttonTheme?: ButtonThemeType
@@ -54,11 +55,12 @@ interface IButtonProps {
   testID?: string
 }
 
-const Button = ({ children, onPress, disabled = false, buttonTheme }: IButtonProps): ReactElement => {
+const Button = ({ children, onPress, disabled = false, buttonTheme, testID }: IButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
+      testID={testID}
       isPressed={isPressed}
       onPress={onPress}
       disabled={disabled}

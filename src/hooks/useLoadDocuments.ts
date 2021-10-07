@@ -1,6 +1,6 @@
-import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
-import { DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { ARTICLES } from '../constants/data'
+import { DocumentType, ENDPOINTS } from '../constants/endpoints'
+import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
 export interface AlternativeWordTypeFromServer {
   article: number

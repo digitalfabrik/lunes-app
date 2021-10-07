@@ -1,5 +1,5 @@
-import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
+import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
 interface ServerResponse {
   id: number

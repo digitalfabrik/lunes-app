@@ -1,9 +1,10 @@
-import React from 'react'
-import MenuItem, { IMenuItemProps } from '../MenuItem'
-import { shallow } from 'enzyme'
-import { Text } from 'react-native'
-import { COLORS } from '../../constants/theme/colors'
 import { fireEvent, render } from '@testing-library/react-native'
+import { shallow } from 'enzyme'
+import React from 'react'
+import { Text } from 'react-native'
+
+import { COLORS } from '../../constants/theme/colors'
+import MenuItem, { IMenuItemProps } from '../MenuItem'
 
 describe('Components', () => {
   describe('MenuItem', () => {

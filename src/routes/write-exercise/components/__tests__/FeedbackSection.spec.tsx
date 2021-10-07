@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import 'react-native'
-import React from 'react'
-import FeedbackSection, { FeedbackPropsType } from '../FeedbackSection'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { ARTICLES } from '../../../../constants/data'
+import React from 'react'
+import 'react-native'
+
 import { AlmostCorrectFeedbackIcon, CorrectFeedbackIcon, IncorrectFeedbackIcon } from '../../../../../assets/images'
+import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
+import FeedbackSection, { FeedbackPropsType } from '../FeedbackSection'
 
 describe('Feedback section', () => {
   const defaultFeedbackProps: FeedbackPropsType = {

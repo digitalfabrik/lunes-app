@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { ImagesType } from '../constants/endpoints'
+import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
-import ImageViewer from 'react-native-image-zoom-viewer'
+
+import { ImagesType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View`

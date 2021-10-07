@@ -1,3 +1,6 @@
+import { ComponentType } from 'react'
+import { SvgProps } from 'react-native-svg'
+
 import {
   AlmostCorrectEntriesIcon,
   CorrectEntriesIcon,
@@ -9,8 +12,6 @@ import {
 } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import labels from './labels.json'
-import { ComponentType } from 'react'
-import { SvgProps } from 'react-native-svg'
 
 export const ExerciseKeys = {
   vocabularyList: 0,

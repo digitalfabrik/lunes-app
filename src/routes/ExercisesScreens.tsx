@@ -1,15 +1,16 @@
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { COLORS } from '../constants/theme/colors'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { StackNavigationProp } from '@react-navigation/stack'
 import labels from '../constants/labels.json'
-import styled from 'styled-components/native'
+import { COLORS } from '../constants/theme/colors'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};

@@ -1,9 +1,10 @@
-import { DocumentsType } from '../constants/endpoints'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ExerciseKeyType } from '../constants/data'
-import { DocumentResultType } from '../navigation/NavigationTypes'
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
+
+import { ExerciseKeyType } from '../constants/data'
+import { DocumentsType } from '../constants/endpoints'
+import { DocumentResultType } from '../navigation/NavigationTypes'
 
 const SESSION_KEY = 'session'
 

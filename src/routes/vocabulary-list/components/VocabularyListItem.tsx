@@ -1,10 +1,11 @@
-import AudioPlayer from '../../../components/AudioPlayer'
-import { DocumentType } from '../../../constants/endpoints'
-import { getArticleColor } from '../../../services/helpers'
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
+
+import AudioPlayer from '../../../components/AudioPlayer'
+import { DocumentType } from '../../../constants/endpoints'
+import { getArticleColor } from '../../../services/helpers'
 
 const Wrapper = styled.Pressable`
   padding-right: 5%;
