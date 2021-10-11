@@ -10,6 +10,7 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../../../assets/images'
+import { SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 
@@ -29,36 +30,35 @@ const StyledText = styled.Text`
 `
 
 export interface FeedbackPropsType {
-  secondAttempt: boolean
-  result: string
-  document?: DocumentType
-  input: string
+  result: SimpleResultType
+  document: DocumentType
+  submission: string | null
 }
 
-const Feedback = ({ result, document, input, secondAttempt }: FeedbackPropsType): ReactElement | null => {
+const Feedback = ({ result, document, submission }: FeedbackPropsType): ReactElement | null => {
   let Icon, background, message
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
     background = correct_background
     message = labels.exercises.write.feedback.correct
-  } else if (result === 'incorrect' || result === 'giveUp' || !secondAttempt) {
-    Icon = IncorrectFeedbackIcon
-    background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} „${document?.article.value ?? ''} ${document?.word ?? ''}“`
-  } else {
+  } else if (result === 'similar' && submission) {
     Icon = AlmostCorrectFeedbackIcon
     background = hint_background
-    message = `${labels.exercises.write.feedback.almostCorrect1} „${input}“ ${labels.exercises.write.feedback.almostCorrect2}`
+    message = `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+  } else {
+    Icon = IncorrectFeedbackIcon
+    background = incorrect_background
+    message = `${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`
   }
 
-  return result !== '' || secondAttempt ? (
+  return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
       <StyledText numberOfLines={2} ellipsizeMode='tail' testID={'feedback-write-exercise'}>
         {message}
       </StyledText>
     </Background>
-  ) : null
+  )
 }
 
 export default Feedback

@@ -9,13 +9,13 @@ describe('Components', () => {
   describe('Actions', () => {
     const defaultActionProps: IActionsProps = {
       input: '',
-      result: '',
+      result: null,
       isFinished: false,
       secondAttempt: false,
       giveUp: () => {},
       tryLater: () => {},
       checkEntry: () => {},
-      getNextWord: () => {}
+      continueExercise: () => {}
     }
 
     it('renders correctly across screens', () => {

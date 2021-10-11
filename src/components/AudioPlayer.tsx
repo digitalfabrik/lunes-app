@@ -19,7 +19,6 @@ const StyledView = styled.View`
 const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolean }>`
   position: absolute;
   top: -20px;
-  left: 45%;
   width: 40px;
   height: 40px;
   border-radius: 50px;
