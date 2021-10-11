@@ -44,7 +44,7 @@ interface VocabularyListScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'VocabularyList'>
 }
 
-const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
+const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
@@ -74,9 +74,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
 
   return (
     <Root>
-      {!documents || !documents[selectedDocumentIndex] ? (
-        <></>
-      ) : (
+      {documents?.[selectedDocumentIndex] && (
         <VocabularyListModal
           documents={documents}
           isModalVisible={isModalVisible}
