@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import AddAreaScreen from '../routes/AddAreaScreen'
+import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import InitialSummaryScreen from '../routes/InitialSummaryScreen'
 import ProfessionScreen from '../routes/ProfessionScreen'
@@ -155,8 +155,8 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ navigation }) => defaultOptions(labels.general.header.overview, BackButton, navigation, false)}
-          name='AddArea'
-          component={AddAreaScreen}
+          name='AddCustomDiscipline'
+          component={AddCustomDisciplineScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

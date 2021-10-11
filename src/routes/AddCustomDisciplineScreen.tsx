@@ -1,0 +1,133 @@
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
+
+import Button from '../components/Button'
+import { BUTTONS_THEME } from '../constants/data'
+import labels from '../constants/labels.json'
+import withCustomDiscipline from '../hocs/withCustomDiscipline'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+
+const Container = styled.View`
+  flex-direction: column;
+  align-items: center;
+`
+
+const Heading = styled.Text`
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.headingFontSize};
+  padding-top: 40px;
+`
+
+const Description = styled.Text`
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  color: ${props => props.theme.colors.lunesGreyMedium}
+  padding: 10px 0;
+`
+
+const StyledTextInput = styled.TextInput<{ showError: boolean }>`
+  font-size: ${props => props.theme.fonts.largeFontSize}
+  font-weight: normal;
+  letter-spacing: 0.11px;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop => prop.theme.colors.lunesBlack};
+  width: 80%;
+  border: 1px solid ${props =>
+    props.showError ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
+  border-radius: 4px;
+  margin-top: ${hp('8%')}px;
+  padding-left: 15px;
+`
+
+const ErrorContainer = styled.View`
+  margin-bottom: ${hp('4%')}px;
+  width: 80%;
+  height: 10%;
+`
+
+const ErrorText = styled.Text`
+  font-size: ${props => props.theme.fonts.defaultFontSize}
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
+`
+
+const LightLabel = styled.Text`
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+`
+
+const DarkLabel = styled.Text<{ disabled: boolean }>`
+  color: ${props => (props.disabled ? props.theme.colors.lunesBlackLight : props.theme.colors.lunesWhite)};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+`
+
+interface AddCustomDisciplineScreenPropsType {
+  navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
+  customDisciplines: string[]
+}
+
+const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDisciplineScreenPropsType) => {
+  const [code, setCode] = useState<string>('')
+  const [showError, setShowError] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const showErrorMessage = (message: string) => {
+    setShowError(true)
+    setErrorMessage(message)
+    setTimeout(() => {
+      setShowError(false)
+      setErrorMessage('')
+      setCode('')
+    }, 5000)
+  }
+
+  const submit = (): void => {
+    if (customDisciplines.includes(code)) {
+      showErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
+    } else {
+      const serverResponse = true // TODO make server request here, when api is finished
+      if (!serverResponse) {
+        showErrorMessage(labels.addCustomDiscipline.error.wrongCode)
+      } else {
+        AsyncStorage.setCustomDisciplines([...customDisciplines, code])
+          .then(() => {
+            navigation.navigate('Profession')
+          })
+          .catch(() => {
+            showErrorMessage(labels.addCustomDiscipline.error.technical)
+          })
+      }
+    }
+  }
+
+  return (
+    <Container>
+      <Heading>{labels.addCustomDiscipline.heading}</Heading>
+      <Description>{labels.addCustomDiscipline.description}</Description>
+      <StyledTextInput
+        placeholder={labels.addCustomDiscipline.placeholder}
+        value={code}
+        onChangeText={text => setCode(text)}
+        showError={showError}
+      />
+      <ErrorContainer>{showError && <ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+      <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
+        <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
+      </Button>
+      <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
+        <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
+      </Button>
+    </Container>
+  )
+}
+
+export default withCustomDiscipline(AddCustomDiscipline)

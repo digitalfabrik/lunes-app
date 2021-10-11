@@ -31,13 +31,13 @@ export interface ExerciseType {
   }
 }
 
-export const getIndividualAreas = async (): Promise<string[]> => {
-  const areas = await AsyncStorage.getItem('individualAreas')
-  return areas ? JSON.parse(areas) : null
+export const getCustomDisciplines = async (): Promise<string[]> => {
+  const disciplines = await AsyncStorage.getItem('customDiscipline')
+  return disciplines ? JSON.parse(disciplines) : null
 }
 
-export const setIndividualAreas = async (areas: string[]): Promise<void> => {
-  await AsyncStorage.setItem('individualAreas', JSON.stringify(areas))
+export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
+  await AsyncStorage.setItem('customDiscipline', JSON.stringify(customDisciplines))
 }
 
 export const setSession = async (session: SessionType): Promise<void> => {
@@ -73,6 +73,6 @@ export default {
   setExercise,
   getExercise,
   clearExercise,
-  getIndividualAreas,
-  setIndividualAreas
+  getCustomDisciplines,
+  setCustomDisciplines
 }

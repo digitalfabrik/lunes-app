@@ -1,17 +1,18 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
-import { BackButton, PlusIcon } from '../../assets/images'
+import { PlusIcon } from '../../assets/images'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import withCustomDiscipline from '../hocs/withCustomDiscipline'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
@@ -40,14 +41,14 @@ const Description = styled.Text<{ item: DisciplineType; selectedId: number | nul
     props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
 
-const AddAreaContainer = styled.TouchableOpacity`
+const AddCustomDisciplineContainer = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 16px;
 `
 
-const AddAreaText = styled.Text`
+const AddCustomDisciplineText = styled.Text`
   text-transform: uppercase;
   padding-left: 10px;
   font-family: ${props => props.theme.fonts.contentFontBold};
@@ -55,12 +56,13 @@ const AddAreaText = styled.Text`
 
 interface ProfessionScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
+  customDisciplines: string[]
 }
 
-const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
+const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null)
+  const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -79,10 +81,10 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     <>
       <Header top={top} />
       <StyledText>{labels.home.welcome}</StyledText>
-      <AddAreaContainer onPress={navigateToNewScreen}>
+      <AddCustomDisciplineContainer onPress={navigateToNewScreen}>
         <PlusIcon />
-        <AddAreaText>{labels.home.addArea}</AddAreaText>
-      </AddAreaContainer>
+        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+      </AddCustomDisciplineContainer>
     </>
   )
 
@@ -113,7 +115,7 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   }
 
   const navigateToNewScreen = (): void => {
-    navigation.navigate('AddArea')
+    navigation.navigate('AddCustomDiscipline')
   }
 
   return (
@@ -136,4 +138,4 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     </SafeAreaInsetsContext.Consumer>
   )
 }
-export default ProfessionScreen
+export default withCustomDiscipline(ProfessionScreen)

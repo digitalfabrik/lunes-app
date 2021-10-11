@@ -21,9 +21,14 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
   return { ...serverResponse, data: formattedServerResponse }
 }
 
-export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
+export const useLoadDisciplines = (
+  parent: DisciplineType | null,
+  customDisciplines: string[]
+): ReturnType<DisciplineType[]> => {
   const rootModulesUrl = ENDPOINTS.professions.all
   const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.professions.all : ENDPOINTS.subCategories.all}/${parent?.id}`
+  const withCustomDisciplines = customDisciplines ? `${rootModulesUrl}/${customDisciplines.join('&')}` : ''
+  console.log(withCustomDisciplines) // TODO use withCustomDisciplines when api is ready
   const disciplines = useLoadFromEndpoint<ServerResponse[]>(parent === null ? rootModulesUrl : nestedModulesUrl)
   return formatServerResponse(disciplines)
 }

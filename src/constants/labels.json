@@ -6,14 +6,19 @@
     "word": "Wort",
     "words": "Wörter",
     "exercises": "Übungen",
-    "addArea": "Code eingeben"
+    "addCustomDiscipline": "Code eingeben"
   },
-  "addArea": {
+  "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",
     "description": "Gibt hier den Zugangscode ein",
     "placeholder": "Code eingeben",
     "submitLabel": "Code eingeben",
-    "backNavigation": "Zurück zur Übersicht"
+    "backNavigation": "Zurück zur Übersicht",
+    "error": {
+      "alreadyAdded": "Dieser Code wurde bereits zu deiner App hinzugefügt.",
+      "wrongCode": "Dieser Code existiert nicht. Bitte versuche es erneut",
+      "technical": "Der Code konnte aufgrund eines technischen Fehlers nicht hinzugefügt werden"
+    }
   },
   "exercises": {
     "vocabularyList": {
