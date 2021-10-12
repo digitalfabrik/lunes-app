@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.johnsonsu.rnsoundplayer.RNSoundPlayerPackage;
 import com.johnsonsu.rnsoundplayer.RNSoundPlayerPackage;
@@ -51,6 +52,10 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+    // FORCE LTR
+    I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
+    sharedI18nUtilInstance.allowRTL(getApplicationContext(), false);
   }
 
   /**

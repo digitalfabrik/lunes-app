@@ -3,13 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { Modal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Color } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 import Button from './Button'
@@ -18,10 +16,10 @@ const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${COLORS.lunesOverlay};
+  background-color: ${props => props.theme.colors.lunesOverlay};
 `
 const ModalContainer = styled.View`
-  background-color: ${COLORS.white};
+  background-color: ${props => props.theme.colors.white};
   align-items: center;
   width: ${wp('85%')}px;
   border-radius: 4px;
@@ -38,26 +36,22 @@ const Icon = styled.TouchableOpacity`
 `
 const Message = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${props => props.theme.fonts.headingFontSize};
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
   margin-bottom: 31px;
   padding-top: 31px;
 `
-const Label = styled.Text`
-  color: ${(prop: LabelProps) => prop.labelColor};
-  font-size: ${wp('4%')}px;
-  font-weight: 600;
+const Label = styled.Text<{ light: boolean }>`
+  color: ${props => (props.light ? props.theme.colors.lunesWhite : props.theme.colors.lunesBlack)};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   text-align: center;
   text-transform: uppercase;
-  font-family: 'SourceSansPro-SemiBold';
-  letter-spacing: 0.4px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
 `
-
-interface LabelProps {
-  labelColor: Color
-}
 
 export interface ConfirmationModalPropsType {
   visible: boolean
@@ -99,10 +93,10 @@ const ConfirmationModal = ({
           </Icon>
           <Message>{labels.exercises.cancelModal.cancelAsk}</Message>
           <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
-            <Label labelColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
+            <Label light>{labels.exercises.cancelModal.continue}</Label>
           </Button>
           <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
-            <Label labelColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.cancel}</Label>
+            <Label light={false}>{labels.exercises.cancelModal.cancel}</Label>
           </Button>
         </ModalContainer>
       </Overlay>

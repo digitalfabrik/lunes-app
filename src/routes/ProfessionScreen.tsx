@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
@@ -22,7 +21,7 @@ const Root = styled.View`
 const StyledText = styled.Text`
   margin-top: 8.5%;
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
@@ -32,8 +31,8 @@ const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
 `
 
 const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
-  font-size: ${wp('4%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${props =>
     props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};

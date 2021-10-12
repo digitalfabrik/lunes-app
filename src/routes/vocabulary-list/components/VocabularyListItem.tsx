@@ -34,23 +34,23 @@ const StyledImage = styled.Image`
   height: ${wp('15%')}px;
   border-radius: 50px;
 `
-const StyledTitle = styled.Text`
-  font-size: ${wp('3.5%')}px;
-  font-weight: normal;
+const StyledTitle = styled.Text<{ articleColor: string }>`
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   border-radius: 10px;
   margin-bottom: 6px;
   color: ${props => props.theme.colors.lunesGreyDark};
+  background-color: ${props => props.articleColor};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
   width: ${wp('10%')}px;
   overflow: hidden;
   height: ${wp('5%')}px;
   text-align: center;
-  line-height: 18px;
 `
 const Description = styled.Text`
-  font-size: ${wp('4%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-left: 8px;
@@ -83,10 +83,8 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
             />
           )}
           <View>
-            <StyledTitle testID='article' style={[{ backgroundColor: getArticleColor(article) }]}>
-              {article.value}
-            </StyledTitle>
-            <Description testID='word'>{word}</Description>
+            <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
+            <Description>{word}</Description>
           </View>
         </StyledItem>
         <Speaker>

@@ -1,6 +1,6 @@
-import { RouteProp } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FlatList, StatusBar, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -29,30 +29,30 @@ const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
 
 const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: 5px;
-  font-weight: normal;
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
 
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   min-width: ${wp('6%')}px;
   height: ${wp('4%')}px;
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
   color: ${prop => (prop.selected ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
-  font-size: ${prop => (prop.selected ? wp('12') : wp('3%'))}px;
   background-color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
+  font-size: ${prop => prop.theme.fonts.smallFontSize};
 `
 
 interface ProfessionSubcategoryScreenPropsType {
@@ -66,6 +66,12 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const { data: disciplines, error, loading } = useLoadDisciplines(module)
+
+  useFocusEffect(
+    useCallback(() => {
+      setSelectedId(-1)
+    }, [])
+  )
 
   const titleCOMP = (
     <Title>
@@ -88,11 +94,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     const description = module.isLeaf ? descriptionForWord : descriptionForUnit
 
     return (
-      <MenuItem
-        selected={item.id === selectedId}
-        title={item.title}
-        icon={item.icon}
-        onPress={() => handleNavigation(item)}>
+      <MenuItem selected={selected} title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{description}</Description>
@@ -102,7 +104,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
   }
 
   const handleNavigation = (selectedItem: DisciplineType): void => {
-    setSelectedId(module.id)
+    setSelectedId(selectedItem.id)
     if (!module.isLeaf) {
       navigation.push('ProfessionSubcategory', {
         extraParams: {

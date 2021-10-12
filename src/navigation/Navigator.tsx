@@ -33,7 +33,8 @@ export const styles = StyleSheet.create({
     fontSize: wp('4%'),
     textTransform: 'uppercase',
     fontWeight: '600',
-    marginLeft: 15
+    marginLeft: 15,
+    letterSpacing: 0.4
   },
   headerLeft: {
     paddingLeft: 15,

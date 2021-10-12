@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components PopoverContent renders correctly across screens 1`] = `
+exports[`components ArticleMissingPopoverContent renders correctly across screens 1`] = `
 <Styled(View)>
   <SvgrURL
     height={30}

@@ -27,7 +27,6 @@
     "react-native": "0.63.3",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-image-zoom-viewer": "^3.0.1",
-    "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-paper": "4.7.0",
     "react-native-popover-view": "^3.1.1",
     "react-native-reanimated": "^1.13.2",
@@ -48,16 +47,17 @@
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^3.0.0",
-    "@testing-library/react-native": "^7.2.0",
     "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/jest-native": "^4.0.2",
+    "@testing-library/react-native": "^7.2.0",
     "@trivago/prettier-plugin-sort-imports": "^2.0.4",
     "@types/enzyme": "^3.10.8",
-    "@types/react-native-snap-carousel": "^3.8.4",
-    "@types/string-similarity": "^4.0.0",
-    "@types/styled-components": "^5.1.12",
     "@types/jest": "^26.0.20",
     "@types/react-native": "^0.63.2",
+    "@types/react-native-snap-carousel": "^3.8.4",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/string-similarity": "^4.0.0",
+    "@types/styled-components": "^5.1.12",
     "@types/styled-components-react-native": "^5.1.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
@@ -77,42 +77,14 @@
     "jest": "^26.6.3",
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
+    "jest-extended": "^0.11.5",
     "jest-transform-stub": "^2.0.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.4.1",
     "react-dom": "16.13.1",
     "react-test-renderer": "16.13.1",
     "ts-jest": "26.5.6",
+    "ts-node": "^10.2.1",
     "typescript": "^3.8.3"
-  },
-  "jest": {
-    "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js",
-      "./jest/jestSetup.js"
-    ],
-    "moduleNameMapper": {
-      ".+\\.(styl|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-      "\\.(css|less)$": "identity-obj-proxy",
-      "\\.svg": "<rootDir>/src/__mocks__/svgrMock.js"
-    },
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "setupFilesAfterEnv": [
-      "jest-enzyme"
-    ],
-    "testEnvironment": "enzyme",
-    "testEnvironmentOptions": {
-      "enzymeAdapter": "react16"
-    }
   }
 }

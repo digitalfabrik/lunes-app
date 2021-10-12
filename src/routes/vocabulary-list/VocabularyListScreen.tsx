@@ -2,7 +2,6 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import Loading from '../../components/Loading'
@@ -23,7 +22,7 @@ const Root = styled.View`
 `
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 4px;
@@ -34,7 +33,7 @@ const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
 
 const Description = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
@@ -44,7 +43,7 @@ interface VocabularyListScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'VocabularyList'>
 }
 
-const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsType): JSX.Element => {
+const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Element => {
   const { trainingSetId } = route.params.extraParams
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
@@ -74,9 +73,7 @@ const VocabularyListScreen = ({ navigation, route }: VocabularyListScreenPropsTy
 
   return (
     <Root>
-      {!documents || !documents[selectedDocumentIndex] ? (
-        <></>
-      ) : (
+      {documents?.[selectedDocumentIndex] && (
         <VocabularyListModal
           documents={documents}
           isModalVisible={isModalVisible}
