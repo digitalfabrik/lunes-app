@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from 'react'
 import { TouchableOpacity, Pressable, Keyboard } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
 import styled from 'styled-components/native'
 
@@ -38,12 +38,12 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
 `
 const StyledTextInput = styled.TextInput`
   flex: 1;
-  font-size: ${wp('4.5%')}px;
-  font-weight: normal;
-  letter-spacing: 0.11px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};
-  width: 60%;
+  width: 90%;
 `
 
 export interface AnswerSectionPropsType {

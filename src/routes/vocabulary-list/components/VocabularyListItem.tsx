@@ -35,8 +35,8 @@ const StyledImage = styled.Image`
   border-radius: 50px;
 `
 const StyledTitle = styled.Text<{ articleColor: string }>`
-  font-size: ${wp('3.5%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   border-radius: 10px;
   margin-bottom: 6px;
   color: ${props => props.theme.colors.lunesGreyDark};
@@ -49,8 +49,8 @@ const StyledTitle = styled.Text<{ articleColor: string }>`
   text-align: center;
 `
 const Description = styled.Text`
-  font-size: ${wp('4%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-left: 8px;

@@ -2,7 +2,6 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
@@ -25,7 +24,7 @@ const Root = styled.View`
 
 const ScreenTitle = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
+  font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${prop => prop.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
   margin-bottom: 1%;
@@ -34,7 +33,7 @@ const ScreenTitle = styled.Text`
 
 const Description = styled.Text`
   text-align: center;
-  font-size: ${wp('4%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${prop => prop.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
@@ -49,10 +48,10 @@ const DarkLabel = styled.Text`
   text-align: center;
   color: ${prop => prop.theme.colors.lunesBlack};
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${wp('3.5%')}px;
-  letter-spacing: 0.4px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
 
 const Arrow = styled(NextArrow)`
@@ -60,10 +59,10 @@ const Arrow = styled(NextArrow)`
 `
 
 const LightLabel = styled.Text`
-  font-size: ${wp('3.2%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `
