@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
 
 import { Answer, Article } from '../../../constants/data'
@@ -8,8 +7,8 @@ import { getArticleColor } from '../../../services/helpers'
 
 const StyledText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${wp('4.3%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-style: normal;
 `
 

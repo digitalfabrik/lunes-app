@@ -39,7 +39,7 @@ const ButtonContainer = styled.View`
 
 const ButtonText = styled.Text`
   color: ${props => props.theme.colors.lunesWhite};
-  font-weight: 600;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-left: 10px;
   text-transform: uppercase;
 `

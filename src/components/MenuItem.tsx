@@ -6,22 +6,22 @@ import styled from 'styled-components/native'
 import { Arrow } from '../../assets/images'
 import { COLORS } from '../constants/theme/colors'
 
-const Container = styled(Pressable)`
+const Container = styled(Pressable)<{ selected: boolean }>`
   margin: 0px 16px 8px 16px;
   padding: 17px 8px 17px 16px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.white)};
-  border: 1px solid ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.lunesBlack : COLORS.lunesBlackUltralight)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
+  border: 1px solid ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.lunesBlackUltralight)};
   border-radius: 2px;
 `
-const Title = styled.Text`
-  font-size: ${wp('5%')}px;
-  letter-spacing: 0.11px;
+const Title = styled.Text<{ selected: boolean }>`
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
-  font-family: 'SourceSansPro-SemiBold';
-  color: ${(prop: MenuItemStyleProps) => (prop.selected ? COLORS.white : COLORS.lunesGreyDark)};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
 const Icon = styled.Image`
   justify-content: center;
@@ -33,10 +33,6 @@ const Icon = styled.Image`
 const TextContainer = styled.View`
   flex: 1;
 `
-
-interface MenuItemStyleProps {
-  selected: boolean
-}
 
 export interface IMenuItemProps {
   selected: boolean
