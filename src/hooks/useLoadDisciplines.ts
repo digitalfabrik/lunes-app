@@ -23,7 +23,7 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
 
 export const useLoadDisciplines = (
   parent: DisciplineType | null,
-  customDisciplines: string[]
+  customDisciplines?: string[]
 ): ReturnType<DisciplineType[]> => {
   const rootModulesUrl = ENDPOINTS.professions.all
   const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.professions.all : ENDPOINTS.subCategories.all}/${parent?.id}`
