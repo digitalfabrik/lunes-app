@@ -370,6 +370,22 @@ jobs:
                 command: bundle exec fastlane android playstore_promote
                 name: '[FL] Play Store Promotion'
                 working_directory: android
+    promote_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        macos:
+            xcode: 12.5.1
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - restore_yarn_tools_cache
+            - restore_yarn_cache
+            - restore_ruby_cache:
+                directory: ios
+            - run:
+                command: bundle exec fastlane ios appstoreconnect_promote
+                name: '[FL] App Store Connect Promotion'
+                working_directory: ios
 parameters:
     run_commit:
         default: true
@@ -428,6 +444,10 @@ workflows:
                 production_delivery: false
                 requires:
                     - build_ios
+            - move_release_notes:
+                requires:
+                    - deliver_android
+                    - deliver_ios
         when: << pipeline.parameters.run_dev_delivery >>
     prod_delivery:
         jobs:
@@ -451,12 +471,14 @@ workflows:
                 requires:
                     - build_ios
             - move_release_notes:
-                context:
-                    - deliverino
+                requires:
+                    - deliver_android
+                    - deliver_ios
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:
             - promote_android
+            - promote_ios
         when: << pipeline.parameters.run_promote >>
     version: 2
 

@@ -10,7 +10,7 @@ const StyledContainer = styled.View`
   align-items: center;
   background-color: ${prop => prop.theme.colors.lunesBlack};
   width: ${wp('80%')}px;
-  height: 60px;
+  height: 80px;
   padding: 9px 8px 9px 8px;
   border-radius: 2px;
 `
@@ -23,11 +23,11 @@ const StyledMessage = styled.Text`
   margin-left: 8px;
 `
 
-const PopoverContent = (): ReactElement => (
+const ArticleMissingPopoverContent = (): ReactElement => (
   <StyledContainer>
     <InfoIcon width={30} height={30} />
     <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
   </StyledContainer>
 )
 
-export default PopoverContent
+export default ArticleMissingPopoverContent
