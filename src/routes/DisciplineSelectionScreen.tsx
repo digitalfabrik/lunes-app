@@ -55,12 +55,12 @@ const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-size: ${prop => prop.theme.fonts.smallFontSize};
 `
 
-interface ProfessionSubcategoryScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'ProfessionSubcategory'>
-  navigation: StackNavigationProp<RoutesParamsType, 'ProfessionSubcategory'>
+interface DisciplineSelectionScreenPropsType {
+  route: RouteProp<RoutesParamsType, 'DisciplineSelection'>
+  navigation: StackNavigationProp<RoutesParamsType, 'DisciplineSelection'>
 }
 
-const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategoryScreenPropsType): JSX.Element => {
+const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
   const { module } = extraParams
 
@@ -106,7 +106,7 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
   const handleNavigation = (selectedItem: DisciplineType): void => {
     setSelectedId(selectedItem.id)
     if (!module.isLeaf) {
-      navigation.push('ProfessionSubcategory', {
+      navigation.push('DisciplineSelection', {
         extraParams: {
           module: selectedItem,
           parentTitle: module.title
@@ -141,4 +141,4 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
     </Root>
   )
 }
-export default ProfessionSubcategoryScreen
+export default DisciplineSelectionScreen

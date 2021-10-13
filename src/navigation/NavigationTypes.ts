@@ -17,8 +17,8 @@ export type CountsType = {
 // https://github.com/Microsoft/TypeScript/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParamsType = {
-  Profession: undefined
-  ProfessionSubcategory: {
+  Home: undefined
+  DisciplineSelection: {
     extraParams: {
       module: DisciplineType
       parentTitle?: string
