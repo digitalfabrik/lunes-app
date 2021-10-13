@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
@@ -16,7 +16,7 @@ describe('Components', () => {
       onPress: () => {}
     }
 
-    const renderMenuItem = (overrideProps: Partial<ComponentProps<typeof MenuItem>> = {}) => {
+    const renderMenuItem = (overrideProps: Partial<ComponentProps<typeof MenuItem>> = {}): RenderAPI => {
       return render(<MenuItem {...defaultMenuItemProps} {...overrideProps} />, {
         wrapper: wrapWithTheme
       })
