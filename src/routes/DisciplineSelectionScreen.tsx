@@ -62,10 +62,10 @@ interface DisciplineSelectionScreenPropsType {
 
 const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
   const { extraParams } = route.params
-  const { module } = extraParams
+  const { discipline } = extraParams
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const { data: disciplines, error, loading } = useLoadDisciplines(module)
+  const { data: disciplines, error, loading } = useLoadDisciplines(discipline)
 
   useFocusEffect(
     useCallback(() => {
@@ -76,9 +76,9 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   const titleCOMP = (
     <Title>
       <>
-        <ScreenTitle>{module?.title}</ScreenTitle>
+        <ScreenTitle>{discipline?.title}</ScreenTitle>
         <Description selected={false}>
-          {module.numberOfChildren} {module.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+          {discipline.numberOfChildren} {discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>
       </>
     </Title>
@@ -91,7 +91,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     const selected = item.id === selectedId
     const descriptionForWord = item.numberOfChildren === 1 ? labels.home.word : labels.home.words
     const descriptionForUnit = item.numberOfChildren === 1 ? labels.home.unit : labels.home.units
-    const description = module.isLeaf ? descriptionForWord : descriptionForUnit
+    const description = discipline.isLeaf ? descriptionForWord : descriptionForUnit
 
     return (
       <MenuItem selected={selected} title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
@@ -105,19 +105,19 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
 
   const handleNavigation = (selectedItem: DisciplineType): void => {
     setSelectedId(selectedItem.id)
-    if (!module.isLeaf) {
+    if (!discipline.isLeaf) {
       navigation.push('DisciplineSelection', {
         extraParams: {
-          module: selectedItem,
-          parentTitle: module.title
+          discipline: selectedItem,
+          parentTitle: discipline.title
         }
       })
     } else {
       navigation.navigate('Exercises', {
         extraParams: {
-          disciplineID: module.id,
-          disciplineTitle: module.title,
-          disciplineIcon: module.icon,
+          disciplineID: discipline.id,
+          disciplineTitle: discipline.title,
+          disciplineIcon: discipline.icon,
           trainingSetId: selectedItem.id,
           trainingSet: selectedItem.title,
           documentsLength: selectedItem.numberOfChildren

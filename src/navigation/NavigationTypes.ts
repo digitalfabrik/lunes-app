@@ -20,7 +20,7 @@ export type RoutesParamsType = {
   Home: undefined
   DisciplineSelection: {
     extraParams: {
-      module: DisciplineType
+      discipline: DisciplineType
       parentTitle?: string
     }
   }
