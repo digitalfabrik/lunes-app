@@ -22,8 +22,8 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
 }
 
 export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
-  const rootModulesUrl = ENDPOINTS.professions.all
-  const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.professions.all : ENDPOINTS.subCategories.all}/${parent?.id}`
+  const rootModulesUrl = ENDPOINTS.disciplines.all
+  const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.disciplines.all : ENDPOINTS.trainingSet.all}/${parent?.id}`
   const disciplines = useLoadFromEndpoint<ServerResponse[]>(parent === null ? rootModulesUrl : nestedModulesUrl)
   return formatServerResponse(disciplines)
 }
