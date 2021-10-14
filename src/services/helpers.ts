@@ -22,12 +22,12 @@ export const getArticleColor = (article: Article): string => {
 
 /* Randomize array using Durstenfeld shuffle algorithm with O(n) complexity */
 export const shuffleArray = <T>(array: T[]): T[] => {
-  array = array.slice()
-  for (let i = array.length - 1; i > 0; i--) {
+  const shuffledArray = array.slice()
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    const temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
+    const temp = shuffledArray[i]
+    shuffledArray[i] = shuffledArray[j]
+    shuffledArray[j] = temp
   }
-  return array
+  return shuffledArray
 }
