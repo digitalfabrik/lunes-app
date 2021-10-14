@@ -30,7 +30,7 @@ const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): Retu
 }
 
 const useLoadDocuments = (disciplineId: number): ReturnType<DocumentType[]> => {
-  const url = ENDPOINTS.documents.all.replace(':id', `${disciplineId}`)
+  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
   const documents: ReturnType<DocumentTypeFromServer[]> = useLoadFromEndpoint(url)
   return transformArticle(documents)
 }

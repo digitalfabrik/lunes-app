@@ -7,10 +7,10 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
+import HomeScreen from '../routes/HomeScreen'
 import InitialSummaryScreen from '../routes/InitialSummaryScreen'
-import ProfessionScreen from '../routes/ProfessionScreen'
-import ProfessionSubcategoryScreen from '../routes/ProfessionSubcategoryScreen'
 import ResultScreen from '../routes/ResultScreen'
 import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
@@ -69,7 +69,7 @@ const Navigator = (): JSX.Element => {
       ...(showHomeButton && {
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Profession')}
+            onPress={() => navigation.navigate('Home')}
             onPressIn={() => setIsHomeButtonPressed(true)}
             onPressOut={() => setIsHomeButtonPressed(false)}
             activeOpacity={1}>
@@ -85,8 +85,8 @@ const Navigator = (): JSX.Element => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Profession' screenOptions={TransitionPresets.SlideFromRightIOS}>
-        <Stack.Screen options={{ headerShown: false }} name='Profession' component={ProfessionScreen} />
+      <Stack.Navigator initialRouteName='Home' screenOptions={TransitionPresets.SlideFromRightIOS}>
+        <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
@@ -98,8 +98,8 @@ const Navigator = (): JSX.Element => {
               !!route.params.extraParams.parentTitle
             )
           }
-          name='ProfessionSubcategory'
-          component={ProfessionSubcategoryScreen}
+          name='DisciplineSelection'
+          component={DisciplineSelectionScreen}
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
