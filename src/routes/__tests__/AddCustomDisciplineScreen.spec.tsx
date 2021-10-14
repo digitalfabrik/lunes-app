@@ -33,7 +33,7 @@ describe('AddCustomDisciplineScreen', () => {
     fireEvent.changeText(textField, 'test')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    expect(AsyncStorage.setItem).toBeCalledWith('customDiscipline', '["test"]')
+    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test"]')
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
   })
 
