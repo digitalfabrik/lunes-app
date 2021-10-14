@@ -99,14 +99,14 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { ...route.params.result })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { ...result })}>
             <CircularFinishIcon />
           </TouchableOpacity>
         )
       })
 
       setIsLoading(false)
-    }, [route.params, navigation, resultType, result])
+    }, [navigation, resultType, result])
   )
 
   const Header = (
@@ -128,7 +128,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {
-      discipline: { ...route.params.result.discipline },
+      discipline: { ...result.discipline },
       retryData: { data: entries }
     })
 

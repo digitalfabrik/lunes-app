@@ -117,7 +117,6 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
         discipline: {
           id: selectedItem.id,
           title: selectedItem.title,
-          // disciplineIcon: module.icon,
           numberOfWords: selectedItem.numberOfChildren
         }
       })
