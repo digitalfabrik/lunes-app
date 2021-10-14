@@ -1,7 +1,7 @@
 import { ARTICLES } from '../constants/data'
 import { DocumentType, ENDPOINTS } from '../constants/endpoints'
+import { shuffleArray } from '../services/helpers'
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
-import { shuffleArray } from "../services/helpers";
 
 export interface AlternativeWordTypeFromServer {
   article: number

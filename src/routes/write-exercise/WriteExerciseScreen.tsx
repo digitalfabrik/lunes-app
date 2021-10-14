@@ -9,7 +9,7 @@ import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
 import { DocumentType } from '../../constants/endpoints'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { useLoadDocumentsRandomOrder } from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import AnswerSection from './components/AnswerSection'
@@ -34,7 +34,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   // Hints (e.g. audio) are only enabled after an answer was entered and validated
   const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
-  const response = useLoadDocuments(trainingSetId)
+  const response = useLoadDocumentsRandomOrder(trainingSetId)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {

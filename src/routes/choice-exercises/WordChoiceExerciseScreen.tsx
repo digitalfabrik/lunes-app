@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import { Answer } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { useLoadDocumentsRandomOrder } from '../../hooks/useLoadDocuments'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -16,7 +16,7 @@ interface WordChoiceExerciseScreenPropsType {
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const { data: documents, loading } = useLoadDocuments(trainingSetId)
+  const { data: documents, loading } = useLoadDocumentsRandomOrder(trainingSetId)
 
   if (documents === null || loading) {
     return null

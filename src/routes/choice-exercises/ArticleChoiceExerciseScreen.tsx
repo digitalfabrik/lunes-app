@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import { Answer, ARTICLES } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { useLoadDocumentsRandomOrder } from '../../hooks/useLoadDocuments'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -19,7 +19,7 @@ const ArticleChoiceExerciseScreen = ({
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
   const { extraParams } = route.params
   const { trainingSetId } = extraParams
-  const { data: documents, loading } = useLoadDocuments(trainingSetId)
+  const { data: documents, loading } = useLoadDocumentsRandomOrder(trainingSetId)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
