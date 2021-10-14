@@ -22,8 +22,8 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
 }
 
 export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
-  const rootModulesUrl = ENDPOINTS.disciplines.all
-  const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.disciplines.all : ENDPOINTS.trainingSet.all}/${parent?.id}`
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(parent === null ? rootModulesUrl : nestedModulesUrl)
+  const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
+  const suffix = parent?.id ?? ''
+  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
   return formatServerResponse(disciplines)
 }

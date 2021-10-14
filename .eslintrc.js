@@ -37,11 +37,10 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
 
-    // TODO LUN-55: Use errors again for these typescript rules
-    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/no-floating-promises': 'warn',
-    '@typescript-eslint/restrict-template-expressions': 'warn',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
     'jest/consistent-test-it': 'error',
