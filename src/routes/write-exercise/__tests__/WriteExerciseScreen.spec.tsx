@@ -28,7 +28,13 @@ jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WriteExerciseScreen', () => {
   beforeEach(() => {
+    // mocking math makes normally random order of documents predictable
+    jest.spyOn(Math, 'random').mockReturnValue(0.9)
     jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    jest.spyOn(Math, 'random').mockRestore()
   })
 
   const testDocuments: DocumentTypeFromServer[] = [
