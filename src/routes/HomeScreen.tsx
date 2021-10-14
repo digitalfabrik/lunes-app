@@ -38,11 +38,11 @@ const Description = styled.Text<{ item: DisciplineType; selectedId: number | nul
     props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
 
-interface ProfessionScreenPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
+interface HomeScreenPropsType {
+  navigation: StackNavigationProp<RoutesParamsType, 'Home'>
 }
 
-const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
   const { data: disciplines, error, loading } = useLoadDisciplines(null)
@@ -83,9 +83,9 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
   }
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
-    navigation.navigate('ProfessionSubcategory', {
+    navigation.navigate('DisciplineSelection', {
       extraParams: {
-        module: item
+        discipline: item
       }
     })
   }
@@ -109,4 +109,4 @@ const ProfessionScreen = ({ navigation }: ProfessionScreenPropsType): JSX.Elemen
     </SafeAreaInsetsContext.Consumer>
   )
 }
-export default ProfessionScreen
+export default HomeScreen

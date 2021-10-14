@@ -22,7 +22,7 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
 }
 
 export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
-  const prefix = parent?.isLeaf ? ENDPOINTS.subCategories : ENDPOINTS.professions
+  const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
   const suffix = parent != null ? parent.id : ''
   const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
   return formatServerResponse(disciplines)
