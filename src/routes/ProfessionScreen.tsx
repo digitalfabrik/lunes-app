@@ -11,7 +11,7 @@ import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import withCustomDiscipline from '../hocs/withCustomDiscipline'
+import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
@@ -80,7 +80,7 @@ const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPro
     <>
       <Header top={top} />
       <StyledText>{labels.home.welcome}</StyledText>
-      <AddCustomDisciplineContainer onPress={navigateToNewScreen}>
+      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
         <PlusIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
@@ -113,7 +113,7 @@ const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPro
     })
   }
 
-  const navigateToNewScreen = (): void => {
+  const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
   }
 
@@ -137,4 +137,4 @@ const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPro
     </SafeAreaInsetsContext.Consumer>
   )
 }
-export default withCustomDiscipline(ProfessionScreen)
+export default withCustomDisciplines(ProfessionScreen)
