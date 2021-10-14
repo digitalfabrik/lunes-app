@@ -53,12 +53,12 @@ const AddCustomDisciplineText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
-interface ProfessionScreenPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'Profession'>
+interface HomeScreenPropsType {
+  navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   customDisciplines: string[]
 }
 
-const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
   const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
@@ -106,9 +106,9 @@ const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPro
 
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
-    navigation.navigate('ProfessionSubcategory', {
+    navigation.navigate('DisciplineSelection', {
       extraParams: {
-        module: item
+        discipline: item
       }
     })
   }
@@ -131,10 +131,11 @@ const ProfessionScreen = ({ navigation, customDisciplines }: ProfessionScreenPro
               bounces={false}
             />
           </Loading>
-          <Text>{error}</Text>
+          <Text>{error?.message}</Text>
         </Root>
       )}
     </SafeAreaInsetsContext.Consumer>
   )
 }
-export default withCustomDisciplines(ProfessionScreen)
+
+export default withCustomDisciplines(HomeScreen)

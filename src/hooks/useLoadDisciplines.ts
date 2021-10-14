@@ -25,10 +25,11 @@ export const useLoadDisciplines = (
   parent: DisciplineType | null,
   customDisciplines?: string[]
 ): ReturnType<DisciplineType[]> => {
-  const rootModulesUrl = ENDPOINTS.professions.all
-  const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.professions.all : ENDPOINTS.subCategories.all}/${parent?.id}`
-  const withCustomDisciplines = customDisciplines ? `${rootModulesUrl}/${customDisciplines.join('&')}` : ''
-  console.log(withCustomDisciplines) // TODO use withCustomDisciplines when api is ready
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(parent === null ? rootModulesUrl : nestedModulesUrl)
+  const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
+  const customDisciplinesSuffix = customDisciplines ? customDisciplines.join('&') : ''
+  let suffix = parent?.id ?? customDisciplinesSuffix
+  console.log(`${prefix}/${suffix}`)
+  suffix = parent?.id ?? '' // TODO LUN-190 remove when api is ready
+  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
   return formatServerResponse(disciplines)
 }

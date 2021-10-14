@@ -97,7 +97,7 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
       } else {
         AsyncStorage.setCustomDisciplines([...customDisciplines, code])
           .then(() => {
-            navigation.navigate('Profession')
+            navigation.navigate('Home')
           })
           .catch(() => {
             showErrorMessage(labels.addCustomDiscipline.error.technical)

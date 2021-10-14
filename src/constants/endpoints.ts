@@ -33,13 +33,7 @@ export interface DocumentType {
 export type DocumentsType = DocumentType[]
 
 export const ENDPOINTS = {
-  professions: {
-    all: '/disciplines_by_level'
-  },
-  subCategories: {
-    all: '/training_set'
-  },
-  documents: {
-    all: '/documents/:id'
-  }
+  disciplines: '/disciplines_by_level',
+  trainingSet: '/training_set',
+  documents: '/documents/:id'
 }
