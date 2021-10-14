@@ -80,8 +80,8 @@ interface ResultScreenPropsType {
 }
 
 const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
-  const { extraParams, results, counts, resultType } = route.params
-  const { exercise } = extraParams
+  const { result, counts, resultType } = route.params
+  const { exercise } = result
   const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
@@ -96,17 +96,17 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   useFocusEffect(
     React.useCallback(() => {
-      setEntries(results.filter(({ result }: DocumentResultType) => result === resultType.key))
+      setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { extraParams: extraParams })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { ...route.params.result })}>
             <CircularFinishIcon />
           </TouchableOpacity>
         )
       })
 
       setIsLoading(false)
-    }, [extraParams, navigation, resultType, results])
+    }, [route.params, navigation, resultType, result])
   )
 
   const Header = (
@@ -128,8 +128,8 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {
-      retryData: { data: entries },
-      extraParams
+      discipline: { ...route.params.result.discipline },
+      retryData: { data: entries }
     })
 
   const retryButton =

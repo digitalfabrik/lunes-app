@@ -1,6 +1,3 @@
-import { ComponentType } from 'react'
-import { SvgProps } from 'react-native-svg'
-
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
 import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
 
@@ -14,6 +11,19 @@ export type CountsType = {
   total: number
 }
 
+interface DisciplineData {
+  id: number
+  title: string
+  numberOfWords: number
+}
+
+interface ResultScreenData {
+  discipline: DisciplineData
+  exercise: ExerciseKeyType
+  results: DocumentResultType[]
+  retryData?: { data: DocumentsType }
+}
+
 // https://github.com/Microsoft/TypeScript/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParamsType = {
@@ -25,116 +35,33 @@ export type RoutesParamsType = {
     }
   }
   Exercises: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-    }
+    discipline: DisciplineData
   }
   VocabularyList: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: DisciplineData
   }
   WordChoiceExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: DisciplineData
   }
   ArticleChoiceExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: DisciplineData
   }
   WriteExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: DisciplineData
     retryData?: { data: DocumentsType }
   }
   InitialSummary: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-      documentsLength: number
-      results: DocumentResultType[]
-    }
-    retryData?: { data: DocumentsType }
+    result: ResultScreenData
   }
   ResultsOverview: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
-    retryData?: { data: DocumentsType }
-    results: DocumentResultType[]
+    result: ResultScreenData
   }
-
-  CorrectResults: undefined
-  IncorrectResults: undefined
-  AlmostCorrectResults: undefined
   ResultScreen: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      documentsLength: number
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
-    retryData?: { data: DocumentsType }
-    results: DocumentResultType[]
+    result: ResultScreenData
     resultType: ResultType
     counts: CountsType
   }
+  CorrectResults: undefined
+  IncorrectResults: undefined
+  AlmostCorrectResults: undefined
 }

@@ -76,8 +76,8 @@ interface ExercisesScreenPropsType {
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
-  const { extraParams } = route.params
-  const { trainingSet, documentsLength } = extraParams
+  const { discipline } = route.params
+  const { title, numberOfWords } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   useFocusEffect(
@@ -89,9 +89,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   const Header = (
     <Title>
       <>
-        <ScreenTitle>{trainingSet}</ScreenTitle>
+        <ScreenTitle>{title}</ScreenTitle>
         <ScreenDescription>
-          {documentsLength} {labels.home.words}
+          {numberOfWords} {labels.home.words}
         </ScreenDescription>
       </>
     </Title>
@@ -114,13 +114,8 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const handleNavigation = (item: ExerciseType): void => {
     setSelectedKey(item.key.toString())
-    navigation.navigate(item.nextScreen, {
-      extraParams: {
-        ...extraParams,
-        exercise: item.key,
-        exerciseDescription: item.description,
-        level: item.Level
-      }
+    navigation.navigate(EXERCISES[item.key].nextScreen, {
+      discipline: { ...discipline }
     })
   }
 

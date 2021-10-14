@@ -114,13 +114,11 @@ const ProfessionSubcategoryScreen = ({ route, navigation }: ProfessionSubcategor
       })
     } else {
       navigation.navigate('Exercises', {
-        extraParams: {
-          disciplineID: module.id,
-          disciplineTitle: module.title,
-          disciplineIcon: module.icon,
-          trainingSetId: selectedItem.id,
-          trainingSet: selectedItem.title,
-          documentsLength: selectedItem.numberOfChildren
+        discipline: {
+          id: selectedItem.id,
+          title: selectedItem.title,
+          // disciplineIcon: module.icon,
+          numberOfWords: selectedItem.numberOfChildren
         }
       })
     }

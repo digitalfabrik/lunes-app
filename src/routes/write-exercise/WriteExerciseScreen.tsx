@@ -8,6 +8,7 @@ import styled from 'styled-components/native'
 import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
+import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -28,18 +29,20 @@ interface WriteExerciseScreenPropsType {
 }
 
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
-  const { extraParams, retryData } = route.params
-  const { trainingSet, trainingSetId, disciplineTitle } = extraParams
+  const { discipline, retryData } = route.params
+  const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   // Hints (e.g. audio) are only enabled after an answer was entered and validated
   const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
-  const response = useLoadDocuments(trainingSetId)
+  const response = useLoadDocuments(id)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {
-    AsyncStorage.setSession(route.params).catch(e => console.error(e))
-  }, [route.params])
+    AsyncStorage.setSession({ ...discipline, exercise: ExerciseKeys.writeExercise, results: [] }).catch(e =>
+      console.error(e)
+    )
+  }, [discipline])
 
   const tryLater = useCallback(() => {
     if (documents !== null) {
@@ -54,7 +57,13 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     AsyncStorage.clearSession().catch(e => console.error(e))
     setCurrentDocumentNumber(0)
     setNewDocuments(null)
-    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
+    navigation.navigate('InitialSummary', {
+      result: {
+        discipline: { ...discipline },
+        results: [],
+        exercise: ExerciseKeys.writeExercise
+      }
+    })
   }
 
   const docsLength = documents?.length ?? 0
@@ -79,8 +88,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             documents={documents}
             finishExercise={finishExercise}
             tryLater={tryLater}
-            trainingSet={trainingSet}
-            disciplineTitle={disciplineTitle}
+            disciplineId={id}
             setHintsEnabled={setHintsEnabled}
           />
         </ScrollView>

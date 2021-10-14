@@ -103,7 +103,7 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.extraParams.disciplineTitle, BackButton, navigation, true)
+            defaultOptions(route.params.discipline.title, BackButton, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}

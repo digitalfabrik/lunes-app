@@ -52,8 +52,7 @@ export interface AnswerSectionPropsType {
   setCurrentDocumentNumber: Function
   documents: DocumentType[]
   finishExercise: Function
-  trainingSet: string
-  disciplineTitle: string
+  disciplineId: number
   setHintsEnabled: (hintsEnabled: boolean) => void
 }
 
@@ -64,8 +63,7 @@ const AnswerSection = ({
   setCurrentDocumentNumber,
   finishExercise,
   tryLater,
-  trainingSet,
-  disciplineTitle,
+  disciplineId,
   documents,
   setHintsEnabled
 }: AnswerSectionPropsType): ReactElement => {
@@ -155,10 +153,9 @@ const AnswerSection = ({
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
       const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
-      exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
-      exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
+      exercise[disciplineId] = exercise[disciplineId] ?? {}
 
-      exercise[disciplineTitle][trainingSet][document.word] = {
+      exercise[disciplineId][document.word] = {
         ...document,
         result: score
       }

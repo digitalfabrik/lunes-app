@@ -1,41 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ComponentType } from 'react'
-import { SvgProps } from 'react-native-svg'
 
 import { ExerciseKeyType } from '../constants/data'
-import { DocumentsType } from '../constants/endpoints'
 import { DocumentResultType } from '../navigation/NavigationTypes'
 
 const SESSION_KEY = 'session'
 
-export interface SessionType {
-  extraParams: {
-    disciplineID: number
-    disciplineTitle: string
-    disciplineIcon: string
-    trainingSetId: number
-    trainingSet: string
-    exercise: ExerciseKeyType
-    exerciseDescription: string
-    level: ComponentType<SvgProps>
-    documentsLength: number
-  }
-  retryData?: { data: DocumentsType }
-}
-
 export interface ExerciseType {
-  [disciplineTitle: string]: {
-    [trainingSet: string]: {
-      [word: string]: DocumentResultType
-    }
+  [disciplineId: number]: {
+    [word: string]: DocumentResultType
   }
 }
 
-export const setSession = async (session: SessionType): Promise<void> => {
+export const setSession = async (session: any): Promise<void> => {
   await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session))
 }
 
-export const getSession = async (): Promise<SessionType | null> => {
+export const getSession = async (): Promise<any | null> => {
   const sessionJson = await AsyncStorage.getItem(SESSION_KEY)
   return sessionJson === null ? null : JSON.parse(sessionJson)
 }

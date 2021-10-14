@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
-import { Answer } from '../../constants/data'
+import { Answer, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
@@ -14,9 +14,8 @@ interface WordChoiceExerciseScreenPropsType {
 }
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { extraParams } = route.params
-  const { trainingSetId } = extraParams
-  const { data: documents, loading } = useLoadDocuments(trainingSetId)
+  const { id } = route.params.discipline
+  const { data: documents, loading } = useLoadDocuments(id)
 
   if (documents === null || loading) {
     return null
@@ -52,7 +51,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   }
 
   const onExerciseFinished = (results: DocumentResultType[]): void => {
-    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
+    navigation.navigate('InitialSummary', {
+      result: {
+        discipline: { ...route.params.discipline },
+        exercise: ExerciseKeys.wordChoiceExercise,
+        results: results
+      }
+    })
   }
 
   return (
