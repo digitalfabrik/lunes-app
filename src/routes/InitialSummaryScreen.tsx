@@ -105,17 +105,15 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
     AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('ResultsOverview', {
       result: {
-        discipline: { ...route.params.result.discipline },
-        exercise: route.params.result.exercise,
+        discipline: discipline,
+        exercise: exercise,
         results: results
       }
     })
   }
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      ...route.params
-    })
+    navigation.navigate(EXERCISES[exercise].nextScreen, route.params)
   }
 
   return (

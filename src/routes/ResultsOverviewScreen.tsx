@@ -214,7 +214,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
       discipline: { ...discipline },
-      ...(exercise === ExerciseKeys.writeExercise && { retryData: { data: results } })
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
     })
   }
 

@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKeyType } from '../constants/data'
+import { DocumentsType } from '../constants/endpoints'
 import { DocumentResultType } from '../navigation/NavigationTypes'
 
 const SESSION_KEY = 'session'
@@ -11,11 +12,20 @@ export interface ExerciseType {
   }
 }
 
-export const setSession = async (session: any): Promise<void> => {
+interface sessionData {
+  id: number
+  title: string
+  numberOfWords: number
+  exercise: number
+  retryData?: { data: DocumentsType }
+  results: []
+}
+
+export const setSession = async (session: sessionData): Promise<void> => {
   await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session))
 }
 
-export const getSession = async (): Promise<any | null> => {
+export const getSession = async (): Promise<sessionData | null> => {
   const sessionJson = await AsyncStorage.getItem(SESSION_KEY)
   return sessionJson === null ? null : JSON.parse(sessionJson)
 }

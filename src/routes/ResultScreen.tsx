@@ -99,7 +99,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { ...result })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
             <CircularFinishIcon />
           </TouchableOpacity>
         )
