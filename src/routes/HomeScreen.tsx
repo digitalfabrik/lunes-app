@@ -49,15 +49,8 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getSession()
-        .then(async value => {
-          if (value !== null) {
-            navigation.navigate('WriteExercise', value)
-          }
-        })
-        .catch(e => console.error(e))
       setSelectedId(-1)
-    }, [navigation])
+    }, [])
   )
   const Title = (top: number | undefined): JSX.Element => (
     <>
