@@ -28,7 +28,6 @@ export const useLoadDisciplines = (
   const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
   const customDisciplinesSuffix = customDisciplines ? customDisciplines.join('&') : ''
   let suffix = parent?.id ?? customDisciplinesSuffix
-  console.log(`${prefix}/${suffix}`)
   suffix = parent?.id ?? '' // TODO LUN-190 remove when api is ready
   const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
   return formatServerResponse(disciplines)

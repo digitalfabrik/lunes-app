@@ -83,7 +83,6 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
     setErrorMessage(message)
     setTimeout(() => {
       setErrorMessage('')
-      setCode('')
     }, 5000)
   }
 
