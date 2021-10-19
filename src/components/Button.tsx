@@ -66,8 +66,7 @@ const Button = ({ children, onPress, disabled = false, buttonTheme, testID }: IB
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
-      activeOpacity={1}
-    >
+      activeOpacity={1}>
       {children}
     </ThemedButton>
   )
