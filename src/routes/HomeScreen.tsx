@@ -14,7 +14,6 @@ import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
