@@ -21,9 +21,14 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
   return { ...serverResponse, data: formattedServerResponse }
 }
 
-export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
+export const useLoadDisciplines = (
+  parent: DisciplineType | null,
+  customDisciplines?: string[]
+): ReturnType<DisciplineType[]> => {
   const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
-  const suffix = parent?.id ?? ''
+  const customDisciplinesSuffix = customDisciplines ? customDisciplines.join('&') : ''
+  let suffix = parent?.id ?? customDisciplinesSuffix
+  suffix = parent?.id ?? '' // TODO LUN-190 remove when api is ready
   const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
   return formatServerResponse(disciplines)
 }

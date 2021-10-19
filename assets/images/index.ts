@@ -33,6 +33,7 @@ import mideasy from './level-mid-easy.svg'
 import midhard from './level-mid-hard.svg'
 import ListIcon from './list.svg'
 import NextArrow from './next-arrow.svg'
+import PlusIcon from './plus.svg'
 import RepeatIcon from './repeat.svg'
 import SmileIcon from './smile.svg'
 import WhiteNextArrow from './white-next-arrow.svg'
@@ -62,6 +63,7 @@ export {
   CheckIcon,
   ListIcon,
   RepeatIcon,
+  PlusIcon,
   FinishIcon,
   CircularFinishIcon,
   AlmostCorrectEntriesIcon,
