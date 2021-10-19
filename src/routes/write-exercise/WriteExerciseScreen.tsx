@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, ScrollView } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
@@ -70,7 +71,8 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
       />
 
       {documents && document ? (
-        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
+        <KeyboardAwareScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always'
+        showsVerticalScrollIndicator={false}>
           <ImageCarousel images={document.document_image} />
           <AudioPlayer document={document} disabled={!hintsEnabled} />
           <AnswerSection
@@ -83,7 +85,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
             disciplineTitle={disciplineTitle}
             setHintsEnabled={setHintsEnabled}
           />
-        </ScrollView>
+        </KeyboardAwareScrollView>
       ) : (
         <Spinner />
       )}
