@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, ScrollView } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -71,8 +71,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
       />
 
       {documents && document ? (
-        <KeyboardAwareScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always'
-        showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always' showsVerticalScrollIndicator={false}>
           <ImageCarousel images={document.document_image} />
           <AudioPlayer document={document} disabled={!hintsEnabled} />
           <AnswerSection
