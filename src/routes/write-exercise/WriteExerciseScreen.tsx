@@ -71,7 +71,11 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
       />
 
       {documents && document ? (
-        <KeyboardAwareScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='always' showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView
+          style={{ flex: 1 }}
+          keyboardShouldPersistTaps='always'
+          showsVerticalScrollIndicator={false}
+        >
           <ImageCarousel images={document.document_image} />
           <AudioPlayer document={document} disabled={!hintsEnabled} />
           <AnswerSection

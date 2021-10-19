@@ -70,8 +70,14 @@ const ConfirmationModal = ({
   const goBack = (): void => {
     setIsModalVisible(false)
     AsyncStorage.clearSession().catch(e => console.error(e))
-    const { disciplineID, disciplineTitle, disciplineIcon, trainingSetId, trainingSet, documentsLength } =
-      route.params.extraParams
+    const {
+      disciplineID,
+      disciplineTitle,
+      disciplineIcon,
+      trainingSetId,
+      trainingSet,
+      documentsLength
+    } = route.params.extraParams
     const extraParams = {
       extraParams: {
         disciplineID: disciplineID,

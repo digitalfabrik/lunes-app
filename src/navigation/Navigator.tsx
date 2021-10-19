@@ -62,7 +62,8 @@ const Navigator = (): JSX.Element => {
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}
-          style={styles.headerLeft}>
+          style={styles.headerLeft}
+        >
           {isPressed ? <BackArrowPressed /> : <Icon />}
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
@@ -73,7 +74,8 @@ const Navigator = (): JSX.Element => {
             onPress={() => navigation.navigate('Home')}
             onPressIn={() => setIsHomeButtonPressed(true)}
             onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
+            activeOpacity={1}
+          >
             {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
           </TouchableOpacity>
         )

@@ -172,13 +172,15 @@ const SingleChoiceListItem = ({
       onPressOut={onPressOut}
       pressed={pressed}
       delayPassed={delayPassed}
-      disabled={anyAnswerSelected || disabled}>
+      disabled={anyAnswerSelected || disabled}
+    >
       <ArticleBox
         article={article}
         selected={selected}
         correct={showCorrect}
         pressed={pressed}
-        delayPassed={delayPassed}>
+        delayPassed={delayPassed}
+      >
         <ArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
           {article.value}
         </ArticleText>
