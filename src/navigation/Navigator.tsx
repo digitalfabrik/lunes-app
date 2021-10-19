@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import HomeScreen from '../routes/HomeScreen'
@@ -152,6 +153,11 @@ const Navigator = (): JSX.Element => {
           }
           name='ResultScreen'
           component={ResultScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) => defaultOptions(labels.general.header.overview, BackButton, navigation, false)}
+          name='AddCustomDiscipline'
+          component={AddCustomDisciplineScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

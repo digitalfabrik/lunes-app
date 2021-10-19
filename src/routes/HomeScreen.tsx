@@ -5,11 +5,13 @@ import { FlatList, Text } from 'react-native'
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
+import { PlusIcon } from '../../assets/images'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
@@ -38,26 +40,46 @@ const Description = styled.Text<{ item: DisciplineType; selectedId: number | nul
     props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
 
+const AddCustomDisciplineContainer = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 16px;
+`
+
+const AddCustomDisciplineText = styled.Text`
+  text-transform: uppercase;
+  padding-left: 10px;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+`
+
 interface HomeScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
+  customDisciplines: string[]
 }
 
-const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null)
+  const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(-1)
     }, [])
   )
+
   const Title = (top: number | undefined): JSX.Element => (
     <>
       <Header top={top} />
       <StyledText>{labels.home.welcome}</StyledText>
+      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
+        <PlusIcon />
+        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+      </AddCustomDisciplineContainer>
     </>
   )
+
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
@@ -74,6 +96,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
       </MenuItem>
     )
   }
+
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id)
     navigation.navigate('DisciplineSelection', {
@@ -82,6 +105,11 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
       }
     })
   }
+
+  const navigateToAddCustomDisciplineScreen = (): void => {
+    navigation.navigate('AddCustomDiscipline')
+  }
+
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (
@@ -96,10 +124,11 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
               bounces={false}
             />
           </Loading>
-          <Text>{error}</Text>
+          <Text>{error?.message}</Text>
         </Root>
       )}
     </SafeAreaInsetsContext.Consumer>
   )
 }
-export default HomeScreen
+
+export default withCustomDisciplines(HomeScreen)
