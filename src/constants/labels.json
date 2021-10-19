@@ -5,7 +5,20 @@
     "units": "Module",
     "word": "Wort",
     "words": "Wörter",
-    "exercises": "Übungen"
+    "exercises": "Übungen",
+    "addCustomDiscipline": "Bereich hinzufügen"
+  },
+  "addCustomDiscipline": {
+    "heading": "Individuellen Bereich hinzufügen",
+    "description": "Bitte gib den Code über die Tastatur ein.",
+    "placeholder": "Code eingeben",
+    "submitLabel": "hinzufügen",
+    "backNavigation": "Zur Startseite",
+    "error": {
+      "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
+      "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
+      "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
+    }
   },
   "exercises": {
     "vocabularyList": {

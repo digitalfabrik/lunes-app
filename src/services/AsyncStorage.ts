@@ -31,6 +31,15 @@ export interface ExerciseType {
   }
 }
 
+export const getCustomDisciplines = async (): Promise<string[]> => {
+  const disciplines = await AsyncStorage.getItem('customDisciplines')
+  return disciplines ? JSON.parse(disciplines) : null
+}
+
+export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
+  await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
+}
+
 export const setSession = async (session: SessionType): Promise<void> => {
   await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session))
 }
@@ -63,5 +72,7 @@ export default {
   clearSession,
   setExercise,
   getExercise,
-  clearExercise
+  clearExercise,
+  getCustomDisciplines,
+  setCustomDisciplines
 }
