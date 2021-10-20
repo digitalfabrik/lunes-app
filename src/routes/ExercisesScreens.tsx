@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow } from '../../assets/images'
-import Title from '../components/Title'
+import ListTitle from '../components/ListTitle'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -15,31 +15,21 @@ import { RoutesParamsType } from '../navigation/NavigationTypes'
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
-  padding-top: 10%;
 `
+
 const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
   width: ${wp('100%')}px;
   padding-right: ${wp('5%')}px;
   padding-left: ${wp('5%')}px;
 `
 
-const ScreenDescription = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-`
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-`
+
 const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
   padding: 17px 8px 17px 16px;
@@ -86,16 +76,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }, [])
   )
 
-  const Header = (
-    <Title>
-      <>
-        <ScreenTitle>{title}</ScreenTitle>
-        <ScreenDescription>
-          {numberOfWords} {labels.home.words}
-        </ScreenDescription>
-      </>
-    </Title>
-  )
+  const Header = <ListTitle title={title} description={`${numberOfWords} ${labels.home.words}`} />
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
