@@ -114,13 +114,10 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       })
     } else {
       navigation.navigate('Exercises', {
-        extraParams: {
-          disciplineID: discipline.id,
-          disciplineTitle: discipline.title,
-          disciplineIcon: discipline.icon,
-          trainingSetId: selectedItem.id,
-          trainingSet: selectedItem.title,
-          documentsLength: selectedItem.numberOfChildren
+        discipline: {
+          id: selectedItem.id,
+          title: selectedItem.title,
+          numberOfWords: selectedItem.numberOfChildren
         }
       })
     }
@@ -141,4 +138,5 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     </Root>
   )
 }
+
 export default DisciplineSelectionScreen

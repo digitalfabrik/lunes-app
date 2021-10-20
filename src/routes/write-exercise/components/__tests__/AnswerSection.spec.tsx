@@ -42,8 +42,7 @@ describe('AnswerSection', () => {
         ]
       }
     ],
-    trainingSet: '',
-    disciplineTitle: '',
+    disciplineId: 1,
     currentDocumentNumber: 0,
     tryLater: () => {},
     finishExercise: () => {},

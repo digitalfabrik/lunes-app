@@ -55,16 +55,10 @@ describe('WriteExerciseScreen', () => {
     key: '',
     name: 'WriteExercise',
     params: {
-      extraParams: {
-        documentsLength: 2,
-        disciplineID: 0,
-        disciplineIcon: 'Icon',
-        disciplineTitle: 'Title',
-        exercise: 4,
-        exerciseDescription: 'Description',
-        trainingSet: 'Set',
-        trainingSetId: 0,
-        level: jest.fn()
+      discipline: {
+        id: 1,
+        title: 'TestTitel',
+        numberOfWords: 2
       }
     }
   }
