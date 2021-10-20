@@ -15,7 +15,7 @@ const Indicator = styled.View`
 `
 
 export interface ILoadingProps {
-  children: ReactElement
+  children?: ReactElement
   isLoading: boolean
 }
 

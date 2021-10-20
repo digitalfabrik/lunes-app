@@ -16,19 +16,23 @@ const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): Ret
     serverResponse.data?.map(item => ({
       ...item,
       numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-      isLeaf: item.total_discipline_children === 0
+      isLeaf: item.total_discipline_children === 0,
+      apiKeyOfCustomDiscipline: null
     })) ?? []
   return { ...serverResponse, data: formattedServerResponse }
 }
 
 export const useLoadDisciplines = (
   parent: DisciplineType | null,
-  customDisciplines?: string[]
+  apiKeyOfCustomDiscipline: string | null
 ): ReturnType<DisciplineType[]> => {
-  const prefix = parent?.isLeaf ? ENDPOINTS.trainingSet : ENDPOINTS.disciplines
-  const customDisciplinesSuffix = customDisciplines ? customDisciplines.join('&') : ''
-  let suffix = parent?.id ?? customDisciplinesSuffix
-  suffix = parent?.id ?? '' // TODO LUN-190 remove when api is ready
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`)
+  const prefix = parent?.isLeaf
+    ? ENDPOINTS.trainingSet
+    : apiKeyOfCustomDiscipline
+    ? ENDPOINTS.disciplinesByGroup
+    : ENDPOINTS.disciplines
+  const suffix = parent?.id ?? ''
+  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`, apiKeyOfCustomDiscipline)
+
   return formatServerResponse(disciplines)
 }

@@ -32,6 +32,7 @@ export type RoutesParamsType = {
   DisciplineSelection: {
     extraParams: {
       discipline: DisciplineType
+      apiKeyOfCustomDiscipline: string | null
       parentTitle?: string
     }
   }
