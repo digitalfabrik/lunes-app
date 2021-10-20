@@ -22,20 +22,20 @@
   },
   "exercises": {
     "vocabularyList": {
-      "title": "Vokabelübersicht",
-      "description": "Alle Wörter anschauen"
+      "title": "Wortliste",
+      "description": "Alle Wörter kennenlernen"
     },
     "wordChoice": {
-      "title": "Wort auswählen",
-      "description": "Wähle das richtige Wort"
+      "title": "Level 1",
+      "description": "Das richtige Wort auswählen"
     },
     "articleChoice": {
-      "title": "Artikel üben",
-      "description": "Wähle den richtigen Artikel"
+      "title": "Level 2",
+      "description": "Den richtigen Artikel auswählen"
     },
     "write": {
-      "title": "Wort schreiben",
-      "description": "Wort mit Artikel eingeben",
+      "title": "Level 3",
+      "description": "Das Wort mit Artikel schreiben",
       "checkInput": "Eingabe überprüfen",
       "showSolution": "Lösung anzeigen",
       "tryLater": "Später versuchen",
