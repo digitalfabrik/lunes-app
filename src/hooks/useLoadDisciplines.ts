@@ -1,4 +1,5 @@
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
+import { DisciplineData } from '../navigation/NavigationTypes'
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
 interface ServerResponse {
@@ -11,28 +12,31 @@ interface ServerResponse {
   total_documents: number
 }
 
-const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): ReturnType<DisciplineType[]> => {
+const formatServerResponse = (
+  serverResponse: ReturnType<ServerResponse[]>,
+  apiKeyOfCustomDiscipline: string | null
+): ReturnType<DisciplineType[]> => {
   const formattedServerResponse: DisciplineType[] =
     serverResponse.data?.map(item => ({
       ...item,
       numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
       isLeaf: item.total_discipline_children === 0,
-      apiKeyOfCustomDiscipline: null
+      apiKeyOfCustomDiscipline: apiKeyOfCustomDiscipline
     })) ?? []
   return { ...serverResponse, data: formattedServerResponse }
 }
 
-export const useLoadDisciplines = (
-  parent: DisciplineType | null,
-  apiKeyOfCustomDiscipline: string | null
-): ReturnType<DisciplineType[]> => {
+export const useLoadDisciplines = (parent: DisciplineData | null): ReturnType<DisciplineType[]> => {
   const prefix = parent?.isLeaf
     ? ENDPOINTS.trainingSet
-    : apiKeyOfCustomDiscipline
+    : parent?.apiKeyOfCustomDiscipline
     ? ENDPOINTS.disciplinesByGroup
     : ENDPOINTS.disciplines
   const suffix = parent?.id ?? ''
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`, apiKeyOfCustomDiscipline)
+  const disciplines = useLoadFromEndpoint<ServerResponse[]>(
+    `${prefix}/${suffix}`,
+    parent?.apiKeyOfCustomDiscipline ?? null
+  )
 
-  return formatServerResponse(disciplines)
+  return formatServerResponse(disciplines, parent?.apiKeyOfCustomDiscipline ?? null)
 }

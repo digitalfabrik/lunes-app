@@ -20,7 +20,7 @@ describe('loadFromEndpoint', () => {
       return { data: 'myData' }
     })
 
-    await loadFromEndpoint(apiUrl, setData, setError, setLoading)
+    await loadFromEndpoint(apiUrl, setData, setError, setLoading, null)
 
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(null)
@@ -31,7 +31,7 @@ describe('loadFromEndpoint', () => {
   it('should set everything correctly if loading from endpoint throws an error', async () => {
     const error = new Error('myError')
     mocked(axios.get).mockImplementationOnce(async () => await Promise.reject(error))
-    await loadFromEndpoint(apiUrl, setData, setError, setLoading)
+    await loadFromEndpoint(apiUrl, setData, setError, setLoading, null)
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(error)
     expect(setData).toHaveBeenCalledTimes(1)

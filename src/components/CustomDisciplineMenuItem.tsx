@@ -1,18 +1,15 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { Text, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
 
-const LoadingPlaceholder = styled.View`
+const Placeholder = styled.View`
   height: ${wp('22%')}px;
   background-color: ${props => props.theme.colors.white};
   margin: 0px 16px 8px 16px;
@@ -31,10 +28,18 @@ const Description = styled.Text<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
 `
 
+const ErrorText = styled.Text`
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props => props.theme.colors.lunesRed};
+  margin: 10px;
+`
+
 interface CustomDisciplineMenuItemPropsType {
   apiKey: string
-  selectedId: number | null
-  setSelectedId: (input: number) => void
+  selectedId: string | null
+  setSelectedId: (input: string) => void
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
 }
 
@@ -44,33 +49,39 @@ const CustomDisciplineMenuItem = ({
   setSelectedId,
   navigation
 }: CustomDisciplineMenuItemPropsType): JSX.Element => {
-  const { data } = useLoadGroupInfo(apiKey)
+  const { data, loading } = useLoadGroupInfo(apiKey)
 
-  return !data ? (
-    <LoadingPlaceholder>
+  const idToSelectedIdString = (id: number): string => {
+    return `custom-${id}`
+  }
+
+  return loading ? (
+    <Placeholder>
       <LoadingSpinner>
-        <Loading isLoading={true}></Loading>
+        <Loading isLoading={true} />
       </LoadingSpinner>
-    </LoadingPlaceholder>
-  ) : (
+    </Placeholder>
+  ) : data ? (
     <MenuItem
-      selected={data.id === selectedId}
+      selected={idToSelectedIdString(data.id) === selectedId}
       onPress={() => {
-        setSelectedId(data.id)
+        setSelectedId(idToSelectedIdString(data.id))
         navigation.navigate('DisciplineSelection', {
-          extraParams: {
-            discipline: data,
-            apiKeyOfCustomDiscipline: apiKey
-          }
+          extraParams: { discipline: data }
         })
       }}
       icon={data.icon}
       title={data.title}>
-      <Description selected={data.id === selectedId}>
+      <Description selected={idToSelectedIdString(data.id) === selectedId}>
         {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
       </Description>
     </MenuItem>
-    // TODO show error
+  ) : (
+    <Placeholder>
+      <ErrorText>
+        {labels.home.errorLoadCustomDiscipline} {apiKey}
+      </ErrorText>
+    </Placeholder>
   )
 }
 

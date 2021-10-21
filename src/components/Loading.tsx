@@ -1,13 +1,9 @@
 import React, { ReactElement } from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { COLORS } from '../constants/theme/colors'
 
-const LoadingContainer = styled.View`
-  flex: 1;
-  align-items: center;
-`
 const Indicator = styled.View`
   height: 50%;
   justify-content: center;
@@ -20,7 +16,7 @@ export interface ILoadingProps {
 }
 
 const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
-  <LoadingContainer>
+  <View>
     {isLoading ? (
       <Indicator>
         <ActivityIndicator size='large' color={COLORS.lunesBlack} />
@@ -28,6 +24,6 @@ const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
     ) : (
       children
     )}
-  </LoadingContainer>
+  </View>
 )
 export default Loading

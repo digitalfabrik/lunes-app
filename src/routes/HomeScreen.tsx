@@ -58,13 +58,13 @@ interface HomeScreenPropsType {
 }
 
 const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null, null)
+  const { data: disciplines, error, loading } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(-1)
+      setSelectedId('')
     }, [])
   )
 
@@ -96,11 +96,11 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
     }
     return (
       <MenuItem
-        selected={item.id === selectedId}
+        selected={item.id.toString() === selectedId}
         title={item.title}
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
-        <Description selected={item.id === selectedId}>
+        <Description selected={item.id.toString() === selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>
       </MenuItem>
@@ -108,11 +108,10 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   }
 
   const handleNavigation = (item: DisciplineType): void => {
-    setSelectedId(item.id)
+    setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       extraParams: {
-        discipline: item,
-        apiKeyOfCustomDiscipline: null
+        discipline: item
       }
     })
   }

@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react-native'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import React from 'react'
@@ -12,18 +13,13 @@ describe('Components', () => {
       children: <Text>Test Children</Text>
     }
 
-    it('renders correctly across screens', () => {
-      const component = shallow(<Loading {...defaultLoadingProps} />)
-      expect(toJson(component)).toMatchSnapshot()
-    })
-
     it('should not render children when isLoading is true', () => {
       const loadingProps: ILoadingProps = {
         ...defaultLoadingProps
       }
 
-      const component = shallow(<Loading {...loadingProps} />)
-      expect(component.contains(loadingProps.children)).toBe(false)
+      const { queryByText } = render(<Loading {...loadingProps} />)
+      expect(queryByText('Test Children')).toBeNull()
     })
 
     it('should render children when isLoading is false', () => {
@@ -32,8 +28,8 @@ describe('Components', () => {
         isLoading: false
       }
 
-      const component = shallow(<Loading {...loadingProps} />)
-      expect(component.contains(loadingProps.children)).toBe(true)
+      const { queryByText } = render(<Loading {...loadingProps} />)
+      expect(queryByText('Test Children')).toBeDefined()
     })
   })
 })

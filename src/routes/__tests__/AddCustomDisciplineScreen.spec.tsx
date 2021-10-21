@@ -18,7 +18,7 @@ describe('AddCustomDisciplineScreen', () => {
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
+    const submitButton = getByText(labels.addCustomDiscipline.submitLabel.toUpperCase())
     expect(submitButton).toBeDisabled()
     const textField = getByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'test')

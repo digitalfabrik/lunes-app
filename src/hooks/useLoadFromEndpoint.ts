@@ -12,7 +12,6 @@ export const loadFromEndpoint = async <T>(
   setLoading(true)
 
   const header = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
-  // pgPuaa2R.ShguBch5D1y9RkCI85C7GXW12wxydukU
 
   try {
     const response = await axios.get(url, { headers: header })

@@ -1,5 +1,6 @@
 import { ARTICLES } from '../constants/data'
 import { DocumentType, ENDPOINTS } from '../constants/endpoints'
+import { DisciplineData } from '../navigation/NavigationTypes'
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
 export interface AlternativeWordTypeFromServer {
@@ -29,9 +30,9 @@ const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): Retu
   return { ...documents, data: formattedDocuments }
 }
 
-const useLoadDocuments = (disciplineId: number): ReturnType<DocumentType[]> => {
-  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
-  const documents: ReturnType<DocumentTypeFromServer[]> = useLoadFromEndpoint(url)
+const useLoadDocuments = (discipline: DisciplineData): ReturnType<DocumentType[]> => {
+  const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
+  const documents: ReturnType<DocumentTypeFromServer[]> = useLoadFromEndpoint(url, discipline.apiKeyOfCustomDiscipline)
   return transformArticle(documents)
 }
 

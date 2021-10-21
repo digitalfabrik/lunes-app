@@ -1,5 +1,5 @@
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
-import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
+import { DocumentsType, DocumentType } from '../constants/endpoints'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
@@ -11,10 +11,12 @@ export type CountsType = {
   total: number
 }
 
-interface DisciplineData {
+export interface DisciplineData {
   id: number
   title: string
-  numberOfWords: number
+  apiKeyOfCustomDiscipline: string | null
+  numberOfChildren: number
+  isLeaf: boolean
 }
 
 interface ResultScreenData {
@@ -31,8 +33,7 @@ export type RoutesParamsType = {
   AddCustomDiscipline: undefined
   DisciplineSelection: {
     extraParams: {
-      discipline: DisciplineType
-      apiKeyOfCustomDiscipline: string | null
+      discipline: DisciplineData
       parentTitle?: string
     }
   }

@@ -4,7 +4,6 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow } from '../../assets/images'
-import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
