@@ -1,12 +1,10 @@
 import React from 'react'
-import { Platform } from 'react-native'
 import styled from 'styled-components/native'
 
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.lunesBlack};
-  padding-top: ${Platform.OS === 'ios' ? '50px' : '20px'};
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.lunesBlack};
