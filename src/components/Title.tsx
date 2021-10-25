@@ -38,7 +38,7 @@ interface ITitleProps {
   children?: ReactElement
 }
 
-const ListTitle = ({ titleIcon, title, subtitle, description, children }: ITitleProps): ReactElement => (
+const Title = ({ titleIcon, title, subtitle, description, children }: ITitleProps): ReactElement => (
   <Container>
     {titleIcon}
     <ScreenTitle>{title}</ScreenTitle>
@@ -47,4 +47,4 @@ const ListTitle = ({ titleIcon, title, subtitle, description, children }: ITitle
     {children}
   </Container>
 )
-export default ListTitle
+export default Title

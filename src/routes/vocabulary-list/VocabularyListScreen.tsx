@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import styled from 'styled-components/native'
 
-import ListTitle from '../../components/ListTitle'
 import Loading from '../../components/Loading'
+import Title from '../../components/Title'
 import { DocumentType } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
@@ -37,7 +37,7 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Ele
   const { data: documents, error, loading } = useLoadDocuments(id)
 
   const Header = (
-    <ListTitle
+    <Title
       title={labels.exercises.vocabularyList.title}
       description={`${documents?.length ?? '0'} ${documents?.length === 1 ? labels.home.word : labels.home.words}`}
     />

@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 
 import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import ListTitle from '../components/ListTitle'
 import Loading from '../components/Loading'
+import Title from '../components/Title'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -93,7 +93,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   )
 
   const Header = (
-    <ListTitle
+    <Title
       titleIcon={<Icon width={38} height={38} />}
       title={` \n${title} ${labels.results.entries}`}
       description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.home.words}`}

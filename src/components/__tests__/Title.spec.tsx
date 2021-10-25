@@ -4,16 +4,16 @@ import { Text } from 'react-native'
 
 import { CorrectEntriesIcon } from '../../../assets/images'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import ListTitle from '../ListTitle'
+import Title from '../Title'
 
 describe('ListTitle', () => {
-  const defaultTitleProps: React.ComponentProps<typeof ListTitle> = {
+  const defaultTitleProps: React.ComponentProps<typeof Title> = {
     title: 'Title',
     description: 'Description'
   }
 
-  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof ListTitle>> = {}): RenderAPI => {
-    return render(<ListTitle {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
+  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI => {
+    return render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
   }
 
   it('should render ListTitle with title and description', () => {

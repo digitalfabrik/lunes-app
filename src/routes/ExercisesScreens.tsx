@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow } from '../../assets/images'
-import ListTitle from '../components/ListTitle'
+import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -76,7 +76,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }, [])
   )
 
-  const Header = <ListTitle title={title} description={`${numberOfWords} ${labels.home.words}`} />
+  const Header = <Title title={title} description={`${numberOfWords} ${labels.home.words}`} />
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey

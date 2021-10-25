@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import ListTitle from '../components/ListTitle'
+import Title from '../components/Title'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -97,7 +97,7 @@ const RightHeader = styled.TouchableOpacity`
   border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
 `
-const StyledTitle = styled(ListTitle)`
+const StyledTitle = styled(Title)`
   elevation: 0;
   border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
