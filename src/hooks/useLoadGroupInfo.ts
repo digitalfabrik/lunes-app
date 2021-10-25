@@ -10,7 +10,7 @@ interface ServerResponse {
 
 export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> => {
   const serverResponse = useLoadFromEndpoint<ServerResponse[]>('group_info', apiKey)
-  const customDiscipline = serverResponse.data
+  const customDiscipline = serverResponse?.data
     ? {
         ...serverResponse.data[0],
         title: serverResponse.data[0].name,

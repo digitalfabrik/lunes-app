@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -101,6 +102,8 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
         .catch(() => {
           showErrorMessage(labels.addCustomDiscipline.error.technical)
         })
+    } else {
+      console.log('no data?')
     }
   }, [code, customDisciplines, data, navigation])
 
@@ -119,25 +122,29 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
   }
 
   return (
-    <Loading isLoading={loading}>
-      <Container>
-        <Heading>{labels.addCustomDiscipline.heading}</Heading>
-        <Description>{labels.addCustomDiscipline.description}</Description>
-        <StyledTextInput
-          errorMessage={errorMessage}
-          placeholder={labels.addCustomDiscipline.placeholder}
-          value={code}
-          onChangeText={setCode}
-        />
-        <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
-        <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
-          <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
-        </Button>
-        <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
-          <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
-        </Button>
-      </Container>
-    </Loading>
+    <>
+      <Loading isLoading={loading}>
+        <Container>
+          <Heading>{labels.addCustomDiscipline.heading}</Heading>
+          <Description>{labels.addCustomDiscipline.description}</Description>
+          <StyledTextInput
+            errorMessage={errorMessage}
+            placeholder={labels.addCustomDiscipline.placeholder}
+            value={code}
+            onChangeText={setCode}
+          />
+          <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+          <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
+            <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
+          </Button>
+          <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
+            <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
+          </Button>
+        </Container>
+      </Loading>
+      {loading && <View>Test</View>}
+      {error && <View>Test</View>}
+    </>
   )
 }
 
