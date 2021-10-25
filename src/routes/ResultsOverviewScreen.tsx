@@ -135,16 +135,22 @@ interface ResultOverviewScreenPropsType {
 }
 
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
-  const { extraParams, results } = route.params
-  const { exercise } = extraParams
+  const { exercise, results, discipline } = route.params.result
   const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
+
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <RightHeader onPress={() => navigation.navigate('Exercises', { extraParams })}>
+        <RightHeader
+          onPress={() =>
+            navigation.navigate('Exercises', {
+              discipline: { ...discipline }
+            })
+          }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <FinishIcon />
         </RightHeader>
@@ -157,7 +163,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
       incorrect: results.filter(({ result }) => result === 'incorrect').length,
       similar: results.filter(({ result }) => result === 'similar').length
     })
-  }, [results, navigation, extraParams])
+  }, [results, navigation, discipline])
 
   const Header = (
     <StyledTitle>
@@ -179,9 +185,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
       setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
-        extraParams,
+        result: { ...route.params.result },
         resultType: item,
-        results,
         counts
       })
     }
@@ -208,8 +213,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
-      retryData: { data: results },
-      extraParams
+      discipline: { ...discipline },
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
     })
   }
 

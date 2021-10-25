@@ -13,7 +13,6 @@ import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -64,15 +63,8 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getSession()
-        .then(async value => {
-          if (value !== null) {
-            navigation.navigate('WriteExercise', value)
-          }
-        })
-        .catch(e => console.error(e))
       setSelectedId(-1)
-    }, [navigation])
+    }, [])
   )
 
   const Title = (): JSX.Element => (
