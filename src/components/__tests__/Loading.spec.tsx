@@ -1,33 +1,35 @@
-import { render } from '@testing-library/react-native'
+import { RenderAPI, render } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import Loading, { ILoadingProps } from '../Loading'
+import wrapWithTheme from '../../testing/wrapWithTheme'
+import Loading from '../Loading'
 
-describe('Components', () => {
-  describe('Loading ', () => {
-    const defaultLoadingProps: ILoadingProps = {
-      isLoading: true,
-      children: <Text>Test Children</Text>
-    }
+describe('Loading ', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-    it('should not render children when isLoading is true', () => {
-      const loadingProps: ILoadingProps = {
-        ...defaultLoadingProps
-      }
+  const childText = 'Children'
 
-      const { queryByText } = render(<Loading {...loadingProps} />)
-      expect(queryByText('Test Children')).toBeNull()
-    })
+  const renderLoading = (isLoading: boolean): RenderAPI => {
+    return render(
+      <Loading isLoading={isLoading}>
+        <Text>{childText}</Text>
+      </Loading>,
+      { wrapper: wrapWithTheme }
+    )
+  }
 
-    it('should render children when isLoading is false', () => {
-      const loadingProps: ILoadingProps = {
-        ...defaultLoadingProps,
-        isLoading: false
-      }
+  it('should not render children when isLoading is true', () => {
+    const { queryByText, getByTestId } = renderLoading(true)
+    expect(queryByText(childText)).toBeFalsy()
+    expect(getByTestId('loading')).toBeTruthy()
+  })
 
-      const { queryByText } = render(<Loading {...loadingProps} />)
-      expect(queryByText('Test Children')).toBeDefined()
-    })
+  it('should render children when isLoading is false', () => {
+    const { getByText, queryByTestId } = renderLoading(false)
+    expect(getByText(childText)).toBeTruthy()
+    expect(queryByTestId('loading')).toBeFalsy()
   })
 })
