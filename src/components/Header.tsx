@@ -5,7 +5,7 @@ import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../as
 
 const Wrapper = styled.View`
   background-color: ${props => props.theme.colors.lunesBlack};
-  padding-top: ${(prop: IHeaderProps) => prop.top};
+  padding-top: ${(prop: IHeaderProps) => prop.top ?? 0}px;
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.lunesBlack};
