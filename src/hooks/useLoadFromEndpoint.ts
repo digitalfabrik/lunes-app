@@ -7,11 +7,11 @@ export const loadFromEndpoint = async <T>(
   setData: (data: T | null) => void,
   setError: (error: Error | null) => void,
   setLoading: (loading: boolean) => void,
-  apiKey: string | null
+  apiKeyOfCustomDiscipline?: string
 ): Promise<void> => {
   setLoading(true)
 
-  const header = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
+  const header = apiKeyOfCustomDiscipline ? { Authorization: `Api-Key ${apiKeyOfCustomDiscipline}` } : {}
 
   try {
     const response = await axios.get(url, { headers: header })
@@ -32,14 +32,14 @@ export interface ReturnType<T> {
   refresh: () => void
 }
 
-export const useLoadFromEndpoint = <T>(url: string, apiKey: string | null): ReturnType<T> => {
+export const useLoadFromEndpoint = <T>(url: string, apiKeyOfCustomDiscipline?: string): ReturnType<T> => {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   const load = useCallback(() => {
-    loadFromEndpoint<T>(url, setData, setError, setLoading, apiKey).catch(e => setError(e))
-  }, [url, apiKey])
+    loadFromEndpoint<T>(url, setData, setError, setLoading, apiKeyOfCustomDiscipline).catch(e => setError(e))
+  }, [url, apiKeyOfCustomDiscipline])
 
   useEffect(() => {
     load()

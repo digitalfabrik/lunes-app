@@ -1,4 +1,3 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
@@ -18,7 +17,6 @@ describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
   it('should change button to be enabled on text input', () => {
-    mockUseLoadFromEndpointWithError('test')
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })

@@ -14,7 +14,7 @@ interface ServerResponse {
 
 const formatServerResponse = (
   serverResponse: ReturnType<ServerResponse[]>,
-  apiKeyOfCustomDiscipline: string | null
+  apiKeyOfCustomDiscipline?: string
 ): ReturnType<DisciplineType[]> => {
   const formattedServerResponse: DisciplineType[] =
     serverResponse.data?.map(item => ({
@@ -33,10 +33,7 @@ export const useLoadDisciplines = (parent: DisciplineData | null): ReturnType<Di
     ? ENDPOINTS.disciplinesByGroup
     : ENDPOINTS.disciplines
   const suffix = parent?.id ?? ''
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(
-    `${prefix}/${suffix}`,
-    parent?.apiKeyOfCustomDiscipline ?? null
-  )
+  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`, parent?.apiKeyOfCustomDiscipline)
 
-  return formatServerResponse(disciplines, parent?.apiKeyOfCustomDiscipline ?? null)
+  return formatServerResponse(disciplines, parent?.apiKeyOfCustomDiscipline)
 }

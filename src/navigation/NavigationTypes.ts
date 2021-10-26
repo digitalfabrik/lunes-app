@@ -14,9 +14,9 @@ export type CountsType = {
 export interface DisciplineData {
   id: number
   title: string
-  apiKeyOfCustomDiscipline: string | null
   numberOfChildren: number
   isLeaf: boolean
+  apiKeyOfCustomDiscipline?: string
 }
 
 interface ResultScreenData {

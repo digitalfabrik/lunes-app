@@ -59,8 +59,7 @@ describe('WriteExerciseScreen', () => {
         id: 1,
         title: 'TestTitel',
         numberOfChildren: 2,
-        isLeaf: true,
-        apiKeyOfCustomDiscipline: null
+        isLeaf: true
       }
     }
   }

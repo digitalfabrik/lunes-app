@@ -17,8 +17,7 @@ describe('Components', () => {
             id: 0,
             title: 'Title',
             numberOfChildren: 0,
-            isLeaf: false,
-            apiKeyOfCustomDiscipline: null
+            isLeaf: false
           }
         }
       },
