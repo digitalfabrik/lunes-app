@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react'
 import { ActivityIndicator } from 'react-native'
-import styled from 'styled-components/native'
-
-import { COLORS } from '../constants/theme/colors'
+import styled, { useTheme } from 'styled-components/native'
 
 const LoadingContainer = styled.View`
   flex: 1;
@@ -14,20 +12,23 @@ const Indicator = styled.View`
   align-items: center;
 `
 
-export interface ILoadingProps {
+interface ILoadingProps {
   children: ReactElement
   isLoading: boolean
 }
 
-const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => (
-  <LoadingContainer>
-    {isLoading ? (
-      <Indicator>
-        <ActivityIndicator size='large' color={COLORS.lunesBlack} />
-      </Indicator>
-    ) : (
-      children
-    )}
-  </LoadingContainer>
-)
+const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <LoadingContainer>
+      {isLoading ? (
+        <Indicator>
+          <ActivityIndicator size='large' color={theme.colors.lunesBlack} testID={'loading'} />
+        </Indicator>
+      ) : (
+        children
+      )}
+    </LoadingContainer>
+  )
+}
 export default Loading
