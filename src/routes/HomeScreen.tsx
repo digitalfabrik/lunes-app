@@ -125,16 +125,14 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
       {insets => (
         <Root>
           <Loading isLoading={loading}>
-            <>
-              <StyledList
-                data={disciplines}
-                ListHeaderComponent={Title(insets?.top)}
-                renderItem={Item}
-                keyExtractor={item => item.id.toString()}
-                scrollEnabled={true}
-                bounces={false}
-              />
-            </>
+            <StyledList
+              data={disciplines}
+              ListHeaderComponent={Title(insets?.top)}
+              renderItem={Item}
+              keyExtractor={item => item.id.toString()}
+              scrollEnabled={true}
+              bounces={false}
+            />
           </Loading>
           <Text>{error?.message}</Text>
         </Root>
