@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 
+import { NextArrow } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -25,12 +26,26 @@ const ButtonContainer = styled.View`
   margin: 7% 0;
 `
 
+const DarkLabel = styled.Text`
+  text-align: center;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+`
+const StyledArrow = styled(NextArrow)`
+  margin-left: 5px;
+`
+
 interface SingleChoiceExercisePropsType {
   documents: DocumentType[]
   documentToAnswers: (document: DocumentType) => Answer[]
   onExerciseFinished: (results: DocumentResultType[]) => void
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  tryLater: () => void
 }
 
 const ChoiceExerciseScreen = ({
@@ -38,7 +53,8 @@ const ChoiceExerciseScreen = ({
   documentToAnswers,
   onExerciseFinished,
   navigation,
-  route
+  route,
+  tryLater
 }: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
   const currentDocument = documents[currentWord]
@@ -118,12 +134,19 @@ const ChoiceExerciseScreen = ({
         delayPassed={delayPassed}
       />
       <ButtonContainer>
-        {selectedAnswer !== null && (
+        {selectedAnswer !== null ? (
           <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
               <LightLabelInput>
                 {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
               </LightLabelInput>
+            </>
+          </Button>
+        ) : (
+          <Button onPress={tryLater} testID='try-later'>
+            <>
+              <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
+              <StyledArrow />
             </>
           </Button>
         )}

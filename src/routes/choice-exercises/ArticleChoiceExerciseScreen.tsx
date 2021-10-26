@@ -1,11 +1,12 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
+import { appendDocument } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface ArticleChoiceExerciseScreenPropsType {
@@ -18,7 +19,16 @@ const ArticleChoiceExerciseScreen = ({
   route
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
   const { id } = route.params.discipline
-  const { data: documents, loading } = useLoadDocuments(id)
+  const { data, loading } = useLoadDocuments(id)
+  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
+  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
+  const documents = newDocuments ?? data
+
+  const tryLater = useCallback(() => {
+    if (documents !== null) {
+      setNewDocuments(appendDocument(documents, currentDocumentNumber))
+    }
+  }, [documents, currentDocumentNumber])
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
@@ -28,6 +38,8 @@ const ArticleChoiceExerciseScreen = ({
     navigation.navigate('InitialSummary', {
       result: { discipline: { ...route.params.discipline }, results, exercise: ExerciseKeys.articleChoiceExercise }
     })
+    setCurrentDocumentNumber(0)
+    setNewDocuments(null)
   }
 
   if (documents === null || loading) {
@@ -41,6 +53,7 @@ const ArticleChoiceExerciseScreen = ({
       onExerciseFinished={onExerciseFinished}
       navigation={navigation}
       route={route}
+      tryLater={tryLater}
     />
   )
 }

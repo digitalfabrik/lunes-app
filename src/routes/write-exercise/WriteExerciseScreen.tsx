@@ -13,6 +13,7 @@ import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { appendDocument } from '../../services/helpers'
 import AnswerSection from './components/AnswerSection'
 
 const Spinner = styled(ActivityIndicator)`
@@ -46,10 +47,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
   const tryLater = useCallback(() => {
     if (documents !== null) {
-      const currDocument = documents[currentDocumentNumber]
-      const newDocuments = documents.filter(d => d !== currDocument)
-      newDocuments.push(currDocument)
-      setNewDocuments(newDocuments)
+      setNewDocuments(appendDocument(documents, currentDocumentNumber))
     }
   }, [documents, currentDocumentNumber])
 

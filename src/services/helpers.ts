@@ -1,4 +1,5 @@
 import { Article } from '../constants/data'
+import { DocumentType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 export const getArticleColor = (article: Article): string => {
@@ -18,4 +19,11 @@ export const getArticleColor = (article: Article): string => {
     default:
       return COLORS.lunesArtikelDer
   }
+}
+
+export const appendDocument = (documents: DocumentType[], currentDocument: number): DocumentType[] => {
+  const currDocument = documents[currentDocument]
+  const newDocuments = documents.filter(d => d !== currDocument)
+  newDocuments.push(currDocument)
+  return newDocuments
 }
