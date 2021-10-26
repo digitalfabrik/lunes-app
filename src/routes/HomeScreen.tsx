@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
@@ -20,7 +19,7 @@ const Root = styled.View`
   height: 100%;
 `
 const StyledText = styled.Text`
-  margin-top: 8.5%;
+  margin-top: 50px;
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
@@ -68,9 +67,9 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
     }, [])
   )
 
-  const Title = (top: number | undefined): JSX.Element => (
+  const Title = (): JSX.Element => (
     <>
-      <Header top={top} />
+      <Header />
       <StyledText>{labels.home.welcome}</StyledText>
       <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
         <PlusIcon />
@@ -110,23 +109,19 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   }
 
   return (
-    <SafeAreaInsetsContext.Consumer>
-      {insets => (
-        <Root>
-          <Loading isLoading={loading}>
-            <StyledList
-              data={disciplines}
-              ListHeaderComponent={Title(insets?.top)}
-              renderItem={Item}
-              keyExtractor={item => item.id.toString()}
-              scrollEnabled={true}
-              bounces={false}
-            />
-          </Loading>
-          <Text>{error?.message}</Text>
-        </Root>
-      )}
-    </SafeAreaInsetsContext.Consumer>
+    <Root>
+      <Loading isLoading={loading}>
+        <StyledList
+          data={disciplines}
+          ListHeaderComponent={Title}
+          renderItem={Item}
+          keyExtractor={item => item.id.toString()}
+          scrollEnabled={true}
+          bounces={false}
+        />
+      </Loading>
+      <Text>{error?.message}</Text>
+    </Root>
   )
 }
 
