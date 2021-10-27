@@ -53,7 +53,7 @@
     "@trivago/prettier-plugin-sort-imports": "^2.0.4",
     "@types/enzyme": "^3.10.8",
     "@types/jest": "^26.0.20",
-    "@types/react-native": "^0.63.2",
+    "@types/react-native": "^0.64.18",
     "@types/react-native-snap-carousel": "^3.8.4",
     "@types/react-test-renderer": "^16.9.2",
     "@types/string-similarity": "^4.0.0",
