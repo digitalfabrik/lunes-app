@@ -31,10 +31,10 @@ describe('AddCustomDisciplineScreen', () => {
       wrapper: wrapWithTheme
     })
     const textField = getByPlaceholderText(labels.addCustomDiscipline.placeholder)
-    fireEvent.changeText(textField, 'test')
+    fireEvent.changeText(textField, 'another_test_module')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test"]')
+    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test","another_test_module"]')
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
   })
 
