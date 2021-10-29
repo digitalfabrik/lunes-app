@@ -10,6 +10,7 @@ import wrapWithTheme from '../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
+jest.mock('../../hocs/withCustomDisciplines')
 
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
@@ -30,28 +31,24 @@ describe('AddCustomDisciplineScreen', () => {
       wrapper: wrapWithTheme
     })
     const textField = getByPlaceholderText(labels.addCustomDiscipline.placeholder)
-    fireEvent.changeText(textField, 'test')
+    fireEvent.changeText(textField, 'another_test_module')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test"]')
+    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test","another_test_module"]')
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
   })
 
-  it('should show duplicate error', async () => {
-    await AsyncStorage.setItem('customDiscipline', '["test"]')
-    const { getByText, getByPlaceholderText, findByText } = render(
-      <AddCustomDisciplineScreen navigation={navigation} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
-    await mocked(useIsFocused).mockReturnValue(true)
-    await mocked(useIsFocused).mockReturnValue(false)
+  it('should show duplicate error', () => {
+    const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
+    mocked(useIsFocused).mockReturnValue(true)
+    mocked(useIsFocused).mockReturnValue(false)
 
     const textField = getByPlaceholderText(labels.addCustomDiscipline.placeholder)
-    await fireEvent.changeText(textField, 'test')
+    fireEvent.changeText(textField, 'test')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
-    await fireEvent.press(submitButton)
-    expect(await findByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull()
+    fireEvent.press(submitButton)
+    expect(getByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull()
   })
 })

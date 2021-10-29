@@ -1,3 +1,4 @@
+const transformNodeModules = ['react-native', '@react-native']
 export default {
   rootDir: 'src',
   preset: 'react-native',
@@ -14,6 +15,7 @@ export default {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'
   },
+  transformIgnorePatterns: [`node_modules/(?!${transformNodeModules.join('|')})`],
   setupFilesAfterEnv: [
     'jest-enzyme',
     'jest-extended',
