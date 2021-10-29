@@ -1,12 +1,11 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement } from 'react'
 
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
-import { appendDocument } from '../../services/helpers'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface WordChoiceExerciseScreenPropsType {
@@ -16,16 +15,7 @@ interface WordChoiceExerciseScreenPropsType {
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
   const { id } = route.params.discipline
-  const { data, loading } = useLoadDocuments(id)
-  const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
-  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  const documents = newDocuments ?? data
-
-  const tryLater = useCallback(() => {
-    if (documents !== null) {
-      setNewDocuments(appendDocument(documents, currentDocumentNumber))
-    }
-  }, [documents, currentDocumentNumber])
+  const { data: documents, loading } = useLoadDocuments(id)
 
   if (documents === null || loading) {
     return null
@@ -60,26 +50,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     return answers
   }
 
-  const onExerciseFinished = (results: DocumentResultType[]): void => {
-    navigation.navigate('InitialSummary', {
-      result: {
-        discipline: { ...route.params.discipline },
-        exercise: ExerciseKeys.wordChoiceExercise,
-        results: results
-      }
-    })
-    setCurrentDocumentNumber(0)
-    setNewDocuments(null)
-  }
-
   return (
     <SingleChoiceExercise
-      documents={documents}
+      data={documents}
       documentToAnswers={documentToAnswers}
-      onExerciseFinished={onExerciseFinished}
       navigation={navigation}
       route={route}
-      tryLater={tryLater}
+      exerciseKey={ExerciseKeys.wordChoiceExercise}
     />
   )
 }

@@ -1,0 +1,6 @@
+issue_key: LUN-116
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Fragen können nun auch in Artikel- und Wortübungen übersprungen werden

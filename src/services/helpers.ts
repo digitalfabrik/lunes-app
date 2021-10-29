@@ -1,5 +1,4 @@
 import { Article } from '../constants/data'
-import { DocumentType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 export const getArticleColor = (article: Article): string => {
@@ -21,9 +20,9 @@ export const getArticleColor = (article: Article): string => {
   }
 }
 
-export const appendDocument = (documents: DocumentType[], currentDocument: number): DocumentType[] => {
-  const currDocument = documents[currentDocument]
-  const newDocuments = documents.filter(d => d !== currDocument)
+export const moveToEnd = <T>(array: T[], index: number): T[] => {
+  const currDocument = array[index]
+  const newDocuments = array.filter(d => d !== currDocument)
   newDocuments.push(currDocument)
   return newDocuments
 }

@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { NextArrow, WhiteNextArrow } from '../../../../assets/images'
+import { WhiteNextArrow } from '../../../../assets/images'
 import Button from '../../../components/Button'
+import ButtonTryLater from '../../../components/ButtonTryLater'
 import { BUTTONS_THEME, SimpleResultType } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 
@@ -29,9 +30,6 @@ const DarkLabel = styled.Text`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-`
-const StyledArrow = styled(NextArrow)`
-  margin-left: 5px;
 `
 
 export interface IActionsProps {
@@ -71,14 +69,7 @@ const Actions = ({
         <DarkLabel>{labels.exercises.write.showSolution}</DarkLabel>
       </Button>
 
-      {!isFinished && (
-        <Button onPress={tryLater} testID='try-later'>
-          <>
-            <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
-            <StyledArrow />
-          </>
-        </Button>
-      )}
+      {!isFinished && <ButtonTryLater text={labels.exercises.tryLater} onPress={tryLater} />}
     </>
   )
 }
