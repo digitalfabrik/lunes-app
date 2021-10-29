@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Components Title renders correctly across screens 1`] = `
-<Styled(View)>
-  <Text>
-    Title
-  </Text>
-</Styled(View)>
-`;
