@@ -1,0 +1,5 @@
+issue_key: LUN-110
+show_in_stores: true
+platforms:
+  - ios
+de: Audio wird auch mit aktiviertem Silent-Mode abgespielt
