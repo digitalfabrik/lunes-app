@@ -17,8 +17,7 @@
 		33D4D410B3E64F4DB1368910 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B3E5FD9A1E84C23A7FB5C96 /* SourceSansPro-Bold.ttf */; };
 		40B164F70E7D4FEE82BD9606 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BE88ACDF44242A79F381E35 /* SourceSansPro-Light.ttf */; };
 		48103CCAE64E4B54A8BD0C8C /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED45C262CF141B981FD2CB6 /* SourceSansPro-SemiBoldItalic.ttf */; };
-		5E0B7EAB596A4035A1521 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */; };
-        8B2742D73CAE4F48896CED49427 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B79239CD3DE946A0BE953DCC /* SourceSansPro-Regular.ttf */; };
+		5E0B7EAB596A4035A1549427 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B79239CD3DE946A0BE953DCC /* SourceSansPro-Regular.ttf */; };
 		87A466CFEE17407CAB2AC921 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */; };
 		8B2742D73CAE4F48896CED3E /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18CD2FA065EC4EFFB6F0212B /* SourceSansPro-ExtraLight.ttf */; };
 		961F0746F19745779C0FC013 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73CBB64724D84F818FE6A37A /* SourceSansPro-Black.ttf */; };
