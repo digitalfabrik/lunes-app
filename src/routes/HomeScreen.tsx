@@ -1,10 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
+import ErrorMessage from '../components/ErrorMessage'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
@@ -59,23 +60,12 @@ interface HomeScreenPropsType {
 const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null, customDisciplines)
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(-1)
     }, [])
-  )
-
-  const Title = (): JSX.Element => (
-    <>
-      <Header />
-      <StyledText>{labels.home.welcome}</StyledText>
-      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
-        <PlusIcon />
-        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
-      </AddCustomDisciplineContainer>
-    </>
   )
 
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -110,17 +100,24 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
 
   return (
     <Root>
+      <Header />
+      <StyledText>{labels.home.welcome}</StyledText>
+      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
+        <PlusIcon />
+        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+      </AddCustomDisciplineContainer>
       <Loading isLoading={loading}>
-        <StyledList
-          data={disciplines}
-          ListHeaderComponent={Title}
-          renderItem={Item}
-          keyExtractor={item => item.id.toString()}
-          scrollEnabled={true}
-          bounces={false}
-        />
+        <>
+          <ErrorMessage error={error} refresh={refresh} />
+          <StyledList
+            data={disciplines}
+            renderItem={Item}
+            keyExtractor={item => item.id.toString()}
+            scrollEnabled={true}
+            bounces={false}
+          />
+        </>
       </Loading>
-      <Text>{error?.message}</Text>
     </Root>
   )
 }

@@ -5,6 +5,7 @@ import React, { ReactElement } from 'react'
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
+import { ReturnType } from '../../hooks/useLoadFromEndpoint'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -15,13 +16,13 @@ interface WordChoiceExerciseScreenPropsType {
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
   const { id } = route.params.discipline
-  const { data: documents, loading } = useLoadDocuments(id)
-
-  if (documents === null || loading) {
-    return null
-  }
+  const response: ReturnType<DocumentType[]> = useLoadDocuments(id)
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
+    const { data: documents } = response
+    if (!documents) {
+      return []
+    }
     const answers = []
     const usedDocuments = [correctDocument]
 
@@ -62,7 +63,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     <SingleChoiceExercise
-      documents={documents}
+      response={response}
       documentToAnswers={documentToAnswers}
       onExerciseFinished={onExerciseFinished}
       navigation={navigation}

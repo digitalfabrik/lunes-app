@@ -79,6 +79,10 @@
       "cancelExercise": "Übung beenden",
       "of": "von"
     },
-    "plurals": "Plural"
+    "plurals": "Plural",
+    "error": {
+      "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
+      "retryButton": "Erneut versuchen"
+    }
   }
 }

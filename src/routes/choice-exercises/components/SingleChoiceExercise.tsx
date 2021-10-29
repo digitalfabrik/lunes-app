@@ -5,11 +5,14 @@ import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
+import ErrorMessage from '../../../components/ErrorMessage'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
+import Loading from '../../../components/Loading'
 import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
+import { ReturnType } from '../../../hooks/useLoadFromEndpoint'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { LightLabelInput } from '../../write-exercise/components/Actions'
 import { SingleChoice } from './SingleChoice'
@@ -26,7 +29,7 @@ const ButtonContainer = styled.View`
 `
 
 interface SingleChoiceExercisePropsType {
-  documents: DocumentType[]
+  response: ReturnType<DocumentType[]>
   documentToAnswers: (document: DocumentType) => Answer[]
   onExerciseFinished: (results: DocumentResultType[]) => void
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -34,37 +37,41 @@ interface SingleChoiceExercisePropsType {
 }
 
 const ChoiceExerciseScreen = ({
-  documents,
+  response,
   documentToAnswers,
   onExerciseFinished,
   navigation,
   route
 }: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
-  const currentDocument = documents[currentWord]
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
-  const correctAnswerDelay = 700
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
-  const [correctAnswer, setCorrectAnswer] = useState<Answer>({
-    article: currentDocument.article,
-    word: currentDocument.word
-  })
+  const [correctAnswer, setCorrectAnswer] = useState<Answer>()
+
+  const correctAnswerDelay = 700
+  const { data: documents, loading, error, refresh } = response
+  const currentDocument = documents ? documents[currentWord] : null
 
   // Prevent regenerating false answers on every render
   useEffect(() => {
-    setAnswers(documentToAnswers(currentDocument))
-    setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
+    if (currentDocument) {
+      setAnswers(documentToAnswers(currentDocument))
+      setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
+    }
   }, [currentDocument, documentToAnswers])
 
-  const count = documents.length
+  const count = documents?.length ?? 0
 
   const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
   const onClickAnswer = (clickedAnswer: Answer): void => {
+    if (!currentDocument || !documents || !correctAnswer) {
+      return
+    }
     setSelectedAnswer(clickedAnswer)
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, clickedAnswer)
@@ -104,30 +111,39 @@ const ChoiceExerciseScreen = ({
         navigation={navigation}
         route={route}
         currentWord={currentWord}
-        numberOfWords={documents.length}
+        numberOfWords={documents?.length ?? 0}
       />
-      {documents[currentWord]?.document_image.length > 0 && (
-        <ImageCarousel images={documents[currentWord]?.document_image} />
-      )}
-      <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
-      <SingleChoice
-        answers={answers}
-        onClick={onClickAnswer}
-        correctAnswer={correctAnswer}
-        selectedAnswer={selectedAnswer}
-        delayPassed={delayPassed}
-      />
-      <ButtonContainer>
-        {selectedAnswer !== null && (
-          <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
+      <Loading isLoading={loading}>
+        <>
+          <ErrorMessage error={error} refresh={refresh} />
+          {documents && correctAnswer && (
             <>
-              <LightLabelInput>
-                {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
-              </LightLabelInput>
+              {documents[currentWord]?.document_image.length > 0 && (
+                <ImageCarousel images={documents[currentWord]?.document_image} />
+              )}
+              <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
+              <SingleChoice
+                answers={answers}
+                onClick={onClickAnswer}
+                correctAnswer={correctAnswer}
+                selectedAnswer={selectedAnswer}
+                delayPassed={delayPassed}
+              />
+              <ButtonContainer>
+                {selectedAnswer !== null && (
+                  <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
+                    <>
+                      <LightLabelInput>
+                        {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
+                      </LightLabelInput>
+                    </>
+                  </Button>
+                )}
+              </ButtonContainer>
             </>
-          </Button>
-        )}
-      </ButtonContainer>
+          )}
+        </>
+      </Loading>
     </ExerciseContainer>
   )
 }

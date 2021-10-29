@@ -1,9 +1,10 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
+import ErrorMessage from '../../components/ErrorMessage'
 import Loading from '../../components/Loading'
 import Title from '../../components/Title'
 import { DocumentType } from '../../constants/endpoints'
@@ -48,18 +49,7 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Ele
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
-  const { data: documents, error, loading } = useLoadDocuments(id)
-
-  const Header = (
-    <Title>
-      <>
-        <ScreenTitle>{labels.exercises.vocabularyList.title}</ScreenTitle>
-        <Description>
-          {documents?.length} {documents?.length === 1 ? labels.home.word : labels.home.words}
-        </Description>
-      </>
-    </Title>
-  )
+  const { data: documents, error, loading, refresh } = useLoadDocuments(id)
 
   const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (
     <VocabularyListItem
@@ -82,16 +72,26 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Ele
           setSelectedDocumentIndex={setSelectedDocumentIndex}
         />
       )}
+      <Title>
+        <>
+          <ScreenTitle>{labels.exercises.vocabularyList.title}</ScreenTitle>
+          <Description>
+            {documents?.length} {documents?.length === 1 ? labels.home.word : labels.home.words}
+          </Description>
+        </>
+      </Title>
+
       <Loading isLoading={loading}>
-        <StyledList
-          data={documents}
-          ListHeaderComponent={Header}
-          renderItem={renderItem}
-          keyExtractor={item => `${item.id}`}
-          showsVerticalScrollIndicator={false}
-        />
+        <>
+          <ErrorMessage error={error} refresh={refresh} />
+          <StyledList
+            data={documents}
+            renderItem={renderItem}
+            keyExtractor={item => `${item.id}`}
+            showsVerticalScrollIndicator={false}
+          />
+        </>
       </Loading>
-      {error && <Text>{error.message}</Text>}
     </Root>
   )
 }
