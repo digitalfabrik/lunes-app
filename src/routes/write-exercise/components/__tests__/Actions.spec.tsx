@@ -11,7 +11,6 @@ describe('Components', () => {
       input: '',
       result: null,
       isFinished: false,
-      secondAttempt: false,
       giveUp: () => {},
       tryLater: () => {},
       checkEntry: () => {},
