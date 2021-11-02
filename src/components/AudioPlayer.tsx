@@ -79,9 +79,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
       const ttsHandler = (): void => setIsActive(false)
       Tts.addEventListener('tts-finish', ttsHandler)
 
-      return () => {
-        Tts.removeEventListener('tts-finish', ttsHandler)
-      }
+      return () => Tts.removeEventListener('tts-finish', ttsHandler)
     }
   }, [submittedAlternative, audio, initializeTts])
 
@@ -105,7 +103,11 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
 
   return (
     <StyledView>
-      <VolumeIcon disabled={disabled || !isInitialized} isActive={isActive} onPress={handleSpeakerClick}>
+      <VolumeIcon
+        disabled={disabled || !isInitialized}
+        isActive={isActive}
+        onPress={handleSpeakerClick}
+        accessibilityRole='button'>
         <VolumeUp />
       </VolumeIcon>
     </StyledView>

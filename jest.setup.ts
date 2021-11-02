@@ -19,3 +19,4 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
 jest.mock('react-native-tts')
+jest.mock('react-native-sound-player')
