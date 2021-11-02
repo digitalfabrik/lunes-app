@@ -5,15 +5,13 @@ import { ActivityIndicator, ScrollView } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import ImageCarousel from '../../components/ImageCarousel'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
-import AnswerSection from './components/AnswerSection'
+import WriteExercise from './components/WriteExercise'
 
 const Spinner = styled(ActivityIndicator)`
   width: 100%;
@@ -33,8 +31,6 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  // Hints (e.g. audio) are only enabled after an answer was entered and validated
-  const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
   const response = useLoadDocuments(id)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
@@ -80,16 +76,13 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
       {documents && document ? (
         <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
-          <ImageCarousel images={document.document_image} />
-          <AudioPlayer document={document} disabled={!hintsEnabled} />
-          <AnswerSection
+          <WriteExercise
             currentDocumentNumber={currentDocumentNumber}
             setCurrentDocumentNumber={setCurrentDocumentNumber}
             documents={documents}
             finishExercise={finishExercise}
             tryLater={tryLater}
             disciplineId={id}
-            setHintsEnabled={setHintsEnabled}
           />
         </ScrollView>
       ) : (

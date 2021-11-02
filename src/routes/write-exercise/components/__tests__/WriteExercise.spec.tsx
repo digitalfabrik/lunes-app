@@ -3,7 +3,7 @@ import React from 'react'
 
 import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
-import AnswerSection, { AnswerSectionPropsType } from '../AnswerSection'
+import WriteExercise, { AnswerSectionPropsType } from '../WriteExercise'
 
 jest.mock('../../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
@@ -12,7 +12,7 @@ jest.mock('../../../../components/AudioPlayer', () => {
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
-describe('AnswerSection', () => {
+describe('WriteExercise', () => {
   const defaultAnswerSectionProps: AnswerSectionPropsType = {
     documents: [
       {
@@ -46,12 +46,11 @@ describe('AnswerSection', () => {
     currentDocumentNumber: 0,
     tryLater: () => {},
     finishExercise: () => {},
-    setCurrentDocumentNumber: () => {},
-    setHintsEnabled: () => undefined
+    setCurrentDocumentNumber: () => {}
   }
 
   const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {
-    const { getByPlaceholderText, getByText, getByTestId } = render(<AnswerSection {...defaultAnswerSectionProps} />, {
+    const { getByPlaceholderText, getByText, getByTestId } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
       wrapper: wrapWithTheme
     })
     const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
