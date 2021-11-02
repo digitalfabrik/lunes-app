@@ -5,10 +5,13 @@ import styled from 'styled-components/native'
 
 import { VolumeUp } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
+import { stringifyDocument } from '../services/helpers'
 
 export interface AudioPlayerProps {
   document: DocumentType
   disabled: boolean
+  // If the user submitted a correct alternative (differing enough to the document), we want to play the alternative
+  submittedAlternative?: string | null
 }
 
 const StyledView = styled.View`
@@ -37,8 +40,7 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
   shadow-opacity: 0.5;
 `
 
-const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
-  const { document, disabled } = props
+const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerProps): ReactElement => {
   const { audio } = document
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
@@ -60,7 +62,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
   }, [])
 
   React.useEffect(() => {
-    if (audio) {
+    if (audio && !submittedAlternative) {
       const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()
       })
@@ -81,16 +83,16 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
         Tts.removeEventListener('tts-finish', ttsHandler)
       }
     }
-  }, [audio, initializeTts])
+  }, [submittedAlternative, audio, initializeTts])
 
   const handleSpeakerClick = (): void => {
     if (isInitialized) {
       setIsActive(true)
-      if (document.audio) {
-        SoundPlayer.loadUrl(document.audio)
+      if (audio && !submittedAlternative) {
+        SoundPlayer.loadUrl(audio)
       } else {
         // @ts-expect-error ios params should be optional
-        Tts.speak(`${document?.article.value} ${document?.word}`, {
+        Tts.speak(submittedAlternative ?? stringifyDocument(document), {
           androidParams: {
             KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,
@@ -103,7 +105,7 @@ const AudioPlayer = (props: AudioPlayerProps): ReactElement => {
 
   return (
     <StyledView>
-      <VolumeIcon disabled={disabled} isActive={isActive} onPress={handleSpeakerClick}>
+      <VolumeIcon disabled={disabled || !isInitialized} isActive={isActive} onPress={handleSpeakerClick}>
         <VolumeUp />
       </VolumeIcon>
     </StyledView>

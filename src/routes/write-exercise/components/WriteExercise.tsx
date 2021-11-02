@@ -12,6 +12,7 @@ import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 import AsyncStorage from '../../../services/AsyncStorage'
+import { stringifyDocument } from '../../../services/helpers'
 import Actions from './Actions'
 import ArticleMissingPopoverContent from './ArticleMissingPopoverContent'
 import Feedback from './FeedbackSection'
@@ -58,6 +59,7 @@ export interface AnswerSectionPropsType {
 }
 
 const almostCorrectThreshold = 0.6
+const ttsThreshold = 0.8
 
 const WriteExercise = ({
   currentDocumentNumber,
@@ -190,11 +192,20 @@ const WriteExercise = ({
   }
 
   const editable = result === null || result === 'similar'
+  const correctAlternativeSubmitted =
+    result === 'correct' &&
+    submission &&
+    stringSimilarity.compareTwoStrings(submission, stringifyDocument(document)) >= ttsThreshold
+  const submittedAlternative = correctAlternativeSubmitted ? submission : null
 
   return (
     <>
       <ImageCarousel images={document.document_image} />
-      <AudioPlayer document={document} disabled={!result || result === 'similar'} />
+      <AudioPlayer
+        document={document}
+        disabled={!result || result === 'similar'}
+        submittedAlternative={submittedAlternative}
+      />
 
       <Pressable onPress={Keyboard.dismiss}>
         <StyledContainer>
