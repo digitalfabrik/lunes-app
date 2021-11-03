@@ -118,6 +118,7 @@ const ChoiceExerciseScreen = ({
     setSelectedAnswer(null)
     setDelayPassed(false)
   }
+  const lastWord = currentWord + 1 >= count
 
   return (
     <ExerciseContainer>
@@ -142,13 +143,11 @@ const ChoiceExerciseScreen = ({
         {selectedAnswer !== null ? (
           <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
             <>
-              <LightLabelInput>
-                {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
-              </LightLabelInput>
+              <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
             </>
           </Button>
         ) : (
-          <ButtonTryLater text={labels.exercises.tryLater} onPress={tryLater} />
+          !lastWord && <ButtonTryLater text={labels.exercises.tryLater} onPress={tryLater} />
         )}
       </ButtonContainer>
     </ExerciseContainer>

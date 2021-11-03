@@ -3,13 +3,13 @@ import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
 
-import labels from '../../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
-import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
-import WriteExerciseScreen from '../WriteExerciseScreen'
+import labels from '../../constants/labels.json'
+import { DocumentTypeFromServer } from '../../hooks/useLoadDocuments'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import createNavigationMock from '../../testing/createNavigationPropMock'
+import { mockUseLoadFromEndpointWitData } from '../../testing/mockUseLoadFromEndpoint'
+import wrapWithTheme from '../../testing/wrapWithTheme'
+import ArticleChoiceExerciseScreen from '../choice-exercises/ArticleChoiceExerciseScreen'
 
 jest.mock('react-native/Libraries/Image/Image', () => {
   return {
@@ -19,14 +19,14 @@ jest.mock('react-native/Libraries/Image/Image', () => {
     }
   }
 })
-jest.mock('../../../components/AudioPlayer', () => {
+jest.mock('../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
-describe('WriteExerciseScreen', () => {
+describe('ArticleChoiceExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -50,10 +50,10 @@ describe('WriteExerciseScreen', () => {
     }
   ]
 
-  const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const navigation = createNavigationMock<'ArticleChoiceExercise'>()
+  const route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'> = {
     key: '',
-    name: 'WriteExercise',
+    name: 'ArticleChoiceExercise',
     params: {
       discipline: {
         id: 1,
@@ -66,28 +66,36 @@ describe('WriteExerciseScreen', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
     const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
-    const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByRole, getByText, getByTestId } = render(
+      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
 
     expect(getUri(getByRole('image'))).toBe('Arbeitshose')
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
     expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent(getByTestId('single-choice1'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
     expect(getUri(getByRole('image'))).toBe('Arbeitshose')
+    fireEvent(getByTestId('single-choice1'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.showResults))
   })
 
   it('should not allow to skip last document', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { queryByText, getByText, getByTestId } = render(
+      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
 
-    expect(queryByText('Später versuchen')).not.toBeNull()
-    fireEvent.press(getByText('Lösung anzeigen'))
-    fireEvent.press(getByText('Nächstes Wort'))
-    expect(queryByText('Später versuchen')).toBeNull()
+    expect(queryByText(labels.exercises.tryLater)).not.toBeNull()
+    fireEvent(getByTestId('single-choice1'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+    expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 })
