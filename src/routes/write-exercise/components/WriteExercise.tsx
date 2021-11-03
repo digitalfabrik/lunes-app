@@ -59,7 +59,7 @@ export interface AnswerSectionPropsType {
 }
 
 const almostCorrectThreshold = 0.6
-const ttsThreshold = 0.8
+const ttsThreshold = 0.6
 
 const WriteExercise = ({
   currentDocumentNumber,
