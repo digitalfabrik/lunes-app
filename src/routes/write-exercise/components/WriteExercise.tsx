@@ -195,7 +195,7 @@ const WriteExercise = ({
   const correctAlternativeSubmitted =
     result === 'correct' &&
     submission &&
-    stringSimilarity.compareTwoStrings(submission, stringifyDocument(document)) >= ttsThreshold
+    stringSimilarity.compareTwoStrings(submission, stringifyDocument(document)) <= ttsThreshold
   const submittedAlternative = correctAlternativeSubmitted ? submission : null
 
   return (
