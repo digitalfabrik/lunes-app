@@ -104,7 +104,6 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
 
   const submit = (): void => {
     if (customDisciplines.includes(code)) {
-      console.log('error submit is set: ', code)
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
     } else {
       setCodeToSubmit(code)

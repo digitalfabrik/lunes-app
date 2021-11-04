@@ -32,8 +32,6 @@ const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): Retu
 
 const useLoadDocuments = (discipline: Discipline): ReturnType<DocumentType[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
-  console.log('a:', discipline)
-  console.log('b:', discipline.apiKey)
   const documents: ReturnType<DocumentTypeFromServer[]> = useLoadFromEndpoint(url, discipline.apiKey)
   return transformArticle(documents)
 }
