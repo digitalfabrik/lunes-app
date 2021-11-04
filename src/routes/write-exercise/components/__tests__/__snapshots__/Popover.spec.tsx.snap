@@ -17,12 +17,9 @@ exports[`Components Popover renders correctly across screens 1`] = `
   from={null}
   isVisible={true}
   mode="rn-modal"
-  onCloseComplete={[Function]}
-  onCloseStart={[Function]}
-  onOpenComplete={[Function]}
-  onOpenStart={[Function]}
   onRequestClose={[Function]}
   placement="top"
+  popoverStyle={Object {}}
   verticalOffset={-10}
 >
   <Text>
