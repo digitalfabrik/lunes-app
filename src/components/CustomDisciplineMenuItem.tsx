@@ -65,22 +65,20 @@ const CustomDisciplineMenuItem = ({
     )
   } else if (data) {
     return (
-      <Loading isLoading={loading}>
-        <MenuItem
-          selected={idToSelectedIdString(data.id) === selectedId}
-          onPress={() => {
-            setSelectedId(idToSelectedIdString(data.id))
-            navigation.navigate('DisciplineSelection', {
-              extraParams: { discipline: data }
-            })
-          }}
-          icon={data.icon}
-          title={data.title}>
-          <Description selected={idToSelectedIdString(data.id) === selectedId}>
-            {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-          </Description>
-        </MenuItem>
-      </Loading>
+      <MenuItem
+        selected={idToSelectedIdString(data.id) === selectedId}
+        onPress={() => {
+          setSelectedId(idToSelectedIdString(data.id))
+          navigation.navigate('DisciplineSelection', {
+            extraParams: { discipline: data }
+          })
+        }}
+        icon={data.icon}
+        title={data.title}>
+        <Description selected={idToSelectedIdString(data.id) === selectedId}>
+          {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+        </Description>
+      </MenuItem>
     )
   } else {
     return (
