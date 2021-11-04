@@ -7,6 +7,7 @@ export interface DisciplineType {
   icon: string
   numberOfChildren: number
   isLeaf: boolean
+  apiKey?: string
 }
 
 export interface AlternativeWordType {
@@ -34,6 +35,7 @@ export type DocumentsType = DocumentType[]
 
 export const ENDPOINTS = {
   disciplines: '/disciplines_by_level',
+  disciplinesByGroup: 'disciplines_by_group',
   trainingSet: '/training_set',
   documents: '/documents/:id'
 }

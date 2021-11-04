@@ -30,11 +30,11 @@ interface VocabularyListScreenPropsType {
 }
 
 const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Element => {
-  const { id } = route.params.discipline
+  const { discipline } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
-  const { data: documents, error, loading } = useLoadDocuments(id)
+  const { data: documents, error, loading } = useLoadDocuments(discipline)
 
   const Header = (
     <Title

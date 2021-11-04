@@ -55,8 +55,7 @@ interface DisciplineSelectionScreenPropsType {
 }
 
 const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
-  const { extraParams } = route.params
-  const { discipline } = extraParams
+  const { discipline } = route.params.extraParams
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const { data: disciplines, error, loading } = useLoadDisciplines(discipline)
@@ -100,18 +99,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     if (!discipline.isLeaf) {
       navigation.push('DisciplineSelection', {
         extraParams: {
-          discipline: selectedItem,
+          discipline: { ...selectedItem, apiKey: discipline.apiKey },
           parentTitle: discipline.title
         }
       })
     } else {
-      navigation.navigate('Exercises', {
-        discipline: {
-          id: selectedItem.id,
-          title: selectedItem.title,
-          numberOfWords: selectedItem.numberOfChildren
-        }
-      })
+      navigation.navigate('Exercises', { discipline: selectedItem })
     }
   }
   return (
@@ -126,7 +119,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </Loading>
-      <Text>{error}</Text>
+      <Text>{error?.message}</Text>
     </Root>
   )
 }

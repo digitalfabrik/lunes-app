@@ -35,7 +35,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   // Hints (e.g. audio) are only enabled after an answer was entered and validated
   const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
-  const response = useLoadDocuments(id)
+  const response = useLoadDocuments(discipline)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {
