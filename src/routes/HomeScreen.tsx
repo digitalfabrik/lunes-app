@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId('')
+      setSelectedId(null)
     }, [])
   )
 

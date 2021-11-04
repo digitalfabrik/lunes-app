@@ -11,16 +11,16 @@ export type CountsType = {
   total: number
 }
 
-export interface DisciplineData {
+export interface Discipline {
   id: number
   title: string
   numberOfChildren: number
   isLeaf: boolean
-  apiKeyOfCustomDiscipline?: string
+  apiKey?: string
 }
 
 interface ResultScreenData {
-  discipline: DisciplineData
+  discipline: Discipline
   exercise: ExerciseKeyType
   results: DocumentResultType[]
   retryData?: { data: DocumentsType }
@@ -33,24 +33,24 @@ export type RoutesParamsType = {
   AddCustomDiscipline: undefined
   DisciplineSelection: {
     extraParams: {
-      discipline: DisciplineData
+      discipline: Discipline
       parentTitle?: string
     }
   }
   Exercises: {
-    discipline: DisciplineData
+    discipline: Discipline
   }
   VocabularyList: {
-    discipline: DisciplineData
+    discipline: Discipline
   }
   WordChoiceExercise: {
-    discipline: DisciplineData
+    discipline: Discipline
   }
   ArticleChoiceExercise: {
-    discipline: DisciplineData
+    discipline: Discipline
   }
   WriteExercise: {
-    discipline: DisciplineData
+    discipline: Discipline
     retryData?: { data: DocumentsType }
   }
   InitialSummary: {

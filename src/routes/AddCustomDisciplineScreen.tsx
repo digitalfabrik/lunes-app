@@ -84,14 +84,6 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
 
   const { data, loading, error } = useLoadGroupInfo(codeToSubmit)
 
-  const showErrorMessage = (message: string): void => {
-    setErrorMessage(message)
-    const timeout = setTimeout(() => {
-      setErrorMessage('')
-    }, 5000)
-    return clearTimeout(timeout)
-  }
-
   useEffect(() => {
     if (data && !customDisciplines.includes(code)) {
       AsyncStorage.setCustomDisciplines([...customDisciplines, code])
@@ -99,22 +91,21 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
           navigation.navigate('Home')
         })
         .catch(() => {
-          showErrorMessage(labels.addCustomDiscipline.error.technical)
+          setErrorMessage(labels.addCustomDiscipline.error.technical)
         })
-    } else {
-      console.log('no data?')
     }
   }, [code, customDisciplines, data, navigation])
 
   useEffect(() => {
     if (error && codeToSubmit) {
-      showErrorMessage(labels.addCustomDiscipline.error.wrongCode)
+      setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
     }
   }, [error, codeToSubmit])
 
   const submit = (): void => {
     if (customDisciplines.includes(code)) {
-      showErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
+      console.log('error submit is set: ', code)
+      setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
     } else {
       setCodeToSubmit(code)
     }

@@ -99,7 +99,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     if (!discipline.isLeaf) {
       navigation.push('DisciplineSelection', {
         extraParams: {
-          discipline: selectedItem,
+          discipline: { ...selectedItem, apiKey: discipline.apiKey },
           parentTitle: discipline.title
         }
       })
@@ -119,7 +119,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </Loading>
-      <Text>{error}</Text>
+      <Text>{error?.message}</Text>
     </Root>
   )
 }

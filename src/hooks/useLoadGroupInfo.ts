@@ -14,7 +14,7 @@ export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> => 
     ? {
         ...serverResponse.data[0],
         title: serverResponse.data[0].name,
-        apiKeyOfCustomDiscipline: apiKey,
+        apiKey: apiKey,
         isLeaf: false,
         numberOfChildren: serverResponse.data[0].total_discipline_children,
         description: ''

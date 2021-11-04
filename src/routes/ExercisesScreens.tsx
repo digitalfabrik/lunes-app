@@ -95,6 +95,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const handleNavigation = (item: ExerciseType): void => {
     setSelectedKey(item.key.toString())
+    console.log('haneNav: ', discipline)
     navigation.navigate(EXERCISES[item.key].nextScreen, {
       discipline: discipline
     })
