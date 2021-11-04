@@ -21,12 +21,12 @@ const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
-interface ErrorPropsType {
+interface ErrorMessagePropsType {
   error: Error | null
   refresh: () => void
 }
 
-const ErrorMessage = ({ error, refresh }: ErrorPropsType): JSX.Element | null => {
+const ErrorMessage = ({ error, refresh }: ErrorMessagePropsType): JSX.Element | null => {
   return (
     error && (
       <Container>

@@ -5,7 +5,6 @@ import React, { ReactElement } from 'react'
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { ReturnType } from '../../hooks/useLoadFromEndpoint'
 import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -19,7 +18,7 @@ const ArticleChoiceExerciseScreen = ({
   route
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
   const { id } = route.params.discipline
-  const response: ReturnType<DocumentType[]> = useLoadDocuments(id)
+  const response = useLoadDocuments(id)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return document

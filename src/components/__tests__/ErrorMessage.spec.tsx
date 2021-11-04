@@ -5,7 +5,7 @@ import labels from '../../constants/labels.json'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import ErrorMessage from '../ErrorMessage'
 
-describe('Error', () => {
+describe('ErrorMessage', () => {
   const refresh = jest.fn()
 
   it('Should show NetworkError with Refresh-Button', () => {
