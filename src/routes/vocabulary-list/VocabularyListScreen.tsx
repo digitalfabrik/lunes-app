@@ -4,8 +4,7 @@ import React, { useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import ErrorMessage from '../../components/ErrorMessage'
-import Loading from '../../components/Loading'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { DocumentType } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
@@ -63,17 +62,14 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Ele
         description={`${documents?.length ?? '0'} ${documents?.length === 1 ? labels.home.word : labels.home.words}`}
       />
 
-      <Loading isLoading={loading}>
-        <>
-          <ErrorMessage error={error} refresh={refresh} />
-          <StyledList
-            data={documents}
-            renderItem={renderItem}
-            keyExtractor={item => `${item.id}`}
-            showsVerticalScrollIndicator={false}
-          />
-        </>
-      </Loading>
+      <ServerResponseHandler loading={loading} error={error} refresh={refresh}>
+        <StyledList
+          data={documents}
+          renderItem={renderItem}
+          keyExtractor={item => `${item.id}`}
+          showsVerticalScrollIndicator={false}
+        />
+      </ServerResponseHandler>
     </Root>
   )
 }

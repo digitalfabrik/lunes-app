@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { ActivityIndicator } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -9,7 +9,7 @@ const Indicator = styled.View`
 `
 
 interface ILoadingProps {
-  children?: ReactElement
+  children?: ReactNode
   isLoading: boolean
 }
 

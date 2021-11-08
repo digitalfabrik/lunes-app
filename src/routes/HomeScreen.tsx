@@ -6,10 +6,9 @@ import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
 import CustomDisciplineMenuItem from '../components/CustomDisciplineMenuItem'
-import ErrorMessage from '../components/ErrorMessage'
 import Header from '../components/Header'
-import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
@@ -117,18 +116,15 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
           />
         )
       })}
-      <Loading isLoading={loading}>
-        <>
-          <ErrorMessage error={error} refresh={refresh} />
-          <StyledList
-            data={disciplines}
-            renderItem={Item}
-            keyExtractor={item => item.id.toString()}
-            scrollEnabled={true}
-            bounces={false}
-          />
-        </>
-      </Loading>
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        <StyledList
+          data={disciplines}
+          renderItem={Item}
+          keyExtractor={item => item.id.toString()}
+          scrollEnabled={true}
+          bounces={false}
+        />
+      </ServerResponseHandler>
     </Root>
   )
 }

@@ -20,9 +20,7 @@ const ArticleChoiceExerciseScreen = ({
   const response = useLoadDocuments(route.params.discipline)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
-    return document
-      ? ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
-      : []
+    return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
   }
 
   const onExerciseFinished = (results: DocumentResultType[]): void => {

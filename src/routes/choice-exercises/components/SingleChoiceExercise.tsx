@@ -5,10 +5,9 @@ import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
-import ErrorMessage from '../../../components/ErrorMessage'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
-import Loading from '../../../components/Loading'
+import ServerResponseHandler from '../../../components/ServerResponseHandler'
 import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
@@ -48,7 +47,7 @@ const ChoiceExerciseScreen = ({
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
-  const [correctAnswer, setCorrectAnswer] = useState<Answer>()
+  const [correctAnswer, setCorrectAnswer] = useState<Answer | null>(null)
 
   const correctAnswerDelay = 700
   const { data: documents, loading, error, refresh } = response
@@ -79,10 +78,10 @@ const ChoiceExerciseScreen = ({
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)
-      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
+      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
-      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
+      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.incorrect }
       setResults([...results, result])
     }
     setTimeout(() => {
@@ -113,37 +112,30 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={documents?.length ?? 0}
       />
-      <Loading isLoading={loading}>
-        <>
-          <ErrorMessage error={error} refresh={refresh} />
-          {documents && correctAnswer && (
-            <>
-              {documents[currentWord]?.document_image.length > 0 && (
-                <ImageCarousel images={documents[currentWord]?.document_image} />
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && correctAnswer && currentDocument && (
+          <>
+            {currentDocument.document_image.length > 0 && <ImageCarousel images={currentDocument.document_image} />}
+            <AudioPlayer document={currentDocument} disabled={selectedAnswer === null} />
+            <SingleChoice
+              answers={answers}
+              onClick={onClickAnswer}
+              correctAnswer={correctAnswer}
+              selectedAnswer={selectedAnswer}
+              delayPassed={delayPassed}
+            />
+            <ButtonContainer>
+              {selectedAnswer !== null && (
+                <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
+                  <LightLabelInput>
+                    {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
+                  </LightLabelInput>
+                </Button>
               )}
-              <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
-              <SingleChoice
-                answers={answers}
-                onClick={onClickAnswer}
-                correctAnswer={correctAnswer}
-                selectedAnswer={selectedAnswer}
-                delayPassed={delayPassed}
-              />
-              <ButtonContainer>
-                {selectedAnswer !== null && (
-                  <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-                    <>
-                      <LightLabelInput>
-                        {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
-                      </LightLabelInput>
-                    </>
-                  </Button>
-                )}
-              </ButtonContainer>
-            </>
-          )}
-        </>
-      </Loading>
+            </ButtonContainer>
+          </>
+        )}
+      </ServerResponseHandler>
     </ExerciseContainer>
   )
 }

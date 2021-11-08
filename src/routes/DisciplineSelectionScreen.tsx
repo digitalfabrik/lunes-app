@@ -5,9 +5,8 @@ import { FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import ErrorMessage from '../components/ErrorMessage'
-import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
@@ -108,17 +107,14 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
         }`}
       />
-      <Loading isLoading={loading}>
-        <>
-          <ErrorMessage error={error} refresh={refresh} />
-          <StyledList
-            data={disciplines}
-            renderItem={ListItem}
-            keyExtractor={item => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-          />
-        </>
-      </Loading>
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        <StyledList
+          data={disciplines}
+          renderItem={ListItem}
+          keyExtractor={item => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+      </ServerResponseHandler>
     </Root>
   )
 }

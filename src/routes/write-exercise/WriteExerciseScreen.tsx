@@ -4,10 +4,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import AudioPlayer from '../../components/AudioPlayer'
-import ErrorMessage from '../../components/ErrorMessage'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import ImageCarousel from '../../components/ImageCarousel'
-import Loading from '../../components/Loading'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
@@ -71,26 +70,23 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      <Loading isLoading={loading}>
-        <>
-          <ErrorMessage error={error} refresh={refresh} />
-          {documents && document && (
-            <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
-              <ImageCarousel images={document.document_image} />
-              <AudioPlayer document={document} disabled={!hintsEnabled} />
-              <AnswerSection
-                currentDocumentNumber={currentDocumentNumber}
-                setCurrentDocumentNumber={setCurrentDocumentNumber}
-                documents={documents}
-                finishExercise={finishExercise}
-                tryLater={tryLater}
-                disciplineId={id}
-                setHintsEnabled={setHintsEnabled}
-              />
-            </ScrollView>
-          )}
-        </>
-      </Loading>
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && document && (
+          <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
+            <ImageCarousel images={document.document_image} />
+            <AudioPlayer document={document} disabled={!hintsEnabled} />
+            <AnswerSection
+              currentDocumentNumber={currentDocumentNumber}
+              setCurrentDocumentNumber={setCurrentDocumentNumber}
+              documents={documents}
+              finishExercise={finishExercise}
+              tryLater={tryLater}
+              disciplineId={id}
+              setHintsEnabled={setHintsEnabled}
+            />
+          </ScrollView>
+        )}
+      </ServerResponseHandler>
     </>
   )
 }
