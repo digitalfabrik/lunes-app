@@ -28,9 +28,9 @@ describe('ErrorMessage', () => {
     expect(container).toBeEmpty()
   })
 
-  it('should show message if other error', async () => {
+  it('should show message if other error', () => {
     const error: Error = new Error('Other Error')
     const { getByText } = render(<ErrorMessage error={error} refresh={refresh} />, { wrapper: wrapWithTheme })
-    expect(getByText('(Other Error)')).toBeDefined()
+    expect(getByText('Other Error')).toBeDefined()
   })
 })
