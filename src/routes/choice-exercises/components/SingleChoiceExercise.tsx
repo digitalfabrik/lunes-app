@@ -1,8 +1,9 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
+import { NextArrow } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -11,6 +12,7 @@ import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { moveToEnd } from '../../../services/helpers'
 import { LightLabelInput } from '../../write-exercise/components/Actions'
 import { SingleChoice } from './SingleChoice'
 
@@ -25,28 +27,43 @@ const ButtonContainer = styled.View`
   margin: 7% 0;
 `
 
+const DarkLabel = styled.Text`
+  text-align: center;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+`
+const StyledArrow = styled(NextArrow)`
+  margin-left: 5px;
+`
+
 interface SingleChoiceExercisePropsType {
-  documents: DocumentType[]
+  data: DocumentType[]
   documentToAnswers: (document: DocumentType) => Answer[]
-  onExerciseFinished: (results: DocumentResultType[]) => void
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  exerciseKey: number
 }
 
 const ChoiceExerciseScreen = ({
-  documents,
+  data,
   documentToAnswers,
-  onExerciseFinished,
   navigation,
-  route
+  route,
+  exerciseKey
 }: SingleChoiceExercisePropsType): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
-  const currentDocument = documents[currentWord]
+  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
   const correctAnswerDelay = 700
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
+  const documents = newDocuments ?? data
+  const currentDocument = documents[currentWord]
   const [correctAnswer, setCorrectAnswer] = useState<Answer>({
     article: currentDocument.article,
     word: currentDocument.word
@@ -57,6 +74,24 @@ const ChoiceExerciseScreen = ({
     setAnswers(documentToAnswers(currentDocument))
     setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
   }, [currentDocument, documentToAnswers])
+
+  const tryLater = useCallback(() => {
+    if (documents !== null) {
+      setNewDocuments(moveToEnd(documents, currentWord))
+    }
+  }, [documents, currentWord])
+
+  const onExerciseFinished = (results: DocumentResultType[]): void => {
+    navigation.navigate('InitialSummary', {
+      result: {
+        discipline: { ...route.params.discipline },
+        exercise: exerciseKey,
+        results: results
+      }
+    })
+    setCurrentWord(0)
+    setNewDocuments(null)
+  }
 
   const count = documents.length
 
@@ -89,7 +124,6 @@ const ChoiceExerciseScreen = ({
       setCurrentWord(0)
       setSelectedAnswer(null)
       onExerciseFinished(results)
-      setCurrentWord(0)
       setResults([])
     } else {
       setCurrentWord(prevState => prevState + 1)
@@ -97,6 +131,7 @@ const ChoiceExerciseScreen = ({
     setSelectedAnswer(null)
     setDelayPassed(false)
   }
+  const lastWord = currentWord + 1 >= count
 
   return (
     <ExerciseContainer>
@@ -118,14 +153,17 @@ const ChoiceExerciseScreen = ({
         delayPassed={delayPassed}
       />
       <ButtonContainer>
-        {selectedAnswer !== null && (
+        {selectedAnswer !== null ? (
           <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-            <>
-              <LightLabelInput>
-                {currentWord + 1 >= count ? labels.exercises.showResults : labels.exercises.next}
-              </LightLabelInput>
-            </>
+            <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
           </Button>
+        ) : (
+          !lastWord && (
+            <Button onPress={tryLater} testID='try-later'>
+              <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
+              <StyledArrow />
+            </Button>
+          )
         )}
       </ButtonContainer>
     </ExerciseContainer>

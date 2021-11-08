@@ -57,6 +57,7 @@ const DarkLabel = styled.Text`
   margin-left: 10px;
   text-transform: uppercase;
 `
+
 interface InitialSummaryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'InitialSummary'>
   navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
@@ -128,17 +129,13 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       </UpperSection>
 
       <Button buttonTheme={BUTTONS_THEME.dark} onPress={checkResults}>
-        <>
-          <ListIcon />
-          <LightLabel>{labels.results.checkEntries}</LightLabel>
-        </>
+        <ListIcon />
+        <LightLabel>{labels.results.checkEntries}</LightLabel>
       </Button>
 
       <Button buttonTheme={BUTTONS_THEME.light} onPress={repeatExercise}>
-        <>
-          <RepeatIcon fill={COLORS.lunesBlack} />
-          <DarkLabel>{labels.results.retryExercise}</DarkLabel>
-        </>
+        <RepeatIcon fill={COLORS.lunesBlack} />
+        <DarkLabel>{labels.results.retryExercise}</DarkLabel>
       </Button>
     </Root>
   )

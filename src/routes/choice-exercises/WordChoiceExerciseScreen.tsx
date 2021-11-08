@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react'
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface WordChoiceExerciseScreenPropsType {
@@ -50,23 +50,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     return answers
   }
 
-  const onExerciseFinished = (results: DocumentResultType[]): void => {
-    navigation.navigate('InitialSummary', {
-      result: {
-        discipline: { ...route.params.discipline },
-        exercise: ExerciseKeys.wordChoiceExercise,
-        results: results
-      }
-    })
-  }
-
   return (
     <SingleChoiceExercise
-      documents={documents}
+      data={documents}
       documentToAnswers={documentToAnswers}
-      onExerciseFinished={onExerciseFinished}
       navigation={navigation}
       route={route}
+      exerciseKey={ExerciseKeys.wordChoiceExercise}
     />
   )
 }

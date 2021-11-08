@@ -10,6 +10,7 @@ export const StyledContainer = styled.View`
   margin-left: 8%;
   margin-right: 8%;
 `
+
 export interface SingleChoicePropsType {
   onClick: (answer: Answer) => void
   answers: Answer[]

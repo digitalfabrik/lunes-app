@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
-import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../../constants/labels.json'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
@@ -9,16 +8,8 @@ import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
-import WriteExerciseScreen from '../WriteExerciseScreen'
+import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
-  }
-})
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
@@ -26,7 +17,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
-describe('WriteExerciseScreen', () => {
+describe('ArticleChoiceExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -50,10 +41,10 @@ describe('WriteExerciseScreen', () => {
     }
   ]
 
-  const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const navigation = createNavigationMock<'ArticleChoiceExercise'>()
+  const route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'> = {
     key: '',
-    name: 'WriteExercise',
+    name: 'ArticleChoiceExercise',
     params: {
       discipline: {
         id: 1,
@@ -65,30 +56,30 @@ describe('WriteExerciseScreen', () => {
   }
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
-    const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+    const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
 
-    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
-    expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    expect(getByText('Arbeitsschuhe (Plural)')).not.toBeNull()
+    fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
-    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
+    expect(getByText('Arbeitshose (Plural)')).not.toBeNull()
+    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.showResults))
   })
 
   it('should not allow to skip last document', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+    const { queryByText, getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
 
-    expect(queryByText('Später versuchen')).not.toBeNull()
-    fireEvent.press(getByText('Lösung anzeigen'))
-    fireEvent.press(getByText('Nächstes Wort'))
-    expect(queryByText('Später versuchen')).toBeNull()
+    expect(queryByText(labels.exercises.tryLater)).not.toBeNull()
+    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+    expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 })
