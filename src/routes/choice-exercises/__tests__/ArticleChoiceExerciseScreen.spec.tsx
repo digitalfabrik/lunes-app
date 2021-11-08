@@ -49,7 +49,7 @@ describe('ArticleChoiceExerciseScreen', () => {
       discipline: {
         id: 1,
         title: 'TestTitel',
-        numberOfWords: 2
+        numberOfChildren: 2
       }
     }
   }
