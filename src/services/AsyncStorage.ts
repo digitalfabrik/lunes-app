@@ -15,7 +15,8 @@ export interface ExerciseType {
 interface sessionData {
   id: number
   title: string
-  numberOfWords: number
+  numberOfChildren: number
+  isLeaf: boolean
   exercise: number
   retryData?: { data: DocumentsType }
   results: []

@@ -17,8 +17,7 @@ const ArticleChoiceExerciseScreen = ({
   navigation,
   route
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { id } = route.params.discipline
-  const response = useLoadDocuments(id)
+  const response = useLoadDocuments(route.params.discipline)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return document

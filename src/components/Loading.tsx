@@ -9,7 +9,7 @@ const Indicator = styled.View`
 `
 
 interface ILoadingProps {
-  children: ReactElement
+  children?: ReactElement
   isLoading: boolean
 }
 
@@ -27,4 +27,5 @@ const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
     </>
   )
 }
+
 export default Loading

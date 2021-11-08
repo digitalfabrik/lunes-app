@@ -14,8 +14,7 @@ interface WordChoiceExerciseScreenPropsType {
 }
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { id } = route.params.discipline
-  const response = useLoadDocuments(id)
+  const response = useLoadDocuments(route.params.discipline)
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
     const { data: documents } = response
