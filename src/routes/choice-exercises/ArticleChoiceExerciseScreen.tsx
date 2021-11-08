@@ -27,6 +27,7 @@ const ArticleChoiceExerciseScreen = ({
   if (documents === null || loading) {
     return null
   }
+
   return (
     <SingleChoiceExercise
       data={documents}

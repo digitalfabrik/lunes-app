@@ -3,9 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
+import { NextArrow } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
-import ButtonTryLater from '../../../components/ButtonTryLater'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
@@ -27,6 +27,19 @@ const ButtonContainer = styled.View`
   margin: 7% 0;
 `
 
+const DarkLabel = styled.Text`
+  text-align: center;
+  color: ${props => props.theme.colors.lunesBlack};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+`
+const StyledArrow = styled(NextArrow)`
+  margin-left: 5px;
+`
+
 interface SingleChoiceExercisePropsType {
   data: DocumentType[]
   documentToAnswers: (document: DocumentType) => Answer[]
@@ -42,7 +55,7 @@ const ChoiceExerciseScreen = ({
   route,
   exerciseKey
 }: SingleChoiceExercisePropsType): ReactElement => {
-  const [currentWord, setCurrentWord] = useState(0)
+  const [currentWord, setCurrentWord] = useState<number>(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
@@ -142,12 +155,15 @@ const ChoiceExerciseScreen = ({
       <ButtonContainer>
         {selectedAnswer !== null ? (
           <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-            <>
-              <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
-            </>
+            <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
           </Button>
         ) : (
-          !lastWord && <ButtonTryLater text={labels.exercises.tryLater} onPress={tryLater} />
+          !lastWord && (
+            <Button onPress={tryLater} testID='try-later'>
+              <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
+              <StyledArrow />
+            </Button>
+          )
         )}
       </ButtonContainer>
     </ExerciseContainer>

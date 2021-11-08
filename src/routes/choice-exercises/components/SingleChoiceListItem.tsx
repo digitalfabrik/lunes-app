@@ -122,7 +122,6 @@ const Overlay = styled.View`
 `
 
 export interface SingleChoiceListItemPropsType {
-  testID?: string
   answer: Answer
   onClick: (answer: Answer) => void
   correct: boolean
@@ -146,8 +145,7 @@ const SingleChoiceListItem = ({
   selected,
   anyAnswerSelected,
   delayPassed,
-  disabled = false,
-  testID
+  disabled = false
 }: SingleChoiceListItemPropsType): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
@@ -167,7 +165,6 @@ const SingleChoiceListItem = ({
 
   return (
     <Container
-      testID={testID}
       activeOpacity={1}
       correct={showCorrect}
       selected={selected}

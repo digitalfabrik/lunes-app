@@ -220,10 +220,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
 
   const Footer = (
     <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
-      <>
-        <RepeatIcon fill={COLORS.lunesWhite} />
-        <LightLabel>{labels.results.retryExercise}</LightLabel>
-      </>
+      <RepeatIcon fill={COLORS.lunesWhite} />
+      <LightLabel>{labels.results.retryExercise}</LightLabel>
     </Button>
   )
 

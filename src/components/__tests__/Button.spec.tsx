@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme'
-import React, { ComponentProps } from 'react'
+import React, { ComponentProps, ReactElement, ReactNode } from 'react'
 import { Text } from 'react-native'
 import { mocked } from 'ts-jest/utils'
 
@@ -86,7 +86,8 @@ describe('Components', () => {
 
     it('should render children passed to it', () => {
       const component = renderButton()
-      expect(component.contains(defaultButtonProps.children)).toBe(true)
+      // .contains() fkt of enzyme expects React Element
+      expect(component.contains(defaultButtonProps.children as ReactElement)).toBe(true)
     })
   })
 })

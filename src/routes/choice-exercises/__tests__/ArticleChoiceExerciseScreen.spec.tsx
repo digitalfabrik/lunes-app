@@ -1,25 +1,16 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
-import { ReactTestInstance } from 'react-test-renderer'
 
-import labels from '../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
-import createNavigationMock from '../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWitData } from '../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../testing/wrapWithTheme'
-import ArticleChoiceExerciseScreen from '../choice-exercises/ArticleChoiceExerciseScreen'
+import labels from '../../../constants/labels.json'
+import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
+import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
+import wrapWithTheme from '../../../testing/wrapWithTheme'
+import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
-  }
-})
-jest.mock('../../components/AudioPlayer', () => {
+jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
@@ -64,37 +55,29 @@ describe('ArticleChoiceExerciseScreen', () => {
   }
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
-    const { getByRole, getByText, getByTestId } = render(
-      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
 
-    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
-    expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
-    fireEvent(getByTestId('single-choice1'), 'pressOut')
+    expect(getByText('Arbeitsschuhe (Plural)')).not.toBeNull()
+    fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
-    expect(getUri(getByRole('image'))).toBe('Arbeitshose')
-    fireEvent(getByTestId('single-choice1'), 'pressOut')
+    expect(getByText('Arbeitshose (Plural)')).not.toBeNull()
+    fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.showResults))
   })
 
   it('should not allow to skip last document', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText, getByTestId } = render(
-      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    const { queryByText, getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
 
     expect(queryByText(labels.exercises.tryLater)).not.toBeNull()
-    fireEvent(getByTestId('single-choice1'), 'pressOut')
+    fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })

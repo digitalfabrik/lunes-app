@@ -35,7 +35,6 @@ export const SingleChoice = ({
       {answers.map((answer, index) => {
         return (
           <SingleChoiceListItem
-            testID={`single-choice${index}`}
             key={index}
             answer={answer}
             onClick={onClick}
