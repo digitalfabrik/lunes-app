@@ -31,7 +31,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  const response = useLoadDocuments(id)
+  const response = useLoadDocuments(discipline)
   const documents = newDocuments ?? retryData?.data ?? response.data
 
   useEffect(() => {

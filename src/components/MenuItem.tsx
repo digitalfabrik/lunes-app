@@ -7,6 +7,7 @@ import { Arrow } from '../../assets/images'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
+  height: ${wp('21%')}px;
   margin: 0px 16px 8px 16px;
   padding: 17px 8px 17px 16px;
   flex-direction: row;

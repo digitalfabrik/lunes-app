@@ -5,6 +5,7 @@ import { FlatList, Text } from 'react-native'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
+import CustomDisciplineMenuItem from '../components/CustomDisciplineMenuItem'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
@@ -30,14 +31,6 @@ const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
   width: 100%;
 `
 
-const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props =>
-    props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
-`
-
 const AddCustomDisciplineContainer = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
@@ -51,19 +44,26 @@ const AddCustomDisciplineText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
+const Description = styled.Text<{ selected: boolean }>`
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
+`
+
 interface HomeScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   customDisciplines: string[]
 }
 
 const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
+  const { data: disciplines, error, loading } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(-1)
+      setSelectedId(null)
     }, [])
   )
 
@@ -75,6 +75,17 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
         <PlusIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
+      {customDisciplines.map(customDiscipline => {
+        return (
+          <CustomDisciplineMenuItem
+            key={customDiscipline}
+            apiKey={customDiscipline}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            navigation={navigation}
+          />
+        )
+      })}
     </>
   )
 
@@ -84,11 +95,11 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
     }
     return (
       <MenuItem
-        selected={item.id === selectedId}
+        selected={item.id.toString() === selectedId}
         title={item.title}
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
-        <Description item={item} selectedId={selectedId}>
+        <Description selected={item.id.toString() === selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>
       </MenuItem>
@@ -96,7 +107,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   }
 
   const handleNavigation = (item: DisciplineType): void => {
-    setSelectedId(item.id)
+    setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       extraParams: {
         discipline: item

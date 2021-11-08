@@ -5,7 +5,9 @@ import React from 'react'
 import { mocked } from 'ts-jest/utils'
 
 import labels from '../../constants/labels.json'
+import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
+import { mockUseLoadFromEndpointWitData, mockUseLoadFromEndpointWithError } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
@@ -15,7 +17,7 @@ jest.mock('../../hocs/withCustomDisciplines')
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
-  it('Should change button to be enabled on text input', () => {
+  it('should change button to be enabled on text input', () => {
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
@@ -27,6 +29,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
+    mockUseLoadFromEndpointWitData([{ name: 'Test', numberOfChildren: 1 }])
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
@@ -38,7 +41,9 @@ describe('AddCustomDisciplineScreen', () => {
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
   })
 
-  it('should show duplicate error', () => {
+  it('should show duplicate error', async () => {
+    mockUseLoadFromEndpointWithError('test')
+    await AsyncStorageService.setCustomDisciplines(['test'])
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
