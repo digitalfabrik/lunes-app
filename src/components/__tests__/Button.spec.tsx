@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme'
-import React, { ComponentProps, ReactElement, ReactNode } from 'react'
+import React, { ComponentProps, ReactElement } from 'react'
 import { Text } from 'react-native'
 import { mocked } from 'ts-jest/utils'
 
