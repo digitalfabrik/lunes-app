@@ -18,24 +18,10 @@ const Root = styled.View`
   height: 100%;
   width: 100%;
   padding-bottom: 0;
-  padding-top: 5.6%;
-`
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  margin-bottom: 4px;
-`
-const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
-  width: 100%;
 `
 
-const Description = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
+const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
+  width: 100%;
 `
 
 interface VocabularyListScreenPropsType {
@@ -44,21 +30,17 @@ interface VocabularyListScreenPropsType {
 }
 
 const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Element => {
-  const { id } = route.params.discipline
+  const { discipline } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
-  const { data: documents, error, loading } = useLoadDocuments(id)
+  const { data: documents, error, loading } = useLoadDocuments(discipline)
 
   const Header = (
-    <Title>
-      <>
-        <ScreenTitle>{labels.exercises.vocabularyList.title}</ScreenTitle>
-        <Description>
-          {documents?.length} {documents?.length === 1 ? labels.home.word : labels.home.words}
-        </Description>
-      </>
-    </Title>
+    <Title
+      title={labels.exercises.vocabularyList.title}
+      description={`${documents?.length ?? '0'} ${documents?.length === 1 ? labels.home.word : labels.home.words}`}
+    />
   )
 
   const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (

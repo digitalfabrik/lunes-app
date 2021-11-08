@@ -42,7 +42,6 @@ export interface IActionsProps {
   continueExercise: () => void
   input: string
   isFinished: boolean
-  secondAttempt: boolean
 }
 
 const Actions = ({

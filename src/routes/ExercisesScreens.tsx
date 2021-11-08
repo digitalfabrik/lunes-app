@@ -15,31 +15,21 @@ import { RoutesParamsType } from '../navigation/NavigationTypes'
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
-  padding-top: 10%;
 `
+
 const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
   width: ${wp('100%')}px;
   padding-right: ${wp('5%')}px;
   padding-left: ${wp('5%')}px;
 `
 
-const ScreenDescription = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-`
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
 `
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-`
+
 const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
   padding: 17px 8px 17px 16px;
@@ -77,7 +67,7 @@ interface ExercisesScreenPropsType {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { discipline } = route.params
-  const { title, numberOfWords } = discipline
+  const { title, numberOfChildren } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   useFocusEffect(
@@ -86,16 +76,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }, [])
   )
 
-  const Header = (
-    <Title>
-      <>
-        <ScreenTitle>{title}</ScreenTitle>
-        <ScreenDescription>
-          {numberOfWords} {labels.home.words}
-        </ScreenDescription>
-      </>
-    </Title>
-  )
+  const Header = <Title title={title} description={`${numberOfChildren} ${labels.home.words}`} />
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
@@ -115,7 +96,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   const handleNavigation = (item: ExerciseType): void => {
     setSelectedKey(item.key.toString())
     navigation.navigate(EXERCISES[item.key].nextScreen, {
-      discipline: { ...discipline }
+      discipline: discipline
     })
   }
 

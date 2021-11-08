@@ -16,7 +16,8 @@ describe('Components', () => {
           discipline: {
             id: 0,
             title: 'Title',
-            numberOfWords: 0
+            numberOfChildren: 0,
+            isLeaf: false
           }
         }
       },

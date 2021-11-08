@@ -1,5 +1,9 @@
 import { Article } from '../constants/data'
+import { AlternativeWordType, DocumentType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
+
+export const stringifyDocument = ({ article, word }: DocumentType | AlternativeWordType): string =>
+  `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {

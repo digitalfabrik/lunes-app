@@ -6,7 +6,8 @@
     "word": "Wort",
     "words": "Wörter",
     "exercises": "Übungen",
-    "addCustomDiscipline": "Bereich hinzufügen"
+    "addCustomDiscipline": "Bereich hinzufügen",
+    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden."
   },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",

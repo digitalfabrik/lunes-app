@@ -16,8 +16,8 @@ import { RoutesParamsType } from '../navigation/NavigationTypes'
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
-  padding-top: 5%;
 `
+
 const ItemText = styled.View`
   flex-direction: row;
   align-items: center;
@@ -36,12 +36,6 @@ const Description = styled.Text<{ selected: boolean }>`
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
 `
 
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-`
 const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
@@ -61,8 +55,7 @@ interface DisciplineSelectionScreenPropsType {
 }
 
 const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
-  const { extraParams } = route.params
-  const { discipline } = extraParams
+  const { discipline } = route.params.extraParams
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const { data: disciplines, error, loading } = useLoadDisciplines(discipline)
@@ -74,14 +67,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   )
 
   const titleCOMP = (
-    <Title>
-      <>
-        <ScreenTitle>{discipline?.title}</ScreenTitle>
-        <Description selected={false}>
-          {discipline.numberOfChildren} {discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-        </Description>
-      </>
-    </Title>
+    <Title
+      title={discipline.title}
+      description={`${discipline.numberOfChildren} ${
+        discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
+      }`}
+    />
   )
 
   const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -108,18 +99,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     if (!discipline.isLeaf) {
       navigation.push('DisciplineSelection', {
         extraParams: {
-          discipline: selectedItem,
+          discipline: { ...selectedItem, apiKey: discipline.apiKey },
           parentTitle: discipline.title
         }
       })
     } else {
-      navigation.navigate('Exercises', {
-        discipline: {
-          id: selectedItem.id,
-          title: selectedItem.title,
-          numberOfWords: selectedItem.numberOfChildren
-        }
-      })
+      navigation.navigate('Exercises', { discipline: selectedItem })
     }
   }
   return (
@@ -134,7 +119,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </Loading>
-      <Text>{error}</Text>
+      <Text>{error?.message}</Text>
     </Root>
   )
 }

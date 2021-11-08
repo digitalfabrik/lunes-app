@@ -19,23 +19,6 @@ const Root = styled.View`
   height: 100%;
   width: 100%;
   padding-bottom: 0;
-  padding-top: 4%;
-`
-
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  margin-bottom: 1%;
-  margin-top: 6%;
-`
-
-const Description = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
 const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
@@ -110,18 +93,11 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   )
 
   const Header = (
-    <Title>
-      <>
-        <Icon width={38} height={38} />
-        <ScreenTitle>
-          {' '}
-          {title} {labels.results.entries}
-        </ScreenTitle>
-        <Description>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
-          labels.home.words
-        }`}</Description>
-      </>
-    </Title>
+    <Title
+      titleIcon={<Icon width={38} height={38} />}
+      title={` \n${title} ${labels.results.entries}`}
+      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.home.words}`}
+    />
   )
 
   const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />

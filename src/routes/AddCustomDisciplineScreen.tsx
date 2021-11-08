@@ -1,12 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
+import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
@@ -78,51 +80,56 @@ interface AddCustomDisciplineScreenPropsType {
 const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDisciplineScreenPropsType): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [codeToSubmit, setCodeToSubmit] = useState<string>('')
 
-  const showErrorMessage = (message: string): void => {
-    setErrorMessage(message)
-    setTimeout(() => {
-      setErrorMessage('')
-    }, 5000)
-  }
+  const { data, loading, error } = useLoadGroupInfo(codeToSubmit)
+
+  useEffect(() => {
+    if (data && !customDisciplines.includes(code)) {
+      AsyncStorage.setCustomDisciplines([...customDisciplines, code])
+        .then(() => {
+          navigation.navigate('Home')
+        })
+        .catch(() => {
+          setErrorMessage(labels.addCustomDiscipline.error.technical)
+        })
+    }
+  }, [code, customDisciplines, data, navigation])
+
+  useEffect(() => {
+    if (error && codeToSubmit) {
+      setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
+    }
+  }, [error, codeToSubmit])
 
   const submit = (): void => {
     if (customDisciplines.includes(code)) {
-      showErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
+      setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
     } else {
-      const serverResponse = true // TODO LUN-190 make server request here, when api is finished
-      if (!serverResponse) {
-        showErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-      } else {
-        AsyncStorage.setCustomDisciplines([...customDisciplines, code])
-          .then(() => {
-            navigation.navigate('Home')
-          })
-          .catch(() => {
-            showErrorMessage(labels.addCustomDiscipline.error.technical)
-          })
-      }
+      setCodeToSubmit(code)
     }
   }
 
   return (
-    <Container>
-      <Heading>{labels.addCustomDiscipline.heading}</Heading>
-      <Description>{labels.addCustomDiscipline.description}</Description>
-      <StyledTextInput
-        errorMessage={errorMessage}
-        placeholder={labels.addCustomDiscipline.placeholder}
-        value={code}
-        onChangeText={setCode}
-      />
-      <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
-      <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
-        <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
-      </Button>
-      <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
-        <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
-      </Button>
-    </Container>
+    <Loading isLoading={loading}>
+      <Container>
+        <Heading>{labels.addCustomDiscipline.heading}</Heading>
+        <Description>{labels.addCustomDiscipline.description}</Description>
+        <StyledTextInput
+          errorMessage={errorMessage}
+          placeholder={labels.addCustomDiscipline.placeholder}
+          value={code}
+          onChangeText={setCode}
+        />
+        <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+        <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
+          <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
+        </Button>
+        <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
+          <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
+        </Button>
+      </Container>
+    </Loading>
   )
 }
 
