@@ -3,16 +3,15 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
-import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import ImageCarousel from '../../components/ImageCarousel'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
-import AnswerSection from './components/AnswerSection'
+import { moveToEnd } from '../../services/helpers'
+import WriteExercise from './components/WriteExercise'
 
 interface WriteExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'WriteExercise'>
@@ -24,8 +23,6 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  // Hints (e.g. audio) are only enabled after an answer was entered and validated
-  const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
 
   const { data, loading, error, refresh } = useLoadDocuments(discipline)
   const documents = newDocuments ?? retryData?.data ?? data
@@ -38,10 +35,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
   const tryLater = useCallback(() => {
     if (documents !== null) {
-      const currDocument = documents[currentDocumentNumber]
-      const newDocuments = documents.filter(d => d !== currDocument)
-      newDocuments.push(currDocument)
-      setNewDocuments(newDocuments)
+      setNewDocuments(moveToEnd(documents, currentDocumentNumber))
     }
   }, [documents, currentDocumentNumber])
 
@@ -73,16 +67,13 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && document && (
           <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
-            <ImageCarousel images={document.document_image} />
-            <AudioPlayer document={document} disabled={!hintsEnabled} />
-            <AnswerSection
+            <WriteExercise
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
               documents={documents}
               finishExercise={finishExercise}
               tryLater={tryLater}
               disciplineId={id}
-              setHintsEnabled={setHintsEnabled}
             />
           </ScrollView>
         )}

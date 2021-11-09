@@ -1,0 +1,6 @@
+issue_key: LUN-69
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Es wird nun immer das richtige Audio abgespielt.

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { css } from 'styled-components/native'
 
@@ -50,7 +50,7 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
 interface IButtonProps {
   onPress: () => void
   disabled?: boolean
-  children: ReactElement
+  children: ReactNode
   buttonTheme?: ButtonThemeType
   testID?: string
 }

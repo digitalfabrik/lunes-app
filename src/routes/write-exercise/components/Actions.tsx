@@ -42,7 +42,6 @@ export interface IActionsProps {
   continueExercise: () => void
   input: string
   isFinished: boolean
-  secondAttempt: boolean
 }
 
 const Actions = ({
@@ -56,10 +55,8 @@ const Actions = ({
 }: IActionsProps): ReactElement => {
   return result === 'correct' || result === 'incorrect' ? (
     <Button onPress={continueExercise} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
-      <>
-        <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
-        <WhiteNextArrow />
-      </>
+      <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
+      <WhiteNextArrow />
     </Button>
   ) : (
     <>
@@ -73,10 +70,8 @@ const Actions = ({
 
       {!isFinished && (
         <Button onPress={tryLater} testID='try-later'>
-          <>
-            <DarkLabel>{labels.exercises.write.tryLater}</DarkLabel>
-            <StyledArrow />
-          </>
+          <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
+          <StyledArrow />
         </Button>
       )}
     </>

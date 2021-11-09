@@ -75,7 +75,7 @@ describe('WriteExerciseScreen', () => {
     })
 
     expect(getUri(getByRole('image'))).toBe('Arbeitshose')
-    const tryLater = getByText(labels.exercises.write.tryLater)
+    const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
     expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
     fireEvent.press(getByText(labels.exercises.write.showSolution))

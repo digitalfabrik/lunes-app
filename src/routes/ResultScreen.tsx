@@ -111,12 +111,10 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
       <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
-        <>
-          <RepeatIcon fill={COLORS.lunesWhite} />
-          <LightLabel>
-            {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
-          </LightLabel>
-        </>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <LightLabel>
+          {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
+        </LightLabel>
       </Button>
     ) : null
 
@@ -131,12 +129,10 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
             resultType: nextResultType
           })
         }>
-        <>
-          <DarkLabel>
-            {labels.results.show} {nextResultType.title} {labels.results.entries}
-          </DarkLabel>
-          <Arrow />
-        </>
+        <DarkLabel>
+          {labels.results.show} {nextResultType.title} {labels.results.entries}
+        </DarkLabel>
+        <Arrow />
       </Button>
     </>
   )
