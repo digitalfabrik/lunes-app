@@ -17,20 +17,15 @@ const ArticleChoiceExerciseScreen = ({
   navigation,
   route
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { discipline } = route.params
-  const { data: documents, loading } = useLoadDocuments(discipline)
+  const response = useLoadDocuments(route.params.discipline)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
   }
 
-  if (documents === null || loading) {
-    return null
-  }
-
   return (
     <SingleChoiceExercise
-      data={documents}
+      response={response}
       documentToAnswers={documentToAnswers}
       navigation={navigation}
       route={route}

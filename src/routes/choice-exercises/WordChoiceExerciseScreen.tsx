@@ -14,14 +14,13 @@ interface WordChoiceExerciseScreenPropsType {
 }
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { discipline } = route.params
-  const { data: documents, loading } = useLoadDocuments(discipline)
-
-  if (documents === null || loading) {
-    return null
-  }
+  const response = useLoadDocuments(route.params.discipline)
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
+    const { data: documents } = response
+    if (!documents) {
+      return []
+    }
     const answers = []
     const usedDocuments = [correctDocument]
 
@@ -52,7 +51,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     <SingleChoiceExercise
-      data={documents}
+      response={response}
       documentToAnswers={documentToAnswers}
       navigation={navigation}
       route={route}

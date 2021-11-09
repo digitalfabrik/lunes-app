@@ -8,9 +8,11 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
+import ServerResponseHandler from '../../../components/ServerResponseHandler'
 import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
+import { ReturnType } from '../../../hooks/useLoadFromEndpoint'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import { LightLabelInput } from '../../write-exercise/components/Actions'
@@ -41,7 +43,7 @@ const StyledArrow = styled(NextArrow)`
 `
 
 interface SingleChoiceExercisePropsType {
-  data: DocumentType[]
+  response: ReturnType<DocumentType[]>
   documentToAnswers: (document: DocumentType) => Answer[]
   navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -49,7 +51,7 @@ interface SingleChoiceExercisePropsType {
 }
 
 const ChoiceExerciseScreen = ({
-  data,
+  response,
   documentToAnswers,
   navigation,
   route,
@@ -60,19 +62,20 @@ const ChoiceExerciseScreen = ({
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<DocumentResultType[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
-  const correctAnswerDelay = 700
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
+  const [correctAnswer, setCorrectAnswer] = useState<Answer | null>(null)
+
+  const correctAnswerDelay = 700
+  const { data, loading, error, refresh } = response
   const documents = newDocuments ?? data
-  const currentDocument = documents[currentWord]
-  const [correctAnswer, setCorrectAnswer] = useState<Answer>({
-    article: currentDocument.article,
-    word: currentDocument.word
-  })
+  const currentDocument = documents ? documents[currentWord] : null
 
   // Prevent regenerating false answers on every render
   useEffect(() => {
-    setAnswers(documentToAnswers(currentDocument))
-    setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
+    if (currentDocument) {
+      setAnswers(documentToAnswers(currentDocument))
+      setCorrectAnswer({ word: currentDocument.word, article: currentDocument.article })
+    }
   }, [currentDocument, documentToAnswers])
 
   const tryLater = useCallback(() => {
@@ -93,13 +96,16 @@ const ChoiceExerciseScreen = ({
     setNewDocuments(null)
   }
 
-  const count = documents.length
+  const count = documents?.length ?? 0
 
   const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
   const onClickAnswer = (clickedAnswer: Answer): void => {
+    if (!currentDocument || !documents || !correctAnswer) {
+      return
+    }
     setSelectedAnswer(clickedAnswer)
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, clickedAnswer)
@@ -107,10 +113,10 @@ const ChoiceExerciseScreen = ({
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)
-      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.correct }
+      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.correct }
       setResults([...results, result])
     } else {
-      const result: DocumentResultType = { ...documents[currentWord], result: SIMPLE_RESULTS.incorrect }
+      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.incorrect }
       setResults([...results, result])
     }
     setTimeout(() => {
@@ -139,33 +145,38 @@ const ChoiceExerciseScreen = ({
         navigation={navigation}
         route={route}
         currentWord={currentWord}
-        numberOfWords={documents.length}
+        numberOfWords={documents?.length ?? 0}
       />
-      {documents[currentWord]?.document_image.length > 0 && (
-        <ImageCarousel images={documents[currentWord]?.document_image} />
-      )}
-      <AudioPlayer document={documents[currentWord]} disabled={selectedAnswer === null} />
-      <SingleChoice
-        answers={answers}
-        onClick={onClickAnswer}
-        correctAnswer={correctAnswer}
-        selectedAnswer={selectedAnswer}
-        delayPassed={delayPassed}
-      />
-      <ButtonContainer>
-        {selectedAnswer !== null ? (
-          <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-            <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
-          </Button>
-        ) : (
-          !lastWord && (
-            <Button onPress={tryLater} testID='try-later'>
-              <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
-              <StyledArrow />
-            </Button>
-          )
+
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && correctAnswer && currentDocument && (
+          <>
+            {currentDocument.document_image.length > 0 && <ImageCarousel images={currentDocument.document_image} />}
+            <AudioPlayer document={currentDocument} disabled={selectedAnswer === null} />
+            <SingleChoice
+              answers={answers}
+              onClick={onClickAnswer}
+              correctAnswer={correctAnswer}
+              selectedAnswer={selectedAnswer}
+              delayPassed={delayPassed}
+            />
+            <ButtonContainer>
+              {selectedAnswer !== null ? (
+                <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
+                  <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
+                </Button>
+              ) : (
+                !lastWord && (
+                  <Button onPress={tryLater} testID='try-later'>
+                    <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
+                    <StyledArrow />
+                  </Button>
+                )
+              )}
+            </ButtonContainer>
+          </>
         )}
-      </ButtonContainer>
+      </ServerResponseHandler>
     </ExerciseContainer>
   )
 }

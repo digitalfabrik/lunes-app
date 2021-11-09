@@ -1,12 +1,12 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
-import { FlatList, StatusBar, Text } from 'react-native'
+import { FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
@@ -58,21 +58,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   const { discipline } = route.params.extraParams
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const { data: disciplines, error, loading } = useLoadDisciplines(discipline)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
 
   useFocusEffect(
     useCallback(() => {
       setSelectedId(-1)
     }, [])
-  )
-
-  const titleCOMP = (
-    <Title
-      title={discipline.title}
-      description={`${discipline.numberOfChildren} ${
-        discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
-      }`}
-    />
   )
 
   const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -110,16 +101,20 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
-      <Loading isLoading={loading}>
+      <Title
+        title={discipline.title}
+        description={`${discipline.numberOfChildren} ${
+          discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
+        }`}
+      />
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
           data={disciplines}
-          ListHeaderComponent={titleCOMP}
           renderItem={ListItem}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
         />
-      </Loading>
-      <Text>{error?.message}</Text>
+      </ServerResponseHandler>
     </Root>
   )
 }

@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import React, { ReactElement, ReactNode } from 'react'
+import { ActivityIndicator } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 const Indicator = styled.View`
@@ -9,14 +9,14 @@ const Indicator = styled.View`
 `
 
 interface ILoadingProps {
-  children?: ReactElement
+  children?: ReactNode
   isLoading: boolean
 }
 
 const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
   const theme = useTheme()
   return (
-    <View>
+    <>
       {isLoading ? (
         <Indicator>
           <ActivityIndicator size='large' color={theme.colors.lunesBlack} testID={'loading'} />
@@ -24,7 +24,7 @@ const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
       ) : (
         children
       )}
-    </View>
+    </>
   )
 }
 

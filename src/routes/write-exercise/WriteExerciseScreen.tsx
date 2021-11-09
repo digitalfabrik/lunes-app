@@ -1,11 +1,10 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, ScrollView } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { ScrollView } from 'react-native'
 
 import ExerciseHeader from '../../components/ExerciseHeader'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
@@ -13,14 +12,6 @@ import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { moveToEnd } from '../../services/helpers'
 import WriteExercise from './components/WriteExercise'
-
-const Spinner = styled(ActivityIndicator)`
-  width: 100%;
-  height: ${hp('35%')}px;
-  position: absolute;
-  top: 0;
-  background-color: ${props => props.theme.colors.lunesWhite};
-`
 
 interface WriteExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'WriteExercise'>
@@ -32,8 +23,9 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  const response = useLoadDocuments(discipline)
-  const documents = newDocuments ?? retryData?.data ?? response.data
+
+  const { data, loading, error, refresh } = useLoadDocuments(discipline)
+  const documents = newDocuments ?? retryData?.data ?? data
 
   useEffect(() => {
     AsyncStorage.setSession({ ...discipline, exercise: ExerciseKeys.writeExercise, results: [] }).catch(e =>
@@ -72,20 +64,20 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      {documents && document ? (
-        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
-          <WriteExercise
-            currentDocumentNumber={currentDocumentNumber}
-            setCurrentDocumentNumber={setCurrentDocumentNumber}
-            documents={documents}
-            finishExercise={finishExercise}
-            tryLater={tryLater}
-            disciplineId={id}
-          />
-        </ScrollView>
-      ) : (
-        <Spinner />
-      )}
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && document && (
+          <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
+            <WriteExercise
+              currentDocumentNumber={currentDocumentNumber}
+              setCurrentDocumentNumber={setCurrentDocumentNumber}
+              documents={documents}
+              finishExercise={finishExercise}
+              tryLater={tryLater}
+              disciplineId={id}
+            />
+          </ScrollView>
+        )}
+      </ServerResponseHandler>
     </>
   )
 }

@@ -1,14 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
 import CustomDisciplineMenuItem from '../components/CustomDisciplineMenuItem'
 import Header from '../components/Header'
-import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
@@ -59,34 +59,12 @@ interface HomeScreenPropsType {
 const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(null)
     }, [])
-  )
-
-  const Title = (): JSX.Element => (
-    <>
-      <Header />
-      <StyledText>{labels.home.welcome}</StyledText>
-      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
-        <PlusIcon />
-        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
-      </AddCustomDisciplineContainer>
-      {customDisciplines.map(customDiscipline => {
-        return (
-          <CustomDisciplineMenuItem
-            key={customDiscipline}
-            apiKey={customDiscipline}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-            navigation={navigation}
-          />
-        )
-      })}
-    </>
   )
 
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -121,17 +99,32 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
 
   return (
     <Root>
-      <Loading isLoading={loading}>
+      <Header />
+      <StyledText>{labels.home.welcome}</StyledText>
+      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
+        <PlusIcon />
+        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+      </AddCustomDisciplineContainer>
+      {customDisciplines.map(customDiscipline => {
+        return (
+          <CustomDisciplineMenuItem
+            key={customDiscipline}
+            apiKey={customDiscipline}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            navigation={navigation}
+          />
+        )
+      })}
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
           data={disciplines}
-          ListHeaderComponent={Title}
           renderItem={Item}
           keyExtractor={item => item.id.toString()}
           scrollEnabled={true}
           bounces={false}
         />
-      </Loading>
-      <Text>{error?.message}</Text>
+      </ServerResponseHandler>
     </Root>
   )
 }
