@@ -1,11 +1,8 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
-import { ActivityIndicator } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
 
 import ExerciseHeader from '../../components/ExerciseHeader'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -27,6 +24,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
+  const { height } = useWindowDimensions()
 
   const { data, loading, error, refresh } = useLoadDocuments(discipline)
   const documents = newDocuments ?? retryData?.data ?? data
@@ -70,11 +68,8 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
 
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && document && (
-          <KeyboardAwareScrollView
-          style={{ flex: 1 }}
-          keyboardShouldPersistTaps='always'
-            showsVerticalScrollIndicator={false}>
-          <WriteExercise
+          <KeyboardAwareScrollView contentContainerStyle={{ height }}>
+            <WriteExercise
               currentDocumentNumber={currentDocumentNumber}
               setCurrentDocumentNumber={setCurrentDocumentNumber}
               documents={documents}
