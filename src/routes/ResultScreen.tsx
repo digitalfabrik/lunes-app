@@ -19,23 +19,6 @@ const Root = styled.View`
   height: 100%;
   width: 100%;
   padding-bottom: 0;
-  padding-top: 4%;
-`
-
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  margin-bottom: 1%;
-  margin-top: 6%;
-`
-
-const Description = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
 const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
@@ -80,8 +63,8 @@ interface ResultScreenPropsType {
 }
 
 const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
-  const { extraParams, results, counts, resultType } = route.params
-  const { exercise } = extraParams
+  const { result, counts, resultType } = route.params
+  const { exercise } = result
   const [entries, setEntries] = React.useState<DocumentResultType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
@@ -96,51 +79,42 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   useFocusEffect(
     React.useCallback(() => {
-      setEntries(results.filter(({ result }: DocumentResultType) => result === resultType.key))
+      setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { extraParams: extraParams })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
             <CircularFinishIcon />
           </TouchableOpacity>
         )
       })
 
       setIsLoading(false)
-    }, [extraParams, navigation, resultType, results])
+    }, [navigation, resultType, result])
   )
 
   const Header = (
-    <Title>
-      <>
-        <Icon width={38} height={38} />
-        <ScreenTitle>
-          {' '}
-          {title} {labels.results.entries}
-        </ScreenTitle>
-        <Description>{`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${
-          labels.home.words
-        }`}</Description>
-      </>
-    </Title>
+    <Title
+      titleIcon={<Icon width={38} height={38} />}
+      title={` \n${title} ${labels.results.entries}`}
+      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.home.words}`}
+    />
   )
 
   const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {
-      retryData: { data: entries },
-      extraParams
+      discipline: { ...result.discipline },
+      retryData: { data: entries }
     })
 
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
       <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
-        <>
-          <RepeatIcon fill={COLORS.lunesWhite} />
-          <LightLabel>
-            {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
-          </LightLabel>
-        </>
+        <RepeatIcon fill={COLORS.lunesWhite} />
+        <LightLabel>
+          {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
+        </LightLabel>
       </Button>
     ) : null
 
@@ -155,12 +129,10 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
             resultType: nextResultType
           })
         }>
-        <>
-          <DarkLabel>
-            {labels.results.show} {nextResultType.title} {labels.results.entries}
-          </DarkLabel>
-          <Arrow />
-        </>
+        <DarkLabel>
+          {labels.results.show} {nextResultType.title} {labels.results.entries}
+        </DarkLabel>
+        <Arrow />
       </Button>
     </>
   )

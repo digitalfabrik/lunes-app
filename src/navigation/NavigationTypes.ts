@@ -1,8 +1,5 @@
-import { ComponentType } from 'react'
-import { SvgProps } from 'react-native-svg'
-
 import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
-import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
+import { DocumentsType, DocumentType } from '../constants/endpoints'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
@@ -14,6 +11,21 @@ export type CountsType = {
   total: number
 }
 
+export interface Discipline {
+  id: number
+  title: string
+  numberOfChildren: number
+  isLeaf: boolean
+  apiKey?: string
+}
+
+interface ResultScreenData {
+  discipline: Discipline
+  exercise: ExerciseKeyType
+  results: DocumentResultType[]
+  retryData?: { data: DocumentsType }
+}
+
 // https://github.com/Microsoft/TypeScript/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParamsType = {
@@ -21,121 +33,38 @@ export type RoutesParamsType = {
   AddCustomDiscipline: undefined
   DisciplineSelection: {
     extraParams: {
-      discipline: DisciplineType
+      discipline: Discipline
       parentTitle?: string
     }
   }
   Exercises: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-    }
+    discipline: Discipline
   }
   VocabularyList: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: Discipline
   }
   WordChoiceExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: Discipline
   }
   ArticleChoiceExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: Discipline
   }
   WriteExercise: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
+    discipline: Discipline
     retryData?: { data: DocumentsType }
   }
   InitialSummary: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-      documentsLength: number
-      results: DocumentResultType[]
-    }
-    retryData?: { data: DocumentsType }
+    result: ResultScreenData
   }
   ResultsOverview: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      documentsLength: number
-      exercise: ExerciseKeyType
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
-    retryData?: { data: DocumentsType }
-    results: DocumentResultType[]
+    result: ResultScreenData
   }
-
-  CorrectResults: undefined
-  IncorrectResults: undefined
-  AlmostCorrectResults: undefined
   ResultScreen: {
-    extraParams: {
-      disciplineID: number
-      disciplineTitle: string
-      disciplineIcon: string
-      trainingSetId: number
-      trainingSet: string
-      exercise: ExerciseKeyType
-      documentsLength: number
-      exerciseDescription: string
-      level: ComponentType<SvgProps>
-    }
-    retryData?: { data: DocumentsType }
-    results: DocumentResultType[]
+    result: ResultScreenData
     resultType: ResultType
     counts: CountsType
   }
+  CorrectResults: undefined
+  IncorrectResults: undefined
+  AlmostCorrectResults: undefined
 }

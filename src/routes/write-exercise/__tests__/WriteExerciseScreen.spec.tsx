@@ -8,7 +8,10 @@ import labels from '../../../constants/labels.json'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
+import {
+  mockUseLoadFromEndpointWitData,
+  mockUseLoadFromEndpointWithError
+} from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
@@ -62,16 +65,11 @@ describe('WriteExerciseScreen', () => {
     key: '',
     name: 'WriteExercise',
     params: {
-      extraParams: {
-        documentsLength: 2,
-        disciplineID: 0,
-        disciplineIcon: 'Icon',
-        disciplineTitle: 'Title',
-        exercise: 4,
-        exerciseDescription: 'Description',
-        trainingSet: 'Set',
-        trainingSetId: 0,
-        level: jest.fn()
+      discipline: {
+        id: 1,
+        title: 'TestTitel',
+        numberOfChildren: 2,
+        isLeaf: true
       }
     }
   }
@@ -84,7 +82,7 @@ describe('WriteExerciseScreen', () => {
     })
 
     expect(getUri(getByRole('image'))).toBe('Arbeitshose')
-    const tryLater = getByText(labels.exercises.write.tryLater)
+    const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
     expect(getUri(getByRole('image'))).toBe('Arbeitsschuhe')
     fireEvent.press(getByText(labels.exercises.write.showSolution))
@@ -102,5 +100,13 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText('Lösung anzeigen'))
     fireEvent.press(getByText('Nächstes Wort'))
     expect(queryByText('Später versuchen')).toBeNull()
+  })
+
+  it('should show network error', () => {
+    mockUseLoadFromEndpointWithError('Network Error')
+    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
+    expect(findByText(labels.general.error.noWifi)).toBeDefined()
   })
 })

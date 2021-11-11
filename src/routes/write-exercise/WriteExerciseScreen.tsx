@@ -1,27 +1,21 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
+import { ScrollView } from 'react-native'
 import { ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import AudioPlayer from '../../components/AudioPlayer'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import ImageCarousel from '../../components/ImageCarousel'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
+import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
-import AnswerSection from './components/AnswerSection'
-
-const Spinner = styled(ActivityIndicator)`
-  width: 100%;
-  height: ${hp('35%')}px;
-  position: absolute;
-  top: 0;
-  background-color: ${props => props.theme.colors.lunesWhite};
-`
+import { moveToEnd } from '../../services/helpers'
+import WriteExercise from './components/WriteExercise'
 
 interface WriteExerciseScreenPropsType {
   route: RouteProp<RoutesParamsType, 'WriteExercise'>
@@ -29,25 +23,23 @@ interface WriteExerciseScreenPropsType {
 }
 
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
-  const { extraParams, retryData } = route.params
-  const { trainingSet, trainingSetId, disciplineTitle } = extraParams
+  const { discipline, retryData } = route.params
+  const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
-  // Hints (e.g. audio) are only enabled after an answer was entered and validated
-  const [hintsEnabled, setHintsEnabled] = useState<boolean>(false)
-  const response = useLoadDocuments(trainingSetId)
-  const documents = newDocuments ?? retryData?.data ?? response.data
+
+  const { data, loading, error, refresh } = useLoadDocuments(discipline)
+  const documents = newDocuments ?? retryData?.data ?? data
 
   useEffect(() => {
-    AsyncStorage.setSession(route.params).catch(e => console.error(e))
-  }, [route.params])
+    AsyncStorage.setSession({ ...discipline, exercise: ExerciseKeys.writeExercise, results: [] }).catch(e =>
+      console.error(e)
+    )
+  }, [discipline])
 
   const tryLater = useCallback(() => {
     if (documents !== null) {
-      const currDocument = documents[currentDocumentNumber]
-      const newDocuments = documents.filter(d => d !== currDocument)
-      newDocuments.push(currDocument)
-      setNewDocuments(newDocuments)
+      setNewDocuments(moveToEnd(documents, currentDocumentNumber))
     }
   }, [documents, currentDocumentNumber])
 
@@ -55,7 +47,13 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     AsyncStorage.clearSession().catch(e => console.error(e))
     setCurrentDocumentNumber(0)
     setNewDocuments(null)
-    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results: [] } })
+    navigation.navigate('InitialSummary', {
+      result: {
+        discipline: { ...discipline },
+        results: [],
+        exercise: ExerciseKeys.writeExercise
+      }
+    })
   }
 
   const docsLength = documents?.length ?? 0
@@ -70,27 +68,23 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         numberOfWords={docsLength}
       />
 
-      {documents && document ? (
-        <KeyboardAwareScrollView
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && document && (
+          <KeyboardAwareScrollView
           style={{ flex: 1 }}
           keyboardShouldPersistTaps='always'
-          showsVerticalScrollIndicator={false}>
-          <ImageCarousel images={document.document_image} />
-          <AudioPlayer document={document} disabled={!hintsEnabled} />
-          <AnswerSection
-            currentDocumentNumber={currentDocumentNumber}
-            setCurrentDocumentNumber={setCurrentDocumentNumber}
-            documents={documents}
-            finishExercise={finishExercise}
-            tryLater={tryLater}
-            trainingSet={trainingSet}
-            disciplineTitle={disciplineTitle}
-            setHintsEnabled={setHintsEnabled}
-          />
-        </KeyboardAwareScrollView>
-      ) : (
-        <Spinner />
-      )}
+            showsVerticalScrollIndicator={false}>
+          <WriteExercise
+              currentDocumentNumber={currentDocumentNumber}
+              setCurrentDocumentNumber={setCurrentDocumentNumber}
+              documents={documents}
+              finishExercise={finishExercise}
+              tryLater={tryLater}
+              disciplineId={id}
+            />
+          </KeyboardAwareScrollView>
+        )}
+      </ServerResponseHandler>
     </>
   )
 }

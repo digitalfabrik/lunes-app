@@ -6,12 +6,15 @@ export const loadFromEndpoint = async <T>(
   url: string,
   setData: (data: T | null) => void,
   setError: (error: Error | null) => void,
-  setLoading: (loading: boolean) => void
+  setLoading: (loading: boolean) => void,
+  apiKey?: string
 ): Promise<void> => {
   setLoading(true)
 
+  const header = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
+
   try {
-    const response = await axios.get(url)
+    const response = await axios.get(url, { headers: header })
     setData(response.data)
     setError(null)
   } catch (e) {
@@ -29,14 +32,14 @@ export interface ReturnType<T> {
   refresh: () => void
 }
 
-export const useLoadFromEndpoint = <T>(url: string): ReturnType<T> => {
+export const useLoadFromEndpoint = <T>(url: string, apiKey?: string): ReturnType<T> => {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   const load = useCallback(() => {
-    loadFromEndpoint<T>(url, setData, setError, setLoading).catch(e => setError(e))
-  }, [url])
+    loadFromEndpoint<T>(url, setData, setError, setLoading, apiKey).catch(e => setError(e))
+  }, [url, apiKey])
 
   useEffect(() => {
     load()

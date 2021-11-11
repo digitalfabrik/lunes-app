@@ -1,27 +1,26 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList, Text } from 'react-native'
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
+import CustomDisciplineMenuItem from '../components/CustomDisciplineMenuItem'
 import Header from '../components/Header'
-import Loading from '../components/Loading'
 import MenuItem from '../components/MenuItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
 `
 const StyledText = styled.Text`
-  margin-top: 8.5%;
+  margin-top: 50px;
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
@@ -30,14 +29,6 @@ const StyledText = styled.Text`
 `
 const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
   width: 100%;
-`
-
-const Description = styled.Text<{ item: DisciplineType; selectedId: number | null }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props =>
-    props.item.id === props.selectedId ? props.theme.colors.white : props.theme.colors.lunesGreyMedium};
 `
 
 const AddCustomDisciplineContainer = styled.TouchableOpacity`
@@ -53,38 +44,27 @@ const AddCustomDisciplineText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
+const Description = styled.Text<{ selected: boolean }>`
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
+`
+
 interface HomeScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   customDisciplines: string[]
 }
 
 const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const { data: disciplines, error, loading } = useLoadDisciplines(null, customDisciplines)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getSession()
-        .then(async value => {
-          if (value !== null) {
-            navigation.navigate('WriteExercise', value)
-          }
-        })
-        .catch(e => console.error(e))
-      setSelectedId(-1)
-    }, [navigation])
-  )
-
-  const Title = (top: number | undefined): JSX.Element => (
-    <>
-      <Header top={top} />
-      <StyledText>{labels.home.welcome}</StyledText>
-      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
-        <PlusIcon />
-        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
-      </AddCustomDisciplineContainer>
-    </>
+      setSelectedId(null)
+    }, [])
   )
 
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -93,11 +73,11 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
     }
     return (
       <MenuItem
-        selected={item.id === selectedId}
+        selected={item.id.toString() === selectedId}
         title={item.title}
         icon={item.icon}
         onPress={() => handleNavigation(item)}>
-        <Description item={item} selectedId={selectedId}>
+        <Description selected={item.id.toString() === selectedId}>
           {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
         </Description>
       </MenuItem>
@@ -105,7 +85,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   }
 
   const handleNavigation = (item: DisciplineType): void => {
-    setSelectedId(item.id)
+    setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       extraParams: {
         discipline: item
@@ -118,23 +98,34 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   }
 
   return (
-    <SafeAreaInsetsContext.Consumer>
-      {insets => (
-        <Root>
-          <Loading isLoading={loading}>
-            <StyledList
-              data={disciplines}
-              ListHeaderComponent={Title(insets?.top)}
-              renderItem={Item}
-              keyExtractor={item => item.id.toString()}
-              scrollEnabled={true}
-              bounces={false}
-            />
-          </Loading>
-          <Text>{error?.message}</Text>
-        </Root>
-      )}
-    </SafeAreaInsetsContext.Consumer>
+    <Root>
+      <Header />
+      <StyledText>{labels.home.welcome}</StyledText>
+      <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
+        <PlusIcon />
+        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+      </AddCustomDisciplineContainer>
+      {customDisciplines.map(customDiscipline => {
+        return (
+          <CustomDisciplineMenuItem
+            key={customDiscipline}
+            apiKey={customDiscipline}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            navigation={navigation}
+          />
+        )
+      })}
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        <StyledList
+          data={disciplines}
+          renderItem={Item}
+          keyExtractor={item => item.id.toString()}
+          scrollEnabled={true}
+          bounces={false}
+        />
+      </ServerResponseHandler>
+    </Root>
   )
 }
 

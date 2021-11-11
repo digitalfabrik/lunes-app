@@ -57,14 +57,14 @@ const DarkLabel = styled.Text`
   margin-left: 10px;
   text-transform: uppercase;
 `
+
 interface InitialSummaryScreenPropsType {
   route: RouteProp<RoutesParamsType, 'InitialSummary'>
   navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
 }
 
 const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): ReactElement => {
-  const { extraParams } = route.params
-  const { exercise, disciplineTitle, trainingSet } = extraParams
+  const { exercise, discipline, results: resultsFromParams } = route.params.result
   const [results, setResults] = React.useState<DocumentResultType[]>([])
   const [message, setMessage] = React.useState<string>('')
 
@@ -74,14 +74,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
         AsyncStorage.getExercise(exercise)
           .then(value => {
             if (value !== null) {
-              setResults(Object.values(value[disciplineTitle][trainingSet]))
+              setResults(Object.values(value[discipline.id]))
             }
           })
           .catch(e => console.error(e))
       } else {
-        setResults(extraParams.results)
+        setResults(resultsFromParams)
       }
-    }, [exercise, disciplineTitle, trainingSet, extraParams])
+    }, [exercise, discipline.id, resultsFromParams])
   )
 
   React.useEffect(() => {
@@ -104,13 +104,17 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   const checkResults = (): void => {
     AsyncStorage.clearSession().catch(e => console.error(e))
-    navigation.navigate('ResultsOverview', { extraParams, results })
+    navigation.navigate('ResultsOverview', {
+      result: {
+        discipline: discipline,
+        exercise: exercise,
+        results: results
+      }
+    })
   }
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      extraParams
-    })
+    navigation.navigate(EXERCISES[exercise].nextScreen, route.params)
   }
 
   return (
@@ -125,17 +129,13 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       </UpperSection>
 
       <Button buttonTheme={BUTTONS_THEME.dark} onPress={checkResults}>
-        <>
-          <ListIcon />
-          <LightLabel>{labels.results.checkEntries}</LightLabel>
-        </>
+        <ListIcon />
+        <LightLabel>{labels.results.checkEntries}</LightLabel>
       </Button>
 
       <Button buttonTheme={BUTTONS_THEME.light} onPress={repeatExercise}>
-        <>
-          <RepeatIcon fill={COLORS.lunesBlack} />
-          <DarkLabel>{labels.results.retryExercise}</DarkLabel>
-        </>
+        <RepeatIcon fill={COLORS.lunesBlack} />
+        <DarkLabel>{labels.results.retryExercise}</DarkLabel>
       </Button>
     </Root>
   )

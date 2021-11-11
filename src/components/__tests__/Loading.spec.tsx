@@ -1,39 +1,35 @@
-import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
+import { RenderAPI, render } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import Loading, { ILoadingProps } from '../Loading'
+import wrapWithTheme from '../../testing/wrapWithTheme'
+import Loading from '../Loading'
 
-describe('Components', () => {
-  describe('Loading ', () => {
-    const defaultLoadingProps: ILoadingProps = {
-      isLoading: true,
-      children: <Text>Test Children</Text>
-    }
+describe('Loading ', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-    it('renders correctly across screens', () => {
-      const component = shallow(<Loading {...defaultLoadingProps} />)
-      expect(toJson(component)).toMatchSnapshot()
-    })
+  const childText = 'Children'
 
-    it('should not render children when isLoading is true', () => {
-      const loadingProps: ILoadingProps = {
-        ...defaultLoadingProps
-      }
+  const renderLoading = (isLoading: boolean): RenderAPI => {
+    return render(
+      <Loading isLoading={isLoading}>
+        <Text>{childText}</Text>
+      </Loading>,
+      { wrapper: wrapWithTheme }
+    )
+  }
 
-      const component = shallow(<Loading {...loadingProps} />)
-      expect(component.contains(loadingProps.children)).toBe(false)
-    })
+  it('should not render children when isLoading is true', () => {
+    const { queryByText, getByTestId } = renderLoading(true)
+    expect(queryByText(childText)).toBeFalsy()
+    expect(getByTestId('loading')).toBeTruthy()
+  })
 
-    it('should render children when isLoading is false', () => {
-      const loadingProps: ILoadingProps = {
-        ...defaultLoadingProps,
-        isLoading: false
-      }
-
-      const component = shallow(<Loading {...loadingProps} />)
-      expect(component.contains(loadingProps.children)).toBe(true)
-    })
+  it('should render children when isLoading is false', () => {
+    const { getByText, queryByTestId } = renderLoading(false)
+    expect(getByText(childText)).toBeTruthy()
+    expect(queryByTestId('loading')).toBeFalsy()
   })
 })

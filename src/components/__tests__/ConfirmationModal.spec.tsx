@@ -13,16 +13,11 @@ describe('Components', () => {
         key: '',
         name: 'WordChoiceExercise',
         params: {
-          extraParams: {
-            disciplineID: 0,
-            disciplineTitle: 'Title',
-            disciplineIcon: 'Icon',
-            trainingSetId: 0,
-            trainingSet: 'Set',
-            exercise: 1,
-            exerciseDescription: 'Description',
-            level: jest.fn(),
-            documentsLength: 0
+          discipline: {
+            id: 0,
+            title: 'Title',
+            numberOfChildren: 0,
+            isLeaf: false
           }
         }
       },

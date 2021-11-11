@@ -5,11 +5,14 @@ import stringSimilarity from 'string-similarity'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../../../assets/images'
+import AudioPlayer from '../../../components/AudioPlayer'
+import ImageCarousel from '../../../components/ImageCarousel'
 import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 import AsyncStorage from '../../../services/AsyncStorage'
+import { stringifyDocument } from '../../../services/helpers'
 import Actions from './Actions'
 import ArticleMissingPopoverContent from './ArticleMissingPopoverContent'
 import Feedback from './FeedbackSection'
@@ -52,22 +55,19 @@ export interface AnswerSectionPropsType {
   setCurrentDocumentNumber: Function
   documents: DocumentType[]
   finishExercise: Function
-  trainingSet: string
-  disciplineTitle: string
-  setHintsEnabled: (hintsEnabled: boolean) => void
+  disciplineId: number
 }
 
 const almostCorrectThreshold = 0.6
+const ttsThreshold = 0.6
 
-const AnswerSection = ({
+const WriteExercise = ({
   currentDocumentNumber,
   setCurrentDocumentNumber,
   finishExercise,
   tryLater,
-  trainingSet,
-  disciplineTitle,
-  documents,
-  setHintsEnabled
+  disciplineId,
+  documents
 }: AnswerSectionPropsType): ReactElement => {
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   // The currently entered answer
@@ -108,9 +108,6 @@ const AnswerSection = ({
     if (!secondAttempt) {
       await storeResult(newResult)
     }
-    if (newResult !== 'similar') {
-      setHintsEnabled(true)
-    }
   }
 
   const validateAnswer = (article: string, word: string): SimpleResultType => {
@@ -136,14 +133,12 @@ const AnswerSection = ({
     const previousResult = result
     setResult('incorrect')
     await storeResult(previousResult ?? 'incorrect')
-    setHintsEnabled(true)
   }
 
   const continueExercise = (): void => {
     setResult(null)
     setSubmission(null)
     setInput('')
-    setHintsEnabled(false)
 
     if (currentDocumentNumber === totalNumbers - 1) {
       finishExercise()
@@ -155,10 +150,9 @@ const AnswerSection = ({
   const storeResult = async (score: SimpleResultType): Promise<void> => {
     try {
       const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
-      exercise[disciplineTitle] = exercise[disciplineTitle] ?? {}
-      exercise[disciplineTitle][trainingSet] = exercise[disciplineTitle][trainingSet] ?? {}
+      exercise[disciplineId] = exercise[disciplineId] ?? {}
 
-      exercise[disciplineTitle][trainingSet][document.word] = {
+      exercise[disciplineId][document.word] = {
         ...document,
         result: score
       }
@@ -198,47 +192,60 @@ const AnswerSection = ({
   }
 
   const editable = result === null || result === 'similar'
+  const correctAlternativeSubmitted =
+    result === 'correct' &&
+    submission &&
+    stringSimilarity.compareTwoStrings(submission, stringifyDocument(document)) <= ttsThreshold
+  const submittedAlternative = correctAlternativeSubmitted ? submission : null
 
   return (
-    <Pressable onPress={Keyboard.dismiss}>
-      <StyledContainer>
-        <Popover isVisible={isArticleMissing} setIsPopoverVisible={setIsArticleMissing} ref={touchable}>
-          <ArticleMissingPopoverContent />
-        </Popover>
+    <>
+      <ImageCarousel images={document.document_image} />
+      <AudioPlayer
+        document={document}
+        disabled={!result || result === 'similar'}
+        submittedAlternative={submittedAlternative}
+      />
 
-        <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
-          <StyledTextInput
-            placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
-            placeholderTextColor={COLORS.lunesBlackLight}
-            value={input}
-            onChangeText={setInput}
-            editable={editable}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onSubmitEditing={checkEntry}
+      <Pressable onPress={Keyboard.dismiss}>
+        <StyledContainer>
+          <Popover isVisible={isArticleMissing} setIsPopoverVisible={setIsArticleMissing} ref={touchable}>
+            <ArticleMissingPopoverContent />
+          </Popover>
+
+          <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
+            <StyledTextInput
+              placeholder={secondAttempt ? labels.exercises.write.newTry : labels.exercises.write.insertAnswer}
+              placeholderTextColor={COLORS.lunesBlackLight}
+              value={input}
+              onChangeText={setInput}
+              editable={editable}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onSubmitEditing={checkEntry}
+            />
+            {editable && input !== '' && (
+              <TouchableOpacity onPress={() => setInput('')}>
+                <CloseIcon />
+              </TouchableOpacity>
+            )}
+          </TextInputContainer>
+
+          {result && <Feedback result={result} document={document} submission={submission} />}
+
+          <Actions
+            tryLater={tryLater}
+            giveUp={giveUp}
+            input={input}
+            result={result}
+            checkEntry={checkEntry}
+            continueExercise={continueExercise}
+            isFinished={currentDocumentNumber === totalNumbers - 1}
           />
-          {editable && input !== '' && (
-            <TouchableOpacity onPress={() => setInput('')}>
-              <CloseIcon />
-            </TouchableOpacity>
-          )}
-        </TextInputContainer>
-
-        {result && <Feedback result={result} document={document} submission={submission} />}
-
-        <Actions
-          tryLater={tryLater}
-          giveUp={giveUp}
-          input={input}
-          result={result}
-          checkEntry={checkEntry}
-          continueExercise={continueExercise}
-          secondAttempt={secondAttempt}
-          isFinished={currentDocumentNumber === totalNumbers - 1}
-        />
-      </StyledContainer>
-    </Pressable>
+        </StyledContainer>
+      </Pressable>
+    </>
   )
 }
 
-export default AnswerSection
+export default WriteExercise

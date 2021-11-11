@@ -1,0 +1,6 @@
+issue_key: LUN-116
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die Möglichkeit eine Vokabel zu überspringen, gibt es nun für alle Aufgabentypen.

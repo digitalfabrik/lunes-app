@@ -91,16 +91,12 @@ const VocabularyListModal = ({
           <ButtonContainer>
             {documents.length > selectedDocumentIndex + 1 ? (
               <Button onPress={goToNextWord} buttonTheme={BUTTONS_THEME.dark}>
-                <>
-                  <ButtonText>{labels.exercises.next}</ButtonText>
-                  <WhiteNextArrow />
-                </>
+                <ButtonText>{labels.exercises.next}</ButtonText>
+                <WhiteNextArrow />
               </Button>
             ) : (
               <Button onPress={() => setIsModalVisible(false)} buttonTheme={BUTTONS_THEME.dark}>
-                <>
-                  <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
-                </>
+                <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
               </Button>
             )}
           </ButtonContainer>
