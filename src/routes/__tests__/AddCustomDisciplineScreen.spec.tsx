@@ -18,7 +18,7 @@ jest.mock('../../hooks/useLoadGroupInfo')
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
-  it('should enable submit on text input', () => {
+  it('should enable submit button on text input', () => {
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })

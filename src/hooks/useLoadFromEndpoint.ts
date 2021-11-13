@@ -3,8 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 import axios from '../services/axios'
 
 export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {
-  const header = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
-  const response = await axios.get(url, { headers: header })
+  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
+  const response = await axios.get(url, { headers })
   return response.data
 }
 

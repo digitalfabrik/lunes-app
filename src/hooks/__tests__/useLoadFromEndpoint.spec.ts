@@ -1,15 +1,41 @@
-import { loadFromEndpoint } from '../useLoadFromEndpoint'
+import { mocked } from 'ts-jest/utils'
 
-jest.mock('../../services/axios', () => ({ get: jest.fn() }))
+import axios from '../../services/axios'
+import { getFromEndpoint, loadFromEndpoint } from '../useLoadFromEndpoint'
+
+jest.mock('../../services/axios', () => ({ get: jest.fn(() => ({ data: 'my_data' })) }))
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+describe('getFromEndpoint', () => {
+  it('should get data from endpoint', async () => {
+    const data = 'myData'
+    mocked(axios.get).mockImplementationOnce(async () => {
+      return { data }
+    })
+
+    const url = 'https://example.com'
+    const responseData = await getFromEndpoint(url)
+    expect(responseData).toBe(data)
+    expect(axios.get).toHaveBeenCalledTimes(1)
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: {} })
+  })
+
+  it('should include api key in header', async () => {
+    const url = 'https://example.com'
+    const apiKey = 'my_api_key'
+    await getFromEndpoint(url, apiKey)
+    expect(axios.get).toHaveBeenCalledTimes(1)
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: { Authorization: `Api-Key ${apiKey}` } })
+  })
+})
 
 describe('loadFromEndpoint', () => {
   const setData = jest.fn()
   const setError = jest.fn()
   const setLoading = jest.fn()
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
 
   it('should set everything correctly if loading from endpoint succeeds', async () => {
     const request = async (): Promise<string> => 'myData'
