@@ -1,6 +1,6 @@
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
 import { Discipline } from '../navigation/NavigationTypes'
-import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
+import useLoadFromEndpoint, { getFromEndpoint, ReturnType } from './useLoadFromEndpoint'
 
 interface ServerResponse {
   id: number
@@ -12,29 +12,32 @@ interface ServerResponse {
   total_documents: number
 }
 
-const formatServerResponse = (
-  serverResponse: ReturnType<ServerResponse[]>,
-  apiKey?: string
-): ReturnType<DisciplineType[]> => {
-  const formattedServerResponse: DisciplineType[] =
-    serverResponse.data?.map(item => ({
-      ...item,
-      numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-      isLeaf: item.total_discipline_children === 0,
-      apiKey: apiKey
-    })) ?? []
-  return { ...serverResponse, data: formattedServerResponse }
-}
-
-export const useLoadDisciplines = (parent: Discipline | null): ReturnType<DisciplineType[]> => {
-  let prefix
+const getEndpoint = (parent: Discipline | null): string => {
   if (parent?.isLeaf) {
-    prefix = ENDPOINTS.trainingSet
+    return ENDPOINTS.trainingSet
+  } else if (parent?.apiKey) {
+    return ENDPOINTS.disciplinesByGroup
   } else {
-    prefix = parent?.apiKey ? ENDPOINTS.disciplinesByGroup : ENDPOINTS.disciplines
+    return ENDPOINTS.disciplines
   }
-  const suffix = parent?.id ?? ''
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(`${prefix}/${suffix}`, parent?.apiKey)
-
-  return formatServerResponse(disciplines, parent?.apiKey)
 }
+
+const formatServerResponse = (serverResponse: ServerResponse[], apiKey?: string): DisciplineType[] =>
+  serverResponse.map(item => ({
+    ...item,
+    numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
+    isLeaf: item.total_discipline_children === 0,
+    apiKey: apiKey
+  })) ?? []
+
+export const loadDisciplines = async (parent: Discipline | null): Promise<DisciplineType[]> => {
+  const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
+
+  const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)
+  return formatServerResponse(response, parent?.apiKey)
+}
+
+export const useLoadDisciplines = (parent: Discipline | null): ReturnType<DisciplineType[]> =>
+  useLoadFromEndpoint<DisciplineType[]>(async () => {
+    return await loadDisciplines(parent)
+  })
