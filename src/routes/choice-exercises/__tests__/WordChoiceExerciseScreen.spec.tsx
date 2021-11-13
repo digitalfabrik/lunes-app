@@ -2,8 +2,9 @@ import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
+import { ARTICLES } from '../../../constants/data'
+import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
@@ -14,6 +15,10 @@ jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
+jest.mock('react-native-image-zoom-viewer', () => {
+  const Text = require('react-native').Text
+  return () => <Text>ImageZoomViewer</Text>
+})
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
@@ -23,12 +28,12 @@ describe('WordChoiceExerciseScreen', () => {
   })
 
   // at least 4 documents are needed to generate sufficient false answers
-  const testDocuments: DocumentTypeFromServer[] = [
+  const testDocuments: DocumentType[] = [
     {
       audio: '',
       word: 'Arbeitshose',
       id: 1,
-      article: 2,
+      article: ARTICLES[2],
       document_image: [{ id: 1, image: 'Arbeitshose' }],
       alternatives: []
     },
@@ -36,7 +41,7 @@ describe('WordChoiceExerciseScreen', () => {
       audio: '',
       word: 'Arbeitsschuhe',
       id: 2,
-      article: 4,
+      article: ARTICLES[4],
       document_image: [{ id: 2, image: 'Arbeitsschuhe' }],
       alternatives: []
     },
@@ -44,7 +49,7 @@ describe('WordChoiceExerciseScreen', () => {
       audio: '',
       word: 'Arbeitsjacke',
       id: 3,
-      article: 1,
+      article: ARTICLES[1],
       document_image: [{ id: 3, image: 'Arbeitsjacke' }],
       alternatives: []
     },
@@ -52,7 +57,7 @@ describe('WordChoiceExerciseScreen', () => {
       audio: '',
       word: 'Arbeitskleidung',
       id: 4,
-      article: 4,
+      article: ARTICLES[4],
       document_image: [{ id: 4, image: 'Arbeitskleidung' }],
       alternatives: []
     }
