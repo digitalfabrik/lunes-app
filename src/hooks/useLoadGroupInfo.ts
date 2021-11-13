@@ -21,6 +21,4 @@ export const loadGroupInfo = async (apiKey: string): Promise<DisciplineType> => 
 }
 
 export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> =>
-  useLoadFromEndpoint<DisciplineType>(async () => {
-    return await loadGroupInfo(apiKey)
-  })
+  useLoadFromEndpoint(loadGroupInfo, apiKey)

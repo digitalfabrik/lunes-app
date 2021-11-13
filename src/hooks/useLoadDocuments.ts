@@ -35,8 +35,6 @@ export const loadDocuments = async (discipline: Discipline): Promise<DocumentTyp
 }
 
 const useLoadDocuments = (discipline: Discipline): ReturnType<DocumentType[]> =>
-  useLoadFromEndpoint(async () => {
-    return await loadDocuments(discipline)
-  })
+  useLoadFromEndpoint(loadDocuments, discipline)
 
 export default useLoadDocuments

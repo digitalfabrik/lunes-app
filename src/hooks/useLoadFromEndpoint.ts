@@ -8,8 +8,9 @@ export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<
   return response.data
 }
 
-export const loadFromEndpoint = async <T>(
-  request: () => Promise<T>,
+export const loadFromEndpoint = async <T, P>(
+  request: (params: P) => Promise<T>,
+  params: P,
   setData: (data: T | null) => void,
   setError: (error: Error | null) => void,
   setLoading: (loading: boolean) => void
@@ -17,7 +18,7 @@ export const loadFromEndpoint = async <T>(
   setLoading(true)
 
   try {
-    const response = await request()
+    const response = await request(params)
     setData(response)
     setError(null)
   } catch (e) {
@@ -35,14 +36,14 @@ export interface ReturnType<T> {
   refresh: () => void
 }
 
-export const useLoadFromEndpoint = <T>(request: () => Promise<T>): ReturnType<T> => {
+export const useLoadFromEndpoint = <T, P>(request: (params: P) => Promise<T>, params: P): ReturnType<T> => {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   const load = useCallback(() => {
-    loadFromEndpoint<T>(request, setData, setError, setLoading).catch(e => setError(e))
-  }, [request])
+    loadFromEndpoint<T, P>(request, params, setData, setError, setLoading).catch(e => setError(e))
+  }, [request, params])
 
   useEffect(() => {
     load()

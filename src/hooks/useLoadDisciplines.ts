@@ -38,6 +38,4 @@ export const loadDisciplines = async (parent: Discipline | null): Promise<Discip
 }
 
 export const useLoadDisciplines = (parent: Discipline | null): ReturnType<DisciplineType[]> =>
-  useLoadFromEndpoint<DisciplineType[]>(async () => {
-    return await loadDisciplines(parent)
-  })
+  useLoadFromEndpoint(loadDisciplines, parent)
