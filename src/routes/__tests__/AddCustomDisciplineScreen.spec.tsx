@@ -5,19 +5,20 @@ import React from 'react'
 import { mocked } from 'ts-jest/utils'
 
 import labels from '../../constants/labels.json'
+import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
 import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWitData, mockUseLoadFromEndpointWithError } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../hocs/withCustomDisciplines')
+jest.mock('../../hooks/useLoadGroupInfo')
 
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
-  it('should change button to be enabled on text input', () => {
+  it('should enable submit on text input', () => {
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
@@ -29,7 +30,16 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    mockUseLoadFromEndpointWitData([{ name: 'Test', numberOfChildren: 1 }])
+    const groupInfo = {
+      id: 1,
+      icon: 'my_icon',
+      title: 'Test',
+      apiKey: 'my_api_key',
+      isLeaf: false,
+      numberOfChildren: 1,
+      description: ''
+    }
+    mocked(loadGroupInfo).mockImplementationOnce(async () => groupInfo)
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
@@ -37,12 +47,13 @@ describe('AddCustomDisciplineScreen', () => {
     fireEvent.changeText(textField, 'another_test_module')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    expect(AsyncStorage.setItem).toBeCalledWith('customDisciplines', '["test","another_test_module"]')
+    await waitFor(() =>
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_module"]')
+    )
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
   })
 
   it('should show duplicate error', async () => {
-    mockUseLoadFromEndpointWithError('test')
     await AsyncStorageService.setCustomDisciplines(['test'])
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
