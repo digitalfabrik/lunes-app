@@ -8,7 +8,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import { moveToEnd } from '../../services/helpers'
 import WriteExercise from './components/WriteExercise'
 
@@ -31,20 +31,17 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     }
   }, [documents, currentDocumentNumber])
 
-  const finishExercise = (): void => {
+  const finishExercise = (results: DocumentResultType[]): void => {
     setCurrentDocumentNumber(0)
     setNewDocuments(null)
     navigation.navigate('InitialSummary', {
       result: {
         discipline: { ...discipline },
-        results: [],
+        results,
         exercise: ExerciseKeys.writeExercise
       }
     })
   }
-
-  const docsLength = documents?.length ?? 0
-  const document = documents?.[currentDocumentNumber]
 
   return (
     <>
@@ -52,11 +49,11 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         navigation={navigation}
         route={route}
         currentWord={currentDocumentNumber}
-        numberOfWords={docsLength}
+        numberOfWords={documents?.length ?? 0}
       />
 
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {documents && document && (
+        {documents && (
           <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
             <WriteExercise
               currentDocumentNumber={currentDocumentNumber}
