@@ -7,11 +7,10 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
+import { SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
-import AsyncStorage from '../../../services/AsyncStorage'
 import { stringifyDocument } from '../../../services/helpers'
 import Actions from './Actions'
 import ArticleMissingPopoverContent from './ArticleMissingPopoverContent'
@@ -55,7 +54,6 @@ export interface AnswerSectionPropsType {
   setCurrentDocumentNumber: Function
   documents: DocumentType[]
   finishExercise: Function
-  disciplineId: number
 }
 
 const almostCorrectThreshold = 0.6
@@ -66,7 +64,6 @@ const WriteExercise = ({
   setCurrentDocumentNumber,
   finishExercise,
   tryLater,
-  disciplineId,
   documents
 }: AnswerSectionPropsType): ReactElement => {
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
@@ -104,10 +101,6 @@ const WriteExercise = ({
 
     const newResult = validateAnswer(article, word)
     setResult(newResult)
-
-    if (!secondAttempt) {
-      await storeResult(newResult)
-    }
   }
 
   const validateAnswer = (article: string, word: string): SimpleResultType => {
@@ -130,9 +123,7 @@ const WriteExercise = ({
   }
 
   const giveUp = async (): Promise<void> => {
-    const previousResult = result
     setResult('incorrect')
-    await storeResult(previousResult ?? 'incorrect')
   }
 
   const continueExercise = (): void => {
@@ -144,34 +135,6 @@ const WriteExercise = ({
       finishExercise()
     } else {
       setCurrentDocumentNumber(currentDocumentNumber + 1)
-    }
-  }
-
-  const storeResult = async (score: SimpleResultType): Promise<void> => {
-    try {
-      const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
-      exercise[disciplineId] = exercise[disciplineId] ?? {}
-
-      exercise[disciplineId][document.word] = {
-        ...document,
-        result: score
-      }
-
-      await AsyncStorage.setExercise(ExerciseKeys.writeExercise, exercise)
-
-      const session = await AsyncStorage.getSession()
-      if (session === null) {
-        throw new Error('Session is not saved correctly!')
-      }
-      const newSession = {
-        ...session,
-        retryData: {
-          data: documents.slice(currentDocumentNumber + 1, totalNumbers)
-        }
-      }
-      await AsyncStorage.setSession(newSession)
-    } catch (e) {
-      console.error(e)
     }
   }
 
