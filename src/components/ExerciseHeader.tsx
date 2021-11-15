@@ -9,6 +9,7 @@ import { CloseButton } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
 import ConfirmationModal from './ConfirmationModal'
 
 const HeaderText = styled.Text`
@@ -46,6 +47,7 @@ interface ExerciseHeaderPropsType {
 
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+
   useEffect(
     () =>
       navigation.setOptions({
@@ -59,6 +61,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
       }),
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
+
   useEffect(() => {
     const showModal = (): boolean => {
       setIsModalVisible(true)
@@ -67,6 +70,13 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
     return () => bEvent.remove()
   }, [])
+
+  const goBack = (): void => {
+    setIsModalVisible(false)
+    AsyncStorage.clearSession().catch(e => console.error(e))
+    navigation.navigate('Exercises', { ...route.params })
+  }
+
   return (
     <>
       <ProgressBar
@@ -78,9 +88,11 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
       <ConfirmationModal
         visible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        navigation={navigation}
-        route={route}
+        setVisible={setIsModalVisible}
+        text={labels.exercises.cancelModal.cancelAsk}
+        confirmationButtonText={labels.exercises.cancelModal.cancel}
+        cancelButtonText={labels.exercises.cancelModal.continue}
+        confirmationAction={goBack}
       />
     </>
   )

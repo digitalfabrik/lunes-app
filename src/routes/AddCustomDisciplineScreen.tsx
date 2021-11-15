@@ -7,8 +7,8 @@ import Button from '../components/Button'
 import Loading from '../components/Loading'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
-import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
+import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
@@ -74,27 +74,28 @@ const DarkLabel = styled.Text<{ disabled: boolean }>`
 
 interface AddCustomDisciplineScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
-  customDisciplines: string[]
 }
 
-const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDisciplineScreenPropsType): JSX.Element => {
+const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [codeToSubmit, setCodeToSubmit] = useState<string>('')
 
   const { data, loading, error } = useLoadGroupInfo(codeToSubmit)
+  const { data: customDisciplines, refresh } = useReadCustomDisciplines()
 
   useEffect(() => {
-    if (data && !customDisciplines.includes(code)) {
+    if (data && customDisciplines && !customDisciplines.includes(code)) {
       AsyncStorage.setCustomDisciplines([...customDisciplines, code])
         .then(() => {
+          refresh()
           navigation.navigate('Home')
         })
         .catch(() => {
           setErrorMessage(labels.addCustomDiscipline.error.technical)
         })
     }
-  }, [code, customDisciplines, data, navigation])
+  }, [code, customDisciplines, data, refresh, navigation])
 
   useEffect(() => {
     if (error && codeToSubmit) {
@@ -103,7 +104,7 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
   }, [error, codeToSubmit])
 
   const submit = (): void => {
-    if (customDisciplines.includes(code)) {
+    if (customDisciplines?.includes(code)) {
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
     } else {
       setCodeToSubmit(code)
@@ -133,4 +134,4 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
   )
 }
 
-export default withCustomDisciplines(AddCustomDiscipline)
+export default AddCustomDiscipline

@@ -57,4 +57,5 @@ const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps):
     </Container>
   )
 }
+
 export default MenuItem

@@ -11,8 +11,8 @@ import MenuItem from '../components/MenuItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
@@ -53,18 +53,21 @@ const Description = styled.Text<{ selected: boolean }>`
 
 interface HomeScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
-  customDisciplines: string[]
 }
 
-const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+  const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
+
+  // const isFocused = useIsFocused()
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(null)
-    }, [])
+      refreshCustomDisciplines()
+    }, [refreshCustomDisciplines])
   )
 
   const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
@@ -105,7 +108,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
         <PlusIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines.map(customDiscipline => {
+      {customDisciplines?.map(customDiscipline => {
         return (
           <CustomDisciplineMenuItem
             key={customDiscipline}
@@ -113,6 +116,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
             selectedId={selectedId}
             setSelectedId={setSelectedId}
             navigation={navigation}
+            refresh={refreshCustomDisciplines}
           />
         )
       })}
@@ -129,4 +133,4 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
   )
 }
 
-export default withCustomDisciplines(HomeScreen)
+export default HomeScreen
