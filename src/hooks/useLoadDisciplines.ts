@@ -2,7 +2,7 @@ import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
 import { Discipline } from '../navigation/NavigationTypes'
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
-interface ServerResponse {
+export interface ServerResponse {
   id: number
   title: string
   description: string

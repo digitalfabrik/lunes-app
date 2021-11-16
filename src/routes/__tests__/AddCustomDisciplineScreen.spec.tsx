@@ -5,7 +5,7 @@ import React from 'react'
 import labels from '../../constants/labels.json'
 import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWitData } from '../../testing/mockUseLoadFromEndpoint'
+import { mockUseLoadFromEndpointWithData } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
@@ -26,7 +26,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    mockUseLoadFromEndpointWitData([{ name: 'Test', numberOfChildren: 1 }])
+    mockUseLoadFromEndpointWithData([{ name: 'Test', numberOfChildren: 1 }])
     await AsyncStorageService.setCustomDisciplines(['test'])
 
     const { getByText, getByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {

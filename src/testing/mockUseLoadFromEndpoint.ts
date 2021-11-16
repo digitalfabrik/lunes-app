@@ -13,7 +13,7 @@ const mockData = (data: unknown): typeof useLoadFromEndpoint => {
   })) as typeof useLoadFromEndpoint
 }
 
-export const mockUseLoadFromEndpointWitData = <T>(data: T): void => {
+export const mockUseLoadFromEndpointWithData = <T>(data: T): void => {
   mocked(useLoadFromEndpoint).mockImplementation(mockData(data))
 }
 

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { Animated } from 'react-native'
+import { Animated, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -95,7 +95,7 @@ const CustomDisciplineMenuItem = ({
       <DeleteContainer>
         <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
           <DeleteButton onPress={pressHandler}>
-            <TrashBinIcon />
+            <TrashBinIcon testID={'trash-bin-icon'} />
           </DeleteButton>
         </Animated.View>
       </DeleteContainer>
@@ -140,35 +140,37 @@ const CustomDisciplineMenuItem = ({
     )
   } else if (data) {
     return (
-      <Swipeable
-        ref={updateRef}
-        friction={2}
-        enableTrackpadTwoFingerGesture
-        rightThreshold={40}
-        renderRightActions={renderRightAction}>
-        <ConfirmationModal
-          visible={isModalVisible}
-          setVisible={setIsModalVisible}
-          text={labels.home.deleteModal.confirmationQuestion}
-          confirmationButtonText={labels.home.deleteModal.confirm}
-          cancelButtonText={labels.home.deleteModal.cancel}
-          confirmationAction={deleteModule}
-        />
-        <MenuItem
-          selected={idToSelectedIdString(data.id) === selectedId}
-          onPress={() => {
-            setSelectedId(idToSelectedIdString(data.id))
-            navigation.navigate('DisciplineSelection', {
-              extraParams: { discipline: data }
-            })
-          }}
-          icon={data.icon}
-          title={data.title}>
-          <Description selected={idToSelectedIdString(data.id) === selectedId}>
-            {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-          </Description>
-        </MenuItem>
-      </Swipeable>
+      <View testID={'Swipeable'}>
+        <Swipeable
+          ref={updateRef}
+          friction={2}
+          enableTrackpadTwoFingerGesture
+          rightThreshold={40}
+          renderRightActions={renderRightAction}>
+          <ConfirmationModal
+            visible={isModalVisible}
+            setVisible={setIsModalVisible}
+            text={labels.home.deleteModal.confirmationQuestion}
+            confirmationButtonText={labels.home.deleteModal.confirm}
+            cancelButtonText={labels.home.deleteModal.cancel}
+            confirmationAction={deleteModule}
+          />
+          <MenuItem
+            selected={idToSelectedIdString(data.id) === selectedId}
+            onPress={() => {
+              setSelectedId(idToSelectedIdString(data.id))
+              navigation.navigate('DisciplineSelection', {
+                extraParams: { discipline: data }
+              })
+            }}
+            icon={data.icon}
+            title={data.title}>
+            <Description selected={idToSelectedIdString(data.id) === selectedId}>
+              {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+            </Description>
+          </MenuItem>
+        </Swipeable>
+      </View>
     )
   } else {
     return (

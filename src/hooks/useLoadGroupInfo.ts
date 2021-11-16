@@ -1,7 +1,7 @@
 import { DisciplineType } from '../constants/endpoints'
 import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
 
-interface ServerResponse {
+export interface ServerResponse {
   id: number
   name: string
   icon: string

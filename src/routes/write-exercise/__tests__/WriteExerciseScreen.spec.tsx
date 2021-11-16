@@ -8,7 +8,7 @@ import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import {
-  mockUseLoadFromEndpointWitData,
+  mockUseLoadFromEndpointWithData,
   mockUseLoadFromEndpointWithError
 } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
@@ -67,7 +67,7 @@ describe('WriteExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadFromEndpointWitData(testDocuments)
+    mockUseLoadFromEndpointWithData(testDocuments)
     const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
     const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
@@ -84,7 +84,7 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadFromEndpointWitData(testDocuments)
+    mockUseLoadFromEndpointWithData(testDocuments)
     const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
