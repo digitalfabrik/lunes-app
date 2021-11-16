@@ -8,6 +8,9 @@ steps:
       name: Linting check
       command: yarn lint
   - run:
+      name: TS check
+      command: yarn ts:check
+  - run:
       name: Prettier check
       command: yarn prettier --check .
   - run:
