@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
@@ -15,7 +14,7 @@ import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-const Root = styled.View`
+const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
 `
@@ -26,9 +25,6 @@ const StyledText = styled.Text`
   color: ${props => props.theme.colors.lunesGreyMedium};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
-`
-const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
-  width: 100%;
 `
 
 const AddCustomDisciplineContainer = styled.TouchableOpacity`
@@ -61,31 +57,12 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
-  // const isFocused = useIsFocused()
-
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(null)
       refreshCustomDisciplines()
     }, [refreshCustomDisciplines])
   )
-
-  const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
-    if (item.numberOfChildren === 0) {
-      return null
-    }
-    return (
-      <MenuItem
-        selected={item.id.toString() === selectedId}
-        title={item.title}
-        icon={item.icon}
-        onPress={() => handleNavigation(item)}>
-        <Description selected={item.id.toString() === selectedId}>
-          {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-        </Description>
-      </MenuItem>
-    )
-  }
 
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id.toString())
@@ -121,13 +98,23 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
         )
       })}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <StyledList
-          data={disciplines}
-          renderItem={Item}
-          keyExtractor={item => item.id.toString()}
-          scrollEnabled={true}
-          bounces={false}
-        />
+        {disciplines?.map(item => {
+          if (item.numberOfChildren === 0) {
+            return null
+          }
+          return (
+            <MenuItem
+              key={item.id}
+              selected={item.id.toString() === selectedId}
+              title={item.title}
+              icon={item.icon}
+              onPress={() => handleNavigation(item)}>
+              <Description selected={item.id.toString() === selectedId}>
+                {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+              </Description>
+            </MenuItem>
+          )
+        })}
       </ServerResponseHandler>
     </Root>
   )

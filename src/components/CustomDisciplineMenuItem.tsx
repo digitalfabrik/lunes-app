@@ -78,9 +78,6 @@ const CustomDisciplineMenuItem = ({
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const renderRightAction = (progress: Animated.AnimatedInterpolation): ReactElement => {
-    if (!apiKey) {
-      return <></>
-    }
     const trans = progress.interpolate({
       inputRange: [0, 1],
       outputRange: [50, 0]
@@ -103,16 +100,9 @@ const CustomDisciplineMenuItem = ({
   }
 
   const deleteModule = (): void => {
-    if (!apiKey) {
-      return
-    }
-
     AsyncStorage.deleteCustomDiscipline(apiKey)
-      .then(() => {
-        refresh()
-      })
+      .then(() => refresh())
       .catch((e: Error) => console.log(e.message))
-
     setIsModalVisible(false)
   }
 
@@ -138,7 +128,7 @@ const CustomDisciplineMenuItem = ({
         </LoadingSpinner>
       </Placeholder>
     )
-  } else if (data) {
+  } else {
     return (
       <View testID={'Swipeable'}>
         <Swipeable
@@ -155,30 +145,30 @@ const CustomDisciplineMenuItem = ({
             cancelButtonText={labels.home.deleteModal.cancel}
             confirmationAction={deleteModule}
           />
-          <MenuItem
-            selected={idToSelectedIdString(data.id) === selectedId}
-            onPress={() => {
-              setSelectedId(idToSelectedIdString(data.id))
-              navigation.navigate('DisciplineSelection', {
-                extraParams: { discipline: data }
-              })
-            }}
-            icon={data.icon}
-            title={data.title}>
-            <Description selected={idToSelectedIdString(data.id) === selectedId}>
-              {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-            </Description>
-          </MenuItem>
+          {data ? (
+            <MenuItem
+              selected={idToSelectedIdString(data.id) === selectedId}
+              onPress={() => {
+                setSelectedId(idToSelectedIdString(data.id))
+                navigation.navigate('DisciplineSelection', {
+                  extraParams: { discipline: data }
+                })
+              }}
+              icon={data.icon}
+              title={data.title}>
+              <Description selected={idToSelectedIdString(data.id) === selectedId}>
+                {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+              </Description>
+            </MenuItem>
+          ) : (
+            <Placeholder>
+              <ErrorText>
+                {labels.home.errorLoadCustomDiscipline} {apiKey}
+              </ErrorText>
+            </Placeholder>
+          )}
         </Swipeable>
       </View>
-    )
-  } else {
-    return (
-      <Placeholder>
-        <ErrorText>
-          {labels.home.errorLoadCustomDiscipline} {apiKey}
-        </ErrorText>
-      </Placeholder>
     )
   }
 }

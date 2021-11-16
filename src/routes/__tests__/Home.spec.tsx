@@ -1,33 +1,18 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { fireEvent, render, waitFor } from '@testing-library/react-native'
+import { fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react-native'
 import React from 'react'
-import { Swipeable } from 'react-native-gesture-handler'
 import { ReactTestInstance } from 'react-test-renderer'
 
 import { DisciplineType } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import { ServerResponse } from '../../hooks/useLoadDisciplines'
-import { ServerResponse as ServerResponseCustomDiscipline } from '../../hooks/useLoadGroupInfo'
-import { useLoadGroupInfo } from '../../hooks/useLoadGroupInfo'
-import useReadCustomDisciplines, { useReadFromAsyncStorage } from '../../hooks/useReadCustomDisciplines'
 import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { mockUseLoadFromEndpointWithData } from '../../testing/mockUseLoadFromEndpoint'
 import { mockUseLoadGroupInfo } from '../../testing/mockUseLoadGroupInfo'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 import HomeScreen from '../HomeScreen'
 
-const h = require('../../hooks/useReadCustomDisciplines')
-
 jest.mock('@react-navigation/native')
-/*jest.mock('../../hooks/useLoadGroupInfo', () => ({
-  useLoadGroupInfo: () => [
-    {
-      title: 'custom discipline'
-    }
-  ]
-}))*/
 
 const mockDisciplines: ServerResponse[] = [
   {
@@ -85,17 +70,23 @@ describe('HomeScreen', () => {
     mockUseLoadFromEndpointWithData(mockDisciplines)
     mockUseLoadGroupInfo(mockCustomDiscipline)
 
-    const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />, { wrapper: wrapWithTheme })
+    const { findByText, findByTestId, queryByText } = render(<HomeScreen navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
     const customDiscipline = await findByText('Custom Discipline')
-    const eventData = {
-      nativeEvent: {
-        translationX: 200
-      }
-    }
+    expect(customDiscipline).toBeDefined()
+
     const row = await findByTestId('Swipeable')
     const swipeable = row.children[0] as ReactTestInstance
-    fireEvent(customDiscipline, 'openRight', eventData)
+    swipeable.instance.openRight()
+
     const deleteIcon = await findByTestId('trash-bin-icon')
     expect(deleteIcon).toBeDefined()
+    await fireEvent.press(deleteIcon)
+
+    const confirmationModelConfirmButton = await findByText(labels.home.deleteModal.confirm)
+    fireEvent.press(confirmationModelConfirmButton)
+
+    await waitForElementToBeRemoved(() => queryByText('Custom Discipline'))
   })
 })

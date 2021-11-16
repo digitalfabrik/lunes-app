@@ -1,0 +1,6 @@
+issue_key: LUN-189
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Persönliche Bereiche können nun hinzugefügt und gelöscht werden
