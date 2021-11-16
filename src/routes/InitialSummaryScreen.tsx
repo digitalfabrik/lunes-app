@@ -1,4 +1,4 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { StatusBar } from 'react-native'
@@ -7,11 +7,10 @@ import styled from 'styled-components/native'
 
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
+import { BUTTONS_THEME, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
+import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -64,25 +63,8 @@ interface InitialSummaryScreenPropsType {
 }
 
 const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): ReactElement => {
-  const { exercise, discipline, results: resultsFromParams } = route.params.result
-  const [results, setResults] = React.useState<DocumentResultType[]>([])
+  const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (exercise === ExerciseKeys.writeExercise) {
-        AsyncStorage.getExercise(exercise)
-          .then(value => {
-            if (value !== null) {
-              setResults(Object.values(value[discipline.id]))
-            }
-          })
-          .catch(e => console.error(e))
-      } else {
-        setResults(resultsFromParams)
-      }
-    }, [exercise, discipline.id, resultsFromParams])
-  )
 
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
@@ -103,7 +85,6 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   }, [results])
 
   const checkResults = (): void => {
-    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('ResultsOverview', {
       result: {
         discipline: discipline,

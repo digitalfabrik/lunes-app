@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import ExerciseHeader from '../../components/ExerciseHeader'
@@ -8,8 +8,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
 import { moveToEnd } from '../../services/helpers'
 import WriteExercise from './components/WriteExercise'
 
@@ -20,18 +19,11 @@ interface WriteExerciseScreenPropsType {
 
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { discipline, retryData } = route.params
-  const { id } = discipline
   const [currentDocumentNumber, setCurrentDocumentNumber] = useState(0)
   const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
 
   const { data, loading, error, refresh } = useLoadDocuments(discipline)
   const documents = newDocuments ?? retryData?.data ?? data
-
-  useEffect(() => {
-    AsyncStorage.setSession({ ...discipline, exercise: ExerciseKeys.writeExercise, results: [] }).catch(e =>
-      console.error(e)
-    )
-  }, [discipline])
 
   const tryLater = useCallback(() => {
     if (documents !== null) {
@@ -39,21 +31,17 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     }
   }, [documents, currentDocumentNumber])
 
-  const finishExercise = (): void => {
-    AsyncStorage.clearSession().catch(e => console.error(e))
+  const finishExercise = (results: DocumentResultType[]): void => {
     setCurrentDocumentNumber(0)
     setNewDocuments(null)
     navigation.navigate('InitialSummary', {
       result: {
         discipline: { ...discipline },
-        results: [],
+        results,
         exercise: ExerciseKeys.writeExercise
       }
     })
   }
-
-  const docsLength = documents?.length ?? 0
-  const document = documents?.[currentDocumentNumber]
 
   return (
     <>
@@ -61,11 +49,11 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
         navigation={navigation}
         route={route}
         currentWord={currentDocumentNumber}
-        numberOfWords={docsLength}
+        numberOfWords={documents?.length ?? 0}
       />
 
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {documents && document && (
+        {documents && (
           <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps='always'>
             <WriteExercise
               currentDocumentNumber={currentDocumentNumber}
@@ -73,7 +61,6 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
               documents={documents}
               finishExercise={finishExercise}
               tryLater={tryLater}
-              disciplineId={id}
             />
           </ScrollView>
         )}
