@@ -1,6 +1,10 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock'
 import '@testing-library/jest-native/extend-expect'
+import { configure } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import 'react-native-gesture-handler/jestSetup'
+
+configure({ adapter: new Adapter() })
 
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

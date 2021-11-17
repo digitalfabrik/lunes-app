@@ -20,7 +20,7 @@ describe('getFromEndpoint', () => {
     const responseData = await getFromEndpoint(url)
     expect(responseData).toBe(data)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith(url, { headers: {} })
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: undefined })
   })
 
   it('should include api key in header', async () => {

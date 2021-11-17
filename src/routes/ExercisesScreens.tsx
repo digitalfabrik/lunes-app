@@ -1,6 +1,6 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { ComponentType, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -17,11 +17,11 @@ const Root = styled.View`
   height: 100%;
 `
 
-const ItemTitle = styled(FlatList as new () => FlatList<ExerciseType>)`
+const ItemTitle = styled(FlatList)`
   width: ${wp('100%')}px;
   padding-right: ${wp('5%')}px;
   padding-left: ${wp('5%')}px;
-`
+` as ComponentType as new () => FlatList<ExerciseType>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};

@@ -17,16 +17,15 @@ export default {
   },
   transformIgnorePatterns: [`node_modules/(?!${transformNodeModules.join('|')})`],
   setupFilesAfterEnv: [
-    'jest-enzyme',
     'jest-extended',
     '<rootDir>/../jest.setup.ts',
     '<rootDir>/../node_modules/@testing-library/jest-native/extend-expect',
     '<rootDir>/../node_modules/react-native-gesture-handler/jestSetup.js'
   ],
-  testEnvironment: 'enzyme',
-  testEnvironmentOptions: {
-    enzymeAdapter: 'react16'
-  },
+  snapshotSerializers: ['enzyme-to-json/serializer'],
   modulePaths: ['<rootDir>'],
-  moduleDirectories: ['node_modules']
+  moduleDirectories: ['node_modules'],
+  globals: {
+    __DEV__: true
+  }
 }
