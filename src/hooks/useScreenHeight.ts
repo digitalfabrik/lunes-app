@@ -10,8 +10,7 @@ const DEFAULT_IOS_STATUS_BAR_HEIGHT = 20
 const useScreenHeight = (): number => {
   const { height: deviceHeight } = useWindowDimensions()
   const statusBarHeight = StatusBar.currentHeight ?? DEFAULT_IOS_STATUS_BAR_HEIGHT
-  const height = deviceHeight - useHeaderHeight() - statusBarHeight
-  return height
+  return deviceHeight - useHeaderHeight() - statusBarHeight
 }
 
 export default useScreenHeight
