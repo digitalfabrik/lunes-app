@@ -2,7 +2,6 @@ import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
@@ -31,34 +30,46 @@ describe('WordChoiceExerciseScreen', () => {
   const testDocuments: DocumentType[] = [
     {
       audio: '',
-      word: 'Arbeitshose',
+      word: 'Hose',
       id: 1,
-      article: ARTICLES[2],
-      document_image: [{ id: 1, image: 'Arbeitshose' }],
+      article: {
+        id: 2,
+        value: 'Die'
+      },
+      document_image: [{ id: 1, image: 'image' }],
       alternatives: []
     },
     {
       audio: '',
-      word: 'Arbeitsschuhe',
+      word: 'Helm',
       id: 2,
-      article: ARTICLES[4],
-      document_image: [{ id: 2, image: 'Arbeitsschuhe' }],
+      article: {
+        id: 1,
+        value: 'Der'
+      },
+      document_image: [{ id: 2, image: 'image' }],
       alternatives: []
     },
     {
       audio: '',
-      word: 'Arbeitsjacke',
+      word: 'Auto',
       id: 3,
-      article: ARTICLES[1],
-      document_image: [{ id: 3, image: 'Arbeitsjacke' }],
+      article: {
+        id: 3,
+        value: 'Das'
+      },
+      document_image: [{ id: 3, image: 'image' }],
       alternatives: []
     },
     {
       audio: '',
-      word: 'Arbeitskleidung',
+      word: 'Hammer',
       id: 4,
-      article: ARTICLES[4],
-      document_image: [{ id: 4, image: 'Arbeitskleidung' }],
+      article: {
+        id: 1,
+        value: 'Der'
+      },
+      document_image: [{ id: 4, image: 'image' }],
       alternatives: []
     }
   ]
@@ -79,41 +90,26 @@ describe('WordChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
 
-    const { getByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
+    const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
 
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
-    expect(getByText('Arbeitsschuhe (Plural)')).not.toBeNull()
-    fireEvent(getByText('Arbeitsschuhe (Plural)'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
-    expect(getByText('Arbeitshose')).not.toBeNull()
-    fireEvent(getByText('Arbeitshose'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
-    expect(getByText('Arbeitsjacke')).not.toBeNull()
-    fireEvent(getByText('Arbeitsjacke'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
-    expect(getByText('Arbeitskleidung (Plural)')).not.toBeNull()
-    fireEvent(getByText('Arbeitskleidung (Plural)'), 'pressOut')
-    expect(getByText('Arbeitshose')).not.toBeNull()
-    fireEvent(getByText('Arbeitshose'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.showResults))
-  })
 
-  it('should not allow to skip last document', () => {
-    mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    let correctAnswer = getByText('Helm')
+    fireEvent(correctAnswer, 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+    correctAnswer = getByText('Auto')
+    fireEvent(correctAnswer, 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+    correctAnswer = getByText('Hammer')
+    fireEvent(correctAnswer, 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
 
-    expect(queryByText(labels.exercises.tryLater)).not.toBeNull()
-    fireEvent(getByText('Arbeitshose'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
-    fireEvent(getByText('Arbeitsjacke'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
-    fireEvent(getByText('Arbeitskleidung (Plural)'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
+    correctAnswer = getByText('Hose')
+    fireEvent(correctAnswer, 'pressOut')
+    expect(getByText(labels.exercises.showResults)).toBeDefined()
   })
 })

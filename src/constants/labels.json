@@ -44,6 +44,7 @@
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
         "wrong": "Die richtige Antwort ist:",
+        "wrongForRetry": "Das war leider nicht richtig.",
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."

@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { SimpleResultType } from '../../../constants/data'
+import { SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
@@ -104,10 +104,7 @@ const WriteExercise = ({
     const newResult = validateAnswer(article, word)
     setResult(newResult)
 
-    // The first result counts
-    if (!secondAttempt) {
-      storeResult(newResult)
-    }
+    storeResult(newResult)
   }
 
   const validateAnswer = (article: string, word: string): SimpleResultType => {
@@ -130,7 +127,7 @@ const WriteExercise = ({
   const giveUp = async (): Promise<void> => {
     const previousResult = result
     setResult('incorrect')
-    storeResult(previousResult ?? 'incorrect')
+    storeResult(previousResult ?? 'incorrect', true)
   }
 
   const continueExercise = (): void => {
@@ -138,15 +135,41 @@ const WriteExercise = ({
     setSubmission(null)
     setInput('')
 
-    if (currentDocumentNumber === documents.length - 1) {
+    if (currentDocumentNumber === documents.length - 1 && !getRetryInfoOfCurrent().needsToBeRepeated) {
       finishExercise(results)
     } else {
-      setCurrentDocumentNumber(currentDocumentNumber + 1)
+      getRetryInfoOfCurrent().needsToBeRepeated ? tryLater() : setCurrentDocumentNumber(currentDocumentNumber + 1)
     }
   }
 
-  const storeResult = (score: SimpleResultType): void => {
-    setResults([...results, { ...document, result: score }])
+  const storeResult = (score: SimpleResultType, noFurtherRetries: boolean = false): void => {
+    const nthRetry = noFurtherRetries ? 3 : getRetryInfoOfCurrent().nthRetry
+
+    const indexOfCurrentResult = results.findIndex(result => result.id === document?.id)
+    const result: DocumentResultType = { ...document, result: score, numberOfTries: nthRetry + 1 }
+    const newArr = results
+    if (indexOfCurrentResult !== -1) {
+      newArr[indexOfCurrentResult] = result
+      if (results[indexOfCurrentResult].result === 'similar') {
+        newArr[indexOfCurrentResult] = {
+          ...document,
+          result: nthRetry >= 2 ? 'incorrect' : 'similar',
+          numberOfTries: nthRetry + 1
+        }
+      }
+      setResult(newArr[indexOfCurrentResult].result)
+      setResults(newArr)
+    } else {
+      setResults([...results, result])
+    }
+  }
+
+  const getRetryInfoOfCurrent = (): { nthRetry: number; needsToBeRepeated: boolean } => {
+    const indexOfCurrent = results.findIndex(result => result.id === document?.id)
+    const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
+    const needsToBeRepeated =
+      nthRetry < 3 && (indexOfCurrent === -1 || results[indexOfCurrent].result !== SIMPLE_RESULTS.correct)
+    return { nthRetry, needsToBeRepeated }
   }
 
   const getBorderColor = (): string => {
@@ -205,7 +228,14 @@ const WriteExercise = ({
             )}
           </TextInputContainer>
 
-          {result && <Feedback result={result} document={document} submission={submission} />}
+          {result && (
+            <Feedback
+              result={result}
+              document={document}
+              submission={submission}
+              needsToBeRepeated={getRetryInfoOfCurrent().needsToBeRepeated}
+            />
+          )}
 
           <Actions
             tryLater={tryLater}
@@ -215,6 +245,7 @@ const WriteExercise = ({
             checkEntry={checkEntry}
             continueExercise={continueExercise}
             isFinished={currentDocumentNumber === documents.length - 1}
+            needsToBeRepeated={getRetryInfoOfCurrent().needsToBeRepeated}
           />
         </StyledContainer>
       </Pressable>

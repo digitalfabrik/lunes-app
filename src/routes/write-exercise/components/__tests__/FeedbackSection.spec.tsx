@@ -19,17 +19,23 @@ describe('Feedback section', () => {
 
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
-    const { queryByText } = render(<FeedbackSection result='correct' submission={submission} document={document} />, {
-      wrapper: wrapWithTheme
-    })
+    const { queryByText } = render(
+      <FeedbackSection result='correct' submission={submission} document={document} needsToBeRepeated={false} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
     expect(queryByText(labels.exercises.write.feedback.correct)).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
     const submission = 'Der Abrissbirne'
-    const { queryByText } = render(<FeedbackSection result='similar' submission={submission} document={document} />, {
-      wrapper: wrapWithTheme
-    })
+    const { queryByText } = render(
+      <FeedbackSection result='similar' submission={submission} document={document} needsToBeRepeated={false} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
 
     expect(
       queryByText(
@@ -40,9 +46,12 @@ describe('Feedback section', () => {
 
   it('should render incorrect feedback', () => {
     const submission = 'Der Hammer'
-    const { queryByText } = render(<FeedbackSection result='incorrect' submission={submission} document={document} />, {
-      wrapper: wrapWithTheme
-    })
+    const { queryByText } = render(
+      <FeedbackSection result='incorrect' submission={submission} document={document} needsToBeRepeated={false} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
     expect(
       queryByText(`${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`)
     ).toBeTruthy()

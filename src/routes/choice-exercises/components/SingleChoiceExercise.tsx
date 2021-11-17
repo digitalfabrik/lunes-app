@@ -107,36 +107,63 @@ const ChoiceExerciseScreen = ({
       return
     }
     setSelectedAnswer(clickedAnswer)
+
+    const { nthRetry } = getRetryInfoOfCurrent()
+
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, clickedAnswer)
     )
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)
-      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.correct }
-      setResults([...results, result])
+      const result: DocumentResultType = {
+        ...currentDocument,
+        result: SIMPLE_RESULTS.correct,
+        numberOfTries: nthRetry + 1
+      }
+      updateResult(result)
     } else {
-      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.incorrect }
-      setResults([...results, result])
+      const result: DocumentResultType = {
+        ...currentDocument,
+        result: SIMPLE_RESULTS.incorrect,
+        numberOfTries: nthRetry + 1
+      }
+      updateResult(result)
     }
     setTimeout(() => {
       setDelayPassed(true)
     }, correctAnswerDelay)
   }
 
+  const updateResult = (result: DocumentResultType): void => {
+    const indexOfCurrentResult = results.findIndex(result => result.id === currentDocument?.id)
+    indexOfCurrentResult !== -1 ? (results[indexOfCurrentResult] = result) : setResults([...results, result])
+  }
+
+  const getRetryInfoOfCurrent = (): { nthRetry: number; needsToBeRepeated: boolean } => {
+    const indexOfCurrent = results.findIndex(result => result.id === currentDocument?.id)
+    const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
+    const needsToBeRepeated =
+      nthRetry < 3 && (indexOfCurrent === -1 || results[indexOfCurrent].result === SIMPLE_RESULTS.incorrect)
+    return { nthRetry, needsToBeRepeated }
+  }
+
   const onFinishWord = (): void => {
-    const exerciseFinished = currentWord + 1 >= count
+    const { needsToBeRepeated } = getRetryInfoOfCurrent()
+    const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
+
     if (exerciseFinished) {
       setCurrentWord(0)
       setSelectedAnswer(null)
       onExerciseFinished(results)
       setResults([])
     } else {
-      setCurrentWord(prevState => prevState + 1)
+      needsToBeRepeated ? tryLater() : setCurrentWord(prevState => prevState + 1)
     }
     setSelectedAnswer(null)
     setDelayPassed(false)
   }
+
   const lastWord = currentWord + 1 >= count
 
   return (
@@ -163,7 +190,11 @@ const ChoiceExerciseScreen = ({
             <ButtonContainer>
               {selectedAnswer !== null ? (
                 <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-                  <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
+                  <LightLabelInput>
+                    {lastWord && !getRetryInfoOfCurrent().needsToBeRepeated
+                      ? labels.exercises.showResults
+                      : labels.exercises.next}
+                  </LightLabelInput>
                 </Button>
               ) : (
                 !lastWord && (

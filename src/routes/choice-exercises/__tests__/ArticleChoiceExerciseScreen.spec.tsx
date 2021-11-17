@@ -3,7 +3,6 @@ import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadFromEndpointWitData } from '../../../testing/mockUseLoadFromEndpoint'
@@ -22,21 +21,27 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const testDocuments: DocumentTypeFromServer[] = [
+  const testDocuments: Document[] = [
     {
       audio: '',
-      word: 'Arbeitshose',
+      word: 'Helm',
       id: 1,
-      article: 2,
-      document_image: [{ id: 1, image: 'Arbeitshose' }],
+      article: {
+        id: 1,
+        value: 'Der'
+      },
+      document_image: [{ id: 1, image: 'Helm' }],
       alternatives: []
     },
     {
       audio: '',
-      word: 'Arbeitsschuhe',
+      word: 'Auto',
       id: 2,
-      article: 4,
-      document_image: [{ id: 2, image: 'Arbeitsschuhe' }],
+      article: {
+        id: 3,
+        value: 'Das'
+      },
+      document_image: [{ id: 2, image: 'Auto' }],
       alternatives: []
     }
   ]
@@ -57,29 +62,52 @@ describe('ArticleChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
 
-    const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
+    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
 
+    expect(getAllByText('Helm')[0]).toBeDefined()
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
-    expect(getByText('Arbeitsschuhe (Plural)')).not.toBeNull()
-    fireEvent(getByText('Der'), 'pressOut')
+
+    expect(getAllByText('Auto')[0]).toBeDefined()
+    fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
-    expect(getByText('Arbeitshose (Plural)')).not.toBeNull()
-    fireEvent(getByText('Der'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.showResults))
+
+    expect(getAllByText('Helm')[0]).toBeDefined()
   })
 
   it('should not allow to skip last document', () => {
     mockUseLoadFromEndpointWitData(testDocuments)
-    const { queryByText, getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
+    const { queryByText, getByText, getAllByText } = render(
+      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
+
+    expect(getAllByText('Helm')[0]).toBeDefined()
+    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+
+    expect(getAllByText('Auto')[0]).toBeDefined()
+    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+  })
+
+  it('should show word again when answered wrong', () => {
+    mockUseLoadFromEndpointWitData(testDocuments)
+    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
 
-    expect(queryByText(labels.exercises.tryLater)).not.toBeNull()
-    fireEvent(getByText('Der'), 'pressOut')
+    expect(getAllByText('Helm')[0]).toBeDefined()
+    fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
-    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+
+    expect(getAllByText('Auto')[0]).toBeDefined()
+    fireEvent(getByText('Das'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+
+    expect(getAllByText('Helm')[0]).toBeDefined()
   })
 })

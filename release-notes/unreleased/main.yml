@@ -1,0 +1,6 @@
+issue_key:
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wiederholungsmechanismus bei fehlerhaften Eingaben für alle Aufgabentypen

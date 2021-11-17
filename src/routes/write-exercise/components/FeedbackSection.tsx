@@ -33,9 +33,10 @@ export interface FeedbackPropsType {
   result: SimpleResultType
   document: DocumentType
   submission: string | null
+  needsToBeRepeated: boolean
 }
 
-const Feedback = ({ result, document, submission }: FeedbackPropsType): ReactElement | null => {
+const Feedback = ({ result, document, submission, needsToBeRepeated }: FeedbackPropsType): ReactElement | null => {
   let Icon, background, message
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
@@ -48,7 +49,9 @@ const Feedback = ({ result, document, submission }: FeedbackPropsType): ReactEle
   } else {
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
-    message = `${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`
+    message = needsToBeRepeated
+      ? labels.exercises.write.feedback.wrongForRetry
+      : `${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`
   }
 
   return (
