@@ -28,8 +28,5 @@ export default {
     enzymeAdapter: 'react16'
   },
   modulePaths: ['<rootDir>'],
-  moduleDirectories: ['node_modules'],
-  globals: {
-    __DEV__: true
-  }
+  moduleDirectories: ['node_modules']
 }
