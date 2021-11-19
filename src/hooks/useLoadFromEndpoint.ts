@@ -2,20 +2,24 @@ import { useCallback, useEffect, useState } from 'react'
 
 import axios from '../services/axios'
 
-export const loadFromEndpoint = async <T>(
-  url: string,
+export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {
+  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
+  const response = await axios.get(url, { headers })
+  return response.data
+}
+
+export const loadFromEndpoint = async <T, P>(
+  request: (params: P) => Promise<T>,
+  params: P,
   setData: (data: T | null) => void,
   setError: (error: Error | null) => void,
-  setLoading: (loading: boolean) => void,
-  apiKey?: string
+  setLoading: (loading: boolean) => void
 ): Promise<void> => {
   setLoading(true)
 
-  const header = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
-
   try {
-    const response = await axios.get(url, { headers: header })
-    setData(response.data)
+    const response = await request(params)
+    setData(response)
     setError(null)
   } catch (e) {
     setError(e)
@@ -32,14 +36,14 @@ export interface ReturnType<T> {
   refresh: () => void
 }
 
-export const useLoadFromEndpoint = <T>(url: string, apiKey?: string): ReturnType<T> => {
+export const useLoadFromEndpoint = <T, P>(request: (params: P) => Promise<T>, params: P): ReturnType<T> => {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   const load = useCallback(() => {
-    loadFromEndpoint<T>(url, setData, setError, setLoading, apiKey).catch(e => setError(e))
-  }, [url, apiKey])
+    loadFromEndpoint<T, P>(request, params, setData, setError, setLoading).catch(e => setError(e))
+  }, [request, params])
 
   useEffect(() => {
     load()

@@ -9,7 +9,6 @@ import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 import Button from './Button'
 
 const Overlay = styled.View`
@@ -69,7 +68,6 @@ const ConfirmationModal = ({
   const closeModal = (): void => setIsModalVisible(false)
   const goBack = (): void => {
     setIsModalVisible(false)
-    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('Exercises', { ...route.params })
   }
   return (

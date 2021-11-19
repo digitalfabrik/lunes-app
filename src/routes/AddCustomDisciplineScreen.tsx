@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -8,7 +8,7 @@ import Loading from '../components/Loading'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import withCustomDisciplines from '../hocs/withCustomDisciplines'
-import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
+import { loadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
@@ -80,34 +80,21 @@ interface AddCustomDisciplineScreenPropsType {
 const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDisciplineScreenPropsType): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [codeToSubmit, setCodeToSubmit] = useState<string>('')
-
-  const { data, loading, error } = useLoadGroupInfo(codeToSubmit)
-
-  useEffect(() => {
-    if (data && !customDisciplines.includes(code)) {
-      AsyncStorage.setCustomDisciplines([...customDisciplines, code])
-        .then(() => {
-          navigation.navigate('Home')
-        })
-        .catch(() => {
-          setErrorMessage(labels.addCustomDiscipline.error.technical)
-        })
-    }
-  }, [code, customDisciplines, data, navigation])
-
-  useEffect(() => {
-    if (error && codeToSubmit) {
-      setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-    }
-  }, [error, codeToSubmit])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const submit = (): void => {
     if (customDisciplines.includes(code)) {
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
-    } else {
-      setCodeToSubmit(code)
+      return
     }
+    setLoading(true)
+    loadGroupInfo(code)
+      .then(async () => {
+        return await AsyncStorage.setCustomDisciplines([...customDisciplines, code])
+      })
+      .then(() => navigation.navigate('Home'))
+      .catch(() => setErrorMessage(labels.addCustomDiscipline.error.technical))
+      .finally(() => setLoading(false))
   }
 
   return (
