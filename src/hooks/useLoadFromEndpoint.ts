@@ -21,7 +21,7 @@ export const loadFromEndpoint = async <T, P>(
     const response = await request(params)
     setData(response)
     setError(null)
-  } catch (e) {
+  } catch (e: any) {
     setError(e)
     setData(null)
   } finally {
