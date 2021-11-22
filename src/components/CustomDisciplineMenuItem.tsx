@@ -83,7 +83,7 @@ const CustomDisciplineMenuItem = ({
       outputRange: [50, 0]
     })
 
-    const pressHandler = (): void => {
+    const showConfirmationModal = (): void => {
       close()
       setIsModalVisible(true)
     }
@@ -91,7 +91,7 @@ const CustomDisciplineMenuItem = ({
     return (
       <DeleteContainer>
         <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-          <DeleteButton onPress={pressHandler}>
+          <DeleteButton onPress={showConfirmationModal}>
             <TrashBinIcon testID={'trash-bin-icon'} />
           </DeleteButton>
         </Animated.View>
@@ -147,15 +147,14 @@ const CustomDisciplineMenuItem = ({
           />
           {data ? (
             <MenuItem
+              item={data}
               selected={idToSelectedIdString(data.id) === selectedId}
               onPress={() => {
                 setSelectedId(idToSelectedIdString(data.id))
                 navigation.navigate('DisciplineSelection', {
                   extraParams: { discipline: data }
                 })
-              }}
-              icon={data.icon}
-              title={data.title}>
+              }}>
               <Description selected={idToSelectedIdString(data.id) === selectedId}>
                 {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
               </Description>

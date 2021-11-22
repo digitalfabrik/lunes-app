@@ -88,7 +88,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
     if (!customDisciplines) {
       return
     }
-    if (customDisciplines?.includes(code)) {
+    if (customDisciplines.includes(code)) {
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
       return
     }

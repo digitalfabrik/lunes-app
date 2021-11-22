@@ -1,18 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import { mocked } from 'ts-jest'
+import { mocked } from 'ts-jest/utils'
 
 import labels from '../../constants/labels.json'
 import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
 import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWithData } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
-
 jest.mock('../../hooks/useLoadGroupInfo')
 
 describe('AddCustomDisciplineScreen', () => {
@@ -30,7 +28,6 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    mockUseLoadFromEndpointWithData([{ name: 'Test', numberOfChildren: 1 }])
     await AsyncStorageService.setCustomDisciplines(['test'])
 
     const groupInfo = {

@@ -1,5 +1,6 @@
 import { DisciplineType } from '../constants/endpoints'
-import useLoadFromEndpoint, { getFromEndpoint, ReturnType } from './useLoadFromEndpoint'
+import { getFromEndpoint } from '../services/axios'
+import useLoadAsync, { ReturnType } from './useLoadAsync'
 
 export interface ServerResponse {
   id: number
@@ -20,5 +21,4 @@ export const loadGroupInfo = async (apiKey: string): Promise<DisciplineType> => 
   }
 }
 
-export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> =>
-  useLoadFromEndpoint(loadGroupInfo, apiKey)
+export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> => useLoadAsync(loadGroupInfo, apiKey)

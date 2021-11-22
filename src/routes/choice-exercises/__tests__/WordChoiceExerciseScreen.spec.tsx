@@ -7,7 +7,7 @@ import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadFromEndpointWithData } from '../../../testing/mockUseLoadFromEndpoint'
+import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
@@ -77,7 +77,7 @@ describe('WordChoiceExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadFromEndpointWithData(testDocuments)
+    mockUseLoadAsyncWithData(testDocuments)
 
     const { getByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
@@ -102,7 +102,7 @@ describe('WordChoiceExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadFromEndpointWithData(testDocuments)
+    mockUseLoadAsyncWithData(testDocuments)
     const { queryByText, getByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })

@@ -105,9 +105,8 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
           return (
             <MenuItem
               key={item.id}
+              item={item}
               selected={item.id.toString() === selectedId}
-              title={item.title}
-              icon={item.icon}
               onPress={() => handleNavigation(item)}>
               <Description selected={item.id.toString() === selectedId}>
                 {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
