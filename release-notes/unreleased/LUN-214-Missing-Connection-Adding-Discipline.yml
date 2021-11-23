@@ -1,0 +1,5 @@
+issue_key: LUN-214
+show_in_stores: true
+platforms:
+  - ios
+de: Fehler beim Hinzufügen individueller Bereiche behoben

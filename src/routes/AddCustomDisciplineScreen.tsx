@@ -42,6 +42,7 @@ const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding-left: 15px;
+  height: ${hp('8%')}px;
 `
 
 const ErrorContainer = styled.View`
