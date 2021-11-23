@@ -61,7 +61,7 @@ const DeleteButton = styled(RectButton)`
 interface CustomDisciplineMenuItemPropsType {
   apiKey: string
   selectedId: string | null
-  setSelectedId: (input: string) => void
+  setSelectedId: React.Dispatch<React.SetStateAction<string | null>>
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   refresh: () => void
 }

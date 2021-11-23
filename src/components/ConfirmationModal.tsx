@@ -50,7 +50,7 @@ const Label = styled.Text<{ light: boolean }>`
 
 export interface ConfirmationModalPropsType {
   visible: boolean
-  setVisible: Function
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
   text: string
   confirmationButtonText: string
   cancelButtonText: string

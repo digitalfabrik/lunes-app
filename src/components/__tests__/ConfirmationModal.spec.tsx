@@ -8,7 +8,7 @@ describe('Components', () => {
   describe('ConfirmationModal ', () => {
     const defaultModalProps: ConfirmationModalPropsType = {
       visible: false,
-      setVisible: (input: boolean) => {},
+      setVisible: jest.fn(),
       text: 'Are you sure?',
       confirmationButtonText: 'confirm',
       cancelButtonText: 'cancel',

@@ -35,7 +35,7 @@ export const deleteCustomDiscipline = async (customDiscipline: string): Promise<
   const disciplines = await getCustomDisciplines()
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
-    return await Promise.reject(new Error('customDiscipline not available'))
+    throw new Error('customDiscipline not available')
   }
   disciplines.splice(index, 1)
   await setCustomDisciplines(disciplines)
