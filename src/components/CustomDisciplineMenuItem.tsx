@@ -15,7 +15,7 @@ import ConfirmationModal from './ConfirmationModal'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
 
-const widthOfTrashButton = wp('18%')
+const widthOfTrashButton = `${wp('18%')}px`
 
 const Placeholder = styled.View`
   height: ${wp('22%')}px;
