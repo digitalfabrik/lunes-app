@@ -7,11 +7,11 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { ExerciseKeys, SimpleResultType } from '../../../constants/data'
+import { SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { DocumentResultType } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Actions from './Actions'
 import ArticleMissingPopoverContent from './ArticleMissingPopoverContent'
@@ -52,10 +52,9 @@ const StyledTextInput = styled.TextInput`
 export interface AnswerSectionPropsType {
   tryLater: () => void
   currentDocumentNumber: number
-  setCurrentDocumentNumber: Function
+  setCurrentDocumentNumber: (currentDocumentNumber: number) => void
   documents: DocumentType[]
-  finishExercise: Function
-  disciplineId: number
+  finishExercise: (results: DocumentResultType[]) => void
 }
 
 const almostCorrectThreshold = 0.6
@@ -66,7 +65,6 @@ const WriteExercise = ({
   setCurrentDocumentNumber,
   finishExercise,
   tryLater,
-  disciplineId,
   documents
 }: AnswerSectionPropsType): ReactElement => {
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
@@ -74,14 +72,15 @@ const WriteExercise = ({
   const [input, setInput] = useState<string>('')
   // The last submitted answer
   const [submission, setSubmission] = useState<string | null>(null)
-  // The result of the submitted answer
+  // The result of the lastly submitted answer
   const [result, setResult] = useState<SimpleResultType | null>(null)
+  // The results of all previous documents
+  const [results, setResults] = useState<DocumentResultType[]>([])
   const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const touchable: any = React.createRef()
 
   const document = documents[currentDocumentNumber]
-  const totalNumbers = documents.length
   const secondAttempt = !!submission
 
   const capitalizeFirstLetter = (string: string): string => {
@@ -105,8 +104,9 @@ const WriteExercise = ({
     const newResult = validateAnswer(article, word)
     setResult(newResult)
 
+    // The first result counts
     if (!secondAttempt) {
-      await storeResult(newResult)
+      storeResult(newResult)
     }
   }
 
@@ -121,8 +121,6 @@ const WriteExercise = ({
     } else if (
       validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)
     ) {
-      // TODO Is the article relevant here? Before article was checked for alternatives but not for default word
-      // Word is similar to either the document or an alternative
       return 'similar'
     }
 
@@ -132,7 +130,7 @@ const WriteExercise = ({
   const giveUp = async (): Promise<void> => {
     const previousResult = result
     setResult('incorrect')
-    await storeResult(previousResult ?? 'incorrect')
+    storeResult(previousResult ?? 'incorrect')
   }
 
   const continueExercise = (): void => {
@@ -140,39 +138,15 @@ const WriteExercise = ({
     setSubmission(null)
     setInput('')
 
-    if (currentDocumentNumber === totalNumbers - 1) {
-      finishExercise()
+    if (currentDocumentNumber === documents.length - 1) {
+      finishExercise(results)
     } else {
       setCurrentDocumentNumber(currentDocumentNumber + 1)
     }
   }
 
-  const storeResult = async (score: SimpleResultType): Promise<void> => {
-    try {
-      const exercise = (await AsyncStorage.getExercise(ExerciseKeys.writeExercise)) ?? {}
-      exercise[disciplineId] = exercise[disciplineId] ?? {}
-
-      exercise[disciplineId][document.word] = {
-        ...document,
-        result: score
-      }
-
-      await AsyncStorage.setExercise(ExerciseKeys.writeExercise, exercise)
-
-      const session = await AsyncStorage.getSession()
-      if (session === null) {
-        throw new Error('Session is not saved correctly!')
-      }
-      const newSession = {
-        ...session,
-        retryData: {
-          data: documents.slice(currentDocumentNumber + 1, totalNumbers)
-        }
-      }
-      await AsyncStorage.setSession(newSession)
-    } catch (e) {
-      console.error(e)
-    }
+  const storeResult = (score: SimpleResultType): void => {
+    setResults([...results, { ...document, result: score }])
   }
 
   const getBorderColor = (): string => {
@@ -240,7 +214,7 @@ const WriteExercise = ({
             result={result}
             checkEntry={checkEntry}
             continueExercise={continueExercise}
-            isFinished={currentDocumentNumber === totalNumbers - 1}
+            isFinished={currentDocumentNumber === documents.length - 1}
           />
         </StyledContainer>
       </Pressable>

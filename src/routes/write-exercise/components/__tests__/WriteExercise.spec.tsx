@@ -63,7 +63,6 @@ describe('WriteExercise', () => {
 
   const defaultAnswerSectionProps: AnswerSectionPropsType = {
     documents: [document],
-    disciplineId: 1,
     currentDocumentNumber: 0,
     tryLater: () => {},
     finishExercise: () => {},
