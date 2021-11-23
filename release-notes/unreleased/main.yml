@@ -3,4 +3,4 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: Wiederholungsmechanismus bei fehlerhaften Eingaben für alle Aufgabentypen
+de: Falsche Eingaben werden nun bei allen Übungen wiederholt
