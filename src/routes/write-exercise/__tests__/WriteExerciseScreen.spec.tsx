@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
+import { KeyboardAvoidingViewProps } from 'react-native'
 import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../../constants/labels.json'
@@ -22,12 +23,21 @@ jest.mock('react-native/Libraries/Image/Image', () => {
     }
   }
 })
+
+jest.mock('@react-navigation/stack')
+
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
+type Props = KeyboardAvoidingViewProps & { children: React.ReactNode }
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+  const KeyboardAwareScrollView = ({ children }: Props): React.ReactNode => children
+  return { KeyboardAwareScrollView }
+})
 
 describe('WriteExerciseScreen', () => {
   beforeEach(() => {
