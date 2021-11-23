@@ -50,8 +50,8 @@ const Feedback = ({ result, document, submission, needsToBeRepeated }: FeedbackP
     Icon = IncorrectFeedbackIcon
     background = incorrect_background
     message = needsToBeRepeated
-      ? labels.exercises.write.feedback.wrongForRetry
-      : `${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`
+      ? labels.exercises.write.feedback.wrong
+      : `${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
   }
 
   return (

@@ -53,7 +53,7 @@ describe('Feedback section', () => {
       }
     )
     expect(
-      queryByText(`${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`)
+      queryByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
     ).toBeTruthy()
   })
 
@@ -65,6 +65,6 @@ describe('Feedback section', () => {
         wrapper: wrapWithTheme
       }
     )
-    expect(queryByText(`${labels.exercises.write.feedback.wrongForRetry}`)).toBeTruthy()
+    expect(queryByText(`${labels.exercises.write.feedback.wrong}`)).toBeTruthy()
   })
 })

@@ -110,7 +110,7 @@ describe('WriteExercise', () => {
   })
 
   it('should show wrong feedback', async () => {
-    await evaluate('Das Falsche', `${labels.exercises.write.feedback.wrongForRetry}`)
+    await evaluate('Das Falsche', `${labels.exercises.write.feedback.wrong}`)
   })
 
   it('should play audio if available and no alternative solution submitted', async () => {
@@ -167,7 +167,7 @@ describe('WriteExercise', () => {
     fireEvent.changeText(inputField, 'Das Falsche3')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     expect(
-      getByText(`${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`)
+      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
     ).toBeDefined()
     expect(getByText(labels.exercises.showResults)).toBeDefined()
   })
@@ -191,7 +191,7 @@ describe('WriteExercise', () => {
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     expect(
-      getByText(`${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`)
+      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
     ).toBeDefined()
     expect(getByText(labels.exercises.showResults)).toBeDefined()
   })

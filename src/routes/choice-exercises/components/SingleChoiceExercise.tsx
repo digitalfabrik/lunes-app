@@ -137,7 +137,9 @@ const ChoiceExerciseScreen = ({
 
   const updateResult = (result: DocumentResultType): void => {
     const indexOfCurrentResult = results.findIndex(result => result.id === currentDocument?.id)
-    indexOfCurrentResult !== -1 ? (results[indexOfCurrentResult] = result) : setResults([...results, result])
+    const newResults = results
+    indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
+    setResults(newResults)
   }
 
   const getRetryInfoOfCurrent = (): { nthRetry: number; needsToBeRepeated: boolean } => {
