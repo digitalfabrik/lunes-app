@@ -44,7 +44,7 @@ describe('Feedback section', () => {
     ).toBeTruthy()
   })
 
-  it('should render incorrect feedback', () => {
+  it('should render finally incorrect feedback', () => {
     const submission = 'Der Hammer'
     const { queryByText } = render(
       <FeedbackSection result='incorrect' submission={submission} document={document} needsToBeRepeated={false} />,
@@ -55,5 +55,16 @@ describe('Feedback section', () => {
     expect(
       queryByText(`${labels.exercises.write.feedback.wrong} „${document.article.value} ${document.word}“`)
     ).toBeTruthy()
+  })
+
+  it('should render incorrect feedback with retries not exceeded', () => {
+    const submission = 'Der Hammer'
+    const { queryByText } = render(
+      <FeedbackSection result='incorrect' submission={submission} document={document} needsToBeRepeated={true} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
+    expect(queryByText(`${labels.exercises.write.feedback.wrongForRetry}`)).toBeTruthy()
   })
 })

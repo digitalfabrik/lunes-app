@@ -9,7 +9,7 @@ import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import ServerResponseHandler from '../../../components/ServerResponseHandler'
-import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { ReturnType } from '../../../hooks/useLoadFromEndpoint'
@@ -144,7 +144,8 @@ const ChoiceExerciseScreen = ({
     const indexOfCurrent = results.findIndex(result => result.id === currentDocument?.id)
     const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
     const needsToBeRepeated =
-      nthRetry < 3 && (indexOfCurrent === -1 || results[indexOfCurrent].result === SIMPLE_RESULTS.incorrect)
+      nthRetry < numberOfMaxRetries &&
+      (indexOfCurrent === -1 || results[indexOfCurrent].result === SIMPLE_RESULTS.incorrect)
     return { nthRetry, needsToBeRepeated }
   }
 

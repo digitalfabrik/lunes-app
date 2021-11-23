@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
+import { numberOfMaxRetries, SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
@@ -143,7 +143,7 @@ const WriteExercise = ({
   }
 
   const storeResult = (score: SimpleResultType, noFurtherRetries: boolean = false): void => {
-    const nthRetry = noFurtherRetries ? 3 : getRetryInfoOfCurrent().nthRetry
+    const nthRetry = noFurtherRetries ? numberOfMaxRetries : getRetryInfoOfCurrent().nthRetry
 
     const indexOfCurrentResult = results.findIndex(result => result.id === document?.id)
     const result: DocumentResultType = { ...document, result: score, numberOfTries: nthRetry + 1 }
@@ -153,7 +153,7 @@ const WriteExercise = ({
       if (results[indexOfCurrentResult].result === 'similar') {
         newArr[indexOfCurrentResult] = {
           ...document,
-          result: nthRetry >= 2 ? 'incorrect' : 'similar',
+          result: nthRetry >= numberOfMaxRetries - 1 ? 'incorrect' : 'similar',
           numberOfTries: nthRetry + 1
         }
       }
@@ -168,7 +168,8 @@ const WriteExercise = ({
     const indexOfCurrent = results.findIndex(result => result.id === document?.id)
     const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
     const needsToBeRepeated =
-      nthRetry < 3 && (indexOfCurrent === -1 || results[indexOfCurrent].result !== SIMPLE_RESULTS.correct)
+      nthRetry < numberOfMaxRetries &&
+      (indexOfCurrent === -1 || results[indexOfCurrent].result !== SIMPLE_RESULTS.correct)
     return { nthRetry, needsToBeRepeated }
   }
 
