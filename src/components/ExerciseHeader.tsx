@@ -46,6 +46,7 @@ interface ExerciseHeaderPropsType {
 
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+
   useEffect(
     () =>
       navigation.setOptions({
@@ -59,6 +60,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
       }),
     [navigation, currentWord, numberOfWords, setIsModalVisible]
   )
+
   useEffect(() => {
     const showModal = (): boolean => {
       setIsModalVisible(true)
@@ -67,15 +69,23 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
     return () => bEvent.remove()
   }, [])
+
+  const goBack = (): void => {
+    setIsModalVisible(false)
+    navigation.navigate('Exercises', { ...route.params })
+  }
+
   return (
     <>
       <ProgressBar progress={numberOfWords > 0 ? currentWord / numberOfWords : 0} color={COLORS.lunesGreenMedium} />
 
       <ConfirmationModal
         visible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        navigation={navigation}
-        route={route}
+        setVisible={setIsModalVisible}
+        text={labels.exercises.cancelModal.cancelAsk}
+        confirmationButtonText={labels.exercises.cancelModal.cancel}
+        cancelButtonText={labels.exercises.cancelModal.continue}
+        confirmationAction={goBack}
       />
     </>
   )

@@ -11,11 +11,11 @@ import MenuItem from '../components/MenuItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
-import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-const Root = styled.View`
+const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
 `
@@ -53,36 +53,20 @@ const Description = styled.Text<{ selected: boolean }>`
 
 interface HomeScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
-  customDisciplines: string[]
 }
 
-const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+  const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
       setSelectedId(null)
-    }, [])
+      refreshCustomDisciplines()
+    }, [refreshCustomDisciplines])
   )
-
-  const Item = ({ item }: { item: DisciplineType }): JSX.Element | null => {
-    if (item.numberOfChildren === 0) {
-      return null
-    }
-    return (
-      <MenuItem
-        selected={item.id.toString() === selectedId}
-        title={item.title}
-        icon={item.icon}
-        onPress={() => handleNavigation(item)}>
-        <Description selected={item.id.toString() === selectedId}>
-          {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-        </Description>
-      </MenuItem>
-    )
-  }
 
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id.toString())
@@ -105,7 +89,7 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
         <PlusIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines.map(customDiscipline => {
+      {customDisciplines?.map(customDiscipline => {
         return (
           <CustomDisciplineMenuItem
             key={customDiscipline}
@@ -113,20 +97,30 @@ const HomeScreen = ({ navigation, customDisciplines }: HomeScreenPropsType): JSX
             selectedId={selectedId}
             setSelectedId={setSelectedId}
             navigation={navigation}
+            refresh={refreshCustomDisciplines}
           />
         )
       })}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <StyledList
-          data={disciplines}
-          renderItem={Item}
-          keyExtractor={item => item.id.toString()}
-          scrollEnabled={true}
-          bounces={false}
-        />
+        {disciplines?.map(item => {
+          if (item.numberOfChildren === 0) {
+            return null
+          }
+          return (
+            <MenuItem
+              key={item.id}
+              item={item}
+              selected={item.id.toString() === selectedId}
+              onPress={() => handleNavigation(item)}>
+              <Description selected={item.id.toString() === selectedId}>
+                {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+              </Description>
+            </MenuItem>
+          )
+        })}
       </ServerResponseHandler>
     </Root>
   )
 }
 
-export default withCustomDisciplines(HomeScreen)
+export default HomeScreen

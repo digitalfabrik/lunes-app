@@ -1,7 +1,8 @@
 import { ARTICLES } from '../constants/data'
 import { DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { Discipline } from '../navigation/NavigationTypes'
-import useLoadFromEndpoint, { getFromEndpoint, ReturnType } from './useLoadFromEndpoint'
+import { getFromEndpoint } from '../services/axios'
+import useLoadAsync, { ReturnType } from './useLoadAsync'
 
 export interface AlternativeWordTypeFromServer {
   article: number
@@ -34,7 +35,6 @@ export const loadDocuments = async (discipline: Discipline): Promise<DocumentTyp
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline): ReturnType<DocumentType[]> =>
-  useLoadFromEndpoint(loadDocuments, discipline)
+const useLoadDocuments = (discipline: Discipline): ReturnType<DocumentType[]> => useLoadAsync(loadDocuments, discipline)
 
 export default useLoadDocuments
