@@ -9,7 +9,6 @@ import { CloseButton } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 import ConfirmationModal from './ConfirmationModal'
 
 const HeaderText = styled.Text`
@@ -73,7 +72,6 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
   const goBack = (): void => {
     setIsModalVisible(false)
-    AsyncStorage.clearSession().catch(e => console.error(e))
     navigation.navigate('Exercises', { ...route.params })
   }
 

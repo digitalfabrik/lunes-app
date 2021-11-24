@@ -55,7 +55,5 @@ describe('Components', () => {
       const { getByText } = renderItem()
       expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
     })
-
-    // TODO: should delete from AsyncStorage when delete
   })
 })
