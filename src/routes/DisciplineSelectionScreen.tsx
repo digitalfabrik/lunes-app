@@ -1,6 +1,6 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useState } from 'react'
+import React, { ComponentType, useCallback, useState } from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -23,9 +23,9 @@ const ItemText = styled.View`
   align-items: center;
 `
 
-const StyledList = styled(FlatList as new () => FlatList<DisciplineType>)`
+const StyledList = styled(FlatList)`
   width: 100%;
-`
+` as ComponentType as new () => FlatList<DisciplineType>
 
 const Description = styled.Text<{ selected: boolean }>`
   text-align: center;

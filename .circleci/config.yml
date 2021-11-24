@@ -198,7 +198,7 @@ jobs:
                 root: ios/output/gym
     bump_version:
         docker:
-            - image: circleci/node:14.16.0
+            - image: circleci/node:14.17.0
         parameters:
             delivery:
                 default: none
@@ -230,7 +230,7 @@ jobs:
             - persist_environment_variables
     check:
         docker:
-            - image: circleci/node:14.16.0
+            - image: circleci/node:14.17.0
         steps:
             - checkout
             - check_config
@@ -348,7 +348,7 @@ jobs:
                         working_directory: ios
     move_release_notes:
         docker:
-            - image: circleci/node:14.9.0
+            - image: circleci/node:14.17.0
         resource_class: small
         steps:
             - checkout

@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { ComponentType, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -20,9 +20,9 @@ const Root = styled.View`
   padding-bottom: 0;
 `
 
-const StyledList = styled(FlatList as new () => FlatList<DocumentType>)`
+const StyledList = styled(FlatList)`
   width: 100%;
-`
+` as ComponentType as new () => FlatList<DocumentType>
 
 interface VocabularyListScreenPropsType {
   route: RouteProp<RoutesParamsType, 'VocabularyList'>

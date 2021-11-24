@@ -2,15 +2,22 @@ import { StackNavigationProp } from '@react-navigation/stack'
 
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
-const createNavigationMock = <T extends keyof RoutesParamsType>(): StackNavigationProp<RoutesParamsType, T> => ({
+const createNavigationMock = <T extends keyof RoutesParamsType>(
+  routeIndex = 0
+): StackNavigationProp<RoutesParamsType, T> => ({
   dispatch: jest.fn(),
   canGoBack: jest.fn(),
   goBack: jest.fn(),
-  dangerouslyGetParent: jest.fn(),
-  dangerouslyGetState: jest.fn(),
-  navigate: jest.fn(),
   getParent: jest.fn(),
-  getState: jest.fn(),
+  getState: jest.fn(() => ({
+    index: routeIndex,
+    routes: [{ key: 'some-key-0', name: 'Home' }],
+    key: 'some-key-0',
+    routeNames: ['Home'],
+    type: 'stack',
+    stale: false
+  })),
+  navigate: jest.fn(),
   setParams: jest.fn(),
   addListener: jest.fn(),
   push: jest.fn(),

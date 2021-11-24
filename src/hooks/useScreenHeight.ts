@@ -1,4 +1,4 @@
-import { useHeaderHeight } from '@react-navigation/stack'
+import { useHeaderHeight } from '@react-navigation/elements'
 import { StatusBar, useWindowDimensions } from 'react-native'
 
 /**
