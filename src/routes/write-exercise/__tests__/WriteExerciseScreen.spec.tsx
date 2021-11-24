@@ -1,16 +1,14 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
+import { KeyboardAvoidingViewProps } from 'react-native'
 import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../../constants/labels.json'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import {
-  mockUseLoadFromEndpointWitData,
-  mockUseLoadFromEndpointWithError
-} from '../../../testing/mockUseLoadFromEndpoint'
+import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
@@ -22,12 +20,21 @@ jest.mock('react-native/Libraries/Image/Image', () => {
     }
   }
 })
+
+jest.mock('@react-navigation/stack')
+
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
+type Props = KeyboardAvoidingViewProps & { children: React.ReactNode }
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+  const KeyboardAwareScrollView = ({ children }: Props): React.ReactNode => children
+  return { KeyboardAwareScrollView }
+})
 
 describe('WriteExerciseScreen', () => {
   beforeEach(() => {
@@ -67,7 +74,7 @@ describe('WriteExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadFromEndpointWitData(testDocuments)
+    mockUseLoadAsyncWithData(testDocuments)
     const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
     const { getByRole, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
@@ -84,7 +91,7 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadFromEndpointWitData(testDocuments)
+    mockUseLoadAsyncWithData(testDocuments)
     const { queryByText, getByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
@@ -96,7 +103,7 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should show network error', () => {
-    mockUseLoadFromEndpointWithError('Network Error')
+    mockUseLoadAsyncWithError('Network Error')
     const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })

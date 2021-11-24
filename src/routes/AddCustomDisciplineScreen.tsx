@@ -7,8 +7,8 @@ import Button from '../components/Button'
 import Loading from '../components/Loading'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
-import withCustomDisciplines from '../hocs/withCustomDisciplines'
 import { loadGroupInfo } from '../hooks/useLoadGroupInfo'
+import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
@@ -42,6 +42,7 @@ const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding-left: 15px;
+  height: ${hp('8%')}px;
 `
 
 const ErrorContainer = styled.View`
@@ -74,15 +75,20 @@ const DarkLabel = styled.Text<{ disabled: boolean }>`
 
 interface AddCustomDisciplineScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
-  customDisciplines: string[]
 }
 
-const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDisciplineScreenPropsType): JSX.Element => {
+const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const { data: customDisciplines } = useReadCustomDisciplines()
+
   const [loading, setLoading] = useState<boolean>(false)
 
   const submit = (): void => {
+    if (!customDisciplines) {
+      return
+    }
     if (customDisciplines.includes(code)) {
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
       return
@@ -99,25 +105,27 @@ const AddCustomDiscipline = ({ navigation, customDisciplines }: AddCustomDiscipl
 
   return (
     <Loading isLoading={loading}>
-      <Container>
-        <Heading>{labels.addCustomDiscipline.heading}</Heading>
-        <Description>{labels.addCustomDiscipline.description}</Description>
-        <StyledTextInput
-          errorMessage={errorMessage}
-          placeholder={labels.addCustomDiscipline.placeholder}
-          value={code}
-          onChangeText={setCode}
-        />
-        <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
-        <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
-          <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
-        </Button>
-        <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
-          <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
-        </Button>
-      </Container>
+      {customDisciplines && (
+        <Container>
+          <Heading>{labels.addCustomDiscipline.heading}</Heading>
+          <Description>{labels.addCustomDiscipline.description}</Description>
+          <StyledTextInput
+            errorMessage={errorMessage}
+            placeholder={labels.addCustomDiscipline.placeholder}
+            value={code}
+            onChangeText={setCode}
+          />
+          <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+          <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
+            <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
+          </Button>
+          <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
+            <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
+          </Button>
+        </Container>
+      )}
     </Loading>
   )
 }
 
-export default withCustomDisciplines(AddCustomDiscipline)
+export default AddCustomDiscipline

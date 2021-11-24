@@ -1,42 +1,38 @@
 import { mocked } from 'ts-jest/utils'
 
-import useLoadFromEndpoint from '../hooks/useLoadFromEndpoint'
+import useLoadAsync from '../hooks/useLoadAsync'
 
-jest.mock('../hooks/useLoadFromEndpoint')
+jest.mock('../hooks/useLoadAsync')
 
-const mockData = (data: unknown): typeof useLoadFromEndpoint => {
+const mockData = (data: unknown): typeof useLoadAsync => {
   return (() => ({
     data: data,
     loading: false,
     error: null,
     refresh: () => null
-  })) as typeof useLoadFromEndpoint
+  })) as typeof useLoadAsync
 }
 
-export const mockUseLoadFromEndpointWitData = <T>(data: T): void => {
-  mocked(useLoadFromEndpoint).mockImplementation(mockData(data))
+export const mockUseLoadAsyncWithData = <T>(data: T): void => {
+  mocked(useLoadAsync).mockImplementation(mockData(data))
 }
 
-export const mockUseLoadFromEndpointOnceWitData = <T>(data: T): void => {
-  mocked(useLoadFromEndpoint).mockImplementationOnce(mockData(data))
-}
-
-export const mockUseLoadFromEndpointLoading = ({ data, error }: { data?: unknown; error?: string } = {}): void => {
-  const useLoadFromEndpointMock = (() => ({
-    data: data || null,
+export const mockUseLoadAsyncLoading = (): void => {
+  const useLoadAsyncMock = (() => ({
+    data: null,
     loading: true,
-    error: error ? new Error(error) : null,
+    error: null,
     refresh: () => null
-  })) as typeof useLoadFromEndpoint
-  mocked(useLoadFromEndpoint).mockImplementationOnce(useLoadFromEndpointMock)
+  })) as typeof useLoadAsync
+  mocked(useLoadAsync).mockImplementationOnce(useLoadAsyncMock)
 }
 
-export const mockUseLoadFromEndpointWithError = (error: string): void => {
-  const useLoadFromEndpointMock = (() => ({
+export const mockUseLoadAsyncWithError = (error: string): void => {
+  const useLoadAsyncMock = (() => ({
     data: null,
     loading: false,
     error: new Error(error),
     refresh: () => null
-  })) as typeof useLoadFromEndpoint
-  mocked(useLoadFromEndpoint).mockImplementationOnce(useLoadFromEndpointMock)
+  })) as typeof useLoadAsync
+  mocked(useLoadAsync).mockImplementationOnce(useLoadAsyncMock)
 }

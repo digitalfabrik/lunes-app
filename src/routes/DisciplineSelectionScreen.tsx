@@ -76,7 +76,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     const description = discipline.isLeaf ? descriptionForWord : descriptionForUnit
 
     return (
-      <MenuItem selected={selected} title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
+      <MenuItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{description}</Description>

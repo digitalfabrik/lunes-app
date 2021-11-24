@@ -1,0 +1,6 @@
+issue_key: LUN-154
+show_in_stores: true
+platforms:
+  - ios
+  - android
+de: In der Schreibübung kann nun während der Eingabe gescrollt werden.
