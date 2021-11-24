@@ -66,15 +66,15 @@ describe('ArticleChoiceExerciseScreen', () => {
       wrapper: wrapWithTheme
     })
 
-    expect(getAllByText('Helm')).toHaveLength(3)
+    expect(getAllByText(/Helm/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
 
-    expect(getAllByText('Auto')).toHaveLength(3)
+    expect(getAllByText(/Auto/)).toHaveLength(4)
     fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText('Helm')).toHaveLength(3)
+    expect(getAllByText(/Helm/)).toHaveLength(4)
   })
 
   it('should not allow to skip last document', () => {
@@ -86,11 +86,11 @@ describe('ArticleChoiceExerciseScreen', () => {
       }
     )
 
-    expect(getAllByText('Helm')).toHaveLength(3)
+    expect(getAllByText(/Helm/)).toHaveLength(4)
     fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText('Auto')).toHaveLength(3)
+    expect(getAllByText(/Auto/)).toHaveLength(4)
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 
@@ -100,14 +100,14 @@ describe('ArticleChoiceExerciseScreen', () => {
       wrapper: wrapWithTheme
     })
 
-    expect(getAllByText('Helm')).toHaveLength(3)
+    expect(getAllByText(/Helm/)).toHaveLength(4)
     fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText('Auto')).toHaveLength(3)
+    expect(getAllByText(/Auto/)).toHaveLength(4)
     fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText('Helm')).toHaveLength(3)
+    expect(getAllByText(/Helm/)).toHaveLength(4)
   })
 })
