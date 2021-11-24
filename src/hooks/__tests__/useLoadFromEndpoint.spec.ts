@@ -21,7 +21,7 @@ describe('getFromEndpoint', () => {
     const responseData = await getFromEndpoint(path)
     expect(responseData).toBe(data)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc', { headers: {} })
+    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', { headers: {} })
   })
 
   it('should include api key in header', async () => {
@@ -34,7 +34,7 @@ describe('getFromEndpoint', () => {
     const apiKey = 'my_api_key'
     await getFromEndpoint(path, apiKey)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc', {
+    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', {
       headers: { Authorization: `Api-Key ${apiKey}` }
     })
   })
