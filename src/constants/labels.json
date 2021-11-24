@@ -7,7 +7,12 @@
     "words": "Wörter",
     "exercises": "Übungen",
     "addCustomDiscipline": "Bereich hinzufügen",
-    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden."
+    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
+    "deleteModal": {
+      "confirmationQuestion": "Soll das Modul wirklich gelöscht werden?",
+      "cancel": "Abbrechen",
+      "confirm": "Modul löschen"
+    }
   },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",

@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const baseURL = __DEV__ ? 'https://lunes-test.tuerantuer.org/api' : 'https://lunes.tuerantuer.org/api'
 
-const instance = axios.create({
-  baseURL: baseURL
-})
-
-export default instance
+export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {
+  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : {}
+  const response = await axios.get(`${baseURL}/${url}`, { headers })
+  return response.data
+}

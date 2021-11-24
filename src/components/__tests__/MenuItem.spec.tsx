@@ -10,8 +10,14 @@ describe('Components', () => {
   describe('MenuItem', () => {
     const defaultMenuItemProps: IMenuItemProps = {
       selected: false,
-      icon: '',
-      title: 'MenuItemTitle',
+      item: {
+        id: 1,
+        description: '',
+        icon: '',
+        title: 'Menu item title',
+        numberOfChildren: 1,
+        isLeaf: false
+      },
       children: <Text>Text of children</Text>,
       onPress: () => {}
     }
@@ -26,13 +32,13 @@ describe('Components', () => {
       const onPress = jest.fn()
       const { getByText } = renderMenuItem({ onPress: onPress })
       expect(onPress).not.toHaveBeenCalled()
-      const element = getByText('MenuItemTitle')
+      const element = getByText('Menu item title')
       fireEvent.press(element)
       expect(onPress).toHaveBeenCalled()
     })
 
     it('should display title passed to it', () => {
-      const { queryByText } = renderMenuItem({ title: 'Menu item title' })
+      const { queryByText } = renderMenuItem({})
       const title = queryByText('Menu item title')
       expect(title).not.toBeNull()
     })
@@ -47,7 +53,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderMenuItem()
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-      const title = getByText('MenuItemTitle')
+      const title = getByText('Menu item title')
       expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
     })
 
@@ -55,7 +61,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderMenuItem({ selected: true })
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
-      const title = getByText('MenuItemTitle')
+      const title = getByText('Menu item title')
       expect(title.instance.props.style[0].color).toBe(COLORS.white)
     })
   })

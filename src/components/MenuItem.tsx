@@ -4,6 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow } from '../../assets/images'
+import { DisciplineType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
@@ -36,14 +37,14 @@ const TextContainer = styled.View`
 `
 
 export interface IMenuItemProps {
+  item: DisciplineType
+  children: ReactElement
   selected: boolean
   onPress: () => void
-  icon: string
-  title: string
-  children: ReactElement
 }
 
-const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps): JSX.Element => {
+const MenuItem = ({ selected, onPress, item, children }: IMenuItemProps): JSX.Element => {
+  const { icon, title } = item
   return (
     <Container onPress={onPress} selected={selected}>
       <Icon source={{ uri: icon }} />
@@ -57,4 +58,5 @@ const MenuItem = ({ selected, onPress, icon, title, children }: IMenuItemProps):
     </Container>
   )
 }
+
 export default MenuItem

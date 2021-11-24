@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import DeletionSwipeable from './DeletionSwipeable'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
 
@@ -39,20 +40,32 @@ const ErrorText = styled.Text`
 interface CustomDisciplineMenuItemPropsType {
   apiKey: string
   selectedId: string | null
-  setSelectedId: (input: string) => void
+  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
+  refresh: () => void
 }
 
 const CustomDisciplineMenuItem = ({
   apiKey,
   selectedId,
   setSelectedId,
-  navigation
+  navigation,
+  refresh
 }: CustomDisciplineMenuItemPropsType): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
   const idToSelectedIdString = (id: number): string => {
     return `custom-${id}`
+  }
+
+  const navigate = (): void => {
+    if (!data) {
+      return
+    }
+    setSelectedId(idToSelectedIdString(data.id))
+    navigation.navigate('DisciplineSelection', {
+      extraParams: { discipline: data }
+    })
   }
 
   if (loading) {
@@ -63,30 +76,23 @@ const CustomDisciplineMenuItem = ({
         </LoadingSpinner>
       </Placeholder>
     )
-  } else if (data) {
-    return (
-      <MenuItem
-        selected={idToSelectedIdString(data.id) === selectedId}
-        onPress={() => {
-          setSelectedId(idToSelectedIdString(data.id))
-          navigation.navigate('DisciplineSelection', {
-            extraParams: { discipline: data }
-          })
-        }}
-        icon={data.icon}
-        title={data.title}>
-        <Description selected={idToSelectedIdString(data.id) === selectedId}>
-          {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-        </Description>
-      </MenuItem>
-    )
   } else {
     return (
-      <Placeholder>
-        <ErrorText>
-          {labels.home.errorLoadCustomDiscipline} {apiKey}
-        </ErrorText>
-      </Placeholder>
+      <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
+        {data ? (
+          <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+            <Description selected={idToSelectedIdString(data.id) === selectedId}>
+              {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+            </Description>
+          </MenuItem>
+        ) : (
+          <Placeholder>
+            <ErrorText>
+              {labels.home.errorLoadCustomDiscipline} {apiKey}
+            </ErrorText>
+          </Placeholder>
+        )}
+      </DeletionSwipeable>
     )
   }
 }
