@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, RefObject, useEffect, useState } from 'react'
+import React, { ReactElement, ReactNode, RefObject, useEffect, useRef, useState } from 'react'
 import { Animated, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
@@ -34,13 +34,14 @@ interface DeletionSwipableProps {
 
 const rightThreshold = 40
 
-const DeletionSwipable = ({ apiKey, refresh, children }: DeletionSwipableProps): ReactElement => {
+const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const swipeableRow: RefObject<Swipeable> = React.createRef<Swipeable>()
+  const swipeableRow: RefObject<Swipeable> = useRef<Swipeable>(null)
 
   useEffect(() => {
-    swipeableRow.current?.close()
-  }, [swipeableRow])
+    // closes the swipeable when leaving the screen
+    return swipeableRow.current?.close()
+  })
 
   const renderRightAction = (progress: Animated.AnimatedInterpolation): ReactElement => {
     const trans = progress.interpolate({
@@ -93,4 +94,4 @@ const DeletionSwipable = ({ apiKey, refresh, children }: DeletionSwipableProps):
   )
 }
 
-export default DeletionSwipable
+export default DeletionSwipeable

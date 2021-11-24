@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import DeletionSwipable from './DeletionSwipable'
+import DeletionSwipeable from './DeletionSwipeable'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
 
@@ -40,7 +40,7 @@ const ErrorText = styled.Text`
 interface CustomDisciplineMenuItemPropsType {
   apiKey: string
   selectedId: string | null
-  setSelectedId: React.Dispatch<React.SetStateAction<string | null>>
+  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   refresh: () => void
 }
@@ -78,7 +78,7 @@ const CustomDisciplineMenuItem = ({
     )
   } else {
     return (
-      <DeletionSwipable apiKey={apiKey} refresh={refresh}>
+      <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
         {data ? (
           <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
             <Description selected={idToSelectedIdString(data.id) === selectedId}>
@@ -92,7 +92,7 @@ const CustomDisciplineMenuItem = ({
             </ErrorText>
           </Placeholder>
         )}
-      </DeletionSwipable>
+      </DeletionSwipeable>
     )
   }
 }
