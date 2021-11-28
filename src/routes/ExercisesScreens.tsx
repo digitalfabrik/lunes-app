@@ -1,6 +1,7 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
+import { Alert } from 'react-native'
 import { FlatList, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -11,7 +12,6 @@ import { EXERCISES, ExerciseType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
   height: 100%;
@@ -77,6 +77,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   )
 
   const Header = <Title title={title} description={`${numberOfChildren} ${labels.home.words}`} />
+   //checking number of childerns for exerciseScreen 
+   
+
+
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
@@ -94,11 +98,15 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   }
 
   const handleNavigation = (item: ExerciseType): void => {
+    if(item.title === "Level 1" && numberOfChildren < 4){
+         Alert.alert("Not enough words"); 
+        return;
+ }else{
     setSelectedKey(item.key.toString())
     navigation.navigate(EXERCISES[item.key].nextScreen, {
       discipline: discipline
-    })
-  }
+    });}}
+      
 
   return (
     <Root>
@@ -112,5 +120,5 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     </Root>
   )
 }
-
+  
 export default ExercisesScreen

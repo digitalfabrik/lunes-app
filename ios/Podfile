@@ -12,11 +12,8 @@ target 'Lunes' do
     :hermes_enabled => false
   )
 
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
-  pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
 
-  pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
 
   target 'LunesTests' do
     inherit! :complete
