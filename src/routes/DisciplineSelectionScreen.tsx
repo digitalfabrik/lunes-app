@@ -11,7 +11,7 @@ import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { childrenDescription } from '../services/helpers'
+import { childrenDescription, childrenLabel } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -76,7 +76,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       <MenuItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
-          <Description selected={selected}>{childrenDescription(item)}</Description>
+          <Description selected={selected}>{childrenLabel(item)}</Description>
         </ItemText>
       </MenuItem>
     )
