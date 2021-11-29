@@ -83,6 +83,10 @@ const WriteExercise = ({
   const document = documents[currentDocumentNumber]
   const secondAttempt = !!submission
 
+  const current = results.find(result => result.id === document?.id)
+  const nthRetry = current ? current.numberOfTries : 0
+  const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!current || current.result !== SIMPLE_RESULTS.correct)
+
   const capitalizeFirstLetter = (string: string): string => {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
@@ -135,42 +139,38 @@ const WriteExercise = ({
     setSubmission(null)
     setInput('')
 
-    if (currentDocumentNumber === documents.length - 1 && !getRetryInfoOfCurrent().needsToBeRepeated) {
+    if (currentDocumentNumber === documents.length - 1 && !needsToBeRepeated) {
       finishExercise(results)
     } else {
-      getRetryInfoOfCurrent().needsToBeRepeated ? tryLater() : setCurrentDocumentNumber(currentDocumentNumber + 1)
+      needsToBeRepeated ? tryLater() : setCurrentDocumentNumber(currentDocumentNumber + 1)
     }
   }
 
   const storeResult = (score: SimpleResultType, noFurtherRetries: boolean = false): void => {
-    const nthRetry = noFurtherRetries ? numberOfMaxRetries : getRetryInfoOfCurrent().nthRetry
+    if (!document) {
+      return
+    }
+    const indexOfCurrentResult = results.findIndex(result => result.id === document.id)
+    const numberOfTries = noFurtherRetries ? numberOfMaxRetries : nthRetry + 1
+    const result: DocumentResultType = { ...document, result: score, numberOfTries: numberOfTries }
+    const newArr = Array.from(results)
 
-    const indexOfCurrentResult = results.findIndex(result => result.id === document?.id)
-    const result: DocumentResultType = { ...document, result: score, numberOfTries: nthRetry + 1 }
-    const newArr = results
     if (indexOfCurrentResult !== -1) {
-      newArr[indexOfCurrentResult] = result
       if (results[indexOfCurrentResult].result === 'similar') {
         newArr[indexOfCurrentResult] = {
           ...document,
-          result: nthRetry >= numberOfMaxRetries - 1 ? 'incorrect' : 'similar',
-          numberOfTries: nthRetry + 1
+          result: numberOfTries >= numberOfMaxRetries ? 'incorrect' : score,
+          numberOfTries: 5
         }
+      } else {
+        newArr[indexOfCurrentResult] = result
       }
       setResult(newArr[indexOfCurrentResult].result)
       setResults(newArr)
     } else {
       setResults([...results, result])
+      setResult(result.result)
     }
-  }
-
-  const getRetryInfoOfCurrent = (): { nthRetry: number; needsToBeRepeated: boolean } => {
-    const indexOfCurrent = results.findIndex(result => result.id === document?.id)
-    const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
-    const needsToBeRepeated =
-      nthRetry < numberOfMaxRetries &&
-      (indexOfCurrent === -1 || results[indexOfCurrent].result !== SIMPLE_RESULTS.correct)
-    return { nthRetry, needsToBeRepeated }
   }
 
   const getBorderColor = (): string => {
@@ -234,7 +234,7 @@ const WriteExercise = ({
               result={result}
               document={document}
               submission={submission}
-              needsToBeRepeated={getRetryInfoOfCurrent().needsToBeRepeated}
+              needsToBeRepeated={needsToBeRepeated}
             />
           )}
 
@@ -246,7 +246,7 @@ const WriteExercise = ({
             checkEntry={checkEntry}
             continueExercise={continueExercise}
             isFinished={currentDocumentNumber === documents.length - 1}
-            needsToBeRepeated={getRetryInfoOfCurrent().needsToBeRepeated}
+            needsToBeRepeated={needsToBeRepeated}
           />
         </StyledContainer>
       </Pressable>

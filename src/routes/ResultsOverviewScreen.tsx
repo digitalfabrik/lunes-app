@@ -153,7 +153,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   )
 
   const Item = ({ item }: { item: ResultType }): ReactElement | null => {
-    const hideAlmostCorrect = exercise !== ExerciseKeys.writeExercise && item.key === SIMPLE_RESULTS.similar
+    const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
