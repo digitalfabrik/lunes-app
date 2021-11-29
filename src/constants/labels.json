@@ -9,9 +9,9 @@
     "addCustomDiscipline": "Bereich hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
     "deleteModal": {
-      "confirmationQuestion": "Soll das Modul wirklich gelöscht werden?",
+      "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
       "cancel": "Abbrechen",
-      "confirm": "Modul löschen"
+      "confirm": "Bereich löschen"
     }
   },
   "addCustomDiscipline": {
