@@ -23,13 +23,16 @@ const getEndpoint = (parent: DisciplineType | null): string => {
 }
 
 const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>
-  serverResponse.map(item => ({
-    ...item,
-    numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-    isLeaf: item.total_discipline_children === 0,
-    isFirstLevel: parent === null,
-    apiKey: parent?.apiKey
-  })) ?? []
+  serverResponse.map(item => {
+    const numberOfChildren = item.total_discipline_children || item.total_training_sets || item.total_documents
+    return {
+      ...item,
+      numberOfChildren,
+      isLeaf: numberOfChildren === 0,
+      isFirstLevel: parent === null,
+      apiKey: parent?.apiKey
+    }
+  }) ?? []
 
 export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
