@@ -25,7 +25,8 @@ const mockDisciplines = [
     description: 'Description1',
     icon: 'none',
     numberOfChildren: 1,
-    isLeaf: false
+    isLeaf: false,
+    isFirstLevel: true
   },
   {
     id: 2,
@@ -33,7 +34,8 @@ const mockDisciplines = [
     description: 'Description1',
     icon: 'none',
     numberOfChildren: 1,
-    isLeaf: false
+    isLeaf: false,
+    isFirstLevel: true
   }
 ]
 
@@ -44,7 +46,8 @@ const mockCustomDiscipline = {
   icon: 'none',
   numberOfChildren: 1,
   isLeaf: false,
-  apiKey: 'test'
+  apiKey: 'test',
+  isFirstLevel: true
 }
 
 describe('HomeScreen', () => {

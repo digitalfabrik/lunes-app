@@ -9,7 +9,10 @@ const parent = {
   id: 1234,
   title: 'title',
   numberOfChildren: 12,
-  isLeaf: true
+  isLeaf: false,
+  description: '',
+  icon: '',
+  isFirstLevel: true
 }
 
 const testData = [

@@ -50,7 +50,11 @@ describe('ArticleChoiceExerciseScreen', () => {
         id: 1,
         title: 'TestTitel',
         numberOfChildren: 2,
-        isLeaf: true
+        isLeaf: true,
+        isFirstLevel: false,
+        icon: 'my_icon',
+        apiKey: 'my_api_key',
+        description: ''
       }
     }
   }

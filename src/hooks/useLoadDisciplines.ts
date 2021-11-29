@@ -1,5 +1,4 @@
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
-import { Discipline } from '../navigation/NavigationTypes'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
 
@@ -13,7 +12,7 @@ export interface ServerResponse {
   total_documents: number
 }
 
-const getEndpoint = (parent: Discipline | null): string => {
+const getEndpoint = (parent: DisciplineType | null): string => {
   if (parent?.isLeaf) {
     return ENDPOINTS.trainingSet
   } else if (parent?.apiKey) {
@@ -23,19 +22,20 @@ const getEndpoint = (parent: Discipline | null): string => {
   }
 }
 
-const formatServerResponse = (serverResponse: ServerResponse[], apiKey?: string): DisciplineType[] =>
+const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>
   serverResponse.map(item => ({
     ...item,
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
     isLeaf: item.total_discipline_children === 0,
-    apiKey: apiKey
+    isFirstLevel: parent === null,
+    apiKey: parent?.apiKey
   })) ?? []
 
-export const loadDisciplines = async (parent: Discipline | null): Promise<DisciplineType[]> => {
+export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
   const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)
-  return formatServerResponse(response, parent?.apiKey)
+  return formatServerResponse(response, parent)
 }
 
-export const useLoadDisciplines = (parent: Discipline | null): ReturnType<DisciplineType[]> =>
+export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> =>
   useLoadAsync(loadDisciplines, parent)

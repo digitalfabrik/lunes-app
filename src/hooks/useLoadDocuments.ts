@@ -1,6 +1,5 @@
 import { ARTICLES } from '../constants/data'
-import { DocumentType, ENDPOINTS } from '../constants/endpoints'
-import { Discipline } from '../navigation/NavigationTypes'
+import { DisciplineType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
 
@@ -28,13 +27,14 @@ const formatServerResponse = (documents: DocumentTypeFromServer[]): DocumentType
     }))
   })) ?? []
 
-export const loadDocuments = async (discipline: Discipline): Promise<DocumentType[]> => {
+export const loadDocuments = async (discipline: DisciplineType): Promise<DocumentType[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
 
   const response = await getFromEndpoint<DocumentTypeFromServer[]>(url, discipline.apiKey)
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline): ReturnType<DocumentType[]> => useLoadAsync(loadDocuments, discipline)
+const useLoadDocuments = (discipline: DisciplineType): ReturnType<DocumentType[]> =>
+  useLoadAsync(loadDocuments, discipline)
 
 export default useLoadDocuments
