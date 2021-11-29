@@ -9,6 +9,7 @@ export interface DisciplineType {
   isLeaf: boolean
   isFirstLevel: boolean
   apiKey?: string
+  total_training_sets?: number
 }
 
 export interface AlternativeWordType {
