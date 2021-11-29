@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
@@ -82,7 +83,7 @@ const CustomDisciplineMenuItem = ({
         {data ? (
           <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
             <Description selected={idToSelectedIdString(data.id) === selectedId}>
-              {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+              {childrenDescription(data)}
             </Description>
           </MenuItem>
         ) : (

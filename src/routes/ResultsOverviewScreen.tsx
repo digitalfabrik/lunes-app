@@ -179,7 +179,9 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
-              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+              selected={
+                selected
+              }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />

@@ -96,7 +96,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     <Title
       titleIcon={<Icon width={38} height={38} />}
       title={` \n${title} ${labels.results.entries}`}
-      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.home.words}`}
+      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.general.words}`}
     />
   )
 

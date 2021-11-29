@@ -41,7 +41,7 @@ describe('Components', () => {
       mockUseLoadAsyncWithData(mockData)
       const { getByText } = renderItem()
       expect(getByText('Custom Discipline')).toBeDefined()
-      expect(getByText(`1 ${labels.home.unit}`)).toBeDefined()
+      expect(getByText(`1 ${labels.general.firstLevelDiscipline}`)).toBeDefined()
     })
 
     it('should display loading', () => {

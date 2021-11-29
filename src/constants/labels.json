@@ -1,11 +1,6 @@
 {
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
-    "unit": "Beruf",
-    "units": "Berufe",
-    "word": "Wort",
-    "words": "Wörter",
-    "exercises": "Übungen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
     "deleteModal": {
@@ -89,6 +84,13 @@
     "error": {
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
       "retryButton": "Erneut versuchen"
-    }
+    },
+    "firstLevelDiscipline": "Beruf",
+    "firstLevelDisciplines": "Berufe",
+    "discipline": "Modul",
+    "disciplines": "Module",
+    "exercises": "Übungen",
+    "word": "Wort",
+    "words": "Wörter"
   }
 }
