@@ -21,6 +21,7 @@ describe('Components', () => {
       icon: 'none',
       numberOfChildren: 1,
       isLeaf: false,
+      isFirstLevel: true,
       apiKey: 'abc'
     }
 

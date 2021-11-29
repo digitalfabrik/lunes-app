@@ -65,7 +65,7 @@ const CustomDisciplineMenuItem = ({
     }
     setSelectedId(idToSelectedIdString(data.id))
     navigation.navigate('DisciplineSelection', {
-      extraParams: { discipline: data }
+      discipline: data
     })
   }
 
