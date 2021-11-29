@@ -24,10 +24,8 @@ export type RoutesParamsType = {
   Home: undefined
   AddCustomDiscipline: undefined
   DisciplineSelection: {
-    extraParams: {
-      discipline: DisciplineType
-      parentTitle?: string
-    }
+    discipline: DisciplineType
+    parentTitle?: string
   }
   Exercises: {
     discipline: DisciplineType

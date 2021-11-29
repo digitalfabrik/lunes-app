@@ -68,9 +68,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
-      extraParams: {
-        discipline: item
-      }
+      discipline: item
     })
   }
 
