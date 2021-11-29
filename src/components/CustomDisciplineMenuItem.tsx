@@ -1,21 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
-import { Animated, View } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
-import Swipeable from 'react-native-gesture-handler/Swipeable'
+import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { TrashBinIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
-import ConfirmationModal from './ConfirmationModal'
+import DeletionSwipeable from './DeletionSwipeable'
 import Loading from './Loading'
 import MenuItem from './MenuItem'
-
-const widthOfTrashButton = wp('18%')
 
 const Placeholder = styled.View`
   height: ${wp('22%')}px;
@@ -44,24 +37,10 @@ const ErrorText = styled.Text`
   margin: 10px;
 `
 
-const DeleteContainer = styled.View`
-  width: ${widthOfTrashButton};
-`
-
-const DeleteButton = styled(RectButton)`
-  height: ${wp('21%')}px;
-  margin: 0 16px 8px -16px;
-  align-items: center;
-  flex: 1;
-  justify-content: center;
-  background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
-  width: ${widthOfTrashButton};
-`
-
 interface CustomDisciplineMenuItemPropsType {
   apiKey: string
   selectedId: string | null
-  setSelectedId: (input: string) => void
+  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParamsType, 'Home'>
   refresh: () => void
 }
@@ -75,49 +54,18 @@ const CustomDisciplineMenuItem = ({
 }: CustomDisciplineMenuItemPropsType): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-
-  const renderRightAction = (progress: Animated.AnimatedInterpolation): ReactElement => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [50, 0]
-    })
-
-    const pressHandler = (): void => {
-      close()
-      setIsModalVisible(true)
-    }
-
-    return (
-      <DeleteContainer>
-        <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-          <DeleteButton onPress={pressHandler}>
-            <TrashBinIcon testID={'trash-bin-icon'} />
-          </DeleteButton>
-        </Animated.View>
-      </DeleteContainer>
-    )
-  }
-
-  const deleteModule = (): void => {
-    AsyncStorage.deleteCustomDiscipline(apiKey)
-      .then(() => refresh())
-      .catch((e: Error) => console.log(e.message))
-    setIsModalVisible(false)
-  }
-
-  let swipeableRow: Swipeable
-
-  const updateRef = (ref: Swipeable): void => {
-    swipeableRow = ref
-    swipeableRow?.close()
-  }
-  const close = (): void => {
-    swipeableRow.close()
-  }
-
   const idToSelectedIdString = (id: number): string => {
     return `custom-${id}`
+  }
+
+  const navigate = (): void => {
+    if (!data) {
+      return
+    }
+    setSelectedId(idToSelectedIdString(data.id))
+    navigation.navigate('DisciplineSelection', {
+      extraParams: { discipline: data }
+    })
   }
 
   if (loading) {
@@ -130,45 +78,21 @@ const CustomDisciplineMenuItem = ({
     )
   } else {
     return (
-      <View testID={'Swipeable'}>
-        <Swipeable
-          ref={updateRef}
-          friction={2}
-          enableTrackpadTwoFingerGesture
-          rightThreshold={40}
-          renderRightActions={renderRightAction}>
-          <ConfirmationModal
-            visible={isModalVisible}
-            setVisible={setIsModalVisible}
-            text={labels.home.deleteModal.confirmationQuestion}
-            confirmationButtonText={labels.home.deleteModal.confirm}
-            cancelButtonText={labels.home.deleteModal.cancel}
-            confirmationAction={deleteModule}
-          />
-          {data ? (
-            <MenuItem
-              selected={idToSelectedIdString(data.id) === selectedId}
-              onPress={() => {
-                setSelectedId(idToSelectedIdString(data.id))
-                navigation.navigate('DisciplineSelection', {
-                  extraParams: { discipline: data }
-                })
-              }}
-              icon={data.icon}
-              title={data.title}>
-              <Description selected={idToSelectedIdString(data.id) === selectedId}>
-                {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-              </Description>
-            </MenuItem>
-          ) : (
-            <Placeholder>
-              <ErrorText>
-                {labels.home.errorLoadCustomDiscipline} {apiKey}
-              </ErrorText>
-            </Placeholder>
-          )}
-        </Swipeable>
-      </View>
+      <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
+        {data ? (
+          <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+            <Description selected={idToSelectedIdString(data.id) === selectedId}>
+              {data.numberOfChildren} {data.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
+            </Description>
+          </MenuItem>
+        ) : (
+          <Placeholder>
+            <ErrorText>
+              {labels.home.errorLoadCustomDiscipline} {apiKey}
+            </ErrorText>
+          </Placeholder>
+        )}
+      </DeletionSwipeable>
     )
   }
 }

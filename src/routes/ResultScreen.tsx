@@ -1,6 +1,6 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -21,11 +21,11 @@ const Root = styled.View`
   padding-bottom: 0;
 `
 
-const StyledList = styled(FlatList as new () => FlatList<DocumentResultType>)`
+const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-`
+` as ComponentType as new () => FlatList<DocumentResultType>
 
 const DarkLabel = styled.Text`
   text-align: center;

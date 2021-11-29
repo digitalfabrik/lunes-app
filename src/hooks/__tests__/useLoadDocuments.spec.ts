@@ -1,9 +1,10 @@
 import { mocked } from 'ts-jest/utils'
 
+import { getFromEndpoint } from '../../services/axios'
 import { loadDocuments } from '../useLoadDocuments'
-import { getFromEndpoint } from '../useLoadFromEndpoint'
 
-jest.mock('../useLoadFromEndpoint')
+jest.mock('../useLoadAsync')
+jest.mock('../../services/axios')
 
 const testData = [
   {

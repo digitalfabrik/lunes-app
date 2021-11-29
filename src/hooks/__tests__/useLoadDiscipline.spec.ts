@@ -1,9 +1,9 @@
 import { mocked } from 'ts-jest/utils'
 
+import { getFromEndpoint } from '../../services/axios'
 import { loadDisciplines } from '../useLoadDisciplines'
-import { getFromEndpoint } from '../useLoadFromEndpoint'
 
-jest.mock('../useLoadFromEndpoint')
+jest.mock('../../services/axios')
 
 const parent = {
   id: 1234,

@@ -1,9 +1,10 @@
+import axios from 'axios'
 import { mocked } from 'ts-jest/utils'
 
-import axios from '../../services/axios'
-import { getFromEndpoint, loadFromEndpoint } from '../useLoadFromEndpoint'
+import { getFromEndpoint } from '../../services/axios'
+import { loadAsync } from '../useLoadAsync'
 
-jest.mock('../../services/axios', () => ({ get: jest.fn(() => ({ data: 'my_data' })) }))
+jest.mock('axios', () => ({ get: jest.fn() }))
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -16,19 +17,26 @@ describe('getFromEndpoint', () => {
       return { data }
     })
 
-    const url = 'https://example.com'
-    const responseData = await getFromEndpoint(url)
+    const path = 'abc'
+    const responseData = await getFromEndpoint(path)
     expect(responseData).toBe(data)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith(url, { headers: {} })
+    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', { headers: undefined })
   })
 
   it('should include api key in header', async () => {
-    const url = 'https://example.com'
+    const data = 'myData'
+    mocked(axios.get).mockImplementationOnce(async () => {
+      return { data }
+    })
+
+    const path = 'abc'
     const apiKey = 'my_api_key'
-    await getFromEndpoint(url, apiKey)
+    await getFromEndpoint(path, apiKey)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith(url, { headers: { Authorization: `Api-Key ${apiKey}` } })
+    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', {
+      headers: { Authorization: `Api-Key ${apiKey}` }
+    })
   })
 })
 
@@ -40,7 +48,7 @@ describe('loadFromEndpoint', () => {
   it('should set everything correctly if loading from endpoint succeeds', async () => {
     const request = async (): Promise<string> => 'myData'
 
-    await loadFromEndpoint(request, undefined, setData, setError, setLoading)
+    await loadAsync(request, undefined, setData, setError, setLoading)
 
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(null)
@@ -51,7 +59,7 @@ describe('loadFromEndpoint', () => {
   it('should set everything correctly if loading from endpoint throws an error', async () => {
     const error = new Error('myError')
     const request = async (): Promise<void> => await Promise.reject(error)
-    await loadFromEndpoint(request, undefined, setData, setError, setLoading)
+    await loadAsync(request, undefined, setData, setError, setLoading)
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(error)
     expect(setData).toHaveBeenCalledTimes(1)

@@ -1,9 +1,10 @@
 import { mocked } from 'ts-jest/utils'
 
-import { getFromEndpoint } from '../useLoadFromEndpoint'
+import { getFromEndpoint } from '../../services/axios'
 import { loadGroupInfo } from '../useLoadGroupInfo'
 
-jest.mock('../useLoadFromEndpoint')
+jest.mock('../useLoadAsync')
+jest.mock('../../services/axios')
 
 const apiKey = 'my_api_key'
 

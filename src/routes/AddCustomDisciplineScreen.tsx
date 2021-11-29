@@ -42,6 +42,7 @@ const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding-left: 15px;
+  height: ${hp('8%')}px;
 `
 
 const ErrorContainer = styled.View`
@@ -88,7 +89,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
     if (!customDisciplines) {
       return
     }
-    if (customDisciplines?.includes(code)) {
+    if (customDisciplines.includes(code)) {
       setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
       return
     }

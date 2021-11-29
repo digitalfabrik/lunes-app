@@ -50,7 +50,7 @@ const Label = styled.Text<{ light: boolean }>`
 
 export interface ConfirmationModalPropsType {
   visible: boolean
-  setVisible: Function
+  setVisible: (visible: boolean) => void
   text: string
   confirmationButtonText: string
   cancelButtonText: string
