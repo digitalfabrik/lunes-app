@@ -101,6 +101,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     if(item.title === "Level 1" && numberOfChildren < 4){
          Alert.alert("Not enough words"); 
         return;
+        //new edit
  }else{
     setSelectedKey(item.key.toString())
     navigation.navigate(EXERCISES[item.key].nextScreen, {
