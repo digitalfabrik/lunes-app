@@ -1,0 +1,6 @@
+issue_key: LUN-133
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Falsche Eingaben werden nun bei allen Übungen wiederholt

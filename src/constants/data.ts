@@ -132,3 +132,5 @@ export const RESULTS: ResultType[] = [
     order: 2
   }
 ]
+
+export const numberOfMaxRetries = 3

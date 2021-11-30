@@ -110,10 +110,7 @@ describe('WriteExercise', () => {
   })
 
   it('should show wrong feedback', async () => {
-    await evaluate(
-      'Das Falsche',
-      `${labels.exercises.write.feedback.wrong} „${defaultAnswerSectionProps.documents[0].article.value} ${defaultAnswerSectionProps.documents[0].word}“`
-    )
+    await evaluate('Das Falsche', `${labels.exercises.write.feedback.wrong}`)
   })
 
   it('should play audio if available and no alternative solution submitted', async () => {
@@ -150,5 +147,52 @@ describe('WriteExercise', () => {
     expect(Tts.speak).toHaveBeenCalledWith('Die Alternative', expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
+  })
+
+  it('should show solution after three wrong entries', async () => {
+    const { getByPlaceholderText, getByText } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
+      wrapper: wrapWithTheme
+    })
+
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Das Falsche')
+    const button = getByText(labels.exercises.write.checkInput)
+    fireEvent.press(button)
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(inputField, 'Das Falsche2')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(inputField, 'Das Falsche3')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    expect(
+      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
+    ).toBeDefined()
+    expect(getByText(labels.exercises.showResults)).toBeDefined()
+  })
+
+  it('should count as wrong after three times almost correct', async () => {
+    const { getByPlaceholderText, getByText } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
+      wrapper: wrapWithTheme
+    })
+    const submission = 'Der Spachtl'
+
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, submission)
+    const button = getByText(labels.exercises.write.checkInput)
+    fireEvent.press(button)
+    expect(
+      getByText(
+        `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+      )
+    ).toBeDefined()
+
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    expect(
+      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
+    ).toBeDefined()
+    expect(getByText(labels.exercises.showResults)).toBeDefined()
   })
 })
