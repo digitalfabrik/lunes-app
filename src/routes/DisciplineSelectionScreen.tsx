@@ -101,14 +101,16 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
-      <Title
-        title={discipline.title}
-        description={`${discipline.numberOfChildren} ${
-          discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
-        }`}
-      />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
+          ListHeaderComponent={
+            <Title
+              title={discipline.title}
+              description={`${discipline.numberOfChildren} ${
+                discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
+              }`}
+            />
+          }
           data={disciplines}
           renderItem={ListItem}
           keyExtractor={item => item.id.toString()}
