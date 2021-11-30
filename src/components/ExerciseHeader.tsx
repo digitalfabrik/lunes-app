@@ -77,12 +77,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
   return (
     <>
-      <ProgressBar
-        progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
-        color={COLORS.lunesGreenMedium}
-        accessibilityComponentType
-        accessibilityTraits
-      />
+      <ProgressBar progress={numberOfWords > 0 ? currentWord / numberOfWords : 0} color={COLORS.lunesGreenMedium} />
 
       <ConfirmationModal
         visible={isModalVisible}

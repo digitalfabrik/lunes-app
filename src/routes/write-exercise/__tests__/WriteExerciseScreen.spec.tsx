@@ -21,7 +21,7 @@ jest.mock('react-native/Libraries/Image/Image', () => {
   }
 })
 
-jest.mock('@react-navigation/stack')
+jest.mock('@react-navigation/elements')
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text

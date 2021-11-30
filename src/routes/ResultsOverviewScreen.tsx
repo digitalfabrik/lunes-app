@@ -1,6 +1,6 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -20,11 +20,11 @@ const Root = styled.View`
   padding-right: 4%;
 `
 
-const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
+const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-`
+` as ComponentType as new () => FlatList<ResultType>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
