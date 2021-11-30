@@ -160,7 +160,7 @@ const WriteExercise = ({
         newArr[indexOfCurrentResult] = {
           ...document,
           result: numberOfTries >= numberOfMaxRetries ? 'incorrect' : score,
-          numberOfTries: 5
+          numberOfTries: nthRetry + 1
         }
       } else {
         newArr[indexOfCurrentResult] = result

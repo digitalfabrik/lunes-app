@@ -70,6 +70,10 @@ const ChoiceExerciseScreen = ({
   const documents = newDocuments ?? data
   const currentDocument = documents ? documents[currentWord] : null
 
+  const result = results.find(result => result.id === currentDocument?.id)
+  const nthRetry = !result ? 0 : result.numberOfTries
+  const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!result || result.result === SIMPLE_RESULTS.incorrect)
+
   // Prevent regenerating false answers on every render
   useEffect(() => {
     if (currentDocument) {
@@ -108,8 +112,6 @@ const ChoiceExerciseScreen = ({
     }
     setSelectedAnswer(clickedAnswer)
 
-    const { nthRetry } = getRetryInfoOfCurrent()
-
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, clickedAnswer)
     )
@@ -142,17 +144,7 @@ const ChoiceExerciseScreen = ({
     setResults(newResults)
   }
 
-  const getRetryInfoOfCurrent = (): { nthRetry: number; needsToBeRepeated: boolean } => {
-    const indexOfCurrent = results.findIndex(result => result.id === currentDocument?.id)
-    const nthRetry = indexOfCurrent === -1 ? 0 : results[indexOfCurrent].numberOfTries
-    const needsToBeRepeated =
-      nthRetry < numberOfMaxRetries &&
-      (indexOfCurrent === -1 || results[indexOfCurrent].result === SIMPLE_RESULTS.incorrect)
-    return { nthRetry, needsToBeRepeated }
-  }
-
   const onFinishWord = (): void => {
-    const { needsToBeRepeated } = getRetryInfoOfCurrent()
     const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
 
     if (exerciseFinished) {
@@ -194,9 +186,7 @@ const ChoiceExerciseScreen = ({
               {selectedAnswer !== null ? (
                 <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
                   <LightLabelInput>
-                    {lastWord && !getRetryInfoOfCurrent().needsToBeRepeated
-                      ? labels.exercises.showResults
-                      : labels.exercises.next}
+                    {lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}
                   </LightLabelInput>
                 </Button>
               ) : (
