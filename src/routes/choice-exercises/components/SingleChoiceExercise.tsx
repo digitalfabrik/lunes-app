@@ -71,7 +71,7 @@ const ChoiceExerciseScreen = ({
   const currentDocument = documents ? documents[currentWord] : null
 
   const result = results.find(result => result.id === currentDocument?.id)
-  const nthRetry = !result ? 0 : result.numberOfTries
+  const nthRetry = result?.numberOfTries ?? 0
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!result || result.result === SIMPLE_RESULTS.incorrect)
 
   // Prevent regenerating false answers on every render
