@@ -12,7 +12,7 @@ const parent = {
   isLeaf: false,
   description: '',
   icon: '',
-  isFirstLevel: true
+  isRoot: true
 }
 
 const testData = [
@@ -54,7 +54,7 @@ const expectedData = [
     icon: 'https://lunes-test.tuerantuer.org/media/images/icon-metall-elektro-maschienen3x.png',
     id: 3,
     isLeaf: false,
-    isFirstLevel: true,
+    isRoot: true,
     numberOfChildren: 7,
     title: 'Metall, Elektro & Maschinen',
     total_discipline_children: 0,
@@ -66,7 +66,7 @@ const expectedData = [
     icon: 'https://lunes-test.tuerantuer.org/media/images/do-not-touch.png',
     id: 28,
     isLeaf: true,
-    isFirstLevel: true,
+    isRoot: true,
     numberOfChildren: 9,
     title: 'Sicherheit & Arbeitsschutz',
     total_documents: 9
@@ -78,7 +78,7 @@ const expectedData = [
     icon: null,
     id: 21,
     isLeaf: false,
-    isFirstLevel: true,
+    isRoot: true,
     numberOfChildren: 1,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,

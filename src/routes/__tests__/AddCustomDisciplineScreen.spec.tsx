@@ -36,7 +36,7 @@ describe('AddCustomDisciplineScreen', () => {
       title: 'Test',
       apiKey: 'my_api_key',
       isLeaf: false,
-      isFirstLevel: true,
+      isRoot: true,
       numberOfChildren: 1,
       description: ''
     }

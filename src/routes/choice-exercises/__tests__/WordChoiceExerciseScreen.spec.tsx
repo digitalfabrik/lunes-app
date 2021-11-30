@@ -75,7 +75,7 @@ describe('WordChoiceExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isFirstLevel: false
+        isRoot: false
       }
     }
   }

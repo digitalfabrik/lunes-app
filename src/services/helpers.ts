@@ -39,8 +39,8 @@ export const addTrailingSlashToUrl = (url: string): string => {
 
 const childrenLabel = (discipline: DisciplineType): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (discipline.isFirstLevel) {
-    return isSingular ? labels.general.firstLevelDiscipline : labels.general.firstLevelDisciplines
+  if (discipline.isRoot) {
+    return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {
     return isSingular ? labels.general.word : labels.general.words

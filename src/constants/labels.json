@@ -85,8 +85,8 @@
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
       "retryButton": "Erneut versuchen"
     },
-    "firstLevelDiscipline": "Beruf",
-    "firstLevelDisciplines": "Berufe",
+    "rootDiscipline": "Beruf",
+    "rootDisciplines": "Berufe",
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",

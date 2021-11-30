@@ -90,7 +90,7 @@ const discipline = {
   isLeaf: false,
   description: '',
   icon: '',
-  isFirstLevel: true
+  isRoot: true
 }
 
 beforeEach(() => {

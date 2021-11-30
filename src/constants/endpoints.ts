@@ -7,7 +7,7 @@ export interface DisciplineType {
   icon: string
   numberOfChildren: number
   isLeaf: boolean
-  isFirstLevel: boolean
+  isRoot: boolean
   apiKey?: string
   total_training_sets?: number
 }

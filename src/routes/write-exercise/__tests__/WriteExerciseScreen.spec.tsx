@@ -72,7 +72,7 @@ describe('WriteExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isFirstLevel: false
+        isRoot: false
       }
     }
   }

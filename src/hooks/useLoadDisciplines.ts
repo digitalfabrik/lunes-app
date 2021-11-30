@@ -27,7 +27,7 @@ const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipli
     ...item,
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
     isLeaf: item.total_documents !== undefined,
-    isFirstLevel: parent === null,
+    isRoot: parent === null,
     apiKey: parent?.apiKey
   })) ?? []
 
