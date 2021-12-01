@@ -1,7 +1,8 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
-import { Alert, FlatList, View } from 'react-native'
+import { Alert } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -94,8 +95,8 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    if (item.title === 'Level 1' && numberOfChildren < 4) {
-      Alert.alert('Not enough words')
+    if (item.title === labels.exercises.wordChoice.title && numberOfChildren < 4) {
+      Alert.alert('Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)')
     } else {
       setSelectedKey(item.key.toString())
       navigation.navigate(EXERCISES[item.key].nextScreen, {
