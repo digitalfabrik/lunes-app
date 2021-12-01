@@ -1,7 +1,7 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { Alert, FlatList, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -94,10 +94,15 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    setSelectedKey(item.key.toString())
-    navigation.navigate(EXERCISES[item.key].nextScreen, {
-      discipline: discipline
-    })
+    if (item.title === 'Level 1' && numberOfChildren < 4) {
+      Alert.alert('Not enough words')
+      return
+    } else {
+      setSelectedKey(item.key.toString())
+      navigation.navigate(EXERCISES[item.key].nextScreen, {
+        discipline: discipline
+      })
+    }
   }
 
   return (
