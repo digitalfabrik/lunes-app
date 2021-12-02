@@ -95,8 +95,8 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    if (item.title === labels.exercises.wordChoice.title && numberOfChildren < 4) {
-      Alert.alert('Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)')
+    if (item.title === labels.exercises.wordChoice.title && numberOfChildren < 10) {
+      Alert.alert(labels.exercises.wordChoice.error);
     } else {
       setSelectedKey(item.key.toString())
       navigation.navigate(EXERCISES[item.key].nextScreen, {
