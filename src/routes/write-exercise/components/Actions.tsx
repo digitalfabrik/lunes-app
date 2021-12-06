@@ -42,6 +42,7 @@ export interface IActionsProps {
   continueExercise: () => void
   input: string
   isFinished: boolean
+  needsToBeRepeated: boolean
 }
 
 const Actions = ({
@@ -51,11 +52,14 @@ const Actions = ({
   continueExercise,
   input,
   isFinished,
-  tryLater
+  tryLater,
+  needsToBeRepeated
 }: IActionsProps): ReactElement => {
   return result === 'correct' || result === 'incorrect' ? (
-    <Button onPress={continueExercise} buttonTheme={BUTTONS_THEME.dark} testID={isFinished ? 'check-out' : 'next-word'}>
-      <LightLabelArrow>{isFinished ? labels.exercises.showResults : labels.exercises.next}</LightLabelArrow>
+    <Button onPress={continueExercise} buttonTheme={BUTTONS_THEME.dark}>
+      <LightLabelArrow>
+        {isFinished && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}
+      </LightLabelArrow>
       <WhiteNextArrow />
     </Button>
   ) : (

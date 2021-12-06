@@ -9,7 +9,7 @@ import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import ServerResponseHandler from '../../../components/ServerResponseHandler'
-import { Answer, BUTTONS_THEME, SIMPLE_RESULTS } from '../../../constants/data'
+import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
 import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { ReturnType } from '../../../hooks/useLoadAsync'
@@ -70,6 +70,10 @@ const ChoiceExerciseScreen = ({
   const documents = newDocuments ?? data
   const currentDocument = documents ? documents[currentWord] : null
 
+  const result = results.find(result => result.id === currentDocument?.id)
+  const nthRetry = result?.numberOfTries ?? 0
+  const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!result || result.result === SIMPLE_RESULTS.incorrect)
+
   // Prevent regenerating false answers on every render
   useEffect(() => {
     if (currentDocument) {
@@ -107,36 +111,54 @@ const ChoiceExerciseScreen = ({
       return
     }
     setSelectedAnswer(clickedAnswer)
+
     const correctSelected = [correctAnswer, ...currentDocument.alternatives].find(it =>
       isAnswerEqual(it, clickedAnswer)
     )
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)
-      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.correct }
-      setResults([...results, result])
+      const result: DocumentResultType = {
+        ...currentDocument,
+        result: SIMPLE_RESULTS.correct,
+        numberOfTries: nthRetry + 1
+      }
+      updateResult(result)
     } else {
-      const result: DocumentResultType = { ...currentDocument, result: SIMPLE_RESULTS.incorrect }
-      setResults([...results, result])
+      const result: DocumentResultType = {
+        ...currentDocument,
+        result: SIMPLE_RESULTS.incorrect,
+        numberOfTries: nthRetry + 1
+      }
+      updateResult(result)
     }
     setTimeout(() => {
       setDelayPassed(true)
     }, correctAnswerDelay)
   }
 
+  const updateResult = (result: DocumentResultType): void => {
+    const indexOfCurrentResult = results.findIndex(result => result.id === currentDocument?.id)
+    const newResults = results
+    indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
+    setResults(newResults)
+  }
+
   const onFinishWord = (): void => {
-    const exerciseFinished = currentWord + 1 >= count
+    const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
+
     if (exerciseFinished) {
       setCurrentWord(0)
       setSelectedAnswer(null)
       onExerciseFinished(results)
       setResults([])
     } else {
-      setCurrentWord(prevState => prevState + 1)
+      needsToBeRepeated ? tryLater() : setCurrentWord(prevState => prevState + 1)
     }
     setSelectedAnswer(null)
     setDelayPassed(false)
   }
+
   const lastWord = currentWord + 1 >= count
 
   return (
@@ -163,7 +185,9 @@ const ChoiceExerciseScreen = ({
             <ButtonContainer>
               {selectedAnswer !== null ? (
                 <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-                  <LightLabelInput>{lastWord ? labels.exercises.showResults : labels.exercises.next}</LightLabelInput>
+                  <LightLabelInput>
+                    {lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}
+                  </LightLabelInput>
                 </Button>
               ) : (
                 !lastWord && (

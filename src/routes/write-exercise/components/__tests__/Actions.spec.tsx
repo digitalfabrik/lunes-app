@@ -1,8 +1,11 @@
+import { render } from '@testing-library/react-native'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import React from 'react'
 import 'react-native'
 
+import labels from '../../../../constants/labels.json'
+import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import Action, { IActionsProps } from '../Actions'
 
 describe('Components', () => {
@@ -14,7 +17,8 @@ describe('Components', () => {
       giveUp: () => {},
       tryLater: () => {},
       checkEntry: () => {},
-      continueExercise: () => {}
+      continueExercise: () => {},
+      needsToBeRepeated: false
     }
 
     it('renders correctly across screens', () => {
@@ -29,9 +33,8 @@ describe('Components', () => {
         isFinished: true
       }
 
-      const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button')).toHaveLength(1)
-      expect(component.find('[testID="check-out"]')).toHaveLength(1)
+      const { getByText } = render(<Action {...actionProps} />, { wrapper: wrapWithTheme })
+      expect(getByText(labels.exercises.showResults)).toBeDefined()
     })
 
     it('should render "next word" button when there is a result and isFinished is false', () => {
@@ -41,9 +44,8 @@ describe('Components', () => {
         isFinished: false
       }
 
-      const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button')).toHaveLength(1)
-      expect(component.find('[testID="next-word"]')).toHaveLength(1)
+      const { getByText } = render(<Action {...actionProps} />, { wrapper: wrapWithTheme })
+      expect(getByText(labels.exercises.next)).toBeDefined()
     })
 
     it('should render "check entry", "i give up", "try later" buttons when there is no result and isFinished is false', () => {
@@ -52,11 +54,10 @@ describe('Components', () => {
         isFinished: false
       }
 
-      const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button')).toHaveLength(3)
-      expect(component.find('[testID="check-entry"]')).toHaveLength(1)
-      expect(component.find('[testID="give-up"]')).toHaveLength(1)
-      expect(component.find('[testID="try-later"]')).toHaveLength(1)
+      const { getByText } = render(<Action {...actionProps} />, { wrapper: wrapWithTheme })
+      expect(getByText(labels.exercises.write.checkInput)).toBeDefined()
+      expect(getByText(labels.exercises.tryLater)).toBeDefined()
+      expect(getByText(labels.exercises.write.showSolution)).toBeDefined()
     })
 
     it('should render "check entry", "i give up" buttons when there is no result and isFinished is true', () => {
@@ -65,20 +66,18 @@ describe('Components', () => {
         isFinished: true
       }
 
-      const component = shallow(<Action {...actionProps} />)
-      expect(component.find('Button')).toHaveLength(2)
-      expect(component.find('[testID="check-entry"]')).toHaveLength(1)
-      expect(component.find('[testID="give-up"]')).toHaveLength(1)
+      const { getByText } = render(<Action {...actionProps} />, { wrapper: wrapWithTheme })
+      expect(getByText(labels.exercises.write.checkInput)).toBeDefined()
+      expect(getByText(labels.exercises.write.showSolution)).toBeDefined()
     })
 
     it('should render disabled "check entry" button when input is empty', () => {
       const actionProps: IActionsProps = {
         ...defaultActionProps
       }
-      const isButtonDisabled = true
 
-      const component = shallow(<Action {...actionProps} />)
-      expect(component.find('[testID="check-entry"]').props().disabled).toBe(isButtonDisabled)
+      const { getByText } = render(<Action {...actionProps} />, { wrapper: wrapWithTheme })
+      expect(getByText(labels.exercises.write.checkInput)).toBeDisabled()
     })
   })
 })

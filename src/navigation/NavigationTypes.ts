@@ -3,6 +3,7 @@ import { DocumentsType, DocumentType } from '../constants/endpoints'
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
+  numberOfTries: number
 }
 
 export type CountsType = {

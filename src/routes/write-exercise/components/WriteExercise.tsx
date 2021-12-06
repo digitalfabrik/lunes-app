@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import ImageCarousel from '../../../components/ImageCarousel'
-import { SimpleResultType } from '../../../constants/data'
+import { numberOfMaxRetries, SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
@@ -83,6 +83,10 @@ const WriteExercise = ({
   const document = documents[currentDocumentNumber]
   const secondAttempt = !!submission
 
+  const current = results.find(result => result.id === document?.id)
+  const nthRetry = current ? current.numberOfTries : 0
+  const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!current || current.result !== SIMPLE_RESULTS.correct)
+
   const capitalizeFirstLetter = (string: string): string => {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
@@ -104,10 +108,7 @@ const WriteExercise = ({
     const newResult = validateAnswer(article, word)
     setResult(newResult)
 
-    // The first result counts
-    if (!secondAttempt) {
-      storeResult(newResult)
-    }
+    storeResult(newResult)
   }
 
   const validateAnswer = (article: string, word: string): SimpleResultType => {
@@ -130,7 +131,7 @@ const WriteExercise = ({
   const giveUp = async (): Promise<void> => {
     const previousResult = result
     setResult('incorrect')
-    storeResult(previousResult ?? 'incorrect')
+    storeResult(previousResult ?? 'incorrect', true)
   }
 
   const continueExercise = (): void => {
@@ -138,15 +139,38 @@ const WriteExercise = ({
     setSubmission(null)
     setInput('')
 
-    if (currentDocumentNumber === documents.length - 1) {
+    if (currentDocumentNumber === documents.length - 1 && !needsToBeRepeated) {
       finishExercise(results)
     } else {
-      setCurrentDocumentNumber(currentDocumentNumber + 1)
+      needsToBeRepeated ? tryLater() : setCurrentDocumentNumber(currentDocumentNumber + 1)
     }
   }
 
-  const storeResult = (score: SimpleResultType): void => {
-    setResults([...results, { ...document, result: score }])
+  const storeResult = (score: SimpleResultType, noFurtherRetries: boolean = false): void => {
+    if (!document) {
+      return
+    }
+    const indexOfCurrentResult = results.findIndex(result => result.id === document.id)
+    const numberOfTries = noFurtherRetries ? numberOfMaxRetries : nthRetry + 1
+    const result: DocumentResultType = { ...document, result: score, numberOfTries: numberOfTries }
+    const newArr = Array.from(results)
+
+    if (indexOfCurrentResult !== -1) {
+      if (results[indexOfCurrentResult].result === 'similar') {
+        newArr[indexOfCurrentResult] = {
+          ...document,
+          result: numberOfTries >= numberOfMaxRetries ? 'incorrect' : score,
+          numberOfTries: nthRetry + 1
+        }
+      } else {
+        newArr[indexOfCurrentResult] = result
+      }
+      setResult(newArr[indexOfCurrentResult].result)
+      setResults(newArr)
+    } else {
+      setResults([...results, result])
+      setResult(result.result)
+    }
   }
 
   const getBorderColor = (): string => {
@@ -205,7 +229,14 @@ const WriteExercise = ({
             )}
           </TextInputContainer>
 
-          {result && <Feedback result={result} document={document} submission={submission} />}
+          {result && (
+            <Feedback
+              result={result}
+              document={document}
+              submission={submission}
+              needsToBeRepeated={needsToBeRepeated}
+            />
+          )}
 
           <Actions
             tryLater={tryLater}
@@ -215,6 +246,7 @@ const WriteExercise = ({
             checkEntry={checkEntry}
             continueExercise={continueExercise}
             isFinished={currentDocumentNumber === documents.length - 1}
+            needsToBeRepeated={needsToBeRepeated}
           />
         </StyledContainer>
       </Pressable>
