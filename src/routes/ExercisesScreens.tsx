@@ -1,8 +1,7 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
-import { Alert } from 'react-native'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, Alert } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
