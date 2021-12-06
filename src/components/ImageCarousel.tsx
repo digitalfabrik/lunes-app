@@ -55,7 +55,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
   }
 
   return (
-    <ImageView>
+    <ImageView testID={'Swipeable'}>
       <ImageViewer
         key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}

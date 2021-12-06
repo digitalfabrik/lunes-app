@@ -3,6 +3,7 @@ import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoi
 
 export interface DocumentResultType extends DocumentType {
   result: SimpleResultType
+  numberOfTries: number
 }
 
 export type CountsType = {

@@ -98,9 +98,9 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
-      <Title title={discipline.title} description={childrenDescription(discipline)} />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
+          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={ListItem}
           keyExtractor={item => item.id.toString()}
