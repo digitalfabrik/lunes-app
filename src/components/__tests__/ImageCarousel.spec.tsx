@@ -35,21 +35,32 @@ describe('ImageCarousel ', () => {
 
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
-  it('should render images', async () => {
+  it('should display the images', async () => {
     const { getByTestId, findAllByRole } = renderImageCarousel()
 
     const row = getByTestId('Swipeable')
     expect(row).toBeTruthy()
     const swipeable = row.children[0] as ReactTestInstance
-    swipeable.instance.loadImage(1) // preload the second image
 
     const displayedImages = await findAllByRole('image')
-    expect(displayedImages).toHaveLength(2)
+    expect(displayedImages).toHaveLength(1)
 
     const firstImage = displayedImages[0]
     expect(getUri(firstImage)).toBe('Arbeitshose')
 
-    const secondImage = displayedImages[1]
+    // the react-native-image-zoom library renders the images in a row next to each other
+    // images which were not yet loaded don't have a size and are therefore only rendered as an empty View
+    // swiping to the next image triggers loadImage and goNext, but we only care about loadImage
+    // as the image is then rendered and accessible by role, even without swiping
+    swipeable.instance.loadImage(1) // load the second image
+
+    const swipedDisplayedImages = await findAllByRole('image')
+    expect(swipedDisplayedImages).toHaveLength(2)
+
+    const swipedFirstImage = swipedDisplayedImages[0]
+    expect(swipedFirstImage).toBe(firstImage)
+
+    const secondImage = swipedDisplayedImages[1]
     expect(getUri(secondImage)).toBe('Arbeitsschuhe')
   })
 })
