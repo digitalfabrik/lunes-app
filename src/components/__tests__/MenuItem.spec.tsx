@@ -17,7 +17,8 @@ describe('Components', () => {
         title: 'Menu item title',
         numberOfChildren: 1,
         isLeaf: false,
-        isRoot: true
+        isRoot: true,
+        needsTrainingSetEndpoint: false
       },
       children: <Text>Text of children</Text>,
       onPress: () => {}

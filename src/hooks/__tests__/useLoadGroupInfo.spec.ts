@@ -24,7 +24,8 @@ const expectedData = {
   isLeaf: false,
   isRoot: true,
   numberOfChildren: testData[0].total_discipline_children,
-  description: ''
+  description: '',
+  needsTrainingSetEndpoint: false
 }
 
 beforeEach(() => {

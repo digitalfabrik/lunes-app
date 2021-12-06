@@ -72,7 +72,8 @@ describe('WriteExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isRoot: false
+        isRoot: false,
+        needsTrainingSetEndpoint: false
       }
     }
   }

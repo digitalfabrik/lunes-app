@@ -13,7 +13,7 @@ export interface ServerResponse {
 }
 
 const getEndpoint = (parent: DisciplineType | null): string => {
-  if (parent?.total_training_sets && parent.total_training_sets > 0) {
+  if (parent?.needsTrainingSetEndpoint) {
     return ENDPOINTS.trainingSet
   } else if (parent?.apiKey) {
     return ENDPOINTS.disciplinesByGroup
@@ -28,7 +28,8 @@ const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipli
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
     isLeaf: item.total_documents !== undefined,
     isRoot: parent === null,
-    apiKey: parent?.apiKey
+    apiKey: parent?.apiKey,
+    needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
   })) ?? []
 
 export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {

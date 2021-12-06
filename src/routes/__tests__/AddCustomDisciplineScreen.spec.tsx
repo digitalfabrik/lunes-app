@@ -38,7 +38,8 @@ describe('AddCustomDisciplineScreen', () => {
       isLeaf: false,
       isRoot: true,
       numberOfChildren: 1,
-      description: ''
+      description: '',
+      needsTrainingSetEndpoint: false
     }
     mocked(loadGroupInfo).mockImplementationOnce(async () => groupInfo)
 

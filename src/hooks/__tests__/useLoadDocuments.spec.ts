@@ -90,7 +90,8 @@ const discipline = {
   isLeaf: false,
   description: '',
   icon: '',
-  isRoot: true
+  isRoot: true,
+  needsTrainingSetEndpoint: false
 }
 
 beforeEach(() => {

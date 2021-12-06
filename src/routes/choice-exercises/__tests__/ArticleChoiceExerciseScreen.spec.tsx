@@ -59,7 +59,8 @@ describe('ArticleChoiceExerciseScreen', () => {
         isRoot: false,
         icon: 'my_icon',
         apiKey: 'my_api_key',
-        description: ''
+        description: '',
+        needsTrainingSetEndpoint: false
       }
     }
   }

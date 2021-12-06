@@ -12,7 +12,8 @@ const parent = {
   isLeaf: false,
   description: '',
   icon: '',
-  isRoot: true
+  isRoot: true,
+  needsTrainingSetEndpoint: false
 }
 
 const testData = [
@@ -58,7 +59,8 @@ const expectedData = [
     numberOfChildren: 7,
     title: 'Metall, Elektro & Maschinen',
     total_discipline_children: 0,
-    total_training_sets: 7
+    total_training_sets: 7,
+    needsTrainingSetEndpoint: true
   },
   {
     apiKey: undefined,
@@ -69,7 +71,8 @@ const expectedData = [
     isRoot: true,
     numberOfChildren: 9,
     title: 'Sicherheit & Arbeitsschutz',
-    total_documents: 9
+    total_documents: 9,
+    needsTrainingSetEndpoint: false
   },
   {
     apiKey: undefined,
@@ -82,7 +85,8 @@ const expectedData = [
     numberOfChildren: 1,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
-    total_training_sets: 1
+    total_training_sets: 1,
+    needsTrainingSetEndpoint: true
   }
 ]
 
@@ -105,7 +109,7 @@ describe('loadDiscipline', () => {
     })
 
     it('has training sets as children', async () => {
-      await loadDisciplines({ ...parent, total_training_sets: 2 })
+      await loadDisciplines({ ...parent, needsTrainingSetEndpoint: true })
       expect(getFromEndpoint).toHaveBeenCalledWith('training_set/1234', undefined)
     })
 
