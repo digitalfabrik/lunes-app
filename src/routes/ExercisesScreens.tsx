@@ -95,7 +95,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const handleNavigation = (item: ExerciseType): void => {
     if (item.title === labels.exercises.wordChoice.title && numberOfChildren < 4) {
-      Alert.alert(labels.exercises.wordChoice.speaking)
+      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
       setSelectedKey(item.key.toString())
       navigation.navigate(EXERCISES[item.key].nextScreen, {
