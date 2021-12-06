@@ -2,7 +2,7 @@ import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data
 import { DocumentsType, DocumentType } from '../constants/endpoints'
 
 export interface DocumentResultType extends DocumentType {
-  result: SimpleResultType
+  result: SimpleResultType | null
   numberOfTries: number
 }
 
