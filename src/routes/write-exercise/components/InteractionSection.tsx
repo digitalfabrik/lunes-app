@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, RefObject, useEffect, useState } from 'react'
 import { Keyboard, Pressable, TouchableOpacity } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
@@ -43,8 +43,7 @@ export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${prop =>
-    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
+  color: ${props => (props.styledInput ? props.theme.colors.lunesBlackLight : props.theme.colors.lunesWhite)};
 `
 
 const Speaker = styled.View`
@@ -65,17 +64,17 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
-  const [submittedInput, setSubmittedInput] = useState<string>('')
+  const [submittedInput, setSubmittedInput] = useState<string | null>(null)
   const [isFocused, setIsFocused] = useState<boolean>(false)
 
-  const editable = !isAnswerSubmitted || documentWithResult.result === 'similar'
+  const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(documentWithResult)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
 
-  const touchable: any = React.createRef()
+  const resetTextInputIcon: RefObject<TouchableOpacity> = React.createRef()
 
   useEffect(() => {
     if (!isAnswerSubmitted) {
@@ -146,23 +145,31 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   return (
     <>
       <Speaker>
-        <AudioPlayer document={documentWithResult} disabled={editable} submittedAlternative={submittedAlternative} />
+        <AudioPlayer
+          document={documentWithResult}
+          disabled={retryAllowed}
+          submittedAlternative={submittedAlternative}
+        />
       </Speaker>
 
-      <MissingArticlePopover isVisible={isArticleMissing} setIsPopoverVisible={setIsArticleMissing} ref={touchable} />
+      <MissingArticlePopover
+        isVisible={isArticleMissing}
+        setIsPopoverVisible={setIsArticleMissing}
+        ref={resetTextInputIcon}
+      />
 
-      <TextInputContainer testID='input-field' ref={touchable} styledBorderColor={getBorderColor()}>
+      <TextInputContainer testID='input-field' ref={resetTextInputIcon} styledBorderColor={getBorderColor()}>
         <StyledTextInput
           placeholder={labels.exercises.write.insertAnswer}
           placeholderTextColor={COLORS.lunesBlackLight}
           value={input}
           onChangeText={setInput}
-          editable={editable}
+          editable={retryAllowed}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           onSubmitEditing={checkEntry}
         />
-        {editable && input !== '' && (
+        {retryAllowed && input !== '' && (
           <TouchableOpacity onPress={() => setInput('')}>
             <CloseIcon />
           </TouchableOpacity>

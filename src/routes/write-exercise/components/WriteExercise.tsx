@@ -69,8 +69,8 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
   )
 
   const current = documentsWithResults[currentIndex]
-  const nthRetry = current?.numberOfTries ?? 0
-  const needsToBeRepeated = nthRetry < numberOfMaxRetries && current?.result !== SIMPLE_RESULTS.correct
+  const nthRetry = current.numberOfTries ?? 0
+  const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
     setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
@@ -99,7 +99,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
 
   const storeResult = (result: DocumentResultType): void => {
     const updatedDocumentsWithResults = Array.from(documentsWithResults)
-    if (documentsWithResults[currentIndex].id !== result.id) {
+    if (current.id !== result.id) {
       return
     }
     updatedDocumentsWithResults[currentIndex] = result
@@ -109,7 +109,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
 
   const giveUp = async (): Promise<void> => {
     setIsAnswerSubmitted(true)
-    storeResult({ ...documentsWithResults[currentIndex], result: 'incorrect', numberOfTries: numberOfMaxRetries })
+    storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
   }
 
   return (
@@ -118,7 +118,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         navigation={navigation}
         route={route}
         currentWord={currentIndex}
-        numberOfWords={documents?.length ?? 0}
+        numberOfWords={documents.length}
       />
 
       <ImageCarousel images={current.document_image} />

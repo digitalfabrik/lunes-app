@@ -36,7 +36,7 @@ const StyledMessage = styled.Text`
 `
 
 export interface IPopoverProps {
-  setIsPopoverVisible: (param: boolean) => void
+  setIsPopoverVisible: (isVisible: boolean) => void
   isVisible: boolean
 }
 
