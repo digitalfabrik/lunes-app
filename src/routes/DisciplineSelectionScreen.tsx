@@ -5,7 +5,7 @@ import { FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import MenuItem from '../components/MenuItem'
+import DisciplineItem from '../components/DisciplineItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
@@ -73,12 +73,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     const selected = item.id === selectedId
 
     return (
-      <MenuItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
+      <DisciplineItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{childrenLabel(item)}</Description>
         </ItemText>
-      </MenuItem>
+      </DisciplineItem>
     )
   }
 

@@ -9,7 +9,7 @@ import {
   mockUseLoadAsyncWithError
 } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import CustomDisciplineMenuItem from '../CustomDisciplineMenuItem'
+import CustomDisciplineItem from '../CustomDisciplineItem'
 
 describe('Components', () => {
   describe('CustomDisciplineMenuItem', () => {
@@ -27,7 +27,7 @@ describe('Components', () => {
 
     const renderItem = (): RenderAPI => {
       return render(
-        <CustomDisciplineMenuItem
+        <CustomDisciplineItem
           apiKey={'abc'}
           selectedId={'0'}
           setSelectedId={jest.fn()}

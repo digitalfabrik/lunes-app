@@ -4,7 +4,7 @@ import { Text } from 'react-native'
 
 import { COLORS } from '../../constants/theme/colors'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import MenuItem, { IMenuItemProps } from '../MenuItem'
+import DisciplineItem, { IMenuItemProps } from '../DisciplineItem'
 
 describe('Components', () => {
   describe('MenuItem', () => {
@@ -24,8 +24,8 @@ describe('Components', () => {
       onPress: () => {}
     }
 
-    const renderMenuItem = (overrideProps: Partial<ComponentProps<typeof MenuItem>> = {}): RenderAPI => {
-      return render(<MenuItem {...defaultMenuItemProps} {...overrideProps} />, {
+    const renderMenuItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI => {
+      return render(<DisciplineItem {...defaultMenuItemProps} {...overrideProps} />, {
         wrapper: wrapWithTheme
       })
     }

@@ -8,8 +8,8 @@ import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
+import MenuItem from './DisciplineItem'
 import Loading from './Loading'
-import MenuItem from './MenuItem'
 
 const Placeholder = styled.View`
   height: ${wp('22%')}px;
@@ -46,7 +46,7 @@ interface CustomDisciplineMenuItemPropsType {
   refresh: () => void
 }
 
-const CustomDisciplineMenuItem = ({
+const CustomDisciplineItem = ({
   apiKey,
   selectedId,
   setSelectedId,
@@ -98,4 +98,4 @@ const CustomDisciplineMenuItem = ({
   }
 }
 
-export default CustomDisciplineMenuItem
+export default CustomDisciplineItem

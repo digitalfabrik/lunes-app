@@ -43,7 +43,7 @@ export interface IMenuItemProps {
   onPress: () => void
 }
 
-const MenuItem = ({ selected, onPress, item, children }: IMenuItemProps): JSX.Element => {
+const DisciplineItem = ({ selected, onPress, item, children }: IMenuItemProps): JSX.Element => {
   const { icon, title } = item
   return (
     <Container onPress={onPress} selected={selected}>
@@ -59,4 +59,4 @@ const MenuItem = ({ selected, onPress, item, children }: IMenuItemProps): JSX.El
   )
 }
 
-export default MenuItem
+export default DisciplineItem
