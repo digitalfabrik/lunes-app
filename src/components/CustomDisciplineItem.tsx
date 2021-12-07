@@ -8,7 +8,7 @@ import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
-import MenuItem from './DisciplineItem'
+import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
 
 const Placeholder = styled.View`
@@ -81,11 +81,11 @@ const CustomDisciplineItem = ({
     return (
       <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
         {data ? (
-          <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+          <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
             <Description selected={idToSelectedIdString(data.id) === selectedId}>
               {childrenDescription(data)}
             </Description>
-          </MenuItem>
+          </DisciplineItem>
         ) : (
           <Placeholder>
             <ErrorText>
