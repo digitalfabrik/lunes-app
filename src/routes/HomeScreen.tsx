@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components/native'
 
 import { PlusIcon } from '../../assets/images'
-import CustomDisciplineMenuItem from '../components/CustomDisciplineMenuItem'
+import CustomDisciplineItem from '../components/CustomDisciplineItem'
+import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
-import MenuItem from '../components/MenuItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import { DisciplineType } from '../constants/endpoints'
 import labels from '../constants/labels.json'
@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
       </AddCustomDisciplineContainer>
       {customDisciplines?.map(customDiscipline => {
         return (
-          <CustomDisciplineMenuItem
+          <CustomDisciplineItem
             key={customDiscipline}
             apiKey={customDiscipline}
             selectedId={selectedId}
@@ -102,13 +102,13 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
             return null
           }
           return (
-            <MenuItem
+            <DisciplineItem
               key={item.id}
               item={item}
               selected={item.id.toString() === selectedId}
               onPress={() => handleNavigation(item)}>
               <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
-            </MenuItem>
+            </DisciplineItem>
           )
         })}
       </ServerResponseHandler>
