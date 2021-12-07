@@ -21,6 +21,7 @@ describe('Components', () => {
       icon: 'none',
       numberOfChildren: 1,
       isLeaf: false,
+      isRoot: true,
       apiKey: 'abc'
     }
 
@@ -41,7 +42,7 @@ describe('Components', () => {
       mockUseLoadAsyncWithData(mockData)
       const { getByText } = renderItem()
       expect(getByText('Custom Discipline')).toBeDefined()
-      expect(getByText(`1 ${labels.home.unit}`)).toBeDefined()
+      expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
     })
 
     it('should display loading', () => {

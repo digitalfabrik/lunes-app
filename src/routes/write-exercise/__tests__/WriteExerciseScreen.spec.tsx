@@ -69,7 +69,11 @@ describe('WriteExerciseScreen', () => {
         id: 1,
         title: 'TestTitel',
         numberOfChildren: 2,
-        isLeaf: true
+        isLeaf: true,
+        description: '',
+        icon: '',
+        isRoot: false,
+        needsTrainingSetEndpoint: false
       }
     }
   }

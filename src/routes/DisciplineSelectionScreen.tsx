@@ -9,9 +9,9 @@ import MenuItem from '../components/MenuItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { DisciplineType } from '../constants/endpoints'
-import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { childrenDescription, childrenLabel } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -55,7 +55,7 @@ interface DisciplineSelectionScreenPropsType {
 }
 
 const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
-  const { discipline } = route.params.extraParams
+  const { discipline } = route.params
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
@@ -71,15 +71,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       return null
     }
     const selected = item.id === selectedId
-    const descriptionForWord = item.numberOfChildren === 1 ? labels.home.word : labels.home.words
-    const descriptionForUnit = item.numberOfChildren === 1 ? labels.home.unit : labels.home.units
-    const description = discipline.isLeaf ? descriptionForWord : descriptionForUnit
 
     return (
       <MenuItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
-          <Description selected={selected}>{description}</Description>
+          <Description selected={selected}>{childrenLabel(item)}</Description>
         </ItemText>
       </MenuItem>
     )
@@ -87,30 +84,23 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
 
   const handleNavigation = (selectedItem: DisciplineType): void => {
     setSelectedId(selectedItem.id)
-    if (!discipline.isLeaf) {
-      navigation.push('DisciplineSelection', {
-        extraParams: {
-          discipline: { ...selectedItem, apiKey: discipline.apiKey },
-          parentTitle: discipline.title
-        }
-      })
-    } else {
+
+    if (selectedItem.isLeaf) {
       navigation.navigate('Exercises', { discipline: selectedItem })
+    } else {
+      navigation.push('DisciplineSelection', {
+        discipline: selectedItem,
+        parentTitle: discipline.title
+      })
     }
   }
+
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
-          ListHeaderComponent={
-            <Title
-              title={discipline.title}
-              description={`${discipline.numberOfChildren} ${
-                discipline.numberOfChildren === 1 ? labels.home.unit : labels.home.units
-              }`}
-            />
-          }
+          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={ListItem}
           keyExtractor={item => item.id.toString()}

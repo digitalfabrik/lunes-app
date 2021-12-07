@@ -1,5 +1,4 @@
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
-import { Discipline } from '../navigation/NavigationTypes'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
 
@@ -13,8 +12,8 @@ export interface ServerResponse {
   total_documents: number
 }
 
-const getEndpoint = (parent: Discipline | null): string => {
-  if (parent?.isLeaf) {
+const getEndpoint = (parent: DisciplineType | null): string => {
+  if (parent?.needsTrainingSetEndpoint) {
     return ENDPOINTS.trainingSet
   } else if (parent?.apiKey) {
     return ENDPOINTS.disciplinesByGroup
@@ -23,19 +22,21 @@ const getEndpoint = (parent: Discipline | null): string => {
   }
 }
 
-const formatServerResponse = (serverResponse: ServerResponse[], apiKey?: string): DisciplineType[] =>
+const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>
   serverResponse.map(item => ({
     ...item,
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-    isLeaf: item.total_discipline_children === 0,
-    apiKey: apiKey
+    isLeaf: item.total_documents !== undefined,
+    isRoot: parent === null,
+    apiKey: parent?.apiKey,
+    needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
   })) ?? []
 
-export const loadDisciplines = async (parent: Discipline | null): Promise<DisciplineType[]> => {
+export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
   const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)
-  return formatServerResponse(response, parent?.apiKey)
+  return formatServerResponse(response, parent)
 }
 
-export const useLoadDisciplines = (parent: Discipline | null): ReturnType<DisciplineType[]> =>
+export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> =>
   useLoadAsync(loadDisciplines, parent)

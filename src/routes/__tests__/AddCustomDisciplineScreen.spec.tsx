@@ -36,8 +36,10 @@ describe('AddCustomDisciplineScreen', () => {
       title: 'Test',
       apiKey: 'my_api_key',
       isLeaf: false,
+      isRoot: true,
       numberOfChildren: 1,
-      description: ''
+      description: '',
+      needsTrainingSetEndpoint: false
     }
     mocked(loadGroupInfo).mockImplementationOnce(async () => groupInfo)
 
