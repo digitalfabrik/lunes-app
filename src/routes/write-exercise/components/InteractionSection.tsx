@@ -183,7 +183,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
           needsToBeRepeated={needsToBeRepeated}
         />
       )}
-      {(documentWithResult.result === 'similar' || !isAnswerSubmitted) && (
+      {retryAllowed && (
         <Pressable onPress={Keyboard.dismiss}>
           <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
             <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
