@@ -1,11 +1,12 @@
-import { render } from '@testing-library/react-native'
+import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES } from '../../../../constants/data'
+import { ARTICLES, SimpleResultType } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
+import { DocumentResultType } from '../../../../navigation/NavigationTypes'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
-import FeedbackSection from '../FeedbackSection'
+import Feedback from '../Feedback'
 
 describe('Feedback section', () => {
   const document = {
@@ -17,25 +18,34 @@ describe('Feedback section', () => {
     word: 'Abrissbirne'
   }
 
-  it('should render correct feedback', () => {
-    const submission = 'Die Abrissbirne'
-    const { queryByText } = render(
-      <FeedbackSection result='correct' submission={submission} document={document} needsToBeRepeated={false} />,
+  const renderFeedback = (
+    result: SimpleResultType,
+    numberOfTries: number,
+    submission: string,
+    needsToBeRepeated: boolean
+  ): RenderAPI => {
+    const docuementWithResult: DocumentResultType = { ...document, result: result, numberOfTries: numberOfTries }
+    return render(
+      <Feedback
+        documentWithResult={docuementWithResult}
+        submission={submission}
+        needsToBeRepeated={needsToBeRepeated}
+      />,
       {
         wrapper: wrapWithTheme
       }
     )
+  }
+
+  it('should render correct feedback', () => {
+    const submission = 'Die Abrissbirne'
+    const { queryByText } = renderFeedback('correct', 1, submission, false)
     expect(queryByText(labels.exercises.write.feedback.correct)).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
-    const submission = 'Der Abrissbirne'
-    const { queryByText } = render(
-      <FeedbackSection result='similar' submission={submission} document={document} needsToBeRepeated={false} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    const submission = 'Die Abrissbirn'
+    const { queryByText } = renderFeedback('similar', 1, submission, true)
 
     expect(
       queryByText(
@@ -46,12 +56,8 @@ describe('Feedback section', () => {
 
   it('should render finally incorrect feedback', () => {
     const submission = 'Der Hammer'
-    const { queryByText } = render(
-      <FeedbackSection result='incorrect' submission={submission} document={document} needsToBeRepeated={false} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    const { queryByText } = renderFeedback('incorrect', 1, submission, false)
+
     expect(
       queryByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
     ).toBeTruthy()
@@ -59,12 +65,8 @@ describe('Feedback section', () => {
 
   it('should render incorrect feedback with retries not exceeded', () => {
     const submission = 'Der Hammer'
-    const { queryByText } = render(
-      <FeedbackSection result='incorrect' submission={submission} document={document} needsToBeRepeated={true} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    const { queryByText } = renderFeedback('incorrect', 1, submission, true)
+
     expect(queryByText(`${labels.exercises.write.feedback.wrong}`)).toBeTruthy()
   })
 })
