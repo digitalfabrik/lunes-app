@@ -7,7 +7,9 @@ export interface DisciplineType {
   icon: string
   numberOfChildren: number
   isLeaf: boolean
+  isRoot: boolean
   apiKey?: string
+  needsTrainingSetEndpoint: boolean
 }
 
 export interface AlternativeWordType {

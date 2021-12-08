@@ -8,9 +8,9 @@ import { DisciplineType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
-  height: ${wp('21%')}px;
+  min-height: ${wp('22%')}px;
   margin: 0px 16px 8px 16px;
-  padding: 17px 8px 17px 16px;
+  padding: 12px 8px 12px 16px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

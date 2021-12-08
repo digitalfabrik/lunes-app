@@ -9,7 +9,11 @@ const parent = {
   id: 1234,
   title: 'title',
   numberOfChildren: 12,
-  isLeaf: true
+  isLeaf: false,
+  description: '',
+  icon: '',
+  isRoot: true,
+  needsTrainingSetEndpoint: false
 }
 
 const testData = [
@@ -50,21 +54,25 @@ const expectedData = [
     description: 'Wörter zu den Themen Metall, Elektro und Maschinen',
     icon: 'https://lunes-test.tuerantuer.org/media/images/icon-metall-elektro-maschienen3x.png',
     id: 3,
-    isLeaf: true,
+    isLeaf: false,
+    isRoot: true,
     numberOfChildren: 7,
     title: 'Metall, Elektro & Maschinen',
     total_discipline_children: 0,
-    total_training_sets: 7
+    total_training_sets: 7,
+    needsTrainingSetEndpoint: true
   },
   {
     apiKey: undefined,
     description: '',
     icon: 'https://lunes-test.tuerantuer.org/media/images/do-not-touch.png',
     id: 28,
-    isLeaf: false,
+    isLeaf: true,
+    isRoot: true,
     numberOfChildren: 9,
     title: 'Sicherheit & Arbeitsschutz',
-    total_documents: 9
+    total_documents: 9,
+    needsTrainingSetEndpoint: false
   },
   {
     apiKey: undefined,
@@ -72,11 +80,13 @@ const expectedData = [
     description: 'Discipline to test custom stuff',
     icon: null,
     id: 21,
-    isLeaf: true,
+    isLeaf: false,
+    isRoot: true,
     numberOfChildren: 1,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
-    total_training_sets: 1
+    total_training_sets: 1,
+    needsTrainingSetEndpoint: true
   }
 ]
 
@@ -93,13 +103,13 @@ describe('loadDiscipline', () => {
       expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_level/', undefined)
     })
 
-    it('has no leaf parent without an api key', async () => {
+    it('has parent without an api key', async () => {
       await loadDisciplines({ ...parent, isLeaf: false })
       expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_level/1234', undefined)
     })
 
-    it('has leaf parent', async () => {
-      await loadDisciplines(parent)
+    it('has training sets as children', async () => {
+      await loadDisciplines({ ...parent, needsTrainingSetEndpoint: true })
       expect(getFromEndpoint).toHaveBeenCalledWith('training_set/1234', undefined)
     })
 

@@ -17,7 +17,9 @@ export const loadGroupInfo = async (apiKey: string): Promise<DisciplineType> => 
     apiKey: apiKey,
     isLeaf: false,
     numberOfChildren: response[0].total_discipline_children,
-    description: ''
+    description: '',
+    isRoot: true,
+    needsTrainingSetEndpoint: false
   }
 }
 

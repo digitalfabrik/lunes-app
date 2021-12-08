@@ -13,6 +13,7 @@ import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { childrenDescription } from '../services/helpers'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -67,9 +68,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
   const handleNavigation = (item: DisciplineType): void => {
     setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
-      extraParams: {
-        discipline: item
-      }
+      discipline: item
     })
   }
 
@@ -108,9 +107,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
               item={item}
               selected={item.id.toString() === selectedId}
               onPress={() => handleNavigation(item)}>
-              <Description selected={item.id.toString() === selectedId}>
-                {item.numberOfChildren} {item.numberOfChildren === 1 ? labels.home.unit : labels.home.units}
-              </Description>
+              <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
             </MenuItem>
           )
         })}

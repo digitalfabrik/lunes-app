@@ -1,5 +1,6 @@
 import { Article } from '../constants/data'
-import { AlternativeWordType, DocumentType } from '../constants/endpoints'
+import { AlternativeWordType, DisciplineType, DocumentType } from '../constants/endpoints'
+import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 
 export const stringifyDocument = ({ article, word }: DocumentType | AlternativeWordType): string =>
@@ -35,3 +36,17 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 export const addTrailingSlashToUrl = (url: string): string => {
   return url.endsWith('/') ? url : `${url}/`
 }
+
+export const childrenLabel = (discipline: DisciplineType): string => {
+  const isSingular = discipline.numberOfChildren === 1
+  if (discipline.isRoot) {
+    return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
+  }
+  if (discipline.isLeaf) {
+    return isSingular ? labels.general.word : labels.general.words
+  }
+  return isSingular ? labels.general.discipline : labels.general.disciplines
+}
+
+export const childrenDescription = (discipline: DisciplineType): string =>
+  `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
