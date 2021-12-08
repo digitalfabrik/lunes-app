@@ -36,14 +36,14 @@ const TextContainer = styled.View`
   flex: 1;
 `
 
-export interface IMenuItemProps {
+export interface DisciplineItemProps {
   item: DisciplineType
   children: ReactElement
   selected: boolean
   onPress: () => void
 }
 
-const DisciplineItem = ({ selected, onPress, item, children }: IMenuItemProps): JSX.Element => {
+const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemProps): JSX.Element => {
   const { icon, title } = item
   return (
     <Container onPress={onPress} selected={selected}>

@@ -25,7 +25,7 @@ describe('Components', () => {
       apiKey: 'abc'
     }
 
-    const renderItem = (): RenderAPI => {
+    const renderCustomDisciplineItem = (): RenderAPI => {
       return render(
         <CustomDisciplineItem
           apiKey={'abc'}
@@ -40,20 +40,20 @@ describe('Components', () => {
 
     it('should display data', () => {
       mockUseLoadAsyncWithData(mockData)
-      const { getByText } = renderItem()
+      const { getByText } = renderCustomDisciplineItem()
       expect(getByText('Custom Discipline')).toBeDefined()
       expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
     })
 
     it('should display loading', () => {
       mockUseLoadAsyncLoading()
-      const { getByTestId } = renderItem()
+      const { getByTestId } = renderCustomDisciplineItem()
       expect(getByTestId('loading')).toBeDefined()
     })
 
     it('should display error', () => {
       mockUseLoadAsyncWithError('Network Error')
-      const { getByText } = renderItem()
+      const { getByText } = renderCustomDisciplineItem()
       expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
     })
   })

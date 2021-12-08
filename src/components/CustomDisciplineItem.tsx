@@ -38,7 +38,7 @@ const ErrorText = styled.Text`
   margin: 10px;
 `
 
-interface CustomDisciplineMenuItemPropsType {
+interface CustomDisciplineItemPropsType {
   apiKey: string
   selectedId: string | null
   setSelectedId: (selectedId: string) => void
@@ -52,7 +52,7 @@ const CustomDisciplineItem = ({
   setSelectedId,
   navigation,
   refresh
-}: CustomDisciplineMenuItemPropsType): JSX.Element => {
+}: CustomDisciplineItemPropsType): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
   const idToSelectedIdString = (id: number): string => {
