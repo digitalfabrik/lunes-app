@@ -463,7 +463,6 @@ workflows:
                     - build_android
             - deliver_ios:
                 context:
-                    - fastlane-match
                     - tuerantuer-apple
                 production_delivery: false
                 requires:
@@ -502,7 +501,6 @@ workflows:
                     - build_android
             - deliver_ios:
                 context:
-                    - fastlane-match
                     - tuerantuer-apple
                 production_delivery: true
                 requires:
@@ -521,7 +519,6 @@ workflows:
                     - tuerantuer-google-play
             - promote_ios:
                 context:
-                    - fastlane-match
                     - tuerantuer-apple
         when: << pipeline.parameters.run_promote >>
     version: 2
