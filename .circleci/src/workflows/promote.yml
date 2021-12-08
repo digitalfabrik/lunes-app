@@ -5,5 +5,4 @@ jobs:
         - tuerantuer-google-play
   - promote_ios:
       context:
-        - fastlane-match
         - tuerantuer-apple
