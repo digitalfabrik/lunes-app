@@ -4,22 +4,34 @@ jobs:
   - bump_version:
       delivery: production
   - build_android:
+      context:
+        - credentials-repo
+        - credentials-lunes
       requires:
         - check
         - bump_version
   - build_ios:
+      context:
+        - fastlane-match
+        - tuerantuer-apple
       requires:
         - check
         - bump_version
   - deliver_android:
+      context:
+        - tuerantuer-google-play
       production_delivery: true # TODO test in mid of september
       requires:
         - build_android
   - deliver_ios:
+      context:
+        - tuerantuer-apple
       production_delivery: true # TODO test in mid of september
       requires:
         - build_ios
   - move_release_notes:
+      context:
+        - deliverino
       requires:
         - deliver_android
         - deliver_ios
