@@ -68,8 +68,12 @@ describe('WriteExercise', () => {
       discipline: {
         id: 1,
         title: 'TestTitel',
+        description: '',
+        icon: '',
         numberOfChildren: 2,
-        isLeaf: true
+        isLeaf: true,
+        isRoot: false,
+        needsTrainingSetEndpoint: true
       }
     }
   }
