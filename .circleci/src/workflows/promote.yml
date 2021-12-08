@@ -1,4 +1,9 @@
 when: << pipeline.parameters.run_promote >>
 jobs:
-  - promote_android
-  - promote_ios
+  - promote_android:
+      context:
+        - tuerantuer-google-play
+  - promote_ios:
+      context:
+        - fastlane-match
+        - tuerantuer-apple
