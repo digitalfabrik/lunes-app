@@ -25,7 +25,6 @@ jobs:
         - build_android
   - deliver_ios:
       context:
-        - fastlane-match
         - tuerantuer-apple
       production_delivery: true # TODO test in mid of september
       requires:

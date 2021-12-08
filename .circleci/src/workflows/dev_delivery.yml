@@ -31,7 +31,6 @@ jobs:
         - build_android
   - deliver_ios:
       context:
-        - fastlane-match
         - tuerantuer-apple
       production_delivery: false
       requires:
