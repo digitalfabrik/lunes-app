@@ -32,7 +32,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "4.10.1",
     "react-native-popover-view": "^4.1.0",
-    "react-native-reanimated": "^2.2.4",
+    "react-native-reanimated": "2.3.0",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
