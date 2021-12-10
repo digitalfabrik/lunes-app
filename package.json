@@ -19,7 +19,7 @@
     "create-release-note": "bash ./release-notes/createReleaseNotes.sh $1"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.11",
+    "@react-native-async-storage/async-storage": "^1.15.14",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/elements": "^1.2.1",
     "@react-navigation/native": "6.0.6",
@@ -35,10 +35,10 @@
     "react-native-reanimated": "2.3.0",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.9.0",
+    "react-native-screens": "^3.10.1",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-sound-player": "0.11.1",
-    "react-native-splash-screen": "^3.2.0",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.1.1",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-tts": "4.1.0",
