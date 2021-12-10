@@ -1,13 +1,17 @@
-import { fireEvent, render, waitFor } from '@testing-library/react-native'
+import { RouteProp } from '@react-navigation/native'
+import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
+import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
+import { RoutesParamsType } from '../../../../navigation/NavigationTypes'
+import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
-import WriteExercise, { AnswerSectionPropsType } from '../WriteExercise'
+import WriteExercise from '../WriteExercise'
 
-jest.mock('../../../../services/AsyncStorage')
+jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
@@ -22,71 +26,143 @@ jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() })),
   loadUrl: jest.fn()
 }))
-jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WriteExercise', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  const document = {
-    id: 1,
-    word: 'Spachtel',
-    article: {
+  const documents = [
+    {
       id: 1,
-      value: 'Der'
+      word: 'Spachtel',
+      article: ARTICLES[1],
+      document_image: [{ id: 1, image: 'Spachtel' }],
+      audio: 'https://example.com/my-audio',
+      alternatives: [
+        {
+          word: 'Spachtel',
+          article: ARTICLES[2]
+        },
+        {
+          word: 'Alternative',
+          article: ARTICLES[2]
+        }
+      ]
     },
-    document_image: [{ id: 1, image: '' }],
-    audio: '',
-    alternatives: [
-      {
-        word: 'Spachtel',
-        article: {
-          id: 2,
-          value: 'Die'
-        }
-      },
-      {
-        word: 'Alternative',
-        article: {
-          id: 2,
-          value: 'Die'
-        }
+    {
+      id: 2,
+      word: 'Hammer',
+      article: ARTICLES[1],
+      document_image: [{ id: 1, image: 'Hammer' }],
+      audio: '',
+      alternatives: []
+    }
+  ]
+
+  const navigation = createNavigationMock<'WriteExercise'>()
+  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+    key: '',
+    name: 'WriteExercise',
+    params: {
+      discipline: {
+        id: 1,
+        title: 'TestTitel',
+        description: '',
+        icon: '',
+        numberOfChildren: 2,
+        isLeaf: true,
+        isRoot: false,
+        needsTrainingSetEndpoint: true
       }
-    ]
+    }
   }
 
-  const audioDocument = {
-    ...document,
-    audio: 'https://example.com/my-audio'
-  }
-
-  const defaultAnswerSectionProps: AnswerSectionPropsType = {
-    documents: [document],
-    currentDocumentNumber: 0,
-    tryLater: () => {},
-    finishExercise: () => {},
-    setCurrentDocumentNumber: () => {}
-  }
-
-  const audioAnswerSectionProps = {
-    ...defaultAnswerSectionProps,
-    documents: [audioDocument]
-  }
-
-  const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {
-    const { getByPlaceholderText, getByText, getByTestId } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
+  const renderWriteExercise = (): RenderAPI => {
+    return render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    // Fixes errors that tests are not wrapped in act
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
+  }
 
+  it('should allow to skip an exercise and try it out later', () => {
+    const { getByText } = renderWriteExercise()
+
+    fireEvent.press(getByText(labels.exercises.tryLater))
+    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    expect(getByText(labels.exercises.next)).toBeDefined()
+  })
+
+  it('should not allow to skip last document', () => {
+    const { queryByText, getByText } = renderWriteExercise()
+
+    expect(labels.exercises.tryLater).not.toBeNull()
+    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.press(getByText(labels.exercises.next))
+    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+  })
+
+  it('should show solution after three wrong entries', async () => {
+    const { getByPlaceholderText, getByText } = renderWriteExercise()
+    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche2')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche3')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    expect(
+      getByText(
+        `${labels.exercises.write.feedback.wrongWithSolution} „${documents[1].article.value} ${documents[1].word}“`
+      )
+    ).toBeDefined()
+    expect(getByText(labels.exercises.showResults)).toBeDefined()
+  })
+
+  it('should show solution after three times almost correct', () => {
+    const { getByPlaceholderText, getByText } = renderWriteExercise()
+    const submission = 'Der Spachtl'
+
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, submission)
+    const button = getByText(labels.exercises.write.checkInput)
+    fireEvent.press(button)
+    expect(
+      getByText(
+        `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+      )
+    ).toBeDefined()
+
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    expect(
+      getByText(
+        `${labels.exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+      )
+    ).toBeDefined()
+    expect(getByText(labels.exercises.next)).toBeDefined()
+  })
+
+  it('should show continue or finish exercise', () => {
+    const { getByText } = renderWriteExercise()
+    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.press(getByText(labels.exercises.showResults))
+  })
+
+  const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {
+    const { getByPlaceholderText, getByText } = renderWriteExercise()
     const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
     await fireEvent.changeText(inputField, input)
     const button = await getByText(labels.exercises.write.checkInput)
     await fireEvent.press(button)
-    const result = await getByTestId('feedback-write-exercise')
-    expect(result.children[0]).toEqual(expectedFeedback)
+    expect(getByText(expectedFeedback)).toBeDefined()
   }
 
   it('should show correct-feedback for correct solution', async () => {
@@ -114,31 +190,29 @@ describe('WriteExercise', () => {
   })
 
   it('should play audio if available and no alternative solution submitted', async () => {
-    const { getByPlaceholderText, getByText, getByRole } = render(<WriteExercise {...audioAnswerSectionProps} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
     const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Der Spachtel')
     const button = await getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
 
     // Play audio
-    fireEvent.press(getByRole('button'))
+    const audioButton = getByRole('button')
+    fireEvent.press(audioButton)
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioDocument.audio)
+    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(documents[0].audio)
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
   it('should play submitted alternative', async () => {
-    const { getByPlaceholderText, getByText, getByRole } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
-      wrapper: wrapWithTheme
-    })
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-    const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Die Alternative')
-    const button = await getByText(labels.exercises.write.checkInput)
+    const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
+
+    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     // Play audio
     fireEvent.press(getByRole('button'))
@@ -147,52 +221,5 @@ describe('WriteExercise', () => {
     expect(Tts.speak).toHaveBeenCalledWith('Die Alternative', expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-  })
-
-  it('should show solution after three wrong entries', async () => {
-    const { getByPlaceholderText, getByText } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
-      wrapper: wrapWithTheme
-    })
-
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Das Falsche')
-    const button = getByText(labels.exercises.write.checkInput)
-    fireEvent.press(button)
-    fireEvent.press(getByText(labels.exercises.next))
-
-    fireEvent.changeText(inputField, 'Das Falsche2')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
-
-    fireEvent.changeText(inputField, 'Das Falsche3')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    expect(
-      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
-    ).toBeDefined()
-    expect(getByText(labels.exercises.showResults)).toBeDefined()
-  })
-
-  it('should count as wrong after three times almost correct', async () => {
-    const { getByPlaceholderText, getByText } = render(<WriteExercise {...defaultAnswerSectionProps} />, {
-      wrapper: wrapWithTheme
-    })
-    const submission = 'Der Spachtl'
-
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, submission)
-    const button = getByText(labels.exercises.write.checkInput)
-    fireEvent.press(button)
-    expect(
-      getByText(
-        `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
-      )
-    ).toBeDefined()
-
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    expect(
-      getByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
-    ).toBeDefined()
-    expect(getByText(labels.exercises.showResults)).toBeDefined()
   })
 })

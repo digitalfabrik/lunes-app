@@ -4,14 +4,22 @@ jobs:
   - bump_version:
       delivery: none
   - build_android:
+      context:
+        - credentials-repo
+        - credentials-lunes
       requires:
         - check
         - bump_version
   - build_ios:
+      context:
+        - fastlane-match
+        - tuerantuer-apple
       requires:
         - check
         - bump_version
   - deliver_browser_stack:
+      context:
+        - browserstack
       requires:
         - build_android
         - build_ios

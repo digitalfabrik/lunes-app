@@ -8,9 +8,9 @@ import styled from 'styled-components/native'
 import { Arrow } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
-import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -67,7 +67,7 @@ interface ExercisesScreenPropsType {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
   const { discipline } = route.params
-  const { title, numberOfChildren } = discipline
+  const { title } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   useFocusEffect(
@@ -76,7 +76,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }, [])
   )
 
-  const Header = <Title title={title} description={`${numberOfChildren} ${labels.home.words}`} />
+  const Header = <Title title={title} description={childrenDescription(discipline)} />
 
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey

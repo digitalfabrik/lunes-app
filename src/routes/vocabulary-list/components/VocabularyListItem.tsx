@@ -57,7 +57,7 @@ const Description = styled.Text`
 `
 const Speaker = styled.View`
   padding-right: 40px;
-  padding-top: 17px;
+  padding-top: 20px;
 `
 
 export interface VocabularyListItemPropType {

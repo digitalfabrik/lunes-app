@@ -1,17 +1,12 @@
 {
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
-    "unit": "Beruf",
-    "units": "Berufe",
-    "word": "Wort",
-    "words": "Wörter",
-    "exercises": "Übungen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
     "deleteModal": {
-      "confirmationQuestion": "Soll das Modul wirklich gelöscht werden?",
+      "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
       "cancel": "Abbrechen",
-      "confirm": "Modul löschen"
+      "confirm": "Bereich löschen"
     }
   },
   "addCustomDiscipline": {
@@ -46,7 +41,6 @@
       "checkInput": "Eingabe überprüfen",
       "showSolution": "Lösung anzeigen",
       "insertAnswer": "Wort mit Artikel eingeben",
-      "newTry": "Neuer Versuch",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
         "wrongWithSolution": "Die richtige Antwort ist:",
@@ -91,6 +85,12 @@
     "error": {
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
       "retryButton": "Erneut versuchen"
-    }
+    },
+    "rootDiscipline": "Beruf",
+    "rootDisciplines": "Berufe",
+    "discipline": "Modul",
+    "disciplines": "Module",
+    "word": "Wort",
+    "words": "Wörter"
   }
 }

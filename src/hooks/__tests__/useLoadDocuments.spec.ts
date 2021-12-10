@@ -87,7 +87,11 @@ const discipline = {
   id: 1234,
   title: 'title',
   numberOfChildren: 12,
-  isLeaf: true
+  isLeaf: false,
+  description: '',
+  icon: '',
+  isRoot: true,
+  needsTrainingSetEndpoint: false
 }
 
 beforeEach(() => {

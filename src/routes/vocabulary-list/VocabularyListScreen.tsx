@@ -59,7 +59,9 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Ele
       )}
       <Title
         title={labels.exercises.vocabularyList.title}
-        description={`${documents?.length ?? '0'} ${documents?.length === 1 ? labels.home.word : labels.home.words}`}
+        description={`${documents?.length ?? '0'} ${
+          documents?.length === 1 ? labels.general.word : labels.general.words
+        }`}
       />
 
       <ServerResponseHandler loading={loading} error={error} refresh={refresh}>
