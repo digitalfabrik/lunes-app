@@ -162,7 +162,7 @@ describe('WriteExercise', () => {
     await fireEvent.changeText(inputField, input)
     const button = await getByText(labels.exercises.write.checkInput)
     await fireEvent.press(button)
-    expect(getByText(expectedFeedback)).toBeDefined()
+    expect(getByText(expectedFeedback.replace('\n', ''))).toBeDefined()
   }
 
   it('should show correct-feedback for correct solution', async () => {
