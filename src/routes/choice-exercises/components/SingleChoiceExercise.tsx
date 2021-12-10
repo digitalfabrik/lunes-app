@@ -15,7 +15,6 @@ import labels from '../../../constants/labels.json'
 import { ReturnType } from '../../../hooks/useLoadAsync'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
-import { LightLabelInput } from '../../write-exercise/components/Actions'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
@@ -38,6 +37,18 @@ const DarkLabel = styled.Text`
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
+
+export const LightLabelInput = styled.Text<{ styledInput?: string }>`
+  text-align: center;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+  color: ${prop =>
+    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
+`
+
 const StyledArrow = styled(NextArrow)`
   margin-left: 5px;
 `
@@ -70,7 +81,7 @@ const ChoiceExerciseScreen = ({
   const documents = newDocuments ?? data
   const currentDocument = documents ? documents[currentWord] : null
 
-  const result = results.find(result => result.id === currentDocument?.id)
+  const result = results.find(elem => elem.id === currentDocument?.id)
   const nthRetry = result?.numberOfTries ?? 0
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && (!result || result.result === SIMPLE_RESULTS.incorrect)
 
@@ -118,19 +129,17 @@ const ChoiceExerciseScreen = ({
 
     if (correctSelected !== undefined) {
       setCorrectAnswer(clickedAnswer)
-      const result: DocumentResultType = {
+      updateResult({
         ...currentDocument,
         result: SIMPLE_RESULTS.correct,
         numberOfTries: nthRetry + 1
-      }
-      updateResult(result)
+      })
     } else {
-      const result: DocumentResultType = {
+      updateResult({
         ...currentDocument,
         result: SIMPLE_RESULTS.incorrect,
         numberOfTries: nthRetry + 1
-      }
-      updateResult(result)
+      })
     }
     setTimeout(() => {
       setDelayPassed(true)
@@ -138,7 +147,7 @@ const ChoiceExerciseScreen = ({
   }
 
   const updateResult = (result: DocumentResultType): void => {
-    const indexOfCurrentResult = results.findIndex(result => result.id === currentDocument?.id)
+    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
     const newResults = results
     indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
     setResults(newResults)

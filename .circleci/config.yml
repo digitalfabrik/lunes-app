@@ -141,7 +141,7 @@ jobs:
         steps:
             - add_ssh_keys:
                 fingerprints:
-                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
+                    - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
             - checkout
             - restore_ruby_cache:
                 directory: android
@@ -178,7 +178,7 @@ jobs:
         steps:
             - add_ssh_keys:
                 fingerprints:
-                    - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
+                    - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
             - checkout
             - prepare_workspace
             - restore_environment_variables
@@ -410,14 +410,22 @@ workflows:
             - bump_version:
                 delivery: none
             - build_android:
+                context:
+                    - credentials-repo
+                    - credentials-lunes
                 requires:
                     - check
                     - bump_version
             - build_ios:
+                context:
+                    - fastlane-match
+                    - tuerantuer-apple
                 requires:
                     - check
                     - bump_version
             - deliver_browser_stack:
+                context:
+                    - browserstack
                 requires:
                     - build_android
                     - build_ios
@@ -428,26 +436,40 @@ workflows:
             - bump_version:
                 delivery: development
             - build_android:
+                context:
+                    - credentials-repo
+                    - credentials-lunes
                 requires:
                     - check
                     - bump_version
             - build_ios:
+                context:
+                    - fastlane-match
+                    - tuerantuer-apple
                 requires:
                     - check
                     - bump_version
             - deliver_browser_stack:
+                context:
+                    - browserstack
                 requires:
                     - build_android
                     - build_ios
             - deliver_android:
+                context:
+                    - tuerantuer-google-play
                 production_delivery: false
                 requires:
                     - build_android
             - deliver_ios:
+                context:
+                    - tuerantuer-apple
                 production_delivery: false
                 requires:
                     - build_ios
             - move_release_notes:
+                context:
+                    - deliverino
                 requires:
                     - deliver_android
                     - deliver_ios
@@ -458,30 +480,46 @@ workflows:
             - bump_version:
                 delivery: production
             - build_android:
+                context:
+                    - credentials-repo
+                    - credentials-lunes
                 requires:
                     - check
                     - bump_version
             - build_ios:
+                context:
+                    - fastlane-match
+                    - tuerantuer-apple
                 requires:
                     - check
                     - bump_version
             - deliver_android:
+                context:
+                    - tuerantuer-google-play
                 production_delivery: true
                 requires:
                     - build_android
             - deliver_ios:
+                context:
+                    - tuerantuer-apple
                 production_delivery: true
                 requires:
                     - build_ios
             - move_release_notes:
+                context:
+                    - deliverino
                 requires:
                     - deliver_android
                     - deliver_ios
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:
-            - promote_android
-            - promote_ios
+            - promote_android:
+                context:
+                    - tuerantuer-google-play
+            - promote_ios:
+                context:
+                    - tuerantuer-apple
         when: << pipeline.parameters.run_promote >>
     version: 2
 
