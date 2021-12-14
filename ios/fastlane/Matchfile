@@ -1,4 +1,5 @@
-git_url("git@github.com:digitalfabrik/lunes-credentials.git")
+git_url("git@github.com:digitalfabrik/app-credentials.git")
+git_branch("main")
 storage_mode("git")
 
-username("delivery@lunes.app")
+username("app-team@integreat-app.de")

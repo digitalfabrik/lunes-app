@@ -69,11 +69,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
 
-  let nextResultType = RESULTS.find(result => result.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
-  if (
-    nextResultType.key === 'similar' &&
-    (exercise === ExerciseKeys.articleChoiceExercise || exercise === ExerciseKeys.wordChoiceExercise)
-  ) {
+  let nextResultType = RESULTS.find(elem => elem.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+  // TODO will be adjusted in LUN-222
+  if (nextResultType.key === 'similar') {
     nextResultType = RESULTS[2]
   }
 

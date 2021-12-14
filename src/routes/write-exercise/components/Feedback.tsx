@@ -10,17 +10,17 @@ import {
   incorrect_background,
   IncorrectFeedbackIcon
 } from '../../../../assets/images'
-import { SimpleResultType } from '../../../constants/data'
-import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
+import { DocumentResultType } from '../../../navigation/NavigationTypes'
 
 const Background = styled.ImageBackground`
   width: ${wp(80)}px;
   height: ${hp(9)}px;
+  min-height: 50px;
   margin-bottom: 40px;
   flex-direction: row;
   align-items: center;
-  padding: 10px;
+  padding: 0 10px;
 `
 
 const StyledText = styled.Text`
@@ -30,14 +30,15 @@ const StyledText = styled.Text`
 `
 
 export interface FeedbackPropsType {
-  result: SimpleResultType
-  document: DocumentType
+  documentWithResult: DocumentResultType
   submission: string | null
   needsToBeRepeated: boolean
 }
 
-const Feedback = ({ result, document, submission, needsToBeRepeated }: FeedbackPropsType): ReactElement | null => {
+const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackPropsType): ReactElement | null => {
+  const { result } = documentWithResult
   let Icon, background, message
+
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
     background = correct_background
@@ -51,7 +52,7 @@ const Feedback = ({ result, document, submission, needsToBeRepeated }: FeedbackP
     background = incorrect_background
     message = needsToBeRepeated
       ? labels.exercises.write.feedback.wrong
-      : `${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+      : `${labels.exercises.write.feedback.wrongWithSolution} „${documentWithResult.article.value} ${documentWithResult.word}“`
   }
 
   return (

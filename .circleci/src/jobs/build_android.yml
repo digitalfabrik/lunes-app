@@ -7,7 +7,7 @@ shell: /bin/bash -eo pipefail
 steps:
   - add_ssh_keys: # Needed for credentials repo
       fingerprints:
-        - 5b:28:97:36:8b:31:08:ae:5d:ad:19:8a:7d:6f:57:8a
+        - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
   - checkout
   - restore_ruby_cache:
       directory: android
