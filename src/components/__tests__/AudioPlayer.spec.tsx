@@ -14,8 +14,7 @@ jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
   setDefaultLanguage: jest.fn(async () => undefined),
   requestInstallEngine: jest.fn(async () => undefined),
-  addEventListener: jest.fn(() => undefined),
-  removeEventListener: jest.fn(() => undefined),
+  addListener: jest.fn(() => ({ remove: jest.fn() })),
   speak: jest.fn()
 }))
 
@@ -61,7 +60,7 @@ describe('AudioPlayer', () => {
     expect(Tts.getInitStatus).toHaveBeenCalled()
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-    expect(Tts.addEventListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
+    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
 
     expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
@@ -72,7 +71,7 @@ describe('AudioPlayer', () => {
     expect(Tts.getInitStatus).toHaveBeenCalled()
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-    expect(Tts.addEventListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
+    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
 
     expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
@@ -84,7 +83,7 @@ describe('AudioPlayer', () => {
 
     expect(Tts.getInitStatus).toHaveBeenCalled()
     await waitFor(() => expect(Tts.requestInstallEngine).toHaveBeenCalledTimes(1))
-    expect(Tts.addEventListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
+    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
 
     expect(Tts.setDefaultLanguage).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
@@ -99,7 +98,7 @@ describe('AudioPlayer', () => {
 
     expect(Tts.getInitStatus).not.toHaveBeenCalled()
     expect(Tts.setDefaultLanguage).not.toHaveBeenCalled()
-    expect(Tts.addEventListener).not.toHaveBeenCalled()
+    expect(Tts.addListener).not.toHaveBeenCalled()
   })
 
   it('should be disabled', async () => {
