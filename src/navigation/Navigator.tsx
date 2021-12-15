@@ -35,7 +35,8 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '600',
     marginLeft: 15,
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
+    minWidth: 450
   },
   headerLeft: {
     paddingLeft: 15,
