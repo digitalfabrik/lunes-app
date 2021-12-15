@@ -28,7 +28,8 @@
     },
     "wordChoice": {
       "title": "Level 1",
-      "description": "Das richtige Wort auswählen"
+      "description": "Das richtige Wort auswählen",
+      "errorWrongModuleSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
     },
     "articleChoice": {
       "title": "Level 2",
