@@ -17,7 +17,7 @@ jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
   setDefaultLanguage: jest.fn(async () => undefined),
   requestInstallEngine: jest.fn(async () => undefined),
-  addListener: jest.fn(() => ({ })),
+  addListener: jest.fn(() => ({})),
   speak: jest.fn()
 }))
 
