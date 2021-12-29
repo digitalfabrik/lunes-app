@@ -12,7 +12,7 @@ import wrapWithTheme from '../../testing/wrapWithTheme'
 import CustomDisciplineItem from '../CustomDisciplineItem'
 
 describe('Components', () => {
-  describe('CustomDisciplineMenuItem', () => {
+  describe('CustomDisciplineItem', () => {
     const navigation = createNavigationMock<'Home'>()
     const mockData = {
       id: 1,

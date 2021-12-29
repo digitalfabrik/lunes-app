@@ -7,14 +7,14 @@ import wrapWithTheme from '../../testing/wrapWithTheme'
 import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
 
 describe('Components', () => {
-  describe('MenuItem', () => {
+  describe('DisciplineItem', () => {
     const defaultDisciplineItemProps: DisciplineItemProps = {
       selected: false,
       item: {
         id: 1,
         description: '',
         icon: '',
-        title: 'Menu item title',
+        title: 'Discipline Item title',
         numberOfChildren: 1,
         isLeaf: false,
         isRoot: true,
