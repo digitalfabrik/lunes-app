@@ -50,3 +50,15 @@ export const childrenLabel = (discipline: DisciplineType): string => {
 
 export const childrenDescription = (discipline: DisciplineType): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
+
+/**
+ * Shuffles an array using the Durstenfeld algorithm as found here: https://stackoverflow.com/a/12646864
+ * @returns {T[]} Returns the shuffled array.
+ */
+export const shuffleArray = <T>(array: T[]): T[] => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array
+}
