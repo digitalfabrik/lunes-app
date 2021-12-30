@@ -49,6 +49,7 @@ export type RoutesParamsType = {
   }
   ResultsOverview: {
     result: ResultScreenData
+    repeatExercise: () => void
   }
   ResultScreen: {
     result: ResultScreenData
