@@ -43,7 +43,7 @@ export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${props => (props.styledInput ? props.theme.colors.lunesBlackLight : props.theme.colors.lunesWhite)};
+  color: ${props => props.theme.colors.lunesWhite};
 `
 
 const Speaker = styled.View`
