@@ -1,8 +1,8 @@
 import { ARTICLES } from '../constants/data'
 import { DisciplineType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
+import { shuffleArray } from '../services/helpers'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
-import {shuffleArray} from "../services/helpers";
 
 export interface AlternativeWordTypeFromServer {
   article: number
