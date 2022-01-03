@@ -77,9 +77,9 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
       initializeTts()
 
       const ttsHandler = (): void => setIsActive(false)
-      Tts.addEventListener('tts-finish', ttsHandler)
+      const listener = Tts.addListener('tts-finish', ttsHandler)
 
-      return () => Tts.removeEventListener('tts-finish', ttsHandler)
+      return listener.remove
     }
   }, [submittedAlternative, audio, initializeTts])
 
