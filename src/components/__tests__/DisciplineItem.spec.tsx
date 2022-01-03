@@ -55,7 +55,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderDisciplineItem()
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-      const title = getByText('Menu item title')
+      const title = getByText('Displine Item title')
       expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
     })
 
