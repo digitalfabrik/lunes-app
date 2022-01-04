@@ -97,8 +97,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
         discipline: discipline,
         exercise: exercise,
         results: results
-      },
-      repeatExercise
+      }
     })
   }
 

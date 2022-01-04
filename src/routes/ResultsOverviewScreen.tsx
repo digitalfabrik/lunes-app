@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
-import { BUTTONS_THEME, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
@@ -117,12 +117,18 @@ interface ResultOverviewScreenPropsType {
 
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
   const { exercise, results, discipline } = route.params.result
-  const { repeatExercise } = route.params
   const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
+
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
+  }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
