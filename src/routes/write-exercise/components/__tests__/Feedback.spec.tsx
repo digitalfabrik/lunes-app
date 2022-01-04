@@ -40,7 +40,7 @@ describe('Feedback section', () => {
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
     const { queryByText } = renderFeedback('correct', 1, submission, false)
-    expect(queryByText(labels.exercises.write.feedback.correct)).toBeTruthy()
+    expect(queryByText(labels.exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
