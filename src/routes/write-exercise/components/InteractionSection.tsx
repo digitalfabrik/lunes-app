@@ -36,14 +36,14 @@ const StyledTextInput = styled.TextInput`
   width: 90%;
 `
 
-export const LightLabelInput = styled.Text<{ styledInput?: string }>`
+export const LightLabelInput = styled.Text<{ disabled: boolean }>`
   text-align: center;
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${props => props.theme.colors.lunesWhite};
+  color: ${props => (props.disabled ? props.theme.colors.lunesBlackLight : props.theme.colors.lunesWhite)};
 `
 
 const Speaker = styled.View`
@@ -187,7 +187,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       {retryAllowed && (
         <Pressable onPress={Keyboard.dismiss}>
           <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
-            <LightLabelInput styledInput={input}>{labels.exercises.write.checkInput}</LightLabelInput>
+            <LightLabelInput disabled={!input}>{labels.exercises.write.checkInput}</LightLabelInput>
           </Button>
         </Pressable>
       )}
