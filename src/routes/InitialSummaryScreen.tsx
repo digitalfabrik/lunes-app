@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 
 import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import { BUTTONS_THEME, EXERCISES } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
@@ -84,6 +84,13 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
     }
   }, [results])
 
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
+  }
+
   const checkResults = (): void => {
     navigation.navigate('ResultsOverview', {
       result: {
@@ -92,10 +99,6 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
         results: results
       }
     })
-  }
-
-  const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, route.params)
   }
 
   return (
