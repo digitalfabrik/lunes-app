@@ -1,5 +1,5 @@
-import React, { ReactElement, RefObject, useEffect, useState } from 'react'
-import { Keyboard, Pressable, TouchableOpacity } from 'react-native'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import { Keyboard, Pressable, TouchableOpacity, View } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
 import styled from 'styled-components/native'
@@ -74,7 +74,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(documentWithResult)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
 
-  const resetTextInputIcon: RefObject<TouchableOpacity> = React.createRef()
+  const textInputRef = useRef<View>(null)
 
   useEffect(() => {
     if (!isAnswerSubmitted) {
@@ -155,10 +155,11 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       <MissingArticlePopover
         isVisible={isArticleMissing}
         setIsPopoverVisible={setIsArticleMissing}
-        ref={resetTextInputIcon}
+        ref={textInputRef}
       />
 
-      <TextInputContainer testID='input-field' ref={resetTextInputIcon} styledBorderColor={getBorderColor()}>
+      {/* @ts-expect-error ref typing is off here */}
+      <TextInputContainer testID='input-field' ref={textInputRef} styledBorderColor={getBorderColor()}>
         <StyledTextInput
           placeholder={labels.exercises.write.insertAnswer}
           placeholderTextColor={COLORS.lunesBlackLight}
