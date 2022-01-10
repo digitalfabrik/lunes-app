@@ -123,6 +123,13 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
 
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
+  }
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -187,13 +194,6 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
         <Arrow fill={arrowColor} />
       </Contained>
     )
-  }
-
-  const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      discipline: { ...discipline },
-      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
-    })
   }
 
   const Footer = (
