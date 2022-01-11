@@ -34,14 +34,14 @@ describe('Components', () => {
       const onPress = jest.fn()
       const { getByText } = renderDisciplineItem({ onPress: onPress })
       expect(onPress).not.toHaveBeenCalled()
-      const element = getByText('Menu item title')
+      const element = getByText('Discipline Item title')
       fireEvent.press(element)
       expect(onPress).toHaveBeenCalled()
     })
 
     it('should display title passed to it', () => {
       const { queryByText } = renderDisciplineItem({})
-      const title = queryByText('Menu item title')
+      const title = queryByText('Discipline Item title')
       expect(title).not.toBeNull()
     })
 
@@ -55,7 +55,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderDisciplineItem()
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-      const title = getByText('Displine Item title')
+      const title = getByText('Discipline Item title')
       expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
     })
 
@@ -63,7 +63,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderDisciplineItem({ selected: true })
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
-      const title = getByText('Displine Item title')
+      const title = getByText('Discipline Item title')
       expect(title.instance.props.style[0].color).toBe(COLORS.white)
     })
   })
