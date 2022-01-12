@@ -2,9 +2,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
-import styled from 'styled-components/native'
 
 import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
+import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
+import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
@@ -36,23 +37,6 @@ export const styles = StyleSheet.create({
     flexGrow: 3
   }
 })
-
-export const NavigationTitle = styled.Text`
-  color: ${props => props.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  padding-left: 15px;
-  flex: 1;
-`
-
-export const NavigationHeaderLeft = styled.TouchableOpacity`
-  padding-left: 15px;
-  flex-direction: row;
-  align-items: center;
-`
 
 const Stack = createStackNavigator<RoutesParamsType>()
 
@@ -145,7 +129,7 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={{
             headerLeft: () => null,
-            headerTitle: ' ',
+            headerTitle: '',
             headerRightContainerStyle: styles.headerRightContainer
           }}
           name='ResultsOverview'

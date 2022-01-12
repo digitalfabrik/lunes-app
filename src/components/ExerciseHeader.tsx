@@ -9,8 +9,9 @@ import { CloseButton } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
-import { NavigationHeaderLeft, NavigationTitle } from '../navigation/Navigator'
 import ConfirmationModal from './ConfirmationModal'
+import { NavigationHeaderLeft } from './NavigationHeaderLeft'
+import { NavigationTitle } from './NavigationTitle'
 
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
