@@ -1,0 +1,6 @@
+issue_key: LUN-227
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Verbesserte Textdarstellung von Überschriften

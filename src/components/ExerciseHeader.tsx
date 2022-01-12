@@ -9,6 +9,7 @@ import { CloseButton } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { NavigationHeaderLeft, NavigationTitle } from '../navigation/Navigator'
 import ConfirmationModal from './ConfirmationModal'
 
 const HeaderText = styled.Text`
@@ -17,24 +18,8 @@ const HeaderText = styled.Text`
   color: ${props => props.theme.colors.lunesGreyMedium};
 `
 
-const Title = styled.Text`
-  color: ${props => props.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 15px;
-`
-
 const ProgressBar = styled(RNProgressBar)`
   background-color: ${props => props.theme.colors.lunesBlackUltralight};
-`
-
-const HeaderLeft = styled.TouchableOpacity`
-  padding-left: 15px;
-  flex-direction: row;
-  align-items: center;
 `
 
 interface ExerciseHeaderPropsType {
@@ -51,10 +36,10 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     () =>
       navigation.setOptions({
         headerLeft: () => (
-          <HeaderLeft onPress={() => setIsModalVisible(true)}>
+          <NavigationHeaderLeft onPress={() => setIsModalVisible(true)}>
             <CloseButton />
-            <Title>{labels.general.header.cancelExercise}</Title>
-          </HeaderLeft>
+            <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
+          </NavigationHeaderLeft>
         ),
         headerRight: () => <HeaderText>{`${currentWord + 1} ${labels.general.header.of} ${numberOfWords}`}</HeaderText>
       }),
