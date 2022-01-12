@@ -62,7 +62,8 @@ export const EXERCISES: ExerciseType[] = [
 
 export const BUTTONS_THEME = {
   light: 'light',
-  dark: 'dark'
+  dark: 'dark',
+  noOutline: 'no-outline'
 } as const
 
 export type ButtonThemeType = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]

@@ -4,7 +4,7 @@ import React from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
-import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
+import { ArrowBack, CloseButton, ArrowBackPressed, HomeButtonPressed, Home } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
@@ -63,7 +63,7 @@ const Navigator = (): JSX.Element => {
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}
           style={styles.headerLeft}>
-          {isPressed ? <BackArrowPressed /> : <Icon />}
+          {isPressed ? <ArrowBackPressed /> : <Icon />}
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
       ),
@@ -92,7 +92,7 @@ const Navigator = (): JSX.Element => {
           options={({ route, navigation }) =>
             defaultOptions(
               route.params.parentTitle ?? labels.general.header.overview,
-              BackButton,
+              ArrowBack,
               navigation,
               !!route.params.parentTitle
             )
@@ -102,14 +102,14 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.discipline.title, BackButton, navigation, true)
+            defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, BackButton, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, ArrowBack, navigation, false)
           }
           name='VocabularyList'
           component={VocabularyListScreen}
@@ -147,13 +147,13 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.results.resultsOverview, BackButton, navigation, false, 'ResultsOverview')
+            defaultOptions(labels.results.resultsOverview, ArrowBack, navigation, false, 'ResultsOverview')
           }
           name='ResultScreen'
           component={ResultScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overview, BackButton, navigation, false)}
+          options={({ navigation }) => defaultOptions(labels.general.header.overview, ArrowBack, navigation, false)}
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
         />

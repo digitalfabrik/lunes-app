@@ -70,15 +70,6 @@ const StyledText = styled.View`
   display: flex;
   flex-direction: column;
 `
-const LightLabel = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
-`
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
@@ -197,10 +188,12 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   }
 
   const Footer = (
-    <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
-      <RepeatIcon fill={COLORS.lunesWhite} />
-      <LightLabel>{labels.results.retryExercise}</LightLabel>
-    </Button>
+    <Button
+      label={labels.results.retryExercise}
+      iconLeft={RepeatIcon}
+      onPress={repeatExercise}
+      buttonTheme={BUTTONS_THEME.dark}
+    />
   )
 
   return (

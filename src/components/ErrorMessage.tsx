@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -33,9 +32,7 @@ const ErrorMessage = ({ error, refresh }: ErrorMessagePropsType): JSX.Element | 
         <ErrorText>
           {error.message === 'Network Error' ? `${labels.general.error.noWifi} (${error?.message})` : error?.message}
         </ErrorText>
-        <Button buttonTheme={BUTTONS_THEME.light} onPress={refresh}>
-          <Text>{labels.general.error.retryButton}</Text>
-        </Button>
+        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.light} onPress={refresh} />
       </Container>
     )
   )

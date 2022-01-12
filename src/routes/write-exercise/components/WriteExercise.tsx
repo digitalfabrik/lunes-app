@@ -4,7 +4,7 @@ import React, { useState, ReactElement, useCallback } from 'react'
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
-import { NextArrow, WhiteNextArrow } from '../../../../assets/images'
+import { ArrowNext } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
@@ -14,33 +14,6 @@ import labels from '../../../constants/labels.json'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
-
-const DarkLabel = styled.Text`
-  text-align: center;
-  color: ${props => props.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-`
-const StyledBlackArrow = styled(NextArrow)`
-  margin-left: 5px;
-`
-
-export const LightLabel = styled.Text<{ styledInput?: string }>`
-  text-align: center;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${props => props.theme.colors.lunesWhite};
-`
-
-const StyledWhiteArrow = styled(WhiteNextArrow)`
-  margin-right: 8px;
-`
 
 const StyledContainer = styled.View`
   padding-top: 20px;
@@ -131,25 +104,33 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         />
 
         {isAnswerSubmitted && current.result !== 'similar' ? (
-          <Button onPress={continueExercise} buttonTheme={BUTTONS_THEME.dark}>
-            <LightLabel>
-              {currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
+          <Button
+            label={
+              currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
                 ? labels.exercises.showResults
-                : labels.exercises.next}
-            </LightLabel>
-            <StyledWhiteArrow />
-          </Button>
+                : labels.exercises.next
+            }
+            iconRight={ArrowNext}
+            onPress={continueExercise}
+            buttonTheme={BUTTONS_THEME.dark}
+          />
         ) : (
           <>
-            <Button onPress={giveUp} buttonTheme={BUTTONS_THEME.light} testID='give-up'>
-              <DarkLabel>{labels.exercises.write.showSolution}</DarkLabel>
-            </Button>
+            <Button
+              label={labels.exercises.write.showSolution}
+              onPress={giveUp}
+              buttonTheme={BUTTONS_THEME.light}
+              testID='give-up'
+            />
 
             {currentIndex < documents.length - 1 && (
-              <Button onPress={tryLater} testID='try-later'>
-                <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
-                <StyledBlackArrow />
-              </Button>
+              <Button
+                label={labels.exercises.tryLater}
+                iconRight={ArrowNext}
+                onPress={tryLater}
+                testID='try-later'
+                buttonTheme={BUTTONS_THEME.noOutline}
+              />
             )}
           </>
         )}

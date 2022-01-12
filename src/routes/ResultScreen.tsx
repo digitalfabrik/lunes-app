@@ -4,13 +4,12 @@ import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CircularFinishIcon, NextArrow, RepeatIcon } from '../../assets/images'
+import { CircularFinishIcon, ArrowNext, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Loading from '../components/Loading'
 import Title from '../components/Title'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
@@ -27,27 +26,8 @@ const StyledList = styled(FlatList)`
   margin-bottom: 6%;
 ` as ComponentType as new () => FlatList<DocumentResultType>
 
-const DarkLabel = styled.Text`
-  text-align: center;
-  color: ${prop => prop.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-`
-
-const Arrow = styled(NextArrow)`
+const Arrow = styled(ArrowNext)`
   margin-left: 5px;
-`
-
-const LightLabel = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
 `
 
 export const styles = StyleSheet.create({
@@ -108,30 +88,30 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
-      <Button onPress={repeatIncorrectEntries} buttonTheme={BUTTONS_THEME.dark}>
-        <RepeatIcon fill={COLORS.lunesWhite} />
-        <LightLabel>
-          {resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} {labels.results.viewEntries}
-        </LightLabel>
-      </Button>
+      <Button
+        label={`${
+          resultType.key === 'similar' ? labels.results.similar : labels.results.wrong
+        } {labels.results.viewEntries}`}
+        onPress={repeatIncorrectEntries}
+        buttonTheme={BUTTONS_THEME.dark}
+        iconLeft={RepeatIcon}
+      />
     ) : null
 
   const Footer = (
     <>
       {exercise === ExerciseKeys.writeExercise && retryButton}
-
       <Button
         onPress={() =>
           navigation.navigate('ResultScreen', {
             ...route.params,
             resultType: nextResultType
           })
-        }>
-        <DarkLabel>
-          {labels.results.show} {nextResultType.title} {labels.results.entries}
-        </DarkLabel>
-        <Arrow />
-      </Button>
+        }
+        label={`${labels.results.show} {nextResultType.title} {labels.results.entries}`}
+        iconLeft={Arrow}
+        buttonTheme={BUTTONS_THEME.noOutline}
+      />
     </>
   )
 

@@ -186,9 +186,13 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       )}
       {retryAllowed && (
         <Pressable onPress={Keyboard.dismiss}>
-          <Button onPress={checkEntry} disabled={!input} buttonTheme={BUTTONS_THEME.dark} testID='check-entry'>
-            <LightLabelInput disabled={!input}>{labels.exercises.write.checkInput}</LightLabelInput>
-          </Button>
+          <Button
+            label={labels.exercises.write.checkInput}
+            onPress={checkEntry}
+            disabled={!input}
+            buttonTheme={BUTTONS_THEME.dark}
+            testID='check-entry'
+          />
         </Pressable>
       )}
     </>
