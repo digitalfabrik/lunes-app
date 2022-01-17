@@ -8,8 +8,8 @@ import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
+import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
-import MenuItem from './MenuItem'
 
 const Placeholder = styled.View`
   height: ${wp('22%')}px;
@@ -38,7 +38,7 @@ const ErrorText = styled.Text`
   margin: 10px;
 `
 
-interface CustomDisciplineMenuItemPropsType {
+interface CustomDisciplineItemPropsType {
   apiKey: string
   selectedId: string | null
   setSelectedId: (selectedId: string) => void
@@ -46,13 +46,13 @@ interface CustomDisciplineMenuItemPropsType {
   refresh: () => void
 }
 
-const CustomDisciplineMenuItem = ({
+const CustomDisciplineItem = ({
   apiKey,
   selectedId,
   setSelectedId,
   navigation,
   refresh
-}: CustomDisciplineMenuItemPropsType): JSX.Element => {
+}: CustomDisciplineItemPropsType): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
   const idToSelectedIdString = (id: number): string => {
@@ -81,11 +81,11 @@ const CustomDisciplineMenuItem = ({
     return (
       <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
         {data ? (
-          <MenuItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+          <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
             <Description selected={idToSelectedIdString(data.id) === selectedId}>
               {childrenDescription(data)}
             </Description>
-          </MenuItem>
+          </DisciplineItem>
         ) : (
           <Placeholder>
             <ErrorText>
@@ -98,4 +98,4 @@ const CustomDisciplineMenuItem = ({
   }
 }
 
-export default CustomDisciplineMenuItem
+export default CustomDisciplineItem

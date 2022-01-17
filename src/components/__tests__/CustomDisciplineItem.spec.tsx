@@ -9,10 +9,10 @@ import {
   mockUseLoadAsyncWithError
 } from '../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import CustomDisciplineMenuItem from '../CustomDisciplineMenuItem'
+import CustomDisciplineItem from '../CustomDisciplineItem'
 
 describe('Components', () => {
-  describe('CustomDisciplineMenuItem', () => {
+  describe('CustomDisciplineItem', () => {
     const navigation = createNavigationMock<'Home'>()
     const mockData = {
       id: 1,
@@ -25,9 +25,9 @@ describe('Components', () => {
       apiKey: 'abc'
     }
 
-    const renderItem = (): RenderAPI => {
+    const renderCustomDisciplineItem = (): RenderAPI => {
       return render(
-        <CustomDisciplineMenuItem
+        <CustomDisciplineItem
           apiKey={'abc'}
           selectedId={'0'}
           setSelectedId={jest.fn()}
@@ -40,20 +40,20 @@ describe('Components', () => {
 
     it('should display data', () => {
       mockUseLoadAsyncWithData(mockData)
-      const { getByText } = renderItem()
+      const { getByText } = renderCustomDisciplineItem()
       expect(getByText('Custom Discipline')).toBeDefined()
       expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
     })
 
     it('should display loading', () => {
       mockUseLoadAsyncLoading()
-      const { getByTestId } = renderItem()
+      const { getByTestId } = renderCustomDisciplineItem()
       expect(getByTestId('loading')).toBeDefined()
     })
 
     it('should display error', () => {
       mockUseLoadAsyncWithError('Network Error')
-      const { getByText } = renderItem()
+      const { getByText } = renderCustomDisciplineItem()
       expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
     })
   })
