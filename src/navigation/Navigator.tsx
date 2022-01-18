@@ -136,9 +136,7 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) =>
-            defaultOptions(labels.results.resultsOverview, BackButton, navigation, false, 'ResultsOverview')
-          }
+          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, BackButton, navigation, false)}
           name='ResultScreen'
           component={ResultScreen}
         />
