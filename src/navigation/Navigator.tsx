@@ -1,10 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 
 import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
+import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
+import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
@@ -28,23 +29,12 @@ export const styles = StyleSheet.create({
     borderBottomColor: COLORS.lunesBlackUltralight,
     borderBottomWidth: 1
   },
-  title: {
-    color: COLORS.lunesBlack,
-    fontFamily: 'SourceSansPro-SemiBold',
-    fontSize: wp('4%'),
-    textTransform: 'uppercase',
-    fontWeight: '600',
-    marginLeft: 15,
-    letterSpacing: 0.4
+  headerRightContainer: {
+    paddingRight: 15,
+    flexShrink: 1
   },
-  headerLeft: {
-    paddingLeft: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 100
-  },
-  headerRight: {
-    paddingRight: 15
+  headerLeftContainer: {
+    flexGrow: 3
   }
 })
 
@@ -57,15 +47,14 @@ const Navigator = (): JSX.Element => {
   const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
     return {
       headerLeft: () => (
-        <TouchableOpacity
+        <NavigationHeaderLeft
           onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
-          activeOpacity={1}
-          style={styles.headerLeft}>
+          activeOpacity={1}>
           {isPressed ? <BackArrowPressed /> : <Icon />}
-          <Text style={styles.title}>{title}</Text>
-        </TouchableOpacity>
+          <NavigationTitle>{title}</NavigationTitle>
+        </NavigationHeaderLeft>
       ),
       ...(showHomeButton && {
         headerRight: () => (
@@ -78,9 +67,10 @@ const Navigator = (): JSX.Element => {
           </TouchableOpacity>
         )
       }),
-      headerTitle: ' ',
+      headerTitle: '',
       headerStyle: styles.header,
-      headerRightContainerStyle: styles.headerRight
+      headerRightContainerStyle: styles.headerRightContainer,
+      headerLeftContainerStyle: styles.headerLeftContainer
     }
   }
 
@@ -139,8 +129,8 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={{
             headerLeft: () => null,
-            headerTitle: ' ',
-            headerRightContainerStyle: styles.headerRight
+            headerTitle: '',
+            headerRightContainerStyle: styles.headerRightContainer
           }}
           name='ResultsOverview'
           component={ResultsOverviewScreen}
