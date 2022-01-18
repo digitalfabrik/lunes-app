@@ -8,7 +8,7 @@ import { Color, COLORS } from '../constants/theme/colors'
 
 interface ThemedButtonProps {
   buttonTheme: ButtonThemeType
-  backgroundColor: Color | null
+  backgroundColor: Color | 'transparent'
   disabled?: boolean
 }
 
@@ -18,7 +18,7 @@ interface ThemedLabelProps {
 
 const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   ${props =>
-    props.buttonTheme === BUTTONS_THEME.light &&
+    props.buttonTheme === BUTTONS_THEME.outlined &&
     !props.disabled &&
     css`
       border-color: ${props.theme.colors.lunesBlack};
@@ -58,10 +58,11 @@ interface ButtonPropsType {
 
 const Button = (props: ButtonPropsType): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
-  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.light, testID } = props
-  let textColor = buttonTheme === BUTTONS_THEME.dark ? COLORS.lunesWhite : COLORS.lunesBlack
-  if (disabled) {
-    textColor = COLORS.lunesBlackLight
+  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined, testID } = props
+
+  const getTextColor = (): Color => {
+    const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesWhite : COLORS.lunesBlack
+    return disabled ? COLORS.lunesBlackLight : enabledTextColor
   }
 
   const getBackgroundColor = (): Color | 'transparent' => {
@@ -69,29 +70,27 @@ const Button = (props: ButtonPropsType): ReactElement => {
       return COLORS.lunesBlackUltralight
     }
     if (isPressed) {
-      return props.buttonTheme === BUTTONS_THEME.dark ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
+      return props.buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
     }
-    if (buttonTheme === 'dark') {
+    if (buttonTheme === BUTTONS_THEME.contained) {
       return COLORS.lunesBlack
-    } else {
-      return 'transparent'
     }
+    return 'transparent'
   }
-  const backgroundColor = getBackgroundColor()
 
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
       testID={testID}
-      backgroundColor={backgroundColor}
+      backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
-      {props.iconLeft && <props.iconLeft fill={textColor} accessibilityLabel={'button-icon-left'} />}
-      <Label color={textColor}>{label}</Label>
-      {props.iconRight && <props.iconRight fill={textColor} accessibilityLabel={'button-icon-right'} />}
+      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID={'button-icon-left'} />}
+      <Label color={getTextColor()}>{label}</Label>
+      {props.iconRight && <props.iconRight fill={getTextColor()} testID={'button-icon-right'} />}
     </ThemedButton>
   )
 }

@@ -60,8 +60,8 @@ const ConfirmationModal = (props: ConfirmationModalPropsType): JSX.Element => {
             <CloseIcon />
           </Icon>
           <Message>{text}</Message>
-          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.dark} />
-          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.light} />
+          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
         </ModalContainer>
       </Overlay>
     </Modal>

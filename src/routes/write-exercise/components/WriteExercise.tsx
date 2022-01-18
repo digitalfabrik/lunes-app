@@ -85,6 +85,11 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
     storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
   }
 
+  const buttonLabel =
+    currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
+      ? labels.exercises.showResults
+      : labels.exercises.next
+
   return (
     <>
       <ExerciseHeader
@@ -105,21 +110,17 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
 
         {isAnswerSubmitted && current.result !== 'similar' ? (
           <Button
-            label={
-              currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
-                ? labels.exercises.showResults
-                : labels.exercises.next
-            }
+            label={buttonLabel}
             iconRight={ArrowNext}
             onPress={continueExercise}
-            buttonTheme={BUTTONS_THEME.dark}
+            buttonTheme={BUTTONS_THEME.contained}
           />
         ) : (
           <>
             <Button
               label={labels.exercises.write.showSolution}
               onPress={giveUp}
-              buttonTheme={BUTTONS_THEME.light}
+              buttonTheme={BUTTONS_THEME.outlined}
               testID='give-up'
             />
 
@@ -129,7 +130,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
                 iconRight={ArrowNext}
                 onPress={tryLater}
                 testID='try-later'
-                buttonTheme={BUTTONS_THEME.noOutline}
+                buttonTheme={BUTTONS_THEME.text}
               />
             )}
           </>

@@ -87,13 +87,13 @@ const VocabularyListModal = ({
                 label={labels.exercises.next}
                 iconRight={ArrowNext}
                 onPress={goToNextWord}
-                buttonTheme={BUTTONS_THEME.dark}
+                buttonTheme={BUTTONS_THEME.contained}
               />
             ) : (
               <Button
                 label={labels.general.header.cancelExercise}
                 onPress={() => setIsModalVisible(false)}
-                buttonTheme={BUTTONS_THEME.dark}
+                buttonTheme={BUTTONS_THEME.contained}
               />
             )}
           </ButtonContainer>

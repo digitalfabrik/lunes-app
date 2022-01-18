@@ -26,10 +26,6 @@ const StyledList = styled(FlatList)`
   margin-bottom: 6%;
 ` as ComponentType as new () => FlatList<DocumentResultType>
 
-const Arrow = styled(ArrowNext)`
-  margin-left: 5px;
-`
-
 export const styles = StyleSheet.create({
   footer: {
     marginTop: 25,
@@ -86,14 +82,16 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
       retryData: { data: entries }
     })
 
+  const label = `${resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} ${
+    labels.results.viewEntries
+  }`
+
   const retryButton =
     entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
       <Button
-        label={`${
-          resultType.key === 'similar' ? labels.results.similar : labels.results.wrong
-        } {labels.results.viewEntries}`}
+        label={label}
         onPress={repeatIncorrectEntries}
-        buttonTheme={BUTTONS_THEME.dark}
+        buttonTheme={BUTTONS_THEME.contained}
         iconLeft={RepeatIcon}
       />
     ) : null
@@ -108,9 +106,9 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
             resultType: nextResultType
           })
         }
-        label={`${labels.results.show} {nextResultType.title} {labels.results.entries}`}
-        iconLeft={Arrow}
-        buttonTheme={BUTTONS_THEME.noOutline}
+        label={`${labels.results.show} ${nextResultType.title} ${labels.results.entries}`}
+        iconLeft={ArrowNext}
+        buttonTheme={BUTTONS_THEME.text}
       />
     </>
   )

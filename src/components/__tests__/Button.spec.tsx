@@ -23,7 +23,7 @@ describe('Components', () => {
       const buttonProps = {
         onPress: onPressMock,
         label: 'Button label',
-        buttonTheme: BUTTONS_THEME.light,
+        buttonTheme: BUTTONS_THEME.outlined,
         testID: 'button',
         ...overrideProps
       }
@@ -31,17 +31,17 @@ describe('Components', () => {
     }
 
     it('should render label and icons', () => {
-      const { getByText, getByA11yLabel } = renderButton({ iconLeft: ArrowNext, iconRight: ArrowBack })
+      const { getByText, queryByTestId } = renderButton({ iconLeft: ArrowNext, iconRight: ArrowBack })
       expect(getByText('Button label')).toBeDefined()
-      expect(getByA11yLabel('button-icon-left')).toBeDefined()
-      expect(getByA11yLabel('button-icon-right')).toBeDefined()
+      expect(queryByTestId('button-icon-left')).toBeDefined()
+      expect(queryByTestId('button-icon-right')).toBeDefined()
     })
 
     it('should render label and no icons', () => {
-      const { getByText, queryByA11yLabel } = renderButton()
+      const { getByText, queryByTestId } = renderButton()
       expect(getByText('Button label')).toBeDefined()
-      expect(queryByA11yLabel('button-icon-left')).toBeNull()
-      expect(queryByA11yLabel('button-icon-right')).toBeNull()
+      expect(queryByTestId('button-icon-left')).toBeNull()
+      expect(queryByTestId('button-icon-right')).toBeNull()
     })
 
     it('should call onClick', () => {
@@ -59,21 +59,21 @@ describe('Components', () => {
     })
 
     it('should have correct style when light theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.light })
+      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.outlined })
       expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
       expect(getByTestId('button').props.style.borderColor).toBe(COLORS.lunesBlack)
       expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)
     })
 
     it('should have correct style when dark theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.dark })
+      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.contained })
       expect(getByTestId('button').props.style.backgroundColor).toEqual(COLORS.lunesBlack)
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
       expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesWhite)
     })
 
     it('should have correct style when no-outline theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.noOutline })
+      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.text })
       expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
       expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)

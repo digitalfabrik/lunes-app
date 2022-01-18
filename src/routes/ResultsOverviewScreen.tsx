@@ -192,7 +192,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
       label={labels.results.retryExercise}
       iconLeft={RepeatIcon}
       onPress={repeatExercise}
-      buttonTheme={BUTTONS_THEME.dark}
+      buttonTheme={BUTTONS_THEME.contained}
     />
   )
 

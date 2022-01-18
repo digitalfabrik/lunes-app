@@ -102,13 +102,13 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
           <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
           <Button
             label={labels.addCustomDiscipline.submitLabel}
-            buttonTheme={BUTTONS_THEME.dark}
+            buttonTheme={BUTTONS_THEME.contained}
             onPress={submit}
             disabled={code.length === 0}
           />
           <Button
             label={labels.addCustomDiscipline.backNavigation}
-            buttonTheme={BUTTONS_THEME.light}
+            buttonTheme={BUTTONS_THEME.outlined}
             onPress={navigation.goBack}
           />
         </Container>

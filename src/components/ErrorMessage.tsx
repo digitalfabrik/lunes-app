@@ -32,7 +32,7 @@ const ErrorMessage = ({ error, refresh }: ErrorMessagePropsType): JSX.Element | 
         <ErrorText>
           {error.message === 'Network Error' ? `${labels.general.error.noWifi} (${error?.message})` : error?.message}
         </ErrorText>
-        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.light} onPress={refresh} />
+        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
       </Container>
     )
   )

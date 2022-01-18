@@ -96,13 +96,13 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       <Button
         label={labels.results.checkEntries}
         iconLeft={ListIcon}
-        buttonTheme={BUTTONS_THEME.dark}
+        buttonTheme={BUTTONS_THEME.contained}
         onPress={checkResults}
       />
       <Button
         label={labels.results.retryExercise}
         iconLeft={RepeatIcon}
-        buttonTheme={BUTTONS_THEME.light}
+        buttonTheme={BUTTONS_THEME.outlined}
         onPress={repeatExercise}
       />
     </Root>

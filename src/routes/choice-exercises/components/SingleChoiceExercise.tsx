@@ -155,6 +155,7 @@ const ChoiceExerciseScreen = ({
   }
 
   const lastWord = currentWord + 1 >= count
+  const buttonLabel = `${lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}`
 
   return (
     <ExerciseContainer>
@@ -180,10 +181,10 @@ const ChoiceExerciseScreen = ({
             <ButtonContainer>
               {selectedAnswer !== null ? (
                 <Button
-                  label={`${lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}`}
+                  label={buttonLabel}
                   iconLeft={ArrowNext}
                   onPress={onFinishWord}
-                  buttonTheme={BUTTONS_THEME.dark}
+                  buttonTheme={BUTTONS_THEME.contained}
                 />
               ) : (
                 !lastWord && (
@@ -192,7 +193,7 @@ const ChoiceExerciseScreen = ({
                     iconRight={ArrowNext}
                     onPress={tryLater}
                     testID='try-later'
-                    buttonTheme={BUTTONS_THEME.noOutline}
+                    buttonTheme={BUTTONS_THEME.text}
                   />
                 )
               )}
