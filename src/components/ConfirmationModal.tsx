@@ -38,15 +38,6 @@ const Message = styled.Text`
   margin-bottom: 31px;
   padding-top: 31px;
 `
-const Label = styled.Text<{ light: boolean }>`
-  color: ${props => (props.light ? props.theme.colors.lunesWhite : props.theme.colors.lunesBlack)};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  text-align: center;
-  text-transform: uppercase;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-`
 
 export interface ConfirmationModalPropsType {
   visible: boolean
@@ -69,12 +60,8 @@ const ConfirmationModal = (props: ConfirmationModalPropsType): JSX.Element => {
             <CloseIcon />
           </Icon>
           <Message>{text}</Message>
-          <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
-            <Label light>{cancelButtonText}</Label>
-          </Button>
-          <Button onPress={confirmationAction} buttonTheme={BUTTONS_THEME.light}>
-            <Label light={false}>{confirmationButtonText}</Label>
-          </Button>
+          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
         </ModalContainer>
       </Overlay>
     </Modal>
