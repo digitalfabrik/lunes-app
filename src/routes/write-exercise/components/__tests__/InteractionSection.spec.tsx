@@ -64,7 +64,7 @@ describe('InteractionSection', () => {
   })
 
   it('should show popup if article missing', async () => {
-    const { getByText, getByPlaceholderText } = renderInteractionSection(
+    const { getByText, getByPlaceholderText, getByTestId } = renderInteractionSection(
       { ...document, result: null, numberOfTries: 0 },
       false
     )
@@ -72,6 +72,6 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'Spachtel')
     const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
-    await waitFor(() => expect(getByText(labels.exercises.write.feedback.articleMissing)).toBeDefined())
+    await waitFor(() => expect(getByTestId('popover').props.isVisible).toBeTruthy())
   })
 })
