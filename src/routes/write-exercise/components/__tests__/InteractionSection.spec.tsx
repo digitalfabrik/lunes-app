@@ -7,6 +7,16 @@ import { DocumentResultType } from '../../../../navigation/NavigationTypes'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import InteractionSection from '../InteractionSection'
 
+jest.mock('react-native-sound-player', () => ({
+  addEventListener: jest.fn(() => ({ remove: jest.fn() }))
+}))
+
+jest.mock('react-native-popover-view', () => ({
+  __esModule: true,
+  default: 'Popover',
+  PopoverPlacement: 'top'
+}))
+
 describe('InteractionSection', () => {
   const storeResult = jest.fn()
 
@@ -53,9 +63,7 @@ describe('InteractionSection', () => {
     expect(queryByText(labels.exercises.write.checkInput)).toBeNull()
   })
 
-  // will be fixed in LUN-230
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should show popup if article missing', async () => {
+  it('should show popup if article missing', async () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(
       { ...document, result: null, numberOfTries: 0 },
       false

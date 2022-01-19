@@ -5,21 +5,24 @@ import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import MissingArticlePopover from '../MissingArticlePopover'
 
-// will be fixed in LUN-230
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('MissingArticlePopover', () => {
+jest.mock('react-native-popover-view', () => ({
+  __esModule: true,
+  default: 'Popover',
+  PopoverPlacement: 'top'
+}))
+
+describe('MissingArticlePopover', () => {
   it('should show Popover when visible', () => {
     const { getByText } = render(<MissingArticlePopover setIsPopoverVisible={jest.fn()} isVisible={true} />, {
       wrapper: wrapWithTheme
     })
     expect(getByText(labels.exercises.write.feedback.articleMissing)).toBeDefined()
-    console.log(getByText(labels.exercises.write.feedback.articleMissing))
   })
-
+  // Unfortunately jest renders the popover(modal) even if it's set to invisible
   it('should not show Popover when invisible', () => {
-    const { queryByText } = render(<MissingArticlePopover setIsPopoverVisible={jest.fn()} isVisible={false} />, {
+    const { getByTestId } = render(<MissingArticlePopover setIsPopoverVisible={jest.fn()} isVisible={false} />, {
       wrapper: wrapWithTheme
     })
-    expect(queryByText(labels.exercises.write.feedback.articleMissing)).toBeNull()
+    expect(getByTestId('popover').props.isVisible).toBeFalsy()
   })
 })
