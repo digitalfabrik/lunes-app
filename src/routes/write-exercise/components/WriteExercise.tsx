@@ -117,19 +117,13 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
           />
         ) : (
           <>
-            <Button
-              label={labels.exercises.write.showSolution}
-              onPress={giveUp}
-              buttonTheme={BUTTONS_THEME.outlined}
-              testID='give-up'
-            />
+            <Button label={labels.exercises.write.showSolution} onPress={giveUp} buttonTheme={BUTTONS_THEME.outlined} />
 
             {currentIndex < documents.length - 1 && (
               <Button
                 label={labels.exercises.tryLater}
                 iconRight={ArrowNext}
                 onPress={tryLater}
-                testID='try-later'
                 buttonTheme={BUTTONS_THEME.text}
               />
             )}

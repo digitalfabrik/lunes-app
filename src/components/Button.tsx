@@ -53,12 +53,11 @@ interface ButtonPropsType {
   disabled?: boolean
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
-  testID?: string
 }
 
 const Button = (props: ButtonPropsType): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
-  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined, testID } = props
+  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
 
   const getTextColor = (): Color => {
     const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesWhite : COLORS.lunesBlack
@@ -81,7 +80,7 @@ const Button = (props: ButtonPropsType): ReactElement => {
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      testID={testID}
+      testID={'button'}
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}

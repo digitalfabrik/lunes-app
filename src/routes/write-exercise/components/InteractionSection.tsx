@@ -181,7 +181,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
             onPress={checkEntry}
             disabled={!input}
             buttonTheme={BUTTONS_THEME.contained}
-            testID='check-entry'
           />
         </Pressable>
       )}

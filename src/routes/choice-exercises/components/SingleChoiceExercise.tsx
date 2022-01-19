@@ -155,7 +155,7 @@ const ChoiceExerciseScreen = ({
   }
 
   const lastWord = currentWord + 1 >= count
-  const buttonLabel = `${lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}`
+  const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
 
   return (
     <ExerciseContainer>
@@ -192,7 +192,6 @@ const ChoiceExerciseScreen = ({
                     label={labels.exercises.tryLater}
                     iconRight={ArrowNext}
                     onPress={tryLater}
-                    testID='try-later'
                     buttonTheme={BUTTONS_THEME.text}
                   />
                 )

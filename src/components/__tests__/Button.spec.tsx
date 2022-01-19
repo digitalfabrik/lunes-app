@@ -24,7 +24,6 @@ describe('Components', () => {
         onPress: onPressMock,
         label: 'Button label',
         buttonTheme: BUTTONS_THEME.outlined,
-        testID: 'button',
         ...overrideProps
       }
       return render(<Button {...buttonProps} />, { wrapper: wrapWithTheme })
