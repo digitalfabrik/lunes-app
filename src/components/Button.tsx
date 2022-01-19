@@ -1,37 +1,24 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ComponentType, ReactElement } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { SvgProps } from 'react-native-svg'
 import styled, { css } from 'styled-components/native'
 
 import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
+import { Color, COLORS } from '../constants/theme/colors'
 
 interface ThemedButtonProps {
-  buttonTheme?: ButtonThemeType
-  isPressed: boolean
+  buttonTheme: ButtonThemeType
+  backgroundColor: Color | 'transparent'
   disabled?: boolean
 }
 
+interface ThemedLabelProps {
+  color: string
+}
+
 const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
-  ${props => {
-    if (props.disabled) {
-      return css`
-        background-color: ${props.theme.colors.lunesBlackUltralight};
-      `
-    }
-    if (props.isPressed) {
-      return css`
-        background-color: ${props.buttonTheme === BUTTONS_THEME.dark
-          ? props.theme.colors.lunesBlackMedium
-          : props.theme.colors.lunesBlackLight};
-      `
-    }
-    if (props.buttonTheme === 'dark') {
-      return css`
-        background-color: ${props.theme.colors.lunesBlack};
-      `
-    }
-  }};
   ${props =>
-    props.buttonTheme === BUTTONS_THEME.light &&
+    props.buttonTheme === BUTTONS_THEME.outlined &&
     !props.disabled &&
     css`
       border-color: ${props.theme.colors.lunesBlack};
@@ -45,30 +32,66 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   justify-content: center;
   height: ${hp('7%')}px;
   margin-bottom: ${hp('2%')}px;
+  background-color: ${props => props.backgroundColor};
 `
 
-interface IButtonProps {
+const Label = styled.Text<ThemedLabelProps>`
+  color: ${props => props.color};
+  text-align: center;
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+  padding: 0 10px;
+`
+
+interface ButtonPropsType {
   onPress: () => void
+  label: string
+  buttonTheme: ButtonThemeType
   disabled?: boolean
-  children: ReactNode
-  buttonTheme?: ButtonThemeType
-  testID?: string
+  iconLeft?: ComponentType<SvgProps>
+  iconRight?: ComponentType<SvgProps>
 }
 
-const Button = ({ children, onPress, disabled = false, buttonTheme, testID }: IButtonProps): ReactElement => {
+const Button = (props: ButtonPropsType): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
+  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
+
+  const getTextColor = (): Color => {
+    const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesWhite : COLORS.lunesBlack
+    return disabled ? COLORS.lunesBlackLight : enabledTextColor
+  }
+
+  const getBackgroundColor = (): Color | 'transparent' => {
+    if (props.disabled) {
+      return COLORS.lunesBlackUltralight
+    }
+    if (isPressed) {
+      return props.buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
+    }
+    if (buttonTheme === BUTTONS_THEME.contained) {
+      return COLORS.lunesBlack
+    }
+    return 'transparent'
+  }
+
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      testID={testID}
-      isPressed={isPressed}
+      testID={'button'}
+      backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
-      {children}
+      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID={'button-icon-left'} />}
+      <Label color={getTextColor()}>{label}</Label>
+      {props.iconRight && <props.iconRight fill={getTextColor()} testID={'button-icon-right'} />}
     </ThemedButton>
   )
 }
+
 export default Button
