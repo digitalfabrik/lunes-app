@@ -25,3 +25,5 @@ export const COLORS = {
   shadow: 'rgba(0, 0, 0, 0.6)',
   lunesBlackMedium: '#3d4662'
 }
+
+export type Color = typeof COLORS[keyof typeof COLORS]

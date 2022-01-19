@@ -57,22 +57,6 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
-const LightLabel = styled.Text`
-  color: ${props => props.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-`
-
-const DarkLabel = styled.Text<{ disabled: boolean }>`
-  color: ${props => (props.disabled ? props.theme.colors.lunesBlackLight : props.theme.colors.lunesWhite)};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-`
-
 interface AddCustomDisciplineScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
 }
@@ -120,12 +104,17 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
             onChangeText={setCode}
           />
           <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
-          <Button buttonTheme={BUTTONS_THEME.dark} onPress={submit} disabled={code.length === 0}>
-            <DarkLabel disabled={code.length === 0}>{labels.addCustomDiscipline.submitLabel}</DarkLabel>
-          </Button>
-          <Button buttonTheme={BUTTONS_THEME.light} onPress={navigation.goBack}>
-            <LightLabel>{labels.addCustomDiscipline.backNavigation}</LightLabel>
-          </Button>
+          <Button
+            label={labels.addCustomDiscipline.submitLabel}
+            buttonTheme={BUTTONS_THEME.contained}
+            onPress={submit}
+            disabled={code.length === 0}
+          />
+          <Button
+            label={labels.addCustomDiscipline.backNavigation}
+            buttonTheme={BUTTONS_THEME.outlined}
+            onPress={navigation.goBack}
+          />
         </Container>
       )}
     </Loading>
