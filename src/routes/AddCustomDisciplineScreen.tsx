@@ -83,7 +83,11 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
         return await AsyncStorage.setCustomDisciplines([...customDisciplines, code])
       })
       .then(() => navigation.navigate('Home'))
-      .catch(() => setErrorMessage(labels.addCustomDiscipline.error.technical))
+      .catch(error => {
+        error.response?.status === 403
+          ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
+          : setErrorMessage(labels.addCustomDiscipline.error.technical)
+      })
       .finally(() => setLoading(false))
   }
 
