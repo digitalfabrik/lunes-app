@@ -1,0 +1,6 @@
+issue_key: LUN-121
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wörter werden innerhalb der Aufgaben nun in zufälliger Reihenfolge abgefragt

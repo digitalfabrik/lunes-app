@@ -13,11 +13,11 @@ jest.mock('../../navigation/Navigator', () => {
 jest.useFakeTimers('modern')
 
 describe('App', () => {
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     const { getByText } = render(<App />)
 
     // wait for splash screen to disappear
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(3000)
     })
 

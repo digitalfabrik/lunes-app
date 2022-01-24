@@ -17,7 +17,7 @@ const ArticleChoiceExerciseScreen = ({
   navigation,
   route
 }: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
-  const response = useLoadDocuments(route.params.discipline)
+  const response = useLoadDocuments(route.params.discipline, true)
 
   const documentToAnswers = (document: DocumentType): Answer[] => {
     return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
