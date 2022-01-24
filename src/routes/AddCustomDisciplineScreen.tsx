@@ -26,19 +26,20 @@ const Heading = styled.Text`
 const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium}
+  color: ${props => props.theme.colors.lunesGreyMedium};
   padding: 10px 0;
 `
 
 const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
-  font-size: ${props => props.theme.fonts.largeFontSize}
+  font-size: ${props => props.theme.fonts.largeFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: 0.11px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};
   width: 80%;
-  border: 1px solid ${props =>
-    props.errorMessage ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
+  border: 1px solid
+    ${props =>
+      props.errorMessage ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding-left: 15px;
@@ -52,7 +53,7 @@ const ErrorContainer = styled.View`
 `
 
 const ErrorText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize}
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
@@ -84,7 +85,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
       })
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        error.response?.status === 403
+        return error.response?.status === 403
           ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
           : setErrorMessage(labels.addCustomDiscipline.error.technical)
       })

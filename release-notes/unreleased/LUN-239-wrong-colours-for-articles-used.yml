@@ -1,0 +1,6 @@
+issue_key: LUN-239
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Falsche Artikelfarbgebung behoben

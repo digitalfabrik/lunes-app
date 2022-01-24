@@ -67,19 +67,18 @@ describe('AddCustomDisciplineScreen', () => {
     fireEvent.changeText(textField, 'test')
     const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    await waitFor(() => expect(findByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull())
+    expect(await findByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull()
   })
 
   it('should show wrong-code-error', async () => {
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    mocked(loadGroupInfo).mockRejectedValueOnce({ code: 403 })
-
+    mocked(loadGroupInfo).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'invalid-code')
     const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    await waitFor(() => expect(findByText(labels.addCustomDiscipline.error.wrongCode)).not.toBeNull())
+    expect(await findByText(labels.addCustomDiscipline.error.wrongCode)).not.toBeNull()
   })
 })

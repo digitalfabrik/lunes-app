@@ -12,10 +12,10 @@ export const getArticleColor = (article: Article): string => {
       return COLORS.lunesArtikelDer
 
     case 2:
-      return COLORS.lunesArtikelDas
+      return COLORS.lunesArtikelDie
 
     case 3:
-      return COLORS.lunesArtikelDie
+      return COLORS.lunesArtikelDas
 
     case 4:
       return COLORS.lunesArtikelDiePlural
@@ -50,3 +50,10 @@ export const childrenLabel = (discipline: DisciplineType): string => {
 
 export const childrenDescription = (discipline: DisciplineType): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
+
+export const shuffleArray = <T>(array: T[]): void => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+}
