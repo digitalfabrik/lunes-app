@@ -11,6 +11,11 @@ import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../te
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
+
 jest.mock('react-native/Libraries/Image/Image', () => {
   return {
     ...jest.requireActual('react-native/Libraries/Image/Image'),
@@ -69,12 +74,13 @@ describe('WriteExerciseScreen', () => {
     }
   }
 
-  it('should show network error', () => {
-    mockUseLoadAsyncWithError('Network Error')
+  it('should show network error', async () => {
+    const errorMessage = 'Network Error'
+    mockUseLoadAsyncWithError(errorMessage)
     const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    expect(findByText(labels.general.error.noWifi)).toBeDefined()
+    expect(await findByText(`${labels.general.error.noWifi} (${errorMessage})`)).toBeDefined()
   })
 
   it('should show exercise if loaded successfully', () => {

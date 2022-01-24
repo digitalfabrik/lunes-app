@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
+import { mocked } from 'jest-mock'
 import React from 'react'
-import { mocked } from 'ts-jest/utils'
 
 import labels from '../../constants/labels.json'
 import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
@@ -67,19 +67,21 @@ describe('AddCustomDisciplineScreen', () => {
     fireEvent.changeText(textField, 'test')
     const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    await waitFor(() => expect(findByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull())
+    expect(await findByText(labels.addCustomDiscipline.error.alreadyAdded)).not.toBeNull()
   })
 
   it('should show wrong-code-error', async () => {
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
-    mocked(loadGroupInfo).mockRejectedValueOnce({ code: 403 })
-
+    const { findByText, getByText, findByPlaceholderText } = render(
+      <AddCustomDisciplineScreen navigation={navigation} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
+    mocked(loadGroupInfo).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'invalid-code')
-    const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
+    const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
-    await waitFor(() => expect(findByText(labels.addCustomDiscipline.error.wrongCode)).not.toBeNull())
+    expect(await findByText(labels.addCustomDiscipline.error.wrongCode)).not.toBeNull()
   })
 })
