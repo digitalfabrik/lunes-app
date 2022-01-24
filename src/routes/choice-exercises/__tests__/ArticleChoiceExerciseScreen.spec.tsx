@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { act, fireEvent, render } from '@testing-library/react-native'
+import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
