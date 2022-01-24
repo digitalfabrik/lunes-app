@@ -18,7 +18,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
   const { discipline, retryData } = route.params
   const height = useScreenHeight()
 
-  const { data, loading, error, refresh } = useLoadDocuments(discipline)
+  const { data, loading, error, refresh } = useLoadDocuments(discipline, true)
   const documents = retryData?.data ?? data
 
   return (

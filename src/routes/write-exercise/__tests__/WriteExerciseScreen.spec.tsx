@@ -11,6 +11,11 @@ import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../te
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
+
 jest.mock('react-native/Libraries/Image/Image', () => {
   return {
     ...jest.requireActual('react-native/Libraries/Image/Image'),
