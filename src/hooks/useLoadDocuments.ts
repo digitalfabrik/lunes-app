@@ -1,6 +1,7 @@
 import { ARTICLES } from '../constants/data'
 import { DisciplineType, DocumentType, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
+import { shuffleArray } from '../services/helpers'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
 
 export interface AlternativeWordTypeFromServer {
@@ -34,7 +35,12 @@ export const loadDocuments = async (discipline: DisciplineType): Promise<Documen
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: DisciplineType): ReturnType<DocumentType[]> =>
-  useLoadAsync(loadDocuments, discipline)
+const useLoadDocuments = (discipline: DisciplineType, shuffle: Boolean = false): ReturnType<DocumentType[]> => {
+  const documents = useLoadAsync(loadDocuments, discipline)
+  if (shuffle && documents.data) {
+    shuffleArray(documents.data)
+  }
+  return documents
+}
 
 export default useLoadDocuments

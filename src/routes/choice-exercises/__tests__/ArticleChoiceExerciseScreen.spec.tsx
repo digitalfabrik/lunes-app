@@ -9,6 +9,11 @@ import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoi
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
+
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
