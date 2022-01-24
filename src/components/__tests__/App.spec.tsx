@@ -17,7 +17,7 @@ describe('App', () => {
 
     // wait for splash screen to disappear
     act(() => {
-      jest.advanceTimersByTime(5000)
+      jest.advanceTimersByTime(3000)
     })
 
     expect(SplashScreen.hide).toHaveBeenCalled()

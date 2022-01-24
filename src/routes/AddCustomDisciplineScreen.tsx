@@ -84,7 +84,6 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
       })
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        console.log(error)
         return error.response?.status === 403
           ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
           : setErrorMessage(labels.addCustomDiscipline.error.technical)

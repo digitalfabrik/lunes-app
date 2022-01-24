@@ -23,6 +23,5 @@ export default {
     '<rootDir>/../node_modules/react-native-gesture-handler/jestSetup.js'
   ],
   modulePaths: ['<rootDir>'],
-  clearMocks: true,
   moduleDirectories: ['node_modules']
 }

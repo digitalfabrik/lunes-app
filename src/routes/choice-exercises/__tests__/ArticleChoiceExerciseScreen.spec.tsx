@@ -64,7 +64,7 @@ describe('ArticleChoiceExerciseScreen', () => {
       }
     }
   }
-  it.only('should allow to skip an exercise and try it out later', () => {
+  it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
 
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
