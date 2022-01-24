@@ -1,8 +1,7 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
@@ -19,40 +18,21 @@ const Root = styled.View`
   align-items: center;
   padding-left: 4%;
   padding-right: 4%;
-  padding-top: 4.5%;
 `
-const StyledList = styled(FlatList as new () => FlatList<ResultType>)`
+
+const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-`
+` as ComponentType as new () => FlatList<ResultType>
 
-const ScreenDescription = styled.Text`
-  font-size: ${wp('4%')}px;
-  color: ${props => props.theme.colors.lunesGreyMedium};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  line-height: 18px;
-  margin-top: 7px;
-`
 const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${wp('4%')}px;
-  font-weight: normal;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
 `
-const ScreenTitle = styled.Text`
-  text-align: center;
-  font-size: ${wp('5%')}px;
-  color: ${prop => prop.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  padding-bottom: 7%;
-`
-const ScreenSubTitle = styled.Text`
-  text-align: center;
-  font-size: ${wp('4%')}px;
-  color: ${prop => prop.theme.colors.lunesGreyDark};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-`
+
 const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
   padding: 17px 28px 17px 16px;
@@ -69,15 +49,15 @@ const Contained = styled.Pressable<{ selected: boolean }>`
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
-  font-weight: 600;
-  letter-spacing: 0.11px;
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${prop => (prop.selected ? wp('5%') : wp('4.5%'))}px;
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
 `
 const StyledLevel = styled.View`
-  margin-top: 7%;
+  margin-top: 9px;
 `
 const LeftSide = styled.View`
   display: flex;
@@ -90,18 +70,11 @@ const StyledText = styled.View`
   display: flex;
   flex-direction: column;
 `
-const LightLabel = styled.Text`
-  font-size: ${wp('3.5%')}px;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: 600;
-  margin-left: 10px;
-  text-transform: uppercase;
-`
 const HeaderText = styled.Text`
-  font-size: ${wp('3.5%')}px;
-  font-weight: 600;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;
   margin-right: 8px;
@@ -134,16 +107,29 @@ interface ResultOverviewScreenPropsType {
 }
 
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
-  const { extraParams, results } = route.params
-  const { exercise } = extraParams
+  const { exercise, results, discipline } = route.params.result
   const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
+
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
+
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
+  }
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <RightHeader onPress={() => navigation.navigate('Exercises', { extraParams })}>
+        <RightHeader
+          onPress={() =>
+            navigation.navigate('Exercises', {
+              discipline: { ...discipline }
+            })
+          }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <FinishIcon />
         </RightHeader>
@@ -156,21 +142,16 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
       incorrect: results.filter(({ result }) => result === 'incorrect').length,
       similar: results.filter(({ result }) => result === 'similar').length
     })
-  }, [results, navigation, extraParams])
+  }, [results, navigation, discipline])
 
   const Header = (
-    <StyledTitle>
-      <>
-        <ScreenTitle>{labels.results.resultsOverview}</ScreenTitle>
-        <ScreenSubTitle>{title}</ScreenSubTitle>
-        <ScreenDescription>{description}</ScreenDescription>
-        <StyledLevel as={Level} />
-      </>
+    <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
+      <StyledLevel as={Level} />
     </StyledTitle>
   )
 
   const Item = ({ item }: { item: ResultType }): ReactElement | null => {
-    const hideAlmostCorrect = exercise !== ExerciseKeys.writeExercise && item.key === SIMPLE_RESULTS.similar
+    const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
@@ -178,9 +159,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
       setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
-        extraParams,
+        result: { ...route.params.result },
         resultType: item,
-        results,
         counts
       })
     }
@@ -197,7 +177,9 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
-              selected={selected}>{`${count} ${labels.results.of} ${counts.total} ${labels.home.words}`}</Description>
+              selected={
+                selected
+              }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
           </StyledText>
         </LeftSide>
         <Arrow fill={arrowColor} />
@@ -205,20 +187,13 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     )
   }
 
-  const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      retryData: { data: results },
-      extraParams
-    })
-  }
-
   const Footer = (
-    <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
-      <>
-        <RepeatIcon fill={COLORS.lunesWhite} />
-        <LightLabel>{labels.results.retryExercise}</LightLabel>
-      </>
-    </Button>
+    <Button
+      label={labels.results.retryExercise}
+      iconLeft={RepeatIcon}
+      onPress={repeatExercise}
+      buttonTheme={BUTTONS_THEME.contained}
+    />
   )
 
   return (

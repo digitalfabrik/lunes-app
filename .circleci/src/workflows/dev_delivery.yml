@@ -2,28 +2,44 @@ when: << pipeline.parameters.run_dev_delivery >>
 jobs:
   - check
   - bump_version:
+      context:
+        - deliverino
       delivery: development
   - build_android:
+      context:
+        - credentials-repo
+        - credentials-lunes
       requires:
         - check
         - bump_version
   - build_ios:
+      context:
+        - fastlane-match
+        - tuerantuer-apple
       requires:
         - check
         - bump_version
   - deliver_browser_stack:
+      context:
+        - browserstack
       requires:
         - build_android
         - build_ios
   - deliver_android:
+      context:
+        - tuerantuer-google-play
       production_delivery: false
       requires:
         - build_android
   - deliver_ios:
+      context:
+        - tuerantuer-apple
       production_delivery: false
       requires:
         - build_ios
   - move_release_notes:
+      context:
+        - deliverino
       requires:
         - deliver_android
         - deliver_ios

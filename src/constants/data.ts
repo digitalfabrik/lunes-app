@@ -61,8 +61,9 @@ export const EXERCISES: ExerciseType[] = [
 ]
 
 export const BUTTONS_THEME = {
-  light: 'light',
-  dark: 'dark'
+  outlined: 'outlined',
+  contained: 'contained',
+  text: 'text'
 } as const
 
 export type ButtonThemeType = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
@@ -132,3 +133,5 @@ export const RESULTS: ResultType[] = [
     order: 2
   }
 ]
+
+export const numberOfMaxRetries = 3

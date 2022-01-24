@@ -37,11 +37,10 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
 
-    // TODO LUN-55: Use errors again for these typescript rules
-    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/no-floating-promises': 'warn',
-    '@typescript-eslint/restrict-template-expressions': 'warn',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
     'jest/consistent-test-it': 'error',
@@ -49,9 +48,8 @@ module.exports = {
     'jest/no-focused-tests': 'error',
     'jest/no-identical-title': 'error',
     'jest/no-test-prefixes': 'error',
-    'jest/prefer-to-be-null': 'error',
     'jest/prefer-to-have-length': 'error',
-    'jest/valid-describe': 'error',
+    'jest/valid-describe-callback': 'error',
     'jest/valid-expect': 'error'
   },
   overrides: [

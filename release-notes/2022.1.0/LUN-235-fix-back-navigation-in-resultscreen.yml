@@ -1,0 +1,6 @@
+issue_key: LUN-235
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Navigationsbug behoben

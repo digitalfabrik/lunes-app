@@ -1,7 +1,8 @@
 import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
-import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
+import { getFromEndpoint } from '../services/axios'
+import useLoadAsync, { ReturnType } from './useLoadAsync'
 
-interface ServerResponse {
+export interface ServerResponse {
   id: number
   title: string
   description: string
@@ -11,19 +12,31 @@ interface ServerResponse {
   total_documents: number
 }
 
-const formatServerResponse = (serverResponse: ReturnType<ServerResponse[]>): ReturnType<DisciplineType[]> => {
-  const formattedServerResponse: DisciplineType[] =
-    serverResponse.data?.map(item => ({
-      ...item,
-      numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-      isLeaf: item.total_discipline_children === 0
-    })) ?? []
-  return { ...serverResponse, data: formattedServerResponse }
+const getEndpoint = (parent: DisciplineType | null): string => {
+  if (parent?.needsTrainingSetEndpoint) {
+    return ENDPOINTS.trainingSet
+  } else if (parent?.apiKey) {
+    return ENDPOINTS.disciplinesByGroup
+  } else {
+    return ENDPOINTS.disciplines
+  }
 }
 
-export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> => {
-  const rootModulesUrl = ENDPOINTS.professions.all
-  const nestedModulesUrl = `${!parent?.isLeaf ? ENDPOINTS.professions.all : ENDPOINTS.subCategories.all}/${parent?.id}`
-  const disciplines = useLoadFromEndpoint<ServerResponse[]>(parent === null ? rootModulesUrl : nestedModulesUrl)
-  return formatServerResponse(disciplines)
+const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>
+  serverResponse.map(item => ({
+    ...item,
+    numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
+    isLeaf: item.total_documents !== undefined,
+    isRoot: parent === null,
+    apiKey: parent?.apiKey,
+    needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
+  })) ?? []
+
+export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
+  const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
+  const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)
+  return formatServerResponse(response, parent)
 }
+
+export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> =>
+  useLoadAsync(loadDisciplines, parent)

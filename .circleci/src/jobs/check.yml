@@ -1,5 +1,5 @@
 docker:
-  - image: circleci/node:14.16.0
+  - image: circleci/node:14.17.0
 steps:
   - checkout
   - check_config
@@ -7,6 +7,9 @@ steps:
   - run:
       name: Linting check
       command: yarn lint
+  - run:
+      name: TS check
+      command: yarn ts:check
   - run:
       name: Prettier check
       command: yarn prettier --check .

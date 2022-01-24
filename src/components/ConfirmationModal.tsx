@@ -1,27 +1,20 @@
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { Modal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Color } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
-import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 import Button from './Button'
 
 const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${COLORS.lunesOverlay};
+  background-color: ${props => props.theme.colors.lunesOverlay};
 `
 const ModalContainer = styled.View`
-  background-color: ${COLORS.white};
+  background-color: ${props => props.theme.colors.white};
   align-items: center;
   width: ${wp('85%')}px;
   border-radius: 4px;
@@ -38,58 +31,27 @@ const Icon = styled.TouchableOpacity`
 `
 const Message = styled.Text`
   text-align: center;
-  font-size: ${wp('5%')}px;
-  color: ${COLORS.lunesGreyDark};
-  font-family: 'SourceSansPro-SemiBold';
+  font-size: ${props => props.theme.fonts.headingFontSize};
+  color: ${props => props.theme.colors.lunesGreyDark};
+  font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
   margin-bottom: 31px;
   padding-top: 31px;
 `
-const Label = styled.Text`
-  color: ${(prop: LabelProps) => prop.labelColor};
-  font-size: ${wp('4%')}px;
-  font-weight: 600;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'SourceSansPro-SemiBold';
-  letter-spacing: 0.4px;
-`
-
-interface LabelProps {
-  labelColor: Color
-}
 
 export interface ConfirmationModalPropsType {
   visible: boolean
-  setIsModalVisible: Function
-  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
-  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
+  setVisible: (visible: boolean) => void
+  text: string
+  confirmationButtonText: string
+  cancelButtonText: string
+  confirmationAction: () => void
 }
 
-const ConfirmationModal = ({
-  navigation,
-  route,
-  visible,
-  setIsModalVisible
-}: ConfirmationModalPropsType): JSX.Element => {
-  const closeModal = (): void => setIsModalVisible(false)
-  const goBack = (): void => {
-    setIsModalVisible(false)
-    AsyncStorage.clearSession().catch(e => console.error(e))
-    const { disciplineID, disciplineTitle, disciplineIcon, trainingSetId, trainingSet, documentsLength } =
-      route.params.extraParams
-    const extraParams = {
-      extraParams: {
-        disciplineID: disciplineID,
-        disciplineTitle: disciplineTitle,
-        disciplineIcon: disciplineIcon,
-        trainingSetId: trainingSetId,
-        trainingSet: trainingSet,
-        documentsLength: documentsLength
-      }
-    }
-    navigation.navigate('Exercises', extraParams)
-  }
+const ConfirmationModal = (props: ConfirmationModalPropsType): JSX.Element => {
+  const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction } = props
+  const closeModal = (): void => setVisible(false)
+
   return (
     <Modal testID='modal' visible={visible} transparent animationType='fade'>
       <Overlay>
@@ -97,13 +59,9 @@ const ConfirmationModal = ({
           <Icon onPress={closeModal}>
             <CloseIcon />
           </Icon>
-          <Message>{labels.exercises.cancelModal.cancelAsk}</Message>
-          <Button onPress={closeModal} buttonTheme={BUTTONS_THEME.dark}>
-            <Label labelColor={COLORS.lunesWhite}>{labels.exercises.cancelModal.continue}</Label>
-          </Button>
-          <Button onPress={goBack} buttonTheme={BUTTONS_THEME.light}>
-            <Label labelColor={COLORS.lunesBlack}>{labels.exercises.cancelModal.cancel}</Label>
-          </Button>
+          <Message>{text}</Message>
+          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
         </ModalContainer>
       </Overlay>
     </Modal>

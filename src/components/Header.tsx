@@ -2,14 +2,12 @@ import React from 'react'
 import styled from 'styled-components/native'
 
 import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
 
-const Wrapper = styled.View`
-  background-color: ${COLORS.lunesBlack};
-  padding-top: ${(prop: IHeaderProps) => prop.top};
+const Wrapper = styled.SafeAreaView`
+  background-color: ${props => props.theme.colors.lunesBlack};
 `
 const HeaderStyle = styled.View`
-  background-color: ${COLORS.lunesBlack};
+  background-color: ${props => props.theme.colors.lunesBlack};
   height: 91px;
   width: 100%;
 `
@@ -50,12 +48,8 @@ const SmileIconStyle = styled.View`
   top: 51px;
 `
 
-export interface IHeaderProps {
-  top: number | undefined
-}
-
-const Header = ({ top }: IHeaderProps): JSX.Element => (
-  <Wrapper testID='header' top={top}>
+const Header = (): JSX.Element => (
+  <Wrapper testID='header'>
     <HeaderStyle>
       <SquareIconStyle>
         <SquareIcon />

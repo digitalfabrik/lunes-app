@@ -2,10 +2,10 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
-import { Answer } from '../../constants/data'
+import { Answer, ExerciseKeys } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { DocumentResultType, RoutesParamsType } from '../../navigation/NavigationTypes'
+import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface WordChoiceExerciseScreenPropsType {
@@ -14,15 +14,13 @@ interface WordChoiceExerciseScreenPropsType {
 }
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
-  const { extraParams } = route.params
-  const { trainingSetId } = extraParams
-  const { data: documents, loading } = useLoadDocuments(trainingSetId)
-
-  if (documents === null || loading) {
-    return null
-  }
+  const response = useLoadDocuments(route.params.discipline)
 
   const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
+    const { data: documents } = response
+    if (!documents) {
+      return []
+    }
     const answers = []
     const usedDocuments = [correctDocument]
 
@@ -51,17 +49,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     return answers
   }
 
-  const onExerciseFinished = (results: DocumentResultType[]): void => {
-    navigation.navigate('InitialSummary', { extraParams: { ...extraParams, results } })
-  }
-
   return (
     <SingleChoiceExercise
-      documents={documents}
+      response={response}
       documentToAnswers={documentToAnswers}
-      onExerciseFinished={onExerciseFinished}
       navigation={navigation}
       route={route}
+      exerciseKey={ExerciseKeys.wordChoiceExercise}
     />
   )
 }

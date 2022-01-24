@@ -1,67 +1,26 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ComponentType } from 'react'
-import { SvgProps } from 'react-native-svg'
 
-import { ExerciseKeyType } from '../constants/data'
-import { DocumentsType } from '../constants/endpoints'
-import { DocumentResultType } from '../navigation/NavigationTypes'
+export const getCustomDisciplines = async (): Promise<string[]> => {
+  const disciplines = await AsyncStorage.getItem('customDisciplines')
+  return disciplines ? JSON.parse(disciplines) : []
+}
 
-const SESSION_KEY = 'session'
+export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
+  await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
+}
 
-export interface SessionType {
-  extraParams: {
-    disciplineID: number
-    disciplineTitle: string
-    disciplineIcon: string
-    trainingSetId: number
-    trainingSet: string
-    exercise: ExerciseKeyType
-    exerciseDescription: string
-    level: ComponentType<SvgProps>
-    documentsLength: number
+export const deleteCustomDiscipline = async (customDiscipline: string): Promise<void> => {
+  const disciplines = await getCustomDisciplines()
+  const index = disciplines.indexOf(customDiscipline)
+  if (index === -1) {
+    throw new Error('customDiscipline not available')
   }
-  retryData?: { data: DocumentsType }
-}
-
-export interface ExerciseType {
-  [disciplineTitle: string]: {
-    [trainingSet: string]: {
-      [word: string]: DocumentResultType
-    }
-  }
-}
-
-export const setSession = async (session: SessionType): Promise<void> => {
-  await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session))
-}
-
-export const getSession = async (): Promise<SessionType | null> => {
-  const sessionJson = await AsyncStorage.getItem(SESSION_KEY)
-  return sessionJson === null ? null : JSON.parse(sessionJson)
-}
-
-export const clearSession = async (): Promise<void> => {
-  await AsyncStorage.removeItem(SESSION_KEY)
-}
-
-export const setExercise = async (exerciseKey: ExerciseKeyType, exercise: ExerciseType): Promise<void> => {
-  await AsyncStorage.setItem(exerciseKey.toString(), JSON.stringify(exercise))
-}
-
-export const getExercise = async (exerciseKey: ExerciseKeyType): Promise<ExerciseType | null> => {
-  const exerciseJson = await AsyncStorage.getItem(exerciseKey.toString())
-  return exerciseJson === null ? null : JSON.parse(exerciseJson)
-}
-
-export const clearExercise = async (exerciseKey: ExerciseKeyType): Promise<void> => {
-  await AsyncStorage.removeItem(exerciseKey.toString())
+  disciplines.splice(index, 1)
+  await setCustomDisciplines(disciplines)
 }
 
 export default {
-  setSession,
-  getSession,
-  clearSession,
-  setExercise,
-  getExercise,
-  clearExercise
+  getCustomDisciplines,
+  setCustomDisciplines,
+  deleteCustomDiscipline
 }

@@ -1,41 +1,56 @@
 {
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
-    "unit": "Modul",
-    "units": "Module",
-    "word": "Wort",
-    "words": "Wörter",
-    "exercises": "Übungen"
+    "addCustomDiscipline": "Bereich hinzufügen",
+    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
+    "deleteModal": {
+      "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
+      "cancel": "Abbrechen",
+      "confirm": "Bereich löschen"
+    }
+  },
+  "addCustomDiscipline": {
+    "heading": "Individuellen Bereich hinzufügen",
+    "description": "Bitte gib den Code über die Tastatur ein.",
+    "placeholder": "Code eingeben",
+    "submitLabel": "hinzufügen",
+    "backNavigation": "Zur Startseite",
+    "error": {
+      "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
+      "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
+      "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
+    }
   },
   "exercises": {
     "vocabularyList": {
-      "title": "Vokabelübersicht",
-      "description": "Alle Wörter anschauen"
+      "title": "Wortliste",
+      "description": "Alle Wörter kennenlernen"
     },
     "wordChoice": {
-      "title": "Wort auswählen",
-      "description": "Wähle das richtige Wort"
+      "title": "Level 1",
+      "description": "Das richtige Wort auswählen",
+      "errorWrongModuleSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
     },
     "articleChoice": {
-      "title": "Artikel üben",
-      "description": "Wähle den richtigen Artikel"
+      "title": "Level 2",
+      "description": "Den richtigen Artikel auswählen"
     },
     "write": {
-      "title": "Wort schreiben",
-      "description": "Wort mit Artikel eingeben",
+      "title": "Level 3",
+      "description": "Das Wort mit Artikel schreiben",
       "checkInput": "Eingabe überprüfen",
       "showSolution": "Lösung anzeigen",
-      "tryLater": "Später versuchen",
       "insertAnswer": "Wort mit Artikel eingeben",
-      "newTry": "Neuer Versuch",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
-        "wrong": "Die richtige Antwort ist:",
+        "wrongWithSolution": "Die richtige Antwort ist:",
+        "wrong": "Das war leider nicht richtig.",
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
+    "tryLater": "Später versuchen",
     "next": "Nächstes Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
@@ -66,6 +81,16 @@
       "cancelExercise": "Übung beenden",
       "of": "von"
     },
-    "plurals": "Plural"
+    "plurals": "Plural",
+    "error": {
+      "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
+      "retryButton": "Erneut versuchen"
+    },
+    "rootDiscipline": "Beruf",
+    "rootDisciplines": "Berufe",
+    "discipline": "Modul",
+    "disciplines": "Module",
+    "word": "Wort",
+    "words": "Wörter"
   }
 }

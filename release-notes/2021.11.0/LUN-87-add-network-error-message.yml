@@ -1,0 +1,6 @@
+issue_key: LUN-87
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Es wird nun eine Fehlermeldung bei fehlender Internetverbindung angezeigt

@@ -1,10 +1,13 @@
-import { shallow } from 'enzyme'
+import { render } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
 import { ARTICLES } from '../../../../constants/data'
 import { DocumentType } from '../../../../constants/endpoints'
+import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import VocabularyListItem from '../VocabularyListItem'
+
+jest.mock('../../../../components/AudioPlayer', () => () => null)
 
 describe('VocabularyListItem', () => {
   const document: DocumentType = {
@@ -17,17 +20,17 @@ describe('VocabularyListItem', () => {
   }
 
   it('should display image passed to it', () => {
-    const component = shallow(<VocabularyListItem document={document} />)
-    expect(component.find('[testID="image"]').prop('source')).toHaveProperty('uri', document.document_image[0].image)
+    const { getByTestId } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    expect(getByTestId('image')).toHaveProp('source', { uri: document.document_image[0].image })
   })
 
   it('should display article passed to it', () => {
-    const component = shallow(<VocabularyListItem document={document} />)
-    expect(component.find('[testID="article"]').props().children).toBe(document.article.value)
+    const { queryByText } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    expect(queryByText(document.article.value)).toBeTruthy()
   })
 
   it('should display word passed to it', () => {
-    const component = shallow(<VocabularyListItem document={document} />)
-    expect(component.find('[testID="word"]').props().children).toBe(document.word)
+    const { queryByText } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    expect(queryByText(document.word)).toBeTruthy()
   })
 })

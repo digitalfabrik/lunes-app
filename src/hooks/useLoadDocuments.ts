@@ -1,6 +1,7 @@
 import { ARTICLES } from '../constants/data'
-import { DocumentType, ENDPOINTS } from '../constants/endpoints'
-import useLoadFromEndpoint, { ReturnType } from './useLoadFromEndpoint'
+import { DisciplineType, DocumentType, ENDPOINTS } from '../constants/endpoints'
+import { getFromEndpoint } from '../services/axios'
+import useLoadAsync, { ReturnType } from './useLoadAsync'
 
 export interface AlternativeWordTypeFromServer {
   article: number
@@ -16,23 +17,24 @@ export interface DocumentTypeFromServer {
   alternatives: AlternativeWordTypeFromServer[]
 }
 
-const transformArticle = (documents: ReturnType<DocumentTypeFromServer[]>): ReturnType<DocumentType[]> => {
-  const formattedDocuments: DocumentType[] =
-    documents.data?.map(document => ({
-      ...document,
-      article: ARTICLES[document.article],
-      alternatives: document.alternatives.map(it => ({
-        article: ARTICLES[it.article],
-        word: it.alt_word
-      }))
-    })) ?? []
-  return { ...documents, data: formattedDocuments }
+const formatServerResponse = (documents: DocumentTypeFromServer[]): DocumentType[] =>
+  documents.map(document => ({
+    ...document,
+    article: ARTICLES[document.article],
+    alternatives: document.alternatives.map(it => ({
+      article: ARTICLES[it.article],
+      word: it.alt_word
+    }))
+  })) ?? []
+
+export const loadDocuments = async (discipline: DisciplineType): Promise<DocumentType[]> => {
+  const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
+
+  const response = await getFromEndpoint<DocumentTypeFromServer[]>(url, discipline.apiKey)
+  return formatServerResponse(response)
 }
 
-const useLoadDocuments = (trainingSetId: number): ReturnType<DocumentType[]> => {
-  const url = ENDPOINTS.documents.all.replace(':id', `${trainingSetId}`)
-  const documents: ReturnType<DocumentTypeFromServer[]> = useLoadFromEndpoint(url)
-  return transformArticle(documents)
-}
+const useLoadDocuments = (discipline: DisciplineType): ReturnType<DocumentType[]> =>
+  useLoadAsync(loadDocuments, discipline)
 
 export default useLoadDocuments

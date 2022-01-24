@@ -7,6 +7,9 @@ export interface DisciplineType {
   icon: string
   numberOfChildren: number
   isLeaf: boolean
+  isRoot: boolean
+  apiKey?: string
+  needsTrainingSetEndpoint: boolean
 }
 
 export interface AlternativeWordType {
@@ -33,13 +36,8 @@ export interface DocumentType {
 export type DocumentsType = DocumentType[]
 
 export const ENDPOINTS = {
-  professions: {
-    all: '/disciplines_by_level'
-  },
-  subCategories: {
-    all: '/training_set'
-  },
-  documents: {
-    all: '/documents/:id'
-  }
+  disciplines: 'disciplines_by_level',
+  disciplinesByGroup: 'disciplines_by_group',
+  trainingSet: 'training_set',
+  documents: 'documents/:id'
 }

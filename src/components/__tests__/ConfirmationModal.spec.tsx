@@ -1,60 +1,43 @@
-import { shallow } from 'enzyme'
+import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
-import { View } from 'react-native'
 
-import createNavigationPropMock from '../../testing/createNavigationPropMock'
+import wrapWithTheme from '../../testing/wrapWithTheme'
 import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
 
 describe('Components', () => {
   describe('ConfirmationModal ', () => {
+    const setVisible = jest.fn()
+    const confirmationAction = jest.fn()
+
     const defaultModalProps: ConfirmationModalPropsType = {
-      navigation: createNavigationPropMock(),
-      route: {
-        key: '',
-        name: 'WordChoiceExercise',
-        params: {
-          extraParams: {
-            disciplineID: 0,
-            disciplineTitle: 'Title',
-            disciplineIcon: 'Icon',
-            trainingSetId: 0,
-            trainingSet: 'Set',
-            exercise: 1,
-            exerciseDescription: 'Description',
-            level: jest.fn(),
-            documentsLength: 0
-          }
-        }
-      },
-      setIsModalVisible: () => {},
-      visible: false
+      visible: false,
+      setVisible: setVisible,
+      text: 'Are you sure?',
+      confirmationButtonText: 'confirm',
+      cancelButtonText: 'cancel',
+      confirmationAction: confirmationAction
     }
 
-    it('should have visible property passed to it as default', () => {
-      const modalProps: ConfirmationModalPropsType = {
-        ...defaultModalProps
-      }
-
-      const component = shallow(
-        <View>
-          <ConfirmationModal {...modalProps} />
-        </View>
-      )
-      expect(component.children().props().visible).toBe(false)
+    it('should display passed props', () => {
+      const { getByText } = render(<ConfirmationModal {...defaultModalProps} />, { wrapper: wrapWithTheme })
+      expect(getByText('Are you sure?')).toBeDefined()
+      expect(getByText('cancel')).toBeDefined()
+      expect(getByText('confirm')).toBeDefined()
     })
 
-    it('should have visible property passed to it', () => {
-      const modalProps: ConfirmationModalPropsType = {
-        ...defaultModalProps,
-        visible: true
-      }
+    it('should close on cancel button click', () => {
+      const { getByText } = render(<ConfirmationModal {...defaultModalProps} />, { wrapper: wrapWithTheme })
+      const cancelButton = getByText('cancel')
+      fireEvent.press(cancelButton)
+      expect(setVisible).toBeCalledWith(false)
+      expect(confirmationAction).not.toBeCalled()
+    })
 
-      const component = shallow(
-        <View>
-          <ConfirmationModal {...modalProps} />
-        </View>
-      )
-      expect(component.children().props().visible).toBe(true)
+    it('should trigger action on confirm button click', () => {
+      const { getByText } = render(<ConfirmationModal {...defaultModalProps} />, { wrapper: wrapWithTheme })
+      const confirmationButton = getByText('confirm')
+      fireEvent.press(confirmationButton)
+      expect(confirmationAction).toBeCalled()
     })
   })
 })

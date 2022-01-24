@@ -2,9 +2,10 @@
 import AlmostCorrectEntriesIcon from './almost-correct-entries.svg'
 import AlmostCorrectFeedbackIcon from './almost-correct-feedback.svg'
 import AlmostCorrectIcon from './almost-correct-icon.svg'
+import ArrowBackPressed from './arrow-back-pressed.svg'
+import ArrowBack from './arrow-back.svg'
+import ArrowNext from './arrow-next.svg'
 import Arrow from './arrow.svg'
-import BackArrowPressed from './back-arrow-pressed.svg'
-import BackButton from './back-button.svg'
 import CheckIcon from './check.svg'
 import CircularFinishIcon from './circular-finish.svg'
 import CloseIcon from './close-icon.svg'
@@ -32,47 +33,48 @@ import hard from './level-hard.svg'
 import mideasy from './level-mid-easy.svg'
 import midhard from './level-mid-hard.svg'
 import ListIcon from './list.svg'
-import NextArrow from './next-arrow.svg'
+import PlusIcon from './plus.svg'
 import RepeatIcon from './repeat.svg'
 import SmileIcon from './smile.svg'
-import WhiteNextArrow from './white-next-arrow.svg'
+import TrashBinIcon from './trash-bin.svg'
 
 export {
-  BackButton,
-  SquareIcon,
-  StarIcon,
-  CircleIcon,
-  LinesIcon,
-  SmileIcon,
+  AlmostCorrectEntriesIcon,
+  AlmostCorrectFeedbackIcon,
+  AlmostCorrectIcon,
   Arrow,
-  easy,
-  mideasy,
-  midhard,
-  hard,
-  Home,
+  ArrowBack,
+  ArrowBackPressed,
+  ArrowNext,
+  CheckIcon,
+  CircleIcon,
+  CircularFinishIcon,
   CloseButton,
   CloseIcon,
-  NextArrow,
-  InfoIcon,
-  VolumeUp,
-  CorrectIcon,
-  WhiteNextArrow,
-  IncorrectIcon,
-  AlmostCorrectIcon,
-  CheckIcon,
-  ListIcon,
-  RepeatIcon,
-  FinishIcon,
-  CircularFinishIcon,
-  AlmostCorrectEntriesIcon,
   CorrectEntriesIcon,
-  IncorrectEntriesIcon,
   CorrectFeedbackIcon,
-  AlmostCorrectFeedbackIcon,
+  CorrectIcon,
+  FinishIcon,
+  Home,
+  HomeButtonPressed,
+  IncorrectEntriesIcon,
   IncorrectFeedbackIcon,
-  incorrect_background,
+  IncorrectIcon,
+  InfoIcon,
+  LinesIcon,
+  ListIcon,
+  PlusIcon,
+  RepeatIcon,
+  SmileIcon,
+  SquareIcon,
+  StarIcon,
+  TrashBinIcon,
+  VolumeUp,
   correct_background,
+  easy,
+  hard,
   hint_background,
-  BackArrowPressed,
-  HomeButtonPressed
+  incorrect_background,
+  mideasy,
+  midhard
 }
