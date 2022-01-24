@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import labels from '../../constants/labels.json'
 import { ReturnType } from '../../hooks/useLoadAsync'

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import labels from '../../constants/labels.json'
 import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'

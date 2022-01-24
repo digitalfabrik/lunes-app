@@ -2,7 +2,7 @@ import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-na
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import { ARTICLES } from '../../constants/data'
 import { DocumentType } from '../../constants/endpoints'
