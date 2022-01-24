@@ -9,7 +9,6 @@ import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
@@ -37,24 +36,6 @@ const Message = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   text-align: center;
-`
-const LightLabel = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
-`
-const DarkLabel = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesBlack};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
 `
 
 interface InitialSummaryScreenPropsType {
@@ -112,15 +93,18 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
         </MessageContainer>
       </UpperSection>
 
-      <Button buttonTheme={BUTTONS_THEME.dark} onPress={checkResults}>
-        <ListIcon />
-        <LightLabel>{labels.results.checkEntries}</LightLabel>
-      </Button>
-
-      <Button buttonTheme={BUTTONS_THEME.light} onPress={repeatExercise}>
-        <RepeatIcon fill={COLORS.lunesBlack} />
-        <DarkLabel>{labels.results.retryExercise}</DarkLabel>
-      </Button>
+      <Button
+        label={labels.results.checkEntries}
+        iconLeft={ListIcon}
+        buttonTheme={BUTTONS_THEME.contained}
+        onPress={checkResults}
+      />
+      <Button
+        label={labels.results.retryExercise}
+        iconLeft={RepeatIcon}
+        buttonTheme={BUTTONS_THEME.outlined}
+        onPress={repeatExercise}
+      />
     </Root>
   )
 }

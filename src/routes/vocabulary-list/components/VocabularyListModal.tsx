@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CloseButton, WhiteNextArrow } from '../../../../assets/images'
+import { CloseButton, ArrowNext } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
@@ -35,13 +35,6 @@ const ButtonContainer = styled.View`
   display: flex;
   align-items: center;
   margin-top: -40%;
-`
-
-const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.lunesWhite};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
 `
 
 interface VocabularyListModalPropsType {
@@ -90,14 +83,18 @@ const VocabularyListModal = ({
           </ItemContainer>
           <ButtonContainer>
             {documents.length > selectedDocumentIndex + 1 ? (
-              <Button onPress={goToNextWord} buttonTheme={BUTTONS_THEME.dark}>
-                <ButtonText>{labels.exercises.next}</ButtonText>
-                <WhiteNextArrow />
-              </Button>
+              <Button
+                label={labels.exercises.next}
+                iconRight={ArrowNext}
+                onPress={goToNextWord}
+                buttonTheme={BUTTONS_THEME.contained}
+              />
             ) : (
-              <Button onPress={() => setIsModalVisible(false)} buttonTheme={BUTTONS_THEME.dark}>
-                <ButtonText>{labels.general.header.cancelExercise}</ButtonText>
-              </Button>
+              <Button
+                label={labels.general.header.cancelExercise}
+                onPress={() => setIsModalVisible(false)}
+                buttonTheme={BUTTONS_THEME.contained}
+              />
             )}
           </ButtonContainer>
         </ModalContainer>
