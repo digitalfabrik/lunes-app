@@ -69,12 +69,13 @@ describe('WriteExerciseScreen', () => {
     }
   }
 
-  it('should show network error', () => {
-    mockUseLoadAsyncWithError('Network Error')
-    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
+  it('should show network error', async () => {
+    const errorMessage = 'Network Error'
+    mockUseLoadAsyncWithError(errorMessage)
+    const { findByText, debug } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-    expect(findByText(labels.general.error.noWifi)).toBeDefined()
+    expect(await findByText(`${labels.general.error.noWifi} (${errorMessage})`)).toBeDefined()
   })
 
   it('should show exercise if loaded successfully', () => {

@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render } from '@testing-library/react-native'
+import { act, fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
@@ -64,7 +64,7 @@ describe('ArticleChoiceExerciseScreen', () => {
       }
     }
   }
-  it('should allow to skip an exercise and try it out later', () => {
+  it.only('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
 
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
