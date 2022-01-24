@@ -61,7 +61,7 @@ describe('HomeScreen', () => {
       data: data,
       error: null,
       loading: false,
-      refresh: () => {}
+      refresh: () => undefined
     }
   }
 

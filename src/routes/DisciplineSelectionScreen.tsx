@@ -103,7 +103,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={ListItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item: DisciplineType) => item.id.toString()}
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>

@@ -53,7 +53,7 @@ const VocabularyListModal = ({
   setSelectedDocumentIndex
 }: VocabularyListModalPropsType): ReactElement => {
   const goToNextWord = (): void => {
-    if (documents && selectedDocumentIndex + 1 < documents.length) {
+    if (selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
     }
   }
@@ -73,7 +73,7 @@ const VocabularyListModal = ({
                 word: documents[selectedDocumentIndex].word,
                 article: documents[selectedDocumentIndex].article
               }}
-              onClick={() => {}}
+              onClick={() => undefined}
               correct={false}
               selected={false}
               anyAnswerSelected={false}

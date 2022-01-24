@@ -12,6 +12,7 @@ import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
+import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -95,7 +96,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
   }
 
   const handleNavigation = (item: ExerciseType): void => {
-    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < 4) {
+    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
       setSelectedKey(item.key.toString())

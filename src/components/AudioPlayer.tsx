@@ -48,6 +48,8 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
   const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
       .then(async status => {
+        // Status does not have to be 'success'
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (status === 'success') {
           setIsInitialized(true)
           await Tts.setDefaultLanguage('de-DE')

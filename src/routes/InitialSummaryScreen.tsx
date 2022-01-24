@@ -49,19 +49,14 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
 
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
-    const percentageCorrect = (correctResults.length / results.length) * 100
-    switch (true) {
-      case percentageCorrect > 66:
-        setMessage(labels.results.feedbackGood)
-        break
+    const percentageCorrect = correctResults.length / results.length
 
-      case percentageCorrect > 33:
-        setMessage(labels.results.feedbackMedium)
-        break
-
-      case percentageCorrect < 33:
-        setMessage(labels.results.feedbackBad)
-        break
+    if (percentageCorrect > 2 / 3) {
+      setMessage(labels.results.feedbackGood)
+    } else if (percentageCorrect > 1 / 3) {
+      setMessage(labels.results.feedbackMedium)
+    } else {
+      setMessage(labels.results.feedbackBad)
     }
   }, [results])
 

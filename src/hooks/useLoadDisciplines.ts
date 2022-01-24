@@ -26,11 +26,13 @@ const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipli
   serverResponse.map(item => ({
     ...item,
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
+    //  The ServerResponse type is not completely correct
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     isLeaf: item.total_documents !== undefined,
     isRoot: parent === null,
     apiKey: parent?.apiKey,
     needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
-  })) ?? []
+  }))
 
 export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`

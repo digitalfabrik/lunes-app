@@ -58,6 +58,8 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
+const HTTP_STATUS_CODE_FORBIDDEN = 403
+
 interface AddCustomDisciplineScreenPropsType {
   navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
 }
@@ -85,7 +87,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
       })
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        return error.response?.status === 403
+        return error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
           ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
           : setErrorMessage(labels.addCustomDiscipline.error.technical)
       })

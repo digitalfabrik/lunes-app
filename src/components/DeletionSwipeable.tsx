@@ -44,9 +44,11 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
   })
 
   const renderRightAction = (progress: Animated.AnimatedInterpolation): ReactElement => {
+    const inputRangeStart = -20
+    const outputRangeStart = 50
     const trans = progress.interpolate({
-      inputRange: [-20, 1],
-      outputRange: [50, 0]
+      inputRange: [inputRangeStart, 1],
+      outputRange: [outputRangeStart, 0]
     })
 
     const showConfirmationModal = (): void => {

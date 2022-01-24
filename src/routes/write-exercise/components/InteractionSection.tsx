@@ -126,6 +126,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         case 'incorrect':
           return COLORS.lunesFunctionalIncorrectDark
         case 'similar':
+        default:
           return COLORS.lunesFunctionalAlmostCorrectDark
       }
     }

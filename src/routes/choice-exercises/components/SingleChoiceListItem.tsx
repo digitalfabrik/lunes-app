@@ -43,14 +43,14 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
   shadow-color: ${props => {
     if (props.correct) {
       return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected && !props.correct) {
+    } else if (props.selected) {
       return props.theme.colors.lunesFunctionalIncorrectDark
     } else {
       return props.theme.colors.shadow
     }
   }};
   ${props => {
-    if (props.pressed || props.selected || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
+    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return css`
         elevation: 6;
         shadow-opacity: 0.5;

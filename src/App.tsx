@@ -10,11 +10,13 @@ import Navigator from './navigation/Navigator'
 
 LogBox.ignoreLogs(['NativeEventEmitter'])
 
+const SPLASH_SCREEN_DURATION = 3000
+
 const App = (): ReactElement => {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide()
-    }, 3000)
+    }, SPLASH_SCREEN_DURATION)
   }, [])
 
   return (

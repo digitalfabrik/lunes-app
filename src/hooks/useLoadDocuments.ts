@@ -26,7 +26,7 @@ const formatServerResponse = (documents: DocumentTypeFromServer[]): DocumentType
       article: ARTICLES[it.article],
       word: it.alt_word
     }))
-  })) ?? []
+  }))
 
 export const loadDocuments = async (discipline: DisciplineType): Promise<DocumentType[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)

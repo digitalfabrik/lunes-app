@@ -14,8 +14,8 @@ import labels from '../../../constants/labels.json'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
 
 const Background = styled.ImageBackground`
-  width: ${wp(80)}px;
-  height: ${hp(9)}px;
+  width: ${wp('80%')}px;
+  height: ${hp('9%')}px;
   min-height: 50px;
   margin-bottom: 40px;
   flex-direction: row;

@@ -21,7 +21,7 @@ describe('Components', () => {
         needsTrainingSetEndpoint: false
       },
       children: <Text>Text of children</Text>,
-      onPress: () => {}
+      onPress: () => undefined
     }
 
     const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI => {
