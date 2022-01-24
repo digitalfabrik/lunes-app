@@ -480,6 +480,8 @@ workflows:
         jobs:
             - check
             - bump_version:
+                context:
+                    - deliverino
                 delivery: production
             - build_android:
                 context:

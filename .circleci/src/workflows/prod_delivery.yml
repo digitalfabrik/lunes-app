@@ -2,6 +2,8 @@ when: << pipeline.parameters.run_prod_delivery >>
 jobs:
   - check
   - bump_version:
+      context:
+        - deliverino
       delivery: production
   - build_android:
       context:
