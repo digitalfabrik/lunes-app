@@ -12,10 +12,10 @@ export const getArticleColor = (article: Article): string => {
       return COLORS.lunesArtikelDer
 
     case 2:
-      return COLORS.lunesArtikelDas
+      return COLORS.lunesArtikelDie
 
     case 3:
-      return COLORS.lunesArtikelDie
+      return COLORS.lunesArtikelDas
 
     case 4:
       return COLORS.lunesArtikelDiePlural

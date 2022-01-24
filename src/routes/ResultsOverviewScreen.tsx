@@ -70,15 +70,6 @@ const StyledText = styled.View`
   display: flex;
   flex-direction: column;
 `
-const LightLabel = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesWhite};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-left: 10px;
-  text-transform: uppercase;
-`
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
@@ -122,6 +113,13 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
   const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
+
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
+  }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -189,18 +187,13 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     )
   }
 
-  const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      discipline: { ...discipline },
-      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
-    })
-  }
-
   const Footer = (
-    <Button onPress={repeatExercise} buttonTheme={BUTTONS_THEME.dark}>
-      <RepeatIcon fill={COLORS.lunesWhite} />
-      <LightLabel>{labels.results.retryExercise}</LightLabel>
-    </Button>
+    <Button
+      label={labels.results.retryExercise}
+      iconLeft={RepeatIcon}
+      onPress={repeatExercise}
+      buttonTheme={BUTTONS_THEME.contained}
+    />
   )
 
   return (

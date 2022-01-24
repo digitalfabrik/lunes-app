@@ -58,7 +58,8 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" red="0.0" green="0.054901960784313725" blue="0.2196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                        <!--find here to calculate colors https://github.com/expo/expo/issues/826#issuecomment-344561215-->
+                        <color key="backgroundColor" red="0.0" green="0.0417" blue="0.1659" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="c5L-Uf-p2Z" secondAttribute="trailing" constant="36" id="85S-hs-B9t"/>
                             <constraint firstItem="c5L-Uf-p2Z" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="32" id="FUh-HV-lFU"/>
