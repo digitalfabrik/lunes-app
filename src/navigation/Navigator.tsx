@@ -3,7 +3,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 
-import { BackButton, CloseButton, BackArrowPressed, HomeButtonPressed, Home } from '../../assets/images'
+import { ArrowBack, CloseButton, ArrowBackPressed, HomeButtonPressed, Home } from '../../assets/images'
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
@@ -52,7 +52,7 @@ const Navigator = (): JSX.Element => {
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}>
-          {isPressed ? <BackArrowPressed /> : <Icon />}
+          {isPressed ? <ArrowBackPressed /> : <Icon />}
           <NavigationTitle>{title}</NavigationTitle>
         </NavigationHeaderLeft>
       ),
@@ -82,7 +82,7 @@ const Navigator = (): JSX.Element => {
           options={({ route, navigation }) =>
             defaultOptions(
               route.params.parentTitle ?? labels.general.header.overview,
-              BackButton,
+              ArrowBack,
               navigation,
               !!route.params.parentTitle
             )
@@ -92,14 +92,14 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.discipline.title, BackButton, navigation, true)
+            defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, BackButton, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, ArrowBack, navigation, false)
           }
           name='VocabularyList'
           component={VocabularyListScreen}
@@ -136,12 +136,12 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, BackButton, navigation, false)}
+          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, ArrowBack, navigation, false)}
           name='ResultScreen'
           component={ResultScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overview, BackButton, navigation, false)}
+          options={({ navigation }) => defaultOptions(labels.general.header.overview, ArrowBack, navigation, false)}
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
         />

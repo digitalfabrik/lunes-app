@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
-import { NextArrow } from '../../../../assets/images'
+import { ArrowNext } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -28,16 +28,6 @@ const ButtonContainer = styled.View`
   margin: 7% 0;
 `
 
-const DarkLabel = styled.Text`
-  text-align: center;
-  color: ${props => props.theme.colors.lunesBlack};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-`
-
 export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   text-align: center;
   font-family: ${props => props.theme.fonts.contentFontBold};
@@ -47,10 +37,6 @@ export const LightLabelInput = styled.Text<{ styledInput?: string }>`
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   color: ${prop =>
     prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
-`
-
-const StyledArrow = styled(NextArrow)`
-  margin-left: 5px;
 `
 
 interface SingleChoiceExercisePropsType {
@@ -169,6 +155,7 @@ const ChoiceExerciseScreen = ({
   }
 
   const lastWord = currentWord + 1 >= count
+  const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
 
   return (
     <ExerciseContainer>
@@ -193,17 +180,20 @@ const ChoiceExerciseScreen = ({
             />
             <ButtonContainer>
               {selectedAnswer !== null ? (
-                <Button onPress={onFinishWord} buttonTheme={BUTTONS_THEME.dark}>
-                  <LightLabelInput>
-                    {lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next}
-                  </LightLabelInput>
-                </Button>
+                <Button
+                  label={buttonLabel}
+                  iconLeft={ArrowNext}
+                  onPress={onFinishWord}
+                  buttonTheme={BUTTONS_THEME.contained}
+                />
               ) : (
                 !lastWord && (
-                  <Button onPress={tryLater} testID='try-later'>
-                    <DarkLabel>{labels.exercises.tryLater}</DarkLabel>
-                    <StyledArrow />
-                  </Button>
+                  <Button
+                    label={labels.exercises.tryLater}
+                    iconRight={ArrowNext}
+                    onPress={tryLater}
+                    buttonTheme={BUTTONS_THEME.text}
+                  />
                 )
               )}
             </ButtonContainer>
