@@ -71,9 +71,12 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should show wrong-code-error', async () => {
-    const { findByText, getByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText, getByText, findByPlaceholderText } = render(
+      <AddCustomDisciplineScreen navigation={navigation} />,
+      {
+        wrapper: wrapWithTheme
+      }
+    )
     mocked(loadGroupInfo).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'invalid-code')
