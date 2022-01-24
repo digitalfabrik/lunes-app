@@ -6,13 +6,15 @@ import { KeyboardAvoidingViewProps } from 'react-native'
 import labels from '../../../constants/labels.json'
 import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
-import * as helpers from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
-jest.spyOn(helpers, 'shuffleArray').mockImplementation(array => {})
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
 
 jest.mock('react-native/Libraries/Image/Image', () => {
   return {

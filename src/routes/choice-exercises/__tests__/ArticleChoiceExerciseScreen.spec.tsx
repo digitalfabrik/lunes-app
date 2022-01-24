@@ -4,13 +4,15 @@ import React from 'react'
 
 import labels from '../../../constants/labels.json'
 import { RoutesParamsType } from '../../../navigation/NavigationTypes'
-import * as helpers from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
-jest.spyOn(helpers, 'shuffleArray').mockImplementation(array => {})
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
