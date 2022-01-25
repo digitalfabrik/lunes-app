@@ -42,6 +42,8 @@ export interface IPopoverProps {
 
 const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
   <Popover
+    // @ts-expect-error, used for testing purposes
+    testID='popover'
     isVisible={isVisible}
     onRequestClose={() => setIsPopoverVisible(false)}
     from={ref}
