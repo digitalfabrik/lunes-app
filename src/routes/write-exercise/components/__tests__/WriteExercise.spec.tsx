@@ -71,7 +71,7 @@ describe('WriteExercise', () => {
         icon: '',
         numberOfChildren: 2,
         isLeaf: true,
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: true
       }
     }

@@ -22,7 +22,7 @@ const expectedData = {
   title: testData[0].name,
   apiKey: apiKey,
   isLeaf: false,
-  isRoot: true,
+  parentTitle: null,
   numberOfChildren: testData[0].total_discipline_children,
   description: '',
   needsTrainingSetEndpoint: false
