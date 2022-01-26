@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Keyboard, View } from 'react-native'
+import { Keyboard, useWindowDimensions } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
@@ -7,22 +7,28 @@ import styled from 'styled-components/native'
 import { ImagesType } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
-const ImageView = styled(View)<{ height: string }>`
-  height: ${prop => prop.height};
+const ImageView = styled.View<{ height: number }>`
+  height: ${({ height }) => height}px;
 `
-const StyledImage = styled.Image`
-  height: 100%;
+const StyledImage = styled.Image<{ height: number; minimized: boolean }>`
+  height: ${({ height }) => height}px;
+  ${({ minimized }) =>
+    minimized &&
+    `
+    aspect-ratio: 1.5;
+    margin: 0 auto;
+  `}
 `
-const PaginationView = styled.View`
+const PaginationView = styled.View<{ topPosition: number }>`
   position: absolute;
   left: 0px;
   right: 0px;
-  top: 10px;
+  top: ${({ topPosition }) => topPosition}px;
 `
 
 interface ImageCarouselPropsType {
   images: ImagesType
-  height?: string
+  minimized?: boolean
 }
 
 interface ItemType {
@@ -35,7 +41,11 @@ interface ImageUrlType {
   url: string
 }
 
-const ImageCarousel = ({ images, height = '35%' }: ImageCarouselPropsType): ReactElement => {
+const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): ReactElement => {
+  const { height: deviceHeight } = useWindowDimensions()
+  const heightPercent = minimized ? 17.5 : 35
+  const viewerHeight = (deviceHeight * heightPercent) / 100
+
   const imagesUrls: ImageUrlType[] = images.map(image => ({
     url: image.image
   }))
@@ -44,7 +54,7 @@ const ImageCarousel = ({ images, height = '35%' }: ImageCarouselPropsType): Reac
     return !currentIndex || !allSize ? (
       <></>
     ) : (
-      <PaginationView>
+      <PaginationView topPosition={minimized ? -10 : 10}>
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}
@@ -55,15 +65,11 @@ const ImageCarousel = ({ images, height = '35%' }: ImageCarouselPropsType): Reac
   }
 
   const renderItem = (item: ItemType): ReactElement => {
-    return (
-      <View style={{ height: 'auto', width: '100%' }}>
-        <StyledImage source={item.source} accessibilityRole='image' />
-      </View>
-    )
+    return <StyledImage source={item.source} accessibilityRole='image' minimized={minimized} height={viewerHeight} />
   }
 
   return (
-    <ImageView testID={'Swipeable'} height={height}>
+    <ImageView testID={'Swipeable'} height={viewerHeight}>
       <ImageViewer
         key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}

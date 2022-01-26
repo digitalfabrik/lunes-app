@@ -48,9 +48,17 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
-    setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
-    Keyboard.dismiss()
-  }, [documentsWithResults, currentIndex])
+    // Wait until keyboard is hidden before go next
+    if (keyboard.keyboardShown) {
+      const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+        setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+        onKeyboardHideSubscription.remove()
+      })
+      Keyboard.dismiss()
+    } else {
+      setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+    }
+  }, [keyboard.keyboardShown, documentsWithResults, currentIndex])
 
   const finishExercise = (): void => {
     navigation.navigate('InitialSummary', {
@@ -101,7 +109,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         numberOfWords={documents.length}
       />
 
-      <ImageCarousel images={current.document_image} height={keyboard.keyboardShown ? '20%' : undefined} />
+      <ImageCarousel images={current.document_image} minimized={keyboard.keyboardShown} />
 
       <StyledContainer>
         <InteractionSection
