@@ -3,7 +3,7 @@ import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
 
-import { ImagesType } from '../constants/endpoints'
+import { Images } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View`
@@ -19,20 +19,20 @@ const PaginationView = styled.View`
   top: 10px;
 `
 
-interface ImageCarouselPropsType {
-  images: ImagesType
+interface ImageCarouselProps {
+  images: Images
 }
-interface ItemType {
+interface Item {
   source: {
     uri: string
   }
 }
-interface ImageUrlType {
+interface ImageUrl {
   url: string
 }
 
-const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
-  const imagesUrls: ImageUrlType[] = images.map(image => ({
+const ImageCarousel = ({ images }: ImageCarouselProps): ReactElement => {
+  const imagesUrls: ImageUrl[] = images.map(image => ({
     url: image.image
   }))
 
@@ -50,7 +50,7 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
     )
   }
 
-  const renderItem = (item: ItemType): ReactElement => {
+  const renderItem = (item: Item): ReactElement => {
     return <StyledImage source={item.source} accessibilityRole='image' />
   }
 

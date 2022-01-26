@@ -11,7 +11,7 @@ export const StyledContainer = styled.View`
   margin-right: 8%;
 `
 
-export interface SingleChoicePropsType {
+export interface SingleChoiceProps {
   onClick: (answer: Answer) => void
   answers: Answer[]
   correctAnswer: Answer
@@ -25,7 +25,7 @@ export const SingleChoice = ({
   correctAnswer,
   selectedAnswer,
   delayPassed
-}: SingleChoicePropsType): ReactElement => {
+}: SingleChoiceProps): ReactElement => {
   const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
     return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
   }

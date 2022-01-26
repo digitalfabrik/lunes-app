@@ -3,11 +3,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { SvgProps } from 'react-native-svg'
 import styled, { css } from 'styled-components/native'
 
-import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
+import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color, COLORS } from '../constants/theme/colors'
 
 interface ThemedButtonProps {
-  buttonTheme: ButtonThemeType
+  buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
 }
@@ -46,16 +46,16 @@ const Label = styled.Text<ThemedLabelProps>`
   padding: 0 10px;
 `
 
-interface ButtonPropsType {
+interface ButtonProps {
   onPress: () => void
   label: string
-  buttonTheme: ButtonThemeType
+  buttonTheme: ButtonTheme
   disabled?: boolean
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
 }
 
-const Button = (props: ButtonPropsType): ReactElement => {
+const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
 

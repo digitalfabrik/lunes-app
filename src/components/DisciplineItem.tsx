@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Arrow } from '../../assets/images'
-import { DisciplineType } from '../constants/endpoints'
+import { Discipline } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
@@ -37,7 +37,7 @@ const TextContainer = styled.View`
 `
 
 export interface DisciplineItemProps {
-  item: DisciplineType
+  item: Discipline
   children: ReactElement
   selected: boolean
   onPress: () => void

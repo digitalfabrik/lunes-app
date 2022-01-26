@@ -1,10 +1,9 @@
 import { Article } from '../constants/data'
-import { AlternativeWordType, DisciplineType, DocumentType } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 
-export const stringifyDocument = ({ article, word }: DocumentType | AlternativeWordType): string =>
-  `${article.value} ${word}`
+export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -37,7 +36,7 @@ export const addTrailingSlashToUrl = (url: string): string => {
   return url.endsWith('/') ? url : `${url}/`
 }
 
-export const childrenLabel = (discipline: DisciplineType): string => {
+export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
   if (discipline.isRoot) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
@@ -48,7 +47,7 @@ export const childrenLabel = (discipline: DisciplineType): string => {
   return isSingular ? labels.general.discipline : labels.general.disciplines
 }
 
-export const childrenDescription = (discipline: DisciplineType): string =>
+export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
 export const shuffleArray = <T>(array: T[]): void => {

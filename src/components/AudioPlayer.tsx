@@ -4,11 +4,11 @@ import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
 
 import { VolumeUp } from '../../assets/images'
-import { DocumentType } from '../constants/endpoints'
+import { Document } from '../constants/endpoints'
 import { stringifyDocument } from '../services/helpers'
 
 export interface AudioPlayerProps {
-  document: DocumentType
+  document: Document
   disabled: boolean
   // If the user submitted a correct alternative (differing enough to the document), we want to play the alternative
   submittedAlternative?: string | null

@@ -8,9 +8,9 @@ import styled from 'styled-components/native'
 import DisciplineItem from '../components/DisciplineItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
-import { DisciplineType } from '../constants/endpoints'
+import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription, childrenLabel } from '../services/helpers'
 
 const Root = styled.View`
@@ -25,7 +25,7 @@ const ItemText = styled.View`
 
 const StyledList = styled(FlatList)`
   width: 100%;
-` as ComponentType as new () => FlatList<DisciplineType>
+` as ComponentType as new () => FlatList<Discipline>
 
 const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
@@ -49,12 +49,12 @@ const BadgeLabel = styled.Text<{ selected: boolean }>`
   font-size: ${prop => prop.theme.fonts.smallFontSize};
 `
 
-interface DisciplineSelectionScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'DisciplineSelection'>
-  navigation: StackNavigationProp<RoutesParamsType, 'DisciplineSelection'>
+interface DisciplineSelectionScreenProps {
+  route: RouteProp<RoutesParams, 'DisciplineSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
 }
 
-const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenPropsType): JSX.Element => {
+const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenProps): JSX.Element => {
   const { discipline } = route.params
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
@@ -66,7 +66,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }, [])
   )
 
-  const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
+  const ListItem = ({ item }: { item: Discipline }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
     }
@@ -82,7 +82,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     )
   }
 
-  const handleNavigation = (selectedItem: DisciplineType): void => {
+  const handleNavigation = (selectedItem: Discipline): void => {
     setSelectedId(selectedItem.id)
 
     if (selectedItem.isLeaf) {

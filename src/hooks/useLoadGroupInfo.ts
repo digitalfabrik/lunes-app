@@ -1,6 +1,6 @@
-import { DisciplineType } from '../constants/endpoints'
+import { Discipline } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import useLoadAsync, { ReturnType } from './useLoadAsync'
+import useLoadAsync, { Return } from './useLoadAsync'
 
 export interface ServerResponse {
   id: number
@@ -9,7 +9,7 @@ export interface ServerResponse {
   total_discipline_children: number
 }
 
-export const loadGroupInfo = async (apiKey: string): Promise<DisciplineType> => {
+export const loadGroupInfo = async (apiKey: string): Promise<Discipline> => {
   const response = await getFromEndpoint<ServerResponse[]>('group_info', apiKey)
   return {
     ...response[0],
@@ -23,4 +23,4 @@ export const loadGroupInfo = async (apiKey: string): Promise<DisciplineType> => 
   }
 }
 
-export const useLoadGroupInfo = (apiKey: string): ReturnType<DisciplineType> => useLoadAsync(loadGroupInfo, apiKey)
+export const useLoadGroupInfo = (apiKey: string): Return<Discipline> => useLoadAsync(loadGroupInfo, apiKey)

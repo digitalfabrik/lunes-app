@@ -10,10 +10,10 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import ServerResponseHandler from '../../../components/ServerResponseHandler'
 import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
+import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { ReturnType } from '../../../hooks/useLoadAsync'
-import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { Return } from '../../../hooks/useLoadAsync'
+import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -39,11 +39,11 @@ export const LightLabelInput = styled.Text<{ styledInput?: string }>`
     prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
 `
 
-interface SingleChoiceExercisePropsType {
-  response: ReturnType<DocumentType[]>
-  documentToAnswers: (document: DocumentType) => Answer[]
-  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+interface SingleChoiceExerciseProps {
+  response: Return<Document[]>
+  documentToAnswers: (document: Document) => Answer[]
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   exerciseKey: number
 }
 
@@ -53,11 +53,11 @@ const ChoiceExerciseScreen = ({
   navigation,
   route,
   exerciseKey
-}: SingleChoiceExercisePropsType): ReactElement => {
+}: SingleChoiceExerciseProps): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
-  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
+  const [newDocuments, setNewDocuments] = useState<Document[] | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
-  const [results, setResults] = useState<DocumentResultType[]>([])
+  const [results, setResults] = useState<DocumentResult[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [correctAnswer, setCorrectAnswer] = useState<Answer | null>(null)
@@ -85,7 +85,7 @@ const ChoiceExerciseScreen = ({
     }
   }, [documents, currentWord])
 
-  const onExerciseFinished = (results: DocumentResultType[]): void => {
+  const onExerciseFinished = (results: DocumentResult[]): void => {
     navigation.navigate('InitialSummary', {
       result: {
         discipline: { ...route.params.discipline },
@@ -99,7 +99,7 @@ const ChoiceExerciseScreen = ({
 
   const count = documents?.length ?? 0
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
+  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean => {
     return answer1.article.id === answer2.article.id && answer1.word === answer2.word
   }
 
@@ -132,7 +132,7 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const updateResult = (result: DocumentResultType): void => {
+  const updateResult = (result: DocumentResult): void => {
     const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
     const newResults = results
     indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)

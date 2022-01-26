@@ -8,7 +8,7 @@ import styled from 'styled-components/native'
 import { CloseButton } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
 import { NavigationTitle } from './NavigationTitle'
@@ -23,14 +23,14 @@ const ProgressBar = styled(RNProgressBar)`
   background-color: ${props => props.theme.colors.lunesBlackUltralight};
 `
 
-interface ExerciseHeaderPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
-  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
+interface ExerciseHeaderProps {
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
+  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
   currentWord: number
   numberOfWords: number
 }
 
-const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderPropsType): JSX.Element => {
+const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(

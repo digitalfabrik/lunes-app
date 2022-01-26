@@ -4,8 +4,8 @@ import React from 'react'
 import { KeyboardAvoidingViewProps } from 'react-native'
 
 import labels from '../../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { DocumentFromServer } from '../../../hooks/useLoadDocuments'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
@@ -45,7 +45,7 @@ describe('WriteExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const testDocuments: DocumentTypeFromServer[] = [
+  const testDocuments: DocumentFromServer[] = [
     {
       audio: '',
       word: 'Arbeitshose',
@@ -57,7 +57,7 @@ describe('WriteExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const route: RouteProp<RoutesParams, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {

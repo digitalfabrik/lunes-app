@@ -9,7 +9,7 @@ import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { loadGroupInfo } from '../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
 const Container = styled.View`
@@ -58,11 +58,11 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
-interface AddCustomDisciplineScreenPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
+interface AddCustomDisciplineScreenProps {
+  navigation: StackNavigationProp<RoutesParams, 'AddCustomDiscipline'>
 }
 
-const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType): JSX.Element => {
+const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
 

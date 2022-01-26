@@ -21,14 +21,14 @@ export const loadAsync = async <T, P>(
   }
 }
 
-export interface ReturnType<T> {
+export interface Return<T> {
   data: T | null
   error: Error | null
   loading: boolean
   refresh: () => void
 }
 
-export const useLoadAsync = <T, P>(request: (params: P) => Promise<T>, params: P): ReturnType<T> => {
+export const useLoadAsync = <T, P>(request: (params: P) => Promise<T>, params: P): Return<T> => {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState<boolean>(true)

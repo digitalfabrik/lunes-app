@@ -19,7 +19,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
-import { RoutesParamsType } from './NavigationTypes'
+import { RoutesParams } from './NavigationTypes'
 
 export const styles = StyleSheet.create({
   header: {
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   }
 })
 
-const Stack = createStackNavigator<RoutesParamsType>()
+const Stack = createStackNavigator<RoutesParams>()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)

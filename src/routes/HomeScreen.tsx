@@ -8,11 +8,11 @@ import CustomDisciplineItem from '../components/CustomDisciplineItem'
 import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
 import ServerResponseHandler from '../components/ServerResponseHandler'
-import { DisciplineType } from '../constants/endpoints'
+import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
 const Root = styled.ScrollView`
@@ -48,11 +48,11 @@ const Description = styled.Text<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
 `
 
-interface HomeScreenPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'Home'>
+interface HomeScreenProps {
+  navigation: StackNavigationProp<RoutesParams, 'Home'>
 }
 
-const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
+const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
     }, [refreshCustomDisciplines])
   )
 
-  const handleNavigation = (item: DisciplineType): void => {
+  const handleNavigation = (item: Discipline): void => {
     setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       discipline: item

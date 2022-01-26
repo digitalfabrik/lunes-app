@@ -1,12 +1,12 @@
 import { COLORS } from './colors'
 import { FONTS } from './fonts'
 
-export interface ThemeType {
+export interface Theme {
   colors: typeof COLORS
   fonts: typeof FONTS
 }
 
-const theme: ThemeType = {
+const theme: Theme = {
   colors: COLORS,
   fonts: FONTS
 }

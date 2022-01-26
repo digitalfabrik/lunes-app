@@ -9,7 +9,7 @@ import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -38,12 +38,12 @@ const Message = styled.Text`
   text-align: center;
 `
 
-interface InitialSummaryScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'InitialSummary'>
-  navigation: StackNavigationProp<RoutesParamsType, 'InitialSummary'>
+interface InitialSummaryScreenProps {
+  route: RouteProp<RoutesParams, 'InitialSummary'>
+  navigation: StackNavigationProp<RoutesParams, 'InitialSummary'>
 }
 
-const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsType): ReactElement => {
+const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps): ReactElement => {
   const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
 
