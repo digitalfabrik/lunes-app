@@ -25,7 +25,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     <>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
-          <KeyboardAwareScrollView contentContainerStyle={{ height }} keyboardShouldPersistTaps='always'>
+          <KeyboardAwareScrollView contentContainerStyle={{ height }} keyboardShouldPersistTaps='handled'>
             <WriteExercise documents={documents} navigation={navigation} route={route} />
           </KeyboardAwareScrollView>
         )}

@@ -1,3 +1,4 @@
+import { useKeyboard } from '@react-native-community/hooks'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState, ReactElement, useCallback } from 'react'
@@ -41,6 +42,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
     }))
   )
 
+  const keyboard = useKeyboard()
   const current = documentsWithResults[currentIndex]
   const nthRetry = current.numberOfTries ?? 0
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
@@ -99,7 +101,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         numberOfWords={documents.length}
       />
 
-      <ImageCarousel images={current.document_image} />
+      <ImageCarousel images={current.document_image} height={keyboard.keyboardShown ? '20%' : undefined} />
 
       <StyledContainer>
         <InteractionSection
