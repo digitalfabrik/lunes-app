@@ -81,10 +81,10 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
-              route.params.parentTitle ?? labels.general.header.overview,
+              route.params.discipline.parentTitle ?? labels.general.header.overview,
               ArrowBack,
               navigation,
-              !!route.params.parentTitle
+              !!route.params.discipline.parentTitle
             )
           }
           name='DisciplineSelection'

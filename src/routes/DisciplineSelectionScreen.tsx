@@ -89,8 +89,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       navigation.navigate('Exercises', { discipline: selectedItem })
     } else {
       navigation.push('DisciplineSelection', {
-        discipline: selectedItem,
-        parentTitle: discipline.title
+        discipline: selectedItem
       })
     }
   }

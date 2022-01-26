@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import { Discipline } from '../../constants/endpoints'
+import { DisciplineType } from '../../constants/endpoints'
 import { getFromEndpoint } from '../../services/axios'
 import { loadDisciplines } from '../useLoadDisciplines'
 
@@ -48,7 +48,7 @@ const testData = [
   }
 ]
 
-const expectedData = (parent: Discipline | null): Array<Discipline & Record<string, any>> => [
+const expectedData = (parent: DisciplineType | null): Array<DisciplineType & Record<string, any>> => [
   {
     apiKey: undefined,
     created_by: null,
