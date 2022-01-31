@@ -12,6 +12,7 @@ const ImageView = styled.View<{ height: number }>`
 `
 const StyledImage = styled.Image<{ height: number; minimized: boolean }>`
   height: ${({ height }) => height}px;
+  /* center image because resizeMode doesn't work for ios */
   ${({ minimized }) =>
     minimized &&
     `
@@ -19,11 +20,11 @@ const StyledImage = styled.Image<{ height: number; minimized: boolean }>`
     margin: 0 auto;
   `}
 `
-const PaginationView = styled.View<{ topPosition: number }>`
+const PaginationView = styled.View<{ minimized: boolean }>`
   position: absolute;
   left: 0px;
   right: 0px;
-  top: ${({ topPosition }) => topPosition}px;
+  top: ${({ minimized }) => (minimized ? -10 : 10)}px;
 `
 
 interface ImageCarouselPropsType {
@@ -43,7 +44,8 @@ interface ImageUrlType {
 
 const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): ReactElement => {
   const { height: deviceHeight } = useWindowDimensions()
-  const heightPercent = minimized ? 17.5 : 35
+  // Since ImageViewer Lib doesn't resize image correct on container size change, we set the current height here depending minimized value
+  const heightPercent = minimized ? 35 / 2 : 35
   const viewerHeight = (deviceHeight * heightPercent) / 100
 
   const imagesUrls: ImageUrlType[] = images.map(image => ({
@@ -54,7 +56,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): R
     return !currentIndex || !allSize ? (
       <></>
     ) : (
-      <PaginationView topPosition={minimized ? -10 : 10}>
+      <PaginationView minimized={minimized}>
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}

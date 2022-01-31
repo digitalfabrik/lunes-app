@@ -1,4 +1,3 @@
-import { useKeyboard } from '@react-native-community/hooks'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState, ReactElement, useCallback } from 'react'
@@ -12,6 +11,7 @@ import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
 import { DocumentType } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
+import { useKeyboard } from '../../../hooks/useKeyboard'
 import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
@@ -42,14 +42,14 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
     }))
   )
 
-  const keyboard = useKeyboard()
+  const isKeyboardShown = useKeyboard()
   const current = documentsWithResults[currentIndex]
   const nthRetry = current.numberOfTries ?? 0
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
     // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
-    if (keyboard.keyboardShown) {
+    if (isKeyboardShown) {
       const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
         setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
         onKeyboardHideSubscription.remove()
@@ -58,7 +58,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
     } else {
       setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
     }
-  }, [keyboard.keyboardShown, documentsWithResults, currentIndex])
+  }, [isKeyboardShown, documentsWithResults, currentIndex])
 
   const finishExercise = (): void => {
     navigation.navigate('InitialSummary', {
@@ -109,7 +109,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         numberOfWords={documents.length}
       />
 
-      <ImageCarousel images={current.document_image} minimized={keyboard.keyboardShown} />
+      <ImageCarousel images={current.document_image} minimized={isKeyboardShown} />
 
       <StyledContainer>
         <InteractionSection
