@@ -48,7 +48,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
   const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
-    // Wait until keyboard is hidden before go next
+    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
     if (keyboard.keyboardShown) {
       const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
         setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
