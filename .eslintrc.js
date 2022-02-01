@@ -3,7 +3,6 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prefer-arrow'],
   extends: [
     '@react-native-community',
-    'standard-with-typescript',
     'airbnb',
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
@@ -80,7 +79,6 @@ module.exports = {
 
     // TODO check
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error'
   },

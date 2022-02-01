@@ -102,6 +102,17 @@ const ChoiceExerciseScreen = ({
   const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean =>
     answer1.article.id === answer2.article.id && answer1.word === answer2.word
 
+  const updateResult = (result: DocumentResultType): void => {
+    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
+    const newResults = results
+    if (indexOfCurrentResult !== -1) {
+      newResults[indexOfCurrentResult] = result
+    } else {
+      newResults.push(result)
+    }
+    setResults(newResults)
+  }
+
   const onClickAnswer = (clickedAnswer: Answer): void => {
     if (!currentDocument || !documents || !correctAnswer) {
       return
@@ -129,17 +140,6 @@ const ChoiceExerciseScreen = ({
     setTimeout(() => {
       setDelayPassed(true)
     }, correctAnswerDelay)
-  }
-
-  const updateResult = (result: DocumentResultType): void => {
-    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
-    const newResults = results
-    if (indexOfCurrentResult !== -1) {
-      newResults[indexOfCurrentResult] = result
-    } else {
-      newResults.push(result)
-    }
-    setResults(newResults)
   }
 
   const onFinishWord = (): void => {

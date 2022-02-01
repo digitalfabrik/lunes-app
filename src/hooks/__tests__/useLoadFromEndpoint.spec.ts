@@ -54,7 +54,7 @@ describe('loadFromEndpoint', () => {
 
   it('should set everything correctly if loading from endpoint throws an error', async () => {
     const error = new Error('myError')
-    const request = async (): Promise<void> => await Promise.reject(error)
+    const request = async (): Promise<void> => Promise.reject(error)
     await loadAsync(request, undefined, setData, setError, setLoading)
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(error)

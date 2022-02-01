@@ -80,6 +80,17 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
+  const handleNavigation = (item: ExerciseType): void => {
+    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
+      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
+    } else {
+      setSelectedKey(item.key.toString())
+      navigation.navigate(EXERCISES[item.key].nextScreen, {
+        discipline
+      })
+    }
+  }
+
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
 
@@ -93,17 +104,6 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Container>
     )
-  }
-
-  const handleNavigation = (item: ExerciseType): void => {
-    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
-      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
-    } else {
-      setSelectedKey(item.key.toString())
-      navigation.navigate(EXERCISES[item.key].nextScreen, {
-        discipline
-      })
-    }
   }
 
   return (

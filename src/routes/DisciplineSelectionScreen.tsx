@@ -66,6 +66,19 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }, [])
   )
 
+  const handleNavigation = (selectedItem: DisciplineType): void => {
+    setSelectedId(selectedItem.id)
+
+    if (selectedItem.isLeaf) {
+      navigation.navigate('Exercises', { discipline: selectedItem })
+    } else {
+      navigation.push('DisciplineSelection', {
+        discipline: selectedItem,
+        parentTitle: discipline.title
+      })
+    }
+  }
+
   const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
@@ -80,19 +93,6 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         </ItemText>
       </DisciplineItem>
     )
-  }
-
-  const handleNavigation = (selectedItem: DisciplineType): void => {
-    setSelectedId(selectedItem.id)
-
-    if (selectedItem.isLeaf) {
-      navigation.navigate('Exercises', { discipline: selectedItem })
-    } else {
-      navigation.push('DisciplineSelection', {
-        discipline: selectedItem,
-        parentTitle: discipline.title
-      })
-    }
   }
 
   return (

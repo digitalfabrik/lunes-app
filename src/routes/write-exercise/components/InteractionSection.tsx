@@ -90,6 +90,18 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     return 'incorrect'
   }
 
+  const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
+
+  const updateAndStoreResult = (score: SimpleResultType): void => {
+    const nthRetry = documentWithResult.numberOfTries + 1
+    const documentWithResultToStore = {
+      ...documentWithResult,
+      result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
+      numberOfTries: nthRetry
+    }
+    storeResult(documentWithResultToStore)
+  }
+
   const checkEntry = async (): Promise<void> => {
     const splitInput = input.trim().split(' ')
     if (splitInput.length < 2) {
@@ -102,18 +114,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
     setSubmittedInput(input)
     updateAndStoreResult(validateAnswer(article, word))
-  }
-
-  const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
-
-  const updateAndStoreResult = (score: SimpleResultType): void => {
-    const nthRetry = documentWithResult.numberOfTries + 1
-    const documentWithResultToStore = {
-      ...documentWithResult,
-      result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
-      numberOfTries: nthRetry
-    }
-    storeResult(documentWithResultToStore)
   }
 
   const getBorderColor = (): string => {
