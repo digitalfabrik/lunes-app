@@ -44,7 +44,7 @@ describe('VocabularyListModal', () => {
     const { getByText } = render(
       <VocabularyListModal
         documents={documents}
-        isModalVisible={true}
+        isModalVisible
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={0}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
@@ -61,7 +61,7 @@ describe('VocabularyListModal', () => {
     const { getByText } = render(
       <VocabularyListModal
         documents={documents}
-        isModalVisible={true}
+        isModalVisible
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={1}
         setSelectedDocumentIndex={setSelectedDocumentIndex}

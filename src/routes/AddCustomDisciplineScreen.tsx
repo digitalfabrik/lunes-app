@@ -82,14 +82,14 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
     }
     setLoading(true)
     loadGroupInfo(code)
-      .then(async () => {
-        return await AsyncStorage.setCustomDisciplines([...customDisciplines, code])
-      })
+      .then(async () => await AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        return error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
-          ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-          : setErrorMessage(labels.addCustomDiscipline.error.technical)
+        if (error.response?.status === HTTP_STATUS_CODE_FORBIDDEN) {
+          setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
+        } else {
+          setErrorMessage(labels.addCustomDiscipline.error.technical)
+        }
       })
       .finally(() => setLoading(false))
   }
@@ -106,7 +106,9 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
             value={code}
             onChangeText={setCode}
           />
-          <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+          <ErrorContainer>
+            <ErrorText>{errorMessage}</ErrorText>
+          </ErrorContainer>
           <Button
             label={labels.addCustomDiscipline.submitLabel}
             buttonTheme={BUTTONS_THEME.contained}

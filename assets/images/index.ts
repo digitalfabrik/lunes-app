@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // Need to be replaced with icons from API
 import AlmostCorrectEntriesIcon from './almost-correct-entries.svg'
 import AlmostCorrectFeedbackIcon from './almost-correct-feedback.svg'

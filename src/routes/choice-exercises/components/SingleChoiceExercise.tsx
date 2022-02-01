@@ -90,7 +90,7 @@ const ChoiceExerciseScreen = ({
       result: {
         discipline: { ...route.params.discipline },
         exercise: exerciseKey,
-        results: results
+        results
       }
     })
     setCurrentWord(0)
@@ -99,9 +99,8 @@ const ChoiceExerciseScreen = ({
 
   const count = documents?.length ?? 0
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
-    return answer1.article.id === answer2.article.id && answer1.word === answer2.word
-  }
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean =>
+    answer1.article.id === answer2.article.id && answer1.word === answer2.word
 
   const onClickAnswer = (clickedAnswer: Answer): void => {
     if (!currentDocument || !documents || !correctAnswer) {
@@ -135,7 +134,11 @@ const ChoiceExerciseScreen = ({
   const updateResult = (result: DocumentResultType): void => {
     const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
     const newResults = results
-    indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
+    if (indexOfCurrentResult !== -1) {
+      newResults[indexOfCurrentResult] = result
+    } else {
+      newResults.push(result)
+    }
     setResults(newResults)
   }
 
@@ -147,8 +150,10 @@ const ChoiceExerciseScreen = ({
       setSelectedAnswer(null)
       onExerciseFinished(results)
       setResults([])
+    } else if (needsToBeRepeated) {
+      tryLater()
     } else {
-      needsToBeRepeated ? tryLater() : setCurrentWord(prevState => prevState + 1)
+      setCurrentWord(prevState => prevState + 1)
     }
     setSelectedAnswer(null)
     setDelayPassed(false)

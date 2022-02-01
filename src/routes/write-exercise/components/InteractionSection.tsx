@@ -79,12 +79,12 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     ]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
-    } else if (validAnswers.some(answer => answer.word === word)) {
+    }
+    if (validAnswers.some(answer => answer.word === word)) {
       // Word is an exact match with either the document or an alternative -> just the article is wrong
       return 'similar'
-    } else if (
-      validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)
-    ) {
+    }
+    if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
       return 'similar'
     }
     return 'incorrect'
@@ -104,9 +104,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     updateAndStoreResult(validateAnswer(article, word))
   }
 
-  const capitalizeFirstLetter = (string: string): string => {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
+  const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
 
   const updateAndStoreResult = (score: SimpleResultType): void => {
     const nthRetry = documentWithResult.numberOfTries + 1

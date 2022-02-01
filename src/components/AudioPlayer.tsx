@@ -25,12 +25,15 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
   width: 40px;
   height: 40px;
   border-radius: 50px;
-  background-color: ${props =>
-    props.disabled
-      ? props.theme.colors.lunesBlackUltralight
-      : props.isActive
-      ? props.theme.colors.lunesRed
-      : props.theme.colors.lunesRedDark};
+  background-color: ${props => {
+    if (props.disabled) {
+      return props.theme.colors.lunesBlackUltralight
+    }
+    if (props.isActive) {
+      return props.theme.colors.lunesRed
+    }
+    return props.theme.colors.lunesRedDark
+  }};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -75,14 +78,13 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         _onFinishedLoadingSubscription.remove()
         _onSoundPlayerFinishPlaying.remove()
       }
-    } else {
-      initializeTts()
-
-      const ttsHandler = (): void => setIsActive(false)
-      const listener = Tts.addListener('tts-finish', ttsHandler)
-
-      return listener.remove
     }
+    initializeTts()
+
+    const ttsHandler = (): void => setIsActive(false)
+    const listener = Tts.addListener('tts-finish', ttsHandler)
+
+    return listener.remove
   }, [submittedAlternative, audio, initializeTts])
 
   const handleSpeakerClick = (): void => {

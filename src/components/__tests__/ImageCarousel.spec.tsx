@@ -5,14 +5,12 @@ import { ReactTestInstance } from 'react-test-renderer'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import ImageCarousel from '../ImageCarousel'
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
+jest.mock('react-native/Libraries/Image/Image', () => ({
+  ...jest.requireActual('react-native/Libraries/Image/Image'),
+  getSize: (uri: string, success: (w: number, h: number) => void) => {
+    success(1234, 1234)
   }
-})
+}))
 
 describe('ImageCarousel', () => {
   const images = [
@@ -29,9 +27,7 @@ describe('ImageCarousel', () => {
     jest.clearAllMocks()
   })
 
-  const renderImageCarousel = (): RenderAPI => {
-    return render(<ImageCarousel images={images} />, { wrapper: wrapWithTheme })
-  }
+  const renderImageCarousel = (): RenderAPI => render(<ImageCarousel images={images} />, { wrapper: wrapWithTheme })
 
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 

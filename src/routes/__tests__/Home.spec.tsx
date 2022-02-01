@@ -56,14 +56,12 @@ const mockCustomDiscipline = {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  const getReturnTypeOf = <T,>(data: T): ReturnType<T> => {
-    return {
-      data: data,
-      error: null,
-      loading: false,
-      refresh: () => undefined
-    }
-  }
+  const getReturnTypeOf = <T,>(data: T): ReturnType<T> => ({
+    data,
+    error: null,
+    loading: false,
+    refresh: () => undefined
+  })
 
   it('should show discipline', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnTypeOf(mockDisciplines))

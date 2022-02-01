@@ -4,8 +4,8 @@ module.exports = {
   extends: [
     '@react-native-community',
     'standard-with-typescript',
-    // 'airbnb',
-    // 'airbnb/hooks',
+    'airbnb',
+    'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',

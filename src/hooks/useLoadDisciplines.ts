@@ -15,11 +15,11 @@ export interface ServerResponse {
 const getEndpoint = (parent: DisciplineType | null): string => {
   if (parent?.needsTrainingSetEndpoint) {
     return ENDPOINTS.trainingSet
-  } else if (parent?.apiKey) {
-    return ENDPOINTS.disciplinesByGroup
-  } else {
-    return ENDPOINTS.disciplines
   }
+  if (parent?.apiKey) {
+    return ENDPOINTS.disciplinesByGroup
+  }
+  return ENDPOINTS.disciplines
 }
 
 const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>

@@ -13,9 +13,7 @@ beforeEach(() => {
 describe('getFromEndpoint', () => {
   it('should get data from endpoint', async () => {
     const data = 'myData'
-    mocked(axios.get).mockImplementationOnce(async () => {
-      return { data }
-    })
+    mocked(axios.get).mockImplementationOnce(async () => ({ data }))
 
     const path = 'abc'
     const responseData = await getFromEndpoint(path)
@@ -26,9 +24,7 @@ describe('getFromEndpoint', () => {
 
   it('should include api key in header', async () => {
     const data = 'myData'
-    mocked(axios.get).mockImplementationOnce(async () => {
-      return { data }
-    })
+    mocked(axios.get).mockImplementationOnce(async () => ({ data }))
 
     const path = 'abc'
     const apiKey = 'my_api_key'

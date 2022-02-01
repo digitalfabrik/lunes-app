@@ -11,11 +11,11 @@ describe('Components', () => {
 
     const defaultModalProps: ConfirmationModalPropsType = {
       visible: false,
-      setVisible: setVisible,
+      setVisible,
       text: 'Are you sure?',
       confirmationButtonText: 'confirm',
       cancelButtonText: 'cancel',
-      confirmationAction: confirmationAction
+      confirmationAction
     }
 
     it('should display passed props', () => {

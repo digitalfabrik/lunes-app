@@ -70,9 +70,9 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
   const checkResults = (): void => {
     navigation.navigate('ResultsOverview', {
       result: {
-        discipline: discipline,
-        exercise: exercise,
-        results: results
+        discipline,
+        exercise,
+        results
       }
     })
   }

@@ -64,8 +64,10 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
 
     if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
       finishExercise()
+    } else if (needsToBeRepeated) {
+      tryLater()
     } else {
-      needsToBeRepeated ? tryLater() : setCurrentIndex(oldValue => oldValue + 1)
+      setCurrentIndex(oldValue => oldValue + 1)
     }
   }
 

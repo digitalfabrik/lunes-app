@@ -27,7 +27,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     const usedDocuments = [correctDocument]
 
     // Pick 3 false answer options
-    for (let i = 0; i < MIN_WORDS - 1; i++) {
+    for (let i = 0; i < MIN_WORDS - 1; i += 1) {
       let rand: number
       // Pick a document as false answer option that was not picked already
       do {
@@ -47,7 +47,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
     // Insert correct answer on random position
     const positionOfCorrectAnswer = Math.floor(Math.random() * MIN_WORDS)
-    answers.splice(positionOfCorrectAnswer, 0, { article: article, word })
+    answers.splice(positionOfCorrectAnswer, 0, { article, word })
     return answers
   }
 

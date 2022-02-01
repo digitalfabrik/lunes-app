@@ -101,7 +101,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     } else {
       setSelectedKey(item.key.toString())
       navigation.navigate(EXERCISES[item.key].nextScreen, {
-        discipline: discipline
+        discipline
       })
     }
   }

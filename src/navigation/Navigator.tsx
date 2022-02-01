@@ -51,35 +51,33 @@ const Navigator = (): JSX.Element => {
     navigation: NavigationProp<any>,
     showHomeButton: boolean,
     screen?: string
-  ): StackNavigationOptions => {
-    return {
-      headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
+  ): StackNavigationOptions => ({
+    headerLeft: () => (
+      <NavigationHeaderLeft
+        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}>
+        {isPressed ? <ArrowBackPressed /> : <Icon />}
+        <NavigationTitle>{title}</NavigationTitle>
+      </NavigationHeaderLeft>
+    ),
+    ...(showHomeButton && {
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          onPressIn={() => setIsHomeButtonPressed(true)}
+          onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isPressed ? <ArrowBackPressed /> : <Icon />}
-          <NavigationTitle>{title}</NavigationTitle>
-        </NavigationHeaderLeft>
-      ),
-      ...(showHomeButton && {
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            onPressIn={() => setIsHomeButtonPressed(true)}
-            onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
-            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-          </TouchableOpacity>
-        )
-      }),
-      headerTitle: '',
-      headerStyle: styles.header,
-      headerRightContainerStyle: styles.headerRightContainer,
-      headerLeftContainerStyle: styles.headerLeftContainer
-    }
-  }
+          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
+        </TouchableOpacity>
+      )
+    }),
+    headerTitle: '',
+    headerStyle: styles.header,
+    headerRightContainerStyle: styles.headerRightContainer,
+    headerLeftContainerStyle: styles.headerLeftContainer
+  })
 
   return (
     <NavigationContainer>

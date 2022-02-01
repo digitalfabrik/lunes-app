@@ -59,7 +59,7 @@ const VocabularyListModal = ({
   }
 
   return (
-    <Modal animationType='slide' transparent={true} visible={isModalVisible}>
+    <Modal animationType='slide' transparent visible={isModalVisible}>
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
@@ -78,7 +78,7 @@ const VocabularyListModal = ({
               selected={false}
               anyAnswerSelected={false}
               delayPassed={false}
-              disabled={true}
+              disabled
             />
           </ItemContainer>
           <ButtonContainer>
