@@ -44,7 +44,7 @@ interface ImageUrlType {
 
 const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): ReactElement => {
   const { height: deviceHeight } = useWindowDimensions()
-  // Since ImageViewer Lib doesn't resize image correct on container size change, we set the current height here depending minimized value
+  // Manually resize ImageViewer since it doesn't happen automatically on container size changes
   const heightPercent = minimized ? 35 / 2 : 35
   const viewerHeight = (deviceHeight * heightPercent) / 100
 
