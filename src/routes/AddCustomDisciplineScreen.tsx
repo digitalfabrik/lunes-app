@@ -85,11 +85,11 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
       .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        if (error.response?.status === HTTP_STATUS_CODE_FORBIDDEN) {
-          setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-        } else {
-          setErrorMessage(labels.addCustomDiscipline.error.technical)
-        }
+        setErrorMessage(
+          error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
+            ? labels.addCustomDiscipline.error.wrongCode
+            : labels.addCustomDiscipline.error.technical
+        )
       })
       .finally(() => setLoading(false))
   }
