@@ -5,7 +5,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { TrashBinIcon } from '../../assets/images'
+import { TrashIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import AsyncStorage from '../services/AsyncStorage'
 import ConfirmationModal from './ConfirmationModal'
@@ -58,7 +58,7 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
       <DeleteContainer>
         <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
           <DeleteButton onPress={showConfirmationModal}>
-            <TrashBinIcon testID={'trash-bin-icon'} />
+            <TrashIcon testID={'trash-bin-icon'} />
           </DeleteButton>
         </Animated.View>
       </DeleteContainer>

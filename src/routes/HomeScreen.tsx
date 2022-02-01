@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 
-import { PlusIcon } from '../../assets/images'
+import { AddCircleIcon } from '../../assets/images'
 import CustomDisciplineItem from '../components/CustomDisciplineItem'
 import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
@@ -81,7 +81,7 @@ const HomeScreen = ({ navigation }: HomeScreenPropsType): JSX.Element => {
       <Header />
       <StyledText>{labels.home.welcome}</StyledText>
       <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
-        <PlusIcon />
+        <AddCircleIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
       {customDisciplines?.map(customDiscipline => {

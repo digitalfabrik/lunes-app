@@ -4,7 +4,7 @@ import React, { useState, ReactElement, useCallback } from 'react'
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
-import { ArrowNext } from '../../../../assets/images'
+import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
@@ -111,7 +111,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         {isAnswerSubmitted && current.result !== 'similar' ? (
           <Button
             label={buttonLabel}
-            iconRight={ArrowNext}
+            iconRight={ArrowRightIcon}
             onPress={continueExercise}
             buttonTheme={BUTTONS_THEME.contained}
           />
@@ -122,7 +122,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
             {currentIndex < documents.length - 1 && (
               <Button
                 label={labels.exercises.tryLater}
-                iconRight={ArrowNext}
+                iconRight={ArrowRightIcon}
                 onPress={tryLater}
                 buttonTheme={BUTTONS_THEME.text}
               />

@@ -1,7 +1,7 @@
 import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
-import { ArrowBack, ArrowNext } from '../../../assets/images'
+import { ArrowLeftCircleIconWhite, ArrowRightIcon } from '../../../assets/images'
 import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
 import wrapWithTheme from '../../testing/wrapWithTheme'
@@ -30,7 +30,10 @@ describe('Components', () => {
     }
 
     it('should render label and icons', () => {
-      const { getByText, queryByTestId } = renderButton({ iconLeft: ArrowNext, iconRight: ArrowBack })
+      const { getByText, queryByTestId } = renderButton({
+        iconLeft: ArrowRightIcon,
+        iconRight: ArrowLeftCircleIconWhite
+      })
       expect(getByText('Button label')).toBeDefined()
       expect(queryByTestId('button-icon-left')).toBeDefined()
       expect(queryByTestId('button-icon-right')).toBeDefined()

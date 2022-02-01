@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
-import { ArrowNext } from '../../../../assets/images'
+import { ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -182,7 +182,7 @@ const ChoiceExerciseScreen = ({
               {selectedAnswer !== null ? (
                 <Button
                   label={buttonLabel}
-                  iconLeft={ArrowNext}
+                  iconLeft={ArrowRightIcon}
                   onPress={onFinishWord}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
@@ -190,7 +190,7 @@ const ChoiceExerciseScreen = ({
                 !lastWord && (
                   <Button
                     label={labels.exercises.tryLater}
-                    iconRight={ArrowNext}
+                    iconRight={ArrowRightIcon}
                     onPress={tryLater}
                     buttonTheme={BUTTONS_THEME.text}
                   />

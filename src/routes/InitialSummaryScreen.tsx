@@ -5,7 +5,7 @@ import { StatusBar } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CheckIcon, ListIcon, RepeatIcon } from '../../assets/images'
+import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
@@ -87,7 +87,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenPropsTy
       <StatusBar barStyle='light-content' />
 
       <UpperSection>
-        <CheckIcon />
+        <CheckCircleIconWhite />
         <MessageContainer>
           <Message>{message}</Message>
         </MessageContainer>

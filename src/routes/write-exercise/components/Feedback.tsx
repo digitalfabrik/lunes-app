@@ -3,12 +3,12 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import styled from 'styled-components/native'
 
 import {
-  AlmostCorrectFeedbackIcon,
-  correct_background,
-  CorrectFeedbackIcon,
-  hint_background,
-  incorrect_background,
-  IncorrectFeedbackIcon
+  CheckCloseCircleIconBold,
+  BannerGreen,
+  CheckCircleIconBold,
+  BannerYellow,
+  BannerRed,
+  CloseCircleIconBold
 } from '../../../../assets/images'
 import labels from '../../../constants/labels.json'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
@@ -40,16 +40,16 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   let Icon, background, message
 
   if (result === 'correct') {
-    Icon = CorrectFeedbackIcon
-    background = correct_background
+    Icon = CheckCircleIconBold
+    background = BannerGreen
     message = labels.exercises.write.feedback.correct
   } else if (result === 'similar' && submission) {
-    Icon = AlmostCorrectFeedbackIcon
-    background = hint_background
+    Icon = CheckCloseCircleIconBold
+    background = BannerYellow
     message = `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
   } else {
-    Icon = IncorrectFeedbackIcon
-    background = incorrect_background
+    Icon = CloseCircleIconBold
+    background = BannerRed
     message = needsToBeRepeated
       ? labels.exercises.write.feedback.wrong
       : `${labels.exercises.write.feedback.wrongWithSolution} „${documentWithResult.article.value} ${documentWithResult.word}“`

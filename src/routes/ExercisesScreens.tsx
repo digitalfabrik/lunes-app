@@ -5,7 +5,7 @@ import { FlatList, View, Alert } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
+import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import labels from '../constants/labels.json'
@@ -89,7 +89,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
           <Description selected={selected}>{item.description}</Description>
           <StyledLevel as={item.Level} />
         </View>
-        <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <ChevronRight fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Container>
     )
   }
