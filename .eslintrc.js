@@ -6,7 +6,7 @@ module.exports = {
     'standard-with-typescript',
     // 'airbnb',
     // 'airbnb/hooks',
-    // 'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'prettier',
@@ -70,6 +70,7 @@ module.exports = {
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
     'jest/consistent-test-it': 'error',
+    'jest/no-alias-methods': 'error',
 
     'prefer-arrow/prefer-arrow-functions': 'error',
 

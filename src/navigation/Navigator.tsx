@@ -1,7 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-import React from 'react'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native'
+import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import { ArrowBack, CloseButton, ArrowBackPressed, HomeButtonPressed, Home } from '../../assets/images'
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
@@ -44,7 +45,13 @@ const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
+  const defaultOptions = (
+    title: string,
+    Icon: ComponentType<SvgProps>,
+    navigation: NavigationProp<any>,
+    showHomeButton: boolean,
+    screen?: string
+  ): StackNavigationOptions => {
     return {
       headerLeft: () => (
         <NavigationHeaderLeft
@@ -91,7 +98,7 @@ const Navigator = (): JSX.Element => {
           component={DisciplineSelectionScreen}
         />
         <Stack.Screen
-          options={({ route, navigation }: any) =>
+          options={({ route, navigation }) =>
             defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
           }
           name='Exercises'
