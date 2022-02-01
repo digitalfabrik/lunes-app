@@ -55,6 +55,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
@@ -65,17 +66,14 @@ module.exports = {
       }
     ],
     '@typescript-eslint/no-use-before-define': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
     'jest/consistent-test-it': 'error',
     'jest/no-alias-methods': 'error',
 
-    'prefer-arrow/prefer-arrow-functions': 'error',
-
-    // TODO check
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/restrict-template-expressions': 'error'
+    'prefer-arrow/prefer-arrow-functions': 'error'
   },
   parserOptions: {
     project: './tsconfig.json'

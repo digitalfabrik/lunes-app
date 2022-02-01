@@ -120,7 +120,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           data={entries}
           ListHeaderComponent={Header}
           renderItem={Item}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
           ListFooterComponentStyle={styles.footer}

@@ -112,7 +112,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => item.key.toString()}
+        keyExtractor={({ key }) => key.toString()}
         showsVerticalScrollIndicator={false}
       />
     </Root>
