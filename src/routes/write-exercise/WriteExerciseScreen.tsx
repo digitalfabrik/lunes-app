@@ -5,7 +5,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import useScreenHeight from '../../hooks/useScreenHeight'
 import { RoutesParamsType } from '../../navigation/NavigationTypes'
 import WriteExercise from './components/WriteExercise'
 
@@ -16,7 +15,6 @@ interface WriteExerciseScreenPropsType {
 
 const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType): JSX.Element => {
   const { discipline, retryData } = route.params
-  const height = useScreenHeight()
 
   const { data, loading, error, refresh } = useLoadDocuments(discipline, true)
   const documents = retryData?.data ?? data
@@ -25,7 +23,7 @@ const WriteExerciseScreen = ({ navigation, route }: WriteExerciseScreenPropsType
     <>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
-          <KeyboardAwareScrollView contentContainerStyle={{ height }} keyboardShouldPersistTaps='handled'>
+          <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
             <WriteExercise documents={documents} navigation={navigation} route={route} />
           </KeyboardAwareScrollView>
         )}

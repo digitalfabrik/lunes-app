@@ -3,7 +3,7 @@ import { Keyboard } from 'react-native'
 
 // This hook listens to the keyboard and returns boolean whether keyboard is opened or closed
 
-export const useKeyboard = (): boolean => {
+export const useIsKeyboardVisible = (): boolean => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
   useEffect(() => {
