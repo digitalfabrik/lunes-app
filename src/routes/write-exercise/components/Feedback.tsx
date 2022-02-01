@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -14,8 +15,8 @@ import labels from '../../../constants/labels.json'
 import { DocumentResultType } from '../../../navigation/NavigationTypes'
 
 const Background = styled.ImageBackground`
-  width: ${wp(80)}px;
-  height: ${hp(9)}px;
+  width: ${wp('80%')}px;
+  height: ${hp('9%')}px;
   min-height: 50px;
   margin-bottom: 40px;
   flex-direction: row;
@@ -37,7 +38,9 @@ export interface FeedbackPropsType {
 
 const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackPropsType): ReactElement | null => {
   const { result } = documentWithResult
-  let Icon, background, message
+  let Icon
+  let background
+  let message
 
   if (result === 'correct') {
     Icon = CorrectFeedbackIcon
@@ -58,7 +61,7 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={2} ellipsizeMode='tail' testID={'feedback-write-exercise'}>
+      <StyledText numberOfLines={2} ellipsizeMode='tail' testID='feedback-write-exercise'>
         {message}
       </StyledText>
     </Background>

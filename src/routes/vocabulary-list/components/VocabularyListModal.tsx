@@ -53,13 +53,13 @@ const VocabularyListModal = ({
   setSelectedDocumentIndex
 }: VocabularyListModalPropsType): ReactElement => {
   const goToNextWord = (): void => {
-    if (documents && selectedDocumentIndex + 1 < documents.length) {
+    if (selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
     }
   }
 
   return (
-    <Modal animationType='slide' transparent={true} visible={isModalVisible}>
+    <Modal animationType='slide' transparent visible={isModalVisible}>
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
@@ -73,12 +73,12 @@ const VocabularyListModal = ({
                 word: documents[selectedDocumentIndex].word,
                 article: documents[selectedDocumentIndex].article
               }}
-              onClick={() => {}}
+              onClick={() => undefined}
               correct={false}
               selected={false}
               anyAnswerSelected={false}
               delayPassed={false}
-              disabled={true}
+              disabled
             />
           </ItemContainer>
           <ButtonContainer>

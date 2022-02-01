@@ -1,10 +1,8 @@
 import AsyncStorage from '../services/AsyncStorage'
 import useLoadAsync, { ReturnType } from './useLoadAsync'
 
-const loadFromAsyncStorage = async (): Promise<string[]> => await AsyncStorage.getCustomDisciplines()
+const loadFromAsyncStorage = async (): Promise<string[]> => AsyncStorage.getCustomDisciplines()
 
-const useReadFromAsyncStorage = (): ReturnType<string[]> => {
-  return useLoadAsync(loadFromAsyncStorage, null)
-}
+const useReadFromAsyncStorage = (): ReturnType<string[]> => useLoadAsync(loadFromAsyncStorage, null)
 
 export default useReadFromAsyncStorage

@@ -69,7 +69,7 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
   const { article, word } = document
 
   return (
-    <Wrapper onPress={setIsModalVisible ?? (() => {})}>
+    <Wrapper onPress={setIsModalVisible}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (

@@ -38,8 +38,8 @@ describe('InteractionSection', () => {
     word: 'Spachtel'
   }
 
-  const renderInteractionSection = (documentWithResult: DocumentResultType, isAnswerSubmitted: boolean): RenderAPI => {
-    return render(
+  const renderInteractionSection = (documentWithResult: DocumentResultType, isAnswerSubmitted: boolean): RenderAPI =>
+    render(
       <InteractionSection
         documentWithResult={documentWithResult}
         isAnswerSubmitted={isAnswerSubmitted}
@@ -47,7 +47,6 @@ describe('InteractionSection', () => {
       />,
       { wrapper: wrapWithTheme }
     )
-  }
 
   it('should render correctly if not submitted answer yet', () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(

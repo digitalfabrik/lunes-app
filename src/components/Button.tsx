@@ -65,11 +65,11 @@ const Button = (props: ButtonPropsType): ReactElement => {
   }
 
   const getBackgroundColor = (): Color | 'transparent' => {
-    if (props.disabled) {
+    if (disabled) {
       return COLORS.lunesBlackUltralight
     }
     if (isPressed) {
-      return props.buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
+      return buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
     }
     if (buttonTheme === BUTTONS_THEME.contained) {
       return COLORS.lunesBlack
@@ -80,16 +80,18 @@ const Button = (props: ButtonPropsType): ReactElement => {
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      testID={'button'}
+      testID='button'
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
-      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID={'button-icon-left'} />}
+      {/* eslint-disable-next-line react/destructuring-assignment */}
+      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID='button-icon-left' />}
       <Label color={getTextColor()}>{label}</Label>
-      {props.iconRight && <props.iconRight fill={getTextColor()} testID={'button-icon-right'} />}
+      {/* eslint-disable-next-line react/destructuring-assignment */}
+      {props.iconRight && <props.iconRight fill={getTextColor()} testID='button-icon-right' />}
     </ThemedButton>
   )
 }

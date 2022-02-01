@@ -26,25 +26,22 @@ export const SingleChoice = ({
   selectedAnswer,
   delayPassed
 }: SingleChoicePropsType): ReactElement => {
-  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
-    return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
-  }
+  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean =>
+    answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
 
   return (
     <StyledContainer>
-      {answers.map((answer, index) => {
-        return (
-          <SingleChoiceListItem
-            key={index}
-            answer={answer}
-            onClick={onClick}
-            correct={isAnswerEqual(answer, correctAnswer)}
-            selected={isAnswerEqual(answer, selectedAnswer)}
-            anyAnswerSelected={selectedAnswer !== null}
-            delayPassed={delayPassed}
-          />
-        )
-      })}
+      {answers.map(answer => (
+        <SingleChoiceListItem
+          key={answer.word}
+          answer={answer}
+          onClick={onClick}
+          correct={isAnswerEqual(answer, correctAnswer)}
+          selected={isAnswerEqual(answer, selectedAnswer)}
+          anyAnswerSelected={selectedAnswer !== null}
+          delayPassed={delayPassed}
+        />
+      ))}
     </StyledContainer>
   )
 }
