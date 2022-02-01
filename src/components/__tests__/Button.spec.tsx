@@ -47,14 +47,14 @@ describe('Components', () => {
       const { getByText } = renderButton()
       const button = getByText('Button label')
       fireEvent.press(button)
-      expect(onPressMock).toBeCalled()
+      expect(onPressMock).toHaveBeenCalled()
     })
 
     it('should not call onClick when disabled', () => {
       const { getByText } = renderButton({ disabled: true })
       const button = getByText('Button label')
       fireEvent.press(button)
-      expect(onPressMock).not.toBeCalled()
+      expect(onPressMock).not.toHaveBeenCalled()
     })
 
     it('should have correct style when light theme', () => {

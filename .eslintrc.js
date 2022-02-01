@@ -18,24 +18,20 @@ module.exports = {
   ignorePatterns: ['**/reports/', '**/node_modules/', '**/ios/', '**/dist/', '**/lib-dist/'],
   rules: {
     // Overly strict rules (for now)
-    'class-methods-use-this': 'off',
-    'global-require': 'off',
-    'import/extensions': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/no-unresolved': 'off',
-    'import/prefer-default-export': 'off',
-    'lines-between-class-members': 'off',
     'no-shadow': 'off',
-    'no-underscore-dangle': 'off',
     'react/display-name': 'off',
-    'react/jsx-filename-extension': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react/require-default-props': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
-    // Disabling since better @typescript-eslint rules available
+    // Unwanted
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'react/require-default-props': 'off',
+
+    // Disabling since better @typescript-eslint rules available or they make no sense for ts projects
     'default-case': 'off',
     'no-use-before-define': 'off',
+    'import/no-unresolved': 'off',
+    'react/jsx-filename-extension': 'off',
 
     curly: ['error', 'all'],
     'no-magic-numbers': [
@@ -81,14 +77,17 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.spec.{ts,tsx}', '**/__mocks__/*.ts'],
+      files: ['*.spec.{ts,tsx}', '**/__mocks__/*.{ts,tsx}', '**/testing/*.{ts,tsx}', 'jest.setup.ts'],
       rules: {
+        'global-require': 'off',
         'no-console': 'off',
         'no-magic-numbers': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        'import/no-extraneous-dependencies': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
-        'jsx-a11y/no-static-element-interactions': 'off'
+        'jsx-a11y/no-static-element-interactions': 'off',
+        'react/jsx-props-no-spreading': 'off'
       }
     }
   ]

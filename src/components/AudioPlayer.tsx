@@ -68,15 +68,15 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
 
   React.useEffect(() => {
     if (audio && !submittedAlternative) {
-      const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+      const onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()
       })
-      const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
+      const onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
       setIsInitialized(true)
 
       return () => {
-        _onFinishedLoadingSubscription.remove()
-        _onSoundPlayerFinishPlaying.remove()
+        onFinishedLoadingSubscription.remove()
+        onSoundPlayerFinishPlaying.remove()
       }
     }
     initializeTts()
