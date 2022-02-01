@@ -23,6 +23,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
     // Unwanted
+    'lines-between-class-members': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'react/require-default-props': 'off',
@@ -77,7 +78,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.spec.{ts,tsx}', '**/__mocks__/*.{ts,tsx}', '**/testing/*.{ts,tsx}', 'jest.setup.ts'],
+      files: ['*.spec.{ts,tsx}', '**/__mocks__/*.{ts,tsx}', '**/testing/*.{ts,tsx}', 'jest.setup.ts', 'jest.config.ts'],
       rules: {
         'global-require': 'off',
         'no-console': 'off',
