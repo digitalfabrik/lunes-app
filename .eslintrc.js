@@ -2,7 +2,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prefer-arrow'],
   extends: [
-    '@react-native-community',
     'airbnb',
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
@@ -72,10 +71,6 @@ module.exports = {
     'jest/no-alias-methods': 'error',
 
     'prefer-arrow/prefer-arrow-functions': 'error',
-
-    // TODO check
-    'react/prefer-es6-class': ['error', 'always'],
-    'react/prop-types': 'off',
 
     // TODO check
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
