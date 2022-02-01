@@ -5,7 +5,7 @@ import { Text } from 'react-native'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import Loading from '../Loading'
 
-describe('Loading ', () => {
+describe('Loading', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })

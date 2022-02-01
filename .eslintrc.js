@@ -9,7 +9,9 @@ module.exports = {
     // 'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'prettier'
+    'prettier',
+    'plugin:jest/recommended',
+    'plugin:jest/style'
   ],
   env: {
     es6: true,
@@ -68,13 +70,6 @@ module.exports = {
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
     'jest/consistent-test-it': 'error',
-    'jest/no-disabled-tests': 'error',
-    'jest/no-focused-tests': 'error',
-    'jest/no-identical-title': 'error',
-    'jest/no-test-prefixes': 'error',
-    'jest/prefer-to-have-length': 'error',
-    'jest/valid-describe-callback': 'error',
-    'jest/valid-expect': 'error',
 
     'prefer-arrow/prefer-arrow-functions': 'error',
 

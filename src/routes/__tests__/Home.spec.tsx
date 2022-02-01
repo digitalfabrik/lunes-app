@@ -109,7 +109,7 @@ describe('HomeScreen', () => {
     const confirmationModelConfirmButton = await findByText(labels.home.deleteModal.confirm)
     fireEvent.press(confirmationModelConfirmButton)
 
-    expect(spyOnDeletion).toBeCalledTimes(1)
-    expect(spyOnDeletion).toBeCalledWith('test')
+    expect(spyOnDeletion).toHaveBeenCalledTimes(1)
+    expect(spyOnDeletion).toHaveBeenCalledWith('test')
   })
 })

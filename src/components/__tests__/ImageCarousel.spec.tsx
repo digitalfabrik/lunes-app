@@ -14,7 +14,7 @@ jest.mock('react-native/Libraries/Image/Image', () => {
   }
 })
 
-describe('ImageCarousel ', () => {
+describe('ImageCarousel', () => {
   const images = [
     {
       id: 0,
