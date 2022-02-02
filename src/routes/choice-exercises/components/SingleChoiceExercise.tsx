@@ -187,7 +187,7 @@ const ChoiceExerciseScreen = ({
               {selectedAnswer !== null ? (
                 <Button
                   label={buttonLabel}
-                  iconLeft={ArrowRightIcon}
+                  iconRight={ArrowRightIcon}
                   onPress={onFinishWord}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
