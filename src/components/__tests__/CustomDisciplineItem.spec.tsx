@@ -1,7 +1,7 @@
 import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { DisciplineType } from '../../constants/endpoints'
+import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import {
@@ -15,7 +15,7 @@ import CustomDisciplineItem from '../CustomDisciplineItem'
 describe('Components', () => {
   describe('CustomDisciplineItem', () => {
     const navigation = createNavigationMock<'Home'>()
-    const mockData: DisciplineType = {
+    const mockData: Discipline = {
       id: 1,
       title: 'Custom Discipline',
       description: 'description',
