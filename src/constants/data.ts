@@ -1,15 +1,7 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import {
-  CheckCloseCircleIcon,
-  CheckCircleIcon,
-  TrophyIcon0,
-  TrophyIcon3,
-  CloseCircleIcon,
-  TrophyIcon1,
-  TrophyIcon2
-} from '../../assets/images'
+import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import labels from './labels.json'
 
@@ -25,7 +17,7 @@ export interface ExerciseType {
   key: ExerciseKeyType
   title: string
   description: string
-  Level: typeof TrophyIcon0
+  level: number
   nextScreen: keyof RoutesParamsType
 }
 
@@ -34,28 +26,28 @@ export const EXERCISES: ExerciseType[] = [
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
-    Level: TrophyIcon0,
+    level: 0,
     nextScreen: 'VocabularyList'
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
-    Level: TrophyIcon1,
+    level: 1,
     nextScreen: 'WordChoiceExercise'
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
-    Level: TrophyIcon2,
+    level: 2,
     nextScreen: 'ArticleChoiceExercise'
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
-    Level: TrophyIcon3,
+    level: 3,
     nextScreen: 'WriteExercise'
   }
 ]
