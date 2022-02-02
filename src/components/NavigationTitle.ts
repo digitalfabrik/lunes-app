@@ -8,5 +8,6 @@ export const NavigationTitle = styled.Text`
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   padding-left: 15px;
+  padding-right: 5px;
   flex: 1;
 `
