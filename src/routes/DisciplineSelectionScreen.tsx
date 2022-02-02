@@ -66,6 +66,18 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }, [])
   )
 
+  const handleNavigation = (selectedItem: DisciplineType): void => {
+    setSelectedId(selectedItem.id)
+
+    if (selectedItem.isLeaf) {
+      navigation.navigate('Exercises', { discipline: selectedItem })
+    } else {
+      navigation.push('DisciplineSelection', {
+        discipline: selectedItem
+      })
+    }
+  }
+
   const ListItem = ({ item }: { item: DisciplineType }): JSX.Element | null => {
     if (item.numberOfChildren === 0) {
       return null
@@ -82,18 +94,6 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     )
   }
 
-  const handleNavigation = (selectedItem: DisciplineType): void => {
-    setSelectedId(selectedItem.id)
-
-    if (selectedItem.isLeaf) {
-      navigation.navigate('Exercises', { discipline: selectedItem })
-    } else {
-      navigation.push('DisciplineSelection', {
-        discipline: selectedItem
-      })
-    }
-  }
-
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
@@ -102,7 +102,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={ListItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>

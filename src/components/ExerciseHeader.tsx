@@ -5,7 +5,7 @@ import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import styled from 'styled-components/native'
 
-import { CloseButton } from '../../assets/images'
+import { CloseCircleIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
@@ -38,7 +38,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
       navigation.setOptions({
         headerLeft: () => (
           <NavigationHeaderLeft onPress={() => setIsModalVisible(true)}>
-            <CloseButton />
+            <CloseCircleIconWhite />
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),

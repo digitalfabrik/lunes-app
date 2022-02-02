@@ -20,7 +20,7 @@ const testData = [
 const expectedData = {
   ...testData[0],
   title: testData[0].name,
-  apiKey: apiKey,
+  apiKey,
   isLeaf: false,
   parentTitle: null,
   numberOfChildren: testData[0].total_discipline_children,

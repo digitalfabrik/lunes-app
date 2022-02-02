@@ -5,13 +5,14 @@ import { FlatList, View, Alert } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
+import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
 import { EXERCISES, ExerciseType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParamsType } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
+import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -79,6 +80,17 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
+  const handleNavigation = (item: ExerciseType): void => {
+    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
+      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
+    } else {
+      setSelectedKey(item.key.toString())
+      navigation.navigate(EXERCISES[item.key].nextScreen, {
+        discipline
+      })
+    }
+  }
+
   const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
 
@@ -89,20 +101,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
           <Description selected={selected}>{item.description}</Description>
           <StyledLevel as={item.Level} />
         </View>
-        <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <ChevronRight fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Container>
     )
-  }
-
-  const handleNavigation = (item: ExerciseType): void => {
-    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < 4) {
-      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
-    } else {
-      setSelectedKey(item.key.toString())
-      navigation.navigate(EXERCISES[item.key].nextScreen, {
-        discipline: discipline
-      })
-    }
   }
 
   return (
@@ -111,7 +112,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => item.key.toString()}
+        keyExtractor={({ key }) => key.toString()}
         showsVerticalScrollIndicator={false}
       />
     </Root>

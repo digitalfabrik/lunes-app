@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
-import { ArrowNext } from '../../../../assets/images'
+import { ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -90,7 +90,7 @@ const ChoiceExerciseScreen = ({
       result: {
         discipline: { ...route.params.discipline },
         exercise: exerciseKey,
-        results: results
+        results
       }
     })
     setCurrentWord(0)
@@ -99,8 +99,18 @@ const ChoiceExerciseScreen = ({
 
   const count = documents?.length ?? 0
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
-    return answer1.article.id === answer2.article.id && answer1.word === answer2.word
+  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean =>
+    answer1.article.id === answer2.article.id && answer1.word === answer2.word
+
+  const updateResult = (result: DocumentResultType): void => {
+    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
+    const newResults = results
+    if (indexOfCurrentResult !== -1) {
+      newResults[indexOfCurrentResult] = result
+    } else {
+      newResults.push(result)
+    }
+    setResults(newResults)
   }
 
   const onClickAnswer = (clickedAnswer: Answer): void => {
@@ -132,13 +142,6 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const updateResult = (result: DocumentResultType): void => {
-    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
-    const newResults = results
-    indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
-    setResults(newResults)
-  }
-
   const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
 
@@ -147,8 +150,10 @@ const ChoiceExerciseScreen = ({
       setSelectedAnswer(null)
       onExerciseFinished(results)
       setResults([])
+    } else if (needsToBeRepeated) {
+      tryLater()
     } else {
-      needsToBeRepeated ? tryLater() : setCurrentWord(prevState => prevState + 1)
+      setCurrentWord(prevState => prevState + 1)
     }
     setSelectedAnswer(null)
     setDelayPassed(false)
@@ -182,7 +187,7 @@ const ChoiceExerciseScreen = ({
               {selectedAnswer !== null ? (
                 <Button
                   label={buttonLabel}
-                  iconLeft={ArrowNext}
+                  iconRight={ArrowRightIcon}
                   onPress={onFinishWord}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
@@ -190,7 +195,7 @@ const ChoiceExerciseScreen = ({
                 !lastWord && (
                   <Button
                     label={labels.exercises.tryLater}
-                    iconRight={ArrowNext}
+                    iconRight={ArrowRightIcon}
                     onPress={tryLater}
                     buttonTheme={BUTTONS_THEME.text}
                   />

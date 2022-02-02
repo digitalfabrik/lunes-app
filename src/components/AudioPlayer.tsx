@@ -3,7 +3,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
 
-import { VolumeUp } from '../../assets/images'
+import { VolumeUpCircleIcon } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import { stringifyDocument } from '../services/helpers'
 
@@ -25,12 +25,15 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
   width: 40px;
   height: 40px;
   border-radius: 50px;
-  background-color: ${props =>
-    props.disabled
-      ? props.theme.colors.lunesBlackUltralight
-      : props.isActive
-      ? props.theme.colors.lunesRed
-      : props.theme.colors.lunesRedDark};
+  background-color: ${props => {
+    if (props.disabled) {
+      return props.theme.colors.lunesBlackUltralight
+    }
+    if (props.isActive) {
+      return props.theme.colors.lunesRed
+    }
+    return props.theme.colors.lunesRedDark
+  }};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -48,6 +51,8 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
   const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
       .then(async status => {
+        // Status does not have to be 'success'
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (status === 'success') {
           setIsInitialized(true)
           await Tts.setDefaultLanguage('de-DE')
@@ -63,24 +68,23 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
 
   React.useEffect(() => {
     if (audio && !submittedAlternative) {
-      const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
+      const onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()
       })
-      const _onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
+      const onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
       setIsInitialized(true)
 
       return () => {
-        _onFinishedLoadingSubscription.remove()
-        _onSoundPlayerFinishPlaying.remove()
+        onFinishedLoadingSubscription.remove()
+        onSoundPlayerFinishPlaying.remove()
       }
-    } else {
-      initializeTts()
-
-      const ttsHandler = (): void => setIsActive(false)
-      const listener = Tts.addListener('tts-finish', ttsHandler)
-
-      return listener.remove
     }
+    initializeTts()
+
+    const ttsHandler = (): void => setIsActive(false)
+    const listener = Tts.addListener('tts-finish', ttsHandler)
+
+    return listener.remove
   }, [submittedAlternative, audio, initializeTts])
 
   const handleSpeakerClick = (): void => {
@@ -108,7 +112,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         isActive={isActive}
         onPress={handleSpeakerClick}
         accessibilityRole='button'>
-        <VolumeUp />
+        <VolumeUpCircleIcon />
       </VolumeIcon>
     </StyledView>
   )

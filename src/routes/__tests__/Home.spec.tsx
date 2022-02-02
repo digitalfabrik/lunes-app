@@ -56,14 +56,12 @@ const mockCustomDiscipline = {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  const getReturnTypeOf = <T,>(data: T): ReturnType<T> => {
-    return {
-      data: data,
-      error: null,
-      loading: false,
-      refresh: () => {}
-    }
-  }
+  const getReturnTypeOf = <T,>(data: T): ReturnType<T> => ({
+    data,
+    error: null,
+    loading: false,
+    refresh: () => undefined
+  })
 
   it('should show discipline', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnTypeOf(mockDisciplines))
@@ -102,14 +100,14 @@ describe('HomeScreen', () => {
     const swipeable = row.children[0] as ReactTestInstance
     swipeable.instance.openRight()
 
-    const deleteIcon = await findByTestId('trash-bin-icon')
+    const deleteIcon = await findByTestId('trash-icon')
     expect(deleteIcon).toBeDefined()
     await fireEvent.press(deleteIcon)
 
     const confirmationModelConfirmButton = await findByText(labels.home.deleteModal.confirm)
     fireEvent.press(confirmationModelConfirmButton)
 
-    expect(spyOnDeletion).toBeCalledTimes(1)
-    expect(spyOnDeletion).toBeCalledWith('test')
+    expect(spyOnDeletion).toHaveBeenCalledTimes(1)
+    expect(spyOnDeletion).toHaveBeenCalledWith('test')
   })
 })

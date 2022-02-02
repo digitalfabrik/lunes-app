@@ -16,14 +16,12 @@ jest.mock('../../../services/helpers', () => ({
   shuffleArray: jest.fn()
 }))
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
+jest.mock('react-native/Libraries/Image/Image', () => ({
+  ...jest.requireActual('react-native/Libraries/Image/Image'),
+  getSize: (uri: string, success: (w: number, h: number) => void) => {
+    success(1234, 1234)
   }
-})
+}))
 
 jest.mock('@react-navigation/elements')
 

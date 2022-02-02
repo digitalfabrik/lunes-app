@@ -20,7 +20,7 @@ describe('ErrorMessage', () => {
     const { getByText } = render(<ErrorMessage error={error} refresh={refresh} />, { wrapper: wrapWithTheme })
     const button = getByText(labels.general.error.retryButton)
     await fireEvent.press(button)
-    expect(refresh).toBeCalled()
+    expect(refresh).toHaveBeenCalled()
   })
 
   it('should show nothing if no error', () => {

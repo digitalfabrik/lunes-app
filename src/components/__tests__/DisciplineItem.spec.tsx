@@ -21,18 +21,17 @@ describe('Components', () => {
         needsTrainingSetEndpoint: false
       },
       children: <Text>Text of children</Text>,
-      onPress: () => {}
+      onPress: () => undefined
     }
 
-    const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI => {
-      return render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />, {
+    const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI =>
+      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />, {
         wrapper: wrapWithTheme
       })
-    }
 
     it('should call onPress event', () => {
       const onPress = jest.fn()
-      const { getByText } = renderDisciplineItem({ onPress: onPress })
+      const { getByText } = renderDisciplineItem({ onPress })
       expect(onPress).not.toHaveBeenCalled()
       const element = getByText('Discipline Item title')
       fireEvent.press(element)
