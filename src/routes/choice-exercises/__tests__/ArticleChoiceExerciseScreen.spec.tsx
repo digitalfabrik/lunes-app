@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
@@ -52,7 +52,7 @@ describe('ArticleChoiceExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
-  const route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'> = {
+  const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
@@ -75,7 +75,6 @@ describe('ArticleChoiceExerciseScreen', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-
     expect(getAllByText(/Helm/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)

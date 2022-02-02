@@ -10,7 +10,7 @@ import {
   TrophyIcon1,
   TrophyIcon2
 } from '../../assets/images'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -19,17 +19,17 @@ export const ExerciseKeys = {
   articleChoiceExercise: 2,
   writeExercise: 3
 }
-export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
-export interface ExerciseType {
-  key: ExerciseKeyType
+export interface Exercise {
+  key: ExerciseKey
   title: string
   description: string
   Level: typeof TrophyIcon0
-  nextScreen: keyof RoutesParamsType
+  nextScreen: keyof RoutesParams
 }
 
-export const EXERCISES: ExerciseType[] = [
+export const EXERCISES: Exercise[] = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
@@ -66,7 +66,7 @@ export const BUTTONS_THEME = {
   text: 'text'
 } as const
 
-export type ButtonThemeType = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
+export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
 interface ArticleType {
   readonly id: number
@@ -99,10 +99,10 @@ export const ARTICLES: ArticleType[] = [
 export type Article = typeof ARTICLES[number]
 
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
-export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
+export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
-export interface ResultType {
-  key: SimpleResultType
+interface ResultType {
+  key: SimpleResult
   title: string
   Icon: ComponentType<SvgProps>
   order: number
@@ -133,5 +133,7 @@ export const RESULTS: ResultType[] = [
     order: 2
   }
 ]
+
+export type Result = typeof RESULTS[number]
 
 export const numberOfMaxRetries = 3

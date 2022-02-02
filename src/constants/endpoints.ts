@@ -1,6 +1,6 @@
 import { Article } from './data'
 
-export interface DisciplineType {
+export interface Discipline {
   id: number
   title: string
   description: string
@@ -12,28 +12,28 @@ export interface DisciplineType {
   needsTrainingSetEndpoint: boolean
 }
 
-export interface AlternativeWordType {
+export interface AlternativeWord {
   word: string
   article: Article
 }
 
-export interface ImageType {
+export interface Image {
   id: number
   image: string
 }
 
-export type ImagesType = ImageType[]
+export type Images = Image[]
 
-export interface DocumentType {
+export interface Document {
   id: number
   word: string
   article: Article
-  document_image: ImagesType
+  document_image: Images
   audio: string
-  alternatives: AlternativeWordType[]
+  alternatives: AlternativeWord[]
 }
 
-export type DocumentsType = DocumentType[]
+export type Documents = Document[]
 
 export const ENDPOINTS = {
   disciplines: 'disciplines_by_level',
