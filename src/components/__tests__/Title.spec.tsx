@@ -2,7 +2,7 @@ import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import { CorrectEntriesIcon } from '../../../assets/images'
+import { CheckCircleIcon } from '../../../assets/images'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import Title from '../Title'
 
@@ -24,7 +24,7 @@ describe('ListTitle', () => {
 
   it('should render ListTitle with subtitle icon and children', () => {
     const subtitle = 'Subtitle'
-    const titleIcon = <CorrectEntriesIcon accessibilityLabel='correct' />
+    const titleIcon = <CheckCircleIcon accessibilityLabel='correct' />
     const childText = 'Child'
     const { getByText, getByA11yLabel } = renderListTitle({ subtitle, titleIcon, children: <Text>{childText}</Text> })
 

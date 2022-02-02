@@ -91,7 +91,7 @@ describe('WordChoiceExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: false
       }
     }

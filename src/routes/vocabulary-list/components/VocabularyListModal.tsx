@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CloseButton, ArrowNext } from '../../../../assets/images'
+import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
@@ -63,7 +63,7 @@ const VocabularyListModal = ({
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
-            <CloseButton onPress={() => setIsModalVisible(false)} />
+            <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} />
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
@@ -85,7 +85,7 @@ const VocabularyListModal = ({
             {documents.length > selectedDocumentIndex + 1 ? (
               <Button
                 label={labels.exercises.next}
-                iconRight={ArrowNext}
+                iconRight={ArrowRightIcon}
                 onPress={goToNextWord}
                 buttonTheme={BUTTONS_THEME.contained}
               />

@@ -90,7 +90,7 @@ const discipline = {
   isLeaf: false,
   description: '',
   icon: '',
-  isRoot: true,
+  parentTitle: null,
   needsTrainingSetEndpoint: false
 }
 
