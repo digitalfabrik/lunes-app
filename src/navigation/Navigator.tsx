@@ -1,7 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-import React from 'react'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native'
+import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import {
   ArrowLeftCircleIconWhite,
@@ -50,35 +51,39 @@ const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
-    return {
-      headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
+  const defaultOptions = (
+    title: string,
+    Icon: ComponentType<SvgProps>,
+    navigation: NavigationProp<any>,
+    showHomeButton: boolean,
+    screen?: string
+  ): StackNavigationOptions => ({
+    headerLeft: () => (
+      <NavigationHeaderLeft
+        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}>
+        {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
+        <NavigationTitle>{title}</NavigationTitle>
+      </NavigationHeaderLeft>
+    ),
+    ...(showHomeButton && {
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          onPressIn={() => setIsHomeButtonPressed(true)}
+          onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
-          <NavigationTitle>{title}</NavigationTitle>
-        </NavigationHeaderLeft>
-      ),
-      ...(showHomeButton && {
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            onPressIn={() => setIsHomeButtonPressed(true)}
-            onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
-            {isHomeButtonPressed ? <HomeCircleIconBlue /> : <HomeCircleIconWhite />}
-          </TouchableOpacity>
-        )
-      }),
-      headerTitle: '',
-      headerStyle: styles.header,
-      headerRightContainerStyle: styles.headerRightContainer,
-      headerLeftContainerStyle: styles.headerLeftContainer
-    }
-  }
+          {isHomeButtonPressed ? <HomeCircleIconBlue /> : <HomeCircleIconWhite />}
+        </TouchableOpacity>
+      )
+    }),
+    headerTitle: '',
+    headerStyle: styles.header,
+    headerRightContainerStyle: styles.headerRightContainer,
+    headerLeftContainerStyle: styles.headerLeftContainer
+  })
 
   return (
     <NavigationContainer>
@@ -88,7 +93,7 @@ const Navigator = (): JSX.Element => {
           options={({ route, navigation }) =>
             defaultOptions(
               route.params.parentTitle ?? labels.general.header.overview,
-              ArrowLeftCircleIconWhite,
+              ArrowBack,
               navigation,
               !!route.params.parentTitle
             )
@@ -98,35 +103,35 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.discipline.title, ArrowLeftCircleIconWhite, navigation, true)
+            defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, ArrowLeftCircleIconWhite, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, ArrowBack, navigation, false)
           }
           name='VocabularyList'
           component={VocabularyListScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
           }
           name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
           }
           name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, CloseCircleIconWhite, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation, false)
           }
           name='WriteExercise'
           component={WriteExerciseScreen}
@@ -142,16 +147,12 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) =>
-            defaultOptions(labels.results.resultsOverview, ArrowLeftCircleIconWhite, navigation, false)
-          }
+          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, ArrowBack, navigation, false)}
           name='ResultScreen'
           component={ResultScreen}
         />
         <Stack.Screen
-          options={({ navigation }) =>
-            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
-          }
+          options={({ navigation }) => defaultOptions(labels.general.header.overview, ArrowBack, navigation, false)}
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
         />

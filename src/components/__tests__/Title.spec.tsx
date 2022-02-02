@@ -12,9 +12,8 @@ describe('ListTitle', () => {
     description: 'Description'
   }
 
-  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI => {
-    return render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
-  }
+  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI =>
+    render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
 
   it('should render ListTitle with title and description', () => {
     const { getByText } = renderListTitle()

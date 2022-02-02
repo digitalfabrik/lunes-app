@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState, ReactElement, useCallback } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -42,8 +42,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
   )
 
   const current = documentsWithResults[currentIndex]
-  const nthRetry = current.numberOfTries ?? 0
-  const needsToBeRepeated = nthRetry < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
+  const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
     setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
@@ -65,8 +64,10 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
 
     if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
       finishExercise()
+    } else if (needsToBeRepeated) {
+      tryLater()
     } else {
-      needsToBeRepeated ? tryLater() : setCurrentIndex(oldValue => oldValue + 1)
+      setCurrentIndex(oldValue => oldValue + 1)
     }
   }
 

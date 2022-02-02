@@ -36,10 +36,8 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
     url: image.image
   }))
 
-  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => {
-    return !currentIndex || !allSize ? (
-      <></>
-    ) : (
+  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement =>
+    currentIndex && allSize ? (
       <PaginationView>
         <Pagination
           activeDotIndex={currentIndex - 1}
@@ -47,15 +45,14 @@ const ImageCarousel = ({ images }: ImageCarouselPropsType): ReactElement => {
           dotStyle={{ backgroundColor: COLORS.lunesBlack }}
         />
       </PaginationView>
+    ) : (
+      <></>
     )
-  }
 
-  const renderItem = (item: ItemType): ReactElement => {
-    return <StyledImage source={item.source} accessibilityRole='image' />
-  }
+  const renderItem = (item: ItemType): ReactElement => <StyledImage source={item.source} accessibilityRole='image' />
 
   return (
-    <ImageView testID={'Swipeable'}>
+    <ImageView testID='Swipeable'>
       <ImageViewer
         key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}

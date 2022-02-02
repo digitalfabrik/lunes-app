@@ -14,7 +14,7 @@ describe('Services', () => {
     it('should not delete customDisicpline from array if not exists', async () => {
       await AsyncStorage.setCustomDisciplines(customDisicplines)
       await expect(AsyncStorage.getCustomDisciplines()).resolves.toHaveLength(3)
-      await expect(AsyncStorage.deleteCustomDiscipline('fourth')).rejects.toThrowError('customDiscipline not available')
+      await expect(AsyncStorage.deleteCustomDiscipline('fourth')).rejects.toThrow('customDiscipline not available')
       await expect(AsyncStorage.getCustomDisciplines()).resolves.toStrictEqual(['first', 'second', 'third'])
     })
   })

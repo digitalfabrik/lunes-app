@@ -1,76 +1,94 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: `./tsconfig.json`
-  },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prefer-arrow'],
   extends: [
-    '@react-native-community',
-    'standard-with-typescript',
+    'airbnb',
+    'airbnb/hooks',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'prettier'
+    'prettier',
+    'plugin:jest/recommended',
+    'plugin:jest/style'
   ],
   env: {
     es6: true,
     'jest/globals': true
   },
-  ignorePatterns: ['**/reports/', '**/node_modules/', '**/ios/main.jsbundle', '**/dist/', '**/lib-dist/'],
+  ignorePatterns: ['**/reports/', '**/node_modules/', '**/ios/', '**/dist/', '**/lib-dist/'],
   rules: {
-    'arrow-parens': ['error', 'as-needed'],
-    curly: ['error', 'all'],
-    'no-loop-func': 'error',
-    'prefer-const': 'error',
-    'prefer-object-spread': 'error',
-    'prefer-template': 'error',
-
+    // Overly strict rules (for now)
+    'no-shadow': 'off',
     'react/display-name': 'off',
-    'react/no-access-state-in-setstate': 'error',
-    'react/no-did-mount-set-state': 'warn',
-    'react/no-did-update-set-state': 'warn',
-    'react/no-unescaped-entities': 'off',
-    'react/no-unused-prop-types': 'warn',
-    'react/no-typos': 'error',
-    'react/prefer-es6-class': ['error', 'always'],
-    'react/prop-types': 'off',
-
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'error',
-
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'off',
 
+    // Unwanted
+    'lines-between-class-members': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'react/require-default-props': 'off',
+
+    // Disabling since better @typescript-eslint rules available or they make no sense for ts projects
+    'default-case': 'off',
+    'no-use-before-define': 'off',
+    'import/no-unresolved': 'off',
+    'react/jsx-filename-extension': 'off',
+
+    curly: ['error', 'all'],
+    'no-magic-numbers': [
+      'error',
+      {
+        ignore: [-1, 0, 1, 2, 3, 4],
+        ignoreArrayIndexes: true
+      }
+    ],
+    'prefer-destructuring': ['error', { array: false }],
+    'prefer-object-spread': 'error',
+
+    'react/no-did-mount-set-state': 'error',
+    'react/no-unused-prop-types': 'warn',
+
+    '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/explicit-module-boundary-types': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-unnecessary-condition': 'error',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '_(unused)?',
+        varsIgnorePattern: '_(unused)?',
+        ignoreRestSiblings: true
+      }
+    ],
+    '@typescript-eslint/no-use-before-define': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/prefer-ts-expect-error': 'error',
+    '@typescript-eslint/restrict-template-expressions': 'error',
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
+
     'jest/consistent-test-it': 'error',
-    'jest/no-disabled-tests': 'error',
-    'jest/no-focused-tests': 'error',
-    'jest/no-identical-title': 'error',
-    'jest/no-test-prefixes': 'error',
-    'jest/prefer-to-have-length': 'error',
-    'jest/valid-describe-callback': 'error',
-    'jest/valid-expect': 'error'
+    'jest/no-alias-methods': 'error',
+
+    'prefer-arrow/prefer-arrow-functions': 'error'
+  },
+  parserOptions: {
+    project: './tsconfig.json'
   },
   overrides: [
     {
-      files: ['*.js'],
-      excludedFiles: ['*.spec.js', '**/__mocks__/*.js'],
+      files: ['*.spec.{ts,tsx}', '**/__mocks__/*.{ts,tsx}', '**/testing/*.{ts,tsx}', 'jest.setup.ts', 'jest.config.ts'],
       rules: {
-        'no-magic-numbers': [
-          'error',
-          {
-            ignore: [-1, 0, 1, 2],
-            ignoreArrayIndexes: true
-          }
-        ]
-      }
-    },
-    {
-      files: ['*.spec.{ts,tsx}'],
-      rules: {
-        '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-var-requires': 'off'
+        'global-require': 'off',
+        'no-console': 'off',
+        'no-magic-numbers': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off',
+        'jsx-a11y/no-static-element-interactions': 'off',
+        'react/jsx-props-no-spreading': 'off'
       }
     }
   ]
