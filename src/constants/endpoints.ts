@@ -7,7 +7,7 @@ export interface Discipline {
   icon: string
   numberOfChildren: number
   isLeaf: boolean
-  isRoot: boolean
+  parentTitle: string | null // if null then it is the root discipline
   apiKey?: string
   needsTrainingSetEndpoint: boolean
 }

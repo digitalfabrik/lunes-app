@@ -33,7 +33,7 @@ export const SingleChoice = ({
     <StyledContainer>
       {answers.map(answer => (
         <SingleChoiceListItem
-          key={answer.word}
+          key={`${answer.article.id}-${answer.word}`}
           answer={answer}
           onClick={onClick}
           correct={isAnswerEqual(answer, correctAnswer)}

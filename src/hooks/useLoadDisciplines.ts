@@ -29,7 +29,7 @@ const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipli
     //  The ServerResponse type is not completely correct
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     isLeaf: item.total_documents !== undefined,
-    isRoot: parent === null,
+    parentTitle: parent?.title ?? null,
     apiKey: parent?.apiKey,
     needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
   }))
