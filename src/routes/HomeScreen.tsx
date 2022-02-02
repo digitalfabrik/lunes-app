@@ -16,14 +16,14 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
 const Root = styled.ScrollView`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
 `
 const StyledText = styled.Text`
   margin-top: 50px;
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondaryColor};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
 `
@@ -45,7 +45,7 @@ const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.textSecondaryColor)};
 `
 
 interface HomeScreenProps {

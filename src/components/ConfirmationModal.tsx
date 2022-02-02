@@ -32,7 +32,7 @@ const Icon = styled.TouchableOpacity`
 const Message = styled.Text`
   text-align: center;
   font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
+  color: ${props => props.theme.colors.textColor};
   font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
   margin-bottom: 31px;

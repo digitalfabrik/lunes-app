@@ -22,7 +22,7 @@ const DeleteButton = styled(RectButton)`
   align-items: center;
   flex: 1;
   justify-content: center;
-  background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
+  background-color: ${props => props.theme.colors.functionalIncorrect};
   width: ${widthOfTrashButton};
 `
 

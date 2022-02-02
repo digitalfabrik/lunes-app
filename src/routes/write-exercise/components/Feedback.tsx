@@ -26,7 +26,7 @@ const Background = styled.ImageBackground`
 
 const StyledText = styled.Text`
   width: 100%;
-  color: ${props => props.theme.colors.lunesBlack};
+  color: ${props => props.theme.colors.primary};
   padding: 0 20px 0 10px;
 `
 

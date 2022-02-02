@@ -30,10 +30,10 @@ import { RoutesParams } from './NavigationTypes'
 
 export const styles = StyleSheet.create({
   header: {
-    backgroundColor: COLORS.lunesWhite,
+    backgroundColor: COLORS.background,
     shadowOpacity: 0,
     elevation: 0,
-    borderBottomColor: COLORS.lunesBlackUltralight,
+    borderBottomColor: COLORS.disabled,
     borderBottomWidth: 1
   },
   headerRightContainer: {

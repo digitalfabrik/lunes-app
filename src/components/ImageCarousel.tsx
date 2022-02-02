@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { Images } from '../constants/endpoints'
-import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View`
   height: 35%;
@@ -32,6 +31,7 @@ interface ImageUrl {
 }
 
 const ImageCarousel = ({ images }: ImageCarouselProps): ReactElement => {
+  const theme = useTheme()
   const imagesUrls: ImageUrl[] = images.map(image => ({
     url: image.image
   }))
@@ -42,7 +42,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps): ReactElement => {
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}
-          dotStyle={{ backgroundColor: COLORS.lunesBlack }}
+          dotStyle={{ backgroundColor: theme.colors.primary }}
         />
       </PaginationView>
     ) : (
@@ -58,7 +58,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps): ReactElement => {
         imageUrls={imagesUrls}
         renderImage={renderItem}
         renderIndicator={renderIndicator}
-        backgroundColor={COLORS.lunesWhite}
+        backgroundColor={theme.colors.background}
       />
     </ImageView>
   )

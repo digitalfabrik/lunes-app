@@ -18,7 +18,7 @@ import { moveToEnd } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
 `
@@ -26,17 +26,6 @@ const ExerciseContainer = styled.View`
 const ButtonContainer = styled.View`
   align-items: center;
   margin: 7% 0;
-`
-
-export const LightLabelInput = styled.Text<{ styledInput?: string }>`
-  text-align: center;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${prop =>
-    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
 `
 
 interface SingleChoiceExerciseProps {

@@ -27,25 +27,25 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  border-color: ${props => props.theme.colors.lunesBlackUltralight};
+  border-color: ${props => props.theme.colors.disabled};
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     if (props.correct && (props.selected || props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.functionalCorrect
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.functionalIncorrect
     }
     return props.theme.colors.white
   }};
   shadow-color: ${props => {
     if (props.correct) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.functionalCorrect
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.functionalIncorrect
     }
     return props.theme.colors.shadow
   }};
@@ -77,10 +77,10 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   margin-left: 3.5%;
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
+      return props.theme.colors.background
     }
     if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     return getArticleColor(props.article)
   }};
@@ -90,27 +90,27 @@ const ArticleText = styled(StyledText)<StyledListElementProps>`
   text-align: center;
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.functionalCorrect
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.functionalIncorrect
     }
-    return props.theme.colors.lunesGreyDark
+    return props.theme.colors.textColor
   }};
 `
 
 const Word = styled(StyledText)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
+      return props.theme.colors.background
     }
     if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
-    return props.theme.colors.lunesGreyDark
+    return props.theme.colors.textColor
   }};
 `
 

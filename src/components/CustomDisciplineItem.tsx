@@ -15,7 +15,7 @@ const Placeholder = styled.View`
   height: ${wp('22%')}px;
   background-color: ${props => props.theme.colors.white};
   margin: 0px 16px 8px 16px;
-  border: 1px solid ${prop => prop.theme.colors.lunesBlackUltralight};
+  border: 1px solid ${prop => prop.theme.colors.disabled};
   border-radius: 2px;
 `
 
@@ -27,14 +27,14 @@ const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
+  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.textSecondaryColor)};
 `
 
 const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.lunesRed};
+  color: ${props => props.theme.colors.primary};
   margin: 10px;
 `
 
