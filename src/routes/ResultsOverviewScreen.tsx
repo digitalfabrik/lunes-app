@@ -4,7 +4,7 @@ import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 
-import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
+import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
@@ -131,7 +131,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
             })
           }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
-          <FinishIcon />
+          <DoubleCheckIcon />
         </RightHeader>
       )
     })
@@ -182,7 +182,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
               }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
           </StyledText>
         </LeftSide>
-        <Arrow fill={arrowColor} />
+        <ChevronRight fill={arrowColor} />
       </Contained>
     )
   }

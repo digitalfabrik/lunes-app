@@ -4,7 +4,7 @@ import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CircularFinishIcon, ArrowNext, RepeatIcon } from '../../assets/images'
+import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Loading from '../components/Loading'
 import Title from '../components/Title'
@@ -57,7 +57,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => 
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <CircularFinishIcon />
+            <DoubleCheckCircleIconWhite />
           </TouchableOpacity>
         )
       })
@@ -107,7 +107,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => 
           })
         }
         label={`${labels.results.show} ${nextResultType.title} ${labels.results.entries}`}
-        iconLeft={ArrowNext}
+        iconLeft={ArrowRightIcon}
         buttonTheme={BUTTONS_THEME.text}
       />
     </>

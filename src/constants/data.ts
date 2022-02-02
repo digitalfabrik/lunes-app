@@ -2,13 +2,13 @@ import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
 import {
-  AlmostCorrectEntriesIcon,
-  CorrectEntriesIcon,
-  easy,
-  hard,
-  IncorrectEntriesIcon,
-  mideasy,
-  midhard
+  CheckCloseCircleIcon,
+  CheckCircleIcon,
+  TrophyIcon0,
+  TrophyIcon3,
+  CloseCircleIcon,
+  TrophyIcon1,
+  TrophyIcon2
 } from '../../assets/images'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import labels from './labels.json'
@@ -25,7 +25,7 @@ export interface Exercise {
   key: ExerciseKey
   title: string
   description: string
-  Level: typeof easy
+  Level: typeof TrophyIcon0
   nextScreen: keyof RoutesParams
 }
 
@@ -34,28 +34,28 @@ export const EXERCISES: Exercise[] = [
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
-    Level: easy,
+    Level: TrophyIcon0,
     nextScreen: 'VocabularyList'
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
-    Level: mideasy,
+    Level: TrophyIcon1,
     nextScreen: 'WordChoiceExercise'
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
-    Level: midhard,
+    Level: TrophyIcon2,
     nextScreen: 'ArticleChoiceExercise'
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
-    Level: hard,
+    Level: TrophyIcon3,
     nextScreen: 'WriteExercise'
   }
 ]
@@ -116,19 +116,19 @@ export interface Answer {
 export const RESULTS: ResultType[] = [
   {
     key: 'correct',
-    Icon: CorrectEntriesIcon,
+    Icon: CheckCircleIcon,
     title: 'Richtige',
     order: 0
   },
   {
     key: 'similar',
-    Icon: AlmostCorrectEntriesIcon,
+    Icon: CheckCloseCircleIcon,
     title: 'Fast richtige',
     order: 1
   },
   {
     key: 'incorrect',
-    Icon: IncorrectEntriesIcon,
+    Icon: CloseCircleIcon,
     title: 'Falsche',
     order: 2
   }

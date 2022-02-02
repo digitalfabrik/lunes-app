@@ -100,7 +100,7 @@ describe('HomeScreen', () => {
     const swipeable = row.children[0] as ReactTestInstance
     swipeable.instance.openRight()
 
-    const deleteIcon = await findByTestId('trash-bin-icon')
+    const deleteIcon = await findByTestId('trash-icon')
     expect(deleteIcon).toBeDefined()
     await fireEvent.press(deleteIcon)
 

@@ -3,7 +3,7 @@ import { Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
+import { ChevronRight } from '../../assets/images'
 import { Discipline } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
@@ -54,7 +54,7 @@ const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemPro
         </Title>
         {children}
       </TextContainer>
-      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+      <ChevronRight fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
     </Container>
   )
 }
