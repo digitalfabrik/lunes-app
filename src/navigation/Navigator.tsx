@@ -93,7 +93,7 @@ const Navigator = (): JSX.Element => {
           options={({ route, navigation }) =>
             defaultOptions(
               route.params.parentTitle ?? labels.general.header.overview,
-              ArrowBack,
+              ArrowLeftCircleIconWhite,
               navigation,
               !!route.params.parentTitle
             )
@@ -103,35 +103,35 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route, navigation }: any) =>
-            defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
+            defaultOptions(route.params.discipline.title, ArrowLeftCircleIconWhite, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, ArrowBack, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, ArrowLeftCircleIconWhite, navigation, false)
           }
           name='VocabularyList'
           component={VocabularyListScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
           }
           name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
           }
           name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, CloseCircleIconWhite, navigation, false)
           }
           name='WriteExercise'
           component={WriteExerciseScreen}
@@ -147,12 +147,16 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, ArrowBack, navigation, false)}
+          options={({ navigation }) =>
+            defaultOptions(labels.results.resultsOverview, ArrowLeftCircleIconWhite, navigation, false)
+          }
           name='ResultScreen'
           component={ResultScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overview, ArrowBack, navigation, false)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
         />
