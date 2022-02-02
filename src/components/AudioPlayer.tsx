@@ -3,7 +3,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
 
-import { VolumeUp } from '../../assets/images'
+import { VolumeUpCircleIcon } from '../../assets/images'
 import { DocumentType } from '../constants/endpoints'
 import { stringifyDocument } from '../services/helpers'
 
@@ -112,7 +112,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         isActive={isActive}
         onPress={handleSpeakerClick}
         accessibilityRole='button'>
-        <VolumeUp />
+        <VolumeUpCircleIcon />
       </VolumeIcon>
     </StyledView>
   )

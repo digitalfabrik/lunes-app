@@ -26,7 +26,7 @@ const mockDisciplines = [
     icon: 'none',
     numberOfChildren: 1,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: null,
     needsTrainingSetEndpoint: false
   },
   {
@@ -36,7 +36,7 @@ const mockDisciplines = [
     icon: 'none',
     numberOfChildren: 1,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: null,
     needsTrainingSetEndpoint: false
   }
 ]
@@ -49,7 +49,7 @@ const mockCustomDiscipline = {
   numberOfChildren: 1,
   isLeaf: false,
   apiKey: 'test',
-  isRoot: true,
+  parentTitle: null,
   needsTrainingSetEndpoint: false
 }
 
@@ -100,7 +100,7 @@ describe('HomeScreen', () => {
     const swipeable = row.children[0] as ReactTestInstance
     swipeable.instance.openRight()
 
-    const deleteIcon = await findByTestId('trash-bin-icon')
+    const deleteIcon = await findByTestId('trash-icon')
     expect(deleteIcon).toBeDefined()
     await fireEvent.press(deleteIcon)
 

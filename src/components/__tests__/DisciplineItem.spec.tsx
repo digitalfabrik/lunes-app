@@ -17,7 +17,7 @@ describe('Components', () => {
         title: 'Discipline Item title',
         numberOfChildren: 1,
         isLeaf: false,
-        isRoot: true,
+        parentTitle: null,
         needsTrainingSetEndpoint: false
       },
       children: <Text>Text of children</Text>,
