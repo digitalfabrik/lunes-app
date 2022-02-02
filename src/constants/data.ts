@@ -101,7 +101,7 @@ export type Article = typeof ARTICLES[number]
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
 export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
-export interface ResultType {
+interface ResultType {
   key: SimpleResult
   title: string
   Icon: ComponentType<SvgProps>
@@ -133,5 +133,7 @@ export const RESULTS: ResultType[] = [
     order: 2
   }
 ]
+
+export type Result = typeof RESULTS[number]
 
 export const numberOfMaxRetries = 3

@@ -1,4 +1,4 @@
-import { ExerciseKey, ResultType, SimpleResult } from '../constants/data'
+import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import { Discipline, Documents, Document } from '../constants/endpoints'
 
 export interface DocumentResult extends Document {
@@ -52,7 +52,7 @@ export type RoutesParams = {
   }
   ResultScreen: {
     result: ResultScreenData
-    resultType: ResultType
+    resultType: Result
     counts: Counts
   }
   CorrectResults: undefined

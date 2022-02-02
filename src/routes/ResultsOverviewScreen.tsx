@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
@@ -24,7 +24,7 @@ const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-` as ComponentType as new () => FlatList<ResultType>
+` as ComponentType as new () => FlatList<Result>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -150,12 +150,12 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     </StyledTitle>
   )
 
-  const Item = ({ item }: { item: ResultType }): ReactElement | null => {
+  const Item = ({ item }: { item: Result }): ReactElement | null => {
     const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
-    const handleNavigation = ({ key }: ResultType): void => {
+    const handleNavigation = ({ key }: Result): void => {
       setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
