@@ -1,7 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-import React from 'react'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native'
+import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import { ArrowBack, CloseButton, ArrowBackPressed, HomeButtonPressed, Home } from '../../assets/images'
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
@@ -44,35 +45,39 @@ const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
-    return {
-      headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
+  const defaultOptions = (
+    title: string,
+    Icon: ComponentType<SvgProps>,
+    navigation: NavigationProp<any>,
+    showHomeButton: boolean,
+    screen?: string
+  ): StackNavigationOptions => ({
+    headerLeft: () => (
+      <NavigationHeaderLeft
+        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}>
+        {isPressed ? <ArrowBackPressed /> : <Icon />}
+        <NavigationTitle>{title}</NavigationTitle>
+      </NavigationHeaderLeft>
+    ),
+    ...(showHomeButton && {
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          onPressIn={() => setIsHomeButtonPressed(true)}
+          onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isPressed ? <ArrowBackPressed /> : <Icon />}
-          <NavigationTitle>{title}</NavigationTitle>
-        </NavigationHeaderLeft>
-      ),
-      ...(showHomeButton && {
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            onPressIn={() => setIsHomeButtonPressed(true)}
-            onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
-            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-          </TouchableOpacity>
-        )
-      }),
-      headerTitle: '',
-      headerStyle: styles.header,
-      headerRightContainerStyle: styles.headerRightContainer,
-      headerLeftContainerStyle: styles.headerLeftContainer
-    }
-  }
+          {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
+        </TouchableOpacity>
+      )
+    }),
+    headerTitle: '',
+    headerStyle: styles.header,
+    headerRightContainerStyle: styles.headerRightContainer,
+    headerLeftContainerStyle: styles.headerLeftContainer
+  })
 
   return (
     <NavigationContainer>
@@ -91,7 +96,7 @@ const Navigator = (): JSX.Element => {
           component={DisciplineSelectionScreen}
         />
         <Stack.Screen
-          options={({ route, navigation }: any) =>
+          options={({ route, navigation }) =>
             defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
           }
           name='Exercises'

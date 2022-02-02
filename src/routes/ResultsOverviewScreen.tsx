@@ -203,7 +203,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
         data={RESULTS}
         ListHeaderComponent={Header}
         renderItem={Item}
-        keyExtractor={item => item.key}
+        keyExtractor={({ key }) => key}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={Footer}
         ListFooterComponentStyle={styles.footer}

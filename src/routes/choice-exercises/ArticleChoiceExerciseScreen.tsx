@@ -16,9 +16,8 @@ interface ArticleChoiceExerciseScreenProps {
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const response = useLoadDocuments(route.params.discipline, true)
 
-  const documentToAnswers = (document: Document): Answer[] => {
-    return ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
-  }
+  const documentToAnswers = (document: Document): Answer[] =>
+    ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
 
   return (
     <SingleChoiceExercise

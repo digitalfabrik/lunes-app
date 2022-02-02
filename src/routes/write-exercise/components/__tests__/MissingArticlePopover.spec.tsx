@@ -12,7 +12,7 @@ jest.mock('react-native-popover-view', () => ({
 
 describe('MissingArticlePopover', () => {
   it('should show Popover when visible', () => {
-    const { getByTestId } = render(<MissingArticlePopover setIsPopoverVisible={jest.fn()} isVisible={true} />, {
+    const { getByTestId } = render(<MissingArticlePopover setIsPopoverVisible={jest.fn()} isVisible />, {
       wrapper: wrapWithTheme
     })
     expect(getByTestId('popover').props.isVisible).toBeTruthy()

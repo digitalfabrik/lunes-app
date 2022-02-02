@@ -84,18 +84,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         <PlusIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines?.map(customDiscipline => {
-        return (
-          <CustomDisciplineItem
-            key={customDiscipline}
-            apiKey={customDiscipline}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-            navigation={navigation}
-            refresh={refreshCustomDisciplines}
-          />
-        )
-      })}
+      {customDisciplines?.map(customDiscipline => (
+        <CustomDisciplineItem
+          key={customDiscipline}
+          apiKey={customDiscipline}
+          selectedId={selectedId}
+          setSelectedId={setSelectedId}
+          navigation={navigation}
+          refresh={refreshCustomDisciplines}
+        />
+      ))}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {disciplines?.map(item => {
           if (item.numberOfChildren === 0) {

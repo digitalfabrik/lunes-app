@@ -77,11 +77,10 @@ describe('WriteExercise', () => {
     }
   }
 
-  const renderWriteExercise = (): RenderAPI => {
-    return render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
+  const renderWriteExercise = (): RenderAPI =>
+    render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-  }
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()

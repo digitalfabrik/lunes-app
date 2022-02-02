@@ -75,7 +75,6 @@ describe('ArticleChoiceExerciseScreen', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-
     expect(getAllByText(/Helm/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)

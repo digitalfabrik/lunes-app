@@ -32,9 +32,7 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 }
 
 // fix ios issue for Django, that requires trailing slash in request url https://github.com/square/retrofit/issues/1037
-export const addTrailingSlashToUrl = (url: string): string => {
-  return url.endsWith('/') ? url : `${url}/`
-}
+export const addTrailingSlashToUrl = (url: string): string => (url.endsWith('/') ? url : `${url}/`)
 
 export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
@@ -51,8 +49,9 @@ export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
 export const shuffleArray = <T>(array: T[]): void => {
-  for (let i = array.length - 1; i > 0; i--) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
+    // eslint-disable-next-line no-param-reassign
     ;[array[i], array[j]] = [array[j], array[i]]
   }
 }

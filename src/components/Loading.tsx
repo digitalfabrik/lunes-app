@@ -19,7 +19,7 @@ const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
     <>
       {isLoading ? (
         <Indicator>
-          <ActivityIndicator size='large' color={theme.colors.lunesBlack} testID={'loading'} />
+          <ActivityIndicator size='large' color={theme.colors.lunesBlack} testID='loading' />
         </Indicator>
       ) : (
         children

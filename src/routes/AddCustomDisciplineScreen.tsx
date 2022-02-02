@@ -58,6 +58,8 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
+const HTTP_STATUS_CODE_FORBIDDEN = 403
+
 interface AddCustomDisciplineScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'AddCustomDiscipline'>
 }
@@ -80,14 +82,14 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
     }
     setLoading(true)
     loadGroupInfo(code)
-      .then(async () => {
-        return await AsyncStorage.setCustomDisciplines([...customDisciplines, code])
-      })
+      .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        return error.response?.status === 403
-          ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-          : setErrorMessage(labels.addCustomDiscipline.error.technical)
+        setErrorMessage(
+          error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
+            ? labels.addCustomDiscipline.error.wrongCode
+            : labels.addCustomDiscipline.error.technical
+        )
       })
       .finally(() => setLoading(false))
   }
@@ -104,7 +106,9 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
             value={code}
             onChangeText={setCode}
           />
-          <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+          <ErrorContainer>
+            <ErrorText>{errorMessage}</ErrorText>
+          </ErrorContainer>
           <Button
             label={labels.addCustomDiscipline.submitLabel}
             buttonTheme={BUTTONS_THEME.contained}

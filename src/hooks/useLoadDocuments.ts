@@ -26,7 +26,7 @@ const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
       article: ARTICLES[it.article],
       word: it.alt_word
     }))
-  })) ?? []
+  }))
 
 export const loadDocuments = async (discipline: Discipline): Promise<Document[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
@@ -35,7 +35,7 @@ export const loadDocuments = async (discipline: Discipline): Promise<Document[]>
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline, shuffle: Boolean = false): Return<Document[]> => {
+const useLoadDocuments = (discipline: Discipline, shuffle = false): Return<Document[]> => {
   const documents = useLoadAsync(loadDocuments, discipline)
   if (shuffle && documents.data) {
     shuffleArray(documents.data)

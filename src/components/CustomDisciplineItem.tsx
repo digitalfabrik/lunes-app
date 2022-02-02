@@ -55,9 +55,7 @@ const CustomDisciplineItem = ({
 }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
-  const idToSelectedIdString = (id: number): string => {
-    return `custom-${id}`
-  }
+  const idToSelectedIdString = (id: number): string => `custom-${id}`
 
   const navigate = (): void => {
     if (!data) {
@@ -73,29 +71,26 @@ const CustomDisciplineItem = ({
     return (
       <Placeholder>
         <LoadingSpinner>
-          <Loading isLoading={true} />
+          <Loading isLoading />
         </LoadingSpinner>
       </Placeholder>
     )
-  } else {
-    return (
-      <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
-        {data ? (
-          <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
-            <Description selected={idToSelectedIdString(data.id) === selectedId}>
-              {childrenDescription(data)}
-            </Description>
-          </DisciplineItem>
-        ) : (
-          <Placeholder>
-            <ErrorText>
-              {labels.home.errorLoadCustomDiscipline} {apiKey}
-            </ErrorText>
-          </Placeholder>
-        )}
-      </DeletionSwipeable>
-    )
   }
+  return (
+    <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
+      {data ? (
+        <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+          <Description selected={idToSelectedIdString(data.id) === selectedId}>{childrenDescription(data)}</Description>
+        </DisciplineItem>
+      ) : (
+        <Placeholder>
+          <ErrorText>
+            {labels.home.errorLoadCustomDiscipline} {apiKey}
+          </ErrorText>
+        </Placeholder>
+      )}
+    </DeletionSwipeable>
+  )
 }
 
 export default CustomDisciplineItem

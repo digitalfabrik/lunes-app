@@ -56,14 +56,12 @@ const mockCustomDiscipline = {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  const getReturnOf = <T,>(data: T): Return<T> => {
-    return {
-      data: data,
-      error: null,
-      loading: false,
-      refresh: () => {}
-    }
-  }
+  const getReturnOf = <T,>(data: T): Return<T> => ({
+    data,
+    error: null,
+    loading: false,
+    refresh: () => undefined
+  })
 
   it('should show discipline', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
@@ -109,7 +107,7 @@ describe('HomeScreen', () => {
     const confirmationModelConfirmButton = await findByText(labels.home.deleteModal.confirm)
     fireEvent.press(confirmationModelConfirmButton)
 
-    expect(spyOnDeletion).toBeCalledTimes(1)
-    expect(spyOnDeletion).toBeCalledWith('test')
+    expect(spyOnDeletion).toHaveBeenCalledTimes(1)
+    expect(spyOnDeletion).toHaveBeenCalledWith('test')
   })
 })

@@ -13,6 +13,8 @@ interface WordChoiceExerciseScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
 }
 
+export const MIN_WORDS = 4
+
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
   const response = useLoadDocuments(route.params.discipline, true)
 
@@ -25,7 +27,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     const usedDocuments = [correctDocument]
 
     // Pick 3 false answer options
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < MIN_WORDS - 1; i += 1) {
       let rand: number
       // Pick a document as false answer option that was not picked already
       do {
@@ -44,8 +46,8 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     const answers = generateFalseAnswers(document)
 
     // Insert correct answer on random position
-    const positionOfCorrectAnswer = Math.floor(Math.random() * 4)
-    answers.splice(positionOfCorrectAnswer, 0, { article: article, word })
+    const positionOfCorrectAnswer = Math.floor(Math.random() * MIN_WORDS)
+    answers.splice(positionOfCorrectAnswer, 0, { article, word })
     return answers
   }
 
