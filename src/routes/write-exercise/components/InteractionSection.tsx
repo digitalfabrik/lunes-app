@@ -7,10 +7,10 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
-import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
+import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
-import { DocumentResultType } from '../../../navigation/NavigationTypes'
+import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
@@ -41,9 +41,9 @@ const Speaker = styled.View`
 `
 
 interface InteractionSectionProps {
-  documentWithResult: DocumentResultType
+  documentWithResult: DocumentResult
   isAnswerSubmitted: boolean
-  storeResult: (result: DocumentResultType) => void
+  storeResult: (result: DocumentResult) => void
 }
 
 const almostCorrectThreshold = 0.6
@@ -72,7 +72,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     }
   }, [isAnswerSubmitted])
 
-  const validateAnswer = (article: string, word: string): SimpleResultType => {
+  const validateAnswer = (article: string, word: string): SimpleResult => {
     const validAnswers = [
       { article: documentWithResult.article, word: documentWithResult.word },
       ...documentWithResult.alternatives
@@ -92,7 +92,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
 
-  const updateAndStoreResult = (score: SimpleResultType): void => {
+  const updateAndStoreResult = (score: SimpleResult): void => {
     const nthRetry = documentWithResult.numberOfTries + 1
     const documentWithResultToStore = {
       ...documentWithResult,

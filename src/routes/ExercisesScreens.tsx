@@ -8,10 +8,10 @@ import styled from 'styled-components/native'
 import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { EXERCISES, ExerciseType } from '../constants/data'
+import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
@@ -24,7 +24,7 @@ const ItemTitle = styled(FlatList)`
   width: ${wp('100%')}px;
   padding-right: ${wp('5%')}px;
   padding-left: ${wp('5%')}px;
-` as ComponentType as new () => FlatList<ExerciseType>
+` as ComponentType as new () => FlatList<Exercise>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -59,12 +59,12 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
 `
 
-interface ExercisesScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'Exercises'>
-  navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
+interface ExercisesScreenProps {
+  route: RouteProp<RoutesParams, 'Exercises'>
+  navigation: StackNavigationProp<RoutesParams, 'Exercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline } = route.params
   const { title } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -77,7 +77,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
-  const handleNavigation = (item: ExerciseType): void => {
+  const handleNavigation = (item: Exercise): void => {
     if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
@@ -88,7 +88,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }
   }
 
-  const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
+  const Item = ({ item }: { item: Exercise }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
 
     return (

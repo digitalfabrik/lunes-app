@@ -1,5 +1,6 @@
 import { mocked } from 'jest-mock'
 
+import { Discipline } from '../../constants/endpoints'
 import { getFromEndpoint } from '../../services/axios'
 import { loadDisciplines } from '../useLoadDisciplines'
 
@@ -12,7 +13,7 @@ const parent = {
   isLeaf: false,
   description: '',
   icon: '',
-  isRoot: true,
+  parentTitle: null,
   needsTrainingSetEndpoint: false
 }
 
@@ -39,7 +40,7 @@ const testData = [
   {
     created_by: 2,
     description: 'Discipline to test custom stuff',
-    icon: null,
+    icon: 'https://lunes-test.tuerantuer.org/media/images/1cfe1860-3166-11ec-bdd1-960000c17cb9.jpg',
     id: 21,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
@@ -47,7 +48,7 @@ const testData = [
   }
 ]
 
-const expectedData = [
+const expectedData = (parent: Discipline | null): Array<Discipline & Record<string, any>> => [
   {
     apiKey: undefined,
     created_by: null,
@@ -55,7 +56,7 @@ const expectedData = [
     icon: 'https://lunes-test.tuerantuer.org/media/images/icon-metall-elektro-maschienen3x.png',
     id: 3,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: parent?.title ?? null,
     numberOfChildren: 7,
     title: 'Metall, Elektro & Maschinen',
     total_discipline_children: 0,
@@ -68,7 +69,7 @@ const expectedData = [
     icon: 'https://lunes-test.tuerantuer.org/media/images/do-not-touch.png',
     id: 28,
     isLeaf: true,
-    isRoot: true,
+    parentTitle: parent?.title ?? null,
     numberOfChildren: 9,
     title: 'Sicherheit & Arbeitsschutz',
     total_documents: 9,
@@ -78,10 +79,10 @@ const expectedData = [
     apiKey: undefined,
     created_by: 2,
     description: 'Discipline to test custom stuff',
-    icon: null,
+    icon: 'https://lunes-test.tuerantuer.org/media/images/1cfe1860-3166-11ec-bdd1-960000c17cb9.jpg',
     id: 21,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: parent?.title ?? null,
     numberOfChildren: 1,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
@@ -124,8 +125,13 @@ describe('loadDiscipline', () => {
     })
   })
 
-  it('should map data correctly', async () => {
+  it('should map data correctly for set parent', async () => {
+    const responseData = await loadDisciplines(parent)
+    expect(responseData).toEqual(expectedData(parent))
+  })
+
+  it('should map data correctly for no parent', async () => {
     const responseData = await loadDisciplines(null)
-    expect(responseData).toEqual(expectedData)
+    expect(responseData).toEqual(expectedData(null))
   })
 })

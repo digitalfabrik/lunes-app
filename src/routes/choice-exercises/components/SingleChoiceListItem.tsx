@@ -121,7 +121,7 @@ const Overlay = styled.View`
   height: 100%;
 `
 
-export interface SingleChoiceListItemPropsType {
+export interface SingleChoiceListItemProps {
   answer: Answer
   onClick: (answer: Answer) => void
   correct: boolean
@@ -146,7 +146,7 @@ const SingleChoiceListItem = ({
   anyAnswerSelected,
   delayPassed,
   disabled = false
-}: SingleChoiceListItemPropsType): JSX.Element => {
+}: SingleChoiceListItemProps): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity =

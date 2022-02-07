@@ -9,7 +9,7 @@ import Button from '../Button'
 
 import resetAllMocks = jest.resetAllMocks
 
-type ButtonPropsType = ComponentProps<typeof Button>
+type ButtonProps = ComponentProps<typeof Button>
 
 describe('Components', () => {
   describe('Button', () => {
@@ -19,7 +19,7 @@ describe('Components', () => {
       resetAllMocks()
     })
 
-    const renderButton = (overrideProps: Partial<ButtonPropsType> = {}): RenderAPI => {
+    const renderButton = (overrideProps: Partial<ButtonProps> = {}): RenderAPI => {
       const buttonProps = {
         onPress: onPressMock,
         label: 'Button label',

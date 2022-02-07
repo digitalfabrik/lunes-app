@@ -2,9 +2,9 @@ import { RouteProp } from '@react-navigation/native'
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
-import { DocumentType } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import wrapWithTheme from '../../../testing/wrapWithTheme'
@@ -32,7 +32,7 @@ describe('WordChoiceExerciseScreen', () => {
   })
 
   // at least 4 documents are needed to generate sufficient false answers
-  const testDocuments: DocumentType[] = [
+  const testDocuments: Document[] = [
     {
       audio: '',
       word: 'Hose',
@@ -80,7 +80,7 @@ describe('WordChoiceExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WordChoiceExercise'> = {
+  const route: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
     key: '',
     name: 'WordChoiceExercise',
     params: {
@@ -91,7 +91,7 @@ describe('WordChoiceExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: false
       }
     }

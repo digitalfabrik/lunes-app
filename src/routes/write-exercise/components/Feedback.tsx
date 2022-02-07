@@ -12,7 +12,7 @@ import {
   CloseCircleIconBold
 } from '../../../../assets/images'
 import labels from '../../../constants/labels.json'
-import { DocumentResultType } from '../../../navigation/NavigationTypes'
+import { DocumentResult } from '../../../navigation/NavigationTypes'
 
 const Background = styled.ImageBackground`
   width: ${wp('80%')}px;
@@ -30,13 +30,13 @@ const StyledText = styled.Text`
   padding: 0 20px 0 10px;
 `
 
-export interface FeedbackPropsType {
-  documentWithResult: DocumentResultType
+export interface FeedbackProps {
+  documentWithResult: DocumentResult
   submission: string | null
   needsToBeRepeated: boolean
 }
 
-const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackPropsType): ReactElement | null => {
+const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
   const { result } = documentWithResult
   let Icon
   let background
