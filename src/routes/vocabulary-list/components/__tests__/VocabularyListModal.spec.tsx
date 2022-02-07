@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
-import { DocumentsType } from '../../../../constants/endpoints'
+import { Documents } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import VocabularyListModal from '../VocabularyListModal'
@@ -12,7 +12,7 @@ jest.mock('../../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyListModal', () => {
-  const documents: DocumentsType = [
+  const documents: Documents = [
     {
       id: 1,
       word: 'Hammer',

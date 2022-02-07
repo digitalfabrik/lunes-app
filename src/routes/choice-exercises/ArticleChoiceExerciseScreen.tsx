@@ -3,23 +3,20 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
-import { DocumentType } from '../../constants/endpoints'
+import { Document } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
-interface ArticleChoiceExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'>
-  navigation: StackNavigationProp<RoutesParamsType, 'ArticleChoiceExercise'>
+interface ArticleChoiceExerciseScreenProps {
+  route: RouteProp<RoutesParams, 'ArticleChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'ArticleChoiceExercise'>
 }
 
-const ArticleChoiceExerciseScreen = ({
-  navigation,
-  route
-}: ArticleChoiceExerciseScreenPropsType): ReactElement | null => {
+const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const response = useLoadDocuments(route.params.discipline, true)
 
-  const documentToAnswers = (document: DocumentType): Answer[] =>
+  const documentToAnswers = (document: Document): Answer[] =>
     ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
 
   return (

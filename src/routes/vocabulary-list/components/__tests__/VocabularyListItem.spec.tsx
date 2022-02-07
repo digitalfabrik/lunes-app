@@ -3,14 +3,14 @@ import React from 'react'
 import 'react-native'
 
 import { ARTICLES } from '../../../../constants/data'
-import { DocumentType } from '../../../../constants/endpoints'
+import { Document } from '../../../../constants/endpoints'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import VocabularyListItem from '../VocabularyListItem'
 
 jest.mock('../../../../components/AudioPlayer', () => () => null)
 
 describe('VocabularyListItem', () => {
-  const document: DocumentType = {
+  const document: Document = {
     article: ARTICLES[1],
     audio: '',
     id: 0,

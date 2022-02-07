@@ -4,13 +4,13 @@ import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 
-import { Arrow, FinishIcon, RepeatIcon } from '../../assets/images'
+import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, ResultType, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { CountsType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { Counts, RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
@@ -24,7 +24,7 @@ const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-` as ComponentType as new () => FlatList<ResultType>
+` as ComponentType as new () => FlatList<Result>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -101,16 +101,16 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface ResultOverviewScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'ResultsOverview'>
-  navigation: StackNavigationProp<RoutesParamsType, 'ResultsOverview'>
+interface ResultOverviewScreenProps {
+  route: RouteProp<RoutesParams, 'ResultsOverview'>
+  navigation: StackNavigationProp<RoutesParams, 'ResultsOverview'>
 }
 
-const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): ReactElement => {
+const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): ReactElement => {
   const { exercise, results, discipline } = route.params.result
   const { Level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
-  const [counts, setCounts] = React.useState<CountsType>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
+  const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
 
@@ -131,7 +131,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
             })
           }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
-          <FinishIcon />
+          <DoubleCheckIcon />
         </RightHeader>
       )
     })
@@ -150,12 +150,12 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
     </StyledTitle>
   )
 
-  const Item = ({ item }: { item: ResultType }): ReactElement | null => {
+  const Item = ({ item }: { item: Result }): ReactElement | null => {
     const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
-    const handleNavigation = ({ key }: ResultType): void => {
+    const handleNavigation = ({ key }: Result): void => {
       setSelectedKey(key)
 
       navigation.navigate('ResultScreen', {
@@ -182,7 +182,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenPropsType): 
               }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
           </StyledText>
         </LeftSide>
-        <Arrow fill={arrowColor} />
+        <ChevronRight fill={arrowColor} />
       </Contained>
     )
   }

@@ -4,14 +4,14 @@ import React, { ReactElement, useCallback, useState } from 'react'
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
-import { ArrowNext } from '../../../../assets/images'
+import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import { DocumentType } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
 
@@ -24,16 +24,16 @@ const StyledContainer = styled.View`
   height: 85%;
 `
 
-export interface WriteExercisePropType {
-  documents: DocumentType[]
-  route: RouteProp<RoutesParamsType, 'WriteExercise'>
-  navigation: StackNavigationProp<RoutesParamsType, 'WriteExercise'>
+export interface WriteExerciseProp {
+  documents: Document[]
+  route: RouteProp<RoutesParams, 'WriteExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
 
-const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType): ReactElement => {
+const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): ReactElement => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
-  const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResultType[]>(
+  const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
     documents.map(document => ({
       ...document,
       result: null,
@@ -71,7 +71,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
     }
   }
 
-  const storeResult = (result: DocumentResultType): void => {
+  const storeResult = (result: DocumentResult): void => {
     const updatedDocumentsWithResults = Array.from(documentsWithResults)
     if (current.id !== result.id) {
       return
@@ -112,7 +112,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
         {isAnswerSubmitted && current.result !== 'similar' ? (
           <Button
             label={buttonLabel}
-            iconRight={ArrowNext}
+            iconRight={ArrowRightIcon}
             onPress={continueExercise}
             buttonTheme={BUTTONS_THEME.contained}
           />
@@ -123,7 +123,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExercisePropType):
             {currentIndex < documents.length - 1 && (
               <Button
                 label={labels.exercises.tryLater}
-                iconRight={ArrowNext}
+                iconRight={ArrowRightIcon}
                 onPress={tryLater}
                 buttonTheme={BUTTONS_THEME.text}
               />

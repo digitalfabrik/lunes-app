@@ -39,7 +39,7 @@ const Message = styled.Text`
   padding-top: 31px;
 `
 
-export interface ConfirmationModalPropsType {
+export interface ConfirmationModalProps {
   visible: boolean
   setVisible: (visible: boolean) => void
   text: string
@@ -48,7 +48,7 @@ export interface ConfirmationModalPropsType {
   confirmationAction: () => void
 }
 
-const ConfirmationModal = (props: ConfirmationModalPropsType): JSX.Element => {
+const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
   const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction } = props
   const closeModal = (): void => setVisible(false)
 

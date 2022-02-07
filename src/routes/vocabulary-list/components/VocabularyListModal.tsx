@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CloseButton, ArrowNext } from '../../../../assets/images'
+import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { DocumentsType } from '../../../constants/endpoints'
+import { Documents } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
 
@@ -37,8 +37,8 @@ const ButtonContainer = styled.View`
   margin-top: -40%;
 `
 
-interface VocabularyListModalPropsType {
-  documents: DocumentsType
+interface VocabularyListModalProps {
+  documents: Documents
   isModalVisible: boolean
   setIsModalVisible: (isModalVisible: boolean) => void
   selectedDocumentIndex: number
@@ -51,7 +51,7 @@ const VocabularyListModal = ({
   setIsModalVisible,
   selectedDocumentIndex,
   setSelectedDocumentIndex
-}: VocabularyListModalPropsType): ReactElement => {
+}: VocabularyListModalProps): ReactElement => {
   const goToNextWord = (): void => {
     if (selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
@@ -63,7 +63,7 @@ const VocabularyListModal = ({
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
-            <CloseButton onPress={() => setIsModalVisible(false)} />
+            <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} />
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
@@ -85,7 +85,7 @@ const VocabularyListModal = ({
             {documents.length > selectedDocumentIndex + 1 ? (
               <Button
                 label={labels.exercises.next}
-                iconRight={ArrowNext}
+                iconRight={ArrowRightIcon}
                 onPress={goToNextWord}
                 buttonTheme={BUTTONS_THEME.contained}
               />

@@ -4,7 +4,7 @@ import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../constants/labels.json'
-import { ReturnType } from '../../hooks/useLoadAsync'
+import { Return } from '../../hooks/useLoadAsync'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import { useLoadGroupInfo } from '../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
@@ -26,7 +26,7 @@ const mockDisciplines = [
     icon: 'none',
     numberOfChildren: 1,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: null,
     needsTrainingSetEndpoint: false
   },
   {
@@ -36,7 +36,7 @@ const mockDisciplines = [
     icon: 'none',
     numberOfChildren: 1,
     isLeaf: false,
-    isRoot: true,
+    parentTitle: null,
     needsTrainingSetEndpoint: false
   }
 ]
@@ -49,14 +49,14 @@ const mockCustomDiscipline = {
   numberOfChildren: 1,
   isLeaf: false,
   apiKey: 'test',
-  isRoot: true,
+  parentTitle: null,
   needsTrainingSetEndpoint: false
 }
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  const getReturnTypeOf = <T,>(data: T): ReturnType<T> => ({
+  const getReturnOf = <T,>(data: T): Return<T> => ({
     data,
     error: null,
     loading: false,
@@ -64,8 +64,8 @@ describe('HomeScreen', () => {
   })
 
   it('should show discipline', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnTypeOf(mockDisciplines))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnTypeOf([]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
 
     const { findByText } = render(<HomeScreen navigation={navigation} />, { wrapper: wrapWithTheme })
     expect(await findByText('First Discipline')).toBeDefined()
@@ -74,9 +74,9 @@ describe('HomeScreen', () => {
 
   it('should show custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnTypeOf(mockDisciplines))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnTypeOf(['abc']))
-    mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnTypeOf(mockCustomDiscipline))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
+    mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { findByText } = render(<HomeScreen navigation={navigation} />, { wrapper: wrapWithTheme })
     expect(await findByText('Custom Discipline')).toBeDefined()
@@ -85,9 +85,9 @@ describe('HomeScreen', () => {
   it('should delete custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
 
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnTypeOf(mockDisciplines))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnTypeOf(['test']))
-    mocked(useLoadGroupInfo).mockReturnValue(getReturnTypeOf(mockCustomDiscipline))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['test']))
+    mocked(useLoadGroupInfo).mockReturnValue(getReturnOf(mockCustomDiscipline))
     const spyOnDeletion = jest.spyOn(AsyncStorageService, 'deleteCustomDiscipline')
 
     const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />, {
@@ -100,7 +100,7 @@ describe('HomeScreen', () => {
     const swipeable = row.children[0] as ReactTestInstance
     swipeable.instance.openRight()
 
-    const deleteIcon = await findByTestId('trash-bin-icon')
+    const deleteIcon = await findByTestId('trash-icon')
     expect(deleteIcon).toBeDefined()
     await fireEvent.press(deleteIcon)
 

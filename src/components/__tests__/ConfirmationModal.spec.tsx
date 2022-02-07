@@ -2,14 +2,14 @@ import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import ConfirmationModal, { ConfirmationModalPropsType } from '../ConfirmationModal'
+import ConfirmationModal, { ConfirmationModalProps } from '../ConfirmationModal'
 
 describe('Components', () => {
   describe('ConfirmationModal', () => {
     const setVisible = jest.fn()
     const confirmationAction = jest.fn()
 
-    const defaultModalProps: ConfirmationModalPropsType = {
+    const defaultModalProps: ConfirmationModalProps = {
       visible: false,
       setVisible,
       text: 'Are you sure?',
