@@ -1,16 +1,8 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import {
-  AlmostCorrectEntriesIcon,
-  CorrectEntriesIcon,
-  easy,
-  hard,
-  IncorrectEntriesIcon,
-  mideasy,
-  midhard
-} from '../../assets/images'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -19,43 +11,43 @@ export const ExerciseKeys = {
   articleChoiceExercise: 2,
   writeExercise: 3
 }
-export type ExerciseKeyType = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
-export interface ExerciseType {
-  key: ExerciseKeyType
+export interface Exercise {
+  key: ExerciseKey
   title: string
   description: string
-  Level: typeof easy
-  nextScreen: keyof RoutesParamsType
+  level: number
+  nextScreen: keyof RoutesParams
 }
 
-export const EXERCISES: ExerciseType[] = [
+export const EXERCISES: Exercise[] = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
-    Level: easy,
+    level: 0,
     nextScreen: 'VocabularyList'
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
-    Level: mideasy,
+    level: 1,
     nextScreen: 'WordChoiceExercise'
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
-    Level: midhard,
+    level: 2,
     nextScreen: 'ArticleChoiceExercise'
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
-    Level: hard,
+    level: 3,
     nextScreen: 'WriteExercise'
   }
 ]
@@ -66,7 +58,7 @@ export const BUTTONS_THEME = {
   text: 'text'
 } as const
 
-export type ButtonThemeType = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
+export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
 interface ArticleType {
   readonly id: number
@@ -99,10 +91,10 @@ export const ARTICLES: ArticleType[] = [
 export type Article = typeof ARTICLES[number]
 
 export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
-export type SimpleResultType = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
+export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
-export interface ResultType {
-  key: SimpleResultType
+interface ResultType {
+  key: SimpleResult
   title: string
   Icon: ComponentType<SvgProps>
   order: number
@@ -116,22 +108,24 @@ export interface Answer {
 export const RESULTS: ResultType[] = [
   {
     key: 'correct',
-    Icon: CorrectEntriesIcon,
+    Icon: CheckCircleIcon,
     title: 'Richtige',
     order: 0
   },
   {
     key: 'similar',
-    Icon: AlmostCorrectEntriesIcon,
+    Icon: CheckCloseCircleIcon,
     title: 'Fast richtige',
     order: 1
   },
   {
     key: 'incorrect',
-    Icon: IncorrectEntriesIcon,
+    Icon: CloseCircleIcon,
     title: 'Falsche',
     order: 2
   }
 ]
+
+export type Result = typeof RESULTS[number]
 
 export const numberOfMaxRetries = 3

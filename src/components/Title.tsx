@@ -14,6 +14,8 @@ const ScreenTitle = styled.Text`
   font-size: ${props => props.theme.fonts.headingFontSize};
   color: ${props => props.theme.colors.lunesGreyDark};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  text-align: center;
+  padding: 10px;
 `
 
 const ScreenSubTitle = styled.Text`

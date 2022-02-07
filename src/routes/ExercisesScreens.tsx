@@ -5,12 +5,13 @@ import { FlatList, View, Alert } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
+import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
-import { EXERCISES, ExerciseType } from '../constants/data'
+import Trophy from '../components/Trophy'
+import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
@@ -23,7 +24,7 @@ const ItemTitle = styled(FlatList)`
   width: ${wp('100%')}px;
   padding-right: ${wp('5%')}px;
   padding-left: ${wp('5%')}px;
-` as ComponentType as new () => FlatList<ExerciseType>
+` as ComponentType as new () => FlatList<Exercise>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -58,16 +59,12 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
 `
 
-const StyledLevel = styled.View`
-  margin-top: 11px;
-`
-
-interface ExercisesScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'Exercises'>
-  navigation: StackNavigationProp<RoutesParamsType, 'Exercises'>
+interface ExercisesScreenProps {
+  route: RouteProp<RoutesParams, 'Exercises'>
+  navigation: StackNavigationProp<RoutesParams, 'Exercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.Element => {
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline } = route.params
   const { title } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -80,7 +77,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
-  const handleNavigation = (item: ExerciseType): void => {
+  const handleNavigation = (item: Exercise): void => {
     if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
@@ -91,7 +88,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
     }
   }
 
-  const Item = ({ item }: { item: ExerciseType }): JSX.Element | null => {
+  const Item = ({ item }: { item: Exercise }): JSX.Element | null => {
     const selected = item.key.toString() === selectedKey
 
     return (
@@ -99,9 +96,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenPropsType): JSX.E
         <View>
           <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
           <Description selected={selected}>{item.description}</Description>
-          <StyledLevel as={item.Level} />
+          <Trophy level={item.level} />
         </View>
-        <Arrow fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <ChevronRight fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
       </Container>
     )
   }

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import { DocumentResultType } from '../../../../navigation/NavigationTypes'
+import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import InteractionSection from '../InteractionSection'
 
@@ -38,7 +38,7 @@ describe('InteractionSection', () => {
     word: 'Spachtel'
   }
 
-  const renderInteractionSection = (documentWithResult: DocumentResultType, isAnswerSubmitted: boolean): RenderAPI =>
+  const renderInteractionSection = (documentWithResult: DocumentResult, isAnswerSubmitted: boolean): RenderAPI =>
     render(
       <InteractionSection
         documentWithResult={documentWithResult}

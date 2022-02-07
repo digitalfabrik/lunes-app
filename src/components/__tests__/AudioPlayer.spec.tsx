@@ -5,7 +5,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
 import { ARTICLES } from '../../constants/data'
-import { DocumentType } from '../../constants/endpoints'
+import { Document } from '../../constants/endpoints'
 import { stringifyDocument } from '../../services/helpers'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import AudioPlayer from '../AudioPlayer'
@@ -47,7 +47,7 @@ describe('AudioPlayer', () => {
     submittedAlternative = null,
     disabled = false
   }: {
-    document?: DocumentType
+    document?: Document
     submittedAlternative?: string | null
     disabled?: boolean
   }): RenderAPI =>

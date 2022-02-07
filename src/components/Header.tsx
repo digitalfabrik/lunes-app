@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 
-import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
+import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.lunesBlack};
@@ -52,19 +52,19 @@ const Header = (): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SquareIconStyle>
-        <SquareIcon />
+        <HeaderSquareIcon />
       </SquareIconStyle>
       <StarIconStyle>
-        <StarIcon />
+        <HeaderStarIcon />
       </StarIconStyle>
       <CircleIconStyle>
-        <CircleIcon />
+        <HeaderCircleIcon />
       </CircleIconStyle>
       <VerticalLinesIcon>
-        <LinesIcon />
+        <HeaderLinesIcon />
       </VerticalLinesIcon>
       <SmileIconStyle>
-        <SmileIcon />
+        <LunesIcon />
       </SmileIconStyle>
     </HeaderStyle>
   </Wrapper>
