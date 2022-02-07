@@ -28,17 +28,6 @@ const ButtonContainer = styled.View`
   margin: 7% 0;
 `
 
-export const LightLabelInput = styled.Text<{ styledInput?: string }>`
-  text-align: center;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${prop =>
-    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
-`
-
 interface SingleChoiceExerciseProps {
   response: Return<Document[]>
   documentToAnswers: (document: Document) => Answer[]
