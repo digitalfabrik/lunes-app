@@ -43,7 +43,11 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
-        headerRight: () => <HeaderText>{progressText}</HeaderText>
+        headerRight: () => <HeaderText>{progressText}</HeaderText>,
+        headerRightContainerStyle: {
+          paddingHorizontal: 15,
+          maxWidth: 100
+        }
       }),
     [navigation, progressText, setIsModalVisible]
   )
