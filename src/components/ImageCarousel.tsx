@@ -20,11 +20,15 @@ const StyledImage = styled.Image<{ height: number; minimized: boolean }>`
     margin: 0 auto;
   `}
 `
+
+const minimizedPosition = -10
+const normalPosition = 10
+
 const PaginationView = styled.View<{ minimized: boolean }>`
   position: absolute;
   left: 0px;
   right: 0px;
-  top: ${({ minimized }) => (minimized ? -10 : 10)}px;
+  top: ${({ minimized }) => (minimized ? minimizedPosition : normalPosition)}px;
 `
 
 interface ImageCarouselProps {
@@ -45,8 +49,10 @@ interface ImageUrl {
 const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): ReactElement => {
   const { height: deviceHeight } = useWindowDimensions()
   // Manually resize ImageViewer since it doesn't happen automatically on container size changes
-  const heightPercent = minimized ? 35 / 2 : 35
-  const viewerHeight = (deviceHeight * heightPercent) / 100
+  const height = 35
+  const percentage = 100
+  const heightPercent = minimized ? height / 2 : height
+  const viewerHeight = (deviceHeight * heightPercent) / percentage
 
   const imagesUrls: ImageUrl[] = images.map(image => ({
     url: image.image
@@ -70,7 +76,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   )
 
   return (
-    <ImageView testID={'Swipeable'} height={viewerHeight}>
+    <ImageView testID='Swipeable' height={viewerHeight}>
       <ImageViewer
         key={imagesUrls.map(elem => elem.url).join()}
         imageUrls={imagesUrls}
