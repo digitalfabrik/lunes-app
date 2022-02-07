@@ -6,7 +6,7 @@ import { CheckCircleIcon } from '../../../assets/images'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import Title from '../Title'
 
-describe('ListTitle', () => {
+describe('Title', () => {
   const defaultTitleProps: React.ComponentProps<typeof Title> = {
     title: 'Title',
     description: 'Description'
