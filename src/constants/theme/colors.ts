@@ -16,14 +16,10 @@ export const COLORS = {
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
-  lunesArtikelDas: '#72f399',
-  lunesArtikelDiePlural: '#eee12d',
-  lunesArtikelDie: '#faa7a7',
-  lunesArtikelDer: '#8cc8f3',
-  blue: '#0000FF',  // not used
-  lunesBlueLight: '#97aef1',  // not used
-  lunesOrangeLight: '#ffbb4a',  // not used
-  lunesGreenLight: '#7ae6d8',  // not used
+  artikelDas: '#72f399',
+  artikelDiePlural: '#eee12d',
+  artikelDie: '#faa7a7',
+  artikelDer: '#8cc8f3'
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]

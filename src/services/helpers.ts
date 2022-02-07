@@ -8,19 +8,19 @@ export const stringifyDocument = ({ article, word }: Document | AlternativeWord)
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
     case 1:
-      return COLORS.lunesArtikelDer
+      return COLORS.artikelDer
 
     case 2:
-      return COLORS.lunesArtikelDie
+      return COLORS.artikelDie
 
     case 3:
-      return COLORS.lunesArtikelDas
+      return COLORS.artikelDas
 
     case 4:
-      return COLORS.lunesArtikelDiePlural
+      return COLORS.artikelDiePlural
 
     default:
-      return COLORS.lunesArtikelDer
+      return COLORS.artikelDer
   }
 }
 
