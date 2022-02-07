@@ -3,8 +3,8 @@ import { Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Arrow } from '../../assets/images'
-import { DisciplineType } from '../constants/endpoints'
+import { ChevronRight } from '../../assets/images'
+import { Discipline } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
@@ -37,7 +37,7 @@ const TextContainer = styled.View`
 `
 
 export interface DisciplineItemProps {
-  item: DisciplineType
+  item: Discipline
   children: ReactElement
   selected: boolean
   onPress: () => void
@@ -54,7 +54,7 @@ const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemPro
         </Title>
         {children}
       </TextContainer>
-      <Arrow fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+      <ChevronRight fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
     </Container>
   )
 }

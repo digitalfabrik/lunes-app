@@ -4,13 +4,13 @@ import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CircularFinishIcon, ArrowNext, RepeatIcon } from '../../assets/images'
+import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Loading from '../components/Loading'
 import Title from '../components/Title'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
+import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
 const Root = styled.View`
@@ -24,7 +24,7 @@ const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
   margin-bottom: 6%;
-` as ComponentType as new () => FlatList<DocumentResultType>
+` as ComponentType as new () => FlatList<DocumentResult>
 
 export const styles = StyleSheet.create({
   footer: {
@@ -33,15 +33,15 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface ResultScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'ResultScreen'>
-  navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
+interface ResultScreenProps {
+  route: RouteProp<RoutesParams, 'ResultScreen'>
+  navigation: StackNavigationProp<RoutesParams, 'ResultScreen'>
 }
 
-const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
+const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => {
   const { result, counts, resultType } = route.params
   const { exercise } = result
-  const [entries, setEntries] = React.useState<DocumentResultType[]>([])
+  const [entries, setEntries] = React.useState<DocumentResult[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
 
@@ -53,11 +53,11 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
 
   useFocusEffect(
     React.useCallback(() => {
-      setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
+      setEntries(result.results.filter(({ result }: DocumentResult) => result === resultType.key))
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <CircularFinishIcon />
+            <DoubleCheckCircleIconWhite />
           </TouchableOpacity>
         )
       })
@@ -74,7 +74,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
     />
   )
 
-  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />
+  const Item = ({ item }: { item: DocumentResult }): JSX.Element => <VocabularyListItem document={item} />
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {
@@ -107,7 +107,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           })
         }
         label={`${labels.results.show} ${nextResultType.title} ${labels.results.entries}`}
-        iconLeft={ArrowNext}
+        iconLeft={ArrowRightIcon}
         buttonTheme={BUTTONS_THEME.text}
       />
     </>
@@ -120,7 +120,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element
           data={entries}
           ListHeaderComponent={Header}
           renderItem={Item}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={Footer}
           ListFooterComponentStyle={styles.footer}

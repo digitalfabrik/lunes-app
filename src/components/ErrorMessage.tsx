@@ -20,22 +20,19 @@ const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
-interface ErrorMessagePropsType {
+interface ErrorMessageProps {
   error: Error | null
   refresh: () => void
 }
 
-const ErrorMessage = ({ error, refresh }: ErrorMessagePropsType): JSX.Element | null => {
-  return (
-    error && (
-      <Container>
-        <ErrorText>
-          {error.message === 'Network Error' ? `${labels.general.error.noWifi} (${error?.message})` : error?.message}
-        </ErrorText>
-        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
-      </Container>
-    )
+const ErrorMessage = ({ error, refresh }: ErrorMessageProps): JSX.Element | null =>
+  error && (
+    <Container>
+      <ErrorText>
+        {error.message === 'Network Error' ? `${labels.general.error.noWifi} (${error.message})` : error.message}
+      </ErrorText>
+      <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
+    </Container>
   )
-}
 
 export default ErrorMessage

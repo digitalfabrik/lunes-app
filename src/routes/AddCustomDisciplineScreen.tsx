@@ -9,7 +9,7 @@ import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { loadGroupInfo } from '../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 
 const Container = styled.View`
@@ -58,11 +58,13 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
-interface AddCustomDisciplineScreenPropsType {
-  navigation: StackNavigationProp<RoutesParamsType, 'AddCustomDiscipline'>
+const HTTP_STATUS_CODE_FORBIDDEN = 403
+
+interface AddCustomDisciplineScreenProps {
+  navigation: StackNavigationProp<RoutesParams, 'AddCustomDiscipline'>
 }
 
-const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType): JSX.Element => {
+const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -80,14 +82,14 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
     }
     setLoading(true)
     loadGroupInfo(code)
-      .then(async () => {
-        return await AsyncStorage.setCustomDisciplines([...customDisciplines, code])
-      })
+      .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
       .then(() => navigation.navigate('Home'))
       .catch(error => {
-        return error.response?.status === 403
-          ? setErrorMessage(labels.addCustomDiscipline.error.wrongCode)
-          : setErrorMessage(labels.addCustomDiscipline.error.technical)
+        setErrorMessage(
+          error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
+            ? labels.addCustomDiscipline.error.wrongCode
+            : labels.addCustomDiscipline.error.technical
+        )
       })
       .finally(() => setLoading(false))
   }
@@ -104,7 +106,9 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenPropsType)
             value={code}
             onChangeText={setCode}
           />
-          <ErrorContainer>{<ErrorText>{errorMessage}</ErrorText>}</ErrorContainer>
+          <ErrorContainer>
+            <ErrorText>{errorMessage}</ErrorText>
+          </ErrorContainer>
           <Button
             label={labels.addCustomDiscipline.submitLabel}
             buttonTheme={BUTTONS_THEME.contained}

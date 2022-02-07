@@ -1,10 +1,9 @@
 import { Article } from '../constants/data'
-import { AlternativeWordType, DisciplineType, DocumentType } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 
-export const stringifyDocument = ({ article, word }: DocumentType | AlternativeWordType): string =>
-  `${article.value} ${word}`
+export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -33,13 +32,11 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 }
 
 // fix ios issue for Django, that requires trailing slash in request url https://github.com/square/retrofit/issues/1037
-export const addTrailingSlashToUrl = (url: string): string => {
-  return url.endsWith('/') ? url : `${url}/`
-}
+export const addTrailingSlashToUrl = (url: string): string => (url.endsWith('/') ? url : `${url}/`)
 
-export const childrenLabel = (discipline: DisciplineType): string => {
+export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (discipline.isRoot) {
+  if (!discipline.parentTitle) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {
@@ -48,12 +45,13 @@ export const childrenLabel = (discipline: DisciplineType): string => {
   return isSingular ? labels.general.discipline : labels.general.disciplines
 }
 
-export const childrenDescription = (discipline: DisciplineType): string =>
+export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
 export const shuffleArray = <T>(array: T[]): void => {
-  for (let i = array.length - 1; i > 0; i--) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
+    // eslint-disable-next-line no-param-reassign
     ;[array[i], array[j]] = [array[j], array[i]]
   }
 }

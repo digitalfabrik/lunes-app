@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
 
-import { DocumentsType } from '../../../../constants/endpoints'
+import { Documents } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import VocabularyListModal from '../VocabularyListModal'
@@ -12,7 +12,7 @@ jest.mock('../../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyListModal', () => {
-  const documents: DocumentsType = [
+  const documents: Documents = [
     {
       id: 1,
       word: 'Hammer',
@@ -44,7 +44,7 @@ describe('VocabularyListModal', () => {
     const { getByText } = render(
       <VocabularyListModal
         documents={documents}
-        isModalVisible={true}
+        isModalVisible
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={0}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
@@ -54,14 +54,14 @@ describe('VocabularyListModal', () => {
     const button = await getByText(labels.exercises.next)
     expect(button).toBeDefined()
     await fireEvent.press(button)
-    expect(setSelectedDocumentIndex).toBeCalledTimes(1)
+    expect(setSelectedDocumentIndex).toHaveBeenCalledTimes(1)
   })
 
   it('should close modal for last word', async () => {
     const { getByText } = render(
       <VocabularyListModal
         documents={documents}
-        isModalVisible={true}
+        isModalVisible
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={1}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
@@ -71,6 +71,6 @@ describe('VocabularyListModal', () => {
     const button = await getByText(labels.general.header.cancelExercise)
     expect(button).toBeDefined()
     await fireEvent.press(button)
-    expect(setIsModalVisible).toBeCalledTimes(1)
+    expect(setIsModalVisible).toHaveBeenCalledTimes(1)
   })
 })

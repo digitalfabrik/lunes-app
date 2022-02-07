@@ -1,9 +1,16 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-import React from 'react'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native'
+import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
-import { ArrowBack, CloseButton, ArrowBackPressed, HomeButtonPressed, Home } from '../../assets/images'
+import {
+  ArrowLeftCircleIconWhite,
+  CloseCircleIconWhite,
+  ArrowLeftCircleIconBlue,
+  HomeCircleIconBlue,
+  HomeCircleIconWhite
+} from '../../assets/images'
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
@@ -19,7 +26,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
-import { RoutesParamsType } from './NavigationTypes'
+import { RoutesParams } from './NavigationTypes'
 
 export const styles = StyleSheet.create({
   header: {
@@ -38,41 +45,45 @@ export const styles = StyleSheet.create({
   }
 })
 
-const Stack = createStackNavigator<RoutesParamsType>()
+const Stack = createStackNavigator<RoutesParams>()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
-  const defaultOptions = (title: string, Icon: any, navigation: any, showHomeButton: boolean, screen?: string): {} => {
-    return {
-      headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
+  const defaultOptions = (
+    title: string,
+    Icon: ComponentType<SvgProps>,
+    navigation: NavigationProp<any>,
+    showHomeButton: boolean,
+    screen?: string
+  ): StackNavigationOptions => ({
+    headerLeft: () => (
+      <NavigationHeaderLeft
+        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}>
+        {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
+        <NavigationTitle>{title}</NavigationTitle>
+      </NavigationHeaderLeft>
+    ),
+    ...(showHomeButton && {
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          onPressIn={() => setIsHomeButtonPressed(true)}
+          onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isPressed ? <ArrowBackPressed /> : <Icon />}
-          <NavigationTitle>{title}</NavigationTitle>
-        </NavigationHeaderLeft>
-      ),
-      ...(showHomeButton && {
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            onPressIn={() => setIsHomeButtonPressed(true)}
-            onPressOut={() => setIsHomeButtonPressed(false)}
-            activeOpacity={1}>
-            {isHomeButtonPressed ? <HomeButtonPressed /> : <Home />}
-          </TouchableOpacity>
-        )
-      }),
-      headerTitle: '',
-      headerStyle: styles.header,
-      headerRightContainerStyle: styles.headerRightContainer,
-      headerLeftContainerStyle: styles.headerLeftContainer
-    }
-  }
+          {isHomeButtonPressed ? <HomeCircleIconBlue /> : <HomeCircleIconWhite />}
+        </TouchableOpacity>
+      )
+    }),
+    headerTitle: '',
+    headerStyle: styles.header,
+    headerRightContainerStyle: styles.headerRightContainer,
+    headerLeftContainerStyle: styles.headerLeftContainer
+  })
 
   return (
     <NavigationContainer>
@@ -81,46 +92,51 @@ const Navigator = (): JSX.Element => {
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
-              route.params.parentTitle ?? labels.general.header.overview,
-              ArrowBack,
+              route.params.discipline.parentTitle ?? labels.general.header.overview,
+              ArrowLeftCircleIconWhite,
               navigation,
-              !!route.params.parentTitle
+              !!route.params.discipline.parentTitle
             )
           }
           name='DisciplineSelection'
           component={DisciplineSelectionScreen}
         />
         <Stack.Screen
-          options={({ route, navigation }: any) =>
-            defaultOptions(route.params.discipline.title, ArrowBack, navigation, true)
+          options={({ route, navigation }) =>
+            defaultOptions(
+              route.params.discipline.parentTitle ?? labels.general.header.overview,
+              ArrowLeftCircleIconWhite,
+              navigation,
+              true
+            )
           }
           name='Exercises'
           component={ExercisesScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, ArrowBack, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, ArrowLeftCircleIconWhite, navigation, false)
           }
           name='VocabularyList'
           component={VocabularyListScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
           }
           name='WordChoiceExercise'
           component={WordChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.cancelExercise, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.cancelExercise, CloseCircleIconWhite, navigation, false)
           }
           name='ArticleChoiceExercise'
           component={ArticleChoiceExerciseScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
-            defaultOptions(labels.general.header.overviewExercises, CloseButton, navigation, false)
+            defaultOptions(labels.general.header.overviewExercises, CloseCircleIconWhite, navigation, false)
           }
           name='WriteExercise'
           component={WriteExerciseScreen}
@@ -136,12 +152,16 @@ const Navigator = (): JSX.Element => {
           component={ResultsOverviewScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.results.resultsOverview, ArrowBack, navigation, false)}
+          options={({ navigation }) =>
+            defaultOptions(labels.results.resultsOverview, ArrowLeftCircleIconWhite, navigation, false)
+          }
           name='ResultScreen'
           component={ResultScreen}
         />
         <Stack.Screen
-          options={({ navigation }) => defaultOptions(labels.general.header.overview, ArrowBack, navigation, false)}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
         />

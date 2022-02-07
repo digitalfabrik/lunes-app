@@ -4,7 +4,7 @@ import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
 import styled from 'styled-components/native'
 
-import { ImagesType } from '../constants/endpoints'
+import { Images } from '../constants/endpoints'
 import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View<{ height: number }>`
@@ -27,35 +27,33 @@ const PaginationView = styled.View<{ minimized: boolean }>`
   top: ${({ minimized }) => (minimized ? -10 : 10)}px;
 `
 
-interface ImageCarouselPropsType {
-  images: ImagesType
+interface ImageCarouselProps {
+  images: Images
   minimized?: boolean
 }
 
-interface ItemType {
+interface Item {
   source: {
     uri: string
   }
 }
 
-interface ImageUrlType {
+interface ImageUrl {
   url: string
 }
 
-const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): ReactElement => {
+const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): ReactElement => {
   const { height: deviceHeight } = useWindowDimensions()
   // Manually resize ImageViewer since it doesn't happen automatically on container size changes
   const heightPercent = minimized ? 35 / 2 : 35
   const viewerHeight = (deviceHeight * heightPercent) / 100
 
-  const imagesUrls: ImageUrlType[] = images.map(image => ({
+  const imagesUrls: ImageUrl[] = images.map(image => ({
     url: image.image
   }))
 
-  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => {
-    return !currentIndex || !allSize ? (
-      <></>
-    ) : (
+  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement =>
+    currentIndex && allSize ? (
       <PaginationView minimized={minimized}>
         <Pagination
           activeDotIndex={currentIndex - 1}
@@ -63,12 +61,13 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselPropsType): R
           dotStyle={{ backgroundColor: COLORS.lunesBlack }}
         />
       </PaginationView>
+    ) : (
+      <></>
     )
-  }
 
-  const renderItem = (item: ItemType): ReactElement => {
-    return <StyledImage source={item.source} accessibilityRole='image' minimized={minimized} height={viewerHeight} />
-  }
+  const renderItem = (item: Item): ReactElement => (
+    <StyledImage source={item.source} accessibilityRole='image' minimized={minimized} height={viewerHeight} />
+  )
 
   return (
     <ImageView testID={'Swipeable'} height={viewerHeight}>

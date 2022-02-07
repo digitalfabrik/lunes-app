@@ -290,26 +290,26 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - run:
-                command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH}.apk
+                command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH////-}.apk
                 name: Rename apk
             - run:
-                command: mv ~/attached_workspace/app-release.ipa ~/attached_workspace/${CIRCLE_BRANCH}.ipa
+                command: mv ~/attached_workspace/app-release.ipa ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa
                 name: Rename ipa
             - run:
-                command: bundle exec fastlane android upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH}.apk
+                command: bundle exec fastlane android upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH////-}.apk
                 name: BrowserStack Upload android
                 working_directory: android
             - restore_ruby_cache:
                 directory: ios
             - run:
-                command: bundle exec fastlane ios upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH}.ipa
+                command: bundle exec fastlane ios upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH////-}.ipa
                 name: BrowserStack Upload iOS
                 working_directory: ios
             - run:
-                command: mv ~/attached_workspace/${CIRCLE_BRANCH}.apk ~/attached_workspace/app-release.apk
+                command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.apk ~/attached_workspace/app-release.apk
                 name: Undo rename apk
             - run:
-                command: mv ~/attached_workspace/${CIRCLE_BRANCH}.ipa ~/attached_workspace/app-release.ipa
+                command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
                 name: Undo raname ipa
     deliver_ios:
         environment:

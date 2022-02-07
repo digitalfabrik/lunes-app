@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
-import { RoutesParamsType } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
 import DisciplineItem from './DisciplineItem'
@@ -38,11 +38,11 @@ const ErrorText = styled.Text`
   margin: 10px;
 `
 
-interface CustomDisciplineItemPropsType {
+interface CustomDisciplineItemProps {
   apiKey: string
   selectedId: string | null
   setSelectedId: (selectedId: string) => void
-  navigation: StackNavigationProp<RoutesParamsType, 'Home'>
+  navigation: StackNavigationProp<RoutesParams, 'Home'>
   refresh: () => void
 }
 
@@ -52,12 +52,10 @@ const CustomDisciplineItem = ({
   setSelectedId,
   navigation,
   refresh
-}: CustomDisciplineItemPropsType): JSX.Element => {
+}: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
-  const idToSelectedIdString = (id: number): string => {
-    return `custom-${id}`
-  }
+  const idToSelectedIdString = (id: number): string => `custom-${id}`
 
   const navigate = (): void => {
     if (!data) {
@@ -73,29 +71,26 @@ const CustomDisciplineItem = ({
     return (
       <Placeholder>
         <LoadingSpinner>
-          <Loading isLoading={true} />
+          <Loading isLoading />
         </LoadingSpinner>
       </Placeholder>
     )
-  } else {
-    return (
-      <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
-        {data ? (
-          <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
-            <Description selected={idToSelectedIdString(data.id) === selectedId}>
-              {childrenDescription(data)}
-            </Description>
-          </DisciplineItem>
-        ) : (
-          <Placeholder>
-            <ErrorText>
-              {labels.home.errorLoadCustomDiscipline} {apiKey}
-            </ErrorText>
-          </Placeholder>
-        )}
-      </DeletionSwipeable>
-    )
   }
+  return (
+    <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
+      {data ? (
+        <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
+          <Description selected={idToSelectedIdString(data.id) === selectedId}>{childrenDescription(data)}</Description>
+        </DisciplineItem>
+      ) : (
+        <Placeholder>
+          <ErrorText>
+            {labels.home.errorLoadCustomDiscipline} {apiKey}
+          </ErrorText>
+        </Placeholder>
+      )}
+    </DeletionSwipeable>
+  )
 }
 
 export default CustomDisciplineItem

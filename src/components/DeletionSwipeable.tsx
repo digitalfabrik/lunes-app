@@ -5,7 +5,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { TrashBinIcon } from '../../assets/images'
+import { TrashIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import AsyncStorage from '../services/AsyncStorage'
 import ConfirmationModal from './ConfirmationModal'
@@ -38,15 +38,15 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const swipeableRow: RefObject<Swipeable> = useRef<Swipeable>(null)
 
-  useEffect(() => {
-    // closes the swipeable when leaving the screen
-    return swipeableRow.current?.close()
-  })
+  // Closes the swipeable when leaving the screen
+  useEffect(() => swipeableRow.current?.close())
 
   const renderRightAction = (progress: Animated.AnimatedInterpolation): ReactElement => {
+    const inputRangeStart = -20
+    const outputRangeStart = 50
     const trans = progress.interpolate({
-      inputRange: [-20, 1],
-      outputRange: [50, 0]
+      inputRange: [inputRangeStart, 1],
+      outputRange: [outputRangeStart, 0]
     })
 
     const showConfirmationModal = (): void => {
@@ -58,7 +58,7 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
       <DeleteContainer>
         <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
           <DeleteButton onPress={showConfirmationModal}>
-            <TrashBinIcon testID={'trash-bin-icon'} />
+            <TrashIcon testID='trash-icon' />
           </DeleteButton>
         </Animated.View>
       </DeleteContainer>
@@ -73,7 +73,7 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
   }
 
   return (
-    <View testID={'Swipeable'}>
+    <View testID='Swipeable'>
       <Swipeable
         ref={swipeableRow}
         friction={2}

@@ -11,7 +11,7 @@ export const StyledContainer = styled.View`
   margin-right: 8%;
 `
 
-export interface SingleChoicePropsType {
+export interface SingleChoiceProps {
   onClick: (answer: Answer) => void
   answers: Answer[]
   correctAnswer: Answer
@@ -25,26 +25,23 @@ export const SingleChoice = ({
   correctAnswer,
   selectedAnswer,
   delayPassed
-}: SingleChoicePropsType): ReactElement => {
-  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean => {
-    return answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
-  }
+}: SingleChoiceProps): ReactElement => {
+  const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean =>
+    answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word
 
   return (
     <StyledContainer>
-      {answers.map((answer, index) => {
-        return (
-          <SingleChoiceListItem
-            key={index}
-            answer={answer}
-            onClick={onClick}
-            correct={isAnswerEqual(answer, correctAnswer)}
-            selected={isAnswerEqual(answer, selectedAnswer)}
-            anyAnswerSelected={selectedAnswer !== null}
-            delayPassed={delayPassed}
-          />
-        )
-      })}
+      {answers.map(answer => (
+        <SingleChoiceListItem
+          key={`${answer.article.id}-${answer.word}`}
+          answer={answer}
+          onClick={onClick}
+          correct={isAnswerEqual(answer, correctAnswer)}
+          selected={isAnswerEqual(answer, selectedAnswer)}
+          anyAnswerSelected={selectedAnswer !== null}
+          delayPassed={delayPassed}
+        />
+      ))}
     </StyledContainer>
   )
 }

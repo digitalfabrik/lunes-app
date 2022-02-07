@@ -7,10 +7,10 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
-import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResultType } from '../../../constants/data'
+import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
-import { DocumentResultType } from '../../../navigation/NavigationTypes'
+import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
@@ -41,9 +41,9 @@ const Speaker = styled.View`
 `
 
 interface InteractionSectionProps {
-  documentWithResult: DocumentResultType
+  documentWithResult: DocumentResult
   isAnswerSubmitted: boolean
-  storeResult: (result: DocumentResultType) => void
+  storeResult: (result: DocumentResult) => void
 }
 
 const almostCorrectThreshold = 0.6
@@ -72,22 +72,34 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     }
   }, [isAnswerSubmitted])
 
-  const validateAnswer = (article: string, word: string): SimpleResultType => {
+  const validateAnswer = (article: string, word: string): SimpleResult => {
     const validAnswers = [
       { article: documentWithResult.article, word: documentWithResult.word },
       ...documentWithResult.alternatives
     ]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
-    } else if (validAnswers.some(answer => answer.word === word)) {
+    }
+    if (validAnswers.some(answer => answer.word === word)) {
       // Word is an exact match with either the document or an alternative -> just the article is wrong
       return 'similar'
-    } else if (
-      validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)
-    ) {
+    }
+    if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
       return 'similar'
     }
     return 'incorrect'
+  }
+
+  const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
+
+  const updateAndStoreResult = (score: SimpleResult): void => {
+    const nthRetry = documentWithResult.numberOfTries + 1
+    const documentWithResultToStore = {
+      ...documentWithResult,
+      result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
+      numberOfTries: nthRetry
+    }
+    storeResult(documentWithResultToStore)
   }
 
   const checkEntry = async (): Promise<void> => {
@@ -104,20 +116,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     updateAndStoreResult(validateAnswer(article, word))
   }
 
-  const capitalizeFirstLetter = (string: string): string => {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
-
-  const updateAndStoreResult = (score: SimpleResultType): void => {
-    const nthRetry = documentWithResult.numberOfTries + 1
-    const documentWithResultToStore = {
-      ...documentWithResult,
-      result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
-      numberOfTries: nthRetry
-    }
-    storeResult(documentWithResultToStore)
-  }
-
   const getBorderColor = (): string => {
     if (isAnswerSubmitted) {
       switch (documentWithResult.result) {
@@ -126,6 +124,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         case 'incorrect':
           return COLORS.lunesFunctionalIncorrectDark
         case 'similar':
+        default:
           return COLORS.lunesFunctionalAlmostCorrectDark
       }
     }

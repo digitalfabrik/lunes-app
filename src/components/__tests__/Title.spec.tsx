@@ -2,19 +2,18 @@ import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import { CorrectEntriesIcon } from '../../../assets/images'
+import { CheckCircleIcon } from '../../../assets/images'
 import wrapWithTheme from '../../testing/wrapWithTheme'
 import Title from '../Title'
 
-describe('ListTitle', () => {
+describe('Title', () => {
   const defaultTitleProps: React.ComponentProps<typeof Title> = {
     title: 'Title',
     description: 'Description'
   }
 
-  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI => {
-    return render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
-  }
+  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI =>
+    render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
 
   it('should render ListTitle with title and description', () => {
     const { getByText } = renderListTitle()
@@ -25,7 +24,7 @@ describe('ListTitle', () => {
 
   it('should render ListTitle with subtitle icon and children', () => {
     const subtitle = 'Subtitle'
-    const titleIcon = <CorrectEntriesIcon accessibilityLabel='correct' />
+    const titleIcon = <CheckCircleIcon accessibilityLabel='correct' />
     const childText = 'Child'
     const { getByText, getByA11yLabel } = renderListTitle({ subtitle, titleIcon, children: <Text>{childText}</Text> })
 

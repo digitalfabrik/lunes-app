@@ -1,7 +1,7 @@
 import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
-import { ArrowBack, ArrowNext } from '../../../assets/images'
+import { ArrowLeftCircleIconWhite, ArrowRightIcon } from '../../../assets/images'
 import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
 import wrapWithTheme from '../../testing/wrapWithTheme'
@@ -9,7 +9,7 @@ import Button from '../Button'
 
 import resetAllMocks = jest.resetAllMocks
 
-type ButtonPropsType = ComponentProps<typeof Button>
+type ButtonProps = ComponentProps<typeof Button>
 
 describe('Components', () => {
   describe('Button', () => {
@@ -19,7 +19,7 @@ describe('Components', () => {
       resetAllMocks()
     })
 
-    const renderButton = (overrideProps: Partial<ButtonPropsType> = {}): RenderAPI => {
+    const renderButton = (overrideProps: Partial<ButtonProps> = {}): RenderAPI => {
       const buttonProps = {
         onPress: onPressMock,
         label: 'Button label',
@@ -30,7 +30,10 @@ describe('Components', () => {
     }
 
     it('should render label and icons', () => {
-      const { getByText, queryByTestId } = renderButton({ iconLeft: ArrowNext, iconRight: ArrowBack })
+      const { getByText, queryByTestId } = renderButton({
+        iconLeft: ArrowRightIcon,
+        iconRight: ArrowLeftCircleIconWhite
+      })
       expect(getByText('Button label')).toBeDefined()
       expect(queryByTestId('button-icon-left')).toBeDefined()
       expect(queryByTestId('button-icon-right')).toBeDefined()
@@ -47,14 +50,14 @@ describe('Components', () => {
       const { getByText } = renderButton()
       const button = getByText('Button label')
       fireEvent.press(button)
-      expect(onPressMock).toBeCalled()
+      expect(onPressMock).toHaveBeenCalled()
     })
 
     it('should not call onClick when disabled', () => {
       const { getByText } = renderButton({ disabled: true })
       const button = getByText('Button label')
       fireEvent.press(button)
-      expect(onPressMock).not.toBeCalled()
+      expect(onPressMock).not.toHaveBeenCalled()
     })
 
     it('should have correct style when light theme', () => {

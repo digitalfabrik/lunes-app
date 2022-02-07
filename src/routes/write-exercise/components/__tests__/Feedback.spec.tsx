@@ -2,9 +2,9 @@ import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES, SimpleResultType } from '../../../../constants/data'
+import { ARTICLES, SimpleResult } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import { DocumentResultType } from '../../../../navigation/NavigationTypes'
+import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import Feedback from '../Feedback'
 
@@ -19,15 +19,15 @@ describe('Feedback section', () => {
   }
 
   const renderFeedback = (
-    result: SimpleResultType,
+    result: SimpleResult,
     numberOfTries: number,
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const docuementWithResult: DocumentResultType = { ...document, result: result, numberOfTries: numberOfTries }
+    const documentWithResult: DocumentResult = { ...document, result, numberOfTries }
     return render(
       <Feedback
-        documentWithResult={docuementWithResult}
+        documentWithResult={documentWithResult}
         submission={submission}
         needsToBeRepeated={needsToBeRepeated}
       />,

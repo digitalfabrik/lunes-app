@@ -3,20 +3,22 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import { Answer, ExerciseKeys } from '../../constants/data'
-import { DocumentType } from '../../constants/endpoints'
+import { Document } from '../../constants/endpoints'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
-interface WordChoiceExerciseScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'WordChoiceExercise'>
-  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise'>
+interface WordChoiceExerciseScreenProps {
+  route: RouteProp<RoutesParams, 'WordChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
 }
 
-const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenPropsType): ReactElement | null => {
+export const MIN_WORDS = 4
+
+const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
   const response = useLoadDocuments(route.params.discipline, true)
 
-  const generateFalseAnswers = (correctDocument: DocumentType): Answer[] => {
+  const generateFalseAnswers = (correctDocument: Document): Answer[] => {
     const { data: documents } = response
     if (!documents) {
       return []
@@ -25,7 +27,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     const usedDocuments = [correctDocument]
 
     // Pick 3 false answer options
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < MIN_WORDS - 1; i += 1) {
       let rand: number
       // Pick a document as false answer option that was not picked already
       do {
@@ -39,13 +41,13 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     return answers
   }
 
-  const documentToAnswers = (document: DocumentType): Answer[] => {
+  const documentToAnswers = (document: Document): Answer[] => {
     const { word, article } = document
     const answers = generateFalseAnswers(document)
 
     // Insert correct answer on random position
-    const positionOfCorrectAnswer = Math.floor(Math.random() * 4)
-    answers.splice(positionOfCorrectAnswer, 0, { article: article, word })
+    const positionOfCorrectAnswer = Math.floor(Math.random() * MIN_WORDS)
+    answers.splice(positionOfCorrectAnswer, 0, { article, word })
     return answers
   }
 

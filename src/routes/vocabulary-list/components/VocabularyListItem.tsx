@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
-import { DocumentType } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import { getArticleColor } from '../../../services/helpers'
 
 const Wrapper = styled.Pressable`
@@ -60,16 +60,16 @@ const Speaker = styled.View`
   padding-top: 20px;
 `
 
-export interface VocabularyListItemPropType {
-  document: DocumentType
+export interface VocabularyListItemProp {
+  document: Document
   setIsModalVisible?: () => void
 }
 
-const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemPropType): ReactElement => {
+const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemProp): ReactElement => {
   const { article, word } = document
 
   return (
-    <Wrapper onPress={setIsModalVisible ?? (() => {})}>
+    <Wrapper onPress={setIsModalVisible}>
       <Container>
         <StyledItem>
           {document.document_image.length > 0 && (

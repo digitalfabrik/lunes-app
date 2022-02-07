@@ -19,9 +19,8 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
-    } else {
-      return '1px'
     }
+    return '1px'
   }};
   border-style: solid;
   display: flex;
@@ -32,35 +31,35 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
   background-color: ${props => {
     if (props.pressed) {
       return props.theme.colors.lunesBlack
-    } else if (props.correct && (props.selected || props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.white
     }
+    if (props.correct && (props.selected || props.delayPassed)) {
+      return props.theme.colors.lunesFunctionalCorrectDark
+    }
+    if (props.selected) {
+      return props.theme.colors.lunesFunctionalIncorrectDark
+    }
+    return props.theme.colors.white
   }};
   shadow-color: ${props => {
     if (props.correct) {
       return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected && !props.correct) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.shadow
     }
+    if (props.selected) {
+      return props.theme.colors.lunesFunctionalIncorrectDark
+    }
+    return props.theme.colors.shadow
   }};
   ${props => {
-    if (props.pressed || props.selected || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
+    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return css`
         elevation: 6;
         shadow-opacity: 0.5;
       `
-    } else {
-      return css`
-        elevation: 0;
-        shadow-opacity: 0;
-      `
     }
+    return css`
+      elevation: 0;
+      shadow-opacity: 0;
+    `
   }};
   shadow-radius: 5px;
   shadow-offset: 5px 5px;
@@ -79,11 +78,11 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   background-color: ${props => {
     if (props.pressed) {
       return props.theme.colors.lunesWhite
-    } else if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
-    } else {
-      return getArticleColor(props.article)
     }
+    if (props.selected || (props.correct && props.delayPassed)) {
+      return props.theme.colors.lunesBlack
+    }
+    return getArticleColor(props.article)
   }};
 `
 
@@ -92,13 +91,14 @@ const ArticleText = styled(StyledText)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
       return props.theme.colors.lunesBlack
-    } else if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.lunesGreyDark
     }
+    if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
+      return props.theme.colors.lunesFunctionalCorrectDark
+    }
+    if (props.selected) {
+      return props.theme.colors.lunesFunctionalIncorrectDark
+    }
+    return props.theme.colors.lunesGreyDark
   }};
 `
 
@@ -106,11 +106,11 @@ const Word = styled(StyledText)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
       return props.theme.colors.lunesWhite
-    } else if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
-    } else {
-      return props.theme.colors.lunesGreyDark
     }
+    if (props.selected || (props.correct && props.delayPassed)) {
+      return props.theme.colors.lunesBlack
+    }
+    return props.theme.colors.lunesGreyDark
   }};
 `
 
@@ -121,7 +121,7 @@ const Overlay = styled.View`
   height: 100%;
 `
 
-export interface SingleChoiceListItemPropsType {
+export interface SingleChoiceListItemProps {
   answer: Answer
   onClick: (answer: Answer) => void
   correct: boolean
@@ -146,7 +146,7 @@ const SingleChoiceListItem = ({
   anyAnswerSelected,
   delayPassed,
   disabled = false
-}: SingleChoiceListItemPropsType): JSX.Element => {
+}: SingleChoiceListItemProps): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity =

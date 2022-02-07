@@ -3,11 +3,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { SvgProps } from 'react-native-svg'
 import styled, { css } from 'styled-components/native'
 
-import { BUTTONS_THEME, ButtonThemeType } from '../constants/data'
+import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color, COLORS } from '../constants/theme/colors'
 
 interface ThemedButtonProps {
-  buttonTheme: ButtonThemeType
+  buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
 }
@@ -46,16 +46,16 @@ const Label = styled.Text<ThemedLabelProps>`
   padding: 0 10px;
 `
 
-interface ButtonPropsType {
+interface ButtonProps {
   onPress: () => void
   label: string
-  buttonTheme: ButtonThemeType
+  buttonTheme: ButtonTheme
   disabled?: boolean
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
 }
 
-const Button = (props: ButtonPropsType): ReactElement => {
+const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
 
@@ -65,11 +65,11 @@ const Button = (props: ButtonPropsType): ReactElement => {
   }
 
   const getBackgroundColor = (): Color | 'transparent' => {
-    if (props.disabled) {
+    if (disabled) {
       return COLORS.lunesBlackUltralight
     }
     if (isPressed) {
-      return props.buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
+      return buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
     }
     if (buttonTheme === BUTTONS_THEME.contained) {
       return COLORS.lunesBlack
@@ -80,16 +80,18 @@ const Button = (props: ButtonPropsType): ReactElement => {
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      testID={'button'}
+      testID='button'
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
-      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID={'button-icon-left'} />}
+      {/* eslint-disable-next-line react/destructuring-assignment */}
+      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID='button-icon-left' />}
       <Label color={getTextColor()}>{label}</Label>
-      {props.iconRight && <props.iconRight fill={getTextColor()} testID={'button-icon-right'} />}
+      {/* eslint-disable-next-line react/destructuring-assignment */}
+      {props.iconRight && <props.iconRight fill={getTextColor()} testID='button-icon-right' />}
     </ThemedButton>
   )
 }

@@ -6,7 +6,7 @@ import Tts from 'react-native-tts'
 
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import { RoutesParamsType } from '../../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import wrapWithTheme from '../../../../testing/wrapWithTheme'
 import WriteExercise from '../WriteExercise'
@@ -60,7 +60,7 @@ describe('WriteExercise', () => {
   ]
 
   const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const route: RouteProp<RoutesParams, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {
@@ -71,17 +71,16 @@ describe('WriteExercise', () => {
         icon: '',
         numberOfChildren: 2,
         isLeaf: true,
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: true
       }
     }
   }
 
-  const renderWriteExercise = (): RenderAPI => {
-    return render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
+  const renderWriteExercise = (): RenderAPI =>
+    render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
-  }
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()
