@@ -7,6 +7,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
+import Trophy from '../components/Trophy'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
@@ -55,9 +56,7 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.text)};
 `
-const StyledLevel = styled.View`
-  margin-top: 9px;
-`
+
 const LeftSide = styled.View`
   display: flex;
   flex-direction: row;
@@ -107,7 +106,7 @@ interface ResultOverviewScreenProps {
 
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): ReactElement => {
   const { exercise, results, discipline } = route.params.result
-  const { Level, description, title } = EXERCISES[exercise]
+  const { level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
   const theme = useTheme()
@@ -146,7 +145,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
 
   const Header = (
     <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
-      <StyledLevel as={Level} />
+      <Trophy level={level} />
     </StyledTitle>
   )
 

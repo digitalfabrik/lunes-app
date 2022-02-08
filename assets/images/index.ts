@@ -28,10 +28,7 @@ import ListIcon from './list-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
-import TrophyIcon0 from './trophy-icon-0.svg'
-import TrophyIcon1 from './trophy-icon-1.svg'
-import TrophyIcon2 from './trophy-icon-2.svg'
-import TrophyIcon3 from './trophy-icon-3.svg'
+import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
 
 export {
@@ -65,9 +62,6 @@ export {
   LunesIcon,
   RepeatIcon,
   TrashIcon,
-  TrophyIcon0,
-  TrophyIcon1,
-  TrophyIcon2,
-  TrophyIcon3,
+  TrophyIcon,
   VolumeUpCircleIcon
 }

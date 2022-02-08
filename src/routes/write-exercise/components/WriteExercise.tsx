@@ -11,6 +11,7 @@ import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
 import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
+import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
@@ -41,13 +42,22 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
     }))
   )
 
+  const isKeyboardShown = useIsKeyboardVisible()
   const current = documentsWithResults[currentIndex]
   const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const tryLater = useCallback(() => {
-    setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
-    Keyboard.dismiss()
-  }, [documentsWithResults, currentIndex])
+    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
+    if (isKeyboardShown) {
+      const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+        setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+        onKeyboardHideSubscription.remove()
+      })
+      Keyboard.dismiss()
+    } else {
+      setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+    }
+  }, [isKeyboardShown, documentsWithResults, currentIndex])
 
   const finishExercise = (): void => {
     navigation.navigate('InitialSummary', {
@@ -100,7 +110,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
         numberOfWords={documents.length}
       />
 
-      <ImageCarousel images={current.document_image} />
+      <ImageCarousel images={current.document_image} minimized={isKeyboardShown} />
 
       <StyledContainer>
         <InteractionSection

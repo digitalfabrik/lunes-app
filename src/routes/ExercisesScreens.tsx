@@ -7,6 +7,7 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
+import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -57,10 +58,6 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.background : props.theme.colors.text)};
 `
 
-const StyledLevel = styled.View`
-  margin-top: 11px;
-`
-
 interface ExercisesScreenProps {
   route: RouteProp<RoutesParams, 'Exercises'>
   navigation: StackNavigationProp<RoutesParams, 'Exercises'>
@@ -99,7 +96,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         <View>
           <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
           <Description selected={selected}>{item.description}</Description>
-          <StyledLevel as={item.Level} />
+          <Trophy level={item.level} />
         </View>
         <ChevronRight
           fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
