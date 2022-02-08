@@ -28,7 +28,7 @@ import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.lunesWhite,
     shadowOpacity: 0,
@@ -37,11 +37,15 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   headerRightContainer: {
-    paddingRight: 15,
-    flexShrink: 1
+    paddingHorizontal: 15,
+    maxWidth: 60
   },
   headerLeftContainer: {
-    flexGrow: 3
+    flex: 1,
+    padding: 0
+  },
+  headerTitleContainer: {
+    marginHorizontal: 0
   }
 })
 
@@ -65,7 +69,7 @@ const Navigator = (): JSX.Element => {
         onPressOut={() => setIsPressed(false)}
         activeOpacity={1}>
         {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
-        <NavigationTitle>{title}</NavigationTitle>
+        <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
       </NavigationHeaderLeft>
     ),
     ...(showHomeButton && {
@@ -82,7 +86,8 @@ const Navigator = (): JSX.Element => {
     headerTitle: '',
     headerStyle: styles.header,
     headerRightContainerStyle: styles.headerRightContainer,
-    headerLeftContainerStyle: styles.headerLeftContainer
+    headerLeftContainerStyle: styles.headerLeftContainer,
+    headerTitleContainerStyle: styles.headerTitleContainer
   })
 
   return (
