@@ -85,7 +85,7 @@ describe('Components', () => {
       const { getByTestId, getByText } = renderButton({ disabled: true })
       expect(getByTestId('button').props.style.backgroundColor).toBe(COLORS.disabled)
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlackLight)
+      expect(getByText('Button label').props.style[0].color).toBe(COLORS.placeholder)
     })
   })
 })

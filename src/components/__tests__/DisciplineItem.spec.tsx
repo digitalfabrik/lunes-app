@@ -55,15 +55,15 @@ describe('Components', () => {
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.primary)
       const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.textColor)
+      expect(title.instance.props.style[0].color).toBe(COLORS.text)
     })
 
     it('should render red arrow icon when selected is true', () => {
       const { getByTestId, getByText } = renderDisciplineItem({ selected: true })
       const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.secondarySelectedColor)
+      expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
       const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.white)
+      expect(title.instance.props.style[0].color).toBe(COLORS.backgroundAccent)
     })
   })
 })

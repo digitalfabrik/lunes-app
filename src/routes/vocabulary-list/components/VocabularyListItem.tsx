@@ -18,7 +18,7 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.backgroundAccent};
   border-color: ${props => props.theme.colors.disabled};
   border-width: 1px;
   border-style: solid;
@@ -39,7 +39,7 @@ const StyledTitle = styled.Text<{ articleColor: string }>`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   border-radius: 10px;
   margin-bottom: 6px;
-  color: ${props => props.theme.colors.textColor};
+  color: ${props => props.theme.colors.text};
   background-color: ${props => props.articleColor};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
@@ -51,7 +51,7 @@ const StyledTitle = styled.Text<{ articleColor: string }>`
 const Description = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  color: ${props => props.theme.colors.textSecondaryColor};
+  color: ${props => props.theme.colors.textSecondary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-left: 8px;
 `

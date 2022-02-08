@@ -11,7 +11,7 @@ import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
-import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
+import { MIN_WORDS } from '../routes/choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};

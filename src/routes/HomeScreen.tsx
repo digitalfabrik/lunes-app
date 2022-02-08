@@ -23,7 +23,7 @@ const StyledText = styled.Text`
   margin-top: 50px;
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondaryColor};
+  color: ${props => props.theme.colors.textSecondary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: 32px;
 `
@@ -45,7 +45,7 @@ const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.textSecondaryColor)};
+  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
 interface HomeScreenProps {

@@ -11,10 +11,10 @@ const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.theme.colors.lunesOverlay};
+  background-color: ${props => props.theme.colors.overlay};
 `
 const ModalContainer = styled.View`
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.backgroundAccent};
   align-items: center;
   width: ${wp('85%')}px;
   border-radius: 4px;
@@ -32,7 +32,7 @@ const Icon = styled.TouchableOpacity`
 const Message = styled.Text`
   text-align: center;
   font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.textColor};
+  color: ${props => props.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
   margin-bottom: 31px;

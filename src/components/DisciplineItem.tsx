@@ -13,7 +13,7 @@ const Container = styled(Pressable)<{ selected: boolean }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.white)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
   border: 1px solid ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-radius: 2px;
 `
@@ -22,7 +22,7 @@ const Title = styled.Text<{ selected: boolean }>`
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.textColor)};
+  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 const Icon = styled.Image`
   justify-content: center;
@@ -54,7 +54,7 @@ const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemPro
         </Title>
         {children}
       </TextContainer>
-      <ChevronRight fill={selected ? theme.colors.secondarySelectedColor : theme.colors.primary} testID='arrow' />
+      <ChevronRight fill={selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary} testID='arrow' />
     </Container>
   )
 }

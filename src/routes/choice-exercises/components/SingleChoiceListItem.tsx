@@ -38,7 +38,7 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
     if (props.selected) {
       return props.theme.colors.functionalIncorrect
     }
-    return props.theme.colors.white
+    return props.theme.colors.backgroundAccent
   }};
   shadow-color: ${props => {
     if (props.correct) {
@@ -98,7 +98,7 @@ const ArticleText = styled(StyledText)<StyledListElementProps>`
     if (props.selected) {
       return props.theme.colors.functionalIncorrect
     }
-    return props.theme.colors.textColor
+    return props.theme.colors.text
   }};
 `
 
@@ -110,7 +110,7 @@ const Word = styled(StyledText)<StyledListElementProps>`
     if (props.selected || (props.correct && props.delayPassed)) {
       return props.theme.colors.primary
     }
-    return props.theme.colors.textColor
+    return props.theme.colors.text
   }};
 `
 

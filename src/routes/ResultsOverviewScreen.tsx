@@ -29,7 +29,7 @@ const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.textColor)};
+  color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.text)};
 `
 
 const Contained = styled.Pressable<{ selected: boolean }>`
@@ -43,8 +43,8 @@ const Contained = styled.Pressable<{ selected: boolean }>`
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.white)};
-  border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.disabled)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  border-color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.disabled)};
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
@@ -53,7 +53,7 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.largeFontSize};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textColor)};
+  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.text)};
 `
 const StyledLevel = styled.View`
   margin-top: 9px;
@@ -168,8 +168,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     const count = counts[item.key]
 
     const selected = item.key === selectedKey
-    const iconColor = selected ? theme.colors.background : theme.colors.textColor
-    const arrowColor = selected ? theme.colors.secondarySelectedColor : theme.colors.primary
+    const iconColor = selected ? theme.colors.background : theme.colors.text
+    const arrowColor = selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary
     return (
       <Contained selected={selected} onPress={() => handleNavigation(item)}>
         <LeftSide>

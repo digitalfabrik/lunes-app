@@ -128,7 +128,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
           return theme.colors.functionalAlmostCorrect
       }
     }
-    return isFocused ? theme.colors.primary : theme.colors.textSecondaryColor
+    return isFocused ? theme.colors.primary : theme.colors.textSecondary
   }
 
   return (

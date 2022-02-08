@@ -33,7 +33,7 @@ const Description = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: 5px;
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondaryColor)};
+  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondary)};
 `
 
 const BadgeLabel = styled.Text<{ selected: boolean }>`
@@ -44,8 +44,8 @@ const BadgeLabel = styled.Text<{ selected: boolean }>`
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  color: ${prop => (prop.selected ? prop.theme.colors.textSecondaryColor : prop.theme.colors.background)};
-  background-color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondaryColor)};
+  color: ${prop => (prop.selected ? prop.theme.colors.textSecondary : prop.theme.colors.background)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondary)};
   font-size: ${prop => prop.theme.fonts.smallFontSize};
 `
 

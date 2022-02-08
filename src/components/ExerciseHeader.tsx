@@ -15,7 +15,7 @@ import { NavigationTitle } from './NavigationTitle'
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.textSecondaryColor};
+  color: ${props => props.theme.colors.textSecondary};
 `
 
 const ProgressBar = styled(RNProgressBar)`
