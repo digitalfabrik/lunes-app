@@ -1,0 +1,5 @@
+issue_key: LUN-197
+show_in_stores: true
+platforms:
+  - ios
+de: Support für iPads hinzugefügt.
