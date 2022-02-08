@@ -37,9 +37,7 @@ const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.primary};
   width: 80%;
-  border: 1px solid
-    ${props =>
-      props.errorMessage ? props.theme.colors.functionalIncorrect : props.theme.colors.text};
+  border: 1px solid ${props => (props.errorMessage ? props.theme.colors.functionalIncorrect : props.theme.colors.text)};
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding-left: 15px;

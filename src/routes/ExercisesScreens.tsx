@@ -101,7 +101,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           <Description selected={selected}>{item.description}</Description>
           <StyledLevel as={item.Level} />
         </View>
-        <ChevronRight fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary} />
+        <ChevronRight
+          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+        />
       </Container>
     )
   }

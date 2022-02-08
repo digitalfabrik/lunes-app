@@ -10,8 +10,8 @@ import Title from '../components/Title'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from '../routes/choice-exercises/WordChoiceExerciseScreen'
+import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -101,7 +101,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           <Description selected={selected}>{item.description}</Description>
           <StyledLevel as={item.Level} />
         </View>
-        <ChevronRight fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary} />
+        <ChevronRight
+          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+        />
       </Container>
     )
   }

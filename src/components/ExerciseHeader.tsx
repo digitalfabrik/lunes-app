@@ -32,7 +32,7 @@ interface ExerciseHeaderProps {
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const theme = useTheme()
-  
+
   useEffect(
     () =>
       navigation.setOptions({
@@ -63,7 +63,10 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
   return (
     <>
-      <ProgressBar progress={numberOfWords > 0 ? currentWord / numberOfWords : 0} color={theme.colors.exerciseProgressIndicator} />
+      <ProgressBar
+        progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
+        color={theme.colors.exerciseProgressIndicator}
+      />
 
       <ConfirmationModal
         visible={isModalVisible}
