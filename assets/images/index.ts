@@ -11,6 +11,7 @@ import CheckCircleIcon from './check-circle-icon.svg'
 import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
 import CheckCloseCircleIcon from './check-close-circle-icon.svg'
 import ChevronRight from './chevron-right.svg'
+import CloseCircleIconBlue from './close-circle-icon-blue.svg'
 import CloseCircleIconBold from './close-circle-icon-bold.svg'
 import CloseCircleIconWhite from './close-circle-icon-white.svg'
 import CloseCircleIcon from './close-circle-icon.svg'
@@ -48,6 +49,7 @@ export {
   CloseCircleIcon,
   CloseCircleIconBold,
   CloseCircleIconWhite,
+  CloseCircleIconBlue,
   CloseIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,

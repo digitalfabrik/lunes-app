@@ -19,6 +19,13 @@
       "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
+    },
+    "qrCodeScanner": {
+      "noAuthorization": {
+        "description": "Feature ist ohne Kamerazugriff nicht verfügbar",
+        "back": "Zurück",
+        "grant": "Zulassen"
+      }
     }
   },
   "exercises": {

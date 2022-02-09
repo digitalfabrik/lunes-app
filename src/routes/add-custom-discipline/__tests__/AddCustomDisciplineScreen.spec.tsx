@@ -3,11 +3,11 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
-import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
-import AsyncStorageService from '../../services/AsyncStorage'
-import createNavigationMock from '../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import labels from '../../../constants/labels.json'
+import { loadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import AsyncStorageService from '../../../services/AsyncStorage'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import wrapWithTheme from '../../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')

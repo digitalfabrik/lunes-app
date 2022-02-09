@@ -1,16 +1,19 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableOpacity } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import Button from '../components/Button'
-import Loading from '../components/Loading'
-import { BUTTONS_THEME } from '../constants/data'
-import labels from '../constants/labels.json'
-import { loadGroupInfo } from '../hooks/useLoadGroupInfo'
-import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
-import { RoutesParams } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
+import { HeaderLinesIcon } from '../../../assets/images'
+import Button from '../../components/Button'
+import Loading from '../../components/Loading'
+import { BUTTONS_THEME } from '../../constants/data'
+import labels from '../../constants/labels.json'
+import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
+import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
+import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
 
 const Container = styled.View`
   flex-direction: column;
@@ -30,20 +33,28 @@ const Description = styled.Text`
   padding: 10px 0;
 `
 
-const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  letter-spacing: 0.11px;
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.lunesBlack};
+const InputContainer = styled.View<{ errorMessage: string }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   width: 80%;
   border: 1px solid
     ${props =>
       props.errorMessage ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
-  padding-left: 15px;
+  padding: 0 15px;
   height: ${hp('8%')}px;
+`
+
+const StyledTextInput = styled.TextInput`
+  flex-grow: 2;
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
+  letter-spacing: 0.11px;
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  color: ${prop => prop.theme.colors.lunesBlack};
 `
 
 const ErrorContainer = styled.View`
@@ -67,10 +78,15 @@ interface AddCustomDisciplineScreenProps {
 const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [showQRCodeOverlay, setShowQRCodeOverlay] = useState<boolean>(false)
 
   const { data: customDisciplines } = useReadCustomDisciplines()
 
   const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setErrorMessage('')
+  }, [code])
 
   const submit = (): void => {
     if (!customDisciplines) {
@@ -94,18 +110,35 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       .finally(() => setLoading(false))
   }
 
+  const showQRCodeReaderOverlay = () => {
+    setShowQRCodeOverlay(true)
+  }
+
+  if (showQRCodeOverlay) {
+    return (
+      <QRCodeReaderOverlay
+        visible={showQRCodeOverlay}
+        setVisible={setShowQRCodeOverlay}
+        setCode={setCode}
+        navigation={navigation}
+      />
+    )
+  }
+
   return (
     <Loading isLoading={loading}>
       {customDisciplines && (
         <Container>
           <Heading>{labels.addCustomDiscipline.heading}</Heading>
           <Description>{labels.addCustomDiscipline.description}</Description>
-          <StyledTextInput
-            errorMessage={errorMessage}
-            placeholder={labels.addCustomDiscipline.placeholder}
-            value={code}
-            onChangeText={setCode}
-          />
+
+          <InputContainer errorMessage={errorMessage}>
+            <StyledTextInput placeholder={labels.addCustomDiscipline.placeholder} value={code} onChangeText={setCode} />
+            <TouchableOpacity onPress={() => showQRCodeReaderOverlay()}>
+              <HeaderLinesIcon />
+            </TouchableOpacity>
+          </InputContainer>
+
           <ErrorContainer>
             <ErrorText>{errorMessage}</ErrorText>
           </ErrorContainer>

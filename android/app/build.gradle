@@ -138,6 +138,7 @@ android {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
         }
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {
