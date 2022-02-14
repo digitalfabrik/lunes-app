@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Discipline } from '../constants/endpoints'
+import { Discipline, Document } from '../constants/endpoints'
+
+const CUSTOM_DISCIPLINE_KEY = 'customDisciplines'
+const FAVORITES_KEY = 'favorites'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
@@ -37,16 +40,16 @@ export const removeSelectedProfession = async (profession: Discipline): Promise<
   return professions
 }
 
-export const getCustomDisciplines = async (): Promise<string[]> => {
-  const disciplines = await AsyncStorage.getItem('customDisciplines')
+const getCustomDisciplines = async (): Promise<string[]> => {
+  const disciplines = await AsyncStorage.getItem(CUSTOM_DISCIPLINE_KEY)
   return disciplines ? JSON.parse(disciplines) : []
 }
 
-export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
-  await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
+const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
+  await AsyncStorage.setItem(CUSTOM_DISCIPLINE_KEY, JSON.stringify(customDisciplines))
 }
 
-export const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
+const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
   const disciplines = await getCustomDisciplines()
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
@@ -56,6 +59,32 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
+const getFavorites = async (): Promise<Document[]> => {
+  const documents = await AsyncStorage.getItem(FAVORITES_KEY)
+  return documents ? JSON.parse(documents) : []
+}
+
+const setFavorites = async (favorites: Document[]): Promise<void> => {
+  await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
+}
+
+const addFavorite = async (favorite: Document): Promise<void> => {
+  const favorites = await getFavorites()
+  const newFavorites = [...favorites, favorite]
+  await setFavorites(newFavorites)
+}
+
+const deleteFavorite = async (favorite: Document): Promise<void> => {
+  const favorites = await getFavorites()
+  const newFavorites = favorites.filter(it => it.id !== favorite.id)
+  await setFavorites(newFavorites)
+}
+
+const isFavorite = async (favorite: Document): Promise<boolean> => {
+  const favorites = await getFavorites()
+  return favorites.some(it => it.id === favorite.id)
+}
+
 export default {
   getCustomDisciplines,
   setCustomDisciplines,
@@ -63,5 +92,11 @@ export default {
   setSelectedProfessions,
   getSelectedProfessions,
   pushSelectedProfession,
-  removeSelectedProfession
+  removeSelectedProfession,
+  deleteCustomDiscipline,
+  getFavorites,
+  setFavorites,
+  addFavorite,
+  deleteFavorite,
+  isFavorite
 }
