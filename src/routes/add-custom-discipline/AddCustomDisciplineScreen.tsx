@@ -1,10 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { HeaderLinesIcon } from '../../../assets/images'
+import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import Loading from '../../components/Loading'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -69,6 +69,11 @@ const ErrorText = styled.Text`
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
 `
 
+const ScanIcon = styled(QRCodeIcon)`
+  width: 400px;
+  height: 400px;
+`
+
 const HTTP_STATUS_CODE_FORBIDDEN = 403
 
 interface AddCustomDisciplineScreenProps {
@@ -115,14 +120,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
   }
 
   if (showQRCodeOverlay) {
-    return (
-      <QRCodeReaderOverlay
-        visible={showQRCodeOverlay}
-        setVisible={setShowQRCodeOverlay}
-        setCode={setCode}
-        navigation={navigation}
-      />
-    )
+    return <QRCodeReaderOverlay setVisible={setShowQRCodeOverlay} setCode={setCode} />
   }
 
   return (
@@ -135,7 +133,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
           <InputContainer errorMessage={errorMessage}>
             <StyledTextInput placeholder={labels.addCustomDiscipline.placeholder} value={code} onChangeText={setCode} />
             <TouchableOpacity onPress={() => showQRCodeReaderOverlay()}>
-              <HeaderLinesIcon />
+              <ScanIcon accessibilityLabel='qr-code-scanner' width={25} height={25} />
             </TouchableOpacity>
           </InputContainer>
 
