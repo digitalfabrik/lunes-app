@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 
 import labels from '../../../constants/labels.json'
 import { loadGroupInfo } from '../../../hooks/useLoadGroupInfo'

@@ -1,6 +1,5 @@
-import { useIsFocused } from '@react-navigation/native'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, AppStateStatus, Linking, Modal, PermissionsAndroid, Text } from 'react-native'
+import { AppState, Linking, Modal, PermissionsAndroid } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import styled from 'styled-components/native'
 
@@ -49,7 +48,6 @@ interface Props {
 }
 
 const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement => {
-  const camera = useRef<RNCamera>(null)
   const appState = useRef(AppState.currentState)
 
   const [isPressed, setIsPressed] = useState<boolean>(false)
@@ -86,7 +84,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   }
 
   return (
-    <Modal testID='modal' visible transparent animationType='fade'>
+    <Modal visible transparent animationType='fade'>
       <Container>
         <Icon
           onPress={() => setVisible(false)}
@@ -100,7 +98,6 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
           )}
         </Icon>
         <Camera
-          ref={camera}
           captureAudio={false}
           onBarCodeRead={onBarCodeRead}
           testID='camera'

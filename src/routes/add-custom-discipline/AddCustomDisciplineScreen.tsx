@@ -55,6 +55,7 @@ const StyledTextInput = styled.TextInput`
   letter-spacing: 0.11px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};
+  width: 80%;
 `
 
 const ErrorContainer = styled.View`
@@ -67,11 +68,6 @@ const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
-`
-
-const ScanIcon = styled(QRCodeIcon)`
-  width: 400px;
-  height: 400px;
 `
 
 const HTTP_STATUS_CODE_FORBIDDEN = 403
@@ -115,10 +111,6 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       .finally(() => setLoading(false))
   }
 
-  const showQRCodeReaderOverlay = () => {
-    setShowQRCodeOverlay(true)
-  }
-
   if (showQRCodeOverlay) {
     return <QRCodeReaderOverlay setVisible={setShowQRCodeOverlay} setCode={setCode} />
   }
@@ -132,8 +124,8 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
 
           <InputContainer errorMessage={errorMessage}>
             <StyledTextInput placeholder={labels.addCustomDiscipline.placeholder} value={code} onChangeText={setCode} />
-            <TouchableOpacity onPress={() => showQRCodeReaderOverlay()}>
-              <ScanIcon accessibilityLabel='qr-code-scanner' width={25} height={25} />
+            <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
+              <QRCodeIcon accessibilityLabel='qr-code-scanner' />
             </TouchableOpacity>
           </InputContainer>
 
