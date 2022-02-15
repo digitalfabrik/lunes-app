@@ -33,13 +33,15 @@ const NotAuthorisedView = styled.View`
   justify-content: center;
   height: 100%;
   background-color: ${props => props.theme.colors.lunesWhite};
+  margin: 50px 0 0;
 `
 
 const NoAuthDescription = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
-  padding-bottom: 20px;
+  padding: 0 20px 20px;
+  text-align: center;
 `
 
 interface Props {
@@ -59,6 +61,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
     setVisible(false)
   }
 
+  // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
   useEffect(() => {
     if (requestPermissions) {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
@@ -79,12 +82,12 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
     }
   }, [])
 
-  const refresh = () => {
+  const openSettings = () => {
     Linking.openSettings().catch(() => console.error('Unable to open Settings'))
   }
 
   return (
-    <Modal visible transparent animationType='fade'>
+    <Modal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
       <Container>
         <Icon
           onPress={() => setVisible(false)}
@@ -97,34 +100,31 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
             <CloseCircleIconWhite testID='close-circle-icon-white' />
           )}
         </Icon>
-        <Camera
-          captureAudio={false}
-          onBarCodeRead={onBarCodeRead}
-          testID='camera'
-          onStatusChange={status => setPermissionDenied(status.cameraStatus === 'NOT_AUTHORIZED')}
-          onCameraReady={() => setPermissionDenied(false)}>
-          {() =>
-            permissionDenied && !requestPermissions ? (
-              <NotAuthorisedView>
-                <NoAuthDescription>
-                  {labels.addCustomDiscipline.qrCodeScanner.noAuthorization.description}
-                </NoAuthDescription>
-                <Button
-                  onPress={() => setVisible(false)}
-                  label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.back}
-                  buttonTheme={BUTTONS_THEME.outlined}
-                />
-                <Button
-                  onPress={() => refresh()}
-                  label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.grant}
-                  buttonTheme={BUTTONS_THEME.contained}
-                />
-              </NotAuthorisedView>
-            ) : (
-              <></>
-            )
-          }
-        </Camera>
+        {permissionDenied && !requestPermissions ? (
+          <NotAuthorisedView>
+            <NoAuthDescription>
+              {labels.addCustomDiscipline.qrCodeScanner.noAuthorization.description}
+            </NoAuthDescription>
+            <Button
+              onPress={() => setVisible(false)}
+              label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.back}
+              buttonTheme={BUTTONS_THEME.outlined}
+            />
+            <Button
+              onPress={() => openSettings()}
+              label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          </NotAuthorisedView>
+        ) : (
+          <Camera
+            captureAudio={false}
+            onBarCodeRead={onBarCodeRead}
+            testID='camera'
+            onStatusChange={status => setPermissionDenied(status.cameraStatus === 'NOT_AUTHORIZED')}
+            onCameraReady={() => setPermissionDenied(false)}
+          />
+        )}
       </Container>
     </Modal>
   )

@@ -91,12 +91,12 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should open qr code scanner', async () => {
-    const { findByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
+    const { findByLabelText, getByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
     const QRCodeIcon = await findByLabelText('qr-code-scanner')
     expect(QRCodeIcon).toBeDefined()
     fireEvent.press(QRCodeIcon)
-    expect(await findByLabelText('RNCamera')).toBeDefined()
+    expect(getByLabelText('RNCamera')).toBeDefined()
   })
 })

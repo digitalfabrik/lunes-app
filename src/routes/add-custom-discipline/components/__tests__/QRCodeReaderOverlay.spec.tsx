@@ -30,6 +30,16 @@ describe('QRCodeReaderOverlay', () => {
     expect(queryByTestId('close-circle-icon-white')).toBeNull()
   })
 
+  it('should close overlay on icon press', () => {
+    const { getByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
+      wrapper: wrapWithTheme
+    })
+    const closeIcon = getByTestId('close-circle-icon-white')
+    expect(closeIcon).toBeDefined()
+    fireEvent.press(closeIcon)
+    expect(setVisible).toHaveBeenCalledWith(false)
+  })
+
   it('should set text, when qr code is scanned', () => {
     const { getByLabelText } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
       wrapper: wrapWithTheme

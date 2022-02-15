@@ -49,13 +49,12 @@ const InputContainer = styled.View<{ errorMessage: string }>`
 `
 
 const StyledTextInput = styled.TextInput`
-  flex-grow: 2;
   font-size: ${props => props.theme.fonts.largeFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: 0.11px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.lunesBlack};
-  width: 80%;
+  width: 90%;
 `
 
 const ErrorContainer = styled.View`

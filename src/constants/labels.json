@@ -22,9 +22,9 @@
     },
     "qrCodeScanner": {
       "noAuthorization": {
-        "description": "Feature ist ohne Kamerazugriff nicht verfügbar",
+        "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Android-Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
         "back": "Zurück",
-        "grant": "Zulassen"
+        "settings": "Einstellungen"
       }
     }
   },
