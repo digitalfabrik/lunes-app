@@ -39,22 +39,41 @@ const TextContainer = styled.View`
   flex: 1;
 `
 
+const DescriptionContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
 const Description = styled.Text<{ pressed: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.pressed ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
+  color: ${props => (props.pressed ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyMedium)};
+`
+
+const BadgeLabel = styled.Text<{ pressed: boolean }>`
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+  min-width: ${wp('6%')}px;
+  height: ${wp('4%')}px;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  color: ${prop => (prop.pressed ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
+  background-color: ${prop => (prop.pressed ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
+  font-size: ${prop => prop.theme.fonts.smallFontSize};
+  margin-right: 5px;
 `
 
 export interface DisciplineItemProps {
   title: string
   icon: string | ReactElement
-  description?: string
-  children?: ReactElement
+  description: string
+  badgeLabel?: string
   onPress: () => void
 }
 
-const DisciplineItem = ({ onPress, icon, title, description, children }: DisciplineItemProps): ReactElement => {
+const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: DisciplineItemProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
   return (
     <Container
@@ -67,8 +86,10 @@ const DisciplineItem = ({ onPress, icon, title, description, children }: Discipl
         <Title pressed={pressed} numberOfLines={3}>
           {title}
         </Title>
-        {description && <Description pressed={pressed}>{description}</Description>}
-        {children}
+        <DescriptionContainer>
+          {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
+          <Description pressed={pressed}>{description}</Description>
+        </DescriptionContainer>
       </TextContainer>
       <ChevronRight fill={pressed ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
     </Container>
