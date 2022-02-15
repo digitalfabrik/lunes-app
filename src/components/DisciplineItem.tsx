@@ -65,6 +65,8 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   margin-right: 5px;
 `
 
+const PRESS_ANIMATION_DURATION = 300
+
 interface DisciplineItemProps {
   title: string
   icon: string | ReactElement
@@ -75,12 +77,14 @@ interface DisciplineItemProps {
 
 const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: DisciplineItemProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
+  const onItemPress = () => {
+    setPressed(true)
+    setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
+    onPress()
+  }
+
   return (
-    <Container
-      onPress={onPress}
-      pressed={pressed}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}>
+    <Container onPress={onItemPress} pressed={pressed}>
       <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
       <TextContainer>
         <Title pressed={pressed} numberOfLines={3}>

@@ -1,4 +1,4 @@
-import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
@@ -27,28 +27,22 @@ describe('DisciplineItem', () => {
     expect(getByText(badge)).toBeDefined()
   })
 
-  it('should call onPress event', () => {
-    const { getByText } = renderDisciplineItem()
-    expect(onPress).not.toHaveBeenCalled()
-    const element = getByText(title)
-    fireEvent.press(element)
-    expect(onPress).toHaveBeenCalled()
-  })
-
-  it('should render black arrow icon when not pressed', () => {
+  it('should handle press', async () => {
     const { getByTestId, getByText } = renderDisciplineItem()
     const arrowIcon = getByTestId('arrow')
+
     expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
-  })
 
-  it('should adjust style when pressed', () => {
-    const { getByTestId, getByText } = renderDisciplineItem()
-    const arrowIcon = getByTestId('arrow')
+    fireEvent.press(arrowIcon)
 
-    fireEvent(arrowIcon, 'onPressIn')
-
+    expect(onPress).toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.white)
+
+    await waitFor(() => {
+      expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
+    })
   })
 })
