@@ -9,7 +9,6 @@ import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
 describe('Components', () => {
   describe('DisciplineItem', () => {
     const defaultDisciplineItemProps: DisciplineItemProps = {
-      selected: false,
       description: '',
       icon: '',
       title: 'Discipline Item title',
@@ -52,7 +51,7 @@ describe('Components', () => {
     })
 
     it('should render red arrow icon when selected is true', () => {
-      const { getByTestId, getByText } = renderDisciplineItem({ selected: true })
+      const { getByTestId, getByText } = renderDisciplineItem()
       const arrowIcon = getByTestId('arrow')
       expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
       const title = getByText('Discipline Item title')

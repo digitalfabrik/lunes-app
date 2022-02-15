@@ -33,28 +33,17 @@ const ErrorText = styled.Text`
 
 interface CustomDisciplineItemProps {
   apiKey: string
-  selectedId: string | null
-  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParams, 'Home'>
   refresh: () => void
 }
 
-const CustomDisciplineItem = ({
-  apiKey,
-  selectedId,
-  setSelectedId,
-  navigation,
-  refresh
-}: CustomDisciplineItemProps): JSX.Element => {
+const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
-
-  const idToSelectedIdString = (id: number): string => `custom-${id}`
 
   const navigate = (): void => {
     if (!data) {
       return
     }
-    setSelectedId(idToSelectedIdString(data.id))
     navigation.navigate('DisciplineSelection', {
       discipline: data
     })
@@ -75,7 +64,6 @@ const CustomDisciplineItem = ({
         <DisciplineItem
           title={data.title}
           icon={data.icon}
-          selected={idToSelectedIdString(data.id) === selectedId}
           onPress={navigate}
           description={childrenDescription(data)}
         />

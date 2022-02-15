@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
@@ -46,20 +46,16 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(null)
       refreshCustomDisciplines()
     }, [refreshCustomDisciplines])
   )
 
   const navigateToDiscipline = (item: Discipline): void => {
-    setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       discipline: item
     })
@@ -73,8 +69,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     <CustomDisciplineItem
       key={customDiscipline}
       apiKey={customDiscipline}
-      selectedId={selectedId}
-      setSelectedId={setSelectedId}
       navigation={navigation}
       refresh={refreshCustomDisciplines}
     />
@@ -87,7 +81,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         key={item.id}
         title={item.title}
         icon={item.icon}
-        selected={item.id.toString() === selectedId}
         onPress={() => navigateToDiscipline(item)}
         description={childrenDescription(item)}
       />

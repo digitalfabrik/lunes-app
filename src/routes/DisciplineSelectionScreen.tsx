@@ -81,7 +81,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   const ListItem = ({ item }: { item: Discipline }): JSX.Element => {
     const selected = item.id === selectedId
     return (
-      <DisciplineItem selected={selected} title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
+      <DisciplineItem title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{childrenLabel(item)}</Description>
