@@ -1,61 +1,54 @@
 import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
-import React, { ComponentProps } from 'react'
-import { Text } from 'react-native'
+import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
+import DisciplineItem from '../DisciplineItem'
 
-describe('Components', () => {
-  describe('DisciplineItem', () => {
-    const defaultDisciplineItemProps: DisciplineItemProps = {
-      description: '',
-      icon: '',
-      title: 'Discipline Item title',
-      children: <Text>Text of children</Text>,
-      onPress: () => undefined
-    }
+describe('DisciplineItem', () => {
+  const onPress = jest.fn()
+  const description = 'Wörter'
+  const icon = 'https://example.com'
+  const title = 'Discipline Item title'
+  const badge = '12'
 
-    const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI =>
-      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />, {
+  const renderDisciplineItem = (): RenderAPI =>
+    render(
+      <DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />,
+      {
         wrapper: wrapWithTheme
-      })
+      }
+    )
 
-    it('should call onPress event', () => {
-      const onPress = jest.fn()
-      const { getByText } = renderDisciplineItem({ onPress })
-      expect(onPress).not.toHaveBeenCalled()
-      const element = getByText('Discipline Item title')
-      fireEvent.press(element)
-      expect(onPress).toHaveBeenCalled()
-    })
+  it('should render texts', () => {
+    const { getByText } = renderDisciplineItem()
+    expect(getByText(title)).toBeDefined()
+    expect(getByText(description)).toBeDefined()
+    expect(getByText(badge)).toBeDefined()
+  })
 
-    it('should display title passed to it', () => {
-      const { queryByText } = renderDisciplineItem({})
-      const title = queryByText('Discipline Item title')
-      expect(title).not.toBeNull()
-    })
+  it('should call onPress event', () => {
+    const { getByText } = renderDisciplineItem()
+    expect(onPress).not.toHaveBeenCalled()
+    const element = getByText(title)
+    fireEvent.press(element)
+    expect(onPress).toHaveBeenCalled()
+  })
 
-    it('should render children passed to it', () => {
-      const { queryByText } = renderDisciplineItem()
-      const title = queryByText('Text of children')
-      expect(title).not.toBeNull()
-    })
+  it('should render black arrow icon when not pressed', () => {
+    const { getByTestId, getByText } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
+    expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
+  })
 
-    it('should render black arrow icon when selected is false', () => {
-      const { getByTestId, getByText } = renderDisciplineItem()
-      const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-      const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
-    })
+  it('should adjust style when pressed', () => {
+    const { getByTestId, getByText } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
 
-    it('should render red arrow icon when selected is true', () => {
-      const { getByTestId, getByText } = renderDisciplineItem()
-      const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
-      const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.white)
-    })
+    fireEvent(arrowIcon, 'onPressIn')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.white)
   })
 })

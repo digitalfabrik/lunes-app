@@ -65,7 +65,7 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   margin-right: 5px;
 `
 
-export interface DisciplineItemProps {
+interface DisciplineItemProps {
   title: string
   icon: string | ReactElement
   description: string
