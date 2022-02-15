@@ -1,16 +1,16 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 
-import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
+import { DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
+import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
@@ -27,48 +27,6 @@ const StyledList = styled(FlatList)`
   margin-bottom: 6%;
 ` as ComponentType as new () => FlatList<Result>
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
-`
-
-const Contained = styled.Pressable<{ selected: boolean }>`
-  align-self: center;
-  padding: 17px 28px 17px 16px;
-  margin-bottom: 8px;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
-  border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesBlackUltralight)};
-`
-const StyledItemTitle = styled.Text<{ selected: boolean }>`
-  text-align: left;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-bottom: 2px;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
-`
-
-const LeftSide = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-`
-const StyledText = styled.View`
-  margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-`
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
@@ -108,10 +66,7 @@ interface ResultOverviewScreenProps {
 const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): ReactElement => {
   const { exercise, results, discipline } = route.params.result
   const { level, description, title } = EXERCISES[exercise]
-  const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
-
-  useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
@@ -149,41 +104,26 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     </StyledTitle>
   )
 
+  const navigateToResult = (item: Result) => {
+    navigation.navigate('ResultScreen', {
+      result: { ...route.params.result },
+      resultType: item,
+      counts
+    })
+  }
+
   const Item = ({ item }: { item: Result }): ReactElement | null => {
     const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
-    const handleNavigation = ({ key }: Result): void => {
-      setSelectedKey(key)
-
-      navigation.navigate('ResultScreen', {
-        result: { ...route.params.result },
-        resultType: item,
-        counts
-      })
-    }
 
     const count = counts[item.key]
 
-    const selected = item.key === selectedKey
-    const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark
-    const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack
-    return (
-      <Contained selected={selected} onPress={() => handleNavigation(item)}>
-        <LeftSide>
-          <item.Icon fill={iconColor} width={30} height={30} />
-          <StyledText>
-            <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
-            <Description
-              selected={
-                selected
-              }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
-          </StyledText>
-        </LeftSide>
-        <ChevronRight fill={arrowColor} />
-      </Contained>
-    )
+    const description = `${count} ${labels.results.of} ${counts.total} ${labels.general.words}`
+    const icon = <item.Icon width={30} height={30} />
+
+    return <ListItem title={item.title} icon={icon} description={description} onPress={() => navigateToResult(item)} />
   }
 
   const Footer = (
