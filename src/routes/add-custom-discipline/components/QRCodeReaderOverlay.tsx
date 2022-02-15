@@ -4,9 +4,6 @@ import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
-import Button from '../../../components/Button'
-import { BUTTONS_THEME } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.View`
