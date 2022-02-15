@@ -7,6 +7,7 @@ import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/im
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.View`
   flex: 1;
@@ -25,23 +26,6 @@ const Camera = styled(RNCamera)`
   flex: 1;
   position: relative;
   margin: 50px 0 0;
-`
-
-const NotAuthorisedView = styled.View`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background-color: ${props => props.theme.colors.lunesWhite};
-  margin: 50px 0 0;
-`
-
-const NoAuthDescription = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
-  padding: 0 20px 20px;
-  text-align: center;
 `
 
 interface Props {
@@ -101,21 +85,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
           )}
         </Icon>
         {permissionDenied && !requestPermissions ? (
-          <NotAuthorisedView>
-            <NoAuthDescription>
-              {labels.addCustomDiscipline.qrCodeScanner.noAuthorization.description}
-            </NoAuthDescription>
-            <Button
-              onPress={() => setVisible(false)}
-              label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.back}
-              buttonTheme={BUTTONS_THEME.outlined}
-            />
-            <Button
-              onPress={() => openSettings()}
-              label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          </NotAuthorisedView>
+          <NotAuthorisedView setVisible={setVisible} openSettings={openSettings} />
         ) : (
           <Camera
             captureAudio={false}
