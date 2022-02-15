@@ -70,15 +70,24 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 const PRESS_ANIMATION_DURATION = 300
 
 interface ListItemProps {
-  title: string
+  title: string | ReactElement
   icon?: string | ReactElement
   description: string
   badgeLabel?: string
   children?: ReactElement
   onPress: () => void
+  rightChildren?: ReactElement
 }
 
-const ListItem = ({ onPress, icon, title, description, badgeLabel, children }: ListItemProps): ReactElement => {
+const ListItem = ({
+  onPress,
+  icon,
+  title,
+  description,
+  badgeLabel,
+  children,
+  rightChildren
+}: ListItemProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
   const onItemPress = () => {
     setPressed(true)
@@ -86,20 +95,35 @@ const ListItem = ({ onPress, icon, title, description, badgeLabel, children }: L
     onPress()
   }
 
+  const titleToRender =
+    typeof title === 'string' ? (
+      <Title pressed={pressed} numberOfLines={3}>
+        {title}
+      </Title>
+    ) : (
+      title
+    )
+
+  const iconToRender = icon ? (
+    <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
+  ) : null
+
+  const rightChildrenToRender = rightChildren ?? (
+    <ChevronRight fill={pressed ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+  )
+
   return (
     <Container onPress={onItemPress} pressed={pressed}>
-      {icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
+      {iconToRender}
       <FlexContainer>
-        <Title pressed={pressed} numberOfLines={3}>
-          {title}
-        </Title>
+        {titleToRender}
         <DescriptionContainer>
           {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
           <Description pressed={pressed}>{description}</Description>
         </DescriptionContainer>
         {children}
       </FlexContainer>
-      <ChevronRight fill={pressed ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+      {rightChildrenToRender}
     </Container>
   )
 }
