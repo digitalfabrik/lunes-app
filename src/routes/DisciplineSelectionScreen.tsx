@@ -78,14 +78,10 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }
   }
 
-  const ListItem = ({ item }: { item: Discipline }): JSX.Element | null => {
-    if (item.numberOfChildren === 0) {
-      return null
-    }
+  const ListItem = ({ item }: { item: Discipline }): JSX.Element => {
     const selected = item.id === selectedId
-
     return (
-      <DisciplineItem selected={selected} item={item} onPress={() => handleNavigation(item)}>
+      <DisciplineItem selected={selected} title={item.title} icon={item.icon} onPress={() => handleNavigation(item)}>
         <ItemText>
           <BadgeLabel selected={selected}>{item.numberOfChildren}</BadgeLabel>
           <Description selected={selected}>{childrenLabel(item)}</Description>
@@ -94,13 +90,15 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     )
   }
 
+  const relevantDisciplines = disciplines?.filter(it => it.numberOfChildren > 0)
+
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
-          data={disciplines}
+          data={relevantDisciplines}
           renderItem={ListItem}
           keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}

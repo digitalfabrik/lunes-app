@@ -10,16 +10,9 @@ describe('Components', () => {
   describe('DisciplineItem', () => {
     const defaultDisciplineItemProps: DisciplineItemProps = {
       selected: false,
-      item: {
-        id: 1,
-        description: '',
-        icon: '',
-        title: 'Discipline Item title',
-        numberOfChildren: 1,
-        isLeaf: false,
-        parentTitle: null,
-        needsTrainingSetEndpoint: false
-      },
+      description: '',
+      icon: '',
+      title: 'Discipline Item title',
       children: <Text>Text of children</Text>,
       onPress: () => undefined
     }

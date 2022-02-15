@@ -23,13 +23,6 @@ const LoadingSpinner = styled.View`
   padding-top: ${wp('10%')}px;
 `
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
-`
-
 const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
@@ -79,9 +72,13 @@ const CustomDisciplineItem = ({
   return (
     <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
       {data ? (
-        <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
-          <Description selected={idToSelectedIdString(data.id) === selectedId}>{childrenDescription(data)}</Description>
-        </DisciplineItem>
+        <DisciplineItem
+          title={data.title}
+          icon={data.icon}
+          selected={idToSelectedIdString(data.id) === selectedId}
+          onPress={navigate}
+          description={childrenDescription(data)}
+        />
       ) : (
         <Placeholder>
           <ErrorText>

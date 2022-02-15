@@ -41,13 +41,6 @@ const AddCustomDisciplineText = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyMedium)};
-`
-
 interface HomeScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'Home'>
 }
@@ -65,7 +58,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     }, [refreshCustomDisciplines])
   )
 
-  const handleNavigation = (item: Discipline): void => {
+  const navigateToDiscipline = (item: Discipline): void => {
     setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       discipline: item
@@ -76,6 +69,30 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
+  const customDisciplineItems = customDisciplines?.map(customDiscipline => (
+    <CustomDisciplineItem
+      key={customDiscipline}
+      apiKey={customDiscipline}
+      selectedId={selectedId}
+      setSelectedId={setSelectedId}
+      navigation={navigation}
+      refresh={refreshCustomDisciplines}
+    />
+  ))
+
+  const disciplineItems = disciplines
+    ?.filter(it => it.numberOfChildren > 0)
+    ?.map(item => (
+      <DisciplineItem
+        key={item.id}
+        title={item.title}
+        icon={item.icon}
+        selected={item.id.toString() === selectedId}
+        onPress={() => navigateToDiscipline(item)}
+        description={childrenDescription(item)}
+      />
+    ))
+
   return (
     <Root>
       <Header />
@@ -84,31 +101,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         <AddCircleIcon />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines?.map(customDiscipline => (
-        <CustomDisciplineItem
-          key={customDiscipline}
-          apiKey={customDiscipline}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          navigation={navigation}
-          refresh={refreshCustomDisciplines}
-        />
-      ))}
+      {customDisciplineItems}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {disciplines?.map(item => {
-          if (item.numberOfChildren === 0) {
-            return null
-          }
-          return (
-            <DisciplineItem
-              key={item.id}
-              item={item}
-              selected={item.id.toString() === selectedId}
-              onPress={() => handleNavigation(item)}>
-              <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
-            </DisciplineItem>
-          )
-        })}
+        {disciplineItems}
       </ServerResponseHandler>
     </Root>
   )
