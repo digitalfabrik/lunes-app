@@ -3,9 +3,9 @@ import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
 import wrapWithTheme from '../../testing/wrapWithTheme'
-import DisciplineItem from '../DisciplineItem'
+import ListItem from '../ListItem'
 
-describe('DisciplineItem', () => {
+describe('ListItem', () => {
   const onPress = jest.fn()
   const description = 'Wörter'
   const icon = 'https://example.com'
@@ -13,12 +13,9 @@ describe('DisciplineItem', () => {
   const badge = '12'
 
   const renderDisciplineItem = (): RenderAPI =>
-    render(
-      <DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />,
-      {
-        wrapper: wrapWithTheme
-      }
-    )
+    render(<ListItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />, {
+      wrapper: wrapWithTheme
+    })
 
   it('should render texts', () => {
     const { getByText } = renderDisciplineItem()

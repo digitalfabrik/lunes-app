@@ -8,7 +8,9 @@ import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ pressed: boolean }>`
   min-height: ${wp('22%')}px;
-  margin: 0px 16px 8px 16px;
+  width: ${wp('90%')}px;
+  margin-bottom: 8px;
+  align-self: center;
   padding: 12px 8px 12px 16px;
   flex-direction: row;
   justify-content: space-between;
@@ -35,7 +37,7 @@ const IconContainer = styled.View`
   margin-right: 10px;
 `
 
-const TextContainer = styled.View`
+const FlexContainer = styled.View`
   flex: 1;
 `
 
@@ -67,15 +69,16 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 
 const PRESS_ANIMATION_DURATION = 300
 
-interface DisciplineItemProps {
+interface ListItemProps {
   title: string
-  icon: string | ReactElement
+  icon?: string | ReactElement
   description: string
   badgeLabel?: string
+  children?: ReactElement
   onPress: () => void
 }
 
-const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: DisciplineItemProps): ReactElement => {
+const ListItem = ({ onPress, icon, title, description, badgeLabel, children }: ListItemProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
   const onItemPress = () => {
     setPressed(true)
@@ -85,8 +88,8 @@ const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: Disci
 
   return (
     <Container onPress={onItemPress} pressed={pressed}>
-      <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
-      <TextContainer>
+      {icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
+      <FlexContainer>
         <Title pressed={pressed} numberOfLines={3}>
           {title}
         </Title>
@@ -94,10 +97,11 @@ const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: Disci
           {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
           <Description pressed={pressed}>{description}</Description>
         </DescriptionContainer>
-      </TextContainer>
+        {children}
+      </FlexContainer>
       <ChevronRight fill={pressed ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
     </Container>
   )
 }
 
-export default DisciplineItem
+export default ListItem

@@ -6,9 +6,8 @@ import styled from 'styled-components/native'
 import labels from '../constants/labels.json'
 import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
-import DisciplineItem from './DisciplineItem'
+import DisciplineListItem from './DisciplineListItem'
 import Loading from './Loading'
 
 const Placeholder = styled.View`
@@ -61,12 +60,7 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
   return (
     <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
       {data ? (
-        <DisciplineItem
-          title={data.title}
-          icon={data.icon}
-          onPress={navigate}
-          description={childrenDescription(data)}
-        />
+        <DisciplineListItem item={data} onPress={navigate} badge={false} />
       ) : (
         <Placeholder>
           <ErrorText>
