@@ -1,8 +1,8 @@
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import QRCodeReaderOverlay from '../QRCodeReaderOverlay'
 
 const apiCode = 'scanned-api-code'
@@ -25,9 +25,7 @@ describe('QRCodeReaderOverlay', () => {
   const setCode = jest.fn()
 
   it('should show close header with correct icon', () => {
-    const { getByTestId, queryByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByTestId, queryByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
     const closeIcon = getByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()
     fireEvent(closeIcon, 'onPressIn')
@@ -36,9 +34,7 @@ describe('QRCodeReaderOverlay', () => {
   })
 
   it('should close overlay on icon press', () => {
-    const { getByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
     const closeIcon = getByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()
     fireEvent.press(closeIcon)
@@ -46,9 +42,7 @@ describe('QRCodeReaderOverlay', () => {
   })
 
   it('should set text, when qr code is scanned', async () => {
-    const { findByLabelText } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByLabelText } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
     const camera = await findByLabelText('mockOnBarCodeRead')
     expect(camera).toBeDefined()
     fireEvent.press(camera)
