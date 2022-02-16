@@ -23,6 +23,8 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
   }
 }))
 
+jest.mock('react-native-popover-view')
+
 jest.mock('@react-navigation/elements')
 
 jest.mock('../../../components/AudioPlayer', () => {

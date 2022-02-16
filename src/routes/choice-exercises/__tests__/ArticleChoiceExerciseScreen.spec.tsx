@@ -9,6 +9,8 @@ import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoi
 import wrapWithTheme from '../../../testing/wrapWithTheme'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
+jest.useFakeTimers()
+
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn()
