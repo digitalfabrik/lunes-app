@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Linking, Modal, PermissionsAndroid } from 'react-native'
+import { AppState, Modal, PermissionsAndroid } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import styled from 'styled-components/native'
 
@@ -26,8 +26,8 @@ const Camera = styled(RNCamera)`
 `
 
 interface Props {
-  setVisible: (input: boolean) => void
-  setCode: (input: string) => void
+  setVisible: (visible: boolean) => void
+  setCode: (code: string) => void
 }
 
 const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement => {
@@ -53,19 +53,13 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
         setRequestPermissions(true)
       }
       appState.current = nextAppState
     })
-    return () => {
-      subscription.remove()
-    }
+    return subscription.remove()
   }, [])
-
-  const openSettings = () => {
-    Linking.openSettings().catch(() => console.error('Unable to open Settings'))
-  }
 
   return (
     <Modal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
@@ -82,7 +76,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
           )}
         </Icon>
         {permissionDenied && !requestPermissions ? (
-          <NotAuthorisedView setVisible={setVisible} openSettings={openSettings} />
+          <NotAuthorisedView setVisible={setVisible} />
         ) : (
           <Camera
             captureAudio={false}
