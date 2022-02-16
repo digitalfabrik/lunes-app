@@ -27,12 +27,12 @@ const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolea
   border-radius: 50px;
   background-color: ${props => {
     if (props.disabled) {
-      return props.theme.colors.lunesBlackUltralight
+      return props.theme.colors.disabled
     }
     if (props.isActive) {
-      return props.theme.colors.lunesRed
+      return props.theme.colors.audioIconSelected
     }
-    return props.theme.colors.lunesRedDark
+    return props.theme.colors.audioIconHighlight
   }};
   justify-content: center;
   align-items: center;

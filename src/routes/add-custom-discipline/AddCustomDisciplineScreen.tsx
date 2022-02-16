@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -29,7 +29,7 @@ const Heading = styled.Text`
 const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondary};
   padding: 10px 0;
 `
 
@@ -39,9 +39,7 @@ const InputContainer = styled.View<{ errorMessage: string }>`
   align-items: center;
   justify-content: space-between;
   width: 80%;
-  border: 1px solid
-    ${props =>
-      props.errorMessage ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
+  border: 1px solid ${props => (props.errorMessage ? props.theme.colors.incorrect : props.theme.colors.text)};
   border-radius: 4px;
   margin-top: ${hp('8%')}px;
   padding: 0 15px;
@@ -53,7 +51,7 @@ const StyledTextInput = styled.TextInput`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: 0.11px;
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.primary};
   width: 90%;
 `
 
@@ -66,7 +64,7 @@ const ErrorContainer = styled.View`
 const ErrorText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.lunesFunctionalIncorrectDark};
+  color: ${prop => prop.theme.colors.incorrect};
 `
 
 const HTTP_STATUS_CODE_FORBIDDEN = 403
@@ -78,6 +76,7 @@ interface AddCustomDisciplineScreenProps {
 const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const theme = useTheme()
   const [showQRCodeOverlay, setShowQRCodeOverlay] = useState<boolean>(false)
 
   const { data: customDisciplines } = useReadCustomDisciplines()
@@ -122,7 +121,12 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
           <Description>{labels.addCustomDiscipline.description}</Description>
 
           <InputContainer errorMessage={errorMessage}>
-            <StyledTextInput placeholder={labels.addCustomDiscipline.placeholder} value={code} onChangeText={setCode} />
+            <StyledTextInput
+              placeholder={labels.addCustomDiscipline.placeholder}
+              placeholderTextColor={theme.colors.placeholder}
+              value={code}
+              onChangeText={setCode}
+            />
             <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
               <QRCodeIcon accessibilityLabel='qr-code-scanner' />
             </TouchableOpacity>
