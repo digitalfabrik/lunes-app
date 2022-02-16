@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
@@ -8,7 +8,7 @@ import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
 import { RoutesParams } from '../../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import WriteExercise from '../WriteExercise'
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
@@ -78,9 +78,7 @@ describe('WriteExercise', () => {
   }
 
   const renderWriteExercise = (): RenderAPI =>
-    render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    render(<WriteExercise documents={documents} route={route} navigation={navigation} />)
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()
