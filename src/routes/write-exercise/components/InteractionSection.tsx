@@ -120,12 +120,12 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     if (isAnswerSubmitted) {
       switch (documentWithResult.result) {
         case 'correct':
-          return theme.colors.functionalCorrect
+          return theme.colors.correct
         case 'incorrect':
-          return theme.colors.functionalIncorrect
+          return theme.colors.incorrect
         case 'similar':
         default:
-          return theme.colors.functionalAlmostCorrect
+          return theme.colors.almostCorrect
       }
     }
     return isFocused ? theme.colors.primary : theme.colors.textSecondary
