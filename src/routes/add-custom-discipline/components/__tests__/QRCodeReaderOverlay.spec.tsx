@@ -7,10 +7,7 @@ import QRCodeReaderOverlay from '../QRCodeReaderOverlay'
 
 const apiCode = 'scanned-api-code'
 
-jest.mock('react-native//Libraries/PermissionsAndroid/PermissionsAndroid', () => ({
-  ...jest.requireActual('react-native//Libraries/PermissionsAndroid/PermissionsAndroid'),
-  request: jest.fn(() => new Promise(resolve => resolve('granted')))
-}))
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 
 jest.mock('react-native-camera', () => ({
   RNCamera: ({ onBarCodeRead }: { onBarCodeRead: ({ data }: { data: string }) => void }) => (

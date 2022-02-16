@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal, PermissionsAndroid } from 'react-native'
+import { AppState, Modal, Platform } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
@@ -45,8 +46,8 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
   useEffect(() => {
     if (!permissionRequested) {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-        .then(status => setPermissionGranted(status === 'granted'))
+      request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
         .catch(e => console.error(e))
         .finally(() => setPermissionRequested(true))
     }
