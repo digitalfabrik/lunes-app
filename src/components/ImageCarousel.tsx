@@ -2,10 +2,9 @@ import React, { ReactElement } from 'react'
 import { Keyboard, useWindowDimensions } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Pagination } from 'react-native-snap-carousel'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { Images } from '../constants/endpoints'
-import { COLORS } from '../constants/theme/colors'
 
 const ImageView = styled.View<{ height: number }>`
   height: ${({ height }) => height}px;
@@ -47,6 +46,7 @@ interface ImageUrl {
 }
 
 const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): ReactElement => {
+  const theme = useTheme()
   const { height: deviceHeight } = useWindowDimensions()
   // Manually resize ImageViewer since it doesn't happen automatically on container size changes
   const height = 35
@@ -64,7 +64,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}
-          dotStyle={{ backgroundColor: COLORS.lunesBlack }}
+          dotStyle={{ backgroundColor: theme.colors.primary }}
         />
       </PaginationView>
     ) : (
@@ -82,7 +82,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
         imageUrls={imagesUrls}
         renderImage={renderItem}
         renderIndicator={renderIndicator}
-        backgroundColor={COLORS.lunesWhite}
+        backgroundColor={theme.colors.backgroundAccent}
         onClick={Keyboard.dismiss}
       />
     </ImageView>

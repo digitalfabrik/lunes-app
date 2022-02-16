@@ -2,14 +2,13 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Keyboard, Pressable, TouchableOpacity, View } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
-import { COLORS } from '../../../constants/theme/colors'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -32,7 +31,7 @@ const StyledTextInput = styled.TextInput`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.primary};
   width: 90%;
 `
 
@@ -57,6 +56,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
   const [isFocused, setIsFocused] = useState<boolean>(false)
 
+  const theme = useTheme()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
@@ -120,15 +120,15 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     if (isAnswerSubmitted) {
       switch (documentWithResult.result) {
         case 'correct':
-          return COLORS.lunesFunctionalCorrectDark
+          return theme.colors.correct
         case 'incorrect':
-          return COLORS.lunesFunctionalIncorrectDark
+          return theme.colors.incorrect
         case 'similar':
         default:
-          return COLORS.lunesFunctionalAlmostCorrectDark
+          return theme.colors.almostCorrect
       }
     }
-    return isFocused ? COLORS.lunesBlack : COLORS.lunesGreyMedium
+    return isFocused ? theme.colors.primary : theme.colors.textSecondary
   }
 
   return (
@@ -151,7 +151,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       <TextInputContainer testID='input-field' ref={textInputRef} styledBorderColor={getBorderColor()}>
         <StyledTextInput
           placeholder={labels.exercises.write.insertAnswer}
-          placeholderTextColor={COLORS.lunesBlackLight}
+          placeholderTextColor={theme.colors.placeholder}
           value={input}
           onChangeText={setInput}
           editable={retryAllowed}

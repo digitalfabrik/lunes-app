@@ -63,29 +63,29 @@ describe('Components', () => {
     it('should have correct style when light theme', () => {
       const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.outlined })
       expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
-      expect(getByTestId('button').props.style.borderColor).toBe(COLORS.lunesBlack)
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)
+      expect(getByTestId('button').props.style.borderColor).toBe(COLORS.primary)
+      expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
     })
 
     it('should have correct style when dark theme', () => {
       const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.contained })
-      expect(getByTestId('button').props.style.backgroundColor).toEqual(COLORS.lunesBlack)
+      expect(getByTestId('button').props.style.backgroundColor).toEqual(COLORS.primary)
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesWhite)
+      expect(getByText('Button label').props.style[0].color).toBe(COLORS.background)
     })
 
     it('should have correct style when no-outline theme', () => {
       const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.text })
       expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)
+      expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
     })
 
     it('should have correct style when disabled', () => {
       const { getByTestId, getByText } = renderButton({ disabled: true })
-      expect(getByTestId('button').props.style.backgroundColor).toBe(COLORS.lunesBlackUltralight)
+      expect(getByTestId('button').props.style.backgroundColor).toBe(COLORS.disabled)
       expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlackLight)
+      expect(getByText('Button label').props.style[0].color).toBe(COLORS.placeholder)
     })
   })
 })
