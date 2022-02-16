@@ -5,7 +5,6 @@ import labels from '../../constants/labels.json'
 import render from '../../testing/render'
 import ErrorMessage from '../ErrorMessage'
 
-
 describe('ErrorMessage', () => {
   const refresh = jest.fn()
 
@@ -26,7 +25,7 @@ describe('ErrorMessage', () => {
 
   it('should show nothing if no error', () => {
     const { container } = renderWithoutTheme(<ErrorMessage error={null} refresh={refresh} />)
-    
+
     expect(container).toBeEmpty()
   })
 
