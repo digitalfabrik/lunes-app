@@ -8,7 +8,7 @@ import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.backgroundAccent};
 `
 
 const Icon = styled.TouchableOpacity`
