@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../components/Button'
 import Loading from '../components/Loading'
@@ -65,6 +65,7 @@ interface AddCustomDisciplineScreenProps {
 const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const theme = useTheme()
 
   const { data: customDisciplines } = useReadCustomDisciplines()
 
@@ -101,6 +102,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
           <StyledTextInput
             errorMessage={errorMessage}
             placeholder={labels.addCustomDiscipline.placeholder}
+            placeholderTextColor={theme.colors.placeholder}
             value={code}
             onChangeText={setCode}
           />
