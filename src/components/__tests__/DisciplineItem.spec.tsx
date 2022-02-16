@@ -1,9 +1,9 @@
-import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
 import { COLORS } from '../../constants/theme/colors'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
 
 describe('Components', () => {
@@ -25,9 +25,7 @@ describe('Components', () => {
     }
 
     const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI =>
-      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />, {
-        wrapper: wrapWithTheme
-      })
+      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />)
 
     it('should call onPress event', () => {
       const onPress = jest.fn()

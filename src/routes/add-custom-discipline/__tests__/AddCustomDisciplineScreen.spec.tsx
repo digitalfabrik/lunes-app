@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { fireEvent, render, waitFor } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { View } from 'react-native'
@@ -8,7 +8,7 @@ import labels from '../../../constants/labels.json'
 import { loadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
@@ -27,9 +27,7 @@ describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
   it('should enable submit button on text input', async () => {
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
     const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
     expect(submitButton).toBeDisabled()
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
@@ -53,9 +51,7 @@ describe('AddCustomDisciplineScreen', () => {
     }
     mocked(loadGroupInfo).mockImplementationOnce(async () => groupInfo)
 
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'another_test_module')
@@ -69,9 +65,7 @@ describe('AddCustomDisciplineScreen', () => {
 
   it('should show duplicate error', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'test')
@@ -82,10 +76,7 @@ describe('AddCustomDisciplineScreen', () => {
 
   it('should show wrong-code-error', async () => {
     const { findByText, getByText, findByPlaceholderText } = render(
-      <AddCustomDisciplineScreen navigation={navigation} />,
-      {
-        wrapper: wrapWithTheme
-      }
+      <AddCustomDisciplineScreen navigation={navigation} />
     )
     mocked(loadGroupInfo).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
@@ -96,9 +87,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should open qr code scanner', async () => {
-    const { findByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
     const QRCodeIcon = await findByLabelText('qr-code-scanner')
     expect(QRCodeIcon).toBeDefined()
     fireEvent.press(QRCodeIcon)

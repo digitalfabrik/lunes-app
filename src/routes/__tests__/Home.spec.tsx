@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
@@ -10,7 +10,7 @@ import { useLoadGroupInfo } from '../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import AsyncStorageService from '../../services/AsyncStorage'
 import createNavigationMock from '../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import HomeScreen from '../HomeScreen'
 
 jest.mock('@react-navigation/native')
@@ -67,7 +67,7 @@ describe('HomeScreen', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />, { wrapper: wrapWithTheme })
+    const { findByText } = render(<HomeScreen navigation={navigation} />)
     expect(await findByText('First Discipline')).toBeDefined()
     expect(await findByText('Second Discipline')).toBeDefined()
   })
@@ -78,7 +78,7 @@ describe('HomeScreen', () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />, { wrapper: wrapWithTheme })
+    const { findByText } = render(<HomeScreen navigation={navigation} />)
     expect(await findByText('Custom Discipline')).toBeDefined()
   })
 
@@ -90,9 +90,7 @@ describe('HomeScreen', () => {
     mocked(useLoadGroupInfo).mockReturnValue(getReturnOf(mockCustomDiscipline))
     const spyOnDeletion = jest.spyOn(AsyncStorageService, 'deleteCustomDiscipline')
 
-    const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />)
     const customDiscipline = await findByText('Custom Discipline')
     expect(customDiscipline).toBeDefined()
 

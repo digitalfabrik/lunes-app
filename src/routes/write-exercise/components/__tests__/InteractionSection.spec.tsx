@@ -1,10 +1,10 @@
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
 
 jest.mock('react-native-sound-player', () => ({
@@ -44,8 +44,7 @@ describe('InteractionSection', () => {
         documentWithResult={documentWithResult}
         isAnswerSubmitted={isAnswerSubmitted}
         storeResult={storeResult}
-      />,
-      { wrapper: wrapWithTheme }
+      />
     )
 
   it('should render correctly if not submitted answer yet', () => {

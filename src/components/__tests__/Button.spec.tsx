@@ -1,10 +1,10 @@
-import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
 import { ArrowLeftCircleIconWhite, ArrowRightIcon } from '../../../assets/images'
 import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import Button from '../Button'
 
 import resetAllMocks = jest.resetAllMocks
@@ -26,7 +26,7 @@ describe('Components', () => {
         buttonTheme: BUTTONS_THEME.outlined,
         ...overrideProps
       }
-      return render(<Button {...buttonProps} />, { wrapper: wrapWithTheme })
+      return render(<Button {...buttonProps} />)
     }
 
     it('should render label and icons', () => {

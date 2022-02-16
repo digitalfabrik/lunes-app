@@ -1,4 +1,4 @@
-import { render, RenderAPI } from '@testing-library/react-native'
+import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
 import { Discipline } from '../../constants/endpoints'
@@ -9,7 +9,7 @@ import {
   mockUseLoadAsyncWithData,
   mockUseLoadAsyncWithError
 } from '../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import CustomDisciplineItem from '../CustomDisciplineItem'
 
 describe('Components', () => {
@@ -35,8 +35,7 @@ describe('Components', () => {
           setSelectedId={jest.fn()}
           navigation={navigation}
           refresh={jest.fn()}
-        />,
-        { wrapper: wrapWithTheme }
+        />
       )
 
     it('should display data', () => {
