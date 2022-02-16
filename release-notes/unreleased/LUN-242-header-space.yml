@@ -1,0 +1,6 @@
+issue_key: LUN-242
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die Darstellung von langen Titeln wurde verbessert.
