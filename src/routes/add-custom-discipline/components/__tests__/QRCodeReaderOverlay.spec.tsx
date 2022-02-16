@@ -7,6 +7,11 @@ import QRCodeReaderOverlay from '../QRCodeReaderOverlay'
 
 const apiCode = 'scanned-api-code'
 
+jest.mock('react-native//Libraries/PermissionsAndroid/PermissionsAndroid', () => ({
+  ...jest.requireActual('react-native//Libraries/PermissionsAndroid/PermissionsAndroid'),
+  request: jest.fn(() => new Promise(resolve => resolve('granted')))
+}))
+
 jest.mock('react-native-camera', () => ({
   RNCamera: ({ onBarCodeRead }: { onBarCodeRead: ({ data }: { data: string }) => void }) => (
     <View accessibilityLabel='scanner'>
@@ -40,11 +45,11 @@ describe('QRCodeReaderOverlay', () => {
     expect(setVisible).toHaveBeenCalledWith(false)
   })
 
-  it('should set text, when qr code is scanned', () => {
-    const { getByLabelText } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
+  it('should set text, when qr code is scanned', async () => {
+    const { findByLabelText } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />, {
       wrapper: wrapWithTheme
     })
-    const camera = getByLabelText('mockOnBarCodeRead')
+    const camera = await findByLabelText('mockOnBarCodeRead')
     expect(camera).toBeDefined()
     fireEvent.press(camera)
     expect(setVisible).toHaveBeenCalledWith(false)

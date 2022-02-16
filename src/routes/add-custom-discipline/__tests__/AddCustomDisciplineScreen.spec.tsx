@@ -18,6 +18,11 @@ jest.mock('react-native-camera', () => ({
   RNCamera: () => <View accessibilityLabel='RNCamera' />
 }))
 
+jest.mock('react-native//Libraries/PermissionsAndroid/PermissionsAndroid', () => ({
+  ...jest.requireActual('react-native//Libraries/PermissionsAndroid/PermissionsAndroid'),
+  request: jest.fn(() => new Promise(resolve => resolve('granted')))
+}))
+
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
@@ -91,12 +96,12 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should open qr code scanner', async () => {
-    const { findByLabelText, getByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
+    const { findByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
       wrapper: wrapWithTheme
     })
     const QRCodeIcon = await findByLabelText('qr-code-scanner')
     expect(QRCodeIcon).toBeDefined()
     fireEvent.press(QRCodeIcon)
-    expect(getByLabelText('RNCamera')).toBeDefined()
+    expect(await findByLabelText('RNCamera')).toBeDefined()
   })
 })

@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal, PermissionsAndroid } from 'react-native'
+import { AppState, Modal, PermissionsAndroid, Text } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import styled from 'styled-components/native'
 
@@ -34,8 +34,8 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   const appState = useRef(AppState.currentState)
 
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const [requestPermissions, setRequestPermissions] = useState<boolean>(false)
-  const [permissionDenied, setPermissionDenied] = useState<boolean>(false)
+  const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
+  const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
 
   const onBarCodeRead = (scanResult: BarCodeReadEvent) => {
     setCode(scanResult.data)
@@ -44,18 +44,21 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
 
   // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
   useEffect(() => {
-    if (requestPermissions) {
+    if (!permissionRequested) {
+      console.log('useEffect')
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-        .then(() => setRequestPermissions(false))
+        .then(status => setPermissionGranted(status === 'granted'))
         .catch(e => console.error(e))
+        .finally(() => setPermissionRequested(true))
     }
-  }, [requestPermissions])
+  }, [permissionRequested])
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
       if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
-        setRequestPermissions(true)
+        setPermissionRequested(false)
       }
+      console.log('app state changed')
       appState.current = nextAppState
     })
     return subscription.remove()
@@ -64,6 +67,9 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   return (
     <Modal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
       <Container>
+        <Text>
+          {permissionRequested} {permissionGranted}
+        </Text>
         <Icon
           onPress={() => setVisible(false)}
           onPressIn={() => setIsPressed(true)}
@@ -75,17 +81,8 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
             <CloseCircleIconWhite testID='close-circle-icon-white' />
           )}
         </Icon>
-        {permissionDenied && !requestPermissions ? (
-          <NotAuthorisedView setVisible={setVisible} />
-        ) : (
-          <Camera
-            captureAudio={false}
-            onBarCodeRead={onBarCodeRead}
-            testID='camera'
-            onStatusChange={status => setPermissionDenied(status.cameraStatus === 'NOT_AUTHORIZED')}
-            onCameraReady={() => setPermissionDenied(false)}
-          />
-        )}
+        {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}
+        {permissionRequested && !permissionGranted && <NotAuthorisedView setVisible={setVisible} />}
       </Container>
     </Modal>
   )
