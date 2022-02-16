@@ -11,6 +11,7 @@ import CheckCircleIcon from './check-circle-icon.svg'
 import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
 import CheckCloseCircleIcon from './check-close-circle-icon.svg'
 import ChevronRight from './chevron-right.svg'
+import CloseCircleIconBlue from './close-circle-icon-blue.svg'
 import CloseCircleIconBold from './close-circle-icon-bold.svg'
 import CloseCircleIconWhite from './close-circle-icon-white.svg'
 import CloseCircleIcon from './close-circle-icon.svg'
@@ -26,12 +27,10 @@ import HomeCircleIconWhite from './home-circle-icon-white.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LunesIcon from './lunes-icon.svg'
+import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
-import TrophyIcon0 from './trophy-icon-0.svg'
-import TrophyIcon1 from './trophy-icon-1.svg'
-import TrophyIcon2 from './trophy-icon-2.svg'
-import TrophyIcon3 from './trophy-icon-3.svg'
+import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
 
 export {
@@ -51,6 +50,7 @@ export {
   CloseCircleIcon,
   CloseCircleIconBold,
   CloseCircleIconWhite,
+  CloseCircleIconBlue,
   CloseIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
@@ -63,11 +63,9 @@ export {
   InfoCircleIcon,
   ListIcon,
   LunesIcon,
+  QRCodeIcon,
   RepeatIcon,
   TrashIcon,
-  TrophyIcon0,
-  TrophyIcon1,
-  TrophyIcon2,
-  TrophyIcon3,
+  TrophyIcon,
   VolumeUpCircleIcon
 }

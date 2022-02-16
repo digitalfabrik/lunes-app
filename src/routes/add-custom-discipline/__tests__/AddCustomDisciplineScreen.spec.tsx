@@ -2,16 +2,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
+import { View } from 'react-native'
 
-import labels from '../../constants/labels.json'
-import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
-import AsyncStorageService from '../../services/AsyncStorage'
-import createNavigationMock from '../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import labels from '../../../constants/labels.json'
+import { loadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import AsyncStorageService from '../../../services/AsyncStorage'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import wrapWithTheme from '../../../testing/wrapWithTheme'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../hooks/useLoadGroupInfo')
+jest.mock('../../../hooks/useLoadGroupInfo')
+
+jest.mock('react-native-camera', () => ({
+  RNCamera: () => <View accessibilityLabel='RNCamera' />
+}))
+
+jest.mock('react-native//Libraries/PermissionsAndroid/PermissionsAndroid', () => ({
+  ...jest.requireActual('react-native//Libraries/PermissionsAndroid/PermissionsAndroid'),
+  request: jest.fn(() => new Promise(resolve => resolve('granted')))
+}))
 
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
@@ -83,5 +93,15 @@ describe('AddCustomDisciplineScreen', () => {
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
     expect(await findByText(labels.addCustomDiscipline.error.wrongCode)).not.toBeNull()
+  })
+
+  it('should open qr code scanner', async () => {
+    const { findByLabelText } = render(<AddCustomDisciplineScreen navigation={navigation} />, {
+      wrapper: wrapWithTheme
+    })
+    const QRCodeIcon = await findByLabelText('qr-code-scanner')
+    expect(QRCodeIcon).toBeDefined()
+    fireEvent.press(QRCodeIcon)
+    expect(await findByLabelText('RNCamera')).toBeDefined()
   })
 })

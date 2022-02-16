@@ -1,0 +1,6 @@
+issue_key: LUN-232
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: QRCode Scanner für die vereinfachte Eingabe der Zugangscodes hinzugefügt.

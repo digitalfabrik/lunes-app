@@ -32,6 +32,7 @@ interface ExerciseHeaderProps {
 
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const progressText = numberOfWords !== 0 ? `${currentWord + 1} ${labels.general.header.of} ${numberOfWords}` : ''
 
   useEffect(
     () =>
@@ -42,9 +43,13 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
-        headerRight: () => <HeaderText>{`${currentWord + 1} ${labels.general.header.of} ${numberOfWords}`}</HeaderText>
+        headerRight: () => <HeaderText>{progressText}</HeaderText>,
+        headerRightContainerStyle: {
+          paddingHorizontal: 15,
+          maxWidth: 100
+        }
       }),
-    [navigation, currentWord, numberOfWords, setIsModalVisible]
+    [navigation, progressText, setIsModalVisible]
   )
 
   useEffect(() => {
