@@ -14,10 +14,10 @@ const Container = styled.View`
 
 const Icon = styled.TouchableOpacity`
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  top: ${wp('2.5%')}px;
+  right: ${wp('2.5%')}px;
+  width: ${props => props.theme.spacings.lg};
+  height: ${props => props.theme.spacings.lg}; ;
 `
 
 const Camera = styled(RNCamera)`

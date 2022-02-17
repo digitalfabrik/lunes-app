@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { QRCodeIcon } from '../../../assets/images'
@@ -127,7 +127,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
               onChangeText={setCode}
             />
             <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-              <QRCodeIcon accessibilityLabel='qr-code-scanner' />
+              <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
             </TouchableOpacity>
           </InputContainer>
 
