@@ -15,7 +15,7 @@ const Placeholder = styled.View`
   height: ${wp('22%')}px;
   background-color: ${props => props.theme.colors.backgroundAccent};
   margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} -${props.theme.spacings.sm}`};
-  border: 1px solid $${prop => prop.theme.colors.disabled};
+  border: 1px solid ${prop => prop.theme.colors.disabled};
   border-radius: 2px;
 `
 
