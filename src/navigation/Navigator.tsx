@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     elevation: 0,
     borderBottomColor: COLORS.disabled,
     borderBottomWidth: 1,
-    height: wp('12%')
+    height: wp('15%')
   },
   headerRightContainer: {
     paddingHorizontal: 15,

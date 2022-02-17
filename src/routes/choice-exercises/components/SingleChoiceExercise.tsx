@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
-import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -166,34 +165,32 @@ const ChoiceExerciseScreen = ({
           <>
             {currentDocument.document_image.length > 0 && <ImageCarousel images={currentDocument.document_image} />}
             <AudioPlayer document={currentDocument} disabled={selectedAnswer === null} />
-            <ScrollView>
-              <SingleChoice
-                answers={answers}
-                onClick={onClickAnswer}
-                correctAnswer={correctAnswer}
-                selectedAnswer={selectedAnswer}
-                delayPassed={delayPassed}
-              />
-              <ButtonContainer>
-                {selectedAnswer !== null ? (
+            <SingleChoice
+              answers={answers}
+              onClick={onClickAnswer}
+              correctAnswer={correctAnswer}
+              selectedAnswer={selectedAnswer}
+              delayPassed={delayPassed}
+            />
+            <ButtonContainer>
+              {selectedAnswer !== null ? (
+                <Button
+                  label={buttonLabel}
+                  iconRight={ArrowRightIcon}
+                  onPress={onFinishWord}
+                  buttonTheme={BUTTONS_THEME.contained}
+                />
+              ) : (
+                !lastWord && (
                   <Button
-                    label={buttonLabel}
+                    label={labels.exercises.tryLater}
                     iconRight={ArrowRightIcon}
-                    onPress={onFinishWord}
-                    buttonTheme={BUTTONS_THEME.contained}
+                    onPress={tryLater}
+                    buttonTheme={BUTTONS_THEME.text}
                   />
-                ) : (
-                  !lastWord && (
-                    <Button
-                      label={labels.exercises.tryLater}
-                      iconRight={ArrowRightIcon}
-                      onPress={tryLater}
-                      buttonTheme={BUTTONS_THEME.text}
-                    />
-                  )
-                )}
-              </ButtonContainer>
-            </ScrollView>
+                )
+              )}
+            </ButtonContainer>
           </>
         )}
       </ServerResponseHandler>

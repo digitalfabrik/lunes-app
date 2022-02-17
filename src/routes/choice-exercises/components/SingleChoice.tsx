@@ -7,9 +7,10 @@ import SingleChoiceListItem from './SingleChoiceListItem'
 
 export const StyledContainer = styled.View`
   padding-top: ${props => props.theme.spacings.md};
-  height: ${hp('42%')}px;
+  height: ${hp('35%')}px;
   margin-left: ${props => props.theme.spacings.md};
   margin-right: ${props => props.theme.spacings.md};
+  margin-bottom: ${props => props.theme.spacings.sm};
 `
 
 export interface SingleChoiceProps {

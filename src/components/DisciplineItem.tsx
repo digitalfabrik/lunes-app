@@ -7,10 +7,10 @@ import { ChevronRight } from '../../assets/images'
 import { Discipline } from '../constants/endpoints'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
-  min-height: ${wp('22%')}px;
+  min-height: ${hp('12%')}px;
   margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm}`};
   padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.md}`};
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -27,7 +27,7 @@ const Title = styled.Text<{ selected: boolean }>`
 `
 const Icon = styled.Image`
   justify-content: center;
-  margin-right: ${props => props.theme.spacings.xs};
+  margin-right: ${props => props.theme.spacings.sm};
   width: ${wp('7%')}px;
   height: ${wp('7%')}px;
 `

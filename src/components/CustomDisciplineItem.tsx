@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import labels from '../constants/labels.json'
@@ -12,7 +12,7 @@ import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
 
 const Placeholder = styled.View`
-  height: ${wp('22%')}px;
+  height: ${hp('22%')}px;
   background-color: ${props => props.theme.colors.backgroundAccent};
   margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} -${props.theme.spacings.sm}`};
   border: 1px solid ${prop => prop.theme.colors.disabled};
