@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
@@ -11,11 +11,10 @@ import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   align-items: center;
   padding-left: ${props => props.theme.spacings.sm};
@@ -25,14 +24,14 @@ const Root = styled.View`
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: ${props => props.theme.spacings.md}
+  margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Result>
 
 const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesGreyDark)};
+  color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.text)};
 `
 
 const Contained = styled.Pressable<{ selected: boolean }>`
@@ -47,8 +46,8 @@ const Contained = styled.Pressable<{ selected: boolean }>`
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
-  border-color: ${prop => (prop.selected ? prop.theme.colors.white : prop.theme.colors.lunesBlackUltralight)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  border-color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.disabled)};
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
@@ -57,7 +56,7 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.largeFontSize};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  color: ${prop => (prop.selected ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyDark)};
+  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.text)};
 `
 
 const LeftSide = styled.View`
@@ -76,7 +75,7 @@ const HeaderText = styled.Text`
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   font-family: ${props => props.theme.fonts.contentFontBold};
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.primary};
   text-transform: uppercase;
   margin-right: ${props => props.theme.spacings.xs};
 `
@@ -86,13 +85,13 @@ const RightHeader = styled.TouchableOpacity`
   align-items: center;
   shadow-opacity: 0;
   elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
   border-bottom-width: 1px;
   margin-right: ${props => props.theme.spacings.sm};
 `
 const StyledTitle = styled(Title)`
   elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
   border-bottom-width: 1px;
 `
 
@@ -113,6 +112,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
   const { level, description, title } = EXERCISES[exercise]
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
+  const theme = useTheme()
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
 
@@ -171,8 +171,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     const count = counts[item.key]
 
     const selected = item.key === selectedKey
-    const iconColor = selected ? COLORS.lunesWhite : COLORS.lunesGreyDark
-    const arrowColor = selected ? COLORS.lunesRedLight : COLORS.lunesBlack
+    const iconColor = selected ? theme.colors.background : theme.colors.text
+    const arrowColor = selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary
     return (
       <Contained selected={selected} onPress={() => handleNavigation(item)}>
         <LeftSide>

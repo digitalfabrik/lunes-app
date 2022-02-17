@@ -19,7 +19,7 @@ import { moveToEnd } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
 `

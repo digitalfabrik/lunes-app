@@ -4,10 +4,10 @@ import styled from 'styled-components/native'
 import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
 
 const Wrapper = styled.SafeAreaView`
-  background-color: ${props => props.theme.colors.lunesBlack};
+  background-color: ${props => props.theme.colors.primary};
 `
 const HeaderStyle = styled.View`
-  background-color: ${props => props.theme.colors.lunesBlack};
+  background-color: ${props => props.theme.colors.primary};
   height: 91px;
   width: 100%;
 `

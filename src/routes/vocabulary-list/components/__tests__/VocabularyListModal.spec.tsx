@@ -1,9 +1,9 @@
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { Documents } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import VocabularyListModal from '../VocabularyListModal'
 
 jest.mock('../../../../components/AudioPlayer', () => {
@@ -48,8 +48,7 @@ describe('VocabularyListModal', () => {
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={0}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
-      />,
-      { wrapper: wrapWithTheme }
+      />
     )
     const button = await getByText(labels.exercises.next)
     expect(button).toBeDefined()
@@ -65,8 +64,7 @@ describe('VocabularyListModal', () => {
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={1}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
-      />,
-      { wrapper: wrapWithTheme }
+      />
     )
     const button = await getByText(labels.general.header.cancelExercise)
     expect(button).toBeDefined()

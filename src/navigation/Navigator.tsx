@@ -16,13 +16,13 @@ import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import AddCustomDisciplineScreen from '../routes/AddCustomDisciplineScreen'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import HomeScreen from '../routes/HomeScreen'
 import InitialSummaryScreen from '../routes/InitialSummaryScreen'
 import ResultScreen from '../routes/ResultScreen'
 import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
+import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
@@ -31,10 +31,10 @@ import { RoutesParams } from './NavigationTypes'
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: COLORS.lunesWhite,
+    backgroundColor: COLORS.background,
     shadowOpacity: 0,
     elevation: 0,
-    borderBottomColor: COLORS.lunesBlackUltralight,
+    borderBottomColor: COLORS.disabled,
     borderBottomWidth: 1,
     height: wp('12%')
   },

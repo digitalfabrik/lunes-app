@@ -26,8 +26,8 @@ const Background = styled.ImageBackground`
 
 const StyledText = styled.Text`
   width: 100%;
-  color: ${props => props.theme.colors.lunesBlack};
   padding: ${props => `0 ${props.theme.spacings.md} 0 ${props.theme.spacings.sm}`};
+  color: ${props => props.theme.colors.primary};
 `
 
 export interface FeedbackProps {

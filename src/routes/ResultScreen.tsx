@@ -15,7 +15,7 @@ import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.lunesWhite};
+  background-color: ${prop => prop.theme.colors.background};
   height: 100%;
   width: 100%;
   padding-bottom: 0;

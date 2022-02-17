@@ -13,7 +13,7 @@ const Container = styled.View`
 
 const ScreenTitle = styled.Text`
   font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
+  color: ${props => props.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
   text-align: center;
   padding: ${props => props.theme.spacings.xs};
@@ -22,14 +22,14 @@ const ScreenTitle = styled.Text`
 const ScreenSubTitle = styled.Text`
   margin-top: ${props => props.theme.spacings.xs};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyDark};
+  color: ${prop => prop.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
 const Description = styled.Text`
   margin-top: ${props => props.theme.spacings.xxs};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
