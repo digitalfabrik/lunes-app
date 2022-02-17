@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
@@ -78,8 +78,6 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
               source={{
                 uri: document.document_image[0].image
               }}
-              width={wp('8%')}
-              height={hp('8%')}
             />
           )}
           <View>

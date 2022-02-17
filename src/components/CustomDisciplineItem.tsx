@@ -12,11 +12,11 @@ import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
 
 const Placeholder = styled.View`
-  height: ${hp('22%')}px;
   background-color: ${props => props.theme.colors.backgroundAccent};
-  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} -${props.theme.spacings.sm}`};
+  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
   border: 1px solid ${prop => prop.theme.colors.disabled};
   border-radius: 2px;
+  padding: ${props => props.theme.spacings.sm};
 `
 
 const LoadingSpinner = styled.View`
@@ -35,7 +35,6 @@ const ErrorText = styled.Text`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${props => props.theme.colors.primary};
-  margin: ${props => props.theme.spacings.xs};
 `
 
 interface CustomDisciplineItemProps {
