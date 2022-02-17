@@ -44,7 +44,7 @@ const SmileIconStyle = styled.View`
   width: 80px;
   height: 80px;
   left: 50%;
-  margin-left: ${props => `-${props.theme.spacings.xl}`};
+  margin-left: -40px;
   top: 51px;
 `
 

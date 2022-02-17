@@ -12,14 +12,14 @@ const Container = styled.View`
   justify-content: center;
   height: 100%;
   background-color: ${props => props.theme.colors.background};
-  margin: 50px 0 0;
+  margin: ${props => `${props.theme.spacings.xxl} 0 0`};
 `
 
 const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.textSecondary};
-  padding: 0 20px 20px;
+  padding: ${props => `0 ${props.theme.spacings.md} ${props.theme.spacings.md}`};
   text-align: center;
 `
 

@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Pressable } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'

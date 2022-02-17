@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { AppState, Modal, PermissionsAndroid } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
@@ -22,7 +23,7 @@ const Icon = styled.TouchableOpacity`
 const Camera = styled(RNCamera)`
   flex: 1;
   position: relative;
-  margin: 50px 0 0;
+  margin: ${props => `${props.theme.spacings.xxl} 0 0`};
 `
 
 interface Props {
@@ -71,9 +72,9 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}>
           {isPressed ? (
-            <CloseCircleIconBlue testID='close-circle-icon-blue' />
+            <CloseCircleIconBlue testID='close-circle-icon-blue' width={wp('7%')} height={wp('7%')} />
           ) : (
-            <CloseCircleIconWhite testID='close-circle-icon-white' />
+            <CloseCircleIconWhite testID='close-circle-icon-white' width={wp('7%')} height={wp('7%')} />
           )}
         </Icon>
         {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}

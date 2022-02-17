@@ -2,6 +2,7 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../assets/images'
@@ -12,7 +13,6 @@ import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -58,7 +58,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => 
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')}/>
+            <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
           </TouchableOpacity>
         )
       })

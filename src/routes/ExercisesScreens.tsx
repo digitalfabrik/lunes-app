@@ -100,7 +100,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           <Trophy level={item.level} />
         </View>
         <ChevronRight
-          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primar}
+          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
           width={wp('6%')}
           height={hp('6%')}
         />

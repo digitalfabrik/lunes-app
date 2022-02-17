@@ -30,7 +30,6 @@ const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.textSecondary};
-  padding: 10px 0;
   padding: ${props => `${props.theme.spacings.xs} 0`};
 `
 
@@ -42,7 +41,7 @@ const InputContainer = styled.View<{ errorMessage: string }>`
   width: 80%;
   border: 1px solid ${props => (props.errorMessage ? props.theme.colors.incorrect : props.theme.colors.text)};
   border-radius: 4px;
-  margin-top: ${hp('8%')}px;
+  margin-top: ${props => props.theme.spacings.lg};
   padding: ${props => `0 ${props.theme.spacings.sm}`};
   height: ${hp('8%')}px;
 `
