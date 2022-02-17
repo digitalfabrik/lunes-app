@@ -22,8 +22,8 @@ const StyledContainer = styled.View`
   align-items: center;
   background-color: ${prop => prop.theme.colors.lunesBlack};
   width: ${wp('80%')}px;
-  height: 50px;
-  padding: 9px 8px 9px 8px;
+  height: ${wp('15%')}px;
+  padding: ${props => props.theme.spacings.xs};
   border-radius: 2px;
 `
 const StyledMessage = styled.Text`
@@ -32,7 +32,7 @@ const StyledMessage = styled.Text`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   width: ${wp('60%')}px;
-  margin-left: 8px;
+  margin-left: ${props => props.theme.spacings.xs};
 `
 
 export interface IPopoverProps {
@@ -53,7 +53,7 @@ const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible
     verticalOffset={-10}
     backgroundStyle={styles.overlay}>
     <StyledContainer>
-      <InfoCircleIcon width={30} height={30} />
+      <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
       <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
     </StyledContainer>
   </Popover>

@@ -20,14 +20,14 @@ const Container = styled.View`
 const Heading = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.headingFontSize};
-  padding-top: 40px;
+  padding-top: ${props => props.theme.spacings.xl};
 `
 
 const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.lunesGreyMedium};
-  padding: 10px 0;
+  padding: ${props => `${props.theme.spacings.xs} 0`};
 `
 
 const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
@@ -41,13 +41,13 @@ const StyledTextInput = styled.TextInput<{ errorMessage: string }>`
     ${props =>
       props.errorMessage ? props.theme.colors.lunesFunctionalIncorrectDark : props.theme.colors.lunesGreyDark};
   border-radius: 4px;
-  margin-top: ${hp('8%')}px;
-  padding-left: 15px;
+  margin-top: ${props => props.theme.spacings.lg};
+  padding-left: ${props => props.theme.spacings.sm};
   height: ${hp('8%')}px;
 `
 
 const ErrorContainer = styled.View`
-  margin-bottom: ${hp('4%')}px;
+  margin-bottom: ${props => props.theme.spacings.sm};
   width: 80%;
   height: 10%;
 `

@@ -25,13 +25,13 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
       border-width: 1px;
     `};
   flex-direction: row;
-  padding: 10px 20px;
+  padding: ${props => `${wp('3%')}px ${props.theme.spacings.sm}`};
+
   width: ${wp('70%')}px;
   align-items: center;
   border-radius: ${hp('7%')}px;
   justify-content: center;
-  height: ${hp('7%')}px;
-  margin-bottom: ${hp('2%')}px;
+  margin-bottom: ${props => props.theme.spacings.sm};
   background-color: ${props => props.backgroundColor};
 `
 
@@ -43,7 +43,7 @@ const Label = styled.Text<ThemedLabelProps>`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  padding: 0 10px;
+  padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
 interface ButtonProps {
@@ -88,10 +88,14 @@ const Button = (props: ButtonProps): ReactElement => {
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
       {/* eslint-disable-next-line react/destructuring-assignment */}
-      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID='button-icon-left' />}
+      {props.iconLeft && (
+        <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={wp('6%')} height={wp('6%')} />
+      )}
       <Label color={getTextColor()}>{label}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
-      {props.iconRight && <props.iconRight fill={getTextColor()} testID='button-icon-right' />}
+      {props.iconRight && (
+        <props.iconRight fill={getTextColor()} testID='button-icon-right' width={wp('6%')} height={wp('6%')} />
+      )}
     </ThemedButton>
   )
 }

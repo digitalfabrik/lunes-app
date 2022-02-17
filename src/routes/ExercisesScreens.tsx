@@ -2,7 +2,7 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
 import { FlatList, View, Alert } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
@@ -22,8 +22,8 @@ const Root = styled.View`
 
 const ItemTitle = styled(FlatList)`
   width: ${wp('100%')}px;
-  padding-right: ${wp('5%')}px;
-  padding-left: ${wp('5%')}px;
+  padding-right: ${props => props.theme.spacings.md};
+  padding-left: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Exercise>
 
 const Description = styled.Text<{ selected: boolean }>`
@@ -35,8 +35,9 @@ const Description = styled.Text<{ selected: boolean }>`
 
 const Container = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding: 17px 8px 17px 16px;
-  margin-bottom: 8px;
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+  margin-bottom: ${props => props.theme.spacings.xxs};
   flex-direction: row;
   align-items: center;
   width: 100%;
@@ -98,7 +99,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           <Description selected={selected}>{item.description}</Description>
           <Trophy level={item.level} />
         </View>
-        <ChevronRight fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <ChevronRight
+          fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack}
+          width={wp('6%')}
+          height={hp('6%')}
+        />
       </Container>
     )
   }

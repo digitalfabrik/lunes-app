@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
+import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -25,7 +26,7 @@ const ExerciseContainer = styled.View`
 
 const ButtonContainer = styled.View`
   align-items: center;
-  margin: 7% 0;
+  margin: ${props => `${props.theme.spacings.sm} 0`};
 `
 
 interface SingleChoiceExerciseProps {
@@ -165,32 +166,34 @@ const ChoiceExerciseScreen = ({
           <>
             {currentDocument.document_image.length > 0 && <ImageCarousel images={currentDocument.document_image} />}
             <AudioPlayer document={currentDocument} disabled={selectedAnswer === null} />
-            <SingleChoice
-              answers={answers}
-              onClick={onClickAnswer}
-              correctAnswer={correctAnswer}
-              selectedAnswer={selectedAnswer}
-              delayPassed={delayPassed}
-            />
-            <ButtonContainer>
-              {selectedAnswer !== null ? (
-                <Button
-                  label={buttonLabel}
-                  iconRight={ArrowRightIcon}
-                  onPress={onFinishWord}
-                  buttonTheme={BUTTONS_THEME.contained}
-                />
-              ) : (
-                !lastWord && (
+            <ScrollView>
+              <SingleChoice
+                answers={answers}
+                onClick={onClickAnswer}
+                correctAnswer={correctAnswer}
+                selectedAnswer={selectedAnswer}
+                delayPassed={delayPassed}
+              />
+              <ButtonContainer>
+                {selectedAnswer !== null ? (
                   <Button
-                    label={labels.exercises.tryLater}
+                    label={buttonLabel}
                     iconRight={ArrowRightIcon}
-                    onPress={tryLater}
-                    buttonTheme={BUTTONS_THEME.text}
+                    onPress={onFinishWord}
+                    buttonTheme={BUTTONS_THEME.contained}
                   />
-                )
-              )}
-            </ButtonContainer>
+                ) : (
+                  !lastWord && (
+                    <Button
+                      label={labels.exercises.tryLater}
+                      iconRight={ArrowRightIcon}
+                      onPress={tryLater}
+                      buttonTheme={BUTTONS_THEME.text}
+                    />
+                  )
+                )}
+              </ButtonContainer>
+            </ScrollView>
           </>
         )}
       </ServerResponseHandler>

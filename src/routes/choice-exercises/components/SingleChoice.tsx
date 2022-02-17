@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Answer } from '../../../constants/data'
 import SingleChoiceListItem from './SingleChoiceListItem'
 
 export const StyledContainer = styled.View`
-  padding-top: 6%;
-  height: 42%;
-  margin-left: 8%;
-  margin-right: 8%;
+  padding-top: ${props => props.theme.spacings.md};
+  height: ${hp('42%')}px;
+  margin-left: ${props => props.theme.spacings.md};
+  margin-right: ${props => props.theme.spacings.md};
 `
 
 export interface SingleChoiceProps {

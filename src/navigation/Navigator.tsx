@@ -2,6 +2,7 @@ import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 
 import {
@@ -34,7 +35,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
     elevation: 0,
     borderBottomColor: COLORS.lunesBlackUltralight,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    height: wp('12%')
   },
   headerRightContainer: {
     paddingHorizontal: 15,
@@ -68,7 +70,11 @@ const Navigator = (): JSX.Element => {
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         activeOpacity={1}>
-        {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
+        {isPressed ? (
+          <ArrowLeftCircleIconBlue width={wp('7%')} height={wp('7%')} />
+        ) : (
+          <Icon width={wp('7%')} height={wp('7%')} />
+        )}
         <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
       </NavigationHeaderLeft>
     ),
@@ -79,7 +85,11 @@ const Navigator = (): JSX.Element => {
           onPressIn={() => setIsHomeButtonPressed(true)}
           onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isHomeButtonPressed ? <HomeCircleIconBlue /> : <HomeCircleIconWhite />}
+          {isHomeButtonPressed ? (
+            <HomeCircleIconBlue width={wp('7%')} height={wp('7%')} />
+          ) : (
+            <HomeCircleIconWhite width={wp('7%')} height={wp('7%')} />
+          )}
         </TouchableOpacity>
       )
     }),

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Pressable } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
@@ -9,8 +9,9 @@ import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
   min-height: ${wp('22%')}px;
-  margin: 0px 16px 8px 16px;
-  padding: 12px 8px 12px 16px;
+  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm}`};
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.md}`};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -27,7 +28,7 @@ const Title = styled.Text<{ selected: boolean }>`
 `
 const Icon = styled.Image`
   justify-content: center;
-  margin-right: 10px;
+  margin-right: ${props => props.theme.spacings.xs};
   width: ${wp('7%')}px;
   height: ${wp('7%')}px;
 `
@@ -54,7 +55,12 @@ const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemPro
         </Title>
         {children}
       </TextContainer>
-      <ChevronRight fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+      <ChevronRight
+        fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack}
+        testID='arrow'
+        width={wp('6%')}
+        height={hp('6%')}
+      />
     </Container>
   )
 }

@@ -14,13 +14,13 @@ import Loading from './Loading'
 const Placeholder = styled.View`
   height: ${wp('22%')}px;
   background-color: ${props => props.theme.colors.white};
-  margin: 0px 16px 8px 16px;
+  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} -${props.theme.spacings.sm}`};
   border: 1px solid ${prop => prop.theme.colors.lunesBlackUltralight};
   border-radius: 2px;
 `
 
 const LoadingSpinner = styled.View`
-  padding-top: ${wp('10%')}px;
+  padding-top: ${props => props.theme.spacings.xl};
 `
 
 const Description = styled.Text<{ selected: boolean }>`
@@ -35,7 +35,7 @@ const ErrorText = styled.Text`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${props => props.theme.colors.lunesRed};
-  margin: 10px;
+  margin: ${props => props.theme.spacings.xs};
 `
 
 interface CustomDisciplineItemProps {

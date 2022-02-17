@@ -12,6 +12,7 @@ import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.lunesWhite};
@@ -23,7 +24,7 @@ const Root = styled.View`
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
+  margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<DocumentResult>
 
 export const styles = StyleSheet.create({
@@ -57,7 +58,7 @@ const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => 
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <DoubleCheckCircleIconWhite />
+            <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')}/>
           </TouchableOpacity>
         )
       })

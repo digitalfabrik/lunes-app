@@ -2,6 +2,7 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
@@ -17,14 +18,14 @@ const Root = styled.View`
   background-color: ${props => props.theme.colors.lunesWhite};
   height: 100%;
   align-items: center;
-  padding-left: 4%;
-  padding-right: 4%;
+  padding-left: ${props => props.theme.spacings.sm};
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
+  margin-bottom: ${props => props.theme.spacings.md}
 ` as ComponentType as new () => FlatList<Result>
 
 const Description = styled.Text<{ selected: boolean }>`
@@ -36,8 +37,9 @@ const Description = styled.Text<{ selected: boolean }>`
 
 const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
-  padding: 17px 28px 17px 16px;
-  margin-bottom: 8px;
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.md} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+  margin-bottom: ${props => props.theme.spacings.xs}
   flex-direction: row;
   align-items: center;
   width: 100%;
@@ -65,7 +67,7 @@ const LeftSide = styled.View`
   width: 100%;
 `
 const StyledText = styled.View`
-  margin-left: 10px;
+  margin-left: ${props => props.theme.spacings.xs};
   display: flex;
   flex-direction: column;
 `
@@ -76,7 +78,7 @@ const HeaderText = styled.Text`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   color: ${prop => prop.theme.colors.lunesBlack};
   text-transform: uppercase;
-  margin-right: 8px;
+  margin-right: ${props => props.theme.spacings.xs};
 `
 const RightHeader = styled.TouchableOpacity`
   display: flex;
@@ -86,6 +88,7 @@ const RightHeader = styled.TouchableOpacity`
   elevation: 0;
   border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
   border-bottom-width: 1px;
+  margin-right: ${props => props.theme.spacings.sm};
 `
 const StyledTitle = styled(Title)`
   elevation: 0;
@@ -130,9 +133,10 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
             })
           }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
-          <DoubleCheckIcon />
+          <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
-      )
+      ),
+      headerRightContainerStyle: { flex: 1 }
     })
 
     setCounts({
@@ -172,7 +176,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     return (
       <Contained selected={selected} onPress={() => handleNavigation(item)}>
         <LeftSide>
-          <item.Icon fill={iconColor} width={30} height={30} />
+          <item.Icon fill={iconColor} width={wp('7%')} height={wp('7%')} />
           <StyledText>
             <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
             <Description
@@ -181,7 +185,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
               }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
           </StyledText>
         </LeftSide>
-        <ChevronRight fill={arrowColor} />
+        <ChevronRight fill={arrowColor} width={wp('6%')} height={wp('6%')} />
       </Contained>
     )
   }
