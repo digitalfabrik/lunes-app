@@ -1,6 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import labels from '../constants/labels.json'
