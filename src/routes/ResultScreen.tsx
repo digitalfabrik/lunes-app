@@ -14,7 +14,7 @@ import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
 import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.lunesWhite};
+  background-color: ${prop => prop.theme.colors.background};
   height: 100%;
   width: 100%;
   padding-bottom: 0;

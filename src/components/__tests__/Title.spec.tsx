@@ -1,9 +1,9 @@
-import { render, RenderAPI } from '@testing-library/react-native'
+import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
 import { CheckCircleIcon } from '../../../assets/images'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import Title from '../Title'
 
 describe('Title', () => {
@@ -13,7 +13,7 @@ describe('Title', () => {
   }
 
   const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI =>
-    render(<Title {...defaultTitleProps} {...otherProps} />, { wrapper: wrapWithTheme })
+    render(<Title {...defaultTitleProps} {...otherProps} />)
 
   it('should render ListTitle with title and description', () => {
     const { getByText } = renderListTitle()

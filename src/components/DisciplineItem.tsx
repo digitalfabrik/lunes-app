@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react'
 import { Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import { Discipline } from '../constants/endpoints'
-import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ selected: boolean }>`
   min-height: ${wp('22%')}px;
@@ -14,8 +13,8 @@ const Container = styled(Pressable)<{ selected: boolean }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
-  border: 1px solid ${prop => (prop.selected ? prop.theme.colors.lunesBlack : prop.theme.colors.lunesBlackUltralight)};
+  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  border: 1px solid ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-radius: 2px;
 `
 const Title = styled.Text<{ selected: boolean }>`
@@ -23,7 +22,7 @@ const Title = styled.Text<{ selected: boolean }>`
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 const Icon = styled.Image`
   justify-content: center;
@@ -45,6 +44,7 @@ export interface DisciplineItemProps {
 
 const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemProps): JSX.Element => {
   const { icon, title } = item
+  const theme = useTheme()
   return (
     <Container onPress={onPress} selected={selected}>
       <Icon source={{ uri: icon }} />
@@ -54,7 +54,7 @@ const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemPro
         </Title>
         {children}
       </TextContainer>
-      <ChevronRight fill={selected ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+      <ChevronRight fill={selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary} testID='arrow' />
     </Container>
   )
 }

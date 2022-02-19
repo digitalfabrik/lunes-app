@@ -1,9 +1,9 @@
-import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
 import { COLORS } from '../../constants/theme/colors'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
 
 describe('Components', () => {
@@ -25,9 +25,7 @@ describe('Components', () => {
     }
 
     const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI =>
-      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />, {
-        wrapper: wrapWithTheme
-      })
+      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />)
 
     it('should call onPress event', () => {
       const onPress = jest.fn()
@@ -53,17 +51,17 @@ describe('Components', () => {
     it('should render black arrow icon when selected is false', () => {
       const { getByTestId, getByText } = renderDisciplineItem()
       const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
+      expect(arrowIcon.props.fill).toBe(COLORS.primary)
       const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
+      expect(title.instance.props.style[0].color).toBe(COLORS.text)
     })
 
     it('should render red arrow icon when selected is true', () => {
       const { getByTestId, getByText } = renderDisciplineItem({ selected: true })
       const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
+      expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
       const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.white)
+      expect(title.instance.props.style[0].color).toBe(COLORS.backgroundAccent)
     })
   })
 })

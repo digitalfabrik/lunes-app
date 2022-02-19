@@ -3,20 +3,19 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
 import { FlatList, View, Alert } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.lunesWhite};
+  background-color: ${prop => prop.theme.colors.background};
   height: 100%;
 `
 
@@ -30,7 +29,7 @@ const Description = styled.Text<{ selected: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 
 const Container = styled.Pressable<{ selected: boolean }>`
@@ -45,8 +44,8 @@ const Container = styled.Pressable<{ selected: boolean }>`
   border-style: solid;
   border-radius: 2px;
 
-  background-color: ${props => (props.selected ? props.theme.colors.lunesBlack : props.theme.colors.white)};
-  border-color: ${props => (props.selected ? props.theme.colors.white : props.theme.colors.lunesBlackUltralight)};
+  background-color: ${props => (props.selected ? props.theme.colors.primary : props.theme.colors.backgroundAccent)};
+  border-color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.disabled)};
 `
 const StyledItemTitle = styled.Text<{ selected: boolean }>`
   text-align: left;
@@ -56,7 +55,7 @@ const StyledItemTitle = styled.Text<{ selected: boolean }>`
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
 
-  color: ${props => (props.selected ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyDark)};
+  color: ${props => (props.selected ? props.theme.colors.background : props.theme.colors.text)};
 `
 
 interface ExercisesScreenProps {
@@ -68,6 +67,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const { discipline } = route.params
   const { title } = discipline
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  const theme = useTheme()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -98,7 +98,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           <Description selected={selected}>{item.description}</Description>
           <Trophy level={item.level} />
         </View>
-        <ChevronRight fill={item.key.toString() === selectedKey ? COLORS.lunesRedLight : COLORS.lunesBlack} />
+        <ChevronRight
+          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+        />
       </Container>
     )
   }

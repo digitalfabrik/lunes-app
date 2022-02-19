@@ -12,7 +12,7 @@ import labels from '../../../constants/labels.json'
 import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
 
 const ModalContainer = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
 `
@@ -21,7 +21,7 @@ const ModalHeader = styled.View`
   display: flex;
   align-items: flex-end;
   padding: 10px;
-  border-bottom-color: ${props => props.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${props => props.theme.colors.disabled};
   border-bottom-width: 1px;
   margin-bottom: 10px;
 `
