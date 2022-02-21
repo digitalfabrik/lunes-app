@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
-import { TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 
@@ -16,6 +16,7 @@ import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import HomeScreen from '../routes/HomeScreen'
@@ -59,9 +60,7 @@ const Navigator = (): JSX.Element => {
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
 
   // Set only height for tablets since header doesn't scale auto
-  const { width } = useWindowDimensions()
-  const MOBILE_MAX_WIDTH = 550
-  const headerHeight = width > MOBILE_MAX_WIDTH ? wp('15%') : undefined
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const defaultOptions = (
     title: string,

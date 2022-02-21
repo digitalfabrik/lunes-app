@@ -11,6 +11,7 @@ import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
@@ -115,6 +116,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
   const theme = useTheme()
 
   useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
+  // Set only height for tablets since header doesn't scale auto
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
@@ -136,7 +139,8 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
           <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
       ),
-      headerRightContainerStyle: { flex: 1 }
+      headerRightContainerStyle: { flex: 1 },
+      headerStyle: { height: headerHeight }
     })
 
     setCounts({
