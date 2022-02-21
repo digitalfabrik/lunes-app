@@ -7,15 +7,14 @@ import styled from 'styled-components/native'
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
 import NotAuthorisedView from './NotAuthorisedView'
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
 
 const Icon = styled.TouchableOpacity`
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  align-self: flex-end;
+  margin: 10px;
   width: 30px;
   height: 30px;
 `
@@ -23,7 +22,6 @@ const Icon = styled.TouchableOpacity`
 const Camera = styled(RNCamera)`
   flex: 1;
   position: relative;
-  margin: 50px 0 0;
 `
 
 interface Props {
