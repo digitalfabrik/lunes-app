@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 
@@ -29,33 +29,39 @@ import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
 
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: COLORS.background,
-    shadowOpacity: 0,
-    elevation: 0,
-    borderBottomColor: COLORS.disabled,
-    borderBottomWidth: 1,
-    height: wp('15%')
-  },
-  headerRightContainer: {
-    paddingHorizontal: 15,
-    maxWidth: 60
-  },
-  headerLeftContainer: {
-    flex: 1,
-    padding: 0
-  },
-  headerTitleContainer: {
-    marginHorizontal: 0
-  }
-})
+const styles = (headerHeight?: number) =>
+  StyleSheet.create({
+    header: {
+      backgroundColor: COLORS.background,
+      shadowOpacity: 0,
+      elevation: 0,
+      borderBottomColor: COLORS.disabled,
+      borderBottomWidth: 1,
+      height: headerHeight
+    },
+    headerRightContainer: {
+      paddingHorizontal: 15,
+      maxWidth: 60
+    },
+    headerLeftContainer: {
+      flex: 1,
+      padding: 0
+    },
+    headerTitleContainer: {
+      marginHorizontal: 0
+    }
+  })
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
+
+  // Set only height for tablets since header doesn't scale auto
+  const { width } = useWindowDimensions()
+  const MOBILE_MAX_WIDTH = 550
+  const headerHeight = width > MOBILE_MAX_WIDTH ? wp('15%') : undefined
 
   const defaultOptions = (
     title: string,
@@ -94,10 +100,10 @@ const Navigator = (): JSX.Element => {
       )
     }),
     headerTitle: '',
-    headerStyle: styles.header,
-    headerRightContainerStyle: styles.headerRightContainer,
-    headerLeftContainerStyle: styles.headerLeftContainer,
-    headerTitleContainerStyle: styles.headerTitleContainer
+    headerStyle: styles(headerHeight).header,
+    headerRightContainerStyle: styles().headerRightContainer,
+    headerLeftContainerStyle: styles().headerLeftContainer,
+    headerTitleContainerStyle: styles().headerTitleContainer
   })
 
   return (
@@ -161,7 +167,7 @@ const Navigator = (): JSX.Element => {
           options={{
             headerLeft: () => null,
             headerTitle: '',
-            headerRightContainerStyle: styles.headerRightContainer
+            headerRightContainerStyle: styles().headerRightContainer
           }}
           name='ResultsOverview'
           component={ResultsOverviewScreen}
