@@ -41,7 +41,7 @@ const styles = (headerHeight?: number) =>
       height: headerHeight
     },
     headerRightContainer: {
-      paddingHorizontal: 15,
+      paddingHorizontal: wp('4%'),
       maxWidth: 60
     },
     headerLeftContainer: {

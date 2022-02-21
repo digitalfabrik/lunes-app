@@ -46,7 +46,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
         ),
         headerRight: () => <HeaderText>{progressText}</HeaderText>,
         headerRightContainerStyle: {
-          paddingHorizontal: 15,
+          paddingHorizontal: wp('4%'),
           maxWidth: wp('25%')
         }
       }),
