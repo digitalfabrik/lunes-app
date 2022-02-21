@@ -1,29 +1,28 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal, PermissionsAndroid } from 'react-native'
+import { AppState, Modal, Platform } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
 import NotAuthorisedView from './NotAuthorisedView'
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
 
 const Icon = styled.TouchableOpacity`
-  position: absolute;
-  top: ${wp('2.5%')}px;
-  right: ${wp('2.5%')}px;
-  width: ${props => props.theme.spacings.lg};
-  height: ${props => props.theme.spacings.lg}; ;
+  align-self: flex-end;
+  ${props => props.theme.spacings.xs};
+  width: ${wp('7%')}px;
+  height: ${wp('7%')}px;
 `
 
 const Camera = styled(RNCamera)`
   flex: 1;
   position: relative;
-  margin: ${props => `${props.theme.spacings.xxl} 0 0`};
 `
 
 interface Props {
@@ -46,8 +45,8 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
   useEffect(() => {
     if (!permissionRequested) {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-        .then(status => setPermissionGranted(status === 'granted'))
+      request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
         .catch(e => console.error(e))
         .finally(() => setPermissionRequested(true))
     }
