@@ -18,16 +18,16 @@ const Background = styled.ImageBackground`
   width: ${wp('80%')}px;
   height: ${hp('9%')}px;
   min-height: 50px;
-  margin-bottom: 40px;
+  margin-bottom: ${props => props.theme.spacings.lg};
   flex-direction: row;
   align-items: center;
-  padding: 0 10px;
+  padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
 const StyledText = styled.Text`
   width: 100%;
+  padding: ${props => `0 ${props.theme.spacings.md} 0 ${props.theme.spacings.sm}`};
   color: ${props => props.theme.colors.primary};
-  padding: 0 20px 0 10px;
 `
 
 export interface FeedbackProps {

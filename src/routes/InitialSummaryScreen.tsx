@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { StatusBar } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../assets/images'
@@ -22,13 +22,13 @@ const UpperSection = styled.View`
   background-color: ${prop => prop.theme.colors.primary};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
-  margin-bottom: 8%;
+  margin-bottom: ${props => props.theme.spacings.lg};
   justify-content: center;
   align-items: center;
 `
 const MessageContainer = styled.View`
   width: 60%;
-  margin-top: 5%;
+  margin-top: ${props => props.theme.spacings.sm};
 `
 const Message = styled.Text`
   color: ${prop => prop.theme.colors.background};
@@ -82,7 +82,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps):
       <StatusBar barStyle='light-content' />
 
       <UpperSection>
-        <CheckCircleIconWhite />
+        <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
         <MessageContainer>
           <Message>{message}</Message>
         </MessageContainer>

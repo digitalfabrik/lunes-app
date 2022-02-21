@@ -2,6 +2,7 @@ import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 
 import {
@@ -15,6 +16,7 @@ import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import HomeScreen from '../routes/HomeScreen'
@@ -28,32 +30,37 @@ import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
 
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: COLORS.background,
-    shadowOpacity: 0,
-    elevation: 0,
-    borderBottomColor: COLORS.disabled,
-    borderBottomWidth: 1
-  },
-  headerRightContainer: {
-    paddingHorizontal: 15,
-    maxWidth: 60
-  },
-  headerLeftContainer: {
-    flex: 1,
-    padding: 0
-  },
-  headerTitleContainer: {
-    marginHorizontal: 0
-  }
-})
+const styles = (headerHeight?: number) =>
+  StyleSheet.create({
+    header: {
+      backgroundColor: COLORS.background,
+      shadowOpacity: 0,
+      elevation: 0,
+      borderBottomColor: COLORS.disabled,
+      borderBottomWidth: 1,
+      height: headerHeight
+    },
+    headerRightContainer: {
+      paddingHorizontal: wp('4%'),
+      maxWidth: 60
+    },
+    headerLeftContainer: {
+      flex: 1,
+      padding: 0
+    },
+    headerTitleContainer: {
+      marginHorizontal: 0
+    }
+  })
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
+
+  // Set only height for tablets since header doesn't scale auto
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const defaultOptions = (
     title: string,
@@ -68,7 +75,11 @@ const Navigator = (): JSX.Element => {
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         activeOpacity={1}>
-        {isPressed ? <ArrowLeftCircleIconBlue /> : <Icon />}
+        {isPressed ? (
+          <ArrowLeftCircleIconBlue width={wp('7%')} height={wp('7%')} />
+        ) : (
+          <Icon width={wp('7%')} height={wp('7%')} />
+        )}
         <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
       </NavigationHeaderLeft>
     ),
@@ -79,15 +90,19 @@ const Navigator = (): JSX.Element => {
           onPressIn={() => setIsHomeButtonPressed(true)}
           onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
-          {isHomeButtonPressed ? <HomeCircleIconBlue /> : <HomeCircleIconWhite />}
+          {isHomeButtonPressed ? (
+            <HomeCircleIconBlue width={wp('7%')} height={wp('7%')} />
+          ) : (
+            <HomeCircleIconWhite width={wp('7%')} height={wp('7%')} />
+          )}
         </TouchableOpacity>
       )
     }),
     headerTitle: '',
-    headerStyle: styles.header,
-    headerRightContainerStyle: styles.headerRightContainer,
-    headerLeftContainerStyle: styles.headerLeftContainer,
-    headerTitleContainerStyle: styles.headerTitleContainer
+    headerStyle: styles(headerHeight).header,
+    headerRightContainerStyle: styles().headerRightContainer,
+    headerLeftContainerStyle: styles().headerLeftContainer,
+    headerTitleContainerStyle: styles().headerTitleContainer
   })
 
   return (
@@ -151,7 +166,7 @@ const Navigator = (): JSX.Element => {
           options={{
             headerLeft: () => null,
             headerTitle: '',
-            headerRightContainerStyle: styles.headerRightContainer
+            headerRightContainerStyle: styles().headerRightContainer
           }}
           name='ResultsOverview'
           component={ResultsOverviewScreen}

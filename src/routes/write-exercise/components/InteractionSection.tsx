@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Keyboard, Pressable, TouchableOpacity, View } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -21,8 +21,8 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   justify-content: space-between;
   align-items: center;
   border-radius: 2px;
-  padding: 0 15px;
-  margin-bottom: 5%;
+  padding: ${props => `0 ${props.theme.spacings.sm}`};
+  margin-bottom: ${props => props.theme.spacings.sm};
   border: 1px solid ${prop => prop.styledBorderColor};
 `
 const StyledTextInput = styled.TextInput`
@@ -36,7 +36,7 @@ const StyledTextInput = styled.TextInput`
 `
 
 const Speaker = styled.View`
-  top: -20px;
+  top: ${wp('-6%')}px;
 `
 
 interface InteractionSectionProps {
@@ -161,7 +161,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         />
         {retryAllowed && input !== '' && (
           <TouchableOpacity onPress={() => setInput('')}>
-            <CloseIcon />
+            <CloseIcon width={wp('6%')} height={wp('6%')} />
           </TouchableOpacity>
         )}
       </TextInputContainer>

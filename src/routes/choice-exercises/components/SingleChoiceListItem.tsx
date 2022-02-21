@@ -14,7 +14,7 @@ const StyledText = styled.Text`
 
 const Container = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
-  margin-bottom: 1.5%;
+  margin-bottom: ${props => props.theme.spacings.xxs};
   border-radius: 2px;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
@@ -66,15 +66,14 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
 `
 
 const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
-  width: 11.5%;
-  height: 38%;
-  border-radius: 10px;
+  padding: ${props => `2px ${props.theme.spacings.xs}`};
+  border-radius: ${props => props.theme.spacings.sm};
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 3%;
-  margin-left: 3.5%;
+  margin-right: ${props => props.theme.spacings.sm};
+  margin-left: ${props => props.theme.spacings.sm};
   background-color: ${props => {
     if (props.pressed) {
       return props.theme.colors.background

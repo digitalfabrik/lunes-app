@@ -1,4 +1,5 @@
 import React, { ReactElement, useCallback, useState } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
@@ -16,14 +17,14 @@ export interface AudioPlayerProps {
 
 const StyledView = styled.View`
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: ${props => props.theme.spacings.sm};
 `
 
 const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolean }>`
   position: absolute;
-  top: -20px;
-  width: 40px;
-  height: 40px;
+  top: ${wp('-4.5%')}px;
+  width: ${wp('9%')}px;
+  height: ${wp('9%')}px;
   border-radius: 50px;
   background-color: ${props => {
     if (props.disabled) {
@@ -112,7 +113,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         isActive={isActive}
         onPress={handleSpeakerClick}
         accessibilityRole='button'>
-        <VolumeUpCircleIcon />
+        <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
       </VolumeIcon>
     </StyledView>
   )

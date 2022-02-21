@@ -31,7 +31,7 @@ const Description = styled.Text<{ selected: boolean }>`
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  padding-left: 5px;
+  padding-left: ${props => props.theme.spacings.xxs};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondary)};
 `

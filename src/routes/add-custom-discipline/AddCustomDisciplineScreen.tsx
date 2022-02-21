@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { QRCodeIcon } from '../../../assets/images'
@@ -23,14 +23,14 @@ const Container = styled.View`
 const Heading = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.headingFontSize};
-  padding-top: 40px;
+  padding-top: ${props => props.theme.spacings.xl};
 `
 
 const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   color: ${props => props.theme.colors.textSecondary};
-  padding: 10px 0;
+  padding: ${props => `${props.theme.spacings.xs} 0`};
 `
 
 const InputContainer = styled.View<{ errorMessage: string }>`
@@ -41,8 +41,8 @@ const InputContainer = styled.View<{ errorMessage: string }>`
   width: 80%;
   border: 1px solid ${props => (props.errorMessage ? props.theme.colors.incorrect : props.theme.colors.text)};
   border-radius: 4px;
-  margin-top: ${hp('8%')}px;
-  padding: 0 15px;
+  margin-top: ${props => props.theme.spacings.lg};
+  padding: ${props => `0 ${props.theme.spacings.sm}`};
   height: ${hp('8%')}px;
 `
 
@@ -56,7 +56,7 @@ const StyledTextInput = styled.TextInput`
 `
 
 const ErrorContainer = styled.View`
-  margin-bottom: ${hp('4%')}px;
+  margin-bottom: ${props => props.theme.spacings.sm};
   width: 80%;
   height: 10%;
 `
@@ -119,7 +119,6 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
         <Container>
           <Heading>{labels.addCustomDiscipline.heading}</Heading>
           <Description>{labels.addCustomDiscipline.description}</Description>
-
           <InputContainer errorMessage={errorMessage}>
             <StyledTextInput
               placeholder={labels.addCustomDiscipline.placeholder}
@@ -128,7 +127,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
               onChangeText={setCode}
             />
             <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-              <QRCodeIcon accessibilityLabel='qr-code-scanner' />
+              <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
             </TouchableOpacity>
           </InputContainer>
 

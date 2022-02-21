@@ -1,0 +1,6 @@
+issue_key: LUN-246
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Bedienbarkeit für Tablets wurde verbessert.

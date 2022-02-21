@@ -7,7 +7,7 @@ export const NavigationTitle = styled.Text`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  padding-left: 15px;
-  padding-right: 5px;
+  padding-left: ${props => props.theme.spacings.sm};
+  padding-right: ${props => props.theme.spacings.xxs};
   flex: 1;
 `
