@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { Document } from '../../../constants/endpoints'
@@ -7,7 +7,7 @@ import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
 jest.useFakeTimers()
@@ -101,9 +101,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
 
-    const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)

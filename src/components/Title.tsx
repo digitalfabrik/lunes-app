@@ -1,34 +1,35 @@
 import React, { ReactElement } from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
-  min-height: 54px;
+  min-height: ${hp('7%')}px;
   align-items: center;
-  margin-bottom: 32px;
-  margin-top: 32px;
+  margin-bottom: ${props => props.theme.spacings.lg};
+  margin-top: ${props => props.theme.spacings.lg};
   text-align: center;
 `
 
 const ScreenTitle = styled.Text`
   font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
+  color: ${props => props.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
   text-align: center;
-  padding: 10px;
+  padding: ${props => props.theme.spacings.xs};
 `
 
 const ScreenSubTitle = styled.Text`
-  margin-top: 25px;
+  margin-top: ${props => props.theme.spacings.xs};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${prop => prop.theme.colors.lunesGreyDark};
+  color: ${prop => prop.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
 `
 
 const Description = styled.Text`
-  margin-top: 4px;
+  margin-top: ${props => props.theme.spacings.xxs};
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 

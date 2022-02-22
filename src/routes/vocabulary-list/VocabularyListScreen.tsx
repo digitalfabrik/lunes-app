@@ -14,7 +14,7 @@ import VocabularyListItem from './components/VocabularyListItem'
 import VocabularyListModal from './components/VocabularyListModal'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
   padding-bottom: 0;

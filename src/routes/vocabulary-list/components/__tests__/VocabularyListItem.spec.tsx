@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
 import { ARTICLES } from '../../../../constants/data'
 import { Document } from '../../../../constants/endpoints'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
 
 jest.mock('../../../../components/AudioPlayer', () => () => null)
@@ -20,17 +19,17 @@ describe('VocabularyListItem', () => {
   }
 
   it('should display image passed to it', () => {
-    const { getByTestId } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    const { getByTestId } = render(<VocabularyListItem document={document} />)
     expect(getByTestId('image')).toHaveProp('source', { uri: document.document_image[0].image })
   })
 
   it('should display article passed to it', () => {
-    const { queryByText } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    const { queryByText } = render(<VocabularyListItem document={document} />)
     expect(queryByText(document.article.value)).toBeTruthy()
   })
 
   it('should display word passed to it', () => {
-    const { queryByText } = render(<VocabularyListItem document={document} />, { wrapper: wrapWithTheme })
+    const { queryByText } = render(<VocabularyListItem document={document} />)
     expect(queryByText(document.word)).toBeTruthy()
   })
 })
