@@ -10,6 +10,8 @@ import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoi
 import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
+jest.useFakeTimers()
+
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn()
