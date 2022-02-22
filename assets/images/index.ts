@@ -29,6 +29,7 @@ import ListIcon from './list-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
+import ShareIcon from './share-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
@@ -65,6 +66,7 @@ export {
   LunesIcon,
   QRCodeIcon,
   RepeatIcon,
+  ShareIcon,
   TrashIcon,
   TrophyIcon,
   VolumeUpCircleIcon
