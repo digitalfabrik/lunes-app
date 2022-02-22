@@ -10,16 +10,14 @@ jest.mock('../../navigation/Navigator', () => {
   const Text = require('react-native').Text
   return () => <Text>Navigator</Text>
 })
-jest.useFakeTimers('modern')
+jest.useFakeTimers()
 
 describe('App', () => {
-  it('renders correctly', async () => {
+  it('renders correctly', () => {
     const { getByText } = render(<App />)
 
     // wait for splash screen to disappear
-    await act(() => {
-      jest.advanceTimersByTime(3000)
-    })
+    act(() => jest.advanceTimersByTime(3000))
 
     expect(SplashScreen.hide).toHaveBeenCalled()
     expect(getByText('Navigator')).toBeTruthy()
