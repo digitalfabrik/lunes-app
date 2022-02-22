@@ -3,6 +3,7 @@ import { Linking } from 'react-native'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
+import { ContentSecondary } from '../../../components/text/Content'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 
@@ -15,10 +16,7 @@ const Container = styled.View`
   margin: ${props => `${props.theme.spacings.xxl} 0 0`};
 `
 
-const Description = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondary};
+const Description = styled(ContentSecondary)`
   padding: ${props => `0 ${props.theme.spacings.md} ${props.theme.spacings.md}`};
   text-align: center;
 `

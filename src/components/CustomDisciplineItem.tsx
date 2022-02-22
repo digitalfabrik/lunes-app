@@ -9,6 +9,7 @@ import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
 import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
+import { ContentSecondaryLight } from './text/Content'
 
 const Placeholder = styled.View`
   background-color: ${props => props.theme.colors.backgroundAccent};
@@ -22,18 +23,8 @@ const LoadingSpinner = styled.View`
   padding-top: ${props => props.theme.spacings.xl};
 `
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
+const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
-`
-
-const ErrorText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.primary};
 `
 
 interface CustomDisciplineItemProps {
@@ -82,9 +73,9 @@ const CustomDisciplineItem = ({
         </DisciplineItem>
       ) : (
         <Placeholder>
-          <ErrorText>
+          <ContentSecondaryLight>
             {labels.home.errorLoadCustomDiscipline} {apiKey}
-          </ErrorText>
+          </ContentSecondaryLight>
         </Placeholder>
       )}
     </DeletionSwipeable>

@@ -9,6 +9,9 @@ import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
+import { ContentSecondaryLight } from '../components/text/Content'
+import ItemTitle from '../components/text/ItemTitle'
+import { SubheadingPrimary } from '../components/text/Subheading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
@@ -28,10 +31,7 @@ const StyledList = styled(FlatList)`
   margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Result>
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
+const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
   color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.text)};
 `
 
@@ -50,15 +50,6 @@ const Contained = styled.Pressable<{ selected: boolean }>`
   background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
   border-color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.disabled)};
 `
-const StyledItemTitle = styled.Text<{ selected: boolean }>`
-  text-align: left;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-bottom: 2px;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.text)};
-`
 
 const LeftSide = styled.View`
   display: flex;
@@ -71,12 +62,8 @@ const StyledText = styled.View`
   display: flex;
   flex-direction: column;
 `
-const HeaderText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontBold};
+const HeaderText = styled(SubheadingPrimary)`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.primary};
   text-transform: uppercase;
   margin-right: ${props => props.theme.spacings.xs};
 `
@@ -182,7 +169,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
         <LeftSide>
           <item.Icon fill={iconColor} width={wp('7%')} height={wp('7%')} />
           <StyledText>
-            <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
+            <ItemTitle selected={selected}>{item.title}</ItemTitle>
             <Description
               selected={
                 selected

@@ -7,6 +7,8 @@ import styled, { useTheme } from 'styled-components/native'
 import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import Loading from '../../components/Loading'
+import { ContentError, ContentSecondary } from '../../components/text/Content'
+import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
@@ -20,16 +22,11 @@ const Container = styled.View`
   align-items: center;
 `
 
-const Heading = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.headingFontSize};
+const CustomDisciplineHeading = styled(HeadingText)`
   padding-top: ${props => props.theme.spacings.xl};
 `
 
-const Description = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondary};
+const Description = styled(ContentSecondary)`
   padding: ${props => `${props.theme.spacings.xs} 0`};
 `
 
@@ -59,12 +56,6 @@ const ErrorContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.sm};
   width: 80%;
   height: 10%;
-`
-
-const ErrorText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.incorrect};
 `
 
 const HTTP_STATUS_CODE_FORBIDDEN = 403
@@ -117,7 +108,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
     <Loading isLoading={loading}>
       {customDisciplines && (
         <Container>
-          <Heading>{labels.addCustomDiscipline.heading}</Heading>
+          <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
           <Description>{labels.addCustomDiscipline.description}</Description>
           <InputContainer errorMessage={errorMessage}>
             <StyledTextInput
@@ -132,7 +123,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
           </InputContainer>
 
           <ErrorContainer>
-            <ErrorText>{errorMessage}</ErrorText>
+            <ContentError>{errorMessage}</ContentError>
           </ErrorContainer>
           <Button
             label={labels.addCustomDiscipline.submitLabel}

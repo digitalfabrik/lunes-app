@@ -3,6 +3,10 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
+import { ContentSecondary } from './text/Content'
+import { HeadingText } from './text/Heading'
+import { SubheadingText } from './text/Subheading'
+
 const Container = styled.View`
   min-height: ${hp('7%')}px;
   align-items: center;
@@ -11,26 +15,16 @@ const Container = styled.View`
   text-align: center;
 `
 
-const ScreenTitle = styled.Text`
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.text};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  text-align: center;
+const TitleContent = styled(ContentSecondary)`
+  margin-top: ${props => props.theme.spacings.xxs};
+`
+
+const TitleHeading = styled(HeadingText)`
   padding: ${props => props.theme.spacings.xs};
 `
 
-const ScreenSubTitle = styled.Text`
+const TitleSubheading = styled(SubheadingText)`
   margin-top: ${props => props.theme.spacings.xs};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${prop => prop.theme.colors.text};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-`
-
-const Description = styled.Text`
-  margin-top: ${props => props.theme.spacings.xxs};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondary};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
 `
 
 interface ITitleProps {
@@ -44,9 +38,9 @@ interface ITitleProps {
 const Title = ({ titleIcon, title, subtitle, description, children }: ITitleProps): ReactElement => (
   <Container>
     {titleIcon}
-    <ScreenTitle>{title}</ScreenTitle>
-    {subtitle && <ScreenSubTitle>{subtitle}</ScreenSubTitle>}
-    <Description>{description}</Description>
+    <TitleHeading>{title}</TitleHeading>
+    {subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
+    <TitleContent>{description}</TitleContent>
     {children}
   </Container>
 )

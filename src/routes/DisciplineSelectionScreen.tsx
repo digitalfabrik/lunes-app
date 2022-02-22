@@ -8,6 +8,7 @@ import styled from 'styled-components/native'
 import DisciplineItem from '../components/DisciplineItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
+import { ContentSecondaryLight } from '../components/text/Content'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -27,12 +28,9 @@ const StyledList = styled(FlatList)`
   width: 100%;
 ` as ComponentType as new () => FlatList<Discipline>
 
-const Description = styled.Text<{ selected: boolean }>`
+const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
   text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   padding-left: ${props => props.theme.spacings.xxs};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
   color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.textSecondary)};
 `
 
