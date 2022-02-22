@@ -1,97 +1,31 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, ReactElement } from 'react'
-import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import styled, { useTheme } from 'styled-components/native'
+import React, { ComponentType } from 'react'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
 
-import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
+import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 import Title from '../components/Title'
-import Trophy from '../components/Trophy'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { Counts, RoutesParams } from '../navigation/NavigationTypes'
-import ShareButton from './exercise-finished/components/ShareButton'
+import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
+import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${prop => prop.theme.colors.background};
   height: 100%;
-  align-items: center;
-  padding-left: 4%;
-  padding-right: 4%;
+  width: 100%;
+  padding-bottom: 0;
 `
 
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
-` as ComponentType as new () => FlatList<Result>
-
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.text)};
-`
-
-const Contained = styled.Pressable<{ selected: boolean }>`
-  align-self: center;
-  padding: 17px 28px 17px 16px;
-  margin-bottom: 8px;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
-  border-color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.disabled)};
-`
-const StyledItemTitle = styled.Text<{ selected: boolean }>`
-  text-align: left;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  margin-bottom: 2px;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  color: ${prop => (prop.selected ? prop.theme.colors.background : prop.theme.colors.text)};
-`
-
-const LeftSide = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-`
-const StyledText = styled.View`
-  margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-`
-const HeaderText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.primary};
-  text-transform: uppercase;
-  margin-right: 8px;
-`
-const RightHeader = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  shadow-opacity: 0;
-  elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.disabled};
-  border-bottom-width: 1px;
-`
-const StyledTitle = styled(Title)`
-  elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.disabled};
-  border-bottom-width: 1px;
-`
+  margin-bottom: ${props => props.theme.spacings.md};
+` as ComponentType as new () => FlatList<DocumentResult>
 
 export const styles = StyleSheet.create({
   footer: {
@@ -100,119 +34,101 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface ResultOverviewScreenProps {
-  route: RouteProp<RoutesParams, 'ResultsOverview'>
-  navigation: StackNavigationProp<RoutesParams, 'ResultsOverview'>
+interface ResultScreenProps {
+  route: RouteProp<RoutesParams, 'ResultScreen'>
+  navigation: StackNavigationProp<RoutesParams, 'ResultScreen'>
 }
 
-const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): ReactElement => {
-  const { exercise, results, discipline } = route.params.result
-  const { level, description, title } = EXERCISES[exercise]
-  const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
-  const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
-  const theme = useTheme()
+const ResultScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => {
+  const { result, counts, resultType } = route.params
+  const { exercise } = result
+  const [entries, setEntries] = React.useState<DocumentResult[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
+  const { Icon, title, order } = resultType
 
-  useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
-
-  const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      discipline,
-      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
-    })
+  let nextResultType = RESULTS.find(elem => elem.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
+  // TODO will be adjusted in LUN-222
+  if (nextResultType.key === 'similar') {
+    nextResultType = RESULTS[2]
   }
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <RightHeader
-          onPress={() =>
-            navigation.navigate('Exercises', {
-              discipline: { ...discipline }
-            })
-          }>
-          <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
-          <DoubleCheckIcon />
-        </RightHeader>
-      )
-    })
+  useFocusEffect(
+    React.useCallback(() => {
+      setEntries(result.results.filter(({ result }: DocumentResult) => result === resultType.key))
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
+            <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
+          </TouchableOpacity>
+        )
+      })
 
-    setCounts({
-      total: results.length,
-      correct: results.filter(({ result }) => result === 'correct').length,
-      incorrect: results.filter(({ result }) => result === 'incorrect').length,
-      similar: results.filter(({ result }) => result === 'similar').length
-    })
-  }, [results, navigation, discipline])
-
-  const Header = (
-    <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
-      <Trophy level={level} />
-    </StyledTitle>
+      setIsLoading(false)
+    }, [navigation, resultType, result])
   )
 
-  const Item = ({ item }: { item: Result }): ReactElement | null => {
-    const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
-    if (hideAlmostCorrect) {
-      return null
-    }
-    const handleNavigation = ({ key }: Result): void => {
-      setSelectedKey(key)
+  const Header = (
+    <Title
+      titleIcon={<Icon width={38} height={38} />}
+      title={` \n${title} ${labels.results.entries}`}
+      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.general.words}`}
+    />
+  )
 
-      navigation.navigate('ResultScreen', {
-        result: { ...route.params.result },
-        resultType: item,
-        counts
-      })
-    }
+  const Item = ({ item }: { item: DocumentResult }): JSX.Element => <VocabularyListItem document={item} />
 
-    const count = counts[item.key]
+  const repeatIncorrectEntries = (): void =>
+    navigation.navigate('WriteExercise', {
+      discipline: { ...result.discipline },
+      retryData: { data: entries }
+    })
 
-    const selected = item.key === selectedKey
-    const iconColor = selected ? theme.colors.background : theme.colors.text
-    const arrowColor = selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary
-    return (
-      <Contained selected={selected} onPress={() => handleNavigation(item)}>
-        <LeftSide>
-          <item.Icon fill={iconColor} width={30} height={30} />
-          <StyledText>
-            <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
-            <Description
-              selected={
-                selected
-              }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
-          </StyledText>
-        </LeftSide>
-        <ChevronRight fill={arrowColor} />
-      </Contained>
-    )
-  }
+  const label = `${resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} ${
+    labels.results.viewEntries
+  }`
+
+  const retryButton =
+    entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
+      <Button
+        label={label}
+        onPress={repeatIncorrectEntries}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconLeft={RepeatIcon}
+      />
+    ) : null
 
   const Footer = (
     <>
+      {exercise === ExerciseKeys.writeExercise && retryButton}
       <Button
-        label={labels.results.retryExercise}
-        iconLeft={RepeatIcon}
-        onPress={repeatExercise}
-        buttonTheme={BUTTONS_THEME.contained}
+        onPress={() =>
+          navigation.navigate('ResultScreen', {
+            ...route.params,
+            resultType: nextResultType
+          })
+        }
+        label={`${labels.results.show} ${nextResultType.title} ${labels.results.entries}`}
+        iconLeft={ArrowRightIcon}
+        buttonTheme={BUTTONS_THEME.text}
       />
-      <ShareButton discipline={discipline} results={results} />
     </>
   )
 
   return (
     <Root>
-      <StatusBar barStyle='dark-content' />
-      <StyledList
-        data={RESULTS}
-        ListHeaderComponent={Header}
-        renderItem={Item}
-        keyExtractor={({ key }) => key}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={Footer}
-        ListFooterComponentStyle={styles.footer}
-      />
+      <Loading isLoading={isLoading}>
+        <StyledList
+          data={entries}
+          ListHeaderComponent={Header}
+          renderItem={Item}
+          keyExtractor={({ id }) => id.toString()}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={Footer}
+          ListFooterComponentStyle={styles.footer}
+        />
+      </Loading>
     </Root>
   )
 }
 
-export default ResultsOverview
+export default ResultScreen

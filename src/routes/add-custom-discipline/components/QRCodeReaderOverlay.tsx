@@ -1,28 +1,28 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal, PermissionsAndroid } from 'react-native'
+import { AppState, Modal, Platform } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
 import NotAuthorisedView from './NotAuthorisedView'
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
 
 const Icon = styled.TouchableOpacity`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  align-self: flex-end;
+  ${props => props.theme.spacings.xs};
+  width: ${wp('7%')}px;
+  height: ${wp('7%')}px;
 `
 
 const Camera = styled(RNCamera)`
   flex: 1;
   position: relative;
-  margin: 50px 0 0;
 `
 
 interface Props {
@@ -45,8 +45,8 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
   useEffect(() => {
     if (!permissionRequested) {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-        .then(status => setPermissionGranted(status === 'granted'))
+      request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
         .catch(e => console.error(e))
         .finally(() => setPermissionRequested(true))
     }
@@ -71,9 +71,9 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
           onPressOut={() => setIsPressed(false)}
           activeOpacity={1}>
           {isPressed ? (
-            <CloseCircleIconBlue testID='close-circle-icon-blue' />
+            <CloseCircleIconBlue testID='close-circle-icon-blue' width={wp('7%')} height={wp('7%')} />
           ) : (
-            <CloseCircleIconWhite testID='close-circle-icon-white' />
+            <CloseCircleIconWhite testID='close-circle-icon-white' width={wp('7%')} height={wp('7%')} />
           )}
         </Icon>
         {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}

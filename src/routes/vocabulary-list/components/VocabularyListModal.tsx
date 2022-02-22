@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
@@ -20,14 +21,14 @@ const ModalContainer = styled.View`
 const ModalHeader = styled.View`
   display: flex;
   align-items: flex-end;
-  padding: 10px;
+  padding: ${props => props.theme.spacings.xs};
   border-bottom-color: ${props => props.theme.colors.disabled};
   border-bottom-width: 1px;
-  margin-bottom: 10px;
+  margin-bottom: ${props => props.theme.spacings.xs};
 `
 
 const ItemContainer = styled.View`
-  padding: 5%;
+  padding: ${props => props.theme.spacings.md};
   height: 45%;
 `
 
@@ -63,7 +64,7 @@ const VocabularyListModal = ({
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>
-            <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} />
+            <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />

@@ -18,10 +18,7 @@ jest.mock('react-native-camera', () => ({
   RNCamera: () => <View accessibilityLabel='RNCamera' />
 }))
 
-jest.mock('react-native//Libraries/PermissionsAndroid/PermissionsAndroid', () => ({
-  ...jest.requireActual('react-native//Libraries/PermissionsAndroid/PermissionsAndroid'),
-  request: jest.fn(() => new Promise(resolve => resolve('granted')))
-}))
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()

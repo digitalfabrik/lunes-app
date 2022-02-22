@@ -25,7 +25,7 @@ const ExerciseContainer = styled.View`
 
 const ButtonContainer = styled.View`
   align-items: center;
-  margin: 7% 0;
+  margin: ${props => `${props.theme.spacings.sm} 0`};
 `
 
 interface SingleChoiceExerciseProps {

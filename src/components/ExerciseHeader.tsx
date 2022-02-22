@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconWhite } from '../../assets/images'
@@ -39,14 +40,14 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
       navigation.setOptions({
         headerLeft: () => (
           <NavigationHeaderLeft onPress={() => setIsModalVisible(true)}>
-            <CloseCircleIconWhite />
+            <CloseCircleIconWhite width={wp('7%')} height={wp('7%')} />
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
         headerRight: () => <HeaderText>{progressText}</HeaderText>,
         headerRightContainerStyle: {
-          paddingHorizontal: 15,
-          maxWidth: 100
+          paddingHorizontal: wp('4%'),
+          maxWidth: wp('25%')
         }
       }),
     [navigation, progressText, setIsModalVisible]
