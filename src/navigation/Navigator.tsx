@@ -161,21 +161,21 @@ const Navigator = (): JSX.Element => {
           name='WriteExercise'
           component={WriteExerciseScreen}
         />
-        <Stack.Screen options={{ headerShown: false }} name='InitialSummary' component={ExerciseFinishedScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='ExerciseFinished' component={ExerciseFinishedScreen} />
         <Stack.Screen
           options={{
             headerLeft: () => null,
             headerTitle: '',
             headerRightContainerStyle: styles().headerRightContainer
           }}
-          name='ResultsOverview'
+          name='Result'
           component={ResultScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
             defaultOptions(labels.results.resultsOverview, ArrowLeftCircleIconWhite, navigation, false)
           }
-          name='ResultScreen'
+          name='ResultDetail'
           component={ResultDetailScreen}
         />
         <Stack.Screen

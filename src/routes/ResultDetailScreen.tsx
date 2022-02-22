@@ -2,6 +2,7 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../assets/images'
@@ -23,7 +24,7 @@ const Root = styled.View`
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
+  margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<DocumentResult>
 
 export const styles = StyleSheet.create({
@@ -34,8 +35,8 @@ export const styles = StyleSheet.create({
 })
 
 interface ResultScreenProps {
-  route: RouteProp<RoutesParams, 'ResultScreen'>
-  navigation: StackNavigationProp<RoutesParams, 'ResultScreen'>
+  route: RouteProp<RoutesParams, 'ResultDetail'>
+  navigation: StackNavigationProp<RoutesParams, 'ResultDetail'>
 }
 
 const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => {
@@ -57,7 +58,7 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
       navigation.setOptions({
         headerRight: () => (
           <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <DoubleCheckCircleIconWhite />
+            <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
           </TouchableOpacity>
         )
       })
@@ -101,7 +102,7 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
       {exercise === ExerciseKeys.writeExercise && retryButton}
       <Button
         onPress={() =>
-          navigation.navigate('ResultScreen', {
+          navigation.navigate('ResultDetail', {
             ...route.params,
             resultType: nextResultType
           })

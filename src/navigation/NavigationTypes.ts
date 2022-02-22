@@ -43,13 +43,13 @@ export type RoutesParams = {
     discipline: Discipline
     retryData?: { data: Documents }
   }
-  InitialSummary: {
+  ExerciseFinished: {
     result: ResultScreenData
   }
-  ResultsOverview: {
+  Result: {
     result: ResultScreenData
   }
-  ResultScreen: {
+  ResultDetail: {
     result: ResultScreenData
     resultType: Result
     counts: Counts

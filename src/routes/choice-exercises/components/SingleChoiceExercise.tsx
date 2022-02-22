@@ -75,7 +75,7 @@ const ChoiceExerciseScreen = ({
   }, [documents, currentWord])
 
   const onExerciseFinished = (results: DocumentResult[]): void => {
-    navigation.navigate('InitialSummary', {
+    navigation.navigate('ExerciseFinished', {
       result: {
         discipline: { ...route.params.discipline },
         exercise: exerciseKey,

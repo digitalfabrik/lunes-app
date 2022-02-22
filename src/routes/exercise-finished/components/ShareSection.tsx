@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Discipline } from '../../../constants/endpoints'
@@ -10,8 +9,8 @@ import ShareButton from './ShareButton'
 const Container = styled.View`
   display: flex;
   align-items: center;
-  margin: ${wp('6%')}px /* TODO change to md */
-  padding: ${wp('4%')}px; /* TODO change to sm */
+  margin: ${props => props.theme.spacings.md};
+  padding: ${props => props.theme.spacings.sm};
   border-radius: 6px;
   shadow-color: ${props => props.theme.colors.shadow};
   elevation: 10;
@@ -22,7 +21,7 @@ const Description = styled.Text`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.largeFontSize};
   text-align: center;
-  padding-bottom: ${wp('4%')}px; /* TODO change to sm */
+  padding-bottom: ${props => props.theme.spacings.sm};
 `
 
 interface Props {
