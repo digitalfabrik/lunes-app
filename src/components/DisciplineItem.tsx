@@ -62,7 +62,7 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   color: ${prop => (prop.pressed ? prop.theme.colors.textSecondary : prop.theme.colors.background)};
   background-color: ${prop => (prop.pressed ? prop.theme.colors.backgroundAccent : prop.theme.colors.textSecondary)};
   font-size: ${prop => prop.theme.fonts.smallFontSize};
-  margin-right: ${props => props.theme.spacings.sm};
+  margin-right: ${props => props.theme.spacings.xxs};
 `
 
 const PRESS_ANIMATION_DURATION = 300
