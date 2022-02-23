@@ -1,6 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
@@ -16,29 +17,30 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
 const Root = styled.ScrollView`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
 `
 const StyledText = styled.Text`
-  margin-top: 50px;
+  margin-top: ${props => props.theme.spacings.xxl};
   text-align: center;
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  margin-bottom: 32px;
+  margin-bottom: ${props => props.theme.spacings.lg};
 `
 
 const AddCustomDisciplineContainer = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 16px;
+  margin: ${props => props.theme.spacings.sm};
 `
 
 const AddCustomDisciplineText = styled.Text`
   text-transform: uppercase;
-  padding-left: 10px;
+  padding-left: ${props => props.theme.spacings.xs};
   font-family: ${props => props.theme.fonts.contentFontBold};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 interface HomeScreenProps {
@@ -91,7 +93,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       <Header />
       <StyledText>{labels.home.welcome}</StyledText>
       <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
-        <AddCircleIcon />
+        <AddCircleIcon width={wp('8%')} height={wp('8%')} />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
       {customDisciplineItems}

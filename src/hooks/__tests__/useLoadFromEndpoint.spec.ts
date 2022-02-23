@@ -6,6 +6,8 @@ import { loadAsync } from '../useLoadAsync'
 
 jest.mock('axios', () => ({ get: jest.fn() }))
 
+jest.mock('axios-cache-interceptor', () => ({ setupCache: jest.fn() }))
+
 beforeEach(() => {
   jest.clearAllMocks()
 })

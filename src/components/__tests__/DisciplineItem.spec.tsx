@@ -1,8 +1,8 @@
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import DisciplineItem from '../DisciplineItem'
 
 describe('DisciplineItem', () => {
@@ -14,10 +14,7 @@ describe('DisciplineItem', () => {
 
   const renderDisciplineItem = (): RenderAPI =>
     render(
-      <DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />,
-      {
-        wrapper: wrapWithTheme
-      }
+      <DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />
     )
 
   it('should render texts', () => {
@@ -31,8 +28,8 @@ describe('DisciplineItem', () => {
     const { getByTestId, getByText } = renderDisciplineItem()
     const arrowIcon = getByTestId('arrow')
 
-    expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
 
     fireEvent.press(arrowIcon)
 
@@ -45,4 +42,3 @@ describe('DisciplineItem', () => {
       expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
     })
   })
-})

@@ -18,14 +18,14 @@ import { moveToEnd } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
 `
 
 const ButtonContainer = styled.View`
   align-items: center;
-  margin: 7% 0;
+  margin: ${props => `${props.theme.spacings.sm} 0`};
 `
 
 interface SingleChoiceExerciseProps {

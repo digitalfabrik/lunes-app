@@ -1,5 +1,4 @@
 import { RouteProp } from '@react-navigation/native'
-import { render } from '@testing-library/react-native'
 import React from 'react'
 import { KeyboardAvoidingViewProps } from 'react-native'
 
@@ -8,7 +7,7 @@ import { DocumentFromServer } from '../../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -22,6 +21,8 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
     success(1234, 1234)
   }
 }))
+
+jest.mock('react-native-popover-view')
 
 jest.mock('@react-navigation/elements')
 
@@ -75,17 +76,13 @@ describe('WriteExerciseScreen', () => {
   it('should show network error', async () => {
     const errorMessage = 'Network Error'
     mockUseLoadAsyncWithError(errorMessage)
-    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
     expect(await findByText(`${labels.general.error.noWifi} (${errorMessage})`)).toBeDefined()
   })
 
   it('should show exercise if loaded successfully', () => {
     mockUseLoadAsyncWithData(testDocuments)
-    const { getByText, getByPlaceholderText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByText, getByPlaceholderText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
     expect(getByText(labels.exercises.write.checkInput)).toBeDefined()
     expect(getByPlaceholderText(labels.exercises.write.insertAnswer)).toBeDefined()
   })

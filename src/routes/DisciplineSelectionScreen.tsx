@@ -13,7 +13,7 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription, childrenLabel } from '../services/helpers'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
 `
 

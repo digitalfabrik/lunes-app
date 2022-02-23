@@ -17,8 +17,8 @@ import { moveToEnd } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
 
 const StyledContainer = styled.View`
-  padding-top: 20px;
-  padding-bottom: 30px;
+  padding-top: ${props => props.theme.spacings.md};
+  padding-bottom: ${props => props.theme.spacings.lg};
   align-items: center;
   position: relative;
   width: 100%;
