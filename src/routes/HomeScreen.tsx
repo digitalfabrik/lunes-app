@@ -1,6 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
+import { Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -56,9 +57,14 @@ interface HomeScreenProps {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const selectedIdRef = useRef(selectedId)
+  selectedIdRef.current = selectedId
 
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
+
+  const waitForScrollEvent = 100
+  const navigationTransitionDuration = 250
 
   useFocusEffect(
     React.useCallback(() => {
@@ -68,7 +74,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   )
 
   const handleNavigation = (item: Discipline): void => {
-    setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
       discipline: item
     })
@@ -79,7 +84,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   return (
-    <Root>
+    <Root onScrollBeginDrag={() => setSelectedId(null)}>
       <Header />
       <StyledText>{labels.home.welcome}</StyledText>
       <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
@@ -102,13 +107,33 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
             return null
           }
           return (
-            <DisciplineItem
+            <Pressable
               key={item.id}
-              item={item}
-              selected={item.id.toString() === selectedId}
-              onPress={() => handleNavigation(item)}>
-              <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
-            </DisciplineItem>
+              onPress={() => {
+                setSelectedId(item.id.toString())
+                handleNavigation(item)
+                setTimeout(() => {
+                  setSelectedId(null)
+                }, navigationTransitionDuration)
+              }}
+              onLongPress={() => setSelectedId(item.id.toString())}
+              delayLongPress={200}
+              onPressOut={() => {
+                setTimeout(() => {
+                  if (selectedIdRef.current !== null) {
+                    handleNavigation(item)
+                    setTimeout(() => {
+                      setSelectedId(null)
+                    }, navigationTransitionDuration)
+                  }
+                }, waitForScrollEvent)
+              }}>
+              <DisciplineItem item={item} selected={item.id.toString() === selectedIdRef.current}>
+                <Description selected={item.id.toString() === selectedIdRef.current}>
+                  {childrenDescription(item)}
+                </Description>
+              </DisciplineItem>
+            </Pressable>
           )
         })}
       </ServerResponseHandler>

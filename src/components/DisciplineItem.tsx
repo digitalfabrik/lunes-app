@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react'
-import { Pressable } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import { Discipline } from '../constants/endpoints'
 
-const Container = styled(Pressable)<{ selected: boolean }>`
+const Container = styled.View<{ selected: boolean }>`
   min-height: ${hp('12%')}px;
   margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm}`};
   padding: ${props =>
@@ -40,14 +39,13 @@ export interface DisciplineItemProps {
   item: Discipline
   children: ReactElement
   selected: boolean
-  onPress: () => void
 }
 
-const DisciplineItem = ({ selected, onPress, item, children }: DisciplineItemProps): JSX.Element => {
+const DisciplineItem = ({ selected, item, children }: DisciplineItemProps): JSX.Element => {
   const { icon, title } = item
   const theme = useTheme()
   return (
-    <Container onPress={onPress} selected={selected}>
+    <Container selected={selected}>
       <Icon source={{ uri: icon }} />
       <TextContainer>
         <Title selected={selected} numberOfLines={3}>
