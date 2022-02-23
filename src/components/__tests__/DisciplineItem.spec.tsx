@@ -13,9 +13,7 @@ describe('DisciplineItem', () => {
   const badge = '12'
 
   const renderDisciplineItem = (): RenderAPI =>
-    render(
-      <DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />
-    )
+    render(<DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
 
   it('should render texts', () => {
     const { getByText } = renderDisciplineItem()
@@ -34,11 +32,12 @@ describe('DisciplineItem', () => {
     fireEvent.press(arrowIcon)
 
     expect(onPress).toHaveBeenCalled()
-    expect(arrowIcon.props.fill).toBe(COLORS.lunesRedLight)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.white)
+    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
 
     await waitFor(() => {
-      expect(arrowIcon.props.fill).toBe(COLORS.lunesBlack)
-      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.lunesGreyDark)
+      expect(arrowIcon.props.fill).toBe(COLORS.primary)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
   })
+})

@@ -48,7 +48,7 @@ const Description = styled.Text<{ pressed: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.pressed ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyMedium)};
+  color: ${props => (props.pressed ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
 const BadgeLabel = styled.Text<{ pressed: boolean }>`
@@ -59,10 +59,10 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  color: ${prop => (prop.pressed ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
-  background-color: ${prop => (prop.pressed ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
+  color: ${prop => (prop.pressed ? prop.theme.colors.textSecondary : prop.theme.colors.background)};
+  background-color: ${prop => (prop.pressed ? prop.theme.colors.backgroundAccent : prop.theme.colors.textSecondary)};
   font-size: ${prop => prop.theme.fonts.smallFontSize};
-  margin-right: 5px;
+  margin-right: ${props => props.theme.spacings.sm};
 `
 
 const PRESS_ANIMATION_DURATION = 300
