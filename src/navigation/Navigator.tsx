@@ -1,32 +1,29 @@
-import { NavigationContainer, NavigationProp } from '@react-navigation/native'
-import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { SvgProps } from 'react-native-svg'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack';
+import React, { ComponentType } from 'react';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { SvgProps } from 'react-native-svg';
 
-import {
-  ArrowLeftCircleIconWhite,
-  CloseCircleIconWhite,
-  ArrowLeftCircleIconBlue,
-  HomeCircleIconBlue,
-  HomeCircleIconWhite
-} from '../../assets/images'
-import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
-import { NavigationTitle } from '../components/NavigationTitle'
-import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
-import ExercisesScreen from '../routes/ExercisesScreens'
-import HomeScreen from '../routes/HomeScreen'
-import InitialSummaryScreen from '../routes/InitialSummaryScreen'
-import ResultScreen from '../routes/ResultScreen'
-import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
-import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
-import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
-import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
-import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
+
+
+import { ArrowLeftCircleIconWhite, CloseCircleIconWhite, ArrowLeftCircleIconBlue, HomeCircleIconBlue, HomeCircleIconWhite } from '../../assets/images';
+import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft';
+import { NavigationTitle } from '../components/NavigationTitle';
+import labels from '../constants/labels.json';
+import { COLORS } from '../constants/theme/colors';
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight';
+import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen';
+import ExercisesScreen from '../routes/ExercisesScreens';
+import HomeScreen from '../routes/HomeScreen';
+import ImprintScreen from '../routes/ImprintScreen';
+import InitialSummaryScreen from '../routes/InitialSummaryScreen';
+import ResultScreen from '../routes/ResultScreen';
+import ResultsOverviewScreen from '../routes/ResultsOverviewScreen';
+import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen';
+import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen';
+import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen';
+import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen';
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
 
@@ -184,6 +181,13 @@ const Navigator = (): JSX.Element => {
           }
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='Imprint'
+          component={ImprintScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

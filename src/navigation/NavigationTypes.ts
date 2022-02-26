@@ -57,4 +57,5 @@ export type RoutesParams = {
   CorrectResults: undefined
   IncorrectResults: undefined
   AlmostCorrectResults: undefined
+  Imprint: undefined
 }

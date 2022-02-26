@@ -1,13 +1,16 @@
-import { useFocusEffect } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { useFocusEffect } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useState } from 'react';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import styled from 'styled-components/native';
 
-import { AddCircleIcon } from '../../assets/images'
-import CustomDisciplineItem from '../components/CustomDisciplineItem'
-import DisciplineItem from '../components/DisciplineItem'
+
+
+import { AddCircleIcon } from '../../assets/images';
+import CustomDisciplineItem from '../components/CustomDisciplineItem';
+import DisciplineItem from '../components/DisciplineItem';
 import Header from '../components/Header'
+import HomeFooter from '../components/HomeFooter'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
@@ -67,6 +70,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     }, [refreshCustomDisciplines])
   )
 
+  const navigateToImprintScreen = (): void => {
+    navigation.navigate('Imprint')
+  }
+
   const handleNavigation = (item: Discipline): void => {
     setSelectedId(item.id.toString())
     navigation.navigate('DisciplineSelection', {
@@ -112,6 +119,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           )
         })}
       </ServerResponseHandler>
+      <HomeFooter navigateToImprint={navigateToImprintScreen} />
     </Root>
   )
 }
