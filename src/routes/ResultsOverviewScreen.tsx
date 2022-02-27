@@ -1,18 +1,21 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, ReactElement } from 'react'
-import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled, { useTheme } from 'styled-components/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { ComponentType, ReactElement } from 'react';
+import { FlatList, StatusBar, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import styled, { useTheme } from 'styled-components/native';
 
-import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
-import Button from '../components/Button'
-import Title from '../components/Title'
-import Trophy from '../components/Trophy'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
-import labels from '../constants/labels.json'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import { Counts, RoutesParams } from '../navigation/NavigationTypes'
+
+
+import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images';
+import Button from '../components/Button';
+import Title from '../components/Title';
+import Trophy from '../components/Trophy';
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data';
+import labels from '../constants/labels.json';
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight';
+import { Counts, RoutesParams } from '../navigation/NavigationTypes';
+
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
@@ -39,7 +42,7 @@ const Contained = styled.Pressable<{ selected: boolean }>`
   align-self: center;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.md} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
-  margin-bottom: ${props => props.theme.spacings.xs}
+  margin-bottom: ${props => props.theme.spacings.xs};
   flex-direction: row;
   align-items: center;
   width: 100%;
@@ -149,7 +152,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
       incorrect: results.filter(({ result }) => result === 'incorrect').length,
       similar: results.filter(({ result }) => result === 'similar').length
     })
-  }, [results, navigation, discipline])
+  }, [results, navigation, discipline, headerHeight])
 
   const Header = (
     <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
