@@ -40,8 +40,8 @@ const Subheading = styled.Text`
   color: ${props => props.theme.colors.text};
 `
 
-const StyledLink = styled(Link)`
-  color: blue;
+const MultiTextContainer = styled.View`
+  flex-direction: row;
 `
 
 const ImprintScreen = (): ReactElement => (
@@ -57,10 +57,14 @@ const ImprintScreen = (): ReactElement => (
         Umsatzsteuer-Identifikationsnummer: DE307491397
       </Description>
       <Subheading>Kontakt</Subheading>
-      <Description>Telefon:</Description>
-      <StyledLink text='0821 20990556' url='tel:082120990556' />
-      <Description>E-Mail: digitalfabrik@tuerantuer.de</Description>
-      <StyledLink text='digitalfabrik@tuerantuer.de' url='mailto:digitalfabrik@tuerantuer.de' />
+      <MultiTextContainer>
+        <Description>Telefon:</Description>
+        <Link text='0821 20990556' url='tel:082120990556' />
+      </MultiTextContainer>
+      <MultiTextContainer>
+        <Description>E-Mail: digitalfabrik@tuerantuer.de</Description>
+        <Link text='digitalfabrik@tuerantuer.de' url='mailto:digitalfabrik@tuerantuer.de' />
+      </MultiTextContainer>
     </Container>
   </Root>
 )

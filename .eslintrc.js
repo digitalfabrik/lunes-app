@@ -28,6 +28,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/require-default-props': 'off',
     'jest/expect-expect': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
 
     // Disabling since better @typescript-eslint rules available or they make no sense for ts projects
     'default-case': 'off',

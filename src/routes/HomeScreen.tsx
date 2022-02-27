@@ -1,14 +1,12 @@
-import { useFocusEffect } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import styled from 'styled-components/native';
+import { useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useState } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
 
-
-
-import { AddCircleIcon } from '../../assets/images';
-import CustomDisciplineItem from '../components/CustomDisciplineItem';
-import DisciplineItem from '../components/DisciplineItem';
+import { AddCircleIcon } from '../../assets/images'
+import CustomDisciplineItem from '../components/CustomDisciplineItem'
+import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
 import HomeFooter from '../components/HomeFooter'
 import ServerResponseHandler from '../components/ServerResponseHandler'
