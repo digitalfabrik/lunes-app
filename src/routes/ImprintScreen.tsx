@@ -52,17 +52,20 @@ const ImprintScreen = (): ReactElement => (
       <Description>Tür an Tür – Digitalfabrik gGmbH Wertachstr. 29 86153 Augsburg</Description>
       <Description>vertreten durch Herrn Daniel Kehne, Herrn Fritjof Knier</Description>
       <Subheading>Aufsichtsbehörde</Subheading>
-      <Description>
-        Finanzamt Augsburg-Stadt Sitz der Gesellschaft: Augsburg Handelsregister und Registernummer: HRB30759
-        Umsatzsteuer-Identifikationsnummer: DE307491397
-      </Description>
+      <Description>Finanzamt Augsburg-Stadt</Description>
+      <Subheading>Sitz der Gesellschaft:</Subheading>
+      <Description>Augsburg</Description>
+      <Subheading>Handelsregister und Registernummer:</Subheading>
+      <Description>HRB30759</Description>
+      <Subheading>Umsatzsteuer-Identifikationsnummer:</Subheading>
+      <Description>DE307491397</Description>
       <Subheading>Kontakt</Subheading>
       <MultiTextContainer>
         <Description>Telefon:</Description>
         <Link text='0821 20990556' url='tel:082120990556' />
       </MultiTextContainer>
       <MultiTextContainer>
-        <Description>E-Mail: digitalfabrik@tuerantuer.de</Description>
+        <Description>E-Mail: </Description>
         <Link text='digitalfabrik@tuerantuer.de' url='mailto:digitalfabrik@tuerantuer.de' />
       </MultiTextContainer>
     </Container>
