@@ -21,6 +21,7 @@ const TitleContent = styled(ContentSecondary)`
 
 const TitleHeading = styled(HeadingText)`
   padding: ${props => props.theme.spacings.xs};
+  text-align: center;
 `
 
 const TitleSubheading = styled(SubheadingText)`

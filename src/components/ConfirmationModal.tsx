@@ -34,6 +34,7 @@ const Message = styled(HeadingText)`
   width: ${wp('60%')}px;
   margin-bottom: ${props => props.theme.spacings.lg};
   padding-top: ${props => props.theme.spacings.lg};
+  text-align: center;
 `
 
 export interface ConfirmationModalProps {

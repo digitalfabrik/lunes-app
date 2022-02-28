@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 export const Content = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-weight: ${props => props.theme.fonts.defaultFontWeight};
 `
 
 export const ContentSecondary = styled(Content)`

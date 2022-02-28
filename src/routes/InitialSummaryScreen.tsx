@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 
 import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import { Heading } from '../components/text/Heading'
+import { HeadingBackground } from '../components/text/Heading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -31,8 +31,8 @@ const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
 `
-const Message = styled(Heading)`
-  color: ${prop => prop.theme.colors.background};
+const Message = styled(HeadingBackground)`
+  text-align: center;
 `
 
 interface InitialSummaryScreenProps {

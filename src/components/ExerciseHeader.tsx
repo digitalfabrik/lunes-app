@@ -12,7 +12,7 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
 import { NavigationTitle } from './NavigationTitle'
-import { Content } from './text/Content'
+import { ContentSecondary } from './text/Content'
 
 const ProgressBar = styled(RNProgressBar)`
   background-color: ${props => props.theme.colors.disabled};
@@ -39,7 +39,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
-        headerRight: () => <Content>{progressText}</Content>,
+        headerRight: () => <ContentSecondary>{progressText}</ContentSecondary>,
         headerRightContainerStyle: {
           paddingHorizontal: wp('4%'),
           maxWidth: wp('25%')

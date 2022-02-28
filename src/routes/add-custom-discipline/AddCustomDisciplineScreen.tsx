@@ -24,6 +24,7 @@ const Container = styled.View`
 
 const CustomDisciplineHeading = styled(HeadingText)`
   padding-top: ${props => props.theme.spacings.xl};
+  text-align: center;
 `
 
 const Description = styled(ContentSecondary)`
