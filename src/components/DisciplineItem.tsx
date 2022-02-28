@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from 'react'
-import { Pressable } from 'react-native'
+import React, { ReactElement, useCallback, useState } from 'react'
+import { GestureResponderEvent, Pressable } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -66,6 +66,7 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 `
 
 const PRESS_ANIMATION_DURATION = 300
+const PRESS_MAX_DRAG_Y = 5
 
 interface DisciplineItemProps {
   title: string
@@ -76,17 +77,36 @@ interface DisciplineItemProps {
 }
 
 const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: DisciplineItemProps): ReactElement => {
+  const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
   const theme = useTheme()
 
-  const onItemPress = () => {
-    setPressed(true)
-    setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
-    onPress()
+  const onPressIn = (e: GestureResponderEvent) => {
+    setPressInY(e.nativeEvent.pageY)
   }
 
+  const onPressOut = useCallback(
+    (e: GestureResponderEvent) => {
+      if (pressInY && Math.abs(pressInY - e.nativeEvent.pageY) <= PRESS_MAX_DRAG_Y) {
+        // Only call onPress if user not scrolling
+        setPressed(true)
+        onPress()
+        setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
+      } else {
+        setPressed(false)
+      }
+      setPressInY(null)
+    },
+    [pressInY, onPress]
+  )
+
   return (
-    <Container onPress={onItemPress} pressed={pressed}>
+    <Container
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      onLongPress={() => setPressed(true)}
+      pressed={pressed}
+      delayLongPress={200}>
       <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
       <TextContainer>
         <Title pressed={pressed} numberOfLines={3}>
