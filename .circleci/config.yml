@@ -159,8 +159,8 @@ jobs:
             - run:
                 command: |
                     mkdir -p sourcemaps/
-                    cp native/android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
-                    cp native/android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
+                    cp android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
+                    cp android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
                 name: Prepare Sourcemaps
             - persist_to_workspace:
                 paths:
@@ -203,7 +203,7 @@ jobs:
             - run:
                 command: |
                     mkdir -p sourcemaps/
-                    cp native/ios/output/lunes.ios.bundle* sourcemaps/
+                    cp ios/output/lunes.ios.bundle* sourcemaps/
                 name: Prepare Sourcemaps
             - persist_to_workspace:
                 paths:
