@@ -23,34 +23,19 @@ const LoadingSpinner = styled.View`
   padding-top: ${props => props.theme.spacings.xl};
 `
 
-const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
-  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
-`
-
 interface CustomDisciplineItemProps {
   apiKey: string
-  selectedId: string | null
-  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParams, 'Home'>
   refresh: () => void
 }
 
-const CustomDisciplineItem = ({
-  apiKey,
-  selectedId,
-  setSelectedId,
-  navigation,
-  refresh
-}: CustomDisciplineItemProps): JSX.Element => {
+const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
-
-  const idToSelectedIdString = (id: number): string => `custom-${id}`
 
   const navigate = (): void => {
     if (!data) {
       return
     }
-    setSelectedId(idToSelectedIdString(data.id))
     navigation.navigate('DisciplineSelection', {
       discipline: data
     })
@@ -68,9 +53,12 @@ const CustomDisciplineItem = ({
   return (
     <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
       {data ? (
-        <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
-          <Description selected={idToSelectedIdString(data.id) === selectedId}>{childrenDescription(data)}</Description>
-        </DisciplineItem>
+        <DisciplineItem
+          title={data.title}
+          icon={data.icon}
+          onPress={navigate}
+          description={childrenDescription(data)}
+        />
       ) : (
         <Placeholder>
           <ContentSecondaryLight>

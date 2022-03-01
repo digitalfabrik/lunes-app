@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -9,7 +9,7 @@ import CustomDisciplineItem from '../components/CustomDisciplineItem'
 import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
 import ServerResponseHandler from '../components/ServerResponseHandler'
-import { ContentSecondary, ContentSecondaryLight } from '../components/text/Content'
+import { ContentSecondary } from '../components/text/Content'
 import { SubheadingPrimary } from '../components/text/Subheading'
 import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
@@ -40,29 +40,21 @@ const AddCustomDisciplineText = styled(SubheadingPrimary)`
   padding-left: ${props => props.theme.spacings.xs};
 `
 
-const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
-  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
-`
-
 interface HomeScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'Home'>
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(null)
       refreshCustomDisciplines()
     }, [refreshCustomDisciplines])
   )
 
-  const handleNavigation = (item: Discipline): void => {
-    setSelectedId(item.id.toString())
+  const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('DisciplineSelection', {
       discipline: item
     })
@@ -72,6 +64,27 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
+  const customDisciplineItems = customDisciplines?.map(customDiscipline => (
+    <CustomDisciplineItem
+      key={customDiscipline}
+      apiKey={customDiscipline}
+      navigation={navigation}
+      refresh={refreshCustomDisciplines}
+    />
+  ))
+
+  const disciplineItems = disciplines
+    ?.filter(it => it.numberOfChildren > 0)
+    ?.map(item => (
+      <DisciplineItem
+        key={item.id}
+        title={item.title}
+        icon={item.icon}
+        onPress={() => navigateToDiscipline(item)}
+        description={childrenDescription(item)}
+      />
+    ))
+
   return (
     <Root>
       <Header />
@@ -80,31 +93,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         <AddCircleIcon width={wp('8%')} height={wp('8%')} />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines?.map(customDiscipline => (
-        <CustomDisciplineItem
-          key={customDiscipline}
-          apiKey={customDiscipline}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          navigation={navigation}
-          refresh={refreshCustomDisciplines}
-        />
-      ))}
+      {customDisciplineItems}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {disciplines?.map(item => {
-          if (item.numberOfChildren === 0) {
-            return null
-          }
-          return (
-            <DisciplineItem
-              key={item.id}
-              item={item}
-              selected={item.id.toString() === selectedId}
-              onPress={() => handleNavigation(item)}>
-              <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
-            </DisciplineItem>
-          )
-        })}
+        {disciplineItems}
       </ServerResponseHandler>
     </Root>
   )
