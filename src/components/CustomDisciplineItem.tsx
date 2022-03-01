@@ -9,6 +9,7 @@ import { childrenDescription } from '../services/helpers'
 import DeletionSwipeable from './DeletionSwipeable'
 import DisciplineItem from './DisciplineItem'
 import Loading from './Loading'
+import { ContentSecondaryLight } from './text/Content'
 
 const Placeholder = styled.View`
   background-color: ${props => props.theme.colors.backgroundAccent};
@@ -22,44 +23,19 @@ const LoadingSpinner = styled.View`
   padding-top: ${props => props.theme.spacings.xl};
 `
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
-`
-
-const ErrorText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.primary};
-`
-
 interface CustomDisciplineItemProps {
   apiKey: string
-  selectedId: string | null
-  setSelectedId: (selectedId: string) => void
   navigation: StackNavigationProp<RoutesParams, 'Home'>
   refresh: () => void
 }
 
-const CustomDisciplineItem = ({
-  apiKey,
-  selectedId,
-  setSelectedId,
-  navigation,
-  refresh
-}: CustomDisciplineItemProps): JSX.Element => {
+const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
-
-  const idToSelectedIdString = (id: number): string => `custom-${id}`
 
   const navigate = (): void => {
     if (!data) {
       return
     }
-    setSelectedId(idToSelectedIdString(data.id))
     navigation.navigate('DisciplineSelection', {
       discipline: data
     })
@@ -77,14 +53,17 @@ const CustomDisciplineItem = ({
   return (
     <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
       {data ? (
-        <DisciplineItem item={data} selected={idToSelectedIdString(data.id) === selectedId} onPress={navigate}>
-          <Description selected={idToSelectedIdString(data.id) === selectedId}>{childrenDescription(data)}</Description>
-        </DisciplineItem>
+        <DisciplineItem
+          title={data.title}
+          icon={data.icon}
+          onPress={navigate}
+          description={childrenDescription(data)}
+        />
       ) : (
         <Placeholder>
-          <ErrorText>
+          <ContentSecondaryLight>
             {labels.home.errorLoadCustomDiscipline} {apiKey}
-          </ErrorText>
+          </ContentSecondaryLight>
         </Placeholder>
       )}
     </DeletionSwipeable>
