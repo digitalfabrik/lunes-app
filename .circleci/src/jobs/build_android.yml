@@ -26,8 +26,8 @@ steps:
       name: Prepare Sourcemaps
       command: |
         mkdir -p sourcemaps/
-        cp native/android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
-        cp native/android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
+        cp android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
+        cp android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
   - persist_to_workspace:
       root: .
       paths:
