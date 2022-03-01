@@ -8,7 +8,7 @@ import { ChevronRight } from '../../assets/images'
 const Container = styled(Pressable)<{ pressed: boolean }>`
   min-height: ${hp('12%')}px;
   width: ${wp('90%')}px;
-  margin-bottom: ${props.theme.spacings.xxs};
+  margin-bottom: ${props => props.theme.spacings.xxs};
   align-self: center;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};

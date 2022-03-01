@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 import { DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
@@ -70,7 +70,6 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
   const { exercise, results, discipline } = route.params.result
   const { level, description, title } = EXERCISES[exercise]
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
-  const theme = useTheme()
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
