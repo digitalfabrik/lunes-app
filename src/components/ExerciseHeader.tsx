@@ -3,11 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import styled from 'styled-components/native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
-import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
@@ -16,11 +16,11 @@ import { NavigationTitle } from './NavigationTitle'
 const HeaderText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.lunesGreyMedium};
+  color: ${props => props.theme.colors.textSecondary};
 `
 
 const ProgressBar = styled(RNProgressBar)`
-  background-color: ${props => props.theme.colors.lunesBlackUltralight};
+  background-color: ${props => props.theme.colors.disabled};
 `
 
 interface ExerciseHeaderProps {
@@ -32,6 +32,7 @@ interface ExerciseHeaderProps {
 
 const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const theme = useTheme()
   const progressText = numberOfWords !== 0 ? `${currentWord + 1} ${labels.general.header.of} ${numberOfWords}` : ''
 
   useEffect(
@@ -39,14 +40,14 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
       navigation.setOptions({
         headerLeft: () => (
           <NavigationHeaderLeft onPress={() => setIsModalVisible(true)}>
-            <CloseCircleIconWhite />
+            <CloseCircleIconWhite width={wp('7%')} height={wp('7%')} />
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
         headerRight: () => <HeaderText>{progressText}</HeaderText>,
         headerRightContainerStyle: {
-          paddingHorizontal: 15,
-          maxWidth: 100
+          paddingHorizontal: wp('4%'),
+          maxWidth: wp('25%')
         }
       }),
     [navigation, progressText, setIsModalVisible]
@@ -68,7 +69,10 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
   return (
     <>
-      <ProgressBar progress={numberOfWords > 0 ? currentWord / numberOfWords : 0} color={COLORS.lunesGreenMedium} />
+      <ProgressBar
+        progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
+        color={theme.colors.exerciseProgressIndicator}
+      />
 
       <ConfirmationModal
         visible={isModalVisible}

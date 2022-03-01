@@ -8,17 +8,17 @@ import { Document } from '../../../constants/endpoints'
 import { getArticleColor } from '../../../services/helpers'
 
 const StyledImage = styled.Image`
-  margin-right: 5px;
+  margin-right: ${props => props.theme.spacings.sm};
   width: ${wp('15%')}px;
   height: ${wp('15%')}px;
-  border-radius: 50px;
+  border-radius: ${props => props.theme.spacings.xxl};
 `
 const StyledTitle = styled.Text<{ articleColor: string }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  border-radius: 10px;
-  margin-bottom: 6px;
-  color: ${props => props.theme.colors.lunesGreyDark};
+  border-radius: ${props => props.theme.spacings.xs};
+  margin-bottom: ${props => props.theme.spacings.xxs};
+  color: ${props => props.theme.colors.text};
   background-color: ${props => props.articleColor};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
@@ -28,8 +28,8 @@ const StyledTitle = styled.Text<{ articleColor: string }>`
   text-align: center;
 `
 const Speaker = styled.View`
-  padding-right: 40px;
-  padding-top: 20px;
+  padding-right: ${props => props.theme.spacings.xl};
+  padding-top: ${props => props.theme.spacings.sm};
 `
 
 export interface VocabularyListItemProp {

@@ -11,32 +11,32 @@ const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.theme.colors.lunesOverlay};
+  background-color: ${props => props.theme.colors.overlay};
 `
 const ModalContainer = styled.View`
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.backgroundAccent};
   align-items: center;
   width: ${wp('85%')}px;
   border-radius: 4px;
   position: relative;
-  padding-top: 31px;
-  padding-bottom: 31px;
+  padding-top: ${props => props.theme.spacings.lg};
+  padding-bottom: ${props => props.theme.spacings.lg};
 `
 const Icon = styled.TouchableOpacity`
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 24px;
-  height: 24px;
+  width: ${wp('6%')}px;
+  height: ${wp('6%')}px;
 `
 const Message = styled.Text`
   text-align: center;
   font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.lunesGreyDark};
+  color: ${props => props.theme.colors.text};
   font-family: ${props => props.theme.fonts.contentFontBold};
   width: ${wp('60%')}px;
-  margin-bottom: 31px;
-  padding-top: 31px;
+  margin-bottom: ${props => props.theme.spacings.lg};
+  padding-top: ${props => props.theme.spacings.lg};
 `
 
 export interface ConfirmationModalProps {
@@ -57,7 +57,7 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
       <Overlay>
         <ModalContainer>
           <Icon onPress={closeModal}>
-            <CloseIcon />
+            <CloseIcon width={wp('6%')} height={wp('6%')} />
           </Icon>
           <Message>{text}</Message>
           <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />

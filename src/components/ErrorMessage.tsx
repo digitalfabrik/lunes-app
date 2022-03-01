@@ -9,14 +9,14 @@ import Button from './Button'
 const Container = styled.View`
   width: ${wp('90%')}px;
   margin: auto;
-  margin-top: ${wp('10%')}px;
+  margin-top: ${props => props.theme.spacings.xl};
   text-align: center;
   display: flex;
   align-items: center;
 `
 
 const ErrorText = styled.Text`
-  padding: 20px 40px;
+  padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`};
   font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 

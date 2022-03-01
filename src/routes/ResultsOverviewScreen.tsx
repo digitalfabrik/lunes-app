@@ -2,7 +2,8 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
-import styled from 'styled-components/native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
@@ -11,20 +12,21 @@ import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   align-items: center;
-  padding-left: 4%;
-  padding-right: 4%;
+  padding-left: ${props => props.theme.spacings.sm};
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
+  margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Result>
 
 const HeaderText = styled.Text`
@@ -32,9 +34,9 @@ const HeaderText = styled.Text`
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
   font-family: ${props => props.theme.fonts.contentFontBold};
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  color: ${prop => prop.theme.colors.lunesBlack};
+  color: ${prop => prop.theme.colors.primary};
   text-transform: uppercase;
-  margin-right: 8px;
+  margin-right: ${props => props.theme.spacings.xs};
 `
 const RightHeader = styled.TouchableOpacity`
   display: flex;
@@ -42,12 +44,13 @@ const RightHeader = styled.TouchableOpacity`
   align-items: center;
   shadow-opacity: 0;
   elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
   border-bottom-width: 1px;
+  margin-right: ${props => props.theme.spacings.sm};
 `
 const StyledTitle = styled(Title)`
   elevation: 0;
-  border-bottom-color: ${prop => prop.theme.colors.lunesBlackUltralight};
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
   border-bottom-width: 1px;
 `
 
@@ -67,6 +70,10 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
   const { exercise, results, discipline } = route.params.result
   const { level, description, title } = EXERCISES[exercise]
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
+  const theme = useTheme()
+
+  // Set only height for tablets since header doesn't scale auto
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
@@ -85,9 +92,11 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
             })
           }>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
-          <DoubleCheckIcon />
+          <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
-      )
+      ),
+      headerRightContainerStyle: { flex: 1 },
+      headerStyle: { height: headerHeight }
     })
 
     setCounts({
@@ -121,7 +130,7 @@ const ResultsOverview = ({ navigation, route }: ResultOverviewScreenProps): Reac
     const count = counts[item.key]
 
     const description = `${count} ${labels.results.of} ${counts.total} ${labels.general.words}`
-    const icon = <item.Icon width={30} height={30} />
+    const icon = <item.Icon width={wp('7%')} height={wp('7%')} />
 
     return <ListItem title={item.title} icon={icon} description={description} onPress={() => navigateToResult(item)} />
   }

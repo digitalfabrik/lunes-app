@@ -18,11 +18,11 @@ const DeleteContainer = styled.View`
 
 const DeleteButton = styled(RectButton)`
   height: ${wp('21%')}px;
-  margin: 0 16px 8px -16px;
+  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} -${props.theme.spacings.sm}`};
   align-items: center;
   flex: 1;
   justify-content: center;
-  background-color: ${props => props.theme.colors.lunesFunctionalIncorrectDark};
+  background-color: ${props => props.theme.colors.incorrect};
   width: ${widthOfTrashButton};
 `
 
@@ -58,7 +58,7 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
       <DeleteContainer>
         <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
           <DeleteButton onPress={showConfirmationModal}>
-            <TrashIcon testID='trash-icon' />
+            <TrashIcon testID='trash-icon' width={wp('6%')} height={wp('6%')} />
           </DeleteButton>
         </Animated.View>
       </DeleteContainer>

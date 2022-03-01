@@ -1,10 +1,10 @@
 import React, { ComponentType, ReactElement } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
-import styled, { css } from 'styled-components/native'
+import styled, { css, useTheme } from 'styled-components/native'
 
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
-import { Color, COLORS } from '../constants/theme/colors'
+import { Color } from '../constants/theme/colors'
 
 interface ThemedButtonProps {
   buttonTheme: ButtonTheme
@@ -21,17 +21,17 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
     props.buttonTheme === BUTTONS_THEME.outlined &&
     !props.disabled &&
     css`
-      border-color: ${props.theme.colors.lunesBlack};
+      border-color: ${props.theme.colors.primary};
       border-width: 1px;
     `};
   flex-direction: row;
-  padding: 10px 20px;
+  padding: ${props => `${wp('3%')}px ${props.theme.spacings.sm}`};
+
   width: ${wp('70%')}px;
   align-items: center;
   border-radius: ${hp('7%')}px;
   justify-content: center;
-  height: ${hp('7%')}px;
-  margin-bottom: ${hp('2%')}px;
+  margin-bottom: ${props => props.theme.spacings.sm};
   background-color: ${props => props.backgroundColor};
 `
 
@@ -43,7 +43,7 @@ const Label = styled.Text<ThemedLabelProps>`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  padding: 0 10px;
+  padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
 interface ButtonProps {
@@ -58,21 +58,22 @@ interface ButtonProps {
 const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = React.useState(false)
   const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
+  const theme = useTheme()
 
   const getTextColor = (): Color => {
-    const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesWhite : COLORS.lunesBlack
-    return disabled ? COLORS.lunesBlackLight : enabledTextColor
+    const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? theme.colors.background : theme.colors.primary
+    return disabled ? theme.colors.placeholder : enabledTextColor
   }
 
   const getBackgroundColor = (): Color | 'transparent' => {
     if (disabled) {
-      return COLORS.lunesBlackUltralight
+      return theme.colors.disabled
     }
     if (isPressed) {
-      return buttonTheme === BUTTONS_THEME.contained ? COLORS.lunesBlackMedium : COLORS.lunesBlackLight
+      return buttonTheme === BUTTONS_THEME.contained ? theme.colors.containedButtonSelected : theme.colors.placeholder
     }
     if (buttonTheme === BUTTONS_THEME.contained) {
-      return COLORS.lunesBlack
+      return theme.colors.primary
     }
     return 'transparent'
   }
@@ -88,10 +89,14 @@ const Button = (props: ButtonProps): ReactElement => {
       onPressOut={() => setIsPressed(false)}
       activeOpacity={1}>
       {/* eslint-disable-next-line react/destructuring-assignment */}
-      {props.iconLeft && <props.iconLeft fill={getTextColor()} testID='button-icon-left' />}
+      {props.iconLeft && (
+        <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={wp('6%')} height={wp('6%')} />
+      )}
       <Label color={getTextColor()}>{label}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
-      {props.iconRight && <props.iconRight fill={getTextColor()} testID='button-icon-right' />}
+      {props.iconRight && (
+        <props.iconRight fill={getTextColor()} testID='button-icon-right' width={wp('6%')} height={wp('6%')} />
+      )}
     </ThemedButton>
   )
 }

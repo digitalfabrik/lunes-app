@@ -15,14 +15,14 @@ import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.lunesWhite};
+  background-color: ${prop => prop.theme.colors.background};
   height: 100%;
 `
 
 const ItemTitle = styled(FlatList)`
   width: ${wp('100%')}px;
-  padding-right: ${wp('5%')}px;
-  padding-left: ${wp('5%')}px;
+  padding-right: ${props => props.theme.spacings.md};
+  padding-left: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Exercise>
 
 interface ExercisesScreenProps {

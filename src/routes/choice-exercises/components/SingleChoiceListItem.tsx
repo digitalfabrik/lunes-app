@@ -14,7 +14,7 @@ const StyledText = styled.Text`
 
 const Container = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
-  margin-bottom: 1.5%;
+  margin-bottom: ${props => props.theme.spacings.xxs};
   border-radius: 2px;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
@@ -27,25 +27,25 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  border-color: ${props => props.theme.colors.lunesBlackUltralight};
+  border-color: ${props => props.theme.colors.disabled};
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     if (props.correct && (props.selected || props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.correct
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.incorrect
     }
-    return props.theme.colors.white
+    return props.theme.colors.backgroundAccent
   }};
   shadow-color: ${props => {
     if (props.correct) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.correct
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.incorrect
     }
     return props.theme.colors.shadow
   }};
@@ -66,21 +66,20 @@ const Container = styled.TouchableOpacity<StyledListElementProps>`
 `
 
 const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
-  width: 11.5%;
-  height: 38%;
-  border-radius: 10px;
+  padding: ${props => `2px ${props.theme.spacings.xs}`};
+  border-radius: ${props => props.theme.spacings.sm};
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 3%;
-  margin-left: 3.5%;
+  margin-right: ${props => props.theme.spacings.sm};
+  margin-left: ${props => props.theme.spacings.sm};
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
+      return props.theme.colors.background
     }
     if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     return getArticleColor(props.article)
   }};
@@ -90,27 +89,27 @@ const ArticleText = styled(StyledText)<StyledListElementProps>`
   text-align: center;
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
     if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
+      return props.theme.colors.correct
     }
     if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
+      return props.theme.colors.incorrect
     }
-    return props.theme.colors.lunesGreyDark
+    return props.theme.colors.text
   }};
 `
 
 const Word = styled(StyledText)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
+      return props.theme.colors.background
     }
     if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
+      return props.theme.colors.primary
     }
-    return props.theme.colors.lunesGreyDark
+    return props.theme.colors.text
   }};
 `
 

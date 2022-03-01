@@ -1,22 +1,22 @@
-import React, { ReactElement, useState } from 'react'
-import { Pressable } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import React, { ReactElement, useCallback, useState } from 'react'
+import { GestureResponderEvent, Pressable } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
-import { COLORS } from '../constants/theme/colors'
 
 const Container = styled(Pressable)<{ pressed: boolean }>`
-  min-height: ${wp('22%')}px;
+  min-height: ${hp('12%')}px;
   width: ${wp('90%')}px;
-  margin-bottom: 8px;
+  margin-bottom: ${props.theme.spacings.xxs};
   align-self: center;
-  padding: 12px 8px 12px 16px;
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${prop => (prop.pressed ? prop.theme.colors.lunesBlack : prop.theme.colors.white)};
-  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.lunesBlack : prop.theme.colors.lunesBlackUltralight)};
+  background-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-radius: 2px;
 `
 const Title = styled.Text<{ pressed: boolean }>`
@@ -24,7 +24,7 @@ const Title = styled.Text<{ pressed: boolean }>`
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => (props.pressed ? props.theme.colors.white : props.theme.colors.lunesGreyDark)};
+  color: ${props => (props.pressed ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 
 const Icon = styled.Image`
@@ -50,7 +50,7 @@ const Description = styled.Text<{ pressed: boolean }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.pressed ? props.theme.colors.lunesWhite : props.theme.colors.lunesGreyMedium)};
+  color: ${props => (props.pressed ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
 const BadgeLabel = styled.Text<{ pressed: boolean }>`
@@ -61,13 +61,14 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  color: ${prop => (prop.pressed ? prop.theme.colors.lunesGreyMedium : prop.theme.colors.lunesWhite)};
-  background-color: ${prop => (prop.pressed ? prop.theme.colors.lunesWhite : prop.theme.colors.lunesGreyMedium)};
+  color: ${prop => (prop.pressed ? prop.theme.colors.textSecondary : prop.theme.colors.background)};
+  background-color: ${prop => (prop.pressed ? prop.theme.colors.backgroundAccent : prop.theme.colors.textSecondary)};
   font-size: ${prop => prop.theme.fonts.smallFontSize};
-  margin-right: 5px;
+  margin-right: ${props => props.theme.spacings.xxs};
 `
 
 const PRESS_ANIMATION_DURATION = 300
+const PRESS_MAX_DRAG_Y = 5
 
 interface ListItemProps {
   title: string | ReactElement
@@ -88,12 +89,28 @@ const ListItem = ({
   children,
   rightChildren
 }: ListItemProps): ReactElement => {
+  const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
-  const onItemPress = () => {
-    setPressed(true)
-    setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
-    onPress()
+  const theme = useTheme()
+
+  const onPressIn = (e: GestureResponderEvent) => {
+    setPressInY(e.nativeEvent.pageY)
   }
+
+  const onPressOut = useCallback(
+    (e: GestureResponderEvent) => {
+      if (pressInY && Math.abs(pressInY - e.nativeEvent.pageY) <= PRESS_MAX_DRAG_Y) {
+        // Only call onPress if user not scrolling
+        setPressed(true)
+        onPress()
+        setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
+      } else {
+        setPressed(false)
+      }
+      setPressInY(null)
+    },
+    [pressInY, onPress]
+  )
 
   const titleToRender =
     typeof title === 'string' ? (
@@ -109,11 +126,21 @@ const ListItem = ({
   ) : null
 
   const rightChildrenToRender = rightChildren ?? (
-    <ChevronRight fill={pressed ? COLORS.lunesRedLight : COLORS.lunesBlack} testID='arrow' />
+    <ChevronRight
+      fill={pressed ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+      testID='arrow'
+      width={wp('6%')}
+      height={hp('6%')}
+    />
   )
 
   return (
-    <Container onPress={onItemPress} pressed={pressed}>
+    <Container
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      onLongPress={() => setPressed(true)}
+      pressed={pressed}
+      delayLongPress={200}>
       {iconToRender}
       <FlexContainer>
         {titleToRender}
