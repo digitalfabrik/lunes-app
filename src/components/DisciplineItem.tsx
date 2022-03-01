@@ -4,6 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
+import { ContentSecondaryLight } from './text/Content'
 
 const Container = styled(Pressable)<{ pressed: boolean }>`
   min-height: ${hp('12%')}px;
@@ -44,10 +45,7 @@ const DescriptionContainer = styled.View`
   align-items: center;
 `
 
-const Description = styled.Text<{ pressed: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
+const Description = styled(ContentSecondaryLight)<{ pressed: boolean }>`
   color: ${props => (props.pressed ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
