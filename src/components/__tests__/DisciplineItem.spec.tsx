@@ -6,6 +6,10 @@ import render from '../../testing/render'
 import DisciplineItem from '../DisciplineItem'
 
 describe('DisciplineItem', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const onPress = jest.fn()
   const description = 'Wörter'
   const icon = 'https://example.com'
@@ -29,7 +33,8 @@ describe('DisciplineItem', () => {
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
 
-    fireEvent.press(arrowIcon)
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
 
     expect(onPress).toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
@@ -39,5 +44,40 @@ describe('DisciplineItem', () => {
       expect(arrowIcon.props.fill).toBe(COLORS.primary)
       expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
+  })
+
+  it('should handle long press', async () => {
+    const { getByTestId, getByText } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'longPress')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+    expect(onPress).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(arrowIcon.props.fill).toBe(COLORS.primary)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+    })
+  })
+
+  it('should not call on press callback if scrolling', async () => {
+    const { getByTestId } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130 } })
+
+    expect(onPress).not.toHaveBeenCalled()
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
   })
 })
