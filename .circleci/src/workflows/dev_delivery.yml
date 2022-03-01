@@ -10,14 +10,14 @@ jobs:
         - credentials-repo
         - credentials-lunes
       requires:
-        - check
+        #- check
         - bump_version
   - build_ios:
       context:
         - fastlane-match
         - tuerantuer-apple
       requires:
-        - check
+        #- check
         - bump_version
   - deliver_browser_stack:
       context:

@@ -31,4 +31,3 @@ steps:
   - run:
       name: Sentry Upload
       command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
-

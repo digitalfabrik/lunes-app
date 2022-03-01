@@ -448,14 +448,12 @@ workflows:
                     - credentials-repo
                     - credentials-lunes
                 requires:
-                    - check
                     - bump_version
             - build_ios:
                 context:
                     - fastlane-match
                     - tuerantuer-apple
                 requires:
-                    - check
                     - bump_version
             - deliver_browser_stack:
                 context:
