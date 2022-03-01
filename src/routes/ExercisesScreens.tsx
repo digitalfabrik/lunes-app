@@ -8,6 +8,8 @@ import styled, { useTheme } from 'styled-components/native'
 import { ChevronRight } from '../../assets/images'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
+import { ContentSecondaryLight } from '../components/text/Content'
+import ItemTitle from '../components/text/ItemTitle'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -19,16 +21,13 @@ const Root = styled.View`
   height: 100%;
 `
 
-const ItemTitle = styled(FlatList)`
+const StyledList = styled(FlatList)`
   width: ${wp('100%')}px;
   padding-right: ${props => props.theme.spacings.md};
   padding-left: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Exercise>
 
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
+const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
   color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 
@@ -47,16 +46,6 @@ const Container = styled.Pressable<{ selected: boolean }>`
 
   background-color: ${props => (props.selected ? props.theme.colors.primary : props.theme.colors.backgroundAccent)};
   border-color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.disabled)};
-`
-const StyledItemTitle = styled.Text<{ selected: boolean }>`
-  text-align: left;
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  margin-bottom: 2px;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-
-  color: ${props => (props.selected ? props.theme.colors.background : props.theme.colors.text)};
 `
 
 interface ExercisesScreenProps {
@@ -95,7 +84,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     return (
       <Container selected={selected} onPress={() => handleNavigation(item)}>
         <View>
-          <StyledItemTitle selected={selected}>{item.title}</StyledItemTitle>
+          <ItemTitle selected={selected}>{item.title}</ItemTitle>
           <Description selected={selected}>{item.description}</Description>
           <Trophy level={item.level} />
         </View>
@@ -110,7 +99,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <Root>
-      <ItemTitle
+      <StyledList
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}

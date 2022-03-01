@@ -9,6 +9,8 @@ import CustomDisciplineItem from '../components/CustomDisciplineItem'
 import DisciplineItem from '../components/DisciplineItem'
 import Header from '../components/Header'
 import ServerResponseHandler from '../components/ServerResponseHandler'
+import { ContentSecondary } from '../components/text/Content'
+import { SubheadingPrimary } from '../components/text/Subheading'
 import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
@@ -20,12 +22,9 @@ const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
   height: 100%;
 `
-const StyledText = styled.Text`
+const StyledText = styled(ContentSecondary)`
   margin-top: ${props => props.theme.spacings.xxl};
   text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondary};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
@@ -36,11 +35,9 @@ const AddCustomDisciplineContainer = styled.TouchableOpacity`
   margin: ${props => props.theme.spacings.sm};
 `
 
-const AddCustomDisciplineText = styled.Text`
+const AddCustomDisciplineText = styled(SubheadingPrimary)`
   text-transform: uppercase;
   padding-left: ${props => props.theme.spacings.xs};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 interface HomeScreenProps {
