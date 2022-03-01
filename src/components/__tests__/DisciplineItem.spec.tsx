@@ -1,67 +1,83 @@
-import { fireEvent, RenderAPI } from '@testing-library/react-native'
-import React, { ComponentProps } from 'react'
-import { Text } from 'react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
+import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
 import render from '../../testing/render'
-import DisciplineItem, { DisciplineItemProps } from '../DisciplineItem'
+import DisciplineItem from '../DisciplineItem'
 
-describe('Components', () => {
-  describe('DisciplineItem', () => {
-    const defaultDisciplineItemProps: DisciplineItemProps = {
-      selected: false,
-      item: {
-        id: 1,
-        description: '',
-        icon: '',
-        title: 'Discipline Item title',
-        numberOfChildren: 1,
-        isLeaf: false,
-        parentTitle: null,
-        needsTrainingSetEndpoint: false
-      },
-      children: <Text>Text of children</Text>,
-      onPress: () => undefined
-    }
+describe('DisciplineItem', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-    const renderDisciplineItem = (overrideProps: Partial<ComponentProps<typeof DisciplineItem>> = {}): RenderAPI =>
-      render(<DisciplineItem {...defaultDisciplineItemProps} {...overrideProps} />)
+  const onPress = jest.fn()
+  const description = 'Wörter'
+  const icon = 'https://example.com'
+  const title = 'Discipline Item title'
+  const badge = '12'
 
-    it('should call onPress event', () => {
-      const onPress = jest.fn()
-      const { getByText } = renderDisciplineItem({ onPress })
-      expect(onPress).not.toHaveBeenCalled()
-      const element = getByText('Discipline Item title')
-      fireEvent.press(element)
-      expect(onPress).toHaveBeenCalled()
-    })
+  const renderDisciplineItem = (): RenderAPI =>
+    render(<DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
 
-    it('should display title passed to it', () => {
-      const { queryByText } = renderDisciplineItem({})
-      const title = queryByText('Discipline Item title')
-      expect(title).not.toBeNull()
-    })
+  it('should render texts', () => {
+    const { getByText } = renderDisciplineItem()
+    expect(getByText(title)).toBeDefined()
+    expect(getByText(description)).toBeDefined()
+    expect(getByText(badge)).toBeDefined()
+  })
 
-    it('should render children passed to it', () => {
-      const { queryByText } = renderDisciplineItem()
-      const title = queryByText('Text of children')
-      expect(title).not.toBeNull()
-    })
+  it('should handle press', async () => {
+    const { getByTestId, getByText } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
 
-    it('should render black arrow icon when selected is false', () => {
-      const { getByTestId, getByText } = renderDisciplineItem()
-      const arrowIcon = getByTestId('arrow')
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+
+    expect(onPress).toHaveBeenCalled()
+    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+
+    await waitFor(() => {
       expect(arrowIcon.props.fill).toBe(COLORS.primary)
-      const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.text)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
+  })
 
-    it('should render red arrow icon when selected is true', () => {
-      const { getByTestId, getByText } = renderDisciplineItem({ selected: true })
-      const arrowIcon = getByTestId('arrow')
-      expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
-      const title = getByText('Discipline Item title')
-      expect(title.instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+  it('should handle long press', async () => {
+    const { getByTestId, getByText } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'longPress')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+    expect(onPress).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(arrowIcon.props.fill).toBe(COLORS.primary)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
+  })
+
+  it('should not call on press callback if scrolling', async () => {
+    const { getByTestId } = renderDisciplineItem()
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130 } })
+
+    expect(onPress).not.toHaveBeenCalled()
+    expect(arrowIcon.props.fill).toBe(COLORS.primary)
   })
 })
