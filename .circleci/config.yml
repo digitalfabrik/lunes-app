@@ -157,6 +157,16 @@ jobs:
                 name: '[FL] Build Android'
                 working_directory: android
             - run:
+                command: |
+                    mkdir -p sourcemaps/
+                    cp native/android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
+                    cp native/android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
+                name: Prepare Sourcemaps
+            - persist_to_workspace:
+                paths:
+                    - sourcemaps/*
+                root: .
+            - run:
                 command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
                 name: Move apk
                 working_directory: android
@@ -190,6 +200,15 @@ jobs:
                 command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: Build iOS
                 working_directory: ios
+            - run:
+                command: |
+                    mkdir -p sourcemaps/
+                    cp native/ios/output/lunes.ios.bundle* sourcemaps/
+                name: Prepare Sourcemaps
+            - persist_to_workspace:
+                paths:
+                    - sourcemaps/*
+                root: .
             - store_artifacts:
                 path: ios/output/gym/app-release.ipa
             - persist_to_workspace:
@@ -275,9 +294,8 @@ jobs:
             - restore_environment_variables
             - restore_yarn_cache
             - run:
-                command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
-                name: PlayStore Upload
-                working_directory: android
+                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+                name: Sentry Upload
     deliver_browser_stack:
         docker:
             - image: circleci/android:api-29-node
@@ -332,20 +350,9 @@ jobs:
             - run:
                 command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
                 name: Parse german ios release notes
-            - when:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-                        name: '[FL] App Store Connect Upload'
-                        working_directory: ios
-            - unless:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
-                        name: '[FL] TestFlight Upload'
-                        working_directory: ios
+            - run:
+                command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+                name: Sentry Upload
     move_release_notes:
         docker:
             - image: circleci/node:14.17.0
@@ -432,7 +439,6 @@ workflows:
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
-            - check
             - bump_version:
                 context:
                     - deliverino
@@ -460,12 +466,14 @@ workflows:
             - deliver_android:
                 context:
                     - tuerantuer-google-play
+                    - sentry
                 production_delivery: false
                 requires:
                     - build_android
             - deliver_ios:
                 context:
                     - tuerantuer-apple
+                    - sentry
                 production_delivery: false
                 requires:
                     - build_ios

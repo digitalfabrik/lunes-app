@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 
 import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
+import { reportError } from '../services/sentry'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.lunesBlack};
@@ -37,9 +38,9 @@ const VerticalLinesIcon = styled.View`
   top: 16.5px;
   right: 0px;
   width: 24.5px;
-  height: 28px;
+  height: 28px;y
 `
-const SmileIconStyle = styled.View`
+const SmileIconStyle = styled.Pressable`
   position: absolute;
   width: 80px;
   height: 80px;
@@ -48,25 +49,38 @@ const SmileIconStyle = styled.View`
   top: 51px;
 `
 
-const Header = (): JSX.Element => (
-  <Wrapper testID='header'>
-    <HeaderStyle>
-      <SquareIconStyle>
-        <HeaderSquareIcon />
-      </SquareIconStyle>
-      <StarIconStyle>
-        <HeaderStarIcon />
-      </StarIconStyle>
-      <CircleIconStyle>
-        <HeaderCircleIcon />
-      </CircleIconStyle>
-      <VerticalLinesIcon>
-        <HeaderLinesIcon />
-      </VerticalLinesIcon>
-      <SmileIconStyle>
-        <LunesIcon />
-      </SmileIconStyle>
-    </HeaderStyle>
-  </Wrapper>
-)
+const Header = (): JSX.Element => {
+  const [counter, setCounter] = useState<number>(0)
+  const CLICKS_TO_ENABLE_SENTRY = 20
+
+  const onPress = () => {
+    if (counter > CLICKS_TO_ENABLE_SENTRY) {
+      reportError('Error for testing Sentry')
+    }
+    setCounter(oldVal => oldVal + 1)
+  }
+
+  return (
+    <Wrapper testID='header'>
+      <HeaderStyle>
+        <SquareIconStyle>
+          <HeaderSquareIcon />
+        </SquareIconStyle>
+        <StarIconStyle>
+          <HeaderStarIcon />
+        </StarIconStyle>
+        <CircleIconStyle>
+          <HeaderCircleIcon />
+        </CircleIconStyle>
+        <VerticalLinesIcon>
+          <HeaderLinesIcon />
+        </VerticalLinesIcon>
+        <SmileIconStyle onPress={onPress}>
+          <LunesIcon />
+        </SmileIconStyle>
+      </HeaderStyle>
+    </Wrapper>
+  )
+}
+
 export default Header

@@ -26,6 +26,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
+import { initSentry } from '../services/sentry'
 import { RoutesParams } from './NavigationTypes'
 
 const styles = StyleSheet.create({
@@ -54,6 +55,8 @@ const Stack = createStackNavigator<RoutesParams>()
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
+
+  initSentry()
 
   const defaultOptions = (
     title: string,

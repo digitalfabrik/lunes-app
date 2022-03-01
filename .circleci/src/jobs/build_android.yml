@@ -23,6 +23,16 @@ steps:
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
   - run:
+      name: Prepare Sourcemaps
+      command: |
+        mkdir -p sourcemaps/
+        cp native/android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
+        cp native/android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
+  - persist_to_workspace:
+      root: .
+      paths:
+        - sourcemaps/*
+  - run:
       name: Move apk
       command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
       working_directory: android
