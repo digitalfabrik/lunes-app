@@ -45,7 +45,7 @@ const ImprintScreen = (): ReactElement => (
       <Description>DE307491397</Description>
       <Subheading>Kontakt</Subheading>
       <MultiTextContainer>
-        <Description>Telefon:</Description>
+        <Description>Telefon: </Description>
         <Link text='0821 20990556' url='tel:082120990556' />
       </MultiTextContainer>
       <MultiTextContainer>
