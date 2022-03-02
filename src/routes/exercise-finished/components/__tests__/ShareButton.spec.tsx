@@ -47,9 +47,7 @@ describe('ShareButton', () => {
     }
   ]
 
-  const message = `${labels.results.share.message1 as string} '${discipline.title}' ${
-    labels.results.share.message2 as string
-  } 1 ${labels.results.of as string} 2 ${labels.results.share.message3 as string}`
+  const message = `${labels.results.share.message1} '${discipline.title}' ${labels.results.share.message2} 1 ${labels.results.of} 2 ${labels.results.share.message3}`
 
   it('should call native share function', () => {
     const { getByText } = render(<ShareButton discipline={discipline} results={results} />)

@@ -16,10 +16,8 @@ interface Props {
 const ShareButton = ({ discipline, results }: Props): ReactElement => {
   const share = async () => {
     const correctWords = results.filter(doc => doc.result === 'correct').length
-    const xOfAllWords = `${correctWords} ${labels.results.of as string} ${discipline.numberOfChildren}`
-    const message = `${labels.results.share.message1 as string} '${discipline.title}' ${
-      labels.results.share.message2 as string
-    } ${xOfAllWords} ${labels.results.share.message3 as string}`
+    const xOfAllWords = `${correctWords} ${labels.results.of} ${discipline.numberOfChildren}`
+    const message = `${labels.results.share.message1} '${discipline.title}' ${labels.results.share.message2} ${xOfAllWords} ${labels.results.share.message3}`
 
     await Share.share({ message })
   }

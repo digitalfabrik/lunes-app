@@ -13,6 +13,7 @@ import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS
 import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
+import ShareButton from './exercise-finished/components/ShareButton'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
@@ -195,12 +196,15 @@ const ResultsOverview = ({ navigation, route }: Props): ReactElement => {
   }
 
   const Footer = (
-    <Button
-      label={labels.results.retryExercise}
-      iconLeft={RepeatIcon}
-      onPress={repeatExercise}
-      buttonTheme={BUTTONS_THEME.contained}
-    />
+    <>
+      <Button
+        label={labels.results.retryExercise}
+        iconLeft={RepeatIcon}
+        onPress={repeatExercise}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
+      <ShareButton discipline={discipline} results={results} />
+    </>
   )
 
   return (
