@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import Link from '../components/Link'
+import { ContentTextLight } from '../components/text/Content'
+import { HeadingText } from '../components/text/Heading'
+import { Subheading } from '../components/text/Subheading'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -13,31 +16,12 @@ const Container = styled.View`
   margin: ${props => props.theme.spacings.sm};
 `
 
-const Description = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  color: ${props => props.theme.colors.text};
+const Description = styled(ContentTextLight)`
   margin-bottom: ${props => props.theme.spacings.xs};
 `
 
-const Title = styled.Text`
-  text-align: left;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
+const Title = styled(HeadingText)`
   margin: ${props => props.theme.spacings.sm} 0;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => props.theme.colors.text};
-`
-
-const Subheading = styled.Text`
-  text-align: left;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => props.theme.colors.text};
 `
 
 const MultiTextContainer = styled.View`
@@ -51,7 +35,7 @@ const ImprintScreen = (): ReactElement => (
       <Description>Angaben gemäß § 5 TMG und verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</Description>
       <Description>Tür an Tür – Digitalfabrik gGmbH Wertachstr. 29 86153 Augsburg</Description>
       <Description>vertreten durch Herrn Daniel Kehne, Herrn Fritjof Knier</Description>
-      <Subheading>Aufsichtsbehörde</Subheading>
+      <Subheading>Aufsichtsbehörde:</Subheading>
       <Description>Finanzamt Augsburg-Stadt</Description>
       <Subheading>Sitz der Gesellschaft:</Subheading>
       <Description>Augsburg</Description>

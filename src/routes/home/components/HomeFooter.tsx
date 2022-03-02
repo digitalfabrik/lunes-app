@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
+import { ContentSecondary } from '../../../components/text/Content'
 import labels from '../../../constants/labels.json'
 
 const Container = styled.View`
@@ -14,18 +15,6 @@ const Container = styled.View`
   border-top-width: 1px;
 `
 
-const ContentSecondary = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.textSecondary};
-`
-
-const LinkSecondary = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.textSecondary};
-`
-
 interface HomeFooterProps {
   navigateToImprint: () => void
 }
@@ -33,7 +22,7 @@ interface HomeFooterProps {
 const HomeFooter = ({ navigateToImprint }: HomeFooterProps): ReactElement => (
   <Container>
     <ContentSecondary>{'\u00A9'}LUNES2022</ContentSecondary>
-    <LinkSecondary onPress={navigateToImprint}>{labels.home.impressum}</LinkSecondary>
+    <ContentSecondary onPress={navigateToImprint}>{labels.home.impressum}</ContentSecondary>
   </Container>
 )
 
