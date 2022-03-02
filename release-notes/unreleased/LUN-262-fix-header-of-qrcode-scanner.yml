@@ -1,0 +1,6 @@
+issue_key: LUN-262
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Fehler bei der Darstellung der Kopfzeile des QR-Codelesers wurden behoben.
