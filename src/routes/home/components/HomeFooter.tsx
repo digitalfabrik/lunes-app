@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
+import labels from '../../../constants/labels.json'
+
 const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -30,8 +32,8 @@ interface HomeFooterProps {
 
 const HomeFooter = ({ navigateToImprint }: HomeFooterProps): ReactElement => (
   <Container>
-    <ContentSecondary>{'\u00A9'}LUNES2020</ContentSecondary>
-    <LinkSecondary onPress={navigateToImprint}>Impressum</LinkSecondary>
+    <ContentSecondary>{'\u00A9'}LUNES2022</ContentSecondary>
+    <LinkSecondary onPress={navigateToImprint}>{labels.home.impressum}</LinkSecondary>
   </Container>
 )
 
