@@ -36,4 +36,4 @@ steps:
   #          working_directory: ios
   - run:
       name: Sentry Upload
-      command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+      command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"

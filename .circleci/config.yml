@@ -351,7 +351,7 @@ jobs:
                 command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
                 name: Parse german ios release notes
             - run:
-                command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
     move_release_notes:
         docker:
