@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { InfoCircleIcon } from '../../../../assets/images'
+import { ContentBackgroundLight } from '../../../components/text/Content'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 
@@ -26,11 +27,8 @@ const StyledContainer = styled.View`
   padding: ${props => props.theme.spacings.xs};
   border-radius: 2px;
 `
-const StyledMessage = styled.Text`
-  color: ${prop => prop.theme.colors.background};
+const StyledMessage = styled(ContentBackgroundLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   width: ${wp('60%')}px;
   margin-left: ${props => props.theme.spacings.xs};
 `

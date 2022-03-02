@@ -1,15 +1,16 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { StatusBar } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../assets/images'
-import Button from '../components/Button'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../constants/data'
-import labels from '../constants/labels.json'
-import { RoutesParams } from '../navigation/NavigationTypes'
+import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../../assets/images'
+import Button from '../../components/Button'
+import { HeadingBackground } from '../../components/text/Heading'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../../constants/data'
+import labels from '../../constants/labels.json'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import ShareSection from './components/ShareSection'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -18,7 +19,7 @@ const Root = styled.View`
 `
 const UpperSection = styled.View`
   width: 140%;
-  height: 60%;
+  height: 45%;
   background-color: ${prop => prop.theme.colors.primary};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
@@ -30,20 +31,16 @@ const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
 `
-const Message = styled.Text`
-  color: ${prop => prop.theme.colors.background};
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
+const Message = styled(HeadingBackground)`
   text-align: center;
 `
 
-interface InitialSummaryScreenProps {
-  route: RouteProp<RoutesParams, 'InitialSummary'>
-  navigation: StackNavigationProp<RoutesParams, 'InitialSummary'>
+interface Props {
+  route: RouteProp<RoutesParams, 'ExerciseFinished'>
+  navigation: StackNavigationProp<RoutesParams, 'ExerciseFinished'>
 }
 
-const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps): ReactElement => {
+const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
 
@@ -68,7 +65,7 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps):
   }
 
   const checkResults = (): void => {
-    navigation.navigate('ResultsOverview', {
+    navigation.navigate('Result', {
       result: {
         discipline,
         exercise,
@@ -79,8 +76,6 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps):
 
   return (
     <Root>
-      <StatusBar barStyle='light-content' />
-
       <UpperSection>
         <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
         <MessageContainer>
@@ -100,8 +95,9 @@ const InitialSummaryScreen = ({ navigation, route }: InitialSummaryScreenProps):
         buttonTheme={BUTTONS_THEME.outlined}
         onPress={repeatExercise}
       />
+      <ShareSection discipline={discipline} results={results} />
     </Root>
   )
 }
 
-export default InitialSummaryScreen
+export default ExerciseFinishedScreen

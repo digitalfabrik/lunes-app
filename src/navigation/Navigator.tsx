@@ -19,14 +19,14 @@ import { COLORS } from '../constants/theme/colors'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
-import HomeScreen from '../routes/HomeScreen'
+import HomeScreen from '../routes/home/HomeScreen'
 import ImprintScreen from '../routes/ImprintScreen'
-import InitialSummaryScreen from '../routes/InitialSummaryScreen'
+import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
-import ResultsOverviewScreen from '../routes/ResultsOverviewScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
+import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -162,22 +162,22 @@ const Navigator = (): JSX.Element => {
           name='WriteExercise'
           component={WriteExerciseScreen}
         />
-        <Stack.Screen options={{ headerShown: false }} name='InitialSummary' component={InitialSummaryScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='ExerciseFinished' component={ExerciseFinishedScreen} />
         <Stack.Screen
           options={{
             headerLeft: () => null,
             headerTitle: '',
             headerRightContainerStyle: styles().headerRightContainer
           }}
-          name='ResultsOverview'
-          component={ResultsOverviewScreen}
+          name='Result'
+          component={ResultScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>
             defaultOptions(labels.results.resultsOverview, ArrowLeftCircleIconWhite, navigation, false)
           }
-          name='ResultScreen'
-          component={ResultScreen}
+          name='ResultDetail'
+          component={ResultDetailScreen}
         />
         <Stack.Screen
           options={({ navigation }) =>

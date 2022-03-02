@@ -5,6 +5,7 @@ import styled, { css, useTheme } from 'styled-components/native'
 
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
+import { Subheading } from './text/Subheading'
 
 interface ThemedButtonProps {
   buttonTheme: ButtonTheme
@@ -35,14 +36,11 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
   background-color: ${props => props.backgroundColor};
 `
 
-const Label = styled.Text<ThemedLabelProps>`
+const Label = styled(Subheading)<ThemedLabelProps>`
   color: ${props => props.color};
   text-align: center;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 

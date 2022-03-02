@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -9,6 +9,8 @@ import CustomDisciplineItem from '../../components/CustomDisciplineItem'
 import DisciplineItem from '../../components/DisciplineItem'
 import Header from '../../components/Header'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
+import { ContentSecondary } from '../../components/text/Content'
+import { SubheadingPrimary } from '../../components/text/Subheading'
 import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
@@ -21,12 +23,9 @@ const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
   height: 100%;
 `
-const StyledText = styled.Text`
+const StyledText = styled(ContentSecondary)`
   margin-top: ${props => props.theme.spacings.xxl};
   text-align: center;
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.textSecondary};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
@@ -37,18 +36,9 @@ const AddCustomDisciplineContainer = styled.TouchableOpacity`
   margin: ${props => props.theme.spacings.sm};
 `
 
-const AddCustomDisciplineText = styled.Text`
+const AddCustomDisciplineText = styled(SubheadingPrimary)`
   text-transform: uppercase;
   padding-left: ${props => props.theme.spacings.xs};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-`
-
-const Description = styled.Text<{ selected: boolean }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
 interface HomeScreenProps {
@@ -56,14 +46,11 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedId(null)
       refreshCustomDisciplines()
     }, [refreshCustomDisciplines])
   )
@@ -72,8 +59,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('Imprint')
   }
 
-  const handleNavigation = (item: Discipline): void => {
-    setSelectedId(item.id.toString())
+  const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('DisciplineSelection', {
       discipline: item
     })
@@ -83,6 +69,27 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
+  const customDisciplineItems = customDisciplines?.map(customDiscipline => (
+    <CustomDisciplineItem
+      key={customDiscipline}
+      apiKey={customDiscipline}
+      navigation={navigation}
+      refresh={refreshCustomDisciplines}
+    />
+  ))
+
+  const disciplineItems = disciplines
+    ?.filter(it => it.numberOfChildren > 0)
+    ?.map(item => (
+      <DisciplineItem
+        key={item.id}
+        title={item.title}
+        icon={item.icon}
+        onPress={() => navigateToDiscipline(item)}
+        description={childrenDescription(item)}
+      />
+    ))
+
   return (
     <Root>
       <Header />
@@ -91,31 +98,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         <AddCircleIcon width={wp('8%')} height={wp('8%')} />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
-      {customDisciplines?.map(customDiscipline => (
-        <CustomDisciplineItem
-          key={customDiscipline}
-          apiKey={customDiscipline}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          navigation={navigation}
-          refresh={refreshCustomDisciplines}
-        />
-      ))}
+      {customDisciplineItems}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {disciplines?.map(item => {
-          if (item.numberOfChildren === 0) {
-            return null
-          }
-          return (
-            <DisciplineItem
-              key={item.id}
-              item={item}
-              selected={item.id.toString() === selectedId}
-              onPress={() => handleNavigation(item)}>
-              <Description selected={item.id.toString() === selectedId}>{childrenDescription(item)}</Description>
-            </DisciplineItem>
-          )
-        })}
+        {disciplineItems}
       </ServerResponseHandler>
       <HomeFooter navigateToImprint={navigateToImprintScreen} />
     </Root>
