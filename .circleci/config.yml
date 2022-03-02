@@ -203,7 +203,7 @@ jobs:
             - run:
                 command: |
                     mkdir -p sourcemaps/
-                    cp ios/output/lunes.ios.bundle* sourcemaps/
+                    cp ios/output/app-release.ios.bundle* sourcemaps/
                 name: Prepare Sourcemaps
             - persist_to_workspace:
                 paths:

@@ -25,7 +25,7 @@ steps:
       name: Prepare Sourcemaps
       command: |
         mkdir -p sourcemaps/
-        cp ios/output/lunes.ios.bundle* sourcemaps/
+        cp ios/output/app-release.ios.bundle* sourcemaps/
   - persist_to_workspace:
       root: .
       paths:
