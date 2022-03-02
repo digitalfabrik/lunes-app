@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import Button from './Button'
+import { HeadingText } from './text/Heading'
 
 const Overlay = styled.View`
   flex: 1;
@@ -29,14 +30,11 @@ const Icon = styled.TouchableOpacity`
   width: ${wp('6%')}px;
   height: ${wp('6%')}px;
 `
-const Message = styled.Text`
-  text-align: center;
-  font-size: ${props => props.theme.fonts.headingFontSize};
-  color: ${props => props.theme.colors.text};
-  font-family: ${props => props.theme.fonts.contentFontBold};
+const Message = styled(HeadingText)`
   width: ${wp('60%')}px;
   margin-bottom: ${props => props.theme.spacings.lg};
   padding-top: ${props => props.theme.spacings.lg};
+  text-align: center;
 `
 
 export interface ConfirmationModalProps {

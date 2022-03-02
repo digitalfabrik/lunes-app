@@ -12,49 +12,39 @@ import {
 import render from '../../testing/render'
 import CustomDisciplineItem from '../CustomDisciplineItem'
 
-describe('Components', () => {
-  describe('CustomDisciplineItem', () => {
-    const navigation = createNavigationMock<'Home'>()
-    const mockData: Discipline = {
-      id: 1,
-      title: 'Custom Discipline',
-      description: 'description',
-      icon: 'none',
-      numberOfChildren: 1,
-      parentTitle: null,
-      needsTrainingSetEndpoint: false,
-      isLeaf: false,
-      apiKey: 'abc'
-    }
+describe('CustomDisciplineItem', () => {
+  const navigation = createNavigationMock<'Home'>()
+  const mockData: Discipline = {
+    id: 1,
+    title: 'Custom Discipline',
+    description: 'description',
+    icon: 'none',
+    numberOfChildren: 1,
+    parentTitle: null,
+    needsTrainingSetEndpoint: false,
+    isLeaf: false,
+    apiKey: 'abc'
+  }
 
-    const renderCustomDisciplineItem = (): RenderAPI =>
-      render(
-        <CustomDisciplineItem
-          apiKey='abc'
-          selectedId='0'
-          setSelectedId={jest.fn()}
-          navigation={navigation}
-          refresh={jest.fn()}
-        />
-      )
+  const renderCustomDisciplineItem = (): RenderAPI =>
+    render(<CustomDisciplineItem apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
 
-    it('should display data', () => {
-      mockUseLoadAsyncWithData(mockData)
-      const { getByText } = renderCustomDisciplineItem()
-      expect(getByText('Custom Discipline')).toBeDefined()
-      expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
-    })
+  it('should display data', () => {
+    mockUseLoadAsyncWithData(mockData)
+    const { getByText } = renderCustomDisciplineItem()
+    expect(getByText('Custom Discipline')).toBeDefined()
+    expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
+  })
 
-    it('should display loading', () => {
-      mockUseLoadAsyncLoading()
-      const { getByTestId } = renderCustomDisciplineItem()
-      expect(getByTestId('loading')).toBeDefined()
-    })
+  it('should display loading', () => {
+    mockUseLoadAsyncLoading()
+    const { getByTestId } = renderCustomDisciplineItem()
+    expect(getByTestId('loading')).toBeDefined()
+  })
 
-    it('should display error', () => {
-      mockUseLoadAsyncWithError('Network Error')
-      const { getByText } = renderCustomDisciplineItem()
-      expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
-    })
+  it('should display error', () => {
+    mockUseLoadAsyncWithError('Network Error')
+    const { getByText } = renderCustomDisciplineItem()
+    expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
   })
 })
