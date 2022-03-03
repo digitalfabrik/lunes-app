@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/native'
 
+import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Answer, Article } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { getArticleColor } from '../../../services/helpers'
-
-const StyledText = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-style: normal;
-`
 
 const Container = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
@@ -85,7 +79,7 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   }};
 `
 
-const ArticleText = styled(StyledText)<StyledListElementProps>`
+const ArticleText = styled(ContentSecondary)<StyledListElementProps>`
   text-align: center;
   color: ${props => {
     if (props.pressed) {
@@ -101,7 +95,7 @@ const ArticleText = styled(StyledText)<StyledListElementProps>`
   }};
 `
 
-const Word = styled(StyledText)<StyledListElementProps>`
+const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
       return props.theme.colors.background

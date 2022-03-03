@@ -79,7 +79,14 @@
     "entries": "Eingaben",
     "viewEntries": "Eingaben anschauen",
     "show": "Zeige",
-    "of": "von"
+    "of": "von",
+    "share": {
+      "description": "Teile deine Ergebnisse!",
+      "button": "Ergebnisse teilen",
+      "message1": "Meine Ergebnisse für",
+      "message2": "in Lunes:",
+      "message3": "Wörter richtig. Und du?"
+    }
   },
   "general": {
     "header": {

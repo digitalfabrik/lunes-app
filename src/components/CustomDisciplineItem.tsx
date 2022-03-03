@@ -8,6 +8,7 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import DeletionSwipeable from './DeletionSwipeable'
 import DisciplineListItem from './DisciplineListItem'
 import Loading from './Loading'
+import { ContentSecondaryLight } from './text/Content'
 
 const Placeholder = styled.View`
   background-color: ${props => props.theme.colors.backgroundAccent};
@@ -19,13 +20,6 @@ const Placeholder = styled.View`
 
 const LoadingSpinner = styled.View`
   padding-top: ${props => props.theme.spacings.xl};
-`
-
-const ErrorText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${props => props.theme.colors.primary};
 `
 
 interface CustomDisciplineItemProps {
@@ -61,9 +55,9 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
         <DisciplineListItem item={data} onPress={navigate} badge={false} />
       ) : (
         <Placeholder>
-          <ErrorText>
+          <ContentSecondaryLight>
             {labels.home.errorLoadCustomDiscipline} {apiKey}
-          </ErrorText>
+          </ContentSecondaryLight>
         </Placeholder>
       )}
     </DeletionSwipeable>

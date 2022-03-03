@@ -8,6 +8,8 @@ import styled from 'styled-components/native'
 import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
+import { ContentSecondaryLight } from '../components/text/Content'
+import ItemTitle from '../components/text/ItemTitle'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -19,7 +21,7 @@ const Root = styled.View`
   height: 100%;
 `
 
-const ItemTitle = styled(FlatList)`
+const StyledList = styled(FlatList)`
   width: ${wp('100%')}px;
   padding-right: ${props => props.theme.spacings.md};
   padding-left: ${props => props.theme.spacings.md};
@@ -54,7 +56,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <Root>
-      <ItemTitle
+      <StyledList
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}

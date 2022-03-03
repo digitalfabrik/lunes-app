@@ -13,14 +13,10 @@ const StyledImage = styled.Image`
   height: ${wp('15%')}px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
-const StyledTitle = styled.Text<{ articleColor: string }>`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
+const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   border-radius: ${props => props.theme.spacings.xs};
   margin-bottom: ${props => props.theme.spacings.xxs};
-  color: ${props => props.theme.colors.text};
   background-color: ${props => props.articleColor};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   align-self: flex-start;
   width: ${wp('10%')}px;
   overflow: hidden;

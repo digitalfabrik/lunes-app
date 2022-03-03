@@ -60,7 +60,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
   const finishExercise = (): void => {
-    navigation.navigate('InitialSummary', {
+    navigation.navigate('ExerciseFinished', {
       result: {
         discipline: { ...route.params.discipline },
         results: documentsWithResults,
