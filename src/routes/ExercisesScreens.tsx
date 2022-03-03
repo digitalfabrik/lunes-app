@@ -1,8 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { FlatList, Alert } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import ListItem from '../components/ListItem'
@@ -18,12 +17,6 @@ const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
 `
-
-const StyledList = styled(FlatList)`
-  width: ${wp('100%')}px;
-  padding-right: ${props => props.theme.spacings.md};
-  padding-left: ${props => props.theme.spacings.md};
-` as ComponentType as new () => FlatList<Exercise>
 
 interface ExercisesScreenProps {
   route: RouteProp<RoutesParams, 'Exercises'>
@@ -54,7 +47,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <Root>
-      <StyledList
+      <FlatList
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}
