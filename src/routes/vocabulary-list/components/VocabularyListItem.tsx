@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
 import ListItem from '../../../components/ListItem'
+import { ContentTextLight } from '../../../components/text/Content'
 import { Document } from '../../../constants/endpoints'
 import { getArticleColor } from '../../../services/helpers'
 
