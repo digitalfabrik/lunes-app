@@ -52,7 +52,7 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
   return (
     <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
       {data ? (
-        <DisciplineListItem item={data} onPress={navigate} badge={false} />
+        <DisciplineListItem item={data} onPress={navigate} hasBadge={false} />
       ) : (
         <Placeholder>
           <ContentSecondaryLight>

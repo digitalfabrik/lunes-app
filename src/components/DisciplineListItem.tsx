@@ -7,13 +7,14 @@ import ListItem from './ListItem'
 interface DisciplineListItemProps {
   item: Discipline
   onPress: () => void
-  badge: boolean
+  hasBadge: boolean
 }
 
-const DisciplineListItem = ({ item, onPress, badge }: DisciplineListItemProps): ReactElement | null => {
+const DisciplineListItem = ({ item, onPress, hasBadge }: DisciplineListItemProps): ReactElement | null => {
   const { numberOfChildren, title, icon } = item
-  const badgeLabel = badge ? numberOfChildren.toString() : undefined
-  const description = badge ? childrenLabel(item) : childrenDescription(item)
+  const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined
+  // Description either contains the number of children and the type of children or just the type of children if the number is shown as badge
+  const description = hasBadge ? childrenLabel(item) : childrenDescription(item)
 
   if (numberOfChildren === 0) {
     return null

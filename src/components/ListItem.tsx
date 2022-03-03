@@ -119,9 +119,9 @@ const ListItem = ({
       title
     )
 
-  const iconToRender = icon ? (
+  const iconToRender = icon && (
     <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
-  ) : null
+  )
 
   const rightChildrenToRender = rightChildren ?? (
     <ChevronRight

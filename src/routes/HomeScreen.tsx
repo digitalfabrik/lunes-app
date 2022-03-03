@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   ))
 
   const disciplineItems = disciplines?.map(item => (
-    <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} badge={false} />
+    <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} hasBadge={false} />
   ))
 
   return (

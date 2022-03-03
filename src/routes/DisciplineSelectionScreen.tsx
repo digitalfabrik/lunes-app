@@ -41,7 +41,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   }
 
   const Item = ({ item }: { item: Discipline }): JSX.Element => (
-    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} badge />
+    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge />
   )
 
   return (
