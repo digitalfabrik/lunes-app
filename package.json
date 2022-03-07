@@ -24,6 +24,7 @@
     "@react-navigation/elements": "^1.2.1",
     "@react-navigation/native": "6.0.6",
     "@react-navigation/stack": "6.0.11",
+    "@sentry/react-native": "^3.2.13",
     "axios": "^0.24.0",
     "axios-cache-interceptor": "0.9.1",
     "react": "17.0.2",
