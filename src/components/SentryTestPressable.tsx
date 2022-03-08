@@ -14,6 +14,7 @@ const SentryTestPressable = ({ children }: Props): ReactElement => {
   const onPress = () => {
     if (counter > CLICKS_TO_ENABLE_SENTRY) {
       reportError('Error for testing Sentry')
+      setCounter(0)
     }
     setCounter(oldVal => oldVal + 1)
   }
