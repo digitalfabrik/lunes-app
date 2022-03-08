@@ -9,12 +9,13 @@ interface Props {
 
 const SentryTestPressable = ({ children }: Props): ReactElement => {
   const [counter, setCounter] = useState<number>(0)
-  const CLICKS_TO_ENABLE_SENTRY = 20
+  const CLICKS_TO_THROW_SENTRY_ERROR = 20
 
   const onPress = () => {
-    if (counter > CLICKS_TO_ENABLE_SENTRY) {
-      reportError('Error for testing Sentry')
+    if (counter > CLICKS_TO_THROW_SENTRY_ERROR) {
       setCounter(0)
+      reportError('Error for testing Sentry')
+      throw Error('This error was thrown for testing purposes. Please ignore this error.')
     }
     setCounter(oldVal => oldVal + 1)
   }
