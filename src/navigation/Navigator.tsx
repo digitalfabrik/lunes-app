@@ -28,7 +28,6 @@ import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerc
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
-import { initSentry } from '../services/sentry'
 import { RoutesParams } from './NavigationTypes'
 
 const styles = (headerHeight?: number) =>
@@ -59,8 +58,6 @@ const Stack = createStackNavigator<RoutesParams>()
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
-
-  initSentry()
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
