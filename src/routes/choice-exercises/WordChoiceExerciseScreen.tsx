@@ -4,7 +4,6 @@ import React, { ReactElement } from 'react'
 
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -16,13 +15,9 @@ interface WordChoiceExerciseScreenProps {
 export const MIN_WORDS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
-  const response = useLoadDocuments(route.params.discipline, true)
+  const { documents, discipline } = route.params
 
   const generateFalseAnswers = (correctDocument: Document): Answer[] => {
-    const { data: documents } = response
-    if (!documents) {
-      return []
-    }
     const answers = []
     const usedDocuments = [correctDocument]
 
@@ -53,7 +48,8 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     <SingleChoiceExercise
-      response={response}
+      documents={documents}
+      discipline={discipline}
       documentToAnswers={documentToAnswers}
       navigation={navigation}
       route={route}

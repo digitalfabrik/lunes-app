@@ -11,7 +11,7 @@ import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { SubheadingPrimary } from '../components/text/Subheading'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
+import { BUTTONS_THEME, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import { Counts, RoutesParams } from '../navigation/NavigationTypes'
@@ -65,7 +65,7 @@ interface Props {
 }
 
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, results, discipline } = route.params.result
+  const { exercise, results, discipline, documents } = route.params
   const { level, description, title } = EXERCISES[exercise]
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
@@ -74,20 +74,15 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
 
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
-      discipline,
-      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+      documents,
+      discipline
     })
   }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <RightHeader
-          onPress={() =>
-            navigation.navigate('Exercises', {
-              discipline: { ...discipline }
-            })
-          }>
+        <RightHeader onPress={() => navigation.navigate('Exercises', { discipline })}>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
@@ -102,7 +97,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       incorrect: results.filter(({ result }) => result === 'incorrect').length,
       similar: results.filter(({ result }) => result === 'similar').length
     })
-  }, [results, navigation, discipline])
+  }, [results, navigation, headerHeight, discipline])
 
   const Header = (
     <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
@@ -111,9 +106,11 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   )
   const navigateToResult = (item: Result) => {
     navigation.navigate('ResultDetail', {
-      result: { ...route.params.result },
       resultType: item,
-      counts
+      documents,
+      discipline,
+      exercise,
+      results
     })
   }
 
@@ -139,7 +136,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
         onPress={repeatExercise}
         buttonTheme={BUTTONS_THEME.contained}
       />
-      <ShareButton discipline={discipline} results={results} />
+      <ShareButton disciplineTitle={discipline.title} results={results} />
     </>
   )
 

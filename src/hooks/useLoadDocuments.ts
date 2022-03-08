@@ -35,7 +35,7 @@ export const loadDocuments = async (discipline: Discipline): Promise<Document[]>
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline, shuffle = false): Return<Document[]> => {
+const useLoadDocuments = (discipline: Discipline, shuffle: boolean): Return<Document[]> => {
   const documents = useLoadAsync(loadDocuments, discipline)
   if (shuffle && documents.data) {
     shuffleArray(documents.data)

@@ -1,7 +1,8 @@
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, Documents, Document } from '../constants/endpoints'
+import { Discipline, Document } from '../constants/endpoints'
 
-export interface DocumentResult extends Document {
+export interface DocumentResult {
+  document: Document
   result: SimpleResult | null
   numberOfTries: number
 }
@@ -12,11 +13,15 @@ export type Counts = {
   total: number
 }
 
-interface ResultScreenData {
+interface ExerciseParams {
   discipline: Discipline
+  documents: Document[]
+}
+
+type ResultScreenData = ExerciseParams & {
   exercise: ExerciseKey
   results: DocumentResult[]
-  retryData?: { data: Documents }
+  documents: Document[]
 }
 
 // https://github.com/Microsoft/Script/issues/15300
@@ -30,32 +35,14 @@ export type RoutesParams = {
   Exercises: {
     discipline: Discipline
   }
-  VocabularyList: {
-    discipline: Discipline
-  }
-  WordChoiceExercise: {
-    discipline: Discipline
-  }
-  ArticleChoiceExercise: {
-    discipline: Discipline
-  }
-  WriteExercise: {
-    discipline: Discipline
-    retryData?: { data: Documents }
-  }
-  ExerciseFinished: {
-    result: ResultScreenData
-  }
-  Result: {
-    result: ResultScreenData
-  }
-  ResultDetail: {
-    result: ResultScreenData
+  VocabularyList: ExerciseParams
+  WordChoiceExercise: ExerciseParams
+  ArticleChoiceExercise: ExerciseParams
+  WriteExercise: ExerciseParams
+  ExerciseFinished: ResultScreenData
+  Result: ResultScreenData
+  ResultDetail: ResultScreenData & {
     resultType: Result
-    counts: Counts
   }
-  CorrectResults: undefined
-  IncorrectResults: undefined
-  AlmostCorrectResults: undefined
   Imprint: undefined
 }

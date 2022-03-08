@@ -9,7 +9,6 @@ import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
@@ -26,17 +25,17 @@ const StyledContainer = styled.View`
 `
 
 export interface WriteExerciseProp {
-  documents: Document[]
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
 
-const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): ReactElement => {
+const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement => {
+  const { documents, discipline } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
     documents.map(document => ({
-      ...document,
+      document,
       result: null,
       numberOfTries: 0
     }))
@@ -61,11 +60,10 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
 
   const finishExercise = (): void => {
     navigation.navigate('ExerciseFinished', {
-      result: {
-        discipline: { ...route.params.discipline },
-        results: documentsWithResults,
-        exercise: ExerciseKeys.writeExercise
-      }
+      documents,
+      discipline,
+      results: documentsWithResults,
+      exercise: ExerciseKeys.writeExercise
     })
   }
 
@@ -83,7 +81,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
 
   const storeResult = (result: DocumentResult): void => {
     const updatedDocumentsWithResults = Array.from(documentsWithResults)
-    if (current.id !== result.id) {
+    if (current.document.id !== result.document.id) {
       return
     }
     updatedDocumentsWithResults[currentIndex] = result
@@ -110,7 +108,7 @@ const WriteExercise = ({ documents, route, navigation }: WriteExerciseProp): Rea
         numberOfWords={documents.length}
       />
 
-      <ImageCarousel images={current.document_image} minimized={isKeyboardShown} />
+      <ImageCarousel images={current.document.document_image} minimized={isKeyboardShown} />
 
       <StyledContainer>
         <InteractionSection

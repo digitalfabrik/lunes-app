@@ -50,6 +50,7 @@ const ttsThreshold = 0.6
 
 const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const { isAnswerSubmitted, documentWithResult, storeResult } = props
+  const { document } = documentWithResult
 
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
@@ -61,7 +62,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
-    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(documentWithResult)) <= ttsThreshold
+    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(document)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
 
   const textInputRef = useRef<View>(null)
@@ -73,10 +74,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   }, [isAnswerSubmitted])
 
   const validateAnswer = (article: string, word: string): SimpleResult => {
-    const validAnswers = [
-      { article: documentWithResult.article, word: documentWithResult.word },
-      ...documentWithResult.alternatives
-    ]
+    const validAnswers = [{ article: document.article, word: document.word }, ...document.alternatives]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
     }
@@ -135,7 +133,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     <>
       <Speaker>
         <AudioPlayer
-          document={documentWithResult}
+          document={documentWithResult.document}
           disabled={retryAllowed}
           submittedAlternative={submittedAlternative}
         />

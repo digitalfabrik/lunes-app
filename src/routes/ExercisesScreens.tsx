@@ -5,10 +5,12 @@ import { FlatList, Alert } from 'react-native'
 import styled from 'styled-components/native'
 
 import ListItem from '../components/ListItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
+import useLoadDocuments from '../hooks/useLoadDocuments'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
@@ -25,15 +27,21 @@ interface ExercisesScreenProps {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline } = route.params
-  const { title } = discipline
+  const { title, numberOfChildren } = discipline
+
+  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline, true)
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
   const handleNavigation = (item: Exercise): void => {
-    if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
+    if (!documents) {
+      return
+    }
+    if (item.title === labels.exercises.wordChoice.title && numberOfChildren < MIN_WORDS) {
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
       navigation.navigate(EXERCISES[item.key].nextScreen, {
+        documents,
         discipline
       })
     }
@@ -47,13 +55,17 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <Root>
-      <FlatList
-        data={EXERCISES}
-        ListHeaderComponent={Header}
-        renderItem={Item}
-        keyExtractor={({ key }) => key.toString()}
-        showsVerticalScrollIndicator={false}
-      />
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        {documents && (
+          <FlatList
+            data={EXERCISES}
+            ListHeaderComponent={Header}
+            renderItem={Item}
+            keyExtractor={({ key }) => key.toString()}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </ServerResponseHandler>
     </Root>
   )
 }

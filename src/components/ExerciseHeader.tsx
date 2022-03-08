@@ -25,7 +25,7 @@ interface ExerciseHeaderProps {
   numberOfWords: number
 }
 
-const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
+const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const theme = useTheme()
   const progressText = numberOfWords !== 0 ? `${currentWord + 1} ${labels.general.header.of} ${numberOfWords}` : ''
@@ -59,7 +59,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
 
   const goBack = (): void => {
     setIsModalVisible(false)
-    navigation.navigate('Exercises', { ...route.params })
+    navigation.goBack()
   }
 
   return (
