@@ -21,18 +21,20 @@ describe('QRCodeReaderOverlay', () => {
   const setVisible = jest.fn()
   const setCode = jest.fn()
 
-  it('should show close header with correct icon', () => {
-    const { getByTestId, queryByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
-    const closeIcon = getByTestId('close-circle-icon-white')
+  it('should show close header with correct icon', async () => {
+    const { getByTestId, queryByTestId, findByTestId } = render(
+      <QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />
+    )
+    const closeIcon = await findByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()
     fireEvent(closeIcon, 'onPressIn')
     expect(getByTestId('close-circle-icon-blue')).toBeDefined()
     expect(queryByTestId('close-circle-icon-white')).toBeNull()
   })
 
-  it('should close overlay on icon press', () => {
-    const { getByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
-    const closeIcon = getByTestId('close-circle-icon-white')
+  it('should close overlay on icon press', async () => {
+    const { findByTestId } = render(<QRCodeReaderOverlay setVisible={setVisible} setCode={setCode} />)
+    const closeIcon = await findByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()
     fireEvent.press(closeIcon)
     expect(setVisible).toHaveBeenCalledWith(false)

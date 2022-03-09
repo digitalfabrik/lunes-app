@@ -4,18 +4,19 @@ import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { AddCircleIcon } from '../../assets/images'
-import CustomDisciplineItem from '../components/CustomDisciplineItem'
-import DisciplineListItem from '../components/DisciplineListItem'
-import Header from '../components/Header'
-import ServerResponseHandler from '../components/ServerResponseHandler'
-import { ContentSecondary } from '../components/text/Content'
-import { SubheadingPrimary } from '../components/text/Subheading'
-import { Discipline } from '../constants/endpoints'
-import labels from '../constants/labels.json'
-import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
-import useReadCustomDisciplines from '../hooks/useReadCustomDisciplines'
-import { RoutesParams } from '../navigation/NavigationTypes'
+import { AddCircleIcon } from '../../../assets/images'
+import CustomDisciplineItem from '../../components/CustomDisciplineItem'
+import DisciplineListItem from '../../components/DisciplineListItem'
+import Header from '../../components/Header'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
+import { ContentSecondary } from '../../components/text/Content'
+import { SubheadingPrimary } from '../../components/text/Subheading'
+import { Discipline } from '../../constants/endpoints'
+import labels from '../../constants/labels.json'
+import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
+import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import HomeFooter from './components/HomeFooter'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -53,6 +54,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     }, [refreshCustomDisciplines])
   )
 
+  const navigateToImprintScreen = (): void => {
+    navigation.navigate('Imprint')
+  }
+
   const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('DisciplineSelection', {
       discipline: item
@@ -88,6 +93,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {disciplineItems}
       </ServerResponseHandler>
+      <HomeFooter navigateToImprint={navigateToImprintScreen} />
     </Root>
   )
 }
