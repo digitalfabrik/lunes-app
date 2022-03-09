@@ -1,20 +1,17 @@
-import { fireEvent } from '@testing-library/react-native';
-import { mocked } from 'jest-mock';
-import React from 'react';
-import { ReactTestInstance } from 'react-test-renderer';
+import { fireEvent } from '@testing-library/react-native'
+import { mocked } from 'jest-mock'
+import React from 'react'
+import { ReactTestInstance } from 'react-test-renderer'
 
-
-
-import labels from '../../../constants/labels.json';
-import { Return } from '../../../hooks/useLoadAsync';
-import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines';
-import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo';
-import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines';
-import AsyncStorageService from '../../../services/AsyncStorage';
-import createNavigationMock from '../../../testing/createNavigationPropMock';
-import render from '../../../testing/render';
-import HomeScreen from '../HomeScreen';
-
+import labels from '../../../constants/labels.json'
+import { Return } from '../../../hooks/useLoadAsync'
+import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
+import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
+import AsyncStorageService from '../../../services/AsyncStorage'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import render from '../../../testing/render'
+import HomeScreen from '../HomeScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')

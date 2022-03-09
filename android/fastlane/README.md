@@ -16,6 +16,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
+### android keystore
+```
+fastlane android keystore
+```
+Download and decrypt the JKS
 ### android validate_play_store_key
 ```
 fastlane android validate_play_store_key
@@ -36,6 +41,11 @@ Upload Android App to BrowserStack
 fastlane android upload_to_playstore
 ```
 Upload Android App to Google Play
+### android playstore_promote
+```
+fastlane android playstore_promote
+```
+Promote the most recent version in the beta track to the production track in the Play Store.
 
 ----
 

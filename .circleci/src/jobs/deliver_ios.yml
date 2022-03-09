@@ -34,3 +34,6 @@ steps:
             name: '[FL] TestFlight Upload'
             command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
             working_directory: ios
+  - run:
+      name: Sentry Upload
+      command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"

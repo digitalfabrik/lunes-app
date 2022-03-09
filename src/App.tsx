@@ -7,12 +7,15 @@ import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
 import Navigator from './navigation/Navigator'
+import { initSentry } from './services/sentry'
 
 LogBox.ignoreLogs(['NativeEventEmitter'])
 
 const SPLASH_SCREEN_DURATION = 3000
 
 const App = (): ReactElement => {
+  initSentry()
+
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide()
