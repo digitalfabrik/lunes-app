@@ -28,12 +28,14 @@ jobs:
   - deliver_android:
       context:
         - tuerantuer-google-play
+        - sentry
       production_delivery: false
       requires:
         - build_android
   - deliver_ios:
       context:
         - tuerantuer-apple
+        - sentry
       production_delivery: false
       requires:
         - build_ios
