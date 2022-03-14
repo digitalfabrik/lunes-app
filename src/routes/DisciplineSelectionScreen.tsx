@@ -4,13 +4,13 @@ import React, { ComponentType } from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
-import DisciplineItem from '../components/DisciplineItem'
+import DisciplineListItem from '../components/DisciplineListItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { childrenDescription, childrenLabel } from '../services/helpers'
+import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
@@ -40,17 +40,9 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }
   }
 
-  const ListItem = ({ item }: { item: Discipline }): JSX.Element => (
-    <DisciplineItem
-      title={item.title}
-      icon={item.icon}
-      onPress={() => handleNavigation(item)}
-      badgeLabel={item.numberOfChildren.toString()}
-      description={childrenLabel(item)}
-    />
+  const Item = ({ item }: { item: Discipline }): JSX.Element => (
+    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge />
   )
-
-  const relevantDisciplines = disciplines?.filter(it => it.numberOfChildren > 0)
 
   return (
     <Root>
@@ -58,8 +50,8 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <StyledList
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
-          data={relevantDisciplines}
-          renderItem={ListItem}
+          data={disciplines}
+          renderItem={Item}
           keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
         />

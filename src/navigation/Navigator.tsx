@@ -19,13 +19,14 @@ import { COLORS } from '../constants/theme/colors'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
-import HomeScreen from '../routes/HomeScreen'
+import ImprintScreen from '../routes/ImprintScreen'
 import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
+import HomeScreen from '../routes/home/HomeScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -184,6 +185,13 @@ const Navigator = (): JSX.Element => {
           }
           name='AddCustomDiscipline'
           component={AddCustomDisciplineScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='Imprint'
+          component={ImprintScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

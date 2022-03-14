@@ -3,13 +3,12 @@ import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
 import render from '../../testing/render'
-import DisciplineItem from '../DisciplineItem'
+import ListItem from '../ListItem'
 
-describe('DisciplineItem', () => {
+describe('ListItem', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
-
   const onPress = jest.fn()
   const description = 'Wörter'
   const icon = 'https://example.com'
@@ -17,7 +16,7 @@ describe('DisciplineItem', () => {
   const badge = '12'
 
   const renderDisciplineItem = (): RenderAPI =>
-    render(<DisciplineItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
+    render(<ListItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
 
   it('should render texts', () => {
     const { getByText } = renderDisciplineItem()

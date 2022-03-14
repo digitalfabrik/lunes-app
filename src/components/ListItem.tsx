@@ -8,7 +8,9 @@ import { ContentSecondaryLight } from './text/Content'
 
 const Container = styled(Pressable)<{ pressed: boolean }>`
   min-height: ${hp('12%')}px;
-  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm}`};
+  width: ${wp('90%')}px;
+  margin-bottom: ${props => props.theme.spacings.xxs};
+  align-self: center;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   flex-direction: row;
@@ -36,7 +38,7 @@ const IconContainer = styled.View`
   margin-right: 10px;
 `
 
-const TextContainer = styled.View`
+const FlexContainer = styled.View`
   flex: 1;
 `
 
@@ -66,15 +68,25 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 const PRESS_ANIMATION_DURATION = 300
 const PRESS_MAX_DRAG_Y = 5
 
-interface DisciplineItemProps {
-  title: string
-  icon: string | ReactElement
+interface ListItemProps {
+  title: string | ReactElement
+  icon?: string | ReactElement
   description: string
   badgeLabel?: string
+  children?: ReactElement
   onPress: () => void
+  rightChildren?: ReactElement
 }
 
-const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: DisciplineItemProps): ReactElement => {
+const ListItem = ({
+  onPress,
+  icon,
+  title,
+  description,
+  badgeLabel,
+  children,
+  rightChildren
+}: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
   const theme = useTheme()
@@ -98,6 +110,28 @@ const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: Disci
     [pressInY, onPress]
   )
 
+  const titleToRender =
+    typeof title === 'string' ? (
+      <Title pressed={pressed} numberOfLines={3}>
+        {title}
+      </Title>
+    ) : (
+      title
+    )
+
+  const iconToRender = icon && (
+    <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
+  )
+
+  const rightChildrenToRender = rightChildren ?? (
+    <ChevronRight
+      fill={pressed ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+      testID='arrow'
+      width={wp('6%')}
+      height={hp('6%')}
+    />
+  )
+
   return (
     <Container
       onPressIn={onPressIn}
@@ -105,24 +139,18 @@ const DisciplineItem = ({ onPress, icon, title, description, badgeLabel }: Disci
       onLongPress={() => setPressed(true)}
       pressed={pressed}
       delayLongPress={200}>
-      <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
-      <TextContainer>
-        <Title pressed={pressed} numberOfLines={3}>
-          {title}
-        </Title>
+      {iconToRender}
+      <FlexContainer>
+        {titleToRender}
         <DescriptionContainer>
           {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
           <Description pressed={pressed}>{description}</Description>
         </DescriptionContainer>
-      </TextContainer>
-      <ChevronRight
-        fill={pressed ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
-        testID='arrow'
-        width={wp('6%')}
-        height={hp('6%')}
-      />
+        {children}
+      </FlexContainer>
+      {rightChildrenToRender}
     </Container>
   )
 }
 
-export default DisciplineItem
+export default ListItem

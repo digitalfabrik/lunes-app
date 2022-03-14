@@ -1,16 +1,15 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement } from 'react'
 import { FlatList, StatusBar, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
-import { ChevronRight, DoubleCheckIcon, RepeatIcon } from '../../assets/images'
+import { DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
+import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { ContentSecondaryLight } from '../components/text/Content'
-import ItemTitle from '../components/text/ItemTitle'
 import { SubheadingPrimary } from '../components/text/Subheading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
@@ -32,37 +31,6 @@ const StyledList = styled(FlatList)`
   margin-bottom: ${props => props.theme.spacings.md};
 ` as ComponentType as new () => FlatList<Result>
 
-const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
-  color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.text)};
-`
-
-const Contained = styled.Pressable<{ selected: boolean }>`
-  align-self: center;
-  padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.md} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
-  margin-bottom: ${props => props.theme.spacings.xs}
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-  background-color: ${prop => (prop.selected ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
-  border-color: ${prop => (prop.selected ? prop.theme.colors.backgroundAccent : prop.theme.colors.disabled)};
-`
-
-const LeftSide = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-`
-const StyledText = styled.View`
-  margin-left: ${props => props.theme.spacings.xs};
-  display: flex;
-  flex-direction: column;
-`
 const HeaderText = styled(SubheadingPrimary)`
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
   text-transform: uppercase;
@@ -99,11 +67,8 @@ interface Props {
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, results, discipline } = route.params.result
   const { level, description, title } = EXERCISES[exercise]
-  const [selectedKey, setSelectedKey] = React.useState<string | null>(null)
   const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
-  const theme = useTheme()
 
-  useFocusEffect(React.useCallback(() => setSelectedKey(null), []))
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
 
@@ -144,42 +109,26 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       <Trophy level={level} />
     </StyledTitle>
   )
+  const navigateToResult = (item: Result) => {
+    navigation.navigate('ResultDetail', {
+      result: { ...route.params.result },
+      resultType: item,
+      counts
+    })
+  }
 
   const Item = ({ item }: { item: Result }): ReactElement | null => {
     const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
     if (hideAlmostCorrect) {
       return null
     }
-    const handleNavigation = ({ key }: Result): void => {
-      setSelectedKey(key)
-
-      navigation.navigate('ResultDetail', {
-        result: { ...route.params.result },
-        resultType: item,
-        counts
-      })
-    }
 
     const count = counts[item.key]
 
-    const selected = item.key === selectedKey
-    const iconColor = selected ? theme.colors.background : theme.colors.text
-    const arrowColor = selected ? theme.colors.buttonSelectedSecondary : theme.colors.primary
-    return (
-      <Contained selected={selected} onPress={() => handleNavigation(item)}>
-        <LeftSide>
-          <item.Icon fill={iconColor} width={wp('7%')} height={wp('7%')} />
-          <StyledText>
-            <ItemTitle selected={selected}>{item.title}</ItemTitle>
-            <Description
-              selected={
-                selected
-              }>{`${count} ${labels.results.of} ${counts.total} ${labels.general.words}`}</Description>
-          </StyledText>
-        </LeftSide>
-        <ChevronRight fill={arrowColor} width={wp('6%')} height={wp('6%')} />
-      </Contained>
-    )
+    const description = `${count} ${labels.results.of} ${counts.total} ${labels.general.words}`
+    const icon = <item.Icon width={wp('7%')} height={wp('7%')} />
+
+    return <ListItem title={item.title} icon={icon} description={description} onPress={() => navigateToResult(item)} />
   }
 
   const Footer = (
