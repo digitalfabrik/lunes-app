@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setupCache } from 'axios-cache-interceptor'
 
-import { addTrailingSlashToUrl } from './helpers'
+import { addTrailingSlashToUrl } from './url'
 
 const baseURL = __DEV__ ? 'https://lunes-test.tuerantuer.org/api' : 'https://lunes.tuerantuer.org/api'
 

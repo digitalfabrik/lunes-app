@@ -28,3 +28,6 @@ steps:
       name: PlayStore Upload
       command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
       working_directory: android
+  - run:
+      name: Sentry Upload
+      command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"

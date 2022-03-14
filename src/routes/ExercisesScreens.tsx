@@ -1,15 +1,12 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, useState } from 'react'
-import { FlatList, View, Alert } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled, { useTheme } from 'styled-components/native'
+import React from 'react'
+import { FlatList, Alert } from 'react-native'
+import styled from 'styled-components/native'
 
-import { ChevronRight } from '../../assets/images'
+import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { ContentSecondaryLight } from '../components/text/Content'
-import ItemTitle from '../components/text/ItemTitle'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -21,33 +18,6 @@ const Root = styled.View`
   height: 100%;
 `
 
-const StyledList = styled(FlatList)`
-  width: ${wp('100%')}px;
-  padding-right: ${props => props.theme.spacings.md};
-  padding-left: ${props => props.theme.spacings.md};
-` as ComponentType as new () => FlatList<Exercise>
-
-const Description = styled(ContentSecondaryLight)<{ selected: boolean }>`
-  color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
-`
-
-const Container = styled.Pressable<{ selected: boolean }>`
-  align-self: center;
-  padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.xxs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
-  margin-bottom: ${props => props.theme.spacings.xxs};
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-
-  background-color: ${props => (props.selected ? props.theme.colors.primary : props.theme.colors.backgroundAccent)};
-  border-color: ${props => (props.selected ? props.theme.colors.backgroundAccent : props.theme.colors.disabled)};
-`
-
 interface ExercisesScreenProps {
   route: RouteProp<RoutesParams, 'Exercises'>
   navigation: StackNavigationProp<RoutesParams, 'Exercises'>
@@ -56,14 +26,6 @@ interface ExercisesScreenProps {
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline } = route.params
   const { title } = discipline
-  const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  const theme = useTheme()
-
-  useFocusEffect(
-    React.useCallback(() => {
-      setSelectedKey(null)
-    }, [])
-  )
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
@@ -71,35 +33,21 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
-      setSelectedKey(item.key.toString())
       navigation.navigate(EXERCISES[item.key].nextScreen, {
         discipline
       })
     }
   }
 
-  const Item = ({ item }: { item: Exercise }): JSX.Element | null => {
-    const selected = item.key.toString() === selectedKey
-
-    return (
-      <Container selected={selected} onPress={() => handleNavigation(item)}>
-        <View>
-          <ItemTitle selected={selected}>{item.title}</ItemTitle>
-          <Description selected={selected}>{item.description}</Description>
-          <Trophy level={item.level} />
-        </View>
-        <ChevronRight
-          fill={item.key.toString() === selectedKey ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
-          width={wp('6%')}
-          height={hp('6%')}
-        />
-      </Container>
-    )
-  }
+  const Item = ({ item }: { item: Exercise }): JSX.Element | null => (
+    <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)}>
+      <Trophy level={item.level} />
+    </ListItem>
+  )
 
   return (
     <Root>
-      <StyledList
+      <FlatList
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}

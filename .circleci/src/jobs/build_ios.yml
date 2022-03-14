@@ -21,6 +21,15 @@ steps:
       name: Build iOS
       command: bundle exec fastlane build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: ios
+  - run:
+      name: Prepare Sourcemaps
+      command: |
+        mkdir -p sourcemaps/
+        cp ios/output/app-release.ios.bundle* sourcemaps/
+  - persist_to_workspace:
+      root: .
+      paths:
+        - sourcemaps/*
   - store_artifacts:
       path: ios/output/gym/app-release.ipa
   - persist_to_workspace:
