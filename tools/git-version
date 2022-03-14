@@ -1,7 +1,7 @@
 #!/usr/bin/env node
+import { VERSION_FILE, PLATFORMS, tagId } from "./constants";
 
 const authenticate = require('./github-authentication')
-const { VERSION_FILE, PLATFORMS, tagId } = require('./constants')
 const { program } = require('commander')
 
 program

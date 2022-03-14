@@ -30,6 +30,86 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    notify:
+        description: Send a notification (to Mattermost) at the end of a job, based on success or failure. Must be the last step in a job.
+        parameters:
+            channel:
+                default: lunes-app-test
+                type: string
+            failure_mentions:
+                default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle'
+                type: string
+            only_for_branch:
+                default: main
+                type: string
+            success_mentions:
+                default: ""
+                type: string
+            success_message:
+                default: ""
+                type: string
+        steps:
+            - run:
+                command: |
+                    if [ -n "<< parameters.failure_mentions >>" ]; then
+                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:\n<< parameters.failure_mentions >>"' >> $BASH_ENV
+                    else
+                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:"' >> $BASH_ENV
+                    fi
+                name: Mattermost - Prepare failure message
+                when: on_fail
+            - run:
+                command: |
+                    if [ -n "<< parameters.success_message >>" ]; then
+                        if [ -n "<< parameters.success_mentions >>" ]; then
+                            echo 'export MM_MESSAGE="<< parameters.success_message >>\n<< parameters.success_mentions >>"' >> $BASH_ENV
+                        else
+                            echo 'export MM_MESSAGE="<< parameters.success_message >>"' >> $BASH_ENV
+                        fi
+                    fi
+                name: Mattermost - Prepare success message
+                when: on_success
+            - run:
+                command: |
+                    #!/bin/bash
+
+                    Send_notification() {
+                        if [ "<< parameters.only_for_branch >>" != "${CIRCLE_BRANCH}" ]; then
+                            echo "Not on << parameters.only_for_branch >> branch. Skipping."
+                            exit 0
+                        fi
+
+                        if [ -z "${MM_MESSAGE}" ]; then
+                            echo "No message set. Skipping."
+                            exit 0
+                        fi
+
+                        if [ -z "${MM_WEBHOOK_LUNES}" ]; then
+                            echo "NO MATTERMOST WEBHOOK SET"
+                            echo "Please add the environment variable \"MM_WEBHOOK_LUNES\" in the settings for this project."
+                            exit 1
+                        fi
+
+                        STATUS=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST -H 'Content-type: application/json' \
+                            --data \
+                            "{
+                              \"channel\": \"<< parameters.channel >>\",
+                              \"username\": \"circleci\",
+                              \"text\": \"${MM_MESSAGE}\"
+                            }" "${MM_WEBHOOK_LUNES}")
+
+                        if [ "$STATUS" -ne "200" ]; then
+                            echo "Notification not sent due to an error. Status: $STATUS. Please check the webhook URL"
+                            exit 1
+                        fi
+
+                        echo "Notification sent!"
+                        exit 0
+                      }
+
+                      Send_notification
+                name: Mattermost Status Alert
+                when: always
     persist_environment_variables:
         description: Writes the environment variables to the file 'environment_variables'. Make sure the file is persisted and has been attached.
         steps:
@@ -177,6 +257,7 @@ jobs:
                 root: android/attached_workspace
             - store_artifacts:
                 path: android/attached_workspace/app-release.apk
+            - notify
     build_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -216,6 +297,7 @@ jobs:
                 paths:
                     - app-release.ipa
                 root: ios/output/gym
+            - notify
     bump_version:
         docker:
             - image: circleci/node:14.17.0
@@ -248,6 +330,7 @@ jobs:
                         command: tools/git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
                         name: Bump git version
             - persist_environment_variables
+            - notify
     check:
         docker:
             - image: circleci/node:14.17.0
@@ -267,6 +350,7 @@ jobs:
             - run:
                 command: yarn test
                 name: Run unit tests
+            - notify
     deliver_android:
         docker:
             - image: circleci/android:api-29-node
@@ -294,13 +378,7 @@ jobs:
             - prepare_workspace
             - restore_environment_variables
             - restore_yarn_cache
-            - run:
-                command: bundle exec fastlane upload_to_playstore version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE} production_delivery:"<< parameters.production_delivery >>"
-                name: PlayStore Upload
-                working_directory: android
-            - run:
-                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
-                name: Sentry Upload
+            - notify
     deliver_browser_stack:
         docker:
             - image: circleci/android:api-29-node
@@ -334,6 +412,7 @@ jobs:
             - run:
                 command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
                 name: Undo raname ipa
+            - notify
     deliver_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -355,23 +434,7 @@ jobs:
             - run:
                 command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
                 name: Parse german ios release notes
-            - when:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-                        name: '[FL] App Store Connect Upload'
-                        working_directory: ios
-            - unless:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
-                        name: '[FL] TestFlight Upload'
-                        working_directory: ios
-            - run:
-                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
-                name: Sentry Upload
+            - notify
     move_release_notes:
         docker:
             - image: circleci/node:14.17.0
@@ -384,6 +447,51 @@ jobs:
             - run:
                 command: tools/move-release-notes move-to ${NEW_VERSION_NAME} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
                 name: Move release notes
+            - notify
+    notify_android:
+        docker:
+            - image: circleci/node:14.18.0
+        parameters:
+            production_delivery:
+                description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
+                type: boolean
+        resource_class: small
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
+            - run:
+                command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
+                name: Prepare artifact urls
+                working_directory: ~/attached_workspace
+            - run:
+                command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --android)" >> ${BASH_ENV}
+                name: Create release notes
+            - notify:
+                success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
+    notify_ios:
+        docker:
+            - image: circleci/node:14.18.0
+        parameters:
+            production_delivery:
+                description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
+                type: boolean
+        resource_class: small
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - restore_yarn_tools_cache
+            - run:
+                command: echo "export IOS_ARTIFACT_URLS='$(echo $(cat $(ls | grep ipa-url)))'" >> ${BASH_ENV}
+                name: Prepare artifact urls
+                working_directory: ~/attached_workspace
+            - run:
+                command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --ios)" >> ${BASH_ENV}
+                name: Create release notes
+            - notify:
+                success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on iOS!\n${RELEASE_NOTES}\n${IOS_ARTIFACT_URLS}
     promote_android:
         docker:
             - image: circleci/android:api-29-node
@@ -399,6 +507,7 @@ jobs:
                 command: bundle exec fastlane android playstore_promote
                 name: '[FL] Play Store Promotion'
                 working_directory: android
+            - notify
     promote_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -415,6 +524,7 @@ jobs:
                 command: bundle exec fastlane ios appstoreconnect_promote
                 name: '[FL] App Store Connect Promotion'
                 working_directory: ios
+            - notify
 parameters:
     run_commit:
         default: true
@@ -432,11 +542,16 @@ version: 2.1
 workflows:
     commit:
         jobs:
-            - check
+            - check:
+                context:
+                    - mattermost
             - bump_version:
+                context:
+                    - mattermost
                 delivery: none
             - build_android:
                 context:
+                    - mattermost
                     - credentials-repo
                     - credentials-lunes
                 requires:
@@ -444,6 +559,7 @@ workflows:
                     - bump_version
             - build_ios:
                 context:
+                    - mattermost
                     - fastlane-match
                     - tuerantuer-apple
                 requires:
@@ -451,6 +567,7 @@ workflows:
                     - bump_version
             - deliver_browser_stack:
                 context:
+                    - mattermost
                     - browserstack
                 requires:
                     - build_android
@@ -458,13 +575,17 @@ workflows:
         when: << pipeline.parameters.run_commit >>
     dev_delivery:
         jobs:
-            - check
+            - check:
+                context:
+                    - mattermost
             - bump_version:
                 context:
+                    - mattermost
                     - deliverino
                 delivery: development
             - build_android:
                 context:
+                    - mattermost
                     - credentials-repo
                     - credentials-lunes
                 requires:
@@ -472,6 +593,7 @@ workflows:
                     - bump_version
             - build_ios:
                 context:
+                    - mattermost
                     - fastlane-match
                     - tuerantuer-apple
                 requires:
@@ -479,12 +601,14 @@ workflows:
                     - bump_version
             - deliver_browser_stack:
                 context:
+                    - mattermost
                     - browserstack
                 requires:
                     - build_android
                     - build_ios
             - deliver_android:
                 context:
+                    - mattermost
                     - tuerantuer-google-play
                     - sentry
                 production_delivery: false
@@ -492,25 +616,47 @@ workflows:
                     - build_android
             - deliver_ios:
                 context:
+                    - mattermost
                     - tuerantuer-apple
                     - sentry
                 production_delivery: false
                 requires:
                     - build_ios
-            - move_release_notes:
+            - notify_android:
                 context:
+                    - mattermost
                     - deliverino
+                production_delivery: false
                 requires:
                     - deliver_android
+            - notify_ios:
+                context:
+                    - mattermost
+                    - deliverino
+                production_delivery: false
+                requires:
                     - deliver_ios
+            - move_release_notes:
+                context:
+                    - mattermost
+                    - deliverino
+                requires:
+                    - notify_android
+                    - notify_ios
         when: << pipeline.parameters.run_dev_delivery >>
     prod_delivery:
         jobs:
-            - check
+            - check:
+                context:
+                    - mattermost
             - bump_version:
+                context:
+                    - mattermost
+                    - deliverino
                 delivery: production
             - build_android:
                 context:
+                    - mattermost
                     - credentials-repo
                     - credentials-lunes
                 requires:
@@ -518,6 +664,7 @@ workflows:
                     - bump_version
             - build_ios:
                 context:
+                    - mattermost
                     - fastlane-match
                     - tuerantuer-apple
                 requires:
@@ -525,30 +672,49 @@ workflows:
                     - bump_version
             - deliver_android:
                 context:
+                    - mattermost
                     - tuerantuer-google-play
                 production_delivery: true
                 requires:
                     - build_android
             - deliver_ios:
                 context:
+                    - mattermost
                     - tuerantuer-apple
                 production_delivery: true
                 requires:
                     - build_ios
-            - move_release_notes:
+            - notify_android:
                 context:
+                    - mattermost
                     - deliverino
+                production_delivery: true
                 requires:
                     - deliver_android
+            - notify_ios:
+                context:
+                    - mattermost
+                    - deliverino
+                production_delivery: true
+                requires:
                     - deliver_ios
+            - move_release_notes:
+                context:
+                    - mattermost
+                    - deliverino
+                requires:
+                    - notify_android
+                    - notify_ios
         when: << pipeline.parameters.run_prod_delivery >>
     promote:
         jobs:
             - promote_android:
                 context:
+                    - mattermost
                     - tuerantuer-google-play
             - promote_ios:
                 context:
+                    - mattermost
                     - tuerantuer-apple
         when: << pipeline.parameters.run_promote >>
     version: 2

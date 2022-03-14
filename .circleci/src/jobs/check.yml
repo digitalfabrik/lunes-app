@@ -16,3 +16,4 @@ steps:
   - run:
       name: Run unit tests
       command: yarn test
+  - notify

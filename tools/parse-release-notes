@@ -1,14 +1,14 @@
 #!/usr/bin/env node
+import { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR, PLATFORM_ANDROID, PLATFORM_IOS } from './constants'
 
+import { DEFAULT_NOTES } from "./constants"
 const fs = require('fs')
-const { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR, PLATFORM_ANDROID, PLATFORM_IOS } = require('./constants')
 const { program } = require('commander')
 const yaml = require('js-yaml')
 
 const MAX_RELEASE_NOTES_LENGTH = 500
 
 const DEFAULT_LANGUAGE = 'de'
-const DEFAULT_NOTES = 'Wir haben hinter den Kulissen hart gearbeitet, um sicherzustellen, dass alles so funktioniert, wie es soll. Wenn Sie bemerken, dass etwas nicht funktioniert, lassen Sie es uns wissen!\n'
 
 program
   .option('--ios', 'include release notes for ios')

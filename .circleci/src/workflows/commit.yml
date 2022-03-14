@@ -1,10 +1,15 @@
 when: << pipeline.parameters.run_commit >>
 jobs:
-  - check
+  - check:
+      context:
+        - mattermost
   - bump_version:
+      context:
+        - mattermost
       delivery: none
   - build_android:
       context:
+        - mattermost
         - credentials-repo
         - credentials-lunes
       requires:
@@ -12,6 +17,7 @@ jobs:
         - bump_version
   - build_ios:
       context:
+        - mattermost
         - fastlane-match
         - tuerantuer-apple
       requires:
@@ -19,6 +25,7 @@ jobs:
         - bump_version
   - deliver_browser_stack:
       context:
+        - mattermost
         - browserstack
       requires:
         - build_android

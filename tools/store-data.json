@@ -1,0 +1,27 @@
+/*tbd {
+  "appstore": {
+    "de": {
+      "keywords": "Deutschland,Hilfe,Deutsch lernen,Regeln,Deutschkurs,Nachrichten,Beratung,Integration,Informationen",
+      "marketing_url": "https://integreat-app.de",
+      "privacy_url": "https://integreat-app.de/datenschutz",
+      "support_url": "https://integreat-app.de"
+    }
+  },
+  "common": {
+    "de": {
+      "name": "Integreat",
+      "description": "In Integreat finden Sie lokale Informationen, Veranstaltungen und Beratungsstellen. Wir helfen Ihnen den Überblick zu behalten. Die Informationen werden von Behörden und Organisationen selbst erstellt und laufend aktualisiert.\nKOSTENLOSE HILFE\nIntegreat können Sie kostenlos und ohne Werbung nutzen. Entwickelt wurde es von der gemeinnützigen Organisation \"Tür an Tür\" in Zusammenarbeit mit vielen Städten, Behörden und weiteren gemeinwohlorientierten Organisationen.\nVIELE FUNKTIONEN\nIntegreat ist Ihr digitaler Guide für Ihre Stadt und bietet einzigartige Funktionen:\n- Sie finden lokale Informationen, Veranstaltungen und weitere Angebote in einer App\n- Die lokalen Informationen werden von Ihrer Stadt selbst erstellt und aktualisiert\n- Über die Suchfunktion können Sie Informationen noch schneller finden\n- Im Bereich „Angebote“ finden Sie Arbeitsplätze und Ausbildungsplätze in Ihrer Nähe\n- Integreat zeigt Ihnen interessante Veranstaltungen in Ihrer Stadt an\n- Über Push-Nachrichten benachrichtigt Sie Ihre Stadt über wichtige Neuigkeiten\n- Sie können die Informationen und Veranstaltungen mit Ihren Bekannten teilen\n- Helfen Sie mit Integreat zu verbessern, indem Sie Feedback zur App und den lokalen Informationen geben\nKEIN DATENSAMMELN\nIntegreat sammelt keine Daten über Sie und Ihre Nutzung. Es wird nur gezählt, wie oft die lokalen Inhalte in einer Sprache geöffnet wurden, ohne dass wir Daten über Sie sammeln oder speichern.\nIntegreat benötigt von Ihnen wenige Berechtigungen, damit Sie Integreat bestmöglich nutzen können:\nSpeicher: Die lokalen Informationen über Ihre Stadt werden auf Ihrem Gerät gespeichert, damit Sie auch ohne Internetverbindung darauf zugreifen können\nStandort: Für die Nutzung der Karte in Integreat und die Auswahl der passenden Stadt hilft es, wenn Sie Ihren aktuellen Standort sehen können. Es werden keine Standortdaten ausgewertet.\nWLAN: Integreat lädt speicherintensive Inhalte nur herunter, wenn eine WLAN-Verbindung existiert. Dafür müssen wir prüfen können, ob eine WLAN-Verbindung existiert.",
+      "defaultReleaseNote": "Wir haben die App weiter für Sie verbessert und einige Fehler entfernt. Helfen Sie mit Integreat zu verbessern, indem Sie Feedback zur App und den lokalen Informationen geben"
+    }
+  },
+  "playstore": {
+    "de": {
+      "short_description": "Integreat hilft Ihnen, sich schnell in Ihrer neuen Stadt zurechtzufinden."
+    }
+  },
+  "screenshots": {
+    "de": {
+      "placeholder_key": "Integreat ist Ihr kostenloser Digitaler Guide"
+    }
+  }
+}*/

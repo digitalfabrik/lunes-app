@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const authenticate = require('./github-authentication')
-const { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR } = require('./constants')
+import { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR } from './constants'
 const { program } = require('commander')
 
 program
