@@ -4,13 +4,14 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { InfoIcon } from '../../../../assets/images'
+import { InfoCircleIcon } from '../../../../assets/images'
+import { ContentBackgroundLight } from '../../../components/text/Content'
 import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   arrow: {
-    backgroundColor: COLORS.lunesBlack
+    backgroundColor: COLORS.primary
   },
   overlay: {
     backgroundColor: 'transparent'
@@ -20,19 +21,16 @@ export const styles = StyleSheet.create({
 const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: ${prop => prop.theme.colors.lunesBlack};
+  background-color: ${prop => prop.theme.colors.primary};
   width: ${wp('80%')}px;
-  height: 50px;
-  padding: 9px 8px 9px 8px;
+  height: ${wp('15%')}px;
+  padding: ${props => props.theme.spacings.xs};
   border-radius: 2px;
 `
-const StyledMessage = styled.Text`
-  color: ${prop => prop.theme.colors.lunesWhite};
+const StyledMessage = styled(ContentBackgroundLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   width: ${wp('60%')}px;
-  margin-left: 8px;
+  margin-left: ${props => props.theme.spacings.xs};
 `
 
 export interface IPopoverProps {
@@ -42,6 +40,8 @@ export interface IPopoverProps {
 
 const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
   <Popover
+    // @ts-expect-error, used for testing purposes
+    testID='popover'
     isVisible={isVisible}
     onRequestClose={() => setIsPopoverVisible(false)}
     from={ref}
@@ -51,7 +51,7 @@ const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible
     verticalOffset={-10}
     backgroundStyle={styles.overlay}>
     <StyledContainer>
-      <InfoIcon width={30} height={30} />
+      <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
       <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
     </StyledContainer>
   </Popover>

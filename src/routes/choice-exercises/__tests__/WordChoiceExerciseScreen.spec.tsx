@@ -1,14 +1,21 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import { DocumentType } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
+
+jest.useFakeTimers()
+
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
@@ -27,7 +34,7 @@ describe('WordChoiceExerciseScreen', () => {
   })
 
   // at least 4 documents are needed to generate sufficient false answers
-  const testDocuments: DocumentType[] = [
+  const testDocuments: Document[] = [
     {
       audio: '',
       word: 'Hose',
@@ -75,7 +82,7 @@ describe('WordChoiceExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WordChoiceExercise'> = {
+  const route: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
     key: '',
     name: 'WordChoiceExercise',
     params: {
@@ -86,7 +93,7 @@ describe('WordChoiceExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: false
       }
     }
@@ -94,9 +101,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
 
-    const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)

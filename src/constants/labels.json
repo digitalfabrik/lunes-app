@@ -7,7 +7,8 @@
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
       "cancel": "Abbrechen",
       "confirm": "Bereich löschen"
-    }
+    },
+    "impressum": "Impressum"
   },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",
@@ -19,6 +20,13 @@
       "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
+    },
+    "qrCodeScanner": {
+      "noAuthorization": {
+        "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
+        "back": "Zurück",
+        "settings": "Einstellungen"
+      }
     }
   },
   "exercises": {
@@ -72,7 +80,14 @@
     "entries": "Eingaben",
     "viewEntries": "Eingaben anschauen",
     "show": "Zeige",
-    "of": "von"
+    "of": "von",
+    "share": {
+      "description": "Teile deine Ergebnisse!",
+      "button": "Ergebnisse teilen",
+      "message1": "Meine Ergebnisse für",
+      "message2": "in Lunes:",
+      "message3": "Wörter richtig. Und du?"
+    }
   },
   "general": {
     "header": {

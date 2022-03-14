@@ -1,20 +1,17 @@
-import { render, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
 
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import ImageCarousel from '../ImageCarousel'
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
+jest.mock('react-native/Libraries/Image/Image', () => ({
+  ...jest.requireActual('react-native/Libraries/Image/Image'),
+  getSize: (uri: string, success: (w: number, h: number) => void) => {
+    success(1234, 1234)
   }
-})
+}))
 
-describe('ImageCarousel ', () => {
+describe('ImageCarousel', () => {
   const images = [
     {
       id: 0,
@@ -29,14 +26,10 @@ describe('ImageCarousel ', () => {
     jest.clearAllMocks()
   })
 
-  const renderImageCarousel = (): RenderAPI => {
-    return render(<ImageCarousel images={images} />, { wrapper: wrapWithTheme })
-  }
-
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
   it('should display the images', async () => {
-    const { getByTestId, findAllByRole } = renderImageCarousel()
+    const { getByTestId, findAllByRole } = render(<ImageCarousel images={images} />)
 
     const row = getByTestId('Swipeable')
     expect(row).toBeTruthy()

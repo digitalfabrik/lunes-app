@@ -1,4 +1,4 @@
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import { getFromEndpoint } from '../../services/axios'
 import { loadGroupInfo } from '../useLoadGroupInfo'
@@ -20,9 +20,9 @@ const testData = [
 const expectedData = {
   ...testData[0],
   title: testData[0].name,
-  apiKey: apiKey,
+  apiKey,
   isLeaf: false,
-  isRoot: true,
+  parentTitle: null,
   numberOfChildren: testData[0].total_discipline_children,
   description: '',
   needsTrainingSetEndpoint: false

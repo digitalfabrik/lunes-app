@@ -1,13 +1,13 @@
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
+import { mocked } from 'jest-mock'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
-import { mocked } from 'ts-jest/utils'
 
 import { ARTICLES } from '../../constants/data'
-import { DocumentType } from '../../constants/endpoints'
+import { Document } from '../../constants/endpoints'
 import { stringifyDocument } from '../../services/helpers'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
 jest.mock('react-native-tts', () => ({
@@ -47,13 +47,11 @@ describe('AudioPlayer', () => {
     submittedAlternative = null,
     disabled = false
   }: {
-    document?: DocumentType
+    document?: Document
     submittedAlternative?: string | null
     disabled?: boolean
   }): RenderAPI =>
-    render(<AudioPlayer document={document} disabled={disabled} submittedAlternative={submittedAlternative} />, {
-      wrapper: wrapWithTheme
-    })
+    render(<AudioPlayer document={document} disabled={disabled} submittedAlternative={submittedAlternative} />)
 
   it('should initialize tts', async () => {
     renderAudioPlayer({})

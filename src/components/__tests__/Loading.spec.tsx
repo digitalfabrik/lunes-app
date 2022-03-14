@@ -1,25 +1,23 @@
-import { RenderAPI, render } from '@testing-library/react-native'
+import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import Loading from '../Loading'
 
-describe('Loading ', () => {
+describe('Loading', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   const childText = 'Children'
 
-  const renderLoading = (isLoading: boolean): RenderAPI => {
-    return render(
+  const renderLoading = (isLoading: boolean): RenderAPI =>
+    render(
       <Loading isLoading={isLoading}>
         <Text>{childText}</Text>
-      </Loading>,
-      { wrapper: wrapWithTheme }
+      </Loading>
     )
-  }
 
   it('should not render children when isLoading is true', () => {
     const { queryByText, getByTestId } = renderLoading(true)

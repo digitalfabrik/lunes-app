@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components/native'
 
-import { SquareIcon, StarIcon, CircleIcon, LinesIcon, SmileIcon } from '../../assets/images'
+import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
+import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
-  background-color: ${props => props.theme.colors.lunesBlack};
+  background-color: ${props => props.theme.colors.primary};
 `
 const HeaderStyle = styled.View`
-  background-color: ${props => props.theme.colors.lunesBlack};
+  background-color: ${props => props.theme.colors.primary};
   height: 91px;
   width: 100%;
 `
@@ -39,7 +40,8 @@ const VerticalLinesIcon = styled.View`
   width: 24.5px;
   height: 28px;
 `
-const SmileIconStyle = styled.View`
+
+const SmileIconStyle = styled.Pressable`
   position: absolute;
   width: 80px;
   height: 80px;
@@ -52,21 +54,24 @@ const Header = (): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SquareIconStyle>
-        <SquareIcon />
+        <HeaderSquareIcon />
       </SquareIconStyle>
       <StarIconStyle>
-        <StarIcon />
+        <HeaderStarIcon />
       </StarIconStyle>
       <CircleIconStyle>
-        <CircleIcon />
+        <HeaderCircleIcon />
       </CircleIconStyle>
       <VerticalLinesIcon>
-        <LinesIcon />
+        <HeaderLinesIcon />
       </VerticalLinesIcon>
       <SmileIconStyle>
-        <SmileIcon />
+        <SentryTestPressable>
+          <LunesIcon />
+        </SentryTestPressable>
       </SmileIconStyle>
     </HeaderStyle>
   </Wrapper>
 )
+
 export default Header

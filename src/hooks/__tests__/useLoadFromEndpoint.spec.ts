@@ -1,10 +1,12 @@
 import axios from 'axios'
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import { getFromEndpoint } from '../../services/axios'
 import { loadAsync } from '../useLoadAsync'
 
 jest.mock('axios', () => ({ get: jest.fn() }))
+
+jest.mock('axios-cache-interceptor', () => ({ setupCache: jest.fn() }))
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -13,9 +15,7 @@ beforeEach(() => {
 describe('getFromEndpoint', () => {
   it('should get data from endpoint', async () => {
     const data = 'myData'
-    mocked(axios.get).mockImplementationOnce(async () => {
-      return { data }
-    })
+    mocked(axios.get).mockImplementationOnce(async () => ({ data }))
 
     const path = 'abc'
     const responseData = await getFromEndpoint(path)
@@ -26,9 +26,7 @@ describe('getFromEndpoint', () => {
 
   it('should include api key in header', async () => {
     const data = 'myData'
-    mocked(axios.get).mockImplementationOnce(async () => {
-      return { data }
-    })
+    mocked(axios.get).mockImplementationOnce(async () => ({ data }))
 
     const path = 'abc'
     const apiKey = 'my_api_key'
@@ -58,7 +56,7 @@ describe('loadFromEndpoint', () => {
 
   it('should set everything correctly if loading from endpoint throws an error', async () => {
     const error = new Error('myError')
-    const request = async (): Promise<void> => await Promise.reject(error)
+    const request = async (): Promise<void> => Promise.reject(error)
     await loadAsync(request, undefined, setData, setError, setLoading)
     expect(setError).toHaveBeenCalledTimes(1)
     expect(setError).toHaveBeenCalledWith(error)

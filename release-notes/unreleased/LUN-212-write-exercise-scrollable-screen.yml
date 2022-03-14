@@ -1,0 +1,6 @@
+issue_key: LUN-212
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Verbesserte Darstellung der Schreibübung

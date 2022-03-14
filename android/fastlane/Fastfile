@@ -96,12 +96,12 @@ platform :android do
         end
 
         ensure_env_vars(
-            env_vars: ["BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
+            env_vars: ["BROWSERSTACK_USERNAME_LUNES", "BROWSERSTACK_ACCESS_KEY_LUNES"]
         )
 
         upload_to_browserstack_app_live(
-            browserstack_username: ENV["BROWSERSTACK_USERNAME"],
-            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+            browserstack_username: ENV["BROWSERSTACK_USERNAME_LUNES"],
+            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY_LUNES"],
             file_path: "#{ENV['HOME']}/#{file_path}"
         )
     end

@@ -1,24 +1,28 @@
 import { RouteProp } from '@react-navigation/native'
-import { render } from '@testing-library/react-native'
 import React from 'react'
 import { KeyboardAvoidingViewProps } from 'react-native'
 
 import labels from '../../../constants/labels.json'
-import { DocumentTypeFromServer } from '../../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { DocumentFromServer } from '../../../hooks/useLoadDocuments'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData, mockUseLoadAsyncWithError } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
-jest.mock('react-native/Libraries/Image/Image', () => {
-  return {
-    ...jest.requireActual('react-native/Libraries/Image/Image'),
-    getSize: (uri: string, success: (w: number, h: number) => void) => {
-      success(1234, 1234)
-    }
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
+
+jest.mock('react-native/Libraries/Image/Image', () => ({
+  ...jest.requireActual('react-native/Libraries/Image/Image'),
+  getSize: (uri: string, success: (w: number, h: number) => void) => {
+    success(1234, 1234)
   }
-})
+}))
+
+jest.mock('react-native-popover-view')
 
 jest.mock('@react-navigation/elements')
 
@@ -40,7 +44,7 @@ describe('WriteExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const testDocuments: DocumentTypeFromServer[] = [
+  const testDocuments: DocumentFromServer[] = [
     {
       audio: '',
       word: 'Arbeitshose',
@@ -52,7 +56,7 @@ describe('WriteExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const route: RouteProp<RoutesParams, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {
@@ -63,25 +67,22 @@ describe('WriteExerciseScreen', () => {
         isLeaf: true,
         description: '',
         icon: '',
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: false
       }
     }
   }
 
-  it('should show network error', () => {
-    mockUseLoadAsyncWithError('Network Error')
-    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
-    expect(findByText(labels.general.error.noWifi)).toBeDefined()
+  it('should show network error', async () => {
+    const errorMessage = 'Network Error'
+    mockUseLoadAsyncWithError(errorMessage)
+    const { findByText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
+    expect(await findByText(`${labels.general.error.noWifi} (${errorMessage})`)).toBeDefined()
   })
 
   it('should show exercise if loaded successfully', () => {
     mockUseLoadAsyncWithData(testDocuments)
-    const { getByText, getByPlaceholderText } = render(<WriteExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByText, getByPlaceholderText } = render(<WriteExerciseScreen route={route} navigation={navigation} />)
     expect(getByText(labels.exercises.write.checkInput)).toBeDefined()
     expect(getByPlaceholderText(labels.exercises.write.insertAnswer)).toBeDefined()
   })

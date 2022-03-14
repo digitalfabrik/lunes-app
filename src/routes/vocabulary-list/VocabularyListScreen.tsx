@@ -6,15 +6,15 @@ import styled from 'styled-components/native'
 
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { DocumentType } from '../../constants/endpoints'
+import { Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
-import { RoutesParamsType } from '../../navigation/NavigationTypes'
+import { RoutesParams } from '../../navigation/NavigationTypes'
 import VocabularyListItem from './components/VocabularyListItem'
 import VocabularyListModal from './components/VocabularyListModal'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
   padding-bottom: 0;
@@ -22,21 +22,21 @@ const Root = styled.View`
 
 const StyledList = styled(FlatList)`
   width: 100%;
-` as ComponentType as new () => FlatList<DocumentType>
+` as ComponentType as new () => FlatList<Document>
 
-interface VocabularyListScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'VocabularyList'>
-  navigation: StackNavigationProp<RoutesParamsType, 'VocabularyList'>
+interface VocabularyListScreenProps {
+  route: RouteProp<RoutesParams, 'VocabularyList'>
+  navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }
 
-const VocabularyListScreen = ({ route }: VocabularyListScreenPropsType): JSX.Element => {
+const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element => {
   const { discipline } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
   const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
 
-  const renderItem = ({ item, index }: { item: DocumentType; index: number }): JSX.Element => (
+  const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem
       document={item}
       setIsModalVisible={() => {

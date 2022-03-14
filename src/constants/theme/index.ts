@@ -1,14 +1,17 @@
 import { COLORS } from './colors'
 import { FONTS } from './fonts'
+import { SPACINGS } from './spacings'
 
-export interface ThemeType {
+export interface Theme {
   colors: typeof COLORS
   fonts: typeof FONTS
+  spacings: typeof SPACINGS
 }
 
-const theme: ThemeType = {
+const theme: Theme = {
   colors: COLORS,
-  fonts: FONTS
+  fonts: FONTS,
+  spacings: SPACINGS
 }
 
 export default theme

@@ -1,4 +1,4 @@
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 
 import { getFromEndpoint } from '../../services/axios'
 import { loadDocuments } from '../useLoadDocuments'
@@ -90,7 +90,7 @@ const discipline = {
   isLeaf: false,
   description: '',
   icon: '',
-  isRoot: true,
+  parentTitle: null,
   needsTrainingSetEndpoint: false
 }
 

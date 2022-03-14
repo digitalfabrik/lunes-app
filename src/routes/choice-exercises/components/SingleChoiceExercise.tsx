@@ -3,47 +3,36 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
-import { ArrowNext } from '../../../../assets/images'
+import { ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import ServerResponseHandler from '../../../components/ServerResponseHandler'
 import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import { AlternativeWordType, DocumentType } from '../../../constants/endpoints'
+import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { ReturnType } from '../../../hooks/useLoadAsync'
-import { DocumentResultType, RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { Return } from '../../../hooks/useLoadAsync'
+import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
 `
 
 const ButtonContainer = styled.View`
   align-items: center;
-  margin: 7% 0;
+  margin: ${props => `${props.theme.spacings.sm} 0`};
 `
 
-export const LightLabelInput = styled.Text<{ styledInput?: string }>`
-  text-align: center;
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  color: ${prop =>
-    prop.styledInput ? props => props.theme.colors.lunesBlackLight : props => props.theme.colors.lunesWhite};
-`
-
-interface SingleChoiceExercisePropsType {
-  response: ReturnType<DocumentType[]>
-  documentToAnswers: (document: DocumentType) => Answer[]
-  navigation: StackNavigationProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  route: RouteProp<RoutesParamsType, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+interface SingleChoiceExerciseProps {
+  response: Return<Document[]>
+  documentToAnswers: (document: Document) => Answer[]
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   exerciseKey: number
 }
 
@@ -53,11 +42,11 @@ const ChoiceExerciseScreen = ({
   navigation,
   route,
   exerciseKey
-}: SingleChoiceExercisePropsType): ReactElement => {
+}: SingleChoiceExerciseProps): ReactElement => {
   const [currentWord, setCurrentWord] = useState<number>(0)
-  const [newDocuments, setNewDocuments] = useState<DocumentType[] | null>(null)
+  const [newDocuments, setNewDocuments] = useState<Document[] | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
-  const [results, setResults] = useState<DocumentResultType[]>([])
+  const [results, setResults] = useState<DocumentResult[]>([])
   const [answers, setAnswers] = useState<Answer[]>([])
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [correctAnswer, setCorrectAnswer] = useState<Answer | null>(null)
@@ -85,12 +74,12 @@ const ChoiceExerciseScreen = ({
     }
   }, [documents, currentWord])
 
-  const onExerciseFinished = (results: DocumentResultType[]): void => {
-    navigation.navigate('InitialSummary', {
+  const onExerciseFinished = (results: DocumentResult[]): void => {
+    navigation.navigate('ExerciseFinished', {
       result: {
         discipline: { ...route.params.discipline },
         exercise: exerciseKey,
-        results: results
+        results
       }
     })
     setCurrentWord(0)
@@ -99,8 +88,18 @@ const ChoiceExerciseScreen = ({
 
   const count = documents?.length ?? 0
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWordType, answer2: Answer): boolean => {
-    return answer1.article.id === answer2.article.id && answer1.word === answer2.word
+  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
+    answer1.article.id === answer2.article.id && answer1.word === answer2.word
+
+  const updateResult = (result: DocumentResult): void => {
+    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
+    const newResults = results
+    if (indexOfCurrentResult !== -1) {
+      newResults[indexOfCurrentResult] = result
+    } else {
+      newResults.push(result)
+    }
+    setResults(newResults)
   }
 
   const onClickAnswer = (clickedAnswer: Answer): void => {
@@ -132,13 +131,6 @@ const ChoiceExerciseScreen = ({
     }, correctAnswerDelay)
   }
 
-  const updateResult = (result: DocumentResultType): void => {
-    const indexOfCurrentResult = results.findIndex(elem => elem.id === currentDocument?.id)
-    const newResults = results
-    indexOfCurrentResult !== -1 ? (newResults[indexOfCurrentResult] = result) : newResults.push(result)
-    setResults(newResults)
-  }
-
   const onFinishWord = (): void => {
     const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
 
@@ -147,8 +139,10 @@ const ChoiceExerciseScreen = ({
       setSelectedAnswer(null)
       onExerciseFinished(results)
       setResults([])
+    } else if (needsToBeRepeated) {
+      tryLater()
     } else {
-      needsToBeRepeated ? tryLater() : setCurrentWord(prevState => prevState + 1)
+      setCurrentWord(prevState => prevState + 1)
     }
     setSelectedAnswer(null)
     setDelayPassed(false)
@@ -182,7 +176,7 @@ const ChoiceExerciseScreen = ({
               {selectedAnswer !== null ? (
                 <Button
                   label={buttonLabel}
-                  iconLeft={ArrowNext}
+                  iconRight={ArrowRightIcon}
                   onPress={onFinishWord}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
@@ -190,7 +184,7 @@ const ChoiceExerciseScreen = ({
                 !lastWord && (
                   <Button
                     label={labels.exercises.tryLater}
-                    iconRight={ArrowNext}
+                    iconRight={ArrowRightIcon}
                     onPress={tryLater}
                     buttonTheme={BUTTONS_THEME.text}
                   />

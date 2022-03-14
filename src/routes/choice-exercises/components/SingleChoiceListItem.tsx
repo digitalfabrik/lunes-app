@@ -1,116 +1,109 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/native'
 
+import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Answer, Article } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { getArticleColor } from '../../../services/helpers'
 
-const StyledText = styled.Text`
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-style: normal;
-`
-
 const Container = styled.TouchableOpacity<StyledListElementProps>`
   height: 23.5%;
-  margin-bottom: 1.5%;
+  margin-bottom: ${props => props.theme.spacings.xxs};
   border-radius: 2px;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
-    } else {
-      return '1px'
     }
+    return '1px'
   }};
   border-style: solid;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  border-color: ${props => props.theme.colors.lunesBlackUltralight};
+  border-color: ${props => props.theme.colors.disabled};
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
-    } else if (props.correct && (props.selected || props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.white
+      return props.theme.colors.primary
     }
+    if (props.correct && (props.selected || props.delayPassed)) {
+      return props.theme.colors.correct
+    }
+    if (props.selected) {
+      return props.theme.colors.incorrect
+    }
+    return props.theme.colors.backgroundAccent
   }};
   shadow-color: ${props => {
     if (props.correct) {
-      return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected && !props.correct) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.shadow
+      return props.theme.colors.correct
     }
+    if (props.selected) {
+      return props.theme.colors.incorrect
+    }
+    return props.theme.colors.shadow
   }};
   ${props => {
-    if (props.pressed || props.selected || (props.correct && props.selected) || (props.correct && props.delayPassed)) {
+    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return css`
         elevation: 6;
         shadow-opacity: 0.5;
       `
-    } else {
-      return css`
-        elevation: 0;
-        shadow-opacity: 0;
-      `
     }
+    return css`
+      elevation: 0;
+      shadow-opacity: 0;
+    `
   }};
   shadow-radius: 5px;
   shadow-offset: 5px 5px;
 `
 
 const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
-  width: 11.5%;
-  height: 38%;
-  border-radius: 10px;
+  padding: ${props => `2px ${props.theme.spacings.xs}`};
+  border-radius: ${props => props.theme.spacings.sm};
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 3%;
-  margin-left: 3.5%;
+  margin-right: ${props => props.theme.spacings.sm};
+  margin-left: ${props => props.theme.spacings.sm};
   background-color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
-    } else if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
-    } else {
-      return getArticleColor(props.article)
+      return props.theme.colors.background
     }
+    if (props.selected || (props.correct && props.delayPassed)) {
+      return props.theme.colors.primary
+    }
+    return getArticleColor(props.article)
   }};
 `
 
-const ArticleText = styled(StyledText)<StyledListElementProps>`
+const ArticleText = styled(ContentSecondary)<StyledListElementProps>`
   text-align: center;
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesBlack
-    } else if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesFunctionalCorrectDark
-    } else if (props.selected) {
-      return props.theme.colors.lunesFunctionalIncorrectDark
-    } else {
-      return props.theme.colors.lunesGreyDark
+      return props.theme.colors.primary
     }
+    if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
+      return props.theme.colors.correct
+    }
+    if (props.selected) {
+      return props.theme.colors.incorrect
+    }
+    return props.theme.colors.text
   }};
 `
 
-const Word = styled(StyledText)<StyledListElementProps>`
+const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
   color: ${props => {
     if (props.pressed) {
-      return props.theme.colors.lunesWhite
-    } else if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.lunesBlack
-    } else {
-      return props.theme.colors.lunesGreyDark
+      return props.theme.colors.background
     }
+    if (props.selected || (props.correct && props.delayPassed)) {
+      return props.theme.colors.primary
+    }
+    return props.theme.colors.text
   }};
 `
 
@@ -121,7 +114,7 @@ const Overlay = styled.View`
   height: 100%;
 `
 
-export interface SingleChoiceListItemPropsType {
+export interface SingleChoiceListItemProps {
   answer: Answer
   onClick: (answer: Answer) => void
   correct: boolean
@@ -146,7 +139,7 @@ const SingleChoiceListItem = ({
   anyAnswerSelected,
   delayPassed,
   disabled = false
-}: SingleChoiceListItemPropsType): JSX.Element => {
+}: SingleChoiceListItemProps): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const addOpacity =

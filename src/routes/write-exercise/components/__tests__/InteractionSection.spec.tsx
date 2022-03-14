@@ -1,11 +1,21 @@
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import { DocumentResultType } from '../../../../navigation/NavigationTypes'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
+
+jest.mock('react-native-sound-player', () => ({
+  addEventListener: jest.fn(() => ({ remove: jest.fn() }))
+}))
+
+jest.mock('react-native-popover-view', () => ({
+  __esModule: true,
+  default: 'Popover',
+  PopoverPlacement: 'top'
+}))
 
 describe('InteractionSection', () => {
   const storeResult = jest.fn()
@@ -28,16 +38,14 @@ describe('InteractionSection', () => {
     word: 'Spachtel'
   }
 
-  const renderInteractionSection = (documentWithResult: DocumentResultType, isAnswerSubmitted: boolean): RenderAPI => {
-    return render(
+  const renderInteractionSection = (documentWithResult: DocumentResult, isAnswerSubmitted: boolean): RenderAPI =>
+    render(
       <InteractionSection
         documentWithResult={documentWithResult}
         isAnswerSubmitted={isAnswerSubmitted}
         storeResult={storeResult}
-      />,
-      { wrapper: wrapWithTheme }
+      />
     )
-  }
 
   it('should render correctly if not submitted answer yet', () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(
@@ -53,10 +61,8 @@ describe('InteractionSection', () => {
     expect(queryByText(labels.exercises.write.checkInput)).toBeNull()
   })
 
-  // will be fixed in LUN-230
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should show popup if article missing', async () => {
-    const { getByText, getByPlaceholderText } = renderInteractionSection(
+  it('should show popup if article missing', async () => {
+    const { getByText, getByPlaceholderText, getByTestId } = renderInteractionSection(
       { ...document, result: null, numberOfTries: 0 },
       false
     )
@@ -64,6 +70,6 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'Spachtel')
     const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
-    await waitFor(() => expect(getByText(labels.exercises.write.feedback.articleMissing)).toBeDefined())
+    await waitFor(() => expect(getByTestId('popover').props.isVisible).toBeTruthy())
   })
 })

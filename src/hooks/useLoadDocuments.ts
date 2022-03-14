@@ -1,23 +1,24 @@
 import { ARTICLES } from '../constants/data'
-import { DisciplineType, DocumentType, ENDPOINTS } from '../constants/endpoints'
+import { Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import useLoadAsync, { ReturnType } from './useLoadAsync'
+import { shuffleArray } from '../services/helpers'
+import useLoadAsync, { Return } from './useLoadAsync'
 
-export interface AlternativeWordTypeFromServer {
+export interface AlternativeWordFromServer {
   article: number
   alt_word: string
 }
 
-export interface DocumentTypeFromServer {
+export interface DocumentFromServer {
   id: number
   word: string
   article: number
   document_image: Array<{ id: number; image: string }>
   audio: string
-  alternatives: AlternativeWordTypeFromServer[]
+  alternatives: AlternativeWordFromServer[]
 }
 
-const formatServerResponse = (documents: DocumentTypeFromServer[]): DocumentType[] =>
+const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
   documents.map(document => ({
     ...document,
     article: ARTICLES[document.article],
@@ -25,16 +26,21 @@ const formatServerResponse = (documents: DocumentTypeFromServer[]): DocumentType
       article: ARTICLES[it.article],
       word: it.alt_word
     }))
-  })) ?? []
+  }))
 
-export const loadDocuments = async (discipline: DisciplineType): Promise<DocumentType[]> => {
+export const loadDocuments = async (discipline: Discipline): Promise<Document[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
 
-  const response = await getFromEndpoint<DocumentTypeFromServer[]>(url, discipline.apiKey)
+  const response = await getFromEndpoint<DocumentFromServer[]>(url, discipline.apiKey)
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: DisciplineType): ReturnType<DocumentType[]> =>
-  useLoadAsync(loadDocuments, discipline)
+const useLoadDocuments = (discipline: Discipline, shuffle = false): Return<Document[]> => {
+  const documents = useLoadAsync(loadDocuments, discipline)
+  if (shuffle && documents.data) {
+    shuffleArray(documents.data)
+  }
+  return documents
+}
 
 export default useLoadDocuments

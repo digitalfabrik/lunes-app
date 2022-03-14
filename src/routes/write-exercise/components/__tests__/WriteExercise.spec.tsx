@@ -1,17 +1,26 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render, RenderAPI, waitFor } from '@testing-library/react-native'
+import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import { RoutesParamsType } from '../../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
-import wrapWithTheme from '../../../../testing/wrapWithTheme'
+import render from '../../../../testing/render'
 import WriteExercise from '../WriteExercise'
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
+jest.mock('react-native-popover-view')
+
+jest.mock('react-native/Libraries/Image/Image', () => ({
+  ...jest.requireActual('react-native/Libraries/Image/Image'),
+  getSize: (uri: string, success: (w: number, h: number) => void) => {
+    success(1234, 1234)
+  }
+}))
 
 jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
@@ -60,7 +69,7 @@ describe('WriteExercise', () => {
   ]
 
   const navigation = createNavigationMock<'WriteExercise'>()
-  const route: RouteProp<RoutesParamsType, 'WriteExercise'> = {
+  const route: RouteProp<RoutesParams, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {
@@ -71,17 +80,14 @@ describe('WriteExercise', () => {
         icon: '',
         numberOfChildren: 2,
         isLeaf: true,
-        isRoot: false,
+        parentTitle: 'parent',
         needsTrainingSetEndpoint: true
       }
     }
   }
 
-  const renderWriteExercise = (): RenderAPI => {
-    return render(<WriteExercise documents={documents} route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
-  }
+  const renderWriteExercise = (): RenderAPI =>
+    render(<WriteExercise documents={documents} route={route} navigation={navigation} />)
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()
@@ -155,44 +161,44 @@ describe('WriteExercise', () => {
     fireEvent.press(getByText(labels.exercises.showResults))
   })
 
-  const evaluate = async (input: string, expectedFeedback: string): Promise<void> => {
+  const evaluate = (input: string, expectedFeedback: string) => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
-    await fireEvent.changeText(inputField, input)
-    const button = await getByText(labels.exercises.write.checkInput)
-    await fireEvent.press(button)
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, input)
+    const button = getByText(labels.exercises.write.checkInput)
+    fireEvent.press(button)
     expect(getByText(expectedFeedback.replace('\n', ''))).toBeDefined()
   }
 
-  it('should show correct-feedback for correct solution', async () => {
-    await evaluate('Der Spachtel', labels.exercises.write.feedback.correct)
+  it('should show correct-feedback for correct solution', () => {
+    evaluate('Der Spachtel', labels.exercises.write.feedback.correct)
   })
 
-  it('should show correct-feedback for alternative article', async () => {
-    await evaluate('Die Spachtel', labels.exercises.write.feedback.correct)
+  it('should show correct-feedback for alternative article', () => {
+    evaluate('Die Spachtel', labels.exercises.write.feedback.correct)
   })
 
-  it('should show correct-feedback for alternative solution', async () => {
-    await evaluate('Die Alternative', labels.exercises.write.feedback.correct)
+  it('should show correct-feedback for alternative solution', () => {
+    evaluate('Die Alternative', labels.exercises.write.feedback.correct)
   })
 
-  it('should show almost correct feedback', async () => {
+  it('should show almost correct feedback', () => {
     const input = 'Die Spachtl'
-    await evaluate(
+    evaluate(
       input,
       `${labels.exercises.write.feedback.almostCorrect1} „${input}“ ${labels.exercises.write.feedback.almostCorrect2}`
     )
   })
 
-  it('should show wrong feedback', async () => {
-    await evaluate('Das Falsche', `${labels.exercises.write.feedback.wrong}`)
+  it('should show wrong feedback', () => {
+    evaluate('Das Falsche', `${labels.exercises.write.feedback.wrong}`)
   })
 
-  it('should play audio if available and no alternative solution submitted', async () => {
+  it('should play audio if available and no alternative solution submitted', () => {
     const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
-    const inputField = await getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Der Spachtel')
-    const button = await getByText(labels.exercises.write.checkInput)
+    const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
 
     // Play audio

@@ -1,61 +1,61 @@
-import { ExerciseKeyType, ResultType, SimpleResultType } from '../constants/data'
-import { DisciplineType, DocumentsType, DocumentType } from '../constants/endpoints'
+import { ExerciseKey, Result, SimpleResult } from '../constants/data'
+import { Discipline, Documents, Document } from '../constants/endpoints'
 
-export interface DocumentResultType extends DocumentType {
-  result: SimpleResultType | null
+export interface DocumentResult extends Document {
+  result: SimpleResult | null
   numberOfTries: number
 }
 
-export type CountsType = {
-  [key in SimpleResultType]: number
+export type Counts = {
+  [key in SimpleResult]: number
 } & {
   total: number
 }
 
 interface ResultScreenData {
-  discipline: DisciplineType
-  exercise: ExerciseKeyType
-  results: DocumentResultType[]
-  retryData?: { data: DocumentsType }
+  discipline: Discipline
+  exercise: ExerciseKey
+  results: DocumentResult[]
+  retryData?: { data: Documents }
 }
 
-// https://github.com/Microsoft/TypeScript/issues/15300
+// https://github.com/Microsoft/Script/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type RoutesParamsType = {
+export type RoutesParams = {
   Home: undefined
   AddCustomDiscipline: undefined
   DisciplineSelection: {
-    discipline: DisciplineType
-    parentTitle?: string
+    discipline: Discipline
   }
   Exercises: {
-    discipline: DisciplineType
+    discipline: Discipline
   }
   VocabularyList: {
-    discipline: DisciplineType
+    discipline: Discipline
   }
   WordChoiceExercise: {
-    discipline: DisciplineType
+    discipline: Discipline
   }
   ArticleChoiceExercise: {
-    discipline: DisciplineType
+    discipline: Discipline
   }
   WriteExercise: {
-    discipline: DisciplineType
-    retryData?: { data: DocumentsType }
+    discipline: Discipline
+    retryData?: { data: Documents }
   }
-  InitialSummary: {
+  ExerciseFinished: {
     result: ResultScreenData
   }
-  ResultsOverview: {
+  Result: {
     result: ResultScreenData
   }
-  ResultScreen: {
+  ResultDetail: {
     result: ResultScreenData
-    resultType: ResultType
-    counts: CountsType
+    resultType: Result
+    counts: Counts
   }
   CorrectResults: undefined
   IncorrectResults: undefined
   AlmostCorrectResults: undefined
+  Imprint: undefined
 }

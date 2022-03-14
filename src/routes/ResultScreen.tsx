@@ -1,30 +1,56 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { ComponentType, ReactElement } from 'react'
+import { FlatList, StatusBar, StyleSheet } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CircularFinishIcon, ArrowNext, RepeatIcon } from '../../assets/images'
+import { DoubleCheckIcon, RepeatIcon } from '../../assets/images'
 import Button from '../components/Button'
-import Loading from '../components/Loading'
+import ListItem from '../components/ListItem'
 import Title from '../components/Title'
-import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
+import Trophy from '../components/Trophy'
+import { SubheadingPrimary } from '../components/text/Subheading'
+import { BUTTONS_THEME, ExerciseKeys, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
-import { DocumentResultType, RoutesParamsType } from '../navigation/NavigationTypes'
-import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import { Counts, RoutesParams } from '../navigation/NavigationTypes'
+import ShareButton from './exercise-finished/components/ShareButton'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.lunesWhite};
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
-  width: 100%;
-  padding-bottom: 0;
+  align-items: center;
+  padding-left: ${props => props.theme.spacings.sm};
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const StyledList = styled(FlatList)`
   flex-grow: 0;
   width: 100%;
-  margin-bottom: 6%;
-` as ComponentType as new () => FlatList<DocumentResultType>
+  margin-bottom: ${props => props.theme.spacings.md};
+` as ComponentType as new () => FlatList<Result>
+
+const HeaderText = styled(SubheadingPrimary)`
+  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
+  text-transform: uppercase;
+  margin-right: ${props => props.theme.spacings.xs};
+`
+const RightHeader = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  shadow-opacity: 0;
+  elevation: 0;
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
+  border-bottom-width: 1px;
+  margin-right: ${props => props.theme.spacings.sm};
+`
+const StyledTitle = styled(Title)`
+  elevation: 0;
+  border-bottom-color: ${prop => prop.theme.colors.disabled};
+  border-bottom-width: 1px;
+`
 
 export const styles = StyleSheet.create({
   footer: {
@@ -33,99 +59,102 @@ export const styles = StyleSheet.create({
   }
 })
 
-interface ResultScreenPropsType {
-  route: RouteProp<RoutesParamsType, 'ResultScreen'>
-  navigation: StackNavigationProp<RoutesParamsType, 'ResultScreen'>
+interface Props {
+  route: RouteProp<RoutesParams, 'Result'>
+  navigation: StackNavigationProp<RoutesParams, 'Result'>
 }
 
-const ResultScreen = ({ route, navigation }: ResultScreenPropsType): JSX.Element => {
-  const { result, counts, resultType } = route.params
-  const { exercise } = result
-  const [entries, setEntries] = React.useState<DocumentResultType[]>([])
-  const [isLoading, setIsLoading] = React.useState(true)
-  const { Icon, title, order } = resultType
+const ResultScreen = ({ navigation, route }: Props): ReactElement => {
+  const { exercise, results, discipline } = route.params.result
+  const { level, description, title } = EXERCISES[exercise]
+  const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
-  let nextResultType = RESULTS.find(elem => elem.order === (order + 1) % RESULTS.length) ?? RESULTS[0]
-  // TODO will be adjusted in LUN-222
-  if (nextResultType.key === 'similar') {
-    nextResultType = RESULTS[2]
+  // Set only height for tablets since header doesn't scale auto
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
+
+  const repeatExercise = (): void => {
+    navigation.navigate(EXERCISES[exercise].nextScreen, {
+      discipline,
+      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    })
   }
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setEntries(result.results.filter(({ result }: DocumentResultType) => result === resultType.key))
-      navigation.setOptions({
-        headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', result)}>
-            <CircularFinishIcon />
-          </TouchableOpacity>
-        )
-      })
-
-      setIsLoading(false)
-    }, [navigation, resultType, result])
-  )
-
-  const Header = (
-    <Title
-      titleIcon={<Icon width={38} height={38} />}
-      title={` \n${title} ${labels.results.entries}`}
-      description={`${counts[resultType.key]} ${labels.results.of} ${counts.total} ${labels.general.words}`}
-    />
-  )
-
-  const Item = ({ item }: { item: DocumentResultType }): JSX.Element => <VocabularyListItem document={item} />
-
-  const repeatIncorrectEntries = (): void =>
-    navigation.navigate('WriteExercise', {
-      discipline: { ...result.discipline },
-      retryData: { data: entries }
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <RightHeader
+          onPress={() =>
+            navigation.navigate('Exercises', {
+              discipline: { ...discipline }
+            })
+          }>
+          <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
+          <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
+        </RightHeader>
+      ),
+      headerRightContainerStyle: { flex: 1 },
+      headerStyle: { height: headerHeight }
     })
 
-  const label = `${resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} ${
-    labels.results.viewEntries
-  }`
+    setCounts({
+      total: results.length,
+      correct: results.filter(({ result }) => result === 'correct').length,
+      incorrect: results.filter(({ result }) => result === 'incorrect').length,
+      similar: results.filter(({ result }) => result === 'similar').length
+    })
+  }, [results, navigation, discipline])
 
-  const retryButton =
-    entries.length > 0 && ['similar', 'incorrect'].includes(resultType.key) ? (
-      <Button
-        label={label}
-        onPress={repeatIncorrectEntries}
-        buttonTheme={BUTTONS_THEME.contained}
-        iconLeft={RepeatIcon}
-      />
-    ) : null
+  const Header = (
+    <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
+      <Trophy level={level} />
+    </StyledTitle>
+  )
+  const navigateToResult = (item: Result) => {
+    navigation.navigate('ResultDetail', {
+      result: { ...route.params.result },
+      resultType: item,
+      counts
+    })
+  }
+
+  const Item = ({ item }: { item: Result }): ReactElement | null => {
+    const hideAlmostCorrect = item.key === SIMPLE_RESULTS.similar // TODO will be adjusted in LUN-222
+    if (hideAlmostCorrect) {
+      return null
+    }
+
+    const count = counts[item.key]
+
+    const description = `${count} ${labels.results.of} ${counts.total} ${labels.general.words}`
+    const icon = <item.Icon width={wp('7%')} height={wp('7%')} />
+
+    return <ListItem title={item.title} icon={icon} description={description} onPress={() => navigateToResult(item)} />
+  }
 
   const Footer = (
     <>
-      {exercise === ExerciseKeys.writeExercise && retryButton}
       <Button
-        onPress={() =>
-          navigation.navigate('ResultScreen', {
-            ...route.params,
-            resultType: nextResultType
-          })
-        }
-        label={`${labels.results.show} ${nextResultType.title} ${labels.results.entries}`}
-        iconLeft={ArrowNext}
-        buttonTheme={BUTTONS_THEME.text}
+        label={labels.results.retryExercise}
+        iconLeft={RepeatIcon}
+        onPress={repeatExercise}
+        buttonTheme={BUTTONS_THEME.contained}
       />
+      <ShareButton discipline={discipline} results={results} />
     </>
   )
 
   return (
     <Root>
-      <Loading isLoading={isLoading}>
-        <StyledList
-          data={entries}
-          ListHeaderComponent={Header}
-          renderItem={Item}
-          keyExtractor={item => `${item.id}`}
-          showsVerticalScrollIndicator={false}
-          ListFooterComponent={Footer}
-          ListFooterComponentStyle={styles.footer}
-        />
-      </Loading>
+      <StatusBar barStyle='dark-content' />
+      <StyledList
+        data={RESULTS}
+        ListHeaderComponent={Header}
+        renderItem={Item}
+        keyExtractor={({ key }) => key}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={Footer}
+        ListFooterComponentStyle={styles.footer}
+      />
     </Root>
   )
 }

@@ -1,88 +1,89 @@
-import { fireEvent, render, RenderAPI } from '@testing-library/react-native'
+import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
-import { ArrowBack, ArrowNext } from '../../../assets/images'
+import { ArrowLeftCircleIconWhite, ArrowRightIcon } from '../../../assets/images'
 import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
-import wrapWithTheme from '../../testing/wrapWithTheme'
+import render from '../../testing/render'
 import Button from '../Button'
 
 import resetAllMocks = jest.resetAllMocks
 
-type ButtonPropsType = ComponentProps<typeof Button>
+type ButtonProps = ComponentProps<typeof Button>
 
-describe('Components', () => {
-  describe('Button', () => {
-    const onPressMock = jest.fn()
+describe('Button', () => {
+  const onPressMock = jest.fn()
 
-    beforeEach(() => {
-      resetAllMocks()
-    })
+  beforeEach(() => {
+    resetAllMocks()
+  })
 
-    const renderButton = (overrideProps: Partial<ButtonPropsType> = {}): RenderAPI => {
-      const buttonProps = {
-        onPress: onPressMock,
-        label: 'Button label',
-        buttonTheme: BUTTONS_THEME.outlined,
-        ...overrideProps
-      }
-      return render(<Button {...buttonProps} />, { wrapper: wrapWithTheme })
+  const renderButton = (overrideProps: Partial<ButtonProps> = {}): RenderAPI => {
+    const buttonProps = {
+      onPress: onPressMock,
+      label: 'Button label',
+      buttonTheme: BUTTONS_THEME.outlined,
+      ...overrideProps
     }
+    return render(<Button {...buttonProps} />)
+  }
 
-    it('should render label and icons', () => {
-      const { getByText, queryByTestId } = renderButton({ iconLeft: ArrowNext, iconRight: ArrowBack })
-      expect(getByText('Button label')).toBeDefined()
-      expect(queryByTestId('button-icon-left')).toBeDefined()
-      expect(queryByTestId('button-icon-right')).toBeDefined()
+  it('should render label and icons', () => {
+    const { getByText, queryByTestId } = renderButton({
+      iconLeft: ArrowRightIcon,
+      iconRight: ArrowLeftCircleIconWhite
     })
+    expect(getByText('Button label')).toBeDefined()
+    expect(queryByTestId('button-icon-left')).toBeDefined()
+    expect(queryByTestId('button-icon-right')).toBeDefined()
+  })
 
-    it('should render label and no icons', () => {
-      const { getByText, queryByTestId } = renderButton()
-      expect(getByText('Button label')).toBeDefined()
-      expect(queryByTestId('button-icon-left')).toBeNull()
-      expect(queryByTestId('button-icon-right')).toBeNull()
-    })
+  it('should render label and no icons', () => {
+    const { getByText, queryByTestId } = renderButton()
+    expect(getByText('Button label')).toBeDefined()
+    expect(queryByTestId('button-icon-left')).toBeNull()
+    expect(queryByTestId('button-icon-right')).toBeNull()
+  })
 
-    it('should call onClick', () => {
-      const { getByText } = renderButton()
-      const button = getByText('Button label')
-      fireEvent.press(button)
-      expect(onPressMock).toBeCalled()
-    })
+  it('should call onClick', () => {
+    const { getByText } = renderButton()
+    const button = getByText('Button label')
+    fireEvent.press(button)
+    expect(onPressMock).toHaveBeenCalled()
+  })
 
-    it('should not call onClick when disabled', () => {
-      const { getByText } = renderButton({ disabled: true })
-      const button = getByText('Button label')
-      fireEvent.press(button)
-      expect(onPressMock).not.toBeCalled()
-    })
+  it('should not call onClick when disabled', () => {
+    const { getByText } = renderButton({ disabled: true })
+    const button = getByText('Button label')
+    fireEvent.press(button)
+    expect(onPressMock).not.toHaveBeenCalled()
+  })
 
-    it('should have correct style when light theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.outlined })
-      expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
-      expect(getByTestId('button').props.style.borderColor).toBe(COLORS.lunesBlack)
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)
-    })
+  it('should have correct style when light theme', () => {
+    const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.outlined })
+    expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
+    expect(getByTestId('button').props.style.borderColor).toBe(COLORS.primary)
+    expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
+  })
 
-    it('should have correct style when dark theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.contained })
-      expect(getByTestId('button').props.style.backgroundColor).toEqual(COLORS.lunesBlack)
-      expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesWhite)
-    })
+  it('should have correct style when dark theme', () => {
+    const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.contained })
+    expect(getByTestId('button').props.style.backgroundColor).toEqual(COLORS.primary)
+    expect(getByTestId('button').props.style.borderColor).toBeUndefined()
+    expect(getByText('Button label').props.style[0].color).toBe(COLORS.background)
+  })
 
-    it('should have correct style when no-outline theme', () => {
-      const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.text })
-      expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
-      expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlack)
-    })
+  it('should have correct style when no-outline theme', () => {
+    const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.text })
+    expect(getByTestId('button').props.style.backgroundColor).toBe('transparent')
+    expect(getByTestId('button').props.style.borderColor).toBeUndefined()
+    expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
+  })
 
-    it('should have correct style when disabled', () => {
-      const { getByTestId, getByText } = renderButton({ disabled: true })
-      expect(getByTestId('button').props.style.backgroundColor).toBe(COLORS.lunesBlackUltralight)
-      expect(getByTestId('button').props.style.borderColor).toBeUndefined()
-      expect(getByText('Button label').props.style[0].color).toBe(COLORS.lunesBlackLight)
-    })
+  it('should have correct style when disabled', () => {
+    const { getByTestId, getByText } = renderButton({ disabled: true })
+    expect(getByTestId('button').props.style.backgroundColor).toBe(COLORS.disabled)
+    expect(getByTestId('button').props.style.borderColor).toBeUndefined()
+    expect(getByText('Button label').props.style[0].color).toBe(COLORS.placeholder)
   })
 })

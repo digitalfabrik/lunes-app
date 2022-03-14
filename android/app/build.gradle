@@ -138,6 +138,7 @@ android {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
         }
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {
@@ -146,6 +147,9 @@ android {
             universalApk false  // If true, also generate a universal APK
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
+    }
+    dexOptions {
+        javaMaxHeapSize "1g" // 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
     }
     signingConfigs {
         release {

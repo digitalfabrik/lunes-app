@@ -1,6 +1,6 @@
-import { DisciplineType, ENDPOINTS } from '../constants/endpoints'
+import { Discipline, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import useLoadAsync, { ReturnType } from './useLoadAsync'
+import useLoadAsync, { Return } from './useLoadAsync'
 
 export interface ServerResponse {
   id: number
@@ -12,31 +12,33 @@ export interface ServerResponse {
   total_documents: number
 }
 
-const getEndpoint = (parent: DisciplineType | null): string => {
+const getEndpoint = (parent: Discipline | null): string => {
   if (parent?.needsTrainingSetEndpoint) {
     return ENDPOINTS.trainingSet
-  } else if (parent?.apiKey) {
-    return ENDPOINTS.disciplinesByGroup
-  } else {
-    return ENDPOINTS.disciplines
   }
+  if (parent?.apiKey) {
+    return ENDPOINTS.disciplinesByGroup
+  }
+  return ENDPOINTS.disciplines
 }
 
-const formatServerResponse = (serverResponse: ServerResponse[], parent: DisciplineType | null): DisciplineType[] =>
+const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipline | null): Discipline[] =>
   serverResponse.map(item => ({
     ...item,
     numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
+    //  The ServerResponse type is not completely correct
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     isLeaf: item.total_documents !== undefined,
-    isRoot: parent === null,
+    parentTitle: parent?.title ?? null,
     apiKey: parent?.apiKey,
     needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
-  })) ?? []
+  }))
 
-export const loadDisciplines = async (parent: DisciplineType | null): Promise<DisciplineType[]> => {
+export const loadDisciplines = async (parent: Discipline | null): Promise<Discipline[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
   const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)
   return formatServerResponse(response, parent)
 }
 
-export const useLoadDisciplines = (parent: DisciplineType | null): ReturnType<DisciplineType[]> =>
+export const useLoadDisciplines = (parent: Discipline | null): Return<Discipline[]> =>
   useLoadAsync(loadDisciplines, parent)

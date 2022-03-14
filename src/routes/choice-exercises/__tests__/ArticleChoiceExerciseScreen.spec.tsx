@@ -1,13 +1,20 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, render } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
-import { RoutesParamsType } from '../../../navigation/NavigationTypes'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
-import wrapWithTheme from '../../../testing/wrapWithTheme'
+import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
+
+jest.useFakeTimers()
+
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  shuffleArray: jest.fn()
+}))
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
@@ -47,7 +54,7 @@ describe('ArticleChoiceExerciseScreen', () => {
   ]
 
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
-  const route: RouteProp<RoutesParamsType, 'ArticleChoiceExercise'> = {
+  const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
@@ -56,7 +63,7 @@ describe('ArticleChoiceExerciseScreen', () => {
         title: 'TestTitel',
         numberOfChildren: 2,
         isLeaf: true,
-        isRoot: false,
+        parentTitle: 'parent',
         icon: 'my_icon',
         apiKey: 'my_api_key',
         description: '',
@@ -67,10 +74,7 @@ describe('ArticleChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
 
-    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
-
+    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
     expect(getAllByText(/Helm/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
@@ -85,10 +89,7 @@ describe('ArticleChoiceExerciseScreen', () => {
   it('should not allow to skip last document', () => {
     mockUseLoadAsyncWithData(testDocuments)
     const { queryByText, getByText, getAllByText } = render(
-      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
-      {
-        wrapper: wrapWithTheme
-      }
+      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
 
     expect(getAllByText(/Helm/)).toHaveLength(4)
@@ -101,9 +102,7 @@ describe('ArticleChoiceExerciseScreen', () => {
 
   it('should show word again when answered wrong', () => {
     mockUseLoadAsyncWithData(testDocuments)
-    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />, {
-      wrapper: wrapWithTheme
-    })
+    const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     expect(getAllByText(/Helm/)).toHaveLength(4)
     fireEvent(getByText('Das'), 'pressOut')
