@@ -1,5 +1,5 @@
 issue_key: LUN-255
-show_in_stores: true
+show_in_stores: false
 platforms:
   - android
   - ios
