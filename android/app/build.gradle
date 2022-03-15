@@ -78,7 +78,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+        extraPackagerArgs: (System.getenv('EXTRA_PACKAGER_ARGS') ?: "").split("\\s+"),
+        enableHermes: false  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
