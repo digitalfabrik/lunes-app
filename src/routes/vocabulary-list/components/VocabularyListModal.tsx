@@ -60,7 +60,7 @@ const VocabularyListModal = ({
   }
 
   return (
-    <Modal animationType='slide' transparent visible={isModalVisible}>
+    <Modal animationType='slide' transparent visible={isModalVisible} onRequestClose={() => setIsModalVisible(false)}>
       <SafeAreaView>
         <ModalContainer>
           <ModalHeader>

@@ -51,7 +51,7 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
   const closeModal = (): void => setVisible(false)
 
   return (
-    <Modal testID='modal' visible={visible} transparent animationType='fade'>
+    <Modal testID='modal' visible={visible} transparent animationType='fade' onRequestClose={() => setVisible(false)}>
       <Overlay>
         <ModalContainer>
           <Icon onPress={closeModal}>
