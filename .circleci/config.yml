@@ -373,8 +373,9 @@ jobs:
             - restore_ruby_cache:
                 directory: android
             - run:
-                command: tools/parse-release-notes parse --android --destination android/fastlane/metadata/de-DE/changelogs/default.txt --production
+                command: yarn manage-metadata prepare-metadata playstore
                 name: Parse german android release notes
+                working_directory: tools
             - run:
                 command: bundle exec fastlane validate_play_store_key
                 name: Validate Play Store Key
@@ -436,8 +437,9 @@ jobs:
             - restore_ruby_cache:
                 directory: ios
             - run:
-                command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
+                command: yarn manage-metadata prepare-metadata appstore
                 name: Parse german ios release notes
+                working_directory: tools
             - notify
     move_release_notes:
         docker:
