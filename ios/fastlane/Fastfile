@@ -105,7 +105,7 @@ platform :ios do
       skip_screenshots: true,
       skip_metadata: false,
       skip_app_version_update: false,
-      metadata_path: "./metadata",
+      metadata_path: "./fastlane/metadata",
       precheck_include_in_app_purchases: false, # We do not have inapp purchases
       submission_information: { add_id_info_uses_idfa: false } # https://firebase.google.com/docs/analytics/configure-data-collection?platform=ios
     # https://support.google.com/firebase/answer/6318039?hl=en
