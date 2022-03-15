@@ -4,6 +4,7 @@ steps:
   - checkout
   - check_config
   - restore_yarn_cache
+  - restore_yarn_tools_cache
   - run:
       name: Linting check
       command: yarn lint
@@ -16,3 +17,4 @@ steps:
   - run:
       name: Run unit tests
       command: yarn test
+  - notify

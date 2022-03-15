@@ -2,7 +2,9 @@ when: << pipeline.parameters.run_promote >>
 jobs:
   - promote_android:
       context:
+        - mattermost
         - tuerantuer-google-play
   - promote_ios:
       context:
+        - mattermost
         - tuerantuer-apple

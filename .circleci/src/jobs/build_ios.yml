@@ -36,3 +36,4 @@ steps:
       root: ios/output/gym
       paths:
         - app-release.ipa
+  - notify

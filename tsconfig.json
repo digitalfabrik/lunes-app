@@ -17,5 +17,5 @@
     "types": ["jest", "node", "react", "styled-components-react-native"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "./jest.setup.ts", "index.js", "jest.config.ts", "metro.config.ci.js", "metro.config.js"]
+  "include": ["src/**/*", "tools/**/*", "./jest.setup.ts", "index.js", "jest.config.ts", "metro.config.ci.js", "metro.config.js"]
 }

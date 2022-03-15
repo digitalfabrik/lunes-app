@@ -43,3 +43,4 @@ steps:
         - app-release.apk
   - store_artifacts:
       path: android/attached_workspace/app-release.apk
+  - notify

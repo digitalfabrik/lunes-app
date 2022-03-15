@@ -1,8 +1,9 @@
-#!/usr/bin/env node
+/* eslint-disable no-console */
+import { Octokit } from '@octokit/rest'
+import { program } from 'commander'
 
-const authenticate = require('./github-authentication')
-const { VERSION_FILE, PLATFORMS, tagId } = require('./constants')
-const { program } = require('commander')
+import { VERSION_FILE, PLATFORMS, tagId } from './constants'
+import authenticate from './github-authentication'
 
 program
   .requiredOption(
@@ -13,7 +14,17 @@ program
   .requiredOption('--repo <repo>', 'the current repository, should be lunes-app')
   .requiredOption('--branch <branch>', 'the current branch')
 
-const createTag = async ({ versionName, versionCode, owner, repo, commitSha, appOctokit, platform }) => {
+interface TagOptions {
+  versionName: string
+  versionCode: number
+  owner: string
+  repo: string
+  commitSha: string
+  appOctokit: Octokit
+  platform: string
+}
+
+const createTag = async ({ versionName, versionCode, owner, repo, commitSha, appOctokit, platform }: TagOptions) => {
   const id = tagId({ versionName, platform })
   const tagMessage = `[${platform}] ${versionName} - ${versionCode}`
 
@@ -37,12 +48,21 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
   console.warn(`New ref with id ${id} successfully created.`)
 }
 
-const commitAndTag = async (versionName, versionCodeString, { deliverinoPrivateKey, owner, repo, branch }) => {
+const commitAndTag = async (
+  versionName: string,
+  versionCodeString: string,
+  {
+    deliverinoPrivateKey,
+    owner,
+    repo,
+    branch
+  }: { deliverinoPrivateKey: string; owner: string; repo: string; branch: string }
+) => {
   const appOctokit = await authenticate({ deliverinoPrivateKey, owner, repo })
   const versionFileContent = await appOctokit.repos.getContent({ owner, repo, path: VERSION_FILE, ref: branch })
 
-  const versionCode = parseInt(versionCodeString)
-  if (isNaN(versionCode)) {
+  const versionCode = parseInt(versionCodeString, 10)
+  if (Number.isNaN(versionCode)) {
     throw new Error(`Failed to parse version code string: ${versionCodeString}`)
   }
 
@@ -73,7 +93,12 @@ program
   .description('commits the supplied version name and code to github and tags the commit')
   .action(async (newVersionName, newVersionCode) => {
     try {
-      await commitAndTag(newVersionName, newVersionCode, program)
+      await commitAndTag(newVersionName, newVersionCode, {
+        deliverinoPrivateKey: program.deliverinoPrivateKey,
+        branch: program.branch,
+        owner: program.owner,
+        repo: program.repo
+      })
     } catch (e) {
       console.error(e)
       process.exit(1)
