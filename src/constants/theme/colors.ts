@@ -19,7 +19,8 @@ export const COLORS = {
   articleNeutral: '#72f399',
   articlePlural: '#eee12d',
   articleFeminine: '#faa7a7',
-  articleMasculine: '#8cc8f3'
+  articleMasculine: '#8cc8f3',
+  link: 'blue'
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]

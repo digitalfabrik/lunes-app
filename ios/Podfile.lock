@@ -389,12 +389,18 @@ PODS:
   - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
+  - RNSentry (3.2.13):
+    - React-Core
+    - Sentry (= 7.9.0)
   - RNSoundPlayer (0.11.1):
     - React
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (9.0.0):
     - React-Core
+  - Sentry (7.9.0):
+    - Sentry/Core (= 7.9.0)
+  - Sentry/Core (7.9.0)
   - TextToSpeech (4.1.0):
     - React
   - Yoga (1.14.0)
@@ -442,6 +448,7 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSoundPlayer (from `../node_modules/react-native-sound-player`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -451,6 +458,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - fmt
+    - Sentry
     - GoogleDataTransport
     - GoogleMLKit
     - GoogleToolboxForMac
@@ -544,6 +552,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSoundPlayer:
     :path: "../node_modules/react-native-sound-player"
   RNSVG:
@@ -557,7 +567,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -609,12 +619,14 @@ SPEC CHECKSUMS:
   RNPermissions: f7ebe52db07c00901127966ca080b4ec6a6ceb0a
   RNReanimated: 569c269480a76e39196aa17a5df08ef1561db5ff
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
+  RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNSoundPlayer: 1a8fb785d9c41ec0cb14283a5ba87ff30c2a50b6
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
 PODFILE CHECKSUM: ca4eb736278d4211ffaa5cef62299ef8fc2137ca
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
