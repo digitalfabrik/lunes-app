@@ -61,6 +61,9 @@ platform :android do
           raise "'nil' passed as parameter! Aborting..."
         end
 
+        # DO NOT OVERWRITE THE BUNDLE_CONFIG ENV VARIABLE! It is used by ruby bundle.
+        ENV["EXTRA_PACKAGER_ARGS"] = "--config ./metro.config.ci.js"
+
         gradle_system_properties = {
           # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
           :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",

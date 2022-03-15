@@ -13,7 +13,6 @@ const Container = styled.View`
   justify-content: center;
   height: 100%;
   background-color: ${props => props.theme.colors.background};
-  margin: ${props => `${props.theme.spacings.xxl} 0 0`};
 `
 
 const Description = styled(ContentSecondary)`

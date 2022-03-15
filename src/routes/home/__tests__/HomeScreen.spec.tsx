@@ -63,13 +63,19 @@ describe('HomeScreen', () => {
     refresh: () => undefined
   })
 
-  it('should show discipline', async () => {
+  it('should navigate to discipline', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
 
     const { findByText } = render(<HomeScreen navigation={navigation} />)
-    expect(await findByText('First Discipline')).toBeDefined()
-    expect(await findByText('Second Discipline')).toBeDefined()
+    const firstDiscipline = await findByText('First Discipline')
+    const secondDiscipline = await findByText('Second Discipline')
+    expect(firstDiscipline).toBeDefined()
+    expect(secondDiscipline).toBeDefined()
+
+    fireEvent.press(firstDiscipline)
+
+    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines[0] })
   })
 
   it('should show custom discipline', async () => {
@@ -79,7 +85,12 @@ describe('HomeScreen', () => {
     mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { findByText } = render(<HomeScreen navigation={navigation} />)
-    expect(await findByText('Custom Discipline')).toBeDefined()
+    const customDiscipline = await findByText('Custom Discipline')
+    expect(customDiscipline).toBeDefined()
+
+    fireEvent.press(customDiscipline)
+
+    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
   })
 
   it('should delete custom discipline', async () => {

@@ -17,7 +17,5 @@
     "types": ["jest", "node", "react", "styled-components-react-native"],
     "skipLibCheck": true
   },
-  "exclude": [
-    "node_modules", "babel.config.js", "metro.config.js", "jest.config.js", "tools"
-  ]
+  "include": ["src/**/*", "./jest.setup.ts", "index.js", "jest.config.ts", "metro.config.ci.js", "metro.config.js"]
 }
