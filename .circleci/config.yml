@@ -40,7 +40,7 @@ commands:
                 default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle'
                 type: string
             only_for_branch:
-                default: main
+                default: LUN-30-generate-mattermost-notifications
                 type: string
             success_mentions:
                 default: ""

@@ -10,7 +10,7 @@ parameters:
     default: ''
     type: string
   only_for_branch:
-    default: main
+    default: LUN-30-generate-mattermost-notifications
     type: string
   channel:
     default: lunes-app-test
