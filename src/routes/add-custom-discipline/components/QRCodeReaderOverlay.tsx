@@ -15,7 +15,7 @@ const Container = styled.SafeAreaView`
 
 const Icon = styled.TouchableOpacity`
   align-self: flex-end;
-  ${props => props.theme.spacings.xs};
+  margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
   width: ${wp('7%')}px;
   height: ${wp('7%')}px;
 `
