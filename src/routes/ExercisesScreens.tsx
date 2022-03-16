@@ -8,11 +8,11 @@ import ListItem from '../components/ListItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { EXERCISES, Exercise } from '../constants/data'
+import { EXERCISES, Exercise, ExerciseKeys } from '../constants/data'
 import labels from '../constants/labels.json'
 import useLoadDocuments from '../hooks/useLoadDocuments'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { childrenDescription } from '../services/helpers'
+import { childrenDescription, shuffleArray } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
@@ -29,7 +29,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const { discipline } = route.params
   const { title, numberOfChildren } = discipline
 
-  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline, true)
+  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
@@ -41,7 +41,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
     } else {
       navigation.navigate(EXERCISES[item.key].nextScreen, {
-        documents,
+        documents: item.key === ExerciseKeys.vocabularyList ? documents : shuffleArray(documents),
         discipline
       })
     }

@@ -45,10 +45,12 @@ export const childrenLabel = (discipline: Discipline): string => {
 export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
-export const shuffleArray = <T>(array: T[]): void => {
-  for (let i = array.length - 1; i > 0; i -= 1) {
+export const shuffleArray = <T>(array: T[]): T[] => {
+  const newArray = array
+  for (let i = newArray.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
     // eslint-disable-next-line no-param-reassign
-    ;[array[i], array[j]] = [array[j], array[i]]
+    ;[newArray[i], newArray[j]] = [newArray[j], newArray[i]]
   }
+  return newArray
 }
