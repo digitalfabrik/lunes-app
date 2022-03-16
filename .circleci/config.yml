@@ -37,7 +37,7 @@ commands:
                 default: lunes-app
                 type: string
             failure_mentions:
-                default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle'
+                default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle @andreas.fischer'
                 type: string
             only_for_branch:
                 default: main
@@ -341,7 +341,6 @@ jobs:
             - checkout
             - check_config
             - restore_yarn_cache
-            - restore_yarn_tools_cache
             - run:
                 command: yarn lint
                 name: Linting check
