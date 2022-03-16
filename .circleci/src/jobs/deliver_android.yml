@@ -16,7 +16,8 @@ steps:
       directory: android
   - run:
       name: Parse german android release notes
-      command: tools/parse-release-notes parse --android --destination android/fastlane/metadata/de-DE/changelogs/default.txt --production
+      command: yarn manage-metadata prepare-metadata playstore
+      working_directory: tools
   - run:
       name: Validate Play Store Key
       command: bundle exec fastlane validate_play_store_key
@@ -31,3 +32,4 @@ steps:
   - run:
       name: Sentry Upload
       command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+  - notify

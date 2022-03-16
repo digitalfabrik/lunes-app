@@ -14,3 +14,4 @@ steps:
       name: '[FL] App Store Connect Promotion'
       command: bundle exec fastlane ios appstoreconnect_promote
       working_directory: ios
+  - notify

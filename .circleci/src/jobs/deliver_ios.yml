@@ -19,7 +19,8 @@ steps:
       directory: ios
   - run:
       name: Parse german ios release notes
-      command: tools/parse-release-notes parse --ios --destination ios/fastlane/metadata/de-DE/release_notes.txt --production
+      command: yarn manage-metadata prepare-metadata appstore
+      working_directory: tools
   - when:
       condition: << parameters.production_delivery >>
       steps:
@@ -37,3 +38,4 @@ steps:
   - run:
       name: Sentry Upload
       command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+  - notify

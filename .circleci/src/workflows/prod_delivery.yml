@@ -1,12 +1,16 @@
 when: << pipeline.parameters.run_prod_delivery >>
 jobs:
-  - check
+  - check:
+      context:
+        - mattermost
   - bump_version:
       context:
+        - mattermost
         - deliverino
       delivery: production
   - build_android:
       context:
+        - mattermost
         - credentials-repo
         - credentials-lunes
       requires:
@@ -14,6 +18,7 @@ jobs:
         - bump_version
   - build_ios:
       context:
+        - mattermost
         - fastlane-match
         - tuerantuer-apple
       requires:
@@ -21,19 +26,36 @@ jobs:
         - bump_version
   - deliver_android:
       context:
+        - mattermost
         - tuerantuer-google-play
-      production_delivery: true # TODO test in mid of september
+      production_delivery: true
       requires:
         - build_android
   - deliver_ios:
       context:
+        - mattermost
         - tuerantuer-apple
-      production_delivery: true # TODO test in mid of september
+      production_delivery: true
       requires:
         - build_ios
-  - move_release_notes:
+  - notify_android:
       context:
+        - mattermost
         - deliverino
+      production_delivery: true
       requires:
         - deliver_android
+  - notify_ios:
+      context:
+        - mattermost
+        - deliverino
+      production_delivery: true
+      requires:
         - deliver_ios
+  - move_release_notes:
+      context:
+        - mattermost
+        - deliverino
+      requires:
+        - notify_android
+        - notify_ios

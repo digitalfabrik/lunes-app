@@ -30,3 +30,4 @@ steps:
   - run:
       name: Undo raname ipa
       command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
+  - notify

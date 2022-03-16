@@ -1,12 +1,16 @@
 when: << pipeline.parameters.run_dev_delivery >>
 jobs:
-  - check
+  - check:
+      context:
+        - mattermost
   - bump_version:
       context:
+        - mattermost
         - deliverino
       delivery: development
   - build_android:
       context:
+        - mattermost
         - credentials-repo
         - credentials-lunes
       requires:
@@ -14,6 +18,7 @@ jobs:
         - bump_version
   - build_ios:
       context:
+        - mattermost
         - fastlane-match
         - tuerantuer-apple
       requires:
@@ -21,12 +26,14 @@ jobs:
         - bump_version
   - deliver_browser_stack:
       context:
+        - mattermost
         - browserstack
       requires:
         - build_android
         - build_ios
   - deliver_android:
       context:
+        - mattermost
         - tuerantuer-google-play
         - sentry
       production_delivery: false
@@ -34,14 +41,30 @@ jobs:
         - build_android
   - deliver_ios:
       context:
+        - mattermost
         - tuerantuer-apple
         - sentry
       production_delivery: false
       requires:
         - build_ios
-  - move_release_notes:
+  - notify_android:
       context:
+        - mattermost
         - deliverino
+      production_delivery: false
       requires:
         - deliver_android
+  - notify_ios:
+      context:
+        - mattermost
+        - deliverino
+      production_delivery: false
+      requires:
         - deliver_ios
+  - move_release_notes:
+      context:
+        - mattermost
+        - deliverino
+      requires:
+        - notify_android
+        - notify_ios

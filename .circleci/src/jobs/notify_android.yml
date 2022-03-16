@@ -1,0 +1,22 @@
+# Create a release (with release notes) on github and send a mattermost notification.
+parameters:
+  production_delivery:
+    description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
+    type: boolean
+docker:
+  - image: circleci/node:14.18.0
+resource_class: small
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - restore_yarn_tools_cache
+  - run:
+      name: Prepare artifact urls
+      command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
+      working_directory: ~/attached_workspace
+  - run:
+      name: Create release notes
+      command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --android)" >> ${BASH_ENV}
+  - notify:
+      success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
