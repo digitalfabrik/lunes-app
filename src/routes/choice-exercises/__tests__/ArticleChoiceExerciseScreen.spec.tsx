@@ -2,10 +2,10 @@ import { RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
@@ -28,7 +28,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const testDocuments: Document[] = [
+  const documents: Document[] = [
     {
       audio: '',
       word: 'Helm',
@@ -58,6 +58,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
+      documents,
       discipline: {
         id: 1,
         title: 'TestTitel',
@@ -72,8 +73,6 @@ describe('ArticleChoiceExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadAsyncWithData(testDocuments)
-
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
     expect(getAllByText(/Helm/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
@@ -87,7 +86,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadAsyncWithData(testDocuments)
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
@@ -101,7 +99,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should show word again when answered wrong', () => {
-    mockUseLoadAsyncWithData(testDocuments)
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     expect(getAllByText(/Helm/)).toHaveLength(4)

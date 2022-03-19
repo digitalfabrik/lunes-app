@@ -6,7 +6,6 @@ import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
@@ -86,6 +85,7 @@ describe('WordChoiceExerciseScreen', () => {
     key: '',
     name: 'WordChoiceExercise',
     params: {
+      documents: testDocuments,
       discipline: {
         id: 1,
         title: 'TestTitel',
@@ -99,8 +99,6 @@ describe('WordChoiceExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadAsyncWithData(testDocuments)
-
     const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
     const tryLater = getByText(labels.exercises.tryLater)

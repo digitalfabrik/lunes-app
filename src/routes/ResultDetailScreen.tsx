@@ -82,7 +82,7 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
     })
 
   const label = `${resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} ${
-    labels.results.repeatEntries
+    labels.results.viewEntries
   }`
 
   const retryButton =

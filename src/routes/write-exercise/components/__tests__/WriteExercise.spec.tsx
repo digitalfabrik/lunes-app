@@ -73,6 +73,7 @@ describe('WriteExercise', () => {
     key: '',
     name: 'WriteExercise',
     params: {
+      documents,
       discipline: {
         id: 1,
         title: 'TestTitel',
@@ -86,8 +87,7 @@ describe('WriteExercise', () => {
     }
   }
 
-  const renderWriteExercise = (): RenderAPI =>
-    render(<WriteExercise documents={documents} route={route} navigation={navigation} />)
+  const renderWriteExercise = (): RenderAPI => render(<WriteExercise route={route} navigation={navigation} />)
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()
