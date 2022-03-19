@@ -74,16 +74,7 @@ describe('WriteExercise', () => {
     name: 'WriteExercise',
     params: {
       documents,
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        description: '',
-        icon: '',
-        numberOfChildren: 2,
-        isLeaf: true,
-        parentTitle: 'parent',
-        needsTrainingSetEndpoint: true
-      }
+      disciplineTitle: 'TestTitel'
     }
   }
 

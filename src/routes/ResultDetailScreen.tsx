@@ -40,7 +40,7 @@ interface ResultScreenProps {
 }
 
 const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => {
-  const { results, resultType, exercise, discipline } = route.params
+  const { results, resultType, exercise, disciplineTitle, documents } = route.params
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
   const matchingResults = results.filter(({ result }: DocumentResult) => result === resultType.key)
@@ -55,14 +55,14 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
     React.useCallback(() => {
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { discipline })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { disciplineTitle, documents })}>
             <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
           </TouchableOpacity>
         )
       })
 
       setIsLoading(false)
-    }, [navigation, discipline])
+    }, [navigation, disciplineTitle, documents])
   )
 
   const Header = (
@@ -77,7 +77,7 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
 
   const repeatIncorrectEntries = (): void =>
     navigation.push('WriteExercise', {
-      discipline,
+      disciplineTitle,
       documents: matchingResults.map(it => it.document)
     })
 

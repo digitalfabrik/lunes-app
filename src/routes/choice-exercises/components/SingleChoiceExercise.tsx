@@ -9,7 +9,7 @@ import Button from '../../../components/Button'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import { AlternativeWord, Discipline, Document } from '../../../constants/endpoints'
+import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { moveToEnd } from '../../../services/helpers'
@@ -28,7 +28,7 @@ const ButtonContainer = styled.View`
 
 interface SingleChoiceExerciseProps {
   documents: Document[]
-  discipline: Discipline
+  disciplineTitle: string
   documentToAnswers: (document: Document) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -37,7 +37,7 @@ interface SingleChoiceExerciseProps {
 
 const ChoiceExerciseScreen = ({
   documents: documentsProp,
-  discipline,
+  disciplineTitle,
   documentToAnswers,
   navigation,
   route,
@@ -71,7 +71,7 @@ const ChoiceExerciseScreen = ({
   const onExerciseFinished = (results: DocumentResult[]): void => {
     navigation.navigate('ExerciseFinished', {
       documents,
-      discipline,
+      disciplineTitle,
       exercise: exerciseKey,
       results
     })

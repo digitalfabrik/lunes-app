@@ -13,7 +13,7 @@ jest.useFakeTimers()
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn()
+  shuffleArray: jest.fn(it => it)
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
@@ -86,16 +86,7 @@ describe('WordChoiceExerciseScreen', () => {
     name: 'WordChoiceExercise',
     params: {
       documents: testDocuments,
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        numberOfChildren: 2,
-        isLeaf: true,
-        description: '',
-        icon: '',
-        parentTitle: 'parent',
-        needsTrainingSetEndpoint: false
-      }
+      disciplineTitle: 'TestTitel'
     }
   }
   it('should allow to skip an exercise and try it out later', () => {

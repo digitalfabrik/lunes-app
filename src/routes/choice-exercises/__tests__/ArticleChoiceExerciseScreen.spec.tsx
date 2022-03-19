@@ -59,17 +59,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     name: 'ArticleChoiceExercise',
     params: {
       documents,
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        numberOfChildren: 2,
-        isLeaf: true,
-        parentTitle: 'parent',
-        icon: 'my_icon',
-        apiKey: 'my_api_key',
-        description: '',
-        needsTrainingSetEndpoint: false
-      }
+      disciplineTitle: 'TestTitel'
     }
   }
   it('should allow to skip an exercise and try it out later', () => {

@@ -124,7 +124,7 @@ const Navigator = (): JSX.Element => {
         />
         <Stack.Screen
           options={({ route: { params }, navigation }) =>
-            defaultOptions(params.discipline.title, ArrowLeftCircleIconWhite, navigation, true)
+            defaultOptions(params.disciplineTitle, ArrowLeftCircleIconWhite, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}

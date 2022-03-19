@@ -8,9 +8,17 @@ export interface DocumentResult {
 }
 
 interface ExerciseParams {
-  discipline: Discipline
+  disciplineTitle: string
   documents: Document[]
 }
+
+export type ExercisesParams =
+  | {
+      documents: null
+      discipline: Discipline
+      disciplineTitle: string
+    }
+  | ExerciseParams
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
@@ -25,9 +33,7 @@ export type RoutesParams = {
   DisciplineSelection: {
     discipline: Discipline
   }
-  Exercises: {
-    discipline: Discipline
-  }
+  Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ArticleChoiceExercise: ExerciseParams

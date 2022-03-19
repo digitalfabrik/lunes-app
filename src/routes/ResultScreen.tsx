@@ -65,7 +65,7 @@ interface Props {
 }
 
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, results, discipline, documents } = route.params
+  const { exercise, results, disciplineTitle, documents } = route.params
   const { level, description, title } = EXERCISES[exercise]
 
   // Set only height for tablets since header doesn't scale auto
@@ -74,14 +74,14 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
       documents,
-      discipline
+      disciplineTitle
     })
   }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <RightHeader onPress={() => navigation.navigate('Exercises', { discipline })}>
+        <RightHeader onPress={() => navigation.navigate('Exercises', { documents, disciplineTitle })}>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
@@ -89,7 +89,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       headerRightContainerStyle: { flex: 1 },
       headerStyle: { height: headerHeight }
     })
-  }, [results, navigation, headerHeight, discipline])
+  }, [results, navigation, headerHeight, documents, disciplineTitle])
 
   const Header = (
     <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
@@ -100,7 +100,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
     navigation.navigate('ResultDetail', {
       resultType: item,
       documents,
-      discipline,
+      disciplineTitle,
       exercise,
       results
     })
@@ -128,7 +128,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
         onPress={repeatExercise}
         buttonTheme={BUTTONS_THEME.contained}
       />
-      <ShareButton disciplineTitle={discipline.title} results={results} />
+      <ShareButton disciplineTitle={disciplineTitle} results={results} />
     </>
   )
 

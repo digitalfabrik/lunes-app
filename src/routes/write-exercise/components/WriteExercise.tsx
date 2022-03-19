@@ -30,7 +30,7 @@ export interface WriteExerciseProp {
 }
 
 const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement => {
-  const { documents, discipline } = route.params
+  const { documents, disciplineTitle } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
@@ -61,7 +61,7 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
   const finishExercise = (): void => {
     navigation.navigate('ExerciseFinished', {
       documents,
-      discipline,
+      disciplineTitle,
       results: documentsWithResults,
       exercise: ExerciseKeys.writeExercise
     })

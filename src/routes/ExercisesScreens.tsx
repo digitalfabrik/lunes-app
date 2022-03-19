@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -9,9 +9,10 @@ import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise, ExerciseKeys } from '../constants/data'
-import useLoadDocuments from '../hooks/useLoadDocuments'
-import { RoutesParams } from '../navigation/NavigationTypes'
-import { childrenDescription, shuffleArray } from '../services/helpers'
+import useLoadAsync from '../hooks/useLoadAsync'
+import { loadDocuments } from '../hooks/useLoadDocuments'
+import { ExercisesParams, RoutesParams } from '../navigation/NavigationTypes'
+import { shuffleArray, wordsDescription } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -24,18 +25,24 @@ interface ExercisesScreenProps {
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { discipline } = route.params
-  const { title } = discipline
+  const { params } = route
+  const { disciplineTitle } = params
 
-  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
+  const load = useCallback(async (params: ExercisesParams) => {
+    if (params.documents) {
+      return params.documents
+    }
+    return loadDocuments(params.discipline)
+  }, [])
+  const { data: documents, error, loading, refresh } = useLoadAsync(load, params)
 
-  const Header = <Title title={title} description={childrenDescription(discipline)} />
+  const Header = documents && <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
 
   const handleNavigation = (item: Exercise): void => {
     if (documents) {
       navigation.navigate(EXERCISES[item.key].nextScreen, {
         documents: item.key === ExerciseKeys.vocabularyList ? documents : shuffleArray(documents),
-        discipline
+        disciplineTitle
       })
     }
   }

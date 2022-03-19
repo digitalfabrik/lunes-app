@@ -41,7 +41,7 @@ interface Props {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, results, discipline, documents } = route.params
+  const { exercise, results, disciplineTitle, documents } = route.params
   const [message, setMessage] = React.useState<string>('')
 
   React.useEffect(() => {
@@ -60,7 +60,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
       documents,
-      discipline
+      disciplineTitle
     })
   }
 
@@ -89,7 +89,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         buttonTheme={BUTTONS_THEME.outlined}
         onPress={repeatExercise}
       />
-      <ShareSection disciplineTitle={discipline.title} results={results} />
+      <ShareSection disciplineTitle={disciplineTitle} results={results} />
     </Root>
   )
 }

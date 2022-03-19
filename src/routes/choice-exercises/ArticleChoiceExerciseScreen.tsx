@@ -13,7 +13,7 @@ interface ArticleChoiceExerciseScreenProps {
 }
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, discipline } = route.params
+  const { documents, disciplineTitle } = route.params
 
   const documentToAnswers = (document: Document): Answer[] =>
     ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
@@ -21,7 +21,7 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
   return (
     <SingleChoiceExercise
       documents={documents}
-      discipline={discipline}
+      disciplineTitle={disciplineTitle}
       documentToAnswers={documentToAnswers}
       navigation={navigation}
       route={route}

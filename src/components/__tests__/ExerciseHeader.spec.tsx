@@ -46,16 +46,7 @@ describe('ExerciseHeader', () => {
     name: 'WordChoiceExercise',
     params: {
       documents,
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        numberOfChildren: 2,
-        isLeaf: true,
-        description: '',
-        icon: '',
-        parentTitle: 'parent',
-        needsTrainingSetEndpoint: false
-      }
+      disciplineTitle: 'TestTitel'
     }
   }
   it('should render header', async () => {
