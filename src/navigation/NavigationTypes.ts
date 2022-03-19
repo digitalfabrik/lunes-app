@@ -7,21 +7,14 @@ export interface DocumentResult {
   numberOfTries: number
 }
 
-export type Counts = {
-  [key in SimpleResult]: number
-} & {
-  total: number
-}
-
 interface ExerciseParams {
   discipline: Discipline
   documents: Document[]
 }
 
-type ResultScreenData = ExerciseParams & {
+type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
   results: DocumentResult[]
-  documents: Document[]
 }
 
 // https://github.com/Microsoft/Script/issues/15300
@@ -39,9 +32,9 @@ export type RoutesParams = {
   WordChoiceExercise: ExerciseParams
   ArticleChoiceExercise: ExerciseParams
   WriteExercise: ExerciseParams
-  ExerciseFinished: ResultScreenData
-  Result: ResultScreenData
-  ResultDetail: ResultScreenData & {
+  ExerciseFinished: ResultParams
+  Result: ResultParams
+  ResultDetail: ResultParams & {
     resultType: Result
   }
   Imprint: undefined

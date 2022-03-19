@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { FlatList, Alert } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import ListItem from '../components/ListItem'
@@ -9,11 +9,9 @@ import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise, ExerciseKeys } from '../constants/data'
-import labels from '../constants/labels.json'
 import useLoadDocuments from '../hooks/useLoadDocuments'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription, shuffleArray } from '../services/helpers'
-import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -27,19 +25,14 @@ interface ExercisesScreenProps {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline } = route.params
-  const { title, numberOfChildren } = discipline
+  const { title } = discipline
 
   const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
   const handleNavigation = (item: Exercise): void => {
-    if (!documents) {
-      return
-    }
-    if (item.title === labels.exercises.wordChoice.title && numberOfChildren < MIN_WORDS) {
-      Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
-    } else {
+    if (documents) {
       navigation.navigate(EXERCISES[item.key].nextScreen, {
         documents: item.key === ExerciseKeys.vocabularyList ? documents : shuffleArray(documents),
         discipline

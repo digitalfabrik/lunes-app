@@ -5,6 +5,7 @@ import React, { ReactElement } from 'react'
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface WordChoiceExerciseScreenProps {
@@ -12,28 +13,15 @@ interface WordChoiceExerciseScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
 }
 
-export const MIN_WORDS = 4
+const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
   const { documents, discipline } = route.params
+  const answersCount = Math.min(documents.length, MAX_ANSWERS)
 
   const generateFalseAnswers = (correctDocument: Document): Answer[] => {
-    const answers = []
-    const usedDocuments = [correctDocument]
-
-    // Pick 3 false answer options
-    for (let i = 0; i < MIN_WORDS - 1; i += 1) {
-      let rand: number
-      // Pick a document as false answer option that was not picked already
-      do {
-        rand = Math.floor(Math.random() * documents.length)
-      } while (usedDocuments.includes(documents[rand]))
-      usedDocuments.push(documents[rand])
-
-      const { word, article } = documents[rand]
-      answers.push({ article, word })
-    }
-    return answers
+    const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctDocument.id))
+    return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 
   const documentToAnswers = (document: Document): Answer[] => {
@@ -41,7 +29,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     const answers = generateFalseAnswers(document)
 
     // Insert correct answer on random position
-    const positionOfCorrectAnswer = Math.floor(Math.random() * MIN_WORDS)
+    const positionOfCorrectAnswer = Math.floor(Math.random() * answersCount)
     answers.splice(positionOfCorrectAnswer, 0, { article, word })
     return answers
   }

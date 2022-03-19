@@ -14,7 +14,7 @@ import { SubheadingPrimary } from '../components/text/Subheading'
 import { BUTTONS_THEME, EXERCISES, RESULTS, Result, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import { Counts, RoutesParams } from '../navigation/NavigationTypes'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import ShareButton from './exercise-finished/components/ShareButton'
 
 const Root = styled.View`
@@ -67,7 +67,6 @@ interface Props {
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, results, discipline, documents } = route.params
   const { level, description, title } = EXERCISES[exercise]
-  const [counts, setCounts] = React.useState<Counts>({ total: 0, correct: 0, incorrect: 0, similar: 0 })
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
@@ -89,13 +88,6 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       ),
       headerRightContainerStyle: { flex: 1 },
       headerStyle: { height: headerHeight }
-    })
-
-    setCounts({
-      total: results.length,
-      correct: results.filter(({ result }) => result === 'correct').length,
-      incorrect: results.filter(({ result }) => result === 'incorrect').length,
-      similar: results.filter(({ result }) => result === 'similar').length
     })
   }, [results, navigation, headerHeight, discipline])
 
@@ -120,9 +112,9 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       return null
     }
 
-    const count = counts[item.key]
+    const count = results.filter(it => it.result === item.key).length
 
-    const description = `${count} ${labels.results.of} ${counts.total} ${labels.general.words}`
+    const description = `${count} ${labels.results.of} ${results.length} ${labels.general.words}`
     const icon = <item.Icon width={wp('7%')} height={wp('7%')} />
 
     return <ListItem title={item.title} icon={icon} description={description} onPress={() => navigateToResult(item)} />
