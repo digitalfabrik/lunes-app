@@ -12,8 +12,8 @@ interface ServerResponseHandlerProps {
 
 const ServerResponseHandler = ({ loading, error, refresh, children }: ServerResponseHandlerProps): ReactElement => (
   <Loading isLoading={loading}>
-    <ErrorMessage error={error} refresh={refresh} />
     {children}
+    <ErrorMessage error={error} refresh={refresh} />
   </Loading>
 )
 
