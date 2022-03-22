@@ -11,6 +11,11 @@ import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import render from '../../../../testing/render'
 import WriteExercise from '../WriteExercise'
 
+jest.mock('../../../../services/helpers', () => ({
+  ...jest.requireActual('../../../../services/helpers'),
+  shuffleArray: jest.fn(it => it)
+}))
+
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('react-native-popover-view')

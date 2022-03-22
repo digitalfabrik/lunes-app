@@ -13,7 +13,7 @@ jest.useFakeTimers()
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn()
+  shuffleArray: jest.fn(it => it)
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
