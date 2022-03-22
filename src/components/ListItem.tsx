@@ -6,7 +6,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { ChevronRight } from '../../assets/images'
 import { ContentSecondaryLight } from './text/Content'
 
-export const GenericListContainer = styled.Pressable`
+export const GenericListItemContainer = styled.Pressable`
   width: ${wp('90%')}px;
   margin-bottom: ${props => props.theme.spacings.xxs};
   align-self: center;
@@ -16,7 +16,7 @@ export const GenericListContainer = styled.Pressable`
   border-radius: 2px;
 `
 
-const Container = styled(GenericListContainer)<{ pressed: boolean }>`
+const Container = styled(GenericListItemContainer)<{ pressed: boolean }>`
   min-height: ${hp('12%')}px;
   background-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
   border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};

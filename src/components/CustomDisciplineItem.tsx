@@ -8,11 +8,11 @@ import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import DeletionSwipeable from './DeletionSwipeable'
 import DisciplineListItem from './DisciplineListItem'
-import { GenericListContainer } from './ListItem'
+import { GenericListItemContainer } from './ListItem'
 import Loading from './Loading'
 import { ContentSecondaryLight } from './text/Content'
 
-const Placeholder = styled(GenericListContainer)`
+const Placeholder = styled(GenericListItemContainer)`
   border: 1px solid ${prop => prop.theme.colors.disabled};
   height: ${hp('12%')}px;
 `
