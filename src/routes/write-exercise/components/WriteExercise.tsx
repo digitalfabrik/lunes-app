@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -12,7 +12,7 @@ import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from 
 import labels from '../../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { moveToEnd } from '../../../services/helpers'
+import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import InteractionSection from './InteractionSection'
 
 const StyledContainer = styled.View`
@@ -30,20 +30,29 @@ export interface WriteExerciseProp {
 }
 
 const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement => {
-  const { documents, disciplineTitle } = route.params
+  const { documents, disciplineTitle, closeExerciseAction } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
-    documents.map(document => ({
-      document,
-      result: null,
-      numberOfTries: 0
-    }))
+    shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
   )
 
   const isKeyboardShown = useIsKeyboardVisible()
   const current = documentsWithResults[currentIndex]
   const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
+
+  const initializeExercise = useCallback(
+    (force = false) => {
+      if (documents.length !== documentsWithResults.length || force) {
+        setCurrentIndex(0)
+        setIsAnswerSubmitted(false)
+        setDocumentsWithResults(shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 }))))
+      }
+    },
+    [documents, documentsWithResults]
+  )
+
+  useEffect(initializeExercise, [initializeExercise])
 
   const tryLater = useCallback(() => {
     // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
@@ -63,8 +72,11 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
       documents,
       disciplineTitle,
       results: documentsWithResults,
-      exercise: ExerciseKeys.writeExercise
+      exercise: ExerciseKeys.writeExercise,
+      closeExerciseAction
     })
+
+    initializeExercise(true)
   }
 
   const continueExercise = (): void => {
@@ -101,12 +113,7 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
 
   return (
     <>
-      <ExerciseHeader
-        navigation={navigation}
-        route={route}
-        currentWord={currentIndex}
-        numberOfWords={documents.length}
-      />
+      <ExerciseHeader navigation={navigation} currentWord={currentIndex} numberOfWords={documents.length} />
 
       <ImageCarousel images={current.document.document_image} minimized={isKeyboardShown} />
 

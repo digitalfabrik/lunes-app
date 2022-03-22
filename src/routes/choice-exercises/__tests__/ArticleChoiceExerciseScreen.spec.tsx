@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
@@ -59,7 +59,8 @@ describe('ArticleChoiceExerciseScreen', () => {
     name: 'ArticleChoiceExercise',
     params: {
       documents,
-      disciplineTitle: 'TestTitel'
+      disciplineTitle: 'TestTitel',
+      closeExerciseAction: CommonActions.goBack()
     }
   }
   it('should allow to skip an exercise and try it out later', () => {

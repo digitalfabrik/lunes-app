@@ -1,4 +1,3 @@
-import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
@@ -20,7 +19,6 @@ const ProgressBar = styled(RNProgressBar)`
 
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
-  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
   currentWord: number
   numberOfWords: number
 }

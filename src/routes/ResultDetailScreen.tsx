@@ -40,7 +40,7 @@ interface ResultScreenProps {
 }
 
 const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Element => {
-  const { results, resultType, exercise, disciplineTitle, documents } = route.params
+  const { results, resultType, exercise, disciplineTitle, closeExerciseAction } = route.params
   const [isLoading, setIsLoading] = React.useState(true)
   const { Icon, title, order } = resultType
   const matchingResults = results.filter(({ result }: DocumentResult) => result === resultType.key)
@@ -55,14 +55,14 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
     React.useCallback(() => {
       navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate('Exercises', { disciplineTitle, documents })}>
+          <TouchableOpacity onPress={() => navigation.dispatch(closeExerciseAction)}>
             <DoubleCheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
           </TouchableOpacity>
         )
       })
 
       setIsLoading(false)
-    }, [navigation, disciplineTitle, documents])
+    }, [navigation, closeExerciseAction])
   )
 
   const Header = (
@@ -76,9 +76,10 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
   const Item = ({ item }: { item: DocumentResult }): JSX.Element => <VocabularyListItem document={item.document} />
 
   const repeatIncorrectEntries = (): void =>
-    navigation.push('WriteExercise', {
+    navigation.navigate('WriteExercise', {
       disciplineTitle,
-      documents: matchingResults.map(it => it.document)
+      documents: matchingResults.map(it => it.document),
+      closeExerciseAction
     })
 
   const label = `${resultType.key === 'similar' ? labels.results.similar : labels.results.wrong} ${

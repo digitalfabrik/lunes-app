@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
@@ -74,7 +74,8 @@ describe('WriteExercise', () => {
     name: 'WriteExercise',
     params: {
       documents,
-      disciplineTitle: 'TestTitel'
+      disciplineTitle: 'TestTitel',
+      closeExerciseAction: CommonActions.goBack()
     }
   }
 

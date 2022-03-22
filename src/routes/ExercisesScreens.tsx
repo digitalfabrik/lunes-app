@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { FlatList } from 'react-native'
@@ -8,11 +8,11 @@ import ListItem from '../components/ListItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { EXERCISES, Exercise, ExerciseKeys } from '../constants/data'
+import { EXERCISES, Exercise } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { loadDocuments } from '../hooks/useLoadDocuments'
 import { ExercisesParams, RoutesParams } from '../navigation/NavigationTypes'
-import { shuffleArray, wordsDescription } from '../services/helpers'
+import { wordsDescription } from '../services/helpers'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -40,9 +40,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   const handleNavigation = (item: Exercise): void => {
     if (documents) {
+      const closeExerciseAction = CommonActions.navigate('Exercises', { documents, disciplineTitle })
       navigation.navigate(EXERCISES[item.key].nextScreen, {
-        documents: item.key === ExerciseKeys.vocabularyList ? documents : shuffleArray(documents),
-        disciplineTitle
+        documents,
+        disciplineTitle,
+        closeExerciseAction
       })
     }
   }

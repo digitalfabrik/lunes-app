@@ -1,3 +1,5 @@
+import { CommonNavigationAction } from '@react-navigation/native'
+
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import { Discipline, Document } from '../constants/endpoints'
 
@@ -10,6 +12,7 @@ export interface DocumentResult {
 interface ExerciseParams {
   disciplineTitle: string
   documents: Document[]
+  closeExerciseAction: CommonNavigationAction
 }
 
 export type ExercisesParams =

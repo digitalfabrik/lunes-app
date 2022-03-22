@@ -132,11 +132,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   return (
     <>
       <Speaker>
-        <AudioPlayer
-          document={documentWithResult.document}
-          disabled={retryAllowed}
-          submittedAlternative={submittedAlternative}
-        />
+        <AudioPlayer document={document} disabled={retryAllowed} submittedAlternative={submittedAlternative} />
       </Speaker>
 
       <MissingArticlePopover

@@ -65,7 +65,7 @@ interface Props {
 }
 
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, results, disciplineTitle, documents } = route.params
+  const { exercise, results, disciplineTitle, documents, closeExerciseAction } = route.params
   const { level, description, title } = EXERCISES[exercise]
 
   // Set only height for tablets since header doesn't scale auto
@@ -74,14 +74,15 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   const repeatExercise = (): void => {
     navigation.navigate(EXERCISES[exercise].nextScreen, {
       documents,
-      disciplineTitle
+      disciplineTitle,
+      closeExerciseAction
     })
   }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <RightHeader onPress={() => navigation.navigate('Exercises', { documents, disciplineTitle })}>
+        <RightHeader onPress={() => navigation.dispatch(closeExerciseAction)}>
           <HeaderText>{labels.general.header.cancelExercise}</HeaderText>
           <DoubleCheckIcon width={wp('6%')} height={wp('6%')} />
         </RightHeader>
@@ -89,7 +90,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       headerRightContainerStyle: { flex: 1 },
       headerStyle: { height: headerHeight }
     })
-  }, [results, navigation, headerHeight, documents, disciplineTitle])
+  }, [results, navigation, headerHeight, closeExerciseAction])
 
   const Header = (
     <StyledTitle title={labels.results.resultsOverview} subtitle={title} description={description}>
@@ -102,7 +103,8 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
       documents,
       disciplineTitle,
       exercise,
-      results
+      results,
+      closeExerciseAction
     })
   }
 

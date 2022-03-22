@@ -16,7 +16,7 @@ export const StyledContainer = styled.View`
 export interface SingleChoiceProps {
   onClick: (answer: Answer) => void
   answers: Answer[]
-  correctAnswer: Answer
+  correctAnswers: Answer[]
   selectedAnswer: Answer | null
   delayPassed: boolean
 }
@@ -24,7 +24,7 @@ export interface SingleChoiceProps {
 export const SingleChoice = ({
   answers,
   onClick,
-  correctAnswer,
+  correctAnswers,
   selectedAnswer,
   delayPassed
 }: SingleChoiceProps): ReactElement => {
@@ -38,7 +38,7 @@ export const SingleChoice = ({
           key={`${answer.article.id}-${answer.word}`}
           answer={answer}
           onClick={onClick}
-          correct={isAnswerEqual(answer, correctAnswer)}
+          correct={correctAnswers.some(it => isAnswerEqual(answer, it))}
           selected={isAnswerEqual(answer, selectedAnswer)}
           anyAnswerSelected={selectedAnswer !== null}
           delayPassed={delayPassed}
