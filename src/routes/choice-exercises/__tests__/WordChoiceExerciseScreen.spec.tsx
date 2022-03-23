@@ -55,7 +55,7 @@ describe('WordChoiceExerciseScreen', () => {
   }
   it('should allow to skip an exercise and try it out later', () => {
     mockUseLoadAsyncWithData(testDocuments)
-    console.log(testDocuments)
+
     const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
     const tryLater = getByText(labels.exercises.tryLater)
@@ -69,6 +69,7 @@ describe('WordChoiceExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.next))
     correctAnswer = getByText('Helm')
     fireEvent(correctAnswer, 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
 
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
     correctAnswer = getByText('Spachtel')
