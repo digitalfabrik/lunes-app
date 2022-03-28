@@ -48,7 +48,7 @@ describe('Feedback section', () => {
   })
 
   it('should render finally incorrect feedback', () => {
-    const submission = 'Der Hammer'
+    const submission = 'Der Auto'
     const { queryByText } = renderFeedback('incorrect', 1, submission, false)
 
     expect(
@@ -57,7 +57,7 @@ describe('Feedback section', () => {
   })
 
   it('should render incorrect feedback with retries not exceeded', () => {
-    const submission = 'Der Hammer'
+    const submission = 'Der Auto'
     const { queryByText } = renderFeedback('incorrect', 1, submission, true)
 
     expect(queryByText(`${labels.exercises.write.feedback.wrong}`)).toBeTruthy()
