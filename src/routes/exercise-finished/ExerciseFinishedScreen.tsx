@@ -4,7 +4,14 @@ import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CheckCircleIconWhite, ListIcon, RepeatIcon, UnlockLockIcon, CloseIcon, CloseIconWhite} from '../../../assets/images'
+import {
+  CheckCircleIconWhite,
+  ListIcon,
+  RepeatIcon,
+  UnlockLockIcon,
+  CloseIcon,
+  CloseIconWhite
+} from '../../../assets/images'
 import Button from '../../components/Button'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../../constants/data'
@@ -33,13 +40,13 @@ const MessageContainer = styled.View`
   margin-top: ${props => props.theme.spacings.sm};
 `
 const Message = styled(HeadingBackground)`
-  color:${ExerciseUnlocked ? prop => prop.theme.colors.primary : prop =>prop.theme.colors.background};
+  color: ${ExerciseUnlocked ? prop => prop.theme.colors.primary : prop => prop.theme.colors.background};
   text-align: center;
 `
 const Icon = styled.TouchableOpacity`
   position: absolute;
-  padding-bottom:250px;
-  padding-left:300px;
+  padding-bottom: 250px;
+  padding-left: 300px;
   width: ${wp('6%')}px;
   height: ${wp('6%')}px;
 `
@@ -87,12 +94,18 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     <Root>
       <UpperSection>
         <Icon onPress={checkResults}>
-          {ExerciseUnlocked ?
-            (<CloseIcon width={wp('6%')} height={wp('6%')} />) : (<CloseIconWhite width={wp('6%')} height={wp('6%')} />)}
+          {ExerciseUnlocked ? (
+            <CloseIcon width={wp('6%')} height={wp('6%')} />
+          ) : (
+            <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+          )}
         </Icon>
 
-        {ExerciseUnlocked ?
-            (<UnlockLockIcon width={wp('8%')} height={wp('8%')} />) : (<CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />)}
+        {ExerciseUnlocked ? (
+          <UnlockLockIcon width={wp('8%')} height={wp('8%')} />
+        ) : (
+          <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
+        )}
         <MessageContainer>
           <Message>{message}</Message>
         </MessageContainer>
