@@ -16,6 +16,7 @@ import CloseCircleIconBold from './close-circle-icon-bold.svg'
 import CloseCircleIconWhite from './close-circle-icon-white.svg'
 import CloseCircleIcon from './close-circle-icon.svg'
 import CloseIcon from './close-icon.svg'
+import CloseIconWhite from './close-icon-white.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
@@ -33,6 +34,7 @@ import ShareIcon from './share-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
+import UnlockLockIcon from './unlocked-Lock-icon.svg'
 
 export {
   AddCircleIcon,
@@ -53,6 +55,7 @@ export {
   CloseCircleIconWhite,
   CloseCircleIconBlue,
   CloseIcon,
+  CloseIconWhite,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
   HeaderCircleIcon,
@@ -69,5 +72,6 @@ export {
   ShareIcon,
   TrashIcon,
   TrophyIcon,
-  VolumeUpCircleIcon
+  VolumeUpCircleIcon,
+  UnlockLockIcon
 }

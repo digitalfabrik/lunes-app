@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
+import { ReactNode } from 'react'
 import { Modal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -37,17 +38,20 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
+
 export interface ConfirmationModalProps {
   visible: boolean
   setVisible: (visible: boolean) => void
   text: string
+  children?: ReactNode
+
   confirmationButtonText: string
   cancelButtonText: string
   confirmationAction: () => void
 }
 
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction } = props
+  const { visible, setVisible, text,children,confirmationButtonText, cancelButtonText, confirmationAction } = props
   const closeModal = (): void => setVisible(false)
 
   return (
@@ -58,6 +62,7 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
             <CloseIcon width={wp('6%')} height={wp('6%')} />
           </Icon>
           <Message>{text}</Message>
+          {children}
           <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
           <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
         </ModalContainer>

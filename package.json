@@ -29,6 +29,7 @@
     "@sentry/react-native": "^3.2.13",
     "axios": "^0.24.0",
     "axios-cache-interceptor": "0.9.1",
+    "pod-install": "^0.1.32",
     "react": "17.0.2",
     "react-native": "0.66.4",
     "react-native-camera": "^4.2.1",
