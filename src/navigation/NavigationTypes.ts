@@ -23,8 +23,12 @@ interface ResultScreenData {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
   Home: undefined
+  Intro: undefined
   AddCustomDiscipline: undefined
   DisciplineSelection: {
+    discipline: Discipline
+  }
+  ProfessionSelection: {
     discipline: Discipline
   }
   Exercises: {
