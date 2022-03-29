@@ -45,8 +45,8 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const Header = <Title title={title} description={childrenDescription(discipline)} />
 
   const handleNavigation = (item: Exercise): void => {
-    const current_level = 4 //  here is a hard coded level for locking exercice modal
-    if (item.level <= current_level) {
+    const CurrentLevel = 4 //  here is a hard coded level for locking exercice modal
+    if (item.level <= CurrentLevel) {
       if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
         Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
       } else {

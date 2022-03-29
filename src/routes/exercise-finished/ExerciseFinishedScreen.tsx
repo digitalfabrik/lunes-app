@@ -19,7 +19,7 @@ import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import ShareSection from './components/ShareSection'
 
-const ExerciseUnlocked = true // here is a the boolean should be replaced with the logic
+const ExerciseUnlocked = false // here is a the boolean should be replaced with the logic
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;

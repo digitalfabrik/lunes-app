@@ -1,4 +1,4 @@
-import React, { ReactElement , ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { Modal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
