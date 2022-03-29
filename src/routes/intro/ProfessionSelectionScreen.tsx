@@ -4,7 +4,7 @@ import React, { ComponentType } from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CheckCircleIcon } from '../../../assets/images'
+import { CheckCircleIconGreen } from '../../../assets/images'
 import Button from '../../components/Button'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -31,6 +31,13 @@ const ButtonContainer = styled.View`
   padding-top: ${props => props.theme.spacings.md}
   margin: 0 auto 0;
 `
+const IconContainer = styled.View`
+  margin-right: ${props => props.theme.spacings.sm};
+`
+const Placeholder = styled.View`
+  width: 24px;
+  margin-right: ${props => props.theme.spacings.sm};
+`
 
 interface ProfessionSelectionScreenProps {
   route: RouteProp<RoutesParams, 'ProfessionSelection'>
@@ -55,7 +62,15 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
       item={item}
       onPress={() => selectDiscipline(item)}
       hasBadge
-      rightChildren={selectedProfessions?.includes(item.id) ? <CheckCircleIcon testID='check-icon' /> : <></>}
+      rightChildren={
+        selectedProfessions?.includes(item.id) ? (
+          <IconContainer>
+            <CheckCircleIconGreen testID='check-icon' />
+          </IconContainer>
+        ) : (
+          <Placeholder />
+        )
+      }
     />
   )
 
