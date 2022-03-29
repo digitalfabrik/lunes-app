@@ -16,7 +16,7 @@ const getEndpoint = (parent: Discipline | null): string => {
   if (parent?.needsTrainingSetEndpoint) {
     return ENDPOINTS.trainingSet
   }
-  if (parent?.apiKey) {
+  if (parent?.apiKey && parent.parentTitle === null) {
     return ENDPOINTS.disciplinesByGroup
   }
   return ENDPOINTS.disciplines
