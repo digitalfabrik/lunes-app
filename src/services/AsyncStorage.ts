@@ -1,15 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const getSelectedProfessions = async (): Promise<number[] | null> => {
+import { Discipline } from '../constants/endpoints'
+
+export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
   const professions = await AsyncStorage.getItem('selectedProfessions')
   return professions ? JSON.parse(professions) : null
 }
 
-export const setSelectedProfessions = async (selectedProfessions: number[]): Promise<void> => {
+export const setSelectedProfessions = async (selectedProfessions: Discipline[]): Promise<void> => {
   await AsyncStorage.setItem('selectedProfessions', JSON.stringify(selectedProfessions))
 }
 
-export const pushSelectedProfession = async (profession: number): Promise<number[]> => {
+export const pushSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
   let professions = await getSelectedProfessions()
   if (professions === null) {
     professions = [profession]
@@ -20,14 +22,14 @@ export const pushSelectedProfession = async (profession: number): Promise<number
   return professions
 }
 
-export const removeSelectedProfession = async (profession: number): Promise<number[]> => {
+export const removeSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
   const professions = await getSelectedProfessions()
   if (professions === null) {
     throw new Error('professions not set')
   }
-  const index = professions.indexOf(profession)
+  const index = professions.findIndex(item => item.id === profession.id)
   if (index === -1) {
-    throw new Error('profession not available')
+    return professions
   }
   professions.splice(index, 1)
   await setSelectedProfessions(professions)

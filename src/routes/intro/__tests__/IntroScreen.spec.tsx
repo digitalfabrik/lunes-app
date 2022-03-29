@@ -45,7 +45,7 @@ describe('IntroScreen', () => {
 
   it('should confirm selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([1]))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
     const { findByText } = render(<IntroScreen navigation={navigation} />)
     const button = await findByText(labels.intro.confirmSelection)
     fireEvent.press(button)

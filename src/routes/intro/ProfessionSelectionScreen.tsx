@@ -50,10 +50,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
-    if (selectedProfessions?.includes(selectedItem.id)) {
-      await AsyncStorage.removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
+    if (selectedProfessions?.includes(selectedItem)) {
+      await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     } else {
-      await AsyncStorage.pushSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
+      await AsyncStorage.pushSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     }
   }
 
@@ -63,7 +63,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
       onPress={() => selectDiscipline(item)}
       hasBadge
       rightChildren={
-        selectedProfessions?.includes(item.id) ? (
+        selectedProfessions?.includes(item) ? (
           <IconContainer>
             <CheckCircleIconGreen testID='check-icon' />
           </IconContainer>
