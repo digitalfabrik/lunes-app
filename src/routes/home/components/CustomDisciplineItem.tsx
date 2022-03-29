@@ -2,13 +2,12 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import styled from 'styled-components/native'
 
-import labels from '../constants/labels.json'
-import { useLoadGroupInfo } from '../hooks/useLoadGroupInfo'
-import { RoutesParams } from '../navigation/NavigationTypes'
-import DeletionSwipeable from './DeletionSwipeable'
-import DisciplineListItem from './DisciplineListItem'
-import Loading from './Loading'
-import { ContentSecondaryLight } from './text/Content'
+import Loading from '../../../components/Loading'
+import { ContentSecondaryLight } from '../../../components/text/Content'
+import labels from '../../../constants/labels.json'
+import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
+import DisciplineCard from './DisciplineCard'
 
 const Placeholder = styled.View`
   background-color: ${props => props.theme.colors.backgroundAccent};
@@ -28,7 +27,7 @@ interface CustomDisciplineItemProps {
   refresh: () => void
 }
 
-const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineItemProps): JSX.Element => {
+const CustomDisciplineItem = ({ apiKey, navigation }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
   const navigate = (): void => {
@@ -43,6 +42,7 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
   if (loading) {
     return (
       <Placeholder>
+        {/* TODO adjust height of Placeholder */}
         <LoadingSpinner>
           <Loading isLoading />
         </LoadingSpinner>
@@ -50,9 +50,9 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
     )
   }
   return (
-    <DeletionSwipeable apiKey={apiKey} refresh={refresh}>
+    <>
       {data ? (
-        <DisciplineListItem item={data} onPress={navigate} hasBadge={false} />
+        <DisciplineCard discipline={data} showProgress={false} onPress={navigate} navigateToNextExercise={navigate} />
       ) : (
         <Placeholder>
           <ContentSecondaryLight>
@@ -60,7 +60,7 @@ const CustomDisciplineItem = ({ apiKey, navigation, refresh }: CustomDisciplineI
           </ContentSecondaryLight>
         </Placeholder>
       )}
-    </DeletionSwipeable>
+    </>
   )
 }
 

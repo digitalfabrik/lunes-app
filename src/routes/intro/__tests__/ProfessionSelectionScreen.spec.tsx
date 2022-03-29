@@ -50,14 +50,14 @@ describe('ProfessionSelectionScreen', () => {
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
     fireEvent.press(profession)
     expect(spyOnPush).toHaveBeenCalledTimes(1)
-    expect(spyOnPush).toHaveBeenCalledWith(mockDisciplines[0].id)
+    expect(spyOnPush).toHaveBeenCalledWith(mockDisciplines[0])
   })
 
   it('should unselect profession when clicked', async () => {
-    await AsyncStorageService.setSelectedProfessions([mockDisciplines[0].id])
+    await AsyncStorageService.setSelectedProfessions([mockDisciplines[0]])
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0].id]))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
     const spyOnRemove = jest.spyOn(AsyncStorageService, 'removeSelectedProfession')
 
     const { findByText, queryAllByTestId } = render(<ProfessionSelectionScreen route={route} navigation={navigation} />)
@@ -68,6 +68,6 @@ describe('ProfessionSelectionScreen', () => {
     fireEvent.press(profession)
 
     expect(spyOnRemove).toHaveBeenCalledTimes(1)
-    expect(spyOnRemove).toHaveBeenCalledWith(mockDisciplines[0].id)
+    expect(spyOnRemove).toHaveBeenCalledWith(mockDisciplines[0])
   })
 })

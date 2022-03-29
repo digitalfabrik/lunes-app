@@ -33,7 +33,7 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 
 export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (!discipline.parentTitle) {
+  if (!discipline.parentTitle && !discipline.apiKey) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {

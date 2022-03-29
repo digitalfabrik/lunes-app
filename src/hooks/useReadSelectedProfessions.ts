@@ -1,8 +1,9 @@
+import { Discipline } from '../constants/endpoints'
 import AsyncStorage from '../services/AsyncStorage'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const loadFromAsyncStorage = async (): Promise<number[] | null> => AsyncStorage.getSelectedProfessions()
+const loadFromAsyncStorage = async (): Promise<Discipline[] | null> => AsyncStorage.getSelectedProfessions()
 
-const useReadFromAsyncStorage = (): Return<number[] | null> => useLoadAsync(loadFromAsyncStorage, null)
+const useReadFromAsyncStorage = (): Return<Discipline[] | null> => useLoadAsync(loadFromAsyncStorage, null)
 
 export default useReadFromAsyncStorage

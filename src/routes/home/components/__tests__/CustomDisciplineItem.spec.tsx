@@ -1,15 +1,15 @@
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { Discipline } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
-import createNavigationMock from '../../testing/createNavigationPropMock'
+import { Discipline } from '../../../../constants/endpoints'
+import labels from '../../../../constants/labels.json'
+import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import {
   mockUseLoadAsyncLoading,
   mockUseLoadAsyncWithData,
   mockUseLoadAsyncWithError
-} from '../../testing/mockUseLoadFromEndpoint'
-import render from '../../testing/render'
+} from '../../../../testing/mockUseLoadFromEndpoint'
+import render from '../../../../testing/render'
 import CustomDisciplineItem from '../CustomDisciplineItem'
 
 describe('CustomDisciplineItem', () => {
@@ -33,7 +33,7 @@ describe('CustomDisciplineItem', () => {
     mockUseLoadAsyncWithData(mockData)
     const { getByText } = renderCustomDisciplineItem()
     expect(getByText('Custom Discipline')).toBeDefined()
-    expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
+    expect(getByText(labels.general.discipline)).toBeDefined()
   })
 
   it('should display loading', () => {

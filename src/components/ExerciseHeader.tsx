@@ -66,7 +66,7 @@ const ExerciseHeader = ({ navigation, route, currentWord, numberOfWords }: Exerc
     <>
       <ProgressBar
         progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
-        color={theme.colors.exerciseProgressIndicator}
+        color={theme.colors.progressIndicator}
       />
 
       <ConfirmationModal
