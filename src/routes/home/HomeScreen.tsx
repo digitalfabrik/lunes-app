@@ -8,6 +8,7 @@ import { AddCircleIcon } from '../../../assets/images'
 import CustomDisciplineItem from '../../components/CustomDisciplineItem'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import Header from '../../components/Header'
+import ListItem from '../../components/ListItem'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
 import { SubheadingPrimary } from '../../components/text/Subheading'
@@ -15,6 +16,7 @@ import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
+import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import HomeFooter from './components/HomeFooter'
 
@@ -46,6 +48,7 @@ interface HomeScreenProps {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
+  const { data: selectedProfessions } = useReadSelectedProfessions()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
 
   useFocusEffect(
@@ -81,18 +84,24 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} hasBadge={false} />
   ))
 
+  const selectedProfessionItems = selectedProfessions?.map(profession => (
+    <ListItem title={'title'} description={'description'} onPress={() => navigateToDiscipline(profession)} />
+  ))
+
   return (
     <Root>
       <Header />
       <StyledText>{labels.home.welcome}</StyledText>
+
       <AddCustomDisciplineContainer onPress={navigateToAddCustomDisciplineScreen}>
         <AddCircleIcon width={wp('8%')} height={wp('8%')} />
         <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
       </AddCustomDisciplineContainer>
       {customDisciplineItems}
-      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+      {selectedProfessionItems}
+      {/*      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {disciplineItems}
-      </ServerResponseHandler>
+      </ServerResponseHandler>*/}
       <HomeFooter navigateToImprint={navigateToImprintScreen} />
     </Root>
   )
