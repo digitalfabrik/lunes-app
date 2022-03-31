@@ -1,7 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
+import { GenericListItemContainer } from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ContentSecondaryLight } from '../../../components/text/Content'
 import labels from '../../../constants/labels.json'
@@ -9,16 +11,13 @@ import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import DisciplineCard from './DisciplineCard'
 
-const Placeholder = styled.View`
-  background-color: ${props => props.theme.colors.backgroundAccent};
-  margin: ${props => `0 ${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
+const Placeholder = styled(GenericListItemContainer)`
   border: 1px solid ${prop => prop.theme.colors.disabled};
-  border-radius: 2px;
-  padding: ${props => props.theme.spacings.sm};
+  height: ${hp('12%')}px;
 `
 
 const LoadingSpinner = styled.View`
-  padding-top: ${props => props.theme.spacings.xl};
+  padding: ${props => props.theme.spacings.md};
 `
 
 interface CustomDisciplineItemProps {

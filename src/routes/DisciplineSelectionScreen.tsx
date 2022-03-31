@@ -19,6 +19,7 @@ const Root = styled.View`
 
 const StyledList = styled(FlatList)`
   width: 100%;
+  flex-grow: 0;
 ` as ComponentType as new () => FlatList<Discipline>
 
 interface DisciplineSelectionScreenProps {
