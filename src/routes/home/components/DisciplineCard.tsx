@@ -20,12 +20,12 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0;
 `
 
-const ProgressText = styled(Subheading)`
+const NumberText = styled(Subheading)`
   font-size: ${props => props.theme.fonts.headingFontSize};
   padding: ${props => props.theme.spacings.xs};
 `
 
-const ProgressUnit = styled(ContentSecondary)`
+const UnitText = styled(ContentSecondary)`
   font-size: ${props => props.theme.fonts.headingFontSize};
 `
 
@@ -45,7 +45,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
   const { data: progress } = useReadProgress(discipline)
 
   const navigate = () => {
-    navigateToNextExercise(discipline) // TODO LUN-290 add progress
+    navigateToNextExercise(discipline)
   }
 
   const onPressProfession = () => {
@@ -70,11 +70,11 @@ const DisciplineCard = (props: PropsType): ReactElement => {
             />
           )}
 
-          <ProgressText>
+          <NumberText>
             {showProgress && progress !== null && `${progress}/`}
             {discipline.numberOfChildren}
-          </ProgressText>
-          <ProgressUnit>{showProgress ? labels.home.progressDescription : childrenLabel(discipline)}</ProgressUnit>
+          </NumberText>
+          <UnitText>{showProgress ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
         </ProgressContainer>
         <ButtonContainer>
           <Button

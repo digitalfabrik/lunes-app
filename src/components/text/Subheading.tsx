@@ -13,7 +13,3 @@ export const SubheadingText = styled(Subheading)`
 export const SubheadingPrimary = styled(Subheading)`
   color: ${prop => prop.theme.colors.primary};
 `
-
-export const SubheadingSecondary = styled(Subheading)`
-  color: ${prop => prop.theme.colors.textSecondary};
-`

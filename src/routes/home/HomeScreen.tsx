@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       discipline={profession}
       showProgress
       onPress={navigateToDiscipline}
-      navigateToNextExercise={navigateToDiscipline}
+      navigateToNextExercise={navigateToDiscipline} // TODO LUN-290 add progress
     />
   ))
 
