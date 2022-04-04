@@ -1,25 +1,29 @@
 import React, { ReactElement, useCallback, useState } from 'react'
-import { GestureResponderEvent, Pressable } from 'react-native'
+import { GestureResponderEvent } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import { ContentSecondaryLight } from './text/Content'
 
-const Container = styled(Pressable)<{ pressed: boolean }>`
-  min-height: ${hp('12%')}px;
+export const GenericListItemContainer = styled.Pressable`
   width: ${wp('90%')}px;
   margin-bottom: ${props => props.theme.spacings.xxs};
   align-self: center;
-  padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
-  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-radius: 2px;
 `
+
+const Container = styled(GenericListItemContainer)<{ pressed: boolean }>`
+  min-height: ${hp('12%')}px;
+  background-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+`
+
 const Title = styled.Text<{ pressed: boolean }>`
   font-size: ${props => props.theme.fonts.largeFontSize};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};

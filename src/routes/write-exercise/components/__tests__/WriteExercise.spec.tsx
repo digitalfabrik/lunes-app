@@ -65,9 +65,9 @@ describe('WriteExercise', () => {
     },
     {
       id: 2,
-      word: 'Hammer',
+      word: 'Auto',
       article: ARTICLES[1],
-      document_image: [{ id: 1, image: 'Hammer' }],
+      document_image: [{ id: 1, image: 'Auto' }],
       audio: '',
       alternatives: []
     }

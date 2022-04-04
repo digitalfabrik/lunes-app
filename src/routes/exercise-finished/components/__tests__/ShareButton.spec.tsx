@@ -17,7 +17,7 @@ describe('ShareButton', () => {
     {
       document: {
         id: 1,
-        word: 'Hammer',
+        word: 'Auto',
         article: ARTICLES[1],
         document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
         audio: 'audio',
