@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 
-import { LunesIcon } from '../../assets/images'
+import { LunesIcon, MenuIcon } from '../../assets/images'
 import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
@@ -22,6 +22,13 @@ const SmileIconStyle = styled.Pressable`
   top: 20px;
 `
 
+const MenuIconContainer = styled.Pressable`
+  position: absolute;
+  color: white;
+  top: ${props => props.theme.spacings.sm};
+  right: ${props => props.theme.spacings.sm};
+`
+
 const HeaderWithMenu = (): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
@@ -30,6 +37,9 @@ const HeaderWithMenu = (): JSX.Element => (
           <LunesIcon />
         </SentryTestPressable>
       </SmileIconStyle>
+      <MenuIconContainer>
+        <MenuIcon />
+      </MenuIconContainer>
     </HeaderStyle>
   </Wrapper>
 )

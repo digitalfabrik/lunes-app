@@ -43,6 +43,7 @@ interface PropsType {
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { discipline, showProgress, onPress, navigateToNextExercise } = props
   const { data: progress } = useReadProgress(discipline)
+  const moduleAlreadyStarted = progress !== null && progress !== 0
 
   const navigate = () => {
     navigateToNextExercise(discipline)
@@ -67,19 +68,22 @@ const DisciplineCard = (props: PropsType): ReactElement => {
               unfilledColor={theme.colors.disabled}
               borderWidth={0}
               thickness={6}
+              testID='progress-circle'
             />
           )}
 
           <NumberText>
-            {showProgress && progress !== null && `${progress}/`}
+            {showProgress && moduleAlreadyStarted && `${progress}/`}
             {discipline.numberOfChildren}
           </NumberText>
-          <UnitText>{showProgress ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
+          <UnitText>
+            {showProgress && moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}
+          </UnitText>
         </ProgressContainer>
         <ButtonContainer>
           <Button
             onPress={navigate}
-            label={progress === 0 ? labels.home.start : labels.home.continue}
+            label={!moduleAlreadyStarted ? labels.home.start : labels.home.continue}
             buttonTheme={BUTTONS_THEME.outlined}
           />
         </ButtonContainer>

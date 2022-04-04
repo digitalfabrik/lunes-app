@@ -26,7 +26,7 @@ interface CustomDisciplineItemProps {
   refresh: () => void
 }
 
-const CustomDisciplineItem = ({ apiKey, navigation }: CustomDisciplineItemProps): JSX.Element => {
+const CustomDiscipline = ({ apiKey, navigation }: CustomDisciplineItemProps): JSX.Element => {
   const { data, loading } = useLoadGroupInfo(apiKey)
 
   const navigate = (): void => {
@@ -63,4 +63,4 @@ const CustomDisciplineItem = ({ apiKey, navigation }: CustomDisciplineItemProps)
   )
 }
 
-export default CustomDisciplineItem
+export default CustomDiscipline

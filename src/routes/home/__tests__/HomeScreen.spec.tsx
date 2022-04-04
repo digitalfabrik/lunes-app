@@ -2,6 +2,7 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import labels from '../../../constants/labels.json'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
@@ -64,5 +65,19 @@ describe('HomeScreen', () => {
     fireEvent.press(customDiscipline)
 
     expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
+  })
+
+  it('should show suggestion to add custom discipline', async () => {
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
+
+    const { findByText } = render(<HomeScreen navigation={navigation} />)
+    const addCustomDiscipline = await findByText(labels.home.addCustomDiscipline)
+    expect(addCustomDiscipline).toBeDefined()
+
+    fireEvent.press(addCustomDiscipline)
+
+    expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
 })

@@ -13,7 +13,7 @@ import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
-import CustomDisciplineItem from './components/CustomDisciplineItem'
+import CustomDiscipline from './components/CustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
 
@@ -60,7 +60,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDisciplineItem
+    <CustomDiscipline
       key={customDiscipline}
       apiKey={customDiscipline}
       navigation={navigation}

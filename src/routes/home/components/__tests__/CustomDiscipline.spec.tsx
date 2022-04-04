@@ -10,7 +10,7 @@ import {
   mockUseLoadAsyncWithError
 } from '../../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../../testing/render'
-import CustomDisciplineItem from '../CustomDisciplineItem'
+import CustomDiscipline from '../CustomDiscipline'
 
 describe('CustomDisciplineItem', () => {
   const navigation = createNavigationMock<'Home'>()
@@ -27,7 +27,7 @@ describe('CustomDisciplineItem', () => {
   }
 
   const renderCustomDisciplineItem = (): RenderAPI =>
-    render(<CustomDisciplineItem apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
+    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockData)
