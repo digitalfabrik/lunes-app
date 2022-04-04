@@ -4,7 +4,7 @@ parameters:
     type: boolean
     default: false
 docker:
-  - image: circleci/node:14.17.0
+  - image: cimg/node:14.19.0
 resource_class: small
 steps:
   - checkout

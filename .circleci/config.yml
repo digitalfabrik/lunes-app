@@ -300,7 +300,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         parameters:
             prepare_delivery:
                 default: false
@@ -333,7 +333,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         steps:
             - checkout
             - check_config
@@ -464,7 +464,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         resource_class: small
         steps:
             - checkout
@@ -478,7 +478,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: circleci/node:14.18.0
+            - image: cimg/node:14.19.0
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
@@ -500,7 +500,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
     notify_ios:
         docker:
-            - image: circleci/node:14.18.0
+            - image: cimg/node:14.19.0
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
