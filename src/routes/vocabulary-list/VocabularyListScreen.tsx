@@ -4,11 +4,9 @@ import React, { ComponentType, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import VocabularyListItem from './components/VocabularyListItem'
 import VocabularyListModal from './components/VocabularyListModal'
@@ -30,11 +28,9 @@ interface VocabularyListScreenProps {
 }
 
 const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element => {
-  const { discipline } = route.params
+  const { documents } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
-
-  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
 
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem
@@ -48,7 +44,7 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
 
   return (
     <Root>
-      {documents?.[selectedDocumentIndex] && (
+      {documents[selectedDocumentIndex] && (
         <VocabularyListModal
           documents={documents}
           isModalVisible={isModalVisible}
@@ -59,19 +55,15 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
       )}
       <Title
         title={labels.exercises.vocabularyList.title}
-        description={`${documents?.length ?? '0'} ${
-          documents?.length === 1 ? labels.general.word : labels.general.words
-        }`}
+        description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
       />
 
-      <ServerResponseHandler loading={loading} error={error} refresh={refresh}>
-        <StyledList
-          data={documents}
-          renderItem={renderItem}
-          keyExtractor={item => `${item.id}`}
-          showsVerticalScrollIndicator={false}
-        />
-      </ServerResponseHandler>
+      <StyledList
+        data={documents}
+        renderItem={renderItem}
+        keyExtractor={item => `${item.id}`}
+        showsVerticalScrollIndicator={false}
+      />
     </Root>
   )
 }

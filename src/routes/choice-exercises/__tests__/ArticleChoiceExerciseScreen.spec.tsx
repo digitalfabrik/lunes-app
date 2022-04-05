@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
@@ -6,7 +6,6 @@ import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
@@ -14,7 +13,7 @@ jest.useFakeTimers()
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn()
+  shuffleArray: jest.fn(it => it)
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
@@ -36,22 +35,12 @@ describe('ArticleChoiceExerciseScreen', () => {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        numberOfChildren: 2,
-        isLeaf: true,
-        parentTitle: 'parent',
-        icon: 'my_icon',
-        apiKey: 'my_api_key',
-        description: '',
-        needsTrainingSetEndpoint: false
-      }
+      documents,
+      disciplineTitle: 'TestTitel',
+      closeExerciseAction: CommonActions.goBack()
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadAsyncWithData(documents)
-
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
@@ -65,7 +54,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadAsyncWithData(documents)
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
@@ -79,7 +67,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should show word again when answered wrong', () => {
-    mockUseLoadAsyncWithData(documents)
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)

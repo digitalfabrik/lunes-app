@@ -33,8 +33,6 @@ export interface Document {
   alternatives: AlternativeWord[]
 }
 
-export type Documents = Document[]
-
 export const ENDPOINTS = {
   disciplines: 'disciplines_by_level',
   disciplinesByGroup: 'disciplines_by_group',

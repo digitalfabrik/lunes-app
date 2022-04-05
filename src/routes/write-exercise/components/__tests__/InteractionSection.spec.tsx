@@ -49,7 +49,7 @@ describe('InteractionSection', () => {
 
   it('should render correctly if not submitted answer yet', () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(
-      { ...document, result: null, numberOfTries: 0 },
+      { document, result: null, numberOfTries: 0 },
       false
     )
     expect(getByText(labels.exercises.write.checkInput)).toBeDisabled()
@@ -57,13 +57,13 @@ describe('InteractionSection', () => {
   })
 
   it('should not show check button if answer submitted', () => {
-    const { queryByText } = renderInteractionSection({ ...document, result: 'correct', numberOfTries: 1 }, true)
+    const { queryByText } = renderInteractionSection({ document, result: 'correct', numberOfTries: 1 }, true)
     expect(queryByText(labels.exercises.write.checkInput)).toBeNull()
   })
 
   it('should show popup if article missing', async () => {
     const { getByText, getByPlaceholderText, getByTestId } = renderInteractionSection(
-      { ...document, result: null, numberOfTries: 0 },
+      { document, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
