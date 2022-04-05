@@ -1,0 +1,6 @@
+issue_key: LUN-272
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: Fehlerhalfte Titel von individuellen Bereichen behoben

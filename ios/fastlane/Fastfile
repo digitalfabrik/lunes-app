@@ -147,7 +147,7 @@ platform :ios do
 
     puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
 
-    prepare_release_notes(version_name: testflight_version)
+    prepare_metadata(version_name: testflight_version)
 
     # https://docs.fastlane.tools/actions/deliver/#submit-build
     deliver(
@@ -169,15 +169,15 @@ platform :ios do
 
   # The following parameters have to be passed:
   # version_name: The version name of the release notes to prepare
-  desc "Prepare release notes"
-  lane :prepare_release_notes do |options|
+  desc "Prepare metadata"
+  lane :prepare_metadata do |options|
     version_name = options[:version_name]
 
     if [version_name].include?(nil)
       raise "'nil' passed as parameter! Aborting..."
     end
 
-    `../../tools/parse-release-notes parse --ios --destination ./metadata/de-DE/release_notes.txt --source ../../release-notes/#{version_name} --production`
+    `yarn --cwd ../../tools manage-metadata prepare-metadata appstore --override-version-name #{version_name}`
   end
 
 end

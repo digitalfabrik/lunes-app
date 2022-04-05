@@ -4,6 +4,7 @@ import React from 'react'
 
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../testing/render'
@@ -28,30 +29,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const testDocuments: Document[] = [
-    {
-      audio: '',
-      word: 'Helm',
-      id: 1,
-      article: {
-        id: 1,
-        value: 'Der'
-      },
-      document_image: [{ id: 1, image: 'Helm' }],
-      alternatives: []
-    },
-    {
-      audio: '',
-      word: 'Auto',
-      id: 2,
-      article: {
-        id: 3,
-        value: 'Das'
-      },
-      document_image: [{ id: 2, image: 'Auto' }],
-      alternatives: []
-    }
-  ]
+  const documents = new DocumentBuilder(2).build()
 
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
@@ -72,27 +50,27 @@ describe('ArticleChoiceExerciseScreen', () => {
     }
   }
   it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadAsyncWithData(testDocuments)
+    mockUseLoadAsyncWithData(documents)
 
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
-    expect(getAllByText(/Helm/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
 
     expect(getAllByText(/Auto/)).toHaveLength(4)
-    fireEvent(getByText('Das'), 'pressOut')
+    fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Helm/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(4)
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadAsyncWithData(testDocuments)
+    mockUseLoadAsyncWithData(documents)
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
 
-    expect(getAllByText(/Helm/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(4)
     fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
@@ -101,10 +79,10 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should show word again when answered wrong', () => {
-    mockUseLoadAsyncWithData(testDocuments)
+    mockUseLoadAsyncWithData(documents)
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
-    expect(getAllByText(/Helm/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(4)
     fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
@@ -112,6 +90,6 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent(getByText('Das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Helm/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(4)
   })
 })
