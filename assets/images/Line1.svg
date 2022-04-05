@@ -1,0 +1,6 @@
+<svg width="24" height="270"  xmlns="http://www.w3.org/2000/svg">
+  <line x1="12" y1="300" x2="12" y2="130" stroke="black" style="stroke-width:2"/>
+
+  <!-- If you do not specify the stroke
+       color the line will not be visible -->
+</svg>

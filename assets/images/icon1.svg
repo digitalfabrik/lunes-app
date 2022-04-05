@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>7ACE387D-677E-4C45-9D81-AF3817C1E242</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.000000 0 0 0 0 0.054902 0 0 0 0 0.219608 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Lock-/-Unlock-Modules" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="320px/Unlock-Tile" transform="translate(-11.000000, -279.000000)">
+            <g id="lock_open-24px" transform="translate(11.000000, 279.000000)" filter="url(#filter-1)">
+                <g transform="translate(6.000000, 4.000000)">
+                    <path d="M6,12 C6.825,12 7.5,11.325 7.5,10.5 C7.5,9.675 6.825,9 6,9 C5.175,9 4.5,9.675 4.5,10.5 C4.5,11.325 5.175,12 6,12 Z M10.5,5.25 L9.75,5.25 L9.75,3.75 C9.75,1.68 8.07,0 6,0 C3.93,0 2.25,1.68 2.25,3.75 L3.675,3.75 C3.675,2.4675 4.7175,1.425 6,1.425 C7.2825,1.425 8.325,2.4675 8.325,3.75 L8.325,5.25 L1.5,5.25 C0.675,5.25 0,5.925 0,6.75 L0,14.25 C0,15.075 0.675,15.75 1.5,15.75 L10.5,15.75 C11.325,15.75 12,15.075 12,14.25 L12,6.75 C12,5.925 11.325,5.25 10.5,5.25 Z M10.5,14.25 L1.5,14.25 L1.5,6.75 L10.5,6.75 L10.5,14.25 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

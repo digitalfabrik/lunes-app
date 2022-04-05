@@ -1,6 +1,6 @@
-import { RouteProp } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React,{useState} from 'react'
 import { FlatList, Alert } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -13,6 +13,10 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
+import Lane from './LockingLane'
+import AAsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
@@ -24,6 +28,9 @@ interface ExercisesScreenProps {
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
+
+  const[level,setLevel]=useState<string>('');
+
   const { discipline } = route.params
   const { title } = discipline
 
@@ -38,6 +45,19 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       })
     }
   }
+  
+useFocusEffect(
+  React.useCallback(()=>{
+    AAsyncStorage.getItem('level').then((value)=>{
+      if(value){
+        const num:string=value;
+        setLevel(num);
+      }
+    })
+    
+  },[navigation])
+  )
+
 
   const Item = ({ item }: { item: Exercise }): JSX.Element | null => (
     <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)}>
@@ -46,8 +66,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   )
 
   return (
-    <Root>
-      <FlatList
+    <Root style={{display:'flex',flexDirection:'row'}}>
+      {/*  <Lane stepslocked={level}></Lane>*/ }
+      <FlatList 
         data={EXERCISES}
         ListHeaderComponent={Header}
         renderItem={Item}

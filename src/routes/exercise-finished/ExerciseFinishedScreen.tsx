@@ -10,7 +10,10 @@ import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
 import ShareSection from './components/ShareSection'
+
+import AAsyncStorage from '@react-native-async-storage/async-storage';
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -43,7 +46,7 @@ interface Props {
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
-
+  
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
     const correct = correctResults.length / results.length
@@ -55,6 +58,9 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     } else {
       setMessage(labels.results.feedbackBad)
     }
+    let exerciselevel=EXERCISES[exercise].level
+    let stepslocked=3-exerciselevel;
+    AAsyncStorage.setItem('level',String(stepslocked))
   }, [results])
 
   const repeatExercise = (): void => {
