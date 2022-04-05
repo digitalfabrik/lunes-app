@@ -37,7 +37,7 @@ export interface FeedbackProps {
 }
 
 const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
-  const { result } = documentWithResult
+  const { result, document } = documentWithResult
   let Icon
   let background
   let message
@@ -55,7 +55,7 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
     background = BannerRed
     message = needsToBeRepeated
       ? labels.exercises.write.feedback.wrong
-      : `${labels.exercises.write.feedback.wrongWithSolution} „${documentWithResult.article.value} ${documentWithResult.word}“`
+      : `${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
   }
 
   return (

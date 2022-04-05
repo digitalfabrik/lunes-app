@@ -31,6 +31,9 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
   return newDocuments
 }
 
+export const wordsDescription = (numberOfChildren: number): string =>
+  `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
+
 export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
   if (!discipline.parentTitle) {
@@ -45,10 +48,11 @@ export const childrenLabel = (discipline: Discipline): string => {
 export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
-export const shuffleArray = <T>(array: T[]): void => {
-  for (let i = array.length - 1; i > 0; i -= 1) {
+export const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    // eslint-disable-next-line no-param-reassign
-    ;[array[i], array[j]] = [array[j], array[i]]
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
+  return shuffled
 }

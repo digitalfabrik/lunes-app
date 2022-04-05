@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
@@ -38,26 +38,17 @@ jest.mock('../components/VocabularyListModal', () => {
   )
 })
 
-const route: RouteProp<RoutesParams, 'VocabularyList'> = {
-  key: '',
-  name: 'VocabularyList',
-  params: {
-    discipline: {
-      id: 1,
-      title: 'TestTitel',
-      numberOfChildren: 2,
-      isLeaf: true,
-      parentTitle: 'parent',
-      icon: 'my_icon',
-      apiKey: 'my_api_key',
-      description: '',
-      needsTrainingSetEndpoint: false
-    }
-  }
-}
-
 describe('VocabularyListScreen', () => {
   const documents = new DocumentBuilder(2).build()
+  const route: RouteProp<RoutesParams, 'VocabularyList'> = {
+    key: '',
+    name: 'VocabularyList',
+    params: {
+      documents,
+      disciplineTitle: 'My discipline title',
+      closeExerciseAction: CommonActions.goBack()
+    }
+  }
 
   const navigation = createNavigationMock<'VocabularyList'>()
 

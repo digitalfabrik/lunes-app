@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
@@ -10,6 +10,11 @@ import { RoutesParams } from '../../../../navigation/NavigationTypes'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import render from '../../../../testing/render'
 import WriteExercise from '../WriteExercise'
+
+jest.mock('../../../../services/helpers', () => ({
+  ...jest.requireActual('../../../../services/helpers'),
+  shuffleArray: jest.fn(it => it)
+}))
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
@@ -73,21 +78,13 @@ describe('WriteExercise', () => {
     key: '',
     name: 'WriteExercise',
     params: {
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        description: '',
-        icon: '',
-        numberOfChildren: 2,
-        isLeaf: true,
-        parentTitle: 'parent',
-        needsTrainingSetEndpoint: true
-      }
+      documents,
+      disciplineTitle: 'TestTitel',
+      closeExerciseAction: CommonActions.goBack()
     }
   }
 
-  const renderWriteExercise = (): RenderAPI =>
-    render(<WriteExercise documents={documents} route={route} navigation={navigation} />)
+  const renderWriteExercise = (): RenderAPI => render(<WriteExercise route={route} navigation={navigation} />)
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()
