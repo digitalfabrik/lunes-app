@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
@@ -33,14 +33,16 @@ describe('IntroScreen', () => {
     expect(navigation.navigate).toHaveBeenCalledWith('ProfessionSelection', { discipline: mockDisciplines[0] })
   })
 
-  it('should skip selection', () => {
+  it('should skip selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
     const { getByText } = render(<IntroScreen navigation={navigation} />)
     const button = getByText(labels.intro.skipSelection)
     fireEvent.press(button)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    await waitFor(() => {
+      expect(navigation.push).toHaveBeenCalledWith('Home')
+    })
   })
 
   it('should confirm selection', () => {
@@ -50,6 +52,6 @@ describe('IntroScreen', () => {
     const button = getByText(labels.intro.confirmSelection)
     fireEvent.press(button)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    expect(navigation.push).toHaveBeenCalledWith('Home')
   })
 })
