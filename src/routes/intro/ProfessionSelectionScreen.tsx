@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -23,10 +23,6 @@ const Root = styled.View`
   height: 100%;
 `
 
-const StyledList = styled(FlatList)`
-  width: 100%;
-` as ComponentType as new () => FlatList<Discipline>
-
 const ButtonContainer = styled.View`
   padding-top: ${props => props.theme.spacings.md}
   margin: 0 auto 0;
@@ -48,9 +44,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   const { discipline } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const isProfessionSelected = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
-    if (selectedProfessions?.includes(selectedItem)) {
+    if (selectedProfessions?.some(profession => profession.id === selectedItem.id)) {
       await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     } else {
       await AsyncStorage.pushSelectedProfession(selectedItem).then(refreshSelectedProfessions)
@@ -63,7 +60,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
       onPress={() => selectDiscipline(item)}
       hasBadge
       rightChildren={
-        selectedProfessions?.includes(item) ? (
+        selectedProfessions?.some(profession => profession.id === item.id) ? (
           <IconContainer>
             <CheckCircleIconGreen testID='check-icon' />
           </IconContainer>
@@ -74,7 +71,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     />
   )
 
-  const navigateToHomeScreen = () => {
+  const navigateToHomeScreen = async () => {
+    if (!isProfessionSelected) {
+      await AsyncStorage.setSelectedProfessions([])
+    }
     navigation.push('Home')
   }
 
@@ -82,11 +82,11 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <StyledList
+        <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           ListFooterComponent={
-            !selectedProfessions || selectedProfessions.length === 0 ? (
+            !isProfessionSelected ? (
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
@@ -105,7 +105,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-      {selectedProfessions && selectedProfessions.length > 0 && (
+      {isProfessionSelected && (
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}

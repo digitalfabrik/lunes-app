@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Discipline } from '../constants/endpoints'
 
+// return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
   const professions = await AsyncStorage.getItem('selectedProfessions')
   return professions ? JSON.parse(professions) : null

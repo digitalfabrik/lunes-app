@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
@@ -41,7 +41,6 @@ describe('ProfessionSelectionScreen', () => {
     await AsyncStorageService.setSelectedProfessions([])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
-    const spyOnPush = jest.spyOn(AsyncStorageService, 'pushSelectedProfession')
 
     const { findByText, queryAllByTestId } = render(<ProfessionSelectionScreen route={route} navigation={navigation} />)
     expect(await findByText(labels.intro.skipSelection)).toBeDefined()
@@ -49,8 +48,10 @@ describe('ProfessionSelectionScreen', () => {
     expect(profession).toBeDefined()
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
     fireEvent.press(profession)
-    expect(spyOnPush).toHaveBeenCalledTimes(1)
-    expect(spyOnPush).toHaveBeenCalledWith(mockDisciplines[0])
+    await waitFor(async () => {
+      const selectedProfessions = await AsyncStorageService.getSelectedProfessions()
+      expect(selectedProfessions).toEqual([mockDisciplines[0]])
+    })
   })
 
   it('should unselect profession when clicked', async () => {
@@ -58,7 +59,6 @@ describe('ProfessionSelectionScreen', () => {
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
-    const spyOnRemove = jest.spyOn(AsyncStorageService, 'removeSelectedProfession')
 
     const { findByText, queryAllByTestId } = render(<ProfessionSelectionScreen route={route} navigation={navigation} />)
     expect(await findByText(labels.intro.confirmSelection)).toBeDefined()
@@ -67,7 +67,9 @@ describe('ProfessionSelectionScreen', () => {
     expect(queryAllByTestId('check-icon')).toHaveLength(1)
     fireEvent.press(profession)
 
-    expect(spyOnRemove).toHaveBeenCalledTimes(1)
-    expect(spyOnRemove).toHaveBeenCalledWith(mockDisciplines[0])
+    await waitFor(async () => {
+      const selectedProfessions = await AsyncStorageService.getSelectedProfessions()
+      expect(selectedProfessions).toEqual([])
+    })
   })
 })
