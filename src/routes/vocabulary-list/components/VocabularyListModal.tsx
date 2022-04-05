@@ -8,7 +8,7 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Documents } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
 
@@ -39,7 +39,7 @@ const ButtonContainer = styled.View`
 `
 
 interface VocabularyListModalProps {
-  documents: Documents
+  documents: Document[]
   isModalVisible: boolean
   setIsModalVisible: (isModalVisible: boolean) => void
   selectedDocumentIndex: number
