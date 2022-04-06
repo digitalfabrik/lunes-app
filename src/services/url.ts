@@ -5,5 +5,12 @@ export const addTrailingSlashToUrl = (url: string): string => (url.endsWith('/')
 
 export const openExternalUrl = (url: string): Promise<void> =>
   Linking.canOpenURL(url)
-    .then(() => Linking.openURL(url))
+    .then(supported => {
+      if (!supported) {
+        // emulators do not support certain schemes like mailto or tel
+        console.log('Cannot handle url', url)
+        return null
+      }
+      return Linking.openURL(url)
+    })
     .catch()
