@@ -46,7 +46,7 @@ export const setCustomDisciplines = async (customDisciplines: string[]): Promise
   await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
 }
 
-export const deleteCustomDiscipline = async (customDiscipline: string): Promise<void> => {
+export const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
   const disciplines = await getCustomDisciplines()
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
@@ -59,7 +59,7 @@ export const deleteCustomDiscipline = async (customDiscipline: string): Promise<
 export default {
   getCustomDisciplines,
   setCustomDisciplines,
-  deleteCustomDiscipline,
+  removeCustomDiscipline,
   setSelectedProfessions,
   getSelectedProfessions,
   pushSelectedProfession,

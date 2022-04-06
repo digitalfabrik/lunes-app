@@ -1,6 +1,6 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
-import React, { ComponentType, useEffect, useState } from 'react'
+import React, { ComponentType, useState } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -16,6 +16,7 @@ import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
@@ -31,8 +32,6 @@ import IntroScreen from '../routes/intro/IntroScreen'
 import ProfessionSelectionScreen from '../routes/intro/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
-import AsyncStorage from '../services/AsyncStorage'
-import { reportError } from '../services/sentry'
 import { RoutesParams } from './NavigationTypes'
 
 const styles = (headerHeight?: number) =>
@@ -63,21 +62,10 @@ const Stack = createStackNavigator<RoutesParams>()
 const Navigator = (): JSX.Element | null => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
-  const [waitingForInit, setWaitingForInit] = useState<boolean>(true)
-  const [introShown, setIntroShown] = useState<boolean>(false)
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
-
-  useEffect(() => {
-    const initialize = async () => {
-      const professions = await AsyncStorage.getSelectedProfessions()
-      setIntroShown(professions !== null)
-    }
-    initialize()
-      .then(() => setWaitingForInit(false))
-      .catch(error => reportError(error))
-  }, [])
+  const { data: professions, loading } = useReadSelectedProfessions()
 
   const defaultOptions = (
     title: string,
@@ -122,14 +110,14 @@ const Navigator = (): JSX.Element | null => {
     headerTitleContainerStyle: styles().headerTitleContainer
   })
 
-  if (waitingForInit) {
+  if (loading) {
     return null
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={introShown ? 'Home' : 'Intro'}
+        initialRouteName={professions !== null ? 'Home' : 'Intro'}
         screenOptions={TransitionPresets.SlideFromRightIOS}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen options={{ headerShown: false }} name='Intro' component={IntroScreen} />

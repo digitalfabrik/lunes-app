@@ -18,7 +18,7 @@ jest.mock('../../../hooks/useReadSelectedProfessions')
 describe('IntroScreen', () => {
   const navigation = createNavigationMock<'Intro'>()
 
-  it('should navigate to discipline', () => {
+  it('should navigate to profession selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
@@ -41,7 +41,7 @@ describe('IntroScreen', () => {
     fireEvent.press(button)
 
     await waitFor(() => {
-      expect(navigation.push).toHaveBeenCalledWith('Home')
+      expect(navigation.navigate).toHaveBeenCalledWith('Home')
     })
   })
 
@@ -52,6 +52,6 @@ describe('IntroScreen', () => {
     const button = getByText(labels.intro.confirmSelection)
     fireEvent.press(button)
 
-    expect(navigation.push).toHaveBeenCalledWith('Home')
+    expect(navigation.navigate).toHaveBeenCalledWith('Home')
   })
 })

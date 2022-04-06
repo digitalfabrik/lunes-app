@@ -66,7 +66,7 @@ const DeletionSwipeable = ({ apiKey, refresh, children }: DeletionSwipableProps)
   }
 
   const deleteModule = (): void => {
-    AsyncStorage.deleteCustomDiscipline(apiKey)
+    AsyncStorage.removeCustomDiscipline(apiKey)
       .then(() => refresh())
       .catch((e: Error) => console.log(e.message))
     setIsModalVisible(false)

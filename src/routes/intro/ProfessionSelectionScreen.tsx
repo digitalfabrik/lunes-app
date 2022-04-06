@@ -24,7 +24,7 @@ const Root = styled.View`
 `
 
 const ButtonContainer = styled.View`
-  padding-top: ${props => props.theme.spacings.md}
+  padding: ${props => props.theme.spacings.md} 0;
   margin: 0 auto 0;
 `
 const IconContainer = styled.View`
@@ -44,7 +44,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   const { discipline } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
-  const isProfessionSelected = selectedProfessions && selectedProfessions.length > 0
+  const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
     if (selectedProfessions?.some(profession => profession.id === selectedItem.id)) {
@@ -72,10 +72,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   )
 
   const navigateToHomeScreen = async () => {
-    if (!isProfessionSelected) {
+    if (!isSelectionMade) {
       await AsyncStorage.setSelectedProfessions([])
     }
-    navigation.push('Home')
+    navigation.navigate('Home')
   }
 
   return (
@@ -86,7 +86,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           contentContainerStyle={{ flexGrow: 1 }}
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           ListFooterComponent={
-            !isProfessionSelected ? (
+            !isSelectionMade ? (
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
@@ -94,9 +94,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
                   buttonTheme={BUTTONS_THEME.contained}
                 />
               </ButtonContainer>
-            ) : (
-              <></>
-            )
+            ) : null
           }
           ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
           data={disciplines}
@@ -105,7 +103,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-      {isProfessionSelected && (
+      {isSelectionMade && (
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}

@@ -38,7 +38,6 @@ interface IntroScreenProps {
 const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
-  const isProfessionSelected = selectedProfessions && selectedProfessions.length > 0
 
   useFocusEffect(refreshSelectedProfessions)
 
@@ -49,10 +48,10 @@ const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
   }
 
   const navigateToHomeScreen = async () => {
-    if (!isProfessionSelected) {
+    if (selectedProfessions === null) {
       await AsyncStorage.setSelectedProfessions([])
     }
-    navigation.push('Home')
+    navigation.navigate('Home')
   }
 
   const disciplineItems = disciplines?.map(item => (

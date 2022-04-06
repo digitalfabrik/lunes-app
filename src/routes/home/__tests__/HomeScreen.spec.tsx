@@ -70,7 +70,7 @@ describe('HomeScreen', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['test']))
     mocked(useLoadGroupInfo).mockReturnValue(getReturnOf(mockCustomDiscipline))
-    const spyOnDeletion = jest.spyOn(AsyncStorageService, 'deleteCustomDiscipline')
+    const spyOnDeletion = jest.spyOn(AsyncStorageService, 'removeCustomDiscipline')
 
     const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />)
     const customDiscipline = await findByText('Custom Discipline')
