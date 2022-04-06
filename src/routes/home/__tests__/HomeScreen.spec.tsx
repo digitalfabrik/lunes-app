@@ -4,12 +4,13 @@ import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../../constants/labels.json'
-import { Return } from '../../../hooks/useLoadAsync'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { getReturnOf } from '../../../testing/helper'
+import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
 
@@ -17,29 +18,6 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadGroupInfo')
-
-const mockDisciplines = [
-  {
-    id: 1,
-    title: 'First Discipline',
-    description: 'Description1',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false
-  },
-  {
-    id: 2,
-    title: 'Second Discipline',
-    description: 'Description1',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false
-  }
-]
 
 const mockCustomDiscipline = {
   id: 1,
@@ -55,13 +33,6 @@ const mockCustomDiscipline = {
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
-
-  const getReturnOf = <T,>(data: T): Return<T> => ({
-    data,
-    error: null,
-    loading: false,
-    refresh: () => undefined
-  })
 
   it('should navigate to discipline', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
@@ -99,7 +70,7 @@ describe('HomeScreen', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['test']))
     mocked(useLoadGroupInfo).mockReturnValue(getReturnOf(mockCustomDiscipline))
-    const spyOnDeletion = jest.spyOn(AsyncStorageService, 'deleteCustomDiscipline')
+    const spyOnDeletion = jest.spyOn(AsyncStorageService, 'removeCustomDiscipline')
 
     const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />)
     const customDiscipline = await findByText('Custom Discipline')

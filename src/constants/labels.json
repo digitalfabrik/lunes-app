@@ -1,4 +1,9 @@
 {
+  "intro": {
+    "welcome": "Willkommen bei Lunes!\nWähle jetzt den Beruf, den du lernen möchtest.",
+    "skipSelection": "Überspringen",
+    "confirmSelection": "Starten"
+  },
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
     "addCustomDiscipline": "Bereich hinzufügen",
@@ -12,7 +17,7 @@
   },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",
-    "description": "Bitte gib den Code über die Tastatur ein.",
+    "description": "Bitte gib den Code über die Tastatur ein oder scanne den QR-Code.",
     "placeholder": "Code eingeben",
     "submitLabel": "hinzufügen",
     "backNavigation": "Zur Startseite",
