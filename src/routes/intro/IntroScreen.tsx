@@ -14,6 +14,7 @@ import labels from '../../constants/labels.json'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -38,11 +39,7 @@ const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
 
-  useFocusEffect(
-    React.useCallback(() => {
-      refreshSelectedProfessions()
-    }, [refreshSelectedProfessions])
-  )
+  useFocusEffect(refreshSelectedProfessions)
 
   const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('ProfessionSelection', {
@@ -50,7 +47,10 @@ const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
     })
   }
 
-  const navigateToHomeScreen = (): void => {
+  const navigateToHomeScreen = async () => {
+    if (selectedProfessions === null) {
+      await AsyncStorage.setSelectedProfessions([])
+    }
     navigation.navigate('Home')
   }
 

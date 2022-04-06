@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { Discipline } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import ShareButton from './ShareButton'
@@ -25,14 +24,14 @@ const Description = styled.Text`
 `
 
 interface Props {
-  discipline: Discipline
+  disciplineTitle: string
   results: DocumentResult[]
 }
 
-const ShareSection = ({ discipline, results }: Props): ReactElement => (
+const ShareSection = ({ disciplineTitle, results }: Props): ReactElement => (
   <Container>
     <Description>{labels.results.share.description}</Description>
-    <ShareButton discipline={discipline} results={results} />
+    <ShareButton disciplineTitle={disciplineTitle} results={results} />
   </Container>
 )
 

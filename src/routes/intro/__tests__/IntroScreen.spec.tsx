@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
@@ -18,13 +18,13 @@ jest.mock('../../../hooks/useReadSelectedProfessions')
 describe('IntroScreen', () => {
   const navigation = createNavigationMock<'Intro'>()
 
-  it('should navigate to discipline', async () => {
+  it('should navigate to profession selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
-    const { findByText } = render(<IntroScreen navigation={navigation} />)
-    const firstDiscipline = await findByText('First Discipline')
-    const secondDiscipline = await findByText('Second Discipline')
+    const { getByText } = render(<IntroScreen navigation={navigation} />)
+    const firstDiscipline = getByText('First Discipline')
+    const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
 
@@ -36,18 +36,20 @@ describe('IntroScreen', () => {
   it('should skip selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
-    const { findByText } = render(<IntroScreen navigation={navigation} />)
-    const button = await findByText(labels.intro.skipSelection)
+    const { getByText } = render(<IntroScreen navigation={navigation} />)
+    const button = getByText(labels.intro.skipSelection)
     fireEvent.press(button)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    await waitFor(() => {
+      expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    })
   })
 
-  it('should confirm selection', async () => {
+  it('should confirm selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
-    const { findByText } = render(<IntroScreen navigation={navigation} />)
-    const button = await findByText(labels.intro.confirmSelection)
+    const { getByText } = render(<IntroScreen navigation={navigation} />)
+    const button = getByText(labels.intro.confirmSelection)
     fireEvent.press(button)
 
     expect(navigation.navigate).toHaveBeenCalledWith('Home')

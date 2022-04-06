@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -23,12 +23,8 @@ const Root = styled.View`
   height: 100%;
 `
 
-const StyledList = styled(FlatList)`
-  width: 100%;
-` as ComponentType as new () => FlatList<Discipline>
-
 const ButtonContainer = styled.View`
-  padding-top: ${props => props.theme.spacings.md}
+  padding: ${props => props.theme.spacings.md} 0;
   margin: 0 auto 0;
 `
 const IconContainer = styled.View`
@@ -48,9 +44,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   const { discipline } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
-    if (selectedProfessions?.some(i => i.id === selectedItem.id)) {
+    if (selectedProfessions?.some(profession => profession.id === selectedItem.id)) {
       await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     } else {
       await AsyncStorage.pushSelectedProfession(selectedItem).then(refreshSelectedProfessions)
@@ -63,7 +60,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
       onPress={() => selectDiscipline(item)}
       hasBadge
       rightChildren={
-        selectedProfessions?.some(i => i.id === item.id) ? (
+        selectedProfessions?.some(profession => profession.id === item.id) ? (
           <IconContainer>
             <CheckCircleIconGreen testID='check-icon' />
           </IconContainer>
@@ -74,19 +71,22 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     />
   )
 
-  const navigateToHomeScreen = () => {
-    navigation.push('Home')
+  const navigateToHomeScreen = async () => {
+    if (!isSelectionMade) {
+      await AsyncStorage.setSelectedProfessions([])
+    }
+    navigation.navigate('Home')
   }
 
   return (
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <StyledList
+        <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           ListFooterComponent={
-            !selectedProfessions || selectedProfessions.length === 0 ? (
+            !isSelectionMade ? (
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
@@ -94,9 +94,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
                   buttonTheme={BUTTONS_THEME.contained}
                 />
               </ButtonContainer>
-            ) : (
-              <></>
-            )
+            ) : null
           }
           ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
           data={disciplines}
@@ -105,7 +103,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-      {selectedProfessions && selectedProfessions.length > 0 && (
+      {isSelectionMade && (
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}

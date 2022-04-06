@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Discipline } from '../constants/endpoints'
 
+// return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
   const professions = await AsyncStorage.getItem('selectedProfessions')
   return professions ? JSON.parse(professions) : null
@@ -45,7 +46,7 @@ export const setCustomDisciplines = async (customDisciplines: string[]): Promise
   await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
 }
 
-export const deleteCustomDiscipline = async (customDiscipline: string): Promise<void> => {
+export const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
   const disciplines = await getCustomDisciplines()
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
@@ -63,7 +64,7 @@ export const getProgress = async (profession: Discipline): Promise<number> => {
 export default {
   getCustomDisciplines,
   setCustomDisciplines,
-  deleteCustomDiscipline,
+  removeCustomDiscipline,
   setSelectedProfessions,
   getSelectedProfessions,
   pushSelectedProfession,
