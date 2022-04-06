@@ -6,6 +6,7 @@ import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
 import CheckCircleIconBold from './check-circle-icon-bold.svg'
+import CheckCircleIconGreen from './check-circle-icon-green.svg'
 import CheckCircleIconWhite from './check-circle-icon-white.svg'
 import CheckCircleIcon from './check-circle-icon.svg'
 import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
@@ -45,6 +46,7 @@ export {
   CheckCircleIcon,
   CheckCircleIconBold,
   CheckCircleIconWhite,
+  CheckCircleIconGreen,
   CheckCloseCircleIcon,
   CheckCloseCircleIconBold,
   ChevronRight,
