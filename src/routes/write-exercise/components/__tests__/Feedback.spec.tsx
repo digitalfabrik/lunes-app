@@ -24,7 +24,7 @@ describe('Feedback section', () => {
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const documentWithResult: DocumentResult = { ...document, result, numberOfTries }
+    const documentWithResult: DocumentResult = { document, result, numberOfTries }
     return render(
       <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
     )

@@ -158,13 +158,8 @@ const Navigator = (): JSX.Element | null => {
           component={ProfessionSelectionScreen}
         />
         <Stack.Screen
-          options={({ route, navigation }) =>
-            defaultOptions(
-              route.params.discipline.parentTitle ?? labels.general.header.overview,
-              ArrowLeftCircleIconWhite,
-              navigation,
-              true
-            )
+          options={({ route: { params }, navigation }) =>
+            defaultOptions(params.disciplineTitle, ArrowLeftCircleIconWhite, navigation, true)
           }
           name='Exercises'
           component={ExercisesScreen}
