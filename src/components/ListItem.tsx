@@ -70,7 +70,7 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 `
 
 const PRESS_ANIMATION_DURATION = 300
-const PRESS_MAX_DRAG_Y = 5
+const PRESS_MAX_DRAG = 5
 
 interface ListItemProps {
   title: string | ReactElement
@@ -91,27 +91,31 @@ const ListItem = ({
   children,
   rightChildren
 }: ListItemProps): ReactElement => {
-  const [pressInY, setPressInY] = useState<number | null>(null)
+  const [pressIn, setPressIn] = useState<{ x: number; y: number } | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
   const theme = useTheme()
 
-  const onPressIn = (e: GestureResponderEvent) => {
-    setPressInY(e.nativeEvent.pageY)
+  const onPressIn = ({ nativeEvent }: GestureResponderEvent) => {
+    setPressIn({ x: nativeEvent.pageX, y: nativeEvent.pageY })
   }
 
   const onPressOut = useCallback(
     (e: GestureResponderEvent) => {
-      if (pressInY && Math.abs(pressInY - e.nativeEvent.pageY) <= PRESS_MAX_DRAG_Y) {
-        // Only call onPress if user not scrolling
+      if (
+        pressIn &&
+        Math.abs(pressIn.y - e.nativeEvent.pageY) <= PRESS_MAX_DRAG &&
+        Math.abs(pressIn.x - e.nativeEvent.pageX) <= PRESS_MAX_DRAG
+      ) {
+        // Only call onPress if user not scrolling or swiping
         setPressed(true)
         onPress()
         setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
       } else {
         setPressed(false)
       }
-      setPressInY(null)
+      setPressIn(null)
     },
-    [pressInY, onPress]
+    [pressIn, onPress]
   )
 
   const titleToRender =

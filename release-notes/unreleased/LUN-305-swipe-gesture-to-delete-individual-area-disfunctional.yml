@@ -1,0 +1,6 @@
+issue_key: LUN-305
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Fehlerhaftes Wischen beim Löschen individueller Bereiche behoben
