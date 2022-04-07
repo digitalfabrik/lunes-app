@@ -1,4 +1,9 @@
 {
+  "intro": {
+    "welcome": "Willkommen bei Lunes!\nWähle jetzt den Beruf, den du lernen möchtest.",
+    "skipSelection": "Überspringen",
+    "confirmSelection": "Starten"
+  },
   "home": {
     "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
     "addCustomDiscipline": "Bereich hinzufügen",
