@@ -28,12 +28,12 @@ import HomeCircleIconWhite from './home-circle-icon-white.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LunesIcon from './lunes-icon.svg'
+import OpenLockIcon from './open-lock-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import ShareIcon from './share-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
-import UnlockLockIcon from './unlocked-Lock-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
 
 export {
@@ -73,5 +73,5 @@ export {
   TrashIcon,
   TrophyIcon,
   VolumeUpCircleIcon,
-  UnlockLockIcon
+  OpenLockIcon
 }

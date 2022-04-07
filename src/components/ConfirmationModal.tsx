@@ -42,6 +42,7 @@ export interface ConfirmationModalProps {
   setVisible: (visible: boolean) => void
   text: string
   children?: ReactNode
+  lockingModal?: boolean
 
   confirmationButtonText: string
   cancelButtonText: string
@@ -49,7 +50,16 @@ export interface ConfirmationModalProps {
 }
 
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const { visible, setVisible, text, children, confirmationButtonText, cancelButtonText, confirmationAction } = props
+  const {
+    visible,
+    setVisible,
+    text,
+    children,
+    confirmationButtonText,
+    cancelButtonText,
+    confirmationAction,
+    lockingModal = false
+  } = props
   const closeModal = (): void => setVisible(false)
 
   return (
@@ -61,8 +71,25 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
           </Icon>
           <Message>{text}</Message>
           {children}
-          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
-          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
+          {lockingModal ? (
+            <>
+              <Button
+                label={confirmationButtonText}
+                onPress={confirmationAction}
+                buttonTheme={BUTTONS_THEME.contained}
+              />
+              <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.outlined} />
+            </>
+          ) : (
+            <>
+              <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+              <Button
+                label={confirmationButtonText}
+                onPress={confirmationAction}
+                buttonTheme={BUTTONS_THEME.outlined}
+              />
+            </>
+          )}
         </ModalContainer>
       </Overlay>
     </Modal>

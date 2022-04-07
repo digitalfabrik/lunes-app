@@ -5,12 +5,9 @@
       location = "group:Lunes.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Lunes.xcworkspace">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Lunes.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

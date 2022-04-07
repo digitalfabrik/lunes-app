@@ -55,7 +55,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/no-unnecessary-condition': 'off',
+    // '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

@@ -43,6 +43,13 @@
       "title": "Level 2",
       "description": "Den richtigen Artikel auswählen"
     },
+    "lockedExerciseModal": {
+      "title": "Ups, this exercise is still unlocked.",
+      "confirmBotton": "unlock exercise",
+      "cancelBotton": "ok,got it!",
+      "descriptionPart1": "you have to complete ",
+      "descriptionPart2": " to unlock the next exercise."
+    },
     "write": {
       "title": "Level 3",
       "description": "Das Wort mit Artikel schreiben",
