@@ -32,8 +32,8 @@ describe('ListItem', () => {
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
 
-    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
-    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123, pageX: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123, pageX: 123 } })
 
     expect(onPress).toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
@@ -52,13 +52,13 @@ describe('ListItem', () => {
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
 
-    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123, pageX: 123 } })
     fireEvent(arrowIcon, 'longPress')
 
     expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
     expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
 
-    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123, pageX: 123 } })
     expect(onPress).toHaveBeenCalled()
 
     await waitFor(() => {
@@ -67,14 +67,14 @@ describe('ListItem', () => {
     })
   })
 
-  it('should not call on press callback if scrolling', async () => {
+  it('should not call on press callback if scrolling or swiping', async () => {
     const { getByTestId } = renderDisciplineItem()
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
 
-    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
-    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130 } })
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123, pageX: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130, pageX: 130 } })
 
     expect(onPress).not.toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
