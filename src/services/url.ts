@@ -7,7 +7,7 @@ export const openExternalUrl = (url: string): Promise<void> =>
   Linking.canOpenURL(url)
     .then(supported => {
       if (!supported) {
-        // emulators do not support certain schemes like mailto or tel
+        // iOS Simulators do not support certain schemes like mailto or tel
         console.log('Cannot handle url', url)
         return null
       }
