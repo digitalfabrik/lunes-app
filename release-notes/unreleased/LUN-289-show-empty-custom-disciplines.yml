@@ -1,6 +1,0 @@
-issue_key: LUN-280
-show_in_stores: true
-platforms:
-  - android
-  - ios
-de: Bei Eingabe einer falschen Antwort in der Schreibübung wird nun die richtige Antwort angezeigt.
