@@ -38,6 +38,9 @@ export interface FeedbackProps {
 
 const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
   const { result, document } = documentWithResult
+  const correctSolution = `„${document.article.value} ${document.word}“`
+  const wrongWithCorrectSolution = `${labels.exercises.write.feedback.wrongWithSolution} ${correctSolution}`
+
   let Icon
   let background
   let message
@@ -54,14 +57,14 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
     Icon = CloseCircleIconBold
     background = BannerRed
     message = needsToBeRepeated
-      ? labels.exercises.write.feedback.wrong
-      : `${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+      ? `${labels.exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+      : `${wrongWithCorrectSolution}`
   }
 
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={2} ellipsizeMode='tail' testID='feedback-write-exercise'>
+      <StyledText numberOfLines={3} ellipsizeMode='tail' testID='feedback-write-exercise'>
         {message}
       </StyledText>
     </Background>
