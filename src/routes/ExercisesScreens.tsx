@@ -8,8 +8,7 @@ import ConfirmationModal from '../components/ConfirmationModal'
 import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { ContentTextBold } from '../components/text/Content'
-import { HeadingText } from '../components/text/Heading'
+import { ContentTextBold,ContentTextLight } from '../components/text/Content'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -20,13 +19,11 @@ const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
 `
-const SmallMessage = styled(HeadingText)`
+const SmallMessage = styled(ContentTextLight)`
   margin-left: 20%;
   margin-right: 20%;
   margin-bottom: ${props => props.theme.spacings.md};
   text-align: center;
-  font-size: ${prop => prop.theme.fonts.defaultFontSize};
-  font-weight: ${prop => prop.theme.fonts.lightFontWeight};
 `
 
 interface ExercisesScreenProps {
