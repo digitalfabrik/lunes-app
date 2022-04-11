@@ -19,6 +19,8 @@ import CloseCircleIcon from './close-circle-icon.svg'
 import CloseIcon from './close-icon.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
+import FavoriteIconOutline from './favorite-icon-outline.svg'
+import FavoriteIcon from './favorite-icon.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
 import HeaderLinesIcon from './header-lines-icon.svg'
 import HeaderSquareIcon from './header-square-icon.svg'
@@ -57,6 +59,8 @@ export {
   CloseIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
+  FavoriteIcon,
+  FavoriteIconOutline,
   HeaderCircleIcon,
   HeaderLinesIcon,
   HeaderSquareIcon,

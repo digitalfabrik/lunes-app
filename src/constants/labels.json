@@ -112,5 +112,8 @@
     "disciplines": "Module",
     "word": "Wort",
     "words": "Wörter"
+  },
+  "favorites": {
+    "favorites": "Favoriten"
   }
 }

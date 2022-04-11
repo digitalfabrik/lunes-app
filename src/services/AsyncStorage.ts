@@ -93,7 +93,6 @@ export default {
   getSelectedProfessions,
   pushSelectedProfession,
   removeSelectedProfession,
-  deleteCustomDiscipline,
   getFavorites,
   setFavorites,
   addFavorite,
