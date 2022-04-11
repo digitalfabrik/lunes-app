@@ -7,10 +7,6 @@ import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ImageCarousel from './ImageCarousel'
 
-const StyledFavoriteButton = styled(FavoriteButton)`
-  top: ${wp('9%')}px;
-  right: ${wp('9%')}px;
-`
 const AudioContainer = styled.View`
   position: absolute;
   bottom: ${wp('-4.5%')}px;
@@ -45,7 +41,7 @@ const DocumentImageSection = ({
       <AudioPlayer document={document} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
     </AudioContainer>
     <FavoriteContainer>
-      <StyledFavoriteButton document={document} />
+      <FavoriteButton document={document} />
     </FavoriteContainer>
   </Container>
 )
