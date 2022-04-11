@@ -36,7 +36,7 @@ const ButtonContainer = styled.View`
 interface PropsType {
   discipline: Discipline
   showProgress: boolean
-  onPress?: (profession: Discipline) => void
+  onPress: (profession: Discipline) => void
   navigateToNextExercise: (profession: Discipline) => void
 }
 
@@ -49,14 +49,8 @@ const DisciplineCard = (props: PropsType): ReactElement => {
     navigateToNextExercise(discipline)
   }
 
-  const onPressProfession = () => {
-    if (onPress) {
-      onPress(discipline)
-    }
-  }
-
   return (
-    <Card heading={discipline.title} icon={discipline.icon} onPress={onPressProfession}>
+    <Card heading={discipline.title} icon={discipline.icon} onPress={() => onPress(discipline)}>
       <>
         <ProgressContainer>
           {showProgress && (
@@ -83,7 +77,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
         <ButtonContainer>
           <Button
             onPress={navigate}
-            label={!moduleAlreadyStarted ? labels.home.start : labels.home.continue}
+            label={moduleAlreadyStarted ? labels.home.continue : labels.home.start}
             buttonTheme={BUTTONS_THEME.outlined}
           />
         </ButtonContainer>

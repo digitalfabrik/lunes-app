@@ -41,7 +41,7 @@ const CustomDiscipline = ({ apiKey, navigation }: CustomDisciplineItemProps): JS
   if (loading) {
     return (
       <Placeholder>
-        {/* TODO adjust height of Placeholder */}
+        {/* TODO adjust height of Placeholder (will be done in LUN-301) */}
         <LoadingSpinner>
           <Loading isLoading />
         </LoadingSpinner>

@@ -31,13 +31,11 @@ interface Props {
 
 const AddCustomDiscipline = ({ navigate }: Props): ReactElement => (
   <Card heading={labels.home.customDisciplineSection} icon={<HeaderCircleIcon />}>
-    <>
-      <Explanation>{labels.home.customDisciplineExplanation}</Explanation>
-      <AddCustomDisciplineContainer onPress={navigate}>
-        <AddCircleIcon width={wp('8%')} height={wp('8%')} />
-        <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
-      </AddCustomDisciplineContainer>
-    </>
+    <Explanation>{labels.home.customDisciplineExplanation}</Explanation>
+    <AddCustomDisciplineContainer onPress={navigate}>
+      <AddCircleIcon width={wp('8%')} height={wp('8%')} />
+      <AddCustomDisciplineText>{labels.home.addCustomDiscipline}</AddCustomDisciplineText>
+    </AddCustomDisciplineContainer>
   </Card>
 )
 

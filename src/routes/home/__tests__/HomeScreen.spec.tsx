@@ -35,14 +35,14 @@ const mockCustomDiscipline = {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should navigate to discipline', async () => {
+  it('should navigate to discipline', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = await findByText('First Discipline')
-    const secondDiscipline = await findByText('Second Discipline')
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const firstDiscipline = getByText('First Discipline')
+    const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
 
@@ -58,8 +58,8 @@ describe('HomeScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
     mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />)
-    const customDiscipline = await findByText('Custom Discipline')
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const customDiscipline = getByText('Custom Discipline')
     expect(customDiscipline).toBeDefined()
 
     fireEvent.press(customDiscipline)
@@ -67,13 +67,13 @@ describe('HomeScreen', () => {
     expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
   })
 
-  it('should show suggestion to add custom discipline', async () => {
+  it('should show suggestion to add custom discipline', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />)
-    const addCustomDiscipline = await findByText(labels.home.addCustomDiscipline)
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const addCustomDiscipline = getByText(labels.home.addCustomDiscipline)
     expect(addCustomDiscipline).toBeDefined()
 
     fireEvent.press(addCustomDiscipline)

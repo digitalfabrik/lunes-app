@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -37,7 +37,7 @@ interface PropsType {
   heading: string
   icon?: string | ReactElement
   onPress?: () => void
-  children: ReactElement
+  children: ReactNode
 }
 
 const Card = (props: PropsType): ReactElement => {

@@ -39,6 +39,7 @@ const HeaderWithMenu = (): JSX.Element => (
       </SmileIconStyle>
       <MenuIconContainer>
         <MenuIcon />
+        {/* Will be done in LUN-276 */}
       </MenuIconContainer>
     </HeaderStyle>
   </Wrapper>
