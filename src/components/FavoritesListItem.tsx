@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 
 import { FavoriteIcon } from '../../assets/images'
@@ -15,6 +16,8 @@ interface Props {
 
 const FavoritesListItem = ({ navigateToFavorites }: Props): ReactElement => {
   const { data, error, loading, refresh } = useLoadAsync(AsyncStorage.getFavorites, null)
+
+  useFocusEffect(refresh)
 
   return (
     <ServerResponseHandler error={error} loading={loading} refresh={refresh}>

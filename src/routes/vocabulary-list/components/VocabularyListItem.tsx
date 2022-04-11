@@ -3,6 +3,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import AudioPlayer from '../../../components/AudioPlayer'
+import FavoriteButton from '../../../components/FavoriteButton'
 import ListItem from '../../../components/ListItem'
 import { ContentTextLight } from '../../../components/text/Content'
 import { Document } from '../../../constants/endpoints'
@@ -29,6 +30,10 @@ const Speaker = styled.View`
   padding-top: ${props => props.theme.spacings.sm};
 `
 
+const RightChildrenContainer = styled.View`
+  flex-direction: row;
+`
+
 export interface VocabularyListItemProp {
   document: Document
   setIsModalVisible?: () => void
@@ -52,9 +57,12 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
       onPress={setIsModalVisible ?? noop}
       icon={icon}
       rightChildren={
-        <Speaker>
-          <AudioPlayer document={document} disabled={false} />
-        </Speaker>
+        <RightChildrenContainer>
+          <Speaker>
+            <AudioPlayer document={document} disabled={false} />
+          </Speaker>
+          <FavoriteButton document={document} />
+        </RightChildrenContainer>
       }
     />
   )

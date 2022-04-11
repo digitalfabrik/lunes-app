@@ -4,9 +4,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
-import ImageCarousel from '../../../components/ImageCarousel'
+import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
@@ -53,6 +52,9 @@ const VocabularyListModal = ({
   selectedDocumentIndex,
   setSelectedDocumentIndex
 }: VocabularyListModalProps): ReactElement => {
+  const document = documents[selectedDocumentIndex]
+  const { word, article } = document
+
   const goToNextWord = (): void => {
     if (selectedDocumentIndex + 1 < documents.length) {
       setSelectedDocumentIndex(selectedDocumentIndex + 1)
@@ -66,14 +68,10 @@ const VocabularyListModal = ({
           <ModalHeader>
             <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
           </ModalHeader>
-          <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
-          <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
+          <DocumentImageSection document={document} />
           <ItemContainer>
             <SingleChoiceListItem
-              answer={{
-                word: documents[selectedDocumentIndex].word,
-                article: documents[selectedDocumentIndex].article
-              }}
+              answer={{ word, article }}
               onClick={() => undefined}
               correct={false}
               selected={false}

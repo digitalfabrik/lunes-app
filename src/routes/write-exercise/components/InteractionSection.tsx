@@ -5,10 +5,11 @@ import stringSimilarity from 'string-similarity'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
+import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -35,10 +36,6 @@ const StyledTextInput = styled.TextInput`
   width: 90%;
 `
 
-const Speaker = styled.View`
-  top: ${wp('-6%')}px;
-`
-
 interface InteractionSectionProps {
   documentWithResult: DocumentResult
   isAnswerSubmitted: boolean
@@ -58,6 +55,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const theme = useTheme()
+  const isKeyboardShown = useIsKeyboardVisible()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
@@ -131,9 +129,12 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   return (
     <>
-      <Speaker>
-        <AudioPlayer document={document} disabled={retryAllowed} submittedAlternative={submittedAlternative} />
-      </Speaker>
+      <DocumentImageSection
+        document={document}
+        minimized={isKeyboardShown}
+        audioDisabled={retryAllowed}
+        submittedAlternative={submittedAlternative}
+      />
 
       <MissingArticlePopover
         isVisible={isArticleMissing}
