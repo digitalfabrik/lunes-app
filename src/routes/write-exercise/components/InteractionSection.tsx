@@ -27,13 +27,17 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   border: 1px solid ${prop => prop.styledBorderColor};
 `
 const StyledTextInput = styled.TextInput`
-  flex: 1;
   font-size: ${props => props.theme.fonts.largeFontSize};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.primary};
   width: 90%;
+`
+
+const InputContainer = styled.View`
+  align-items: center;
+  margin-top: ${props => props.theme.spacings.md};
 `
 
 interface InteractionSectionProps {
@@ -135,49 +139,50 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         audioDisabled={retryAllowed}
         submittedAlternative={submittedAlternative}
       />
-
-      <MissingArticlePopover
-        isVisible={isArticleMissing}
-        setIsPopoverVisible={setIsArticleMissing}
-        ref={textInputRef}
-      />
-
-      {/* @ts-expect-error ref typing is off here */}
-      <TextInputContainer testID='input-field' ref={textInputRef} styledBorderColor={getBorderColor()}>
-        <StyledTextInput
-          placeholder={labels.exercises.write.insertAnswer}
-          placeholderTextColor={theme.colors.placeholder}
-          value={input}
-          onChangeText={setInput}
-          editable={retryAllowed}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onSubmitEditing={checkEntry}
+      <InputContainer>
+        <MissingArticlePopover
+          isVisible={isArticleMissing}
+          setIsPopoverVisible={setIsArticleMissing}
+          ref={textInputRef}
         />
-        {retryAllowed && input !== '' && (
-          <TouchableOpacity onPress={() => setInput('')}>
-            <CloseIcon width={wp('6%')} height={wp('6%')} />
-          </TouchableOpacity>
-        )}
-      </TextInputContainer>
 
-      {isAnswerSubmitted && (
-        <Feedback
-          documentWithResult={documentWithResult}
-          submission={submittedInput}
-          needsToBeRepeated={needsToBeRepeated}
-        />
-      )}
-      {retryAllowed && (
-        <Pressable onPress={Keyboard.dismiss}>
-          <Button
-            label={labels.exercises.write.checkInput}
-            onPress={checkEntry}
-            disabled={!input}
-            buttonTheme={BUTTONS_THEME.contained}
+        {/* @ts-expect-error ref typing is off here */}
+        <TextInputContainer testID='input-field' ref={textInputRef} styledBorderColor={getBorderColor()}>
+          <StyledTextInput
+            placeholder={labels.exercises.write.insertAnswer}
+            placeholderTextColor={theme.colors.placeholder}
+            value={input}
+            onChangeText={setInput}
+            editable={retryAllowed}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onSubmitEditing={checkEntry}
           />
-        </Pressable>
-      )}
+          {retryAllowed && input !== '' && (
+            <TouchableOpacity onPress={() => setInput('')}>
+              <CloseIcon width={wp('6%')} height={wp('6%')} />
+            </TouchableOpacity>
+          )}
+        </TextInputContainer>
+
+        {isAnswerSubmitted && (
+          <Feedback
+            documentWithResult={documentWithResult}
+            submission={submittedInput}
+            needsToBeRepeated={needsToBeRepeated}
+          />
+        )}
+        {retryAllowed && (
+          <Pressable onPress={Keyboard.dismiss}>
+            <Button
+              label={labels.exercises.write.checkInput}
+              onPress={checkEntry}
+              disabled={!input}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          </Pressable>
+        )}
+      </InputContainer>
     </>
   )
 }

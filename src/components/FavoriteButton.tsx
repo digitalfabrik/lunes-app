@@ -7,8 +7,8 @@ import { Document } from '../constants/endpoints'
 import AsyncStorage from '../services/AsyncStorage'
 
 const Container = styled.View`
-  padding-right: ${props => props.theme.spacings.xl};
-  padding-top: ${props => props.theme.spacings.sm};
+  padding: ${props => `${props.theme.spacings.xs} 0  ${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
+  align-self: center;
 `
 
 const Icon = styled(FavoriteIcon)`
