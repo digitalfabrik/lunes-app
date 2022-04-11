@@ -21,7 +21,7 @@ const Background = styled.ImageBackground`
   margin-bottom: ${props => props.theme.spacings.lg};
   flex-direction: row;
   align-items: center;
-  padding: ${props => `0 ${props.theme.spacings.xs}`};
+  padding: ${props => `0 ${props.theme.spacings.md} 0 ${props.theme.spacings.sm}`};
 `
 
 const StyledText = styled.Text`
@@ -58,7 +58,7 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
     background = BannerRed
     message = needsToBeRepeated
       ? `${labels.exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
-      : `${wrongWithCorrectSolution}`
+      : wrongWithCorrectSolution
   }
 
   return (
