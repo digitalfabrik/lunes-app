@@ -13,8 +13,7 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
+  margin: 0 ${props => props.theme.spacings.md};
 `
 
 const StyledList = styled(FlatList)`

@@ -57,7 +57,7 @@ describe('AddCustomDisciplineScreen', () => {
     await waitFor(() =>
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_module"]')
     )
-    await waitFor(() => expect(navigation.navigate).toHaveBeenCalled())
+    await waitFor(() => expect(navigation.goBack).toHaveBeenCalled())
   })
 
   it('should show duplicate error', async () => {

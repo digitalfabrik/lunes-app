@@ -7,7 +7,6 @@ import { ChevronRight } from '../../assets/images'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
-  width: ${wp('90%')}px;
   margin-bottom: ${props => props.theme.spacings.xxs};
   align-self: center;
   flex-direction: row;
@@ -16,9 +15,14 @@ export const GenericListItemContainer = styled.Pressable`
   border-radius: 2px;
 `
 
-const Container = styled(GenericListItemContainer)<{ pressed: boolean }>`
+const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean }>`
   min-height: ${hp('12%')}px;
-  background-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent)};
+  background-color: ${prop => {
+    if (prop.disabled) {
+      return prop.theme.colors.disabled
+    }
+    return prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent
+  }};
   border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
@@ -75,11 +79,12 @@ const PRESS_MAX_DRAG_Y = 5
 interface ListItemProps {
   title: string | ReactElement
   icon?: string | ReactElement
-  description: string
+  description?: string
   badgeLabel?: string
   children?: ReactElement
   onPress: () => void
   rightChildren?: ReactElement
+  disabled?: boolean
 }
 
 const ListItem = ({
@@ -89,7 +94,8 @@ const ListItem = ({
   description,
   badgeLabel,
   children,
-  rightChildren
+  rightChildren,
+  disabled = false
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -138,6 +144,7 @@ const ListItem = ({
 
   return (
     <Container
+      disabled={disabled}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       onLongPress={() => setPressed(true)}
@@ -148,7 +155,7 @@ const ListItem = ({
         {titleToRender}
         <DescriptionContainer>
           {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
-          <Description pressed={pressed}>{description}</Description>
+          {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
         </DescriptionContainer>
         {children}
       </FlexContainer>

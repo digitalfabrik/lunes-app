@@ -9,13 +9,15 @@ interface DisciplineListItemProps {
   onPress: () => void
   hasBadge: boolean
   rightChildren?: ReactElement
+  disabled?: boolean
 }
 
 const DisciplineListItem = ({
   item,
   onPress,
   hasBadge,
-  rightChildren
+  rightChildren,
+  disabled = false
 }: DisciplineListItemProps): ReactElement | null => {
   const { numberOfChildren, title, icon, apiKey } = item
   const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined
@@ -33,6 +35,7 @@ const DisciplineListItem = ({
       onPress={onPress}
       badgeLabel={badgeLabel}
       rightChildren={rightChildren}
+      disabled={disabled}
     />
   )
 }

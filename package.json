@@ -50,6 +50,7 @@
     "react-native-svg-transformer": "^0.14.3",
     "react-native-tts": "4.1.0",
     "react-native-vector-icons": "^9.0.0",
+    "react-navigation-header-buttons": "^9.0.1",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.3.3"
   },

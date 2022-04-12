@@ -1,5 +1,5 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
-import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -15,12 +15,14 @@ import {
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
+import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreens'
 import ImprintScreen from '../routes/ImprintScreen'
+import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -29,7 +31,7 @@ import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerc
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import IntroScreen from '../routes/intro/IntroScreen'
-import ProfessionSelectionScreen from '../routes/intro/ProfessionSelectionScreen'
+import ManageDisciplinesScreen from '../routes/manage-disciplines/ManageDisciplinesScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -118,13 +120,18 @@ const Navigator = (): JSX.Element | null => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={professions !== null ? 'Home' : 'Intro'}
-        screenOptions={TransitionPresets.SlideFromRightIOS}>
+        screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
-        <Stack.Screen options={{ headerShown: false }} name='Intro' component={IntroScreen} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name='Intro'
+          component={IntroScreen}
+          initialParams={{ initialSelection: true }}
+        />
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
-              route.params.discipline.parentTitle ?? labels.general.header.overview,
+              labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
               !!route.params.discipline.parentTitle
@@ -210,6 +217,13 @@ const Navigator = (): JSX.Element | null => {
           }
           name='Imprint'
           component={ImprintScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='ManageDisciplines'
+          component={ManageDisciplinesScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

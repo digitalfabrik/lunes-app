@@ -12,7 +12,7 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
-import ProfessionSelectionScreen from '../ProfessionSelectionScreen'
+import ProfessionSelectionScreen from '../../ProfessionSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDisciplines')
@@ -24,6 +24,7 @@ describe('ProfessionSelectionScreen', () => {
     key: 'key-1',
     name: 'ProfessionSelection',
     params: {
+      initialSelection: true,
       discipline: {
         id: 5,
         title: 'Parent Discipline',

@@ -36,12 +36,13 @@ interface HomeScreenProps {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
-  const { data: selectedProfessions } = useReadSelectedProfessions()
+  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
 
   useFocusEffect(
     React.useCallback(() => {
       refreshCustomDisciplines()
+      refreshSelectedProfessions()
     }, [refreshCustomDisciplines])
   )
 
@@ -81,7 +82,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   return (
     <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View>
-        <HeaderWithMenu />
+        <HeaderWithMenu navigation={navigation} />
 
         <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
         <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
