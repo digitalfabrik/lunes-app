@@ -75,7 +75,7 @@ const addFavorite = async (favorite: Document): Promise<void> => {
   await setFavorites(newFavorites)
 }
 
-const deleteFavorite = async (favorite: Document): Promise<void> => {
+const removeFavorite = async (favorite: Document): Promise<void> => {
   const favorites = await getFavorites()
   const newFavorites = favorites.filter(it => it.id !== favorite.id)
   await setFavorites(newFavorites)
@@ -97,6 +97,6 @@ export default {
   getFavorites,
   setFavorites,
   addFavorite,
-  deleteFavorite,
+  removeFavorite,
   isFavorite
 }

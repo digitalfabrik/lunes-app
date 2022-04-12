@@ -43,7 +43,7 @@ const FavoriteButton = ({ document }: Props): ReactElement | null => {
   const setFavorite = () => {
     if (isFavorite) {
       setIsFavorite(false)
-      AsyncStorage.deleteFavorite(document).catch(() => setIsFavorite(true))
+      AsyncStorage.removeFavorite(document).catch(() => setIsFavorite(true))
     } else {
       setIsFavorite(true)
       AsyncStorage.addFavorite(document).catch(() => setIsFavorite(false))
