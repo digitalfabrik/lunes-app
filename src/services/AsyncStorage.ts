@@ -2,20 +2,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Discipline, Document } from '../constants/endpoints'
 
+const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINE_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
-export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
-  const professions = await AsyncStorage.getItem('selectedProfessions')
+const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
+  const professions = await AsyncStorage.getItem(SELECTED_PROFESSIONS_KEY)
   return professions ? JSON.parse(professions) : null
 }
 
-export const setSelectedProfessions = async (selectedProfessions: Discipline[]): Promise<void> => {
-  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(selectedProfessions))
+const setSelectedProfessions = async (selectedProfessions: Discipline[]): Promise<void> => {
+  await AsyncStorage.setItem(SELECTED_PROFESSIONS_KEY, JSON.stringify(selectedProfessions))
 }
 
-export const pushSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
+const pushSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
   let professions = await getSelectedProfessions()
   if (professions === null) {
     professions = [profession]
@@ -26,7 +27,7 @@ export const pushSelectedProfession = async (profession: Discipline): Promise<Di
   return professions
 }
 
-export const removeSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
+const removeSelectedProfession = async (profession: Discipline): Promise<Discipline[]> => {
   const professions = await getSelectedProfessions()
   if (professions === null) {
     throw new Error('professions not set')
