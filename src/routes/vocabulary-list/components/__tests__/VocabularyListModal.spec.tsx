@@ -6,6 +6,11 @@ import DocumentBuilder from '../../../../testing/DocumentBuilder'
 import render from '../../../../testing/render'
 import VocabularyListModal from '../VocabularyListModal'
 
+jest.mock('../../../../components/FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
+
 jest.mock('../../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>

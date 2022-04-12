@@ -1,10 +1,14 @@
 import React from 'react'
-import 'react-native'
 
 import { ARTICLES } from '../../../../constants/data'
 import { Document } from '../../../../constants/endpoints'
 import render from '../../../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
+
+jest.mock('../../../../components/FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
 
 jest.mock('../../../../components/AudioPlayer', () => () => null)
 

@@ -11,6 +11,11 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
+jest.mock('../../../components/FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
+
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it)

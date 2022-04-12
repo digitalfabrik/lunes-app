@@ -7,6 +7,11 @@ import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
 
+jest.mock('../../../../components/FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
+
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() }))
 }))
