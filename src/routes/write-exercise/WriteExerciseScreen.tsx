@@ -8,7 +8,6 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import ImageCarousel from '../../components/ImageCarousel'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
@@ -16,13 +15,8 @@ import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
-const StyledContainer = styled.View`
-  padding-top: ${props => props.theme.spacings.md};
-  padding-bottom: ${props => props.theme.spacings.lg};
+const ButtonContainer = styled.View`
   align-items: center;
-  position: relative;
-  width: 100%;
-  height: 85%;
 `
 
 export interface WriteExerciseScreenProps {
@@ -116,15 +110,12 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
       <ExerciseHeader navigation={navigation} currentWord={currentIndex} numberOfWords={documents.length} />
 
-      <ImageCarousel images={current.document.document_image} minimized={isKeyboardShown} />
-
-      <StyledContainer>
-        <InteractionSection
-          documentWithResult={current}
-          storeResult={storeResult}
-          isAnswerSubmitted={isAnswerSubmitted}
-        />
-
+      <InteractionSection
+        documentWithResult={current}
+        storeResult={storeResult}
+        isAnswerSubmitted={isAnswerSubmitted}
+      />
+      <ButtonContainer>
         {isAnswerSubmitted && current.result !== 'similar' ? (
           <Button
             label={buttonLabel}
@@ -146,7 +137,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             )}
           </>
         )}
-      </StyledContainer>
+      </ButtonContainer>
     </KeyboardAwareScrollView>
   )
 }
