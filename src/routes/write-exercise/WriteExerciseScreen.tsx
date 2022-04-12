@@ -5,16 +5,16 @@ import { Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
 
-import { ArrowRightIcon } from '../../../../assets/images'
-import Button from '../../../components/Button'
-import ExerciseHeader from '../../../components/ExerciseHeader'
-import ImageCarousel from '../../../components/ImageCarousel'
-import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
-import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
-import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { moveToEnd, shuffleArray } from '../../../services/helpers'
-import InteractionSection from './InteractionSection'
+import { ArrowRightIcon } from '../../../assets/images'
+import Button from '../../components/Button'
+import ExerciseHeader from '../../components/ExerciseHeader'
+import ImageCarousel from '../../components/ImageCarousel'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
+import labels from '../../constants/labels.json'
+import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { moveToEnd, shuffleArray } from '../../services/helpers'
+import InteractionSection from './components/InteractionSection'
 
 const StyledContainer = styled.View`
   padding-top: ${props => props.theme.spacings.md};
@@ -25,12 +25,12 @@ const StyledContainer = styled.View`
   height: 85%;
 `
 
-export interface WriteExerciseProps {
+export interface WriteExerciseScreenProps {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
 
-const WriteExercise = ({ route, navigation }: WriteExerciseProps): ReactElement => {
+const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
   const { documents, disciplineTitle, closeExerciseAction } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
@@ -151,4 +151,4 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProps): ReactElement 
   )
 }
 
-export default WriteExercise
+export default WriteExerciseScreen

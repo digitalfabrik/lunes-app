@@ -31,7 +31,7 @@ import HomeScreen from '../routes/home/HomeScreen'
 import IntroScreen from '../routes/intro/IntroScreen'
 import ProfessionSelectionScreen from '../routes/intro/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
-import WriteExerciseScreen from '../routes/write-exercise/components/WriteExercise'
+import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
 
 const styles = (headerHeight?: number) =>
