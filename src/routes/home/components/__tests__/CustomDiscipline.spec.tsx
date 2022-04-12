@@ -1,16 +1,16 @@
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { Discipline } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
-import createNavigationMock from '../../testing/createNavigationPropMock'
+import { Discipline } from '../../../../constants/endpoints'
+import labels from '../../../../constants/labels.json'
+import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import {
   mockUseLoadAsyncLoading,
   mockUseLoadAsyncWithData,
   mockUseLoadAsyncWithError
-} from '../../testing/mockUseLoadFromEndpoint'
-import render from '../../testing/render'
-import CustomDisciplineItem from '../CustomDisciplineItem'
+} from '../../../../testing/mockUseLoadFromEndpoint'
+import render from '../../../../testing/render'
+import CustomDiscipline from '../CustomDiscipline'
 
 describe('CustomDisciplineItem', () => {
   const navigation = createNavigationMock<'Home'>()
@@ -27,13 +27,13 @@ describe('CustomDisciplineItem', () => {
   }
 
   const renderCustomDisciplineItem = (): RenderAPI =>
-    render(<CustomDisciplineItem apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
+    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockData)
     const { getByText } = renderCustomDisciplineItem()
     expect(getByText('Custom Discipline')).toBeDefined()
-    expect(getByText(`1 ${labels.general.rootDiscipline}`)).toBeDefined()
+    expect(getByText(labels.general.discipline)).toBeDefined()
   })
 
   it('should display loading', () => {
