@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -24,12 +25,12 @@ const StyledContainer = styled.View`
   height: 85%;
 `
 
-export interface WriteExerciseProp {
+export interface WriteExerciseProps {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
 
-const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement => {
+const WriteExercise = ({ route, navigation }: WriteExerciseProps): ReactElement => {
   const { documents, disciplineTitle, closeExerciseAction } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
@@ -112,7 +113,7 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
       : labels.exercises.next
 
   return (
-    <>
+    <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
       <ExerciseHeader navigation={navigation} currentWord={currentIndex} numberOfWords={documents.length} />
 
       <ImageCarousel images={current.document.document_image} minimized={isKeyboardShown} />
@@ -146,7 +147,7 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
           </>
         )}
       </StyledContainer>
-    </>
+    </KeyboardAwareScrollView>
   )
 }
 
