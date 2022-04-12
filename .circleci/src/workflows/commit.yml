@@ -6,7 +6,7 @@ jobs:
   - bump_version:
       context:
         - mattermost
-      delivery: none
+      prepare_delivery: false
   - build_android:
       context:
         - mattermost
