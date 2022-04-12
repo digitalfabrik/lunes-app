@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import { FavoriteIcon, FavoriteIconOutline } from '../../assets/images'
 import { Document } from '../constants/endpoints'
+import labels from '../constants/labels.json'
 import AsyncStorage from '../services/AsyncStorage'
 
 const Container = styled.View`
@@ -56,7 +57,9 @@ const FavoriteButton = ({ document }: Props): ReactElement | null => {
 
   return (
     <Container>
-      <Button onPress={setFavorite}>{isFavorite ? <Icon /> : <IconOutline />}</Button>
+      <Button accessibilityLabel={isFavorite ? labels.favorites.remove : labels.favorites.add} onPress={setFavorite}>
+        {isFavorite ? <Icon /> : <IconOutline />}
+      </Button>
     </Container>
   )
 }

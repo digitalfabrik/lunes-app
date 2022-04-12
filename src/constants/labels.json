@@ -114,6 +114,8 @@
     "words": "Wörter"
   },
   "favorites": {
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "add": "Favorit hinzufügen",
+    "remove": "Favorit entfernen"
   }
 }
