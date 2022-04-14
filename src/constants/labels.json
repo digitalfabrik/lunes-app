@@ -1,6 +1,7 @@
 {
   "intro": {
-    "welcome": "Willkommen bei Lunes!\nWähle jetzt den Beruf, den du lernen möchtest.",
+    "welcome": "Willkommen bei Lunes!",
+    "selectProfession": "Wähle jetzt den Beruf, den du lernen möchtest.",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten"
   },

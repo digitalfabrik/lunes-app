@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     React.useCallback(() => {
       refreshCustomDisciplines()
       refreshSelectedProfessions()
-    }, [refreshCustomDisciplines])
+    }, [refreshCustomDisciplines, refreshSelectedProfessions])
   )
 
   const navigateToImprintScreen = (): void => {
@@ -61,12 +61,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDiscipline
-      key={customDiscipline}
-      apiKey={customDiscipline}
-      navigation={navigation}
-      refresh={refreshCustomDisciplines}
-    />
+    <CustomDiscipline key={customDiscipline} apiKey={customDiscipline} navigation={navigation} />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (

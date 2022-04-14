@@ -23,7 +23,6 @@ const LoadingSpinner = styled.View`
 interface CustomDisciplineItemProps {
   apiKey: string
   navigation: StackNavigationProp<RoutesParams, 'Home'>
-  refresh: () => void
 }
 
 const CustomDiscipline = ({ apiKey, navigation }: CustomDisciplineItemProps): JSX.Element => {

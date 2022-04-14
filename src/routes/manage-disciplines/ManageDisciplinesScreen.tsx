@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { Pressable } from 'react-native'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
@@ -46,10 +46,10 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
   } = useReadSelectedProfessions()
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
-  const refresh = () => {
+  const refresh = useCallback(() => {
     refreshCustomDisciplines()
     refreshSelectedProfessions()
-  }
+  }, [refreshCustomDisciplines, refreshSelectedProfessions])
 
   React.useEffect(() => {
     refresh()
@@ -57,7 +57,7 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
       refresh()
     })
     return willFocusSubscription
-  }, [])
+  }, [navigation, refresh])
 
   const Item = ({ item }: { item: Discipline }): JSX.Element => {
     const unselectProfessionAndRefresh = (item: Discipline) => {
@@ -69,9 +69,8 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
       <ListItem
         icon={item.icon}
         title={item.title}
-        onPress={() => console.log('pressed')}
         rightChildren={
-          <Pressable onPress={() => unselectProfessionAndRefresh(item)}>
+          <Pressable onPress={() => unselectProfessionAndRefresh(item)} testID='delete-icon'>
             <CloseIconRed />
           </Pressable>
         }

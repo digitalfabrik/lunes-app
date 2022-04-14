@@ -39,7 +39,7 @@ interface Props {
 const AddElement = ({ onPress, label, explanation }: Props): ReactElement => (
   <Root onPress={onPress}>
     <FlexRow>
-      <Icon width={wp('8%')} height={wp('8%')} />
+      <Icon width={wp('8%')} height={wp('8%')} testID='add-icon' />
       <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
     </FlexRow>
     {explanation && <Explanation>{explanation}</Explanation>}

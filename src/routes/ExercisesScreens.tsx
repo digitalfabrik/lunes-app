@@ -17,6 +17,7 @@ import { wordsDescription } from '../services/helpers'
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
+  padding: 0 ${props => props.theme.spacings.sm};
 `
 
 interface ExercisesScreenProps {

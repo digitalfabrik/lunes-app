@@ -20,6 +20,7 @@ import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
+  height: 100%;
 `
 
 const ButtonContainer = styled.View`

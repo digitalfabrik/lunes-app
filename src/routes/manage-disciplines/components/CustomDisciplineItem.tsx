@@ -24,9 +24,8 @@ const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
   return (
     <ListItem
       title={data ? data.title : ''}
-      onPress={() => console.log('pressed')}
       rightChildren={
-        <Pressable onPress={() => deleteCustomDisciplineAndRefresh(apiKey)}>
+        <Pressable onPress={() => deleteCustomDisciplineAndRefresh(apiKey)} testID='delete-icon'>
           <CloseIconRed />
         </Pressable>
       }

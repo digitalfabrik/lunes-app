@@ -26,13 +26,12 @@ const ButtonContainer = styled.View`
 `
 
 const StyledText = styled(ContentSecondary)`
-  margin-top: ${props => props.theme.spacings.xxl};
   text-align: center;
-  margin-bottom: ${props => props.theme.spacings.lg};
 `
 
-const Spacing = styled.View`
+const TextContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xxl};
+  margin-bottom: ${props => props.theme.spacings.lg};
 `
 
 interface IntroScreenProps {
@@ -68,7 +67,14 @@ const IntroScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   return (
     <ScrollView>
       <Header />
-      {initialSelection ? <StyledText>{labels.intro.welcome}</StyledText> : <Spacing />}
+      <TextContainer>
+        {initialSelection && (
+          <>
+            <StyledText>{labels.intro.welcome}</StyledText>
+            <StyledText>{labels.intro.selectProfession}</StyledText>
+          </>
+        )}
+      </TextContainer>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <DisciplineContainer>{disciplineItems}</DisciplineContainer>
       </ServerResponseHandler>

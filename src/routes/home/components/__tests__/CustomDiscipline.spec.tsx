@@ -26,8 +26,7 @@ describe('CustomDisciplineItem', () => {
     apiKey: 'abc'
   }
 
-  const renderCustomDisciplineItem = (): RenderAPI =>
-    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={jest.fn()} />)
+  const renderCustomDisciplineItem = (): RenderAPI => render(<CustomDiscipline apiKey='abc' navigation={navigation} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockData)

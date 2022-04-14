@@ -82,7 +82,7 @@ interface ListItemProps {
   description?: string
   badgeLabel?: string
   children?: ReactElement
-  onPress: () => void
+  onPress?: () => void
   rightChildren?: ReactElement
   disabled?: boolean
 }
@@ -110,7 +110,9 @@ const ListItem = ({
       if (pressInY && Math.abs(pressInY - e.nativeEvent.pageY) <= PRESS_MAX_DRAG_Y) {
         // Only call onPress if user not scrolling
         setPressed(true)
-        onPress()
+        if (onPress) {
+          onPress()
+        }
         setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
       } else {
         setPressed(false)
@@ -144,12 +146,13 @@ const ListItem = ({
 
   return (
     <Container
-      disabled={disabled}
+      disabled={disabled || !onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       onLongPress={() => setPressed(true)}
       pressed={pressed}
-      delayLongPress={200}>
+      delayLongPress={200}
+      testID='list-item'>
       {iconToRender}
       <FlexContainer>
         {titleToRender}

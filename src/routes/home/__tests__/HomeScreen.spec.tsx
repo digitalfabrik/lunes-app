@@ -10,6 +10,7 @@ import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfession
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
+import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
@@ -19,18 +20,10 @@ jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadGroupInfo')
-
-const mockCustomDiscipline = {
-  id: 1,
-  title: 'Custom Discipline',
-  description: 'Description',
-  icon: 'none',
-  numberOfChildren: 1,
-  isLeaf: false,
-  apiKey: 'test',
-  parentTitle: null,
-  needsTrainingSetEndpoint: false
-}
+jest.mock('../../../components/HeaderWithMenu', () => {
+  const Text = require('react-native').Text
+  return () => <Text>HeaderWithMenu</Text>
+})
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
