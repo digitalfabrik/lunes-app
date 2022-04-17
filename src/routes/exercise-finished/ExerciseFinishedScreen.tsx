@@ -19,29 +19,27 @@ import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import ShareSection from './components/ShareSection'
 
-const exerciseUnlocked = false // LUN-131 logic
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
   align-items: center;
 `
-const UpperSection = styled.View`
+const UpperSection = styled.View<{ exerciseUnlocked: boolean }>`
   width: 140%;
   height: 45%;
-  background-color: ${prop => (exerciseUnlocked ? prop.theme.colors.correct : prop.theme.colors.primary)};
+  background-color: ${prop => (prop.exerciseUnlocked ? prop.theme.colors.correct : prop.theme.colors.primary)};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
   margin-bottom: ${props => props.theme.spacings.lg};
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 `
 const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
 `
-const Message = styled(HeadingBackground)`
-  color: ${exerciseUnlocked ? prop => prop.theme.colors.primary : prop => prop.theme.colors.background};
+const Message = styled(HeadingBackground)<{ exerciseUnlocked: boolean }>`
+  color: ${prop => (prop.exerciseUnlocked ? prop.theme.colors.primary : prop.theme.colors.background)};
   text-align: center;
 `
 const Icon = styled.TouchableOpacity`
@@ -88,10 +86,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       }
     })
   }
-
+  const exerciseUnlocked = false // TODO: LUN-131 logic
   return (
     <Root>
-      <UpperSection>
+      <UpperSection exerciseUnlocked={exerciseUnlocked}>
         <Icon onPress={checkResults}>
           {exerciseUnlocked ? (
             <CloseIcon width={wp('6%')} height={wp('6%')} />
@@ -106,7 +104,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
           <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
         )}
         <MessageContainer>
-          <Message>{message}</Message>
+          <Message exerciseUnlocked={exerciseUnlocked}>{message}</Message>
         </MessageContainer>
       </UpperSection>
 

@@ -37,9 +37,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
-  const currentLevel = 4 //  LUN-131 logic
+  const currentLevel = 2 //  TODO: LUN-131 logic
   const handleNavigation = (item: Exercise): void => {
-    if (item.level <= currentLevel) {
+    if (item.level < currentLevel) {
       if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
         Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
       } else {
@@ -66,7 +66,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         text={labels.exercises.lockedExerciseModal.title}
         confirmationButtonText={labels.exercises.lockedExerciseModal.confirmBotton}
         cancelButtonText={labels.exercises.lockedExerciseModal.cancelBotton}
-        lockingModal={!false}
+        lockingModal
         confirmationAction={() => {
           navigation.navigate(EXERCISES[currentLevel].nextScreen, {
             discipline
@@ -75,7 +75,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         }}>
         <SmallMessage>
           {labels.exercises.lockedExerciseModal.descriptionPart1}
-          <ContentTextBold>Level {currentLevel}</ContentTextBold>{' '}
+          <ContentTextBold>Level {currentLevel-1}</ContentTextBold>{' '}
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
       </ConfirmationModal>
