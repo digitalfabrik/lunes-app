@@ -33,6 +33,14 @@ import ShareIcon from './share-icon.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
+import HomeIcon from './home-bar-icon.svg'
+import StarIcon from './star-icon.svg'
+import FavoriteIcon from './heart-icon.svg'
+import BookIcon from './menu-book-icon.svg'
+import HomeDimIcon from './home-bar-dim-icon.svg'
+import StarDimIcon from  './star-dim-icon.svg'
+import FavoriteDimIcon from './heart-dim-icon.svg'
+import BookDimIcon from './menu-book-dim-icon.svg'
 
 export {
   AddCircleIcon,
@@ -69,5 +77,13 @@ export {
   ShareIcon,
   TrashIcon,
   TrophyIcon,
-  VolumeUpCircleIcon
+  VolumeUpCircleIcon,
+  HomeIcon,
+  StarIcon,
+  FavoriteIcon,
+  BookIcon,
+  HomeDimIcon,
+  StarDimIcon,
+  FavoriteDimIcon,
+  BookDimIcon
 }
