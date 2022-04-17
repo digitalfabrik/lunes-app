@@ -44,11 +44,11 @@
       "description": "Den richtigen Artikel auswählen"
     },
     "lockedExerciseModal": {
-      "title": "Ups, this exercise is still unlocked.",
-      "confirmBotton": "unlock exercise",
-      "cancelBotton": "ok,got it!",
-      "descriptionPart1": "you have to complete ",
-      "descriptionPart2": " to unlock the next exercise."
+      "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
+      "confirmBotton": "Aufgabe freischalten",
+      "cancelBotton": "Ok",
+      "descriptionPart1": "Du musst",
+      "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
     },
     "write": {
       "title": "Level 3",

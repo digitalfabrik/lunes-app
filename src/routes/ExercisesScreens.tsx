@@ -8,7 +8,7 @@ import ConfirmationModal from '../components/ConfirmationModal'
 import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
-import { ContentTextBold,ContentTextLight } from '../components/text/Content'
+import { ContentTextBold, ContentTextLight } from '../components/text/Content'
 import { EXERCISES, Exercise } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -20,9 +20,7 @@ const Root = styled.View`
   height: 100%;
 `
 const SmallMessage = styled(ContentTextLight)`
-  margin-left: 20%;
-  margin-right: 20%;
-  margin-bottom: ${props => props.theme.spacings.md};
+  margin: 0 ${props => props.theme.spacings.md} ${props => props.theme.spacings.md};
   text-align: center;
 `
 
@@ -71,11 +69,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           navigation.navigate(EXERCISES[currentLevel].nextScreen, {
             discipline
           })
-          setIsModalVisible(false);
+          setIsModalVisible(false)
         }}>
         <SmallMessage>
           {labels.exercises.lockedExerciseModal.descriptionPart1}
-          <ContentTextBold>Level {currentLevel-1}</ContentTextBold>{' '}
+          <ContentTextBold> Level {currentLevel-1}</ContentTextBold>{' '}
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
       </ConfirmationModal>
