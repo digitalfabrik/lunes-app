@@ -73,7 +73,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         }}>
         <SmallMessage>
           {labels.exercises.lockedExerciseModal.descriptionPart1}
-          <ContentTextBold> Level {currentLevel-1}</ContentTextBold>{' '}
+          <ContentTextBold> {EXERCISES[currentLevel].title} </ContentTextBold>
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
       </ConfirmationModal>
