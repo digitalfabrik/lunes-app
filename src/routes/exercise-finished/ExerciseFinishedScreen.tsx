@@ -3,17 +3,16 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
-
+import AAsyncStorage from '@react-native-async-storage/async-storage';
 import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
 import ShareSection from './components/ShareSection'
 
-import AAsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -59,7 +58,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       setMessage(labels.results.feedbackBad)
     }
     let exerciselevel=EXERCISES[exercise].level
-    let stepslocked=3-exerciselevel;
+    const stepslocked=3-exerciselevel;
     AAsyncStorage.setItem('level',String(stepslocked))
   }, [results])
 

@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React,{useState} from 'react'
 import { FlatList, Alert } from 'react-native'
 import styled from 'styled-components/native'
-
+import AAsyncStorage from '@react-native-async-storage/async-storage';
 import ListItem from '../components/ListItem'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
@@ -13,13 +13,15 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 import { MIN_WORDS } from './choice-exercises/WordChoiceExerciseScreen'
 
-import Lane from './LockingLane'
-import AAsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
+  display:flex;
+  flexDirection:row;
 `
 
 interface ExercisesScreenProps {
@@ -66,8 +68,7 @@ useFocusEffect(
   )
 
   return (
-    <Root style={{display:'flex',flexDirection:'row'}}>
-      {/*  <Lane stepslocked={level}></Lane>*/ }
+    <Root>
       <FlatList 
         data={EXERCISES}
         ListHeaderComponent={Header}
