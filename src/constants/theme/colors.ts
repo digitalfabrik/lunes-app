@@ -6,7 +6,7 @@ export const COLORS = {
   textSecondary: '#5b616a',
   placeholder: '#777e91',
   disabled: '#e0e4ed',
-  exerciseProgressIndicator: '#20c5b4',
+  progressIndicator: '#20c5b4',
   containedButtonSelected: '#3d4662',
   buttonSelectedSecondary: '#f57f7a',
   overlay: 'rgba(0, 14, 56, 0.8)',

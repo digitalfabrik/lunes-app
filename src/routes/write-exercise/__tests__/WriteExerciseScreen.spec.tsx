@@ -194,8 +194,11 @@ describe('WriteExerciseScreen', () => {
     )
   })
 
-  it('should show wrong feedback', () => {
-    evaluate('Das Falsche', `${labels.exercises.write.feedback.wrong}`)
+  it('should show wrong feedback with correct solution', () => {
+    evaluate(
+      'Das Falsche',
+      `${labels.exercises.write.feedback.wrong} ${labels.exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+    )
   })
 
   it('should play audio if available and no alternative solution submitted', () => {

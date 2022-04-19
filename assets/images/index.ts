@@ -28,6 +28,7 @@ import HomeCircleIconWhite from './home-circle-icon-white.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LunesIcon from './lunes-icon.svg'
+import MenuIcon from './menu-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import ShareIcon from './share-icon.svg'
@@ -66,6 +67,7 @@ export {
   InfoCircleIcon,
   ListIcon,
   LunesIcon,
+  MenuIcon,
   QRCodeIcon,
   RepeatIcon,
   ShareIcon,

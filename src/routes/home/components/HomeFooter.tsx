@@ -7,7 +7,6 @@ import labels from '../../../constants/labels.json'
 const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin: ${props => `${props.theme.spacings.lg} 0 ${props.theme.spacings.xxs}`};
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.sm} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   background-color: ${props => props.theme.colors.background};

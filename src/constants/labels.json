@@ -5,8 +5,14 @@
     "confirmSelection": "Starten"
   },
   "home": {
-    "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
+    "welcome": "Willkommen bei Lunes!",
+    "haveFun": "Viel Spaß beim Lernen",
+    "progressDescription": "Modulen erledigt",
+    "start": "Beginnen",
+    "continue": "Weitermachen",
     "addCustomDiscipline": "Bereich hinzufügen",
+    "customDisciplineSection": "Individueller Lernbereich",
+    "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
     "deleteModal": {
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",

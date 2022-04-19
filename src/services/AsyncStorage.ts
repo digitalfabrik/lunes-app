@@ -56,6 +56,11 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
+export const getProgress = async (profession: Discipline): Promise<number> => {
+  const progress = await AsyncStorage.getItem('progress')
+  return progress === profession.title ? 1 : 1 // TODO LUN-290
+}
+
 export default {
   getCustomDisciplines,
   setCustomDisciplines,
@@ -63,5 +68,6 @@ export default {
   setSelectedProfessions,
   getSelectedProfessions,
   pushSelectedProfession,
-  removeSelectedProfession
+  removeSelectedProfession,
+  getProgress
 }
