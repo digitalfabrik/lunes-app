@@ -17,7 +17,7 @@ const ProgressContainer = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: ${props => props.theme.spacings.sm} 0;
+  padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
 const NumberText = styled(Subheading)`
@@ -30,7 +30,7 @@ const UnitText = styled(ContentSecondary)`
 `
 
 const ButtonContainer = styled.View`
-  margin: ${props => props.theme.spacings.sm} auto;
+  margin: ${props => props.theme.spacings.xxs} auto;
 `
 
 interface PropsType {

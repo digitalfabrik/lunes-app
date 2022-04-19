@@ -12,16 +12,16 @@ import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
-import ManageDisciplinesScreen from '../ManageDisciplinesScreen'
+import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadGroupInfo')
 
-describe('ManageDisciplinesScreen', () => {
+describe('ManageSelectionsScreen', () => {
   const navigation = createNavigationMock<'ManageDisciplines'>()
-  const renderScreen = () => render(<ManageDisciplinesScreen navigation={navigation} />)
+  const renderScreen = () => render(<ManageSelectionsScreen navigation={navigation} />)
 
   it('should show and delete selected professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
@@ -61,7 +61,7 @@ describe('ManageDisciplinesScreen', () => {
     const { getByText } = renderScreen()
     const addCustomDisciplineText = getByText(labels.home.addCustomDiscipline)
     fireEvent.press(addCustomDisciplineText)
-    expect(navigation.push).toHaveBeenCalledWith('AddCustomDiscipline')
+    expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
 
   it('should navigate to select another profession', () => {
@@ -71,6 +71,6 @@ describe('ManageDisciplinesScreen', () => {
     const { getByText } = renderScreen()
     const addProfessionText = getByText(labels.manageDisciplines.addProfession)
     fireEvent.press(addProfessionText)
-    expect(navigation.push).toHaveBeenCalledWith('Intro', { initialSelection: false })
+    expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
   })
 })

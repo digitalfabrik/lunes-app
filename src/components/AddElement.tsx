@@ -7,21 +7,16 @@ import { ContentSecondary } from './text/Content'
 import { SubheadingPrimary } from './text/Subheading'
 
 const Root = styled.TouchableOpacity`
-  margin: ${props => props.theme.spacings.sm} auto;
-  padding: ${props => props.theme.spacings.xs};
+  margin: ${props => props.theme.spacings.sm} 0;
 `
 
 const AddCustomDisciplineText = styled(SubheadingPrimary)`
   text-transform: uppercase;
+  padding-left: ${props => props.theme.spacings.xs};
 `
 
 const Explanation = styled(ContentSecondary)`
-  padding: 0 ${props => props.theme.spacings.xxl} 0 15%;
-`
-
-const Icon = styled(AddCircleIcon)`
-  padding-right: ${props => props.theme.spacings.xxl};
-  min-width: 15%;
+  padding: 0 ${props => props.theme.spacings.xxl} 0 11%;
 `
 
 const FlexRow = styled.View`
@@ -39,7 +34,7 @@ interface Props {
 const AddElement = ({ onPress, label, explanation }: Props): ReactElement => (
   <Root onPress={onPress}>
     <FlexRow>
-      <Icon width={wp('8%')} height={wp('8%')} testID='add-icon' />
+      <AddCircleIcon width={wp('8%')} height={wp('8%')} />
       <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
     </FlexRow>
     {explanation && <Explanation>{explanation}</Explanation>}

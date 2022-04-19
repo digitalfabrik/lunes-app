@@ -35,11 +35,11 @@ const TextContainer = styled.View`
 `
 
 interface IntroScreenProps {
-  route: RouteProp<RoutesParams, 'Intro'>
-  navigation: StackNavigationProp<RoutesParams, 'Intro'>
+  route: RouteProp<RoutesParams, 'ScopeSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
 }
 
-const IntroScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
+const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   const { initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
@@ -70,8 +70,8 @@ const IntroScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
       <TextContainer>
         {initialSelection && (
           <>
-            <StyledText>{labels.intro.welcome}</StyledText>
-            <StyledText>{labels.intro.selectProfession}</StyledText>
+            <StyledText>{labels.scopeSelection.welcome}</StyledText>
+            <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
           </>
         )}
       </TextContainer>
@@ -84,8 +84,8 @@ const IntroScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
             onPress={navigateToHomeScreen}
             label={
               selectedProfessions && selectedProfessions.length > 0
-                ? labels.intro.confirmSelection
-                : labels.intro.skipSelection
+                ? labels.scopeSelection.confirmSelection
+                : labels.scopeSelection.skipSelection
             }
             buttonTheme={BUTTONS_THEME.contained}
           />
@@ -95,4 +95,4 @@ const IntroScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   )
 }
 
-export default IntroScreen
+export default ScopeSelectionScreen

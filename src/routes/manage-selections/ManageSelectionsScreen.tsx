@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback } from 'react'
 import { Pressable } from 'react-native'
@@ -37,7 +38,7 @@ interface Props {
   navigation: StackNavigationProp<RoutesParams, 'ManageDisciplines'>
 }
 
-const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
+const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   const {
     data: selectedProfessions,
     loading,
@@ -51,19 +52,11 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
     refreshSelectedProfessions()
   }, [refreshCustomDisciplines, refreshSelectedProfessions])
 
-  React.useEffect(() => {
-    refresh()
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      refresh()
-    })
-    return willFocusSubscription
-  }, [navigation, refresh])
+  useFocusEffect(refresh)
 
   const Item = ({ item }: { item: Discipline }): JSX.Element => {
     const unselectProfessionAndRefresh = (item: Discipline) => {
-      removeSelectedProfession(item)
-        .then(refreshSelectedProfessions)
-        .catch(err => reportError(err))
+      removeSelectedProfession(item).then(refreshSelectedProfessions).catch(reportError)
     }
     return (
       <ListItem
@@ -79,11 +72,11 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
   }
 
   const navigateToProfessionSelection = () => {
-    navigation.push('Intro', { initialSelection: false })
+    navigation.navigate('ScopeSelection', { initialSelection: false })
   }
 
   const navigateToAddCustomDiscipline = () => {
-    navigation.push('AddCustomDiscipline')
+    navigation.navigate('AddCustomDiscipline')
   }
 
   return (
@@ -116,4 +109,4 @@ const ManageDisciplinesScreen = ({ navigation }: Props): ReactElement => {
   )
 }
 
-export default ManageDisciplinesScreen
+export default ManageSelectionsScreen

@@ -4,6 +4,7 @@ import React, { ComponentType, useState } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
+import { useTheme } from 'styled-components'
 
 import {
   ArrowLeftCircleIconWhite,
@@ -15,7 +16,6 @@ import {
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
-import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
@@ -30,8 +30,8 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import HomeScreen from '../routes/home/HomeScreen'
-import IntroScreen from '../routes/intro/IntroScreen'
-import ManageDisciplinesScreen from '../routes/manage-disciplines/ManageDisciplinesScreen'
+import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
+import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -68,6 +68,8 @@ const Navigator = (): JSX.Element | null => {
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   const { data: professions, loading } = useReadSelectedProfessions()
+
+  const theme = useTheme()
 
   const defaultOptions = (
     title: string,
@@ -119,13 +121,13 @@ const Navigator = (): JSX.Element | null => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={professions !== null ? 'Home' : 'Intro'}
+        initialRouteName={professions !== null ? 'Home' : 'ScopeSelection'}
         screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen
           options={{ headerShown: false }}
-          name='Intro'
-          component={IntroScreen}
+          name='ScopeSelection'
+          component={ScopeSelection}
           initialParams={{ initialSelection: true }}
         />
         <Stack.Screen
@@ -223,7 +225,7 @@ const Navigator = (): JSX.Element | null => {
             defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
           }
           name='ManageDisciplines'
-          component={ManageDisciplinesScreen}
+          component={ManageSelectionsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

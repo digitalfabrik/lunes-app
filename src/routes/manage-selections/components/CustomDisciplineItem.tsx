@@ -16,9 +16,7 @@ const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
   const { data } = useLoadGroupInfo(apiKey)
 
   const deleteCustomDisciplineAndRefresh = (item: string) => {
-    removeCustomDiscipline(item)
-      .then(refresh)
-      .catch(err => reportError(err))
+    removeCustomDiscipline(item).then(refresh).catch(reportError)
   }
 
   return (

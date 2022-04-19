@@ -94,8 +94,10 @@ describe('ListItem', () => {
     expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.backgroundAccent)
   })
 
-  it('should have correct background color when disabled', () => {
-    const { getByTestId } = renderDisciplineItem(true)
+  it('should handle disable correctly', () => {
+    const { getByTestId, getByText } = renderDisciplineItem(true)
     expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.disabled)
+    fireEvent.press(getByText(title))
+    expect(onPress).not.toHaveBeenCalled()
   })
 })

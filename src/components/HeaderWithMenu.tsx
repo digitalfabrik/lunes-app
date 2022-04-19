@@ -26,10 +26,14 @@ const SmileIconStyle = styled.Pressable`
   top: 20px;
 `
 
-const MenuIconContainer = styled.View`
+const HeaderButtonsContainer = styled.View`
   position: absolute;
-  top: ${props => props.theme.spacings.sm};
-  right: ${props => props.theme.spacings.sm};
+  top: 0;
+  right: 0;
+`
+
+const MenuIconContainer = styled.View`
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.md};
 `
 
 interface Props {
@@ -45,16 +49,21 @@ const HeaderWithMenu = ({ navigation }: Props): JSX.Element => (
         </SentryTestPressable>
       </SmileIconStyle>
 
-      <MenuIconContainer>
+      <HeaderButtonsContainer>
         <HeaderButtons>
-          <OverflowMenu OverflowIcon={<MenuIcon />}>
+          <OverflowMenu
+            OverflowIcon={
+              <MenuIconContainer>
+                <MenuIcon />
+              </MenuIconContainer>
+            }>
             <HiddenItem
               title={labels.general.header.manageDisciplines}
-              onPress={() => navigation.push('ManageDisciplines')}
+              onPress={() => navigation.navigate('ManageDisciplines')}
             />
           </OverflowMenu>
         </HeaderButtons>
-      </MenuIconContainer>
+      </HeaderButtonsContainer>
     </HeaderStyle>
   </Wrapper>
 )

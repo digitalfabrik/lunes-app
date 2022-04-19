@@ -8,15 +8,14 @@ describe('AddElement', () => {
   const onPress = jest.fn()
 
   it('should display correctly', () => {
-    const { getByText, getByTestId } = render(<AddElement onPress={onPress} label='label' explanation='explanation' />)
-    expect(getByTestId('add-icon')).toBeDefined()
-    expect(getByText('explanation')).toBeDefined()
+    const { getByText } = render(<AddElement onPress={onPress} label='label' explanation='explanation' />)
+    expect(getByText('label')).toBeDefined()
     expect(getByText('explanation')).toBeDefined()
   })
 
   it('should handle click', () => {
-    const { getByTestId } = render(<AddElement onPress={onPress} label='label' explanation='explanation' />)
-    const icon = getByTestId('add-icon')
+    const { getByText } = render(<AddElement onPress={onPress} label='label' explanation='explanation' />)
+    const icon = getByText('label')
     fireEvent.press(icon)
     expect(onPress).toHaveBeenCalledTimes(1)
   })

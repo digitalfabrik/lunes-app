@@ -11,17 +11,17 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
-import IntroScreen from '../IntroScreen'
+import ScopeSelection from '../ScopeSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 
-describe('IntroScreen', () => {
-  const navigation = createNavigationMock<'Intro'>()
-  const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'Intro'> => ({
+describe('ScopeSelection', () => {
+  const navigation = createNavigationMock<'ScopeSelection'>()
+  const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'ScopeSelection'> => ({
     key: '',
-    name: 'Intro',
+    name: 'ScopeSelection',
     params: {
       initialSelection
     }
@@ -31,8 +31,8 @@ describe('IntroScreen', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
-    const { getByText } = render(<IntroScreen navigation={navigation} route={getRoute()} />)
-    expect(getByText(labels.intro.welcome)).toBeDefined()
+    const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
+    expect(getByText(labels.scopeSelection.welcome)).toBeDefined()
     const firstDiscipline = getByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
@@ -49,8 +49,8 @@ describe('IntroScreen', () => {
   it('should skip selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
-    const { getByText } = render(<IntroScreen navigation={navigation} route={getRoute()} />)
-    const button = getByText(labels.intro.skipSelection)
+    const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
+    const button = getByText(labels.scopeSelection.skipSelection)
     fireEvent.press(button)
 
     await waitFor(() => {
@@ -61,8 +61,8 @@ describe('IntroScreen', () => {
   it('should confirm selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
-    const { getByText } = render(<IntroScreen navigation={navigation} route={getRoute()} />)
-    const button = getByText(labels.intro.confirmSelection)
+    const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
+    const button = getByText(labels.scopeSelection.confirmSelection)
     fireEvent.press(button)
 
     expect(navigation.navigate).toHaveBeenCalledWith('Home')
@@ -71,9 +71,9 @@ describe('IntroScreen', () => {
   it('should hide welcome message and buttons for non initial view', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
-    const { queryByText } = render(<IntroScreen navigation={navigation} route={getRoute(false)} />)
-    expect(queryByText(labels.intro.welcome)).toBeNull()
-    expect(queryByText(labels.intro.skipSelection)).toBeNull()
-    expect(queryByText(labels.intro.confirmSelection)).toBeNull()
+    const { queryByText } = render(<ScopeSelection navigation={navigation} route={getRoute(false)} />)
+    expect(queryByText(labels.scopeSelection.welcome)).toBeNull()
+    expect(queryByText(labels.scopeSelection.skipSelection)).toBeNull()
+    expect(queryByText(labels.scopeSelection.confirmSelection)).toBeNull()
   })
 })

@@ -32,7 +32,7 @@ type ResultParams = ExerciseParams & {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
   Home: undefined
-  Intro: {
+  ScopeSelection: {
     initialSelection: boolean
   }
   AddCustomDiscipline: undefined

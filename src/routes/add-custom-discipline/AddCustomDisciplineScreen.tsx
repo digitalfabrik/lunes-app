@@ -90,7 +90,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
     setLoading(true)
     loadGroupInfo(code)
       .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
-      .then(() => navigation.goBack())
+      .then(navigation.goBack)
       .catch(error => {
         setErrorMessage(
           error.response?.status === HTTP_STATUS_CODE_FORBIDDEN

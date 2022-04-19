@@ -51,10 +51,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
       await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     } else {
       await AsyncStorage.pushSelectedProfession(selectedItem).then(() => {
-        if (!initialSelection) {
-          navigation.navigate('ManageDisciplines')
-        } else {
+        if (initialSelection) {
           refreshSelectedProfessions()
+        } else {
+          navigation.navigate('ManageDisciplines')
         }
       })
     }
@@ -100,7 +100,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
-                  label={labels.intro.skipSelection}
+                  label={labels.scopeSelection.skipSelection}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
               </ButtonContainer>
@@ -113,11 +113,11 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-      {isSelectionMade && !loading && (
+      {isSelectionMade && !loading && initialSelection && (
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}
-            label={labels.intro.confirmSelection}
+            label={labels.scopeSelection.confirmSelection}
             buttonTheme={BUTTONS_THEME.contained}
           />
         </ButtonContainer>
