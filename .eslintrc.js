@@ -15,7 +15,16 @@ module.exports = {
     es6: true,
     'jest/globals': true
   },
-  ignorePatterns: ['**/reports/', '**/node_modules/', '**/ios/', '**/dist/', '**/lib-dist/'],
+  ignorePatterns: [
+    '**/reports/',
+    '**/node_modules/',
+    '**/ios/',
+    '**/dist/',
+    '**/lib-dist/',
+    '.eslintrc.js',
+    'babel.config.js',
+    'metro.config.js'
+  ],
   rules: {
     // Overly strict rules (for now)
     'no-shadow': 'off',
@@ -92,6 +101,12 @@ module.exports = {
         'jsx-a11y/click-events-have-key-events': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
         'react/jsx-props-no-spreading': 'off'
+      }
+    },
+    {
+      files: ['**/tools/**'],
+      rules: {
+        'no-console': 'off'
       }
     }
   ]
