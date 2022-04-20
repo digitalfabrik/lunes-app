@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react'
+import { TextInputProps } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components'
 import styled from 'styled-components/native'
@@ -42,21 +43,16 @@ const ErrorContainer = styled.View`
   min-height: ${props => props.theme.spacings.lg};
 `
 
-interface CustomTextInputProps {
+interface CustomTextInputProps extends TextInputProps {
   value: string
   onChangeText: (value: string) => void
   /** calculates the height for textArea */
   lines?: number
   /** shows clear indicator if set & input set */
   clearable?: boolean
-  placeholder?: string
-  /** check React Native TextInput for more types */
-  textContentType?: 'emailAddress'
   rightContainer?: ReactElement
   /** Shows error message below the text input. Empty string provides a placeholder */
   errorMessage?: string
-  onSubmitEditing?: () => void
-  editable?: boolean
   /** Custom border color can be defined */
   customBorderColor?: string
 }
