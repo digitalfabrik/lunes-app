@@ -1,11 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons'
+import { HiddenItem } from 'react-navigation-header-buttons'
 import styled from 'styled-components/native'
 
-import { LunesIcon, MenuIcon } from '../../assets/images'
+import { LunesIcon, MenuIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import KebabMenu from './KebabMenu'
 import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
@@ -29,7 +30,6 @@ const SmileIconStyle = styled.Pressable`
 const HeaderButtonsContainer = styled.View`
   align-self: flex-end;
 `
-
 const MenuIconContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.md};
 `
@@ -48,19 +48,17 @@ const HeaderWithMenu = ({ navigation }: Props): JSX.Element => (
       </SmileIconStyle>
 
       <HeaderButtonsContainer>
-        <HeaderButtons>
-          <OverflowMenu
-            OverflowIcon={
-              <MenuIconContainer>
-                <MenuIcon />
-              </MenuIconContainer>
-            }>
-            <HiddenItem
-              title={labels.general.header.manageDisciplines}
-              onPress={() => navigation.navigate('ManageDisciplines')}
-            />
-          </OverflowMenu>
-        </HeaderButtons>
+        <KebabMenu
+          icon={
+            <MenuIconContainer>
+              <MenuIconWhite />
+            </MenuIconContainer>
+          }>
+          <HiddenItem
+            title={labels.general.header.manageDisciplines}
+            onPress={() => navigation.navigate('ManageDisciplines')}
+          />
+        </KebabMenu>
       </HeaderButtonsContainer>
     </HeaderStyle>
   </Wrapper>

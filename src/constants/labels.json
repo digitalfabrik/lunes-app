@@ -109,13 +109,20 @@
       "message3": "Wörter richtig. Und du?"
     }
   },
+  "feedback": {
+    "sendFeedback": "Senden",
+    "question": "Hast du Feedback oder einen Wortvorschlag?",
+    "mailPlaceholder" : "Deine Email für Fragen(optional)",
+    "feedbackPlaceholder": "Teile dein Feedback hier"
+  },
   "general": {
     "header": {
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "of": "von",
-      "manageDisciplines": "Bereiche verwalten"
+      "manageDisciplines": "Bereiche verwalten",
+      "wordFeedback": "Feedback geben"
     },
     "plurals": "Plural",
     "error": {

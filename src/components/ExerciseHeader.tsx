@@ -3,18 +3,31 @@ import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconWhite } from '../../assets/images'
+import { CloseCircleIconWhite, MenuIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
+import FeedbackModal from './FeedbackModal'
+import KebabMenu from './KebabMenu'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
 import { NavigationTitle } from './NavigationTitle'
 import { ContentSecondary } from './text/Content'
 
 const ProgressBar = styled(RNProgressBar)`
   background-color: ${props => props.theme.colors.disabled};
+`
+
+const HeaderRightContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const StyledMenuIcon = styled(MenuIcon)`
+  margin-left: ${props => props.theme.spacings.md};
 `
 
 interface ExerciseHeaderProps {
@@ -25,8 +38,9 @@ interface ExerciseHeaderProps {
 
 const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()
-  const progressText = numberOfWords !== 0 ? `${currentWord + 1} ${labels.general.header.of} ${numberOfWords}` : ''
+  const progressText = numberOfWords !== 0 ? `${currentWord + 1} / ${numberOfWords}` : ''
 
   useEffect(
     () =>
@@ -37,7 +51,14 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
             <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
           </NavigationHeaderLeft>
         ),
-        headerRight: () => <ContentSecondary>{progressText}</ContentSecondary>,
+        headerRight: () => (
+          <HeaderRightContainer>
+            <ContentSecondary>{progressText}</ContentSecondary>
+            <KebabMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
+              <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+            </KebabMenu>
+          </HeaderRightContainer>
+        ),
         headerRightContainerStyle: {
           paddingHorizontal: wp('4%'),
           maxWidth: wp('25%')
@@ -75,6 +96,7 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         cancelButtonText={labels.exercises.cancelModal.continue}
         confirmationAction={goBack}
       />
+      <FeedbackModal isVisible={isFeedbackModalVisible} setIsVisible={setIsFeedbackModalVisible} />
     </>
   )
 }

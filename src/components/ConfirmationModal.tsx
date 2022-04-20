@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Modal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -42,12 +42,13 @@ export interface ConfirmationModalProps {
   setVisible: (visible: boolean) => void
   text: string
   confirmationButtonText: string
-  cancelButtonText: string
+  cancelButtonText?: string
   confirmationAction: () => void
+  children?: ReactNode
 }
 
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction } = props
+  const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction, children } = props
   const closeModal = (): void => setVisible(false)
 
   return (
@@ -58,8 +59,15 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
             <CloseIcon width={wp('6%')} height={wp('6%')} />
           </Icon>
           <Message>{text}</Message>
-          <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
-          <Button label={confirmationButtonText} onPress={confirmationAction} buttonTheme={BUTTONS_THEME.outlined} />
+          {children}
+          {cancelButtonText && (
+            <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+          )}
+          <Button
+            label={confirmationButtonText}
+            onPress={confirmationAction}
+            buttonTheme={cancelButtonText ? BUTTONS_THEME.outlined : BUTTONS_THEME.contained}
+          />
         </ModalContainer>
       </Overlay>
     </Modal>
