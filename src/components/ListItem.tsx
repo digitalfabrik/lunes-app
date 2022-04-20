@@ -98,7 +98,9 @@ const ListItem = ({
   disabled = false
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
-  const [pressed, setPressed] = useState<boolean>(false)
+  const [pressed, setPressedState] = useState<boolean>(false)
+  const setPressed = (pressed: boolean): void => onPress && setPressedState(pressed)
+
   const theme = useTheme()
 
   const onPressIn = (e: GestureResponderEvent) => {
@@ -146,7 +148,7 @@ const ListItem = ({
 
   return (
     <Container
-      disabled={disabled || !onPress}
+      disabled={disabled}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       onLongPress={() => setPressed(true)}
