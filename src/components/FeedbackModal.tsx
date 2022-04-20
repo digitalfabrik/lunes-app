@@ -20,6 +20,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isVisible, setIsVisible }
   const [email, setEmail] = useState<string>('')
   const onSubmit = (): void => {
     // TODO send information Rename ConfirmationModel, adjust and add tests, add JiraTicketNr for send information
+    // TODO a11y https://www.hingehealth.com/engineering-blog/accessible-react-native-textinput/
     setIsVisible(false)
     setMessage('')
     setEmail('')
