@@ -1,6 +1,7 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import Button from '../../components/Button'
@@ -16,9 +17,8 @@ import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 
-const Root = styled.ScrollView`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
+const DisciplineContainer = styled.View`
+  margin: 0 ${props => props.theme.spacings.sm};
 `
 
 const ButtonContainer = styled.View`
@@ -26,16 +26,21 @@ const ButtonContainer = styled.View`
 `
 
 const StyledText = styled(ContentSecondary)`
-  margin-top: ${props => props.theme.spacings.xxl};
   text-align: center;
+`
+
+const TextContainer = styled.View`
+  margin-top: ${props => props.theme.spacings.xxl};
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
 interface IntroScreenProps {
-  navigation: StackNavigationProp<RoutesParams, 'Intro'>
+  route: RouteProp<RoutesParams, 'ScopeSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
 }
 
-const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
+const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
+  const { initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
 
@@ -43,7 +48,8 @@ const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
 
   const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('ProfessionSelection', {
-      discipline: item
+      discipline: item,
+      initialSelection
     })
   }
 
@@ -59,25 +65,34 @@ const IntroScreen = ({ navigation }: IntroScreenProps): JSX.Element => {
   ))
 
   return (
-    <Root>
+    <ScrollView>
       <Header />
-      <StyledText>{labels.intro.welcome}</StyledText>
+      <TextContainer>
+        {initialSelection && (
+          <>
+            <StyledText>{labels.scopeSelection.welcome}</StyledText>
+            <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
+          </>
+        )}
+      </TextContainer>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {disciplineItems}
+        <DisciplineContainer>{disciplineItems}</DisciplineContainer>
       </ServerResponseHandler>
-      <ButtonContainer>
-        <Button
-          onPress={navigateToHomeScreen}
-          label={
-            selectedProfessions && selectedProfessions.length > 0
-              ? labels.intro.confirmSelection
-              : labels.intro.skipSelection
-          }
-          buttonTheme={BUTTONS_THEME.contained}
-        />
-      </ButtonContainer>
-    </Root>
+      {initialSelection && (
+        <ButtonContainer>
+          <Button
+            onPress={navigateToHomeScreen}
+            label={
+              selectedProfessions && selectedProfessions.length > 0
+                ? labels.scopeSelection.confirmSelection
+                : labels.scopeSelection.skipSelection
+            }
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        </ButtonContainer>
+      )}
+    </ScrollView>
   )
 }
 
-export default IntroScreen
+export default ScopeSelectionScreen

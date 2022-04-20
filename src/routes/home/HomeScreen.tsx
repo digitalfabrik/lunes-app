@@ -36,13 +36,14 @@ interface HomeScreenProps {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
-  const { data: selectedProfessions } = useReadSelectedProfessions()
+  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
 
   useFocusEffect(
     React.useCallback(() => {
       refreshCustomDisciplines()
-    }, [refreshCustomDisciplines])
+      refreshSelectedProfessions()
+    }, [refreshCustomDisciplines, refreshSelectedProfessions])
   )
 
   const navigateToImprintScreen = (): void => {
@@ -60,12 +61,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDiscipline
-      key={customDiscipline}
-      apiKey={customDiscipline}
-      navigation={navigation}
-      refresh={refreshCustomDisciplines}
-    />
+    <CustomDiscipline key={customDiscipline} apiKey={customDiscipline} navigation={navigation} />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
@@ -81,7 +77,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   return (
     <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View>
-        <HeaderWithMenu />
+        <HeaderWithMenu navigation={navigation} />
 
         <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
         <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>

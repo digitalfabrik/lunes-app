@@ -4,22 +4,22 @@ import React from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
-import { CheckCircleIconGreen } from '../../../assets/images'
-import Button from '../../components/Button'
-import DisciplineListItem from '../../components/DisciplineListItem'
-import ServerResponseHandler from '../../components/ServerResponseHandler'
-import Title from '../../components/Title'
-import { BUTTONS_THEME } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
-import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
-import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
-import { childrenDescription } from '../../services/helpers'
+import { CheckCircleIconGreen } from '../../assets/images'
+import Button from '../components/Button'
+import DisciplineListItem from '../components/DisciplineListItem'
+import ServerResponseHandler from '../components/ServerResponseHandler'
+import Title from '../components/Title'
+import { BUTTONS_THEME } from '../constants/data'
+import { Discipline } from '../constants/endpoints'
+import labels from '../constants/labels.json'
+import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
+import { RoutesParams } from '../navigation/NavigationTypes'
+import AsyncStorage from '../services/AsyncStorage'
+import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.background};
+  margin: 0 ${props => props.theme.spacings.sm};
   height: 100%;
 `
 
@@ -41,7 +41,7 @@ interface ProfessionSelectionScreenProps {
 }
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
-  const { discipline } = route.params
+  const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
@@ -50,26 +50,36 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     if (selectedProfessions?.some(profession => profession.id === selectedItem.id)) {
       await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
     } else {
-      await AsyncStorage.pushSelectedProfession(selectedItem).then(refreshSelectedProfessions)
+      await AsyncStorage.pushSelectedProfession(selectedItem).then(() => {
+        if (initialSelection) {
+          refreshSelectedProfessions()
+        } else {
+          navigation.navigate('ManageDisciplines')
+        }
+      })
     }
   }
 
-  const Item = ({ item }: { item: Discipline }): JSX.Element => (
-    <DisciplineListItem
-      item={item}
-      onPress={() => selectDiscipline(item)}
-      hasBadge
-      rightChildren={
-        selectedProfessions?.some(profession => profession.id === item.id) ? (
-          <IconContainer>
-            <CheckCircleIconGreen testID='check-icon' />
-          </IconContainer>
-        ) : (
-          <Placeholder />
-        )
-      }
-    />
-  )
+  const Item = ({ item }: { item: Discipline }): JSX.Element => {
+    const isSelected = selectedProfessions?.some(profession => profession.id === item.id)
+    return (
+      <DisciplineListItem
+        item={item}
+        onPress={() => selectDiscipline(item)}
+        hasBadge
+        disabled={!initialSelection && isSelected}
+        rightChildren={
+          initialSelection && isSelected ? (
+            <IconContainer>
+              <CheckCircleIconGreen testID='check-icon' />
+            </IconContainer>
+          ) : (
+            <Placeholder />
+          )
+        }
+      />
+    )
+  }
 
   const navigateToHomeScreen = async () => {
     if (!isSelectionMade) {
@@ -90,7 +100,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
-                  label={labels.intro.skipSelection}
+                  label={labels.scopeSelection.skipSelection}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
               </ButtonContainer>
@@ -103,11 +113,11 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-      {isSelectionMade && (
+      {isSelectionMade && !loading && initialSelection && (
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}
-            label={labels.intro.confirmSelection}
+            label={labels.scopeSelection.confirmSelection}
             buttonTheme={BUTTONS_THEME.contained}
           />
         </ButtonContainer>

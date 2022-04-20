@@ -1,7 +1,11 @@
+import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons'
 import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../assets/images'
+import labels from '../constants/labels.json'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
@@ -22,14 +26,19 @@ const SmileIconStyle = styled.Pressable`
   top: 20px;
 `
 
-const MenuIconContainer = styled.Pressable`
-  position: absolute;
-  color: white;
-  top: ${props => props.theme.spacings.sm};
-  right: ${props => props.theme.spacings.sm};
+const HeaderButtonsContainer = styled.View`
+  align-self: flex-end;
 `
 
-const HeaderWithMenu = (): JSX.Element => (
+const MenuIconContainer = styled.View`
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.md};
+`
+
+interface Props {
+  navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
+}
+
+const HeaderWithMenu = ({ navigation }: Props): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
@@ -37,10 +46,22 @@ const HeaderWithMenu = (): JSX.Element => (
           <LunesIcon />
         </SentryTestPressable>
       </SmileIconStyle>
-      <MenuIconContainer>
-        <MenuIcon />
-        {/* Will be done in LUN-276 */}
-      </MenuIconContainer>
+
+      <HeaderButtonsContainer>
+        <HeaderButtons>
+          <OverflowMenu
+            OverflowIcon={
+              <MenuIconContainer>
+                <MenuIcon />
+              </MenuIconContainer>
+            }>
+            <HiddenItem
+              title={labels.general.header.manageDisciplines}
+              onPress={() => navigation.navigate('ManageDisciplines')}
+            />
+          </OverflowMenu>
+        </HeaderButtons>
+      </HeaderButtonsContainer>
     </HeaderStyle>
   </Wrapper>
 )

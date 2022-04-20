@@ -1,9 +1,10 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
-import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
+import { useTheme } from 'styled-components'
 
 import {
   ArrowLeftCircleIconWhite,
@@ -21,6 +22,7 @@ import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreen'
 import ImprintScreen from '../routes/ImprintScreen'
+import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -28,8 +30,8 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import HomeScreen from '../routes/home/HomeScreen'
-import IntroScreen from '../routes/intro/IntroScreen'
-import ProfessionSelectionScreen from '../routes/intro/ProfessionSelectionScreen'
+import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
+import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -66,6 +68,8 @@ const Navigator = (): JSX.Element | null => {
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   const { data: professions, loading } = useReadSelectedProfessions()
+
+  const theme = useTheme()
 
   const defaultOptions = (
     title: string,
@@ -117,14 +121,19 @@ const Navigator = (): JSX.Element | null => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={professions !== null ? 'Home' : 'Intro'}
-        screenOptions={TransitionPresets.SlideFromRightIOS}>
+        initialRouteName={professions !== null ? 'Home' : 'ScopeSelection'}
+        screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
-        <Stack.Screen options={{ headerShown: false }} name='Intro' component={IntroScreen} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name='ScopeSelection'
+          component={ScopeSelection}
+          initialParams={{ initialSelection: true }}
+        />
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
-              route.params.discipline.parentTitle ?? labels.general.header.overview,
+              labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
               !!route.params.discipline.parentTitle
@@ -210,6 +219,13 @@ const Navigator = (): JSX.Element | null => {
           }
           name='Imprint'
           component={ImprintScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='ManageDisciplines'
+          component={ManageSelectionsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

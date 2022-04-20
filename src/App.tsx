@@ -3,6 +3,7 @@ import { LogBox, StatusBar } from 'react-native'
 import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
+import { OverflowMenuProvider } from 'react-navigation-header-buttons'
 import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
@@ -16,6 +17,8 @@ const SPLASH_SCREEN_DURATION = 3000
 const App = (): ReactElement => {
   initSentry()
 
+  LogBox.ignoreLogs(['EventEmitter.removeListener'])
+
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide()
@@ -26,7 +29,9 @@ const App = (): ReactElement => {
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
         <StatusBar barStyle='light-content' />
-        <Navigator />
+        <OverflowMenuProvider>
+          <Navigator />
+        </OverflowMenuProvider>
       </SafeAreaProvider>
     </ThemeProvider>
   )

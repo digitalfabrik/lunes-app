@@ -15,8 +15,17 @@ describe('ListItem', () => {
   const title = 'Discipline Item title'
   const badge = '12'
 
-  const renderDisciplineItem = (): RenderAPI =>
-    render(<ListItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
+  const renderDisciplineItem = (disabled = false): RenderAPI =>
+    render(
+      <ListItem
+        onPress={onPress}
+        description={description}
+        icon={icon}
+        title={title}
+        badgeLabel={badge}
+        disabled={disabled}
+      />
+    )
 
   it('should render texts', () => {
     const { getByText } = renderDisciplineItem()
@@ -78,5 +87,17 @@ describe('ListItem', () => {
 
     expect(onPress).not.toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
+  })
+
+  it('should have correct background color', () => {
+    const { getByTestId } = renderDisciplineItem()
+    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.backgroundAccent)
+  })
+
+  it('should handle disable correctly', () => {
+    const { getByTestId, getByText } = renderDisciplineItem(true)
+    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.disabled)
+    fireEvent.press(getByText(title))
+    expect(onPress).not.toHaveBeenCalled()
   })
 })

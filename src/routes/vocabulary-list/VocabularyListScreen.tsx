@@ -15,7 +15,7 @@ const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
   height: 100%;
   width: 100%;
-  padding-bottom: 0;
+  padding: 0 ${props => props.theme.spacings.sm};
 `
 
 const StyledList = styled(FlatList)`
