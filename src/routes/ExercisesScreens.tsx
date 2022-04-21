@@ -27,7 +27,7 @@ interface ExercisesScreenProps {
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { params } = route
-  const { disciplineTitle } = params
+  const { disciplineTitle, disciplineId } = params
 
   const load = useCallback(async (params: ExercisesParams) => {
     if (params.documents) {
@@ -41,9 +41,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   const handleNavigation = (item: Exercise): void => {
     if (documents) {
-      const closeExerciseAction = CommonActions.navigate('Exercises', { documents, disciplineTitle })
+      const closeExerciseAction = CommonActions.navigate('Exercises', { documents, disciplineTitle, disciplineId })
       navigation.navigate(EXERCISES[item.key].nextScreen, {
         documents,
+        disciplineId,
         disciplineTitle,
         closeExerciseAction
       })

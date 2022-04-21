@@ -1,3 +1,4 @@
+import { ExerciseKeys } from '../../constants/data'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
 
@@ -39,5 +40,36 @@ describe('AsyncStorage', () => {
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
     await AsyncStorage.pushSelectedProfession(mockDisciplines[1])
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(2)
+  })
+
+  describe('ExerciseProgress', () => {
+    const firstExercise = { disciplineId: 1, exerciseKey: ExerciseKeys.wordChoiceExercise, score: 0.5 }
+    const secondExercise = { disciplineId: 1, exerciseKey: ExerciseKeys.writeExercise, score: 0.5 }
+    const secondExerciseBetter = { disciplineId: 1, exerciseKey: ExerciseKeys.writeExercise, score: 0.75 }
+
+    beforeEach(() => AsyncStorage.clearExerciseProgress())
+
+    it('should save progress for not yet done discipline', async () => {
+      await AsyncStorage.setExerciseProgress(firstExercise)
+      await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual([firstExercise])
+    })
+
+    it('should save progress for done discipline but not yet done exercise', async () => {
+      await AsyncStorage.setExerciseProgress(firstExercise)
+      await AsyncStorage.setExerciseProgress(secondExercise)
+      await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual([firstExercise, secondExercise])
+    })
+
+    it('should save progress for done exercise with improvement', async () => {
+      await AsyncStorage.setExerciseProgress(secondExercise)
+      await AsyncStorage.setExerciseProgress(secondExerciseBetter)
+      await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual([secondExerciseBetter])
+    })
+
+    it('should not save progress for done exercise without improvement', async () => {
+      await AsyncStorage.setExerciseProgress(secondExercise)
+      await AsyncStorage.setExerciseProgress(secondExercise)
+      await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual([secondExercise])
+    })
   })
 })

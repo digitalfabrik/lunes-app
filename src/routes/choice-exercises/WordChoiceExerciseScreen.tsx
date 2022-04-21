@@ -16,7 +16,7 @@ interface WordChoiceExerciseScreenProps {
 const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, disciplineTitle } = route.params
+  const { documents, disciplineTitle, disciplineId } = route.params
   const answersCount = Math.min(documents.length, MAX_ANSWERS)
 
   const generateFalseAnswers = (correctDocument: Document): Answer[] => {
@@ -37,6 +37,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   return (
     <SingleChoiceExercise
       documents={documents}
+      disciplineId={disciplineId}
       disciplineTitle={disciplineTitle}
       documentToAnswers={documentToAnswers}
       navigation={navigation}

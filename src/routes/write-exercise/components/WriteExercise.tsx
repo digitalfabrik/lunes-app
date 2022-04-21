@@ -12,7 +12,8 @@ import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from 
 import labels from '../../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { moveToEnd, shuffleArray } from '../../../services/helpers'
+import { moveToEnd, saveExerciseProgress, shuffleArray } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 import InteractionSection from './InteractionSection'
 
 const StyledContainer = styled.View`
@@ -30,7 +31,7 @@ export interface WriteExerciseProp {
 }
 
 const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement => {
-  const { documents, disciplineTitle, closeExerciseAction } = route.params
+  const { documents, disciplineTitle, disciplineId, closeExerciseAction } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
@@ -68,15 +69,20 @@ const WriteExercise = ({ route, navigation }: WriteExerciseProp): ReactElement =
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
   const finishExercise = (): void => {
-    navigation.navigate('ExerciseFinished', {
-      documents,
-      disciplineTitle,
-      results: documentsWithResults,
-      exercise: ExerciseKeys.writeExercise,
-      closeExerciseAction
-    })
+    saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, documentsWithResults)
+      .then(() => {
+        navigation.navigate('ExerciseFinished', {
+          documents,
+          disciplineTitle,
+          disciplineId,
+          results: documentsWithResults,
+          exercise: ExerciseKeys.writeExercise,
+          closeExerciseAction
+        })
 
-    initializeExercise(true)
+        initializeExercise(true)
+      })
+      .catch(reportError)
   }
 
   const continueExercise = (): void => {

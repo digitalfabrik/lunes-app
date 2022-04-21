@@ -10,6 +10,7 @@ export interface DocumentResult {
 }
 
 interface ExerciseParams {
+  disciplineId: number
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
@@ -20,6 +21,7 @@ export type ExercisesParams =
       documents: null
       discipline: Discipline
       disciplineTitle: string
+      disciplineId: number
     }
   | ExerciseParams
 

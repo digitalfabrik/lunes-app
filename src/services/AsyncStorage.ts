@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import { ExerciseProgress } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
+
+const exerciseProgress = 'exerciseProgress'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
@@ -56,6 +59,34 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
+export const getExerciseProgress = async (): Promise<Array<ExerciseProgress>> => {
+  const progress = await AsyncStorage.getItem(exerciseProgress)
+  return progress ? JSON.parse(progress) : []
+}
+
+export const setExerciseProgress = async (progress: ExerciseProgress): Promise<void> => {
+  const savedProgress = await getExerciseProgress()
+  const index = savedProgress.findIndex(
+    item => item.disciplineId === progress.disciplineId && item.exerciseKey === progress.exerciseKey
+  )
+  if (index !== -1 && savedProgress[index].score >= progress.score) {
+    return
+  }
+  if (index !== -1) {
+    savedProgress.splice(index, 1)
+  }
+  savedProgress.push(progress)
+
+  const progressWithoutDuplicates = [
+    ...new Map(savedProgress.map(v => [JSON.stringify([v.disciplineId, v.exerciseKey]), v])).values()
+  ]
+  await AsyncStorage.setItem(exerciseProgress, JSON.stringify(progressWithoutDuplicates))
+}
+
+export const clearExerciseProgress = async (): Promise<void> => {
+  await AsyncStorage.removeItem(exerciseProgress)
+}
+
 export const getProgress = async (profession: Discipline): Promise<number> => {
   const progress = await AsyncStorage.getItem('progress')
   return progress === profession.title ? 1 : 1 // TODO LUN-290
@@ -69,5 +100,8 @@ export default {
   getSelectedProfessions,
   pushSelectedProfession,
   removeSelectedProfession,
+  setExerciseProgress,
+  getExerciseProgress,
+  clearExerciseProgress,
   getProgress
 }

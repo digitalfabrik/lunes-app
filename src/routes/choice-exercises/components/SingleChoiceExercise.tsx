@@ -12,7 +12,8 @@ import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { moveToEnd, shuffleArray } from '../../../services/helpers'
+import { moveToEnd, saveExerciseProgress, shuffleArray } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
@@ -28,6 +29,7 @@ const ButtonContainer = styled.View`
 
 interface SingleChoiceExerciseProps {
   documents: Document[]
+  disciplineId: number
   disciplineTitle: string
   documentToAnswers: (document: Document) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -39,6 +41,7 @@ const CORRECT_ANSWER_DELAY = 700
 
 const ChoiceExerciseScreen = ({
   documents,
+  disciplineId,
   disciplineTitle,
   documentToAnswers,
   navigation,
@@ -76,15 +79,20 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = (results: DocumentResult[]): void => {
-    navigation.navigate('ExerciseFinished', {
-      documents,
-      disciplineTitle,
-      exercise: exerciseKey,
-      results,
-      closeExerciseAction: route.params.closeExerciseAction
-    })
+    saveExerciseProgress(disciplineId, exerciseKey, results)
+      .then(() => {
+        navigation.navigate('ExerciseFinished', {
+          documents,
+          disciplineId,
+          disciplineTitle,
+          exercise: exerciseKey,
+          results,
+          closeExerciseAction: route.params.closeExerciseAction
+        })
 
-    initializeExercise(true)
+        initializeExercise(true)
+      })
+      .catch(reportError)
   }
   const count = documents.length
 

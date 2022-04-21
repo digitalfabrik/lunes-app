@@ -4,16 +4,18 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES } from '../../../../constants/data'
+import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
 import { RoutesParams } from '../../../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../../../services/helpers'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import render from '../../../../testing/render'
 import WriteExercise from '../WriteExercise'
 
 jest.mock('../../../../services/helpers', () => ({
   ...jest.requireActual('../../../../services/helpers'),
-  shuffleArray: jest.fn(it => it)
+  shuffleArray: jest.fn(it => it),
+  saveExerciseProgress: jest.fn().mockImplementation(() => Promise.resolve())
 }))
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
@@ -79,6 +81,7 @@ describe('WriteExercise', () => {
     name: 'WriteExercise',
     params: {
       documents,
+      disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack()
     }
@@ -150,12 +153,17 @@ describe('WriteExercise', () => {
     expect(getByText(labels.exercises.next)).toBeDefined()
   })
 
-  it('should show continue or finish exercise', () => {
+  it('should finish exercise and save progress', async () => {
     const { getByText } = renderWriteExercise()
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.showResults))
+
+    await expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+      { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
+      { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 }
+    ])
   })
 
   const evaluate = (input: string, expectedFeedback: string) => {
