@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable } from 'react-native'
+import styled from 'styled-components/native'
 
 import { CloseIconRed } from '../../../../assets/images'
 import ListItem from '../../../components/ListItem'
@@ -12,6 +12,10 @@ interface PropsType {
   apiKey: string
 }
 
+const CloseIconContainer = styled.Pressable`
+  padding-right: ${props => props.theme.spacings.sm};
+`
+
 const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
   const { data } = useLoadGroupInfo(apiKey)
 
@@ -23,9 +27,9 @@ const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
     <ListItem
       title={data ? data.title : ''}
       rightChildren={
-        <Pressable onPress={() => deleteCustomDisciplineAndRefresh(apiKey)} testID='delete-icon'>
+        <CloseIconContainer onPress={() => deleteCustomDisciplineAndRefresh(apiKey)} testID='delete-icon'>
           <CloseIconRed />
-        </Pressable>
+        </CloseIconContainer>
       }
     />
   )

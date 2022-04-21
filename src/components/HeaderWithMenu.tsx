@@ -27,9 +27,7 @@ const SmileIconStyle = styled.Pressable`
 `
 
 const HeaderButtonsContainer = styled.View`
-  position: absolute;
-  top: 0;
-  right: 0;
+  align-self: flex-end;
 `
 
 const MenuIconContainer = styled.View`

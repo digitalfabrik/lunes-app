@@ -1,19 +1,19 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../../constants/data'
-import labels from '../../../../constants/labels.json'
-import { RoutesParams } from '../../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../../services/helpers'
-import createNavigationMock from '../../../../testing/createNavigationPropMock'
-import render from '../../../../testing/render'
-import WriteExercise from '../WriteExercise'
+import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
+import labels from '../../../constants/labels.json'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../../services/helpers'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import render from '../../../testing/render'
+import WriteExerciseScreen from '../WriteExerciseScreen'
 
-jest.mock('../../../../services/helpers', () => ({
-  ...jest.requireActual('../../../../services/helpers'),
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it),
   saveExerciseProgress: jest.fn().mockImplementation(() => Promise.resolve())
 }))
@@ -29,6 +29,13 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
   }
 }))
 
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+  const { View } = require('react-native')
+  return {
+    KeyboardAwareScrollView: ({ children }: { children: ReactElement }) => <View>{children}</View>
+  }
+})
+
 jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
   setDefaultLanguage: jest.fn(async () => undefined),
@@ -42,7 +49,7 @@ jest.mock('react-native-sound-player', () => ({
   loadUrl: jest.fn()
 }))
 
-describe('WriteExercise', () => {
+describe('WriteExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -87,7 +94,7 @@ describe('WriteExercise', () => {
     }
   }
 
-  const renderWriteExercise = (): RenderAPI => render(<WriteExercise route={route} navigation={navigation} />)
+  const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText } = renderWriteExercise()

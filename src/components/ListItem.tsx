@@ -99,6 +99,8 @@ const ListItem = ({
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
+  const updatePressed = (pressed: boolean): void => onPress && setPressed(pressed)
+
   const theme = useTheme()
 
   const onPressIn = (e: GestureResponderEvent) => {
@@ -109,13 +111,13 @@ const ListItem = ({
     (e: GestureResponderEvent) => {
       if (pressInY && Math.abs(pressInY - e.nativeEvent.pageY) <= PRESS_MAX_DRAG_Y) {
         // Only call onPress if user not scrolling
-        setPressed(true)
+        updatePressed(true)
         if (onPress) {
           onPress()
         }
-        setTimeout(() => setPressed(false), PRESS_ANIMATION_DURATION)
+        setTimeout(() => updatePressed(false), PRESS_ANIMATION_DURATION)
       } else {
-        setPressed(false)
+        updatePressed(false)
       }
       setPressInY(null)
     },
@@ -146,10 +148,10 @@ const ListItem = ({
 
   return (
     <Container
-      disabled={disabled || !onPress}
+      disabled={disabled}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
-      onLongPress={() => setPressed(true)}
+      onLongPress={() => updatePressed(true)}
       pressed={pressed}
       delayLongPress={200}
       testID='list-item'>

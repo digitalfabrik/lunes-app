@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback } from 'react'
-import { Pressable } from 'react-native'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
@@ -34,6 +33,10 @@ const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
 `
 
+const CloseIconContainer = styled.Pressable`
+  padding-right: ${props => props.theme.spacings.sm};
+`
+
 interface Props {
   navigation: StackNavigationProp<RoutesParams, 'ManageDisciplines'>
 }
@@ -63,9 +66,9 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
         icon={item.icon}
         title={item.title}
         rightChildren={
-          <Pressable onPress={() => unselectProfessionAndRefresh(item)} testID='delete-icon'>
+          <CloseIconContainer onPress={() => unselectProfessionAndRefresh(item)} testID='delete-icon'>
             <CloseIconRed />
-          </Pressable>
+          </CloseIconContainer>
         }
       />
     )
