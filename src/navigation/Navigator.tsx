@@ -1,4 +1,4 @@
-import { NavigationContainer, NavigationProp, useNavigation, useNavigationState } from '@react-navigation/native'
+import { NavigationContainer, NavigationProp} from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
 import React, { ComponentType } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
@@ -62,14 +62,11 @@ const Tab = createBottomTabNavigator();
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
   const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
-  const [isBottomBarVisable, setIsBottomBarVisable] = React.useState<boolean>(true)
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   
-  function StackNav() {
-    // { (useNavigationState((state) => state.routes[state.index].name) == 'Exercises') ? setIsBottomBarVisable(false) : null }
-    // { console.log(useNavigationState((state) => state.routes[state.index].name)) }
+  function stackNav() {
     return(
       <Stack.Navigator initialRouteName='Home' screenOptions={TransitionPresets.SlideFromRightIOS}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
@@ -79,7 +76,7 @@ const Navigator = (): JSX.Element => {
               route.params.discipline.parentTitle ?? labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
-              !!route.params.discipline.parentTitle
+              !!route.params.discipline.parentTitle,
             )
           }
           name='DisciplineSelection'
@@ -168,9 +165,9 @@ const Navigator = (): JSX.Element => {
   ): StackNavigationOptions => ({
     headerLeft: () => (
       <NavigationHeaderLeft
-        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-        onPressIn={() => setIsPressed(true)}
-        onPressOut={() => setIsPressed(false)}
+        onPress={screen ? () => navigation.navigate(screen) :navigation.goBack}
+        // onPressIn={() => setIsPressed(true)}
+        // onPressOut={() => setIsPressed(false)}
         activeOpacity={1}>
         {isPressed ? (
           <ArrowLeftCircleIconBlue width={wp('7%')} height={wp('7%')} />
@@ -184,8 +181,8 @@ const Navigator = (): JSX.Element => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => navigation.navigate('Home')}
-          onPressIn={() => setIsHomeButtonPressed(true)}
-          onPressOut={() => setIsHomeButtonPressed(false)}
+          // onPressIn={() => setIsHomeButtonPressed(true)}
+          // onPressOut={() => setIsHomeButtonPressed(false)}
           activeOpacity={1}>
           {isHomeButtonPressed ? (
             <HomeCircleIconBlue width={wp('7%')} height={wp('7%')} />
@@ -203,33 +200,35 @@ const Navigator = (): JSX.Element => {
   })
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{
+      <Tab.Navigator backBehavior= "initialRoute" screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#fff",
-        tabBarStyle: { backgroundColor: COLORS.primary, display:(isBottomBarVisable == false)? "none":"flex" }
+        // lazy: false,
+        tabBarStyle: { backgroundColor: COLORS.primary }
   }}>
-      <Tab.Screen name="Home" component={StackNav} options={{
+      <Tab.Screen name="home" component={stackNav} options={{
             tabBarIcon: ({ focused }) =>  (
             focused
             ? <HomeIcon width={wp('10%')} height={wp('10%')} />
             : <HomeDimIcon width={wp('10%')} height={wp('10%')} />
-         )
+        ),
+          title: "Home"
         }} />
-      <Tab.Screen name="Favoriten" component={StackNav} options={{
+      <Tab.Screen name="Favoriten" component={stackNav} options={{
           tabBarIcon: ({ focused }) =>  (
             focused
             ? <StarIcon width={wp('7%')} height={wp('7%')} />
             : <StarDimIcon width={wp('7%')} height={wp('7%')} />
          )
         }} />
-        <Tab.Screen name="Lexikon" component={StackNav} options={{
+        <Tab.Screen name="Lexikon" component={stackNav} options={{
           tabBarIcon: ({ focused }) =>  (
             focused
             ? <BookIcon width={wp('7%')} height={wp('7%')} />
             : <BookDimIcon width={wp('7%')} height={wp('7%')} />
          )
         }} />
-        <Tab.Screen name="Meine vokabeln" component={StackNav}options={{
+        <Tab.Screen name="Meine vokabeln" component={stackNav}options={{
           tabBarIcon: ({ focused }) =>  (
             focused
             ? <FavoriteIcon width={wp('6%')} height={wp('6%')} />
