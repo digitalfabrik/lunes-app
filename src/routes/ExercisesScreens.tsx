@@ -35,9 +35,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const Header = <Title title={title} description={childrenDescription(discipline)} />
-  const currentLevel = 2 //  TODO: LUN-131 logic
+  const currentLevel = 4 //  TODO: LUN-131 logic , note: currentLevel is the last level that can be accessed.
   const handleNavigation = (item: Exercise): void => {
-    if (item.level < currentLevel) {
+    if (item.level <= currentLevel) {
       if (item.title === labels.exercises.wordChoice.title && discipline.numberOfChildren < MIN_WORDS) {
         Alert.alert(labels.exercises.wordChoice.errorWrongModuleSize)
       } else {
@@ -51,7 +51,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   }
 
   const Item = ({ item }: { item: Exercise }): JSX.Element | null => (
-    <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)}>
+    <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)} arrowDisabled={(item.level<=currentLevel)?  false:true}>
       <Trophy level={item.level} />
     </ListItem>
   )
@@ -73,7 +73,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         }}>
         <SmallMessage>
           {labels.exercises.lockedExerciseModal.descriptionPart1}
-          <ContentTextBold> {EXERCISES[currentLevel].title} </ContentTextBold>
+          <ContentTextBold> {(EXERCISES[currentLevel] !== undefined)?EXERCISES[currentLevel].title:EXERCISES[0].title} </ContentTextBold>
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
       </ConfirmationModal>

@@ -60,13 +60,17 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
     const correct = correctResults.length / results.length
-
-    if (correct > 2 / 3) {
-      setMessage(labels.results.feedbackGood)
-    } else if (correct > 1 / 3) {
-      setMessage(labels.results.feedbackMedium)
+    
+    if (exerciseUnlocked) { 
+      setMessage(labels.results.unlockedExercise)
     } else {
-      setMessage(labels.results.feedbackBad)
+      if (correct > 2 / 3) {
+        setMessage(labels.results.feedbackGood)
+      } else if (correct > 1 / 3) {
+        setMessage(labels.results.feedbackMedium)
+      } else {
+        setMessage(labels.results.feedbackBad)
+      }
     }
   }, [results])
 

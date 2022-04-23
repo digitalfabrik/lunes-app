@@ -14,19 +14,20 @@ describe('ListItem', () => {
   const icon = 'https://example.com'
   const title = 'Discipline Item title'
   const badge = '12'
+  // const arrow = false
 
-  const renderDisciplineItem = (): RenderAPI =>
-    render(<ListItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} />)
+  const renderDisciplineItem = (arrow:boolean): RenderAPI =>
+    render(<ListItem onPress={onPress} description={description} icon={icon} title={title} badgeLabel={badge} arrowDisabled={arrow}/>)
 
   it('should render texts', () => {
-    const { getByText } = renderDisciplineItem()
+    const { getByText } = renderDisciplineItem(false)
     expect(getByText(title)).toBeDefined()
     expect(getByText(description)).toBeDefined()
     expect(getByText(badge)).toBeDefined()
   })
 
   it('should handle press', async () => {
-    const { getByTestId, getByText } = renderDisciplineItem()
+    const { getByTestId, getByText } = renderDisciplineItem(false)
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
@@ -44,9 +45,21 @@ describe('ListItem', () => {
       expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
   })
+    it('should handle press with locked exercise', async () => {
+    const { getByTestId, getByText } = renderDisciplineItem(true)
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+
+    await waitFor(() => {
+      expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+    })
+  })
 
   it('should handle long press', async () => {
-    const { getByTestId, getByText } = renderDisciplineItem()
+    const { getByTestId, getByText } = renderDisciplineItem(false)
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
@@ -66,9 +79,30 @@ describe('ListItem', () => {
       expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
   })
+  it('should handle long press with locked exercise', async () => {
+    const { getByTestId, getByText } = renderDisciplineItem(true)
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'longPress')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
+    expect(onPress).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+    })
+  })
 
   it('should not call on press callback if scrolling', async () => {
-    const { getByTestId } = renderDisciplineItem()
+    const { getByTestId } = renderDisciplineItem(false)
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
@@ -78,5 +112,17 @@ describe('ListItem', () => {
 
     expect(onPress).not.toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
+  })
+    it('should not call on press callback if scrolling with locked exercise', async () => {
+    const { getByTestId } = renderDisciplineItem(true)
+    const arrowIcon = getByTestId('arrow')
+
+    expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+
+    fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130 } })
+
+    expect(onPress).not.toHaveBeenCalled()
+    expect(arrowIcon.props.fill).toBe(COLORS.disabled)
   })
 })

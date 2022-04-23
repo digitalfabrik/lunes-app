@@ -76,6 +76,7 @@ interface ListItemProps {
   children?: ReactElement
   onPress: () => void
   rightChildren?: ReactElement
+  arrowDisabled?:boolean
 }
 
 const ListItem = ({
@@ -85,7 +86,8 @@ const ListItem = ({
   description,
   badgeLabel,
   children,
-  rightChildren
+  rightChildren,
+  arrowDisabled
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -125,7 +127,7 @@ const ListItem = ({
 
   const rightChildrenToRender = rightChildren ?? (
     <ChevronRight
-      fill={pressed ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+      fill={pressed ? theme.colors.buttonSelectedSecondary : (arrowDisabled)? theme.colors.disabled:theme.colors.primary}
       testID='arrow'
       width={wp('6%')}
       height={hp('6%')}

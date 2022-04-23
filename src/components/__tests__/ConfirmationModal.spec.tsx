@@ -1,9 +1,10 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
+import { Text } from 'react-native'
 
 import render from '../../testing/render'
 import ConfirmationModal, { ConfirmationModalProps } from '../ConfirmationModal'
-
+const childText = 'Children'
 describe('ConfirmationModal', () => {
   const setVisible = jest.fn()
   const confirmationAction = jest.fn()
@@ -12,6 +13,8 @@ describe('ConfirmationModal', () => {
     visible: false,
     setVisible,
     text: 'Are you sure?',
+    children: <Text>{childText}</Text>,
+    lockingModal: false,
     confirmationButtonText: 'confirm',
     cancelButtonText: 'cancel',
     confirmationAction
@@ -37,5 +40,20 @@ describe('ConfirmationModal', () => {
     const confirmationButton = getByText('confirm')
     fireEvent.press(confirmationButton)
     expect(confirmationAction).toHaveBeenCalled()
+  })
+const renderLockingModal = (lockingModal: boolean): RenderAPI =>
+    render(
+      <ConfirmationModal {...defaultModalProps} lockingModal={lockingModal}>
+        <Text>{childText}</Text>
+      </ConfirmationModal>
+  )
+  it('should display locked modal when lockingModal is true', () => {
+  const { queryByText, getByTestId } = renderLockingModal(true)
+        expect(queryByText('cancel')).toBeDefined()
+        expect(queryByText('confirm')).toBeDefined()
+  })
+    it('should check for children if available', () => {
+    const { getByText } = render(<ConfirmationModal {...defaultModalProps} />)
+        expect(getByText(childText)).toBeTruthy()
   })
 })

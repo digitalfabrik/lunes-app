@@ -34,5 +34,4 @@ export const ContentBackgroundLight = styled(ContentBackground)`
 `
 export const ContentTextBold = styled(Content)`
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-size: ${prop => prop.theme.fonts.defaultFontSize};
 `
