@@ -5,12 +5,12 @@ import render from '../../testing/render'
 import ConfirmationModal, { ConfirmationModalProps } from '../ConfirmationModal'
 
 describe('ConfirmationModal', () => {
-  const setVisible = jest.fn()
+  const onClose = jest.fn()
   const confirmationAction = jest.fn()
 
   const defaultModalProps: ConfirmationModalProps = {
     visible: false,
-    setVisible,
+    onClose,
     text: 'Are you sure?',
     confirmationButtonText: 'confirm',
     cancelButtonText: 'cancel',
@@ -28,7 +28,7 @@ describe('ConfirmationModal', () => {
     const { getByText } = render(<ConfirmationModal {...defaultModalProps} />)
     const cancelButton = getByText('cancel')
     fireEvent.press(cancelButton)
-    expect(setVisible).toHaveBeenCalledWith(false)
+    expect(onClose).toHaveBeenCalled()
     expect(confirmationAction).not.toHaveBeenCalled()
   })
 

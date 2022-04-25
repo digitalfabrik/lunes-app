@@ -39,33 +39,44 @@ const Message = styled(HeadingText)`
 
 export interface ConfirmationModalProps {
   visible: boolean
-  setVisible: (visible: boolean) => void
+  onClose: () => void
   text: string
   confirmationButtonText: string
   cancelButtonText?: string
   confirmationAction: () => void
+  confirmationDisabled?: boolean
   children?: ReactNode
+  testID?: string
 }
 
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const { visible, setVisible, text, confirmationButtonText, cancelButtonText, confirmationAction, children } = props
-  const closeModal = (): void => setVisible(false)
-
+  const {
+    visible,
+    onClose,
+    text,
+    confirmationButtonText,
+    cancelButtonText,
+    confirmationAction,
+    children,
+    testID,
+    confirmationDisabled = false
+  } = props
   return (
-    <Modal testID='modal' visible={visible} transparent animationType='fade' onRequestClose={() => setVisible(false)}>
+    <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
       <Overlay>
         <ModalContainer>
-          <Icon onPress={closeModal}>
+          <Icon onPress={onClose}>
             <CloseIcon width={wp('6%')} height={wp('6%')} />
           </Icon>
           <Message>{text}</Message>
           {children}
           {cancelButtonText && (
-            <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
+            <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.contained} />
           )}
           <Button
             label={confirmationButtonText}
             onPress={confirmationAction}
+            disabled={confirmationDisabled}
             buttonTheme={cancelButtonText ? BUTTONS_THEME.outlined : BUTTONS_THEME.contained}
           />
         </ModalContainer>

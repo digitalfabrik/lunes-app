@@ -15,17 +15,17 @@ jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
 describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()
 
-  it('should render header', async () => {
+  it('should render header', () => {
     const { getByText, getByTestId } = render(
       <ExerciseHeader navigation={navigation} currentWord={4} numberOfWords={10} />
     )
-    expect(getByTestId('modal')).toBeTruthy()
-    expect(getByTestId('modal').props.visible).toBe(false)
+    expect(getByTestId('confirmationModal')).toBeTruthy()
+    expect(getByTestId('confirmationModal').props.visible).toBe(false)
 
     act(BackHandler.mockPressBack)
 
-    expect(getByTestId('modal')).toBeTruthy()
-    expect(getByTestId('modal').props.visible).toBe(true)
+    expect(getByTestId('confirmationModal')).toBeTruthy()
+    expect(getByTestId('confirmationModal').props.visible).toBe(true)
     expect(getByText(labels.exercises.cancelModal.cancelAsk)).toBeTruthy()
     expect(getByText(labels.exercises.cancelModal.cancel)).toBeTruthy()
     expect(getByText(labels.exercises.cancelModal.continue)).toBeTruthy()

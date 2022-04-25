@@ -11,27 +11,33 @@ const TextInputContainer = styled.View`
 `
 
 interface FeedbackModalProps {
-  isVisible: boolean
-  setIsVisible: (visible: boolean) => void
+  visible: boolean
+  setVisible: (visible: boolean) => void
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ isVisible, setIsVisible }: FeedbackModalProps): ReactElement => {
+const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, setVisible }: FeedbackModalProps): ReactElement => {
   const [message, setMessage] = useState<string>('')
   const [email, setEmail] = useState<string>('')
-  const onSubmit = (): void => {
-    // TODO send information Rename ConfirmationModel, adjust and add tests, add JiraTicketNr for send information
-    // TODO a11y https://www.hingehealth.com/engineering-blog/accessible-react-native-textinput/
-    setIsVisible(false)
+
+  const onClose = (): void => {
     setMessage('')
     setEmail('')
+    setVisible(false)
   }
+  const onSubmit = (): void => {
+    // TODO Submit Feedback LUNES-269
+    onClose()
+  }
+
   return (
     <ConfirmationModal
-      visible={isVisible}
-      setVisible={setIsVisible}
+      testID='feedbackModal'
+      visible={visible}
+      onClose={onClose}
       text={labels.feedback.question}
       confirmationButtonText={labels.feedback.sendFeedback}
-      confirmationAction={onSubmit}>
+      confirmationAction={onSubmit}
+      confirmationDisabled={message.length === 0}>
       <TextInputContainer>
         <CustomTextInput
           value={message}

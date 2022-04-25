@@ -122,7 +122,8 @@
       "cancelExercise": "Übung beenden",
       "of": "von",
       "manageDisciplines": "Bereiche verwalten",
-      "wordFeedback": "Feedback geben"
+      "wordFeedback": "Feedback geben",
+      "overflowMenu": "Mehr Optionen"
     },
     "plurals": "Plural",
     "error": {

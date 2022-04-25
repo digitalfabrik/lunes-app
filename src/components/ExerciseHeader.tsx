@@ -89,14 +89,15 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
       />
 
       <ConfirmationModal
+        testID='confirmationModal'
         visible={isModalVisible}
-        setVisible={setIsModalVisible}
+        onClose={() => setIsModalVisible(false)}
         text={labels.exercises.cancelModal.cancelAsk}
         confirmationButtonText={labels.exercises.cancelModal.cancel}
         cancelButtonText={labels.exercises.cancelModal.continue}
         confirmationAction={goBack}
       />
-      <FeedbackModal isVisible={isFeedbackModalVisible} setIsVisible={setIsFeedbackModalVisible} />
+      <FeedbackModal visible={isFeedbackModalVisible} setVisible={setIsFeedbackModalVisible} />
     </>
   )
 }

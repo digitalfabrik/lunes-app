@@ -1,8 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import { TextInputProps } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useTheme } from 'styled-components'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import theme from '../constants/theme'
@@ -106,7 +105,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         />
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
-            <ClearContainer onPress={() => onChangeText('')}>
+            <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
               <CloseIcon width={wp('6%')} height={wp('6%')} />
             </ClearContainer>
           ) : (
