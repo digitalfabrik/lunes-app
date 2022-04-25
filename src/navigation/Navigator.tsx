@@ -1,6 +1,7 @@
-import { NavigationContainer, NavigationProp} from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useCallback } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -10,7 +11,15 @@ import {
   CloseCircleIconWhite,
   ArrowLeftCircleIconBlue,
   HomeCircleIconBlue,
-  HomeCircleIconWhite
+  HomeCircleIconWhite,
+  HomeIcon,
+  StarIcon,
+  FavoriteIcon,
+  BookIcon,
+  HomeDimIcon,
+  StarDimIcon,
+  FavoriteDimIcon,
+  BookDimIcon
 } from '../../assets/images'
 import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
@@ -30,8 +39,6 @@ import HomeScreen from '../routes/home/HomeScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
-import { HomeIcon, StarIcon, FavoriteIcon,BookIcon,HomeDimIcon,StarDimIcon,FavoriteDimIcon,BookDimIcon } from '../../assets/images'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 const styles = (headerHeight?: number) =>
   StyleSheet.create({
@@ -57,7 +64,7 @@ const styles = (headerHeight?: number) =>
   })
 
 const Stack = createStackNavigator<RoutesParams>()
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 const Navigator = (): JSX.Element => {
   const [isPressed, setIsPressed] = React.useState<boolean>(false)
@@ -66,8 +73,51 @@ const Navigator = (): JSX.Element => {
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   
-  function stackNav() {
-    return(
+  const defaultOptions = (
+    title: string,
+    Icon: ComponentType<SvgProps>,
+    navigation: NavigationProp<any>,
+    showHomeButton: boolean,
+    screen?: string
+  ): StackNavigationOptions => ({
+    headerLeft: () => (
+      <NavigationHeaderLeft
+        onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
+        onPressIn={() => setIsPressed(true)} // here's a bug where onPressOut not called immediately after onPressIn(without usecallback!).
+        onPressOut={() => setIsPressed(false)}
+        activeOpacity={1}>
+        {isPressed ? (
+          <ArrowLeftCircleIconBlue width={wp('7%')} height={wp('7%')} />
+        ) : (
+          <Icon width={wp('7%')} height={wp('7%')} />
+        )}
+        <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
+      </NavigationHeaderLeft>
+    ),
+    ...(showHomeButton && {
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          onPressIn={() => setIsHomeButtonPressed(true)} // here's a bug where onPressOut not called immediately after onPressIn(without usecallback!).
+          onPressOut={() => setIsHomeButtonPressed(false)}
+          activeOpacity={1}>
+          {isHomeButtonPressed ? (
+            <HomeCircleIconBlue width={wp('7%')} height={wp('7%')} />
+          ) : (
+            <HomeCircleIconWhite width={wp('7%')} height={wp('7%')} />
+          )}
+        </TouchableOpacity>
+      )
+    }),
+    headerTitle: '',
+    headerStyle: styles(headerHeight).header,
+    headerRightContainerStyle: styles().headerRightContainer,
+    headerLeftContainerStyle: styles().headerLeftContainer,
+    headerTitleContainerStyle: styles().headerTitleContainer
+  })
+
+  const stackNav = useCallback(
+() => (
       <Stack.Navigator initialRouteName='Home' screenOptions={TransitionPresets.SlideFromRightIOS}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen
@@ -76,7 +126,7 @@ const Navigator = (): JSX.Element => {
               route.params.discipline.parentTitle ?? labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
-              !!route.params.discipline.parentTitle,
+              !!route.params.discipline.parentTitle
             )
           }
           name='DisciplineSelection'
@@ -153,89 +203,68 @@ const Navigator = (): JSX.Element => {
           name='Imprint'
           component={ImprintScreen}
         />
-      </Stack.Navigator >
-    );
-  }
-  const defaultOptions = (
-    title: string,
-    Icon: ComponentType<SvgProps>,
-    navigation: NavigationProp<any>,
-    showHomeButton: boolean,
-    screen?: string
-  ): StackNavigationOptions => ({
-    headerLeft: () => (
-      <NavigationHeaderLeft
-        onPress={screen ? () => navigation.navigate(screen) :navigation.goBack}
-        // onPressIn={() => setIsPressed(true)}
-        // onPressOut={() => setIsPressed(false)}
-        activeOpacity={1}>
-        {isPressed ? (
-          <ArrowLeftCircleIconBlue width={wp('7%')} height={wp('7%')} />
-        ) : (
-          <Icon width={wp('7%')} height={wp('7%')} />
-        )}
-        <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
-      </NavigationHeaderLeft>
+      </Stack.Navigator>
     ),
-    ...(showHomeButton && {
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
-          // onPressIn={() => setIsHomeButtonPressed(true)}
-          // onPressOut={() => setIsHomeButtonPressed(false)}
-          activeOpacity={1}>
-          {isHomeButtonPressed ? (
-            <HomeCircleIconBlue width={wp('7%')} height={wp('7%')} />
-          ) : (
-            <HomeCircleIconWhite width={wp('7%')} height={wp('7%')} />
-          )}
-        </TouchableOpacity>
-      )
-    }),
-    headerTitle: '',
-    headerStyle: styles(headerHeight).header,
-    headerRightContainerStyle: styles().headerRightContainer,
-    headerLeftContainerStyle: styles().headerLeftContainer,
-    headerTitleContainerStyle: styles().headerTitleContainer
-  })
+    []
+  )
   return (
     <NavigationContainer>
-      <Tab.Navigator backBehavior= "initialRoute" screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: "#fff",
-        // lazy: false,
-        tabBarStyle: { backgroundColor: COLORS.primary }
-  }}>
-      <Tab.Screen name="home" component={stackNav} options={{
-            tabBarIcon: ({ focused }) =>  (
-            focused
-            ? <HomeIcon width={wp('10%')} height={wp('10%')} />
-            : <HomeDimIcon width={wp('10%')} height={wp('10%')} />
-        ),
-          title: "Home"
-        }} />
-      <Tab.Screen name="Favoriten" component={stackNav} options={{
-          tabBarIcon: ({ focused }) =>  (
-            focused
-            ? <StarIcon width={wp('7%')} height={wp('7%')} />
-            : <StarDimIcon width={wp('7%')} height={wp('7%')} />
-         )
-        }} />
-        <Tab.Screen name="Lexikon" component={stackNav} options={{
-          tabBarIcon: ({ focused }) =>  (
-            focused
-            ? <BookIcon width={wp('7%')} height={wp('7%')} />
-            : <BookDimIcon width={wp('7%')} height={wp('7%')} />
-         )
-        }} />
-        <Tab.Screen name="Meine vokabeln" component={stackNav}options={{
-          tabBarIcon: ({ focused }) =>  (
-            focused
-            ? <FavoriteIcon width={wp('6%')} height={wp('6%')} />
-            : <FavoriteDimIcon width={wp('6%')} height={wp('6%')} />
-         )
-        }} />
-    </Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: '#fff',
+          tabBarStyle: { backgroundColor: COLORS.primary }
+        }}>
+        <Tab.Screen
+          name='home'
+          component={stackNav}
+          options={{
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <HomeIcon width={wp('10%')} height={wp('10%')} />
+              ) : (
+                <HomeDimIcon width={wp('10%')} height={wp('10%')} />
+              ),
+            title: 'Home'
+          }}
+        />
+        <Tab.Screen
+          name='Favoriten'
+          component={stackNav}
+          options={{
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <StarIcon width={wp('7%')} height={wp('7%')} />
+              ) : (
+                <StarDimIcon width={wp('7%')} height={wp('7%')} />
+              )
+          }}
+        />
+        <Tab.Screen
+          name='Lexikon'
+          component={stackNav}
+          options={{
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <BookIcon width={wp('7%')} height={wp('7%')} />
+              ) : (
+                <BookDimIcon width={wp('7%')} height={wp('7%')} />
+              )
+          }}
+        />
+        <Tab.Screen
+          name='Meine vokabeln'
+          component={stackNav}
+          options={{
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <FavoriteIcon width={wp('6%')} height={wp('6%')} />
+              ) : (
+                <FavoriteDimIcon width={wp('6%')} height={wp('6%')} />
+              )
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   )
 }
