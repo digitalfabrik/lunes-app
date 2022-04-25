@@ -49,6 +49,7 @@ export interface ConfirmationModalProps {
   testID?: string
 }
 
+// TODO Further adjustments gonna be done with LUN-312
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
   const {
     visible,

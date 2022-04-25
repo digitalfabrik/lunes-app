@@ -112,7 +112,7 @@
   "feedback": {
     "sendFeedback": "Senden",
     "question": "Hast du Feedback oder einen Wortvorschlag?",
-    "mailPlaceholder" : "Deine Email für Fragen(optional)",
+    "mailPlaceholder": "Deine Email für Fragen(optional)",
     "feedbackPlaceholder": "Teile dein Feedback hier"
   },
   "general": {
