@@ -26,8 +26,8 @@ const HeaderRightContainer = styled.View`
   justify-content: space-between;
 `
 
-const StyledMenuIcon = styled(MenuIcon)`
-  margin-left: ${props => props.theme.spacings.md};
+const StyledContent = styled(ContentSecondary)`
+  margin-right: ${props => props.theme.spacings.sm};
 `
 
 interface ExerciseHeaderProps {
@@ -53,14 +53,14 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         ),
         headerRight: () => (
           <HeaderRightContainer>
-            <ContentSecondary>{progressText}</ContentSecondary>
-            <KebabMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
+            <StyledContent>{progressText}</StyledContent>
+            <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}>
               <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
             </KebabMenu>
           </HeaderRightContainer>
         ),
         headerRightContainerStyle: {
-          paddingHorizontal: wp('4%'),
+          paddingHorizontal: wp('2%'),
           maxWidth: wp('25%')
         }
       }),

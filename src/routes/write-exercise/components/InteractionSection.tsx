@@ -16,15 +16,7 @@ import MissingArticlePopover from './MissingArticlePopover'
 
 const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   width: 80%;
-`
-const StyledTextInput = styled.TextInput`
-  flex: 1;
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.primary};
-  width: 90%;
+  margin-bottom: ${props => props.theme.spacings.md};
 `
 
 const Speaker = styled.View`
@@ -143,7 +135,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
           onSubmitEditing={checkEntry}
           clearable={retryAllowed && input !== ''}
         />
-        <StyledTextInput />
       </TextInputContainer>
 
       {isAnswerSubmitted && (

@@ -27,16 +27,17 @@ const ClearContainer = styled.TouchableOpacity`
 
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
   border: 1px solid ${props => props.borderColor};
-  padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+  padding-left: ${props => props.theme.spacings.sm};
+  padding-right: ${props => props.theme.spacings.xs};
   border-radius: 2px;
   height: ${props => (props.lines > 1 ? props.lines * LINE_HEIGHT : MIN_HEIGHT)}px;
   flex-direction: row;
   margin-bottom: ${props => (props.showErrorValidation ? 0 : props.theme.spacings.xs)};
 `
 
-const IconContainer = styled.View`
-  padding-right: ${props => props.theme.spacings.xxs};
+const IconContainer = styled.View<{ multiLine: boolean }>`
+  align-self: ${props => (props.multiLine ? 'flex-start' : 'center')};
+  padding: ${props => props.theme.spacings.xs} 0;
 `
 
 const ErrorContainer = styled.View`
@@ -82,6 +83,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const hasErrorMessage = !!(errorMessage && errorMessage.length > 0)
   const showErrorValidation = errorMessage !== undefined
+  const multiLine = lines > 1
 
   return (
     <>
@@ -96,12 +98,13 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          multiline={lines > 1}
+          multiline={multiLine}
           placeholderTextColor={theme.colors.placeholder}
           editable={editable}
           onSubmitEditing={onSubmitEditing}
+          textAlignVertical={multiLine ? 'top' : 'center'}
         />
-        <IconContainer>
+        <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')}>
               <CloseIcon width={wp('6%')} height={wp('6%')} />
