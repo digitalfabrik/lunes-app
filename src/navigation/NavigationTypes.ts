@@ -9,19 +9,17 @@ export interface DocumentResult {
   numberOfTries: number
 }
 
-interface ExerciseParams {
+export interface ExerciseParams {
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
 }
 
-export type ExercisesParams =
-  | {
-      documents: null
-      discipline: Discipline
-      disciplineTitle: string
-    }
-  | ExerciseParams
+export interface ExercisesParams {
+  documents: null
+  discipline: Discipline
+  disciplineTitle: string
+}
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey

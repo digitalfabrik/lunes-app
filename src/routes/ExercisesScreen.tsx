@@ -11,7 +11,7 @@ import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { loadDocuments } from '../hooks/useLoadDocuments'
-import { ExercisesParams, RoutesParams } from '../navigation/NavigationTypes'
+import { ExerciseParams, ExercisesParams, RoutesParams } from '../navigation/NavigationTypes'
 import { wordsDescription } from '../services/helpers'
 
 const Root = styled.View`
@@ -29,7 +29,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const { params } = route
   const { disciplineTitle } = params
 
-  const load = useCallback(async (params: ExercisesParams) => {
+  const load = useCallback(async (params: ExercisesParams | ExerciseParams) => {
     if (params.documents) {
       return params.documents
     }
