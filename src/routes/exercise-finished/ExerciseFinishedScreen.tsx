@@ -57,20 +57,20 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
 
+  const exerciseUnlocked = false // TODO: LUN-131 logic
+
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
     const correct = correctResults.length / results.length
-    
-    if (exerciseUnlocked) { 
+
+    if (exerciseUnlocked) {
       setMessage(labels.results.unlockedExercise)
+    } else if (correct > 2 / 3) {
+      setMessage(labels.results.feedbackGood)
+    } else if (correct > 1 / 3) {
+      setMessage(labels.results.feedbackMedium)
     } else {
-      if (correct > 2 / 3) {
-        setMessage(labels.results.feedbackGood)
-      } else if (correct > 1 / 3) {
-        setMessage(labels.results.feedbackMedium)
-      } else {
-        setMessage(labels.results.feedbackBad)
-      }
+      setMessage(labels.results.feedbackBad)
     }
   }, [results])
 
@@ -90,7 +90,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       }
     })
   }
-  const exerciseUnlocked = false // TODO: LUN-131 logic
+
   return (
     <Root>
       <UpperSection exerciseUnlocked={exerciseUnlocked}>

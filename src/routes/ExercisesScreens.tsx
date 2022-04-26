@@ -51,7 +51,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   }
 
   const Item = ({ item }: { item: Exercise }): JSX.Element | null => (
-    <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)} arrowDisabled={(item.level<=currentLevel)?  false:true}>
+    <ListItem
+      title={item.title}
+      description={item.description}
+      onPress={() => handleNavigation(item)}
+      arrowDisabled={!(item.level <= currentLevel)}>
       <Trophy level={item.level} />
     </ListItem>
   )
@@ -73,7 +77,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         }}>
         <SmallMessage>
           {labels.exercises.lockedExerciseModal.descriptionPart1}
-          <ContentTextBold> {(EXERCISES[currentLevel] !== undefined)?EXERCISES[currentLevel].title:EXERCISES[0].title} </ContentTextBold>
+          <ContentTextBold>
+            {' '}
+            {EXERCISES[currentLevel] !== undefined ? EXERCISES[currentLevel].title : EXERCISES[0].title}{' '}
+          </ContentTextBold>
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
       </ConfirmationModal>

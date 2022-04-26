@@ -76,7 +76,7 @@ interface ListItemProps {
   children?: ReactElement
   onPress: () => void
   rightChildren?: ReactElement
-  arrowDisabled?:boolean
+  arrowDisabled?: boolean
 }
 
 const ListItem = ({
@@ -124,10 +124,10 @@ const ListItem = ({
   const iconToRender = icon && (
     <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
   )
-
+  const condition = arrowDisabled ? theme.colors.disabled : theme.colors.primary
   const rightChildrenToRender = rightChildren ?? (
     <ChevronRight
-      fill={pressed ? theme.colors.buttonSelectedSecondary : (arrowDisabled)? theme.colors.disabled:theme.colors.primary}
+      fill={pressed ? theme.colors.buttonSelectedSecondary : condition}
       testID='arrow'
       width={wp('6%')}
       height={hp('6%')}
