@@ -54,9 +54,10 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         headerRight: () => (
           <HeaderRightContainer>
             <StyledContent>{progressText}</StyledContent>
-            <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}>
-              <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
-            </KebabMenu>
+            {/* TODO Remove comment when LUNES-269 is ready */}
+            {/* <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}> */}
+            {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
+            {/* </KebabMenu> */}
           </HeaderRightContainer>
         ),
         headerRightContainerStyle: {
