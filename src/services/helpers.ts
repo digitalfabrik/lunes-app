@@ -1,9 +1,7 @@
-import { Article, ExerciseKey } from '../constants/data'
+import { Article } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { DocumentResult } from '../navigation/NavigationTypes'
-import AsyncStorage from './AsyncStorage'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -57,13 +55,4 @@ export const shuffleArray = <T>(array: T[]): T[] => {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
-}
-
-export const saveExerciseProgress = async (
-  disciplineId: number,
-  exerciseKey: ExerciseKey,
-  documentsWithResults: DocumentResult[]
-): Promise<void> => {
-  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
-  await AsyncStorage.setExerciseProgress({ disciplineId, exerciseKey, score })
 }

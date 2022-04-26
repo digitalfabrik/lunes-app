@@ -5,7 +5,7 @@ import React from 'react'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/helpers'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -15,9 +15,10 @@ jest.useFakeTimers()
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn(it => it),
-  saveExerciseProgress: jest.fn().mockImplementation(() => Promise.resolve())
+  shuffleArray: jest.fn(it => it)
 }))
+
+jest.mock('../../../services/AsyncStorage')
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text

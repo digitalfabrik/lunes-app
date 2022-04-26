@@ -12,8 +12,8 @@ import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { moveToEnd, saveExerciseProgress, shuffleArray } from '../../../services/helpers'
-import { reportError } from '../../../services/sentry'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ExerciseContainer = styled.View`
@@ -78,21 +78,19 @@ const ChoiceExerciseScreen = ({
     setResults(moveToEnd(results, currentWord))
   }, [results, currentWord])
 
-  const onExerciseFinished = (results: DocumentResult[]): void => {
-    saveExerciseProgress(disciplineId, exerciseKey, results)
-      .then(() => {
-        navigation.navigate('ExerciseFinished', {
-          documents,
-          disciplineId,
-          disciplineTitle,
-          exercise: exerciseKey,
-          results,
-          closeExerciseAction: route.params.closeExerciseAction
-        })
-
-        initializeExercise(true)
-      })
-      .catch(reportError)
+  const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
+    if (disciplineId) {
+      await saveExerciseProgress(disciplineId, exerciseKey, results)
+    }
+    navigation.navigate('ExerciseFinished', {
+      documents,
+      disciplineId,
+      disciplineTitle,
+      exercise: exerciseKey,
+      results,
+      closeExerciseAction: route.params.closeExerciseAction
+    })
+    initializeExercise(true)
   }
   const count = documents.length
 
@@ -116,11 +114,11 @@ const ChoiceExerciseScreen = ({
     }, CORRECT_ANSWER_DELAY)
   }
 
-  const onFinishWord = (): void => {
+  const onFinishWord = async (): Promise<void> => {
     const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
 
     if (exerciseFinished) {
-      onExerciseFinished(results)
+      await onExerciseFinished(results)
     } else if (needsToBeRepeated) {
       tryLater()
     } else {
