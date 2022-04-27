@@ -3,8 +3,6 @@ import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
 
-jest.mock('../../hooks/useLoadDisciplines')
-
 describe('helpers', () => {
   it('should calculate and save exercise progress correctly', async () => {
     const documents = new DocumentBuilder(2).build()

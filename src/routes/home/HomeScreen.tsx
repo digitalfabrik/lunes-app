@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
         const documents = await loadDocumentsById(disciplineId)
         navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
           disciplineId,
-          disciplineTitle: '',
+          disciplineTitle: '', // TODO LUN-320
           documents,
           closeExerciseAction: CommonActions.navigate('Home')
         })
