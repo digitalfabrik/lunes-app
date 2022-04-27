@@ -12,6 +12,7 @@ import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -28,6 +29,7 @@ const ButtonContainer = styled.View`
 
 interface SingleChoiceExerciseProps {
   documents: Document[]
+  disciplineId: number
   disciplineTitle: string
   documentToAnswers: (document: Document) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -39,6 +41,7 @@ const CORRECT_ANSWER_DELAY = 700
 
 const ChoiceExerciseScreen = ({
   documents,
+  disciplineId,
   disciplineTitle,
   documentToAnswers,
   navigation,
@@ -75,15 +78,18 @@ const ChoiceExerciseScreen = ({
     setResults(moveToEnd(results, currentWord))
   }, [results, currentWord])
 
-  const onExerciseFinished = (results: DocumentResult[]): void => {
+  const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
+    if (disciplineId) {
+      await saveExerciseProgress(disciplineId, exerciseKey, results)
+    }
     navigation.navigate('ExerciseFinished', {
       documents,
+      disciplineId,
       disciplineTitle,
       exercise: exerciseKey,
       results,
       closeExerciseAction: route.params.closeExerciseAction
     })
-
     initializeExercise(true)
   }
   const count = documents.length
@@ -108,11 +114,11 @@ const ChoiceExerciseScreen = ({
     }, CORRECT_ANSWER_DELAY)
   }
 
-  const onFinishWord = (): void => {
+  const onFinishWord = async (): Promise<void> => {
     const exerciseFinished = currentWord + 1 >= count && !needsToBeRepeated
 
     if (exerciseFinished) {
-      onExerciseFinished(results)
+      await onExerciseFinished(results)
     } else if (needsToBeRepeated) {
       tryLater()
     } else {

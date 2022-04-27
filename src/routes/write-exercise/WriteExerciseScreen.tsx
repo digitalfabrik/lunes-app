@@ -13,6 +13,7 @@ import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from 
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
@@ -31,7 +32,7 @@ export interface WriteExerciseScreenProps {
 }
 
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
-  const { documents, disciplineTitle, closeExerciseAction } = route.params
+  const { documents, disciplineTitle, closeExerciseAction, disciplineId } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
@@ -68,23 +69,26 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
-  const finishExercise = (): void => {
+  const finishExercise = async (): Promise<void> => {
+    if (disciplineId) {
+      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, documentsWithResults)
+    }
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineTitle,
+      disciplineId,
       results: documentsWithResults,
       exercise: ExerciseKeys.writeExercise,
       closeExerciseAction
     })
-
     initializeExercise(true)
   }
 
-  const continueExercise = (): void => {
+  const continueExercise = async (): Promise<void> => {
     setIsAnswerSubmitted(false)
 
     if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
-      finishExercise()
+      await finishExercise()
     } else if (needsToBeRepeated) {
       tryLater()
     } else {
