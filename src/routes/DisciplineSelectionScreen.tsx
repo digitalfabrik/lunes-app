@@ -35,7 +35,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       navigation.navigate('Exercises', {
         discipline: selectedItem,
         disciplineTitle: discipline.title,
-        disciplineId: discipline.id,
+        disciplineId: selectedItem.id,
         documents: null
       })
     } else {
