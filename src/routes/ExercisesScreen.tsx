@@ -1,6 +1,6 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -9,9 +9,8 @@ import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import Trophy from '../components/Trophy'
 import { EXERCISES, Exercise } from '../constants/data'
-import useLoadAsync from '../hooks/useLoadAsync'
-import { loadDocuments } from '../hooks/useLoadDocuments'
-import { ExerciseParams, ExercisesParams, RoutesParams } from '../navigation/NavigationTypes'
+import useLoadDocuments from '../hooks/useLoadDocuments'
+import { RoutesParams } from '../navigation/NavigationTypes'
 import { wordsDescription } from '../services/helpers'
 
 const Root = styled.View`
@@ -26,16 +25,10 @@ interface ExercisesScreenProps {
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { params } = route
-  const { disciplineTitle } = params
+  const { discipline } = route.params
+  const { title: disciplineTitle } = discipline
 
-  const load = useCallback(async (params: ExercisesParams | ExerciseParams) => {
-    if (params.documents) {
-      return params.documents
-    }
-    return loadDocuments(params.discipline)
-  }, [])
-  const { data: documents, error, loading, refresh } = useLoadAsync(load, params)
+  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
 
   const Header = documents && <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
 

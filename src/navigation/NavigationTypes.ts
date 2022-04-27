@@ -9,16 +9,14 @@ export interface DocumentResult {
   numberOfTries: number
 }
 
-export interface ExerciseParams {
+interface ExerciseParams {
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
 }
 
 export interface ExercisesParams {
-  documents: null
   discipline: Discipline
-  disciplineTitle: string
 }
 
 type ResultParams = ExerciseParams & {
