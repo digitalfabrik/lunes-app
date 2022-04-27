@@ -36,4 +36,10 @@ export const loadDocuments = async (discipline: Discipline): Promise<Document[]>
 
 const useLoadDocuments = (discipline: Discipline): Return<Document[]> => useLoadAsync(loadDocuments, discipline)
 
+export const loadDocumentsById = async (disciplineId: number): Promise<Document[]> => {
+  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
+  const response = await getFromEndpoint<DocumentFromServer[]>(url)
+  return formatServerResponse(response)
+}
+
 export default useLoadDocuments

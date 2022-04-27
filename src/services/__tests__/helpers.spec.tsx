@@ -1,8 +1,9 @@
 import { SIMPLE_RESULTS } from '../../constants/data'
 import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
-import AsyncStorage from '../AsyncStorage'
-import { saveExerciseProgress } from '../helpers'
+import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
+
+jest.mock('../../hooks/useLoadDisciplines')
 
 describe('helpers', () => {
   it('should calculate and save exercise progress correctly', async () => {
@@ -21,7 +22,7 @@ describe('helpers', () => {
     ]
     await saveExerciseProgress(1, 1, documentsWithResults)
     await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual([
-      { disciplineId: 1, exerciseKey: 1, score: 0.5 }
+      { disciplineId: 1, exerciseProgress: [{ exerciseKey: 1, score: 0.5 }] }
     ])
   })
 })

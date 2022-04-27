@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseProgress } from '../constants/data'
+import { ExerciseKey, Progress } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
+import { DocumentResult } from '../navigation/NavigationTypes'
 
-const exerciseProgress = 'exerciseProgress'
+const progressKey = 'progress'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
@@ -59,32 +60,34 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
-export const getExerciseProgress = async (): Promise<Array<ExerciseProgress>> => {
-  const progress = await AsyncStorage.getItem(exerciseProgress)
+export const getExerciseProgress = async (): Promise<Progress[]> => {
+  const progress = await AsyncStorage.getItem(progressKey)
   return progress ? JSON.parse(progress) : []
 }
 
-export const setExerciseProgress = async (progress: ExerciseProgress): Promise<void> => {
+const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKey, score: number): Promise<void> => {
   const savedProgress = await getExerciseProgress()
-  const index = savedProgress.findIndex(
-    item => item.disciplineId === progress.disciplineId && item.exerciseKey === progress.exerciseKey
-  )
-  if (index !== -1 && savedProgress[index].score >= progress.score) {
-    return
+  const disciplineProgress = savedProgress.find(item => item.disciplineId === disciplineId)
+  if (disciplineProgress) {
+    const indexOfCurrent = disciplineProgress.exerciseProgress.findIndex(item => item.exerciseKey === exerciseKey)
+    if (indexOfCurrent === -1) {
+      disciplineProgress.exerciseProgress.push({ exerciseKey, score })
+    } else if (disciplineProgress.exerciseProgress[indexOfCurrent].score < score) {
+      disciplineProgress.exerciseProgress[indexOfCurrent] = { exerciseKey, score }
+    }
+  } else {
+    savedProgress.push({ disciplineId, exerciseProgress: [{ exerciseKey, score }] })
   }
-  if (index !== -1) {
-    savedProgress.splice(index, 1)
-  }
-  savedProgress.push(progress)
-
-  const progressWithoutDuplicates = [
-    ...new Map(savedProgress.map(v => [JSON.stringify([v.disciplineId, v.exerciseKey]), v])).values()
-  ]
-  await AsyncStorage.setItem(exerciseProgress, JSON.stringify(progressWithoutDuplicates))
+  await AsyncStorage.setItem(progressKey, JSON.stringify(savedProgress))
 }
 
-export const clearExerciseProgress = async (): Promise<void> => {
-  await AsyncStorage.removeItem(exerciseProgress)
+export const saveExerciseProgress = async (
+  disciplineId: number,
+  exerciseKey: ExerciseKey,
+  documentsWithResults: DocumentResult[]
+): Promise<void> => {
+  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
+  await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
 export const getProgress = async (profession: Discipline): Promise<number> => {
@@ -100,8 +103,8 @@ export default {
   getSelectedProfessions,
   pushSelectedProfession,
   removeSelectedProfession,
+  saveExerciseProgress,
   setExerciseProgress,
   getExerciseProgress,
-  clearExerciseProgress,
   getProgress
 }

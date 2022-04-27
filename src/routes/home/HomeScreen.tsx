@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
@@ -7,11 +7,15 @@ import styled from 'styled-components/native'
 import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
+import { EXERCISES } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
+import { loadDocumentsById } from '../../hooks/useLoadDocuments'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getNextExercise } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import CustomDiscipline from './components/CustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
@@ -56,6 +60,21 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
+  const navigateToNextExercise = async (item: Discipline): Promise<void> => {
+    getNextExercise(item)
+      .then(async nextExerciseData => {
+        const [disciplineId, exerciseKey] = nextExerciseData
+        const documents = await loadDocumentsById(disciplineId)
+        navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
+          disciplineId,
+          disciplineTitle: '',
+          documents,
+          closeExerciseAction: CommonActions.navigate('Home')
+        })
+      })
+      .catch(reportError)
+  }
+
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
   }
@@ -70,7 +89,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       discipline={profession}
       showProgress
       onPress={navigateToDiscipline}
-      navigateToNextExercise={navigateToDiscipline} // TODO LUN-290 add progress
+      navigateToNextExercise={navigateToNextExercise}
     />
   ))
 

@@ -1,8 +1,8 @@
-import { Article, ExerciseKey } from '../constants/data'
+import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { DocumentResult } from '../navigation/NavigationTypes'
+import { loadDisciplines } from '../hooks/useLoadDisciplines'
 import AsyncStorage from './AsyncStorage'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
@@ -59,11 +59,28 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-export const saveExerciseProgress = async (
-  disciplineId: number,
-  exerciseKey: ExerciseKey,
-  documentsWithResults: DocumentResult[]
-): Promise<void> => {
-  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
-  await AsyncStorage.setExerciseProgress({ disciplineId, exerciseKey, score })
+export const getNextExercise = async (profession: Discipline): Promise<[number, number]> => {
+  const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
+  if (disciplines.length <= 0) {
+    throw new Error(`No Disciplines for id ${profession.id}`)
+  }
+  const progress = await AsyncStorage.getExerciseProgress()
+  const doneExercisesOfLeafDiscipline = (disciplineId: number): number => {
+    const progressOfDiscipline = progress.find(item => item.disciplineId === disciplineId)
+    return progressOfDiscipline ? progressOfDiscipline.exerciseProgress.length : 0
+  }
+  const result = disciplines.find(discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress)
+  if (!result) {
+    return [disciplines[0].id, exercisesWithoutProgress] // TODO LUN-319 show success that every exercise is done
+  }
+  const disciplineProgress = progress.find(item => item.disciplineId === result.id)
+  if (!disciplineProgress) {
+    return [result.id, exercisesWithoutProgress]
+  }
+  const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
+    exercise =>
+      disciplineProgress.exerciseProgress.find(exerciseProgress => exerciseProgress.exerciseKey === exercise.key) ===
+      undefined
+  )
+  return [result.id, nextExerciseKey ? nextExerciseKey.key : exercisesWithoutProgress]
 }

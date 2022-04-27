@@ -34,6 +34,12 @@ const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipli
     needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
   }))
 
+export const loadDiscipline = async (disciplineId: number): Promise<Discipline> => {
+  const url = `${ENDPOINTS.discipline}/${disciplineId}`
+  const response = await getFromEndpoint<ServerResponse[]>(url)
+  return formatServerResponse(response, null)[0]
+}
+
 export const loadDisciplines = async (parent: Discipline | null): Promise<Discipline[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
   const response = await getFromEndpoint<ServerResponse[]>(url, parent?.apiKey)

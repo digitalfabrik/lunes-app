@@ -25,11 +25,11 @@ describe('ManageSelectionsScreen', () => {
 
   it('should show and delete selected professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
-    await AsyncStorage.pushSelectedProfession(mockDisciplines[0])
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
+    await AsyncStorage.pushSelectedProfession(mockDisciplines()[0])
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0]]))
 
     const { getByText, getByTestId } = renderScreen()
-    expect(getByText(mockDisciplines[0].title)).toBeDefined()
+    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     await waitFor(async () => {
