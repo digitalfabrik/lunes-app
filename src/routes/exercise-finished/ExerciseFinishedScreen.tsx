@@ -56,13 +56,13 @@ interface Props {
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, discipline, results } = route.params.result
   const [message, setMessage] = React.useState<string>('')
-
+  // eslint-disable-next-line
   const exerciseUnlocked = false // TODO: LUN-131 logic
 
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
     const correct = correctResults.length / results.length
-
+    // eslint-disable-next-line
     if (exerciseUnlocked) {
       setMessage(labels.results.unlockedExercise)
     } else if (correct > 2 / 3) {
@@ -95,18 +95,23 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     <Root>
       <UpperSection exerciseUnlocked={exerciseUnlocked}>
         <Icon onPress={checkResults}>
-          {exerciseUnlocked ? (
-            <CloseIcon width={wp('6%')} height={wp('6%')} />
-          ) : (
-            <CloseIconWhite width={wp('6%')} height={wp('6%')} />
-          )}
+          {
+            // eslint-disable-next-line
+            exerciseUnlocked ? (
+              <CloseIcon width={wp('6%')} height={wp('6%')} />
+            ) : (
+              <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+            )
+          }
         </Icon>
-
-        {exerciseUnlocked ? (
-          <OpenLockIcon width={wp('8%')} height={wp('8%')} />
-        ) : (
-          <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
-        )}
+        {
+          // eslint-disable-next-line
+          exerciseUnlocked ? (
+            <OpenLockIcon width={wp('8%')} height={wp('8%')} />
+          ) : (
+            <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
+          )
+        }
         <MessageContainer>
           <Message exerciseUnlocked={exerciseUnlocked}>{message}</Message>
         </MessageContainer>

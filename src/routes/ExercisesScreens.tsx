@@ -79,7 +79,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           {labels.exercises.lockedExerciseModal.descriptionPart1}
           <ContentTextBold>
             {' '}
-            {EXERCISES[currentLevel] !== undefined ? EXERCISES[currentLevel].title : EXERCISES[0].title}{' '}
+            {
+              // eslint-disable-next-line
+              EXERCISES[currentLevel] !== undefined ? EXERCISES[currentLevel].title : EXERCISES[0].title
+            }{' '}
           </ContentTextBold>
           {labels.exercises.lockedExerciseModal.descriptionPart2}
         </SmallMessage>
