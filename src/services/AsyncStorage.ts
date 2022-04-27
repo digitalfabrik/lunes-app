@@ -60,24 +60,15 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
-export const getExerciseProgress = async (): Promise<Progress[]> => {
+export const getExerciseProgress = async (): Promise<Progress> => {
   const progress = await AsyncStorage.getItem(progressKey)
-  return progress ? JSON.parse(progress) : []
+  return progress ? JSON.parse(progress) : {}
 }
 
 const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKey, score: number): Promise<void> => {
   const savedProgress = await getExerciseProgress()
-  const disciplineProgress = savedProgress.find(item => item.disciplineId === disciplineId)
-  if (disciplineProgress) {
-    const indexOfCurrent = disciplineProgress.exerciseProgress.findIndex(item => item.exerciseKey === exerciseKey)
-    if (indexOfCurrent === -1) {
-      disciplineProgress.exerciseProgress.push({ exerciseKey, score })
-    } else if (disciplineProgress.exerciseProgress[indexOfCurrent].score < score) {
-      disciplineProgress.exerciseProgress[indexOfCurrent] = { exerciseKey, score }
-    }
-  } else {
-    savedProgress.push({ disciplineId, exerciseProgress: [{ exerciseKey, score }] })
-  }
+  const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
+  savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
   await AsyncStorage.setItem(progressKey, JSON.stringify(savedProgress))
 }
 

@@ -51,12 +51,9 @@ describe('AsyncStorage', () => {
     })
 
     it('should save progress for not yet done discipline', async () => {
-      const progressOneExercise: Progress[] = [
-        {
-          disciplineId: 1,
-          exerciseProgress: [{ exerciseKey: ExerciseKeys.wordChoiceExercise, score: 0.5 }]
-        }
-      ]
+      const progressOneExercise: Progress = {
+        1: { [ExerciseKeys.wordChoiceExercise]: 0.5 }
+      }
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
       await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
     })
@@ -65,24 +62,21 @@ describe('AsyncStorage', () => {
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
       const progress = await AsyncStorage.getExerciseProgress()
-      const exerciseProgress = progress.find(item => item.disciplineId === 1)!.exerciseProgress
-      expect(exerciseProgress).toHaveLength(2)
-      expect(exerciseProgress[0]).toStrictEqual({ exerciseKey: ExerciseKeys.wordChoiceExercise, score: 0.5 })
-      expect(exerciseProgress[1]).toStrictEqual({ exerciseKey: ExerciseKeys.writeExercise, score: 0.6 })
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
     })
 
     it('should save progress for done exercise with improvement', async () => {
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
       const progress = await AsyncStorage.getExerciseProgress()
-      expect(progress).toHaveLength(1)
-      expect(progress.find(item => item.disciplineId === 1)?.exerciseProgress[0].score).toBe(0.8)
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
     })
 
     it('should not save progress for done exercise without improvement', async () => {
       await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-      await expect(AsyncStorage.getExerciseProgress()).resolves.toHaveLength(1)
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
+      const progress = await AsyncStorage.getExerciseProgress()
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
     })
   })
 })
