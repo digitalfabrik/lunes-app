@@ -6,9 +6,11 @@ import Button from '../../../components/Button'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Discipline } from '../../../constants/endpoints'
+import { Discipline, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
+import useLoadDocuments from '../../../hooks/useLoadDocuments'
+import useReadNextExercise from '../../../hooks/useReadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel } from '../../../services/helpers'
 import Card from './Card'
@@ -37,7 +39,12 @@ interface PropsType {
   discipline: Discipline
   showProgress: boolean
   onPress: (profession: Discipline) => void
-  navigateToNextExercise: (profession: Discipline) => void
+  navigateToNextExercise: (
+    disciplineId: number,
+    exerciseKey: number,
+    disciplineTitle: string,
+    documents: Document[]
+  ) => void
 }
 
 const DisciplineCard = (props: PropsType): ReactElement => {
@@ -45,8 +52,13 @@ const DisciplineCard = (props: PropsType): ReactElement => {
   const { data: progress } = useReadProgress(discipline)
   const moduleAlreadyStarted = progress !== null && progress !== 0
 
+  const { data: documents } = useLoadDocuments({ disciplineId: discipline.id })
+  const { data: nextExercise } = useReadNextExercise(discipline)
+
   const navigate = () => {
-    navigateToNextExercise(discipline)
+    if (documents !== null && nextExercise !== null) {
+      navigateToNextExercise(nextExercise.disciplineId, nextExercise.exerciseKey, '', documents) // TODO set discipline title correct LUN-320
+    }
   }
 
   return (

@@ -8,14 +8,11 @@ import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
+import { Discipline, Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
-import { loadDocuments } from '../../hooks/useLoadDocuments'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getNextExercise } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import CustomDiscipline from './components/CustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
@@ -60,20 +57,19 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
-  const navigateToNextExercise = (item: Discipline): Promise<void> =>
-    getNextExercise(item)
-      .then(async nextExerciseData => {
-        const { disciplineId, exerciseKey } = nextExerciseData
-        return loadDocuments({ disciplineId }).then(documents => {
-          navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
-            disciplineId,
-            disciplineTitle: '', // TODO LUN-320
-            documents,
-            closeExerciseAction: CommonActions.navigate('Home')
-          })
-        })
-      })
-      .catch(reportError)
+  const navigateToNextExercise = (
+    disciplineId: number,
+    exerciseKey: number,
+    disciplineTitle: string,
+    documents: Document[]
+  ): void => {
+    navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
+      disciplineId,
+      disciplineTitle,
+      documents,
+      closeExerciseAction: CommonActions.navigate('Home')
+    })
+  }
 
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
