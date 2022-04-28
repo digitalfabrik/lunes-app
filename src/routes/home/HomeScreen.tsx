@@ -10,7 +10,7 @@ import { Heading } from '../../components/text/Heading'
 import { EXERCISES } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
-import { loadDocumentsById } from '../../hooks/useLoadDocuments'
+import { loadDocuments } from '../../hooks/useLoadDocuments'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -60,20 +60,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
-  const navigateToNextExercise = async (item: Discipline): Promise<void> => {
+  const navigateToNextExercise = (item: Discipline): Promise<void> =>
     getNextExercise(item)
       .then(async nextExerciseData => {
-        const [disciplineId, exerciseKey] = nextExerciseData
-        const documents = await loadDocumentsById(disciplineId)
-        navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
-          disciplineId,
-          disciplineTitle: '', // TODO LUN-320
-          documents,
-          closeExerciseAction: CommonActions.navigate('Home')
+        const { disciplineId, exerciseKey } = nextExerciseData
+        return loadDocuments({ disciplineId }).then(documents => {
+          navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
+            disciplineId,
+            disciplineTitle: '', // TODO LUN-320
+            documents,
+            closeExerciseAction: CommonActions.navigate('Home')
+          })
         })
       })
       .catch(reportError)
-  }
 
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')

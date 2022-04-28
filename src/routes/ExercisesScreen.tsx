@@ -33,7 +33,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     if (params.documents) {
       return params.documents
     }
-    return loadDocuments(params.discipline)
+    return loadDocuments({ disciplineId: params.discipline.id, apiKey: params.discipline.apiKey })
   }, [])
   const { data: documents, error, loading, refresh } = useLoadAsync(load, params)
 

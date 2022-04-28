@@ -59,28 +59,30 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-export const getNextExercise = async (profession: Discipline): Promise<[number, number]> => {
+export const getNextExercise = async (
+  profession: Discipline
+): Promise<{ disciplineId: number; exerciseKey: number }> => {
   const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const doneExercisesOfLeafDiscipline = (disciplineId: number): number => {
-    const progressOfDiscipline = progress.find(item => item.disciplineId === disciplineId)
-    return progressOfDiscipline ? progressOfDiscipline.exerciseProgress.length : 0
+    const progressOfDiscipline = progress[disciplineId]
+    return progressOfDiscipline
+      ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
+      : 0
   }
   const result = disciplines.find(discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress)
   if (!result) {
-    return [disciplines[0].id, exercisesWithoutProgress] // TODO LUN-319 show success that every exercise is done
+    return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
   }
-  const disciplineProgress = progress.find(item => item.disciplineId === result.id)
+  const disciplineProgress = progress[result.id]
   if (!disciplineProgress) {
-    return [result.id, exercisesWithoutProgress]
+    return { disciplineId: result.id, exerciseKey: exercisesWithoutProgress }
   }
   const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
-    exercise =>
-      disciplineProgress.exerciseProgress.find(exerciseProgress => exerciseProgress.exerciseKey === exercise.key) ===
-      undefined
+    exercise => disciplineProgress[exercise.key] === undefined
   )
-  return [result.id, nextExerciseKey ? nextExerciseKey.key : exercisesWithoutProgress]
+  return { disciplineId: result.id, exerciseKey: nextExerciseKey ? nextExerciseKey.key : exercisesWithoutProgress }
 }
