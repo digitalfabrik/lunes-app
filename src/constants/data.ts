@@ -55,14 +55,8 @@ export const EXERCISES: Exercise[] = [
 export const exercisesWithoutProgress = 1
 export const exercisesWithProgress = EXERCISES.length - exercisesWithoutProgress
 
-export interface ExerciseProgress {
-  exerciseKey: ExerciseKey
-  score: number
-}
-
 export interface Progress {
-  disciplineId: number
-  exerciseProgress: ExerciseProgress[]
+  [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
 
 export const BUTTONS_THEME = {
