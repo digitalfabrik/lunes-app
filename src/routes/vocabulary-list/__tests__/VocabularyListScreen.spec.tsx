@@ -45,6 +45,7 @@ describe('VocabularyListScreen', () => {
     name: 'VocabularyList',
     params: {
       documents,
+      disciplineId: 1,
       disciplineTitle: 'My discipline title',
       closeExerciseAction: CommonActions.goBack()
     }

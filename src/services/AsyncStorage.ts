@@ -1,6 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import { ExerciseKey, Progress } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
+import { DocumentResult } from '../navigation/NavigationTypes'
+
+const progressKey = 'progress'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
 export const getSelectedProfessions = async (): Promise<Discipline[] | null> => {
@@ -56,6 +60,27 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
+export const getExerciseProgress = async (): Promise<Progress> => {
+  const progress = await AsyncStorage.getItem(progressKey)
+  return progress ? JSON.parse(progress) : {}
+}
+
+const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKey, score: number): Promise<void> => {
+  const savedProgress = await getExerciseProgress()
+  const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
+  savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
+  await AsyncStorage.setItem(progressKey, JSON.stringify(savedProgress))
+}
+
+export const saveExerciseProgress = async (
+  disciplineId: number,
+  exerciseKey: ExerciseKey,
+  documentsWithResults: DocumentResult[]
+): Promise<void> => {
+  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
+  await setExerciseProgress(disciplineId, exerciseKey, score)
+}
+
 export const getProgress = async (profession: Discipline): Promise<number> => {
   const progress = await AsyncStorage.getItem('progress')
   return progress === profession.title ? 1 : 1 // TODO LUN-290
@@ -69,5 +94,8 @@ export default {
   getSelectedProfessions,
   pushSelectedProfession,
   removeSelectedProfession,
+  saveExerciseProgress,
+  setExerciseProgress,
+  getExerciseProgress,
   getProgress
 }

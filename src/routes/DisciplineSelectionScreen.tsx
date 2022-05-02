@@ -33,7 +33,10 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   const handleNavigation = (selectedItem: Discipline): void => {
     if (selectedItem.isLeaf) {
       navigation.navigate('Exercises', {
-        discipline: selectedItem
+        discipline: selectedItem,
+        disciplineTitle: selectedItem.title,
+        disciplineId: selectedItem.id,
+        documents: null
       })
     } else {
       navigation.push('DisciplineSelection', {

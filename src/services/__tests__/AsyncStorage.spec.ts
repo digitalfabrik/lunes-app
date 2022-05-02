@@ -1,5 +1,10 @@
+import RNAsyncStorage from '@react-native-async-storage/async-storage'
+
+import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { DocumentResult } from '../../navigation/NavigationTypes'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import AsyncStorage from '../AsyncStorage'
+import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
   const customDisciplines = ['first', 'second', 'third']
@@ -39,5 +44,60 @@ describe('AsyncStorage', () => {
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
     await AsyncStorage.pushSelectedProfession(mockDisciplines[1])
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(2)
+  })
+
+  describe('ExerciseProgress', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+      RNAsyncStorage.clear()
+    })
+
+    it('should save progress for not yet done discipline', async () => {
+      const progressOneExercise: Progress = {
+        1: { [ExerciseKeys.wordChoiceExercise]: 0.5 }
+      }
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+      await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
+    })
+
+    it('should save progress for done discipline but not yet done exercise', async () => {
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
+      const progress = await AsyncStorage.getExerciseProgress()
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
+    })
+
+    it('should save progress for done exercise with improvement', async () => {
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
+      const progress = await AsyncStorage.getExerciseProgress()
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
+    })
+
+    it('should not save progress for done exercise without improvement', async () => {
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+      await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
+      const progress = await AsyncStorage.getExerciseProgress()
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+    })
+
+    it('should calculate and save exercise progress correctly', async () => {
+      const documents = new DocumentBuilder(2).build()
+      const documentsWithResults: DocumentResult[] = [
+        {
+          document: documents[0],
+          result: SIMPLE_RESULTS.correct,
+          numberOfTries: 1
+        },
+        {
+          document: documents[0],
+          result: SIMPLE_RESULTS.incorrect,
+          numberOfTries: 3
+        }
+      ]
+      await saveExerciseProgress(1, 1, documentsWithResults)
+      const progress = await AsyncStorage.getExerciseProgress()
+      expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+    })
   })
 })
