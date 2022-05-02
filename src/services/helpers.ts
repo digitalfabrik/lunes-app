@@ -73,16 +73,21 @@ export const getNextExercise = async (
       ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
       : 0
   }
-  const result = disciplines.find(discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress)
-  if (!result) {
+  const firstUnfinishedDiscipline = disciplines.find(
+    discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress
+  )
+  if (!firstUnfinishedDiscipline) {
     return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
   }
-  const disciplineProgress = progress[result.id]
+  const disciplineProgress = progress[firstUnfinishedDiscipline.id]
   if (!disciplineProgress) {
-    return { disciplineId: result.id, exerciseKey: exercisesWithoutProgress }
+    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: exercisesWithoutProgress }
   }
   const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
     exercise => disciplineProgress[exercise.key] === undefined
   )
-  return { disciplineId: result.id, exerciseKey: nextExerciseKey ? nextExerciseKey.key : exercisesWithoutProgress }
+  return {
+    disciplineId: firstUnfinishedDiscipline.id,
+    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
+  }
 }
