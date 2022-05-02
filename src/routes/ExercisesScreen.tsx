@@ -33,7 +33,12 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   const handleNavigation = (item: Exercise): void => {
     if (documents) {
-      const closeExerciseAction = CommonActions.navigate('Exercises', { documents, disciplineTitle, disciplineId })
+      const closeExerciseAction = CommonActions.navigate('Exercises', {
+        documents,
+        disciplineTitle,
+        disciplineId,
+        discipline
+      })
       navigation.navigate(EXERCISES[item.key].nextScreen, {
         documents,
         disciplineId,
