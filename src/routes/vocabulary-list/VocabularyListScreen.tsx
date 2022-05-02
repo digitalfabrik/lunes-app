@@ -4,6 +4,7 @@ import React, { ComponentType, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
+import FeedbackModal from '../../components/FeedbackModal'
 import Title from '../../components/Title'
 import { Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
@@ -31,6 +32,20 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
   const { documents } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
+  const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
+
+  /* TODO Remove comment when LUNES-269 is ready */
+  // useEffect(
+  //   () =>
+  //     navigation.setOptions({
+  //       headerRight: () => (
+  //         <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}>
+  //           <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+  //         </KebabMenu>
+  //       )
+  //     }),
+  //   [navigation]
+  // )
 
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem
@@ -64,6 +79,7 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
         keyExtractor={item => `${item.id}`}
         showsVerticalScrollIndicator={false}
       />
+      <FeedbackModal visible={isFeedbackModalVisible} setVisible={setIsFeedbackModalVisible} />
     </Root>
   )
 }

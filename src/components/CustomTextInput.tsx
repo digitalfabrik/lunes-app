@@ -27,7 +27,7 @@ const ClearContainer = styled.TouchableOpacity`
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
   border: 1px solid ${props => props.borderColor};
   padding-left: ${props => props.theme.spacings.sm};
-  padding-right: ${props => props.theme.spacings.xs};
+  padding-right: ${props => props.theme.spacings.sm};
   border-radius: 2px;
   height: ${props => (props.lines > 1 ? props.lines * LINE_HEIGHT : MIN_HEIGHT)}px;
   flex-direction: row;

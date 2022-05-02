@@ -112,7 +112,7 @@
   "feedback": {
     "sendFeedback": "Senden",
     "question": "Hast du Feedback oder einen Wortvorschlag?",
-    "mailPlaceholder": "Deine Email für Fragen(optional)",
+    "mailPlaceholder": "Deine Email für Fragen (optional)",
     "feedbackPlaceholder": "Teile dein Feedback hier"
   },
   "general": {
@@ -120,7 +120,6 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
-      "of": "von",
       "manageDisciplines": "Bereiche verwalten",
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"

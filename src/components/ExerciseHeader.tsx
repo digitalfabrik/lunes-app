@@ -24,7 +24,7 @@ const HeaderRightContainer = styled.View`
   justify-content: space-between;
 `
 
-const StyledContent = styled(ContentSecondary)`
+const ProgressText = styled(ContentSecondary)`
   margin-right: ${props => props.theme.spacings.sm};
 `
 
@@ -51,7 +51,7 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         ),
         headerRight: () => (
           <HeaderRightContainer>
-            <StyledContent>{progressText}</StyledContent>
+            <ProgressText>{progressText}</ProgressText>
             {/* TODO Remove comment when LUNES-269 is ready */}
             {/* <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}> */}
             {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
@@ -63,7 +63,7 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
           maxWidth: wp('25%')
         }
       }),
-    [navigation, progressText, setIsModalVisible]
+    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible]
   )
 
   useEffect(() => {

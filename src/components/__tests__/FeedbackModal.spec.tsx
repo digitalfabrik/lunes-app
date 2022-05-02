@@ -8,7 +8,7 @@ import FeedbackModal from '../FeedbackModal'
 describe('FeedbackModal', () => {
   const setVisible = jest.fn()
 
-  it('Feedback should only be conveyable if a message was set', () => {
+  it('Button should be disabled for empty message', () => {
     const { getByText, getByPlaceholderText } = render(<FeedbackModal visible setVisible={setVisible} />)
     expect(getByText(labels.feedback.sendFeedback)).toBeDisabled()
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
@@ -18,6 +18,7 @@ describe('FeedbackModal', () => {
     fireEvent.press(submitButton)
     expect(setVisible).toHaveBeenCalledWith(false)
   })
+
   it('Clears feedback text by clicking clear button', () => {
     const { getByPlaceholderText, getByTestId } = render(<FeedbackModal visible setVisible={setVisible} />)
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
@@ -25,6 +26,7 @@ describe('FeedbackModal', () => {
     fireEvent.press(getByTestId('clearInput'))
     expect(feedbackInputField.props.value).toBe('')
   })
+
   it('Clears input fields after sending feedback', () => {
     const { getByText, getByPlaceholderText } = render(<FeedbackModal visible setVisible={setVisible} />)
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
