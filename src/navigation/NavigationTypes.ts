@@ -16,8 +16,10 @@ interface ExerciseParams {
   closeExerciseAction: CommonNavigationAction
 }
 
-export interface ExercisesParams {
+export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
   discipline: Discipline
+  documents: Document[] | null
+  closeExerciseAction?: CommonNavigationAction
 }
 
 type ResultParams = ExerciseParams & {
