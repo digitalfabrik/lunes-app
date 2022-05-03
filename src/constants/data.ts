@@ -59,6 +59,11 @@ export interface Progress {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
 
+export interface NextExercise {
+  disciplineId: number
+  exerciseKey: number
+}
+
 export const BUTTONS_THEME = {
   outlined: 'outlined',
   contained: 'contained',
