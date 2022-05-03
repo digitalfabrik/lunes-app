@@ -1,4 +1,6 @@
-export const mockDisciplines = [
+import { Discipline } from '../constants/endpoints'
+
+export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] => [
   {
     id: 1,
     title: 'First Discipline',
@@ -7,7 +9,7 @@ export const mockDisciplines = [
     numberOfChildren: 1,
     isLeaf: false,
     parentTitle: null,
-    needsTrainingSetEndpoint: false
+    needsTrainingSetEndpoint
   },
   {
     id: 2,
@@ -17,6 +19,6 @@ export const mockDisciplines = [
     numberOfChildren: 1,
     isLeaf: false,
     parentTitle: null,
-    needsTrainingSetEndpoint: false
+    needsTrainingSetEndpoint
   }
 ]

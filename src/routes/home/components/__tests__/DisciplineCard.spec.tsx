@@ -18,13 +18,13 @@ describe('DisciplineCard', () => {
     mocked(useReadProgress).mockReturnValueOnce(getReturnOf(1))
     const { getByText, getByTestId } = render(
       <DisciplineCard
-        discipline={mockDisciplines[0]}
+        discipline={mockDisciplines()[0]}
         showProgress
         navigateToNextExercise={navigate}
         onPress={onPress}
       />
     )
-    expect(getByText(mockDisciplines[0].title)).toBeDefined()
+    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     expect(getByTestId('progress-circle')).toBeDefined()
     expect(getByText(`1/1`)).toBeDefined()
     expect(getByText(labels.home.progressDescription)).toBeDefined()
@@ -35,13 +35,13 @@ describe('DisciplineCard', () => {
     mocked(useReadProgress).mockReturnValueOnce(getReturnOf(0))
     const { getByText, queryByTestId } = render(
       <DisciplineCard
-        discipline={mockDisciplines[0]}
+        discipline={mockDisciplines()[0]}
         showProgress={false}
         navigateToNextExercise={navigate}
         onPress={onPress}
       />
     )
-    expect(getByText(mockDisciplines[0].title)).toBeDefined()
+    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     expect(queryByTestId('progress-circle')).toBeNull()
     expect(getByText(labels.home.start)).toBeDefined()
   })
