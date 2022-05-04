@@ -7,7 +7,7 @@ import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
-import SingleChoiceListItem from '../../../components/SingleChoiceListItem'
+import WordItem from '../../../components/WordItem'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
@@ -70,7 +70,7 @@ const VocabularyListModal = ({
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
           <ItemContainer>
-            <SingleChoiceListItem
+            <WordItem
               answer={{
                 word: documents[selectedDocumentIndex].word,
                 article: documents[selectedDocumentIndex].article

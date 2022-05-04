@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import SingleChoiceListItem from '../../../components/SingleChoiceListItem'
+import WordItem from '../../../components/WordItem'
 import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
@@ -33,7 +33,7 @@ export const SingleChoice = ({
   return (
     <StyledContainer>
       {answers.map(answer => (
-        <SingleChoiceListItem
+        <WordItem
           key={`${answer.article.id}-${answer.word}`}
           answer={answer}
           onClick={onClick}

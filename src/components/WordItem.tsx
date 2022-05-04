@@ -131,7 +131,7 @@ interface StyledListElementProps {
   delayPassed: boolean
 }
 
-const SingleChoiceListItem = ({
+const WordItem = ({
   answer,
   onClick,
   correct = false,
@@ -187,4 +187,4 @@ const SingleChoiceListItem = ({
   )
 }
 
-export default SingleChoiceListItem
+export default WordItem
