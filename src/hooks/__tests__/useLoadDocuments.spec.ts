@@ -102,12 +102,12 @@ describe('loadDocuments', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {
-    await loadDocuments(discipline)
+    await loadDocuments({ disciplineId: discipline.id })
     expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234', undefined)
   })
 
   it('should map data correctly', async () => {
-    const responseData = await loadDocuments(discipline)
+    const responseData = await loadDocuments({ disciplineId: discipline.id })
     expect(responseData).toEqual(expectedData)
   })
 })

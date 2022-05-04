@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -6,11 +6,14 @@ import Button from '../../../components/Button'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Discipline } from '../../../constants/endpoints'
+import { Discipline, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
+import { loadDocuments } from '../../../hooks/useLoadDocuments'
+import useReadNextExercise from '../../../hooks/useReadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 import Card from './Card'
 
 const ProgressContainer = styled.View`
@@ -37,16 +40,35 @@ interface PropsType {
   discipline: Discipline
   showProgress: boolean
   onPress: (profession: Discipline) => void
-  navigateToNextExercise: (profession: Discipline) => void
+  navigateToNextExercise: (
+    disciplineId: number,
+    exerciseKey: number,
+    disciplineTitle: string,
+    documents: Document[]
+  ) => void
 }
 
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { discipline, showProgress, onPress, navigateToNextExercise } = props
   const { data: progress } = useReadProgress(discipline)
   const moduleAlreadyStarted = progress !== null && progress !== 0
+  const [documents, setDocuments] = useState<Document[] | null>(null)
+  const { data: nextExercise } = useReadNextExercise(discipline)
+
+  useEffect(() => {
+    if (nextExercise) {
+      loadDocuments({ disciplineId: nextExercise.disciplineId })
+        .then(data => {
+          setDocuments(data)
+        })
+        .catch(reportError)
+    }
+  }, [nextExercise])
 
   const navigate = () => {
-    navigateToNextExercise(discipline)
+    if (documents !== null && nextExercise !== null) {
+      navigateToNextExercise(nextExercise.disciplineId, nextExercise.exerciseKey, '', documents) // TODO set discipline title correct LUN-320
+    }
   }
 
   return (
@@ -79,6 +101,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
             onPress={navigate}
             label={moduleAlreadyStarted ? labels.home.continue : labels.home.start}
             buttonTheme={BUTTONS_THEME.outlined}
+            disabled={documents === null || nextExercise === null}
           />
         </ButtonContainer>
       </>

@@ -1,5 +1,5 @@
 import { ARTICLES } from '../constants/data'
-import { Discipline, Document, ENDPOINTS } from '../constants/endpoints'
+import { Document, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
@@ -27,13 +27,19 @@ const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
     }))
   }))
 
-export const loadDocuments = async (discipline: Discipline): Promise<Document[]> => {
-  const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
-
-  const response = await getFromEndpoint<DocumentFromServer[]>(url, discipline.apiKey)
+export const loadDocuments = async ({
+  disciplineId,
+  apiKey
+}: {
+  disciplineId: number
+  apiKey?: string
+}): Promise<Document[]> => {
+  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
+  const response = await getFromEndpoint<DocumentFromServer[]>(url, apiKey)
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline): Return<Document[]> => useLoadAsync(loadDocuments, discipline)
+const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<Document[]> =>
+  useLoadAsync(loadDocuments, { disciplineId, apiKey })
 
 export default useLoadDocuments
