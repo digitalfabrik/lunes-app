@@ -1,7 +1,7 @@
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { Discipline } from '../../../../constants/endpoints'
+import { Discipline, ForbiddenError, NetworkError } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import {
@@ -26,7 +26,9 @@ describe('CustomDisciplineItem', () => {
     apiKey: 'abc'
   }
 
-  const renderCustomDisciplineItem = (): RenderAPI => render(<CustomDiscipline apiKey='abc' navigation={navigation} />)
+  const renderCustomDisciplineItem = (): RenderAPI =>
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={() => {}} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockData)
@@ -41,8 +43,14 @@ describe('CustomDisciplineItem', () => {
     expect(getByTestId('loading')).toBeDefined()
   })
 
-  it('should display error', () => {
-    mockUseLoadAsyncWithError('Network Error')
+  it('should display no internet error', () => {
+    mockUseLoadAsyncWithError(NetworkError)
+    const { getByText } = renderCustomDisciplineItem()
+    expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
+  })
+
+  it('should display forbidden error', () => {
+    mockUseLoadAsyncWithError(ForbiddenError)
     const { getByText } = renderCustomDisciplineItem()
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
   })
