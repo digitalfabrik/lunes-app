@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     disciplineTitle: string,
     documents: Document[]
   ): void => {
-    navigation.navigate(EXERCISES[exerciseKey].nextScreen, {
+    navigation.navigate(EXERCISES[exerciseKey].screen, {
       disciplineId,
       disciplineTitle,
       documents,
