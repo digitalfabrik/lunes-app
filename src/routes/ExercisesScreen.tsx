@@ -27,7 +27,7 @@ interface ExercisesScreenProps {
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline, disciplineTitle, disciplineId } = route.params
 
-  const { data: documents, error, loading, refresh } = useLoadDocuments(discipline)
+  const { data: documents, error, loading, refresh } = useLoadDocuments({ disciplineId: discipline.id, apiKey: discipline.apiKey })
 
   const Header = documents && <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
 

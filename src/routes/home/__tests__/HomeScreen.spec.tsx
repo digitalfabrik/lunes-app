@@ -29,9 +29,9 @@ describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
   it('should navigate to discipline', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
-    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines()))
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')
@@ -41,12 +41,12 @@ describe('HomeScreen', () => {
 
     fireEvent.press(firstDiscipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines[0] })
+    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
   })
 
   it('should show custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
     mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))

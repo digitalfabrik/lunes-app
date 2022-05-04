@@ -1,7 +1,9 @@
-import { Article } from '../constants/data'
+import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { loadDisciplines } from '../hooks/useLoadDisciplines'
+import AsyncStorage from './AsyncStorage'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -55,4 +57,43 @@ export const shuffleArray = <T>(array: T[]): T[] => {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+/*
+  Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standart vocabulary)
+  returns
+    disciplineId: the leaf discipline which needs to be done next
+    exerciseKey: exerciseKey of the next exercise which needs to be done
+   */
+export const getNextExercise = async (
+  profession: Discipline
+): Promise<{ disciplineId: number; exerciseKey: number }> => {
+  const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
+  if (disciplines.length <= 0) {
+    throw new Error(`No Disciplines for id ${profession.id}`)
+  }
+  const progress = await AsyncStorage.getExerciseProgress()
+  const doneExercisesOfLeafDiscipline = (disciplineId: number): number => {
+    const progressOfDiscipline = progress[disciplineId]
+    return progressOfDiscipline
+      ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
+      : 0
+  }
+  const firstUnfinishedDiscipline = disciplines.find(
+    discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress
+  )
+  if (!firstUnfinishedDiscipline) {
+    return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
+  }
+  const disciplineProgress = progress[firstUnfinishedDiscipline.id]
+  if (!disciplineProgress) {
+    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: exercisesWithoutProgress }
+  }
+  const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
+    exercise => disciplineProgress[exercise.key] === undefined
+  )
+  return {
+    disciplineId: firstUnfinishedDiscipline.id,
+    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
+  }
 }

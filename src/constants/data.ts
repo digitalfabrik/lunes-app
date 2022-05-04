@@ -52,6 +52,9 @@ export const EXERCISES: Exercise[] = [
   }
 ]
 
+export const exercisesWithoutProgress = 1
+export const exercisesWithProgress = EXERCISES.length - exercisesWithoutProgress
+
 export interface Progress {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
