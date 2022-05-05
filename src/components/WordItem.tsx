@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
-import { Answer, Article } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
-import { getArticleColor } from '../../../services/helpers'
+import { Answer, Article } from '../constants/data'
+import labels from '../constants/labels.json'
+import { getArticleColor } from '../services/helpers'
+import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 
 const Container = styled.TouchableOpacity<StyledListElementProps>`
-  height: 23.5%;
   margin-bottom: ${props => props.theme.spacings.xxs};
   border-radius: 2px;
+  flex: 1;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
@@ -116,11 +116,11 @@ const Overlay = styled.View`
 
 export interface SingleChoiceListItemProps {
   answer: Answer
-  onClick: (answer: Answer) => void
-  correct: boolean
-  selected: boolean
-  anyAnswerSelected: boolean
-  delayPassed: boolean
+  correct?: boolean
+  selected?: boolean
+  anyAnswerSelected?: boolean
+  delayPassed?: boolean
+  onClick?: (answer: Answer) => void
   disabled?: boolean
 }
 
@@ -131,13 +131,13 @@ interface StyledListElementProps {
   delayPassed: boolean
 }
 
-const SingleChoiceListItem = ({
+const WordItem = ({
   answer,
   onClick,
-  correct,
-  selected,
-  anyAnswerSelected,
-  delayPassed,
+  correct = false,
+  selected = false,
+  anyAnswerSelected = false,
+  delayPassed = false,
   disabled = false
 }: SingleChoiceListItemProps): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
@@ -152,8 +152,10 @@ const SingleChoiceListItem = ({
   }
 
   const onPressOut = (): void => {
-    setPressed(false)
-    onClick(answer)
+    if (onClick) {
+      setPressed(false)
+      onClick(answer)
+    }
   }
 
   return (
@@ -161,7 +163,7 @@ const SingleChoiceListItem = ({
       activeOpacity={1}
       correct={showCorrect}
       selected={selected}
-      onPressIn={onPressIn}
+      onPressIn={onClick && onPressIn}
       onPressOut={onPressOut}
       pressed={pressed}
       delayPassed={delayPassed}
@@ -185,4 +187,4 @@ const SingleChoiceListItem = ({
   )
 }
 
-export default SingleChoiceListItem
+export default WordItem

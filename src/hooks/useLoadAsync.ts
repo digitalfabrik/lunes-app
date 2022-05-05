@@ -35,7 +35,8 @@ export const useLoadAsync = <T, P>(request: (params: P) => Promise<T>, params: P
 
   const load = useCallback(() => {
     loadAsync<T, P>(request, params, setData, setError, setLoading).catch(e => setError(e))
-  }, [request, params])
+    // TODO LUN-330 fix object comparison
+  }, [request, JSON.stringify(params)])
 
   useEffect(() => {
     load()
