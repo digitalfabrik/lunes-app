@@ -71,7 +71,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
   const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
+    navigation.navigate(EXERCISES[exercise].screen, {
       documents,
       disciplineId,
       disciplineTitle,

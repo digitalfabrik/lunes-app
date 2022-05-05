@@ -47,7 +47,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         disciplineId,
         discipline
       })
-      navigation.navigate(EXERCISES[item.key].nextScreen, {
+      navigation.navigate(EXERCISES[item.key].screen, {
         documents,
         disciplineId,
         disciplineTitle,
