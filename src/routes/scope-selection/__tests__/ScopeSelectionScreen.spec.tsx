@@ -40,7 +40,7 @@ describe('ScopeSelection', () => {
 
     fireEvent.press(firstDiscipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('ProfessionSelection', {
+    expect(navigation.push).toHaveBeenCalledWith('ProfessionSelection', {
       discipline: mockDisciplines()[0],
       initialSelection: true
     })

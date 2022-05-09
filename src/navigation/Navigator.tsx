@@ -1,15 +1,15 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
 import React, { ComponentType, useState } from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import { useTheme } from 'styled-components'
 
 import {
+  ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   CloseCircleIconWhite,
-  ArrowLeftCircleIconBlue,
   HomeCircleIconBlue,
   HomeCircleIconWhite
 } from '../../assets/images'
@@ -125,7 +125,9 @@ const Navigator = (): JSX.Element | null => {
         screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.manageDisciplines, ArrowLeftCircleIconWhite, navigation, false)
+          }
           name='ScopeSelection'
           component={ScopeSelection}
           initialParams={{ initialSelection: true }}
