@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import { CloseIconRed } from '../../../../assets/images'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
-import { Discipline } from '../../../constants/endpoints'
+import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { Return } from '../../../hooks/useLoadAsync'
 
@@ -24,7 +24,13 @@ const LoadingContainer = styled(View)`
 
 const SelectionItem = ({ discipline, deleteItem }: PropsType): JSX.Element => {
   const { data, loading, error } = discipline
-  const errorMessage = error?.message ?? labels.general.error.unknown
+  let errorMessage = labels.general.error.unknown
+  if (error?.message === ForbiddenError) {
+    errorMessage = labels.home.errorLoadCustomDiscipline
+  } else if (error?.message === NetworkError) {
+    errorMessage = `${labels.general.error.noWifi} (${error.message})`
+  }
+
   const loadingOrError = loading ? (
     <LoadingContainer>
       <Loading isLoading={loading} />
