@@ -1,0 +1,5 @@
+issue_key: LUN-314
+show_in_stores: false
+platforms:
+  - ios
+de: Modal für Vokabelliste wird mit vollständiger Höhe angezeigt.

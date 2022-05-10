@@ -7,14 +7,15 @@ import ErrorMessage from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
-import { BUTTONS_THEME, NextExercise } from '../../../constants/data'
+import { BUTTONS_THEME } from '../../../constants/data'
 import { Discipline, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { loadDocuments } from '../../../hooks/useLoadDocuments'
-import AsyncStorage from '../../../services/AsyncStorage'
-import { childrenLabel, getNextExercise } from '../../../services/helpers'
+import useReadNextExercise from '../../../hooks/useReadNextExercise'
+import useReadProgress from '../../../hooks/useReadProgress'
+import { childrenLabel } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 import Card from './Card'
 
@@ -56,17 +57,10 @@ interface PropsType {
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { disciplineId, onPress, navigateToNextExercise } = props
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(disciplineId)
-  const [progress, setProgress] = useState<number | null>(null)
+  const { data: nextExercise } = useReadNextExercise(discipline)
+  const { data: progress } = useReadProgress(discipline)
   const moduleAlreadyStarted = progress !== null && progress !== 0
   const [documents, setDocuments] = useState<Document[] | null>(null)
-  const [nextExercise, setNextExercise] = useState<NextExercise | null>(null)
-
-  useEffect(() => {
-    if (discipline) {
-      AsyncStorage.getProgress(discipline).then(setProgress).catch(reportError)
-      getNextExercise(discipline).then(setNextExercise).catch(reportError)
-    }
-  }, [discipline])
 
   useEffect(() => {
     if (nextExercise) {

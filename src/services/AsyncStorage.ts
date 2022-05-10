@@ -32,8 +32,9 @@ export const removeSelectedProfession = async (professionId: number): Promise<nu
   if (professions === null) {
     throw new Error('professions not set')
   }
-  await setSelectedProfessions(professions.filter(item => item !== professionId))
-  return professions
+  const updatedProfessions = professions.filter(item => item !== professionId)
+  await setSelectedProfessions(updatedProfessions)
+  return updatedProfessions
 }
 
 export const getCustomDisciplines = async (): Promise<string[]> => {
@@ -76,7 +77,10 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
-export const getProgress = async (profession: Discipline): Promise<number> => {
+export const getProgress = async (profession: Discipline | null): Promise<number> => {
+  if (!profession) {
+    return 0
+  }
   const progress = await AsyncStorage.getItem('progress')
   return progress === profession.title ? 1 : 1 // TODO LUN-290
 }
