@@ -59,6 +59,12 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
+/*
+  Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
+  returns
+  disciplineId: the leaf discipline which needs to be done next
+  exerciseKey: exerciseKey of the next exercise which needs to be done
+  */
 export const getNextExercise = async (profession: Discipline | null): Promise<NextExercise | null> => {
   if (!profession) {
     return null
