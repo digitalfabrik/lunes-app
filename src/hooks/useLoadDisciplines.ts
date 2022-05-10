@@ -11,6 +11,7 @@ export interface ServerResponse {
   total_training_sets: number
   total_discipline_children: number
   total_documents: number
+  nested_training_sets: number[]
 }
 
 const getEndpoint = (parent: Discipline | null): string => {

@@ -1,6 +1,6 @@
 import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       refreshCustomDisciplines()
       refreshSelectedProfessions()
     }, [refreshCustomDisciplines, refreshSelectedProfessions])

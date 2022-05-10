@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
@@ -18,7 +19,9 @@ describe('DisciplineCard', () => {
   it('should show discipline card', async () => {
     mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
     const { getByText, findByText, getByTestId } = render(
-      <DisciplineCard disciplineId={mockDisciplines()[0].id} navigateToNextExercise={navigate} onPress={onPress} />
+      <NavigationContainer>
+        <DisciplineCard disciplineId={mockDisciplines()[0].id} navigateToNextExercise={navigate} onPress={onPress} />
+      </NavigationContainer>
     )
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     expect(getByTestId('progress-circle')).toBeDefined()

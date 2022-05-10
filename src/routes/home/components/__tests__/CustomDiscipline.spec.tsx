@@ -23,7 +23,8 @@ describe('CustomDisciplineItem', () => {
     parentTitle: null,
     needsTrainingSetEndpoint: false,
     isLeaf: false,
-    apiKey: 'abc'
+    apiKey: 'abc',
+    leafDisciplines: []
   }
 
   const renderCustomDisciplineItem = (): RenderAPI => render(<CustomDiscipline apiKey='abc' navigation={navigation} />)

@@ -34,7 +34,8 @@ describe('ProfessionSelectionScreen', () => {
         numberOfChildren: 2,
         isLeaf: false,
         parentTitle: null,
-        needsTrainingSetEndpoint: false
+        needsTrainingSetEndpoint: false,
+        leafDisciplines: []
       }
     }
   })

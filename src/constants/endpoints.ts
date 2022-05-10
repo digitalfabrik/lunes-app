@@ -10,6 +10,7 @@ export interface Discipline {
   parentTitle: string | null // if null then it is the root discipline
   apiKey?: string
   needsTrainingSetEndpoint: boolean
+  leafDisciplines?: number[]
 }
 
 export interface AlternativeWord {

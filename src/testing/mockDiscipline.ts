@@ -9,7 +9,8 @@ export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] 
     numberOfChildren: 1,
     isLeaf: false,
     parentTitle: null,
-    needsTrainingSetEndpoint
+    needsTrainingSetEndpoint,
+    leafDisciplines: []
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] 
     numberOfChildren: 1,
     isLeaf: false,
     parentTitle: null,
-    needsTrainingSetEndpoint
+    needsTrainingSetEndpoint,
+    leafDisciplines: []
   }
 ]
