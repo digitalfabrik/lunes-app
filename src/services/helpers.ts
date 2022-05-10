@@ -1,4 +1,4 @@
-import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress } from '../constants/data'
+import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress, NextExercise } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -59,9 +59,10 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-export const getNextExercise = async (
-  profession: Discipline
-): Promise<{ disciplineId: number; exerciseKey: number }> => {
+export const getNextExercise = async (profession: Discipline | null): Promise<NextExercise | null> => {
+  if (!profession) {
+    return null
+  }
   const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
