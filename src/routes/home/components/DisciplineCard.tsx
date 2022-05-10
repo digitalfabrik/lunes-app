@@ -84,16 +84,17 @@ const DisciplineCard = (props: PropsType): ReactElement => {
     }
   }
 
+  if (loading) {
+    return (
+      <Card>
+        <LoadingContainer>
+          <Loading isLoading={loading} />
+        </LoadingContainer>
+      </Card>
+    )
+  }
+
   if (!discipline) {
-    if (loading) {
-      return (
-        <Card>
-          <LoadingContainer>
-            <Loading isLoading={loading} />
-          </LoadingContainer>
-        </Card>
-      )
-    }
     return (
       <Card>
         <ErrorMessage error={error} refresh={refresh} />

@@ -24,32 +24,32 @@ const LoadingContainer = styled(View)`
 
 const SelectionItem = ({ discipline, deleteItem }: PropsType): JSX.Element => {
   const { data, loading, error } = discipline
-  let errorMessage = labels.general.error.unknown
-  if (error?.message === ForbiddenError) {
-    errorMessage = labels.home.errorLoadCustomDiscipline
-  } else if (error?.message === NetworkError) {
-    errorMessage = `${labels.general.error.noWifi} (${error.message})`
+
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <Loading isLoading={loading} />
+      </LoadingContainer>
+    )
   }
 
-  const loadingOrError = loading ? (
-    <LoadingContainer>
-      <Loading isLoading={loading} />
-    </LoadingContainer>
-  ) : (
-    errorMessage
-  )
+  if (!data) {
+    let errorMessage = labels.general.error.unknown
+    if (error?.message === ForbiddenError) {
+      errorMessage = labels.home.errorLoadCustomDiscipline
+    } else if (error?.message === NetworkError) {
+      errorMessage = `${labels.general.error.noWifi} (${error.message})`
+    }
+    return <ListItem title={errorMessage} />
+  }
 
   return (
     <ListItem
-      title={data ? data.title : loadingOrError}
+      title={data.title}
       rightChildren={
-        data ? (
-          <CloseIconContainer onPress={deleteItem} testID='delete-icon'>
-            <CloseIconRed />
-          </CloseIconContainer>
-        ) : (
-          <></>
-        )
+        <CloseIconContainer onPress={deleteItem} testID='delete-icon'>
+          <CloseIconRed />
+        </CloseIconContainer>
       }
     />
   )

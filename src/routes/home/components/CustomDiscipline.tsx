@@ -65,17 +65,17 @@ const CustomDiscipline = ({ apiKey, navigation, refresh: refreshHome }: CustomDi
   const deleteCustomDiscipline = async (): Promise<void> =>
     AsyncStorage.removeCustomDiscipline(apiKey).then(refreshHome)
 
-  if (!discipline) {
-    if (loading) {
-      return (
-        <Card>
-          <LoadingContainer>
-            <Loading isLoading={loading} />
-          </LoadingContainer>
-        </Card>
-      )
-    }
+  if (loading) {
+    return (
+      <Card>
+        <LoadingContainer>
+          <Loading isLoading={loading} />
+        </LoadingContainer>
+      </Card>
+    )
+  }
 
+  if (!discipline) {
     return (
       <Card>
         {error?.message === ForbiddenError ? (

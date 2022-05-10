@@ -27,8 +27,7 @@ describe('CustomDisciplineItem', () => {
   }
 
   const renderCustomDisciplineItem = (): RenderAPI =>
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={() => {}} />)
+    render(<CustomDiscipline apiKey='abc' navigation={navigation} refresh={() => undefined} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockData)
