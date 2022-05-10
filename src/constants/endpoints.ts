@@ -34,6 +34,7 @@ export interface Document {
 }
 
 export const ENDPOINTS = {
+  discipline: 'disciplines',
   disciplines: 'disciplines_by_level',
   disciplinesByGroup: 'disciplines_by_group',
   trainingSet: 'training_set',

@@ -47,10 +47,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
-    if (selectedProfessions?.some(profession => profession.id === selectedItem.id)) {
-      await AsyncStorage.removeSelectedProfession(selectedItem).then(refreshSelectedProfessions)
+    if (selectedProfessions?.includes(selectedItem.id)) {
+      await AsyncStorage.removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
     } else {
-      await AsyncStorage.pushSelectedProfession(selectedItem).then(() => {
+      await AsyncStorage.pushSelectedProfession(selectedItem.id).then(() => {
         if (initialSelection) {
           refreshSelectedProfessions()
         } else {
@@ -61,7 +61,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   }
 
   const Item = ({ item }: { item: Discipline }): JSX.Element => {
-    const isSelected = selectedProfessions?.some(profession => profession.id === item.id)
+    const isSelected = selectedProfessions?.includes(item.id)
     return (
       <DisciplineListItem
         item={item}

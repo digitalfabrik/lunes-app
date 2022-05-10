@@ -1,3 +1,4 @@
+import { NextExercise } from '../../constants/data'
 import { loadDisciplines } from '../../hooks/useLoadDisciplines'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import { getExerciseProgress } from '../AsyncStorage'
@@ -20,10 +21,18 @@ describe('Calculation of next exercise', () => {
     needsTrainingSetEndpoint: false
   }
 
+  const getNextExerciseWithCheck = async (): Promise<NextExercise> => {
+    const e = await getNextExercise(profession)
+    if (!e) {
+      throw Error('NextExerciseData is undefined')
+    }
+    return e
+  }
+
   it('should open first exercise, if no exercise was finished yet', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({}))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(1)
   })
@@ -31,7 +40,7 @@ describe('Calculation of next exercise', () => {
   it('should open second exercise of first discipline, if first exercise was finished yet', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': 1 } }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(2)
   })
@@ -39,7 +48,7 @@ describe('Calculation of next exercise', () => {
   it('should open first exercise, if only second exercise was finished yet', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '2': 1 } }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(1)
   })
@@ -47,7 +56,7 @@ describe('Calculation of next exercise', () => {
   it('should open third exercise of first discipline, if two exercises were finished yet', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': 1, '2': 1 } }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(3)
   })
@@ -56,7 +65,7 @@ describe('Calculation of next exercise', () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': 1, '2': 1, '3': 1 } }))
 
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[1].id)
     expect(exerciseKey).toBe(1)
   })
@@ -64,7 +73,7 @@ describe('Calculation of next exercise', () => {
   it('should open first exercise of first discipline, if second discipline was partly finished yet', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '2': { '1': 1, '2': 1 } }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(1)
   })
@@ -72,7 +81,7 @@ describe('Calculation of next exercise', () => {
   it('should open first exercise of first discipline, if exercise progress is undefined', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': undefined } }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(1)
   })
@@ -80,7 +89,7 @@ describe('Calculation of next exercise', () => {
   it('should open first exercise of first discipline, if discipline progress is undefined', async () => {
     mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
     mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': undefined }))
-    const { disciplineId, exerciseKey } = await getNextExercise(profession)
+    const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
     expect(disciplineId).toBe(mockDisciplines()[0].id)
     expect(exerciseKey).toBe(1)
   })

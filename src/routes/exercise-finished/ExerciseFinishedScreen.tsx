@@ -58,7 +58,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   }, [results])
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
+    navigation.navigate(EXERCISES[exercise].screen, {
       documents,
       disciplineId,
       disciplineTitle,
