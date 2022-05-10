@@ -10,8 +10,8 @@ import HorizontalLine from '../../components/HorizontalLine'
 import ListItem from '../../components/ListItem'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { Heading } from '../../components/text/Heading'
-import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
+import { useLoadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -57,16 +57,17 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   useFocusEffect(refresh)
 
-  const Item = ({ item }: { item: Discipline }): JSX.Element => {
-    const unselectProfessionAndRefresh = (item: Discipline) => {
-      removeSelectedProfession(item).then(refreshSelectedProfessions).catch(reportError)
+  const Item = ({ id }: { id: number }): JSX.Element => {
+    const { data: item } = useLoadDiscipline(id)
+    const unselectProfessionAndRefresh = (id: number) => {
+      removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
     return (
       <ListItem
-        icon={item.icon}
-        title={item.title}
+        icon={item?.icon}
+        title={item?.title ?? ''}
         rightChildren={
-          <CloseIconContainer onPress={() => unselectProfessionAndRefresh(item)} testID='delete-icon'>
+          <CloseIconContainer onPress={() => unselectProfessionAndRefresh(id)} testID='delete-icon'>
             <CloseIconRed />
           </CloseIconContainer>
         }
@@ -89,7 +90,7 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
       <HorizontalLine />
       <ServerResponseHandler error={error} loading={loading} refresh={refreshSelectedProfessions}>
         {selectedProfessions?.map(profession => (
-          <Item key={profession.id} item={profession} />
+          <Item key={profession} id={profession} />
         ))}
       </ServerResponseHandler>
       <AddElement onPress={navigateToProfessionSelection} label={labels.manageDisciplines.addProfession} />

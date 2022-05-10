@@ -3,6 +3,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
+import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
@@ -18,6 +19,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadGroupInfo')
+jest.mock('../../../hooks/useLoadDiscipline')
 
 describe('ManageSelectionsScreen', () => {
   const navigation = createNavigationMock<'ManageDisciplines'>()
@@ -25,8 +27,9 @@ describe('ManageSelectionsScreen', () => {
 
   it('should show and delete selected professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
-    await AsyncStorage.pushSelectedProfession(mockDisciplines()[0])
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0]]))
+    await AsyncStorage.pushSelectedProfession(mockDisciplines()[0].id)
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
+    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()

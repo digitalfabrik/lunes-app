@@ -60,7 +60,7 @@ describe('ScopeSelection', () => {
 
   it('should confirm selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0]]))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     const button = getByText(labels.scopeSelection.confirmSelection)
     fireEvent.press(button)
@@ -70,7 +70,7 @@ describe('ScopeSelection', () => {
 
   it('should hide welcome message and buttons for non initial view', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0]]))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
     const { queryByText } = render(<ScopeSelection navigation={navigation} route={getRoute(false)} />)
     expect(queryByText(labels.scopeSelection.welcome)).toBeNull()
     expect(queryByText(labels.scopeSelection.skipSelection)).toBeNull()
