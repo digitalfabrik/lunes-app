@@ -85,7 +85,10 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     if (!isSelectionMade) {
       await AsyncStorage.setSelectedProfessions([])
     }
-    navigation.navigate('Home')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
   }
 
   return (

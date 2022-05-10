@@ -51,7 +51,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   })
 
   const navigateToDiscipline = (item: Discipline): void => {
-    navigation.push('ProfessionSelection', {
+    navigation.navigate('ProfessionSelection', {
       discipline: item,
       initialSelection
     })
@@ -61,7 +61,10 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     if (selectedProfessions === null) {
       await AsyncStorage.setSelectedProfessions([])
     }
-    navigation.navigate('Home')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
   }
 
   const disciplineItems = disciplines?.map(item => (

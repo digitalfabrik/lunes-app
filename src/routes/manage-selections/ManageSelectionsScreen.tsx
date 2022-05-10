@@ -76,7 +76,7 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   }
 
   const navigateToProfessionSelection = () => {
-    navigation.push('ScopeSelection', { initialSelection: false })
+    navigation.navigate('ScopeSelection', { initialSelection: false })
   }
 
   const navigateToAddCustomDiscipline = () => {

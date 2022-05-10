@@ -74,6 +74,6 @@ describe('ManageSelectionsScreen', () => {
     const { getByText } = renderScreen()
     const addProfessionText = getByText(labels.manageDisciplines.addProfession)
     fireEvent.press(addProfessionText)
-    expect(navigation.push).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
+    expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
   })
 })
