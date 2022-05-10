@@ -3,6 +3,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
+import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
@@ -19,6 +20,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
+jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../../../hooks/useLoadGroupInfo')
 jest.mock('../../../components/HeaderWithMenu', () => {
   const Text = require('react-native').Text
@@ -29,9 +31,11 @@ describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
   it('should navigate to discipline', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
-    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines()))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
+    mocked(useLoadDiscipline)
+      .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
+      .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')

@@ -81,9 +81,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
     <DisciplineCard
-      key={profession.id}
-      discipline={profession}
-      showProgress
+      key={profession}
+      disciplineId={profession}
       onPress={navigateToDiscipline}
       navigateToNextExercise={navigateToNextExercise}
     />

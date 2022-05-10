@@ -26,23 +26,23 @@ describe('AsyncStorage', () => {
   const selectedProfessions = mockDisciplines()
 
   it('should delete selectedProfession from array if exists', async () => {
-    await AsyncStorage.setSelectedProfessions(selectedProfessions)
+    await AsyncStorage.setSelectedProfessions(selectedProfessions.map(item => item.id))
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length)
-    await AsyncStorage.removeSelectedProfession(mockDisciplines()[0])
+    await AsyncStorage.removeSelectedProfession(mockDisciplines()[0].id)
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length - 1)
   })
 
   it('should not delete selectedProfession from array if not exists', async () => {
-    await AsyncStorage.setSelectedProfessions([mockDisciplines()[1]])
+    await AsyncStorage.setSelectedProfessions([mockDisciplines()[1].id])
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
-    await AsyncStorage.removeSelectedProfession(mockDisciplines()[0])
+    await AsyncStorage.removeSelectedProfession(mockDisciplines()[0].id)
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
   })
 
   it('should push selectedProfession to array', async () => {
-    await AsyncStorage.setSelectedProfessions([mockDisciplines()[0]])
+    await AsyncStorage.setSelectedProfessions([mockDisciplines()[0].id])
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
-    await AsyncStorage.pushSelectedProfession(mockDisciplines()[1])
+    await AsyncStorage.pushSelectedProfession(mockDisciplines()[1].id)
     await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(2)
   })
 

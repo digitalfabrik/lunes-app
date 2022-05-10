@@ -1,5 +1,6 @@
 import { Discipline, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
+import { formatDiscipline } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
 export interface ServerResponse {
@@ -23,16 +24,7 @@ const getEndpoint = (parent: Discipline | null): string => {
 }
 
 const formatServerResponse = (serverResponse: ServerResponse[], parent: Discipline | null): Discipline[] =>
-  serverResponse.map(item => ({
-    ...item,
-    numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
-    //  The ServerResponse type is not completely correct
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    isLeaf: item.total_documents !== undefined,
-    parentTitle: parent?.title ?? null,
-    apiKey: parent?.apiKey,
-    needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
-  }))
+  serverResponse.map(item => formatDiscipline(item, parent))
 
 export const loadDisciplines = async (parent: Discipline | null): Promise<Discipline[]> => {
   const url = `${getEndpoint(parent)}/${parent?.id ?? ''}`
