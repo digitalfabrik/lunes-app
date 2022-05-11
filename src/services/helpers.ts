@@ -83,18 +83,28 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   const firstUnfinishedDiscipline = disciplines.find(
     discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress
   )
+
   if (!firstUnfinishedDiscipline) {
-    return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
+    return {
+      disciplineId: disciplines[0].id,
+      exerciseKey: exercisesWithoutProgress,
+      disciplineTitle: disciplines[0].title
+    } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDiscipline.id]
   if (!disciplineProgress) {
-    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: exercisesWithoutProgress }
+    return {
+      disciplineId: firstUnfinishedDiscipline.id,
+      exerciseKey: exercisesWithoutProgress,
+      disciplineTitle: firstUnfinishedDiscipline.title
+    }
   }
   const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
     exercise => disciplineProgress[exercise.key] === undefined
   )
   return {
     disciplineId: firstUnfinishedDiscipline.id,
-    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
+    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress,
+    disciplineTitle: firstUnfinishedDiscipline.title
   }
 }
