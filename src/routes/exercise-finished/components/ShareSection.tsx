@@ -13,8 +13,8 @@ const Container = styled.View`
   border-radius: 6px;
   shadow-color: ${props => props.theme.colors.shadow};
   shadow-offset: 0px 6px;
-  shadowopacity: 0.2;
-  shadowradius: 6;
+  shadow-opacity: 0.2;
+  shadow-radius: 6px;
   elevation: 10;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
