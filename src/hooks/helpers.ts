@@ -1,6 +1,6 @@
 import { Discipline } from '../constants/endpoints'
 
-export type DisciplinesLoadingInfo =
+export type DisciplinesRequestData =
   | {
       apiKey: string
     }
@@ -8,11 +8,17 @@ export type DisciplinesLoadingInfo =
       parent: Discipline | null
     }
 
-export const isTypeLoadGroupType = (
-  value: DisciplinesLoadingInfo
-): value is {
-  apiKey: string
-} => Object.prototype.hasOwnProperty.call(value, 'apiKey')
+export type DisciplineRequestData =
+  | {
+      apiKey: string
+    }
+  | {
+      disciplineId: number
+    }
+
+export const isTypeLoadProtected = (
+  value: DisciplineRequestData | DisciplinesRequestData
+): value is { apiKey: string } => Object.prototype.hasOwnProperty.call(value, 'apiKey')
 
 export interface ServerResponseDiscipline {
   id: number
@@ -25,14 +31,14 @@ export interface ServerResponseDiscipline {
   nested_training_sets: number[]
 }
 
-export const formatDiscipline = (item: ServerResponseDiscipline, loadingInfo: DisciplinesLoadingInfo): Discipline => ({
+export const formatDiscipline = (item: ServerResponseDiscipline, loadingInfo: DisciplinesRequestData): Discipline => ({
   ...item,
   numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
   //  The ServerResponse type is not completely correct
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   isLeaf: item.total_documents !== undefined,
-  parentTitle: !isTypeLoadGroupType(loadingInfo) && loadingInfo.parent ? loadingInfo.parent.title : null,
-  apiKey: isTypeLoadGroupType(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey, // TODO make function for getting api key and reuse
+  parentTitle: !isTypeLoadProtected(loadingInfo) && loadingInfo.parent ? loadingInfo.parent.title : null,
+  apiKey: isTypeLoadProtected(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey, // TODO make function for getting api key and reuse
   needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0,
   leafDisciplines: item.nested_training_sets
 })

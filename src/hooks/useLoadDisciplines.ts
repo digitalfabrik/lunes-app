@@ -1,10 +1,10 @@
 import { Discipline, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import { formatDiscipline, isTypeLoadGroupType, DisciplinesLoadingInfo, ServerResponseDiscipline } from './helpers'
+import { formatDiscipline, isTypeLoadProtected, DisciplinesRequestData, ServerResponseDiscipline } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const getEndpoint = (loadingInfo: DisciplinesLoadingInfo): string => {
-  if (isTypeLoadGroupType(loadingInfo)) {
+const getEndpoint = (loadingInfo: DisciplinesRequestData): string => {
+  if (isTypeLoadProtected(loadingInfo)) {
     return ENDPOINTS.groupInfo
   }
   if (loadingInfo.parent?.needsTrainingSetEndpoint) {
@@ -18,15 +18,15 @@ const getEndpoint = (loadingInfo: DisciplinesLoadingInfo): string => {
 
 const formatServerResponse = (
   serverResponse: ServerResponseDiscipline[],
-  loadingInfo: DisciplinesLoadingInfo
+  loadingInfo: DisciplinesRequestData
 ): Discipline[] => serverResponse.map(item => formatDiscipline(item, loadingInfo))
 
-export const loadDisciplines = async (loadingInfo: DisciplinesLoadingInfo): Promise<Discipline[]> => {
+export const loadDisciplines = async (loadingInfo: DisciplinesRequestData): Promise<Discipline[]> => {
   const url = getEndpoint(loadingInfo)
-  const apiKey = isTypeLoadGroupType(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey
+  const apiKey = isTypeLoadProtected(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey
   const response = await getFromEndpoint<ServerResponseDiscipline[]>(url, apiKey)
   return formatServerResponse(response, loadingInfo)
 }
 
-export const useLoadDisciplines = (loadingInfo: DisciplinesLoadingInfo): Return<Discipline[]> =>
+export const useLoadDisciplines = (loadingInfo: DisciplinesRequestData): Return<Discipline[]> =>
   useLoadAsync(loadDisciplines, loadingInfo)

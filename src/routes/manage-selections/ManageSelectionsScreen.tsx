@@ -13,8 +13,7 @@ import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
-import CustomDisciplineItem from './components/CustomDisciplineItem'
-import ProfessionItem from './components/ProfessionItem'
+import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
   display: flex;
@@ -49,14 +48,14 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
     const unselectProfessionAndRefresh = () => {
       removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
-    return <ProfessionItem key={id} id={id} deleteItem={unselectProfessionAndRefresh} />
+    return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
   const customDisciplineItems = customDisciplines?.map(apiKey => {
     const deleteCustomDisciplineAndRefresh = () => {
       removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
     }
-    return <CustomDisciplineItem key={apiKey} apiKey={apiKey} deleteItem={deleteCustomDisciplineAndRefresh} />
+    return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })
 
   const navigateToProfessionSelection = () => {

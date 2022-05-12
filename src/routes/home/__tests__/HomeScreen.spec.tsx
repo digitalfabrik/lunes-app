@@ -28,7 +28,7 @@ jest.mock('../../../components/HeaderWithMenu', () => {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should navigate to discipline', () => {
+  it('should render professions', () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
     mocked(useLoadDiscipline)
@@ -40,11 +40,9 @@ describe('HomeScreen', () => {
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
-
-    fireEvent.press(firstDiscipline)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
   })
+
+  // TODO LUN-328 add test for navigate to child disciplines
 
   it('should show custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
@@ -54,12 +52,8 @@ describe('HomeScreen', () => {
     mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
-    const customDiscipline = getByText('Custom Discipline')
-    expect(customDiscipline).toBeDefined()
-
-    fireEvent.press(customDiscipline)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
+    expect(getByText('Custom Discipline')).toBeDefined()
+    expect(getByText(labels.home.start)).toBeDefined()
   })
 
   it('should show suggestion to add custom discipline', () => {
