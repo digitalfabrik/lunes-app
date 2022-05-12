@@ -14,8 +14,7 @@ import labels from '../../../constants/labels.json'
 
 const ModalContainer = styled.View`
   background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
+  flex: 1;
 `
 
 const ModalHeader = styled.View`
@@ -62,8 +61,8 @@ const VocabularyListModal = ({
 
   return (
     <Modal animationType='slide' transparent visible={isModalVisible} onRequestClose={() => setIsModalVisible(false)}>
-      <SafeAreaView>
-        <ModalContainer>
+      <ModalContainer>
+        <SafeAreaView>
           <ModalHeader>
             <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
           </ModalHeader>
@@ -93,8 +92,8 @@ const VocabularyListModal = ({
               />
             )}
           </ButtonContainer>
-        </ModalContainer>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ModalContainer>
     </Modal>
   )
 }

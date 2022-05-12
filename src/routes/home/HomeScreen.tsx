@@ -76,7 +76,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDiscipline key={customDiscipline} apiKey={customDiscipline} navigation={navigation} />
+    <CustomDiscipline
+      key={customDiscipline}
+      apiKey={customDiscipline}
+      navigation={navigation}
+      refresh={refreshCustomDisciplines}
+    />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (

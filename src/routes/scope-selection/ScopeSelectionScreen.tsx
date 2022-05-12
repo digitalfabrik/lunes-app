@@ -1,6 +1,6 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -46,6 +46,10 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
 
   useFocusEffect(refreshSelectedProfessions)
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: !initialSelection })
+  })
+
   const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('ProfessionSelection', {
       discipline: item,
@@ -57,7 +61,10 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     if (selectedProfessions === null) {
       await AsyncStorage.setSelectedProfessions([])
     }
-    navigation.navigate('Home')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
   }
 
   const disciplineItems = disciplines?.map(item => (
@@ -66,7 +73,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
 
   return (
     <ScrollView>
-      <Header />
+      {initialSelection && <Header />}
       <TextContainer>
         {initialSelection && (
           <>
