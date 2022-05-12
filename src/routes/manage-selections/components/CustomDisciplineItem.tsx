@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import { CloseIconRed } from '../../../../assets/images'
 import ListItem from '../../../components/ListItem'
-import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { removeCustomDiscipline } from '../../../services/AsyncStorage'
 import { reportError } from '../../../services/sentry'
 
@@ -17,7 +17,7 @@ const CloseIconContainer = styled.Pressable`
 `
 
 const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
-  const { data } = useLoadGroupInfo(apiKey)
+  const { data } = useLoadDiscipline({ apiKey })
 
   const deleteCustomDisciplineAndRefresh = (item: string) => {
     removeCustomDiscipline(item).then(refresh).catch(reportError)

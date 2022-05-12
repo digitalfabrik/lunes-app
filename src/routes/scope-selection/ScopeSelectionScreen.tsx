@@ -41,7 +41,7 @@ interface IntroScreenProps {
 
 const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   const { initialSelection } = route.params
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(null)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
 
   useFocusEffect(refreshSelectedProfessions)

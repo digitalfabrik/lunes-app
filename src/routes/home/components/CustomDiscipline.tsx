@@ -10,7 +10,7 @@ import { ContentSecondary, ContentSecondaryLight } from '../../../components/tex
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
-import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { childrenLabel } from '../../../services/helpers'
 import Card from './Card'
@@ -50,7 +50,7 @@ interface CustomDisciplineItemProps {
 }
 
 const CustomDiscipline = ({ apiKey, navigation }: CustomDisciplineItemProps): JSX.Element => {
-  const { data: discipline, loading } = useLoadGroupInfo(apiKey)
+  const { data: discipline, loading } = useLoadDiscipline({ apiKey })
 
   const navigate = (): void => {
     if (!discipline) {

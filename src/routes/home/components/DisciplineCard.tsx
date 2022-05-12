@@ -51,7 +51,7 @@ interface PropsType {
 
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { disciplineId, onPress, navigateToNextExercise } = props
-  const { data: discipline } = useLoadDiscipline(disciplineId)
+  const { data: discipline } = useLoadDiscipline({ disciplineId })
   const { data: nextExercise, refresh: refreshNextExercise } = useReadNextExercise(discipline)
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const moduleAlreadyStarted = progress !== null && progress !== 0

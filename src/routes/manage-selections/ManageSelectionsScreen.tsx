@@ -58,7 +58,7 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   useFocusEffect(refresh)
 
   const Item = ({ id }: { id: number }): JSX.Element => {
-    const { data: item } = useLoadDiscipline(id)
+    const { data: item } = useLoadDiscipline({ disciplineId: id })
     const unselectProfessionAndRefresh = (id: number) => {
       removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
