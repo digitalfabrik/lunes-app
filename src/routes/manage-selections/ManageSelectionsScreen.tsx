@@ -4,20 +4,17 @@ import React, { ReactElement, useCallback } from 'react'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
-import { CloseIconRed } from '../../../assets/images'
 import AddElement from '../../components/AddElement'
 import HorizontalLine from '../../components/HorizontalLine'
-import ListItem from '../../components/ListItem'
-import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
-import { useLoadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { removeSelectedProfession } from '../../services/AsyncStorage'
+import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import CustomDisciplineItem from './components/CustomDisciplineItem'
+import ProfessionItem from './components/ProfessionItem'
 
 const Root = styled.ScrollView`
   display: flex;
@@ -33,21 +30,12 @@ const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
 `
 
-const CloseIconContainer = styled.Pressable`
-  padding-right: ${props => props.theme.spacings.sm};
-`
-
 interface Props {
   navigation: StackNavigationProp<RoutesParams, 'ManageDisciplines'>
 }
 
 const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
-  const {
-    data: selectedProfessions,
-    loading,
-    error,
-    refresh: refreshSelectedProfessions
-  } = useReadSelectedProfessions()
+  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
   const refresh = useCallback(() => {
@@ -57,23 +45,19 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   useFocusEffect(refresh)
 
-  const Item = ({ id }: { id: number }): JSX.Element => {
-    const { data: item } = useLoadDiscipline(id)
-    const unselectProfessionAndRefresh = (id: number) => {
+  const professionItems = selectedProfessions?.map(id => {
+    const unselectProfessionAndRefresh = () => {
       removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
-    return (
-      <ListItem
-        icon={item?.icon}
-        title={item?.title ?? ''}
-        rightChildren={
-          <CloseIconContainer onPress={() => unselectProfessionAndRefresh(id)} testID='delete-icon'>
-            <CloseIconRed />
-          </CloseIconContainer>
-        }
-      />
-    )
-  }
+    return <ProfessionItem key={id} id={id} deleteItem={unselectProfessionAndRefresh} />
+  })
+
+  const customDisciplineItems = customDisciplines?.map(apiKey => {
+    const deleteCustomDisciplineAndRefresh = () => {
+      removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
+    }
+    return <CustomDisciplineItem key={apiKey} apiKey={apiKey} deleteItem={deleteCustomDisciplineAndRefresh} />
+  })
 
   const navigateToProfessionSelection = () => {
     navigation.navigate('ScopeSelection', { initialSelection: false })
@@ -88,20 +72,12 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
       <Heading>{labels.manageDisciplines.heading}</Heading>
       <SectionHeading>{labels.manageDisciplines.yourProfessions}</SectionHeading>
       <HorizontalLine />
-      <ServerResponseHandler error={error} loading={loading} refresh={refreshSelectedProfessions}>
-        {selectedProfessions?.map(profession => (
-          <Item key={profession} id={profession} />
-        ))}
-      </ServerResponseHandler>
+      {professionItems}
       <AddElement onPress={navigateToProfessionSelection} label={labels.manageDisciplines.addProfession} />
 
       <SectionHeading>{labels.manageDisciplines.yourCustomDisciplines}</SectionHeading>
       <HorizontalLine />
-      <ServerResponseHandler error={error} loading={loading} refresh={refreshCustomDisciplines}>
-        {customDisciplines?.map(customDiscipline => (
-          <CustomDisciplineItem key={customDiscipline} refresh={refreshCustomDisciplines} apiKey={customDiscipline} />
-        ))}
-      </ServerResponseHandler>
+      {customDisciplineItems}
 
       <AddElement
         onPress={navigateToAddCustomDiscipline}
