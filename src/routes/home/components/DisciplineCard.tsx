@@ -3,6 +3,8 @@ import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
+import ErrorMessage from '../../../components/ErrorMessage'
+import Loading from '../../../components/Loading'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
@@ -22,6 +24,10 @@ const ProgressContainer = styled.View`
   flex-direction: row;
   align-items: center;
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
+`
+
+const LoadingContainer = styled.View`
+  padding-top: ${props => props.theme.spacings.xxl};
 `
 
 const NumberText = styled(Subheading)`
@@ -50,7 +56,7 @@ interface PropsType {
 
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { disciplineId, onPress, navigateToNextExercise } = props
-  const { data: discipline } = useLoadDiscipline(disciplineId)
+  const { data: discipline, loading, error, refresh } = useLoadDiscipline(disciplineId)
   const { data: nextExercise } = useReadNextExercise(discipline)
   const { data: progress } = useReadProgress(discipline)
   const moduleAlreadyStarted = progress !== null && progress !== 0
@@ -72,9 +78,22 @@ const DisciplineCard = (props: PropsType): ReactElement => {
     }
   }
 
+  if (loading) {
+    return (
+      <Card>
+        <LoadingContainer>
+          <Loading isLoading={loading} />
+        </LoadingContainer>
+      </Card>
+    )
+  }
+
   if (!discipline) {
-    // TODO LUN-301 handle loading
-    return <></>
+    return (
+      <Card>
+        <ErrorMessage error={error} refresh={refresh} />
+      </Card>
+    )
   }
 
   return (
