@@ -37,13 +37,13 @@ describe('HomeScreen', () => {
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
 
-    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const { getByText, getAllByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
-
-    fireEvent.press(firstDiscipline)
+    const moduleButtons = getAllByText(labels.home.checkModules)
+    fireEvent.press(moduleButtons[0])
 
     expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
   })

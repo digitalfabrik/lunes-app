@@ -111,6 +111,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
   }
 
+  console.log(current.document)
+
   const buttonLabel =
     currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
       ? labels.exercises.showResults

@@ -8,6 +8,7 @@ import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import render from '../../../../testing/render'
 import DisciplineCard from '../DisciplineCard'
 
+jest.mock('@react-navigation/native')
 jest.useFakeTimers()
 jest.mock('../../../../hooks/useLoadDiscipline')
 
