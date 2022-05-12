@@ -3,13 +3,14 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { BUTTONS_THEME } from '../constants/data'
+import { NetworkError } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import Button from './Button'
 
 const Container = styled.View`
-  width: ${wp('90%')}px;
+  width: ${wp('80%')}px;
   margin: auto;
-  margin-top: ${props => props.theme.spacings.xl};
+  margin-top: ${props => props.theme.spacings.md};
   text-align: center;
   display: flex;
   align-items: center;
@@ -29,7 +30,7 @@ const ErrorMessage = ({ error, refresh }: ErrorMessageProps): JSX.Element | null
   error && (
     <Container>
       <ErrorText>
-        {error.message === 'Network Error' ? `${labels.general.error.noWifi} (${error.message})` : error.message}
+        {error.message === NetworkError ? `${labels.general.error.noWifi} (${error.message})` : error.message}
       </ErrorText>
       <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
     </Container>
