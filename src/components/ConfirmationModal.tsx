@@ -73,15 +73,15 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
           <Message>{text}</Message>
           {children}
 
-          {cancelButtonText && (
-            <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.contained} />
-          )}
           <Button
             label={confirmationButtonText}
             onPress={confirmationAction}
             disabled={confirmationDisabled}
-            buttonTheme={cancelButtonText ? BUTTONS_THEME.outlined : BUTTONS_THEME.contained}
+            buttonTheme={BUTTONS_THEME.contained}
           />
+          {cancelButtonText && (
+            <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
+          )}
         </ModalContainer>
       </Overlay>
     </Modal>

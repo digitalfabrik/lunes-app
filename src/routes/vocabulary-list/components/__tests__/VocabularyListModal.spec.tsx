@@ -15,13 +15,18 @@ describe('VocabularyListModal', () => {
   const documents = new DocumentBuilder(2).build()
 
   const setIsModalVisible = jest.fn()
+  const setIsFeedbackModalVisible = jest.fn()
   const setSelectedDocumentIndex = jest.fn()
+
 
   it('should update current document', () => {
     const { getByText } = render(
       <VocabularyListModal
+        kebabMenu={<></>}
+        setIsFeedbackModalVisible={setIsFeedbackModalVisible}
         documents={documents}
         isModalVisible
+        isFeedbackModalVisible={false}
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={0}
         setSelectedDocumentIndex={setSelectedDocumentIndex}
@@ -36,7 +41,10 @@ describe('VocabularyListModal', () => {
   it('should close modal for last word', () => {
     const { getByText } = render(
       <VocabularyListModal
+        kebabMenu={<></>}
+        setIsFeedbackModalVisible={setIsFeedbackModalVisible}
         documents={documents}
+        isFeedbackModalVisible={false}
         isModalVisible
         setIsModalVisible={setIsModalVisible}
         selectedDocumentIndex={1}

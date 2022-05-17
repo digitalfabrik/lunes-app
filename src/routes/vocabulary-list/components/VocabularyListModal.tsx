@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
+import FeedbackModal from '../../../components/FeedbackModal'
 import ImageCarousel from '../../../components/ImageCarousel'
 import WordItem from '../../../components/WordItem'
 import { BUTTONS_THEME } from '../../../constants/data'
@@ -19,7 +20,8 @@ const ModalContainer = styled.View`
 
 const ModalHeader = styled.View`
   display: flex;
-  align-items: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
   padding: ${props => props.theme.spacings.xs};
   border-bottom-color: ${props => props.theme.colors.disabled};
   border-bottom-width: 1px;
@@ -40,8 +42,11 @@ const ButtonContainer = styled.View`
 
 interface VocabularyListModalProps {
   documents: Document[]
+  kebabMenu: ReactNode
   isModalVisible: boolean
+  isFeedbackModalVisible: boolean
   setIsModalVisible: (isModalVisible: boolean) => void
+  setIsFeedbackModalVisible: (isFeedbackModalVisible: boolean) => void
   selectedDocumentIndex: number
   setSelectedDocumentIndex: (selectedDocumentIndex: number) => void
 }
@@ -51,7 +56,10 @@ const VocabularyListModal = ({
   isModalVisible,
   setIsModalVisible,
   selectedDocumentIndex,
-  setSelectedDocumentIndex
+  setSelectedDocumentIndex,
+  setIsFeedbackModalVisible,
+  isFeedbackModalVisible,
+  kebabMenu
 }: VocabularyListModalProps): ReactElement => {
   const goToNextWord = (): void => {
     if (selectedDocumentIndex + 1 < documents.length) {
@@ -65,6 +73,7 @@ const VocabularyListModal = ({
         <SafeAreaView>
           <ModalHeader>
             <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
+            {kebabMenu}
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
@@ -94,6 +103,7 @@ const VocabularyListModal = ({
           </ButtonContainer>
         </SafeAreaView>
       </ModalContainer>
+      <FeedbackModal visible={isFeedbackModalVisible} setVisible={setIsFeedbackModalVisible} />
     </Modal>
   )
 }
