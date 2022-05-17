@@ -30,20 +30,18 @@ jest.mock('../../../components/HeaderWithMenu', () => {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should navigate to discipline', () => {
+  it('should navigate to discipline', async () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
     mocked(useLoadDiscipline)
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
-
-    const { getByText, getAllByText } = render(<HomeScreen navigation={navigation} />)
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
-    const moduleButtons = getAllByText(labels.home.checkModules)
-    fireEvent.press(moduleButtons[0])
+    fireEvent.press(firstDiscipline)
 
     expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
   })

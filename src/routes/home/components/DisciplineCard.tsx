@@ -94,7 +94,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon} >
+    <Card heading={discipline.title} icon={discipline.icon} onPress={() => onPress(discipline)}>
       <>
         <ProgressContainer>
           <Progress.Circle
