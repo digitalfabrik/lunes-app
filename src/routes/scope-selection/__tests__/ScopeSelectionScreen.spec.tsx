@@ -54,7 +54,10 @@ describe('ScopeSelection', () => {
     fireEvent.press(button)
 
     await waitFor(() => {
-      expect(navigation.navigate).toHaveBeenCalledWith('Home')
+      expect(navigation.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'Home' }]
+      })
     })
   })
 
@@ -65,7 +68,10 @@ describe('ScopeSelection', () => {
     const button = getByText(labels.scopeSelection.confirmSelection)
     fireEvent.press(button)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    expect(navigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
   })
 
   it('should hide welcome message and buttons for non initial view', () => {

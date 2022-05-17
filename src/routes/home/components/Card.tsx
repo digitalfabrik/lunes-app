@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Heading } from '../../../components/text/Heading'
@@ -12,8 +12,11 @@ const Icon = styled.Image`
 const Box = styled.Pressable`
   background-color: ${props => props.theme.colors.backgroundAccent};
   border: 1px solid ${props => props.theme.colors.disabled};
+  display: flex;
+  justify-content: space-between;
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
+  height: ${hp('28%')}px;
 `
 
 const BoxHeading = styled.View`
@@ -34,7 +37,7 @@ const IconContainer = styled.View`
 `
 
 interface PropsType {
-  heading: string
+  heading?: string
   icon?: string | ReactElement
   onPress?: () => void
   children: ReactNode
@@ -44,10 +47,12 @@ const Card = (props: PropsType): ReactElement => {
   const { heading, icon, onPress, children } = props
   return (
     <Box onPress={onPress}>
-      <BoxHeading>
-        {icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
-        <Title>{heading}</Title>
-      </BoxHeading>
+      {(icon || heading) && (
+        <BoxHeading>
+          {icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
+          {heading && <Title>{heading}</Title>}
+        </BoxHeading>
+      )}
       {children}
     </Box>
   )

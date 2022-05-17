@@ -1,38 +1,16 @@
-import React from 'react'
-import styled from 'styled-components/native'
+import React, { ReactElement } from 'react'
 
-import { CloseIconRed } from '../../../../assets/images'
-import ListItem from '../../../components/ListItem'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
-import { removeCustomDiscipline } from '../../../services/AsyncStorage'
-import { reportError } from '../../../services/sentry'
+import SelectionItem from './SelectionItem'
 
 interface PropsType {
-  refresh: () => void
   apiKey: string
+  deleteItem: () => void
 }
 
-const CloseIconContainer = styled.Pressable`
-  padding-right: ${props => props.theme.spacings.sm};
-`
-
-const CustomDisciplineItem = ({ apiKey, refresh }: PropsType): JSX.Element => {
-  const { data } = useLoadGroupInfo(apiKey)
-
-  const deleteCustomDisciplineAndRefresh = (item: string) => {
-    removeCustomDiscipline(item).then(refresh).catch(reportError)
-  }
-
-  return (
-    <ListItem
-      title={data ? data.title : ''}
-      rightChildren={
-        <CloseIconContainer onPress={() => deleteCustomDisciplineAndRefresh(apiKey)} testID='delete-icon'>
-          <CloseIconRed />
-        </CloseIconContainer>
-      }
-    />
-  )
+const CustomDisciplineItem = ({ apiKey, deleteItem }: PropsType): ReactElement => {
+  const discipline = useLoadGroupInfo(apiKey)
+  return <SelectionItem discipline={discipline} deleteItem={deleteItem} />
 }
 
 export default CustomDisciplineItem
