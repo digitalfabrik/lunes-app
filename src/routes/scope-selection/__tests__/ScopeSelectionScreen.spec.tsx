@@ -28,7 +28,7 @@ describe('ScopeSelection', () => {
   })
 
   it('should navigate to profession selection', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
@@ -41,36 +41,42 @@ describe('ScopeSelection', () => {
     fireEvent.press(firstDiscipline)
 
     expect(navigation.navigate).toHaveBeenCalledWith('ProfessionSelection', {
-      discipline: mockDisciplines[0],
+      discipline: mockDisciplines()[0],
       initialSelection: true
     })
   })
 
   it('should skip selection', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     const button = getByText(labels.scopeSelection.skipSelection)
     fireEvent.press(button)
 
     await waitFor(() => {
-      expect(navigation.navigate).toHaveBeenCalledWith('Home')
+      expect(navigation.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'Home' }]
+      })
     })
   })
 
   it('should confirm selection', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     const button = getByText(labels.scopeSelection.confirmSelection)
     fireEvent.press(button)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+    expect(navigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
   })
 
   it('should hide welcome message and buttons for non initial view', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
     const { queryByText } = render(<ScopeSelection navigation={navigation} route={getRoute(false)} />)
     expect(queryByText(labels.scopeSelection.welcome)).toBeNull()
     expect(queryByText(labels.scopeSelection.skipSelection)).toBeNull()

@@ -41,27 +41,20 @@ export interface ConfirmationModalProps {
   visible: boolean
   onClose: () => void
   text: string
+  children?: ReactNode
+  lockingModal?: boolean
   confirmationButtonText: string
   cancelButtonText?: string
   confirmationAction: () => void
   confirmationDisabled?: boolean
-  children?: ReactNode
   testID?: string
 }
 
 // TODO Further adjustments gonna be done with LUN-312
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const {
-    visible,
-    onClose,
-    text,
-    confirmationButtonText,
-    cancelButtonText,
-    confirmationAction,
-    children,
-    testID,
-    confirmationDisabled = false
-  } = props
+  const { visible, text, confirmationButtonText, cancelButtonText, confirmationAction, children, lockingModal, onClose, confirmationDisabled =false, testID } = props
+
+
   return (
     <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
       <Overlay>

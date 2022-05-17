@@ -41,6 +41,7 @@ describe('WordChoiceExerciseScreen', () => {
     name: 'WordChoiceExercise',
     params: {
       documents: testDocuments,
+      disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack()
     }

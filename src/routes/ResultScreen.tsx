@@ -64,15 +64,16 @@ interface Props {
 }
 
 const ResultScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, results, disciplineTitle, documents, closeExerciseAction } = route.params
+  const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction } = route.params
   const { level, description, title } = EXERCISES[exercise]
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
+    navigation.navigate(EXERCISES[exercise].screen, {
       documents,
+      disciplineId,
       disciplineTitle,
       closeExerciseAction
     })
@@ -100,6 +101,7 @@ const ResultScreen = ({ navigation, route }: Props): ReactElement => {
     navigation.navigate('ResultDetail', {
       resultType: item,
       documents,
+      disciplineId,
       disciplineTitle,
       exercise,
       results,

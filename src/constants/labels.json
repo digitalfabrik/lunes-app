@@ -14,7 +14,7 @@
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
-    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
+    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteModal": {
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
       "cancel": "Abbrechen",
@@ -63,6 +63,13 @@
       "title": "Level 2",
       "description": "Den richtigen Artikel auswählen"
     },
+    "lockedExerciseModal": {
+      "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
+      "confirmBotton": "Aufgabe freischalten",
+      "cancelBotton": "Ok",
+      "descriptionPart1": "Du musst",
+      "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
+    },
     "write": {
       "title": "Level 3",
       "description": "Das Wort mit Artikel schreiben",
@@ -94,6 +101,7 @@
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
     "checkEntries": "Eingaben überprüfen",
     "retryExercise": "Übung wiederholen",
+    "unlockedExercise": "Glückwunsch, deine nächste Übung ist jetzt freigeschaltet.",
     "wrong": "falsche",
     "similar": "ähnliche",
     "correct": "richtige",
@@ -126,6 +134,7 @@
     },
     "plurals": "Plural",
     "error": {
+      "unknown": "Ein unbekannter Fehler ist aufgetreten.",
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
       "retryButton": "Erneut versuchen"
     },

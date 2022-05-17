@@ -10,18 +10,17 @@ export interface DocumentResult {
 }
 
 interface ExerciseParams {
+  disciplineId: number
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
 }
 
-export type ExercisesParams =
-  | {
-      documents: null
-      discipline: Discipline
-      disciplineTitle: string
-    }
-  | ExerciseParams
+export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
+  discipline: Discipline
+  documents: Document[] | null
+  closeExerciseAction?: CommonNavigationAction
+}
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey

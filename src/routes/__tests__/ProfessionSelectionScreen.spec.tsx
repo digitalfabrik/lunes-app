@@ -41,34 +41,34 @@ describe('ProfessionSelectionScreen', () => {
 
   it('should select profession when pressed', async () => {
     await AsyncStorageService.setSelectedProfessions([])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
     const { findByText, queryAllByTestId } = render(
       <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
     )
     expect(await findByText(labels.scopeSelection.skipSelection)).toBeDefined()
-    const profession = await findByText(mockDisciplines[0].title)
+    const profession = await findByText(mockDisciplines()[0].title)
     expect(profession).toBeDefined()
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
     fireEvent.press(profession)
     await waitFor(async () => {
       const selectedProfessions = await AsyncStorageService.getSelectedProfessions()
-      expect(selectedProfessions).toEqual([mockDisciplines[0]])
+      expect(selectedProfessions).toEqual([mockDisciplines()[0].id])
     })
   })
 
   it('should unselect profession when pressed', async () => {
-    await AsyncStorageService.setSelectedProfessions([mockDisciplines[0]])
+    await AsyncStorageService.setSelectedProfessions([mockDisciplines()[0].id])
 
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
     const { findByText, queryAllByTestId } = render(
       <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
     )
     expect(await findByText(labels.scopeSelection.confirmSelection)).toBeDefined()
-    const profession = await findByText(mockDisciplines[0].title)
+    const profession = await findByText(mockDisciplines()[0].title)
     expect(profession).toBeDefined()
     expect(queryAllByTestId('check-icon')).toHaveLength(1)
     fireEvent.press(profession)
@@ -80,10 +80,10 @@ describe('ProfessionSelectionScreen', () => {
   })
 
   it('should disable selection when not initial view', async () => {
-    await AsyncStorageService.setSelectedProfessions([mockDisciplines[0]])
+    await AsyncStorageService.setSelectedProfessions([mockDisciplines()[0].id])
 
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines[0]]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
     const { findAllByTestId } = render(<ProfessionSelectionScreen route={getRoute(false)} navigation={navigation} />)
     const professions = await findAllByTestId('list-item')
@@ -91,11 +91,11 @@ describe('ProfessionSelectionScreen', () => {
   })
 
   it('should navigate on selection when not initial view', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
     const { findByText } = render(<ProfessionSelectionScreen route={getRoute(false)} navigation={navigation} />)
-    const profession = await findByText(mockDisciplines[0].title)
+    const profession = await findByText(mockDisciplines()[0].title)
     fireEvent.press(profession)
     await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('ManageDisciplines'))
   })

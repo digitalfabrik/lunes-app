@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
@@ -7,7 +7,8 @@ import styled from 'styled-components/native'
 import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { Discipline } from '../../constants/endpoints'
+import { EXERCISES } from '../../constants/data'
+import { Discipline, Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
@@ -56,21 +57,39 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
+  const navigateToNextExercise = (
+    disciplineId: number,
+    exerciseKey: number,
+    disciplineTitle: string,
+    documents: Document[]
+  ): void => {
+    navigation.navigate(EXERCISES[exerciseKey].screen, {
+      disciplineId,
+      disciplineTitle,
+      documents,
+      closeExerciseAction: CommonActions.navigate('Home')
+    })
+  }
+
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDiscipline key={customDiscipline} apiKey={customDiscipline} navigation={navigation} />
+    <CustomDiscipline
+      key={customDiscipline}
+      apiKey={customDiscipline}
+      navigation={navigation}
+      refresh={refreshCustomDisciplines}
+    />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
     <DisciplineCard
-      key={profession.id}
-      discipline={profession}
-      showProgress
+      key={profession}
+      disciplineId={profession}
       onPress={navigateToDiscipline}
-      navigateToNextExercise={navigateToDiscipline} // TODO LUN-290 add progress
+      navigateToNextExercise={navigateToNextExercise}
     />
   ))
 
