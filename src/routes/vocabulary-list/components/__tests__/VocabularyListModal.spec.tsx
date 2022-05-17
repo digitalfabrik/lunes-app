@@ -18,7 +18,6 @@ describe('VocabularyListModal', () => {
   const setIsFeedbackModalVisible = jest.fn()
   const setSelectedDocumentIndex = jest.fn()
 
-
   it('should update current document', () => {
     const { getByText } = render(
       <VocabularyListModal
