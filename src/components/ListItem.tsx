@@ -84,6 +84,7 @@ interface ListItemProps {
   children?: ReactElement
   onPress?: () => void
   rightChildren?: ReactElement
+  arrowDisabled?: boolean
   disabled?: boolean
 }
 
@@ -95,6 +96,7 @@ const ListItem = ({
   badgeLabel,
   children,
   rightChildren,
+  arrowDisabled = false,
   disabled = false
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
@@ -136,10 +138,10 @@ const ListItem = ({
   const iconToRender = icon && (
     <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
   )
-
+  const arrowColor = arrowDisabled ? theme.colors.disabled : theme.colors.primary
   const rightChildrenToRender = rightChildren ?? (
     <ChevronRight
-      fill={pressed ? theme.colors.buttonSelectedSecondary : theme.colors.primary}
+      fill={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
       testID='arrow'
       width={wp('6%')}
       height={hp('6%')}
