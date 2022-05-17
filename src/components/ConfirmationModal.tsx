@@ -42,7 +42,6 @@ export interface ConfirmationModalProps {
   onClose: () => void
   text: string
   children?: ReactNode
-  lockingModal?: boolean
   confirmationButtonText: string
   cancelButtonText?: string
   confirmationAction: () => void
@@ -52,8 +51,17 @@ export interface ConfirmationModalProps {
 
 // TODO Further adjustments gonna be done with LUN-312
 const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
-  const { visible, text, confirmationButtonText, cancelButtonText, confirmationAction, children, lockingModal, onClose, confirmationDisabled =false, testID } = props
-
+  const {
+    visible,
+    text,
+    confirmationButtonText,
+    cancelButtonText,
+    confirmationAction,
+    children,
+    onClose,
+    confirmationDisabled = false,
+    testID
+  } = props
 
   return (
     <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
@@ -64,6 +72,7 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
           </Icon>
           <Message>{text}</Message>
           {children}
+
           {cancelButtonText && (
             <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.contained} />
           )}

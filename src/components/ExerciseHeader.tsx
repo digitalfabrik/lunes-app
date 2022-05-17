@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconWhite } from '../../assets/images'
+import { CloseCircleIconWhite, MenuIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
 import FeedbackModal from './FeedbackModal'
+import KebabMenu from './KebabMenu'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
 import { NavigationTitle } from './NavigationTitle'
 import { ContentSecondary } from './text/Content'
@@ -52,10 +54,9 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         headerRight: () => (
           <HeaderRightContainer>
             <ProgressText>{progressText}</ProgressText>
-            {/* TODO Remove comment when LUNES-269 is ready */}
-            {/* <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}> */}
-            {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
-            {/* </KebabMenu> */}
+            <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}>
+              <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+            </KebabMenu>
           </HeaderRightContainer>
         ),
         headerRightContainerStyle: {

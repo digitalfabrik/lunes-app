@@ -95,7 +95,6 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
               placeholder={labels.addCustomDiscipline.placeholder}
               value={code}
               onChangeText={setCode}
-              clearable
               rightContainer={
                 <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
                   <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
