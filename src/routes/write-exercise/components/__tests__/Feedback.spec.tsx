@@ -24,7 +24,7 @@ describe('Feedback section', () => {
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const documentWithResult: DocumentResult = { ...document, result, numberOfTries }
+    const documentWithResult: DocumentResult = { document, result, numberOfTries }
     return render(
       <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
     )
@@ -60,6 +60,10 @@ describe('Feedback section', () => {
     const submission = 'Der Auto'
     const { queryByText } = renderFeedback('incorrect', 1, submission, true)
 
-    expect(queryByText(`${labels.exercises.write.feedback.wrong}`)).toBeTruthy()
+    expect(
+      queryByText(
+        `${labels.exercises.write.feedback.wrong} ${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+      )
+    ).toBeTruthy()
   })
 })

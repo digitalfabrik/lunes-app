@@ -1,7 +1,9 @@
-import { Article } from '../constants/data'
+import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress, NextExercise } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { loadDisciplines } from '../hooks/useLoadDisciplines'
+import AsyncStorage from './AsyncStorage'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -31,9 +33,12 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
   return newDocuments
 }
 
+export const wordsDescription = (numberOfChildren: number): string =>
+  `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
+
 export const childrenLabel = (discipline: Discipline): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (!discipline.parentTitle) {
+  if (!discipline.parentTitle && !discipline.apiKey) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {
@@ -45,10 +50,51 @@ export const childrenLabel = (discipline: Discipline): string => {
 export const childrenDescription = (discipline: Discipline): string =>
   `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
-export const shuffleArray = <T>(array: T[]): void => {
-  for (let i = array.length - 1; i > 0; i -= 1) {
+export const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    // eslint-disable-next-line no-param-reassign
-    ;[array[i], array[j]] = [array[j], array[i]]
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+/*
+  Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
+  returns
+  disciplineId: the leaf discipline which needs to be done next
+  exerciseKey: exerciseKey of the next exercise which needs to be done
+  */
+export const getNextExercise = async (profession: Discipline | null): Promise<NextExercise | null> => {
+  if (!profession) {
+    return null
+  }
+  const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
+  if (disciplines.length <= 0) {
+    throw new Error(`No Disciplines for id ${profession.id}`)
+  }
+  const progress = await AsyncStorage.getExerciseProgress()
+  const doneExercisesOfLeafDiscipline = (disciplineId: number): number => {
+    const progressOfDiscipline = progress[disciplineId]
+    return progressOfDiscipline
+      ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
+      : 0
+  }
+  const firstUnfinishedDiscipline = disciplines.find(
+    discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress
+  )
+  if (!firstUnfinishedDiscipline) {
+    return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
+  }
+  const disciplineProgress = progress[firstUnfinishedDiscipline.id]
+  if (!disciplineProgress) {
+    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: exercisesWithoutProgress }
+  }
+  const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
+    exercise => disciplineProgress[exercise.key] === undefined
+  )
+  return {
+    disciplineId: firstUnfinishedDiscipline.id,
+    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
   }
 }

@@ -1,7 +1,6 @@
 import { ARTICLES } from '../constants/data'
-import { Discipline, Document, ENDPOINTS } from '../constants/endpoints'
+import { Document, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import { shuffleArray } from '../services/helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
 export interface AlternativeWordFromServer {
@@ -28,19 +27,19 @@ const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
     }))
   }))
 
-export const loadDocuments = async (discipline: Discipline): Promise<Document[]> => {
-  const url = ENDPOINTS.documents.replace(':id', `${discipline.id}`)
-
-  const response = await getFromEndpoint<DocumentFromServer[]>(url, discipline.apiKey)
+export const loadDocuments = async ({
+  disciplineId,
+  apiKey
+}: {
+  disciplineId: number
+  apiKey?: string
+}): Promise<Document[]> => {
+  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
+  const response = await getFromEndpoint<DocumentFromServer[]>(url, apiKey)
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = (discipline: Discipline, shuffle = false): Return<Document[]> => {
-  const documents = useLoadAsync(loadDocuments, discipline)
-  if (shuffle && documents.data) {
-    shuffleArray(documents.data)
-  }
-  return documents
-}
+const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<Document[]> =>
+  useLoadAsync(loadDocuments, { disciplineId, apiKey })
 
 export default useLoadDocuments

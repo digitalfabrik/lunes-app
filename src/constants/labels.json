@@ -1,8 +1,20 @@
 {
+  "scopeSelection": {
+    "welcome": "Willkommen bei Lunes!",
+    "selectProfession": "Wähle jetzt den Beruf, den du lernen möchtest.",
+    "skipSelection": "Überspringen",
+    "confirmSelection": "Starten"
+  },
   "home": {
-    "welcome": "Willkommen bei Lunes!\nLerne Vokabeln für deinen Beruf.",
+    "welcome": "Willkommen bei Lunes!",
+    "haveFun": "Viel Spaß beim Lernen",
+    "progressDescription": "Modulen erledigt",
+    "start": "Beginnen",
+    "continue": "Weitermachen",
     "addCustomDiscipline": "Bereich hinzufügen",
-    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden.",
+    "customDisciplineSection": "Individueller Lernbereich",
+    "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
+    "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteModal": {
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
       "cancel": "Abbrechen",
@@ -10,9 +22,17 @@
     },
     "impressum": "Impressum"
   },
+  "manageDisciplines": {
+    "heading": "Verwalte deine Lernbereiche",
+    "yourProfessions": "Deine Berufsauswahl",
+    "yourCustomDisciplines": "Deine individuellen Bereiche",
+    "yourSavedProgress": "Deine gespeicherten Lernbereiche",
+    "addProfession": "Beruf hinzufügen",
+    "descriptionAddCustomDiscipline": "Hier kannst du eigene Lernbereiche mit deinem QR-Code hinzufügen."
+  },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",
-    "description": "Bitte gib den Code über die Tastatur ein.",
+    "description": "Bitte gib den Code über die Tastatur ein oder scanne den QR-Code.",
     "placeholder": "Code eingeben",
     "submitLabel": "hinzufügen",
     "backNavigation": "Zur Startseite",
@@ -102,10 +122,12 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
-      "of": "von"
+      "of": "von",
+      "manageDisciplines": "Bereiche verwalten"
     },
     "plurals": "Plural",
     "error": {
+      "unknown": "Ein unbekannter Fehler ist aufgetreten.",
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
       "retryButton": "Erneut versuchen"
     },

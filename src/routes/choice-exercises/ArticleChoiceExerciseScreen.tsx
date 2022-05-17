@@ -4,7 +4,6 @@ import React, { ReactElement } from 'react'
 
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -14,14 +13,16 @@ interface ArticleChoiceExerciseScreenProps {
 }
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
-  const response = useLoadDocuments(route.params.discipline, true)
+  const { documents, disciplineTitle, disciplineId } = route.params
 
   const documentToAnswers = (document: Document): Answer[] =>
     ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
 
   return (
     <SingleChoiceExercise
-      response={response}
+      documents={documents}
+      disciplineId={disciplineId}
+      disciplineTitle={disciplineTitle}
       documentToAnswers={documentToAnswers}
       navigation={navigation}
       route={route}

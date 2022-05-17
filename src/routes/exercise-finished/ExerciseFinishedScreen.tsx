@@ -14,7 +14,7 @@ import {
 } from '../../../assets/images'
 import Button from '../../components/Button'
 import { HeadingBackground } from '../../components/text/Heading'
-import { BUTTONS_THEME, ExerciseKeys, EXERCISES } from '../../constants/data'
+import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import ShareSection from './components/ShareSection'
@@ -54,7 +54,7 @@ interface Props {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
-  const { exercise, discipline, results } = route.params.result
+  const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction } = route.params
   const [message, setMessage] = React.useState<string>('')
   // eslint-disable-next-line
   const exerciseUnlocked = false // TODO: LUN-131 logic
@@ -75,20 +75,16 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   }, [results])
 
   const repeatExercise = (): void => {
-    navigation.navigate(EXERCISES[exercise].nextScreen, {
-      discipline,
-      ...(exercise === ExerciseKeys.writeExercise ? { retryData: { data: results } } : {})
+    navigation.navigate(EXERCISES[exercise].screen, {
+      documents,
+      disciplineId,
+      disciplineTitle,
+      closeExerciseAction
     })
   }
 
   const checkResults = (): void => {
-    navigation.navigate('Result', {
-      result: {
-        discipline,
-        exercise,
-        results
-      }
-    })
+    navigation.navigate('Result', route.params)
   }
 
   return (
@@ -129,7 +125,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         buttonTheme={BUTTONS_THEME.outlined}
         onPress={repeatExercise}
       />
-      <ShareSection discipline={discipline} results={results} />
+      <ShareSection disciplineTitle={disciplineTitle} results={results} />
     </Root>
   )
 }

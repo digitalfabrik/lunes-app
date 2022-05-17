@@ -1,12 +1,13 @@
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
+import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
@@ -14,8 +15,10 @@ jest.useFakeTimers()
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn()
+  shuffleArray: jest.fn(it => it)
 }))
+
+jest.mock('../../../services/AsyncStorage')
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
@@ -30,28 +33,19 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   const documents = new DocumentBuilder(2).build()
-
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
-      discipline: {
-        id: 1,
-        title: 'TestTitel',
-        numberOfChildren: 2,
-        isLeaf: true,
-        parentTitle: 'parent',
-        icon: 'my_icon',
-        apiKey: 'my_api_key',
-        description: '',
-        needsTrainingSetEndpoint: false
-      }
+      documents,
+      disciplineId: 1,
+      disciplineTitle: 'TestTitel',
+      closeExerciseAction: CommonActions.goBack()
     }
   }
-  it('should allow to skip an exercise and try it out later', () => {
-    mockUseLoadAsyncWithData(documents)
 
+  it('should allow to skip an exercise and try it out later', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
     const tryLater = getByText(labels.exercises.tryLater)
@@ -65,7 +59,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should not allow to skip last document', () => {
-    mockUseLoadAsyncWithData(documents)
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
@@ -79,7 +72,6 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should show word again when answered wrong', () => {
-    mockUseLoadAsyncWithData(documents)
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
@@ -91,5 +83,19 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.next))
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
+  })
+
+  it('should save progress correctly', async () => {
+    const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
+
+    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent(getByText('Das'), 'pressOut')
+    await fireEvent.press(getByText(labels.exercises.showResults))
+
+    await expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
+      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
+    ])
   })
 })

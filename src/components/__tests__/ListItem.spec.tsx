@@ -15,7 +15,7 @@ describe('ListItem', () => {
   const title = 'Discipline Item title'
   const badge = '12'
 
-  const renderDisciplineItem = (arrowDisabled = false): RenderAPI =>
+  const renderDisciplineItem = (disabled = false, arrowDisabled = false): RenderAPI =>
     render(
       <ListItem
         onPress={onPress}
@@ -24,6 +24,7 @@ describe('ListItem', () => {
         title={title}
         badgeLabel={badge}
         arrowDisabled={arrowDisabled}
+        disabled={disabled}
       />
     )
 
@@ -53,8 +54,9 @@ describe('ListItem', () => {
       expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
     })
   })
+
   it('should show arrow disabled', async () => {
-    const { getByTestId } = renderDisciplineItem(true)
+    const { getByTestId } = renderDisciplineItem(false, true)
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.disabled)
@@ -63,10 +65,6 @@ describe('ListItem', () => {
   it('should handle long press', async () => {
     const { getByTestId, getByText } = renderDisciplineItem()
     const arrowIcon = getByTestId('arrow')
-
-    expect(arrowIcon.props.fill).toBe(COLORS.primary)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
-
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'longPress')
 
@@ -93,5 +91,17 @@ describe('ListItem', () => {
 
     expect(onPress).not.toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
+  })
+
+  it('should have correct background color', () => {
+    const { getByTestId } = renderDisciplineItem()
+    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.backgroundAccent)
+  })
+
+  it('should handle disable correctly', () => {
+    const { getByTestId, getByText } = renderDisciplineItem(true)
+    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.disabled)
+    fireEvent.press(getByText(title))
+    expect(onPress).not.toHaveBeenCalled()
   })
 })

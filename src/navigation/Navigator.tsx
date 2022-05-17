@@ -1,14 +1,15 @@
 import { NavigationContainer, NavigationProp } from '@react-navigation/native'
-import { createStackNavigator, StackNavigationOptions, TransitionPresets } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
+import React, { ComponentType, useState } from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
+import { useTheme } from 'styled-components'
 
 import {
+  ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   CloseCircleIconWhite,
-  ArrowLeftCircleIconBlue,
   HomeCircleIconBlue,
   HomeCircleIconWhite
 } from '../../assets/images'
@@ -16,10 +17,12 @@ import { NavigationHeaderLeft } from '../components/NavigationHeaderLeft'
 import { NavigationTitle } from '../components/NavigationTitle'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
-import ExercisesScreen from '../routes/ExercisesScreens'
+import ExercisesScreen from '../routes/ExercisesScreen'
 import ImprintScreen from '../routes/ImprintScreen'
+import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -27,6 +30,8 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import HomeScreen from '../routes/home/HomeScreen'
+import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
+import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { RoutesParams } from './NavigationTypes'
@@ -56,12 +61,15 @@ const styles = (headerHeight?: number) =>
 
 const Stack = createStackNavigator<RoutesParams>()
 
-const Navigator = (): JSX.Element => {
-  const [isPressed, setIsPressed] = React.useState<boolean>(false)
-  const [isHomeButtonPressed, setIsHomeButtonPressed] = React.useState<boolean>(false)
+const Navigator = (): JSX.Element | null => {
+  const [isPressed, setIsPressed] = useState<boolean>(false)
+  const [isHomeButtonPressed, setIsHomeButtonPressed] = useState<boolean>(false)
 
   // Set only height for tablets since header doesn't scale auto
   const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const { data: professions, loading } = useReadSelectedProfessions()
+
+  const theme = useTheme()
 
   const defaultOptions = (
     title: string,
@@ -106,14 +114,28 @@ const Navigator = (): JSX.Element => {
     headerTitleContainerStyle: styles().headerTitleContainer
   })
 
+  if (loading) {
+    return null
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={TransitionPresets.SlideFromRightIOS}>
+      <Stack.Navigator
+        initialRouteName={professions !== null ? 'Home' : 'ScopeSelection'}
+        screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.manageDisciplines, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='ScopeSelection'
+          component={ScopeSelection}
+          initialParams={{ initialSelection: true }}
+        />
         <Stack.Screen
           options={({ route, navigation }) =>
             defaultOptions(
-              route.params.discipline.parentTitle ?? labels.general.header.overview,
+              labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
               !!route.params.discipline.parentTitle
@@ -126,6 +148,18 @@ const Navigator = (): JSX.Element => {
           options={({ route, navigation }) =>
             defaultOptions(
               route.params.discipline.parentTitle ?? labels.general.header.overview,
+              ArrowLeftCircleIconWhite,
+              navigation,
+              !!route.params.discipline.parentTitle
+            )
+          }
+          name='ProfessionSelection'
+          component={ProfessionSelectionScreen}
+        />
+        <Stack.Screen
+          options={({ route: { params }, navigation }) =>
+            defaultOptions(
+              params.discipline.parentTitle ?? labels.general.header.overview,
               ArrowLeftCircleIconWhite,
               navigation,
               true
@@ -192,6 +226,13 @@ const Navigator = (): JSX.Element => {
           }
           name='Imprint'
           component={ImprintScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) =>
+            defaultOptions(labels.general.header.overview, ArrowLeftCircleIconWhite, navigation, false)
+          }
+          name='ManageDisciplines'
+          component={ManageSelectionsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

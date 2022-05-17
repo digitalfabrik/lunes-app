@@ -33,11 +33,13 @@ export interface Document {
   alternatives: AlternativeWord[]
 }
 
-export type Documents = Document[]
-
 export const ENDPOINTS = {
+  discipline: 'disciplines',
   disciplines: 'disciplines_by_level',
   disciplinesByGroup: 'disciplines_by_group',
   trainingSet: 'training_set',
   documents: 'documents/:id'
 }
+
+export const ForbiddenError = 'Request failed with status code 403'
+export const NetworkError = 'Network Error'

@@ -4,7 +4,7 @@ parameters:
     description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
     type: boolean
 docker:
-  - image: circleci/node:14.18.0
+  - image: cimg/node:14.19.0
 resource_class: small
 steps:
   - checkout
@@ -16,7 +16,12 @@ steps:
       command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
       working_directory: ~/attached_workspace
   - run:
+      name: Create github release
+      command: yarn github-release create android ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "$(yarn --silent manage-metadata parse-release-notes --android)"<<^ parameters.production_delivery >> --development-release<</ parameters.production_delivery >> --download-links "${ANDROID_ARTIFACT_URLS}"
+      working_directory: tools
+  - run:
       name: Create release notes
       command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --android)" >> ${BASH_ENV}
   - notify:
       success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
+      channel: releases

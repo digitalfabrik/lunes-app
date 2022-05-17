@@ -18,7 +18,7 @@ export interface Exercise {
   title: string
   description: string
   level: number
-  nextScreen: keyof RoutesParams
+  screen: keyof RoutesParams
 }
 
 export const EXERCISES: Exercise[] = [
@@ -27,30 +27,42 @@ export const EXERCISES: Exercise[] = [
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     level: 0,
-    nextScreen: 'VocabularyList'
+    screen: 'VocabularyList'
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     level: 1,
-    nextScreen: 'WordChoiceExercise'
+    screen: 'WordChoiceExercise'
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
     level: 2,
-    nextScreen: 'ArticleChoiceExercise'
+    screen: 'ArticleChoiceExercise'
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
     level: 3,
-    nextScreen: 'WriteExercise'
+    screen: 'WriteExercise'
   }
 ]
+
+export const exercisesWithoutProgress = 1
+export const exercisesWithProgress = EXERCISES.length - exercisesWithoutProgress
+
+export interface Progress {
+  [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
+}
+
+export interface NextExercise {
+  disciplineId: number
+  exerciseKey: number
+}
 
 export const BUTTONS_THEME = {
   outlined: 'outlined',

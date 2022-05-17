@@ -213,7 +213,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: circleci/android:api-29-node
+            - image: cimg/android:2022.03.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
@@ -264,7 +264,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 4
         macos:
-            xcode: 12.5.1
+            xcode: 13.3.0
         resource_class: medium
         shell: /bin/bash --login -o pipefail
         steps:
@@ -300,16 +300,12 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         parameters:
-            delivery:
-                default: none
-                description: Which type of delivery is made. If none, the bumped version is not committed.
-                enum:
-                    - none
-                    - development
-                    - production
-                type: enum
+            prepare_delivery:
+                default: false
+                description: Whether to prepare for a delivery. If true, the version bump is committed and a JIRA release is created.
+                type: boolean
         resource_class: small
         steps:
             - checkout
@@ -322,21 +318,22 @@ jobs:
                 command: echo "export NEW_VERSION_CODE=$(yarn --silent next-version calc | jq .versionCode)" >> ${BASH_ENV}
                 name: Calculate next version code
                 working_directory: tools
-            - unless:
-                condition:
-                    equal:
-                        - none
-                        - << parameters.delivery >>
+            - when:
+                condition: << parameters.prepare_delivery >>
                 steps:
                     - run:
                         command: yarn git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
                         name: Bump git version
                         working_directory: tools
+                    - run:
+                        command: yarn jira-release create ${NEW_VERSION_NAME} --private-key ${JIRA_PRIVATE_KEY} --access-token ${JIRA_OAUTH_TOKEN} --consumer-key ${JIRA_CONSUMER_KEY} --project-name ${CIRCLE_PROJECT_REPONAME}
+                        name: Create jira release
+                        working_directory: tools
             - persist_environment_variables
             - notify
     check:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         steps:
             - checkout
             - check_config
@@ -357,7 +354,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: circleci/android:api-29-node
+            - image: cimg/android:2022.03.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -393,7 +390,7 @@ jobs:
             - notify
     deliver_browser_stack:
         docker:
-            - image: circleci/android:api-29-node
+            - image: cimg/android:2022.03.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
@@ -429,7 +426,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 12.5.1
+            xcode: 13.3.0
         parameters:
             production_delivery:
                 default: false
@@ -467,7 +464,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: circleci/node:14.17.0
+            - image: cimg/node:14.19.0
         resource_class: small
         steps:
             - checkout
@@ -481,7 +478,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: circleci/node:14.18.0
+            - image: cimg/node:14.19.0
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
@@ -497,13 +494,18 @@ jobs:
                 name: Prepare artifact urls
                 working_directory: ~/attached_workspace
             - run:
+                command: yarn github-release create android ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "$(yarn --silent manage-metadata parse-release-notes --android)"<<^ parameters.production_delivery >> --development-release<</ parameters.production_delivery >> --download-links "${ANDROID_ARTIFACT_URLS}"
+                name: Create github release
+                working_directory: tools
+            - run:
                 command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --android)" >> ${BASH_ENV}
                 name: Create release notes
             - notify:
+                channel: releases
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
     notify_ios:
         docker:
-            - image: circleci/node:14.18.0
+            - image: cimg/node:14.19.0
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
@@ -519,13 +521,18 @@ jobs:
                 name: Prepare artifact urls
                 working_directory: ~/attached_workspace
             - run:
+                command: yarn github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "$(yarn --silent manage-metadata parse-release-notes --ios)"<<^ parameters.production_delivery >> --development-release<</ parameters.production_delivery >> --download-links "${IOS_ARTIFACT_URLS}"
+                name: Create github release
+                working_directory: tools
+            - run:
                 command: echo "export RELEASE_NOTES=$(yarn --silent --cwd tools manage-metadata parse-release-notes --ios)" >> ${BASH_ENV}
                 name: Create release notes
             - notify:
+                channel: releases
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on iOS!\n${RELEASE_NOTES}\n${IOS_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: circleci/android:api-29-node
+            - image: cimg/android:2022.03.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -543,7 +550,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 12.5.1
+            xcode: 13.3.0
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
@@ -579,7 +586,7 @@ workflows:
             - bump_version:
                 context:
                     - mattermost
-                delivery: none
+                prepare_delivery: false
             - build_android:
                 context:
                     - mattermost
@@ -613,7 +620,8 @@ workflows:
                 context:
                     - mattermost
                     - deliverino
-                delivery: development
+                    - jira
+                prepare_delivery: true
             - build_android:
                 context:
                     - mattermost
@@ -684,7 +692,8 @@ workflows:
                 context:
                     - mattermost
                     - deliverino
-                delivery: production
+                    - jira
+                prepare_delivery: true
             - build_android:
                 context:
                     - mattermost

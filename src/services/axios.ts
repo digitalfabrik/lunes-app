@@ -1,11 +1,21 @@
 import axios from 'axios'
-import { setupCache } from 'axios-cache-interceptor'
+import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
 import { addTrailingSlashToUrl } from './url'
 
 const baseURL = __DEV__ ? 'https://lunes-test.tuerantuer.org/api' : 'https://lunes.tuerantuer.org/api'
 
-setupCache(axios)
+const keyGenerator = buildKeyGenerator(true, ({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({
+  url: baseURL + (baseURL && url ? '/' : '') + url,
+  headers: headers?.Authorization ?? 'not-set',
+  method,
+  params: params as unknown,
+  data
+}))
+
+setupCache(axios, {
+  generateKey: keyGenerator
+})
 
 export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined

@@ -1,91 +1,62 @@
 import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
-import { ReactTestInstance } from 'react-test-renderer'
 
 import labels from '../../../constants/labels.json'
-import { Return } from '../../../hooks/useLoadAsync'
+import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
+import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { getReturnOf } from '../../../testing/helper'
+import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
+import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
+jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
+jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../../../hooks/useLoadGroupInfo')
-
-const mockDisciplines = [
-  {
-    id: 1,
-    title: 'First Discipline',
-    description: 'Description1',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false
-  },
-  {
-    id: 2,
-    title: 'Second Discipline',
-    description: 'Description1',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false
-  }
-]
-
-const mockCustomDiscipline = {
-  id: 1,
-  title: 'Custom Discipline',
-  description: 'Description',
-  icon: 'none',
-  numberOfChildren: 1,
-  isLeaf: false,
-  apiKey: 'test',
-  parentTitle: null,
-  needsTrainingSetEndpoint: false
-}
+jest.mock('../../../components/HeaderWithMenu', () => {
+  const Text = require('react-native').Text
+  return () => <Text>HeaderWithMenu</Text>
+})
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  const getReturnOf = <T,>(data: T): Return<T> => ({
-    data,
-    error: null,
-    loading: false,
-    refresh: () => undefined
-  })
-
-  it('should navigate to discipline', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+  it('should navigate to discipline', () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
+    mocked(useLoadDiscipline)
+      .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
+      .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = await findByText('First Discipline')
-    const secondDiscipline = await findByText('Second Discipline')
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const firstDiscipline = getByText('First Discipline')
+    const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
 
     fireEvent.press(firstDiscipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines[0] })
+    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
   })
 
   it('should show custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
     mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
-    const { findByText } = render(<HomeScreen navigation={navigation} />)
-    const customDiscipline = await findByText('Custom Discipline')
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const customDiscipline = getByText('Custom Discipline')
     expect(customDiscipline).toBeDefined()
 
     fireEvent.press(customDiscipline)
@@ -93,30 +64,17 @@ describe('HomeScreen', () => {
     expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
   })
 
-  it('should delete custom discipline', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+  it('should show suggestion to add custom discipline', () => {
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
 
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['test']))
-    mocked(useLoadGroupInfo).mockReturnValue(getReturnOf(mockCustomDiscipline))
-    const spyOnDeletion = jest.spyOn(AsyncStorageService, 'deleteCustomDiscipline')
+    const { getByText } = render(<HomeScreen navigation={navigation} />)
+    const addCustomDiscipline = getByText(labels.home.addCustomDiscipline)
+    expect(addCustomDiscipline).toBeDefined()
 
-    const { findByText, findByTestId } = render(<HomeScreen navigation={navigation} />)
-    const customDiscipline = await findByText('Custom Discipline')
-    expect(customDiscipline).toBeDefined()
+    fireEvent.press(addCustomDiscipline)
 
-    const row = await findByTestId('Swipeable')
-    const swipeable = row.children[0] as ReactTestInstance
-    swipeable.instance.openRight()
-
-    const deleteIcon = await findByTestId('trash-icon')
-    expect(deleteIcon).toBeDefined()
-    await fireEvent.press(deleteIcon)
-
-    const confirmationModelConfirmButton = await findByText(labels.home.deleteModal.confirm)
-    fireEvent.press(confirmationModelConfirmButton)
-
-    expect(spyOnDeletion).toHaveBeenCalledTimes(1)
-    expect(spyOnDeletion).toHaveBeenCalledWith('test')
+    expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
 })

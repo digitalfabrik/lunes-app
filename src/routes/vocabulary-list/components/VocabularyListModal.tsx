@@ -7,15 +7,14 @@ import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
 import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import ImageCarousel from '../../../components/ImageCarousel'
+import WordItem from '../../../components/WordItem'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Documents } from '../../../constants/endpoints'
+import { Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import SingleChoiceListItem from '../../choice-exercises/components/SingleChoiceListItem'
 
 const ModalContainer = styled.View`
   background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
+  flex: 1;
 `
 
 const ModalHeader = styled.View`
@@ -28,18 +27,19 @@ const ModalHeader = styled.View`
 `
 
 const ItemContainer = styled.View`
-  padding: ${props => props.theme.spacings.md};
-  height: 45%;
+  margin: ${props => props.theme.spacings.xl} 0;
+  height: 10%;
+  width: 85%;
+  align-self: center;
 `
 
 const ButtonContainer = styled.View`
   display: flex;
-  align-items: center;
-  margin-top: -40%;
+  align-self: center;
 `
 
 interface VocabularyListModalProps {
-  documents: Documents
+  documents: Document[]
   isModalVisible: boolean
   setIsModalVisible: (isModalVisible: boolean) => void
   selectedDocumentIndex: number
@@ -61,25 +61,19 @@ const VocabularyListModal = ({
 
   return (
     <Modal animationType='slide' transparent visible={isModalVisible} onRequestClose={() => setIsModalVisible(false)}>
-      <SafeAreaView>
-        <ModalContainer>
+      <ModalContainer>
+        <SafeAreaView>
           <ModalHeader>
             <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />
           <ItemContainer>
-            <SingleChoiceListItem
+            <WordItem
               answer={{
                 word: documents[selectedDocumentIndex].word,
                 article: documents[selectedDocumentIndex].article
               }}
-              onClick={() => undefined}
-              correct={false}
-              selected={false}
-              anyAnswerSelected={false}
-              delayPassed={false}
-              disabled
             />
           </ItemContainer>
           <ButtonContainer>
@@ -98,8 +92,8 @@ const VocabularyListModal = ({
               />
             )}
           </ButtonContainer>
-        </ModalContainer>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ModalContainer>
     </Modal>
   )
 }

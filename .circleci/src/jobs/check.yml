@@ -1,5 +1,5 @@
 docker:
-  - image: circleci/node:14.17.0
+  - image: cimg/node:14.19.0
 steps:
   - checkout
   - check_config

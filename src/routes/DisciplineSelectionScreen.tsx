@@ -13,12 +13,12 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
+  margin: 0 ${props => props.theme.spacings.md};
 `
 
 const StyledList = styled(FlatList)`
   width: 100%;
+  flex-grow: 0;
 ` as ComponentType as new () => FlatList<Discipline>
 
 interface DisciplineSelectionScreenProps {
@@ -32,7 +32,12 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
 
   const handleNavigation = (selectedItem: Discipline): void => {
     if (selectedItem.isLeaf) {
-      navigation.navigate('Exercises', { discipline: selectedItem })
+      navigation.navigate('Exercises', {
+        discipline: selectedItem,
+        disciplineTitle: selectedItem.title,
+        disciplineId: selectedItem.id,
+        documents: null
+      })
     } else {
       navigation.push('DisciplineSelection', {
         discipline: selectedItem

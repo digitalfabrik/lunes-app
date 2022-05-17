@@ -7,7 +7,8 @@ jobs:
       context:
         - mattermost
         - deliverino
-      delivery: development
+        - jira
+      prepare_delivery: true
   - build_android:
       context:
         - mattermost

@@ -8,18 +8,36 @@ interface DisciplineListItemProps {
   item: Discipline
   onPress: () => void
   hasBadge: boolean
+  rightChildren?: ReactElement
+  disabled?: boolean
 }
 
-const DisciplineListItem = ({ item, onPress, hasBadge }: DisciplineListItemProps): ReactElement | null => {
-  const { numberOfChildren, title, icon } = item
+const DisciplineListItem = ({
+  item,
+  onPress,
+  hasBadge,
+  rightChildren,
+  disabled = false
+}: DisciplineListItemProps): ReactElement | null => {
+  const { numberOfChildren, title, icon, apiKey } = item
   const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined
   // Description either contains the number of children and the type of children or just the type of children if the number is shown as badge
   const description = hasBadge ? childrenLabel(item) : childrenDescription(item)
 
-  if (numberOfChildren === 0) {
+  if (numberOfChildren === 0 && !apiKey) {
     return null
   }
-  return <ListItem title={title} icon={icon} description={description} onPress={onPress} badgeLabel={badgeLabel} />
+  return (
+    <ListItem
+      title={title}
+      icon={icon}
+      description={description}
+      onPress={onPress}
+      badgeLabel={badgeLabel}
+      rightChildren={rightChildren}
+      disabled={disabled}
+    />
+  )
 }
 
 export default DisciplineListItem

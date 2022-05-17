@@ -1,0 +1,6 @@
+issue_key: LUN-289
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: Leere persönliche Bereiche werden nun angezeigt.
