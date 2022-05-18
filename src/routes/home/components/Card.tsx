@@ -16,7 +16,7 @@ const Box = styled.Pressable`
   justify-content: space-between;
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
-  height: ${hp('28%')}px;
+  min-height: ${hp('28%')}px;
 `
 
 const BoxHeading = styled.View`
