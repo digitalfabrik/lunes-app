@@ -63,6 +63,13 @@
       "title": "Level 2",
       "description": "Den richtigen Artikel auswählen"
     },
+    "lockedExerciseModal": {
+      "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
+      "confirmBotton": "Aufgabe freischalten",
+      "cancelBotton": "Ok",
+      "descriptionPart1": "Du musst",
+      "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
+    },
     "write": {
       "title": "Level 3",
       "description": "Das Wort mit Artikel schreiben",
@@ -94,6 +101,7 @@
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
     "checkEntries": "Eingaben überprüfen",
     "retryExercise": "Übung wiederholen",
+    "unlockedExercise": "Glückwunsch, deine nächste Übung ist jetzt freigeschaltet.",
     "wrong": "falsche",
     "similar": "ähnliche",
     "correct": "richtige",
