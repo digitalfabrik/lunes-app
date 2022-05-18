@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -37,12 +37,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
 
-  useFocusEffect(
-    useCallback(() => {
-      refreshCustomDisciplines()
-      refreshSelectedProfessions()
-    }, [refreshCustomDisciplines, refreshSelectedProfessions])
-  )
+  useFocusEffect(refreshCustomDisciplines)
+  useFocusEffect(refreshSelectedProfessions)
 
   const navigateToImprintScreen = (): void => {
     navigation.navigate('Imprint')

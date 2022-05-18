@@ -1,24 +1,13 @@
 import { Discipline } from '../constants/endpoints'
+import { DisciplineRequestData } from './useLoadDiscipline'
+import { DisciplinesRequestData } from './useLoadDisciplines'
 
-export type DisciplinesRequestData =
-  | {
-      apiKey: string
-    }
-  | {
-      parent: Discipline | null
-    }
+interface ApiKey {
+  apiKey: string
+}
 
-export type DisciplineRequestData =
-  | {
-      apiKey: string
-    }
-  | {
-      disciplineId: number
-    }
-
-export const isTypeLoadProtected = (
-  value: DisciplineRequestData | DisciplinesRequestData
-): value is { apiKey: string } => Object.prototype.hasOwnProperty.call(value, 'apiKey')
+export const isTypeLoadProtected = (value: DisciplineRequestData | DisciplinesRequestData): value is ApiKey =>
+  !!(value as ApiKey).apiKey
 
 export interface ServerResponseDiscipline {
   id: number

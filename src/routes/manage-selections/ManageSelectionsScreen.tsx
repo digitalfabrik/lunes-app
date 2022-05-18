@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback } from 'react'
+import React, { ReactElement } from 'react'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
@@ -37,12 +37,8 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
-  const refresh = useCallback(() => {
-    refreshCustomDisciplines()
-    refreshSelectedProfessions()
-  }, [refreshCustomDisciplines, refreshSelectedProfessions])
-
-  useFocusEffect(refresh)
+  useFocusEffect(refreshCustomDisciplines)
+  useFocusEffect(refreshSelectedProfessions)
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {

@@ -1,6 +1,6 @@
 import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -36,20 +36,12 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
   const [documents, setDocuments] = useState<Document[] | null>(null)
   const navigation = useNavigation<StackNavigationProp<RoutesParams, 'Home'>>()
 
-  useFocusEffect(
-    useCallback(() => {
-      refreshProgress()
-      refreshNextExercise()
-    }, [refreshProgress, refreshNextExercise])
-  )
+  useFocusEffect(refreshProgress)
+  useFocusEffect(refreshNextExercise)
 
   useEffect(() => {
     if (nextExercise) {
-      loadDocuments({ disciplineId: nextExercise.disciplineId })
-        .then(data => {
-          setDocuments(data)
-        })
-        .catch(reportError)
+      loadDocuments({ disciplineId: nextExercise.disciplineId }).then(setDocuments).catch(reportError)
     }
   }, [nextExercise])
 

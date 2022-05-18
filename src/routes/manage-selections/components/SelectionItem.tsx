@@ -7,8 +7,7 @@ import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { DisciplineRequestData } from '../../../hooks/helpers'
-import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { DisciplineRequestData, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 
 interface PropsType {
   identifier: DisciplineRequestData
