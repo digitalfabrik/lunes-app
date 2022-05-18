@@ -111,10 +111,10 @@ export const getProgress = async (profession: Discipline | null): Promise<number
     return 0
   }
   const progress = await AsyncStorage.getExerciseProgress()
-  let doneExercises = 0
-  profession.leafDisciplines.forEach(leaf => {
-    doneExercises += doneExercisesOfLeafDiscipline(leaf, progress)
-  })
+  const doneExercises = profession.leafDisciplines.reduce(
+    (acc, leaf) => acc + doneExercisesOfLeafDiscipline(leaf, progress),
+    0
+  )
   const totalExercises = profession.leafDisciplines.length * exercisesWithProgress
   return doneExercises / totalExercises
 }
