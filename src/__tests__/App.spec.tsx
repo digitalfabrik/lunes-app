@@ -9,7 +9,7 @@ jest.mock('react-navigation-header-buttons', () => ({
   OverflowMenuProvider: ({ children }: { children: ReactNode }) => <View>{children}</View>
 }))
 jest.mock('react-native-splash-screen', () => ({ hide: jest.fn() }))
-jest.mock('../navigation/Navigator', () => {
+jest.mock('../navigation/HomeStackNavigator', () => {
   const Text = require('react-native').Text
   return () => <Text>Navigator</Text>
 })
