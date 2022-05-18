@@ -1,4 +1,5 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -57,10 +58,18 @@ interface PropsType {
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { disciplineId, onPress, navigateToNextExercise } = props
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(disciplineId)
-  const { data: nextExercise } = useReadNextExercise(discipline)
-  const { data: progress } = useReadProgress(discipline)
+  const { data: nextExercise, refresh: refreshNextExercise } = useReadNextExercise(discipline)
+  const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
+
   const moduleAlreadyStarted = progress !== null && progress !== 0
   const [documents, setDocuments] = useState<Document[] | null>(null)
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshProgress()
+      refreshNextExercise()
+    }, [refreshProgress, refreshNextExercise])
+  )
 
   useEffect(() => {
     if (nextExercise) {
@@ -101,7 +110,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
       <>
         <ProgressContainer>
           <Progress.Circle
-            progress={(progress ?? 0) / discipline.numberOfChildren}
+            progress={progress ?? 0}
             size={50}
             indeterminate={false}
             color={theme.colors.progressIndicator}
@@ -110,10 +119,12 @@ const DisciplineCard = (props: PropsType): ReactElement => {
             thickness={6}
             testID='progress-circle'
           />
-          <NumberText>
-            {moduleAlreadyStarted && `${progress}/`}
-            {discipline.numberOfChildren}
-          </NumberText>
+          {discipline.leafDisciplines && (
+            <NumberText>
+              {moduleAlreadyStarted && `${Math.floor(progress * discipline.leafDisciplines.length)}/`}
+              {discipline.leafDisciplines.length}
+            </NumberText>
+          )}
           <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
         </ProgressContainer>
         <ButtonContainer>
