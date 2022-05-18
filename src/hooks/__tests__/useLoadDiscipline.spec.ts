@@ -14,7 +14,8 @@ const parent = {
   description: '',
   icon: '',
   parentTitle: null,
-  needsTrainingSetEndpoint: false
+  needsTrainingSetEndpoint: false,
+  leafDisciplines: [28]
 }
 
 const testData = [
@@ -26,7 +27,8 @@ const testData = [
     icon: 'https://lunes-test.tuerantuer.org/media/images/icon-metall-elektro-maschienen3x.png',
     created_by: null,
     total_training_sets: 7,
-    total_discipline_children: 0
+    total_discipline_children: 0,
+    nested_training_sets: [28]
   },
   // Training Set
   {
@@ -61,7 +63,9 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     title: 'Metall, Elektro & Maschinen',
     total_discipline_children: 0,
     total_training_sets: 7,
-    needsTrainingSetEndpoint: true
+    needsTrainingSetEndpoint: true,
+    nested_training_sets: [28],
+    leafDisciplines: [28]
   },
   {
     apiKey: undefined,
@@ -73,7 +77,8 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     numberOfChildren: 9,
     title: 'Sicherheit & Arbeitsschutz',
     total_documents: 9,
-    needsTrainingSetEndpoint: false
+    needsTrainingSetEndpoint: false,
+    leafDisciplines: undefined
   },
   {
     apiKey: undefined,
@@ -87,7 +92,8 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
     total_training_sets: 1,
-    needsTrainingSetEndpoint: true
+    needsTrainingSetEndpoint: true,
+    leafDisciplines: undefined
   }
 ]
 

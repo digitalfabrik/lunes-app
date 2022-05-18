@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
@@ -20,7 +21,9 @@ describe('DisciplineCard', () => {
 
   const renderDisciplineCard = (): RenderAPI =>
     render(
-      <DisciplineCard disciplineId={mockDisciplines()[0].id} navigateToNextExercise={navigate} onPress={onPress} />
+      <NavigationContainer>
+        <DisciplineCard disciplineId={mockDisciplines()[0].id} navigateToNextExercise={navigate} onPress={onPress} />
+      </NavigationContainer>
     )
 
   it('should show discipline card', async () => {
