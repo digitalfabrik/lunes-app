@@ -103,7 +103,7 @@ const VocabularyListModal = ({
           </ButtonContainer>
         </SafeAreaView>
       </ModalContainer>
-      <FeedbackModal visible={isFeedbackModalVisible} setVisible={setIsFeedbackModalVisible} />
+      <FeedbackModal visible={isFeedbackModalVisible} onClose={() => setIsFeedbackModalVisible(false)} />
     </Modal>
   )
 }

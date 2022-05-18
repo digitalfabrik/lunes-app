@@ -3,7 +3,7 @@ import React from 'react'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled from 'styled-components/native'
 
-import { LunesIcon, MenuIconWhite } from '../../assets/images'
+import { LunesIcon, MenuIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import KebabMenu from './KebabMenu'
@@ -32,6 +32,10 @@ const HeaderButtonsContainer = styled.View`
 `
 const MenuIconContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.md};
+`
+
+const MenuIconWhite = styled(MenuIcon)`
+  color: ${props => props.theme.colors.backgroundAccent};
 `
 
 interface Props {

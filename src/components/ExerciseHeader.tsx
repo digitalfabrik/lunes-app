@@ -27,6 +27,10 @@ const HeaderRightContainer = styled.View`
 const ProgressText = styled(ContentSecondary)`
   margin-right: ${props => props.theme.spacings.sm};
 `
+// /* TODO Remove comment when LUN-269 is ready */
+// const MenuIconPrimary = styled(MenuIcon)`
+//   color: ${props => props.theme.colors.primary};
+// `
 
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'>
@@ -52,8 +56,8 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         headerRight: () => (
           <HeaderRightContainer>
             <ProgressText>{progressText}</ProgressText>
-            {/* TODO Remove comment when LUNES-269 is ready */}
-            {/* <KebabMenu icon={<MenuIcon width={wp('5%')} height={wp('5%')} />}> */}
+            {/* TODO Remove comment when LUN-269 is ready */}
+            {/* <KebabMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
             {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
             {/* </KebabMenu> */}
           </HeaderRightContainer>
@@ -96,7 +100,7 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         cancelButtonText={labels.exercises.cancelModal.continue}
         confirmationAction={goBack}
       />
-      <FeedbackModal visible={isFeedbackModalVisible} setVisible={setIsFeedbackModalVisible} />
+      <FeedbackModal visible={isFeedbackModalVisible} onClose={() => setIsFeedbackModalVisible(false)} />
     </>
   )
 }

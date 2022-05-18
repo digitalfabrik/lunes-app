@@ -12,28 +12,28 @@ const TextInputContainer = styled.View`
 
 interface FeedbackModalProps {
   visible: boolean
-  setVisible: (visible: boolean) => void
+  onClose: () => void
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, setVisible }: FeedbackModalProps): ReactElement => {
+const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: FeedbackModalProps): ReactElement => {
   const [message, setMessage] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
-  const onClose = (): void => {
+  const onCloseFeedback = (): void => {
     setMessage('')
     setEmail('')
-    setVisible(false)
+    onClose()
   }
   const onSubmit = (): void => {
-    // TODO Submit Feedback LUNES-269
-    onClose()
+    // TODO Submit Feedback LUN-269
+    onCloseFeedback()
   }
 
   return (
     <ConfirmationModal
       testID='feedbackModal'
       visible={visible}
-      onClose={onClose}
+      onClose={onCloseFeedback}
       text={labels.feedback.question}
       confirmationButtonText={labels.feedback.sendFeedback}
       confirmationAction={onSubmit}
