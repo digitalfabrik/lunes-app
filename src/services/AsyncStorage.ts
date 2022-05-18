@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKey, Progress } from '../constants/data'
-import { Discipline } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 
 const progressKey = 'progress'
@@ -77,14 +76,6 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
-export const getProgress = async (profession: Discipline | null): Promise<number> => {
-  if (!profession) {
-    return 0
-  }
-  const progress = await AsyncStorage.getItem('progress')
-  return progress === profession.title ? 1 : 1 // TODO LUN-290
-}
-
 export default {
   getCustomDisciplines,
   setCustomDisciplines,
@@ -95,6 +86,5 @@ export default {
   removeSelectedProfession,
   saveExerciseProgress,
   setExerciseProgress,
-  getExerciseProgress,
-  getProgress
+  getExerciseProgress
 }

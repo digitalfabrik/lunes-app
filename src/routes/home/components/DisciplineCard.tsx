@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -67,9 +67,9 @@ const DisciplineCard = (props: PropsType): ReactElement => {
   const [documents, setDocuments] = useState<Document[] | null>(null)
 
   useFocusEffect(
-    React.useCallback(() => {
-      refreshNextExercise()
+    useCallback(() => {
       refreshProgress()
+      refreshNextExercise()
     }, [refreshProgress, refreshNextExercise])
   )
 
@@ -117,7 +117,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
       <>
         <ProgressContainer>
           <Progress.Circle
-            progress={(progress ?? 0) / discipline.numberOfChildren}
+            progress={progress ?? 0}
             size={50}
             indeterminate={false}
             color={theme.colors.progressIndicator}
@@ -126,10 +126,12 @@ const DisciplineCard = (props: PropsType): ReactElement => {
             thickness={6}
             testID='progress-circle'
           />
-          <NumberText>
-            {moduleAlreadyStarted && `${progress}/`}
-            {discipline.numberOfChildren}
-          </NumberText>
+          {discipline.leafDisciplines && (
+            <NumberText>
+              {moduleAlreadyStarted && `${Math.floor(progress * discipline.leafDisciplines.length)}/`}
+              {discipline.leafDisciplines.length}
+            </NumberText>
+          )}
           <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
         </ProgressContainer>
         {documents && documents.length > 0 && nextExercise && (
