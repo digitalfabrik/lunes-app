@@ -1,91 +1,55 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useTheme } from 'styled-components/native'
 
-import {
-  BookOutlineIconGrey,
-  BookOutlineIconWhite,
-  HeartOutlineIconGrey,
-  HeartOutlineIconWhite,
-  HomeOutlineIconGrey,
-  HomeOutlineIconWhite,
-  StarOutlineIconGrey,
-  StarOutlineIconWhite
-} from '../../assets/images'
-import HomeStackNavigator from './HomeStackNavigator'
+import labels from '../constants/labels.json'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
+import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
+import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
+import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
+import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
+import screenOptions from '../services/screenOptions'
+import BottomTabNavigator from './BottomTabNavigator'
+import { RoutesParams } from './NavigationTypes'
 
-const BottomTabNavigator = createBottomTabNavigator()
+const Stack = createStackNavigator<RoutesParams>()
 
-// TODO LUN-132, LUN-207, LUN-308: Remove this and use actual components
-const MockComponent = () => <></>
+const HomeStackNavigator = (): JSX.Element | null => {
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const options = screenOptions(headerHeight)
 
-const Navigator = (): JSX.Element | null => {
-  const theme = useTheme()
+  const { overviewExercises, cancelExercise } = labels.general.header
 
   return (
     <NavigationContainer>
-      <BottomTabNavigator.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarActiveTintColor: theme.colors.background,
-          tabBarStyle: { backgroundColor: theme.colors.primary, height: wp('14%') },
-          tabBarItemStyle: { height: wp('14%'), padding: wp('2%') },
-          tabBarLabelStyle: { fontSize: wp('3%') }
-        }}>
-        <BottomTabNavigator.Screen
-          name='home'
-          component={HomeStackNavigator}
-          options={{
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <HomeOutlineIconWhite width={wp('10%')} height={wp('10%')} />
-              ) : (
-                <HomeOutlineIconGrey width={wp('10%')} height={wp('10%')} />
-              ),
-            title: 'Home'
-          }}
+      <Stack.Navigator>
+        <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen
+          name='VocabularyList'
+          component={VocabularyListScreen}
+          options={({ navigation }) => options(overviewExercises, navigation, false)}
         />
-        <BottomTabNavigator.Screen
-          name='Favoriten'
-          component={MockComponent}
-          options={{
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <StarOutlineIconWhite width={wp('7%')} height={wp('7%')} />
-              ) : (
-                <StarOutlineIconGrey width={wp('7%')} height={wp('7%')} />
-              )
-          }}
+        <Stack.Screen
+          name='WordChoiceExercise'
+          component={WordChoiceExerciseScreen}
+          options={({ navigation }) => options(cancelExercise, navigation, true)}
         />
-        <BottomTabNavigator.Screen
-          name='Lexikon'
-          component={MockComponent}
-          options={{
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <BookOutlineIconWhite width={wp('7%')} height={wp('7%')} />
-              ) : (
-                <BookOutlineIconGrey width={wp('7%')} height={wp('7%')} />
-              )
-          }}
+        <Stack.Screen
+          name='ArticleChoiceExercise'
+          component={ArticleChoiceExerciseScreen}
+          options={({ navigation }) => options(cancelExercise, navigation, true)}
         />
-        <BottomTabNavigator.Screen
-          name='Meine vokabeln'
-          component={MockComponent}
-          options={{
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <HeartOutlineIconWhite width={wp('6%')} height={wp('6%')} />
-              ) : (
-                <HeartOutlineIconGrey width={wp('6%')} height={wp('6%')} />
-              )
-          }}
+        <Stack.Screen
+          name='WriteExercise'
+          component={WriteExerciseScreen}
+          options={({ navigation }) => options(cancelExercise, navigation, true)}
         />
-      </BottomTabNavigator.Navigator>
+        <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }
 
-export default Navigator
+export default HomeStackNavigator
