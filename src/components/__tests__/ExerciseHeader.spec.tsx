@@ -19,13 +19,13 @@ describe('ExerciseHeader', () => {
     const { getByText, getByTestId } = render(
       <ExerciseHeader navigation={navigation} currentWord={4} numberOfWords={10} />
     )
-    expect(getByTestId('confirmationModal')).toBeTruthy()
-    expect(getByTestId('confirmationModal').props.visible).toBe(false)
+    expect(getByTestId('customModal')).toBeTruthy()
+    expect(getByTestId('customModal').props.visible).toBe(false)
 
     act(BackHandler.mockPressBack)
 
-    expect(getByTestId('confirmationModal')).toBeTruthy()
-    expect(getByTestId('confirmationModal').props.visible).toBe(true)
+    expect(getByTestId('customModal')).toBeTruthy()
+    expect(getByTestId('customModal').props.visible).toBe(true)
     expect(getByText(labels.exercises.cancelModal.cancelAsk)).toBeTruthy()
     expect(getByText(labels.exercises.cancelModal.cancel)).toBeTruthy()
     expect(getByText(labels.exercises.cancelModal.continue)).toBeTruthy()

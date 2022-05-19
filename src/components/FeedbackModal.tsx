@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
 import labels from '../constants/labels.json'
-import ConfirmationModal from './ConfirmationModal'
+import CustomModal from './CustomModal'
 import CustomTextInput from './CustomTextInput'
 
 const TextInputContainer = styled.View`
@@ -30,7 +30,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
   }
 
   return (
-    <ConfirmationModal
+    <CustomModal
       testID='feedbackModal'
       visible={visible}
       onClose={onCloseFeedback}
@@ -54,7 +54,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
           clearable
         />
       </TextInputContainer>
-    </ConfirmationModal>
+    </CustomModal>
   )
 }
 

@@ -37,7 +37,7 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
-export interface ConfirmationModalProps {
+export interface CustomModalProps {
   visible: boolean
   onClose: () => void
   text: string
@@ -50,7 +50,7 @@ export interface ConfirmationModalProps {
 }
 
 // TODO Further adjustments gonna be done with LUN-312
-const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
+const CustomModal = (props: CustomModalProps): JSX.Element => {
   const {
     visible,
     text,
@@ -87,4 +87,4 @@ const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
     </Modal>
   )
 }
-export default ConfirmationModal
+export default CustomModal

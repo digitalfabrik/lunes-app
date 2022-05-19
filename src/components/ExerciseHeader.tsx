@@ -8,7 +8,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { CloseCircleIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import ConfirmationModal from './ConfirmationModal'
+import CustomModal from './CustomModal'
 import FeedbackModal from './FeedbackModal'
 import { NavigationHeaderLeft } from './NavigationHeaderLeft'
 import { NavigationTitle } from './NavigationTitle'
@@ -91,8 +91,8 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         color={theme.colors.progressIndicator}
       />
 
-      <ConfirmationModal
-        testID='confirmationModal'
+      <CustomModal
+        testID='customModal'
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         text={labels.exercises.cancelModal.cancelAsk}

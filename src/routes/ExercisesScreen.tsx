@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import ConfirmationModal from '../components/ConfirmationModal'
+import CustomModal from '../components/CustomModal'
 import ListItem from '../components/ListItem'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
@@ -82,7 +82,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   return (
     <Root>
       {documents && (
-        <ConfirmationModal
+        <CustomModal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
@@ -103,7 +103,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             </ContentTextBold>
             {labels.exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
-        </ConfirmationModal>
+        </CustomModal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
