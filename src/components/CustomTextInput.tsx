@@ -26,8 +26,7 @@ const ClearContainer = styled.TouchableOpacity`
 
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
   border: 1px solid ${props => props.borderColor};
-  padding-left: ${props => props.theme.spacings.sm};
-  padding-right: ${props => props.theme.spacings.sm};
+  padding: 0 ${props => props.theme.spacings.sm};
   border-radius: 2px;
   height: ${props => (props.lines > 1 ? props.lines * LINE_HEIGHT : MIN_HEIGHT)}px;
   flex-direction: row;
@@ -46,14 +45,10 @@ const ErrorContainer = styled.View`
 interface CustomTextInputProps extends TextInputProps {
   value: string
   onChangeText: (value: string) => void
-  /** calculates the height for textArea */
   lines?: number
-  /** shows clear indicator if set & input set */
   clearable?: boolean
   rightContainer?: ReactElement
-  /** Shows error message below the text input. Empty string provides a placeholder */
   errorMessage?: string
-  /** Custom border color can be defined */
   customBorderColor?: string
 }
 
@@ -65,7 +60,7 @@ const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string =>
   return isFocused ? theme.colors.primary : theme.colors.textSecondary
 }
 
-const CustomTextInput: React.FC<CustomTextInputProps> = ({
+const CustomTextInput = ({
   value,
   onChangeText,
   lines = 1,
