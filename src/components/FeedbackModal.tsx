@@ -35,6 +35,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
       visible={visible}
       onClose={onCloseFeedback}
       text={labels.feedback.question}
+      showCancelButton={false}
       confirmationButtonText={labels.feedback.sendFeedback}
       confirmationAction={onSubmit}
       confirmationDisabled={message.length === 0}>

@@ -97,7 +97,6 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
         onClose={() => setIsModalVisible(false)}
         text={labels.exercises.cancelModal.cancelAsk}
         confirmationButtonText={labels.exercises.cancelModal.cancel}
-        cancelButtonText={labels.exercises.cancelModal.continue}
         confirmationAction={goBack}
       />
       <FeedbackModal visible={isFeedbackModalVisible} onClose={() => setIsFeedbackModalVisible(false)} />

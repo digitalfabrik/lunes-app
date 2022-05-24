@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
+import labels from '../constants/labels.json'
 import Button from './Button'
 import { HeadingText } from './text/Heading'
 
@@ -43,7 +44,7 @@ export interface CustomModalProps {
   text: string
   children?: ReactNode
   confirmationButtonText: string
-  cancelButtonText?: string
+  showCancelButton?: boolean
   confirmationAction: () => void
   confirmationDisabled?: boolean
   testID?: string
@@ -55,7 +56,7 @@ const CustomModal = (props: CustomModalProps): JSX.Element => {
     visible,
     text,
     confirmationButtonText,
-    cancelButtonText,
+    showCancelButton = true,
     confirmationAction,
     children,
     onClose,
@@ -79,8 +80,8 @@ const CustomModal = (props: CustomModalProps): JSX.Element => {
             disabled={confirmationDisabled}
             buttonTheme={BUTTONS_THEME.contained}
           />
-          {cancelButtonText && (
-            <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
+          {showCancelButton && (
+            <Button label={labels.general.customModalCancel} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
           )}
         </ModalContainer>
       </Overlay>

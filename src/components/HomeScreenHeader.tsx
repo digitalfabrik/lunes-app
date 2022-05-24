@@ -42,7 +42,7 @@ interface Props {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const HeaderWithMenu = ({ navigation }: Props): JSX.Element => (
+const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
@@ -68,4 +68,4 @@ const HeaderWithMenu = ({ navigation }: Props): JSX.Element => (
   </Wrapper>
 )
 
-export default HeaderWithMenu
+export default HomeScreenHeader

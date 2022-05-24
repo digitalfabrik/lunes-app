@@ -17,7 +17,6 @@
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteModal": {
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
-      "cancel": "Schließen",
       "confirm": "Bereich löschen"
     },
     "impressum": "Impressum"
@@ -66,7 +65,6 @@
     "lockedExerciseModal": {
       "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
       "confirmButtonLabel": "Aufgabe freischalten",
-      "cancelButtonLabel": "Schließen",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
     },
@@ -90,8 +88,7 @@
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
-      "cancel": "Beenden",
-      "continue": "Schließen"
+      "cancel": "Beenden"
     }
   },
   "results": {
@@ -143,6 +140,7 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter"
+    "words": "Wörter",
+    "customModalCancel": "Zurück"
   }
 }

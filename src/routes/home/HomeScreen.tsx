@@ -4,7 +4,7 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
-import HeaderWithMenu from '../../components/HeaderWithMenu'
+import HomeScreenHeader from '../../components/HomeScreenHeader'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   return (
     <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View>
-        <HeaderWithMenu navigation={navigation} />
+        <HomeScreenHeader navigation={navigation} />
 
         <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
         <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>

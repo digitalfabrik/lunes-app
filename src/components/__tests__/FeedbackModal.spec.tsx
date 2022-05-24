@@ -8,7 +8,7 @@ import FeedbackModal from '../FeedbackModal'
 describe('FeedbackModal', () => {
   const onClose = jest.fn()
 
-  it('Button should be disabled for empty message', () => {
+  it('should have a disabled send button when message is empty', () => {
     const { getByText, getByPlaceholderText } = render(<FeedbackModal visible onClose={onClose} />)
     expect(getByText(labels.feedback.sendFeedback)).toBeDisabled()
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
@@ -19,7 +19,7 @@ describe('FeedbackModal', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('Clears feedback text by clicking clear button', () => {
+  it('should get a cleared feedback text when clear button was clicked', () => {
     const { getByPlaceholderText, getByTestId } = render(<FeedbackModal visible onClose={onClose} />)
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
     fireEvent.changeText(feedbackInputField, 'Mein Feedback')
@@ -27,7 +27,7 @@ describe('FeedbackModal', () => {
     expect(feedbackInputField.props.value).toBe('')
   })
 
-  it('Clears input fields after sending feedback', () => {
+  it('should get cleared input fields after sending feedback', () => {
     const { getByText, getByPlaceholderText } = render(<FeedbackModal visible onClose={onClose} />)
     const feedbackInputField = getByPlaceholderText(labels.feedback.feedbackPlaceholder)
     const emailInputField = getByPlaceholderText(labels.feedback.mailPlaceholder)

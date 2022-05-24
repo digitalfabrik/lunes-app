@@ -5,7 +5,7 @@ import { Text } from 'react-native'
 import render from '../../testing/render'
 import CustomModal, { CustomModalProps } from '../CustomModal'
 
-describe('ConfirmationModal', () => {
+describe('CustomModal', () => {
   const onClose = jest.fn()
   const confirmationAction = jest.fn()
   const childText = 'Children'
@@ -16,20 +16,19 @@ describe('ConfirmationModal', () => {
     text: 'Are you sure?',
     children: <Text>{childText}</Text>,
     confirmationButtonText: 'confirm',
-    cancelButtonText: 'cancel',
     confirmationAction
   }
 
   it('should display passed props', () => {
     const { getByText } = render(<CustomModal {...defaultModalProps} />)
     expect(getByText('Are you sure?')).toBeDefined()
-    expect(getByText('cancel')).toBeDefined()
+    expect(getByText('Zurück')).toBeDefined()
     expect(getByText('confirm')).toBeDefined()
   })
 
   it('should close on cancel button click', () => {
     const { getByText } = render(<CustomModal {...defaultModalProps} />)
-    const cancelButton = getByText('cancel')
+    const cancelButton = getByText('Zurück')
     fireEvent.press(cancelButton)
     expect(onClose).toHaveBeenCalled()
     expect(confirmationAction).not.toHaveBeenCalled()

@@ -52,7 +52,6 @@ interface CustomTextInputProps extends TextInputProps {
   customBorderColor?: string
 }
 
-// depending on error and focus the border color will be defined
 const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
   if (hasErrorMessage) {
     return theme.colors.incorrect
