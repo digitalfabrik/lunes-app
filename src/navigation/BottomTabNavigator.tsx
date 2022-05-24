@@ -4,14 +4,14 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components/native'
 
 import {
-  BookOutlineIconGrey,
-  BookOutlineIconWhite,
-  HeartOutlineIconGrey,
-  HeartOutlineIconWhite,
-  HomeOutlineIconGrey,
-  HomeOutlineIconWhite,
-  StarOutlineIconGrey,
-  StarOutlineIconWhite
+  BookIconGrey,
+  BookIconWhite,
+  HeartIconGrey,
+  HeartIconWhite,
+  HomeIconGrey,
+  HomeIconWhite,
+  StartIconGrey,
+  StartIconWhite
 } from '../../assets/images'
 import labels from '../constants/labels.json'
 import HomeStackNavigator from './HomeStackNavigator'
@@ -40,9 +40,9 @@ const Navigator = (): JSX.Element | null => {
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <HomeOutlineIconWhite width={wp('10%')} height={wp('10%')} />
+              <HomeIconWhite width={wp('10%')} height={wp('10%')} />
             ) : (
-              <HomeOutlineIconGrey width={wp('10%')} height={wp('10%')} />
+              <HomeIconGrey width={wp('10%')} height={wp('10%')} />
             ),
           title: labels.general.home
         }}
@@ -53,9 +53,9 @@ const Navigator = (): JSX.Element | null => {
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <StarOutlineIconWhite width={wp('7%')} height={wp('7%')} />
+              <StartIconWhite width={wp('7%')} height={wp('7%')} />
             ) : (
-              <StarOutlineIconGrey width={wp('7%')} height={wp('7%')} />
+              <StartIconGrey width={wp('7%')} height={wp('7%')} />
             ),
           title: labels.general.favorites
         }}
@@ -66,9 +66,9 @@ const Navigator = (): JSX.Element | null => {
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <BookOutlineIconWhite width={wp('7%')} height={wp('7%')} />
+              <BookIconWhite width={wp('7%')} height={wp('7%')} />
             ) : (
-              <BookOutlineIconGrey width={wp('7%')} height={wp('7%')} />
+              <BookIconGrey width={wp('7%')} height={wp('7%')} />
             ),
           title: labels.general.dictionary
         }}
@@ -79,9 +79,9 @@ const Navigator = (): JSX.Element | null => {
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <HeartOutlineIconWhite width={wp('6%')} height={wp('6%')} />
+              <HeartIconWhite width={wp('6%')} height={wp('6%')} />
             ) : (
-              <HeartOutlineIconGrey width={wp('6%')} height={wp('6%')} />
+              <HeartIconGrey width={wp('6%')} height={wp('6%')} />
             ),
           title: labels.general.userVocabulary
         }}
