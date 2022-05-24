@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import { COLORS } from '../constants/theme/colors'
-import { Route, RoutesParams } from '../navigation/NavigationTypes'
+import { Route, RoutesParams } from './NavigationTypes'
 
 const headerStyles = (headerHeight?: number) =>
   StyleSheet.create({

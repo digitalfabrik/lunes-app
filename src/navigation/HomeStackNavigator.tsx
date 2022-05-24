@@ -16,8 +16,8 @@ import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustom
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
-import screenOptions from '../services/screenOptions'
 import { RoutesParams } from './NavigationTypes'
+import screenOptions from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
@@ -35,7 +35,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
 
   return (
     <Stack.Navigator
-      initialRouteName={professions !== null ? 'Home' : 'ScopeSelection'}
+      initialRouteName={professions === null ? 'ScopeSelection' : 'Home'}
       screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
       <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen

@@ -10,9 +10,9 @@ import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerc
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import VocabularyListScreen from '../routes/vocabulary-list/VocabularyListScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
-import screenOptions from '../services/screenOptions'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
+import screenOptions from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
