@@ -1,8 +1,11 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
+import ErrorMessage from '../../../components/ErrorMessage'
+import Loading from '../../../components/Loading'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
@@ -22,6 +25,10 @@ const ProgressContainer = styled.View`
   flex-direction: row;
   align-items: center;
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
+`
+
+const LoadingContainer = styled.View`
+  padding-top: ${props => props.theme.spacings.xxl};
 `
 
 const NumberText = styled(Subheading)`
@@ -50,11 +57,19 @@ interface PropsType {
 
 const DisciplineCard = (props: PropsType): ReactElement => {
   const { disciplineId, onPress, navigateToNextExercise } = props
-  const { data: discipline } = useLoadDiscipline(disciplineId)
-  const { data: nextExercise } = useReadNextExercise(discipline)
-  const { data: progress } = useReadProgress(discipline)
+  const { data: discipline, loading, error, refresh } = useLoadDiscipline(disciplineId)
+  const { data: nextExercise, refresh: refreshNextExercise } = useReadNextExercise(discipline)
+  const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
+
   const moduleAlreadyStarted = progress !== null && progress !== 0
   const [documents, setDocuments] = useState<Document[] | null>(null)
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshProgress()
+      refreshNextExercise()
+    }, [refreshProgress, refreshNextExercise])
+  )
 
   useEffect(() => {
     if (nextExercise) {
@@ -72,9 +87,22 @@ const DisciplineCard = (props: PropsType): ReactElement => {
     }
   }
 
+  if (loading) {
+    return (
+      <Card>
+        <LoadingContainer>
+          <Loading isLoading={loading} />
+        </LoadingContainer>
+      </Card>
+    )
+  }
+
   if (!discipline) {
-    // TODO LUN-301 handle loading
-    return <></>
+    return (
+      <Card>
+        <ErrorMessage error={error} refresh={refresh} />
+      </Card>
+    )
   }
 
   return (
@@ -82,7 +110,7 @@ const DisciplineCard = (props: PropsType): ReactElement => {
       <>
         <ProgressContainer>
           <Progress.Circle
-            progress={(progress ?? 0) / discipline.numberOfChildren}
+            progress={progress ?? 0}
             size={50}
             indeterminate={false}
             color={theme.colors.progressIndicator}
@@ -91,10 +119,12 @@ const DisciplineCard = (props: PropsType): ReactElement => {
             thickness={6}
             testID='progress-circle'
           />
-          <NumberText>
-            {moduleAlreadyStarted && `${progress}/`}
-            {discipline.numberOfChildren}
-          </NumberText>
+          {discipline.leafDisciplines && (
+            <NumberText>
+              {moduleAlreadyStarted && `${Math.floor(progress * discipline.leafDisciplines.length)}/`}
+              {discipline.leafDisciplines.length}
+            </NumberText>
+          )}
           <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
         </ProgressContainer>
         <ButtonContainer>

@@ -9,5 +9,6 @@ export const formatDiscipline = (item: ServerResponse, parent?: Discipline | nul
   isLeaf: item.total_documents !== undefined,
   parentTitle: parent?.title ?? null,
   apiKey: parent?.apiKey,
-  needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0
+  needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0,
+  leafDisciplines: item.nested_training_sets
 })

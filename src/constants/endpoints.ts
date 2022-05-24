@@ -10,6 +10,7 @@ export interface Discipline {
   parentTitle: string | null // if null then it is the root discipline
   apiKey?: string
   needsTrainingSetEndpoint: boolean
+  leafDisciplines?: number[]
 }
 
 export interface AlternativeWord {
@@ -40,3 +41,6 @@ export const ENDPOINTS = {
   trainingSet: 'training_set',
   documents: 'documents/:id'
 }
+
+export const ForbiddenError = 'Request failed with status code 403'
+export const NetworkError = 'Network Error'
