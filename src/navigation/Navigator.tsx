@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import ResultDetailScreen from '../routes/ResultDetailScreen'
+import ResultScreen from '../routes/ResultScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
@@ -47,6 +49,12 @@ const HomeStackNavigator = (): JSX.Element | null => {
           options={({ navigation }) => options(cancelExercise, navigation, true)}
         />
         <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Result' component={ResultScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name='ResultDetail'
+          component={ResultDetailScreen}
+          options={({ navigation }) => options(labels.results.resultsOverview, navigation)}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

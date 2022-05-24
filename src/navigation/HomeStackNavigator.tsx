@@ -10,8 +10,6 @@ import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ExercisesScreen from '../routes/ExercisesScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
-import ResultDetailScreen from '../routes/ResultDetailScreen'
-import ResultScreen from '../routes/ResultScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
@@ -58,12 +56,6 @@ const HomeStackNavigator = (): JSX.Element | null => {
         name='Exercises'
         component={ExercisesScreen}
         options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
-      />
-      <Stack.Screen name='Result' component={ResultScreen} options={{ headerShown: false }} />
-      <Stack.Screen
-        name='ResultDetail'
-        component={ResultDetailScreen}
-        options={({ navigation }) => options(labels.results.resultsOverview, navigation)}
       />
       <Stack.Screen
         name='AddCustomDiscipline'
