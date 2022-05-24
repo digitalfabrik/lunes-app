@@ -12,6 +12,9 @@ const Container = styled.View`
   padding: ${props => props.theme.spacings.sm};
   border-radius: 6px;
   shadow-color: ${props => props.theme.colors.shadow};
+  shadow-offset: 0px 6px;
+  shadow-opacity: 0.2;
+  shadow-radius: 6px;
   elevation: 10;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `

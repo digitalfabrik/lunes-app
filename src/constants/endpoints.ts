@@ -9,7 +9,7 @@ export interface Discipline {
   isLeaf: boolean
   parentTitle: string | null // if null then it is the root discipline
   apiKey?: string
-  needsTrainingSetEndpoint: boolean
+  needsTrainingSetEndpoint: boolean // api endpoint requires different endpoint for leaf disciplines
   leafDisciplines?: number[]
 }
 
@@ -38,6 +38,7 @@ export const ENDPOINTS = {
   discipline: 'disciplines',
   disciplines: 'disciplines_by_level',
   disciplinesByGroup: 'disciplines_by_group',
+  groupInfo: 'group_info',
   trainingSet: 'training_set',
   documents: 'documents/:id'
 }

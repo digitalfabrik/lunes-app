@@ -42,7 +42,7 @@ interface ProfessionSelectionScreenProps {
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
   const { discipline, initialSelection } = route.params
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 

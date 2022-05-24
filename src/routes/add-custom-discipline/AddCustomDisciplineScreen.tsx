@@ -12,7 +12,7 @@ import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import labels from '../../constants/labels.json'
-import { loadGroupInfo } from '../../hooks/useLoadGroupInfo'
+import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
@@ -66,7 +66,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       return
     }
     setLoading(true)
-    loadGroupInfo(code)
+    loadDiscipline({ apiKey: code })
       .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
       .then(navigation.goBack)
       .catch(error => {
