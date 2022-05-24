@@ -9,7 +9,7 @@ import {
 } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-export type DisciplineRequestData =
+export type RequestParams =
   | {
       apiKey: string
     }
@@ -17,7 +17,7 @@ export type DisciplineRequestData =
       disciplineId: number
     }
 
-export const loadDiscipline = async (params: DisciplineRequestData): Promise<Discipline> => {
+export const loadDiscipline = async (params: RequestParams): Promise<Discipline> => {
   if (isTypeLoadProtected(params)) {
     const url = `${ENDPOINTS.groupInfo}`
     const response = await getFromEndpoint<ServerResponseGroup[]>(url, params.apiKey)
@@ -28,5 +28,4 @@ export const loadDiscipline = async (params: DisciplineRequestData): Promise<Dis
   return formatDiscipline(response, { parent: null })
 }
 
-export const useLoadDiscipline = (loadData: DisciplineRequestData): Return<Discipline> =>
-  useLoadAsync(loadDiscipline, loadData)
+export const useLoadDiscipline = (loadData: RequestParams): Return<Discipline> => useLoadAsync(loadDiscipline, loadData)

@@ -7,10 +7,10 @@ import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { DisciplineRequestData, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 
 interface PropsType {
-  identifier: DisciplineRequestData
+  identifier: RequestParams
   deleteItem: () => void
 }
 

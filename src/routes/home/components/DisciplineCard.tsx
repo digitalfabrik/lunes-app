@@ -10,7 +10,7 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { ForbiddenError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { DisciplineRequestData, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import AsyncStorage from '../../../services/AsyncStorage'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
@@ -38,7 +38,7 @@ export const ButtonContainer = styled.View`
 `
 
 interface PropsType {
-  identifier: DisciplineRequestData
+  identifier: RequestParams
   refresh?: () => void
 }
 

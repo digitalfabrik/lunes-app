@@ -15,6 +15,7 @@ const createNavigationMock = <T extends keyof RoutesParams>(routeIndex = 0): Sta
     type: 'stack',
     stale: false
   })),
+  getId: jest.fn(),
   navigate: jest.fn(),
   setParams: jest.fn(),
   addListener: jest.fn(),

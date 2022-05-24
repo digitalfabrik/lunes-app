@@ -1,12 +1,12 @@
 import { Discipline } from '../constants/endpoints'
-import { DisciplineRequestData } from './useLoadDiscipline'
-import { DisciplinesRequestData } from './useLoadDisciplines'
+import { RequestParams as DisciplineRequestParams } from './useLoadDiscipline'
+import { RequestParams as DisciplinesRequestParams } from './useLoadDisciplines'
 
 interface ApiKey {
   apiKey: string
 }
 
-export const isTypeLoadProtected = (value: DisciplineRequestData | DisciplinesRequestData): value is ApiKey =>
+export const isTypeLoadProtected = (value: DisciplineRequestParams | DisciplinesRequestParams): value is ApiKey =>
   !!(value as ApiKey).apiKey
 
 export interface ServerResponseDiscipline {
@@ -20,7 +20,10 @@ export interface ServerResponseDiscipline {
   nested_training_sets: number[]
 }
 
-export const formatDiscipline = (item: ServerResponseDiscipline, loadingInfo: DisciplinesRequestData): Discipline => ({
+export const formatDiscipline = (
+  item: ServerResponseDiscipline,
+  loadingInfo: DisciplinesRequestParams
+): Discipline => ({
   ...item,
   numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
   //  The ServerResponse type is not completely correct
