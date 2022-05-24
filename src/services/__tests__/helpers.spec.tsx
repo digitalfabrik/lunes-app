@@ -22,7 +22,7 @@ describe('helpers', () => {
     leafDisciplines: [1, 2]
   }
 
-  describe('Calculation of next exercise', () => {
+  describe('getNextExercise', () => {
     const getNextExerciseWithCheck = async (): Promise<NextExercise> => {
       const e = await getNextExercise(profession)
       if (!e) {
@@ -97,14 +97,14 @@ describe('helpers', () => {
     })
   })
 
-  describe('Calculation of progress', () => {
+  describe('getProgress', () => {
     it('should show zero if no progress yet', async () => {
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({}))
       const progress = await getProgress(profession)
       expect(progress).toBe(0)
     })
 
-    it('should round to zero if ony one exercise was finished', async () => {
+    it('should round to zero if only one exercise was finished', async () => {
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': 1 } }))
       const progress = await getProgress(profession)
       expect(Math.round(progress)).toBe(0)

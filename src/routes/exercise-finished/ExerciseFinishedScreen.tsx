@@ -4,7 +4,14 @@ import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CheckCircleIconWhite, ListIcon, RepeatIcon } from '../../../assets/images'
+import {
+  CheckCircleIconWhite,
+  ListIcon,
+  RepeatIcon,
+  OpenLockIcon,
+  CloseIcon,
+  CloseIconWhite
+} from '../../../assets/images'
 import Button from '../../components/Button'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
@@ -17,10 +24,10 @@ const Root = styled.View`
   height: 100%;
   align-items: center;
 `
-const UpperSection = styled.View`
+const UpperSection = styled.View<{ exerciseUnlocked: boolean }>`
   width: 140%;
   height: 45%;
-  background-color: ${prop => prop.theme.colors.primary};
+  background-color: ${prop => (prop.exerciseUnlocked ? prop.theme.colors.correct : prop.theme.colors.primary)};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
   margin-bottom: ${props => props.theme.spacings.lg};
@@ -31,8 +38,14 @@ const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
 `
-const Message = styled(HeadingBackground)`
+const Message = styled(HeadingBackground)<{ exerciseUnlocked: boolean }>`
+  color: ${prop => (prop.exerciseUnlocked ? prop.theme.colors.primary : prop.theme.colors.background)};
   text-align: center;
+`
+const Icon = styled.TouchableOpacity`
+  position: absolute;
+  top: 50px;
+  right: 100px;
 `
 
 interface Props {
@@ -43,12 +56,16 @@ interface Props {
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction } = route.params
   const [message, setMessage] = React.useState<string>('')
+  // eslint-disable-next-line
+  const exerciseUnlocked = false // TODO: LUN-131 logic
 
   React.useEffect(() => {
     const correctResults = results.filter(doc => doc.result === 'correct')
     const correct = correctResults.length / results.length
-
-    if (correct > 2 / 3) {
+    // eslint-disable-next-line
+    if (exerciseUnlocked) {
+      setMessage(labels.results.unlockedExercise)
+    } else if (correct > 2 / 3) {
       setMessage(labels.results.feedbackGood)
     } else if (correct > 1 / 3) {
       setMessage(labels.results.feedbackMedium)
@@ -72,10 +89,27 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
 
   return (
     <Root>
-      <UpperSection>
-        <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
+      <UpperSection exerciseUnlocked={exerciseUnlocked}>
+        <Icon onPress={checkResults}>
+          {
+            // eslint-disable-next-line
+            exerciseUnlocked ? (
+              <CloseIcon width={wp('6%')} height={wp('6%')} />
+            ) : (
+              <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+            )
+          }
+        </Icon>
+        {
+          // eslint-disable-next-line
+          exerciseUnlocked ? (
+            <OpenLockIcon width={wp('8%')} height={wp('8%')} />
+          ) : (
+            <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
+          )
+        }
         <MessageContainer>
-          <Message>{message}</Message>
+          <Message exerciseUnlocked={exerciseUnlocked}>{message}</Message>
         </MessageContainer>
       </UpperSection>
 
