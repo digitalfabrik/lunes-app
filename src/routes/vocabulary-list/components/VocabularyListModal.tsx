@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ReactElement } from 'react'
 import { Modal, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -21,7 +21,7 @@ const ModalContainer = styled.View`
 const ModalHeader = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: ${props => props.theme.spacings.xs};
   border-bottom-color: ${props => props.theme.colors.disabled};
   border-bottom-width: 1px;
@@ -42,7 +42,6 @@ const ButtonContainer = styled.View`
 
 interface VocabularyListModalProps {
   documents: Document[]
-  kebabMenu: ReactNode
   isModalVisible: boolean
   isFeedbackModalVisible: boolean
   setIsModalVisible: (isModalVisible: boolean) => void
@@ -58,8 +57,7 @@ const VocabularyListModal = ({
   selectedDocumentIndex,
   setSelectedDocumentIndex,
   setIsFeedbackModalVisible,
-  isFeedbackModalVisible,
-  kebabMenu
+  isFeedbackModalVisible
 }: VocabularyListModalProps): ReactElement => {
   const goToNextWord = (): void => {
     if (selectedDocumentIndex + 1 < documents.length) {
@@ -73,7 +71,6 @@ const VocabularyListModal = ({
         <SafeAreaView>
           <ModalHeader>
             <CloseCircleIconWhite onPress={() => setIsModalVisible(false)} width={wp('7%')} height={wp('7%')} />
-            {kebabMenu}
           </ModalHeader>
           <ImageCarousel images={documents[selectedDocumentIndex].document_image} />
           <AudioPlayer document={documents[selectedDocumentIndex]} disabled={false} />

@@ -71,7 +71,6 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
           isFeedbackModalVisible={isFeedbackModalVisible}
           documents={documents}
           isModalVisible={isModalVisible}
-          kebabMenu={kebabMenu}
           setIsModalVisible={setIsModalVisible}
           selectedDocumentIndex={selectedDocumentIndex}
           setSelectedDocumentIndex={setSelectedDocumentIndex}
