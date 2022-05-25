@@ -21,7 +21,6 @@ describe('VocabularyListModal', () => {
   it('should update current document', () => {
     const { getByText } = render(
       <VocabularyListModal
-        kebabMenu={<></>}
         setIsFeedbackModalVisible={setIsFeedbackModalVisible}
         documents={documents}
         isModalVisible
@@ -40,7 +39,6 @@ describe('VocabularyListModal', () => {
   it('should close modal for last word', () => {
     const { getByText } = render(
       <VocabularyListModal
-        kebabMenu={<></>}
         setIsFeedbackModalVisible={setIsFeedbackModalVisible}
         documents={documents}
         isFeedbackModalVisible={false}
