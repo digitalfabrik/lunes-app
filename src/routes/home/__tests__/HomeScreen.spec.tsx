@@ -5,7 +5,6 @@ import React from 'react'
 import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
-import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorageService from '../../../services/AsyncStorage'
@@ -23,7 +22,6 @@ jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
-jest.mock('../../../hooks/useLoadGroupInfo')
 jest.mock('../../../components/HeaderWithMenu', () => {
   const Text = require('react-native').Text
   return () => <Text>HeaderWithMenu</Text>
@@ -32,7 +30,7 @@ jest.mock('../../../components/HeaderWithMenu', () => {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should navigate to discipline on card click', async () => {
+  it('should render professions', () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
     mocked(useLoadDiscipline)
@@ -43,48 +41,20 @@ describe('HomeScreen', () => {
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
-    fireEvent.press(firstDiscipline)
+    })
 
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
-  })
-
-  it('should navigate to discipline on module button click', async () => {
-    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
-    mocked(useLoadDiscipline)
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
-    mocked(getNextExercise).mockReturnValue(
-      Promise.resolve({
-        disciplineId: 1,
-        exerciseKey: 2,
-        disciplineTitle: 'First Discipline'
-      })
-    )
-    const { getByText, getAllByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = getByText('First Discipline')
-    const secondDiscipline = getByText('Second Discipline')
-    expect(firstDiscipline).toBeDefined()
-    expect(secondDiscipline).toBeDefined()
-    const moduleButtons = getAllByText(labels.home.checkModules)
-    fireEvent.press(moduleButtons[0])
-
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockDisciplines()[0] })
-  })
+  // TODO LUN-328 add test for navigate to child disciplines
 
   it('should show custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
-    mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
+    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
-    const customDiscipline = getByText('Custom Discipline')
-    expect(customDiscipline).toBeDefined()
-
-    fireEvent.press(customDiscipline)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('DisciplineSelection', { discipline: mockCustomDiscipline })
+    expect(getByText('Custom Discipline')).toBeDefined()
+    expect(getByText(labels.home.start)).toBeDefined()
   })
 
   it('should show suggestion to add custom discipline', () => {

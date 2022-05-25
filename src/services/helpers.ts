@@ -82,7 +82,7 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   if (!profession) {
     return null
   }
-  const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
+  const disciplines = await loadDisciplines({ parent: profession }) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }

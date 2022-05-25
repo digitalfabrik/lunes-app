@@ -1,20 +1,17 @@
-import { CommonActions, useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { EXERCISES } from '../../constants/data'
-import { Discipline, Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
-import CustomDiscipline from './components/CustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
 
@@ -40,35 +37,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
 
-  useFocusEffect(
-    useCallback(() => {
-      refreshCustomDisciplines()
-      refreshSelectedProfessions()
-    }, [refreshCustomDisciplines, refreshSelectedProfessions])
-  )
+  useFocusEffect(refreshCustomDisciplines)
+  useFocusEffect(refreshSelectedProfessions)
 
   const navigateToImprintScreen = (): void => {
     navigation.navigate('Imprint')
-  }
-
-  const navigateToDiscipline = (item: Discipline): void => {
-    navigation.navigate('DisciplineSelection', {
-      discipline: item
-    })
-  }
-
-  const navigateToNextExercise = (
-    disciplineId: number,
-    exerciseKey: number,
-    disciplineTitle: string,
-    documents: Document[]
-  ): void => {
-    navigation.navigate(EXERCISES[exerciseKey].screen, {
-      disciplineId,
-      disciplineTitle,
-      documents,
-      closeExerciseAction: CommonActions.navigate('Home')
-    })
   }
 
   const navigateToAddCustomDisciplineScreen = (): void => {
@@ -76,21 +49,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
-    <CustomDiscipline
+    <DisciplineCard
       key={customDiscipline}
-      apiKey={customDiscipline}
-      navigation={navigation}
+      identifier={{ apiKey: customDiscipline }}
       refresh={refreshCustomDisciplines}
     />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
-    <DisciplineCard
-      key={profession}
-      disciplineId={profession}
-      onPress={navigateToDiscipline}
-      navigateToNextExercise={navigateToNextExercise}
-    />
+    <DisciplineCard key={profession} identifier={{ disciplineId: profession }} />
   ))
 
   return (

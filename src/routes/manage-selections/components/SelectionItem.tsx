@@ -5,12 +5,12 @@ import styled from 'styled-components/native'
 import { CloseIconRed } from '../../../../assets/images'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
-import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
+import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
-import { Return } from '../../../hooks/useLoadAsync'
+import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 
 interface PropsType {
-  discipline: Return<Discipline>
+  identifier: RequestParams
   deleteItem: () => void
 }
 
@@ -22,8 +22,8 @@ const LoadingContainer = styled(View)`
   height: 0px;
 `
 
-const SelectionItem = ({ discipline, deleteItem }: PropsType): JSX.Element => {
-  const { data, loading, error } = discipline
+const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
+  const { data, loading, error } = useLoadDiscipline(identifier)
 
   if (loading) {
     return (

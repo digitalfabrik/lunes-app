@@ -1,7 +1,7 @@
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { NetworkError } from '../../../../constants/endpoints'
+import { ForbiddenError, NetworkError } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import {
@@ -16,13 +16,7 @@ jest.mock('@react-navigation/native')
 jest.useFakeTimers()
 
 describe('DisciplineCard', () => {
-  const navigate = jest.fn()
-  const onPress = jest.fn()
-
-  const renderDisciplineCard = (): RenderAPI =>
-    render(
-      <DisciplineCard disciplineId={mockDisciplines()[0].id} navigateToNextExercise={navigate} onPress={onPress} />
-    )
+  const renderDisciplineCard = (): RenderAPI => render(<DisciplineCard identifier={{ disciplineId: 1 }} />)
 
   it('should show discipline card', async () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
@@ -42,5 +36,12 @@ describe('DisciplineCard', () => {
     mockUseLoadAsyncWithError(NetworkError)
     const { getByText } = renderDisciplineCard()
     expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
+  })
+
+  it('should display forbidden error', async () => {
+    mockUseLoadAsyncWithError(ForbiddenError)
+    const { getByText } = render(<DisciplineCard identifier={{ apiKey: 'abc' }} />)
+    expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
+    expect(getByText(labels.home.deleteModal.confirm)).toBeDefined()
   })
 })
