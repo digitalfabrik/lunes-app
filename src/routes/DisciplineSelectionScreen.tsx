@@ -16,11 +16,6 @@ const Root = styled.View`
   margin: 0 ${props => props.theme.spacings.md};
 `
 
-const StyledList = styled(FlatList)`
-  width: 100%;
-  flex-grow: 0;
-` as ComponentType as new () => FlatList<Discipline>
-
 interface DisciplineSelectionScreenProps {
   route: RouteProp<RoutesParams, 'DisciplineSelection'>
   navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
@@ -53,7 +48,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     <Root>
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <StyledList
+        <FlatList
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={Item}
