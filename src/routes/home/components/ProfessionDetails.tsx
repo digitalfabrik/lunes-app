@@ -16,6 +16,7 @@ import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { childrenLabel } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
+import NextExerciseCard from './NextExerciseCard'
 
 const ProgressContainer = styled.View`
   display: flex;
@@ -49,7 +50,7 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
     if (documents !== null && nextExercise !== null) {
       navigation.navigate(EXERCISES[nextExercise.exerciseKey].screen, {
         disciplineId: nextExercise.disciplineId,
-        disciplineTitle: '', // TODO set discipline title correct LUN-320
+        disciplineTitle: nextExercise.disciplineTitle,
         documents,
         closeExerciseAction: CommonActions.navigate('Home')
       })
@@ -77,6 +78,15 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
         )}
         <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
       </ProgressContainer>
+      {documents && documents.length > 0 && nextExercise && (
+        <NextExerciseCard
+          thumbnail={documents[0].document_image[0].image}
+          onPress={navigate}
+          heading={`${labels.home.level} ${nextExercise.exerciseKey}`}
+          buttonLabel={labels.home.continue}
+          subheading={nextExercise.disciplineTitle}
+        />
+      )}
       <ButtonContainer>
         <Button
           onPress={navigate}
