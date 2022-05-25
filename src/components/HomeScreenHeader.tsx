@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 import { LunesIcon, MenuIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import KebabMenu from './KebabMenu'
+import OverflowMenu from './OverflowMenu'
 import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
@@ -52,7 +52,7 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
       </SmileIconStyle>
 
       <HeaderButtonsContainer>
-        <KebabMenu
+        <OverflowMenu
           icon={
             <MenuIconContainer>
               <MenuIconWhite />
@@ -62,7 +62,7 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
             title={labels.general.header.manageDisciplines}
             onPress={() => navigation.navigate('ManageDisciplines')}
           />
-        </KebabMenu>
+        </OverflowMenu>
       </HeaderButtonsContainer>
     </HeaderStyle>
   </Wrapper>

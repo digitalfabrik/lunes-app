@@ -42,9 +42,9 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const kebabMenu = <></>
   // /* TODO Remove comment when LUN-269 is ready */
   // const kebabMenu = (
-  //   <KebabMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}>
+  //   <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}>
   //     <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
-  //   </KebabMenu>
+  //   </OverflowMenu>
   // )
   useEffect(
     () =>

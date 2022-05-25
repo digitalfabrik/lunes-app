@@ -57,9 +57,9 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
           <HeaderRightContainer>
             <ProgressText>{progressText}</ProgressText>
             {/* TODO Remove comment when LUN-269 is ready */}
-            {/* <KebabMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
+            {/* <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
             {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
-            {/* </KebabMenu> */}
+            {/* </OverflowMenu> */}
           </HeaderRightContainer>
         ),
         headerRightContainerStyle: {

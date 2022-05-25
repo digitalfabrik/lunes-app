@@ -74,7 +74,6 @@ const CustomTextInput = ({
 }: CustomTextInputProps): ReactElement => {
   const theme = useTheme()
   const [isFocused, setIsFocused] = useState<boolean>(false)
-  const hasErrorMessage = !!(errorMessage && errorMessage.length > 0)
   const showErrorValidation = errorMessage !== undefined
   const multiLine = lines > 1
 
@@ -82,7 +81,7 @@ const CustomTextInput = ({
     <>
       <TextInputContainer
         lines={lines}
-        borderColor={customBorderColor ?? getBorderColor(hasErrorMessage, isFocused)}
+        borderColor={customBorderColor ?? getBorderColor(!!(showErrorValidation && errorMessage.length > 0), isFocused)}
         showErrorValidation={showErrorValidation}>
         <StyledTextInput
           onFocus={() => setIsFocused(true)}
