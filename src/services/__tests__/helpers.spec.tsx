@@ -10,6 +10,10 @@ jest.mock('../../hooks/useLoadDisciplines')
 jest.mock('../AsyncStorage')
 
 describe('helpers', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const profession = {
     id: 10,
     title: 'Parent Discipline',

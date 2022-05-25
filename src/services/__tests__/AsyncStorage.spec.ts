@@ -7,6 +7,10 @@ import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    RNAsyncStorage.clear()
+  })
   const customDisciplines = ['first', 'second', 'third']
 
   it('should delete customDisicpline from array if exists', async () => {
@@ -48,7 +52,6 @@ describe('AsyncStorage', () => {
 
   describe('ExerciseProgress', () => {
     beforeEach(() => {
-      jest.clearAllMocks()
       RNAsyncStorage.clear()
     })
 

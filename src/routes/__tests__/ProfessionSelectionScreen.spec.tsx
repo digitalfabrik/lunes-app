@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
@@ -20,6 +21,11 @@ jest.mock('../../hooks/useLoadDisciplines')
 jest.mock('../../hooks/useReadSelectedProfessions')
 
 describe('ProfessionSelectionScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    AsyncStorage.clear()
+  })
+
   const navigation = createNavigationMock<'ProfessionSelection'>()
   const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'ProfessionSelection'> => ({
     key: 'key-1',

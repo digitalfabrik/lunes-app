@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
@@ -26,6 +27,11 @@ jest.mock('../../../components/HeaderWithMenu', () => {
 })
 
 describe('HomeScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    AsyncStorage.clear()
+  })
+
   const navigation = createNavigationMock<'Home'>()
 
   it('should render professions', () => {

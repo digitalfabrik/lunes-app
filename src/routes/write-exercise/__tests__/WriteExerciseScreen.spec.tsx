@@ -1,5 +1,5 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
-import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
@@ -114,7 +114,7 @@ describe('WriteExerciseScreen', () => {
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 
-  it('should show solution after three wrong entries', async () => {
+  it('should show solution after three wrong entries', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
@@ -161,14 +161,14 @@ describe('WriteExerciseScreen', () => {
     expect(getByText(labels.exercises.next)).toBeDefined()
   })
 
-  it('should finish exercise and save progress', async () => {
+  it('should finish exercise and save progress', () => {
     const { getByText } = renderWriteExercise()
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.showResults))
 
-    await expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
       { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 }
     ])
