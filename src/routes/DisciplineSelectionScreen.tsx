@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType } from 'react'
+import React from 'react'
 import { FlatList, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
