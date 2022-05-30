@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback } from 'react'
+import React, { ReactElement } from 'react'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
@@ -13,8 +13,7 @@ import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
-import CustomDisciplineItem from './components/CustomDisciplineItem'
-import ProfessionItem from './components/ProfessionItem'
+import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
   display: flex;
@@ -38,25 +37,21 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
-  const refresh = useCallback(() => {
-    refreshCustomDisciplines()
-    refreshSelectedProfessions()
-  }, [refreshCustomDisciplines, refreshSelectedProfessions])
-
-  useFocusEffect(refresh)
+  useFocusEffect(refreshCustomDisciplines)
+  useFocusEffect(refreshSelectedProfessions)
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
       removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
-    return <ProfessionItem key={id} id={id} deleteItem={unselectProfessionAndRefresh} />
+    return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
   const customDisciplineItems = customDisciplines?.map(apiKey => {
     const deleteCustomDisciplineAndRefresh = () => {
       removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
     }
-    return <CustomDisciplineItem key={apiKey} apiKey={apiKey} deleteItem={deleteCustomDisciplineAndRefresh} />
+    return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })
 
   const navigateToProfessionSelection = () => {

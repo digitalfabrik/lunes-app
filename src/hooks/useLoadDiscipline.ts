@@ -1,13 +1,31 @@
 import { Discipline, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
-import { formatDiscipline } from './helpers'
+import {
+  formatDiscipline,
+  formatGroup,
+  isTypeLoadProtected,
+  ServerResponseDiscipline,
+  ServerResponseGroup
+} from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { ServerResponse } from './useLoadDisciplines'
 
-export const loadDiscipline = async (id: number): Promise<Discipline> => {
-  const url = `${ENDPOINTS.discipline}/${id}`
-  const response = await getFromEndpoint<ServerResponse>(url)
-  return formatDiscipline(response)
+export type RequestParams =
+  | {
+      apiKey: string
+    }
+  | {
+      disciplineId: number
+    }
+
+export const loadDiscipline = async (params: RequestParams): Promise<Discipline> => {
+  if (isTypeLoadProtected(params)) {
+    const url = `${ENDPOINTS.groupInfo}`
+    const response = await getFromEndpoint<ServerResponseGroup[]>(url, params.apiKey)
+    return formatGroup(response, params.apiKey)
+  }
+  const url = `${ENDPOINTS.discipline}/${params.disciplineId}`
+  const response = await getFromEndpoint<ServerResponseDiscipline>(url)
+  return formatDiscipline(response, { parent: null })
 }
 
-export const useLoadDiscipline = (id: number): Return<Discipline> => useLoadAsync(loadDiscipline, id)
+export const useLoadDiscipline = (loadData: RequestParams): Return<Discipline> => useLoadAsync(loadDiscipline, loadData)
