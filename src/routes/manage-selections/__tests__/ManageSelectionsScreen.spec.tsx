@@ -4,7 +4,6 @@ import React from 'react'
 
 import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { useLoadGroupInfo } from '../../../hooks/useLoadGroupInfo'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorage from '../../../services/AsyncStorage'
@@ -18,7 +17,6 @@ import ManageSelectionsScreen from '../ManageSelectionsScreen'
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadSelectedProfessions')
-jest.mock('../../../hooks/useLoadGroupInfo')
 jest.mock('../../../hooks/useLoadDiscipline')
 
 describe('ManageSelectionsScreen', () => {
@@ -45,7 +43,7 @@ describe('ManageSelectionsScreen', () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([mockCustomDiscipline.apiKey]))
     await AsyncStorage.setCustomDisciplines([mockCustomDiscipline.apiKey])
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([]))
-    mocked(useLoadGroupInfo).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
+    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { getByText, getByTestId } = renderScreen()
     expect(getByText(mockCustomDiscipline.title)).toBeDefined()

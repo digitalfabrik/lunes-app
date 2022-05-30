@@ -1,4 +1,11 @@
-import { Article, EXERCISES, exercisesWithoutProgress, exercisesWithProgress, NextExercise } from '../constants/data'
+import {
+  Article,
+  EXERCISES,
+  exercisesWithoutProgress,
+  exercisesWithProgress,
+  NextExercise,
+  Progress
+} from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -59,6 +66,12 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
+const doneExercisesOfLeafDiscipline = (disciplineId: number, progress: Progress): number => {
+  const progressOfDiscipline = progress[disciplineId]
+  return progressOfDiscipline
+    ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
+    : 0
+}
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
@@ -69,19 +82,13 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   if (!profession) {
     return null
   }
-  const disciplines = await loadDisciplines(profession) // TODO LUN-316 leaf disciplines must be loaded, also if nested
+  const disciplines = await loadDisciplines({ parent: profession }) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
   const progress = await AsyncStorage.getExerciseProgress()
-  const doneExercisesOfLeafDiscipline = (disciplineId: number): number => {
-    const progressOfDiscipline = progress[disciplineId]
-    return progressOfDiscipline
-      ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
-      : 0
-  }
   const firstUnfinishedDiscipline = disciplines.find(
-    discipline => doneExercisesOfLeafDiscipline(discipline.id) < exercisesWithProgress
+    discipline => doneExercisesOfLeafDiscipline(discipline.id, progress) < exercisesWithProgress
   )
   if (!firstUnfinishedDiscipline) {
     return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
@@ -97,4 +104,17 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
     disciplineId: firstUnfinishedDiscipline.id,
     exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
   }
+}
+
+export const getProgress = async (profession: Discipline | null): Promise<number> => {
+  if (!profession || !profession.leafDisciplines) {
+    return 0
+  }
+  const progress = await AsyncStorage.getExerciseProgress()
+  const doneExercises = profession.leafDisciplines.reduce(
+    (acc, leaf) => acc + doneExercisesOfLeafDiscipline(leaf, progress),
+    0
+  )
+  const totalExercises = profession.leafDisciplines.length * exercisesWithProgress
+  return doneExercises / totalExercises
 }

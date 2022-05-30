@@ -1,55 +1,44 @@
 import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { Discipline, ForbiddenError, NetworkError } from '../../../../constants/endpoints'
+import { ForbiddenError, NetworkError } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
-import { Return } from '../../../../hooks/useLoadAsync'
 import { mockDisciplines } from '../../../../testing/mockDiscipline'
+import {
+  mockUseLoadAsyncLoading,
+  mockUseLoadAsyncWithData,
+  mockUseLoadAsyncWithError
+} from '../../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../../testing/render'
 import SelectionItem from '../SelectionItem'
 
 describe('SelectionItem', () => {
-  const refresh = jest.fn()
-  const renderSelectionItem = (discipline: Return<Discipline>): RenderAPI =>
-    render(<SelectionItem discipline={discipline} deleteItem={() => jest.fn()} />)
+  const deleteItem = jest.fn()
+  const renderSelectionItem = (): RenderAPI =>
+    render(<SelectionItem identifier={{ disciplineId: 1 }} deleteItem={deleteItem} />)
 
   it('should display data', () => {
-    const { getByText } = renderSelectionItem({
-      data: mockDisciplines()[0],
-      loading: false,
-      error: null,
-      refresh
-    })
+    mockUseLoadAsyncWithData(mockDisciplines()[0])
+    const { getByText, getByTestId } = renderSelectionItem()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
+    expect(getByTestId('delete-icon')).toBeDefined()
   })
 
   it('should display loading', () => {
-    const { getByTestId } = renderSelectionItem({
-      data: null,
-      loading: true,
-      error: null,
-      refresh
-    })
+    mockUseLoadAsyncLoading()
+    const { getByTestId } = renderSelectionItem()
     expect(getByTestId('loading')).toBeDefined()
   })
 
   it('should display no internet error', () => {
-    const { getByText } = renderSelectionItem({
-      data: null,
-      loading: false,
-      error: new Error(NetworkError),
-      refresh
-    })
+    mockUseLoadAsyncWithError(NetworkError)
+    const { getByText } = renderSelectionItem()
     expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
   })
 
   it('should display forbidden error', () => {
-    const { getByText } = renderSelectionItem({
-      data: null,
-      loading: false,
-      error: new Error(ForbiddenError),
-      refresh
-    })
+    mockUseLoadAsyncWithError(ForbiddenError)
+    const { getByText } = renderSelectionItem()
     expect(getByText(`${labels.home.errorLoadCustomDiscipline}`)).toBeDefined()
   })
 })

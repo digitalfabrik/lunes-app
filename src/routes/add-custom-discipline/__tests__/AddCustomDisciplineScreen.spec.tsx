@@ -5,14 +5,14 @@ import React from 'react'
 import { View } from 'react-native'
 
 import labels from '../../../constants/labels.json'
-import { loadGroupInfo } from '../../../hooks/useLoadGroupInfo'
+import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadGroupInfo')
+jest.mock('../../../hooks/useLoadDiscipline')
 
 jest.mock('react-native-camera', () => ({
   RNCamera: () => <View accessibilityLabel='RNCamera' />
@@ -44,9 +44,10 @@ describe('AddCustomDisciplineScreen', () => {
       parentTitle: null,
       numberOfChildren: 1,
       description: '',
-      needsTrainingSetEndpoint: false
+      needsTrainingSetEndpoint: false,
+      leafDisciplines: []
     }
-    mocked(loadGroupInfo).mockImplementationOnce(async () => groupInfo)
+    mocked(loadDiscipline).mockImplementationOnce(async () => groupInfo)
 
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
@@ -75,7 +76,7 @@ describe('AddCustomDisciplineScreen', () => {
     const { findByText, getByText, findByPlaceholderText } = render(
       <AddCustomDisciplineScreen navigation={navigation} />
     )
-    mocked(loadGroupInfo).mockRejectedValueOnce({ response: { status: 403 } })
+    mocked(loadDiscipline).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'invalid-code')
     const submitButton = getByText(labels.addCustomDiscipline.submitLabel)

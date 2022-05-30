@@ -23,7 +23,7 @@ interface DisciplineSelectionScreenProps {
 
 const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenProps): JSX.Element => {
   const { discipline } = route.params
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines(discipline)
+  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
 
   const handleNavigation = (selectedItem: Discipline): void => {
     if (selectedItem.isLeaf) {
