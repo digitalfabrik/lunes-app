@@ -2,13 +2,15 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { ARTICLES } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
+import useReadNextExercise from '../../../hooks/useReadNextExercise'
+import useReadProgress from '../../../hooks/useReadProgress'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorageService from '../../../services/AsyncStorage'
-import { getNextExercise } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -19,6 +21,8 @@ import HomeScreen from '../HomeScreen'
 jest.mock('../../../services/helpers')
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
+jest.mock('../../../hooks/useReadProgress')
+jest.mock('../../../hooks/useReadNextExercise')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
@@ -29,6 +33,38 @@ jest.mock('../../../components/HeaderWithMenu', () => {
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
+  const nextExercise = {
+    disciplineId: 1,
+    exerciseKey: 2
+  }
+
+  const documents = [
+    {
+      id: 1,
+      word: 'Spachtel',
+      article: ARTICLES[1],
+      document_image: [{ id: 1, image: 'Spachtel' }],
+      audio: 'https://example.com/my-audio',
+      alternatives: [
+        {
+          word: 'Spachtel',
+          article: ARTICLES[2]
+        },
+        {
+          word: 'Alternative',
+          article: ARTICLES[2]
+        }
+      ]
+    },
+    {
+      id: 2,
+      word: 'Auto',
+      article: ARTICLES[1],
+      document_image: [{ id: 1, image: 'Auto' }],
+      audio: '',
+      alternatives: []
+    }
+  ]
 
   it('should render professions', () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
@@ -36,12 +72,31 @@ describe('HomeScreen', () => {
     mocked(useLoadDiscipline)
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
+    mocked(useReadNextExercise).mockReturnValue(getReturnOf(nextExercise))
+    mocked(useReadProgress).mockReturnValue(getReturnOf(0))
     const { getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
-    })
+  })
+
+  it('should navigate to child discipline', () => {
+    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
+    mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
+    mocked(useLoadDiscipline)
+      .mockReturnValue(getReturnOf(mockDisciplines()[0]))
+      .mockReturnValue(getReturnOf(mockDisciplines()[1]))
+    mocked(useReadNextExercise).mockReturnValue(getReturnOf(nextExercise))
+    mocked(useReadProgress).mockReturnValue(getReturnOf(0))
+    React.useState = jest
+      .fn()
+      .mockReturnValue([documents, {}])
+      .mockReturnValue([mockDisciplines()[0], {}])
+      .mockReturnValue([false, {}])
+    const { debug } = render(<HomeScreen navigation={navigation} />)
+    debug()
+  })
 
   // TODO LUN-328 add test for navigate to child disciplines
 

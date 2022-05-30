@@ -1,6 +1,6 @@
 import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -35,9 +35,10 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
-  const [documents, setDocuments] = useState<Document[] | null>(null)
-  const [trainingSet, setTrainingSet] = useState<Discipline | null>(null)
+  const [documents, setDocuments] = React.useState<Document[] | null>(null)
+  const [trainingSet, setTrainingSet] = React.useState<Discipline | null>(null)
   const navigation = useNavigation<StackNavigationProp<RoutesParams, 'Home'>>()
+
 
   const navigateToDiscipline = (): void => {
     navigation.navigate('DisciplineSelection', {
@@ -58,7 +59,7 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
         .then(setTrainingSet)
         .catch(reportError)
     }
-  }, [nextExercise])
+  }, [nextExercise, discipline])
 
   const navigate = () => {
     if (documents !== null && nextExercise !== null && trainingSet !== null) {
