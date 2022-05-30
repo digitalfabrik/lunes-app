@@ -18,9 +18,15 @@ interface VocabularyListScreenProps {
   documents: Document[]
   onItemPress: (index: number) => void
   refreshFavorites?: () => void
+  title: string
 }
 
-const VocabularyList = ({ documents, onItemPress, refreshFavorites }: VocabularyListScreenProps): JSX.Element => {
+const VocabularyList = ({
+  documents,
+  onItemPress,
+  refreshFavorites,
+  title
+}: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem document={item} onPress={() => onItemPress(index)} refreshFavorites={refreshFavorites} />
   )
@@ -28,7 +34,7 @@ const VocabularyList = ({ documents, onItemPress, refreshFavorites }: Vocabulary
   return (
     <Root>
       <Title
-        title={labels.exercises.vocabularyList.title}
+        title={title}
         description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
       />
 

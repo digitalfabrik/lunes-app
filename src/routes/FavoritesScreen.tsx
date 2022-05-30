@@ -19,21 +19,27 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): JSX.Element => {
 
   useFocusEffect(refresh)
 
+  const onItemPress = (index: number) => {
+    if (!data) {
+      return
+    }
+    navigation.navigate('VocabularyDetail', {
+      disciplineId: 0,
+      disciplineTitle: labels.general.favorites,
+      documents: data,
+      documentIndex: index,
+      closeExerciseAction: CommonActions.goBack()
+    })
+  }
+
   return (
     <ServerResponseHandler error={error} loading={false} refresh={refresh}>
       {data && (
         <VocabularyList
+          title={labels.favorites.favorites}
           documents={data}
           refreshFavorites={refresh}
-          onItemPress={(index: number) =>
-            navigation.navigate('VocabularyDetail', {
-              disciplineId: 0,
-              disciplineTitle: labels.general.favorites,
-              documents: data,
-              documentIndex: index,
-              closeExerciseAction: CommonActions.goBack()
-            })
-          }
+          onItemPress={onItemPress}
         />
       )}
     </ServerResponseHandler>
