@@ -62,7 +62,6 @@ export interface Progress {
 export interface NextExercise {
   disciplineId: number
   exerciseKey: number
-  disciplineTitle: string
 }
 
 export const BUTTONS_THEME = {

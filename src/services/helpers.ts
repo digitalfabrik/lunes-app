@@ -95,7 +95,6 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
     return {
       disciplineId: disciplines[0].id,
       exerciseKey: exercisesWithoutProgress,
-      disciplineTitle: disciplines[0].title
     } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDiscipline.id]
@@ -103,7 +102,6 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
     return {
       disciplineId: firstUnfinishedDiscipline.id,
       exerciseKey: exercisesWithoutProgress,
-      disciplineTitle: firstUnfinishedDiscipline.title
     }
   }
   const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
@@ -112,7 +110,6 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   return {
     disciplineId: firstUnfinishedDiscipline.id,
     exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress,
-    disciplineTitle: firstUnfinishedDiscipline.title
   }
 }
 

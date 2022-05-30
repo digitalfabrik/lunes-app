@@ -9,6 +9,7 @@ import { BUTTONS_THEME, EXERCISES } from '../../../constants/data'
 import { Discipline, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
+import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { loadDocuments } from '../../../hooks/useLoadDocuments'
 import useReadNextExercise from '../../../hooks/useReadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
@@ -35,7 +36,14 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
   const [documents, setDocuments] = useState<Document[] | null>(null)
+  const [trainingSet, setTrainingSet] = useState<Discipline | null>(null)
   const navigation = useNavigation<StackNavigationProp<RoutesParams, 'Home'>>()
+
+  const navigateToDiscipline = (): void => {
+    navigation.navigate('DisciplineSelection', {
+      discipline
+    })
+  }
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -43,14 +51,20 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
   useEffect(() => {
     if (nextExercise) {
       loadDocuments({ disciplineId: nextExercise.disciplineId }).then(setDocuments).catch(reportError)
+      loadDiscipline({
+        disciplineId: nextExercise.disciplineId,
+        needsTrainingSetEndpoint: discipline.needsTrainingSetEndpoint
+      })
+        .then(setTrainingSet)
+        .catch(reportError)
     }
   }, [nextExercise])
 
   const navigate = () => {
-    if (documents !== null && nextExercise !== null) {
+    if (documents !== null && nextExercise !== null && trainingSet !== null) {
       navigation.navigate(EXERCISES[nextExercise.exerciseKey].screen, {
         disciplineId: nextExercise.disciplineId,
-        disciplineTitle: nextExercise.disciplineTitle,
+        disciplineTitle: trainingSet.title,
         documents,
         closeExerciseAction: CommonActions.navigate('Home')
       })
@@ -78,22 +92,17 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
         )}
         <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
       </ProgressContainer>
-      {documents && documents.length > 0 && nextExercise && (
+      {documents && documents.length > 0 && nextExercise && trainingSet && (
         <NextExerciseCard
           thumbnail={documents[0].document_image[0].image}
           onPress={navigate}
           heading={`${labels.home.level} ${nextExercise.exerciseKey}`}
           buttonLabel={labels.home.continue}
-          subheading={nextExercise.disciplineTitle}
+          subheading={trainingSet.title}
         />
       )}
       <ButtonContainer>
-        <Button
-          onPress={navigate}
-          label={moduleAlreadyStarted ? labels.home.continue : labels.home.start}
-          buttonTheme={BUTTONS_THEME.outlined}
-          disabled={documents === null || nextExercise === null}
-        />
+        <Button onPress={navigateToDiscipline} label={labels.home.checkModules} buttonTheme={BUTTONS_THEME.outlined} />
       </ButtonContainer>
     </>
   )
