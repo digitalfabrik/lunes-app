@@ -121,6 +121,10 @@
     "feedbackPlaceholder": "Teile dein Feedback hier"
   },
   "general": {
+    "home": "Start",
+    "favorites": "Favoriten",
+    "dictionary": "Lexikon",
+    "userVocabulary": "Meine Vokabeln",
     "header": {
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
