@@ -141,5 +141,10 @@
     "disciplines": "Module",
     "word": "Wort",
     "words": "Wörter"
+  },
+  "favorites": {
+    "favorites": "Favoriten",
+    "add": "Favorit hinzufügen",
+    "remove": "Favorit entfernen"
   }
 }

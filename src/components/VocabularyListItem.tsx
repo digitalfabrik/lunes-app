@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { Document } from '../constants/endpoints'
 import { getArticleColor } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
+import FavoriteButton from '../../../components/FavoriteButton'
 import ListItem from './ListItem'
 import { ContentTextLight } from './text/Content'
 
@@ -24,9 +25,9 @@ const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   height: ${wp('5%')}px;
   text-align: center;
 `
-const Speaker = styled.View`
-  padding-right: ${props => props.theme.spacings.xl};
-  padding-top: ${props => props.theme.spacings.sm};
+const RightChildrenContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `
 
 export interface VocabularyListItemProp {
@@ -50,9 +51,10 @@ const VocabularyListItem = ({ document, onPress }: VocabularyListItemProp): Reac
       onPress={onPress}
       icon={icon}
       rightChildren={
-        <Speaker>
+        <RightChildrenContainer>
           <AudioPlayer document={document} disabled={false} />
-        </Speaker>
+          <FavoriteButton document={document} />
+        </RightChildrenContainer>
       }
     />
   )
