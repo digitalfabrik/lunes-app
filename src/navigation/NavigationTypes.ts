@@ -30,6 +30,11 @@ type ResultParams = ExerciseParams & {
 // https://github.com/Microsoft/Script/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
+  BottomTabNavigator: undefined
+  HomeTab: undefined
+  FavoritesTab: undefined
+  DictionaryTab: undefined
+  UserVocabularyTab: undefined
   Home: undefined
   ScopeSelection: {
     initialSelection: boolean
@@ -55,3 +60,5 @@ export type RoutesParams = {
   Imprint: undefined
   ManageDisciplines: undefined
 }
+
+export type Route = keyof RoutesParams
