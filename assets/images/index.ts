@@ -7,6 +7,7 @@ import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
 import BookIconGrey from './book-icon-grey.svg'
 import BookIconWhite from './book-icon-white.svg'
+import CheckCircleIconBlue from './check-circle-icon-blue.svg'
 import CheckCircleIconBold from './check-circle-icon-bold.svg'
 import CheckCircleIconGreen from './check-circle-icon-green.svg'
 import CheckCircleIconWhite from './check-circle-icon-white.svg'
@@ -14,6 +15,7 @@ import CheckCircleIcon from './check-circle-icon.svg'
 import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
 import CheckCloseCircleIcon from './check-close-circle-icon.svg'
 import ChevronRight from './chevron-right.svg'
+import CircleIconBlue from './circle-icon-blue.svg'
 import CloseCircleIconBlue from './close-circle-icon-blue.svg'
 import CloseCircleIconBold from './close-circle-icon-bold.svg'
 import CloseCircleIconWhite from './close-circle-icon-white.svg'
@@ -35,6 +37,7 @@ import HomeIconGrey from './home-icon-grey.svg'
 import HomeIconWhite from './home-icon-white.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
+import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import OpenLockIcon from './open-lock-icon.svg'
@@ -58,12 +61,14 @@ export {
   BookIconGrey,
   BookIconWhite,
   CheckCircleIcon,
+  CheckCircleIconBlue,
   CheckCircleIconBold,
   CheckCircleIconWhite,
   CheckCircleIconGreen,
   CheckCloseCircleIcon,
   CheckCloseCircleIconBold,
   ChevronRight,
+  CircleIconBlue,
   CloseCircleIcon,
   CloseCircleIconBold,
   CloseCircleIconWhite,
@@ -85,6 +90,7 @@ export {
   HomeIconWhite,
   InfoCircleIcon,
   ListIcon,
+  LockIcon,
   LunesIcon,
   MenuIcon,
   OpenLockIcon,
