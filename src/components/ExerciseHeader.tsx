@@ -5,12 +5,10 @@ import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import ConfirmationModal from './ConfirmationModal'
-import { NavigationHeaderLeft } from './NavigationHeaderLeft'
-import { NavigationTitle } from './NavigationTitle'
+import NavigationHeaderLeft from './NavigationHeaderLeft'
 import { ContentSecondary } from './text/Content'
 
 const ProgressBar = styled(RNProgressBar)`
@@ -32,10 +30,11 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
     () =>
       navigation.setOptions({
         headerLeft: () => (
-          <NavigationHeaderLeft onPress={() => setIsModalVisible(true)}>
-            <CloseCircleIconWhite width={wp('7%')} height={wp('7%')} />
-            <NavigationTitle>{labels.general.header.cancelExercise}</NavigationTitle>
-          </NavigationHeaderLeft>
+          <NavigationHeaderLeft
+            title={labels.general.header.cancelExercise}
+            onPress={() => setIsModalVisible(true)}
+            isCloseButton
+          />
         ),
         headerRight: () => <ContentSecondary>{progressText}</ContentSecondary>,
         headerRightContainerStyle: {
@@ -52,7 +51,7 @@ const ExerciseHeader = ({ navigation, currentWord, numberOfWords }: ExerciseHead
       return true
     }
     const bEvent = BackHandler.addEventListener('hardwareBackPress', showModal)
-    return () => bEvent.remove()
+    return bEvent.remove
   }, [])
 
   const goBack = (): void => {
