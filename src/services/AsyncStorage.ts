@@ -91,6 +91,9 @@ const setFavorites = async (favorites: Document[]): Promise<void> => {
 
 const addFavorite = async (favorite: Document): Promise<void> => {
   const favorites = await getFavorites()
+  if (favorites.includes(favorite)) {
+    return
+  }
   const newFavorites = [...favorites, favorite]
   await setFavorites(newFavorites)
 }

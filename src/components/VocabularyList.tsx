@@ -17,11 +17,12 @@ const Root = styled.View`
 interface VocabularyListScreenProps {
   documents: Document[]
   onItemPress: (index: number) => void
+  refreshFavorites?: () => void
 }
 
-const VocabularyList = ({ documents, onItemPress }: VocabularyListScreenProps): JSX.Element => {
+const VocabularyList = ({ documents, onItemPress, refreshFavorites }: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
-    <VocabularyListItem document={item} onPress={() => onItemPress(index)} />
+    <VocabularyListItem document={item} onPress={() => onItemPress(index)} refreshFavorites={refreshFavorites} />
   )
 
   return (

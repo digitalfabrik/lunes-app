@@ -15,15 +15,16 @@ interface FavoritesScreenProps {
 }
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): JSX.Element => {
-  const { data, refresh, error, loading } = useLoadAsync(AsyncStorage.getFavorites, {})
+  const { data, refresh, error } = useLoadAsync(AsyncStorage.getFavorites, {})
 
   useFocusEffect(refresh)
 
   return (
-    <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+    <ServerResponseHandler error={error} loading={false} refresh={refresh}>
       {data && (
         <VocabularyList
           documents={data}
+          refreshFavorites={refresh}
           onItemPress={(index: number) =>
             navigation.navigate('VocabularyDetail', {
               disciplineId: 0,

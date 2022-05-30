@@ -1,4 +1,5 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactElement, useCallback, useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -30,24 +31,30 @@ const Button = styled.TouchableOpacity`
 
 interface Props {
   document: Document
+  refreshFavorites?: () => void
 }
 
-const FavoriteButton = ({ document }: Props): ReactElement | null => {
+const FavoriteButton = ({ document, refreshFavorites }: Props): ReactElement | null => {
   const [isFavorite, setIsFavorite] = useState<boolean | null>(null)
 
-  useEffect(() => {
+  const loadIsFavorite = useCallback(() => {
     AsyncStorage.isFavorite(document)
       .then(it => setIsFavorite(it))
       .catch(() => undefined)
   }, [document])
 
-  const setFavorite = () => {
+  useFocusEffect(loadIsFavorite)
+
+  const onPress = async () => {
     if (isFavorite) {
       setIsFavorite(false)
-      AsyncStorage.removeFavorite(document).catch(() => setIsFavorite(true))
+      await AsyncStorage.removeFavorite(document).catch(() => setIsFavorite(true))
     } else {
       setIsFavorite(true)
-      AsyncStorage.addFavorite(document).catch(() => setIsFavorite(false))
+      await AsyncStorage.addFavorite(document).catch(() => setIsFavorite(false))
+    }
+    if (refreshFavorites) {
+      refreshFavorites()
     }
   }
 
@@ -57,7 +64,7 @@ const FavoriteButton = ({ document }: Props): ReactElement | null => {
 
   return (
     <Container>
-      <Button accessibilityLabel={isFavorite ? labels.favorites.remove : labels.favorites.add} onPress={setFavorite}>
+      <Button accessibilityLabel={isFavorite ? labels.favorites.remove : labels.favorites.add} onPress={onPress}>
         {isFavorite ? <Icon /> : <IconOutline />}
       </Button>
     </Container>
