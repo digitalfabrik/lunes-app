@@ -3,7 +3,7 @@ import { HeaderButtons, OverflowMenu as OverflowMenuRN } from 'react-navigation-
 
 import labels from '../constants/labels.json'
 
-interface KebabMenuProps {
+interface OverflowMenuProps {
   children: ReactElement
   icon: ReactElement
 }
