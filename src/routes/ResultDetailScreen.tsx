@@ -73,7 +73,12 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
     />
   )
 
-  const Item = ({ item }: { item: DocumentResult }): JSX.Element => <VocabularyListItem document={item.document} />
+  const Item = ({ item, index }: { item: DocumentResult; index: number }): JSX.Element => (
+    <VocabularyListItem
+      document={item.document}
+      onPress={() => navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })}
+    />
+  )
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {

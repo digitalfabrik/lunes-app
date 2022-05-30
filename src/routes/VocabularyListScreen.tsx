@@ -10,8 +10,10 @@ interface VocabularyListScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }
 
-const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element => (
-  <VocabularyList documents={route.params.documents} />
-)
+const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
+  const onItemPress = (index: number) =>
+    navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
+  return <VocabularyList documents={route.params.documents} onItemPress={onItemPress} />
+}
 
 export default VocabularyListScreen

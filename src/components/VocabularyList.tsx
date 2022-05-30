@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -6,7 +6,6 @@ import { Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'
-import VocabularyListModal from './VocabularyListModal'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
@@ -17,33 +16,16 @@ const Root = styled.View`
 
 interface VocabularyListScreenProps {
   documents: Document[]
+  onItemPress: (index: number) => void
 }
 
-const VocabularyList = ({ documents }: VocabularyListScreenProps): JSX.Element => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
-
+const VocabularyList = ({ documents, onItemPress }: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
-    <VocabularyListItem
-      document={item}
-      setIsModalVisible={() => {
-        setIsModalVisible(true)
-        setSelectedDocumentIndex(index)
-      }}
-    />
+    <VocabularyListItem document={item} onPress={() => onItemPress(index)} />
   )
 
   return (
     <Root>
-      {documents[selectedDocumentIndex] && (
-        <VocabularyListModal
-          documents={documents}
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          selectedDocumentIndex={selectedDocumentIndex}
-          setSelectedDocumentIndex={setSelectedDocumentIndex}
-        />
-      )}
       <Title
         title={labels.exercises.vocabularyList.title}
         description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}

@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
@@ -6,9 +7,11 @@ import { Document } from '../../constants/endpoints'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
 
-jest.mock('../../../../components/AudioPlayer', () => () => null)
+jest.mock('../AudioPlayer', () => () => null)
 
 describe('VocabularyListItem', () => {
+  const onPress = jest.fn()
+
   const document: Document = {
     article: ARTICLES[1],
     audio: '',
@@ -19,17 +22,21 @@ describe('VocabularyListItem', () => {
   }
 
   it('should display image passed to it', () => {
-    const { getByTestId } = render(<VocabularyListItem document={document} />)
+    const { getByTestId } = render(<VocabularyListItem document={document} onPress={onPress} />)
     expect(getByTestId('image')).toHaveProp('source', { uri: document.document_image[0].image })
   })
 
   it('should display article passed to it', () => {
-    const { queryByText } = render(<VocabularyListItem document={document} />)
+    const { queryByText } = render(<VocabularyListItem document={document} onPress={onPress} />)
     expect(queryByText(document.article.value)).toBeTruthy()
   })
 
   it('should display word passed to it', () => {
-    const { queryByText } = render(<VocabularyListItem document={document} />)
-    expect(queryByText(document.word)).toBeTruthy()
+    const { getByText } = render(<VocabularyListItem document={document} onPress={onPress} />)
+    expect(getByText(document.word)).toBeTruthy()
+
+    expect(onPress).toHaveBeenCalledTimes(0)
+    fireEvent.press(getByText(document.word))
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 })

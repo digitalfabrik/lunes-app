@@ -16,6 +16,14 @@ interface ExerciseParams {
   closeExerciseAction: CommonNavigationAction
 }
 
+interface DetailExerciseParams {
+  disciplineId: number
+  disciplineTitle: string
+  documents: Document[]
+  documentIndex: number
+  closeExerciseAction: CommonNavigationAction
+}
+
 export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
   discipline: Discipline
   documents: Document[] | null
@@ -47,6 +55,7 @@ export type RoutesParams = {
     discipline: Discipline
     initialSelection: boolean
   }
+  VocabularyDetail: DetailExerciseParams
   Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams

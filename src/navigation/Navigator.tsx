@@ -7,6 +7,7 @@ import labels from '../constants/labels.json'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import ResultDetailScreen from '../routes/ResultDetailScreen'
 import ResultScreen from '../routes/ResultScreen'
+import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
@@ -32,6 +33,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
           name='VocabularyList'
           component={VocabularyListScreen}
           options={({ navigation }) => options(overviewExercises, navigation, false)}
+        />
+        <Stack.Screen
+          name='VocabularyDetail'
+          component={VocabularyDetailScreen}
+          options={({ navigation }) => options('', navigation, true)}
         />
         <Stack.Screen
           name='WordChoiceExercise'

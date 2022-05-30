@@ -31,10 +31,10 @@ const Speaker = styled.View`
 
 export interface VocabularyListItemProp {
   document: Document
-  setIsModalVisible?: () => void
+  onPress: () => void
 }
 
-const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemProp): ReactElement => {
+const VocabularyListItem = ({ document, onPress }: VocabularyListItemProp): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -43,13 +43,11 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
       <StyledImage testID='image' source={{ uri: documentImage[0].image }} width={24} height={24} />
     ) : undefined
 
-  const noop = () => undefined
-
   return (
     <ListItem
       title={title}
       description={word}
-      onPress={setIsModalVisible ?? noop}
+      onPress={onPress}
       icon={icon}
       rightChildren={
         <Speaker>
