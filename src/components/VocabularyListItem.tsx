@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import { Document } from '../constants/endpoints'
 import { getArticleColor } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
-import FavoriteButton from '../../../components/FavoriteButton'
+import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
 import { ContentTextLight } from './text/Content'
 
