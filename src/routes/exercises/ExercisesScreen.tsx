@@ -56,7 +56,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     apiKey: discipline.apiKey
   })
 
-  const currentExercise: Exercise = EXERCISES[3] //  TODO: LUN-131 logic , note: currentExercise is the last level that can be accessed.
+  const currentExercise: Exercise = EXERCISES[2] //  TODO: LUN-131 logic , note: currentExercise is the last level that can be accessed.
 
   const handleNavigation = (item: Exercise): void => {
     if (item.level > currentExercise.level) {
@@ -125,7 +125,6 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         {documents && (
           <>
             <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
-
             <FlatList
               data={EXERCISES}
               renderItem={Item}

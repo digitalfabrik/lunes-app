@@ -8,7 +8,7 @@ import { COLORS } from '../../../constants/theme/colors'
 
 const Container = styled.View`
   justify-content: center;
-  margin: 10px;
+  margin: ${props => props.theme.spacings.xs}
   max-height: ${hp('10%')}px;
 `
 
@@ -16,7 +16,7 @@ const Line = styled.View<{ color: string }>`
   width: 2px;
   height: ${hp('5%')}px;
   background-color: ${props => props.color};
-  margin: 10px;
+  margin: ${props => props.theme.spacings.xs} 10px;
 `
 
 interface PropsType {
@@ -34,8 +34,8 @@ const LockingLane = ({ current, index }: PropsType): ReactElement => {
     Icon = CheckCircleIconBlue
   }
 
-  const colorPre = current.level < index ? 'black' : COLORS.lockingLane
-  const colorPost = current.level <= index ? 'black' : COLORS.lockingLane
+  const colorPre = current.level < index ? COLORS.black : COLORS.lockingLane
+  const colorPost = current.level <= index ? COLORS.black : COLORS.lockingLane
 
   return (
     <Container>

@@ -16,6 +16,7 @@ export const COLORS = {
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
+  black: '#000000',
   articleNeutral: '#72f399',
   articlePlural: '#eee12d',
   articleFeminine: '#faa7a7',
