@@ -1,12 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
+import { reportError } from '../services/sentry'
 
 const Container = styled.View`
   padding: ${props => `${props.theme.spacings.xs} 0  ${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
@@ -35,24 +37,17 @@ interface Props {
 }
 
 const FavoriteButton = ({ document, refreshFavorites }: Props): ReactElement | null => {
-  const [isFavorite, setIsFavorite] = useState<boolean | null>(null)
+  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document)
 
-  const loadIsFavorite = useCallback(() => {
-    AsyncStorage.isFavorite(document)
-      .then(it => setIsFavorite(it))
-      .catch(() => undefined)
-  }, [document])
-
-  useFocusEffect(loadIsFavorite)
+  useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      setIsFavorite(false)
-      await AsyncStorage.removeFavorite(document).catch(() => setIsFavorite(true))
+      await AsyncStorage.removeFavorite(document).catch(reportError)
     } else {
-      setIsFavorite(true)
-      await AsyncStorage.addFavorite(document).catch(() => setIsFavorite(false))
+      await AsyncStorage.addFavorite(document).catch(reportError)
     }
+    refresh()
     if (refreshFavorites) {
       refreshFavorites()
     }
