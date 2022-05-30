@@ -1,15 +1,12 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React, { ComponentProps } from 'react'
 
-import labels from '../../../constants/labels.json'
-import { RoutesParams } from '../../../navigation/NavigationTypes'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
-import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
-import render from '../../../testing/render'
-import VocabularyListScreen from '../VocabularyListScreen'
-import VocabularyListModal from '../components/VocabularyListModal'
+import VocabularyList from '../../components/VocabularyList'
+import VocabularyListModal from '../../components/VocabularyListModal'
+import labels from '../../constants/labels.json'
+import DocumentBuilder from '../../testing/DocumentBuilder'
+import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
+import render from '../../testing/render'
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
@@ -38,27 +35,13 @@ jest.mock('../components/VocabularyListModal', () => {
   )
 })
 
-describe('VocabularyListScreen', () => {
+describe('VocabularyList', () => {
   const documents = new DocumentBuilder(2).build()
-  const route: RouteProp<RoutesParams, 'VocabularyList'> = {
-    key: '',
-    name: 'VocabularyList',
-    params: {
-      documents,
-      disciplineId: 1,
-      disciplineTitle: 'My discipline title',
-      closeExerciseAction: CommonActions.goBack()
-    }
-  }
-
-  const navigation = createNavigationMock<'VocabularyList'>()
 
   it('should display vocabulary list', () => {
     mockUseLoadAsyncWithData(documents)
 
-    const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyListScreen route={route} navigation={navigation} />
-    )
+    const { getByText, getAllByText, getAllByTestId } = render(<VocabularyList documents={documents} />)
 
     expect(getByText(labels.exercises.vocabularyList.title)).toBeTruthy()
     expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
@@ -71,7 +54,7 @@ describe('VocabularyListScreen', () => {
   })
 
   it('should open vocabulary modal when pressing vocabulary', () => {
-    const { getByText } = render(<VocabularyListScreen route={route} navigation={navigation} />)
+    const { getByText } = render(<VocabularyList documents={documents} />)
 
     const vocabulary = getByText('Auto')
     fireEvent.press(vocabulary)

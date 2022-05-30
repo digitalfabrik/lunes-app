@@ -1,15 +1,12 @@
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, useState } from 'react'
+import React, { useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import Title from '../../components/Title'
-import { Document } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
-import { RoutesParams } from '../../navigation/NavigationTypes'
-import VocabularyListItem from './components/VocabularyListItem'
-import VocabularyListModal from './components/VocabularyListModal'
+import { Document } from '../constants/endpoints'
+import labels from '../constants/labels.json'
+import Title from './Title'
+import VocabularyListItem from './VocabularyListItem'
+import VocabularyListModal from './VocabularyListModal'
 
 const Root = styled.View`
   background-color: ${props => props.theme.colors.background};
@@ -18,17 +15,11 @@ const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
-const StyledList = styled(FlatList)`
-  width: 100%;
-` as ComponentType as new () => FlatList<Document>
-
 interface VocabularyListScreenProps {
-  route: RouteProp<RoutesParams, 'VocabularyList'>
-  navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
+  documents: Document[]
 }
 
-const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element => {
-  const { documents } = route.params
+const VocabularyList = ({ documents }: VocabularyListScreenProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
 
@@ -58,7 +49,7 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
         description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
       />
 
-      <StyledList
+      <FlatList
         data={documents}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
@@ -68,4 +59,4 @@ const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element
   )
 }
 
-export default VocabularyListScreen
+export default VocabularyList

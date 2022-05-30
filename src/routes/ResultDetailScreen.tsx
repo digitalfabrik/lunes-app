@@ -9,10 +9,10 @@ import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../as
 import Button from '../components/Button'
 import Loading from '../components/Loading'
 import Title from '../components/Title'
+import VocabularyListItem from '../components/VocabularyListItem'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
-import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};

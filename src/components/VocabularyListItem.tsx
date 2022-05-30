@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import AudioPlayer from '../../../components/AudioPlayer'
-import ListItem from '../../../components/ListItem'
-import { ContentTextLight } from '../../../components/text/Content'
-import { Document } from '../../../constants/endpoints'
-import { getArticleColor } from '../../../services/helpers'
+import { Document } from '../constants/endpoints'
+import { getArticleColor } from '../services/helpers'
+import AudioPlayer from './AudioPlayer'
+import ListItem from './ListItem'
+import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};

@@ -1,9 +1,9 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../../constants/labels.json'
-import DocumentBuilder from '../../../../testing/DocumentBuilder'
-import render from '../../../../testing/render'
+import labels from '../../constants/labels.json'
+import DocumentBuilder from '../../testing/DocumentBuilder'
+import render from '../../testing/render'
 import VocabularyListModal from '../VocabularyListModal'
 
 jest.mock('../../../../components/AudioPlayer', () => {

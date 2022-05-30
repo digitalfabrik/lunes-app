@@ -3,14 +3,14 @@ import { Modal, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CloseCircleIconWhite, ArrowRightIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
-import Button from '../../../components/Button'
-import ImageCarousel from '../../../components/ImageCarousel'
-import WordItem from '../../../components/WordItem'
-import { BUTTONS_THEME } from '../../../constants/data'
-import { Document } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
+import { CloseCircleIconWhite, ArrowRightIcon } from '../../assets/images'
+import { BUTTONS_THEME } from '../constants/data'
+import { Document } from '../constants/endpoints'
+import labels from '../constants/labels.json'
+import AudioPlayer from './AudioPlayer'
+import Button from './Button'
+import ImageCarousel from './ImageCarousel'
+import WordItem from './WordItem'
 
 const ModalContainer = styled.View`
   background-color: ${props => props.theme.colors.background};
