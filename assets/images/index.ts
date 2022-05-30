@@ -44,8 +44,11 @@ import OpenLockIcon from './open-lock-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import ShareIcon from './share-icon.svg'
-import StartIconGrey from './star-icon-grey.svg'
-import StartIconWhite from './star-icon-white.svg'
+import StarCircleIconGreyFilled from './star-circle-icon-grey-filled.svg'
+import StarCircleIconGrey from './star-circle-icon-grey.svg'
+import StarIconGreyFilled from './star-icon-grey-filled.svg'
+import StarIconGrey from './star-icon-grey.svg'
+import StarIconWhite from './star-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
@@ -97,8 +100,11 @@ export {
   QRCodeIcon,
   RepeatIcon,
   ShareIcon,
-  StartIconGrey,
-  StartIconWhite,
+  StarCircleIconGrey,
+  StarCircleIconGreyFilled,
+  StarIconGrey,
+  StarIconGreyFilled,
+  StarIconWhite,
   TrashIcon,
   TrophyIcon,
   VolumeUpCircleIcon

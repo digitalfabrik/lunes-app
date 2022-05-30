@@ -49,9 +49,9 @@ const BottomTabNavigator = (): JSX.Element | null => {
         {/*  options={{ */}
         {/*    tabBarIcon: ({ focused }) => */}
         {/*      focused ? ( */}
-        {/*        <StartIconWhite width={wp('7%')} height={wp('7%')} /> */}
+        {/*        <StarIconWhite width={wp('7%')} height={wp('7%')} /> */}
         {/*      ) : ( */}
-        {/*        <StartIconGrey width={wp('7%')} height={wp('7%')} /> */}
+        {/*        <StarIconGrey width={wp('7%')} height={wp('7%')} /> */}
         {/*      ), */}
         {/*    title: labels.general.favorites */}
         {/*  }} */}
