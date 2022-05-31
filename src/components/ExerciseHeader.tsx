@@ -58,7 +58,7 @@ const ExerciseHeader = ({
         headerLeft: () => (
           <NavigationHeaderLeft
             title={labels.general.header.cancelExercise}
-            onPress={() => setIsModalVisible(true)}
+            onPress={confirmClose ? () => setIsModalVisible(true) : navigation.goBack}
             isCloseButton
           />
         ),
@@ -76,7 +76,7 @@ const ExerciseHeader = ({
           maxWidth: wp('25%')
         }
       }),
-    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible]
+    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose]
   )
 
   useEffect(() => {
