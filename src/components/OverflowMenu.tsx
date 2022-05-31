@@ -8,7 +8,7 @@ interface OverflowMenuProps {
   icon: ReactElement
 }
 
-const OverflowMenu: React.FC<KebabMenuProps> = ({ children, icon }: KebabMenuProps): ReactElement => (
+const OverflowMenu = ({ children, icon }: OverflowMenuProps): ReactElement => (
   <HeaderButtons>
     <OverflowMenuRN OverflowIcon={icon} accessibilityLabel={labels.general.header.overflowMenu}>
       {children}
