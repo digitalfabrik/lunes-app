@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { HeaderButtons, OverflowMenu as OverflowMenuRN } from 'react-navigation-header-buttons'
+import { HeaderButtons, OverflowMenu as RNOverflowMenu } from 'react-navigation-header-buttons'
 
 import labels from '../constants/labels.json'
 
@@ -10,9 +10,9 @@ interface OverflowMenuProps {
 
 const OverflowMenu = ({ children, icon }: OverflowMenuProps): ReactElement => (
   <HeaderButtons>
-    <OverflowMenuRN OverflowIcon={icon} accessibilityLabel={labels.general.header.overflowMenu}>
+    <RNOverflowMenu OverflowIcon={icon} accessibilityLabel={labels.general.header.overflowMenu}>
       {children}
-    </OverflowMenuRN>
+    </RNOverflowMenu>
   </HeaderButtons>
 )
 

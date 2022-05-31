@@ -3,11 +3,11 @@ import React from 'react'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled from 'styled-components/native'
 
-import { LunesIcon, MenuIcon } from '../../assets/images'
-import labels from '../constants/labels.json'
-import { RoutesParams } from '../navigation/NavigationTypes'
-import OverflowMenu from './OverflowMenu'
-import SentryTestPressable from './SentryTestPressable'
+import { LunesIcon, MenuIcon } from '../../../../assets/images'
+import OverflowMenu from '../../../components/OverflowMenu'
+import SentryTestPressable from '../../../components/SentryTestPressable'
+import labels from '../../../constants/labels.json'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.primary};
