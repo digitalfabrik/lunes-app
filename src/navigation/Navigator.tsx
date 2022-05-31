@@ -55,7 +55,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
           options={({ navigation }) => options(cancelExercise, navigation, true)}
         />
         <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='Result' component={ResultScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Result' component={ResultScreen} options={({ navigation }) => options('', navigation)} />
         <Stack.Screen
           name='ResultDetail'
           component={ResultDetailScreen}
