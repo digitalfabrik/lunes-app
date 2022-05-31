@@ -5,7 +5,7 @@ import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import ConfirmationModal from '../../components/ConfirmationModal'
+import CustomModal from '../../components/CustomModal'
 import ListItem from '../../components/ListItem'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
@@ -97,13 +97,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   return (
     <Root>
       {documents && (
-        <ConfirmationModal
+        <CustomModal
+          onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
-          setVisible={setIsModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmBotton}
-          cancelButtonText={labels.exercises.lockedExerciseModal.cancelBotton}
-          lockingModal
+          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmButtonLabel}
           confirmationAction={() => {
             handleNavigation(currentExercise)
             setIsModalVisible(false)
@@ -119,7 +117,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             </ContentTextBold>
             {labels.exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
-        </ConfirmationModal>
+        </CustomModal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
