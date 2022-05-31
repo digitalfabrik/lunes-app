@@ -1,6 +1,7 @@
 import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
+import { Pressable } from 'react-native'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -56,8 +57,10 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
     }
   }
 
+  const navigateToDisciplines = () => navigation.navigate('DisciplineSelection', { discipline }) // TODO remove in LUN-328
+
   return (
-    <>
+    <Pressable onPress={navigateToDisciplines}>
       <ProgressContainer>
         <Progress.Circle
           progress={progress ?? 0}
@@ -85,7 +88,7 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
           disabled={documents === null || nextExercise === null}
         />
       </ButtonContainer>
-    </>
+    </Pressable>
   )
 }
 
