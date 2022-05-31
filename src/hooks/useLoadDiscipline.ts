@@ -15,21 +15,15 @@ export type RequestParams =
     }
   | {
       disciplineId: number
-      needsTrainingSetEndpoint?: boolean
     }
 
 export const loadDiscipline = async (params: RequestParams): Promise<Discipline> => {
-  let url
   if (isTypeLoadProtected(params)) {
-    url = `${ENDPOINTS.groupInfo}`
+    const url = `${ENDPOINTS.groupInfo}`
     const response = await getFromEndpoint<ServerResponseGroup[]>(url, params.apiKey)
     return formatGroup(response, params.apiKey)
   }
-  if (params.needsTrainingSetEndpoint) {
-    url = `${ENDPOINTS.trainingSets}/${params.disciplineId}`
-  } else {
-    url = `${ENDPOINTS.discipline}/${params.disciplineId}`
-  }
+  const url = `${ENDPOINTS.discipline}/${params.disciplineId}`
   const response = await getFromEndpoint<ServerResponseDiscipline>(url)
   return formatDiscipline(response, { parent: null })
 }
