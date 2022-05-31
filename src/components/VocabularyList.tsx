@@ -26,12 +26,13 @@ const VocabularyList = ({ documents, onItemPress }: VocabularyListScreenProps): 
 
   return (
     <Root>
-      <Title
-        title={labels.exercises.vocabularyList.title}
-        description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
-      />
-
       <FlatList
+        ListHeaderComponent={
+          <Title
+            title={labels.exercises.vocabularyList.title}
+            description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
+          />
+        }
         data={documents}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
