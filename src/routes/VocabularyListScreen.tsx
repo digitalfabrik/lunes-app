@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
 
+import ExerciseHeader from '../components/ExerciseHeader'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -23,7 +24,12 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const onItemPress = (index: number) =>
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
 
-  return <VocabularyList documents={route.params.documents} onItemPress={onItemPress} />
+  return (
+    <>
+      <ExerciseHeader navigation={navigation} confirmClose={false} />
+      <VocabularyList documents={route.params.documents} onItemPress={onItemPress} />
+    </>
+  )
 }
 
 export default VocabularyListScreen

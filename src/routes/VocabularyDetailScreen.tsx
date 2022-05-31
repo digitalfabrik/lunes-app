@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../assets/images'
 import AudioPlayer from '../components/AudioPlayer'
 import Button from '../components/Button'
+import ExerciseHeader from '../components/ExerciseHeader'
 import ImageCarousel from '../components/ImageCarousel'
 import WordItem from '../components/WordItem'
 import { BUTTONS_THEME } from '../constants/data'
@@ -40,6 +41,12 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
 
   return (
     <>
+      <ExerciseHeader
+        navigation={navigation}
+        currentWord={documentIndex}
+        numberOfWords={documents.length}
+        confirmClose={false}
+      />
       <ImageCarousel images={image} />
       <AudioPlayer document={document} disabled={false} />
       <ItemContainer>
