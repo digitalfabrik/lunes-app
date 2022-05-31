@@ -72,4 +72,68 @@ describe('InteractionSection', () => {
     fireEvent.press(button)
     await waitFor(() => expect(getByTestId('popover').props.isVisible).toBeTruthy())
   })
+
+  it('should show incorrect if word is not correct', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Die WrongAnswer')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'incorrect', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText(labels.exercises.write.feedback.wrong, { exact: false })).toBeTruthy()
+  })
+
+  it('should show similar if word is similar', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Die Wachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText(labels.exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
+  })
+
+  it('should show similar if word is correct and article similar', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Das Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText(labels.exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
+  })
+
+  it('should show correct', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
+  })
 })
