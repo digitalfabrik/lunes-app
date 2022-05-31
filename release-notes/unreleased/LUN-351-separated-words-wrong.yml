@@ -1,0 +1,6 @@
+issue_key: LUN-280
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Richtige Antworten für getrennte Wörter werden nun nicht mehr als falsch angezeigt.
