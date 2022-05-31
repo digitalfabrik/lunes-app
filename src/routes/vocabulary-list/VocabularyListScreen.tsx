@@ -6,9 +6,12 @@ import styled from 'styled-components/native'
 
 import FeedbackModal from '../../components/FeedbackModal'
 import Title from '../../components/Title'
+import { ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
+import { reportError } from '../../services/sentry'
 import VocabularyListItem from './components/VocabularyListItem'
 import VocabularyListModal from './components/VocabularyListModal'
 
@@ -34,7 +37,7 @@ interface VocabularyListScreenProps {
 }
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
-  const { documents } = route.params
+  const { documents, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -53,6 +56,10 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
       }),
     [navigation]
   )
+
+  useEffect(() => {
+    AsyncStorage.setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+  }, [])
 
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem

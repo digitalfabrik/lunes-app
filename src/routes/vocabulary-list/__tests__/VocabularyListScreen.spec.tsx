@@ -4,6 +4,7 @@ import React, { ComponentProps } from 'react'
 
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import AsyncStorage from '../../../services/AsyncStorage'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
@@ -22,6 +23,10 @@ jest.mock('react-native/Libraries/Modal/Modal', () => {
   // @ts-expect-error test
   return props => <Modal {...props} />
 })
+
+jest.mock('../../../services/AsyncStorage', () => ({
+  setExerciseProgress: jest.fn(() => Promise.resolve())
+}))
 
 // the modal always lies on top of the route meaning you'll also find the texts below
 // therefore prefix the word with modal_
@@ -52,6 +57,11 @@ describe('VocabularyListScreen', () => {
   }
 
   const navigation = createNavigationMock<'VocabularyList'>()
+
+  it('should save progress', () => {
+    render(<VocabularyListScreen route={route} navigation={navigation} />)
+    expect(AsyncStorage.setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
+  })
 
   it('should display vocabulary list', () => {
     mockUseLoadAsyncWithData(documents)

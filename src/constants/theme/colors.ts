@@ -16,11 +16,13 @@ export const COLORS = {
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
+  black: '#000000',
   articleNeutral: '#72f399',
   articlePlural: '#eee12d',
   articleFeminine: '#faa7a7',
   articleMasculine: '#8cc8f3',
-  link: 'blue'
+  link: 'blue',
+  lockingLane: '#425bee'
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]
