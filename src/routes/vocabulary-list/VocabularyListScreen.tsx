@@ -1,13 +1,16 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, useState } from 'react'
+import React, { ComponentType, useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import Title from '../../components/Title'
+import { ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
+import { reportError } from '../../services/sentry'
 import VocabularyListItem from './components/VocabularyListItem'
 import VocabularyListModal from './components/VocabularyListModal'
 
@@ -28,9 +31,13 @@ interface VocabularyListScreenProps {
 }
 
 const VocabularyListScreen = ({ route }: VocabularyListScreenProps): JSX.Element => {
-  const { documents } = route.params
+  const { documents, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number>(0)
+
+  useEffect(() => {
+    AsyncStorage.setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+  }, [])
 
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem
