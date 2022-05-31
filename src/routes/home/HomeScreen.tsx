@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
@@ -7,7 +7,10 @@ import styled from 'styled-components/native'
 import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
+import { EXERCISES } from '../../constants/data'
+import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
+import { NextExerciseData } from '../../hooks/useLoadNextExercise'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -48,16 +51,38 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
+  const navigateToDiscipline = (discipline: Discipline): void => {
+    navigation.navigate('DisciplineSelection', {
+      discipline
+    })
+  }
+
+  const navigateToExercise = (nextExerciseData: NextExerciseData) => {
+    const { exerciseKey, disciplineId, title: disciplineTitle, documents } = nextExerciseData
+    navigation.navigate(EXERCISES[exerciseKey].screen, {
+      disciplineId,
+      disciplineTitle,
+      documents,
+      closeExerciseAction: CommonActions.navigate('Home')
+    })
+  }
+
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
     <DisciplineCard
       key={customDiscipline}
       identifier={{ apiKey: customDiscipline }}
       refresh={refreshCustomDisciplines}
+      navigateToDiscipline={navigateToDiscipline}
     />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
-    <DisciplineCard key={profession} identifier={{ disciplineId: profession }} />
+    <DisciplineCard
+      key={profession}
+      identifier={{ disciplineId: profession }}
+      navigateToDiscipline={navigateToDiscipline}
+      navigateToExercise={navigateToExercise}
+    />
   ))
 
   return (

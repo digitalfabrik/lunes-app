@@ -23,13 +23,7 @@ describe('helpers', () => {
   }
 
   describe('getNextExercise', () => {
-    const getNextExerciseWithCheck = async (): Promise<NextExercise> => {
-      const e = await getNextExercise(profession)
-      if (!e) {
-        throw Error('NextExerciseData is undefined')
-      }
-      return e
-    }
+    const getNextExerciseWithCheck = async (): Promise<NextExercise> => getNextExercise(profession)
 
     it('should open first exercise, if no exercise was finished yet', async () => {
       mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))

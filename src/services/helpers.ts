@@ -78,10 +78,7 @@ const doneExercisesOfLeafDiscipline = (disciplineId: number, progress: Progress)
   disciplineId: the leaf discipline which needs to be done next
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
-export const getNextExercise = async (profession: Discipline | null): Promise<NextExercise | null> => {
-  if (!profession) {
-    return null
-  }
+export const getNextExercise = async (profession: Discipline): Promise<NextExercise> => {
   const disciplines = await loadDisciplines({ parent: profession }) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
@@ -94,14 +91,14 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   if (!firstUnfinishedDiscipline) {
     return {
       disciplineId: disciplines[0].id,
-      exerciseKey: exercisesWithoutProgress,
+      exerciseKey: exercisesWithoutProgress
     } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDiscipline.id]
   if (!disciplineProgress) {
     return {
       disciplineId: firstUnfinishedDiscipline.id,
-      exerciseKey: exercisesWithoutProgress,
+      exerciseKey: exercisesWithoutProgress
     }
   }
   const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
@@ -109,7 +106,7 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   )
   return {
     disciplineId: firstUnfinishedDiscipline.id,
-    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress,
+    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
   }
 }
 

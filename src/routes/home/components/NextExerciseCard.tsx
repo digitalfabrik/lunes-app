@@ -71,7 +71,7 @@ const NextExerciseCard: React.FC<NextExerciseCardProps> = ({
       <Heading>{heading}</Heading>
       <Subheading>{subheading}</Subheading>
       <ActionContainer>
-        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={onPress} testID='nextExerciseButton'>
+        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={onPress}>
           <Label>{buttonLabel}</Label>
           <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
         </TouchableOpacity>

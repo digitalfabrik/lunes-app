@@ -15,14 +15,16 @@ import DisciplineCard from '../DisciplineCard'
 jest.mock('@react-navigation/native')
 jest.useFakeTimers()
 
+const navigateToDiscipline = jest.fn()
+
 describe('DisciplineCard', () => {
-  const renderDisciplineCard = (): RenderAPI => render(<DisciplineCard identifier={{ disciplineId: 1 }} />)
+  const renderDisciplineCard = (): RenderAPI =>
+    render(<DisciplineCard identifier={{ disciplineId: 1 }} navigateToDiscipline={navigateToDiscipline} />)
 
   it('should show discipline card', async () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
-    const { getByText, findByText, getByTestId } = renderDisciplineCard()
+    const { getByText, findByText } = renderDisciplineCard()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
-    expect(getByTestId('progress-circle')).toBeDefined()
     await expect(findByText(labels.home.continue)).toBeDefined()
   })
 
@@ -40,7 +42,9 @@ describe('DisciplineCard', () => {
 
   it('should display forbidden error', async () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    const { getByText } = render(<DisciplineCard identifier={{ apiKey: 'abc' }} />)
+    const { getByText } = render(
+      <DisciplineCard identifier={{ apiKey: 'abc' }} navigateToDiscipline={navigateToDiscipline} />
+    )
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
     expect(getByText(labels.home.deleteModal.confirm)).toBeDefined()
   })
