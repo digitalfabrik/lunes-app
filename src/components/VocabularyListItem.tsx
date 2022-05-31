@@ -29,12 +29,12 @@ const Speaker = styled.View`
   padding-top: ${props => props.theme.spacings.sm};
 `
 
-export interface VocabularyListItemProp {
+interface VocabularyListItemProps {
   document: Document
   onPress: () => void
 }
 
-const VocabularyListItem = ({ document, onPress }: VocabularyListItemProp): ReactElement => {
+const VocabularyListItem = ({ document, onPress }: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>

@@ -46,11 +46,17 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         <WordItem answer={{ word, article }} />
       </ItemContainer>
       <ButtonContainer>
-        {hasNextDocument && (
+        {hasNextDocument ? (
           <Button
             label={labels.exercises.next}
             iconRight={ArrowRightIcon}
             onPress={goToNextWord}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        ) : (
+          <Button
+            label={labels.general.header.cancelExercise}
+            onPress={navigation.goBack}
             buttonTheme={BUTTONS_THEME.contained}
           />
         )}

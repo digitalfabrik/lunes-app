@@ -7,7 +7,6 @@ import styled from 'styled-components/native'
 import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
@@ -49,25 +48,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
-  const navigateToDisciplineSelection = (discipline: Discipline): void => {
-    navigation.navigate('DisciplineSelection', { discipline })
-  }
-
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
     <DisciplineCard
       key={customDiscipline}
       identifier={{ apiKey: customDiscipline }}
       refresh={refreshCustomDisciplines}
-      onPress={navigateToDisciplineSelection}
     />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
-    <DisciplineCard
-      key={profession}
-      identifier={{ disciplineId: profession }}
-      onPress={navigateToDisciplineSelection}
-    />
+    <DisciplineCard key={profession} identifier={{ disciplineId: profession }} />
   ))
 
   return (
