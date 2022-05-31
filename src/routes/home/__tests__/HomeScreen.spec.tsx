@@ -23,7 +23,7 @@ jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
-jest.mock('../../../components/HeaderWithMenu', () => {
+jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
   return () => <Text>HeaderWithMenu</Text>
 })

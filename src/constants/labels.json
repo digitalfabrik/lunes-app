@@ -19,7 +19,6 @@
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteModal": {
       "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
-      "cancel": "Abbrechen",
       "confirm": "Bereich löschen"
     },
     "impressum": "Impressum"
@@ -67,8 +66,7 @@
     },
     "lockedExerciseModal": {
       "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
-      "confirmBotton": "Aufgabe freischalten",
-      "cancelBotton": "Ok",
+      "confirmButtonLabel": "Aufgabe freischalten",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
     },
@@ -92,8 +90,7 @@
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
-      "cancel": "Beenden",
-      "continue": "Weiter machen"
+      "cancel": "Beenden"
     }
   },
   "results": {
@@ -119,6 +116,12 @@
       "message3": "Wörter richtig. Und du?"
     }
   },
+  "feedback": {
+    "sendFeedback": "Senden",
+    "question": "Hast du Feedback oder einen Wortvorschlag?",
+    "mailPlaceholder": "Deine Email für Fragen (optional)",
+    "feedbackPlaceholder": "Teile dein Feedback hier"
+  },
   "general": {
     "home": "Start",
     "favorites": "Favoriten",
@@ -128,8 +131,9 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
-      "of": "von",
-      "manageDisciplines": "Bereiche verwalten"
+      "manageDisciplines": "Bereiche verwalten",
+      "wordFeedback": "Feedback geben",
+      "overflowMenu": "Mehr Optionen"
     },
     "plurals": "Plural",
     "error": {
@@ -142,6 +146,7 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter"
+    "words": "Wörter",
+    "customModalCancel": "Zurück"
   }
 }
