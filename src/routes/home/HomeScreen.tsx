@@ -4,7 +4,6 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
-import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
@@ -14,6 +13,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
+import HomeScreenHeader from './components/HomeScreenHeader'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   return (
     <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View>
-        <HeaderWithMenu navigation={navigation} />
+        <HomeScreenHeader navigation={navigation} />
 
         <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
         <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>

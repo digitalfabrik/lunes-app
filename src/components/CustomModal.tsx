@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
+import labels from '../constants/labels.json'
 import Button from './Button'
 import { HeadingText } from './text/Heading'
 
@@ -37,62 +38,54 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
-export interface ConfirmationModalProps {
+export interface CustomModalProps {
   visible: boolean
-  setVisible: (visible: boolean) => void
+  onClose: () => void
   text: string
   children?: ReactNode
-  lockingModal?: boolean
-
   confirmationButtonText: string
-  cancelButtonText: string
+  showCancelButton?: boolean
   confirmationAction: () => void
+  confirmationDisabled?: boolean
+  testID?: string
 }
 
-const ConfirmationModal = (props: ConfirmationModalProps): JSX.Element => {
+// TODO Further adjustments gonna be done with LUN-312
+const CustomModal = (props: CustomModalProps): JSX.Element => {
   const {
     visible,
-    setVisible,
     text,
-    children,
     confirmationButtonText,
-    cancelButtonText,
+    showCancelButton = true,
     confirmationAction,
-    lockingModal = false
+    children,
+    onClose,
+    confirmationDisabled = false,
+    testID
   } = props
-  const closeModal = (): void => setVisible(false)
 
   return (
-    <Modal testID='modal' visible={visible} transparent animationType='fade' onRequestClose={() => setVisible(false)}>
+    <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
       <Overlay>
         <ModalContainer>
-          <Icon onPress={closeModal}>
+          <Icon onPress={onClose}>
             <CloseIcon width={wp('6%')} height={wp('6%')} />
           </Icon>
           <Message>{text}</Message>
           {children}
-          {lockingModal ? (
-            <>
-              <Button
-                label={confirmationButtonText}
-                onPress={confirmationAction}
-                buttonTheme={BUTTONS_THEME.contained}
-              />
-              <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.outlined} />
-            </>
-          ) : (
-            <>
-              <Button label={cancelButtonText} onPress={closeModal} buttonTheme={BUTTONS_THEME.contained} />
-              <Button
-                label={confirmationButtonText}
-                onPress={confirmationAction}
-                buttonTheme={BUTTONS_THEME.outlined}
-              />
-            </>
+
+          <Button
+            label={confirmationButtonText}
+            onPress={confirmationAction}
+            disabled={confirmationDisabled}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+          {showCancelButton && (
+            <Button label={labels.general.customModalCancel} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
           )}
         </ModalContainer>
       </Overlay>
     </Modal>
   )
 }
-export default ConfirmationModal
+export default CustomModal
