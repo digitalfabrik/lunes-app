@@ -53,7 +53,7 @@ export type RoutesParams = {
   ArticleChoiceExercise: ExerciseParams
   WriteExercise: ExerciseParams
   ExerciseFinished: ResultParams & {
-    unlockedNextExercise?: boolean
+    unlockedNextExercise: boolean
   }
   Result: ResultParams
   ResultDetail: ResultParams & {

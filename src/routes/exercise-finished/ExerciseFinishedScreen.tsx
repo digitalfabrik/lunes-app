@@ -54,15 +54,8 @@ interface Props {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
-  const {
-    exercise,
-    results,
-    disciplineTitle,
-    disciplineId,
-    documents,
-    closeExerciseAction,
-    unlockedNextExercise = false
-  } = route.params
+  const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction, unlockedNextExercise } =
+    route.params
   const [message, setMessage] = React.useState<string>('')
 
   React.useEffect(() => {

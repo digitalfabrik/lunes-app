@@ -1,6 +1,6 @@
 import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -58,11 +58,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     apiKey: discipline.apiKey
   })
 
-  useFocusEffect(() => {
-    getDoneExercises(disciplineId)
-      .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
-      .catch(reportError)
-  })
+  useFocusEffect(
+    useCallback(() => {
+      getDoneExercises(disciplineId)
+        .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
+        .catch(reportError)
+    }, [disciplineId])
+  )
 
   const handleNavigation = (item: Exercise): void => {
     if (nextExercise && item.level > nextExercise.level) {

@@ -82,9 +82,7 @@ const ChoiceExerciseScreen = ({
 
   const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
     const progress = await getExerciseProgress()
-    if (disciplineId) {
-      await saveExerciseProgress(disciplineId, exerciseKey, results)
-    }
+    await saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineId,
