@@ -113,7 +113,8 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)
-          }}>
+          }}
+          testID='locking-modal'>
           <SmallMessage>
             {labels.exercises.lockedExerciseModal.descriptionPart1}
             <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>

@@ -47,10 +47,10 @@ describe('ExercisesScreen', () => {
 
   it('should show modal on navigation if locked', async () => {
     const { getByText, getByTestId } = render(<ExercisesScreen route={route} navigation={navigation} />)
-    expect(getByTestId('modal')).toHaveProp('visible', false)
+    expect(getByTestId('locking-modal')).toHaveProp('visible', false)
     const lockedExercise = getByText(EXERCISES[1].title)
     fireEvent.press(lockedExercise)
-    expect(getByTestId('modal')).toHaveProp('visible', true)
+    expect(getByTestId('locking-modal')).toHaveProp('visible', true)
     expect(navigation.navigate).not.toHaveBeenCalled()
   })
 
