@@ -33,10 +33,10 @@ const RightChildrenContainer = styled.View`
 interface VocabularyListItemProps {
   document: Document
   onPress: () => void
-  refreshFavorites?: () => void
+  onFavoritesChanged?: () => void
 }
 
-const VocabularyListItem = ({ document, onPress, refreshFavorites }: VocabularyListItemProps): ReactElement => {
+const VocabularyListItem = ({ document, onPress, onFavoritesChanged }: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -54,7 +54,7 @@ const VocabularyListItem = ({ document, onPress, refreshFavorites }: VocabularyL
       rightChildren={
         <RightChildrenContainer>
           <AudioPlayer document={document} disabled={false} />
-          <FavoriteButton document={document} refreshFavorites={refreshFavorites} />
+          <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
         </RightChildrenContainer>
       }
     />

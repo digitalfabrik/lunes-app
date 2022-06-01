@@ -33,10 +33,10 @@ const Button = styled.TouchableOpacity`
 
 interface Props {
   document: Document
-  refreshFavorites?: () => void
+  onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ document, refreshFavorites }: Props): ReactElement | null => {
+const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
   const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document)
 
   useFocusEffect(refresh)
@@ -48,8 +48,8 @@ const FavoriteButton = ({ document, refreshFavorites }: Props): ReactElement | n
       await AsyncStorage.addFavorite(document).catch(reportError)
     }
     refresh()
-    if (refreshFavorites) {
-      refreshFavorites()
+    if (onFavoritesChanged) {
+      onFavoritesChanged()
     }
   }
 

@@ -38,7 +38,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): JSX.Element => {
         <VocabularyList
           title={labels.favorites.favorites}
           documents={data}
-          refreshFavorites={refresh}
+          onFavoritesChanged={refresh}
           onItemPress={onItemPress}
         />
       )}
