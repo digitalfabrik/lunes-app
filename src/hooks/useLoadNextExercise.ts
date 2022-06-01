@@ -16,8 +16,7 @@ export const loadNextExercise = async (profession: Discipline): Promise<NextExer
   const nextExercise = await getNextExercise(profession)
   const trainingSetUrl = `${ENDPOINTS.trainingSets}/${nextExercise.disciplineId}`
   const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
-  const documentUrl = ENDPOINTS.documents.replace(':id', `${nextExercise.disciplineId}`)
-  const documents = await getFromEndpoint<DocumentFromServer[]>(documentUrl)
+  const documents = await loadDocuments({ disciplineId: nextExercise.disciplineId })
   return {
     documents: formatServerResponse(documents),
     title: formatDiscipline(trainingSet, { parent: null }).title,
