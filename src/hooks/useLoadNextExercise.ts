@@ -26,5 +26,7 @@ export const loadNextExercise = async (profession: Discipline): Promise<NextExer
   }
 }
 
-export const useLoadNextExercise = (loadData: Discipline): Return<NextExerciseData> =>
+const useLoadNextExercise = (loadData: Discipline): Return<NextExerciseData> =>
   useLoadAsync(loadNextExercise, loadData)
+
+export default useLoadNextExercise
