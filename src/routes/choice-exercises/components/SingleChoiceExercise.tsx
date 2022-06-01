@@ -90,7 +90,7 @@ const ChoiceExerciseScreen = ({
       exercise: exerciseKey,
       results,
       closeExerciseAction: route.params.closeExerciseAction,
-      unlockedNextExercise: progress[disciplineId] ? progress[disciplineId]![exerciseKey] === undefined : true
+      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined
     })
     initializeExercise(true)
   }
