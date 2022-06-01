@@ -1,5 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
+import { Pressable } from 'react-native'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
@@ -47,7 +48,7 @@ const ProfessionDetails = ({
   const { documents, title, exerciseKey } = nextExerciseData
 
   return (
-    <>
+    <Pressable onPress={() => navigateToDiscipline(discipline)}>
       <ProgressContainer>
         <Progress.Circle
           progress={progress ?? 0}
@@ -81,7 +82,7 @@ const ProfessionDetails = ({
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>
-    </>
+    </Pressable>
   )
 }
 

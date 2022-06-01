@@ -79,7 +79,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       disciplineId,
       results: documentsWithResults,
       exercise: ExerciseKeys.writeExercise,
-      closeExerciseAction
+      closeExerciseAction,
+      unlockedNextExercise: false
     })
     initializeExercise(true)
   }

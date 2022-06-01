@@ -59,12 +59,16 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-const doneExercisesOfLeafDiscipline = (disciplineId: number, progress: Progress): number => {
+const getDoneExercisesByProgress = (disciplineId: number, progress: Progress): number => {
   const progressOfDiscipline = progress[disciplineId]
   return progressOfDiscipline
     ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
     : 0
 }
+
+export const getDoneExercises = (disciplineId: number): Promise<number> =>
+  AsyncStorage.getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
+
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
@@ -78,7 +82,7 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const firstUnfinishedDiscipline = disciplines.find(
-    discipline => doneExercisesOfLeafDiscipline(discipline.id, progress) < EXERCISES.length
+    discipline => getDoneExercisesByProgress(discipline.id, progress) < EXERCISES.length
   )
 
   if (!firstUnfinishedDiscipline) {
@@ -107,7 +111,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
-    (acc, leaf) => acc + doneExercisesOfLeafDiscipline(leaf, progress),
+    (acc, leaf) => acc + getDoneExercisesByProgress(leaf, progress),
     0
   )
   const totalExercises = profession.leafDisciplines.length * EXERCISES.length
