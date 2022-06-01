@@ -1,11 +1,11 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
+import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import ConfirmationModal from '../../components/ConfirmationModal'
+import CustomModal from '../../components/CustomModal'
 import ListItem from '../../components/ListItem'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
@@ -15,7 +15,8 @@ import { Exercise, EXERCISES } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { wordsDescription } from '../../services/helpers'
+import { getDoneExercises, wordsDescription } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
 
 const Root = styled.View`
@@ -45,6 +46,7 @@ interface ExercisesScreenProps {
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline, disciplineTitle, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
 
   const {
     data: documents,
@@ -56,10 +58,16 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     apiKey: discipline.apiKey
   })
 
-  const currentExercise: Exercise = EXERCISES[2] //  TODO: LUN-131 logic , note: currentExercise is the last level that can be accessed.
+  useFocusEffect(
+    useCallback(() => {
+      getDoneExercises(disciplineId)
+        .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
+        .catch(reportError)
+    }, [disciplineId])
+  )
 
   const handleNavigation = (item: Exercise): void => {
-    if (item.level > currentExercise.level) {
+    if (nextExercise && item.level > nextExercise.level) {
       setIsModalVisible(true)
       return
     }
@@ -81,13 +89,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   const Item = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
     <Container>
-      <LockingLane current={currentExercise} index={index} />
+      <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
         <ListItem
           title={item.title}
           description={item.description}
           onPress={() => handleNavigation(item)}
-          arrowDisabled={item.level > currentExercise.level}>
+          arrowDisabled={nextExercise === null || item.level > nextExercise.level}>
           <Trophy level={item.level} />
         </ListItem>
       </ListItemResizer>
@@ -96,30 +104,23 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <Root>
-      {documents && (
-        <ConfirmationModal
+      {documents && nextExercise && (
+        <CustomModal
+          onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
-          setVisible={setIsModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmBotton}
-          cancelButtonText={labels.exercises.lockedExerciseModal.cancelBotton}
-          lockingModal
+          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmButtonLabel}
           confirmationAction={() => {
-            handleNavigation(currentExercise)
+            handleNavigation(nextExercise)
             setIsModalVisible(false)
-          }}>
+          }}
+          testID='locking-modal'>
           <SmallMessage>
             {labels.exercises.lockedExerciseModal.descriptionPart1}
-            <ContentTextBold>
-              {' '}
-              {
-                // eslint-disable-next-line
-                EXERCISES[currentExercise.level] !== undefined ? currentExercise.title : EXERCISES[0].title
-              }{' '}
-            </ContentTextBold>
+            <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
             {labels.exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
-        </ConfirmationModal>
+        </CustomModal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (

@@ -1,11 +1,4 @@
-import {
-  Article,
-  EXERCISES,
-  exercisesWithoutProgress,
-  exercisesWithProgress,
-  NextExercise,
-  Progress
-} from '../constants/data'
+import { Article, EXERCISES, NextExercise, Progress } from '../constants/data'
 import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -66,12 +59,16 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-const doneExercisesOfLeafDiscipline = (disciplineId: number, progress: Progress): number => {
+const getDoneExercisesByProgress = (disciplineId: number, progress: Progress): number => {
   const progressOfDiscipline = progress[disciplineId]
   return progressOfDiscipline
     ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
     : 0
 }
+
+export const getDoneExercises = (disciplineId: number): Promise<number> =>
+  AsyncStorage.getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
+
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
@@ -88,21 +85,19 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const firstUnfinishedDiscipline = disciplines.find(
-    discipline => doneExercisesOfLeafDiscipline(discipline.id, progress) < exercisesWithProgress
+    discipline => getDoneExercisesByProgress(discipline.id, progress) < EXERCISES.length
   )
   if (!firstUnfinishedDiscipline) {
-    return { disciplineId: disciplines[0].id, exerciseKey: exercisesWithoutProgress } // TODO LUN-319 show success that every exercise is done
+    return { disciplineId: disciplines[0].id, exerciseKey: 0 } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDiscipline.id]
   if (!disciplineProgress) {
-    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: exercisesWithoutProgress }
+    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: 0 }
   }
-  const nextExerciseKey = EXERCISES.slice(exercisesWithoutProgress).find(
-    exercise => disciplineProgress[exercise.key] === undefined
-  )
+  const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
   return {
     disciplineId: firstUnfinishedDiscipline.id,
-    exerciseKey: nextExerciseKey?.key ?? exercisesWithoutProgress
+    exerciseKey: nextExerciseKey?.key ?? 0
   }
 }
 
@@ -112,9 +107,9 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
-    (acc, leaf) => acc + doneExercisesOfLeafDiscipline(leaf, progress),
+    (acc, leaf) => acc + getDoneExercisesByProgress(leaf, progress),
     0
   )
-  const totalExercises = profession.leafDisciplines.length * exercisesWithProgress
+  const totalExercises = profession.leafDisciplines.length * EXERCISES.length
   return doneExercises / totalExercises
 }

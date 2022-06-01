@@ -1,4 +1,4 @@
-const transformNodeModules = ['react-native', '@react-native']
+const transformNodeModules = ['react-native', '@react-native', 'react-navigation-header-buttons']
 export default {
   rootDir: 'src',
   preset: 'react-native',

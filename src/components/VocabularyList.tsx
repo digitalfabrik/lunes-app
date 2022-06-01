@@ -33,12 +33,13 @@ const VocabularyList = ({
 
   return (
     <Root>
-      <Title
-        title={title}
-        description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
-      />
-
       <FlatList
+        ListHeaderComponent={
+          <Title
+            title={title}
+            description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
+          />
+        }
         data={documents}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}

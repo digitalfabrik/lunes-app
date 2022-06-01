@@ -4,10 +4,8 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
-import HeaderWithMenu from '../../components/HeaderWithMenu'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
@@ -15,6 +13,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
+import HomeScreenHeader from './components/HomeScreenHeader'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -49,31 +48,22 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('AddCustomDiscipline')
   }
 
-  const navigateToDisciplineSelection = (discipline: Discipline): void => {
-    navigation.navigate('DisciplineSelection', { discipline })
-  }
-
   const customDisciplineItems = customDisciplines?.map(customDiscipline => (
     <DisciplineCard
       key={customDiscipline}
       identifier={{ apiKey: customDiscipline }}
       refresh={refreshCustomDisciplines}
-      onPress={navigateToDisciplineSelection}
     />
   ))
 
   const selectedProfessionItems = selectedProfessions?.map(profession => (
-    <DisciplineCard
-      key={profession}
-      identifier={{ disciplineId: profession }}
-      onPress={navigateToDisciplineSelection}
-    />
+    <DisciplineCard key={profession} identifier={{ disciplineId: profession }} />
   ))
 
   return (
     <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View>
-        <HeaderWithMenu navigation={navigation} />
+        <HomeScreenHeader navigation={navigation} />
 
         <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
         <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>

@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { fireEvent, RenderAPI } from '@testing-library/react-native'
+import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
 import { ForbiddenError, NetworkError } from '../../../../constants/endpoints'
@@ -20,12 +20,10 @@ describe('DisciplineCard', () => {
     jest.clearAllMocks()
   })
 
-  const onPress = jest.fn()
-
   const renderDisciplineCard = (): RenderAPI =>
     render(
       <NavigationContainer>
-        <DisciplineCard identifier={{ disciplineId: 1 }} onPress={onPress} />
+        <DisciplineCard identifier={{ disciplineId: 1 }} />
       </NavigationContainer>
     )
 
@@ -35,11 +33,6 @@ describe('DisciplineCard', () => {
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     expect(getByTestId('progress-circle')).toBeDefined()
     await expect(findByText(labels.home.continue)).toBeDefined()
-
-    fireEvent.press(getByText(mockDisciplines()[0].title))
-
-    expect(onPress).toHaveBeenCalledTimes(1)
-    expect(onPress).toHaveBeenCalledWith(mockDisciplines()[0])
   })
 
   it('should display loading', () => {
@@ -58,7 +51,7 @@ describe('DisciplineCard', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
     const { getByText } = render(
       <NavigationContainer>
-        <DisciplineCard identifier={{ apiKey: 'abc' }} onPress={onPress} />
+        <DisciplineCard identifier={{ apiKey: 'abc' }} />
       </NavigationContainer>
     )
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()

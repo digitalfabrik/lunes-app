@@ -7,7 +7,7 @@ import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Discipline, ForbiddenError } from '../../../constants/endpoints'
+import { ForbiddenError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
@@ -40,10 +40,9 @@ export const ButtonContainer = styled.View`
 interface PropsType {
   identifier: RequestParams
   refresh?: () => void
-  onPress: (discipline: Discipline) => void
 }
 
-const DisciplineCard = ({ identifier, refresh: refreshHome, onPress }: PropsType): JSX.Element => {
+const DisciplineCard = ({ identifier, refresh: refreshHome }: PropsType): JSX.Element => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 
   if (loading) {
@@ -80,7 +79,7 @@ const DisciplineCard = ({ identifier, refresh: refreshHome, onPress }: PropsType
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon} onPress={() => onPress(discipline)}>
+    <Card heading={discipline.title} icon={discipline.icon}>
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={discipline} />
       ) : (

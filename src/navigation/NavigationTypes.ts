@@ -57,7 +57,9 @@ export type RoutesParams = {
   WordChoiceExercise: ExerciseParams
   ArticleChoiceExercise: ExerciseParams
   WriteExercise: ExerciseParams
-  ExerciseFinished: ResultParams
+  ExerciseFinished: ResultParams & {
+    unlockedNextExercise: boolean
+  }
   Result: ResultParams
   ResultDetail: ResultParams & {
     resultType: Result

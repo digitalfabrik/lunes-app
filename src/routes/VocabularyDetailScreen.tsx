@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../assets/images'
 import Button from '../components/Button'
 import DocumentImageSection from '../components/DocumentImageSection'
+import ExerciseHeader from '../components/ExerciseHeader'
 import WordItem from '../components/WordItem'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
@@ -43,16 +44,28 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
 
   return (
     <Container>
+      <ExerciseHeader
+        navigation={navigation}
+        currentWord={documentIndex}
+        numberOfWords={documents.length}
+        confirmClose={false}
+      />
       <DocumentImageSection document={document} />
       <ItemContainer>
         <WordItem answer={{ word, article }} />
       </ItemContainer>
       <ButtonContainer>
-        {hasNextDocument && (
+        {hasNextDocument ? (
           <Button
             label={labels.exercises.next}
             iconRight={ArrowRightIcon}
             onPress={goToNextWord}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        ) : (
+          <Button
+            label={labels.general.header.cancelExercise}
+            onPress={navigation.goBack}
             buttonTheme={BUTTONS_THEME.contained}
           />
         )}

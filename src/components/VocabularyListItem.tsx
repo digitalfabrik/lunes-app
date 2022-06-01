@@ -30,13 +30,13 @@ const RightChildrenContainer = styled.View`
   justify-content: space-between;
 `
 
-export interface VocabularyListItemProp {
+interface VocabularyListItemProps {
   document: Document
   onPress: () => void
   refreshFavorites?: () => void
 }
 
-const VocabularyListItem = ({ document, onPress, refreshFavorites }: VocabularyListItemProp): ReactElement => {
+const VocabularyListItem = ({ document, onPress, refreshFavorites }: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
