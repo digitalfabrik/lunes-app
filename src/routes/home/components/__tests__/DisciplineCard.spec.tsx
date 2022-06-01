@@ -16,6 +16,10 @@ import DisciplineCard from '../DisciplineCard'
 jest.useFakeTimers()
 
 describe('DisciplineCard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const renderDisciplineCard = (): RenderAPI =>
     render(
       <NavigationContainer>

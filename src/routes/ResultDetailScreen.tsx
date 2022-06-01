@@ -9,10 +9,10 @@ import { DoubleCheckCircleIconWhite, ArrowRightIcon, RepeatIcon } from '../../as
 import Button from '../components/Button'
 import Loading from '../components/Loading'
 import Title from '../components/Title'
+import VocabularyListItem from '../components/VocabularyListItem'
 import { BUTTONS_THEME, ExerciseKeys, RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../navigation/NavigationTypes'
-import VocabularyListItem from './vocabulary-list/components/VocabularyListItem'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -73,7 +73,12 @@ const ResultDetailScreen = ({ route, navigation }: ResultScreenProps): JSX.Eleme
     />
   )
 
-  const Item = ({ item }: { item: DocumentResult }): JSX.Element => <VocabularyListItem document={item.document} />
+  const Item = ({ item, index }: { item: DocumentResult; index: number }): JSX.Element => (
+    <VocabularyListItem
+      document={item.document}
+      onPress={() => navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })}
+    />
+  )
 
   const repeatIncorrectEntries = (): void =>
     navigation.navigate('WriteExercise', {
