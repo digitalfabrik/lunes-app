@@ -20,22 +20,22 @@ const Line = styled.View<{ color: string }>`
 `
 
 interface PropsType {
-  current: Exercise
+  nextExercise: Exercise | null
   index: number
 }
 
-const LockingLane = ({ current, index }: PropsType): ReactElement => {
+const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
   let Icon
-  if (current.level < index) {
+  if (nextExercise && nextExercise.level < index) {
     Icon = LockIcon
-  } else if (current.level === index) {
+  } else if (nextExercise && nextExercise.level === index) {
     Icon = CircleIconBlue
   } else {
     Icon = CheckCircleIconBlue
   }
 
-  const colorPre = current.level < index ? COLORS.black : COLORS.lockingLane
-  const colorPost = current.level <= index ? COLORS.black : COLORS.lockingLane
+  const colorPre = nextExercise && nextExercise.level < index ? COLORS.black : COLORS.lockingLane
+  const colorPost = nextExercise && nextExercise.level <= index ? COLORS.black : COLORS.lockingLane
 
   return (
     <Container>
