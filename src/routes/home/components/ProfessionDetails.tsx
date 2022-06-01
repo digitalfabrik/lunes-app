@@ -1,15 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { Pressable } from 'react-native'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
-import { BUTTONS_THEME } from '../../../constants/data'
+import { BUTTONS_THEME, EXERCISES } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
-import { NextExerciseData, useLoadNextExercise } from '../../../hooks/useLoadNextExercise'
+import useLoadNextExercise, { NextExerciseData } from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel } from '../../../services/helpers'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
@@ -48,7 +47,7 @@ const ProfessionDetails = ({
   const { documents, title, exerciseKey } = nextExerciseData
 
   return (
-    <Pressable onPress={() => navigateToDiscipline(discipline)}>
+    <>
       <ProgressContainer>
         <Progress.Circle
           progress={progress ?? 0}
@@ -71,7 +70,7 @@ const ProfessionDetails = ({
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}
         onPress={() => navigateToExercise(nextExerciseData)}
-        heading={`${labels.home.level} ${exerciseKey}`}
+        heading={EXERCISES[exerciseKey].title}
         buttonLabel={labels.home.continue}
         subheading={title}
       />
@@ -82,7 +81,7 @@ const ProfessionDetails = ({
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>
-    </Pressable>
+    </>
   )
 }
 

@@ -1,9 +1,8 @@
-import { Discipline, Document, ENDPOINTS } from '../constants/endpoints'
-import { getFromEndpoint } from '../services/axios'
-import { getNextExercise } from '../services/helpers'
-import { formatDiscipline, ServerResponseDiscipline } from './helpers'
+import { Discipline, Document } from '../constants/endpoints'
+import { getNextExercise, loadTrainingsSet } from '../services/helpers'
+import { formatDiscipline } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { DocumentFromServer, formatServerResponse } from './useLoadDocuments'
+import { loadDocuments } from './useLoadDocuments'
 
 export interface NextExerciseData {
   documents: Document[]
@@ -14,18 +13,16 @@ export interface NextExerciseData {
 
 export const loadNextExercise = async (profession: Discipline): Promise<NextExerciseData> => {
   const nextExercise = await getNextExercise(profession)
-  const trainingSetUrl = `${ENDPOINTS.trainingSets}/${nextExercise.disciplineId}`
-  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
+  const trainingSet = await loadTrainingsSet(nextExercise.disciplineId)
   const documents = await loadDocuments({ disciplineId: nextExercise.disciplineId })
   return {
-    documents: formatServerResponse(documents),
+    documents,
     title: formatDiscipline(trainingSet, { parent: null }).title,
     exerciseKey: nextExercise.exerciseKey,
     disciplineId: nextExercise.disciplineId
   }
 }
 
-const useLoadNextExercise = (loadData: Discipline): Return<NextExerciseData> =>
-  useLoadAsync(loadNextExercise, loadData)
+const useLoadNextExercise = (loadData: Discipline): Return<NextExerciseData> => useLoadAsync(loadNextExercise, loadData)
 
 export default useLoadNextExercise

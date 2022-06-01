@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { Pressable, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -65,19 +65,21 @@ const NextExerciseCard: React.FC<NextExerciseCardProps> = ({
   subheading,
   buttonLabel
 }: NextExerciseCardProps): ReactElement => (
-  <NextExerciseContainer>
-    <Thumbnail source={{ uri: thumbnail }} />
-    <ExerciseDetail>
-      <Heading>{heading}</Heading>
-      <Subheading>{subheading}</Subheading>
-      <ActionContainer>
-        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={onPress}>
-          <Label>{buttonLabel}</Label>
-          <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
-        </TouchableOpacity>
-      </ActionContainer>
-    </ExerciseDetail>
-  </NextExerciseContainer>
+  <Pressable onPress={onPress}>
+    <NextExerciseContainer>
+      <Thumbnail source={{ uri: thumbnail }} />
+      <ExerciseDetail>
+        <Heading>{heading}</Heading>
+        <Subheading>{subheading}</Subheading>
+        <ActionContainer>
+          <TouchableOpacity style={{ flexDirection: 'row' }} onPress={onPress}>
+            <Label>{buttonLabel}</Label>
+            <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
+          </TouchableOpacity>
+        </ActionContainer>
+      </ExerciseDetail>
+    </NextExerciseContainer>
+  </Pressable>
 )
 
 export default NextExerciseCard

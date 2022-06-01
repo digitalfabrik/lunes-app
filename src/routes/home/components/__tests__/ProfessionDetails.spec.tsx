@@ -3,7 +3,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import labels from '../../../../constants/labels.json'
-import { NextExerciseData, useLoadNextExercise } from '../../../../hooks/useLoadNextExercise'
+import useLoadNextExercise, { NextExerciseData } from '../../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../../hooks/useReadProgress'
 import DocumentBuilder from '../../../../testing/DocumentBuilder'
 import { getReturnOf } from '../../../../testing/helper'

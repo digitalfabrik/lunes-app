@@ -87,7 +87,7 @@ const DisciplineCard = ({
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon}>
+    <Card heading={discipline.title} icon={discipline.icon} onPress={() => navigateToDiscipline(discipline)}>
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (

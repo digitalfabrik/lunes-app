@@ -1,9 +1,11 @@
 import { Article, EXERCISES, NextExercise, Progress } from '../constants/data'
-import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDisciplines } from '../hooks/useLoadDisciplines'
 import AsyncStorage from './AsyncStorage'
+import { getFromEndpoint } from './axios'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -116,4 +118,10 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   )
   const totalExercises = profession.leafDisciplines.length * EXERCISES.length
   return doneExercises / totalExercises
+}
+
+export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
+  const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
+  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
+  return trainingSet
 }
