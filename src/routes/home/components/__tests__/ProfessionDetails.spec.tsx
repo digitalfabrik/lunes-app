@@ -2,8 +2,9 @@ import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { NextExerciseData } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
-import useLoadNextExercise, { NextExerciseData } from '../../../../hooks/useLoadNextExercise'
+import useLoadNextExercise from '../../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../../hooks/useReadProgress'
 import DocumentBuilder from '../../../../testing/DocumentBuilder'
 import { getReturnOf } from '../../../../testing/helper'
@@ -31,7 +32,7 @@ describe('ProfessionDetails', () => {
       <ProfessionDetails
         discipline={mockDisciplines()[0]}
         navigateToDiscipline={navigateToDiscipline}
-        navigateToExercise={navigateToExercise}
+        navigateToNextExercise={navigateToExercise}
       />
     )
 

@@ -7,7 +7,7 @@ import { ArrowRightCircleIconWhite } from '../../../../assets/images'
 import { ContentTextLight } from '../../../components/text/Content'
 import { SubheadingPrimary, SubheadingText } from '../../../components/text/Subheading'
 
-const NextExerciseContainer = styled.View`
+const Container = styled.View`
   flex-direction: row;
   background-color: ${props => props.theme.colors.background};
   padding: ${props => props.theme.spacings.sm};
@@ -50,7 +50,7 @@ const Subheading = styled(ContentTextLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-interface NextExerciseCardProps {
+interface PropsType {
   thumbnail: string
   heading: string
   subheading: string
@@ -58,15 +58,9 @@ interface NextExerciseCardProps {
   onPress: () => void
 }
 
-const NextExerciseCard: React.FC<NextExerciseCardProps> = ({
-  thumbnail,
-  onPress,
-  heading,
-  subheading,
-  buttonLabel
-}: NextExerciseCardProps): ReactElement => (
+const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel }: PropsType): ReactElement => (
   <Pressable onPress={onPress}>
-    <NextExerciseContainer>
+    <Container>
       <Thumbnail source={{ uri: thumbnail }} />
       <ExerciseDetail>
         <Heading>{heading}</Heading>
@@ -78,7 +72,7 @@ const NextExerciseCard: React.FC<NextExerciseCardProps> = ({
           </TouchableOpacity>
         </ActionContainer>
       </ExerciseDetail>
-    </NextExerciseContainer>
+    </Container>
   </Pressable>
 )
 

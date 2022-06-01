@@ -6,12 +6,11 @@ import ErrorMessage from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
-import { BUTTONS_THEME } from '../../../constants/data'
+import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { NextExerciseData } from '../../../hooks/useLoadNextExercise'
 import AsyncStorage from '../../../services/AsyncStorage'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
@@ -42,14 +41,14 @@ interface PropsType {
   identifier: RequestParams
   refresh?: () => void
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToExercise?: (nextExerciseData: NextExerciseData) => void
+  navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
 const DisciplineCard = ({
   identifier,
   refresh: refreshHome,
   navigateToDiscipline,
-  navigateToExercise
+  navigateToNextExercise
 }: PropsType): JSX.Element => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 
@@ -91,11 +90,11 @@ const DisciplineCard = ({
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (
-        navigateToExercise && (
+        navigateToNextExercise && (
           <ProfessionDetails
             discipline={discipline}
             navigateToDiscipline={navigateToDiscipline}
-            navigateToExercise={navigateToExercise}
+            navigateToNextExercise={navigateToNextExercise}
           />
         )
       )}

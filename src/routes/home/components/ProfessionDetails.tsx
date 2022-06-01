@@ -4,11 +4,11 @@ import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
-import { BUTTONS_THEME, EXERCISES } from '../../../constants/data'
+import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
-import useLoadNextExercise, { NextExerciseData } from '../../../hooks/useLoadNextExercise'
+import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel } from '../../../services/helpers'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
@@ -24,13 +24,13 @@ const ProgressContainer = styled.View`
 interface PropsType {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
 const ProfessionDetails = ({
   discipline,
   navigateToDiscipline,
-  navigateToExercise
+  navigateToNextExercise
 }: PropsType): ReactElement | null => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
@@ -69,7 +69,7 @@ const ProfessionDetails = ({
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}
-        onPress={() => navigateToExercise(nextExerciseData)}
+        onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={labels.home.continue}
         subheading={title}
@@ -77,7 +77,7 @@ const ProfessionDetails = ({
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={labels.home.checkModules}
+          label={labels.home.viewModules}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

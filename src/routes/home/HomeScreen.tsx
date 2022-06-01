@@ -6,10 +6,9 @@ import styled from 'styled-components/native'
 
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { EXERCISES } from '../../constants/data'
+import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
-import { NextExerciseData } from '../../hooks/useLoadNextExercise'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -57,7 +56,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
-  const navigateToExercise = (nextExerciseData: NextExerciseData) => {
+  const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
     const { exerciseKey, disciplineId, title: disciplineTitle, documents } = nextExerciseData
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       disciplineId,
@@ -81,7 +80,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       key={profession}
       identifier={{ disciplineId: profession }}
       navigateToDiscipline={navigateToDiscipline}
-      navigateToExercise={navigateToExercise}
+      navigateToNextExercise={navigateToNextExercise}
     />
   ))
 

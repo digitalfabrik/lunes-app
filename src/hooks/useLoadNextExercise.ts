@@ -1,15 +1,9 @@
-import { Discipline, Document } from '../constants/endpoints'
+import { NextExerciseData } from '../constants/data'
+import { Discipline } from '../constants/endpoints'
 import { getNextExercise, loadTrainingsSet } from '../services/helpers'
 import { formatDiscipline } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 import { loadDocuments } from './useLoadDocuments'
-
-export interface NextExerciseData {
-  documents: Document[]
-  title: string
-  exerciseKey: number
-  disciplineId: number
-}
 
 export const loadNextExercise = async (profession: Discipline): Promise<NextExerciseData> => {
   const nextExercise = await getNextExercise(profession)
