@@ -36,12 +36,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactNode => {
   }
 
   return (
-    <VocabularyList
-      title={labels.favorites.favorites}
-      documents={data}
-      onFavoritesChanged={refresh}
-      onItemPress={onItemPress}
-    />
+    <VocabularyList title={labels.favorites} documents={data} onFavoritesChanged={refresh} onItemPress={onItemPress} />
   )
 }
 
