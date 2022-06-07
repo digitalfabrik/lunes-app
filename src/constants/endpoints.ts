@@ -40,6 +40,7 @@ export const ENDPOINTS = {
   disciplinesByGroup: 'disciplines_by_group',
   groupInfo: 'group_info',
   trainingSet: 'training_set',
+  trainingSets: 'training_sets',
   documents: 'documents/:id'
 }
 

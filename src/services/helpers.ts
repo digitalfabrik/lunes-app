@@ -1,9 +1,11 @@
 import { Article, EXERCISES, NextExercise, Progress } from '../constants/data'
-import { AlternativeWord, Discipline, Document } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDisciplines } from '../hooks/useLoadDisciplines'
 import AsyncStorage from './AsyncStorage'
+import { getFromEndpoint } from './axios'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -75,10 +77,7 @@ export const getDoneExercises = (disciplineId: number): Promise<number> =>
   disciplineId: the leaf discipline which needs to be done next
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
-export const getNextExercise = async (profession: Discipline | null): Promise<NextExercise | null> => {
-  if (!profession) {
-    return null
-  }
+export const getNextExercise = async (profession: Discipline): Promise<NextExercise> => {
   const disciplines = await loadDisciplines({ parent: profession }) // TODO LUN-316 leaf disciplines must be loaded, also if nested
   if (disciplines.length <= 0) {
     throw new Error(`No Disciplines for id ${profession.id}`)
@@ -87,12 +86,19 @@ export const getNextExercise = async (profession: Discipline | null): Promise<Ne
   const firstUnfinishedDiscipline = disciplines.find(
     discipline => getDoneExercisesByProgress(discipline.id, progress) < EXERCISES.length
   )
+
   if (!firstUnfinishedDiscipline) {
-    return { disciplineId: disciplines[0].id, exerciseKey: 0 } // TODO LUN-319 show success that every exercise is done
+    return {
+      disciplineId: disciplines[0].id,
+      exerciseKey: 0
+    } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDiscipline.id]
   if (!disciplineProgress) {
-    return { disciplineId: firstUnfinishedDiscipline.id, exerciseKey: 0 }
+    return {
+      disciplineId: firstUnfinishedDiscipline.id,
+      exerciseKey: 0
+    }
   }
   const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
   return {
@@ -112,4 +118,10 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   )
   const totalExercises = profession.leafDisciplines.length * EXERCISES.length
   return doneExercises / totalExercises
+}
+
+export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
+  const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
+  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
+  return trainingSet
 }

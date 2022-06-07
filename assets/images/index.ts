@@ -1,6 +1,7 @@
 import AddCircleIcon from './add-circle-icon.svg'
 import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
 import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
+import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
 import ArrowRightIcon from './arrow-right-icon.svg'
 import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
@@ -55,6 +56,7 @@ export {
   ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   ArrowRightIcon,
+  ArrowRightCircleIconWhite,
   BannerGreen,
   BannerRed,
   BannerYellow,
