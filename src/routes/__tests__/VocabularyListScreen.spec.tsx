@@ -10,7 +10,7 @@ import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
 import render from '../../testing/render'
 import VocabularyListScreen from '../VocabularyListScreen'
 
-jest.mock('../../../components/FavoriteButton', () => {
+jest.mock('../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
