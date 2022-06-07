@@ -12,7 +12,7 @@ import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -81,16 +81,16 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
-    if (disciplineId) {
-      await saveExerciseProgress(disciplineId, exerciseKey, results)
-    }
+    const progress = await getExerciseProgress()
+    await saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineId,
       disciplineTitle,
       exercise: exerciseKey,
       results,
-      closeExerciseAction: route.params.closeExerciseAction
+      closeExerciseAction: route.params.closeExerciseAction,
+      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined
     })
     initializeExercise(true)
   }
