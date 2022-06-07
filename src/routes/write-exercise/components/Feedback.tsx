@@ -64,7 +64,7 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={3} ellipsizeMode='tail' testID='feedback-write-exercise'>
+      <StyledText numberOfLines={3} ellipsizeMode='tail'>
         {message}
       </StyledText>
     </Background>

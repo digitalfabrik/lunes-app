@@ -6,8 +6,8 @@ import ErrorMessage from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
-import { BUTTONS_THEME } from '../../../constants/data'
-import { ForbiddenError } from '../../../constants/endpoints'
+import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
+import { Discipline, ForbiddenError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
@@ -40,9 +40,16 @@ export const ButtonContainer = styled.View`
 interface PropsType {
   identifier: RequestParams
   refresh?: () => void
+  navigateToDiscipline: (discipline: Discipline) => void
+  navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
-const DisciplineCard = ({ identifier, refresh: refreshHome }: PropsType): JSX.Element => {
+const DisciplineCard = ({
+  identifier,
+  refresh: refreshHome,
+  navigateToDiscipline,
+  navigateToNextExercise
+}: PropsType): JSX.Element => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 
   if (loading) {
@@ -79,11 +86,17 @@ const DisciplineCard = ({ identifier, refresh: refreshHome }: PropsType): JSX.El
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon}>
+    <Card heading={discipline.title} icon={discipline.icon} onPress={() => navigateToDiscipline(discipline)}>
       {isTypeLoadProtected(identifier) ? (
-        <CustomDisciplineDetails discipline={discipline} />
+        <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (
-        <ProfessionDetails discipline={discipline} />
+        navigateToNextExercise && (
+          <ProfessionDetails
+            discipline={discipline}
+            navigateToDiscipline={navigateToDiscipline}
+            navigateToNextExercise={navigateToNextExercise}
+          />
+        )
       )}
     </Card>
   )
