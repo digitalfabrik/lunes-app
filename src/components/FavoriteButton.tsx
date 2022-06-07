@@ -9,11 +9,6 @@ import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
 
-const Container = styled.View`
-  padding: ${props => `${props.theme.spacings.xs} 0  ${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
-  align-self: center;
-`
-
 const Icon = styled(StarCircleIconGreyFilled)`
   min-width: ${wp('9%')}px;
   min-height: ${wp('9%')}px;
@@ -25,6 +20,7 @@ const IconOutline = styled(StarCircleIconGrey)`
 const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
+  shadow-color: ${props => props.theme.colors.shadow};
   shadow-radius: 5px;
   shadow-offset: 1px 1px;
   shadow-opacity: 0.5;
@@ -57,11 +53,9 @@ const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement |
   }
 
   return (
-    <Container>
-      <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
-        {isFavorite ? <Icon /> : <IconOutline />}
-      </Button>
-    </Container>
+    <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
+      {isFavorite ? <Icon /> : <IconOutline />}
+    </Button>
   )
 }
 

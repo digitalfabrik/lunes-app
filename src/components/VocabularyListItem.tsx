@@ -30,6 +30,11 @@ const RightChildrenContainer = styled.View`
   justify-content: space-between;
 `
 
+const FavButtonContainer = styled.View`
+  padding: ${props => `0 ${props.theme.spacings.xs} 0 ${props.theme.spacings.sm}`};
+  align-self: center;
+`
+
 interface VocabularyListItemProps {
   document: Document
   onPress: () => void
@@ -54,7 +59,9 @@ const VocabularyListItem = ({ document, onPress, onFavoritesChanged }: Vocabular
       rightChildren={
         <RightChildrenContainer>
           <AudioPlayer document={document} disabled={false} />
-          <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
+          <FavButtonContainer>
+            <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
+          </FavButtonContainer>
         </RightChildrenContainer>
       }
     />
