@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import AudioPlayer from '../../../components/AudioPlayer'
-import ListItem from '../../../components/ListItem'
-import { ContentTextLight } from '../../../components/text/Content'
-import { Document } from '../../../constants/endpoints'
-import { getArticleColor } from '../../../services/helpers'
+import { Document } from '../constants/endpoints'
+import { getArticleColor } from '../services/helpers'
+import AudioPlayer from './AudioPlayer'
+import ListItem from './ListItem'
+import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
@@ -29,12 +29,12 @@ const Speaker = styled.View`
   padding-top: ${props => props.theme.spacings.sm};
 `
 
-export interface VocabularyListItemProp {
+interface VocabularyListItemProps {
   document: Document
-  setIsModalVisible?: () => void
+  onPress: () => void
 }
 
-const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemProp): ReactElement => {
+const VocabularyListItem = ({ document, onPress }: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -43,13 +43,11 @@ const VocabularyListItem = ({ document, setIsModalVisible }: VocabularyListItemP
       <StyledImage testID='image' source={{ uri: documentImage[0].image }} width={24} height={24} />
     ) : undefined
 
-  const noop = () => undefined
-
   return (
     <ListItem
       title={title}
       description={word}
-      onPress={setIsModalVisible ?? noop}
+      onPress={onPress}
       icon={icon}
       rightChildren={
         <Speaker>

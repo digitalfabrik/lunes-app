@@ -18,6 +18,10 @@ jest.useFakeTimers()
 const navigateToDiscipline = jest.fn()
 
 describe('DisciplineCard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const renderDisciplineCard = (): RenderAPI =>
     render(<DisciplineCard identifier={{ disciplineId: 1 }} navigateToDiscipline={navigateToDiscipline} />)
 

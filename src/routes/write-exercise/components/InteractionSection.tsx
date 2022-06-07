@@ -84,14 +84,15 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   }
 
   const checkEntry = async (): Promise<void> => {
-    const splitInput = input.trim().split(' ')
-    if (splitInput.length < 2) {
+    const trimmed = input.trim()
+    const indexOfFirstSpace = trimmed.indexOf(' ')
+    if (indexOfFirstSpace < 0) {
       setIsArticleMissing(true)
       return
     }
 
-    const article = capitalizeFirstLetter(splitInput[0])
-    const word = splitInput[1]
+    const article = capitalizeFirstLetter(trimmed.substring(0, indexOfFirstSpace))
+    const word = trimmed.substring(indexOfFirstSpace + 1)
 
     setSubmittedInput(input)
     updateAndStoreResult(validateAnswer(article, word))
