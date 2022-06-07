@@ -23,7 +23,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       return
     }
     navigation.navigate('VocabularyDetail', {
-      disciplineId: 0,
+      disciplineId: null,
       disciplineTitle: labels.general.favorites,
       documents: data,
       documentIndex: index,

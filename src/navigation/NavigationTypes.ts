@@ -16,8 +16,9 @@ interface ExerciseParams {
   closeExerciseAction: CommonNavigationAction
 }
 
-type DetailExerciseParams = ExerciseParams & {
+interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
   documentIndex: number
+  disciplineId: number | null
 }
 
 export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
@@ -51,7 +52,7 @@ export type RoutesParams = {
     discipline: Discipline
     initialSelection: boolean
   }
-  VocabularyDetail: DetailExerciseParams
+  VocabularyDetail: VocabularyDetailExerciseParams
   Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
