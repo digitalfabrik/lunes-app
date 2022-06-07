@@ -1,6 +1,6 @@
 import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactNode } from 'react'
+import React, { ReactElement } from 'react'
 
 import VocabularyList from '../components/VocabularyList'
 import labels from '../constants/labels.json'
@@ -13,7 +13,7 @@ interface FavoritesScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
 }
 
-const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactNode => {
+const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const { data, refresh } = useLoadAsync(AsyncStorage.getFavorites, {})
 
   useFocusEffect(refresh)
@@ -32,7 +32,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactNode => {
   }
 
   if (!data) {
-    return null
+    return <></>
   }
 
   return (

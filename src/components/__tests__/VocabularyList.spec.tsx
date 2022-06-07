@@ -31,7 +31,7 @@ describe('VocabularyList', () => {
       <VocabularyList title='Title' documents={documents} onItemPress={onItemPress} />
     )
 
-    expect(getByText(labels.exercises.vocabularyList.title)).toBeTruthy()
+    expect(getByText('Title')).toBeTruthy()
     expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
     expect(getByText('Der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
