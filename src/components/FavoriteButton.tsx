@@ -36,15 +36,15 @@ interface Props {
 }
 
 const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document)
+  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document.id)
 
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await AsyncStorage.removeFavorite(document).catch(reportError)
+      await AsyncStorage.removeFavorite(document.id).catch(reportError)
     } else {
-      await AsyncStorage.addFavorite(document).catch(reportError)
+      await AsyncStorage.addFavorite(document.id).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKey, Progress } from '../constants/data'
-import { Document } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
@@ -80,16 +79,16 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
-const getFavorites = async (): Promise<Document[]> => {
+const getFavorites = async (): Promise<number[]> => {
   const documents = await AsyncStorage.getItem(FAVORITES_KEY)
   return documents ? JSON.parse(documents) : []
 }
 
-const setFavorites = async (favorites: Document[]): Promise<void> => {
+const setFavorites = async (favorites: number[]): Promise<void> => {
   await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
 }
 
-const addFavorite = async (favorite: Document): Promise<void> => {
+const addFavorite = async (favorite: number): Promise<void> => {
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
@@ -98,15 +97,15 @@ const addFavorite = async (favorite: Document): Promise<void> => {
   await setFavorites(newFavorites)
 }
 
-const removeFavorite = async (favorite: Document): Promise<void> => {
+const removeFavorite = async (favoriteId: number): Promise<void> => {
   const favorites = await getFavorites()
-  const newFavorites = favorites.filter(it => it.id !== favorite.id)
+  const newFavorites = favorites.filter(it => it !== favoriteId)
   await setFavorites(newFavorites)
 }
 
-const isFavorite = async (favorite: Document): Promise<boolean> => {
+const isFavorite = async (favoriteId: number): Promise<boolean> => {
   const favorites = await getFavorites()
-  return favorites.some(it => it.id === favorite.id)
+  return favorites.includes(favoriteId)
 }
 
 export default {

@@ -19,7 +19,7 @@ describe('FavoriteButton', () => {
 
   it('should add favorite on click', async () => {
     await AsyncStorage.setFavorites([])
-    await expect(AsyncStorage.isFavorite(document)).resolves.toBe(false)
+    await expect(AsyncStorage.isFavorite(document.id)).resolves.toBe(false)
 
     const { getByTestId } = renderFavoriteButton()
 
@@ -27,12 +27,12 @@ describe('FavoriteButton', () => {
     fireEvent.press(getByTestId('add'))
 
     await waitFor(() => expect(getByTestId('remove')).toBeTruthy())
-    await expect(AsyncStorage.isFavorite(document)).resolves.toBe(true)
+    await expect(AsyncStorage.isFavorite(document.id)).resolves.toBe(true)
   })
 
   it('should remove favorite on click', async () => {
-    await AsyncStorage.setFavorites([document])
-    await expect(AsyncStorage.isFavorite(document)).resolves.toBe(true)
+    await AsyncStorage.setFavorites([document.id])
+    await expect(AsyncStorage.isFavorite(document.id)).resolves.toBe(true)
 
     const { getByTestId } = renderFavoriteButton()
 
@@ -40,6 +40,6 @@ describe('FavoriteButton', () => {
     fireEvent.press(getByTestId('remove'))
 
     await waitFor(() => expect(getByTestId('add')).toBeTruthy())
-    await expect(AsyncStorage.isFavorite(document)).resolves.toBe(false)
+    await expect(AsyncStorage.isFavorite(document.id)).resolves.toBe(false)
   })
 })

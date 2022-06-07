@@ -2,11 +2,11 @@ import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import ServerResponseHandler from '../components/ServerResponseHandler'
 import VocabularyList from '../components/VocabularyList'
 import labels from '../constants/labels.json'
-import useLoadAsync from '../hooks/useLoadAsync'
+import useLoadFavorites from '../hooks/useLoadFavorites'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
 
 interface FavoritesScreenProps {
   route: RouteProp<RoutesParams, 'Favorites'>
@@ -14,7 +14,7 @@ interface FavoritesScreenProps {
 }
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
-  const { data, refresh } = useLoadAsync(AsyncStorage.getFavorites, {})
+  const { data, error, refresh } = useLoadFavorites()
 
   useFocusEffect(refresh)
 
@@ -31,12 +31,17 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     })
   }
 
-  if (!data) {
-    return <></>
-  }
-
   return (
-    <VocabularyList title={labels.favorites} documents={data} onFavoritesChanged={refresh} onItemPress={onItemPress} />
+    <ServerResponseHandler error={error} loading={false} refresh={refresh}>
+      {data && (
+        <VocabularyList
+          title={labels.favorites}
+          documents={data}
+          onFavoritesChanged={refresh}
+          onItemPress={onItemPress}
+        />
+      )}
+    </ServerResponseHandler>
   )
 }
 

@@ -106,7 +106,7 @@ describe('AsyncStorage', () => {
   })
 
   describe('favorites', () => {
-    const documents = new DocumentBuilder(4).build()
+    const documents = new DocumentBuilder(4).build().map(it => it.id)
 
     it('should add favorites', async () => {
       await AsyncStorage.setFavorites(documents.slice(0, 2))
