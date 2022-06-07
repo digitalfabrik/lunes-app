@@ -2,7 +2,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
 import AsyncStorage from '../../services/AsyncStorage'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import render from '../../testing/render'
@@ -22,12 +21,12 @@ describe('FavoriteButton', () => {
     await AsyncStorage.setFavorites([])
     await expect(AsyncStorage.isFavorite(document)).resolves.toBe(false)
 
-    const { getByA11yLabel } = renderFavoriteButton()
+    const { getByTestId } = renderFavoriteButton()
 
-    await waitFor(() => expect(getByA11yLabel(labels.favorites.add)).toBeTruthy())
-    fireEvent.press(getByA11yLabel(labels.favorites.add))
+    await waitFor(() => expect(getByTestId('add')).toBeTruthy())
+    fireEvent.press(getByTestId('add'))
 
-    await waitFor(() => expect(getByA11yLabel(labels.favorites.remove)).toBeTruthy())
+    await waitFor(() => expect(getByTestId('remove')).toBeTruthy())
     await expect(AsyncStorage.isFavorite(document)).resolves.toBe(true)
   })
 
@@ -35,12 +34,12 @@ describe('FavoriteButton', () => {
     await AsyncStorage.setFavorites([document])
     await expect(AsyncStorage.isFavorite(document)).resolves.toBe(true)
 
-    const { getByA11yLabel } = renderFavoriteButton()
+    const { getByTestId } = renderFavoriteButton()
 
-    await waitFor(() => expect(getByA11yLabel(labels.favorites.remove)).toBeTruthy())
-    fireEvent.press(getByA11yLabel(labels.favorites.remove))
+    await waitFor(() => expect(getByTestId('remove')).toBeTruthy())
+    fireEvent.press(getByTestId('remove'))
 
-    await waitFor(() => expect(getByA11yLabel(labels.favorites.add)).toBeTruthy())
+    await waitFor(() => expect(getByTestId('add')).toBeTruthy())
     await expect(AsyncStorage.isFavorite(document)).resolves.toBe(false)
   })
 })

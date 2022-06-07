@@ -5,7 +5,6 @@ import styled from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { Document } from '../constants/endpoints'
-import labels from '../constants/labels.json'
 import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
@@ -59,7 +58,7 @@ const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement |
 
   return (
     <Container>
-      <Button accessibilityLabel={isFavorite ? labels.favorites.remove : labels.favorites.add} onPress={onPress}>
+      <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
         {isFavorite ? <Icon /> : <IconOutline />}
       </Button>
     </Container>
