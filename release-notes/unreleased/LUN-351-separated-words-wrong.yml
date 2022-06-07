@@ -3,4 +3,4 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: Richtige Antworten für getrennte Wörter werden nun nicht mehr als falsch angezeigt.
+de: Richtige Antworten für getrennte Wörter werden nun korrekt ausgewertet.

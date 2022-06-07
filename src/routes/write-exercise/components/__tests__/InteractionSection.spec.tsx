@@ -7,6 +7,11 @@ import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
 
+jest.mock('react-native-tts', () => ({
+  getInitStatus: jest.fn(async () => 'success'),
+  addListener: jest.fn(async () => ({ remove: jest.fn() }))
+}))
+
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() }))
 }))
@@ -36,6 +41,15 @@ describe('InteractionSection', () => {
     id: 0,
     document_image: [],
     word: 'Spachtel'
+  }
+
+  const dividedDocument = {
+    alternatives: [],
+    article: ARTICLES[1],
+    audio: 'https://example.com/my-audio',
+    id: 0,
+    document_image: [],
+    word: 'kontaktlose Spannungsprüfer'
   }
 
   const renderInteractionSection = (documentWithResult: DocumentResult, isAnswerSubmitted: boolean): RenderAPI =>
@@ -128,6 +142,22 @@ describe('InteractionSection', () => {
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
+  })
+
+  it('should show correct for divided words', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document: dividedDocument, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Der zweipolige Phasenprüfer')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
