@@ -65,7 +65,7 @@ export type RoutesParams = {
     resultType: Result
   }
   Imprint: undefined
-  ManageDisciplines: undefined
+  ManageSelection: undefined
 }
 
 export type Route = keyof RoutesParams

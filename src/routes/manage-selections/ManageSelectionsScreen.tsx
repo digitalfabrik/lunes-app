@@ -30,7 +30,7 @@ const Padding = styled.View`
 `
 
 interface Props {
-  navigation: StackNavigationProp<RoutesParams, 'ManageDisciplines'>
+  navigation: StackNavigationProp<RoutesParams, 'ManageSelection'>
 }
 
 const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
@@ -64,20 +64,20 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   return (
     <Root contentContainerStyle={{ flexGrow: 1 }}>
-      <Heading>{labels.manageDisciplines.heading}</Heading>
-      <SectionHeading>{labels.manageDisciplines.yourProfessions}</SectionHeading>
+      <Heading>{labels.manageSelection.heading}</Heading>
+      <SectionHeading>{labels.manageSelection.yourProfessions}</SectionHeading>
       <HorizontalLine />
       {professionItems}
-      <AddElement onPress={navigateToProfessionSelection} label={labels.manageDisciplines.addProfession} />
+      <AddElement onPress={navigateToProfessionSelection} label={labels.manageSelection.addProfession} />
 
-      <SectionHeading>{labels.manageDisciplines.yourCustomDisciplines}</SectionHeading>
+      <SectionHeading>{labels.manageSelection.yourCustomDisciplines}</SectionHeading>
       <HorizontalLine />
       {customDisciplineItems}
 
       <AddElement
         onPress={navigateToAddCustomDiscipline}
         label={labels.home.addCustomDiscipline}
-        explanation={labels.manageDisciplines.descriptionAddCustomDiscipline}
+        explanation={labels.manageSelection.descriptionAddCustomDiscipline}
       />
       <Padding />
     </Root>
