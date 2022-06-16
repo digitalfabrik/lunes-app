@@ -26,6 +26,7 @@ import CloseIconWhite from './close-icon-white.svg'
 import CloseIcon from './close-icon.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
+import HappSmileyIcon from './happy-smiley-circle-icon-white.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
 import HeaderLinesIcon from './header-lines-icon.svg'
 import HeaderSquareIcon from './header-square-icon.svg'
@@ -42,8 +43,10 @@ import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import OpenLockIcon from './open-lock-icon.svg'
+import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
+import SadSmileyIcon from './sad-smiley-circle-icon-white.svg'
 import ShareIcon from './share-icon.svg'
 import StartIconGrey from './star-icon-grey.svg'
 import StartIconWhite from './star-icon-white.svg'
@@ -80,6 +83,7 @@ export {
   CloseIconRed,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
+  HappSmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,
   HeaderSquareIcon,
@@ -97,7 +101,9 @@ export {
   MenuIcon,
   OpenLockIcon,
   QRCodeIcon,
+  PartyHornIcon,
   RepeatIcon,
+  SadSmileyIcon,
   ShareIcon,
   StartIconGrey,
   StartIconWhite,

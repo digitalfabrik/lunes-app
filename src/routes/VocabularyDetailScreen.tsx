@@ -31,7 +31,7 @@ interface VocabularyDetailScreenProps {
 }
 
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
-  const { documents, documentIndex } = route.params
+  const { documents, documentIndex, closeExerciseAction } = route.params
   const document = documents[documentIndex]
   const { word, article, document_image: image } = document
   const hasNextDocument = documentIndex + 1 < documents.length
@@ -46,6 +46,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         currentWord={documentIndex}
         numberOfWords={documents.length}
         confirmClose={false}
+        closeExerciseAction={closeExerciseAction}
       />
       <ImageCarousel images={image} />
       <AudioPlayer document={document} disabled={false} />

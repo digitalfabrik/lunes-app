@@ -15,7 +15,7 @@ interface VocabularyListScreenProps {
 }
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
-  const { disciplineId } = route.params
+  const { disciplineId, closeExerciseAction } = route.params
 
   useEffect(() => {
     AsyncStorage.setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
@@ -26,7 +26,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
 
   return (
     <>
-      <ExerciseHeader navigation={navigation} confirmClose={false} />
+      <ExerciseHeader navigation={navigation} confirmClose={false} closeExerciseAction={closeExerciseAction} />
       <VocabularyList documents={route.params.documents} onItemPress={onItemPress} />
     </>
   )

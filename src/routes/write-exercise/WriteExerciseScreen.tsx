@@ -119,7 +119,12 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   return (
     <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-      <ExerciseHeader navigation={navigation} currentWord={currentIndex} numberOfWords={documents.length} />
+      <ExerciseHeader
+        navigation={navigation}
+        currentWord={currentIndex}
+        numberOfWords={documents.length}
+        closeExerciseAction={closeExerciseAction}
+      />
 
       <ImageCarousel images={current.document.document_image} minimized={isKeyboardShown} />
 

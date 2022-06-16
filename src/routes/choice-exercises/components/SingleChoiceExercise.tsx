@@ -135,7 +135,12 @@ const ChoiceExerciseScreen = ({
 
   return (
     <ExerciseContainer>
-      <ExerciseHeader navigation={navigation} currentWord={currentWord} numberOfWords={count} />
+      <ExerciseHeader
+        navigation={navigation}
+        closeExerciseAction={route.params.closeExerciseAction}
+        currentWord={currentWord}
+        numberOfWords={count}
+      />
 
       <>
         {document.document_image.length > 0 && <ImageCarousel images={document.document_image} />}
