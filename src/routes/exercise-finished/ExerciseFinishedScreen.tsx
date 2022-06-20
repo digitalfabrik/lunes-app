@@ -50,7 +50,7 @@ const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
 `
 const Icon = styled.TouchableOpacity`
   position: absolute;
-  top: 50px;
+  top: 25px;
   right: 100px;
 `
 
