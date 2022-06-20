@@ -95,7 +95,9 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     }
   }
 
-  const navigateToNextModule = (): void => navigation.pop(3)
+  const navigateToNextModule = (): void => {
+    navigation.pop(2)
+  }
 
   React.useEffect(() => {
     const isLastExercise = exercise === EXERCISES.length - 1
@@ -117,7 +119,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         setIcon(<HappSmileyIcon width={iconSize} height={iconSize} />)
       } else {
         setMessage(labels.results.finishedModule)
-        setButtonText(labels.results.button.nextDiscipline)
+        setButtonText(labels.results.button.close)
         setNavigationAction(() => () => navigateToNextModule())
         setIcon(<PartyHornIcon width={iconSize} height={iconSize} />)
       }
@@ -133,7 +135,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   return (
     <Root>
       <UpperSection unlockedNextExercise={unlockedNextExercise}>
-        <Icon>
+        <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
           {unlockedNextExercise ? (
             <CloseIcon width={wp('6%')} height={wp('6%')} />
           ) : (
