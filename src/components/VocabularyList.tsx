@@ -17,11 +17,18 @@ const Root = styled.View`
 interface VocabularyListScreenProps {
   documents: Document[]
   onItemPress: (index: number) => void
+  onFavoritesChanged?: () => void
+  title: string
 }
 
-const VocabularyList = ({ documents, onItemPress }: VocabularyListScreenProps): JSX.Element => {
+const VocabularyList = ({
+  documents,
+  onItemPress,
+  onFavoritesChanged,
+  title
+}: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
-    <VocabularyListItem document={item} onPress={() => onItemPress(index)} />
+    <VocabularyListItem document={item} onPress={() => onItemPress(index)} onFavoritesChanged={onFavoritesChanged} />
   )
 
   return (
@@ -29,7 +36,7 @@ const VocabularyList = ({ documents, onItemPress }: VocabularyListScreenProps): 
       <FlatList
         ListHeaderComponent={
           <Title
-            title={labels.exercises.vocabularyList.title}
+            title={title}
             description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
           />
         }

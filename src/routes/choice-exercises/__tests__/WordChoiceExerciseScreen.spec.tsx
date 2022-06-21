@@ -11,6 +11,10 @@ import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
 jest.useFakeTimers()
 
+jest.mock('../../../components/FavoriteButton', () => {
+  const Text = require('react-native').Text
+  return () => <Text>FavoriteButton</Text>
+})
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it)
