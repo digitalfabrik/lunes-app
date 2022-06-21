@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
+import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -74,7 +75,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const [resultColor, setResultColor] = useState<Color>(theme.colors.background)
   const [buttonText, setButtonText] = useState<string>('')
   const [navigationAction, setNavigationAction] = useState<() => void>(() => undefined)
-  const [icon, setIcon] = useState<ReactElement>()
+  const [icon, setIcon] = useState<SVGElement | null>(null)
 
   const repeatExercise = (): void =>
     navigation.navigate(EXERCISES[exercise].screen, {
@@ -133,40 +134,43 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   }, [results])
 
   return (
-    <Root>
-      <UpperSection unlockedNextExercise={unlockedNextExercise}>
-        <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
-          {unlockedNextExercise ? (
-            <CloseIcon width={wp('6%')} height={wp('6%')} />
-          ) : (
-            <CloseIconWhite width={wp('6%')} height={wp('6%')} />
-          )}
-        </Icon>
-        {icon}
-        <MessageContainer>
-          <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
-          <Results color={resultColor}>
-            {correctResults.length} {labels.results.of} {results.length} {labels.general.words} {labels.results.correct}
-          </Results>
-          <Progress.Bar
-            color={resultColor}
-            progress={percentageOfCorrectResults}
-            unfilledColor={theme.colors.background}
-            width={wp('40%')}
-            height={wp('2%')}
-            borderWidth={0}
-          />
-        </MessageContainer>
-      </UpperSection>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Root>
+        <UpperSection unlockedNextExercise={unlockedNextExercise}>
+          <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
+            {unlockedNextExercise ? (
+              <CloseIcon width={wp('6%')} height={wp('6%')} />
+            ) : (
+              <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+            )}
+          </Icon>
+          {icon}
+          <MessageContainer>
+            <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
+            <Results color={resultColor}>
+              {correctResults.length} {labels.results.of} {results.length} {labels.general.words}{' '}
+              {labels.results.correct}
+            </Results>
+            <Progress.Bar
+              color={resultColor}
+              progress={percentageOfCorrectResults}
+              unfilledColor={theme.colors.background}
+              width={wp('40%')}
+              height={wp('2%')}
+              borderWidth={0}
+            />
+          </MessageContainer>
+        </UpperSection>
 
-      <Button
-        label={buttonText}
-        iconLeft={buttonText === labels.results.button.repeat ? RepeatIcon : undefined}
-        buttonTheme={BUTTONS_THEME.contained}
-        onPress={() => navigationAction()}
-      />
-      <ShareSection disciplineTitle={disciplineTitle} results={results} />
-    </Root>
+        <Button
+          label={buttonText}
+          iconLeft={buttonText === labels.results.button.repeat ? RepeatIcon : undefined}
+          buttonTheme={BUTTONS_THEME.contained}
+          onPress={() => navigationAction()}
+        />
+        <ShareSection disciplineTitle={disciplineTitle} results={results} />
+      </Root>
+    </SafeAreaView>
   )
 }
 
