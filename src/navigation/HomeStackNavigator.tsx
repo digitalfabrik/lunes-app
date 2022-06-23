@@ -14,6 +14,7 @@ import ExercisesScreen from '../routes/exercises/ExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
+import SettingsScreen from '../routes/settings/SettingsScreen'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions from './screenOptions'
 
@@ -70,6 +71,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='ManageDisciplines'
         component={ManageSelectionsScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='Settings'
+        component={SettingsScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
     </Stack.Navigator>

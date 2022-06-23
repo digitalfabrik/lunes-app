@@ -7,6 +7,16 @@ const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const PROGRESS_KEY = 'progress'
+const TRACKING_KEY = 'tracking'
+
+const isTrackingEnabled = async (): Promise<boolean> => {
+  const tracking = await AsyncStorage.getItem(TRACKING_KEY)
+  return tracking ? JSON.parse(tracking) : true
+}
+
+const setIsTrackingEnabled = async (trackingEnabled: boolean): Promise<void> => {
+  await AsyncStorage.setItem(TRACKING_KEY, JSON.stringify(trackingEnabled))
+}
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
 const getSelectedProfessions = async (): Promise<number[] | null> => {
@@ -109,6 +119,8 @@ const isFavorite = async (favoriteId: number): Promise<boolean> => {
 }
 
 export default {
+  isTrackingEnabled,
+  setIsTrackingEnabled,
   getCustomDisciplines,
   setCustomDisciplines,
   removeCustomDiscipline,

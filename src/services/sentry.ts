@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import * as Sentry from '@sentry/react-native'
 
+import AsyncStorage from './AsyncStorage'
+
 export const initSentry = (): void => {
   if (!__DEV__) {
     Sentry.init({
@@ -42,6 +44,12 @@ export const reportError = (err: unknown): void => {
   if (__DEV__) {
     console.error('Sentry reported error: ', err)
   } else {
-    Sentry.captureException(err)
+    AsyncStorage.isTrackingEnabled()
+      .then(isTrackingEnabled => {
+        if (isTrackingEnabled) {
+          Sentry.captureException(err)
+        }
+      })
+      .catch(() => Sentry.captureException(err))
   }
 }
