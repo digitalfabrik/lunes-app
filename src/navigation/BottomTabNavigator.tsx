@@ -4,8 +4,9 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
-import { HomeIconGrey, HomeIconWhite } from '../../assets/images'
+import { HomeIconGrey, HomeIconWhite, StarIconGrey, StarIconWhite } from '../../assets/images'
 import labels from '../constants/labels.json'
+import FavoritesScreen from '../routes/FavoritesScreen'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
 
@@ -23,9 +24,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
         tabBarStyle: {
           backgroundColor: theme.colors.primary,
           minHeight: wp('14%'),
-          paddingBottom: insets.bottom,
-          // TODO LUN-132: Delete
-          display: 'none'
+          paddingBottom: insets.bottom
         },
         tabBarItemStyle: { height: wp('14%'), padding: wp('2%') },
         tabBarLabelStyle: { fontSize: wp('3%') }
@@ -43,20 +42,19 @@ const BottomTabNavigator = (): JSX.Element | null => {
           title: labels.general.home
         }}
       />
-      {/* TODO LUN-132: Uncomment */}
-      {/* <Navigator.Screen */}
-      {/*  name='FavoritesTab' */}
-      {/*  component={MockComponent} */}
-      {/*  options={{ */}
-      {/*    tabBarIcon: ({ focused }) => */}
-      {/*      focused ? ( */}
-      {/*        <StartIconWhite width={wp('7%')} height={wp('7%')} /> */}
-      {/*      ) : ( */}
-      {/*        <StartIconGrey width={wp('7%')} height={wp('7%')} /> */}
-      {/*      ), */}
-      {/*    title: labels.general.favorites */}
-      {/*  }} */}
-      {/* /> */}
+      <Navigator.Screen
+        name='FavoritesTab'
+        component={FavoritesScreen}
+        options={{
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <StarIconWhite width={wp('7%')} height={wp('7%')} />
+            ) : (
+              <StarIconGrey width={wp('7%')} height={wp('7%')} />
+            ),
+          title: labels.general.favorites
+        }}
+      />
       {/* <Navigator.Screen */}
       {/*  name='DictionaryTab' */}
       {/*  component={MockComponent} */}
