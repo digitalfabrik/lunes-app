@@ -34,8 +34,8 @@ const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
     Icon = CheckCircleIconBlue
   }
 
-  const colorPre = nextExercise && nextExercise.level < index ? COLORS.black : COLORS.lockingLane
-  const colorPost = nextExercise && nextExercise.level <= index ? COLORS.black : COLORS.lockingLane
+  const colorPre = nextExercise && nextExercise.level < index ? COLORS.black : COLORS.progressIndicator
+  const colorPost = nextExercise && nextExercise.level <= index ? COLORS.black : COLORS.progressIndicator
 
   return (
     <Container>

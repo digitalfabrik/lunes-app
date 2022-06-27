@@ -109,8 +109,11 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
 }
 
 export const getProgress = async (profession: Discipline | null): Promise<number> => {
-  if (!profession || !profession.leafDisciplines) {
+  if (!profession) {
     return 0
+  }
+  if (!profession.leafDisciplines) {
+    return (await getDoneExercises(profession.id)) / EXERCISES.length
   }
   const progress = await AsyncStorage.getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
