@@ -80,7 +80,7 @@ export const getDoneExercises = (disciplineId: number): Promise<number> =>
 export const getNextExercise = async (profession: Discipline): Promise<NextExercise> => {
   const discipline = await loadDiscipline({ disciplineId: profession.id })
   const leafDisciplineIds = discipline.leafDisciplines
-  if (!leafDisciplineIds || leafDisciplineIds.length <= 0) {
+  if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
   const progress = await AsyncStorage.getExerciseProgress()
