@@ -11,7 +11,7 @@ import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
+import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
 
@@ -42,14 +42,14 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
+      AsyncStorage.removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
   const customDisciplineItems = customDisciplines?.map(apiKey => {
     const deleteCustomDisciplineAndRefresh = () => {
-      removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
+      AsyncStorage.removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
     }
     return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })

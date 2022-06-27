@@ -15,14 +15,7 @@ export interface AudioPlayerProps {
   submittedAlternative?: string | null
 }
 
-const StyledView = styled.View`
-  align-items: center;
-  margin-bottom: ${props => props.theme.spacings.sm};
-`
-
 const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolean }>`
-  position: absolute;
-  top: ${wp('-4.5%')}px;
   width: ${wp('9%')}px;
   height: ${wp('9%')}px;
   border-radius: 50px;
@@ -107,15 +100,13 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
   }
 
   return (
-    <StyledView>
-      <VolumeIcon
-        disabled={disabled || !isInitialized}
-        isActive={isActive}
-        onPress={handleSpeakerClick}
-        accessibilityRole='button'>
-        <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
-      </VolumeIcon>
-    </StyledView>
+    <VolumeIcon
+      disabled={disabled || !isInitialized}
+      isActive={isActive}
+      onPress={handleSpeakerClick}
+      accessibilityRole='button'>
+      <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
+    </VolumeIcon>
   )
 }
 
