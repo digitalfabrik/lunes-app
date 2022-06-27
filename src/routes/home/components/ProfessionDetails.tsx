@@ -65,7 +65,7 @@ const ProfessionDetails = ({
             {discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
+        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}

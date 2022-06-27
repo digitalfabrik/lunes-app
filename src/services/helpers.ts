@@ -38,9 +38,9 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 export const wordsDescription = (numberOfChildren: number): string =>
   `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
 
-export const childrenLabel = (discipline: Discipline): string => {
+export const childrenLabel = (discipline: Discipline, hasParent = false): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (!discipline.parentTitle && !discipline.apiKey) {
+  if (!discipline.parentTitle && !discipline.apiKey && !hasParent) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {
@@ -49,8 +49,8 @@ export const childrenLabel = (discipline: Discipline): string => {
   return isSingular ? labels.general.discipline : labels.general.disciplines
 }
 
-export const childrenDescription = (discipline: Discipline): string =>
-  `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
+export const childrenDescription = (discipline: Discipline, hasParent = false): string =>
+  `${discipline.numberOfChildren} ${childrenLabel(discipline, hasParent)}`
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]

@@ -66,7 +66,7 @@ export type RoutesParams = {
     resultType: Result
   }
   Imprint: undefined
-  ManageDisciplines: undefined
+  ManageSelection: undefined
   Favorites: undefined
 }
 

@@ -54,7 +54,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
         if (initialSelection) {
           refreshSelectedProfessions()
         } else {
-          navigation.navigate('ManageDisciplines')
+          navigation.navigate('ManageSelection')
         }
       })
     }
