@@ -7,7 +7,7 @@ describe('NextExerciseCard', () => {
   const onPress = jest.fn()
 
   it('should render correctly', async () => {
-    const { getByText, findByRole } = render(
+    const { getByText, findByTestId } = render(
       <NextExerciseCard
         thumbnail='thumbnail-uri'
         heading='heading'
@@ -18,7 +18,7 @@ describe('NextExerciseCard', () => {
     )
     expect(getByText('heading')).toBeDefined()
     expect(getByText('subheading')).toBeDefined()
-    const image = await findByRole('image')
+    const image = await findByTestId('next-exercise-thumbnail')
     expect(image.props.source.uri).toBe('thumbnail-uri')
   })
 })
