@@ -3,19 +3,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ExerciseKey, Progress } from '../constants/data'
 import { DocumentResult } from '../navigation/NavigationTypes'
 
-const progressKey = 'progress'
+const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
+const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
+const FAVORITES_KEY = 'favorites'
+const PROGRESS_KEY = 'progress'
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown
-export const getSelectedProfessions = async (): Promise<number[] | null> => {
-  const professions = await AsyncStorage.getItem('selectedProfessions')
+const getSelectedProfessions = async (): Promise<number[] | null> => {
+  const professions = await AsyncStorage.getItem(SELECTED_PROFESSIONS_KEY)
   return professions ? JSON.parse(professions) : null
 }
 
-export const setSelectedProfessions = async (selectedProfessions: number[]): Promise<void> => {
-  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(selectedProfessions))
+const setSelectedProfessions = async (selectedProfessions: number[]): Promise<void> => {
+  await AsyncStorage.setItem(SELECTED_PROFESSIONS_KEY, JSON.stringify(selectedProfessions))
 }
 
-export const pushSelectedProfession = async (professionId: number): Promise<number[]> => {
+const pushSelectedProfession = async (professionId: number): Promise<number[]> => {
   let professions = await getSelectedProfessions()
   if (professions === null) {
     professions = [professionId]
@@ -26,7 +29,7 @@ export const pushSelectedProfession = async (professionId: number): Promise<numb
   return professions
 }
 
-export const removeSelectedProfession = async (professionId: number): Promise<number[]> => {
+const removeSelectedProfession = async (professionId: number): Promise<number[]> => {
   const professions = await getSelectedProfessions()
   if (professions === null) {
     throw new Error('professions not set')
@@ -36,16 +39,16 @@ export const removeSelectedProfession = async (professionId: number): Promise<nu
   return updatedProfessions
 }
 
-export const getCustomDisciplines = async (): Promise<string[]> => {
-  const disciplines = await AsyncStorage.getItem('customDisciplines')
+const getCustomDisciplines = async (): Promise<string[]> => {
+  const disciplines = await AsyncStorage.getItem(CUSTOM_DISCIPLINES_KEY)
   return disciplines ? JSON.parse(disciplines) : []
 }
 
-export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
-  await AsyncStorage.setItem('customDisciplines', JSON.stringify(customDisciplines))
+const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
+  await AsyncStorage.setItem(CUSTOM_DISCIPLINES_KEY, JSON.stringify(customDisciplines))
 }
 
-export const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
+const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
   const disciplines = await getCustomDisciplines()
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
@@ -56,7 +59,7 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
 }
 
 export const getExerciseProgress = async (): Promise<Progress> => {
-  const progress = await AsyncStorage.getItem(progressKey)
+  const progress = await AsyncStorage.getItem(PROGRESS_KEY)
   return progress ? JSON.parse(progress) : {}
 }
 
@@ -64,7 +67,7 @@ const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKe
   const savedProgress = await getExerciseProgress()
   const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
   savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
-  await AsyncStorage.setItem(progressKey, JSON.stringify(savedProgress))
+  await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(savedProgress))
 }
 
 export const saveExerciseProgress = async (
@@ -74,6 +77,35 @@ export const saveExerciseProgress = async (
 ): Promise<void> => {
   const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
   await setExerciseProgress(disciplineId, exerciseKey, score)
+}
+
+const getFavorites = async (): Promise<number[]> => {
+  const documents = await AsyncStorage.getItem(FAVORITES_KEY)
+  return documents ? JSON.parse(documents) : []
+}
+
+const setFavorites = async (favorites: number[]): Promise<void> => {
+  await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
+}
+
+const addFavorite = async (favorite: number): Promise<void> => {
+  const favorites = await getFavorites()
+  if (favorites.includes(favorite)) {
+    return
+  }
+  const newFavorites = [...favorites, favorite]
+  await setFavorites(newFavorites)
+}
+
+const removeFavorite = async (favoriteId: number): Promise<void> => {
+  const favorites = await getFavorites()
+  const newFavorites = favorites.filter(it => it !== favoriteId)
+  await setFavorites(newFavorites)
+}
+
+const isFavorite = async (favoriteId: number): Promise<boolean> => {
+  const favorites = await getFavorites()
+  return favorites.includes(favoriteId)
 }
 
 export default {
@@ -86,5 +118,10 @@ export default {
   removeSelectedProfession,
   saveExerciseProgress,
   setExerciseProgress,
-  getExerciseProgress
+  getExerciseProgress,
+  getFavorites,
+  setFavorites,
+  addFavorite,
+  removeFavorite,
+  isFavorite
 }

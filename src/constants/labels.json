@@ -22,7 +22,7 @@
     },
     "impressum": "Impressum"
   },
-  "manageDisciplines": {
+  "manageSelection": {
     "heading": "Verwalte deine Lernbereiche",
     "yourProfessions": "Deine Berufsauswahl",
     "yourCustomDisciplines": "Deine individuellen Bereiche",
@@ -130,7 +130,7 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
-      "manageDisciplines": "Bereiche verwalten",
+      "manageSelection": "Bereiche verwalten",
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
@@ -147,5 +147,6 @@
     "word": "Wort",
     "words": "Wörter",
     "customModalCancel": "Zurück"
-  }
+  },
+  "favorites": "Favoriten"
 }

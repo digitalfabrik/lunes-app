@@ -3,7 +3,7 @@ import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/e
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
-import { loadDisciplines } from '../hooks/useLoadDisciplines'
+import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import AsyncStorage from './AsyncStorage'
 import { getFromEndpoint } from './axios'
 
@@ -38,9 +38,9 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 export const wordsDescription = (numberOfChildren: number): string =>
   `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
 
-export const childrenLabel = (discipline: Discipline): string => {
+export const childrenLabel = (discipline: Discipline, hasParent = false): string => {
   const isSingular = discipline.numberOfChildren === 1
-  if (!discipline.parentTitle && !discipline.apiKey) {
+  if (!discipline.parentTitle && !discipline.apiKey && !hasParent) {
     return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
   }
   if (discipline.isLeaf) {
@@ -49,8 +49,8 @@ export const childrenLabel = (discipline: Discipline): string => {
   return isSingular ? labels.general.discipline : labels.general.disciplines
 }
 
-export const childrenDescription = (discipline: Discipline): string =>
-  `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
+export const childrenDescription = (discipline: Discipline, hasParent = false): string =>
+  `${discipline.numberOfChildren} ${childrenLabel(discipline, hasParent)}`
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
@@ -78,31 +78,32 @@ export const getDoneExercises = (disciplineId: number): Promise<number> =>
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
 export const getNextExercise = async (profession: Discipline): Promise<NextExercise> => {
-  const disciplines = await loadDisciplines({ parent: profession }) // TODO LUN-316 leaf disciplines must be loaded, also if nested
-  if (disciplines.length <= 0) {
+  const discipline = await loadDiscipline({ disciplineId: profession.id })
+  const leafDisciplineIds = discipline.leafDisciplines
+  if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
   const progress = await AsyncStorage.getExerciseProgress()
-  const firstUnfinishedDiscipline = disciplines.find(
-    discipline => getDoneExercisesByProgress(discipline.id, progress) < EXERCISES.length
+  const firstUnfinishedDisciplineId = leafDisciplineIds.find(
+    id => getDoneExercisesByProgress(id, progress) < EXERCISES.length
   )
 
-  if (!firstUnfinishedDiscipline) {
+  if (!firstUnfinishedDisciplineId) {
     return {
-      disciplineId: disciplines[0].id,
+      disciplineId: leafDisciplineIds[0],
       exerciseKey: 0
     } // TODO LUN-319 show success that every exercise is done
   }
-  const disciplineProgress = progress[firstUnfinishedDiscipline.id]
+  const disciplineProgress = progress[firstUnfinishedDisciplineId]
   if (!disciplineProgress) {
     return {
-      disciplineId: firstUnfinishedDiscipline.id,
+      disciplineId: firstUnfinishedDisciplineId,
       exerciseKey: 0
     }
   }
   const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
   return {
-    disciplineId: firstUnfinishedDiscipline.id,
+    disciplineId: firstUnfinishedDisciplineId,
     exerciseKey: nextExerciseKey?.key ?? 0
   }
 }

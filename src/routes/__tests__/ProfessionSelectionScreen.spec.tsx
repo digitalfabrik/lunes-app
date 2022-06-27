@@ -98,6 +98,6 @@ describe('ProfessionSelectionScreen', () => {
     const { findByText } = render(<ProfessionSelectionScreen route={getRoute(false)} navigation={navigation} />)
     const profession = await findByText(mockDisciplines()[0].title)
     fireEvent.press(profession)
-    await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('ManageDisciplines'))
+    await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('ManageSelection'))
   })
 })

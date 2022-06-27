@@ -49,7 +49,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <FlatList
-          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
+          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
           data={disciplines}
           renderItem={Item}
           keyExtractor={({ id }) => id.toString()}

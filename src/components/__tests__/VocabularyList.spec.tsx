@@ -7,6 +7,10 @@ import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
 import render from '../../testing/render'
 import VocabularyList from '../VocabularyList'
 
+jest.mock('../FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
 jest.mock('../AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
@@ -24,10 +28,10 @@ describe('VocabularyList', () => {
     mockUseLoadAsyncWithData(documents)
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyList documents={documents} onItemPress={onItemPress} />
+      <VocabularyList title='Title' documents={documents} onItemPress={onItemPress} />
     )
 
-    expect(getByText(labels.exercises.vocabularyList.title)).toBeTruthy()
+    expect(getByText('Title')).toBeTruthy()
     expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
     expect(getByText('Der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
@@ -38,7 +42,7 @@ describe('VocabularyList', () => {
   })
 
   it('should call onItemPress with correct index', () => {
-    const { getByText } = render(<VocabularyList documents={documents} onItemPress={onItemPress} />)
+    const { getByText } = render(<VocabularyList title='Title' documents={documents} onItemPress={onItemPress} />)
 
     expect(onItemPress).toHaveBeenCalledTimes(0)
 

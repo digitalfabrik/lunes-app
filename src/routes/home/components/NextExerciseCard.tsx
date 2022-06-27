@@ -61,7 +61,7 @@ interface PropsType {
 const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel }: PropsType): ReactElement => (
   <Pressable onPress={onPress}>
     <Container>
-      <Thumbnail source={{ uri: thumbnail }} />
+      <Thumbnail source={{ uri: thumbnail }} testID='next-exercise-thumbnail' />
       <ExerciseDetail>
         <Heading>{heading}</Heading>
         <Subheading>{subheading}</Subheading>
