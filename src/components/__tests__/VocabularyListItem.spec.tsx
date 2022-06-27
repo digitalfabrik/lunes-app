@@ -7,6 +7,10 @@ import { Document } from '../../constants/endpoints'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
 
+jest.mock('../FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
 jest.mock('../AudioPlayer', () => () => null)
 
 describe('VocabularyListItem', () => {

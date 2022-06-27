@@ -1,14 +1,14 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Keyboard, Pressable, View } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import stringSimilarity from 'string-similarity'
 import styled, { useTheme } from 'styled-components/native'
 
-import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
+import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -19,8 +19,9 @@ const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-const Speaker = styled.View`
-  top: ${wp('-6%')}px;
+const InputContainer = styled.View`
+  align-items: center;
+  margin-top: ${props => props.theme.spacings.md};
 `
 
 interface InteractionSectionProps {
@@ -41,6 +42,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
 
   const theme = useTheme()
+  const isKeyboardShown = useIsKeyboardVisible()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
@@ -115,46 +117,50 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   return (
     <>
-      <Speaker>
-        <AudioPlayer document={document} disabled={retryAllowed} submittedAlternative={submittedAlternative} />
-      </Speaker>
-
-      <MissingArticlePopover
-        isVisible={isArticleMissing}
-        setIsPopoverVisible={setIsArticleMissing}
-        ref={textInputRef}
+      <DocumentImageSection
+        document={document}
+        minimized={isKeyboardShown}
+        audioDisabled={retryAllowed}
+        submittedAlternative={submittedAlternative}
       />
-
-      {/* @ts-expect-error ref typing is off here */}
-      <TextInputContainer testID='input-field' ref={textInputRef}>
-        <CustomTextInput
-          customBorderColor={getBorderColor()}
-          placeholder={labels.exercises.write.insertAnswer}
-          value={input}
-          onChangeText={setInput}
-          editable={retryAllowed}
-          onSubmitEditing={checkEntry}
-          clearable={retryAllowed && input !== ''}
+      <InputContainer>
+        <MissingArticlePopover
+          isVisible={isArticleMissing}
+          setIsPopoverVisible={setIsArticleMissing}
+          ref={textInputRef}
         />
-      </TextInputContainer>
 
-      {isAnswerSubmitted && (
-        <Feedback
-          documentWithResult={documentWithResult}
-          submission={submittedInput}
-          needsToBeRepeated={needsToBeRepeated}
-        />
-      )}
-      {retryAllowed && (
-        <Pressable onPress={Keyboard.dismiss}>
-          <Button
-            label={labels.exercises.write.checkInput}
-            onPress={checkEntry}
-            disabled={!input}
-            buttonTheme={BUTTONS_THEME.contained}
+        {/* @ts-expect-error ref typing is off here */}
+        <TextInputContainer testID='input-field' ref={textInputRef}>
+          <CustomTextInput
+            customBorderColor={getBorderColor()}
+            placeholder={labels.exercises.write.insertAnswer}
+            value={input}
+            onChangeText={setInput}
+            editable={retryAllowed}
+            onSubmitEditing={checkEntry}
+            clearable={retryAllowed && input !== ''}
           />
-        </Pressable>
-      )}
+        </TextInputContainer>
+
+        {isAnswerSubmitted && (
+          <Feedback
+            documentWithResult={documentWithResult}
+            submission={submittedInput}
+            needsToBeRepeated={needsToBeRepeated}
+          />
+        )}
+        {retryAllowed && (
+          <Pressable onPress={Keyboard.dismiss}>
+            <Button
+              label={labels.exercises.write.checkInput}
+              onPress={checkEntry}
+              disabled={!input}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          </Pressable>
+        )}
+      </InputContainer>
     </>
   )
 }
