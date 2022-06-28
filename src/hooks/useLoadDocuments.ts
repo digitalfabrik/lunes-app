@@ -17,7 +17,7 @@ export interface DocumentFromServer {
   alternatives: AlternativeWordFromServer[]
 }
 
-const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
+export const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
   documents.map(document => ({
     ...document,
     article: ARTICLES[document.article],

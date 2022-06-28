@@ -6,7 +6,7 @@ export const COLORS = {
   textSecondary: '#5b616a',
   placeholder: '#777e91',
   disabled: '#e0e4ed',
-  progressIndicator: '#20c5b4',
+  progressIndicator: '#425bee',
   containedButtonSelected: '#3d4662',
   buttonSelectedSecondary: '#f57f7a',
   overlay: 'rgba(0, 14, 56, 0.8)',
@@ -21,8 +21,7 @@ export const COLORS = {
   articlePlural: '#eee12d',
   articleFeminine: '#faa7a7',
   articleMasculine: '#8cc8f3',
-  link: 'blue',
-  lockingLane: '#425bee'
+  link: 'blue'
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]

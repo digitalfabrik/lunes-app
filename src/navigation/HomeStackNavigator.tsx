@@ -24,7 +24,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
 
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   const options = screenOptions(headerHeight)
-  const { manageDisciplines, overview } = labels.general.header
+  const { manageSelection, overview } = labels.general.header
   const theme = useTheme()
 
   if (loading) {
@@ -40,7 +40,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
         name='ScopeSelection'
         component={ScopeSelection}
         initialParams={{ initialSelection: true }}
-        options={({ navigation }) => options(manageDisciplines, navigation)}
+        options={({ navigation }) => options(manageSelection, navigation)}
       />
       <Stack.Screen
         name='DisciplineSelection'
@@ -68,7 +68,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen
-        name='ManageDisciplines'
+        name='ManageSelection'
         component={ManageSelectionsScreen}
         options={({ navigation }) => options(overview, navigation)}
       />

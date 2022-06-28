@@ -29,7 +29,7 @@ const CustomDisciplineHeading = styled(HeadingText)`
 `
 
 const Description = styled(ContentSecondary)`
-  padding: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.md}`};
+  padding: ${props => `${props.theme.spacings.xl} ${props.theme.spacings.md} ${props.theme.spacings.xs}`};
 `
 
 const InputContainer = styled.View`

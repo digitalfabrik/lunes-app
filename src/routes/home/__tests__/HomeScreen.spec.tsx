@@ -45,7 +45,7 @@ describe('HomeScreen', () => {
     expect(secondDiscipline).toBeDefined()
   })
 
-  it('should show custom discipline', async () => {
+  it('should render custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))

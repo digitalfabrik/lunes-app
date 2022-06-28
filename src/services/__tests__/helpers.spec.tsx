@@ -1,12 +1,12 @@
 import { NextExercise } from '../../constants/data'
-import { loadDisciplines } from '../../hooks/useLoadDisciplines'
+import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import { getExerciseProgress } from '../AsyncStorage'
 import { getNextExercise, getProgress } from '../helpers'
 
 import mocked = jest.mocked
 
-jest.mock('../../hooks/useLoadDisciplines')
+jest.mock('../../hooks/useLoadDiscipline')
 jest.mock('../AsyncStorage')
 
 describe('helpers', () => {
@@ -26,67 +26,67 @@ describe('helpers', () => {
     const getNextExerciseWithCheck = async (): Promise<NextExercise> => getNextExercise(profession)
 
     it('should open first exercise, if no exercise was finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({}))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open third exercise of first discipline, if two exercise were finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '0': 1, '1': 1 } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(2)
     })
 
     it('should open first exercise, if only second exercise was finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': 1 } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '1': 1 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open third exercise of first discipline, if three exercises were finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '0': 1, '1': 1, '2': 1 } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(3)
     })
 
     it('should open first exercise of second discipline, if first discipline was finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '0': 1, '1': 1, '2': 1, '3': 1 } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1, '3': 1 } }))
 
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[1].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![1])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open first exercise of first discipline, if second discipline was partly finished yet', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '2': { '1': 1, '2': 1 } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '11': { '1': 1, '2': 1 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open first exercise of first discipline, if exercise progress is undefined', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': { '1': undefined } }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '1': undefined } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open first exercise of first discipline, if discipline progress is undefined', async () => {
-      mocked(loadDisciplines).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '1': undefined }))
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': undefined }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
-      expect(disciplineId).toBe(mockDisciplines()[0].id)
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
   })

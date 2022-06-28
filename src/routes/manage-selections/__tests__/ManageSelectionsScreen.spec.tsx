@@ -20,7 +20,7 @@ jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDiscipline')
 
 describe('ManageSelectionsScreen', () => {
-  const navigation = createNavigationMock<'ManageDisciplines'>()
+  const navigation = createNavigationMock<'ManageSelection'>()
   const renderScreen = () => render(<ManageSelectionsScreen navigation={navigation} />)
 
   it('should show and delete selected professions', async () => {
@@ -70,7 +70,7 @@ describe('ManageSelectionsScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([]))
 
     const { getByText } = renderScreen()
-    const addProfessionText = getByText(labels.manageDisciplines.addProfession)
+    const addProfessionText = getByText(labels.manageSelection.addProfession)
     fireEvent.press(addProfessionText)
     expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
   })

@@ -4,14 +4,17 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../assets/images'
-import AudioPlayer from '../components/AudioPlayer'
 import Button from '../components/Button'
+import DocumentImageSection from '../components/DocumentImageSection'
 import ExerciseHeader from '../components/ExerciseHeader'
-import ImageCarousel from '../components/ImageCarousel'
 import WordItem from '../components/WordItem'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
+
+const Container = styled.View`
+  flex: 1;
+`
 
 const ItemContainer = styled.View`
   margin: ${props => props.theme.spacings.xl} 0;
@@ -33,14 +36,14 @@ interface VocabularyDetailScreenProps {
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
   const { documents, documentIndex, closeExerciseAction } = route.params
   const document = documents[documentIndex]
-  const { word, article, document_image: image } = document
+  const { word, article } = document
   const hasNextDocument = documentIndex + 1 < documents.length
 
   const goToNextWord = () =>
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: documentIndex + 1 })
 
   return (
-    <>
+    <Container>
       <ExerciseHeader
         navigation={navigation}
         currentWord={documentIndex}
@@ -48,8 +51,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
       />
-      <ImageCarousel images={image} />
-      <AudioPlayer document={document} disabled={false} />
+      <DocumentImageSection document={document} />
       <ItemContainer>
         <WordItem answer={{ word, article }} />
       </ItemContainer>
@@ -69,7 +71,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
           />
         )}
       </ButtonContainer>
-    </>
+    </Container>
   )
 }
 
