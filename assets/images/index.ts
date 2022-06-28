@@ -26,7 +26,7 @@ import CloseIconWhite from './close-icon-white.svg'
 import CloseIcon from './close-icon.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
-import HappSmileyIcon from './happy-smiley-circle-icon-white.svg'
+import HappySmileyIcon from './happy-smiley-circle-icon-white.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
 import HeaderLinesIcon from './header-lines-icon.svg'
 import HeaderSquareIcon from './header-square-icon.svg'
@@ -83,7 +83,7 @@ export {
   CloseIconRed,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
-  HappSmileyIcon,
+  HappySmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,
   HeaderSquareIcon,

@@ -102,7 +102,7 @@
     },
     "correct": "richtig",
     "entries": "Eingaben",
-    "button": {
+    "action": {
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",

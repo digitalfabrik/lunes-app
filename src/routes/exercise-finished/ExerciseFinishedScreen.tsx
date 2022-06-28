@@ -1,15 +1,16 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import {
   CloseIcon,
   CloseIconWhite,
-  HappSmileyIcon,
+  HappySmileyIcon,
   OpenLockIcon,
   PartyHornIcon,
   RepeatIcon,
@@ -71,21 +72,18 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
 
-  const [message, setMessage] = useState<string>('')
-  const [resultColor, setResultColor] = useState<Color>(theme.colors.background)
-  const [buttonText, setButtonText] = useState<string>('')
-  const [navigationAction, setNavigationAction] = useState<() => void>(() => undefined)
-  const [icon, setIcon] = useState<SVGElement | null>(null)
+  const repeatExercise = useCallback(
+    (): void =>
+      navigation.navigate(EXERCISES[exercise].screen, {
+        documents,
+        disciplineId,
+        disciplineTitle,
+        closeExerciseAction
+      }),
+    [documents, disciplineId, disciplineTitle, closeExerciseAction, navigation, exercise]
+  )
 
-  const repeatExercise = (): void =>
-    navigation.navigate(EXERCISES[exercise].screen, {
-      documents,
-      disciplineId,
-      disciplineTitle,
-      closeExerciseAction
-    })
-
-  const startNextExercise = (): void => {
+  const startNextExercise = useCallback((): void => {
     if (exercise + 1 < EXERCISES.length) {
       navigation.navigate(EXERCISES[exercise + 1].screen, {
         documents,
@@ -94,44 +92,59 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         closeExerciseAction
       })
     }
-  }
+  }, [documents, disciplineId, disciplineTitle, closeExerciseAction, navigation, exercise])
 
-  const navigateToNextModule = (): void => {
+  const navigateToNextModule = useCallback((): void => {
     navigation.pop(2)
+  }, [navigation])
+
+  const helper = (): {
+    message: string
+    resultColor: Color
+    buttonText: string
+    ResultIcon: React.ComponentType<SvgProps>
+    navigationAction: () => void
+  } => {
+    const isLastExercise = exercise === EXERCISES.length - 1
+    if (unlockedNextExercise && !isLastExercise) {
+      return {
+        message: `${labels.results.unlockExercise.part1}, ${EXERCISES[exercise + 1].title} ${
+          labels.results.unlockExercise.part2
+        }`,
+        resultColor: theme.colors.primary,
+        buttonText: labels.results.action.nextExercise,
+        navigationAction: startNextExercise,
+        ResultIcon: OpenLockIcon
+      }
+    }
+    if (percentageOfCorrectResults > 1 / 3) {
+      if (!isLastExercise) {
+        return {
+          message: labels.results.feedbackGood,
+          resultColor: theme.colors.correct,
+          buttonText: labels.results.action.continue,
+          navigationAction: startNextExercise,
+          ResultIcon: HappySmileyIcon
+        }
+      }
+      return {
+        message: labels.results.finishedModule,
+        resultColor: theme.colors.correct,
+        buttonText: labels.results.action.close,
+        navigationAction: navigateToNextModule,
+        ResultIcon: PartyHornIcon
+      }
+    }
+    return {
+      message: labels.results.feedbackBad,
+      resultColor: theme.colors.incorrect,
+      buttonText: labels.results.action.repeat,
+      navigationAction: repeatExercise,
+      ResultIcon: SadSmileyIcon
+    }
   }
 
-  React.useEffect(() => {
-    const isLastExercise = exercise === EXERCISES.length - 1
-    const iconSize = wp('10%')
-    if (unlockedNextExercise && !isLastExercise) {
-      setMessage(
-        `${labels.results.unlockExercise.part1} ${EXERCISES[exercise + 1].title} ${labels.results.unlockExercise.part2}`
-      )
-      setResultColor(theme.colors.primary)
-      setButtonText(labels.results.button.nextExercise)
-      setNavigationAction(() => () => startNextExercise())
-      setIcon(<OpenLockIcon width={iconSize} height={iconSize} />)
-    } else if (percentageOfCorrectResults > 1 / 3) {
-      setResultColor(theme.colors.correct)
-      if (!isLastExercise) {
-        setMessage(labels.results.feedbackGood)
-        setButtonText(labels.results.button.continue)
-        setNavigationAction(() => () => startNextExercise())
-        setIcon(<HappSmileyIcon width={iconSize} height={iconSize} />)
-      } else {
-        setMessage(labels.results.finishedModule)
-        setButtonText(labels.results.button.close)
-        setNavigationAction(() => () => navigateToNextModule())
-        setIcon(<PartyHornIcon width={iconSize} height={iconSize} />)
-      }
-    } else {
-      setMessage(labels.results.feedbackBad)
-      setResultColor(theme.colors.incorrect)
-      setButtonText(labels.results.button.repeat)
-      setNavigationAction(() => () => repeatExercise())
-      setIcon(<SadSmileyIcon width={iconSize} height={iconSize} />)
-    }
-  }, [results])
+  const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -144,7 +157,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
               <CloseIconWhite width={wp('6%')} height={wp('6%')} />
             )}
           </Icon>
-          {icon}
+          <ResultIcon width={wp('10%')} height={wp('10%')} />
           <MessageContainer>
             <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
             <Results color={resultColor}>
@@ -164,7 +177,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
 
         <Button
           label={buttonText}
-          iconLeft={buttonText === labels.results.button.repeat ? RepeatIcon : undefined}
+          iconLeft={buttonText === labels.results.action.repeat ? RepeatIcon : undefined}
           buttonTheme={BUTTONS_THEME.contained}
           onPress={() => navigationAction()}
         />
