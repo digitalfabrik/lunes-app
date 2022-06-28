@@ -4,14 +4,14 @@ import { HeaderButtons, OverflowMenu as RNOverflowMenu } from 'react-navigation-
 import labels from '../constants/labels.json'
 
 interface OverflowMenuProps {
-  children: ReactNode
+  children: (ReactElement | ReactNode[]) & ReactNode
   icon: ReactElement
 }
 
 const OverflowMenu = ({ children, icon }: OverflowMenuProps): ReactElement => (
   <HeaderButtons>
     <RNOverflowMenu OverflowIcon={icon} accessibilityLabel={labels.general.header.overflowMenu}>
-      <>{children}</>
+      {children}
     </RNOverflowMenu>
   </HeaderButtons>
 )
