@@ -1,23 +1,23 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
-// @ts-expect-error
-import mockRNDeviceInfo from 'react-native-device-info/jest/react-native-device-info-mock'
 
 import labels from '../../../../constants/labels.json'
 import render from '../../../../testing/render'
-import VersionPressable, { CLICKS_TO_THROW_SENTRY_ERROR } from '../VersionPressable'
+import VersionPressable, { CLICK_THRESHOLD } from '../VersionPressable'
 
-jest.mock('react-native-device-info', () => mockRNDeviceInfo)
+jest.mock('react-native-device-info', () => ({
+  getVersion: jest.fn(() => '2022.6.0')
+}))
 
 describe('VersionPressable', () => {
-  const setVisible = jest.fn()
+  const onClickThresholdReached = jest.fn()
   it('should open modal on multiple clicks', () => {
-    const { getByText } = render(<VersionPressable setVisible={setVisible} />)
+    const { getByText } = render(<VersionPressable onClickThresholdReached={onClickThresholdReached} />)
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const versionPressable = getByText(`${labels.settings.version}: ${mockRNDeviceInfo.getVersion()}`)
-    for (let i = 0; i <= CLICKS_TO_THROW_SENTRY_ERROR; i += 1) {
+    const versionPressable = getByText(`${labels.settings.version}: 2022.6.0`)
+    for (let i = 0; i <= CLICK_THRESHOLD; i += 1) {
       fireEvent.press(versionPressable)
     }
-    expect(setVisible).toHaveBeenCalledTimes(1)
+    expect(onClickThresholdReached).toHaveBeenCalledTimes(1)
   })
 })

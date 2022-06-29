@@ -42,7 +42,7 @@ const CustomModal = (props: CustomModalProps): JSX.Element => {
   } = props
 
   return (
-    <ModalSkeleton visible={visible} onClose={onClose} testId={testID}>
+    <ModalSkeleton visible={visible} onClose={onClose} testID={testID}>
       <Message>{text}</Message>
       {children}
 

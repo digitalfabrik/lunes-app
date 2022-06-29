@@ -7,9 +7,9 @@ import DebugModal from '../DebugModal'
 
 describe('DebugModal', () => {
   it('should show buttons only for correct text input', () => {
-    const { queryByText, getByTestId } = render(<DebugModal visible onClose={jest.fn()} />)
+    const { queryByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
     expect(queryByText(labels.settings.debugModal.sentry)).toBeNull()
-    const textField = getByTestId('code-input')
+    const textField = getByPlaceholderText('Development Code')
     fireEvent.changeText(textField, 'wirschaffendas')
     expect(queryByText(labels.settings.debugModal.sentry)).not.toBeNull()
   })

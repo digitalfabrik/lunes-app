@@ -50,6 +50,6 @@ export const reportError = (err: unknown): void => {
           Sentry.captureException(err)
         }
       })
-      .catch(() => Sentry.captureException(err))
+      .catch(Sentry.captureException)
   }
 }

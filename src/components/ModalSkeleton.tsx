@@ -32,12 +32,12 @@ const Icon = styled.TouchableOpacity`
 interface PropsType {
   visible: boolean
   onClose: () => void
-  testId?: string
+  testID?: string
   children: ReactNode
 }
 
-const ModalSkeleton = ({ visible, onClose, testId, children }: PropsType): ReactElement => (
-  <Modal testID={testId} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
+const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): ReactElement => (
+  <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
     <Overlay>
       <ModalContainer>
         <Icon onPress={onClose}>

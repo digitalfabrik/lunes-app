@@ -6,7 +6,16 @@ import labels from '../../../constants/labels.json'
 import render from '../../../testing/render'
 import SettingsScreen from '../SettingsScreen'
 
-jest.mock('react-native-device-info', () => mockRNDeviceInfo)
+jest.mock('react-native-device-info', () => ({
+  getVersion: jest.fn(() => '2022.6.0')
+}))
+
+jest.mock('react-native/Libraries/Components/Switch/Switch', () => {
+  const mockComponent = require('react-native/jest/mockComponent')
+  return {
+    default: mockComponent('react-native/Libraries/Components/Switch/Switch')
+  }
+})
 
 describe('SettingsScreen', () => {
   it('should render all elements', () => {
@@ -15,6 +24,6 @@ describe('SettingsScreen', () => {
     expect(getByText(labels.settings.appStability)).toBeDefined()
     expect(getByText(labels.settings.appStabilityExplanation)).toBeDefined()
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    expect(getByText(`${labels.settings.version}: ${mockRNDeviceInfo.getVersion()}`)).toBeDefined()
+    expect(getByText(`${labels.settings.version}: ${'2022.6.0'}`)).toBeDefined()
   })
 })

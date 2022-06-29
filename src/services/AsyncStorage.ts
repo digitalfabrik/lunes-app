@@ -7,15 +7,15 @@ const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const PROGRESS_KEY = 'progress'
-const TRACKING_KEY = 'tracking'
+const SENTRY_KEY = 'sentryTracking'
 
 const isTrackingEnabled = async (): Promise<boolean> => {
-  const tracking = await AsyncStorage.getItem(TRACKING_KEY)
+  const tracking = await AsyncStorage.getItem(SENTRY_KEY)
   return tracking ? JSON.parse(tracking) : true
 }
 
 const setIsTrackingEnabled = async (trackingEnabled: boolean): Promise<void> => {
-  await AsyncStorage.setItem(TRACKING_KEY, JSON.stringify(trackingEnabled))
+  await AsyncStorage.setItem(SENTRY_KEY, JSON.stringify(trackingEnabled))
 }
 
 // return value of null means the selected profession was never set before, therefore the intro screen must be shown

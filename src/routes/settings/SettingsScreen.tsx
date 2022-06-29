@@ -36,7 +36,7 @@ const SettingsScreen = (): ReactElement => {
 
   AsyncStorage.isTrackingEnabled().then(setTrackingEnabled).catch(reportError)
 
-  const onTrackingChange = (): Promise<void> => {
+  const onTrackingChange = async (): Promise<void> => {
     const newValue = !trackingEnabled
     setTrackingEnabled(newValue)
     return AsyncStorage.setIsTrackingEnabled(newValue)
@@ -54,7 +54,7 @@ const SettingsScreen = (): ReactElement => {
           </ItemTextContainer>
           <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
         </ItemContainer>
-        <VersionPressable setVisible={() => setIsModalVisible(true)} />
+        <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
       </Container>
     </SafeAreaView>
   )

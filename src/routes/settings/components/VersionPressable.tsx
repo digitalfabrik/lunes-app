@@ -12,18 +12,18 @@ const Version = styled.Pressable`
 `
 
 interface PropsType {
-  setVisible: () => void
+  onClickThresholdReached: () => void
 }
 
-export const CLICKS_TO_THROW_SENTRY_ERROR = 10
+export const CLICK_THRESHOLD = 10
 
-const VersionPressable = ({ setVisible }: PropsType): JSX.Element => {
+const VersionPressable = ({ onClickThresholdReached }: PropsType): JSX.Element => {
   const [counter, setCounter] = useState<number>(0)
 
   const onPress = () => {
-    if (counter >= CLICKS_TO_THROW_SENTRY_ERROR) {
+    if (counter >= CLICK_THRESHOLD) {
       setCounter(0)
-      setVisible()
+      onClickThresholdReached()
     }
     setCounter(oldVal => oldVal + 1)
   }

@@ -14,8 +14,6 @@ const CodeInput = styled.TextInput`
   margin: ${props => props.theme.spacings.md};
 `
 
-const ButtonContainer = styled.View``
-
 interface PropsType {
   visible: boolean
   onClose: () => void
@@ -37,16 +35,14 @@ const DebugModal = (props: PropsType): JSX.Element => {
   }
 
   return (
-    <ModalSkeleton testId='debug-modal' visible={visible} onClose={resetTextAndClose}>
-      <CodeInput testID='code-input' onChangeText={setInputText} />
-      {inputText === UNLOCKING_TEXT && (
-        <ButtonContainer>
-          <Button
-            label={labels.settings.debugModal.sentry}
-            onPress={throwSentryError}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        </ButtonContainer>
+    <ModalSkeleton testID='debug-modal' visible={visible} onClose={resetTextAndClose}>
+      <CodeInput placeholder='Development Code' onChangeText={setInputText} />
+      {inputText.toLowerCase() === UNLOCKING_TEXT && (
+        <Button
+          label={labels.settings.debugModal.sentry}
+          onPress={throwSentryError}
+          buttonTheme={BUTTONS_THEME.contained}
+        />
       )}
     </ModalSkeleton>
   )
