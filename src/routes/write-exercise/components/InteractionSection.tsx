@@ -1,14 +1,14 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Keyboard, Pressable, TouchableOpacity, View } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { Keyboard, Pressable, View } from 'react-native'
 import stringSimilarity from 'string-similarity'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
+import CustomTextInput from '../../../components/CustomTextInput'
+import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -16,27 +16,12 @@ import MissingArticlePopover from './MissingArticlePopover'
 
 const TextInputContainer = styled.View<{ styledBorderColor: string }>`
   width: 80%;
-  height: ${hp('8%')}px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 2px;
-  padding: ${props => `0 ${props.theme.spacings.sm}`};
-  margin-bottom: ${props => props.theme.spacings.sm};
-  border: 1px solid ${prop => prop.styledBorderColor};
-`
-const StyledTextInput = styled.TextInput`
-  flex: 1;
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  color: ${prop => prop.theme.colors.primary};
-  width: 90%;
+  margin-bottom: ${props => props.theme.spacings.md};
 `
 
-const Speaker = styled.View`
-  top: ${wp('-6%')}px;
+const InputContainer = styled.View`
+  align-items: center;
+  margin-top: ${props => props.theme.spacings.md};
 `
 
 interface InteractionSectionProps {
@@ -55,9 +40,9 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
-  const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const theme = useTheme()
+  const isKeyboardShown = useIsKeyboardVisible()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
@@ -101,14 +86,15 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   }
 
   const checkEntry = async (): Promise<void> => {
-    const splitInput = input.trim().split(' ')
-    if (splitInput.length < 2) {
+    const trimmed = input.trim()
+    const indexOfFirstSpace = trimmed.indexOf(' ')
+    if (indexOfFirstSpace < 0) {
       setIsArticleMissing(true)
       return
     }
 
-    const article = capitalizeFirstLetter(splitInput[0])
-    const word = splitInput[1]
+    const article = capitalizeFirstLetter(trimmed.substring(0, indexOfFirstSpace))
+    const word = trimmed.substring(indexOfFirstSpace + 1)
 
     setSubmittedInput(input)
     updateAndStoreResult(validateAnswer(article, word))
@@ -126,57 +112,55 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
           return theme.colors.almostCorrect
       }
     }
-    return isFocused ? theme.colors.primary : theme.colors.textSecondary
+    return theme.colors.primary
   }
 
   return (
     <>
-      <Speaker>
-        <AudioPlayer document={document} disabled={retryAllowed} submittedAlternative={submittedAlternative} />
-      </Speaker>
-
-      <MissingArticlePopover
-        isVisible={isArticleMissing}
-        setIsPopoverVisible={setIsArticleMissing}
-        ref={textInputRef}
+      <DocumentImageSection
+        document={document}
+        minimized={isKeyboardShown}
+        audioDisabled={retryAllowed}
+        submittedAlternative={submittedAlternative}
       />
-
-      {/* @ts-expect-error ref typing is off here */}
-      <TextInputContainer testID='input-field' ref={textInputRef} styledBorderColor={getBorderColor()}>
-        <StyledTextInput
-          placeholder={labels.exercises.write.insertAnswer}
-          placeholderTextColor={theme.colors.placeholder}
-          value={input}
-          onChangeText={setInput}
-          editable={retryAllowed}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onSubmitEditing={checkEntry}
+      <InputContainer>
+        <MissingArticlePopover
+          isVisible={isArticleMissing}
+          setIsPopoverVisible={setIsArticleMissing}
+          ref={textInputRef}
         />
-        {retryAllowed && input !== '' && (
-          <TouchableOpacity onPress={() => setInput('')}>
-            <CloseIcon width={wp('6%')} height={wp('6%')} />
-          </TouchableOpacity>
-        )}
-      </TextInputContainer>
 
-      {isAnswerSubmitted && (
-        <Feedback
-          documentWithResult={documentWithResult}
-          submission={submittedInput}
-          needsToBeRepeated={needsToBeRepeated}
-        />
-      )}
-      {retryAllowed && (
-        <Pressable onPress={Keyboard.dismiss}>
-          <Button
-            label={labels.exercises.write.checkInput}
-            onPress={checkEntry}
-            disabled={!input}
-            buttonTheme={BUTTONS_THEME.contained}
+        {/* @ts-expect-error ref typing is off here */}
+        <TextInputContainer testID='input-field' ref={textInputRef}>
+          <CustomTextInput
+            customBorderColor={getBorderColor()}
+            placeholder={labels.exercises.write.insertAnswer}
+            value={input}
+            onChangeText={setInput}
+            editable={retryAllowed}
+            onSubmitEditing={checkEntry}
+            clearable={retryAllowed && input !== ''}
           />
-        </Pressable>
-      )}
+        </TextInputContainer>
+
+        {isAnswerSubmitted && (
+          <Feedback
+            documentWithResult={documentWithResult}
+            submission={submittedInput}
+            needsToBeRepeated={needsToBeRepeated}
+          />
+        )}
+        {retryAllowed && (
+          <Pressable onPress={Keyboard.dismiss}>
+            <Button
+              label={labels.exercises.write.checkInput}
+              onPress={checkEntry}
+              disabled={!input}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          </Pressable>
+        )}
+      </InputContainer>
     </>
   )
 }

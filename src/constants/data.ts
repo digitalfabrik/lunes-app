@@ -3,6 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import { Document } from './endpoints'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -52,9 +53,6 @@ export const EXERCISES: Exercise[] = [
   }
 ]
 
-export const exercisesWithoutProgress = 1
-export const exercisesWithProgress = EXERCISES.length - exercisesWithoutProgress
-
 export interface Progress {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
@@ -62,6 +60,11 @@ export interface Progress {
 export interface NextExercise {
   disciplineId: number
   exerciseKey: number
+}
+
+export type NextExerciseData = NextExercise & {
+  documents: Document[]
+  title: string
 }
 
 export const BUTTONS_THEME = {

@@ -11,14 +11,20 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
-jest.useFakeTimers()
+jest.mock('../../../components/FavoriteButton', () => () => {
+  const { Text } = require('react-native')
+  return <Text>FavoriteButton</Text>
+})
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it)
 }))
 
-jest.mock('../../../services/AsyncStorage')
+jest.mock('../../../services/AsyncStorage', () => ({
+  getExerciseProgress: jest.fn(() => Promise.resolve({})),
+  saveExerciseProgress: jest.fn()
+}))
 
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text

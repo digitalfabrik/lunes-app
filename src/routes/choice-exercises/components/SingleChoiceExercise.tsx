@@ -4,15 +4,14 @@ import React, { ReactElement, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
-import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
+import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
-import ImageCarousel from '../../../components/ImageCarousel'
 import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -81,16 +80,16 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
-    if (disciplineId) {
-      await saveExerciseProgress(disciplineId, exerciseKey, results)
-    }
+    const progress = await getExerciseProgress()
+    await saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineId,
       disciplineTitle,
       exercise: exerciseKey,
       results,
-      closeExerciseAction: route.params.closeExerciseAction
+      closeExerciseAction: route.params.closeExerciseAction,
+      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined
     })
     initializeExercise(true)
   }
@@ -138,8 +137,7 @@ const ChoiceExerciseScreen = ({
       <ExerciseHeader navigation={navigation} currentWord={currentWord} numberOfWords={count} />
 
       <>
-        {document.document_image.length > 0 && <ImageCarousel images={document.document_image} />}
-        <AudioPlayer document={document} disabled={selectedAnswer === null} />
+        <DocumentImageSection document={document} audioDisabled={selectedAnswer === null} />
         <SingleChoice
           answers={answers}
           onClick={onClickAnswer}

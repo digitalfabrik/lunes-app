@@ -7,6 +7,7 @@ import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
+import useReadProgress from '../../../hooks/useReadProgress'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorageService from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -16,12 +17,14 @@ import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
 
+jest.mock('../../../services/helpers')
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
+jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
-jest.mock('../../../components/HeaderWithMenu', () => {
+jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
   return () => <Text>HeaderWithMenu</Text>
 })
@@ -40,7 +43,7 @@ describe('HomeScreen', () => {
     mocked(useLoadDiscipline)
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
-
+    mocked(useReadProgress).mockReturnValue(getReturnOf(0))
     const { getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = getByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
@@ -48,9 +51,7 @@ describe('HomeScreen', () => {
     expect(secondDiscipline).toBeDefined()
   })
 
-  // TODO LUN-328 add test for navigate to child disciplines
-
-  it('should show custom discipline', async () => {
+  it('should render custom discipline', async () => {
     await AsyncStorageService.setCustomDisciplines(['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))

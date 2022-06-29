@@ -16,6 +16,11 @@ interface ExerciseParams {
   closeExerciseAction: CommonNavigationAction
 }
 
+interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
+  documentIndex: number
+  disciplineId: number | null
+}
+
 export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
   discipline: Discipline
   documents: Document[] | null
@@ -30,6 +35,11 @@ type ResultParams = ExerciseParams & {
 // https://github.com/Microsoft/Script/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
+  BottomTabNavigator: undefined
+  HomeTab: undefined
+  FavoritesTab: undefined
+  DictionaryTab: undefined
+  UserVocabularyTab: undefined
   Home: undefined
   ScopeSelection: {
     initialSelection: boolean
@@ -42,16 +52,22 @@ export type RoutesParams = {
     discipline: Discipline
     initialSelection: boolean
   }
+  VocabularyDetail: VocabularyDetailExerciseParams
   Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ArticleChoiceExercise: ExerciseParams
   WriteExercise: ExerciseParams
-  ExerciseFinished: ResultParams
+  ExerciseFinished: ResultParams & {
+    unlockedNextExercise: boolean
+  }
   Result: ResultParams
   ResultDetail: ResultParams & {
     resultType: Result
   }
   Imprint: undefined
-  ManageDisciplines: undefined
+  ManageSelection: undefined
+  Favorites: undefined
 }
+
+export type Route = keyof RoutesParams

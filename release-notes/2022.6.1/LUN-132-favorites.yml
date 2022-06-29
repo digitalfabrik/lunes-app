@@ -1,0 +1,6 @@
+issue_key: LUN-132
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Favoriten können nun gespeichert werden.

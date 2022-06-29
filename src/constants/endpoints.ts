@@ -40,7 +40,9 @@ export const ENDPOINTS = {
   disciplinesByGroup: 'disciplines_by_group',
   groupInfo: 'group_info',
   trainingSet: 'training_set',
-  documents: 'documents/:id'
+  trainingSets: 'training_sets',
+  documents: 'documents/:id',
+  document: 'words'
 }
 
 export const ForbiddenError = 'Request failed with status code 403'

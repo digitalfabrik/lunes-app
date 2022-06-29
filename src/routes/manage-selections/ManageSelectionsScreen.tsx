@@ -11,7 +11,7 @@ import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
+import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
 
@@ -30,7 +30,7 @@ const Padding = styled.View`
 `
 
 interface Props {
-  navigation: StackNavigationProp<RoutesParams, 'ManageDisciplines'>
+  navigation: StackNavigationProp<RoutesParams, 'ManageSelection'>
 }
 
 const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
@@ -42,14 +42,14 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
+      AsyncStorage.removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
     }
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
   const customDisciplineItems = customDisciplines?.map(apiKey => {
     const deleteCustomDisciplineAndRefresh = () => {
-      removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
+      AsyncStorage.removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
     }
     return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })
@@ -64,20 +64,20 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
 
   return (
     <Root contentContainerStyle={{ flexGrow: 1 }}>
-      <Heading>{labels.manageDisciplines.heading}</Heading>
-      <SectionHeading>{labels.manageDisciplines.yourProfessions}</SectionHeading>
+      <Heading>{labels.manageSelection.heading}</Heading>
+      <SectionHeading>{labels.manageSelection.yourProfessions}</SectionHeading>
       <HorizontalLine />
       {professionItems}
-      <AddElement onPress={navigateToProfessionSelection} label={labels.manageDisciplines.addProfession} />
+      <AddElement onPress={navigateToProfessionSelection} label={labels.manageSelection.addProfession} />
 
-      <SectionHeading>{labels.manageDisciplines.yourCustomDisciplines}</SectionHeading>
+      <SectionHeading>{labels.manageSelection.yourCustomDisciplines}</SectionHeading>
       <HorizontalLine />
       {customDisciplineItems}
 
       <AddElement
         onPress={navigateToAddCustomDiscipline}
         label={labels.home.addCustomDiscipline}
-        explanation={labels.manageDisciplines.descriptionAddCustomDiscipline}
+        explanation={labels.manageSelection.descriptionAddCustomDiscipline}
       />
       <Padding />
     </Root>

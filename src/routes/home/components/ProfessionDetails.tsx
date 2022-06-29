@@ -1,21 +1,18 @@
-import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
-import { BUTTONS_THEME, EXERCISES } from '../../../constants/data'
-import { Discipline, Document } from '../../../constants/endpoints'
+import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/data'
+import { Discipline } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
-import { loadDocuments } from '../../../hooks/useLoadDocuments'
-import useReadNextExercise from '../../../hooks/useReadNextExercise'
+import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
-import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { childrenLabel } from '../../../services/helpers'
-import { reportError } from '../../../services/sentry'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
+import NextExerciseCard from './NextExerciseCard'
 
 const ProgressContainer = styled.View`
   display: flex;
@@ -26,35 +23,28 @@ const ProgressContainer = styled.View`
 
 interface PropsType {
   discipline: Discipline
+  navigateToDiscipline: (discipline: Discipline) => void
+  navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
-const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
-  const { data: nextExercise, refresh: refreshNextExercise } = useReadNextExercise(discipline)
+const ProfessionDetails = ({
+  discipline,
+  navigateToDiscipline,
+  navigateToNextExercise
+}: PropsType): ReactElement | null => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
+  const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
-  const [documents, setDocuments] = useState<Document[] | null>(null)
-  const navigation = useNavigation<StackNavigationProp<RoutesParams, 'Home'>>()
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
 
-  useEffect(() => {
-    if (nextExercise) {
-      loadDocuments({ disciplineId: nextExercise.disciplineId }).then(setDocuments).catch(reportError)
-    }
-  }, [nextExercise])
-
-  const navigate = () => {
-    if (documents !== null && nextExercise !== null) {
-      navigation.navigate(EXERCISES[nextExercise.exerciseKey].screen, {
-        disciplineId: nextExercise.disciplineId,
-        disciplineTitle: '', // TODO set discipline title correct LUN-320
-        documents,
-        closeExerciseAction: CommonActions.navigate('Home')
-      })
-    }
+  if (!nextExerciseData) {
+    return null
   }
+
+  const { documents, title, exerciseKey } = nextExerciseData
 
   return (
     <>
@@ -75,14 +65,20 @@ const ProfessionDetails = ({ discipline }: PropsType): ReactElement => {
             {discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline)}</UnitText>
+        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
       </ProgressContainer>
+      <NextExerciseCard
+        thumbnail={documents[0].document_image[0].image}
+        onPress={() => navigateToNextExercise(nextExerciseData)}
+        heading={EXERCISES[exerciseKey].title}
+        buttonLabel={labels.home.continue}
+        subheading={title}
+      />
       <ButtonContainer>
         <Button
-          onPress={navigate}
-          label={moduleAlreadyStarted ? labels.home.continue : labels.home.start}
+          onPress={() => navigateToDiscipline(discipline)}
+          label={labels.home.viewModules}
           buttonTheme={BUTTONS_THEME.outlined}
-          disabled={documents === null || nextExercise === null}
         />
       </ButtonContainer>
     </>

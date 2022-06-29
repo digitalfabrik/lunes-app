@@ -6,26 +6,16 @@ import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import render from '../../../../testing/render'
 import CustomDisciplineDetails from '../CustomDisciplineDetails'
 
-const mockedNavigate = jest.fn()
-
-jest.mock('@react-navigation/native', () => {
-  const actualNav = jest.requireActual('@react-navigation/native')
-  return {
-    ...actualNav,
-    useNavigation: () => ({
-      navigate: mockedNavigate
-    })
-  }
-})
+const navigateToDiscipline = jest.fn()
 
 describe('CustomDisciplineDetails', () => {
-  it('should navigate on button click', () => {
+  it('should handle button click', () => {
     const discipline = mockDisciplines(false)[0]
-    const { getByText } = render(<CustomDisciplineDetails discipline={discipline} />)
+    const { getByText } = render(
+      <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
+    )
     const button = getByText(labels.home.start)
     fireEvent.press(button)
-    expect(mockedNavigate).toHaveBeenCalledWith('DisciplineSelection', {
-      discipline
-    })
+    expect(navigateToDiscipline).toHaveBeenCalledWith(discipline)
   })
 })
