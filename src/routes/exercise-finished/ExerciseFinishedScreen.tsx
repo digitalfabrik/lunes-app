@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback } from 'react'
+import React, { ReactElement } from 'react'
 import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -72,18 +72,15 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
 
-  const repeatExercise = useCallback(
-    (): void =>
-      navigation.navigate(EXERCISES[exercise].screen, {
-        documents,
-        disciplineId,
-        disciplineTitle,
-        closeExerciseAction
-      }),
-    [documents, disciplineId, disciplineTitle, closeExerciseAction, navigation, exercise]
-  )
+  const repeatExercise = (): void =>
+    navigation.navigate(EXERCISES[exercise].screen, {
+      documents,
+      disciplineId,
+      disciplineTitle,
+      closeExerciseAction
+    })
 
-  const startNextExercise = useCallback((): void => {
+  const startNextExercise = (): void => {
     if (exercise + 1 < EXERCISES.length) {
       navigation.navigate(EXERCISES[exercise + 1].screen, {
         documents,
@@ -92,11 +89,9 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         closeExerciseAction
       })
     }
-  }, [documents, disciplineId, disciplineTitle, closeExerciseAction, navigation, exercise])
+  }
 
-  const navigateToNextModule = useCallback((): void => {
-    navigation.pop(2)
-  }, [navigation])
+  const navigateToNextModule = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
