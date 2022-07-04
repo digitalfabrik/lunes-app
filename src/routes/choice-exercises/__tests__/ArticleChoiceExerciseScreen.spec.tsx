@@ -105,5 +105,5 @@ describe('ArticleChoiceExerciseScreen', () => {
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
     ])
-  }, 10000)
+  })
 })

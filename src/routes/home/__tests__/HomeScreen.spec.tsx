@@ -31,7 +31,7 @@ jest.mock('../components/HomeScreenHeader', () => {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should render professions', () => {
+  it('should render professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
     mocked(useLoadDiscipline)
@@ -39,7 +39,7 @@ describe('HomeScreen', () => {
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
     mocked(useReadProgress).mockReturnValue(getReturnOf(0))
     const { findByText, getByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = findByText('First Discipline')
+    const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
