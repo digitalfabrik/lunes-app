@@ -1,8 +1,8 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { Document } from '../../../../constants/endpoints'
 import { ARTICLES } from '../../../../constants/data'
+import { Document } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import render from '../../../../testing/render'

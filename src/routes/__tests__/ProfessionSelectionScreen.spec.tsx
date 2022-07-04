@@ -20,7 +20,6 @@ jest.mock('../../hooks/useLoadDisciplines')
 jest.mock('../../hooks/useReadSelectedProfessions')
 
 describe('ProfessionSelectionScreen', () => {
-
   const navigation = createNavigationMock<'ProfessionSelection'>()
   const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'ProfessionSelection'> => ({
     key: 'key-1',

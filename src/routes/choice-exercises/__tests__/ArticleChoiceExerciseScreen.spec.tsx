@@ -97,7 +97,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent(getByText('Das'), 'pressOut')
-   
+
     await act(async () => {
       await fireEvent.press(getByText(labels.exercises.showResults))
     })
