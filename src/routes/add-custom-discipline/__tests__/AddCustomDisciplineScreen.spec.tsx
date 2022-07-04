@@ -6,7 +6,7 @@ import { View } from 'react-native'
 
 import labels from '../../../constants/labels.json'
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
-import AsyncStorageService from '../../../services/AsyncStorage'
+import RNAsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
@@ -33,7 +33,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+    await RNAsyncStorage.setCustomDisciplines(['test'])
 
     const groupInfo = {
       id: 1,
@@ -62,7 +62,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should show duplicate error', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+    await RNAsyncStorage.setCustomDisciplines(['test'])
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
