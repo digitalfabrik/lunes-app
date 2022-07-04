@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { HeaderButtons, OverflowMenu as RNOverflowMenu } from 'react-navigation-header-buttons'
 
 import labels from '../constants/labels.json'
 
 interface OverflowMenuProps {
-  children: ReactElement
+  children: (ReactElement | ReactNode[]) & ReactNode
   icon: ReactElement
 }
 

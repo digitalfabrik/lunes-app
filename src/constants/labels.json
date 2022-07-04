@@ -133,6 +133,7 @@
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "manageSelection": "Bereiche verwalten",
+      "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
@@ -150,5 +151,14 @@
     "words": "Wörter",
     "customModalCancel": "Zurück"
   },
-  "favorites": "Favoriten"
+  "favorites": "Favoriten",
+  "settings": {
+    "settings": "Einstellungen",
+    "appStability": "App Stabilität",
+    "appStabilityExplanation": "Durch das automatische Senden von Fehlerberichten die Lunes App verbessern",
+    "version": "Version",
+    "debugModal": {
+      "sentry": "Send Sentry Error"
+    }
+  }
 }
