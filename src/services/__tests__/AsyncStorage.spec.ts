@@ -1,5 +1,3 @@
-import RNAsyncStorage from '@react-native-async-storage/async-storage'
-
 import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
@@ -8,10 +6,6 @@ import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
   describe('customDisciplines', () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-      RNAsyncStorage.clear()
-    })
     const customDisciplines = ['first', 'second', 'third']
 
     it('should delete customDisicpline from array if exists', async () => {
@@ -54,11 +48,6 @@ describe('AsyncStorage', () => {
     })
 
     describe('ExerciseProgress', () => {
-      beforeEach(() => {
-        jest.clearAllMocks()
-        RNAsyncStorage.clear()
-      })
-
       it('should save progress for not yet done discipline', async () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 }

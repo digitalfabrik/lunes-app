@@ -94,10 +94,6 @@ const discipline = {
   needsTrainingSetEndpoint: false
 }
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
-
 describe('loadDocuments', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 

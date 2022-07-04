@@ -7,16 +7,10 @@ import { COLORS } from '../../constants/theme/colors'
 import render from '../../testing/render'
 import Button from '../Button'
 
-import resetAllMocks = jest.resetAllMocks
-
 type ButtonProps = ComponentProps<typeof Button>
 
 describe('Button', () => {
   const onPressMock = jest.fn()
-
-  beforeEach(() => {
-    resetAllMocks()
-  })
 
   const renderButton = (overrideProps: Partial<ButtonProps> = {}): RenderAPI => {
     const buttonProps = {

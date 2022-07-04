@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
@@ -30,11 +29,6 @@ jest.mock('../components/HomeScreenHeader', () => {
 })
 
 describe('HomeScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    AsyncStorage.clear()
-  })
-
   const navigation = createNavigationMock<'Home'>()
 
   it('should render professions', () => {
@@ -44,8 +38,8 @@ describe('HomeScreen', () => {
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
     mocked(useReadProgress).mockReturnValue(getReturnOf(0))
-    const { getByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = getByText('First Discipline')
+    const { findByText, getByText } = render(<HomeScreen navigation={navigation} />)
+    const firstDiscipline = findByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()

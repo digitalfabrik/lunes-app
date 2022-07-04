@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
@@ -21,11 +20,6 @@ jest.mock('../../../hooks/useReadSelectedProfessions')
 jest.mock('../../../hooks/useLoadDiscipline')
 
 describe('ManageSelectionsScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    AsyncStorage.clear()
-  })
-
   const navigation = createNavigationMock<'ManageSelection'>()
   const renderScreen = () => render(<ManageSelectionsScreen navigation={navigation} />)
 

@@ -1,6 +1,7 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
+import { Document } from '../../../../constants/endpoints'
 import { ARTICLES } from '../../../../constants/data'
 import labels from '../../../../constants/labels.json'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
@@ -30,7 +31,7 @@ jest.mock('react-native-popover-view', () => ({
 describe('InteractionSection', () => {
   const storeResult = jest.fn()
 
-  const document = {
+  const document: Document = {
     alternatives: [
       {
         word: 'Spachtel',
@@ -48,7 +49,7 @@ describe('InteractionSection', () => {
     word: 'Spachtel'
   }
 
-  const dividedDocument = {
+  const dividedDocument: Document = {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
@@ -162,10 +163,10 @@ describe('InteractionSection', () => {
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Der zweipolige Phasenprüfer')
+    fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: DocumentResult = { document: dividedDocument, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)

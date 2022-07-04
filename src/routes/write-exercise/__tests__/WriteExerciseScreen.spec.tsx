@@ -56,10 +56,6 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('WriteExerciseScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   const documents = [
     {
       id: 1,
@@ -166,12 +162,12 @@ describe('WriteExerciseScreen', () => {
     expect(getByText(labels.exercises.next)).toBeDefined()
   })
 
-  it('should finish exercise and save progress', () => {
+  it('should finish exercise and save progress', async () => {
     const { getByText } = renderWriteExercise()
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent.press(getByText(labels.exercises.write.showSolution))
-    fireEvent.press(getByText(labels.exercises.showResults))
+    await act(() => fireEvent.press(getByText(labels.exercises.showResults)))
 
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },

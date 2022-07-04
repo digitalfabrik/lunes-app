@@ -1,8 +1,14 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import '@testing-library/jest-native/extend-expect'
 import 'react-native-gesture-handler/jestSetup'
 // @ts-expect-error no types for react-native-safe-area-context/jest/mock
 import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock'
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  AsyncStorage.clear()
+})
 
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-reanimated', () => {

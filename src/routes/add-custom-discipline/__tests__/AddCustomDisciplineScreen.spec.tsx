@@ -21,11 +21,6 @@ jest.mock('react-native-camera', () => ({
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 
 describe('AddCustomDisciplineScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    AsyncStorage.clear()
-  })
-
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
 
   it('should enable submit button on text input', async () => {
