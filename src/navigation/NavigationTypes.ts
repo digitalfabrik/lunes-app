@@ -67,6 +67,7 @@ export type RoutesParams = {
   }
   Imprint: undefined
   ManageSelection: undefined
+  Settings: undefined
   Favorites: undefined
 }
 

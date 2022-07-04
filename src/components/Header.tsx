@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components/native'
 
 import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
-import SentryTestPressable from './SentryTestPressable'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.primary};
@@ -66,9 +65,7 @@ const Header = (): JSX.Element => (
         <HeaderLinesIcon />
       </VerticalLinesIcon>
       <SmileIconStyle>
-        <SentryTestPressable>
-          <LunesIcon />
-        </SentryTestPressable>
+        <LunesIcon />
       </SmileIconStyle>
     </HeaderStyle>
   </Wrapper>

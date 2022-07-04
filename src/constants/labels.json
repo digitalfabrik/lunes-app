@@ -93,19 +93,21 @@
     }
   },
   "results": {
-    "resultsOverview": "Ergebnis-Übersicht",
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.",
-    "feedbackMedium": "Übung macht den Meister, \nversuche es noch einmal!",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "checkEntries": "Eingaben überprüfen",
-    "retryExercise": "Übung wiederholen",
-    "unlockedExercise": "Glückwunsch, deine nächste Übung ist jetzt freigeschaltet.",
-    "wrong": "falsche",
-    "similar": "ähnliche",
-    "correct": "richtige",
+    "finishedModule": "Super, du hast das Modul abgeschlossen",
+    "unlockExercise": {
+      "part1": "Glückwunsch",
+      "part2": "ist jetzt freigeschaltet."
+    },
+    "correct": "richtig",
     "entries": "Eingaben",
-    "viewEntries": "Eingaben anschauen",
-    "show": "Zeige",
+    "action": {
+      "nextExercise": "Nächste Übung",
+      "continue": "Weitermachen",
+      "repeat": "Übung wiederholen",
+      "close": "Schließen"
+    },
     "of": "von",
     "share": {
       "description": "Teile deine Ergebnisse!",
@@ -131,6 +133,7 @@
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "manageSelection": "Bereiche verwalten",
+      "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
@@ -148,5 +151,14 @@
     "words": "Wörter",
     "customModalCancel": "Zurück"
   },
-  "favorites": "Favoriten"
+  "favorites": "Favoriten",
+  "settings": {
+    "settings": "Einstellungen",
+    "appStability": "App Stabilität",
+    "appStabilityExplanation": "Durch das automatische Senden von Fehlerberichten die Lunes App verbessern",
+    "version": "Version",
+    "debugModal": {
+      "sentry": "Send Sentry Error"
+    }
+  }
 }
