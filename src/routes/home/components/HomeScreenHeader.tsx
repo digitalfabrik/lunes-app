@@ -5,7 +5,6 @@ import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
 import OverflowMenu from '../../../components/OverflowMenu'
-import SentryTestPressable from '../../../components/SentryTestPressable'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 
@@ -46,9 +45,7 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
-        <SentryTestPressable>
-          <LunesIcon />
-        </SentryTestPressable>
+        <LunesIcon />
       </SmileIconStyle>
 
       <HeaderButtonsContainer>
@@ -62,6 +59,7 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
             title={labels.general.header.manageSelection}
             onPress={() => navigation.navigate('ManageSelection')}
           />
+          <HiddenItem title={labels.general.header.settings} onPress={() => navigation.navigate('Settings')} />
         </OverflowMenu>
       </HeaderButtonsContainer>
     </HeaderStyle>

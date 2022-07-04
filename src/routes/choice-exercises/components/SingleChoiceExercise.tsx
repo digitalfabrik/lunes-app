@@ -134,7 +134,12 @@ const ChoiceExerciseScreen = ({
 
   return (
     <ExerciseContainer>
-      <ExerciseHeader navigation={navigation} currentWord={currentWord} numberOfWords={count} />
+      <ExerciseHeader
+        navigation={navigation}
+        closeExerciseAction={route.params.closeExerciseAction}
+        currentWord={currentWord}
+        numberOfWords={count}
+      />
 
       <>
         <DocumentImageSection document={document} audioDisabled={selectedAnswer === null} />
