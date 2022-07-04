@@ -1,7 +1,13 @@
-import React, { ReactElement } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactElement, useState } from 'react'
+import * as Progress from 'react-native-progress'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import styled from 'styled-components/native'
 
 import { Discipline } from '../constants/endpoints'
-import { childrenDescription, childrenLabel } from '../services/helpers'
+import theme from '../constants/theme'
+import { childrenDescription, childrenLabel, getProgress } from '../services/helpers'
+import { reportError } from '../services/sentry'
 import ListItem from './ListItem'
 
 interface DisciplineListItemProps {
@@ -10,19 +16,58 @@ interface DisciplineListItemProps {
   hasBadge: boolean
   rightChildren?: ReactElement
   disabled?: boolean
+  showProgress?: boolean
 }
+
+const Icon = styled.Image`
+  width: ${wp('7%')}px;
+  height: ${wp('7%')}px;
+`
+
+const IconContainer = styled.View`
+  position: absolute;
+  top: ${wp('3.5%')}px;
+  left: ${wp('3.5%')}px;
+`
 
 const DisciplineListItem = ({
   item,
   onPress,
   hasBadge,
   rightChildren,
-  disabled = false
+  disabled = false,
+  showProgress = false
 }: DisciplineListItemProps): ReactElement | null => {
   const { numberOfChildren, title, icon, apiKey } = item
   const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined
   // Description either contains the number of children and the type of children or just the type of children if the number is shown as badge
   const description = hasBadge ? childrenLabel(item) : childrenDescription(item)
+
+  const [progress, setProgress] = useState<number>(0)
+
+  useFocusEffect(() => {
+    if (showProgress) {
+      getProgress(item).then(setProgress).catch(reportError)
+    }
+  })
+
+  const iconWithProgress = (
+    <>
+      <Progress.Circle
+        progress={progress}
+        size={Math.round(wp('14%'))}
+        indeterminate={false}
+        color={theme.colors.progressIndicator}
+        unfilledColor={theme.colors.disabled}
+        borderWidth={0}
+        thickness={3}
+        testID='progress-circle'
+      />
+      <IconContainer>
+        <Icon source={{ uri: icon }} />
+      </IconContainer>
+    </>
+  )
 
   if (numberOfChildren === 0 && !apiKey) {
     return null
@@ -30,7 +75,7 @@ const DisciplineListItem = ({
   return (
     <ListItem
       title={title}
-      icon={icon}
+      icon={showProgress ? iconWithProgress : icon}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}

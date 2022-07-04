@@ -56,8 +56,8 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
             </MenuIconContainer>
           }>
           <HiddenItem
-            title={labels.general.header.manageDisciplines}
-            onPress={() => navigation.navigate('ManageDisciplines')}
+            title={labels.general.header.manageSelection}
+            onPress={() => navigation.navigate('ManageSelection')}
           />
           <HiddenItem title={labels.general.header.settings} onPress={() => navigation.navigate('Settings')} />
         </OverflowMenu>

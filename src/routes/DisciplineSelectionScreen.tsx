@@ -41,7 +41,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   }
 
   const Item = ({ item }: { item: Discipline }): JSX.Element => (
-    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge />
+    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge showProgress />
   )
 
   return (
@@ -49,7 +49,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
       <StatusBar backgroundColor='blue' barStyle='dark-content' />
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <FlatList
-          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
+          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
           data={disciplines}
           renderItem={Item}
           keyExtractor={({ id }) => id.toString()}

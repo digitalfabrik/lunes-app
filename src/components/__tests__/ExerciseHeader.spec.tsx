@@ -1,3 +1,4 @@
+import { CommonActions } from '@react-navigation/native'
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 // @ts-expect-error no type declarations for BackHandler
@@ -16,8 +17,9 @@ describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()
 
   it('should render header', () => {
+    const goBack = CommonActions.goBack()
     const { getByText, getByTestId } = render(
-      <ExerciseHeader navigation={navigation} currentWord={4} numberOfWords={10} />
+      <ExerciseHeader navigation={navigation} currentWord={4} numberOfWords={10} closeExerciseAction={goBack} />
     )
     expect(getByTestId('customModal')).toBeTruthy()
     expect(getByTestId('customModal').props.visible).toBe(false)
@@ -32,6 +34,6 @@ describe('ExerciseHeader', () => {
 
     fireEvent.press(getByText(labels.exercises.cancelModal.cancel))
 
-    expect(navigation.goBack).toHaveBeenCalled()
+    expect(navigation.dispatch).toHaveBeenCalledWith(goBack)
   })
 })

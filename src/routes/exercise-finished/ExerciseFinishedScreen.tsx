@@ -1,21 +1,28 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
+import { SafeAreaView } from 'react-native'
+import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import {
-  CheckCircleIconWhite,
-  ListIcon,
-  RepeatIcon,
-  OpenLockIcon,
   CloseIcon,
-  CloseIconWhite
+  CloseIconWhite,
+  HappySmileyIcon,
+  OpenLockIcon,
+  PartyHornIcon,
+  RepeatIcon,
+  SadSmileyIcon
 } from '../../../assets/images'
 import Button from '../../components/Button'
+import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
 import labels from '../../constants/labels.json'
+import theme from '../../constants/theme'
+import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import ShareSection from './components/ShareSection'
 
@@ -26,17 +33,18 @@ const Root = styled.View`
 `
 const UpperSection = styled.View<{ unlockedNextExercise: boolean }>`
   width: 140%;
-  height: 45%;
+  height: 50%;
   background-color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.correct : prop.theme.colors.primary)};
   border-bottom-left-radius: ${hp('60%')}px;
   border-bottom-right-radius: ${hp('60%')}px;
-  margin-bottom: ${props => props.theme.spacings.lg};
+  margin-bottom: ${props => props.theme.spacings.xxl};
   justify-content: center;
   align-items: center;
 `
 const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
+  align-items: center;
 `
 const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
   color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.primary : prop.theme.colors.background)};
@@ -44,8 +52,13 @@ const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
 `
 const Icon = styled.TouchableOpacity`
   position: absolute;
-  top: 50px;
+  top: 25px;
   right: 100px;
+`
+
+const Results = styled(Content)<{ color: Color }>`
+  color: ${props => props.color};
+  padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
 
 interface Props {
@@ -56,69 +69,116 @@ interface Props {
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction, unlockedNextExercise } =
     route.params
-  const [message, setMessage] = React.useState<string>('')
+  const correctResults = results.filter(doc => doc.result === 'correct')
+  const percentageOfCorrectResults = correctResults.length / results.length
 
-  React.useEffect(() => {
-    const correctResults = results.filter(doc => doc.result === 'correct')
-    const correct = correctResults.length / results.length
-    if (unlockedNextExercise) {
-      setMessage(labels.results.unlockedExercise)
-    } else if (correct > 2 / 3) {
-      setMessage(labels.results.feedbackGood)
-    } else if (correct > 1 / 3) {
-      setMessage(labels.results.feedbackMedium)
-    } else {
-      setMessage(labels.results.feedbackBad)
-    }
-  }, [results])
-
-  const repeatExercise = (): void => {
+  const repeatExercise = (): void =>
     navigation.navigate(EXERCISES[exercise].screen, {
       documents,
       disciplineId,
       disciplineTitle,
       closeExerciseAction
     })
+
+  const startNextExercise = (): void => {
+    if (exercise + 1 < EXERCISES.length) {
+      navigation.navigate(EXERCISES[exercise + 1].screen, {
+        documents,
+        disciplineId,
+        disciplineTitle,
+        closeExerciseAction
+      })
+    }
   }
 
-  const checkResults = (): void => {
-    navigation.navigate('Result', route.params)
+  const navigateToNextModule = (): void => navigation.pop(2)
+
+  const helper = (): {
+    message: string
+    resultColor: Color
+    buttonText: string
+    ResultIcon: React.ComponentType<SvgProps>
+    navigationAction: () => void
+  } => {
+    const isLastExercise = exercise === EXERCISES.length - 1
+    if (unlockedNextExercise && !isLastExercise) {
+      return {
+        message: `${labels.results.unlockExercise.part1}, ${EXERCISES[exercise + 1].title} ${
+          labels.results.unlockExercise.part2
+        }`,
+        resultColor: theme.colors.primary,
+        buttonText: labels.results.action.nextExercise,
+        navigationAction: startNextExercise,
+        ResultIcon: OpenLockIcon
+      }
+    }
+    if (percentageOfCorrectResults > 1 / 3) {
+      if (!isLastExercise) {
+        return {
+          message: labels.results.feedbackGood,
+          resultColor: theme.colors.correct,
+          buttonText: labels.results.action.continue,
+          navigationAction: startNextExercise,
+          ResultIcon: HappySmileyIcon
+        }
+      }
+      return {
+        message: labels.results.finishedModule,
+        resultColor: theme.colors.correct,
+        buttonText: labels.results.action.close,
+        navigationAction: navigateToNextModule,
+        ResultIcon: PartyHornIcon
+      }
+    }
+    return {
+      message: labels.results.feedbackBad,
+      resultColor: theme.colors.incorrect,
+      buttonText: labels.results.action.repeat,
+      navigationAction: repeatExercise,
+      ResultIcon: SadSmileyIcon
+    }
   }
+
+  const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
 
   return (
-    <Root>
-      <UpperSection unlockedNextExercise={unlockedNextExercise}>
-        <Icon onPress={checkResults}>
-          {unlockedNextExercise ? (
-            <CloseIcon width={wp('6%')} height={wp('6%')} />
-          ) : (
-            <CloseIconWhite width={wp('6%')} height={wp('6%')} />
-          )}
-        </Icon>
-        {unlockedNextExercise ? (
-          <OpenLockIcon width={wp('8%')} height={wp('8%')} />
-        ) : (
-          <CheckCircleIconWhite width={wp('8%')} height={wp('8%')} />
-        )}
-        <MessageContainer>
-          <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
-        </MessageContainer>
-      </UpperSection>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Root>
+        <UpperSection unlockedNextExercise={unlockedNextExercise}>
+          <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
+            {unlockedNextExercise ? (
+              <CloseIcon width={wp('6%')} height={wp('6%')} />
+            ) : (
+              <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+            )}
+          </Icon>
+          <ResultIcon width={wp('10%')} height={wp('10%')} />
+          <MessageContainer>
+            <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
+            <Results color={resultColor}>
+              {correctResults.length} {labels.results.of} {results.length} {labels.general.words}{' '}
+              {labels.results.correct}
+            </Results>
+            <Progress.Bar
+              color={resultColor}
+              progress={percentageOfCorrectResults}
+              unfilledColor={theme.colors.background}
+              width={wp('40%')}
+              height={wp('2%')}
+              borderWidth={0}
+            />
+          </MessageContainer>
+        </UpperSection>
 
-      <Button
-        label={labels.results.checkEntries}
-        iconLeft={ListIcon}
-        buttonTheme={BUTTONS_THEME.contained}
-        onPress={checkResults}
-      />
-      <Button
-        label={labels.results.retryExercise}
-        iconLeft={RepeatIcon}
-        buttonTheme={BUTTONS_THEME.outlined}
-        onPress={repeatExercise}
-      />
-      <ShareSection disciplineTitle={disciplineTitle} results={results} />
-    </Root>
+        <Button
+          label={buttonText}
+          iconLeft={buttonText === labels.results.action.repeat ? RepeatIcon : undefined}
+          buttonTheme={BUTTONS_THEME.contained}
+          onPress={() => navigationAction()}
+        />
+        <ShareSection disciplineTitle={disciplineTitle} results={results} />
+      </Root>
+    </SafeAreaView>
   )
 }
 

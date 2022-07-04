@@ -1,3 +1,4 @@
+import { CommonNavigationAction } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
@@ -35,6 +36,7 @@ const ProgressText = styled(ContentSecondary)`
 
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, Route>
+  closeExerciseAction: CommonNavigationAction
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
@@ -42,6 +44,7 @@ interface ExerciseHeaderProps {
 
 const ExerciseHeader = ({
   navigation,
+  closeExerciseAction,
   currentWord,
   numberOfWords,
   confirmClose = true
@@ -58,7 +61,7 @@ const ExerciseHeader = ({
         headerLeft: () => (
           <NavigationHeaderLeft
             title={labels.general.header.cancelExercise}
-            onPress={confirmClose ? () => setIsModalVisible(true) : navigation.goBack}
+            onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
             isCloseButton
           />
         ),
@@ -92,7 +95,7 @@ const ExerciseHeader = ({
 
   const goBack = (): void => {
     setIsModalVisible(false)
-    navigation.goBack()
+    navigation.dispatch(closeExerciseAction)
   }
 
   return (
