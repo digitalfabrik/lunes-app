@@ -6,7 +6,7 @@ import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
-import RNAsyncStorage from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -25,7 +25,7 @@ describe('ManageSelectionsScreen', () => {
 
   it('should show and delete selected professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
-    await RNAsyncStorage.pushSelectedProfession(mockDisciplines()[0].id)
+    await AsyncStorage.pushSelectedProfession(mockDisciplines()[0].id)
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
     mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
 
@@ -34,14 +34,14 @@ describe('ManageSelectionsScreen', () => {
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     await waitFor(async () => {
-      const selectedProfessions = await RNAsyncStorage.getSelectedProfessions()
+      const selectedProfessions = await AsyncStorage.getSelectedProfessions()
       expect(selectedProfessions).toEqual([])
     })
   })
 
   it('should show and delete custom disciplines', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([mockCustomDiscipline.apiKey]))
-    await RNAsyncStorage.setCustomDisciplines([mockCustomDiscipline.apiKey])
+    await AsyncStorage.setCustomDisciplines([mockCustomDiscipline.apiKey])
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([]))
     mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
@@ -50,7 +50,7 @@ describe('ManageSelectionsScreen', () => {
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     await waitFor(async () => {
-      const customDisciplines = await RNAsyncStorage.getCustomDisciplines()
+      const customDisciplines = await AsyncStorage.getCustomDisciplines()
       expect(customDisciplines).toEqual([])
     })
   })

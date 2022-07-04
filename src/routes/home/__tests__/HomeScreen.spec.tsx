@@ -8,7 +8,7 @@ import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
-import RNAsyncStorage from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -46,7 +46,7 @@ describe('HomeScreen', () => {
   })
 
   it('should render custom discipline', async () => {
-    await RNAsyncStorage.setCustomDisciplines(['test'])
+    await AsyncStorage.setCustomDisciplines(['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
