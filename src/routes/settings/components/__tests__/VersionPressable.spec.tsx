@@ -13,7 +13,6 @@ describe('VersionPressable', () => {
   const onClickThresholdReached = jest.fn()
   it('should open modal on multiple clicks', () => {
     const { getByText } = render(<VersionPressable onClickThresholdReached={onClickThresholdReached} />)
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const versionPressable = getByText(`${labels.settings.version}: 2022.6.0`)
     for (let i = 0; i <= CLICK_THRESHOLD; i += 1) {
       fireEvent.press(versionPressable)

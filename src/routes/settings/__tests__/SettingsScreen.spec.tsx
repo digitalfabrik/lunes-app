@@ -21,7 +21,6 @@ describe('SettingsScreen', () => {
     expect(getByText(labels.settings.settings)).toBeDefined()
     expect(getByText(labels.settings.appStability)).toBeDefined()
     expect(getByText(labels.settings.appStabilityExplanation)).toBeDefined()
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    expect(getByText(`${labels.settings.version}: ${'2022.6.0'}`)).toBeDefined()
+    expect(getByText(`${labels.settings.version}: 2022.6.0`)).toBeDefined()
   })
 })
