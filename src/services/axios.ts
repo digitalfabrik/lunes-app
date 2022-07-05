@@ -5,7 +5,7 @@ import { addTrailingSlashToUrl } from './url'
 
 const baseURL = __DEV__ ? 'https://lunes-test.tuerantuer.org/api' : 'https://lunes.tuerantuer.org/api'
 
-const keyGenerator = buildKeyGenerator(true, ({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({
+const keyGenerator = buildKeyGenerator(({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({
   url: baseURL + (baseURL && url ? '/' : '') + url,
   headers: headers?.Authorization ?? 'not-set',
   method,
