@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import { COLORS } from '../constants/theme/colors'
-import { Route, RoutesParams } from './NavigationTypes'
+import { RoutesParams } from './NavigationTypes'
 
 const headerStyles = (headerHeight?: number) =>
   StyleSheet.create({
@@ -33,20 +33,11 @@ const headerStyles = (headerHeight?: number) =>
 
 const screenOptions =
   (headerHeight?: number) =>
-  (
-    title: string,
-    navigation: NavigationProp<RoutesParams>,
-    isCloseButton = false,
-    screen?: Route
-  ): StackNavigationOptions => {
+  (title: string, navigation: NavigationProp<RoutesParams>, isCloseButton = false): StackNavigationOptions => {
     const { header, headerLeftContainer, headerRightContainer, headerTitleContainer } = headerStyles(headerHeight)
     return {
       headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          title={title}
-          isCloseButton={isCloseButton}
-        />
+        <NavigationHeaderLeft onPress={navigation.goBack} title={title} isCloseButton={isCloseButton} />
       ),
       headerTitle: '',
       headerStyle: header,

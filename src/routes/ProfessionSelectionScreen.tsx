@@ -60,7 +60,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     }
   }
 
-  const Item = ({ item }: { item: Discipline }): JSX.Element => {
+  const renderListItem = ({ item }: { item: Discipline }): JSX.Element => {
     const isSelected = selectedProfessions?.includes(item.id)
     return (
       <DisciplineListItem
@@ -111,7 +111,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           }
           ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
           data={disciplines}
-          renderItem={Item}
+          renderItem={renderListItem}
           keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
         />
