@@ -21,7 +21,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
     focused ? <HomeIconWhite width={iconSize} height={iconSize} /> : <HomeIconGrey width={iconSize} height={iconSize} />
 
   const renderFavoritesTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? <StarIconWhite width={iconSize} height={iconSize} /> : <StarIconGrey width={iconSize} height={iconSize} />
+    focused ? <StarIconWhite width={wp('7%')} height={wp('7%')} /> : <StarIconGrey width={wp('7%')} height={wp('7%')} />
 
   return (
     <Navigator.Navigator
