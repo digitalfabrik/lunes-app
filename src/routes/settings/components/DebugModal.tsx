@@ -47,13 +47,8 @@ const DebugModal = (props: PropsType): JSX.Element => {
   }
 
   const switchCMS = async (): Promise<void> => {
-    const overwrite = await AsyncStorage.getOverwriteCMS()
     const currentCMS = await getBaseURL()
-    if (overwrite) {
-      await AsyncStorage.setOverwriteCMS(overwrite === liveCMS ? testCMS : liveCMS)
-    } else {
-      await AsyncStorage.setOverwriteCMS(currentCMS === liveCMS ? testCMS : liveCMS)
-    }
+    await AsyncStorage.setOverwriteCMS(currentCMS === liveCMS ? testCMS : liveCMS)
     getBaseURL().then(setBaseURL).catch(reportError)
   }
 
