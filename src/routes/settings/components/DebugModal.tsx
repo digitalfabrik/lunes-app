@@ -51,7 +51,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const switchCMS = async (): Promise<void> => {
     const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
     await AsyncStorage.setOverwriteCMS(updatedCMS)
-    await setBaseURL(updatedCMS)
+    setBaseURL(updatedCMS)
   }
 
   return (
