@@ -1,0 +1,6 @@
+issue_key: LUN-292
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: CMS can now be switched in settings screen

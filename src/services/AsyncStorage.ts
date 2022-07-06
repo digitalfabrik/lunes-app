@@ -2,12 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKey, Progress } from '../constants/data'
 import { DocumentResult } from '../navigation/NavigationTypes'
+import { CMS, productionCMS, testCMS } from './axios'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const PROGRESS_KEY = 'progress'
 const SENTRY_KEY = 'sentryTracking'
+const CMS_KEY = 'cms'
 
 const isTrackingEnabled = async (): Promise<boolean> => {
   const tracking = await AsyncStorage.getItem(SENTRY_KEY)
@@ -118,6 +120,15 @@ const isFavorite = async (favoriteId: number): Promise<boolean> => {
   return favorites.includes(favoriteId)
 }
 
+const setOverwriteCMS = async (cms: CMS): Promise<void> => {
+  await AsyncStorage.setItem(CMS_KEY, cms)
+}
+
+const getOverwriteCMS = async (): Promise<CMS | null> => {
+  const cms = await AsyncStorage.getItem(CMS_KEY)
+  return cms === productionCMS || cms === testCMS ? cms : null
+}
+
 export default {
   isTrackingEnabled,
   setIsTrackingEnabled,
@@ -135,5 +146,7 @@ export default {
   setFavorites,
   addFavorite,
   removeFavorite,
-  isFavorite
+  isFavorite,
+  setOverwriteCMS,
+  getOverwriteCMS
 }
