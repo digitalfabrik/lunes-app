@@ -5,15 +5,15 @@ import AsyncStorage from './AsyncStorage'
 import { addTrailingSlashToUrl } from './url'
 
 export const testCMS = 'https://lunes-test.tuerantuer.org/api'
-export const liveCMS = 'https://lunes.tuerantuer.org/api'
-export type CMS = typeof testCMS | typeof liveCMS
+export const productionCMS = 'https://lunes.tuerantuer.org/api'
+export type CMS = typeof testCMS | typeof productionCMS
 
 export const getBaseURL = async (): Promise<CMS> => {
   const overwriteCMS = await AsyncStorage.getOverwriteCMS()
   if (overwriteCMS) {
     return overwriteCMS
   }
-  return __DEV__ ? testCMS : liveCMS
+  return __DEV__ ? testCMS : productionCMS
 }
 
 const keyGenerator = buildKeyGenerator(true, ({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({

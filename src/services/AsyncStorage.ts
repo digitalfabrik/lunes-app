@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKey, Progress } from '../constants/data'
 import { DocumentResult } from '../navigation/NavigationTypes'
-import { CMS, liveCMS, testCMS } from './axios'
+import { CMS, productionCMS, testCMS } from './axios'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -126,7 +126,7 @@ const setOverwriteCMS = async (cms: CMS): Promise<void> => {
 
 const getOverwriteCMS = async (): Promise<CMS | null> => {
   const cms = await AsyncStorage.getItem(CMS_KEY)
-  return cms === liveCMS || cms === testCMS ? cms : null
+  return cms === productionCMS || cms === testCMS ? cms : null
 }
 
 export default {

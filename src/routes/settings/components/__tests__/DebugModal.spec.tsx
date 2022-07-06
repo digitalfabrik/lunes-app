@@ -2,16 +2,18 @@ import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../../constants/labels.json'
-import { liveCMS, testCMS } from '../../../../services/axios'
+import { productionCMS, testCMS } from '../../../../services/axios'
 import render from '../../../../testing/render'
 import DebugModal from '../DebugModal'
 
 describe('DebugModal', () => {
-  it('should show buttons only for correct text input', () => {
+  it('should show buttons only for correct text input', async () => {
     const { queryByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
     expect(queryByText(labels.settings.debugModal.sentry)).toBeNull()
     const textField = getByPlaceholderText('Development Code')
-    fireEvent.changeText(textField, 'wirschaffendas')
+    await act(async () => {
+      fireEvent.changeText(textField, 'wirschaffendas')
+    })
     expect(queryByText(labels.settings.debugModal.sentry)).not.toBeNull()
   })
 
@@ -27,7 +29,7 @@ describe('DebugModal', () => {
     await act(async () => {
       await fireEvent.press(switchCMSButton)
     })
-    expect(getByText(liveCMS)).toBeDefined()
+    expect(getByText(productionCMS)).toBeDefined()
     await act(async () => {
       await fireEvent.press(switchCMSButton)
     })

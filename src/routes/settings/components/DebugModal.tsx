@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -9,7 +9,7 @@ import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import AsyncStorage from '../../../services/AsyncStorage'
-import { getBaseURL, liveCMS, testCMS } from '../../../services/axios'
+import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { reportError } from '../../../services/sentry'
 
 const Container = styled.View`
@@ -34,7 +34,9 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
 
-  getBaseURL().then(setBaseURL).catch(reportError)
+  useEffect(() => {
+    getBaseURL().then(setBaseURL).catch(reportError)
+  }, [])
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -47,9 +49,9 @@ const DebugModal = (props: PropsType): JSX.Element => {
   }
 
   const switchCMS = async (): Promise<void> => {
-    const currentCMS = await getBaseURL()
-    await AsyncStorage.setOverwriteCMS(currentCMS === liveCMS ? testCMS : liveCMS)
-    getBaseURL().then(setBaseURL).catch(reportError)
+    const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
+    await AsyncStorage.setOverwriteCMS(updatedCMS)
+    await setBaseURL(updatedCMS)
   }
 
   return (
