@@ -6,9 +6,6 @@ import render from '../../testing/render'
 import ListItem from '../ListItem'
 
 describe('ListItem', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
   const onPress = jest.fn()
   const description = 'Wörter'
   const icon = 'https://example.com'

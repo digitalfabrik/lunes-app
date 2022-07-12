@@ -6,10 +6,6 @@ import render from '../../testing/render'
 import Loading from '../Loading'
 
 describe('Loading', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   const childText = 'Children'
 
   const renderLoading = (isLoading: boolean): RenderAPI =>

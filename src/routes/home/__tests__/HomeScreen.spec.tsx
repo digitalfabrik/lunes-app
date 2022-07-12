@@ -8,7 +8,7 @@ import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
-import AsyncStorageService from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -31,22 +31,22 @@ jest.mock('../components/HomeScreenHeader', () => {
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
 
-  it('should render professions', () => {
+  it('should render professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf(mockDisciplines().map(item => item.id)))
     mocked(useLoadDiscipline)
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
     mocked(useReadProgress).mockReturnValue(getReturnOf(0))
-    const { getByText } = render(<HomeScreen navigation={navigation} />)
-    const firstDiscipline = getByText('First Discipline')
+    const { findByText, getByText } = render(<HomeScreen navigation={navigation} />)
+    const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = getByText('Second Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
   })
 
   it('should render custom discipline', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+    await AsyncStorage.setCustomDisciplines(['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))

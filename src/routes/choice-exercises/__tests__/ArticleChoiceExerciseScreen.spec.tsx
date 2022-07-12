@@ -1,5 +1,5 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
-import { fireEvent } from '@testing-library/react-native'
+import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
@@ -22,7 +22,7 @@ jest.mock('../../../services/helpers', () => ({
 }))
 
 jest.mock('../../../services/AsyncStorage', () => ({
-  getExerciseProgress: jest.fn(() => Promise.resolve({})),
+  getExerciseProgress: jest.fn(() => ({})),
   saveExerciseProgress: jest.fn()
 }))
 
@@ -32,7 +32,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
-
+jest.useFakeTimers()
 describe('ArticleChoiceExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -97,9 +97,11 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent(getByText('Der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent(getByText('Das'), 'pressOut')
-    await fireEvent.press(getByText(labels.exercises.showResults))
 
-    await expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
+    await act(async () => {
+      await fireEvent.press(getByText(labels.exercises.showResults))
+    })
+    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
     ])
