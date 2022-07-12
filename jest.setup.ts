@@ -4,8 +4,6 @@ import 'react-native-gesture-handler/jestSetup'
 // @ts-expect-error no types for react-native-safe-area-context/jest/mock
 import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock'
 
-
-
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
