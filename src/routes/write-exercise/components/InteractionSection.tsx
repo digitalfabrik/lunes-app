@@ -73,7 +73,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     return 'incorrect'
   }
 
-  const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
+  const uncapitalizeFirstLetter = (string: string): string => string.charAt(0).toLowerCase() + string.slice(1)
 
   const updateAndStoreResult = (score: SimpleResult): void => {
     const nthRetry = documentWithResult.numberOfTries + 1
@@ -93,7 +93,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       return
     }
 
-    const article = capitalizeFirstLetter(trimmed.substring(0, indexOfFirstSpace))
+    const article = uncapitalizeFirstLetter(trimmed.substring(0, indexOfFirstSpace))
     const word = trimmed.substring(indexOfFirstSpace + 1)
 
     setSubmittedInput(input)
