@@ -23,10 +23,10 @@
     "impressum": "Impressum"
   },
   "manageSelection": {
-    "heading": "Verwalte define Lernbereiche",
-    "yourProfessions": "Define Berufsauswahl",
-    "yourCustomDisciplines": "Define individuellen Bereiche",
-    "yourSavedProgress": "Define gespeicherten Lernbereiche",
+    "heading": "Verwalte deine Lernbereiche",
+    "yourProfessions": "Deine Berufsauswahl",
+    "yourCustomDisciplines": "Deine individuellen Bereiche",
+    "yourSavedProgress": "Deine gespeicherten Lernbereiche",
     "addProfession": "Beruf hinzufügen",
     "descriptionAddCustomDiscipline": "Hier kannst du eigene Lernbereiche mit deinem QR-Code hinzufügen."
   },
@@ -57,7 +57,7 @@
     "wordChoice": {
       "title": "Level 1",
       "description": "Das richtige Wort auswählen",
-      "errorWrongModuleSize": "Die Übung ist für dieses Module nicht möglich (zu wenig Wörter)"
+      "errorWrongModuleSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
     },
     "articleChoice": {
       "title": "Level 2",
@@ -76,10 +76,10 @@
       "showSolution": "Lösung anzeigen",
       "insertAnswer": "Wort mit Artikel eingeben",
       "feedback": {
-        "articleMissing": "Ups, define Eingabe ist nicht vollständig. Füge einen Artikel ein.",
+        "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
         "wrongWithSolution": "Die richtige Antwort ist:",
         "wrong": "Das war leider nicht richtig.",
-        "almostCorrect1": "Define Eingabe",
+        "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
@@ -93,9 +93,9 @@
     }
   },
   "results": {
-    "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
+    "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemeistert.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedModule": "Super, du hast das Module abgeschlossen",
+    "finishedModule": "Super, du hast das Modul abgeschlossen",
     "unlockExercise": {
       "part1": "Glückwunsch",
       "part2": "ist jetzt freigeschaltet."
@@ -110,7 +110,7 @@
     },
     "of": "von",
     "share": {
-      "description": "Teile define Ergebnisse!",
+      "description": "Teile deine Ergebnisse!",
       "button": "Ergebnisse teilen",
       "message1": "Meine Ergebnisse für",
       "message2": "in Lunes:",
@@ -120,7 +120,7 @@
   "feedback": {
     "sendFeedback": "Senden",
     "question": "Hast du Feedback oder einen Wortvorschlag?",
-    "mailPlaceholder": "Define Email für Fragen (optional)",
+    "mailPlaceholder": "Deine Email für Fragen (optional)",
     "feedbackPlaceholder": "Teile dein Feedback hier"
   },
   "general": {
@@ -145,7 +145,7 @@
     },
     "rootDiscipline": "Beruf",
     "rootDisciplines": "Berufe",
-    "discipline": "Module",
+    "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
     "words": "Wörter",
