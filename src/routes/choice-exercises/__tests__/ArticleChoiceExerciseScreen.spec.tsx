@@ -58,7 +58,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(tryLater)
 
     expect(getAllByText(/Auto/)).toHaveLength(4)
-    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
@@ -70,7 +70,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     )
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
-    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
     expect(getAllByText(/Auto/)).toHaveLength(4)
@@ -81,11 +81,11 @@ describe('ArticleChoiceExerciseScreen', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
-    fireEvent(getByText('Das'), 'pressOut')
+    fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
     expect(getAllByText(/Auto/)).toHaveLength(4)
-    fireEvent(getByText('Das'), 'pressOut')
+    fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
     expect(getAllByText(/Spachtel/)).toHaveLength(4)
@@ -94,9 +94,9 @@ describe('ArticleChoiceExerciseScreen', () => {
   it('should save progress correctly', async () => {
     const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
-    fireEvent(getByText('Der'), 'pressOut')
+    fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
-    fireEvent(getByText('Das'), 'pressOut')
+    fireEvent(getByText('das'), 'pressOut')
 
     await act(async () => {
       await fireEvent.press(getByText(labels.exercises.showResults))

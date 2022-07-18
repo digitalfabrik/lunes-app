@@ -99,7 +99,7 @@ describe('InteractionSection', () => {
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Die WrongAnswer')
+    fireEvent.changeText(inputField, 'die WrongAnswer')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document, result: 'incorrect', numberOfTries: 1 }
@@ -115,7 +115,7 @@ describe('InteractionSection', () => {
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Die Wachtel')
+    fireEvent.changeText(inputField, 'die Wachtel')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
@@ -131,7 +131,7 @@ describe('InteractionSection', () => {
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Das Spachtel')
+    fireEvent.changeText(inputField, 'das Spachtel')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
@@ -147,7 +147,7 @@ describe('InteractionSection', () => {
       false
     )
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Die Spachtel')
+    fireEvent.changeText(inputField, 'die Spachtel')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
@@ -167,6 +167,22 @@ describe('InteractionSection', () => {
     fireEvent.press(getByText(labels.exercises.write.checkInput))
 
     const documentWithResult: DocumentResult = { document: dividedDocument, result: 'correct', numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+
+    rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
+  })
+
+  it('should show correct for articels starting with an uppercase letter', async () => {
+    const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
+      { document, result: null, numberOfTries: 0 },
+      false
+    )
+    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    fireEvent.changeText(inputField, 'Die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
