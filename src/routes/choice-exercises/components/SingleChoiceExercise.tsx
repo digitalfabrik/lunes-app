@@ -12,6 +12,7 @@ import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -66,6 +67,7 @@ const ChoiceExerciseScreen = ({
   )
   const { document, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(documentToAnswers(document))
+  const [cheatsEnabled, setCheatsEnabled] = useState(false)
 
   const correctAnswers = [{ word: document.word, article: document.article }, ...document.alternatives]
   const needsToBeRepeated = numberOfTries < numberOfMaxRetries && result === SIMPLE_RESULTS.incorrect
@@ -104,6 +106,9 @@ const ChoiceExerciseScreen = ({
   }
   const count = documents.length
 
+  AsyncStorage.getDevMode().then(isDevMode => {
+    setCheatsEnabled(isDevMode)
+  })
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
   }
@@ -181,18 +186,20 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
-          <CheatContainer>
-            <Button
-              label={labels.exercises.cheat.succeed}
-              onPress={() => onExerciseCheated(SIMPLE_RESULTS.correct)}
-              buttonTheme={BUTTONS_THEME.outlined}
-            />
-            <Button
-              label={labels.exercises.cheat.fail}
-              onPress={() => onExerciseCheated(SIMPLE_RESULTS.incorrect)}
-              buttonTheme={BUTTONS_THEME.outlined}
-            />
-          </CheatContainer>
+          {cheatsEnabled && (
+            <CheatContainer>
+              <Button
+                label={labels.exercises.cheat.succeed}
+                onPress={() => onExerciseCheated(SIMPLE_RESULTS.correct)}
+                buttonTheme={BUTTONS_THEME.outlined}
+              />
+              <Button
+                label={labels.exercises.cheat.fail}
+                onPress={() => onExerciseCheated(SIMPLE_RESULTS.incorrect)}
+                buttonTheme={BUTTONS_THEME.outlined}
+              />
+            </CheatContainer>
+          )}
         </ButtonContainer>
       </>
     </ExerciseContainer>
