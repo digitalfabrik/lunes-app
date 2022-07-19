@@ -8,7 +8,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
@@ -18,6 +18,15 @@ import InteractionSection from './components/InteractionSection'
 
 const ButtonContainer = styled.View`
   align-items: center;
+`
+
+const CheatContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  transform: scale(0.6);
+  margin-top: -30px;
+  width: 100%;
 `
 
 export interface WriteExerciseScreenProps {
@@ -101,6 +110,14 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(true)
   }
 
+  const cheatExercise = async (result: SimpleResult): Promise<void> => {
+    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
+    setDocumentsWithResults(cheatedDocuments)
+    setCurrentIndex(documentsWithResults.length - 1)
+    setIsAnswerSubmitted(true)
+    await finishExercise()
+  }
+
   const giveUp = async (): Promise<void> => {
     setIsAnswerSubmitted(true)
     storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
@@ -147,6 +164,18 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             )}
           </>
         )}
+        <CheatContainer>
+          <Button
+            label={labels.exercises.cheat.succeed}
+            onPress={() => cheatExercise(SIMPLE_RESULTS.correct)}
+            buttonTheme={BUTTONS_THEME.outlined}
+          />
+          <Button
+            label={labels.exercises.cheat.fail}
+            onPress={() => cheatExercise(SIMPLE_RESULTS.incorrect)}
+            buttonTheme={BUTTONS_THEME.outlined}
+          />
+        </CheatContainer>
       </ButtonContainer>
     </KeyboardAwareScrollView>
   )

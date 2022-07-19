@@ -28,6 +28,15 @@ const ButtonContainer = styled.View`
   flex: 1;
 `
 
+const CheatContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  transform: scale(0.6);
+  margin-top: -30px;
+  width: 100%;
+`
+
 interface SingleChoiceExerciseProps {
   documents: Document[]
   disciplineId: number
@@ -94,6 +103,10 @@ const ChoiceExerciseScreen = ({
     initializeExercise(true)
   }
   const count = documents.length
+
+  const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
+    onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
+  }
 
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
     answer1.article.id === answer2.article.id && answer1.word === answer2.word
@@ -168,6 +181,18 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
+          <CheatContainer>
+            <Button
+              label={labels.exercises.cheat.succeed}
+              onPress={() => onExerciseCheated(SIMPLE_RESULTS.correct)}
+              buttonTheme={BUTTONS_THEME.outlined}
+            />
+            <Button
+              label={labels.exercises.cheat.fail}
+              onPress={() => onExerciseCheated(SIMPLE_RESULTS.incorrect)}
+              buttonTheme={BUTTONS_THEME.outlined}
+            />
+          </CheatContainer>
         </ButtonContainer>
       </>
     </ExerciseContainer>
