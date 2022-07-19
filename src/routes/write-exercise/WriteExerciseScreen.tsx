@@ -12,8 +12,7 @@ import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, Simple
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
-import { saveExerciseProgress } from '../../services/AsyncStorage'
+import { saveExerciseProgress, getDevMode } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
@@ -112,9 +111,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(true)
   }
 
-  AsyncStorage.getDevMode().then(isDevMode => {
-    setCheatsEnabled(isDevMode)
-  })
+  getDevMode().then(setCheatsEnabled)
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
     const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
     setDocumentsWithResults(cheatedDocuments)

@@ -11,8 +11,7 @@ import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { getExerciseProgress, saveExerciseProgress, getDevMode } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -106,9 +105,7 @@ const ChoiceExerciseScreen = ({
   }
   const count = documents.length
 
-  AsyncStorage.getDevMode().then(isDevMode => {
-    setCheatsEnabled(isDevMode)
-  })
+  getDevMode().then(setCheatsEnabled)
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
   }
