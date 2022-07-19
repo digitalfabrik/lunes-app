@@ -10,6 +10,7 @@ const FAVORITES_KEY = 'favorites'
 const PROGRESS_KEY = 'progress'
 const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
+const MODE_KEY = 'devmode'
 
 const isTrackingEnabled = async (): Promise<boolean> => {
   const tracking = await AsyncStorage.getItem(SENTRY_KEY)
@@ -129,6 +130,16 @@ const getOverwriteCMS = async (): Promise<CMS | null> => {
   return cms === productionCMS || cms === testCMS ? cms : null
 }
 
+const toggleDevMode = async (): Promise<void> => {
+  const isDevMode = await AsyncStorage.getItem(MODE_KEY)
+  await AsyncStorage.setItem(MODE_KEY, isDevMode ? JSON.stringify(!JSON.parse(isDevMode)) : 'true')
+}
+
+const getDevMode = async (): Promise<boolean> => {
+  const isDevMode = await AsyncStorage.getItem(MODE_KEY)
+  return isDevMode ? JSON.parse(isDevMode) : false
+}
+
 export default {
   isTrackingEnabled,
   setIsTrackingEnabled,
@@ -148,5 +159,7 @@ export default {
   removeFavorite,
   isFavorite,
   setOverwriteCMS,
-  getOverwriteCMS
+  getOverwriteCMS,
+  toggleDevMode,
+  getDevMode
 }

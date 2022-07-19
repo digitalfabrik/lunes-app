@@ -32,10 +32,22 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
+  const [modeButtonLabel, setModeButtonLabel] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
+
+  const updateModeButtonLabel = () => {
+    AsyncStorage.getDevMode()
+      .then(isDevMode => {
+        setModeButtonLabel(
+          isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode
+        )
+      })
+      .catch(reportError)
+  }
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
+    updateModeButtonLabel()
   }, [])
 
   const throwSentryError = (): void => {
@@ -52,6 +64,11 @@ const DebugModal = (props: PropsType): JSX.Element => {
     const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
     await AsyncStorage.setOverwriteCMS(updatedCMS)
     setBaseURL(updatedCMS)
+  }
+
+  const toggleDevMode = async (): Promise<void> => {
+    await AsyncStorage.toggleDevMode()
+    updateModeButtonLabel()
   }
 
   return (
@@ -71,6 +88,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
             onPress={switchCMS}
             buttonTheme={BUTTONS_THEME.contained}
           />
+          <Button label={modeButtonLabel} onPress={toggleDevMode} buttonTheme={BUTTONS_THEME.contained} />
         </Container>
       )}
     </ModalSkeleton>
