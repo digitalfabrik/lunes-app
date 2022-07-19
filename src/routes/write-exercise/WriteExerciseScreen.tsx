@@ -115,7 +115,6 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setDocumentsWithResults(cheatedDocuments)
     setCurrentIndex(documentsWithResults.length - 1)
     setIsAnswerSubmitted(true)
-    await finishExercise()
   }
 
   const giveUp = async (): Promise<void> => {
