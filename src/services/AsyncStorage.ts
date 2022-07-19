@@ -135,7 +135,7 @@ const toggleDevMode = async (): Promise<void> => {
   await AsyncStorage.setItem(MODE_KEY, isDevMode ? JSON.stringify(!JSON.parse(isDevMode)) : 'true')
 }
 
-const getDevMode = async (): Promise<boolean> => {
+export const getDevMode = async (): Promise<boolean> => {
   const isDevMode = await AsyncStorage.getItem(MODE_KEY)
   return isDevMode ? JSON.parse(isDevMode) : false
 }
