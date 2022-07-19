@@ -105,7 +105,12 @@ const ChoiceExerciseScreen = ({
   }
   const count = documents.length
 
-  getDevMode().then(setCheatsEnabled)
+  useEffect(() => {
+    ;(async () => {
+      const isInDevMode = await getDevMode()
+      setCheatsEnabled(isInDevMode)
+    })()
+  })
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
   }

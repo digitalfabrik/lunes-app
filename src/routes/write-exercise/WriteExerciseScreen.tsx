@@ -111,7 +111,12 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(true)
   }
 
-  getDevMode().then(setCheatsEnabled)
+  useEffect(() => {
+    ;(async () => {
+      const isInDevMode = await getDevMode()
+      setCheatsEnabled(isInDevMode)
+    })()
+  })
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
     const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
     setDocumentsWithResults(cheatedDocuments)
