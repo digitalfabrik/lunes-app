@@ -36,8 +36,8 @@ describe('ProfessionDetails', () => {
       />
     )
 
-  it('should show next exercise details on the card', () => {
-    mocked(useReadProgress).mockReturnValue(getReturnOf(0))
+  it('should show next exercise details on the card if at least one module is marked done', () => {
+    mocked(useReadProgress).mockReturnValue(getReturnOf(1))
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
     const { getByText, findByText, getByTestId } = renderProfessionDetails()
     expect(getByText(nextExerciseData.title)).toBeDefined()
@@ -45,8 +45,16 @@ describe('ProfessionDetails', () => {
     expect(findByText(labels.home.continue)).toBeDefined()
   })
 
-  it('should navigate to NextExercise', () => {
+  it('should not show next exercise details on the card if no module is marked done', () => {
     mocked(useReadProgress).mockReturnValue(getReturnOf(0))
+    mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
+    const { queryByText, findByText, queryByTestId } = renderProfessionDetails()
+    expect(queryByText(nextExerciseData.title)).toBeNull()
+    expect(queryByTestId('progress-circle')).toBeDefined()
+    expect(findByText(labels.home.start)).toBeDefined()
+  })
+  it('should navigate to NextExercise', () => {
+    mocked(useReadProgress).mockReturnValue(getReturnOf(1))
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
     const { getByText } = renderProfessionDetails()
     const button = getByText(labels.home.continue)

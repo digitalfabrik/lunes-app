@@ -36,6 +36,8 @@ const ProfessionDetails = ({
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
+  const doneModules =
+    moduleAlreadyStarted && discipline.leafDisciplines ? Math.floor(progress * discipline.leafDisciplines.length) : 0
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -61,23 +63,24 @@ const ProfessionDetails = ({
         />
         {discipline.leafDisciplines && (
           <NumberText>
-            {moduleAlreadyStarted && `${Math.floor(progress * discipline.leafDisciplines.length)}/`}
-            {discipline.leafDisciplines.length}
+            {moduleAlreadyStarted && doneModules}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
+        <UnitText>{doneModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
       </ProgressContainer>
-      <NextExerciseCard
-        thumbnail={documents[0].document_image[0].image}
-        onPress={() => navigateToNextExercise(nextExerciseData)}
-        heading={EXERCISES[exerciseKey].title}
-        buttonLabel={labels.home.continue}
-        subheading={title}
-      />
+      {doneModules > 0 && (
+        <NextExerciseCard
+          thumbnail={documents[0].document_image[0].image}
+          onPress={() => navigateToNextExercise(nextExerciseData)}
+          heading={EXERCISES[exerciseKey].title}
+          buttonLabel={labels.home.continue}
+          subheading={title}
+        />
+      )}
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={labels.home.viewModules}
+          label={doneModules > 0 ? labels.home.viewModules : labels.home.start}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

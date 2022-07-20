@@ -1,0 +1,6 @@
+issue_key: LUN-368
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Berufe, in welchen noch kein Modul angesehen wurde, zeigen statt der nächsten Übung einen Beginnen-Button
