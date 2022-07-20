@@ -3,4 +3,5 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: Level-Fortschrittslinie leicht verlängert, um Lücken zu vermeiden
+en: Fixed a visual bug with the level progress display.
+de: Ein Problem mit der Darstellung der Fortschrittsanzeige wurde behoben.
