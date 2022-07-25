@@ -43,12 +43,12 @@ interface ExerciseHeaderProps {
 }
 
 const ExerciseHeader = ({
-  navigation,
-  closeExerciseAction,
-  currentWord,
-  numberOfWords,
-  confirmClose = true
-}: ExerciseHeaderProps): JSX.Element => {
+                          navigation,
+                          closeExerciseAction,
+                          currentWord,
+                          numberOfWords,
+                          confirmClose = true
+                        }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()
@@ -79,7 +79,7 @@ const ExerciseHeader = ({
           maxWidth: wp('25%')
         }
       }),
-    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose]
+    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction]
   )
 
   useEffect(() => {
