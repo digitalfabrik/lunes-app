@@ -67,6 +67,7 @@ module.exports = {
     'react/no-did-mount-set-state': 'error',
     'react/no-unused-prop-types': 'warn',
 
+    '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',

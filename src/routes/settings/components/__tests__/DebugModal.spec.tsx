@@ -20,18 +20,18 @@ describe('DebugModal', () => {
   it('should show and switch cms url', async () => {
     const { getByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
     const textField = getByPlaceholderText('Development Code')
-    await act(async () => {
-      await fireEvent.changeText(textField, 'wirschaffendas')
+    await act(() => {
+      fireEvent.changeText(textField, 'wirschaffendas')
     })
     expect(getByText(testCMS)).toBeDefined()
     const switchCMSButton = getByText(labels.settings.debugModal.changeCMS)
     expect(switchCMSButton).toBeDefined()
-    await act(async () => {
-      await fireEvent.press(switchCMSButton)
+    await act(() => {
+      fireEvent.press(switchCMSButton)
     })
     expect(getByText(productionCMS)).toBeDefined()
-    await act(async () => {
-      await fireEvent.press(switchCMSButton)
+    await act(() => {
+      fireEvent.press(switchCMSButton)
     })
     expect(getByText(testCMS)).toBeDefined()
   })
