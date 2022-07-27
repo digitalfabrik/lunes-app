@@ -83,7 +83,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     }
   }
 
-  const Item = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
+  const renderListItem = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
     <Container>
       <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
@@ -124,7 +124,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
             <FlatList
               data={EXERCISES}
-              renderItem={Item}
+              renderItem={renderListItem}
               keyExtractor={({ key }) => key.toString()}
               showsVerticalScrollIndicator={false}
             />

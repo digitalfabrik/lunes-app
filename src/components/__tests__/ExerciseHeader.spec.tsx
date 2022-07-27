@@ -10,7 +10,7 @@ import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
 import ExerciseHeader from '../ExerciseHeader'
 
-jest.useFakeTimers('modern')
+jest.useFakeTimers()
 jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
 
 describe('ExerciseHeader', () => {
