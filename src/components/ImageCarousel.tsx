@@ -55,7 +55,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   const viewerHeight = (deviceHeight * heightPercent) / percentage
 
   const imagesUrls: ImageUrl[] = images.map(image => ({
-    url: image.image
+    url: image.image,
   }))
 
   const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (

@@ -9,7 +9,7 @@ const mockData = (data: unknown): typeof useLoadAsync =>
     data,
     loading: false,
     error: null,
-    refresh: () => null
+    refresh: () => null,
   })) as typeof useLoadAsync
 
 export const mockUseLoadAsyncWithData = <T>(data: T): void => {
@@ -21,7 +21,7 @@ export const mockUseLoadAsyncLoading = (): void => {
     data: null,
     loading: true,
     error: null,
-    refresh: () => null
+    refresh: () => null,
   })) as typeof useLoadAsync
   mocked(useLoadAsync).mockImplementationOnce(useLoadAsyncMock)
 }
@@ -31,7 +31,7 @@ export const mockUseLoadAsyncWithError = (error: string): void => {
     data: null,
     loading: false,
     error: new Error(error),
-    refresh: () => null
+    refresh: () => null,
   })) as typeof useLoadAsync
   mocked(useLoadAsync).mockImplementationOnce(useLoadAsyncMock)
 }

@@ -19,7 +19,7 @@ describe('helpers', () => {
     isLeaf: false,
     parentTitle: null,
     needsTrainingSetEndpoint: false,
-    leafDisciplines: [1, 2]
+    leafDisciplines: [1, 2],
   }
 
   describe('getNextExercise', () => {

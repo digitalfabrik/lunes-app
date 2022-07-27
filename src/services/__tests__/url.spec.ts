@@ -5,7 +5,7 @@ import { addTrailingSlashToUrl, openExternalUrl } from '../url'
 
 jest.mock('react-native/Libraries/Linking/Linking', () => ({
   canOpenURL: jest.fn(),
-  openURL: jest.fn()
+  openURL: jest.fn(),
 }))
 
 describe('url', () => {

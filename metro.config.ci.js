@@ -10,6 +10,6 @@ module.exports = (async () => {
                                               that the container thinks it has access to all of the hosts cores,
                                               although its being limited down to 4 by another process.
                                               https://github.com/facebook/create-react-app/issues/4870 */,
-    cacheStores: []
+    cacheStores: [],
   }
 })()

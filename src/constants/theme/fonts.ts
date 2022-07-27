@@ -10,5 +10,5 @@ export const FONTS = {
   smallFontSize: `${wp('3%')}px`,
   defaultFontSize: `${wp('4%')}px`,
   largeFontSize: `${wp('4.5%')}px`,
-  headingFontSize: `${wp('5%')}px`
+  headingFontSize: `${wp('5%')}px`,
 }

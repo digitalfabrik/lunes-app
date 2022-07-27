@@ -11,23 +11,23 @@ const testData = [
     alternatives: [
       {
         alt_word: 'Meterstab',
-        article: 1
+        article: 1,
       },
       {
         alt_word: 'Gliedermaßstab',
-        article: 1
+        article: 1,
       },
       {
         alt_word: 'Zoll-Stock',
-        article: 1
-      }
+        article: 1,
+      },
     ],
     article: 1,
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     document_image: [],
     id: 17,
     word: 'Zollstock',
-    word_type: 'Nomen'
+    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -36,7 +36,7 @@ const testData = [
     document_image: [],
     id: 178,
     word: 'Ölkanister',
-    word_type: 'Nomen'
+    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -45,8 +45,8 @@ const testData = [
     document_image: [],
     id: 245,
     word: 'Ölkreide',
-    word_type: 'Nomen'
-  }
+    word_type: 'Nomen',
+  },
 ]
 
 const expectedData = [
@@ -54,14 +54,14 @@ const expectedData = [
     alternatives: [
       { article: { id: 1, value: 'der' }, word: 'Meterstab' },
       { article: { id: 1, value: 'der' }, word: 'Gliedermaßstab' },
-      { article: { id: 1, value: 'der' }, word: 'Zoll-Stock' }
+      { article: { id: 1, value: 'der' }, word: 'Zoll-Stock' },
     ],
     article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     document_image: [],
     id: 17,
     word: 'Zollstock',
-    word_type: 'Nomen'
+    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -70,7 +70,7 @@ const expectedData = [
     document_image: [],
     id: 178,
     word: 'Ölkanister',
-    word_type: 'Nomen'
+    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -79,8 +79,8 @@ const expectedData = [
     document_image: [],
     id: 245,
     word: 'Ölkreide',
-    word_type: 'Nomen'
-  }
+    word_type: 'Nomen',
+  },
 ]
 
 const discipline = {
@@ -91,7 +91,7 @@ const discipline = {
   description: '',
   icon: '',
   parentTitle: null,
-  needsTrainingSetEndpoint: false
+  needsTrainingSetEndpoint: false,
 }
 
 describe('loadDocuments', () => {

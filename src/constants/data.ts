@@ -10,7 +10,7 @@ export const ExerciseKeys = {
   vocabularyList: 0,
   wordChoiceExercise: 1,
   articleChoiceExercise: 2,
-  writeExercise: 3
+  writeExercise: 3,
 }
 export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
@@ -28,29 +28,29 @@ export const EXERCISES: Exercise[] = [
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     level: 0,
-    screen: 'VocabularyList'
+    screen: 'VocabularyList',
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     level: 1,
-    screen: 'WordChoiceExercise'
+    screen: 'WordChoiceExercise',
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
     level: 2,
-    screen: 'ArticleChoiceExercise'
+    screen: 'ArticleChoiceExercise',
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
     level: 3,
-    screen: 'WriteExercise'
-  }
+    screen: 'WriteExercise',
+  },
 ]
 
 export interface Progress {
@@ -70,7 +70,7 @@ export type NextExerciseData = NextExercise & {
 export const BUTTONS_THEME = {
   outlined: 'outlined',
   contained: 'contained',
-  text: 'text'
+  text: 'text',
 } as const
 
 export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
@@ -83,24 +83,24 @@ interface ArticleType {
 export const ARTICLES: ArticleType[] = [
   {
     id: 0,
-    value: 'keiner'
+    value: 'keiner',
   },
   {
     id: 1,
-    value: 'der'
+    value: 'der',
   },
   {
     id: 2,
-    value: 'die'
+    value: 'die',
   },
   {
     id: 3,
-    value: 'das'
+    value: 'das',
   },
   {
     id: 4,
-    value: 'die'
-  }
+    value: 'die',
+  },
 ]
 
 export type Article = typeof ARTICLES[number]
@@ -125,20 +125,20 @@ export const RESULTS: ResultType[] = [
     key: 'correct',
     Icon: CheckCircleIcon,
     title: 'Richtige',
-    order: 0
+    order: 0,
   },
   {
     key: 'similar',
     Icon: CheckCloseCircleIcon,
     title: 'Fast richtige',
-    order: 1
+    order: 1,
   },
   {
     key: 'incorrect',
     Icon: CloseCircleIcon,
     title: 'Falsche',
-    order: 2
-  }
+    order: 2,
+  },
 ]
 
 export type Result = typeof RESULTS[number]

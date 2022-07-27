@@ -33,8 +33,8 @@ describe('ExercisesScreen', () => {
       disciplineId: mockDisciplines()[0].id,
       disciplineTitle: mockDisciplines()[0].title,
       discipline: mockDisciplines()[0],
-      documents: null
-    }
+      documents: null,
+    },
   }
 
   it('should render correctly', () => {
@@ -62,7 +62,7 @@ describe('ExercisesScreen', () => {
       closeExerciseAction: undefined,
       disciplineId: mockDisciplines()[0].id,
       disciplineTitle: mockDisciplines()[0].title,
-      documents
+      documents,
     })
   })
 })
