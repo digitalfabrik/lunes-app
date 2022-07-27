@@ -7,6 +7,7 @@ import VocabularyList from '../components/VocabularyList'
 import labels from '../constants/labels.json'
 import useLoadFavorites from '../hooks/useLoadFavorites'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import RouteWrapper from '../components/RouteWrapper'
 
 interface FavoritesScreenProps {
   route: RouteProp<RoutesParams, 'Favorites'>
@@ -33,14 +34,16 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
 
   return (
     <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-      {data && (
-        <VocabularyList
-          title={labels.favorites}
-          documents={data}
-          onFavoritesChanged={refresh}
-          onItemPress={onItemPress}
-        />
-      )}
+      <RouteWrapper>
+        {data && (
+          <VocabularyList
+            title={labels.favorites}
+            documents={data}
+            onFavoritesChanged={refresh}
+            onItemPress={onItemPress}
+          />
+        )}
+      </RouteWrapper>
     </ServerResponseHandler>
   )
 }

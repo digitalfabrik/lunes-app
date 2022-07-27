@@ -15,6 +15,7 @@ import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
+import RouteWrapper from '../../components/RouteWrapper'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -112,43 +113,46 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       : labels.exercises.next
 
   return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-      <ExerciseHeader
-        navigation={navigation}
-        currentWord={currentIndex}
-        numberOfWords={documents.length}
-        closeExerciseAction={closeExerciseAction}
-      />
+    <RouteWrapper>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+        <ExerciseHeader
+          navigation={navigation}
+          currentWord={currentIndex}
+          numberOfWords={documents.length}
+          closeExerciseAction={closeExerciseAction}
+        />
 
-      <InteractionSection
-        documentWithResult={current}
-        storeResult={storeResult}
-        isAnswerSubmitted={isAnswerSubmitted}
-      />
-      <ButtonContainer>
-        {isAnswerSubmitted && current.result !== 'similar' ? (
-          <Button
-            label={buttonLabel}
-            iconRight={ArrowRightIcon}
-            onPress={continueExercise}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        ) : (
-          <>
-            <Button label={labels.exercises.write.showSolution} onPress={giveUp} buttonTheme={BUTTONS_THEME.outlined} />
+        <InteractionSection
+          documentWithResult={current}
+          storeResult={storeResult}
+          isAnswerSubmitted={isAnswerSubmitted}
+        />
+        <ButtonContainer>
+          {isAnswerSubmitted && current.result !== 'similar' ? (
+            <Button
+              label={buttonLabel}
+              iconRight={ArrowRightIcon}
+              onPress={continueExercise}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          ) : (
+            <>
+              <Button label={labels.exercises.write.showSolution} onPress={giveUp}
+                      buttonTheme={BUTTONS_THEME.outlined} />
 
-            {currentIndex < documents.length - 1 && (
-              <Button
-                label={labels.exercises.tryLater}
-                iconRight={ArrowRightIcon}
-                onPress={tryLater}
-                buttonTheme={BUTTONS_THEME.text}
-              />
-            )}
-          </>
-        )}
-      </ButtonContainer>
-    </KeyboardAwareScrollView>
+              {currentIndex < documents.length - 1 && (
+                <Button
+                  label={labels.exercises.tryLater}
+                  iconRight={ArrowRightIcon}
+                  onPress={tryLater}
+                  buttonTheme={BUTTONS_THEME.text}
+                />
+              )}
+            </>
+          )}
+        </ButtonContainer>
+      </KeyboardAwareScrollView>
+    </RouteWrapper>
   )
 }
 

@@ -9,6 +9,7 @@ import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
+import RouteWrapper from '../components/RouteWrapper'
 
 interface VocabularyListScreenProps {
   route: RouteProp<RoutesParams, 'VocabularyList'>
@@ -26,14 +27,14 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
 
   return (
-    <>
+    <RouteWrapper>
       <ExerciseHeader navigation={navigation} confirmClose={false} closeExerciseAction={closeExerciseAction} />
       <VocabularyList
         documents={route.params.documents}
         onItemPress={onItemPress}
         title={labels.exercises.vocabularyList.title}
       />
-    </>
+    </RouteWrapper>
   )
 }
 

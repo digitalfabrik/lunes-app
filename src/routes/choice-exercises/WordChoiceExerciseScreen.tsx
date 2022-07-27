@@ -7,6 +7,7 @@ import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
+import RouteWrapper from '../../components/RouteWrapper'
 
 interface WordChoiceExerciseScreenProps {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
@@ -35,6 +36,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   }
 
   return (
+    <RouteWrapper>
     <SingleChoiceExercise
       documents={documents}
       disciplineId={disciplineId}
@@ -44,6 +46,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
       route={route}
       exerciseKey={ExerciseKeys.wordChoiceExercise}
     />
+    </RouteWrapper>
   )
 }
 

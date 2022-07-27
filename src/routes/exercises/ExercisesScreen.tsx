@@ -18,11 +18,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
-
-const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
-`
+import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   display: flex;
@@ -103,7 +99,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   )
 
   return (
-    <Root>
+    <RouteWrapper>
       {documents && nextExercise && (
         <CustomModal
           onClose={() => setIsModalVisible(false)}
@@ -135,7 +131,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           </>
         )}
       </ServerResponseHandler>
-    </Root>
+    </RouteWrapper>
   )
 }
 

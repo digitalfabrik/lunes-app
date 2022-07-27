@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { SafeAreaView, Switch } from 'react-native'
+import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
 import { Content, ContentTextLight } from '../../components/text/Content'
@@ -9,6 +9,7 @@ import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
+import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   height: 100%;
@@ -43,7 +44,7 @@ const SettingsScreen = (): ReactElement => {
   }
 
   return (
-    <SafeAreaView>
+    <RouteWrapper>
       <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
       <Container>
         <SettingsHeading>{labels.settings.settings}</SettingsHeading>
@@ -56,7 +57,7 @@ const SettingsScreen = (): ReactElement => {
         </ItemContainer>
         <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
       </Container>
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 

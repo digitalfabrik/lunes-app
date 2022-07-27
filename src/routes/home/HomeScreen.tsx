@@ -2,7 +2,7 @@ import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
@@ -16,6 +16,7 @@ import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
+import RouteWrapper from '../../components/RouteWrapper'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -38,6 +39,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
+  const theme = useTheme()
 
   useFocusEffect(refreshCustomDisciplines)
   useFocusEffect(refreshSelectedProfessions)
@@ -85,23 +87,22 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   ))
 
   return (
-    <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
-      <View>
-        <HomeScreenHeader navigation={navigation} />
-
-        <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
-        <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
-
-        {selectedProfessionItems}
-
-        {isCustomDisciplineEmpty ? (
-          <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
-        ) : (
-          customDisciplineItems
-        )}
-      </View>
-      <HomeFooter navigateToImprint={navigateToImprintScreen} />
-    </Root>
+    <RouteWrapper backgroundColor={theme.colors.primary} barStyle='light-content'>
+      <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
+        <View>
+          <HomeScreenHeader navigation={navigation} />
+          <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
+          <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
+          {selectedProfessionItems}
+          {isCustomDisciplineEmpty ? (
+            <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
+          ) : (
+            customDisciplineItems
+          )}
+        </View>
+        <HomeFooter navigateToImprint={navigateToImprintScreen} />
+      </Root>
+    </RouteWrapper>
   )
 }
 

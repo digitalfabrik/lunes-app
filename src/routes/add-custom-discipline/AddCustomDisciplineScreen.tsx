@@ -17,6 +17,7 @@ import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
+import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   flex-direction: column;
@@ -86,34 +87,36 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
   return (
     <Loading isLoading={loading}>
       {customDisciplines && (
-        <Container>
-          <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
-          <Description>{labels.addCustomDiscipline.description}</Description>
-          <InputContainer>
-            <CustomTextInput
-              errorMessage={errorMessage}
-              placeholder={labels.addCustomDiscipline.placeholder}
-              value={code}
-              onChangeText={setCode}
-              rightContainer={
-                <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-                  <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
-                </TouchableOpacity>
-              }
+        <RouteWrapper>
+          <Container>
+            <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
+            <Description>{labels.addCustomDiscipline.description}</Description>
+            <InputContainer>
+              <CustomTextInput
+                errorMessage={errorMessage}
+                placeholder={labels.addCustomDiscipline.placeholder}
+                value={code}
+                onChangeText={setCode}
+                rightContainer={
+                  <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
+                    <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
+                  </TouchableOpacity>
+                }
+              />
+            </InputContainer>
+            <Button
+              label={labels.addCustomDiscipline.submitLabel}
+              buttonTheme={BUTTONS_THEME.contained}
+              onPress={submit}
+              disabled={code.length === 0}
             />
-          </InputContainer>
-          <Button
-            label={labels.addCustomDiscipline.submitLabel}
-            buttonTheme={BUTTONS_THEME.contained}
-            onPress={submit}
-            disabled={code.length === 0}
-          />
-          <Button
-            label={labels.addCustomDiscipline.backNavigation}
-            buttonTheme={BUTTONS_THEME.outlined}
-            onPress={navigation.goBack}
-          />
-        </Container>
+            <Button
+              label={labels.addCustomDiscipline.backNavigation}
+              buttonTheme={BUTTONS_THEME.outlined}
+              onPress={navigation.goBack}
+            />
+          </Container>
+        </RouteWrapper>
       )}
     </Loading>
   )
