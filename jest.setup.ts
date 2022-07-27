@@ -27,3 +27,7 @@ jest.mock('react-native-sound-player')
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn()
 }))
+beforeEach(() => {
+  jest.clearAllMocks()
+  mockAsyncStorage.clear()
+})

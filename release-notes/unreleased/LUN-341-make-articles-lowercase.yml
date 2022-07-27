@@ -1,0 +1,6 @@
+issue_key: LUN-341
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Alle Artikel (der/die/das) in Übungen und Vokabellisten beginnen mit einem Kleinbuchstaben

@@ -52,11 +52,11 @@ const testData = [
 const expectedData = [
   {
     alternatives: [
-      { article: { id: 1, value: 'Der' }, word: 'Meterstab' },
-      { article: { id: 1, value: 'Der' }, word: 'Gliedermaßstab' },
-      { article: { id: 1, value: 'Der' }, word: 'Zoll-Stock' }
+      { article: { id: 1, value: 'der' }, word: 'Meterstab' },
+      { article: { id: 1, value: 'der' }, word: 'Gliedermaßstab' },
+      { article: { id: 1, value: 'der' }, word: 'Zoll-Stock' }
     ],
-    article: { id: 1, value: 'Der' },
+    article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     document_image: [],
     id: 17,
@@ -65,7 +65,7 @@ const expectedData = [
   },
   {
     alternatives: [],
-    article: { id: 1, value: 'Der' },
+    article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
     document_image: [],
     id: 178,
@@ -74,7 +74,7 @@ const expectedData = [
   },
   {
     alternatives: [],
-    article: { id: 2, value: 'Die' },
+    article: { id: 2, value: 'die' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
     document_image: [],
     id: 245,
@@ -93,10 +93,6 @@ const discipline = {
   parentTitle: null,
   needsTrainingSetEndpoint: false
 }
-
-beforeEach(() => {
-  jest.clearAllMocks()
-})
 
 describe('loadDocuments', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)

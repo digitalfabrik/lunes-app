@@ -1,5 +1,5 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
-import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
@@ -56,10 +56,6 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('WriteExerciseScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   const documents = [
     {
       id: 1,
@@ -119,20 +115,20 @@ describe('WriteExerciseScreen', () => {
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 
-  it('should show solution after three wrong entries', async () => {
+  it('should show solution after three wrong entries', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche')
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche2')
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche2')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'Das Falsche3')
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche3')
     fireEvent.press(getByText(labels.exercises.write.checkInput))
     expect(
       getByText(
@@ -144,7 +140,7 @@ describe('WriteExerciseScreen', () => {
 
   it('should show solution after three times almost correct', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    const submission = 'Der Spachtl'
+    const submission = 'der Spachtl'
 
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, submission)
@@ -171,9 +167,9 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.write.showSolution))
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent.press(getByText(labels.exercises.write.showSolution))
-    fireEvent.press(getByText(labels.exercises.showResults))
+    await act(() => fireEvent.press(getByText(labels.exercises.showResults)))
 
-    await expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
       { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 }
     ])
@@ -189,19 +185,19 @@ describe('WriteExerciseScreen', () => {
   }
 
   it('should show correct-feedback for correct solution', () => {
-    evaluate('Der Spachtel', labels.exercises.write.feedback.correct)
+    evaluate('der Spachtel', labels.exercises.write.feedback.correct)
   })
 
   it('should show correct-feedback for alternative article', () => {
-    evaluate('Die Spachtel', labels.exercises.write.feedback.correct)
+    evaluate('die Spachtel', labels.exercises.write.feedback.correct)
   })
 
   it('should show correct-feedback for alternative solution', () => {
-    evaluate('Die Alternative', labels.exercises.write.feedback.correct)
+    evaluate('die Alternative', labels.exercises.write.feedback.correct)
   })
 
   it('should show almost correct feedback', () => {
-    const input = 'Die Spachtl'
+    const input = 'die Spachtl'
     evaluate(
       input,
       `${labels.exercises.write.feedback.almostCorrect1} „${input}“ ${labels.exercises.write.feedback.almostCorrect2}`
@@ -210,7 +206,7 @@ describe('WriteExerciseScreen', () => {
 
   it('should show wrong feedback with correct solution', () => {
     evaluate(
-      'Das Falsche',
+      'das Falsche',
       `${labels.exercises.write.feedback.wrong} ${labels.exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
     )
   })
@@ -218,7 +214,7 @@ describe('WriteExerciseScreen', () => {
   it('should play audio if available and no alternative solution submitted', () => {
     const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Der Spachtel')
+    fireEvent.changeText(inputField, 'der Spachtel')
     const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
 
@@ -234,7 +230,7 @@ describe('WriteExerciseScreen', () => {
   it('should play submitted alternative', async () => {
     const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
-    fireEvent.changeText(inputField, 'Die Alternative')
+    fireEvent.changeText(inputField, 'die Alternative')
     const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
 
@@ -244,7 +240,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByRole('button'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith('Die Alternative', expect.any(Object))
+    expect(Tts.speak).toHaveBeenCalledWith('die Alternative', expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
   })

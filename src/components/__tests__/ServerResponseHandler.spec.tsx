@@ -7,10 +7,6 @@ import render from '../../testing/render'
 import ServerResponseHandler from '../ServerResponseHandler'
 
 describe('ServerResponseHandler', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   const refresh = jest.fn()
 
   it('should render error', () => {

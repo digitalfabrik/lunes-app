@@ -32,10 +32,6 @@ jest.mock('react-native-image-zoom-viewer', () => {
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WordChoiceExerciseScreen', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   // at least 4 documents are needed to generate sufficient false answers
   const testDocuments = new DocumentBuilder(4).build()
 

@@ -22,9 +22,6 @@ describe('ImageCarousel', () => {
       image: 'Arbeitsschuhe'
     }
   ]
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
 
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 

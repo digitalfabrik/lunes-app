@@ -33,9 +33,9 @@ describe('VocabularyList', () => {
 
     expect(getByText('Title')).toBeTruthy()
     expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
-    expect(getByText('Der')).toBeTruthy()
+    expect(getByText('der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
-    expect(getByText('Das')).toBeTruthy()
+    expect(getByText('das')).toBeTruthy()
     expect(getByText('Auto')).toBeTruthy()
     expect(getAllByText('AudioPlayer')).toHaveLength(2)
     expect(getAllByTestId('image')).toHaveLength(2)

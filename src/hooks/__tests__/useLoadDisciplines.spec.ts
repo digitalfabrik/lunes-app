@@ -97,10 +97,6 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
   }
 ]
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
-
 describe('loadDiscipline', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 

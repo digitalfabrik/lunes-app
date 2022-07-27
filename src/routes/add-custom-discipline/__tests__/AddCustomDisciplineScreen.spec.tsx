@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import RNAsyncStorage from '@react-native-async-storage/async-storage'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
@@ -6,7 +6,7 @@ import { View } from 'react-native'
 
 import labels from '../../../constants/labels.json'
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
-import AsyncStorageService from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
@@ -33,7 +33,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+    await AsyncStorage.setCustomDisciplines(['test'])
 
     const groupInfo = {
       id: 1,
@@ -56,13 +56,13 @@ describe('AddCustomDisciplineScreen', () => {
     const submitButton = await findByText(labels.addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
     await waitFor(() =>
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_module"]')
+      expect(RNAsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_module"]')
     )
     await waitFor(() => expect(navigation.goBack).toHaveBeenCalled())
   })
 
   it('should show duplicate error', async () => {
-    await AsyncStorageService.setCustomDisciplines(['test'])
+    await AsyncStorage.setCustomDisciplines(['test'])
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(labels.addCustomDiscipline.placeholder)
