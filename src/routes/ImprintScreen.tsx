@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import Link from '../components/Link'
+import RouteWrapper from '../components/RouteWrapper'
 import { ContentText } from '../components/text/Content'
 import { HeadingText } from '../components/text/Heading'
 import { Subheading } from '../components/text/Subheading'
-import RouteWrapper from '../components/RouteWrapper'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};

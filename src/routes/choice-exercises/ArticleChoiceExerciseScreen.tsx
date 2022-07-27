@@ -2,11 +2,11 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
-import RouteWrapper from '../../components/RouteWrapper'
 
 interface ArticleChoiceExerciseScreenProps {
   route: RouteProp<RoutesParams, 'ArticleChoiceExercise'>

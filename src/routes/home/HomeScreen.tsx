@@ -4,6 +4,7 @@ import React from 'react'
 import { View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
@@ -16,7 +17,6 @@ import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};

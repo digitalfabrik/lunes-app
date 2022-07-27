@@ -3,13 +3,13 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
+import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
-import RouteWrapper from '../components/RouteWrapper'
 
 interface VocabularyListScreenProps {
   route: RouteProp<RoutesParams, 'VocabularyList'>

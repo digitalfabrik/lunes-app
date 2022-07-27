@@ -8,6 +8,7 @@ import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Loading from '../../components/Loading'
+import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -17,7 +18,6 @@ import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   flex-direction: column;

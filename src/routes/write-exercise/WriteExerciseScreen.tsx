@@ -8,6 +8,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
+import RouteWrapper from '../../components/RouteWrapper'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
@@ -15,7 +16,6 @@ import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -137,8 +137,11 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             />
           ) : (
             <>
-              <Button label={labels.exercises.write.showSolution} onPress={giveUp}
-                      buttonTheme={BUTTONS_THEME.outlined} />
+              <Button
+                label={labels.exercises.write.showSolution}
+                onPress={giveUp}
+                buttonTheme={BUTTONS_THEME.outlined}
+              />
 
               {currentIndex < documents.length - 1 && (
                 <Button

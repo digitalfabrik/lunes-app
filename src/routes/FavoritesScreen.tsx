@@ -2,12 +2,12 @@ import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import VocabularyList from '../components/VocabularyList'
 import labels from '../constants/labels.json'
 import useLoadFavorites from '../hooks/useLoadFavorites'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import RouteWrapper from '../components/RouteWrapper'
 
 interface FavoritesScreenProps {
   route: RouteProp<RoutesParams, 'Favorites'>

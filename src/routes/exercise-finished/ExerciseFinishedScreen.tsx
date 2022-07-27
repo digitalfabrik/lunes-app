@@ -17,6 +17,7 @@ import {
   SadSmileyIcon
 } from '../../../assets/images'
 import Button from '../../components/Button'
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
@@ -25,7 +26,6 @@ import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import ShareSection from './components/ShareSection'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
@@ -144,8 +144,12 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
 
   return (
     <>
-      <RouteWrapper separated backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary} barStyle={unlockedNextExercise ? 'dark-content' : 'light-content'}/>
-      <SafeAreaView style={{flex: 1}}>
+      <RouteWrapper
+        separated
+        backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
+        barStyle={unlockedNextExercise ? 'dark-content' : 'light-content'}
+      />
+      <SafeAreaView style={{ flex: 1 }}>
         <Root>
           <UpperSection unlockedNextExercise={unlockedNextExercise}>
             <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>

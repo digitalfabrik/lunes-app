@@ -6,6 +6,7 @@ import styled, { useTheme } from 'styled-components/native'
 import Button from '../../components/Button'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import Header from '../../components/Header'
+import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -15,7 +16,6 @@ import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const DisciplineContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -37,7 +37,6 @@ const TextContainer = styled.View`
 const StyledScrollView = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
 `
-
 
 interface IntroScreenProps {
   route: RouteProp<RoutesParams, 'ScopeSelection'>

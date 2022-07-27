@@ -5,19 +5,18 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import DisciplineListItem from '../components/DisciplineListItem'
+import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
-import RouteWrapper from '../components/RouteWrapper'
 
-
-const List = (styled.FlatList`
+const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
   height: 100%;
-`) as unknown as typeof FlatList
+` as unknown as typeof FlatList
 
 interface DisciplineSelectionScreenProps {
   route: RouteProp<RoutesParams, 'DisciplineSelection'>

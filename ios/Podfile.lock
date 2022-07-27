@@ -360,8 +360,6 @@ PODS:
     - React-Core
   - RNDeviceInfo (9.0.2):
     - React-Core
-  - RNGestureHandler (2.1.0):
-    - React-Core
   - RNGestureHandler (2.5.0):
     - React-Core
   - RNPermissions (3.4.0):

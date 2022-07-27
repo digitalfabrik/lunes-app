@@ -2,12 +2,12 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
-import RouteWrapper from '../../components/RouteWrapper'
 
 interface WordChoiceExerciseScreenProps {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
@@ -37,15 +37,15 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     <RouteWrapper>
-    <SingleChoiceExercise
-      documents={documents}
-      disciplineId={disciplineId}
-      disciplineTitle={disciplineTitle}
-      documentToAnswers={documentToAnswers}
-      navigation={navigation}
-      route={route}
-      exerciseKey={ExerciseKeys.wordChoiceExercise}
-    />
+      <SingleChoiceExercise
+        documents={documents}
+        disciplineId={disciplineId}
+        disciplineTitle={disciplineTitle}
+        documentToAnswers={documentToAnswers}
+        navigation={navigation}
+        route={route}
+        exerciseKey={ExerciseKeys.wordChoiceExercise}
+      />
     </RouteWrapper>
   )
 }

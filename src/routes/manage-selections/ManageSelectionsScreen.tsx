@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
 import HorizontalLine from '../../components/HorizontalLine'
+import RouteWrapper from '../../components/RouteWrapper'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
@@ -14,7 +15,6 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Root = styled.ScrollView`
   display: flex;

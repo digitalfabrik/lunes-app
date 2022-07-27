@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 
 import CustomModal from '../../components/CustomModal'
 import ListItem from '../../components/ListItem'
+import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import Trophy from '../../components/Trophy'
@@ -18,7 +19,6 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   display: flex;

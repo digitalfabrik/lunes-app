@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from 'react'
 import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
@@ -9,7 +10,6 @@ import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
-import RouteWrapper from '../../components/RouteWrapper'
 
 const Container = styled.View`
   height: 100%;
