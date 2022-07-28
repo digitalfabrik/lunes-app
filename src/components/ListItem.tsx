@@ -25,7 +25,7 @@ const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled:
   }};
   border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   padding: ${props =>
-          `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
 `
 
 const Title = styled.Text<{ pressed: boolean }>`
@@ -89,16 +89,16 @@ interface ListItemProps {
 }
 
 const ListItem = ({
-                    onPress,
-                    icon,
-                    title,
-                    description,
-                    badgeLabel,
-                    children,
-                    rightChildren,
-                    arrowDisabled = false,
-                    disabled = false
-                  }: ListItemProps): ReactElement => {
+  onPress,
+  icon,
+  title,
+  description,
+  badgeLabel,
+  children,
+  rightChildren,
+  arrowDisabled = false,
+  disabled = false
+}: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
   const updatePressed = useCallback((pressed: boolean): void => onPress && setPressed(pressed), [onPress])

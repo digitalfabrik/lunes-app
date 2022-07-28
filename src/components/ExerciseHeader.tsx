@@ -43,12 +43,12 @@ interface ExerciseHeaderProps {
 }
 
 const ExerciseHeader = ({
-                          navigation,
-                          closeExerciseAction,
-                          currentWord,
-                          numberOfWords,
-                          confirmClose = true
-                        }: ExerciseHeaderProps): JSX.Element => {
+  navigation,
+  closeExerciseAction,
+  currentWord,
+  numberOfWords,
+  confirmClose = true
+}: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()
