@@ -26,12 +26,12 @@ describe('Title', () => {
     const subtitle = 'Subtitle'
     const titleIcon = <CheckCircleIcon accessibilityLabel='correct' />
     const childText = 'Child'
-    const { getByText, getByA11yLabel } = renderListTitle({ subtitle, titleIcon, children: <Text>{childText}</Text> })
+    const { getByText, getByLabelText } = renderListTitle({ subtitle, titleIcon, children: <Text>{childText}</Text> })
 
     expect(getByText(defaultTitleProps.title)).toBeTruthy()
     expect(getByText(defaultTitleProps.description)).toBeTruthy()
     expect(getByText(subtitle)).toBeTruthy()
     expect(getByText(childText)).toBeTruthy()
-    expect(getByA11yLabel('correct')).toBeTruthy()
+    expect(getByLabelText('correct')).toBeTruthy()
   })
 })

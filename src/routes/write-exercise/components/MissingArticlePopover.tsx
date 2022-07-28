@@ -10,7 +10,7 @@ import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
 
 export const styles = StyleSheet.create({
-  arrow: {
+  popover: {
     backgroundColor: COLORS.primary
   },
   overlay: {
@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
 const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: ${prop => prop.theme.colors.primary};
   width: ${wp('80%')}px;
   height: ${wp('15%')}px;
   padding: ${props => props.theme.spacings.xs};
@@ -46,7 +45,7 @@ const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible
     onRequestClose={() => setIsPopoverVisible(false)}
     from={ref}
     placement={PopoverPlacement.TOP}
-    arrowStyle={styles.arrow}
+    popoverStyle={styles.popover}
     arrowShift={-0.85}
     verticalOffset={-10}
     backgroundStyle={styles.overlay}>
