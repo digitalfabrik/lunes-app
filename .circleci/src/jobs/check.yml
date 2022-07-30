@@ -2,9 +2,9 @@ docker:
   - image: cimg/node:14.19.0
 steps:
   - checkout
-  - check_config
   - restore_yarn_cache
   - restore_yarn_tools_cache
+  - check_config
   - run:
       name: Linting check
       command: yarn lint
