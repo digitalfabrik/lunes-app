@@ -68,9 +68,10 @@ buck-out/
 vendor/
 reports/
 
-# yarn
+# Yarn
 .pnp.*
-.yarn/
+.yarn/*
+tools/.yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
