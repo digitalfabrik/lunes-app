@@ -2,6 +2,7 @@
   "version": "0.0.1",
   "name": "tools",
   "private": true,
+  "packageManager": "yarn@3.2.2",
   "scripts": {
     "manage-metadata": "ts-node manage-metadata.ts",
     "git-version": "ts-node git-version.ts",
@@ -14,10 +15,10 @@
     "esModuleInterop": true
   },
   "dependencies": {
+    "@octokit/auth-app": "^2.4.5",
+    "@octokit/rest": "^17.11.0",
     "@types/jira-client": "^7.1.4",
     "@types/js-yaml": "^4.0.3",
-    "@octokit/rest": "^17.11.0",
-    "@octokit/auth-app": "^2.4.5",
     "commander": "^5.1.0",
     "jira-client": "^8.1.0",
     "js-yaml": "4.1.0",
