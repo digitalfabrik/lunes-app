@@ -68,19 +68,17 @@ const ProfessionDetails = ({
         )}
         <UnitText>{doneModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
       </ProgressContainer>
-      {doneModules > 0 && (
-        <NextExerciseCard
-          thumbnail={documents[0].document_image[0].image}
-          onPress={() => navigateToNextExercise(nextExerciseData)}
-          heading={EXERCISES[exerciseKey].title}
-          buttonLabel={labels.home.continue}
-          subheading={title}
-        />
-      )}
+      <NextExerciseCard
+        thumbnail={documents[0].document_image[0].image}
+        onPress={() => navigateToNextExercise(nextExerciseData)}
+        heading={EXERCISES[exerciseKey].title}
+        buttonLabel={doneModules > 0 ? labels.home.continue : labels.home.start}
+        subheading={title}
+      />
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={doneModules > 0 ? labels.home.viewModules : labels.home.start}
+          label={labels.home.viewModules}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

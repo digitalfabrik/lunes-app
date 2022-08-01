@@ -3,4 +3,4 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: Berufe, in welchen noch kein Modul angesehen wurde, zeigen statt der nächsten Übung einen Beginnen-Button
+de: Klarerer Buttonname für unangefangene Übungen
