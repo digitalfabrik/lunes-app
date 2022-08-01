@@ -20,7 +20,7 @@ const RouteWrapper = ({
   backgroundColor = theme.colors.background,
   barStyle = 'dark-content',
   children,
-  separated = false
+  separated = false,
 }: Props): ReactElement => (
   <Container backgroundColor={backgroundColor} separated={separated}>
     <StatusBar backgroundColor={backgroundColor} barStyle={barStyle} />
