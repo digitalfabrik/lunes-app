@@ -7,7 +7,7 @@ import AsyncStorage from './AsyncStorage'
 export const initSentry = (): void => {
   if (!__DEV__) {
     Sentry.init({
-      dsn: 'https://8e99e20eb419461d8a539a15e09199d8@sentry.tuerantuer.org/3'
+      dsn: 'https://8e99e20eb419461d8a539a15e09199d8@sentry.tuerantuer.org/3',
     })
   }
 }

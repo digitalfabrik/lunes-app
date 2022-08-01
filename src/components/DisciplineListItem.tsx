@@ -36,7 +36,7 @@ const DisciplineListItem = ({
   hasBadge,
   rightChildren,
   disabled = false,
-  showProgress = false
+  showProgress = false,
 }: DisciplineListItemProps): ReactElement | null => {
   const { numberOfChildren, title, icon, apiKey } = item
   const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined

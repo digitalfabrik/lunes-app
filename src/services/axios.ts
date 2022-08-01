@@ -21,11 +21,11 @@ const keyGenerator = buildKeyGenerator(({ headers, baseURL = '', url = '', metho
   headers: headers?.Authorization ?? 'not-set',
   method,
   params: params as unknown,
-  data
+  data,
 }))
 
 setupCache(axios, {
-  generateKey: keyGenerator
+  generateKey: keyGenerator,
 })
 
 export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {

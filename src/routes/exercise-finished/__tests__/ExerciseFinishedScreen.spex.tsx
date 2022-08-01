@@ -28,10 +28,10 @@ describe('ExerciseFinishedScreen', () => {
       results: new DocumentBuilder(4).build().map(document => ({
         document,
         result: correct ? 'correct' : 'incorrect',
-        numberOfTries: 1
+        numberOfTries: 1,
       })),
-      unlockedNextExercise
-    }
+      unlockedNextExercise,
+    },
   })
 
   it('should render and handle button click for unlocked next exercise', () => {
@@ -47,7 +47,7 @@ describe('ExerciseFinishedScreen', () => {
       documents: route.params.documents,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
-      closeExerciseAction: route.params.closeExerciseAction
+      closeExerciseAction: route.params.closeExerciseAction,
     })
   })
 
@@ -61,7 +61,7 @@ describe('ExerciseFinishedScreen', () => {
       documents: route.params.documents,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
-      closeExerciseAction: route.params.closeExerciseAction
+      closeExerciseAction: route.params.closeExerciseAction,
     })
   })
 
@@ -75,7 +75,7 @@ describe('ExerciseFinishedScreen', () => {
       documents: route.params.documents,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
-      closeExerciseAction: route.params.closeExerciseAction
+      closeExerciseAction: route.params.closeExerciseAction,
     })
   })
 

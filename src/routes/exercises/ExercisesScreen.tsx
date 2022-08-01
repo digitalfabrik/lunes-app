@@ -48,10 +48,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     data: documents,
     error,
     loading,
-    refresh
+    refresh,
   } = useLoadDocuments({
     disciplineId: discipline.id,
-    apiKey: discipline.apiKey
+    apiKey: discipline.apiKey,
   })
 
   useFocusEffect(
@@ -72,13 +72,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         documents,
         disciplineTitle,
         disciplineId,
-        discipline
+        discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         documents,
         disciplineId,
         disciplineTitle,
-        closeExerciseAction
+        closeExerciseAction,
       })
     }
   }

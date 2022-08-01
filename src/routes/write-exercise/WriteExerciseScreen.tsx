@@ -75,7 +75,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       results: documentsWithResults,
       exercise: ExerciseKeys.writeExercise,
       closeExerciseAction,
-      unlockedNextExercise: false
+      unlockedNextExercise: false,
     })
     initializeExercise(true)
   }

@@ -1,0 +1,6 @@
+issue_key: LUN-383
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: Die Positionierung des Favoriten Icons wurde optimiert.

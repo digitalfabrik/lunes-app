@@ -11,11 +11,11 @@ import { COLORS } from '../../../constants/theme/colors'
 
 export const styles = StyleSheet.create({
   popover: {
-    backgroundColor: COLORS.primary
+    backgroundColor: COLORS.primary,
   },
   overlay: {
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: 'transparent',
+  },
 })
 
 const StyledContainer = styled.View`

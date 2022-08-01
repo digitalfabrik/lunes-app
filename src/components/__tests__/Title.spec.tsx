@@ -9,7 +9,7 @@ import Title from '../Title'
 describe('Title', () => {
   const defaultTitleProps: React.ComponentProps<typeof Title> = {
     title: 'Title',
-    description: 'Description'
+    description: 'Description',
   }
 
   const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI =>

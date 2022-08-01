@@ -13,7 +13,7 @@ import {
   OpenLockIcon,
   PartyHornIcon,
   RepeatIcon,
-  SadSmileyIcon
+  SadSmileyIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
@@ -77,7 +77,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       documents,
       disciplineId,
       disciplineTitle,
-      closeExerciseAction
+      closeExerciseAction,
     })
 
   const startNextExercise = (): void => {
@@ -86,7 +86,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         documents,
         disciplineId,
         disciplineTitle,
-        closeExerciseAction
+        closeExerciseAction,
       })
     }
   }
@@ -109,7 +109,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         resultColor: theme.colors.primary,
         buttonText: labels.results.action.nextExercise,
         navigationAction: startNextExercise,
-        ResultIcon: OpenLockIcon
+        ResultIcon: OpenLockIcon,
       }
     }
     if (percentageOfCorrectResults > 1 / 3) {
@@ -119,7 +119,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
           resultColor: theme.colors.correct,
           buttonText: labels.results.action.continue,
           navigationAction: startNextExercise,
-          ResultIcon: HappySmileyIcon
+          ResultIcon: HappySmileyIcon,
         }
       }
       return {
@@ -127,7 +127,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         resultColor: theme.colors.correct,
         buttonText: labels.results.action.close,
         navigationAction: navigateToNextModule,
-        ResultIcon: PartyHornIcon
+        ResultIcon: PartyHornIcon,
       }
     }
     return {
@@ -135,7 +135,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       resultColor: theme.colors.incorrect,
       buttonText: labels.results.action.repeat,
       navigationAction: repeatExercise,
-      ResultIcon: SadSmileyIcon
+      ResultIcon: SadSmileyIcon,
     }
   }
 

@@ -50,7 +50,7 @@ describe('AsyncStorage', () => {
     describe('ExerciseProgress', () => {
       it('should save progress for not yet done discipline', async () => {
         const progressOneExercise: Progress = {
-          1: { [ExerciseKeys.wordChoiceExercise]: 0.5 }
+          1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
         await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
         await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
@@ -83,13 +83,13 @@ describe('AsyncStorage', () => {
           {
             document: documents[0],
             result: SIMPLE_RESULTS.correct,
-            numberOfTries: 1
+            numberOfTries: 1,
           },
           {
             document: documents[0],
             result: SIMPLE_RESULTS.incorrect,
-            numberOfTries: 3
-          }
+            numberOfTries: 3,
+          },
         ]
         await saveExerciseProgress(1, 1, documentsWithResults)
         const progress = await AsyncStorage.getExerciseProgress()

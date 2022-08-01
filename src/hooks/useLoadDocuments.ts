@@ -23,13 +23,13 @@ export const formatServerResponse = (documents: DocumentFromServer[]): Document[
     article: ARTICLES[document.article],
     alternatives: document.alternatives.map(it => ({
       article: ARTICLES[it.article],
-      word: it.alt_word
-    }))
+      word: it.alt_word,
+    })),
   }))
 
 export const loadDocuments = async ({
   disciplineId,
-  apiKey
+  apiKey,
 }: {
   disciplineId: number
   apiKey?: string

@@ -28,7 +28,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       disciplineTitle: labels.general.favorites,
       documents: data,
       documentIndex: index,
-      closeExerciseAction: CommonActions.goBack()
+      closeExerciseAction: CommonActions.goBack(),
     })
   }
 

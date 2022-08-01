@@ -13,7 +13,7 @@ export const loadNextExercise = async (profession: Discipline): Promise<NextExer
     documents,
     title: formatDiscipline(trainingSet, { parent: null }).title,
     exerciseKey: nextExercise.exerciseKey,
-    disciplineId: nextExercise.disciplineId
+    disciplineId: nextExercise.disciplineId,
   }
 }
 
