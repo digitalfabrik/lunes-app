@@ -31,10 +31,10 @@ const BottomTabNavigator = (): JSX.Element | null => {
         tabBarStyle: {
           backgroundColor: theme.colors.primary,
           minHeight: wp('14%'),
-          paddingBottom: insets.bottom
+          paddingBottom: insets.bottom,
         },
         tabBarItemStyle: { height: wp('14%'), padding: wp('2%') },
-        tabBarLabelStyle: { fontSize: wp('3%') }
+        tabBarLabelStyle: { fontSize: wp('3%') },
       }}>
       <Navigator.Screen
         name='HomeTab'

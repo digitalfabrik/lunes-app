@@ -25,7 +25,7 @@ export const SingleChoice = ({
   onClick,
   correctAnswers,
   selectedAnswer,
-  delayPassed
+  delayPassed,
 }: SingleChoiceProps): ReactElement => {
   const isAnswerEqual = (answer1: Answer, answer2: Answer | null): boolean =>
     answer2 !== null && answer1.article === answer2.article && answer1.word === answer2.word

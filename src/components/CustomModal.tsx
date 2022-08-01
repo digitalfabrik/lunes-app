@@ -38,7 +38,7 @@ const CustomModal = (props: CustomModalProps): JSX.Element => {
     children,
     onClose,
     confirmationDisabled = false,
-    testID
+    testID,
   } = props
 
   return (

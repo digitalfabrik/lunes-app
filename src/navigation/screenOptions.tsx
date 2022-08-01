@@ -16,19 +16,19 @@ const headerStyles = (headerHeight?: number) =>
       elevation: 0,
       borderBottomColor: COLORS.disabled,
       borderBottomWidth: 1,
-      height: headerHeight
+      height: headerHeight,
     },
     headerRightContainer: {
       paddingHorizontal: wp('4%'),
-      maxWidth: 60
+      maxWidth: 60,
     },
     headerLeftContainer: {
       flex: 1,
-      padding: 0
+      padding: 0,
     },
     headerTitleContainer: {
-      marginHorizontal: 0
-    }
+      marginHorizontal: 0,
+    },
   })
 
 const screenOptions =
@@ -43,7 +43,7 @@ const screenOptions =
       headerStyle: header,
       headerRightContainerStyle: headerRightContainer,
       headerLeftContainerStyle: headerLeftContainer,
-      headerTitleContainerStyle: headerTitleContainer
+      headerTitleContainerStyle: headerTitleContainer,
     }
   }
 

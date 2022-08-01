@@ -115,5 +115,5 @@ export {
   StarIconWhite,
   TrashIcon,
   TrophyIcon,
-  VolumeUpCircleIcon
+  VolumeUpCircleIcon,
 }

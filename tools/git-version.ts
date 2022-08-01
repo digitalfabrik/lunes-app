@@ -34,7 +34,7 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
     tag: id,
     message: tagMessage,
     object: commitSha,
-    type: 'commit'
+    type: 'commit',
   })
   const tagSha = tag.data.sha
   console.warn(`New tag with id ${id} successfully created.`)
@@ -43,7 +43,7 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
     owner,
     repo,
     ref: `refs/tags/${id}`,
-    sha: tagSha
+    sha: tagSha,
   })
   console.warn(`New ref with id ${id} successfully created.`)
 }
@@ -55,7 +55,7 @@ const commitAndTag = async (
     deliverinoPrivateKey,
     owner,
     repo,
-    branch
+    branch,
   }: { deliverinoPrivateKey: string; owner: string; repo: string; branch: string }
 ) => {
   const appOctokit = await authenticate({ deliverinoPrivateKey, owner, repo })
@@ -77,7 +77,7 @@ const commitAndTag = async (
     content: contentBase64,
     branch,
     message: commitMessage,
-    sha: versionFileContent.data.sha
+    sha: versionFileContent.data.sha,
   })
   console.warn(`New version successfully commited with message "${commitMessage}".`)
 
@@ -97,7 +97,7 @@ program
         deliverinoPrivateKey: program.deliverinoPrivateKey,
         branch: program.branch,
         owner: program.owner,
-        repo: program.repo
+        repo: program.repo,
       })
     } catch (e) {
       console.error(e)

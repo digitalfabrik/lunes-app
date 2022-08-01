@@ -8,5 +8,5 @@ export const mockCustomDiscipline = {
   apiKey: 'test',
   parentTitle: null,
   needsTrainingSetEndpoint: false,
-  leafDisciplines: []
+  leafDisciplines: [],
 }

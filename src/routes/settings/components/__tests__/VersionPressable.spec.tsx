@@ -6,7 +6,7 @@ import render from '../../../../testing/render'
 import VersionPressable, { CLICK_THRESHOLD } from '../VersionPressable'
 
 jest.mock('react-native-device-info', () => ({
-  getVersion: jest.fn(() => '2022.6.0')
+  getVersion: jest.fn(() => '2022.6.0'),
 }))
 
 describe('VersionPressable', () => {

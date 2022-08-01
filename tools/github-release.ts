@@ -62,7 +62,7 @@ const githubRelease = async (
     repo,
     tag_name: tagId({ versionName: newVersionName, platform }),
     name: releaseName,
-    body
+    body,
   })
 }
 
@@ -78,7 +78,7 @@ program
         developmentRelease: program.developmentRelease,
         downloadLinks: program.downloadLinks,
         releaseNotes: program.releaseNotes,
-        dryRun: program.dryRun
+        dryRun: program.dryRun,
       })
     } catch (e) {
       console.error(e)
