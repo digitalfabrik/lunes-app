@@ -13,7 +13,7 @@ const createNavigationMock = <T extends keyof RoutesParams>(routeIndex = 0): Sta
     key: 'some-key-0',
     routeNames: ['Home'],
     type: 'stack',
-    stale: false
+    stale: false,
   })),
   navigate: jest.fn(),
   setParams: jest.fn(),
@@ -26,7 +26,7 @@ const createNavigationMock = <T extends keyof RoutesParams>(routeIndex = 0): Sta
   reset: jest.fn(),
   removeListener: jest.fn(),
   setOptions: jest.fn(),
-  getId: jest.fn()
+  getId: jest.fn(),
 })
 
 export default createNavigationMock

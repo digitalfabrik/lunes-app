@@ -17,7 +17,7 @@ describe('Button', () => {
       onPress: onPressMock,
       label: 'Button label',
       buttonTheme: BUTTONS_THEME.outlined,
-      ...overrideProps
+      ...overrideProps,
     }
     return render(<Button {...buttonProps} />)
   }
@@ -25,7 +25,7 @@ describe('Button', () => {
   it('should render label and icons', () => {
     const { getByText, queryByTestId } = renderButton({
       iconLeft: ArrowRightIcon,
-      iconRight: ArrowLeftCircleIconWhite
+      iconRight: ArrowLeftCircleIconWhite,
     })
     expect(getByText('Button label')).toBeDefined()
     expect(queryByTestId('button-icon-left')).toBeDefined()

@@ -33,7 +33,7 @@ const DocumentImageSection = ({
   document,
   audioDisabled = false,
   minimized = false,
-  submittedAlternative
+  submittedAlternative,
 }: Props): ReactElement => (
   <Container>
     <ImageCarousel images={document.document_image} minimized={minimized} />

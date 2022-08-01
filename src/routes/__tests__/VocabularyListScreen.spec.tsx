@@ -16,7 +16,7 @@ jest.mock('../../components/FavoriteButton', () => {
 })
 
 jest.mock('../../services/AsyncStorage', () => ({
-  setExerciseProgress: jest.fn(() => Promise.resolve())
+  setExerciseProgress: jest.fn(() => Promise.resolve()),
 }))
 
 jest.mock('../../components/AudioPlayer', () => {
@@ -33,8 +33,8 @@ describe('VocabularyListScreen', () => {
       documents,
       disciplineId: 1,
       disciplineTitle: 'My discipline title',
-      closeExerciseAction: CommonActions.goBack()
-    }
+      closeExerciseAction: CommonActions.goBack(),
+    },
   }
 
   const navigation = createNavigationMock<'VocabularyList'>()

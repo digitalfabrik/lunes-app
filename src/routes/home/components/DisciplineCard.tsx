@@ -48,7 +48,7 @@ const DisciplineCard = ({
   identifier,
   refresh: refreshHome,
   navigateToDiscipline,
-  navigateToNextExercise
+  navigateToNextExercise,
 }: PropsType): JSX.Element => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 

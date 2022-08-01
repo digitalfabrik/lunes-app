@@ -30,7 +30,7 @@ interface PropsType {
 const ProfessionDetails = ({
   discipline,
   navigateToDiscipline,
-  navigateToNextExercise
+  navigateToNextExercise,
 }: PropsType): ReactElement | null => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)

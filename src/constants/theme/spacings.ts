@@ -8,5 +8,5 @@ export const SPACINGS = {
   md: `${wp('6%')}px`, // 24px
   lg: `${wp('8%')}px`, // 32px
   xl: `${wp('10%')}px`, // 40px
-  xxl: `${wp('12%')}px` // 48px
+  xxl: `${wp('12%')}px`, // 48px
 }

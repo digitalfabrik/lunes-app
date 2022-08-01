@@ -14,7 +14,7 @@ import {
   PLATFORM_IOS,
   RELEASE_NOTES_DIR,
   UNRELEASED_DIR,
-  DEFAULT_NOTES
+  DEFAULT_NOTES,
 } from './constants'
 
 // Release notes
@@ -69,7 +69,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
   const emptyNotesMap = {
     common: [] as NoteType[],
     android: [] as NoteType[],
-    ios: [] as NoteType[]
+    ios: [] as NoteType[],
   }
   // Group notes by platform
   const notesMap = notes.reduce((notesMap, note) => {
@@ -87,7 +87,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
   const androidNotes = formatNotes({
     notes: notesMap.android,
     production: false,
-    platformName: PLATFORM_ANDROID
+    platformName: PLATFORM_ANDROID,
   })
   const iosNotes = formatNotes({ notes: notesMap.ios, production: false, platformName: PLATFORM_IOS })
 
@@ -181,7 +181,7 @@ const writeMetadata = (storeName: string, overrideVersionName?: string) => {
 
   const path = metadataPath(storeName)
   fs.mkdirSync(path, {
-    recursive: true
+    recursive: true,
   })
 
   // Prepare release notes

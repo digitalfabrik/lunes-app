@@ -53,7 +53,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const navigateToDiscipline = (item: Discipline): void => {
     navigation.navigate('ProfessionSelection', {
       discipline: item,
-      initialSelection
+      initialSelection,
     })
   }
 
@@ -63,7 +63,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     }
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Home' }]
+      routes: [{ name: 'BottomTabNavigator' }],
     })
   }
 

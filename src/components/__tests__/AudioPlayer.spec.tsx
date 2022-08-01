@@ -15,12 +15,12 @@ jest.mock('react-native-tts', () => ({
   setDefaultLanguage: jest.fn(async () => undefined),
   requestInstallEngine: jest.fn(async () => undefined),
   addListener: jest.fn(() => ({ remove: jest.fn() })),
-  speak: jest.fn()
+  speak: jest.fn(),
 }))
 
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-  loadUrl: jest.fn()
+  loadUrl: jest.fn(),
 }))
 
 describe('AudioPlayer', () => {
@@ -30,18 +30,18 @@ describe('AudioPlayer', () => {
     audio: '',
     id: 0,
     document_image: [],
-    word: 'Abrissbirne'
+    word: 'Abrissbirne',
   }
 
   const audioDocument = {
     ...noAudioDocument,
-    audio: 'https://example.com'
+    audio: 'https://example.com',
   }
 
   const renderAudioPlayer = ({
     document = noAudioDocument,
     submittedAlternative = null,
-    disabled = false
+    disabled = false,
   }: {
     document?: Document
     submittedAlternative?: string | null

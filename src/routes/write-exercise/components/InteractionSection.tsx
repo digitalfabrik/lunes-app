@@ -80,7 +80,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     const documentWithResultToStore = {
       ...documentWithResult,
       result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
-      numberOfTries: nthRetry
+      numberOfTries: nthRetry,
     }
     storeResult(documentWithResultToStore)
   }
