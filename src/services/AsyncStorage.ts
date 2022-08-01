@@ -161,5 +161,5 @@ export default {
   setOverwriteCMS,
   getOverwriteCMS,
   toggleDevMode,
-  getDevMode
+  getDevMode,
 }

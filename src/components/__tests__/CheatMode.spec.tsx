@@ -8,7 +8,7 @@ import render from '../../testing/render'
 import CheatMode from '../CheatMode'
 
 jest.mock('../../services/AsyncStorage', () => ({
-  getDevMode: jest.fn()
+  getDevMode: jest.fn(),
 }))
 
 const cheatFunc = jest.fn()

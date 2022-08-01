@@ -24,7 +24,7 @@ jest.mock('../../../services/helpers', () => ({
 
 jest.mock('../../../services/AsyncStorage', () => ({
   saveExerciseProgress: jest.fn(),
-  getDevMode: jest.fn(async () => false)
+  getDevMode: jest.fn(async () => false),
 }))
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
