@@ -107,18 +107,4 @@ describe('ArticleChoiceExerciseScreen', () => {
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
     ])
   })
-
-  // it('should not show cheat buttons in normal mode', async () => {
-  //   const { queryByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
-  //
-  //   expect(queryByText(labels.exercises.cheat.succeed)).toBeNull()
-  //   expect(queryByText(labels.exercises.cheat.fail)).toBeNull()
-  // })
-  //
-  // it('should show cheat buttons in dev mode', async () => {
-  //   const { queryByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
-  //
-  //   expect(queryByText(labels.exercises.cheat.succeed)).not.toBeNull()
-  //   expect(queryByText(labels.exercises.cheat.fail)).not.toBeNull()
-  // })
 })

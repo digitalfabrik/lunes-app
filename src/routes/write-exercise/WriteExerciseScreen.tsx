@@ -15,6 +15,7 @@ import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
+import { log } from '../../services/sentry'
 import InteractionSection from './components/InteractionSection'
 
 const ButtonContainer = styled.View`
@@ -107,9 +108,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   useEffect(() => {
     if (hasCheated) {
       needsToBeRepeated = false
-      continueExercise().catch(_ => {
-        setHasCheated(false)
-      })
+      continueExercise().catch(log)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentsWithResults])
