@@ -33,7 +33,7 @@ const TextContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xxl};
   margin-bottom: ${props => props.theme.spacings.lg};
 `
-// TODO check if needed
+
 const StyledScrollView = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
 `
@@ -77,7 +77,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   ))
 
   return (
-    <RouteWrapper backgroundColor={theme.colors.primary}>
+    <RouteWrapper backgroundColor={theme.colors.primary} barStyle='light-content'>
       <StyledScrollView>
         {initialSelection && <Header />}
 

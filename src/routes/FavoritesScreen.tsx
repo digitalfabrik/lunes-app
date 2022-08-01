@@ -33,8 +33,8 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
   }
 
   return (
-    <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-      <RouteWrapper>
+    <RouteWrapper>
+      <ServerResponseHandler error={error} loading={false} refresh={refresh}>
         {data && (
           <VocabularyList
             title={labels.favorites}
@@ -43,8 +43,8 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
             onItemPress={onItemPress}
           />
         )}
-      </RouteWrapper>
-    </ServerResponseHandler>
+      </ServerResponseHandler>
+    </RouteWrapper>
   )
 }
 

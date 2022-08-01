@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -149,7 +148,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
         barStyle={unlockedNextExercise ? 'dark-content' : 'light-content'}
       />
-      <SafeAreaView style={{ flex: 1 }}>
+      <RouteWrapper>
         <Root>
           <UpperSection unlockedNextExercise={unlockedNextExercise}>
             <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
@@ -185,7 +184,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
           />
           <ShareSection disciplineTitle={disciplineTitle} results={results} />
         </Root>
-      </SafeAreaView>
+      </RouteWrapper>
     </>
   )
 }
