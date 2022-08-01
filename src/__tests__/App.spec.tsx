@@ -20,7 +20,9 @@ describe('App', () => {
     const { getByText } = render(<App />)
 
     // wait for splash screen to disappear
-    act(() => jest.advanceTimersByTime(3000))
+    act(() => {
+      jest.advanceTimersByTime(3000)
+    })
 
     expect(SplashScreen.hide).toHaveBeenCalled()
     expect(getByText('Navigator')).toBeTruthy()
