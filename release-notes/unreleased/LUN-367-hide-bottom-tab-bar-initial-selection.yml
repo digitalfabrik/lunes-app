@@ -1,0 +1,6 @@
+issue_key: LUN-367
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Bei der Berufsauswahl wird die Navigationsleiste nicht mehr angezeigt.
