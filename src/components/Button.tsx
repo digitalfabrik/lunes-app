@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactElement } from 'react'
+import React, { ComponentType, ReactElement, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled, { css, useTheme } from 'styled-components/native'
@@ -17,7 +17,7 @@ interface ThemedLabelProps {
   color: string
 }
 
-const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
+const ThemedButton = styled.Pressable<ThemedButtonProps>`
   ${props =>
     props.buttonTheme === BUTTONS_THEME.outlined &&
     !props.disabled &&
@@ -27,7 +27,6 @@ const ThemedButton = styled.TouchableOpacity<ThemedButtonProps>`
     `};
   flex-direction: row;
   padding: ${props => `${wp('3%')}px ${props.theme.spacings.sm}`};
-
   width: ${wp('70%')}px;
   align-items: center;
   border-radius: ${hp('7%')}px;
@@ -54,7 +53,7 @@ interface ButtonProps {
 }
 
 const Button = (props: ButtonProps): ReactElement => {
-  const [isPressed, setIsPressed] = React.useState(false)
+  const [isPressed, setIsPressed] = useState<boolean>(false)
   const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
   const theme = useTheme()
 
@@ -84,8 +83,7 @@ const Button = (props: ButtonProps): ReactElement => {
       onPress={onPress}
       disabled={disabled}
       onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
-      activeOpacity={1}>
+      onPressOut={() => setIsPressed(false)}>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (
         <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={wp('6%')} height={wp('6%')} />

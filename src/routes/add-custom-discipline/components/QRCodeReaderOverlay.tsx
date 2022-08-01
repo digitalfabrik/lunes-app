@@ -13,7 +13,7 @@ const Container = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
 
-const Icon = styled.TouchableOpacity`
+const Icon = styled.Pressable`
   align-self: flex-end;
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
   width: ${wp('7%')}px;
@@ -68,8 +68,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
         <Icon
           onPress={() => setVisible(false)}
           onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
-          activeOpacity={1}>
+          onPressOut={() => setIsPressed(false)}>
           {isPressed ? (
             <CloseCircleIconBlue testID='close-circle-icon-blue' width={wp('7%')} height={wp('7%')} />
           ) : (

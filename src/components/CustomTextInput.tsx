@@ -5,6 +5,7 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import theme from '../constants/theme'
+import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
 const LINE_HEIGHT = 30
@@ -19,7 +20,7 @@ const StyledTextInput = styled.TextInput`
   flex: 1;
 `
 
-const ClearContainer = styled.TouchableOpacity`
+const ClearContainer = styled(PressableOpacity)`
   width: ${wp('6%')}px;
   height: ${wp('6%')}px;
 `

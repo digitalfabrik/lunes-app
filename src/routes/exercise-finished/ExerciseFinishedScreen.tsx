@@ -17,6 +17,7 @@ import {
   SadSmileyIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
+import PressableOpacity from '../../components/PressableOpacity'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
@@ -50,7 +51,7 @@ const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
   color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.primary : prop.theme.colors.background)};
   text-align: center;
 `
-const Icon = styled.TouchableOpacity`
+const Icon = styled(PressableOpacity)`
   position: absolute;
   top: 25px;
   right: 100px;

@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 import { VolumeUpCircleIcon } from '../../assets/images'
 import { Document } from '../constants/endpoints'
 import { stringifyDocument } from '../services/helpers'
+import PressableOpacity from './PressableOpacity'
 
 export interface AudioPlayerProps {
   document: Document
@@ -15,7 +16,7 @@ export interface AudioPlayerProps {
   submittedAlternative?: string | null
 }
 
-const VolumeIcon = styled.TouchableOpacity<{ disabled: boolean; isActive: boolean }>`
+const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boolean }>`
   width: ${wp('9%')}px;
   height: ${wp('9%')}px;
   border-radius: 50px;
@@ -100,11 +101,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
   }
 
   return (
-    <VolumeIcon
-      disabled={disabled || !isInitialized}
-      isActive={isActive}
-      onPress={handleSpeakerClick}
-      accessibilityRole='button'>
+    <VolumeIcon disabled={disabled || !isInitialized} isActive={isActive} onPress={handleSpeakerClick}>
       <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
     </VolumeIcon>
   )

@@ -3,10 +3,11 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
+import PressableOpacity from './PressableOpacity'
 import { ContentSecondary } from './text/Content'
 import { SubheadingPrimary } from './text/Subheading'
 
-const Root = styled.TouchableOpacity`
+const Root = styled(PressableOpacity)`
   margin: ${props => props.theme.spacings.sm} 0;
 `
 

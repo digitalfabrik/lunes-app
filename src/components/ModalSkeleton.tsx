@@ -4,6 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
+import PressableOpacity from './PressableOpacity'
 
 const Overlay = styled.View`
   flex: 1;
@@ -21,7 +22,7 @@ const ModalContainer = styled.View`
   padding-bottom: ${props => props.theme.spacings.lg};
 `
 
-const Icon = styled.TouchableOpacity`
+const Icon = styled(PressableOpacity)`
   position: absolute;
   top: 8px;
   right: 8px;

@@ -8,6 +8,7 @@ import { Document } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
+import PressableOpacity from './PressableOpacity'
 
 const Icon = styled(StarCircleIconGreyFilled)`
   min-width: ${wp('9%')}px;
@@ -17,13 +18,14 @@ const IconOutline = styled(StarCircleIconGrey)`
   min-width: ${wp('9%')}px;
   min-height: ${wp('9%')}px;
 `
-const Button = styled.TouchableOpacity`
+const Button = styled(PressableOpacity)`
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
   shadow-radius: 5px;
   shadow-offset: 1px 1px;
   shadow-opacity: 0.5;
+  border-radius: 20px;
 `
 
 interface Props {
