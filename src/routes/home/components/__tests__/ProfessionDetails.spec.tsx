@@ -36,7 +36,7 @@ describe('ProfessionDetails', () => {
       />
     )
 
-  it('should show next exercise details on the card if at least one module is marked done', () => {
+  it('should show next exercise details on the card', () => {
     mocked(useReadProgress).mockReturnValue(getReturnOf(1))
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
     const { getByText, findByText, getByTestId } = renderProfessionDetails()

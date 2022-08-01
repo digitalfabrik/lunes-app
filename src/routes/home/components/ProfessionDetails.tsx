@@ -63,7 +63,7 @@ const ProfessionDetails = ({
         />
         {discipline.leafDisciplines && (
           <NumberText>
-            {moduleAlreadyStarted && doneModules}/{discipline.leafDisciplines.length}
+            {doneModules}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
         <UnitText>{doneModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
