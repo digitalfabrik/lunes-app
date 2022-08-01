@@ -7,26 +7,18 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
-import { saveExerciseProgress, getDevMode } from '../../services/AsyncStorage'
+import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
 const ButtonContainer = styled.View`
   align-items: center;
-`
-
-const CheatContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  transform: scale(0.6);
-  margin-top: -30px;
-  width: 100%;
 `
 
 export interface WriteExerciseScreenProps {
@@ -41,11 +33,12 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
     shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
   )
-  const [cheatsEnabled, setCheatsEnabled] = useState(false)
+
+  const [hasCheated, setHasCheated] = useState<boolean>(false)
 
   const isKeyboardShown = useIsKeyboardVisible()
   const current = documentsWithResults[currentIndex]
-  const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
+  let needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const initializeExercise = useCallback(
     (force = false) => {
@@ -112,16 +105,21 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   }
 
   useEffect(() => {
-    ;(async () => {
-      const isInDevMode = await getDevMode()
-      setCheatsEnabled(isInDevMode)
-    })()
-  })
+    if (hasCheated) {
+      needsToBeRepeated = false
+      continueExercise().catch(_ => {
+        setHasCheated(false)
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [documentsWithResults])
+
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
-    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
-    setDocumentsWithResults(cheatedDocuments)
+    setHasCheated(true)
     setCurrentIndex(documentsWithResults.length - 1)
-    setIsAnswerSubmitted(true)
+
+    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result })).reverse()
+    setDocumentsWithResults(cheatedDocuments)
   }
 
   const giveUp = async (): Promise<void> => {
@@ -170,20 +168,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             )}
           </>
         )}
-        {cheatsEnabled && (
-          <CheatContainer>
-            <Button
-              label={labels.exercises.cheat.succeed}
-              onPress={() => cheatExercise(SIMPLE_RESULTS.correct)}
-              buttonTheme={BUTTONS_THEME.outlined}
-            />
-            <Button
-              label={labels.exercises.cheat.fail}
-              onPress={() => cheatExercise(SIMPLE_RESULTS.incorrect)}
-              buttonTheme={BUTTONS_THEME.outlined}
-            />
-          </CheatContainer>
-        )}
+        <CheatMode cheatFunc={cheatExercise} />
       </ButtonContainer>
     </KeyboardAwareScrollView>
   )

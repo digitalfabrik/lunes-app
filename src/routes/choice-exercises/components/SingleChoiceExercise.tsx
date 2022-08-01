@@ -5,13 +5,14 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
+import CheatMode from '../../../components/CheatMode'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress, getDevMode } from '../../../services/AsyncStorage'
+import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -26,15 +27,6 @@ const ButtonContainer = styled.View`
   justify-content: center;
   margin-bottom: ${props => props.theme.spacings.sm};
   flex: 1;
-`
-
-const CheatContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  transform: scale(0.6);
-  margin-top: -30px;
-  width: 100%;
 `
 
 interface SingleChoiceExerciseProps {
@@ -66,7 +58,6 @@ const ChoiceExerciseScreen = ({
   )
   const { document, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(documentToAnswers(document))
-  const [cheatsEnabled, setCheatsEnabled] = useState(false)
 
   const correctAnswers = [{ word: document.word, article: document.article }, ...document.alternatives]
   const needsToBeRepeated = numberOfTries < numberOfMaxRetries && result === SIMPLE_RESULTS.incorrect
@@ -105,14 +96,8 @@ const ChoiceExerciseScreen = ({
   }
   const count = documents.length
 
-  useEffect(() => {
-    ;(async () => {
-      const isInDevMode = await getDevMode()
-      setCheatsEnabled(isInDevMode)
-    })()
-  })
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
-    onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
+    await onExerciseFinished(results.map(it => ({ ...it, numberOfTries: 1, result })))
   }
 
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
@@ -188,20 +173,7 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
-          {cheatsEnabled && (
-            <CheatContainer>
-              <Button
-                label={labels.exercises.cheat.succeed}
-                onPress={() => onExerciseCheated(SIMPLE_RESULTS.correct)}
-                buttonTheme={BUTTONS_THEME.outlined}
-              />
-              <Button
-                label={labels.exercises.cheat.fail}
-                onPress={() => onExerciseCheated(SIMPLE_RESULTS.incorrect)}
-                buttonTheme={BUTTONS_THEME.outlined}
-              />
-            </CheatContainer>
-          )}
+          <CheatMode cheatFunc={onExerciseCheated} />
         </ButtonContainer>
       </>
     </ExerciseContainer>
