@@ -16,7 +16,7 @@ const testData = [
     created_by: 1,
     total_training_sets: 0,
     total_discipline_children: 7,
-    nested_training_sets: [28]
+    nested_training_sets: [28],
   },
   // Group
   [
@@ -24,9 +24,9 @@ const testData = [
       id: 3,
       name: 'Metall, Elektro & Maschinen',
       icon: 'https://lunes-test.tuerantuer.org/media/images/xx.png',
-      total_discipline_children: 7
-    }
-  ]
+      total_discipline_children: 7,
+    },
+  ],
 ]
 
 const expectedData: Array<Discipline & Record<string, any>> = [
@@ -44,7 +44,7 @@ const expectedData: Array<Discipline & Record<string, any>> = [
     total_training_sets: 0,
     needsTrainingSetEndpoint: false,
     nested_training_sets: [28],
-    leafDisciplines: [28]
+    leafDisciplines: [28],
   },
   {
     apiKey: 'api-key123',
@@ -57,8 +57,8 @@ const expectedData: Array<Discipline & Record<string, any>> = [
     title: 'Metall, Elektro & Maschinen',
     name: 'Metall, Elektro & Maschinen',
     total_discipline_children: 7,
-    needsTrainingSetEndpoint: false
-  }
+    needsTrainingSetEndpoint: false,
+  },
 ]
 
 describe('loadDiscipline', () => {

@@ -22,7 +22,7 @@ describe('VocabularyListItem', () => {
     id: 0,
     document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
     word: 'Winkelmesser',
-    alternatives: []
+    alternatives: [],
   }
 
   it('should display image passed to it', () => {

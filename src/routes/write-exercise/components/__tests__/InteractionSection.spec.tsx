@@ -15,17 +15,17 @@ jest.mock('../../../../components/FavoriteButton', () => () => {
 
 jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
-  addListener: jest.fn(async () => ({ remove: jest.fn() }))
+  addListener: jest.fn(async () => ({ remove: jest.fn() })),
 }))
 
 jest.mock('react-native-sound-player', () => ({
-  addEventListener: jest.fn(() => ({ remove: jest.fn() }))
+  addEventListener: jest.fn(() => ({ remove: jest.fn() })),
 }))
 
 jest.mock('react-native-popover-view', () => ({
   __esModule: true,
   default: 'Popover',
-  PopoverPlacement: 'top'
+  PopoverPlacement: 'top',
 }))
 
 describe('InteractionSection', () => {
@@ -35,18 +35,18 @@ describe('InteractionSection', () => {
     alternatives: [
       {
         word: 'Spachtel',
-        article: ARTICLES[2]
+        article: ARTICLES[2],
       },
       {
         word: 'Alternative',
-        article: ARTICLES[2]
-      }
+        article: ARTICLES[2],
+      },
     ],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
     id: 0,
     document_image: [],
-    word: 'Spachtel'
+    word: 'Spachtel',
   }
 
   const dividedDocument: Document = {
@@ -55,7 +55,7 @@ describe('InteractionSection', () => {
     audio: 'https://example.com/my-audio',
     id: 0,
     document_image: [],
-    word: 'kontaktlose Spannungsprüfer'
+    word: 'kontaktlose Spannungsprüfer',
   }
 
   const renderInteractionSection = (documentWithResult: DocumentResult, isAnswerSubmitted: boolean): RenderAPI =>

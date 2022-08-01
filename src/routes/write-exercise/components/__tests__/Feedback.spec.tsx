@@ -15,7 +15,7 @@ describe('Feedback section', () => {
     audio: '',
     id: 0,
     document_image: [],
-    word: 'Abrissbirne'
+    word: 'Abrissbirne',
   }
 
   const renderFeedback = (

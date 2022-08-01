@@ -6,7 +6,7 @@ import SplashScreen from 'react-native-splash-screen'
 import App from '../App'
 
 jest.mock('react-navigation-header-buttons', () => ({
-  OverflowMenuProvider: ({ children }: { children: ReactNode }) => <View>{children}</View>
+  OverflowMenuProvider: ({ children }: { children: ReactNode }) => <View>{children}</View>,
 }))
 jest.mock('react-native-splash-screen', () => ({ hide: jest.fn() }))
 jest.mock('../navigation/Navigator', () => {

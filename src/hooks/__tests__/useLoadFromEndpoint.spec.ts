@@ -33,7 +33,7 @@ describe('getFromEndpoint', () => {
     await getFromEndpoint(path, apiKey)
     expect(axios.get).toHaveBeenCalledTimes(1)
     expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', {
-      headers: { Authorization: `Api-Key ${apiKey}` }
+      headers: { Authorization: `Api-Key ${apiKey}` },
     })
   })
 })

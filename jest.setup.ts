@@ -25,7 +25,7 @@ jest.mock('react-native-tts')
 jest.mock('react-native-sound-player')
 
 jest.mock('@sentry/react-native', () => ({
-  init: jest.fn()
+  init: jest.fn(),
 }))
 beforeEach(() => {
   jest.clearAllMocks()

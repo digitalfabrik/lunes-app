@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
 
   const navigateToDiscipline = (discipline: Discipline): void => {
     navigation.navigate('DisciplineSelection', {
-      discipline
+      discipline,
     })
   }
 
@@ -62,7 +62,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       disciplineId,
       disciplineTitle,
       documents,
-      closeExerciseAction: CommonActions.navigate('Home')
+      closeExerciseAction: CommonActions.navigate('Home'),
     })
   }
 

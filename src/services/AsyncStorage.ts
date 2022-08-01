@@ -148,5 +148,5 @@ export default {
   removeFavorite,
   isFavorite,
   setOverwriteCMS,
-  getOverwriteCMS
+  getOverwriteCMS,
 }

@@ -15,7 +15,7 @@ const parent = {
   icon: '',
   parentTitle: null,
   needsTrainingSetEndpoint: false,
-  leafDisciplines: [28]
+  leafDisciplines: [28],
 }
 
 const testData = [
@@ -28,7 +28,7 @@ const testData = [
     created_by: null,
     total_training_sets: 7,
     total_discipline_children: 0,
-    nested_training_sets: [28]
+    nested_training_sets: [28],
   },
   // Training Set
   {
@@ -36,7 +36,7 @@ const testData = [
     title: 'Sicherheit & Arbeitsschutz',
     description: '',
     icon: 'https://lunes-test.tuerantuer.org/media/images/do-not-touch.png',
-    total_documents: 9
+    total_documents: 9,
   },
   // Group
   {
@@ -46,8 +46,8 @@ const testData = [
     id: 21,
     title: 'Test Discipline First Level',
     total_discipline_children: 0,
-    total_training_sets: 1
-  }
+    total_training_sets: 1,
+  },
 ]
 
 const expectedData = (parent: Discipline | null): Array<Discipline & Record<string, any>> => [
@@ -65,7 +65,7 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     total_training_sets: 7,
     needsTrainingSetEndpoint: true,
     nested_training_sets: [28],
-    leafDisciplines: [28]
+    leafDisciplines: [28],
   },
   {
     apiKey: undefined,
@@ -78,7 +78,7 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     title: 'Sicherheit & Arbeitsschutz',
     total_documents: 9,
     needsTrainingSetEndpoint: false,
-    leafDisciplines: undefined
+    leafDisciplines: undefined,
   },
   {
     apiKey: undefined,
@@ -93,8 +93,8 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
     total_discipline_children: 0,
     total_training_sets: 1,
     needsTrainingSetEndpoint: true,
-    leafDisciplines: undefined
-  }
+    leafDisciplines: undefined,
+  },
 ]
 
 describe('loadDiscipline', () => {
@@ -120,7 +120,7 @@ describe('loadDiscipline', () => {
       const apiKeyParent = {
         ...parent,
         isLeaf: false,
-        apiKey: 'my_api_key'
+        apiKey: 'my_api_key',
       }
       await loadDisciplines({ parent: apiKeyParent })
       expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_group/1234', 'my_api_key')

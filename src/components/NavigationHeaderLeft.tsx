@@ -6,7 +6,7 @@ import {
   ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   CloseCircleIconBlue,
-  CloseCircleIconWhite
+  CloseCircleIconWhite,
 } from '../../assets/images'
 import { NavigationTitle } from './NavigationTitle'
 

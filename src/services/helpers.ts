@@ -91,20 +91,20 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   if (!firstUnfinishedDisciplineId) {
     return {
       disciplineId: leafDisciplineIds[0],
-      exerciseKey: 0
+      exerciseKey: 0,
     } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDisciplineId]
   if (!disciplineProgress) {
     return {
       disciplineId: firstUnfinishedDisciplineId,
-      exerciseKey: 0
+      exerciseKey: 0,
     }
   }
   const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
   return {
     disciplineId: firstUnfinishedDisciplineId,
-    exerciseKey: nextExerciseKey?.key ?? 0
+    exerciseKey: nextExerciseKey?.key ?? 0,
   }
 }
 

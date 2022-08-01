@@ -7,7 +7,7 @@ import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import {
   mockUseLoadAsyncLoading,
   mockUseLoadAsyncWithData,
-  mockUseLoadAsyncWithError
+  mockUseLoadAsyncWithError,
 } from '../../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../../testing/render'
 import DisciplineCard from '../DisciplineCard'
