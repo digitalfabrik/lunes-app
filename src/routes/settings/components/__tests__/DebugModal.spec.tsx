@@ -1,4 +1,4 @@
-import { act, fireEvent } from '@testing-library/react-native'
+import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../../constants/labels.json'
@@ -20,19 +20,19 @@ describe('DebugModal', () => {
   it('should show and switch cms url', async () => {
     const { getByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
     const textField = getByPlaceholderText('Development Code')
-    await act(() => {
+    await act(async () => {
       fireEvent.changeText(textField, 'wirschaffendas')
     })
-    expect(getByText(testCMS)).toBeDefined()
+    await waitFor(() => expect(getByText(testCMS)).toBeDefined())
     const switchCMSButton = getByText(labels.settings.debugModal.changeCMS)
     expect(switchCMSButton).toBeDefined()
-    await act(() => {
+    act(() => {
       fireEvent.press(switchCMSButton)
     })
-    expect(getByText(productionCMS)).toBeDefined()
-    await act(() => {
+    await waitFor(() => expect(getByText(productionCMS)).toBeDefined())
+    act(() => {
       fireEvent.press(switchCMSButton)
     })
-    expect(getByText(testCMS)).toBeDefined()
+    await waitFor(() => expect(getByText(testCMS)).toBeDefined())
   })
 })
