@@ -1,4 +1,4 @@
-import { render, RenderAPI, RenderOptions } from '@testing-library/react-native'
+import { render, RenderAPI } from '@testing-library/react-native'
 import React, { ReactElement } from 'react'
 import { ThemeProvider } from 'styled-components/native'
 
@@ -12,7 +12,6 @@ const wrapWithTheme = ({ children }: InnerComponent): ReactElement => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )
 
-const renderWithTheme = (component: ReactElement, options?: RenderOptions): RenderAPI =>
-  render(component, { wrapper: wrapWithTheme, ...options })
+const renderWithTheme = (component: ReactElement): RenderAPI => render(component, { wrapper: wrapWithTheme })
 
 export default renderWithTheme
