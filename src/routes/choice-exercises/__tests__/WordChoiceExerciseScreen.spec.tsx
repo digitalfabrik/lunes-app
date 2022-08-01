@@ -17,7 +17,7 @@ jest.mock('../../../components/FavoriteButton', () => {
 })
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn(it => it)
+  shuffleArray: jest.fn(it => it),
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
@@ -43,8 +43,8 @@ describe('WordChoiceExerciseScreen', () => {
       documents: testDocuments,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
-      closeExerciseAction: CommonActions.goBack()
-    }
+      closeExerciseAction: CommonActions.goBack(),
+    },
   }
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)

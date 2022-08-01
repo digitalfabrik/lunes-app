@@ -23,7 +23,7 @@ const nextExerciseData: NextExerciseData = {
   documents: new DocumentBuilder(1).build(),
   title: 'Exercise Test',
   exerciseKey: 1,
-  disciplineId: 1
+  disciplineId: 1,
 }
 
 describe('ProfessionDetails', () => {

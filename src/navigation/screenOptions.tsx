@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import { COLORS } from '../constants/theme/colors'
-import { Route, RoutesParams } from './NavigationTypes'
+import { RoutesParams } from './NavigationTypes'
 
 const headerStyles = (headerHeight?: number) =>
   StyleSheet.create({
@@ -16,43 +16,34 @@ const headerStyles = (headerHeight?: number) =>
       elevation: 0,
       borderBottomColor: COLORS.disabled,
       borderBottomWidth: 1,
-      height: headerHeight
+      height: headerHeight,
     },
     headerRightContainer: {
       paddingHorizontal: wp('4%'),
-      maxWidth: 60
+      maxWidth: 60,
     },
     headerLeftContainer: {
       flex: 1,
-      padding: 0
+      padding: 0,
     },
     headerTitleContainer: {
-      marginHorizontal: 0
-    }
+      marginHorizontal: 0,
+    },
   })
 
 const screenOptions =
   (headerHeight?: number) =>
-  (
-    title: string,
-    navigation: NavigationProp<RoutesParams>,
-    isCloseButton = false,
-    screen?: Route
-  ): StackNavigationOptions => {
+  (title: string, navigation: NavigationProp<RoutesParams>, isCloseButton = false): StackNavigationOptions => {
     const { header, headerLeftContainer, headerRightContainer, headerTitleContainer } = headerStyles(headerHeight)
     return {
       headerLeft: () => (
-        <NavigationHeaderLeft
-          onPress={screen ? () => navigation.navigate(screen) : navigation.goBack}
-          title={title}
-          isCloseButton={isCloseButton}
-        />
+        <NavigationHeaderLeft onPress={navigation.goBack} title={title} isCloseButton={isCloseButton} />
       ),
       headerTitle: '',
       headerStyle: header,
       headerRightContainerStyle: headerRightContainer,
       headerLeftContainerStyle: headerLeftContainer,
-      headerTitleContainerStyle: headerTitleContainer
+      headerTitleContainerStyle: headerTitleContainer,
     }
   }
 

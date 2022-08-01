@@ -9,7 +9,7 @@ import {
   CheckCircleIconBold,
   BannerYellow,
   BannerRed,
-  CloseCircleIconBold
+  CloseCircleIconBold,
 } from '../../../../assets/images'
 import labels from '../../../constants/labels.json'
 import { DocumentResult } from '../../../navigation/NavigationTypes'

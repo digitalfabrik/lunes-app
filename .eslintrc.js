@@ -9,11 +9,11 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'prettier',
     'plugin:jest/recommended',
-    'plugin:jest/style'
+    'plugin:jest/style',
   ],
   env: {
     es6: true,
-    'jest/globals': true
+    'jest/globals': true,
   },
   ignorePatterns: [
     '**/reports/',
@@ -23,7 +23,7 @@ module.exports = {
     '**/lib-dist/',
     '.eslintrc.js',
     'babel.config.js',
-    'metro.config.js'
+    'metro.config.js',
   ],
   rules: {
     // Overly strict rules (for now)
@@ -50,12 +50,20 @@ module.exports = {
       'error',
       {
         ignore: [-1, 0, 1, 2, 3, 4],
-        ignoreArrayIndexes: true
-      }
+        ignoreArrayIndexes: true,
+      },
     ],
     'prefer-destructuring': ['error', { array: false }],
     'prefer-object-spread': 'error',
 
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
     'react/no-did-mount-set-state': 'error',
     'react/no-unused-prop-types': 'warn',
 
@@ -70,8 +78,8 @@ module.exports = {
       {
         argsIgnorePattern: '_(unused)?',
         varsIgnorePattern: '_(unused)?',
-        ignoreRestSiblings: true
-      }
+        ignoreRestSiblings: true,
+      },
     ],
     '@typescript-eslint/no-use-before-define': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
@@ -82,10 +90,10 @@ module.exports = {
     'jest/consistent-test-it': 'error',
     'jest/no-alias-methods': 'error',
 
-    'prefer-arrow/prefer-arrow-functions': 'error'
+    'prefer-arrow/prefer-arrow-functions': 'error',
   },
   parserOptions: {
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   overrides: [
     {
@@ -100,14 +108,14 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
-        'react/jsx-props-no-spreading': 'off'
-      }
+        'react/jsx-props-no-spreading': 'off',
+      },
     },
     {
       files: ['**/tools/**'],
       rules: {
-        'no-console': 'off'
-      }
-    }
-  ]
+        'no-console': 'off',
+      },
+    },
+  ],
 }

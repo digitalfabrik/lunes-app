@@ -19,7 +19,7 @@ jest.mock('../../../components/FavoriteButton', () => () => {
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn(it => it)
+  shuffleArray: jest.fn(it => it),
 }))
 
 jest.mock('../../../services/AsyncStorage', () => ({
@@ -34,13 +34,13 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
   ...jest.requireActual('react-native/Libraries/Image/Image'),
   getSize: (uri: string, success: (w: number, h: number) => void) => {
     success(1234, 1234)
-  }
+  },
 }))
 
 jest.mock('react-native-keyboard-aware-scroll-view', () => {
   const { View } = require('react-native')
   return {
-    KeyboardAwareScrollView: ({ children }: { children: ReactElement }) => <View>{children}</View>
+    KeyboardAwareScrollView: ({ children }: { children: ReactElement }) => <View>{children}</View>,
   }
 })
 
@@ -49,12 +49,12 @@ jest.mock('react-native-tts', () => ({
   setDefaultLanguage: jest.fn(async () => undefined),
   requestInstallEngine: jest.fn(async () => undefined),
   addListener: jest.fn(() => ({})),
-  speak: jest.fn()
+  speak: jest.fn(),
 }))
 
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-  loadUrl: jest.fn()
+  loadUrl: jest.fn(),
 }))
 
 describe('WriteExerciseScreen', () => {
@@ -68,13 +68,13 @@ describe('WriteExerciseScreen', () => {
       alternatives: [
         {
           word: 'Spachtel',
-          article: ARTICLES[2]
+          article: ARTICLES[2],
         },
         {
           word: 'Alternative',
-          article: ARTICLES[2]
-        }
-      ]
+          article: ARTICLES[2],
+        },
+      ],
     },
     {
       id: 2,
@@ -82,8 +82,8 @@ describe('WriteExerciseScreen', () => {
       article: ARTICLES[1],
       document_image: [{ id: 1, image: 'Auto' }],
       audio: '',
-      alternatives: []
-    }
+      alternatives: [],
+    },
   ]
 
   const navigation = createNavigationMock<'WriteExercise'>()
@@ -94,8 +94,8 @@ describe('WriteExerciseScreen', () => {
       documents,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
-      closeExerciseAction: CommonActions.goBack()
-    }
+      closeExerciseAction: CommonActions.goBack(),
+    },
   }
 
   const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
@@ -173,7 +173,7 @@ describe('WriteExerciseScreen', () => {
 
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
-      { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 }
+      { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
     ])
   })
 

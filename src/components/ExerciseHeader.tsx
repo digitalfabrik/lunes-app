@@ -47,7 +47,7 @@ const ExerciseHeader = ({
   closeExerciseAction,
   currentWord,
   numberOfWords,
-  confirmClose = true
+  confirmClose = true,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -55,32 +55,34 @@ const ExerciseHeader = ({
   const showProgress = numberOfWords !== undefined && numberOfWords > 0 && currentWord !== undefined
   const progressText = showProgress ? `${currentWord + 1} / ${numberOfWords}` : ''
 
-  useEffect(
-    () =>
-      navigation.setOptions({
-        headerLeft: () => (
-          <NavigationHeaderLeft
-            title={labels.general.header.cancelExercise}
-            onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
-            isCloseButton
-          />
-        ),
-        headerRight: () => (
-          <HeaderRightContainer>
-            <ProgressText>{progressText}</ProgressText>
-            {/* TODO Remove comment when LUN-269 is ready */}
-            {/* <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
-            {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
-            {/* </OverflowMenu> */}
-          </HeaderRightContainer>
-        ),
-        headerRightContainerStyle: {
-          paddingHorizontal: wp('2%'),
-          maxWidth: wp('25%')
-        }
-      }),
-    [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose]
-  )
+  useEffect(() => {
+    const renderHeaderLeft = () => (
+      <NavigationHeaderLeft
+        title={labels.general.header.cancelExercise}
+        onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
+        isCloseButton
+      />
+    )
+
+    const renderHeaderRight = () => (
+      <HeaderRightContainer>
+        <ProgressText>{progressText}</ProgressText>
+        {/* TODO Remove comment when LUN-269 is ready */}
+        {/* <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
+        {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
+        {/* </OverflowMenu> */}
+      </HeaderRightContainer>
+    )
+
+    navigation.setOptions({
+      headerLeft: renderHeaderLeft,
+      headerRight: renderHeaderRight,
+      headerRightContainerStyle: {
+        paddingHorizontal: wp('2%'),
+        maxWidth: wp('25%'),
+      },
+    })
+  }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction])
 
   useEffect(() => {
     const showModal = (): boolean => {
