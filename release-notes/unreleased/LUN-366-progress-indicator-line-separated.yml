@@ -1,0 +1,7 @@
+issue_key: LUN-366
+show_in_stores: true
+platforms:
+  - android
+  - ios
+en: Fixed a visual bug with the level progress display.
+de: Ein Problem mit der Darstellung der Fortschrittsanzeige wurde behoben.
