@@ -19,7 +19,7 @@ describe('ErrorMessage', () => {
     const error: Error = new Error('Network Error')
     const { getByText } = render(<ErrorMessage error={error} refresh={refresh} />)
     const button = getByText(labels.general.error.retryButton)
-    await fireEvent.press(button)
+    fireEvent.press(button)
     expect(refresh).toHaveBeenCalled()
   })
 
