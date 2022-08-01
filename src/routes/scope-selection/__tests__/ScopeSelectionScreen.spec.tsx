@@ -23,8 +23,8 @@ describe('ScopeSelection', () => {
     key: '',
     name: 'ScopeSelection',
     params: {
-      initialSelection
-    }
+      initialSelection,
+    },
   })
 
   it('should navigate to profession selection', () => {
@@ -42,7 +42,7 @@ describe('ScopeSelection', () => {
 
     expect(navigation.navigate).toHaveBeenCalledWith('ProfessionSelection', {
       discipline: mockDisciplines()[0],
-      initialSelection: true
+      initialSelection: true,
     })
   })
 
@@ -56,7 +56,7 @@ describe('ScopeSelection', () => {
     await waitFor(() => {
       expect(navigation.reset).toHaveBeenCalledWith({
         index: 0,
-        routes: [{ name: 'BottomTabNavigator' }]
+        routes: [{ name: 'BottomTabNavigator' }],
       })
     })
   })
@@ -70,7 +70,7 @@ describe('ScopeSelection', () => {
 
     expect(navigation.reset).toHaveBeenCalledWith({
       index: 0,
-      routes: [{ name: 'BottomTabNavigator' }]
+      routes: [{ name: 'BottomTabNavigator' }],
     })
   })
 

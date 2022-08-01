@@ -6,7 +6,7 @@ import MissingArticlePopover from '../MissingArticlePopover'
 jest.mock('react-native-popover-view', () => ({
   __esModule: true,
   default: 'Popover',
-  PopoverPlacement: 'top'
+  PopoverPlacement: 'top',
 }))
 
 describe('MissingArticlePopover', () => {

@@ -14,7 +14,7 @@ jest.mock('react-native-camera', () => ({
     <View accessibilityLabel='scanner'>
       <TouchableOpacity accessibilityLabel='mockOnBarCodeRead' onPress={() => onBarCodeRead({ data: apiCode })} />
     </View>
-  )
+  ),
 }))
 
 describe('QRCodeReaderOverlay', () => {

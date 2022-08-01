@@ -16,16 +16,16 @@ export const getBaseURL = async (): Promise<CMS> => {
   return __DEV__ ? testCMS : productionCMS
 }
 
-const keyGenerator = buildKeyGenerator(true, ({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({
+const keyGenerator = buildKeyGenerator(({ headers, baseURL = '', url = '', method = 'get', params, data }) => ({
   url: baseURL + (baseURL && url ? '/' : '') + url,
   headers: headers?.Authorization ?? 'not-set',
   method,
   params: params as unknown,
-  data
+  data,
 }))
 
 setupCache(axios, {
-  generateKey: keyGenerator
+  generateKey: keyGenerator,
 })
 
 export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {

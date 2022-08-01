@@ -55,21 +55,20 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   const viewerHeight = (deviceHeight * heightPercent) / percentage
 
   const imagesUrls: ImageUrl[] = images.map(image => ({
-    url: image.image
+    url: image.image,
   }))
 
-  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement =>
-    currentIndex && allSize ? (
-      <PaginationView minimized={minimized}>
+  const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (
+    <PaginationView minimized={minimized}>
+      {currentIndex && allSize && (
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}
           dotStyle={{ backgroundColor: theme.colors.primary }}
         />
-      </PaginationView>
-    ) : (
-      <></>
-    )
+      )}
+    </PaginationView>
+  )
 
   const renderItem = (item: Item): ReactElement => (
     <StyledImage source={item.source} accessibilityRole='image' minimized={minimized} height={viewerHeight} />

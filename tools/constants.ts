@@ -26,5 +26,5 @@ export {
   PLATFORM_ANDROID,
   PLATFORMS,
   DEFAULT_NOTES,
-  tagId
+  tagId,
 }

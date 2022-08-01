@@ -15,17 +15,16 @@ interface ILoadingProps {
 
 const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
   const theme = useTheme()
-  return (
-    <>
-      {isLoading ? (
-        <Indicator>
-          <ActivityIndicator size='large' color={theme.colors.primary} testID='loading' />
-        </Indicator>
-      ) : (
-        children
-      )}
-    </>
-  )
+
+  if (isLoading) {
+    return (
+      <Indicator>
+        <ActivityIndicator size='large' color={theme.colors.primary} testID='loading' />
+      </Indicator>
+    )
+  }
+
+  return <>{children}</>
 }
 
 export default Loading

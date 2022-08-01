@@ -5,7 +5,7 @@ import {
   formatGroup,
   isTypeLoadProtected,
   ServerResponseDiscipline,
-  ServerResponseGroup
+  ServerResponseGroup,
 } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 

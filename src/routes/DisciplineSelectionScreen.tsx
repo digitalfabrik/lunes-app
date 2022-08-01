@@ -31,16 +31,16 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         discipline: selectedItem,
         disciplineTitle: selectedItem.title,
         disciplineId: selectedItem.id,
-        documents: null
+        documents: null,
       })
     } else {
       navigation.push('DisciplineSelection', {
-        discipline: selectedItem
+        discipline: selectedItem,
       })
     }
   }
 
-  const Item = ({ item }: { item: Discipline }): JSX.Element => (
+  const renderListItem = ({ item }: { item: Discipline }): JSX.Element => (
     <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge showProgress />
   )
 
@@ -51,7 +51,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         <FlatList
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
           data={disciplines}
-          renderItem={Item}
+          renderItem={renderListItem}
           keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
         />

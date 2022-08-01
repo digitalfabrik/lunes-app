@@ -52,10 +52,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     data: documents,
     error,
     loading,
-    refresh
+    refresh,
   } = useLoadDocuments({
     disciplineId: discipline.id,
-    apiKey: discipline.apiKey
+    apiKey: discipline.apiKey,
   })
 
   useFocusEffect(
@@ -76,18 +76,18 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         documents,
         disciplineTitle,
         disciplineId,
-        discipline
+        discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         documents,
         disciplineId,
         disciplineTitle,
-        closeExerciseAction
+        closeExerciseAction,
       })
     }
   }
 
-  const Item = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
+  const renderListItem = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
     <Container>
       <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
@@ -128,7 +128,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
             <FlatList
               data={EXERCISES}
-              renderItem={Item}
+              renderItem={renderListItem}
               keyExtractor={({ key }) => key.toString()}
               showsVerticalScrollIndicator={false}
             />

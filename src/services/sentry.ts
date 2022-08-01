@@ -1,42 +1,39 @@
 /* eslint-disable no-console */
 import * as Sentry from '@sentry/react-native'
+import { SeverityLevel } from '@sentry/types'
 
 import AsyncStorage from './AsyncStorage'
 
 export const initSentry = (): void => {
   if (!__DEV__) {
     Sentry.init({
-      dsn: 'https://8e99e20eb419461d8a539a15e09199d8@sentry.tuerantuer.org/3'
+      dsn: 'https://8e99e20eb419461d8a539a15e09199d8@sentry.tuerantuer.org/3',
     })
   }
 }
 
-export const log = (message: string, level = 'debug'): void => {
+export const log = (message: string, level: SeverityLevel = 'debug'): void => {
   if (__DEV__) {
     switch (level) {
-      case Sentry.Severity.Fatal:
-      case Sentry.Severity.Critical:
-      case Sentry.Severity.Error:
+      case 'fatal':
+      case 'error':
         console.error(message)
         break
-      case Sentry.Severity.Warning:
+      case 'warning':
         console.warn(message)
         break
-      case Sentry.Severity.Log:
+      case 'log':
         console.log(message)
         break
-      case Sentry.Severity.Info:
+      case 'info':
         console.info(message)
         break
-      case Sentry.Severity.Debug:
+      case 'debug':
         console.debug(message)
         break
     }
   } else {
-    Sentry.addBreadcrumb({
-      message,
-      level: Sentry.Severity.fromString(level)
-    })
+    Sentry.addBreadcrumb({ message, level })
   }
 }
 

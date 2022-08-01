@@ -18,12 +18,12 @@ jest.mock('../../../components/FavoriteButton', () => () => {
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn(it => it)
+  shuffleArray: jest.fn(it => it),
 }))
 
 jest.mock('../../../services/AsyncStorage', () => ({
   getExerciseProgress: jest.fn(() => ({})),
-  saveExerciseProgress: jest.fn()
+  saveExerciseProgress: jest.fn(),
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
@@ -47,8 +47,8 @@ describe('ArticleChoiceExerciseScreen', () => {
       documents,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
-      closeExerciseAction: CommonActions.goBack()
-    }
+      closeExerciseAction: CommonActions.goBack(),
+    },
   }
 
   it('should allow to skip an exercise and try it out later', () => {
@@ -103,7 +103,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     })
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
+      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 })

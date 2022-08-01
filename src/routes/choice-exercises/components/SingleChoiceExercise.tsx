@@ -47,7 +47,7 @@ const ChoiceExerciseScreen = ({
   documentToAnswers,
   navigation,
   route,
-  exerciseKey
+  exerciseKey,
 }: SingleChoiceExerciseProps): ReactElement => {
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -89,7 +89,7 @@ const ChoiceExerciseScreen = ({
       exercise: exerciseKey,
       results,
       closeExerciseAction: route.params.closeExerciseAction,
-      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined
+      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined,
     })
     initializeExercise(true)
   }
