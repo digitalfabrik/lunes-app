@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CloseIconRed } from '../../../../assets/images'
+import CustomModal from '../../../components/CustomModal'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
+import { ContentSecondary } from '../../../components/text/Content'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
@@ -22,8 +24,14 @@ const LoadingContainer = styled(View)`
   height: 0px;
 `
 
+const Explanation = styled(ContentSecondary)`
+  padding: 0 ${props => props.theme.spacings.lg} ${props => props.theme.spacings.xl};
+  text-align: center;
+`
+
 const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
   const { data, loading, error } = useLoadDiscipline(identifier)
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   if (loading) {
     return (
@@ -44,14 +52,24 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
   }
 
   return (
-    <ListItem
-      title={data.title}
-      rightChildren={
-        <CloseIconContainer onPress={deleteItem} testID='delete-icon'>
-          <CloseIconRed />
-        </CloseIconContainer>
-      }
-    />
+    <>
+      <CustomModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        text={labels.manageSelection.deleteModal.confirmationQuestion}
+        confirmationButtonText={labels.manageSelection.deleteModal.confirm}
+        confirmationAction={deleteItem}>
+        <Explanation>{labels.manageSelection.deleteModal.explanation}</Explanation>
+      </CustomModal>
+      <ListItem
+        title={data.title}
+        rightChildren={
+          <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
+            <CloseIconRed />
+          </CloseIconContainer>
+        }
+      />
+    </>
   )
 }
 
