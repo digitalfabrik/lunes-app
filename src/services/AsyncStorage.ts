@@ -132,7 +132,7 @@ const getOverwriteCMS = async (): Promise<CMS | null> => {
 
 const toggleDevMode = async (): Promise<void> => {
   const isDevMode = await AsyncStorage.getItem(MODE_KEY)
-  await AsyncStorage.setItem(MODE_KEY, isDevMode ? JSON.stringify(!JSON.parse(isDevMode)) : 'true')
+  await AsyncStorage.setItem(MODE_KEY, JSON.stringify(isDevMode ? !JSON.parse(isDevMode) : true))
 }
 
 export const getDevMode = async (): Promise<boolean> => {
