@@ -85,9 +85,9 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
   }
 
   return (
-    <Loading isLoading={loading}>
-      {customDisciplines && (
-        <RouteWrapper>
+    <RouteWrapper>
+      <Loading isLoading={loading}>
+        {customDisciplines && (
           <Container>
             <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
             <Description>{labels.addCustomDiscipline.description}</Description>
@@ -116,9 +116,9 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
               onPress={navigation.goBack}
             />
           </Container>
-        </RouteWrapper>
-      )}
-    </Loading>
+        )}
+      </Loading>
+    </RouteWrapper>
   )
 }
 

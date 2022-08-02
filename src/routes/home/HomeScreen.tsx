@@ -87,7 +87,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   ))
 
   return (
-    <RouteWrapper backgroundColor={theme.colors.primary} barStyle='light-content'>
+    <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent>
       <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
         <View>
           <HomeScreenHeader navigation={navigation} />

@@ -144,9 +144,9 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   return (
     <>
       <RouteWrapper
-        separated
+        shouldApplyToBottom={false}
         backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
-        barStyle={unlockedNextExercise ? 'dark-content' : 'light-content'}
+        lightStatusBarContent={!unlockedNextExercise}
       />
       <RouteWrapper>
         <Root>

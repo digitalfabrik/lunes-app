@@ -1,29 +1,29 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { StatusBar, StatusBarStyle } from 'react-native'
+import { StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
 import theme from '../constants/theme'
 
 interface Props {
   backgroundColor?: string
-  barStyle?: StatusBarStyle
+  lightStatusBarContent?: boolean
   children?: ReactNode
-  separated?: boolean
+  shouldApplyToBottom?: boolean
 }
 
-const Container = styled.SafeAreaView<{ backgroundColor: string; separated: boolean }>`
+const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyToBottom: boolean }>`
   background-color: ${props => props.backgroundColor};
-  flex: ${props => (props.separated ? '0' : '1')};
+  flex: ${props => (props.shouldApplyToBottom ? '1' : '0')};
 `
 
 const RouteWrapper = ({
   backgroundColor = theme.colors.background,
-  barStyle = 'dark-content',
+  lightStatusBarContent = false,
   children,
-  separated = false,
+  shouldApplyToBottom = true,
 }: Props): ReactElement => (
-  <Container backgroundColor={backgroundColor} separated={separated}>
-    <StatusBar backgroundColor={backgroundColor} barStyle={barStyle} />
+  <Container backgroundColor={backgroundColor} shouldApplyToBottom={shouldApplyToBottom}>
+    <StatusBar backgroundColor={backgroundColor} barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'} />
     {children}
   </Container>
 )
