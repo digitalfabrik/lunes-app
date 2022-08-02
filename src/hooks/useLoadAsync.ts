@@ -35,7 +35,8 @@ export const useLoadAsync = <T, P>(request: (params: P) => Promise<T>, params: P
 
   const load = useCallback(() => {
     loadAsync<T, P>(request, params, setData, setError, setLoading).catch(e => setError(e))
-    // TODO LUN-330 fix object comparison
+    /* For small objects JSON.stringify is good enough. But does not work with ESLint rule */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, JSON.stringify(params)])
 
   useEffect(() => {
