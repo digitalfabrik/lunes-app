@@ -36,9 +36,8 @@ const ProfessionDetails = ({
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
-  const startedModules =
-    moduleAlreadyStarted && discipline.leafDisciplines ? progress * discipline.leafDisciplines.length : 0
-  const completedModules = Math.floor(startedModules)
+  const completedModules =
+    moduleAlreadyStarted && discipline.leafDisciplines ? Math.floor(progress * discipline.leafDisciplines.length) : 0
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -73,7 +72,7 @@ const ProfessionDetails = ({
         thumbnail={documents[0].document_image[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
-        buttonLabel={startedModules > 0 ? labels.home.continue : labels.home.start}
+        buttonLabel={nextExerciseData.exerciseKey === 0 ? labels.home.start : labels.home.continue}
         subheading={title}
       />
       <ButtonContainer>
