@@ -25,7 +25,7 @@ describe('DisciplineCard', () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
     const { getByText, findByText } = renderDisciplineCard()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
-    await expect(findByText(labels.home.continue)).toBeDefined()
+    expect(findByText(labels.home.continue)).toBeDefined()
   })
 
   it('should display loading', () => {
