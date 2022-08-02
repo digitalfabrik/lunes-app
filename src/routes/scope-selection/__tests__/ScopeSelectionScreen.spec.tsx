@@ -56,7 +56,7 @@ describe('ScopeSelection', () => {
     await waitFor(() => {
       expect(navigation.reset).toHaveBeenCalledWith({
         index: 0,
-        routes: [{ name: 'Home' }],
+        routes: [{ name: 'BottomTabNavigator' }],
       })
     })
   })
@@ -70,7 +70,7 @@ describe('ScopeSelection', () => {
 
     expect(navigation.reset).toHaveBeenCalledWith({
       index: 0,
-      routes: [{ name: 'Home' }],
+      routes: [{ name: 'BottomTabNavigator' }],
     })
   })
 
