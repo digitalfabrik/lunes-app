@@ -11,13 +11,13 @@ const document: Document[] = [
     alternatives: [
       {
         word: 'Spachtel',
-        article: ARTICLES[2]
+        article: ARTICLES[2],
       },
       {
         word: 'Alternative',
-        article: ARTICLES[2]
-      }
-    ]
+        article: ARTICLES[2],
+      },
+    ],
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const document: Document[] = [
     article: ARTICLES[3],
     document_image: [{ id: 1, image: 'Auto' }],
     audio: '',
-    alternatives: []
+    alternatives: [],
   },
   {
     audio: '',
@@ -33,7 +33,7 @@ const document: Document[] = [
     id: 3,
     article: ARTICLES[2],
     document_image: [{ id: 1, image: 'image' }],
-    alternatives: []
+    alternatives: [],
   },
   {
     audio: '',
@@ -41,8 +41,8 @@ const document: Document[] = [
     id: 4,
     article: ARTICLES[1],
     document_image: [{ id: 2, image: 'image' }],
-    alternatives: []
-  }
+    alternatives: [],
+  },
 ]
 
 class DocumentBuilder {

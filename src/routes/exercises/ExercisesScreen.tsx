@@ -52,10 +52,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     data: documents,
     error,
     loading,
-    refresh
+    refresh,
   } = useLoadDocuments({
     disciplineId: discipline.id,
-    apiKey: discipline.apiKey
+    apiKey: discipline.apiKey,
   })
 
   useFocusEffect(
@@ -76,13 +76,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         documents,
         disciplineTitle,
         disciplineId,
-        discipline
+        discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         documents,
         disciplineId,
         disciplineTitle,
-        closeExerciseAction
+        closeExerciseAction,
       })
     }
   }
@@ -109,7 +109,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmButtonLabel}
+          confirmationButtonText={`${labels.exercises.lockedExerciseModal.confirmButtonLabel} ${nextExercise.title}`}
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)

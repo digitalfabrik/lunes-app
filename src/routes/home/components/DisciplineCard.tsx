@@ -48,7 +48,7 @@ const DisciplineCard = ({
   identifier,
   refresh: refreshHome,
   navigateToDiscipline,
-  navigateToNextExercise
+  navigateToNextExercise,
 }: PropsType): JSX.Element => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 
@@ -73,7 +73,7 @@ const DisciplineCard = ({
             <ButtonContainer>
               <Button
                 onPress={() => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)}
-                label={labels.home.deleteModal.confirm}
+                label={labels.home.deleteProfession}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
             </ButtonContainer>

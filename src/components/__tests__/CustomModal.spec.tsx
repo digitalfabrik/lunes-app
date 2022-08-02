@@ -16,7 +16,7 @@ describe('CustomModal', () => {
     text: 'Are you sure?',
     children: <Text>{childText}</Text>,
     confirmationButtonText: 'confirm',
-    confirmationAction
+    confirmationAction,
   }
 
   it('should display passed props', () => {

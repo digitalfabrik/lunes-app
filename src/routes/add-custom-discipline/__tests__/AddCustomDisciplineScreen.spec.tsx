@@ -15,7 +15,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDiscipline')
 
 jest.mock('react-native-camera', () => ({
-  RNCamera: () => <View accessibilityLabel='RNCamera' />
+  RNCamera: () => <View accessibilityLabel='RNCamera' />,
 }))
 
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
@@ -45,7 +45,7 @@ describe('AddCustomDisciplineScreen', () => {
       numberOfChildren: 1,
       description: '',
       needsTrainingSetEndpoint: false,
-      leafDisciplines: []
+      leafDisciplines: [],
     }
     mocked(loadDiscipline).mockImplementationOnce(async () => groupInfo)
 

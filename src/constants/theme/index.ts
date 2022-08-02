@@ -11,7 +11,7 @@ export interface Theme {
 const theme: Theme = {
   colors: COLORS,
   fonts: FONTS,
-  spacings: SPACINGS
+  spacings: SPACINGS,
 }
 
 export default theme

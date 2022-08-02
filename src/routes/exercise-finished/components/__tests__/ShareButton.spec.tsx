@@ -9,7 +9,7 @@ import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
 
 jest.mock('react-native/Libraries/Share/Share', () => ({
-  share: jest.fn()
+  share: jest.fn(),
 }))
 
 describe('ShareButton', () => {
@@ -21,10 +21,10 @@ describe('ShareButton', () => {
         article: ARTICLES[1],
         document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
         audio: 'audio',
-        alternatives: []
+        alternatives: [],
       },
       result: 'correct',
-      numberOfTries: 1
+      numberOfTries: 1,
     },
     {
       document: {
@@ -33,11 +33,11 @@ describe('ShareButton', () => {
         article: ARTICLES[1],
         document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
         audio: 'audio',
-        alternatives: []
+        alternatives: [],
       },
       result: 'incorrect',
-      numberOfTries: 1
-    }
+      numberOfTries: 1,
+    },
   ]
 
   const message = `${labels.results.share.message1} 'My Discipline' ${labels.results.share.message2} 1 ${labels.results.of} 2 ${labels.results.share.message3}`

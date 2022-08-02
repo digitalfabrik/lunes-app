@@ -97,7 +97,7 @@ const ListItem = ({
   children,
   rightChildren,
   arrowDisabled = false,
-  disabled = false
+  disabled = false,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)

@@ -47,7 +47,7 @@ const ExerciseHeader = ({
   closeExerciseAction,
   currentWord,
   numberOfWords,
-  confirmClose = true
+  confirmClose = true,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -79,8 +79,8 @@ const ExerciseHeader = ({
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
         paddingHorizontal: wp('2%'),
-        maxWidth: wp('25%')
-      }
+        maxWidth: wp('25%'),
+      },
     })
   }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction])
 

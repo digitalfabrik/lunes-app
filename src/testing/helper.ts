@@ -4,5 +4,5 @@ export const getReturnOf = <T>(data: T): Return<T> => ({
   data,
   error: null,
   loading: false,
-  refresh: () => undefined
+  refresh: () => undefined,
 })
