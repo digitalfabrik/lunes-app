@@ -65,9 +65,9 @@
     },
     "lockedExerciseModal": {
       "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
-      "confirmButtonLabel": "Aufgabe freischalten",
+      "confirmButtonLabel": "Zu",
       "descriptionPart1": "Du musst",
-      "descriptionPart2": "abschließen, um die nächste Aufgabe freizuschalten."
+      "descriptionPart2": "abschließen, um das nächste Level freizuschalten."
     },
     "write": {
       "title": "Level 3",
