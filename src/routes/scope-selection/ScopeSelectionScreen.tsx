@@ -77,7 +77,9 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   ))
 
   return (
-    <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent>
+    <RouteWrapper
+      backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
+      lightStatusBarContent={initialSelection}>
       <StyledScrollView>
         {initialSelection && <Header />}
 

@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
+import { Platform } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -144,11 +145,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   return (
     <>
       <RouteWrapper
-        shouldApplyToBottom={false}
         backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
-        lightStatusBarContent={!unlockedNextExercise}
-      />
-      <RouteWrapper>
+        lightStatusBarContent={!unlockedNextExercise}>
         <Root>
           <UpperSection unlockedNextExercise={unlockedNextExercise}>
             <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
@@ -185,6 +183,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
           <ShareSection disciplineTitle={disciplineTitle} results={results} />
         </Root>
       </RouteWrapper>
+      {Platform.OS === 'ios' && <RouteWrapper shouldApplyFullscreen={false} />}
     </>
   )
 }

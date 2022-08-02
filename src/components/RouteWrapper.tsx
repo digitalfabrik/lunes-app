@@ -8,21 +8,21 @@ interface Props {
   backgroundColor?: string
   lightStatusBarContent?: boolean
   children?: ReactNode
-  shouldApplyToBottom?: boolean
+  shouldApplyFullscreen?: boolean
 }
 
-const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyToBottom: boolean }>`
+const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyFullscreen: boolean }>`
   background-color: ${props => props.backgroundColor};
-  flex: ${props => (props.shouldApplyToBottom ? '1' : '0')};
+  flex: ${props => (props.shouldApplyFullscreen ? '1' : '0')};
 `
 
 const RouteWrapper = ({
   backgroundColor = theme.colors.background,
   lightStatusBarContent = false,
   children,
-  shouldApplyToBottom = true,
+  shouldApplyFullscreen = true,
 }: Props): ReactElement => (
-  <Container backgroundColor={backgroundColor} shouldApplyToBottom={shouldApplyToBottom}>
+  <Container backgroundColor={backgroundColor} shouldApplyFullscreen={shouldApplyFullscreen}>
     <StatusBar backgroundColor={backgroundColor} barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'} />
     {children}
   </Container>
