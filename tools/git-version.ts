@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { Octokit } from '@octokit/rest'
 import { program } from 'commander'
 
-import { VERSION_FILE, PLATFORMS, tagId } from './constants'
+import { VERSION_FILE, PLATFORMS, tagId, MAIN_BRANCH } from './constants'
 import authenticate from './github-authentication'
 
 program
@@ -10,7 +9,7 @@ program
     '--deliverino-private-key <deliverino-private-key>',
     'private key of the deliverino github app in pem format with base64 encoding'
   )
-  .requiredOption('--owner <owner>', 'owner of the current repository, usually "Lunes"')
+  .requiredOption('--owner <owner>', 'owner of the current repository, usually "digitalfabrik"')
   .requiredOption('--repo <repo>', 'the current repository, should be lunes-app')
   .requiredOption('--branch <branch>', 'the current branch')
 
@@ -48,16 +47,21 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
   console.warn(`New ref with id ${id} successfully created.`)
 }
 
+interface Options {
+  deliverinoPrivateKey: string
+  owner: string
+  repo: string
+  branch: string
+}
 const commitAndTag = async (
   versionName: string,
   versionCodeString: string,
-  {
-    deliverinoPrivateKey,
-    owner,
-    repo,
-    branch,
-  }: { deliverinoPrivateKey: string; owner: string; repo: string; branch: string }
+  { deliverinoPrivateKey, owner, repo, branch }: Options
 ) => {
+  if (branch !== MAIN_BRANCH) {
+    throw new Error(`Version bumps are only allowed on the ${MAIN_BRANCH} branch!`)
+  }
+
   const appOctokit = await authenticate({ deliverinoPrivateKey, owner, repo })
   const versionFileContent = await appOctokit.repos.getContent({ owner, repo, path: VERSION_FILE, ref: branch })
 
@@ -77,6 +81,7 @@ const commitAndTag = async (
     content: contentBase64,
     branch,
     message: commitMessage,
+    // @ts-expect-error Random typescript error: property sha is not available on type { ..., sha: string, ... }
     sha: versionFileContent.data.sha,
   })
   console.warn(`New version successfully commited with message "${commitMessage}".`)
@@ -84,21 +89,26 @@ const commitAndTag = async (
   const commitSha = commit.data.commit.sha
 
   await Promise.all(
-    PLATFORMS.map(platform => createTag({ versionName, versionCode, commitSha, appOctokit, owner, repo, platform }))
+    PLATFORMS.map(platform =>
+      createTag({
+        versionName,
+        versionCode,
+        commitSha: commitSha!,
+        appOctokit,
+        owner,
+        repo,
+        platform,
+      })
+    )
   )
 }
 
 program
   .command('bump-to <new-version-name> <new-version-code>')
   .description('commits the supplied version name and code to github and tags the commit')
-  .action(async (newVersionName, newVersionCode) => {
+  .action(async (newVersionName: string, newVersionCode: string) => {
     try {
-      await commitAndTag(newVersionName, newVersionCode, {
-        deliverinoPrivateKey: program.deliverinoPrivateKey,
-        branch: program.branch,
-        owner: program.owner,
-        repo: program.repo,
-      })
+      await commitAndTag(newVersionName, newVersionCode, program.opts())
     } catch (e) {
       console.error(e)
       process.exit(1)

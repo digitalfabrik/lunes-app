@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { program } from 'commander'
 
 import { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR } from './constants'
@@ -10,16 +9,19 @@ program
     '--deliverino-private-key <deliverino-private-key>',
     'private key of the deliverino github app in pem format with base64 encoding'
   )
-  .requiredOption('--owner <owner>', 'owner of the current repository, usually "Digitalfabrik"')
+  .requiredOption('--owner <owner>', 'owner of the current repository, usually "digitalfabrik"')
   .requiredOption('--repo <repo>', 'the current repository, usually "lunes-app"')
   .requiredOption('--branch <branch>', 'the current branch')
 
-interface Options {
-  newVersionName: string
+interface Opts {
   deliverinoPrivateKey: string
   owner: string
   repo: string
   branch: string
+}
+
+type Options = Opts & {
+  newVersionName: string
 }
 
 const moveReleaseNotes = async ({ newVersionName, deliverinoPrivateKey, owner, repo, branch }: Options) => {
@@ -116,10 +118,7 @@ program
     try {
       await moveReleaseNotes({
         newVersionName,
-        deliverinoPrivateKey: program.deliverinoPrivateKey,
-        branch: program.branch,
-        owner: program.owner,
-        repo: program.repo,
+        ...program.opts<Opts>(),
       })
     } catch (e) {
       console.error(e)
