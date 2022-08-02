@@ -52,7 +52,7 @@ const ProfessionDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={progress ?? 0}
+          progress={doneModules ? progress ?? 0 : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
