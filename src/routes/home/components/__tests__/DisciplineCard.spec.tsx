@@ -46,6 +46,6 @@ describe('DisciplineCard', () => {
       <DisciplineCard identifier={{ apiKey: 'abc' }} navigateToDiscipline={navigateToDiscipline} />
     )
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
-    expect(getByText(labels.home.deleteModal.confirm)).toBeDefined()
+    expect(getByText(labels.home.deleteProfession)).toBeDefined()
   })
 })
