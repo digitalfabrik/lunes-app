@@ -3,4 +3,4 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: 
+de: Versetzte Fortschrittsbalken in der Übungsübersicht behoben
