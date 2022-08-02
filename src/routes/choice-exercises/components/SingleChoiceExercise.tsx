@@ -173,7 +173,7 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
-          <CheatMode cheatFunc={onExerciseCheated} />
+          <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
       </>
     </ExerciseContainer>

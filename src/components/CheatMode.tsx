@@ -16,10 +16,10 @@ const CheatContainer = styled.View`
 `
 
 interface CheatModeProps {
-  cheatFunc: (result: SimpleResult) => void
+  cheat: (result: SimpleResult) => void
 }
 
-const CheatMode = ({ cheatFunc }: CheatModeProps): ReactElement => {
+const CheatMode = ({ cheat }: CheatModeProps): ReactElement => {
   const [cheatsEnabled, setCheatsEnabled] = useState<boolean>(false)
 
   useEffect(() => {
@@ -36,12 +36,12 @@ const CheatMode = ({ cheatFunc }: CheatModeProps): ReactElement => {
         <CheatContainer>
           <Button
             label={labels.exercises.cheat.succeed}
-            onPress={() => cheatFunc(SIMPLE_RESULTS.correct)}
+            onPress={() => cheat(SIMPLE_RESULTS.correct)}
             buttonTheme={BUTTONS_THEME.outlined}
           />
           <Button
             label={labels.exercises.cheat.fail}
-            onPress={() => cheatFunc(SIMPLE_RESULTS.incorrect)}
+            onPress={() => cheat(SIMPLE_RESULTS.incorrect)}
             buttonTheme={BUTTONS_THEME.outlined}
           />
         </CheatContainer>

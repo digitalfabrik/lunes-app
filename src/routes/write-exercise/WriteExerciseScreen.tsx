@@ -167,7 +167,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             )}
           </>
         )}
-        <CheatMode cheatFunc={cheatExercise} />
+        <CheatMode cheat={cheatExercise} />
       </ButtonContainer>
     </KeyboardAwareScrollView>
   )

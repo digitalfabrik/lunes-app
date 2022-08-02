@@ -11,7 +11,7 @@ jest.mock('../../services/AsyncStorage', () => ({
   getDevMode: jest.fn(),
 }))
 
-const cheatFunc = jest.fn()
+const cheat = jest.fn()
 
 describe('CheatMode', () => {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('CheatMode', () => {
 
   it('should not show cheat buttons in normal mode', async () => {
     ;(getDevMode as jest.Mock).mockImplementation(async () => false)
-    const { queryByText } = render(<CheatMode cheatFunc={cheatFunc} />)
+    const { queryByText } = render(<CheatMode cheat={cheat} />)
 
     await waitFor(() => expect(queryByText(labels.exercises.cheat.succeed)).toBeNull())
     await waitFor(() => expect(queryByText(labels.exercises.cheat.fail)).toBeNull())
@@ -28,7 +28,7 @@ describe('CheatMode', () => {
 
   it('should show cheat buttons in dev mode', async () => {
     ;(getDevMode as jest.Mock).mockImplementation(async () => true)
-    const { getByText } = render(<CheatMode cheatFunc={cheatFunc} />)
+    const { getByText } = render(<CheatMode cheat={cheat} />)
 
     await waitFor(() => expect(getByText(labels.exercises.cheat.succeed)).not.toBeNull())
     await waitFor(() => expect(getByText(labels.exercises.cheat.fail)).not.toBeNull())
@@ -36,16 +36,16 @@ describe('CheatMode', () => {
 
   it("should call parent's cheat function with proper result type", async () => {
     ;(getDevMode as jest.Mock).mockImplementation(async () => true)
-    const { findByText } = render(<CheatMode cheatFunc={cheatFunc} />)
+    const { findByText } = render(<CheatMode cheat={cheat} />)
 
     const succeedButton = await findByText(labels.exercises.cheat.succeed)
     fireEvent.press(succeedButton)
-    expect(cheatFunc).toHaveBeenCalledWith(SIMPLE_RESULTS.correct)
+    expect(cheat).toHaveBeenCalledWith(SIMPLE_RESULTS.correct)
 
-    cheatFunc.mockClear()
+    cheat.mockClear()
 
     const failButton = await findByText(labels.exercises.cheat.fail)
     fireEvent.press(failButton)
-    expect(cheatFunc).toHaveBeenCalledWith(SIMPLE_RESULTS.incorrect)
+    expect(cheat).toHaveBeenCalledWith(SIMPLE_RESULTS.incorrect)
   })
 })
