@@ -41,13 +41,13 @@ describe('DebugModal', () => {
     const textField = getByPlaceholderText('Development Code')
 
     await act(async () => {
-      await fireEvent.changeText(textField, 'wirschaffendas')
+      fireEvent.changeText(textField, 'wirschaffendas')
     })
     const enableDevModeButton = getByText(labels.settings.debugModal.enableDevMode)
     expect(enableDevModeButton).toBeDefined()
 
     await act(async () => {
-      await fireEvent.press(enableDevModeButton)
+      fireEvent.press(enableDevModeButton)
     })
     const disableDevModeButton = getByText(labels.settings.debugModal.disableDevMode)
     expect(disableDevModeButton).toBeDefined()
