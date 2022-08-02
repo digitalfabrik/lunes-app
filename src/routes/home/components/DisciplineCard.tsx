@@ -73,7 +73,7 @@ const DisciplineCard = ({
             <ButtonContainer>
               <Button
                 onPress={() => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)}
-                label={labels.home.deleteModal.confirm}
+                label={labels.home.deleteProfession}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
             </ButtonContainer>
