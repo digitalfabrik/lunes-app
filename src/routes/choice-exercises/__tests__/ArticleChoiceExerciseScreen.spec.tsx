@@ -99,8 +99,8 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent(getByText('das'), 'pressOut')
 
-    await act(async () => {
-      await fireEvent.press(getByText(labels.exercises.showResults))
+    await act(() => {
+      fireEvent.press(getByText(labels.exercises.showResults))
     })
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
