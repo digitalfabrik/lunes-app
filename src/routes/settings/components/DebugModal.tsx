@@ -8,6 +8,7 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import useLoadAsync from '../../../hooks/useLoadAsync'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { reportError } from '../../../services/sentry'
@@ -32,22 +33,20 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
-  const [modeButtonLabel, setModeButtonLabel] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
-
-  const updateModeButtonLabel = () => {
-    AsyncStorage.getDevMode()
-      .then(isDevMode => {
-        setModeButtonLabel(
-          isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode
-        )
-      })
-      .catch(reportError)
-  }
+  const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode)
+  // const updateModeButtonLabel = () => {
+  //   AsyncStorage.getDevMode()
+  //     .then(isDevMode => {
+  //       setModeButtonLabel(
+  //         isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode
+  //       )
+  //     })
+  //     .catch(reportError)
+  // }
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
-    updateModeButtonLabel()
   }, [])
 
   const throwSentryError = (): void => {
@@ -68,7 +67,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
 
   const toggleDevMode = async (): Promise<void> => {
     await AsyncStorage.toggleDevMode()
-    updateModeButtonLabel()
+    refresh()
   }
 
   return (
@@ -88,7 +87,11 @@ const DebugModal = (props: PropsType): JSX.Element => {
             onPress={switchCMS}
             buttonTheme={BUTTONS_THEME.contained}
           />
-          <Button label={modeButtonLabel} onPress={toggleDevMode} buttonTheme={BUTTONS_THEME.contained} />
+          <Button
+            label={isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode}
+            onPress={toggleDevMode}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
         </Container>
       )}
     </ModalSkeleton>
