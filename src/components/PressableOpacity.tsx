@@ -9,10 +9,13 @@ interface Props {
   testID?: string
 }
 
+const OPACITY_MIN = 0.2
+const OPACITY_MAX = 1
+
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
   flex-direction: row;
   background-color: ${props => (props.isPressed ? props.theme.colors.background : 'transparent')}
-  opacity: ${props => (props.isPressed ? 0.2 : 1)}
+  opacity: ${props => (props.isPressed ? OPACITY_MIN : OPACITY_MAX)}
 `
 
 const PressableOpacity = ({ children, onPress, style, testID }: Props): ReactElement => {
