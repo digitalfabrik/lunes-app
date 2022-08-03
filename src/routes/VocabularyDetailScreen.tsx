@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -9,6 +9,7 @@ import { ArrowRightIcon, CrystalBallIcon } from '../../assets/images'
 import Button from '../components/Button'
 import DocumentImageSection from '../components/DocumentImageSection'
 import ExerciseHeader from '../components/ExerciseHeader'
+import FeedbackModal from '../components/FeedbackModal'
 import HorizontalLine from '../components/HorizontalLine'
 import WordItem from '../components/WordItem'
 import { ContentSecondary, ContentTextBold } from '../components/text/Content'
@@ -49,7 +50,7 @@ const AlternativesContent = styled.View`
   padding: 0 10px;
 `
 
-const SuggestAlternativeContainer = styled.View`
+const SuggestAlternativePressable = styled.Pressable`
   flex-direction: row;
   align-items: center;
   padding: ${props => props.theme.spacings.xs} 0 ${props => props.theme.spacings.xxl};
@@ -69,6 +70,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
   const document = documents[documentIndex]
   const { word, article } = document
   const hasNextDocument = documentIndex + 1 < documents.length
+  const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: documentIndex + 1 })
@@ -104,11 +106,10 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
               </>
             )}
 
-            {/* Will be implemented in LUN-269 */}
-            <SuggestAlternativeContainer>
+            <SuggestAlternativePressable onPress={() => setIsFeedbackModalVisible(true)}>
               <Label>{labels.exercises.vocabularyList.suggestAlternative}</Label>
               <ArrowRightIcon fill={theme.colors.black} width={wp('6%')} height={wp('6%')} />
-            </SuggestAlternativeContainer>
+            </SuggestAlternativePressable>
           </AlternativesContent>
         </AlternativesContainer>
 
@@ -129,6 +130,12 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
           )}
         </ButtonContainer>
       </Container>
+      <FeedbackModal
+        visible={isFeedbackModalVisible}
+        onClose={() => setIsFeedbackModalVisible(false)}
+        feedbackType={FeedbackType.document}
+        feedbackForId={document.id}
+      />
     </SafeAreaView>
   )
 }
