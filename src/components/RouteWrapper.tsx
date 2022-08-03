@@ -8,22 +8,23 @@ interface Props {
   backgroundColor?: string
   lightStatusBarContent?: boolean
   children: ReactNode
-  shouldApplyToBottom?: boolean
+  /** Separate bgColor for notches only works for ios */
+  bottomBackgroundColor?: string
 }
 
-const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyToBottom: boolean }>`
+const Container = styled.SafeAreaView<{ backgroundColor: string; shouldTakeSpace: boolean }>`
   background-color: ${props => props.backgroundColor};
-  flex: ${props => (props.shouldApplyToBottom ? '1' : '0')};
+  flex: ${props => (props.shouldTakeSpace ? '1' : '0')};
 `
 
 const RouteWrapper = ({
   backgroundColor = theme.colors.background,
   lightStatusBarContent = false,
   children,
-  shouldApplyToBottom = true,
+  bottomBackgroundColor,
 }: Props): ReactElement => (
   <>
-    <Container backgroundColor={backgroundColor} shouldApplyToBottom>
+    <Container backgroundColor={backgroundColor} shouldTakeSpace>
       <StatusBar
         backgroundColor={backgroundColor}
         barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'}
@@ -31,9 +32,9 @@ const RouteWrapper = ({
       {children}
     </Container>
     {/* For iOS a separate container is needed to overwrite the color of the bottom notch */}
-    {!shouldApplyToBottom && Platform.OS === 'ios' && (
-      <Container shouldApplyToBottom={false} backgroundColor={theme.colors.background} />
-    )}
+    {bottomBackgroundColor && Platform.OS === 'ios' ? (
+      <Container shouldTakeSpace={false} backgroundColor={bottomBackgroundColor} />
+    ) : null}
   </>
 )
 

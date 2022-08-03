@@ -145,7 +145,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     <RouteWrapper
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
-      shouldApplyToBottom={false}>
+      bottomBackgroundColor={theme.colors.background}>
       <Root>
         <UpperSection unlockedNextExercise={unlockedNextExercise}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
