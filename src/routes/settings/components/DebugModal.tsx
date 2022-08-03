@@ -35,15 +35,6 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode, null)
-  // const updateModeButtonLabel = () => {
-  //   AsyncStorage.getDevMode()
-  //     .then(isDevMode => {
-  //       setModeButtonLabel(
-  //         isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode
-  //       )
-  //     })
-  //     .catch(reportError)
-  // }
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
