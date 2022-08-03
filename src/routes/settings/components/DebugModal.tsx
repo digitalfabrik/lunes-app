@@ -34,7 +34,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
-  const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode)
+  const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode, null)
   // const updateModeButtonLabel = () => {
   //   AsyncStorage.getDevMode()
   //     .then(isDevMode => {
