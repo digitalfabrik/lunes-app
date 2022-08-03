@@ -16,10 +16,7 @@
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
-    "deleteModal": {
-      "confirmationQuestion": "Soll der Bereich wirklich gelöscht werden?",
-      "confirm": "Bereich löschen"
-    },
+    "deleteProfession": "Bereich löschen",
     "impressum": "Impressum"
   },
   "manageSelection": {
@@ -28,7 +25,12 @@
     "yourCustomDisciplines": "Deine individuellen Bereiche",
     "yourSavedProgress": "Deine gespeicherten Lernbereiche",
     "addProfession": "Beruf hinzufügen",
-    "descriptionAddCustomDiscipline": "Hier kannst du eigene Lernbereiche mit deinem QR-Code hinzufügen."
+    "descriptionAddCustomDiscipline": "Hier kannst du eigene Lernbereiche mit deinem QR-Code hinzufügen.",
+    "deleteModal": {
+      "confirmationQuestion": "Willst du den Bereich wirklich löschen?",
+      "explanation": "Deine Lernfortschritte werden gespeichert und du kannst den Beruf später wiederherstellen.",
+      "confirm": "Ja, löschen!"
+    }
   },
   "addCustomDiscipline": {
     "heading": "Individuellen Bereich hinzufügen",
