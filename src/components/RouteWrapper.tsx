@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { StatusBar } from 'react-native'
+import { Platform, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
 import theme from '../constants/theme'
@@ -7,25 +7,34 @@ import theme from '../constants/theme'
 interface Props {
   backgroundColor?: string
   lightStatusBarContent?: boolean
-  children?: ReactNode
-  shouldApplyFullscreen?: boolean
+  children: ReactNode
+  shouldApplyToBottom?: boolean
 }
 
-const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyFullscreen: boolean }>`
+const Container = styled.SafeAreaView<{ backgroundColor: string; shouldApplyToBottom: boolean }>`
   background-color: ${props => props.backgroundColor};
-  flex: ${props => (props.shouldApplyFullscreen ? '1' : '0')};
+  flex: ${props => (props.shouldApplyToBottom ? '1' : '0')};
 `
 
 const RouteWrapper = ({
   backgroundColor = theme.colors.background,
   lightStatusBarContent = false,
   children,
-  shouldApplyFullscreen = true,
+  shouldApplyToBottom = true,
 }: Props): ReactElement => (
-  <Container backgroundColor={backgroundColor} shouldApplyFullscreen={shouldApplyFullscreen}>
-    <StatusBar backgroundColor={backgroundColor} barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'} />
-    {children}
-  </Container>
+  <>
+    <Container backgroundColor={backgroundColor} shouldApplyToBottom>
+      <StatusBar
+        backgroundColor={backgroundColor}
+        barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'}
+      />
+      {children}
+    </Container>
+    {/* For iOS a separate container is needed to overwrite the color of the bottom notch */}
+    {!shouldApplyToBottom && Platform.OS === 'ios' && (
+      <Container shouldApplyToBottom={false} backgroundColor={theme.colors.background} />
+    )}
+  </>
 )
 
 export default RouteWrapper
