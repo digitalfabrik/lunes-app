@@ -1,21 +1,21 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
-import { RoutesParams } from '../../navigation/NavigationTypes'
-import DocumentBuilder from '../../testing/DocumentBuilder'
-import createNavigationMock from '../../testing/createNavigationPropMock'
-import render from '../../testing/render'
+import labels from '../../../constants/labels.json'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
+import DocumentBuilder from '../../../testing/DocumentBuilder'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import render from '../../../testing/render'
 import VocabularyDetailScreen from '../VocabularyDetailScreen'
 
 jest.useFakeTimers()
 
-jest.mock('../../components/FavoriteButton', () => {
+jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
 
-jest.mock('../../components/AudioPlayer', () => {
+jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })

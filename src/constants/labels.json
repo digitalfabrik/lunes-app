@@ -55,7 +55,7 @@
     "vocabularyList": {
       "title": "Wortliste",
       "description": "Alle Wörter kennenlernen",
-      "alternativeWords":  "Andere Wörter",
+      "alternativeWords": "Andere Wörter",
       "suggestAlternative": "Anderes Wort vorschlagen"
     },
     "wordChoice": {
