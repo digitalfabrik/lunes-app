@@ -8,8 +8,8 @@ import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 
 const Container = styled.TouchableOpacity<StyledListElementProps>`
   margin-bottom: ${props => props.theme.spacings.xxs};
+  padding: ${props => props.theme.spacings.sm};
   border-radius: 2px;
-  flex: 1;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
