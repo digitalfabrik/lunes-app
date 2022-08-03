@@ -1,6 +1,0 @@
-issue_key: LUN-388
-show_in_stores: true
-platforms:
-  - android
-  - ios
-de: Versetzte Fortschrittsbalken in der Übungsübersicht behoben
