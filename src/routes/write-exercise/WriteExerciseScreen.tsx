@@ -15,7 +15,6 @@ import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../services/helpers'
-import { log } from '../../services/sentry'
 import InteractionSection from './components/InteractionSection'
 
 const ButtonContainer = styled.View`
@@ -35,11 +34,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
   )
 
-  const [hasCheated, setHasCheated] = useState<boolean>(false)
-
   const isKeyboardShown = useIsKeyboardVisible()
   const current = documentsWithResults[currentIndex]
-  let needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
+  const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const initializeExercise = useCallback(
     (force = false) => {
@@ -67,15 +64,15 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
-  const finishExercise = async (): Promise<void> => {
+  const finishExercise = async (results: DocumentResult[]): Promise<void> => {
     if (disciplineId) {
-      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, documentsWithResults)
+      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineTitle,
       disciplineId,
-      results: documentsWithResults,
+      results,
       exercise: ExerciseKeys.writeExercise,
       closeExerciseAction,
       unlockedNextExercise: false,
@@ -87,7 +84,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(false)
 
     if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
-      await finishExercise()
+      await finishExercise(documentsWithResults)
     } else if (needsToBeRepeated) {
       tryLater()
     } else {
@@ -105,20 +102,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(true)
   }
 
-  useEffect(() => {
-    if (hasCheated) {
-      needsToBeRepeated = false
-      continueExercise().catch(log)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [documentsWithResults])
-
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
-    setHasCheated(true)
-    setCurrentIndex(documentsWithResults.length - 1)
-
-    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result })).reverse()
-    setDocumentsWithResults(cheatedDocuments)
+    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
+    await finishExercise(cheatedDocuments)
   }
 
   const giveUp = async (): Promise<void> => {
