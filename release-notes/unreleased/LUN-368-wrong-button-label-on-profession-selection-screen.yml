@@ -3,4 +3,4 @@ show_in_stores: true
 platforms:
   - android
   - ios
-de: Klarerer Buttonname für unangefangene Übungen
+de: Treffenderer Buttonname bei noch nicht begonnenen Übungen
