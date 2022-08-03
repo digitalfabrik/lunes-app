@@ -12,7 +12,7 @@ import ExerciseHeader from '../components/ExerciseHeader'
 import HorizontalLine from '../components/HorizontalLine'
 import WordItem from '../components/WordItem'
 import { ContentSecondary, ContentTextBold } from '../components/text/Content'
-import { BUTTONS_THEME } from '../constants/data'
+import { BUTTONS_THEME, FeedbackType } from '../constants/data'
 import labels from '../constants/labels.json'
 import theme from '../constants/theme'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -81,6 +81,8 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         numberOfWords={documents.length}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
+        feedbackType={FeedbackType.document}
+        feedbackForId={document.id}
       />
       <DocumentImageSection document={document} />
       <Container>

@@ -7,7 +7,15 @@ import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
-import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
+import {
+  Answer,
+  BUTTONS_THEME,
+  ExerciseKey,
+  FeedbackType,
+  numberOfMaxRetries,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../../constants/data'
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
@@ -35,7 +43,7 @@ interface SingleChoiceExerciseProps {
   documentToAnswers: (document: Document) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  exerciseKey: number
+  exerciseKey: ExerciseKey
 }
 
 const CORRECT_ANSWER_DELAY = 700
@@ -139,6 +147,8 @@ const ChoiceExerciseScreen = ({
         closeExerciseAction={route.params.closeExerciseAction}
         currentWord={currentWord}
         numberOfWords={count}
+        feedbackType={FeedbackType.document}
+        feedbackForId={document.id}
       />
 
       <>

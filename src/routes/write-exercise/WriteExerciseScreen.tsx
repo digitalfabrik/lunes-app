@@ -8,7 +8,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, FeedbackType, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
@@ -118,6 +118,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
         currentWord={currentIndex}
         numberOfWords={documents.length}
         closeExerciseAction={closeExerciseAction}
+        feedbackType={FeedbackType.document}
+        feedbackForId={documents[currentIndex].id}
       />
 
       <InteractionSection
