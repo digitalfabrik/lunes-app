@@ -12,7 +12,7 @@ const CheatContainer = styled.View`
   justify-content: center;
   flex-direction: row;
   transform: scale(0.6);
-  margin-top: -30px;
+  margin-top: -${props => props.theme.spacings.sm};
   width: 100%;
 `
 
