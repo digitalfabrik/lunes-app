@@ -117,6 +117,7 @@ module.exports = {
       files: ['**/tools/**'],
       rules: {
         'no-console': 'off',
+        'import/no-extraneous-dependencies': 'off',
       },
     },
   ],

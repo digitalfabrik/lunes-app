@@ -1,8 +1,4 @@
 /* eslint-disable camelcase */
-
-/* eslint-disable import/no-extraneous-dependencies */
-
-/* eslint-disable no-console */
 import { program } from 'commander'
 import fs from 'fs'
 import yaml from 'js-yaml'
@@ -151,7 +147,7 @@ program
   .option('--android', 'include release notes for android')
   .option(
     '--production',
-    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store.'
+    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store. may not be used with multiple platforms.'
   )
   .option('--destination <destination>', 'if specified the parsed notes are saved to the directory')
   .requiredOption(
@@ -163,8 +159,7 @@ program
   .description(
     'parse the release notes and outputs the release notes as JSON string and writes them to the specified file'
   )
-  // @ts-expect-error
-  .action(() => parseNotesProgram({ ...program }))
+  .action(parseNotesProgram)
 
 // General store metadata
 type StoreName = 'appstore' | 'playstore'
@@ -203,9 +198,10 @@ program
   )
   .command('prepare-metadata <storeName>')
   .description('prepare metadata for store')
-  .action((storeName: string) => {
+  .action((storeName: string, options: { overrideVersionName: string }) => {
     try {
-      writeMetadata(storeName, program.overrideVersionName)
+      const { overrideVersionName } = options
+      writeMetadata(storeName, overrideVersionName)
     } catch (e) {
       console.error(e)
       process.exit(1)
