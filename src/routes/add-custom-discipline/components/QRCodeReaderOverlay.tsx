@@ -10,7 +10,7 @@ import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: ${props => props.theme.colors.backgroundAccent};
+  background-color: ${props => props.theme.colors.background};
 `
 
 const Icon = styled.TouchableOpacity`

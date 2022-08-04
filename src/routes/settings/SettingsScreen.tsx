@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react'
-import { SafeAreaView, Switch } from 'react-native'
+import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
@@ -43,7 +44,7 @@ const SettingsScreen = (): ReactElement => {
   }
 
   return (
-    <SafeAreaView>
+    <RouteWrapper>
       <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
       <Container>
         <SettingsHeading>{labels.settings.settings}</SettingsHeading>
@@ -56,7 +57,7 @@ const SettingsScreen = (): ReactElement => {
         </ItemContainer>
         <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
       </Container>
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 

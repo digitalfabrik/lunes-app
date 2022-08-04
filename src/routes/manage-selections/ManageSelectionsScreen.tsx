@@ -6,6 +6,7 @@ import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
 import HorizontalLine from '../../components/HorizontalLine'
+import RouteWrapper from '../../components/RouteWrapper'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
@@ -63,24 +64,26 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   }
 
   return (
-    <Root contentContainerStyle={{ flexGrow: 1 }}>
-      <Heading>{labels.manageSelection.heading}</Heading>
-      <SectionHeading>{labels.manageSelection.yourProfessions}</SectionHeading>
-      <HorizontalLine />
-      {professionItems}
-      <AddElement onPress={navigateToProfessionSelection} label={labels.manageSelection.addProfession} />
+    <RouteWrapper>
+      <Root contentContainerStyle={{ flexGrow: 1 }}>
+        <Heading>{labels.manageSelection.heading}</Heading>
+        <SectionHeading>{labels.manageSelection.yourProfessions}</SectionHeading>
+        <HorizontalLine />
+        {professionItems}
+        <AddElement onPress={navigateToProfessionSelection} label={labels.manageSelection.addProfession} />
 
-      <SectionHeading>{labels.manageSelection.yourCustomDisciplines}</SectionHeading>
-      <HorizontalLine />
-      {customDisciplineItems}
+        <SectionHeading>{labels.manageSelection.yourCustomDisciplines}</SectionHeading>
+        <HorizontalLine />
+        {customDisciplineItems}
 
-      <AddElement
-        onPress={navigateToAddCustomDiscipline}
-        label={labels.home.addCustomDiscipline}
-        explanation={labels.manageSelection.descriptionAddCustomDiscipline}
-      />
-      <Padding />
-    </Root>
+        <AddElement
+          onPress={navigateToAddCustomDiscipline}
+          label={labels.home.addCustomDiscipline}
+          explanation={labels.manageSelection.descriptionAddCustomDiscipline}
+        />
+        <Padding />
+      </Root>
+    </RouteWrapper>
   )
 }
 
