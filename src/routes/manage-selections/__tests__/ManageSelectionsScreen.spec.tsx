@@ -27,12 +27,14 @@ describe('ManageSelectionsScreen', () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
     await AsyncStorage.pushSelectedProfession(mockDisciplines()[0].id)
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
-    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
+    mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
+    const confirmButton = getByText(labels.manageSelection.deleteModal.confirm)
+    fireEvent.press(confirmButton)
     await waitFor(async () => {
       const selectedProfessions = await AsyncStorage.getSelectedProfessions()
       expect(selectedProfessions).toEqual([])
@@ -49,6 +51,8 @@ describe('ManageSelectionsScreen', () => {
     expect(getByText(mockCustomDiscipline.title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
+    const confirmButton = getByText(labels.manageSelection.deleteModal.confirm)
+    fireEvent.press(confirmButton)
     await waitFor(async () => {
       const customDisciplines = await AsyncStorage.getCustomDisciplines()
       expect(customDisciplines).toEqual([])

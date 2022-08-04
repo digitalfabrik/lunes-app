@@ -25,7 +25,7 @@ describe('DisciplineCard', () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
     const { getByText, findByText } = renderDisciplineCard()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
-    await expect(findByText(labels.home.continue)).toBeDefined()
+    expect(findByText(labels.home.continue)).toBeDefined()
   })
 
   it('should display loading', () => {
@@ -46,6 +46,6 @@ describe('DisciplineCard', () => {
       <DisciplineCard identifier={{ apiKey: 'abc' }} navigateToDiscipline={navigateToDiscipline} />
     )
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
-    expect(getByText(labels.home.deleteModal.confirm)).toBeDefined()
+    expect(getByText(labels.home.deleteProfession)).toBeDefined()
   })
 })

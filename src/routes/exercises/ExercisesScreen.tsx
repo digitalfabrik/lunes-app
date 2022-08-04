@@ -105,7 +105,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmButtonLabel}
+          confirmationButtonText={`${labels.exercises.lockedExerciseModal.confirmButtonLabel} ${nextExercise.title}`}
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)
