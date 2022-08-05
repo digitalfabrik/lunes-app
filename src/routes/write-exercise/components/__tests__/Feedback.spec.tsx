@@ -8,10 +8,10 @@ import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
-describe('Feedback section', () => {
+describe('Feedback', () => {
   const document = {
     alternatives: [],
-    article: ARTICLES[4],
+    article: ARTICLES[2],
     audio: '',
     id: 0,
     document_image: [],

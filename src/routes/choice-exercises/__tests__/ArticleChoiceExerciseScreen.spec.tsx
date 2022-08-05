@@ -54,15 +54,15 @@ describe('ArticleChoiceExerciseScreen', () => {
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     const tryLater = getByText(labels.exercises.tryLater)
     fireEvent.press(tryLater)
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
   it('should not allow to skip last document', () => {
@@ -70,26 +70,26 @@ describe('ArticleChoiceExerciseScreen', () => {
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 
   it('should show word again when answered wrong', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(labels.exercises.next))
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
   it('should save progress correctly', async () => {
@@ -99,7 +99,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent(getByText('das'), 'pressOut')
 
-    await act(() => {
+    act(() => {
       fireEvent.press(getByText(labels.exercises.showResults))
     })
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
