@@ -35,4 +35,24 @@ describe('DebugModal', () => {
     })
     await waitFor(() => expect(getByText(testCMS)).toBeDefined())
   })
+
+  it('should show and toggle devmode status', async () => {
+    const { queryByText, getByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
+    const textField = getByPlaceholderText('Development Code')
+
+    await act(async () => {
+      fireEvent.changeText(textField, 'wirschaffendas')
+    })
+    const enableDevModeButton = getByText(labels.settings.debugModal.enableDevMode)
+    expect(enableDevModeButton).toBeDefined()
+
+    await act(async () => {
+      fireEvent.press(enableDevModeButton)
+    })
+    const disableDevModeButton = getByText(labels.settings.debugModal.disableDevMode)
+    expect(disableDevModeButton).toBeDefined()
+
+    const enableDevModeButtonAfterClick = queryByText(labels.settings.debugModal.enableDevMode)
+    expect(enableDevModeButtonAfterClick).toBeNull()
+  })
 })
