@@ -87,6 +87,10 @@
       }
     },
     "tryLater": "Später versuchen",
+    "cheat": {
+      "succeed": "Solve All",
+      "fail": "Fail All"
+    },
     "next": "Nächstes Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
@@ -162,7 +166,9 @@
     "debugModal": {
       "sentry": "Send Sentry Error",
       "currentCMS": "current cms",
-      "changeCMS": "change cms"
+      "changeCMS": "change cms",
+      "enableDevMode": "Enable DevMode",
+      "disableDevMode": "Disable DevMode"
     }
   }
 }

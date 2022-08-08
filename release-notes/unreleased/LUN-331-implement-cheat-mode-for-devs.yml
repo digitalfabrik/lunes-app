@@ -1,0 +1,6 @@
+issue_key: LUN-331
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: Im Entwicklermodus lassen sich Übungen automatisch ausfüllen, wahlweise korrekt oder inkorrekt
