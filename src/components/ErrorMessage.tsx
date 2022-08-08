@@ -1,12 +1,14 @@
 import React from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { NoInternetConnectionIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
 import labels from '../constants/labels.json'
+import theme from '../constants/theme'
 import Button from './Button'
+import RoundedBackground from './RoundedBackground'
 
 const Container = styled.View`
   width: ${wp('80%')}px;
@@ -39,17 +41,6 @@ const IconStyle = styled.View`
   height: auto;
   align-items: center;
 `
-const UpperSection = styled.View`
-  width: 140%;
-  height: 67%;
-  background-color: ${props => props.theme.colors.networkErrorBackground};
-  border-bottom-left-radius: ${hp('60%')}px;
-  border-bottom-right-radius: ${hp('60%')}px;
-  margin-bottom: ${props => props.theme.spacings.xxl};
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`
 
 interface ErrorMessageProps {
   error: Error | null
@@ -61,7 +52,7 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
   error &&
   (!contained && error.message === NetworkError ? (
     <NetworkErrorWrapper>
-      <UpperSection>
+      <RoundedBackground color={theme.colors.networkErrorBackground} height='67%'>
         <Container>
           <IconStyle>
             <NoInternetConnectionIcon testID='no-internet-icon' />
@@ -71,7 +62,7 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
             {labels.general.error.noWifi} ({error.message})
           </ErrorText>
         </Container>
-      </UpperSection>
+      </RoundedBackground>
       <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
     </NetworkErrorWrapper>
   ) : (
