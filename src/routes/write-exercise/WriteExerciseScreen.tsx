@@ -10,6 +10,7 @@ import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
+import RouteWrapper from '../../components/RouteWrapper'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
@@ -118,44 +119,49 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       : labels.exercises.next
 
   return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-      <ExerciseHeader
-        navigation={navigation}
-        currentWord={currentIndex}
-        numberOfWords={documents.length}
-        closeExerciseAction={closeExerciseAction}
-      />
+    <RouteWrapper>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+        <ExerciseHeader
+          navigation={navigation}
+          currentWord={currentIndex}
+          numberOfWords={documents.length}
+          closeExerciseAction={closeExerciseAction}
+        />
 
-      <InteractionSection
-        documentWithResult={current}
-        storeResult={storeResult}
-        isAnswerSubmitted={isAnswerSubmitted}
-      />
-      <ButtonContainer>
-        {isAnswerSubmitted && current.result !== 'similar' ? (
-          <Button
-            label={buttonLabel}
-            iconRight={ArrowRightIcon}
-            onPress={continueExercise}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        ) : (
-          <>
-            <Button label={labels.exercises.write.showSolution} onPress={giveUp} buttonTheme={BUTTONS_THEME.outlined} />
-
-            {currentIndex < documents.length - 1 && (
+        <InteractionSection
+          documentWithResult={current}
+          storeResult={storeResult}
+          isAnswerSubmitted={isAnswerSubmitted}
+        />
+        <ButtonContainer>
+          {isAnswerSubmitted && current.result !== 'similar' ? (
+            <Button
+              label={buttonLabel}
+              iconRight={ArrowRightIcon}
+              onPress={continueExercise}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          ) : (
+            <>
               <Button
-                label={labels.exercises.tryLater}
-                iconRight={ArrowRightIcon}
-                onPress={tryLater}
-                buttonTheme={BUTTONS_THEME.text}
+                label={labels.exercises.write.showSolution}
+                onPress={giveUp}
+                buttonTheme={BUTTONS_THEME.outlined}
               />
-            )}
-          </>
-        )}
-        <CheatMode cheat={cheatExercise} />
-      </ButtonContainer>
-    </KeyboardAwareScrollView>
+              {currentIndex < documents.length - 1 && (
+                <Button
+                  label={labels.exercises.tryLater}
+                  iconRight={ArrowRightIcon}
+                  onPress={tryLater}
+                  buttonTheme={BUTTONS_THEME.text}
+                />
+              )}
+            </>
+          )}
+          <CheatMode cheat={cheatExercise} />
+        </ButtonContainer>
+      </KeyboardAwareScrollView>
+    </RouteWrapper>
   )
 }
 

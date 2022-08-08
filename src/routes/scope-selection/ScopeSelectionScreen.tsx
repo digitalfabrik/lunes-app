@@ -1,12 +1,12 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useLayoutEffect } from 'react'
-import { ScrollView } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../components/Button'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import Header from '../../components/Header'
+import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -34,6 +34,10 @@ const TextContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
+const StyledScrollView = styled.ScrollView`
+  background-color: ${props => props.theme.colors.background};
+`
+
 interface IntroScreenProps {
   route: RouteProp<RoutesParams, 'ScopeSelection'>
   navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
@@ -43,6 +47,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const { initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const theme = useTheme()
 
   useFocusEffect(refreshSelectedProfessions)
 
@@ -72,33 +77,38 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   ))
 
   return (
-    <ScrollView>
-      {initialSelection && <Header />}
-      <TextContainer>
+    <RouteWrapper
+      backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
+      lightStatusBarContent={initialSelection}>
+      <StyledScrollView>
+        {initialSelection && <Header />}
+
+        <TextContainer>
+          {initialSelection && (
+            <>
+              <StyledText>{labels.scopeSelection.welcome}</StyledText>
+              <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
+            </>
+          )}
+        </TextContainer>
+        <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+          <DisciplineContainer>{disciplineItems}</DisciplineContainer>
+        </ServerResponseHandler>
         {initialSelection && (
-          <>
-            <StyledText>{labels.scopeSelection.welcome}</StyledText>
-            <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
-          </>
+          <ButtonContainer>
+            <Button
+              onPress={navigateToHomeScreen}
+              label={
+                selectedProfessions && selectedProfessions.length > 0
+                  ? labels.scopeSelection.confirmSelection
+                  : labels.scopeSelection.skipSelection
+              }
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          </ButtonContainer>
         )}
-      </TextContainer>
-      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <DisciplineContainer>{disciplineItems}</DisciplineContainer>
-      </ServerResponseHandler>
-      {initialSelection && (
-        <ButtonContainer>
-          <Button
-            onPress={navigateToHomeScreen}
-            label={
-              selectedProfessions && selectedProfessions.length > 0
-                ? labels.scopeSelection.confirmSelection
-                : labels.scopeSelection.skipSelection
-            }
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        </ButtonContainer>
-      )}
-    </ScrollView>
+      </StyledScrollView>
+    </RouteWrapper>
   )
 }
 

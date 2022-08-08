@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -17,6 +16,7 @@ import {
   SadSmileyIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
@@ -142,7 +142,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <RouteWrapper
+      backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
+      lightStatusBarContent={!unlockedNextExercise}
+      bottomBackgroundColor={theme.colors.background}>
       <Root>
         <UpperSection unlockedNextExercise={unlockedNextExercise}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
@@ -178,7 +181,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         />
         <ShareSection disciplineTitle={disciplineTitle} results={results} />
       </Root>
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 
