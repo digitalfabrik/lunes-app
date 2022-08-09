@@ -10,8 +10,8 @@ import styled, { useTheme } from 'styled-components/native'
 // import { MenuIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
-import CustomModal from './CustomModal'
 import FeedbackModal from './FeedbackModal'
+import Modal from './Modal'
 import NavigationHeaderLeft from './NavigationHeaderLeft'
 // import OverflowMenu from './OverflowMenu'
 import { ContentSecondary } from './text/Content'
@@ -109,7 +109,7 @@ const ExerciseHeader = ({
         />
       )}
 
-      <CustomModal
+      <Modal
         testID='customModal'
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

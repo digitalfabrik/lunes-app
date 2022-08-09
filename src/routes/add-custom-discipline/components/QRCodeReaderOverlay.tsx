@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal, Platform } from 'react-native'
+import { AppState, Modal as RNModal, Platform } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -63,7 +63,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
   }, [])
 
   return (
-    <Modal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
+    <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
       <Container>
         <Icon
           onPress={() => setVisible(false)}
@@ -79,7 +79,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
         {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}
         {permissionRequested && !permissionGranted && <NotAuthorisedView setVisible={setVisible} />}
       </Container>
-    </Modal>
+    </RNModal>
   )
 }
 
