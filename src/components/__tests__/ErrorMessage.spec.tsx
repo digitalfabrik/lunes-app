@@ -8,10 +8,19 @@ import ErrorMessage from '../ErrorMessage'
 describe('ErrorMessage', () => {
   const refresh = jest.fn()
 
-  it('should show NetworkError with refresh button', () => {
+  it('should show NetworkError with refresh button and image', () => {
     const error: Error = new Error('Network Error')
-    const { getByText } = render(<ErrorMessage error={error} refresh={refresh} />)
+    const { getByText, getByTestId } = render(<ErrorMessage error={error} refresh={refresh} />)
     getByText(`${labels.general.error.noWifi} (Network Error)`)
+    expect(getByTestId('no-internet-icon')).toBeDefined()
+    expect(getByText(labels.general.error.retryButton)).toBeDefined()
+  })
+
+  it('should show reduced NetworkError in contained contexts', () => {
+    const error: Error = new Error('Network Error')
+    const { getByText, queryByTestId } = render(<ErrorMessage error={error} refresh={refresh} contained />)
+    getByText(`${labels.general.error.noWifi} (Network Error)`)
+    expect(queryByTestId('no-internet-icon')).toBeNull()
     expect(getByText(labels.general.error.retryButton)).toBeDefined()
   })
 
