@@ -57,4 +57,4 @@ const Modal = (props: Props): JSX.Element => {
     </ModalSkeleton>
   )
 }
-eport default Modal
+export default Modal
