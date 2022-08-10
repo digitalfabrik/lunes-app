@@ -8,9 +8,6 @@ import { HeadingText } from '../components/text/Heading'
 import { Subheading } from '../components/text/Subheading'
 
 const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
-  width: 100%;
   padding: ${props => props.theme.spacings.sm};
 `
 

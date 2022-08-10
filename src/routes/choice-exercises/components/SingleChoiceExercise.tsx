@@ -16,12 +16,6 @@ import { getExerciseProgress, saveExerciseProgress } from '../../../services/Asy
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
-const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
-`
-
 const ButtonContainer = styled.View`
   align-items: center;
   justify-content: center;
@@ -138,7 +132,7 @@ const ChoiceExerciseScreen = ({
   const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
 
   return (
-    <ExerciseContainer>
+    <>
       <ExerciseHeader
         navigation={navigation}
         closeExerciseAction={route.params.closeExerciseAction}
@@ -176,7 +170,7 @@ const ChoiceExerciseScreen = ({
           <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
       </>
-    </ExerciseContainer>
+    </>
   )
 }
 
