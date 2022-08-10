@@ -20,10 +20,6 @@ const IconOutline = styled(StarCircleIconGrey)`
 const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  shadow-color: ${props => props.theme.colors.shadow};
-  shadow-radius: 5px;
-  shadow-offset: 1px 1px;
-  shadow-opacity: 0.5;
 `
 
 interface Props {

@@ -110,7 +110,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const giveUp = async (): Promise<void> => {
     setIsAnswerSubmitted(true)
-    storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
+    storeResult({ ...current, result: 'incorrect', numberOfTries: current.numberOfTries + 1 })
   }
 
   const buttonLabel =

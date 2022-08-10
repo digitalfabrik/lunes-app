@@ -1,0 +1,6 @@
+issue_key: LUN-391
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wörter werden nach Anzeigen der Lösung wiederholt.
