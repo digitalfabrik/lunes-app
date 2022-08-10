@@ -27,7 +27,6 @@ export interface Props {
   testID?: string
 }
 
-// TODO Further adjustments gonna be done with LUN-312
 const Modal = (props: Props): JSX.Element => {
   const {
     visible,
@@ -58,4 +57,4 @@ const Modal = (props: Props): JSX.Element => {
     </ModalSkeleton>
   )
 }
-export default Modal
+eport default Modal
