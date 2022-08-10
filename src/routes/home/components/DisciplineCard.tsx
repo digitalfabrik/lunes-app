@@ -79,7 +79,7 @@ const DisciplineCard = ({
             </ButtonContainer>
           </>
         ) : (
-          <ErrorMessage error={error} refresh={refresh} />
+          <ErrorMessage error={error} refresh={refresh} contained />
         )}
       </Card>
     )
