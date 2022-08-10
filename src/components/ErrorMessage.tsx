@@ -48,30 +48,37 @@ interface ErrorMessageProps {
   contained?: boolean
 }
 
-const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Element | null =>
-  error &&
-  (!contained && error.message === NetworkError ? (
+const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Element | null => {
+  if (!error) {
+    return null
+  }
+
+  const message = error.message === NetworkError ? `${labels.general.error.noWifi} (${error.message})` : error.message
+  if (contained) {
+    return (
+      <Container>
+        <ErrorText>{message}</ErrorText>
+        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
+      </Container>
+    )
+  }
+
+  return (
     <NetworkErrorWrapper>
       <RoundedBackground color={theme.colors.networkErrorBackground} height='67%'>
         <Container>
-          <IconStyle>
-            <NoInternetConnectionIcon testID='no-internet-icon' />
-          </IconStyle>
+          {error.message === NetworkError && (
+            <IconStyle>
+              <NoInternetConnectionIcon testID='no-internet-icon' />
+            </IconStyle>
+          )}
           <ErrorTitle>{labels.general.error.somethingWentWrong}</ErrorTitle>
-          <ErrorText centered>
-            {labels.general.error.noWifi} ({error.message})
-          </ErrorText>
+          <ErrorText centered>{message}</ErrorText>
         </Container>
       </RoundedBackground>
       <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
     </NetworkErrorWrapper>
-  ) : (
-    <Container>
-      <ErrorText>
-        {error.message === NetworkError ? `${labels.general.error.noWifi} (${error.message})` : error.message}
-      </ErrorText>
-      <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
-    </Container>
-  ))
+  )
+}
 
 export default ErrorMessage
