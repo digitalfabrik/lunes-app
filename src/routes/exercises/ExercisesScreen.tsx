@@ -5,8 +5,8 @@ import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import CustomModal from '../../components/CustomModal'
 import ListItem from '../../components/ListItem'
+import Modal from '../../components/Modal'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
@@ -101,7 +101,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   return (
     <RouteWrapper>
       {documents && nextExercise && (
-        <CustomModal
+        <Modal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
@@ -116,7 +116,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
             {labels.exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
-        </CustomModal>
+        </Modal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
