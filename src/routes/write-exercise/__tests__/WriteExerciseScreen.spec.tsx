@@ -22,8 +22,10 @@ jest.mock('../../../services/helpers', () => ({
   shuffleArray: jest.fn(it => it),
 }))
 
-jest.mock('../../../services/AsyncStorage')
-
+jest.mock('../../../services/AsyncStorage', () => ({
+  saveExerciseProgress: jest.fn(),
+  getDevMode: jest.fn(async () => false),
+}))
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('react-native-popover-view')
