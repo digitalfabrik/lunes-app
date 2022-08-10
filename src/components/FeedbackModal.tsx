@@ -2,8 +2,8 @@ import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
 import labels from '../constants/labels.json'
-import CustomModal from './CustomModal'
 import CustomTextInput from './CustomTextInput'
+import Modal from './Modal'
 
 const TextInputContainer = styled.View`
   width: 85%;
@@ -30,7 +30,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
   }
 
   return (
-    <CustomModal
+    <Modal
       testID='feedbackModal'
       visible={visible}
       onClose={onCloseFeedback}
@@ -55,7 +55,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
           clearable
         />
       </TextInputContainer>
-    </CustomModal>
+    </Modal>
   )
 }
 
