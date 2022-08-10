@@ -11,6 +11,7 @@ const Container = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 `
 
 const Description = styled(ContentSecondary)`
