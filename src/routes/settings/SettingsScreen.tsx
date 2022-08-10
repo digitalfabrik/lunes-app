@@ -11,10 +11,6 @@ import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
 
-const Container = styled.View`
-  height: 100%;
-`
-
 const SettingsHeading = styled(Heading)`
   padding: ${props => props.theme.spacings.xl};
   text-align: center;
@@ -46,17 +42,15 @@ const SettingsScreen = (): ReactElement => {
   return (
     <RouteWrapper>
       <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
-      <Container>
-        <SettingsHeading>{labels.settings.settings}</SettingsHeading>
-        <ItemContainer>
-          <ItemTextContainer>
-            <Content>{labels.settings.appStability}</Content>
-            <ContentTextLight>{labels.settings.appStabilityExplanation}</ContentTextLight>
-          </ItemTextContainer>
-          <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
-        </ItemContainer>
-        <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
-      </Container>
+      <SettingsHeading>{labels.settings.settings}</SettingsHeading>
+      <ItemContainer>
+        <ItemTextContainer>
+          <Content>{labels.settings.appStability}</Content>
+          <ContentTextLight>{labels.settings.appStabilityExplanation}</ContentTextLight>
+        </ItemTextContainer>
+        <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
+      </ItemContainer>
+      <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
     </RouteWrapper>
   )
 }
