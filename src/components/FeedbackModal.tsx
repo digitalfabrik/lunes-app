@@ -5,7 +5,6 @@ import { FeedbackType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { sendFeedback } from '../services/helpers'
 import { reportError } from '../services/sentry'
-import CustomModal from './CustomModal'
 import CustomTextInput from './CustomTextInput'
 import Modal from './Modal'
 
@@ -65,7 +64,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
           clearable
         />
       </TextInputContainer>
-    </CustomModal>
+    </Modal>
   )
 }
 
