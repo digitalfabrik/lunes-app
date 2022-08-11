@@ -14,14 +14,16 @@ const Heading = styled(ContentSecondary)`
 
 const AlternativeWords = styled(ContentSecondary)`
   margin-bottom: ${props => props.theme.spacings.md};
+  font-style: italic;
 `
 
 const Root = styled.View`
   flex-direction: row;
+  padding-top: ${props => props.theme.spacings.sm};
 `
 
 const Content = styled.View`
-  padding: 0 10px;
+  padding: 0 ${props => props.theme.spacings.xs};
 `
 
 const SuggestionPressable = styled.Pressable`
