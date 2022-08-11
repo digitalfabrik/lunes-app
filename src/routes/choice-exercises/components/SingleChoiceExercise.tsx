@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
+import CheatMode from '../../../components/CheatMode'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import {
@@ -22,12 +23,6 @@ import { DocumentResult, RoutesParams } from '../../../navigation/NavigationType
 import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
-
-const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
-`
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -103,6 +98,10 @@ const ChoiceExerciseScreen = ({
   }
   const count = documents.length
 
+  const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
+    await onExerciseFinished(results.map(it => ({ ...it, numberOfTries: numberOfMaxRetries, result })))
+  }
+
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
     answer1.article.id === answer2.article.id && answer1.word === answer2.word
 
@@ -141,7 +140,7 @@ const ChoiceExerciseScreen = ({
   const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
 
   return (
-    <ExerciseContainer>
+    <>
       <ExerciseHeader
         navigation={navigation}
         closeExerciseAction={route.params.closeExerciseAction}
@@ -178,9 +177,10 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
+          <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
       </>
-    </ExerciseContainer>
+    </>
   )
 }
 

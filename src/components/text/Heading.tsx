@@ -1,9 +1,10 @@
 import styled from 'styled-components/native'
 
-export const Heading = styled.Text`
+export const Heading = styled.Text<{ centered?: boolean }>`
   font-size: ${props => props.theme.fonts.headingFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
+  ${props => (props.centered ? 'align-self: center;' : '')};
 `
 
 export const HeadingText = styled(Heading)`

@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react'
-import { SafeAreaView, Switch } from 'react-native'
+import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import labels from '../../constants/labels.json'
@@ -9,10 +10,6 @@ import AsyncStorage from '../../services/AsyncStorage'
 import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
-
-const Container = styled.View`
-  height: 100%;
-`
 
 const SettingsHeading = styled(Heading)`
   padding: ${props => props.theme.spacings.xl};
@@ -43,20 +40,18 @@ const SettingsScreen = (): ReactElement => {
   }
 
   return (
-    <SafeAreaView>
+    <RouteWrapper>
       <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
-      <Container>
-        <SettingsHeading>{labels.settings.settings}</SettingsHeading>
-        <ItemContainer>
-          <ItemTextContainer>
-            <Content>{labels.settings.appStability}</Content>
-            <ContentTextLight>{labels.settings.appStabilityExplanation}</ContentTextLight>
-          </ItemTextContainer>
-          <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
-        </ItemContainer>
-        <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
-      </Container>
-    </SafeAreaView>
+      <SettingsHeading>{labels.settings.settings}</SettingsHeading>
+      <ItemContainer>
+        <ItemTextContainer>
+          <Content>{labels.settings.appStability}</Content>
+          <ContentTextLight>{labels.settings.appStabilityExplanation}</ContentTextLight>
+        </ItemTextContainer>
+        <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
+      </ItemContainer>
+      <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
+    </RouteWrapper>
   )
 }
 

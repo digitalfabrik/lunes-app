@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react'
-import { LogBox, StatusBar } from 'react-native'
+import { LogBox } from 'react-native'
 import 'react-native-gesture-handler'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { OverflowMenuProvider } from 'react-navigation-header-buttons'
 import { ThemeProvider } from 'styled-components/native'
@@ -27,8 +27,7 @@ const App = (): ReactElement => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaProvider>
-        <StatusBar barStyle='light-content' />
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <OverflowMenuProvider>
           <Navigator />
         </OverflowMenuProvider>

@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -19,15 +20,17 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
     ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
 
   return (
-    <SingleChoiceExercise
-      documents={documents}
-      disciplineId={disciplineId}
-      disciplineTitle={disciplineTitle}
-      documentToAnswers={documentToAnswers}
-      navigation={navigation}
-      route={route}
-      exerciseKey={ExerciseKeys.articleChoiceExercise}
-    />
+    <RouteWrapper>
+      <SingleChoiceExercise
+        documents={documents}
+        disciplineId={disciplineId}
+        disciplineTitle={disciplineTitle}
+        documentToAnswers={documentToAnswers}
+        navigation={navigation}
+        route={route}
+        exerciseKey={ExerciseKeys.articleChoiceExercise}
+      />
+    </RouteWrapper>
   )
 }
 

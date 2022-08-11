@@ -7,6 +7,7 @@ import { sendFeedback } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import CustomModal from './CustomModal'
 import CustomTextInput from './CustomTextInput'
+import Modal from './Modal'
 
 const TextInputContainer = styled.View`
   width: 85%;
@@ -39,7 +40,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
   }
 
   return (
-    <CustomModal
+    <Modal
       testID='feedbackModal'
       visible={visible}
       onClose={onCloseFeedback}

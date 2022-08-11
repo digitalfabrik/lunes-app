@@ -8,6 +8,7 @@ import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Loading from '../../components/Loading'
+import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -84,38 +85,40 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
   }
 
   return (
-    <Loading isLoading={loading}>
-      {customDisciplines && (
-        <Container>
-          <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
-          <Description>{labels.addCustomDiscipline.description}</Description>
-          <InputContainer>
-            <CustomTextInput
-              errorMessage={errorMessage}
-              placeholder={labels.addCustomDiscipline.placeholder}
-              value={code}
-              onChangeText={setCode}
-              rightContainer={
-                <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-                  <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
-                </TouchableOpacity>
-              }
+    <RouteWrapper>
+      <Loading isLoading={loading}>
+        {customDisciplines && (
+          <Container>
+            <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
+            <Description>{labels.addCustomDiscipline.description}</Description>
+            <InputContainer>
+              <CustomTextInput
+                errorMessage={errorMessage}
+                placeholder={labels.addCustomDiscipline.placeholder}
+                value={code}
+                onChangeText={setCode}
+                rightContainer={
+                  <TouchableOpacity onPress={() => setShowQRCodeOverlay(true)}>
+                    <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
+                  </TouchableOpacity>
+                }
+              />
+            </InputContainer>
+            <Button
+              label={labels.addCustomDiscipline.submitLabel}
+              buttonTheme={BUTTONS_THEME.contained}
+              onPress={submit}
+              disabled={code.length === 0}
             />
-          </InputContainer>
-          <Button
-            label={labels.addCustomDiscipline.submitLabel}
-            buttonTheme={BUTTONS_THEME.contained}
-            onPress={submit}
-            disabled={code.length === 0}
-          />
-          <Button
-            label={labels.addCustomDiscipline.backNavigation}
-            buttonTheme={BUTTONS_THEME.outlined}
-            onPress={navigation.goBack}
-          />
-        </Container>
-      )}
-    </Loading>
+            <Button
+              label={labels.addCustomDiscipline.backNavigation}
+              buttonTheme={BUTTONS_THEME.outlined}
+              onPress={navigation.goBack}
+            />
+          </Container>
+        )}
+      </Loading>
+    </RouteWrapper>
   )
 }
 
