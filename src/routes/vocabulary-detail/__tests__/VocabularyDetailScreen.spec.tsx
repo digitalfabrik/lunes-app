@@ -1,4 +1,5 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import labels from '../../../constants/labels.json'
@@ -37,20 +38,14 @@ describe('VocabularyDetailScreen', () => {
 
   const navigation = createNavigationMock<'VocabularyDetail'>()
 
-  it('should display alternative words', () => {
+  it('should render and navigate to next word', () => {
     const { getByText } = render(<VocabularyDetailScreen route={getRoute(0)} navigation={navigation} />)
+    expect(getByText(documents[0].word)).toBeDefined()
+    expect('AudioPlayer').toBeDefined()
+    expect('FavoriteButton').toBeDefined()
     expect(getByText(labels.exercises.vocabularyList.alternativeWords)).toBeDefined()
-    expect(
-      getByText(
-        `${documents[0].alternatives[0].article.value} ${documents[0].alternatives[0].word}, ${documents[0].alternatives[1].article.value} ${documents[0].alternatives[1].word}`
-      )
-    ).toBeDefined()
-    expect(getByText(labels.exercises.vocabularyList.suggestAlternative)).toBeDefined()
-  })
-
-  it('should not display alternative words, if word has none', () => {
-    const { getByText, queryByText } = render(<VocabularyDetailScreen route={getRoute(1)} navigation={navigation} />)
-    expect(queryByText(labels.exercises.vocabularyList.alternativeWords)).toBeNull()
-    expect(getByText(labels.exercises.vocabularyList.suggestAlternative)).toBeDefined()
+    const button = getByText(labels.exercises.next)
+    fireEvent.press(button)
+    expect(navigation.navigate).toHaveBeenCalledWith('VocabularyDetail', { ...getRoute(1).params })
   })
 })
