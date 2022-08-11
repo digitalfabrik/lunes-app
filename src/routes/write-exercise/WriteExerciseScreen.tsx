@@ -10,14 +10,7 @@ import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
-import {
-  BUTTONS_THEME,
-  ExerciseKeys,
-  FeedbackType,
-  numberOfMaxRetries,
-  SIMPLE_RESULTS,
-  SimpleResult,
-} from '../../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
@@ -133,8 +126,6 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           currentWord={currentIndex}
           numberOfWords={documents.length}
           closeExerciseAction={closeExerciseAction}
-          feedbackType={FeedbackType.document}
-          feedbackForId={documents[currentIndex].id}
         />
 
         <InteractionSection
