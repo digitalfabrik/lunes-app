@@ -31,7 +31,7 @@ const ProgressText = styled(ContentSecondary)`
   margin-right: ${props => props.theme.spacings.sm};
 `
 
-const MenuIconPrimary = styled(MenuIcon)`
+const StyledMenuIcon = styled(MenuIcon)`
   color: ${props => props.theme.colors.primary};
 `
 
@@ -72,7 +72,7 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}>
+        <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
           <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
         </OverflowMenu>
       </HeaderRightContainer>
