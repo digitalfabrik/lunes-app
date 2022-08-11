@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
+import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import labels from '../constants/labels.json'
@@ -26,14 +27,14 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
 
   return (
-    <>
+    <RouteWrapper>
       <ExerciseHeader navigation={navigation} confirmClose={false} closeExerciseAction={closeExerciseAction} />
       <VocabularyList
         documents={route.params.documents}
         onItemPress={onItemPress}
         title={labels.exercises.vocabularyList.title}
       />
-    </>
+    </RouteWrapper>
   )
 }
 

@@ -24,6 +24,7 @@ jest.mock('../../../services/helpers', () => ({
 jest.mock('../../../services/AsyncStorage', () => ({
   getExerciseProgress: jest.fn(() => ({})),
   saveExerciseProgress: jest.fn(),
+  getDevMode: jest.fn(async () => false),
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {

@@ -7,8 +7,10 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
-import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS } from '../../constants/data'
+import RouteWrapper from '../../components/RouteWrapper'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
@@ -63,15 +65,15 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
-  const finishExercise = async (): Promise<void> => {
+  const finishExercise = async (results: DocumentResult[]): Promise<void> => {
     if (disciplineId) {
-      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, documentsWithResults)
+      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineTitle,
       disciplineId,
-      results: documentsWithResults,
+      results,
       exercise: ExerciseKeys.writeExercise,
       closeExerciseAction,
       unlockedNextExercise: false,
@@ -83,7 +85,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(false)
 
     if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
-      await finishExercise()
+      await finishExercise(documentsWithResults)
     } else if (needsToBeRepeated) {
       tryLater()
     } else {
@@ -101,9 +103,14 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     setIsAnswerSubmitted(true)
   }
 
+  const cheatExercise = async (result: SimpleResult): Promise<void> => {
+    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
+    await finishExercise(cheatedDocuments)
+  }
+
   const giveUp = async (): Promise<void> => {
     setIsAnswerSubmitted(true)
-    storeResult({ ...current, result: 'incorrect', numberOfTries: numberOfMaxRetries })
+    storeResult({ ...current, result: 'incorrect', numberOfTries: current.numberOfTries + 1 })
   }
 
   const buttonLabel =
@@ -112,43 +119,49 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       : labels.exercises.next
 
   return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-      <ExerciseHeader
-        navigation={navigation}
-        currentWord={currentIndex}
-        numberOfWords={documents.length}
-        closeExerciseAction={closeExerciseAction}
-      />
+    <RouteWrapper>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+        <ExerciseHeader
+          navigation={navigation}
+          currentWord={currentIndex}
+          numberOfWords={documents.length}
+          closeExerciseAction={closeExerciseAction}
+        />
 
-      <InteractionSection
-        documentWithResult={current}
-        storeResult={storeResult}
-        isAnswerSubmitted={isAnswerSubmitted}
-      />
-      <ButtonContainer>
-        {isAnswerSubmitted && current.result !== 'similar' ? (
-          <Button
-            label={buttonLabel}
-            iconRight={ArrowRightIcon}
-            onPress={continueExercise}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        ) : (
-          <>
-            <Button label={labels.exercises.write.showSolution} onPress={giveUp} buttonTheme={BUTTONS_THEME.outlined} />
-
-            {currentIndex < documents.length - 1 && (
+        <InteractionSection
+          documentWithResult={current}
+          storeResult={storeResult}
+          isAnswerSubmitted={isAnswerSubmitted}
+        />
+        <ButtonContainer>
+          {isAnswerSubmitted && current.result !== 'similar' ? (
+            <Button
+              label={buttonLabel}
+              iconRight={ArrowRightIcon}
+              onPress={continueExercise}
+              buttonTheme={BUTTONS_THEME.contained}
+            />
+          ) : (
+            <>
               <Button
-                label={labels.exercises.tryLater}
-                iconRight={ArrowRightIcon}
-                onPress={tryLater}
-                buttonTheme={BUTTONS_THEME.text}
+                label={labels.exercises.write.showSolution}
+                onPress={giveUp}
+                buttonTheme={BUTTONS_THEME.outlined}
               />
-            )}
-          </>
-        )}
-      </ButtonContainer>
-    </KeyboardAwareScrollView>
+              {currentIndex < documents.length - 1 && (
+                <Button
+                  label={labels.exercises.tryLater}
+                  iconRight={ArrowRightIcon}
+                  onPress={tryLater}
+                  buttonTheme={BUTTONS_THEME.text}
+                />
+              )}
+            </>
+          )}
+          <CheatMode cheat={cheatExercise} />
+        </ButtonContainer>
+      </KeyboardAwareScrollView>
+    </RouteWrapper>
   )
 }
 

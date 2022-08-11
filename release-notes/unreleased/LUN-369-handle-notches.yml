@@ -1,0 +1,6 @@
+issue_key: LUN-369
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Einheitliches Handling bei Geräten mit Notches für alle Screens.

@@ -8,6 +8,7 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
+import useLoadAsync from '../../../hooks/useLoadAsync'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { reportError } from '../../../services/sentry'
@@ -33,6 +34,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
+  const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode, null)
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
@@ -54,6 +56,11 @@ const DebugModal = (props: PropsType): JSX.Element => {
     setBaseURL(updatedCMS)
   }
 
+  const toggleDevMode = async (): Promise<void> => {
+    await AsyncStorage.toggleDevMode()
+    refresh()
+  }
+
   return (
     <ModalSkeleton testID='debug-modal' visible={visible} onClose={resetTextAndClose}>
       <CodeInput placeholder='Development Code' onChangeText={setInputText} />
@@ -69,6 +76,11 @@ const DebugModal = (props: PropsType): JSX.Element => {
           <Button
             label={labels.settings.debugModal.changeCMS}
             onPress={switchCMS}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+          <Button
+            label={isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode}
+            onPress={toggleDevMode}
             buttonTheme={BUTTONS_THEME.contained}
           />
         </Container>

@@ -36,6 +36,8 @@ const ProfessionDetails = ({
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
   const moduleAlreadyStarted = progress !== null && progress !== 0
+  const completedModules =
+    moduleAlreadyStarted && discipline.leafDisciplines ? Math.floor(progress * discipline.leafDisciplines.length) : 0
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -50,7 +52,7 @@ const ProfessionDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={progress ?? 0}
+          progress={completedModules ? progress ?? 0 : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
@@ -61,17 +63,16 @@ const ProfessionDetails = ({
         />
         {discipline.leafDisciplines && (
           <NumberText>
-            {moduleAlreadyStarted && `${Math.floor(progress * discipline.leafDisciplines.length)}/`}
-            {discipline.leafDisciplines.length}
+            {completedModules}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{moduleAlreadyStarted ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
+        <UnitText>{completedModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
-        buttonLabel={labels.home.continue}
+        buttonLabel={nextExerciseData.exerciseKey === 0 ? labels.home.start : labels.home.continue}
         subheading={title}
       />
       <ButtonContainer>

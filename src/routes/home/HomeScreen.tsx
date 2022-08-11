@@ -2,8 +2,9 @@ import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
+import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
@@ -38,6 +39,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
+  const theme = useTheme()
 
   useFocusEffect(refreshCustomDisciplines)
   useFocusEffect(refreshSelectedProfessions)
@@ -85,23 +87,22 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   ))
 
   return (
-    <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
-      <View>
-        <HomeScreenHeader navigation={navigation} />
-
-        <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
-        <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
-
-        {selectedProfessionItems}
-
-        {isCustomDisciplineEmpty ? (
-          <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
-        ) : (
-          customDisciplineItems
-        )}
-      </View>
-      <HomeFooter navigateToImprint={navigateToImprintScreen} />
-    </Root>
+    <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent>
+      <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
+        <View>
+          <HomeScreenHeader navigation={navigation} />
+          <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
+          <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
+          {selectedProfessionItems}
+          {isCustomDisciplineEmpty ? (
+            <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
+          ) : (
+            customDisciplineItems
+          )}
+        </View>
+        <HomeFooter navigateToImprint={navigateToImprintScreen} />
+      </Root>
+    </RouteWrapper>
   )
 }
 

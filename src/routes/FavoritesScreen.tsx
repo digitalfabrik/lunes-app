@@ -2,6 +2,7 @@ import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import VocabularyList from '../components/VocabularyList'
 import labels from '../constants/labels.json'
@@ -32,16 +33,18 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
   }
 
   return (
-    <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-      {data && (
-        <VocabularyList
-          title={labels.favorites}
-          documents={data}
-          onFavoritesChanged={refresh}
-          onItemPress={onItemPress}
-        />
-      )}
-    </ServerResponseHandler>
+    <RouteWrapper>
+      <ServerResponseHandler error={error} loading={false} refresh={refresh}>
+        {data && (
+          <VocabularyList
+            title={labels.favorites}
+            documents={data}
+            onFavoritesChanged={refresh}
+            onItemPress={onItemPress}
+          />
+        )}
+      </ServerResponseHandler>
+    </RouteWrapper>
   )
 }
 
