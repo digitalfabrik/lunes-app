@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../assets/images'
@@ -10,6 +9,7 @@ import DocumentImageSection from '../../components/DocumentImageSection'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import FeedbackModal from '../../components/FeedbackModal'
 import HorizontalLine from '../../components/HorizontalLine'
+import RouteWrapper from '../../components/RouteWrapper'
 import WordItem from '../../components/WordItem'
 import { BUTTONS_THEME, FeedbackType } from '../../constants/data'
 import labels from '../../constants/labels.json'
@@ -48,7 +48,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: documentIndex + 1 })
 
   return (
-    <SafeAreaView>
+    <RouteWrapper>
       <ExerciseHeader
         navigation={navigation}
         currentWord={documentIndex}
@@ -91,7 +91,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         feedbackType={FeedbackType.document}
         feedbackForId={document.id}
       />
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 
