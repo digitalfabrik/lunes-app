@@ -171,5 +171,14 @@
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode"
     }
+  },
+  "ownVocabulary": {
+    "myVocabulary": "Meine Vokabeln",
+    "vocabulary": "Vokabeln",
+    "overview": {
+      "list": "Vokabelliste",
+      "create": "Vokabeln erstellen",
+      "practice": "Vokabeln üben"
+    }
   }
 }

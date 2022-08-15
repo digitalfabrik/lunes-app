@@ -129,3 +129,7 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
   return trainingSet
 }
+
+export const getLabels = () => {
+  return labels
+}

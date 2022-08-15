@@ -6,6 +6,7 @@ import ArrowRightIcon from './arrow-right-icon.svg'
 import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
+import BookIconBlack from './book-icon-black.svg'
 import BookIconGrey from './book-icon-grey.svg'
 import BookIconWhite from './book-icon-white.svg'
 import CheckCircleIconBlue from './check-circle-icon-blue.svg'
@@ -67,6 +68,7 @@ export {
   BannerGreen,
   BannerRed,
   BannerYellow,
+  BookIconBlack,
   BookIconGrey,
   BookIconWhite,
   CheckCircleIcon,
