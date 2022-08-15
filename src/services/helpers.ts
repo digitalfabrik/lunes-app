@@ -130,6 +130,4 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   return trainingSet
 }
 
-export const getLabels = () => {
-  return labels
-}
+export const getLabels = (): any => labels

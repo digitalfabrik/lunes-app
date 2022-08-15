@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import styled from 'styled-components/native'
 
-import { BookIconBlack, ListIcon } from '../../assets/images'
+import { BookIconBlack } from '../../assets/images'
 import ListItem from '../components/ListItem'
 import { Heading } from '../components/text/Heading'
 import theme from '../constants/theme'
@@ -26,7 +26,7 @@ interface PropsType {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyOverview'>
 }
 
-const UserVocabularyOverviewScreen = ({ navigation }: PropsType) => (
+const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => (
   <Root>
     <StyledHeading>{getLabels().ownVocabulary.myVocabulary}</StyledHeading>
     <Margin />
