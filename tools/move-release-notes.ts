@@ -1,25 +1,17 @@
-/* eslint-disable no-console */
 import { program } from 'commander'
 
 import { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR } from './constants'
 import authenticate from './github-authentication'
 
-program
-  .option('-d, --debug', 'enable extreme logging')
-  .requiredOption(
-    '--deliverino-private-key <deliverino-private-key>',
-    'private key of the deliverino github app in pem format with base64 encoding'
-  )
-  .requiredOption('--owner <owner>', 'owner of the current repository, usually "Digitalfabrik"')
-  .requiredOption('--repo <repo>', 'the current repository, usually "lunes-app"')
-  .requiredOption('--branch <branch>', 'the current branch')
-
-interface Options {
-  newVersionName: string
+interface Opts {
   deliverinoPrivateKey: string
   owner: string
   repo: string
   branch: string
+}
+
+type Options = Opts & {
+  newVersionName: string
 }
 
 const moveReleaseNotes = async ({ newVersionName, deliverinoPrivateKey, owner, repo, branch }: Options) => {
@@ -112,14 +104,18 @@ const moveReleaseNotes = async ({ newVersionName, deliverinoPrivateKey, owner, r
 program
   .command('move-to <new-version-name>')
   .description("move the release notes in 'unreleased' to a new subdirectory <new-version-name>")
-  .action(async (newVersionName: string) => {
+  .requiredOption(
+    '--deliverino-private-key <deliverino-private-key>',
+    'private key of the deliverino github app in pem format with base64 encoding'
+  )
+  .requiredOption('--owner <owner>', 'owner of the current repository, usually "digitalfabrik"')
+  .requiredOption('--repo <repo>', 'the current repository, usually "lunes-app"')
+  .requiredOption('--branch <branch>', 'the current branch')
+  .action(async (newVersionName: string, options: Opts) => {
     try {
       await moveReleaseNotes({
         newVersionName,
-        deliverinoPrivateKey: program.deliverinoPrivateKey,
-        branch: program.branch,
-        owner: program.owner,
-        repo: program.repo,
+        ...options,
       })
     } catch (e) {
       console.error(e)

@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { Modal } from 'react-native'
+import { Modal as RNModal } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -38,7 +38,7 @@ interface PropsType {
 }
 
 const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): ReactElement => (
-  <Modal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
+  <RNModal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
     <Overlay>
       <ModalContainer>
         <Icon onPress={onClose}>
@@ -47,7 +47,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): React
         {children}
       </ModalContainer>
     </Overlay>
-  </Modal>
+  </RNModal>
 )
 
 export default ModalSkeleton

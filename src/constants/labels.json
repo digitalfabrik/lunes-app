@@ -9,7 +9,7 @@
     "welcome": "Willkommen bei Lunes!",
     "haveFun": "Viel Spaß beim Lernen",
     "progressDescription": "Modulen erledigt",
-    "start": "Beginnen",
+    "start": "Starten",
     "continue": "Fortsetzen",
     "viewModules": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
@@ -87,6 +87,10 @@
       }
     },
     "tryLater": "Später versuchen",
+    "cheat": {
+      "succeed": "Solve All",
+      "fail": "Fail All"
+    },
     "next": "Nächstes Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
@@ -143,7 +147,8 @@
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
-      "retryButton": "Erneut versuchen"
+      "retryButton": "Erneut versuchen",
+      "somethingWentWrong": "Ups, da ist etwas schief gelaufen!"
     },
     "rootDiscipline": "Beruf",
     "rootDisciplines": "Berufe",
@@ -162,7 +167,9 @@
     "debugModal": {
       "sentry": "Send Sentry Error",
       "currentCMS": "current cms",
-      "changeCMS": "change cms"
+      "changeCMS": "change cms",
+      "enableDevMode": "Enable DevMode",
+      "disableDevMode": "Disable DevMode"
     }
   }
 }

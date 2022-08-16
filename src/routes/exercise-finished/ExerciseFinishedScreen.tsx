@@ -1,9 +1,8 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { SafeAreaView } from 'react-native'
 import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -18,6 +17,8 @@ import {
 } from '../../../assets/images'
 import Button from '../../components/Button'
 import PressableOpacity from '../../components/PressableOpacity'
+import RoundedBackground from '../../components/RoundedBackground'
+import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
@@ -30,16 +31,6 @@ import ShareSection from './components/ShareSection'
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
   height: 100%;
-  align-items: center;
-`
-const UpperSection = styled.View<{ unlockedNextExercise: boolean }>`
-  width: 140%;
-  height: 50%;
-  background-color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.correct : prop.theme.colors.primary)};
-  border-bottom-left-radius: ${hp('60%')}px;
-  border-bottom-right-radius: ${hp('60%')}px;
-  margin-bottom: ${props => props.theme.spacings.xxl};
-  justify-content: center;
   align-items: center;
 `
 const MessageContainer = styled.View`
@@ -143,9 +134,12 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
   const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <RouteWrapper
+      backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
+      lightStatusBarContent={!unlockedNextExercise}
+      bottomBackgroundColor={theme.colors.background}>
       <Root>
-        <UpperSection unlockedNextExercise={unlockedNextExercise}>
+        <RoundedBackground color={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
             {unlockedNextExercise ? (
               <CloseIcon width={wp('6%')} height={wp('6%')} />
@@ -169,7 +163,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
               borderWidth={0}
             />
           </MessageContainer>
-        </UpperSection>
+        </RoundedBackground>
 
         <Button
           label={buttonText}
@@ -179,7 +173,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         />
         <ShareSection disciplineTitle={disciplineTitle} results={results} />
       </Root>
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 

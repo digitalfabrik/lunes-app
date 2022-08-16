@@ -22,8 +22,10 @@ jest.mock('../../../services/helpers', () => ({
   shuffleArray: jest.fn(it => it),
 }))
 
-jest.mock('../../../services/AsyncStorage')
-
+jest.mock('../../../services/AsyncStorage', () => ({
+  saveExerciseProgress: jest.fn(),
+  getDevMode: jest.fn(async () => false),
+}))
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('react-native-popover-view')
@@ -77,7 +79,7 @@ describe('WriteExerciseScreen', () => {
     {
       id: 2,
       word: 'Auto',
-      article: ARTICLES[1],
+      article: ARTICLES[3],
       document_image: [{ id: 1, image: 'Auto' }],
       audio: '',
       alternatives: [],
@@ -98,26 +100,34 @@ describe('WriteExerciseScreen', () => {
 
   const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
 
-  it('should allow to skip an exercise and try it out later', () => {
-    const { getByText } = renderWriteExercise()
+  it('should allow to skip a document and try it out later', () => {
+    const { getByText, getByPlaceholderText } = renderWriteExercise()
 
     fireEvent.press(getByText(labels.exercises.tryLater))
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
-    expect(getByText(labels.exercises.next)).toBeDefined()
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Auto')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(labels.exercises.next))
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    expect(getByText(labels.exercises.write.feedback.correct)).toBeTruthy()
   })
 
   it('should not allow to skip last document', () => {
-    const { queryByText, getByText } = renderWriteExercise()
+    const { queryByText, getByText, getByPlaceholderText } = renderWriteExercise()
 
     expect(labels.exercises.tryLater).not.toBeNull()
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.next))
     expect(queryByText(labels.exercises.tryLater)).toBeNull()
   })
 
-  it('should show solution after three wrong entries', () => {
+  it('should show solution after three wrong tries', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.next))
 
     fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche')
@@ -163,15 +173,21 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should finish exercise and save progress', async () => {
-    const { getByText } = renderWriteExercise()
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
+    const { getByPlaceholderText, getByText } = renderWriteExercise()
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
     fireEvent.press(getByText(labels.exercises.next))
-    fireEvent.press(getByText(labels.exercises.write.showSolution))
-    await act(() => fireEvent.press(getByText(labels.exercises.showResults)))
+
+    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Auto')
+    fireEvent.press(getByText(labels.exercises.write.checkInput))
+
+    await act(async () => {
+      fireEvent.press(getByText(labels.exercises.showResults))
+    })
 
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
-      { document: documents[1], result: SIMPLE_RESULTS.incorrect, numberOfTries: 3 },
+      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 
