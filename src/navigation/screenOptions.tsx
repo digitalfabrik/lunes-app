@@ -8,6 +8,8 @@ import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from './NavigationTypes'
 
+export const headerHeightPercentage = wp('15%')
+
 const headerStyles = (headerHeight?: number) =>
   StyleSheet.create({
     header: {

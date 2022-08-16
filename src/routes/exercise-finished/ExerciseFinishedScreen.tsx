@@ -13,7 +13,7 @@ import {
   OpenLockIcon,
   PartyHornIcon,
   RepeatIcon,
-  SadSmileyIcon,
+  SadSmileyCircleIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
 import RoundedBackground from '../../components/RoundedBackground'
@@ -126,7 +126,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       resultColor: theme.colors.incorrect,
       buttonText: labels.results.action.repeat,
       navigationAction: repeatExercise,
-      ResultIcon: SadSmileyIcon,
+      ResultIcon: SadSmileyCircleIcon,
     }
   }
 

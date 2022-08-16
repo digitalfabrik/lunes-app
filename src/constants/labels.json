@@ -46,7 +46,6 @@
     "qrCodeScanner": {
       "noAuthorization": {
         "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "back": "Zurück",
         "settings": "Einstellungen"
       }
     }
@@ -143,6 +142,7 @@
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
+    "back": "zurück",
     "plurals": "Plural",
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
@@ -155,10 +155,13 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter",
-    "customModalCancel": "Zurück"
+    "words": "Wörter"
   },
   "favorites": "Favoriten",
+  "dictionary": {
+    "enterWord": "Wort eingeben",
+    "noResults": "Sorry, keine Ergebnisse gefunden"
+  },
   "settings": {
     "settings": "Einstellungen",
     "appStability": "App Stabilität",

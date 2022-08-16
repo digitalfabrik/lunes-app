@@ -4,24 +4,44 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
-import { HomeIconGrey, HomeIconWhite, StarIconGrey, StarIconWhite } from '../../assets/images'
+import {
+  BookIconGrey,
+  BookIconWhite,
+  HomeIconGrey,
+  HomeIconWhite,
+  StarIconGrey,
+  StarIconWhite,
+} from '../../assets/images'
 import labels from '../constants/labels.json'
+import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import DictionaryScreen from '../routes/DictionaryScreen'
 import FavoritesScreen from '../routes/FavoritesScreen'
+import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
+import screenOptions from './screenOptions'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
 const BottomTabNavigator = (): JSX.Element | null => {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
-  const iconSize = wp('10%')
+  const iconSize = wp('7%')
+  const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const options = screenOptions(headerHeight)
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? <HomeIconWhite width={iconSize} height={iconSize} /> : <HomeIconGrey width={iconSize} height={iconSize} />
+    focused ? (
+      <HomeIconWhite width={wp('10%')} height={wp('10%')} />
+    ) : (
+      <HomeIconGrey width={wp('10%')} height={wp('10%')} />
+    )
 
   const renderFavoritesTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? <StarIconWhite width={wp('7%')} height={wp('7%')} /> : <StarIconGrey width={wp('7%')} height={wp('7%')} />
+    focused ? <StarIconWhite width={iconSize} height={iconSize} /> : <StarIconGrey width={iconSize} height={iconSize} />
+
+  const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
+    focused ? <BookIconWhite width={iconSize} height={iconSize} /> : <BookIconGrey width={iconSize} height={iconSize} />
 
   return (
     <Navigator.Navigator
@@ -45,6 +65,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
         name='FavoritesTab'
         component={FavoritesScreen}
         options={{ tabBarIcon: renderFavoritesTabIcon, title: labels.general.favorites }}
+      />
+      <Navigator.Screen
+        name='DictionaryTab'
+        component={DictionaryStackNavigator}
+        options={{ tabBarIcon: renderDictionaryTabIcon, title: labels.general.dictionary }}
       />
     </Navigator.Navigator>
   )

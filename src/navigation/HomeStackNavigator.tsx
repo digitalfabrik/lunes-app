@@ -13,12 +13,12 @@ import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions from './screenOptions'
+import screenOptions, { headerHeightPercentage } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const headerHeight = useTabletHeaderHeight(headerHeightPercentage)
   const options = screenOptions(headerHeight)
   const { overview } = labels.general.header
   const theme = useTheme()
