@@ -15,7 +15,7 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
-export interface CustomModalProps {
+export interface Props {
   visible: boolean
   onClose: () => void
   text: string
@@ -27,8 +27,7 @@ export interface CustomModalProps {
   testID?: string
 }
 
-// TODO Further adjustments gonna be done with LUN-312
-const CustomModal = (props: CustomModalProps): JSX.Element => {
+const Modal = (props: Props): JSX.Element => {
   const {
     visible,
     text,
@@ -58,4 +57,4 @@ const CustomModal = (props: CustomModalProps): JSX.Element => {
     </ModalSkeleton>
   )
 }
-export default CustomModal
+export default Modal

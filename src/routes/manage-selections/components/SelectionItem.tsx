@@ -3,9 +3,9 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CloseIconRed } from '../../../../assets/images'
-import CustomModal from '../../../components/CustomModal'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
+import Modal from '../../../components/Modal'
 import { ContentSecondary } from '../../../components/text/Content'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
@@ -53,14 +53,14 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
 
   return (
     <>
-      <CustomModal
+      <Modal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         text={labels.manageSelection.deleteModal.confirmationQuestion}
         confirmationButtonText={labels.manageSelection.deleteModal.confirm}
         confirmationAction={deleteItem}>
         <Explanation>{labels.manageSelection.deleteModal.explanation}</Explanation>
-      </CustomModal>
+      </Modal>
       <ListItem
         title={data.title}
         rightChildren={

@@ -9,6 +9,7 @@ import Header from '../../components/Header'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
+import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
 import labels from '../../constants/labels.json'
@@ -84,12 +85,12 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
         {initialSelection && <Header />}
 
         <TextContainer>
-          {initialSelection && (
-            <>
-              <StyledText>{labels.scopeSelection.welcome}</StyledText>
-              <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
-            </>
+          {initialSelection ? (
+            <StyledText>{labels.scopeSelection.welcome}</StyledText>
+          ) : (
+            <Heading centered>{labels.manageSelection.addProfession}</Heading>
           )}
+          <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
         </TextContainer>
         <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
           <DisciplineContainer>{disciplineItems}</DisciplineContainer>

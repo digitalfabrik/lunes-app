@@ -42,6 +42,7 @@ import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import MenuIcon from './menu-icon.svg'
+import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import QRCodeIcon from './qr-code-icon.svg'
@@ -102,6 +103,7 @@ export {
   LockIcon,
   LunesIcon,
   MenuIcon,
+  NoInternetConnectionIcon,
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
