@@ -105,7 +105,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
       disabled={disabled || !isInitialized}
       isActive={isActive}
       onPress={handleSpeakerClick}
-      accessibilityRole='button'>
+      testID='audio-player'>
       <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
     </VolumeIcon>
   )
