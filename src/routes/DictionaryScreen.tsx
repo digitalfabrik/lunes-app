@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import React, { ReactElement, useState } from 'react'
+import { FlatList } from 'react-native'
 import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
@@ -9,9 +9,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import SearchBar from '../components/SearchBar'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
-import VocabularyList from '../components/VocabularyList'
 import VocabularyListItem from '../components/VocabularyListItem'
-import { Content } from '../components/text/Content'
 import { Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import useLoadAllDocuments from '../hooks/useLoadAllDocuments'
@@ -38,7 +36,7 @@ interface Props {
   navigation: StackNavigationProp<RoutesParams, 'DictionaryOverview'>
 }
 
-const DictionaryScreen = ({ navigation }: Props) => {
+const DictionaryScreen = ({ navigation }: Props): ReactElement => {
   const documents = useLoadAllDocuments()
   const [searchString, setSearchString] = useState<string>('')
   const filteredDocuments = documents.data?.filter(item => item.word.includes(searchString))
@@ -62,7 +60,7 @@ const DictionaryScreen = ({ navigation }: Props) => {
                 <Header>
                   <Title
                     title={labels.general.dictionary}
-                    description={`${filteredDocuments?.length} ${
+                    description={`${filteredDocuments?.length ?? 0} ${
                       documents.data.length === 1 ? labels.general.word : labels.general.words
                     }`}
                   />

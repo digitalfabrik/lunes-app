@@ -22,13 +22,13 @@ describe('Modal', () => {
   it('should display passed props', () => {
     const { getByText } = render(<Modal {...defaultProps} />)
     expect(getByText('Are you sure?')).toBeDefined()
-    expect(getByText('Zurück')).toBeDefined()
+    expect(getByText('zurück')).toBeDefined()
     expect(getByText('confirm')).toBeDefined()
   })
 
   it('should close on cancel button click', () => {
     const { getByText } = render(<Modal {...defaultProps} />)
-    const cancelButton = getByText('Zurück')
+    const cancelButton = getByText('zurück')
     fireEvent.press(cancelButton)
     expect(onClose).toHaveBeenCalled()
     expect(confirmationAction).not.toHaveBeenCalled()

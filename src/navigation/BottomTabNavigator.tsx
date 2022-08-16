@@ -13,13 +13,10 @@ import {
   StarIconWhite,
 } from '../../assets/images'
 import labels from '../constants/labels.json'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import DictionaryScreen from '../routes/DictionaryScreen'
 import FavoritesScreen from '../routes/FavoritesScreen'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions from './screenOptions'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
@@ -27,8 +24,6 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
   const iconSize = wp('7%')
-  const headerHeight = useTabletHeaderHeight(wp('15%'))
-  const options = screenOptions(headerHeight)
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (

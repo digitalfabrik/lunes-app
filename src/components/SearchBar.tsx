@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { TouchableOpacity } from 'react-native'
 
 import { CloseIcon, MagnifierIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
@@ -10,7 +10,7 @@ interface Props {
   setValue: (input: string) => void
 }
 
-const SearchBar = ({ value, setValue }: Props) => (
+const SearchBar = ({ value, setValue }: Props): ReactElement => (
   <CustomTextInput
     value={value}
     onChangeText={setValue}

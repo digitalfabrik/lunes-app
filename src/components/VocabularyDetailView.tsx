@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { Document } from '../constants/endpoints'
@@ -16,15 +16,13 @@ interface Props {
   document: Document
 }
 
-const VocabularyDetailView = ({ document }: Props) => {
-  return (
-    <>
-      <DocumentImageSection document={document} />
-      <ItemContainer>
-        <WordItem answer={{ word: document.word, article: document.article }} />
-      </ItemContainer>
-    </>
-  )
-}
+const VocabularyDetailView = ({ document }: Props): ReactElement => (
+  <>
+    <DocumentImageSection document={document} />
+    <ItemContainer>
+      <WordItem answer={{ word: document.word, article: document.article }} />
+    </ItemContainer>
+  </>
+)
 
 export default VocabularyDetailView
