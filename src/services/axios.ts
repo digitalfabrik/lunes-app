@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
 import AsyncStorage from './AsyncStorage'
@@ -28,9 +28,18 @@ setupCache(axios, {
   generateKey: keyGenerator,
 })
 
-export const getFromEndpoint = async <T>(url: string, apiKey?: string): Promise<T> => {
+const getUrl = async (endpoint: string): Promise<string> => {
   const baseURL = await getBaseURL()
+  return `${baseURL}/${addTrailingSlashToUrl(endpoint)}`
+}
+
+export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  const response = await axios.get(`${baseURL}/${addTrailingSlashToUrl(url)}`, { headers })
+  const response = await axios.get(await getUrl(endpoint), { headers })
   return response.data
+}
+
+export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: string): Promise<AxiosResponse> => {
+  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
+  return axios.post(await getUrl(endpoint), data, { headers })
 }

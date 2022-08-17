@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react'
-import { Pressable, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ArrowRightCircleIconWhite } from '../../../../assets/images'
+import PressableOpacity from '../../../components/PressableOpacity'
 import { ContentTextLight } from '../../../components/text/Content'
 import { SubheadingPrimary, SubheadingText } from '../../../components/text/Subheading'
 
 const Container = styled.View`
   flex-direction: row;
+  flex: 1;
   background-color: ${props => props.theme.colors.background};
   padding: ${props => props.theme.spacings.sm};
   margin: ${props => props.theme.spacings.sm} 0;
@@ -59,21 +60,21 @@ interface PropsType {
 }
 
 const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel }: PropsType): ReactElement => (
-  <Pressable onPress={onPress}>
+  <PressableOpacity onPress={onPress}>
     <Container>
       <Thumbnail source={{ uri: thumbnail }} testID='next-exercise-thumbnail' />
       <ExerciseDetail>
         <Heading>{heading}</Heading>
         <Subheading>{subheading}</Subheading>
         <ActionContainer>
-          <TouchableOpacity style={{ flexDirection: 'row' }} onPress={onPress}>
+          <PressableOpacity onPress={onPress}>
             <Label>{buttonLabel}</Label>
             <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
-          </TouchableOpacity>
+          </PressableOpacity>
         </ActionContainer>
       </ExerciseDetail>
     </Container>
-  </Pressable>
+  </PressableOpacity>
 )
 
 export default NextExerciseCard
