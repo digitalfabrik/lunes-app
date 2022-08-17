@@ -96,19 +96,19 @@ describe('AudioPlayer', () => {
   })
 
   it('should be disabled', async () => {
-    const { getByRole } = renderAudioPlayer({ disabled: true })
-    expect(getByRole('button')).toBeDisabled()
+    const { getByTestId } = renderAudioPlayer({ disabled: true })
+    expect(getByTestId('audio-player')).toBeDisabled()
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
-    fireEvent.press(getByRole('button'))
+    fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
   it('should play audio if available and no alternative solution submitted', () => {
-    const { getByRole } = renderAudioPlayer({ document: audioDocument })
-    fireEvent.press(getByRole('button'))
+    const { getByTestId } = renderAudioPlayer({ document: audioDocument })
+    fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
     expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioDocument.audio)
@@ -117,10 +117,10 @@ describe('AudioPlayer', () => {
 
   it('should play submitted alternative', async () => {
     const submittedAlternative = 'my alternative'
-    const { getByRole } = renderAudioPlayer({ document: audioDocument, submittedAlternative })
+    const { getByTestId } = renderAudioPlayer({ document: audioDocument, submittedAlternative })
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
-    fireEvent.press(getByRole('button'))
+    fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
     expect(Tts.speak).toHaveBeenCalledWith(submittedAlternative, expect.any(Object))
@@ -128,10 +128,10 @@ describe('AudioPlayer', () => {
   })
 
   it('should play tts if no audio available and no alternative submitted', async () => {
-    const { getByRole } = renderAudioPlayer({})
+    const { getByTestId } = renderAudioPlayer({})
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
-    fireEvent.press(getByRole('button'))
+    fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
     expect(Tts.speak).toHaveBeenCalledWith(stringifyDocument(noAudioDocument), expect.any(Object))

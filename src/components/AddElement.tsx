@@ -3,10 +3,11 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
+import PressableOpacity from './PressableOpacity'
 import { ContentSecondary } from './text/Content'
 import { SubheadingPrimary } from './text/Subheading'
 
-const Root = styled.TouchableOpacity`
+const PressableContainer = styled(PressableOpacity)`
   margin: ${props => props.theme.spacings.sm} 0;
 `
 
@@ -32,13 +33,15 @@ interface Props {
 }
 
 const AddElement = ({ onPress, label, explanation }: Props): ReactElement => (
-  <Root onPress={onPress}>
-    <FlexRow>
-      <AddCircleIcon width={wp('8%')} height={wp('8%')} />
-      <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
-    </FlexRow>
+  <>
+    <PressableContainer onPress={onPress}>
+      <FlexRow>
+        <AddCircleIcon width={wp('8%')} height={wp('8%')} />
+        <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
+      </FlexRow>
+    </PressableContainer>
     {explanation && <Explanation>{explanation}</Explanation>}
-  </Root>
+  </>
 )
 
 export default AddElement
