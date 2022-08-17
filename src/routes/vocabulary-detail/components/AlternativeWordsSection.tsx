@@ -25,7 +25,7 @@ const Root = styled.View`
 `
 
 const Content = styled.View`
-  padding: 0 ${props => props.theme.spacings.xs};
+  padding: 0 ${props => props.theme.spacings.sm};
 `
 
 const SuggestionPressable = styled.Pressable`
