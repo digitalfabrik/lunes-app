@@ -6,7 +6,7 @@ import DocumentImageSection from './DocumentImageSection'
 import WordItem from './WordItem'
 
 const ItemContainer = styled.View`
-  margin: ${props => props.theme.spacings.xl} 0;
+  margin-top: ${props => props.theme.spacings.xl};
   height: 10%;
   width: 85%;
   align-self: center;
