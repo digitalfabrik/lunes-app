@@ -170,9 +170,10 @@ const editUserDocument = async (
 }
 
 const deleteUserDocument = async (userDocument: UserVocabularyDocument): Promise<void> => {
-  let userVocabulary = await getUserVocabulary()
-  userVocabulary = userVocabulary.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
-  await setUserVocabulary(userVocabulary)
+  const userVocabulary = getUserVocabulary().then(vocab =>
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
+  )
+  await setUserVocabulary(await userVocabulary)
 }
 
 export default {
