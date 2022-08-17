@@ -29,7 +29,7 @@ interface PropsType {
 const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => (
   <RouteWrapper>
     <Root>
-      <StyledHeading>{getLabels().ownVocabulary.myVocabulary}</StyledHeading>
+      <StyledHeading>{getLabels().ownVocabulary.myWords}</StyledHeading>
       <Margin />
       <ListItem
         icon={<BookIconBlack />}

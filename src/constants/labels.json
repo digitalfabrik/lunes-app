@@ -173,8 +173,7 @@
     }
   },
   "ownVocabulary": {
-    "myVocabulary": "Meine Vokabeln",
-    "vocabulary": "Vokabeln",
+    "myWords": "Meine Wörter",
     "overview": {
       "list": "Vokabelliste",
       "create": "Vokabeln erstellen",
