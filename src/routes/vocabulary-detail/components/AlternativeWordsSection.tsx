@@ -46,7 +46,7 @@ const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   return (
     <Root>
-      <CrystalBallIcon width={wp('8%')} height={wp('8%')} />
+      <CrystalBallIcon width={wp('7%')} height={wp('7%')} />
       <Content>
         {document.alternatives.length > 0 && (
           <>
