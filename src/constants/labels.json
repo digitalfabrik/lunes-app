@@ -142,7 +142,7 @@
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
-    "back": "zurück",
+    "back": "Zurück",
     "plurals": "Plural",
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
@@ -160,7 +160,7 @@
   "favorites": "Favoriten",
   "dictionary": {
     "enterWord": "Wort eingeben",
-    "noResults": "Sorry, keine Ergebnisse gefunden"
+    "noResults": "Es wurden leider keine Ergebnisse gefunden."
   },
   "settings": {
     "settings": "Einstellungen",

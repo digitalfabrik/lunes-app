@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../components/RouteWrapper'
-import VocabularyDetailView from '../components/VocabularyDetailView'
+import VocabularyDetail from '../components/VocabularyDetail'
 import { RoutesParams } from '../navigation/NavigationTypes'
 
 interface Props {
@@ -13,7 +13,7 @@ const DictionaryDetailScreen = ({ route }: Props): ReactElement => {
   const { document } = route.params
   return (
     <RouteWrapper>
-      <VocabularyDetailView document={document} />
+      <VocabularyDetail document={document} />
     </RouteWrapper>
   )
 }

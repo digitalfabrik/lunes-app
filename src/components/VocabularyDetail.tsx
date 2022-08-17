@@ -16,7 +16,7 @@ interface Props {
   document: Document
 }
 
-const VocabularyDetailView = ({ document }: Props): ReactElement => (
+const VocabularyDetail = ({ document }: Props): ReactElement => (
   <>
     <DocumentImageSection document={document} />
     <ItemContainer>
@@ -25,4 +25,4 @@ const VocabularyDetailView = ({ document }: Props): ReactElement => (
   </>
 )
 
-export default VocabularyDetailView
+export default VocabularyDetail

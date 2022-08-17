@@ -7,7 +7,7 @@ import { ArrowRightIcon } from '../../assets/images'
 import Button from '../components/Button'
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
-import VocabularyDetailView from '../components/VocabularyDetailView'
+import VocabularyDetail from '../components/VocabularyDetail'
 import { BUTTONS_THEME } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -39,7 +39,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
       />
-      <VocabularyDetailView document={document} />
+      <VocabularyDetail document={document} />
       <ButtonContainer>
         {hasNextDocument ? (
           <Button

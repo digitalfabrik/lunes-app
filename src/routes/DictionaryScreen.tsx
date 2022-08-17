@@ -10,6 +10,7 @@ import SearchBar from '../components/SearchBar'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import VocabularyListItem from '../components/VocabularyListItem'
+import { ARTICLES } from '../constants/data'
 import { Document } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import useLoadAllDocuments from '../hooks/useLoadAllDocuments'
@@ -39,7 +40,15 @@ interface Props {
 const DictionaryScreen = ({ navigation }: Props): ReactElement => {
   const documents = useLoadAllDocuments()
   const [searchString, setSearchString] = useState<string>('')
-  const filteredDocuments = documents.data?.filter(item => item.word.includes(searchString))
+  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(searchString.split(' ')[0])
+    ? searchString.substring(searchString.indexOf(' ') + 1)
+    : searchString
+  const filteredDocuments = documents.data?.filter(item =>
+    item.word.toLowerCase().includes(searchStringWithoutArticle.toLowerCase().trim())
+  )
+  const description = `${filteredDocuments?.length ?? 0} ${
+    (filteredDocuments?.length ?? 0) === 1 ? labels.general.word : labels.general.words
+  }`
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('DictionaryDetail', { document })
@@ -58,16 +67,11 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={
                 <Header>
-                  <Title
-                    title={labels.general.dictionary}
-                    description={`${filteredDocuments?.length ?? 0} ${
-                      documents.data.length === 1 ? labels.general.word : labels.general.words
-                    }`}
-                  />
-                  <SearchBar value={searchString} setValue={setSearchString} />
+                  <Title title={labels.general.dictionary} description={description} />
+                  <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
-              data={filteredDocuments}
+              data={filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word))}
               renderItem={renderItem}
               keyExtractor={item => `${item.id}`}
               showsVerticalScrollIndicator={false}
