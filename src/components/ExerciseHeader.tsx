@@ -4,16 +4,17 @@ import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-// import { HiddenItem } from 'react-navigation-header-buttons'
+import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
-// import { MenuIcon } from '../../assets/images'
+import { MenuIcon } from '../../assets/images'
+import { FeedbackType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import FeedbackModal from './FeedbackModal'
 import Modal from './Modal'
 import NavigationHeaderLeft from './NavigationHeaderLeft'
-// import OverflowMenu from './OverflowMenu'
+import OverflowMenu from './OverflowMenu'
 import { ContentSecondary } from './text/Content'
 
 const ProgressBar = styled(RNProgressBar)`
@@ -29,14 +30,16 @@ const HeaderRightContainer = styled.View`
 const ProgressText = styled(ContentSecondary)`
   margin-right: ${props => props.theme.spacings.sm};
 `
-// TODO Remove comment when LUN-269 is ready
-// const MenuIconPrimary = styled(MenuIcon)`
-//   color: ${props => props.theme.colors.primary};
-// `
+
+const StyledMenuIcon = styled(MenuIcon)`
+  color: ${props => props.theme.colors.primary};
+`
 
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
+  feedbackType: FeedbackType
+  feedbackForId: number
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
@@ -45,6 +48,8 @@ interface ExerciseHeaderProps {
 const ExerciseHeader = ({
   navigation,
   closeExerciseAction,
+  feedbackType,
+  feedbackForId,
   currentWord,
   numberOfWords,
   confirmClose = true,
@@ -67,10 +72,9 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        {/* TODO Remove comment when LUN-269 is ready */}
-        {/* <OverflowMenu icon={<MenuIconPrimary width={wp('5%')} height={wp('5%')} />}> */}
-        {/*  <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} /> */}
-        {/* </OverflowMenu> */}
+        <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
+          <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+        </OverflowMenu>
       </HeaderRightContainer>
     )
 
@@ -117,7 +121,12 @@ const ExerciseHeader = ({
         confirmationButtonText={labels.exercises.cancelModal.cancel}
         confirmationAction={goBack}
       />
-      <FeedbackModal visible={isFeedbackModalVisible} onClose={() => setIsFeedbackModalVisible(false)} />
+      <FeedbackModal
+        visible={isFeedbackModalVisible}
+        onClose={() => setIsFeedbackModalVisible(false)}
+        feedbackType={feedbackType}
+        feedbackForId={feedbackForId}
+      />
     </>
   )
 }

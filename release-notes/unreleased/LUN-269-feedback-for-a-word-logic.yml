@@ -1,0 +1,6 @@
+issue_key: LUN-269
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Es kann nun Feedback zu Wörtern und Übungen gegeben werden

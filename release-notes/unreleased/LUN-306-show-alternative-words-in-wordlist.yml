@@ -1,0 +1,6 @@
+issue_key: LUN-306
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Alternative Wörter werden in der Wortliste angezeigt

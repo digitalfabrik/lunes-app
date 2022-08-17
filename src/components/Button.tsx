@@ -35,7 +35,7 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
   background-color: ${props => props.backgroundColor};
 `
 
-const Label = styled(Subheading)<ThemedLabelProps>`
+export const Label = styled(Subheading)<ThemedLabelProps>`
   color: ${props => props.color};
   text-align: center;
   letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
