@@ -11,7 +11,7 @@ import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
 
 const Heading = styled(ContentSecondary)`
-  padding: ${props => props.theme.spacings.xs} 0;
+  padding-bottom: ${props => props.theme.spacings.xs};
 `
 
 const AlternativeWords = styled(ContentSecondary)`
