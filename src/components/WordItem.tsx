@@ -6,10 +6,10 @@ import labels from '../constants/labels.json'
 import { getArticleColor } from '../services/helpers'
 import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 
-const Container = styled.TouchableOpacity<StyledListElementProps>`
+const Container = styled.Pressable<StyledListElementProps>`
   margin-bottom: ${props => props.theme.spacings.xxs};
+  padding: ${props => props.theme.spacings.sm};
   border-radius: 2px;
-  flex: 1;
   border-width: ${props => {
     if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
       return '0px'
@@ -160,7 +160,6 @@ const WordItem = ({
 
   return (
     <Container
-      activeOpacity={1}
       correct={showCorrect}
       selected={selected}
       onPressIn={onClick && onPressIn}

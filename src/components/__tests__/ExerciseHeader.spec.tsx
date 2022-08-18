@@ -5,6 +5,7 @@ import React from 'react'
 // eslint-disable-next-line jest/no-mocks-import
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
 
+import { FeedbackType } from '../../constants/data'
 import labels from '../../constants/labels.json'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
@@ -19,7 +20,14 @@ describe('ExerciseHeader', () => {
   it('should render header', () => {
     const goBack = CommonActions.goBack()
     const { getByText, getByTestId } = render(
-      <ExerciseHeader navigation={navigation} currentWord={4} numberOfWords={10} closeExerciseAction={goBack} />
+      <ExerciseHeader
+        navigation={navigation}
+        currentWord={4}
+        numberOfWords={10}
+        closeExerciseAction={goBack}
+        feedbackType={FeedbackType.document}
+        feedbackForId={1}
+      />
     )
     expect(getByTestId('customModal')).toBeTruthy()
     expect(getByTestId('customModal').props.visible).toBe(false)

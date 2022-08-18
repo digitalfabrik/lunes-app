@@ -11,7 +11,7 @@ export const ExerciseKeys = {
   wordChoiceExercise: 1,
   articleChoiceExercise: 2,
   writeExercise: 3,
-}
+} as const
 export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface Exercise {
@@ -22,7 +22,7 @@ export interface Exercise {
   screen: keyof RoutesParams
 }
 
-export const EXERCISES: Exercise[] = [
+export const EXERCISES: Readonly<Exercise[]> = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
@@ -51,7 +51,7 @@ export const EXERCISES: Exercise[] = [
     level: 3,
     screen: 'WriteExercise',
   },
-]
+] as const
 
 export interface Progress {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
@@ -80,7 +80,7 @@ interface ArticleType {
   readonly value: string
 }
 
-export const ARTICLES: ArticleType[] = [
+export const ARTICLES: Readonly<ArticleType[]> = [
   {
     id: 0,
     value: 'keiner',
@@ -101,7 +101,7 @@ export const ARTICLES: ArticleType[] = [
     id: 4,
     value: 'die',
   },
-]
+] as const
 
 export type Article = typeof ARTICLES[number]
 
@@ -120,7 +120,7 @@ export interface Answer {
   article: Article
 }
 
-export const RESULTS: ResultType[] = [
+export const RESULTS: Readonly<ResultType[]> = [
   {
     key: 'correct',
     Icon: CheckCircleIcon,
@@ -139,9 +139,16 @@ export const RESULTS: ResultType[] = [
     title: 'Falsche',
     order: 2,
   },
-]
+] as const
 
 export type Result = typeof RESULTS[number]
+
+export const FeedbackType = {
+  discipline: 'discipline',
+  leaf_discipline: 'trainingset',
+  document: 'document',
+} as const
+export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3
 
