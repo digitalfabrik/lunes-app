@@ -18,7 +18,7 @@ const DictionaryStackNavigator = (): ReactElement => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='DictionaryOverview'
+        name='Dictionary'
         component={DictionaryScreen}
         options={({ navigation }) => options(back, navigation)}
       />

@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
-import { TouchableOpacity } from 'react-native'
 
 import { CloseIcon, MagnifierIcon } from '../../assets/images'
 import labels from '../constants/labels.json'
 import CustomTextInput from './CustomTextInput'
+import PressableOpacity from './PressableOpacity'
 
 interface Props {
   query: string
@@ -16,9 +16,9 @@ const SearchBar = ({ query, setQuery }: Props): ReactElement => (
     onChangeText={setQuery}
     placeholder={labels.dictionary.enterWord}
     rightContainer={
-      <TouchableOpacity onPress={() => setQuery('')}>
+      <PressableOpacity onPress={() => setQuery('')}>
         {query === '' ? <MagnifierIcon /> : <CloseIcon />}
-      </TouchableOpacity>
+      </PressableOpacity>
     }
   />
 )

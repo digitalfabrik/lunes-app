@@ -34,13 +34,15 @@ const Header = styled.View`
 `
 
 interface Props {
-  navigation: StackNavigationProp<RoutesParams, 'DictionaryOverview'>
+  navigation: StackNavigationProp<RoutesParams, 'Dictionary'>
 }
 
 const DictionaryScreen = ({ navigation }: Props): ReactElement => {
   const documents = useLoadAllDocuments()
   const [searchString, setSearchString] = useState<string>('')
-  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(searchString.split(' ')[0])
+  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
+    searchString.split(' ')[0].toLowerCase()
+  )
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString
   const filteredDocuments = documents.data?.filter(item =>

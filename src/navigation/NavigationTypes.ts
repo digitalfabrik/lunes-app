@@ -69,7 +69,7 @@ export type RoutesParams = {
   ManageSelection: undefined
   Settings: undefined
   Favorites: undefined
-  DictionaryOverview: undefined
+  Dictionary: undefined
   DictionaryDetail: { document: Document }
 }
 
