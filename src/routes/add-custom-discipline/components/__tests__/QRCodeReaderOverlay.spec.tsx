@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import render from '../../../../testing/render'
 import QRCodeReaderOverlay from '../QRCodeReaderOverlay'
@@ -12,7 +12,7 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 jest.mock('react-native-camera', () => ({
   RNCamera: ({ onBarCodeRead }: { onBarCodeRead: ({ data }: { data: string }) => void }) => (
     <View accessibilityLabel='scanner'>
-      <TouchableOpacity accessibilityLabel='mockOnBarCodeRead' onPress={() => onBarCodeRead({ data: apiCode })} />
+      <Pressable accessibilityLabel='mockOnBarCodeRead' onPress={() => onBarCodeRead({ data: apiCode })} />
     </View>
   ),
 }))

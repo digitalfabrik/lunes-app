@@ -10,7 +10,7 @@ import {
 } from '../../assets/images'
 import { NavigationTitle } from './NavigationTitle'
 
-const Container = styled.TouchableOpacity`
+const Container = styled.Pressable`
   padding-left: ${props => props.theme.spacings.sm};
   flex-direction: row;
   align-items: center;
@@ -30,11 +30,7 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: Props): ReactEl
   const Icon = isCloseButton ? closeIcon : backIcon
 
   return (
-    <Container
-      onPress={onPress}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      activeOpacity={1}>
+    <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>
       <Icon width={wp('7%')} height={wp('7%')} />
       <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
     </Container>
