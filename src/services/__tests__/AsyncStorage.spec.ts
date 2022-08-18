@@ -1,4 +1,4 @@
-import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { ARTICLES, ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
@@ -117,6 +117,45 @@ describe('AsyncStorage', () => {
       await expect(AsyncStorage.getFavorites()).resolves.toEqual([documents[0], documents[1], documents[3]])
       await AsyncStorage.removeFavorite(documents[0])
       await expect(AsyncStorage.getFavorites()).resolves.toEqual([documents[1], documents[3]])
+    })
+  })
+
+  describe('userVocabulary', () => {
+    const userDocument1 = {
+      word: 'Helm',
+      article: ARTICLES[1],
+      imagePath: 'pathToImage1',
+    }
+
+    const userDocument2 = {
+      word: 'Jacke',
+      article: ARTICLES[2],
+      imagePath: 'pathToImage1',
+    }
+
+    it('should add userDocument', async () => {
+      const userVocabulary = await AsyncStorage.getUserVocabulary()
+      expect(userVocabulary).toHaveLength(0)
+      await AsyncStorage.addUserDocument(userDocument1)
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      expect(updatedUserVocabulary).toHaveLength(1)
+    })
+
+    it('should edit userDocument', async () => {
+      await AsyncStorage.addUserDocument(userDocument1)
+      await AsyncStorage.editUserDocument(userDocument1, userDocument2)
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      expect(updatedUserVocabulary).toHaveLength(1)
+      expect(updatedUserVocabulary[0]).toEqual(userDocument2)
+    })
+
+    it('should delete userDocument', async () => {
+      await AsyncStorage.addUserDocument(userDocument1)
+      const userVocabulary = await AsyncStorage.getUserVocabulary()
+      expect(userVocabulary).toHaveLength(1)
+      await AsyncStorage.deleteUserDocument(userDocument1)
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      expect(updatedUserVocabulary).toHaveLength(0)
     })
   })
 })
