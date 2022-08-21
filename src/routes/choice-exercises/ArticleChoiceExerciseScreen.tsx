@@ -15,14 +15,15 @@ interface ArticleChoiceExerciseScreenProps {
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const { documents, disciplineTitle, disciplineId } = route.params
+  const singularDocuments = documents.filter(it => it.article.showAsPossibleAnswer)
 
   const documentToAnswers = (document: Document): Answer[] =>
-    ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
+    ARTICLES.filter(it => it.showAsPossibleAnswer).map(article => ({ article, word: document.word }))
 
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        documents={documents}
+        documents={singularDocuments}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
         documentToAnswers={documentToAnswers}
