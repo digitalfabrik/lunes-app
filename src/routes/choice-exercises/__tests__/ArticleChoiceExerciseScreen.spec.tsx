@@ -5,7 +5,7 @@ import React from 'react'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -102,7 +102,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     await act(() => {
       fireEvent.press(getByText(labels.exercises.showResults))
     })
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
+    expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])

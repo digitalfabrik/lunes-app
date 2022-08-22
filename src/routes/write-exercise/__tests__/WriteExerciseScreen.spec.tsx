@@ -7,7 +7,7 @@ import Tts from 'react-native-tts'
 import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
@@ -185,7 +185,7 @@ describe('WriteExerciseScreen', () => {
       fireEvent.press(getByText(labels.exercises.showResults))
     })
 
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])

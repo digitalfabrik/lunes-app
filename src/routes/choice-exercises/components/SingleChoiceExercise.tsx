@@ -20,7 +20,7 @@ import {
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -83,8 +83,8 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
-    const progress = await getExerciseProgress()
-    await saveExerciseProgress(disciplineId, exerciseKey, results)
+    const progress = await AsyncStorage.getExerciseProgress()
+    await AsyncStorage.saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineId,

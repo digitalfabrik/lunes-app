@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { BUTTONS_THEME, SimpleResult, SIMPLE_RESULTS } from '../constants/data'
 import labels from '../constants/labels.json'
 import { useLoadAsync } from '../hooks/useLoadAsync'
-import { getDevMode } from '../services/AsyncStorage'
+import AsyncStorage from '../services/AsyncStorage'
 import Button from './Button'
 
 const CheatContainer = styled.View`
@@ -21,7 +21,7 @@ interface CheatModeProps {
 }
 
 const CheatMode = ({ cheat }: CheatModeProps): ReactElement => {
-  const { data: cheatsEnabled } = useLoadAsync(getDevMode, null)
+  const { data: cheatsEnabled } = useLoadAsync(AsyncStorage.getDevMode, null)
   return (
     <>
       {cheatsEnabled && (
