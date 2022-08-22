@@ -3,7 +3,6 @@ import React from 'react'
 import { useTheme } from 'styled-components'
 
 import labels from '../constants/labels.json'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -12,13 +11,12 @@ import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { headerHeightPercentage } from './screenOptions'
+import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const headerHeight = useTabletHeaderHeight(headerHeightPercentage)
-  const options = screenOptions(headerHeight)
+  const options = screenOptions(useTabletHeaderHeight())
   const { overview } = labels.general.header
   const theme = useTheme()
 

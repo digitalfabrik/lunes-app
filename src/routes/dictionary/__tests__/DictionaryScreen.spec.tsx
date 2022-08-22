@@ -2,25 +2,25 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
-import useLoadAllDocuments from '../../hooks/useLoadAllDocuments'
-import DocumentBuilder from '../../testing/DocumentBuilder'
-import createNavigationMock from '../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../testing/helper'
-import render from '../../testing/render'
+import labels from '../../../constants/labels.json'
+import useLoadAllDocuments from '../../../hooks/useLoadAllDocuments'
+import DocumentBuilder from '../../../testing/DocumentBuilder'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { getReturnOf } from '../../../testing/helper'
+import render from '../../../testing/render'
 import DictionaryScreen from '../DictionaryScreen'
 
-jest.mock('../../components/FavoriteButton', () => {
+jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
 
-jest.mock('../../components/AudioPlayer', () => {
+jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
 
-jest.mock('../../hooks/useLoadAllDocuments')
+jest.mock('../../../hooks/useLoadAllDocuments')
 
 describe('DictionaryScreen', () => {
   const documents = new DocumentBuilder(4).build()

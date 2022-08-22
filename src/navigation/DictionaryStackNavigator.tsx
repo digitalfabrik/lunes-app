@@ -2,17 +2,15 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import labels from '../constants/labels.json'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DictionaryDetailScreen from '../routes/DictionaryDetailScreen'
-import DictionaryScreen from '../routes/DictionaryScreen'
+import DictionaryScreen from '../routes/dictionary/DictionaryScreen'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { headerHeightPercentage } from './screenOptions'
+import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const DictionaryStackNavigator = (): ReactElement => {
-  const headerHeight = useTabletHeaderHeight(headerHeightPercentage)
-  const options = screenOptions(headerHeight)
+  const options = screenOptions(useTabletHeaderHeight())
   const { back } = labels.general
 
   return (
