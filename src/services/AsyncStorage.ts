@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKey, Progress } from '../constants/data'
+import { ExerciseKey, Progress, UserVocabularyDocument } from '../constants/data'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
 
@@ -11,6 +11,7 @@ const PROGRESS_KEY = 'progress'
 const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
 const DEV_MODE_KEY = 'devmode'
+const USER_VOCABULARY = 'userVocabulary'
 
 const isTrackingEnabled = async (): Promise<boolean> => {
   const tracking = await AsyncStorage.getItem(SENTRY_KEY)
@@ -140,6 +141,41 @@ export const getDevMode = async (): Promise<boolean | null> => {
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
+export const getUserVocabulary = async (): Promise<UserVocabularyDocument[]> => {
+  const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
+  return userVocabulary ? JSON.parse(userVocabulary) : []
+}
+
+const setUserVocabulary = async (userDocument: UserVocabularyDocument[]): Promise<void> => {
+  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userDocument))
+}
+
+const addUserDocument = async (userDocument: UserVocabularyDocument): Promise<void> => {
+  const userVocabulary = await getUserVocabulary()
+  await setUserVocabulary([...userVocabulary, userDocument])
+}
+
+const editUserDocument = async (
+  oldUserDocument: UserVocabularyDocument,
+  newUserDocument: UserVocabularyDocument
+): Promise<boolean> => {
+  const userVocabulary = await getUserVocabulary()
+  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserDocument))
+  if (index === -1) {
+    return false
+  }
+  userVocabulary[index] = newUserDocument
+  await setUserVocabulary(userVocabulary)
+  return true
+}
+
+const deleteUserDocument = async (userDocument: UserVocabularyDocument): Promise<void> => {
+  const userVocabulary = getUserVocabulary().then(vocab =>
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
+  )
+  await setUserVocabulary(await userVocabulary)
+}
+
 export default {
   isTrackingEnabled,
   setIsTrackingEnabled,
@@ -162,4 +198,8 @@ export default {
   getOverwriteCMS,
   toggleDevMode,
   getDevMode,
+  getUserVocabulary,
+  addUserDocument,
+  editUserDocument,
+  deleteUserDocument,
 }

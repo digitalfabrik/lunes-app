@@ -385,7 +385,7 @@ jobs:
                 name: PlayStore Upload
                 working_directory: android
             - run:
-                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+                command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
             - notify
     deliver_browser_stack:
@@ -459,7 +459,7 @@ jobs:
                         name: '[FL] TestFlight Upload'
                         working_directory: ios
             - run:
-                command: tools/sentry-release.sh "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
+                command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
             - notify
     move_release_notes:
