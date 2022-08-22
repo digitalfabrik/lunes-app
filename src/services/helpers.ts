@@ -130,4 +130,4 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   return trainingSet
 }
 
-export const getLabels = (): any => labels
+export const getLabels = (): typeof labels => labels
