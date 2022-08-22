@@ -132,6 +132,8 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   return trainingSet
 }
 
+export const getLabels = (): typeof labels => labels
+
 export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>
   postToEndpoint(ENDPOINTS.feedback, {
     comment,
