@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { StyleSheet } from 'react-native'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -37,7 +37,7 @@ export interface IPopoverProps {
   isVisible: boolean
 }
 
-const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
+const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
   <Popover
     // @ts-expect-error, used for testing purposes
     testID='popover'

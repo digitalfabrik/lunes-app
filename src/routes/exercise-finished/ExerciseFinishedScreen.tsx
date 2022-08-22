@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ComponentType } from 'react'
 import * as Progress from 'react-native-progress'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -89,7 +89,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     message: string
     resultColor: Color
     buttonText: string
-    ResultIcon: React.ComponentType<SvgProps>
+    ResultIcon: ComponentType<SvgProps>
     navigationAction: () => void
   } => {
     const isLastExercise = exercise === EXERCISES.length - 1

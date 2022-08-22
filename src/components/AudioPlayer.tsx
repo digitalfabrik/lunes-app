@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement, useCallback, useState, useEffect } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
@@ -61,7 +61,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
       })
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (audio && !submittedAlternative) {
       const onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()

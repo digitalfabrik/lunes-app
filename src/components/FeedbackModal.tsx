@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, FC } from 'react'
 import styled from 'styled-components/native'
 
 import { FeedbackType } from '../constants/data'
@@ -20,7 +20,7 @@ interface FeedbackModalProps {
   feedbackForId: number
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({
+const FeedbackModal: FC<FeedbackModalProps> = ({
   visible,
   onClose,
   feedbackType,
