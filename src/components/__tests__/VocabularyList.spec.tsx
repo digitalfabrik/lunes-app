@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
+import { getLabels } from '../../services/helpers'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
 import render from '../../testing/render'
@@ -32,7 +32,7 @@ describe('VocabularyList', () => {
     )
 
     expect(getByText('Title')).toBeTruthy()
-    expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
+    expect(getByText(`2 ${getLabels().general.words}`)).toBeTruthy()
     expect(getByText('der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
     expect(getByText('das')).toBeTruthy()

@@ -12,8 +12,8 @@ import FeedbackModal from '../../components/FeedbackModal'
 import HorizontalLine from '../../components/HorizontalLine'
 import WordItem from '../../components/WordItem'
 import { BUTTONS_THEME, FeedbackType } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 import AlternativeWordsSection from './components/AlternativeWordsSection'
 
 const CorrectInfoBox = styled.View`
@@ -71,14 +71,14 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         <ButtonContainer>
           {hasNextDocument ? (
             <Button
-              label={labels.exercises.next}
+              label={getLabels().exercises.next}
               iconRight={ArrowRightIcon}
               onPress={goToNextWord}
               buttonTheme={BUTTONS_THEME.contained}
             />
           ) : (
             <Button
-              label={labels.general.header.cancelExercise}
+              label={getLabels().general.header.cancelExercise}
               onPress={navigation.goBack}
               buttonTheme={BUTTONS_THEME.contained}
             />

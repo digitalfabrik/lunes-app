@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../../constants/labels.json'
+import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import HomeFooter from '../HomeFooter'
 
@@ -12,9 +12,9 @@ describe('HomeFooter', () => {
     const { getByText } = render(<HomeFooter navigateToImprint={navigateToImpressum} />)
 
     expect(getByText('\u00A9LUNES2022')).toBeTruthy()
-    expect(getByText(labels.home.impressum)).toBeTruthy()
+    expect(getByText(getLabels().home.impressum)).toBeTruthy()
 
-    fireEvent.press(getByText(labels.home.impressum))
+    fireEvent.press(getByText(getLabels().home.impressum))
 
     expect(navigateToImpressum).toHaveBeenCalled()
   })

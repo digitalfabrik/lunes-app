@@ -12,8 +12,8 @@ import {
   StarIconGrey,
   StarIconWhite,
 } from '../../assets/images'
-import labels from '../constants/labels.json'
 import FavoritesScreen from '../routes/FavoritesScreen'
+import { getLabels } from '../services/helpers'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
@@ -54,17 +54,17 @@ const BottomTabNavigator = (): JSX.Element | null => {
       <Navigator.Screen
         name='HomeTab'
         component={HomeStackNavigator}
-        options={{ tabBarIcon: renderHomeTabIcon, title: labels.general.home }}
+        options={{ tabBarIcon: renderHomeTabIcon, title: getLabels().general.home }}
       />
       <Navigator.Screen
         name='FavoritesTab'
         component={FavoritesScreen}
-        options={{ tabBarIcon: renderFavoritesTabIcon, title: labels.general.favorites }}
+        options={{ tabBarIcon: renderFavoritesTabIcon, title: getLabels().general.favorites }}
       />
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}
-        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: labels.ownVocabulary.myWords }}
+        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().ownVocabulary.myWords }}
       />
     </Navigator.Navigator>
   )

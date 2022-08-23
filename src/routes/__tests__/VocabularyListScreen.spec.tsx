@@ -1,9 +1,9 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
@@ -51,8 +51,8 @@ describe('VocabularyListScreen', () => {
       <VocabularyListScreen route={route} navigation={navigation} />
     )
 
-    expect(getByText(labels.exercises.vocabularyList.title)).toBeTruthy()
-    expect(getByText(`2 ${labels.general.words}`)).toBeTruthy()
+    expect(getByText(getLabels().exercises.vocabularyList.title)).toBeTruthy()
+    expect(getByText(`2 ${getLabels().general.words}`)).toBeTruthy()
     expect(getByText('der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
     expect(getByText('das')).toBeTruthy()

@@ -6,9 +6,9 @@ import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys, FeedbackType } from '../constants/data'
-import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
+import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 
 interface VocabularyListScreenProps {
@@ -38,7 +38,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
       <VocabularyList
         documents={route.params.documents}
         onItemPress={onItemPress}
-        title={labels.exercises.vocabularyList.title}
+        title={getLabels().exercises.vocabularyList.title}
       />
     </RouteWrapper>
   )

@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import Button from '../../../components/Button'
 import { ContentSecondary } from '../../../components/text/Content'
 import { BUTTONS_THEME } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 
 const Container = styled.View`
   display: flex;
@@ -30,15 +30,15 @@ const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
 
   return (
     <Container>
-      <Description>{labels.addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
+      <Description>{getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
       <Button
         onPress={() => setVisible(false)}
-        label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.back}
+        label={getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.back}
         buttonTheme={BUTTONS_THEME.outlined}
       />
       <Button
         onPress={openSettings}
-        label={labels.addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
+        label={getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
         buttonTheme={BUTTONS_THEME.contained}
       />
     </Container>

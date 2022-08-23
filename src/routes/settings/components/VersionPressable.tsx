@@ -3,7 +3,7 @@ import { getVersion } from 'react-native-device-info'
 import styled from 'styled-components/native'
 
 import { ContentSecondary } from '../../../components/text/Content'
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 
 const Version = styled.Pressable`
   position: absolute;
@@ -31,7 +31,7 @@ const VersionPressable = ({ onClickThresholdReached }: PropsType): JSX.Element =
   return (
     <Version onPress={onPress}>
       <ContentSecondary>
-        {labels.settings.version}: {getVersion()}
+        {getLabels().settings.version}: {getVersion()}
       </ContentSecondary>
     </Version>
   )

@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../../constants/labels.json'
+import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import VersionPressable, { CLICK_THRESHOLD } from '../VersionPressable'
 
@@ -13,7 +13,7 @@ describe('VersionPressable', () => {
   const onClickThresholdReached = jest.fn()
   it('should open modal on multiple clicks', () => {
     const { getByText } = render(<VersionPressable onClickThresholdReached={onClickThresholdReached} />)
-    const versionPressable = getByText(`${labels.settings.version}: 2022.6.0`)
+    const versionPressable = getByText(`${getLabels().settings.version}: 2022.6.0`)
     for (let i = 0; i <= CLICK_THRESHOLD; i += 1) {
       fireEvent.press(versionPressable)
     }

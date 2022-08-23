@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 
 import { InfoCircleIcon } from '../../../../assets/images'
 import { ContentBackgroundLight } from '../../../components/text/Content'
-import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
+import { getLabels } from '../../../services/helpers'
 
 export const styles = StyleSheet.create({
   popover: {
@@ -51,7 +51,7 @@ const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IP
     backgroundStyle={styles.overlay}>
     <StyledContainer>
       <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
-      <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
+      <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>
     </StyledContainer>
   </Popover>
 ))

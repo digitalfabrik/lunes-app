@@ -4,8 +4,7 @@ import styled from 'styled-components/native'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
-import { childrenLabel } from '../../../services/helpers'
+import { getLabels, childrenLabel } from '../../../services/helpers'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
 
 const TextContainer = styled.View`
@@ -29,7 +28,7 @@ const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: PropsType
     <ButtonContainer>
       <Button
         onPress={() => navigateToDiscipline(discipline)}
-        label={labels.home.start}
+        label={getLabels().home.start}
         buttonTheme={BUTTONS_THEME.outlined}
       />
     </ButtonContainer>

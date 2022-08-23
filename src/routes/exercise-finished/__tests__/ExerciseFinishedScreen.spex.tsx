@@ -3,8 +3,8 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { ExerciseKey, EXERCISES } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -38,10 +38,14 @@ describe('ExerciseFinishedScreen', () => {
     const route = getRoute(1, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(
-      getByText(`${labels.results.unlockExercise.part1}, ${EXERCISES[2].title} ${labels.results.unlockExercise.part2}`)
+      getByText(
+        `${getLabels().results.unlockExercise.part1}, ${EXERCISES[2].title} ${getLabels().results.unlockExercise.part2}`
+      )
     ).toBeDefined()
-    expect(getByText(`4 ${labels.results.of} 4 ${labels.general.words} ${labels.results.correct}`)).toBeDefined()
-    const button = getByText(labels.results.action.nextExercise)
+    expect(
+      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.words} ${getLabels().results.correct}`)
+    ).toBeDefined()
+    const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
       documents: route.params.documents,
@@ -54,8 +58,8 @@ describe('ExerciseFinishedScreen', () => {
   it('should render and handle button click for good feedback', () => {
     const route = getRoute(1, true, false)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(getByText(labels.results.feedbackGood.replace('\n', ''))).toBeDefined()
-    const button = getByText(labels.results.action.continue)
+    expect(getByText(getLabels().results.feedbackGood.replace('\n', ''))).toBeDefined()
+    const button = getByText(getLabels().results.action.continue)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
       documents: route.params.documents,
@@ -68,8 +72,8 @@ describe('ExerciseFinishedScreen', () => {
   it('should render and handle button click for bad feedback', () => {
     const route = getRoute(1, false, false)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(getByText(labels.results.feedbackBad.replace('\n', ''))).toBeDefined()
-    const button = getByText(labels.results.action.repeat)
+    expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
+    const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, {
       documents: route.params.documents,
@@ -82,8 +86,8 @@ describe('ExerciseFinishedScreen', () => {
   it('should render and handle button click for completed discipline', () => {
     const route = getRoute(3, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(getByText(labels.results.finishedModule)).toBeDefined()
-    const button = getByText(labels.results.action.close)
+    expect(getByText(getLabels().results.finishedModule)).toBeDefined()
+    const button = getByText(getLabels().results.action.close)
     fireEvent.press(button)
     expect(navigation.pop).toHaveBeenCalledWith(2)
   })

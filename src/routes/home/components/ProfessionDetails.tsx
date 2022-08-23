@@ -6,11 +6,10 @@ import styled from 'styled-components/native'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
-import { childrenLabel } from '../../../services/helpers'
+import { childrenLabel, getLabels } from '../../../services/helpers'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
 import NextExerciseCard from './NextExerciseCard'
 
@@ -66,19 +65,21 @@ const ProfessionDetails = ({
             {completedModules}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{completedModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
+        <UnitText>
+          {completedModules > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
+        </UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
-        buttonLabel={nextExerciseData.exerciseKey === 0 ? labels.home.start : labels.home.continue}
+        buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
         subheading={title}
       />
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={labels.home.viewModules}
+          label={getLabels().home.viewModules}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

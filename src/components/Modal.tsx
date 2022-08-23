@@ -3,7 +3,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { BUTTONS_THEME } from '../constants/data'
-import labels from '../constants/labels.json'
+import { getLabels } from '../services/helpers'
 import Button from './Button'
 import ModalSkeleton from './ModalSkeleton'
 import { HeadingText } from './text/Heading'
@@ -52,7 +52,7 @@ const Modal = (props: Props): JSX.Element => {
         buttonTheme={BUTTONS_THEME.contained}
       />
       {showCancelButton && (
-        <Button label={labels.general.customModalCancel} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
+        <Button label={getLabels().general.customModalCancel} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
       )}
     </ModalSkeleton>
   )
