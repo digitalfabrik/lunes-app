@@ -1,0 +1,6 @@
+issue_key: LUN-368
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Treffenderer Buttonname bei noch nicht begonnenen Übungen

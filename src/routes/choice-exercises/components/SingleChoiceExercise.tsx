@@ -5,21 +5,24 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
+import CheatMode from '../../../components/CheatMode'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
-import { Answer, BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
+import {
+  Answer,
+  BUTTONS_THEME,
+  ExerciseKey,
+  FeedbackType,
+  numberOfMaxRetries,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../../constants/data'
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
-
-const ExerciseContainer = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
-`
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -35,7 +38,7 @@ interface SingleChoiceExerciseProps {
   documentToAnswers: (document: Document) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  exerciseKey: number
+  exerciseKey: ExerciseKey
 }
 
 const CORRECT_ANSWER_DELAY = 700
@@ -47,7 +50,7 @@ const ChoiceExerciseScreen = ({
   documentToAnswers,
   navigation,
   route,
-  exerciseKey
+  exerciseKey,
 }: SingleChoiceExerciseProps): ReactElement => {
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -89,11 +92,15 @@ const ChoiceExerciseScreen = ({
       exercise: exerciseKey,
       results,
       closeExerciseAction: route.params.closeExerciseAction,
-      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined
+      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined,
     })
     initializeExercise(true)
   }
   const count = documents.length
+
+  const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
+    await onExerciseFinished(results.map(it => ({ ...it, numberOfTries: numberOfMaxRetries, result })))
+  }
 
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
     answer1.article.id === answer2.article.id && answer1.word === answer2.word
@@ -133,12 +140,14 @@ const ChoiceExerciseScreen = ({
   const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
 
   return (
-    <ExerciseContainer>
+    <>
       <ExerciseHeader
         navigation={navigation}
         closeExerciseAction={route.params.closeExerciseAction}
         currentWord={currentWord}
         numberOfWords={count}
+        feedbackType={FeedbackType.document}
+        feedbackForId={document.id}
       />
 
       <>
@@ -168,9 +177,10 @@ const ChoiceExerciseScreen = ({
               />
             )
           )}
+          <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
       </>
-    </ExerciseContainer>
+    </>
   )
 }
 

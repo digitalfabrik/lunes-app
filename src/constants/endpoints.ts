@@ -42,7 +42,8 @@ export const ENDPOINTS = {
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
   documents: 'documents/:id',
-  document: 'words'
+  document: 'words',
+  feedback: 'feedback',
 }
 
 export const ForbiddenError = 'Request failed with status code 403'

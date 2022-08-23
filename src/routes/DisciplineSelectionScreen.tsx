@@ -1,10 +1,11 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { FlatList, StatusBar } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import DisciplineListItem from '../components/DisciplineListItem'
+import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { Discipline } from '../constants/endpoints'
@@ -12,9 +13,10 @@ import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
-const Root = styled.View`
+const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
-`
+  height: 100%;
+` as unknown as typeof FlatList
 
 interface DisciplineSelectionScreenProps {
   route: RouteProp<RoutesParams, 'DisciplineSelection'>
@@ -31,11 +33,11 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         discipline: selectedItem,
         disciplineTitle: selectedItem.title,
         disciplineId: selectedItem.id,
-        documents: null
+        documents: null,
       })
     } else {
       navigation.push('DisciplineSelection', {
-        discipline: selectedItem
+        discipline: selectedItem,
       })
     }
   }
@@ -45,10 +47,9 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   )
 
   return (
-    <Root>
-      <StatusBar backgroundColor='blue' barStyle='dark-content' />
+    <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <FlatList
+        <List
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
           data={disciplines}
           renderItem={renderListItem}
@@ -56,7 +57,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>
-    </Root>
+    </RouteWrapper>
   )
 }
 

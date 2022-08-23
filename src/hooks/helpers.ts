@@ -32,7 +32,7 @@ export const formatDiscipline = (
   parentTitle: !isTypeLoadProtected(loadingInfo) && loadingInfo.parent ? loadingInfo.parent.title : null,
   apiKey: isTypeLoadProtected(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey, // TODO make function for getting api key and reuse
   needsTrainingSetEndpoint: !!item.total_training_sets && item.total_training_sets > 0,
-  leafDisciplines: item.nested_training_sets
+  leafDisciplines: item.nested_training_sets,
 })
 
 export interface ServerResponseGroup {
@@ -50,5 +50,5 @@ export const formatGroup = (response: ServerResponseGroup[], apiKey: string): Di
   numberOfChildren: response[0].total_discipline_children,
   description: '',
   parentTitle: null,
-  needsTrainingSetEndpoint: false
+  needsTrainingSetEndpoint: false,
 })

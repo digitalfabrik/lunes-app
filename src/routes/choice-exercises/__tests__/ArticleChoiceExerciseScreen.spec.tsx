@@ -18,12 +18,13 @@ jest.mock('../../../components/FavoriteButton', () => () => {
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
-  shuffleArray: jest.fn(it => it)
+  shuffleArray: jest.fn(it => it),
 }))
 
 jest.mock('../../../services/AsyncStorage', () => ({
   getExerciseProgress: jest.fn(() => ({})),
-  saveExerciseProgress: jest.fn()
+  saveExerciseProgress: jest.fn(),
+  getDevMode: jest.fn(async () => false),
 }))
 
 jest.mock('../../../components/AudioPlayer', () => {
@@ -47,8 +48,8 @@ describe('ArticleChoiceExerciseScreen', () => {
       documents,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
-      closeExerciseAction: CommonActions.goBack()
-    }
+      closeExerciseAction: CommonActions.goBack(),
+    },
   }
 
   it('should allow to skip an exercise and try it out later', () => {
@@ -98,12 +99,12 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(getByText(labels.exercises.next))
     fireEvent(getByText('das'), 'pressOut')
 
-    await act(async () => {
-      await fireEvent.press(getByText(labels.exercises.showResults))
+    await act(() => {
+      fireEvent.press(getByText(labels.exercises.showResults))
     })
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
+      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 })

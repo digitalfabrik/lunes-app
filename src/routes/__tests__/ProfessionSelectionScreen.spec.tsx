@@ -35,9 +35,9 @@ describe('ProfessionSelectionScreen', () => {
         isLeaf: false,
         parentTitle: null,
         needsTrainingSetEndpoint: false,
-        leafDisciplines: []
-      }
-    }
+        leafDisciplines: [],
+      },
+    },
   })
 
   it('should select profession when pressed', async () => {

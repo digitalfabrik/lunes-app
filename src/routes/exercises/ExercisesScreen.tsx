@@ -5,8 +5,9 @@ import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import CustomModal from '../../components/CustomModal'
 import ListItem from '../../components/ListItem'
+import Modal from '../../components/Modal'
+import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import Trophy from '../../components/Trophy'
@@ -18,11 +19,6 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
-
-const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
-`
 
 const Container = styled.View`
   display: flex;
@@ -52,10 +48,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     data: documents,
     error,
     loading,
-    refresh
+    refresh,
   } = useLoadDocuments({
     disciplineId: discipline.id,
-    apiKey: discipline.apiKey
+    apiKey: discipline.apiKey,
   })
 
   useFocusEffect(
@@ -76,13 +72,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         documents,
         disciplineTitle,
         disciplineId,
-        discipline
+        discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         documents,
         disciplineId,
         disciplineTitle,
-        closeExerciseAction
+        closeExerciseAction,
       })
     }
   }
@@ -103,13 +99,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   )
 
   return (
-    <Root>
+    <RouteWrapper>
       {documents && nextExercise && (
-        <CustomModal
+        <Modal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={labels.exercises.lockedExerciseModal.confirmButtonLabel}
+          confirmationButtonText={`${labels.exercises.lockedExerciseModal.confirmButtonLabel} ${nextExercise.title}`}
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)
@@ -120,7 +116,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
             <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
             {labels.exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
-        </CustomModal>
+        </Modal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {documents && (
@@ -135,7 +131,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           </>
         )}
       </ServerResponseHandler>
-    </Root>
+    </RouteWrapper>
   )
 }
 

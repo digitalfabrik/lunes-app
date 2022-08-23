@@ -14,7 +14,7 @@ const Container = styled.View`
 
 const Line = styled.View<{ color: string }>`
   width: 2px;
-  height: ${hp('5%')}px;
+  height: ${hp('6%')}px;
   background-color: ${props => props.color};
   margin: ${props => props.theme.spacings.xs} 10px;
 `

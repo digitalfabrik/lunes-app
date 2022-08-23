@@ -24,6 +24,7 @@ import CloseCircleIcon from './close-circle-icon.svg'
 import CloseIconRed from './close-icon-red.svg'
 import CloseIconWhite from './close-icon-white.svg'
 import CloseIcon from './close-icon.svg'
+import CrystalBallIcon from './crystal-ball.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
 import HappySmileyIcon from './happy-smiley-circle-icon-white.svg'
@@ -42,6 +43,7 @@ import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
 import MenuIcon from './menu-icon.svg'
+import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import QRCodeIcon from './qr-code-icon.svg'
@@ -84,6 +86,7 @@ export {
   CloseIcon,
   CloseIconWhite,
   CloseIconRed,
+  CrystalBallIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
   HappySmileyIcon,
@@ -102,6 +105,7 @@ export {
   LockIcon,
   LunesIcon,
   MenuIcon,
+  NoInternetConnectionIcon,
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
@@ -115,5 +119,5 @@ export {
   StarIconWhite,
   TrashIcon,
   TrophyIcon,
-  VolumeUpCircleIcon
+  VolumeUpCircleIcon,
 }

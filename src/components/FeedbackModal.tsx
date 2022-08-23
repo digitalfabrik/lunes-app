@@ -1,9 +1,12 @@
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
+import { FeedbackType } from '../constants/data'
 import labels from '../constants/labels.json'
-import CustomModal from './CustomModal'
+import { sendFeedback } from '../services/helpers'
+import { reportError } from '../services/sentry'
 import CustomTextInput from './CustomTextInput'
+import Modal from './Modal'
 
 const TextInputContainer = styled.View`
   width: 85%;
@@ -13,9 +16,16 @@ const TextInputContainer = styled.View`
 interface FeedbackModalProps {
   visible: boolean
   onClose: () => void
+  feedbackType: FeedbackType
+  feedbackForId: number
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: FeedbackModalProps): ReactElement => {
+const FeedbackModal: React.FC<FeedbackModalProps> = ({
+  visible,
+  onClose,
+  feedbackType,
+  feedbackForId,
+}: FeedbackModalProps): ReactElement => {
   const [message, setMessage] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
@@ -25,12 +35,11 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
     onClose()
   }
   const onSubmit = (): void => {
-    // TODO Submit Feedback LUN-269
-    onCloseFeedback()
+    sendFeedback(`${message} ${email}`, feedbackType, feedbackForId).catch(reportError).finally(onCloseFeedback)
   }
 
   return (
-    <CustomModal
+    <Modal
       testID='feedbackModal'
       visible={visible}
       onClose={onCloseFeedback}
@@ -55,7 +64,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ visible, onClose }: Feedb
           clearable
         />
       </TextInputContainer>
-    </CustomModal>
+    </Modal>
   )
 }
 

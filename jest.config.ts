@@ -9,19 +9,19 @@ export default {
   moduleNameMapper: {
     '.+\\.(styl|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '\\.(css|less)$': 'identity-obj-proxy',
-    '\\.svg': '<rootDir>/__mocks__/svgrMock.js'
+    '\\.svg': '<rootDir>/__mocks__/svgrMock.js',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   transformIgnorePatterns: [`node_modules/(?!${transformNodeModules.join('|')})`],
   setupFilesAfterEnv: [
     'jest-extended',
     '<rootDir>/../jest.setup.ts',
     '<rootDir>/../node_modules/@testing-library/jest-native/extend-expect',
-    '<rootDir>/../node_modules/react-native-gesture-handler/jestSetup.js'
+    '<rootDir>/../node_modules/react-native-gesture-handler/jestSetup.js',
   ],
   modulePaths: ['<rootDir>'],
-  moduleDirectories: ['node_modules']
+  moduleDirectories: ['node_modules'],
 }

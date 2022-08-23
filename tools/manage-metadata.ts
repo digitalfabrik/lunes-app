@@ -1,8 +1,4 @@
 /* eslint-disable camelcase */
-
-/* eslint-disable import/no-extraneous-dependencies */
-
-/* eslint-disable no-console */
 import { program } from 'commander'
 import fs from 'fs'
 import yaml from 'js-yaml'
@@ -14,7 +10,7 @@ import {
   PLATFORM_IOS,
   RELEASE_NOTES_DIR,
   UNRELEASED_DIR,
-  DEFAULT_NOTES
+  DEFAULT_NOTES,
 } from './constants'
 
 // Release notes
@@ -25,7 +21,7 @@ interface NoteType {
   platforms: Platform
   de: string
 }
-interface ParseProgramType {
+interface ParseOptions {
   destination?: string
   source: string
   ios: boolean
@@ -69,7 +65,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
   const emptyNotesMap = {
     common: [] as NoteType[],
     android: [] as NoteType[],
-    ios: [] as NoteType[]
+    ios: [] as NoteType[],
   }
   // Group notes by platform
   const notesMap = notes.reduce((notesMap, note) => {
@@ -87,7 +83,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
   const androidNotes = formatNotes({
     notes: notesMap.android,
     production: false,
-    platformName: PLATFORM_ANDROID
+    platformName: PLATFORM_ANDROID,
   })
   const iosNotes = formatNotes({ notes: notesMap.ios, production: false, platformName: PLATFORM_IOS })
 
@@ -95,7 +91,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
   return `Release Notes:\n${releaseNotes || 'No release notes found. Looks like nothing happened for a while.'}`
 }
 
-const parseReleaseNotes = ({ source, ios, android, production }: ParseProgramType): string => {
+const parseReleaseNotes = ({ source, ios, android, production }: ParseOptions): string => {
   const platforms: string[] = [android ? PLATFORM_ANDROID : undefined, ios ? PLATFORM_IOS : undefined].filter(
     (platform): platform is string => !!platform
   )
@@ -129,13 +125,14 @@ const parseReleaseNotes = ({ source, ios, android, production }: ParseProgramTyp
   return formatDevelopmentNotes({ notes: relevantNotes, platforms })
 }
 
-const parseNotesProgram = (program: ParseProgramType) => {
+const parseNotesProgram = (options: ParseOptions) => {
   try {
-    const notes = parseReleaseNotes({ ...program })
+    const { destination } = options
+    const notes = parseReleaseNotes(options)
 
-    if (program.destination) {
-      fs.mkdirSync(path.dirname(program.destination), { recursive: true })
-      fs.writeFileSync(program.destination, notes)
+    if (destination) {
+      fs.mkdirSync(path.dirname(destination), { recursive: true })
+      fs.writeFileSync(destination, notes)
     }
 
     // Log to enable bash piping
@@ -147,11 +144,15 @@ const parseNotesProgram = (program: ParseProgramType) => {
 }
 
 program
+  .command('parse-release-notes')
+  .description(
+    'parse the release notes and outputs the release notes as JSON string and writes them to the specified file'
+  )
   .option('--ios', 'include release notes for ios')
   .option('--android', 'include release notes for android')
   .option(
     '--production',
-    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store.'
+    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store. may not be used with multiple platforms.'
   )
   .option('--destination <destination>', 'if specified the parsed notes are saved to the directory')
   .requiredOption(
@@ -159,20 +160,13 @@ program
     'the directory of the release notes to parse',
     `../${RELEASE_NOTES_DIR}/${UNRELEASED_DIR}`
   )
-  .command('parse-release-notes')
-  .description(
-    'parse the release notes and outputs the release notes as JSON string and writes them to the specified file'
-  )
-  // @ts-expect-error
-  .action(() => parseNotesProgram({ ...program }))
+  .action(parseNotesProgram)
 
 // General store metadata
 type StoreName = 'appstore' | 'playstore'
 
 const metadataPath = (storeName: StoreName) =>
   `../${storeName === 'appstore' ? 'ios' : 'android'}/fastlane/metadata/de-DE`
-
-program.version('0.1.0').option('-d, --debug', 'enable extreme logging')
 
 const writeMetadata = (storeName: string, overrideVersionName?: string) => {
   if (storeName !== 'appstore' && storeName !== 'playstore') {
@@ -181,7 +175,7 @@ const writeMetadata = (storeName: string, overrideVersionName?: string) => {
 
   const path = metadataPath(storeName)
   fs.mkdirSync(path, {
-    recursive: true
+    recursive: true,
   })
 
   // Prepare release notes
@@ -197,15 +191,16 @@ const writeMetadata = (storeName: string, overrideVersionName?: string) => {
 }
 
 program
+  .command('prepare-metadata <storeName>')
+  .description('prepare metadata for store')
   .option(
     '--override-version-name <override-version-name>',
     'if specified the release notes will be generated from the specified version name instead of the unreleased notes'
   )
-  .command('prepare-metadata <storeName>')
-  .description('prepare metadata for store')
-  .action((storeName: string) => {
+  .action((storeName: string, options: { overrideVersionName: string }) => {
     try {
-      writeMetadata(storeName, program.overrideVersionName)
+      const { overrideVersionName } = options
+      writeMetadata(storeName, overrideVersionName)
     } catch (e) {
       console.error(e)
       process.exit(1)

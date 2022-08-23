@@ -8,9 +8,6 @@ import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'
 
 const Root = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  height: 100%;
-  width: 100%;
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
@@ -25,7 +22,7 @@ const VocabularyList = ({
   documents,
   onItemPress,
   onFavoritesChanged,
-  title
+  title,
 }: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: Document; index: number }): JSX.Element => (
     <VocabularyListItem document={item} onPress={() => onItemPress(index)} onFavoritesChanged={onFavoritesChanged} />

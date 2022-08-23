@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.View`
   background-color: ${props => props.theme.colors.primary};
 `
 const HeaderStyle = styled.View`

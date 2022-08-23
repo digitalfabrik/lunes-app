@@ -5,13 +5,13 @@ import render from '../../../testing/render'
 import SettingsScreen from '../SettingsScreen'
 
 jest.mock('react-native-device-info', () => ({
-  getVersion: jest.fn(() => '2022.6.0')
+  getVersion: jest.fn(() => '2022.6.0'),
 }))
 
 jest.mock('react-native/Libraries/Components/Switch/Switch', () => {
   const mockComponent = require('react-native/jest/mockComponent')
   return {
-    default: mockComponent('react-native/Libraries/Components/Switch/Switch')
+    default: mockComponent('react-native/Libraries/Components/Switch/Switch'),
   }
 })
 

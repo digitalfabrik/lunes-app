@@ -1,11 +1,13 @@
-import { Article, EXERCISES, NextExercise, Progress } from '../constants/data'
+import { AxiosResponse } from 'axios'
+
+import { Article, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
 import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import AsyncStorage from './AsyncStorage'
-import { getFromEndpoint } from './axios'
+import { getFromEndpoint, postToEndpoint } from './axios'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -91,20 +93,20 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   if (!firstUnfinishedDisciplineId) {
     return {
       disciplineId: leafDisciplineIds[0],
-      exerciseKey: 0
+      exerciseKey: 0,
     } // TODO LUN-319 show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDisciplineId]
   if (!disciplineProgress) {
     return {
       disciplineId: firstUnfinishedDisciplineId,
-      exerciseKey: 0
+      exerciseKey: 0,
     }
   }
   const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
   return {
     disciplineId: firstUnfinishedDisciplineId,
-    exerciseKey: nextExerciseKey?.key ?? 0
+    exerciseKey: nextExerciseKey?.key ?? 0,
   }
 }
 
@@ -129,3 +131,10 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
   return trainingSet
 }
+
+export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>
+  postToEndpoint(ENDPOINTS.feedback, {
+    comment,
+    content_type: feedbackType,
+    object_id: id,
+  })

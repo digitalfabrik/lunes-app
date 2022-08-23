@@ -1,12 +1,13 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { FlatList, StatusBar } from 'react-native'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CheckCircleIconGreen } from '../../assets/images'
 import Button from '../components/Button'
 import DisciplineListItem from '../components/DisciplineListItem'
+import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
@@ -18,10 +19,10 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
 import { childrenDescription } from '../services/helpers'
 
-const Root = styled.View`
+const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};
   height: 100%;
-`
+` as unknown as typeof FlatList
 
 const ButtonContainer = styled.View`
   padding: ${props => props.theme.spacings.md} 0;
@@ -87,15 +88,14 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     }
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Home' }]
+      routes: [{ name: 'BottomTabNavigator' }],
     })
   }
 
   return (
-    <Root>
-      <StatusBar backgroundColor='blue' barStyle='dark-content' />
+    <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <FlatList
+        <List
           contentContainerStyle={{ flexGrow: 1 }}
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           ListFooterComponent={
@@ -125,7 +125,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           />
         </ButtonContainer>
       )}
-    </Root>
+    </RouteWrapper>
   )
 }
 

@@ -14,8 +14,8 @@ const AudioContainer = styled.View`
 `
 const FavoriteContainer = styled.View`
   position: absolute;
-  top: 0;
-  right: ${props => props.theme.spacings.md};
+  top: ${props => props.theme.spacings.md};
+  right: ${props => props.theme.spacings.sm};
 `
 
 const Container = styled.View`
@@ -33,7 +33,7 @@ const DocumentImageSection = ({
   document,
   audioDisabled = false,
   minimized = false,
-  submittedAlternative
+  submittedAlternative,
 }: Props): ReactElement => (
   <Container>
     <ImageCarousel images={document.document_image} minimized={minimized} />

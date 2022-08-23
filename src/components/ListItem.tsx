@@ -97,11 +97,11 @@ const ListItem = ({
   children,
   rightChildren,
   arrowDisabled = false,
-  disabled = false
+  disabled = false,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
-  const updatePressed = (pressed: boolean): void => onPress && setPressed(pressed)
+  const updatePressed = useCallback((pressed: boolean): void => onPress && setPressed(pressed), [onPress])
 
   const theme = useTheme()
 
@@ -123,7 +123,7 @@ const ListItem = ({
       }
       setPressInY(null)
     },
-    [pressInY, onPress]
+    [pressInY, updatePressed, onPress]
   )
 
   const titleToRender =

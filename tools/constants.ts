@@ -11,6 +11,8 @@ const PLATFORM_IOS = 'ios'
 
 const PLATFORMS = [PLATFORM_IOS, PLATFORM_ANDROID]
 
+const MAIN_BRANCH = 'main'
+
 interface ReleaseInformation {
   platform: typeof PLATFORMS[number]
   versionName: string
@@ -25,6 +27,7 @@ export {
   PLATFORM_IOS,
   PLATFORM_ANDROID,
   PLATFORMS,
+  MAIN_BRANCH,
   DEFAULT_NOTES,
-  tagId
+  tagId,
 }

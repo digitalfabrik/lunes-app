@@ -3,8 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
+import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
-import { ExerciseKeys } from '../constants/data'
+import { ExerciseKeys, FeedbackType } from '../constants/data'
 import labels from '../constants/labels.json'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
@@ -26,14 +27,20 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
 
   return (
-    <>
-      <ExerciseHeader navigation={navigation} confirmClose={false} closeExerciseAction={closeExerciseAction} />
+    <RouteWrapper>
+      <ExerciseHeader
+        navigation={navigation}
+        confirmClose={false}
+        closeExerciseAction={closeExerciseAction}
+        feedbackType={FeedbackType.leaf_discipline}
+        feedbackForId={disciplineId}
+      />
       <VocabularyList
         documents={route.params.documents}
         onItemPress={onItemPress}
         title={labels.exercises.vocabularyList.title}
       />
-    </>
+    </RouteWrapper>
   )
 }
 

@@ -10,8 +10,8 @@ export const ExerciseKeys = {
   vocabularyList: 0,
   wordChoiceExercise: 1,
   articleChoiceExercise: 2,
-  writeExercise: 3
-}
+  writeExercise: 3,
+} as const
 export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
 export interface Exercise {
@@ -22,36 +22,36 @@ export interface Exercise {
   screen: keyof RoutesParams
 }
 
-export const EXERCISES: Exercise[] = [
+export const EXERCISES: Readonly<Exercise[]> = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     level: 0,
-    screen: 'VocabularyList'
+    screen: 'VocabularyList',
   },
   {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     level: 1,
-    screen: 'WordChoiceExercise'
+    screen: 'WordChoiceExercise',
   },
   {
     key: ExerciseKeys.articleChoiceExercise,
     title: labels.exercises.articleChoice.title,
     description: labels.exercises.articleChoice.description,
     level: 2,
-    screen: 'ArticleChoiceExercise'
+    screen: 'ArticleChoiceExercise',
   },
   {
     key: ExerciseKeys.writeExercise,
     title: labels.exercises.write.title,
     description: labels.exercises.write.description,
     level: 3,
-    screen: 'WriteExercise'
-  }
-]
+    screen: 'WriteExercise',
+  },
+] as const
 
 export interface Progress {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
@@ -70,7 +70,7 @@ export type NextExerciseData = NextExercise & {
 export const BUTTONS_THEME = {
   outlined: 'outlined',
   contained: 'contained',
-  text: 'text'
+  text: 'text',
 } as const
 
 export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
@@ -80,28 +80,28 @@ interface ArticleType {
   readonly value: string
 }
 
-export const ARTICLES: ArticleType[] = [
+export const ARTICLES: Readonly<ArticleType[]> = [
   {
     id: 0,
-    value: 'keiner'
+    value: 'keiner',
   },
   {
     id: 1,
-    value: 'der'
+    value: 'der',
   },
   {
     id: 2,
-    value: 'die'
+    value: 'die',
   },
   {
     id: 3,
-    value: 'das'
+    value: 'das',
   },
   {
     id: 4,
-    value: 'die'
-  }
-]
+    value: 'die',
+  },
+] as const
 
 export type Article = typeof ARTICLES[number]
 
@@ -120,27 +120,34 @@ export interface Answer {
   article: Article
 }
 
-export const RESULTS: ResultType[] = [
+export const RESULTS: Readonly<ResultType[]> = [
   {
     key: 'correct',
     Icon: CheckCircleIcon,
     title: 'Richtige',
-    order: 0
+    order: 0,
   },
   {
     key: 'similar',
     Icon: CheckCloseCircleIcon,
     title: 'Fast richtige',
-    order: 1
+    order: 1,
   },
   {
     key: 'incorrect',
     Icon: CloseCircleIcon,
     title: 'Falsche',
-    order: 2
-  }
-]
+    order: 2,
+  },
+] as const
 
 export type Result = typeof RESULTS[number]
+
+export const FeedbackType = {
+  discipline: 'discipline',
+  leaf_discipline: 'trainingset',
+  document: 'document',
+} as const
+export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3

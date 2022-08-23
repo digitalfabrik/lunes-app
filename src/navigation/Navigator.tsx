@@ -4,12 +4,15 @@ import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import labels from '../constants/labels.json'
+import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
+import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
+import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
+import VocabularyDetailScreen from '../routes/vocabulary-detail/VocabularyDetailScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
@@ -18,15 +21,32 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
+  const { data: professions, loading } = useReadSelectedProfessions()
+
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   const options = screenOptions(headerHeight)
 
-  const { overviewExercises, cancelExercise } = labels.general.header
+  const { manageSelection, overviewExercises, cancelExercise, overview } = labels.general.header
+
+  if (loading) {
+    return null
+  }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={professions === null ? 'ScopeSelection' : 'BottomTabNavigator'}>
         <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen
+          name='ScopeSelection'
+          component={ScopeSelection}
+          initialParams={{ initialSelection: true }}
+          options={({ navigation }) => options(manageSelection, navigation)}
+        />
+        <Stack.Screen
+          name='ProfessionSelection'
+          component={ProfessionSelectionScreen}
+          options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
+        />
         <Stack.Screen
           name='VocabularyList'
           component={VocabularyListScreen}

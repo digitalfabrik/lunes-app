@@ -70,7 +70,7 @@ const CustomTextInput = ({
   errorMessage,
   editable = true,
   onSubmitEditing,
-  customBorderColor
+  customBorderColor,
 }: CustomTextInputProps): ReactElement => {
   const theme = useTheme()
   const [isFocused, setIsFocused] = useState<boolean>(false)

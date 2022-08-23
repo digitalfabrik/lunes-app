@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { program } from 'commander'
 import fs from 'fs'
 import path from 'path'
@@ -22,11 +21,11 @@ const calculateNewVersion = () => {
   if (versionCode && typeof versionCode !== 'number') {
     throw new Error(`Version code must be a number, but is of type ${typeof versionCode}.`)
   }
-  const newVersionCode: number = versionCode ? versionCode + 1 : undefined
+  const newVersionCode = versionCode ? versionCode + 1 : undefined
 
   return {
     versionName: newVersionName,
-    versionCode: newVersionCode
+    versionCode: newVersionCode,
   }
 }
 
