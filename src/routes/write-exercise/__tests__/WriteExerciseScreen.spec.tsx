@@ -228,14 +228,14 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should play audio if available and no alternative solution submitted', () => {
-    const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
+    const { getByPlaceholderText, getByText, getByTestId } = renderWriteExercise()
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'der Spachtel')
     const button = getByText(labels.exercises.write.checkInput)
     fireEvent.press(button)
 
     // Play audio
-    const audioButton = getByRole('button')
+    const audioButton = getByTestId('audio-player')
     fireEvent.press(audioButton)
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
@@ -244,7 +244,7 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should play submitted alternative', async () => {
-    const { getByPlaceholderText, getByText, getByRole } = renderWriteExercise()
+    const { getByPlaceholderText, getByText, getByTestId } = renderWriteExercise()
     const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Alternative')
     const button = getByText(labels.exercises.write.checkInput)
@@ -253,7 +253,7 @@ describe('WriteExerciseScreen', () => {
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     // Play audio
-    fireEvent.press(getByRole('button'))
+    fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
     expect(Tts.speak).toHaveBeenCalledWith('die Alternative', expect.any(Object))
