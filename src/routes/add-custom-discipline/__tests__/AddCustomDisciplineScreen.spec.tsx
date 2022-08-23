@@ -8,6 +8,7 @@ import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
@@ -35,19 +36,7 @@ describe('AddCustomDisciplineScreen', () => {
   it('should navigate on successfully submit', async () => {
     await AsyncStorage.setCustomDisciplines(['test'])
 
-    const groupInfo = {
-      id: 1,
-      icon: 'my_icon',
-      title: 'Test',
-      apiKey: 'my_api_key',
-      isLeaf: false,
-      parentTitle: null,
-      numberOfChildren: 1,
-      description: '',
-      needsTrainingSetEndpoint: false,
-      leafDisciplines: [],
-    }
-    mocked(loadDiscipline).mockImplementationOnce(async () => groupInfo)
+    mocked(loadDiscipline).mockImplementationOnce(async () => mockDisciplines()[0])
 
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 

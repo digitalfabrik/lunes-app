@@ -10,18 +10,7 @@ jest.mock('../../hooks/useLoadDiscipline')
 jest.mock('../AsyncStorage')
 
 describe('helpers', () => {
-  const profession = {
-    id: 10,
-    title: 'Parent Discipline',
-    description: 'Description of Parent',
-    icon: 'none',
-    numberOfChildren: 2,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false,
-    leafDisciplines: [1, 2],
-  }
-
+  const profession = mockDisciplines()[0]
   describe('getNextExercise', () => {
     const getNextExerciseWithCheck = async (): Promise<NextExercise> => getNextExercise(profession)
 
@@ -116,7 +105,7 @@ describe('helpers', () => {
 
     it('should show 0.5 if one of two disciplines are finished', async () => {
       mocked(AsyncStorage.getExerciseProgress).mockReturnValueOnce(
-        Promise.resolve({ '1': { '0': 1, '1': 1, '2': 1, '3': 1 } })
+        Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1, '3': 1 } })
       )
       const progress = await getProgress(profession)
       expect(progress).toBe(0.5)

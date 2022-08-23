@@ -26,17 +26,7 @@ describe('ProfessionSelectionScreen', () => {
     name: 'ProfessionSelection',
     params: {
       initialSelection,
-      discipline: {
-        id: 5,
-        title: 'Parent Discipline',
-        description: 'Parent Description',
-        icon: 'none',
-        numberOfChildren: 2,
-        isLeaf: false,
-        parentTitle: null,
-        needsTrainingSetEndpoint: false,
-        leafDisciplines: [],
-      },
+      discipline: mockDisciplines()[1],
     },
   })
 
