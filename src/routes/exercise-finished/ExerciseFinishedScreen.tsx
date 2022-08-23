@@ -83,7 +83,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     }
   }
 
-  const navigateToNextModule = (): void => navigation.pop(2)
+  const navigateToNextDiscipline = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
@@ -115,10 +115,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         }
       }
       return {
-        message: getLabels().results.finishedModule,
+        message: getLabels().results.finishedDiscipline,
         resultColor: theme.colors.correct,
         buttonText: getLabels().results.action.close,
-        navigationAction: navigateToNextModule,
+        navigationAction: navigateToNextDiscipline,
         ResultIcon: PartyHornIcon,
       }
     }

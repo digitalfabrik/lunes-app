@@ -34,9 +34,11 @@ const ProfessionDetails = ({
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
-  const moduleAlreadyStarted = progress !== null && progress !== 0
-  const completedModules =
-    moduleAlreadyStarted && discipline.leafDisciplines ? Math.floor(progress * discipline.leafDisciplines.length) : 0
+  const disciplineAlreadyStarted = progress !== null && progress !== 0
+  const completedDisciplines =
+    disciplineAlreadyStarted && discipline.leafDisciplines
+      ? Math.floor(progress * discipline.leafDisciplines.length)
+      : 0
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -51,7 +53,7 @@ const ProfessionDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={completedModules ? progress ?? 0 : 0}
+          progress={completedDisciplines ? progress ?? 0 : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
@@ -62,11 +64,11 @@ const ProfessionDetails = ({
         />
         {discipline.leafDisciplines && (
           <NumberText>
-            {completedModules}/{discipline.leafDisciplines.length}
+            {completedDisciplines}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
         <UnitText>
-          {completedModules > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
+          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
@@ -79,7 +81,7 @@ const ProfessionDetails = ({
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={getLabels().home.viewModules}
+          label={getLabels().home.viewDisciplines}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

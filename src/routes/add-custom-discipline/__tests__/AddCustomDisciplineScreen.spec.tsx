@@ -41,11 +41,11 @@ describe('AddCustomDisciplineScreen', () => {
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)
-    fireEvent.changeText(textField, 'another_test_module')
+    fireEvent.changeText(textField, 'another_test_discipline')
     const submitButton = await findByText(getLabels().addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
     await waitFor(() =>
-      expect(RNAsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_module"]')
+      expect(RNAsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_discipline"]')
     )
     await waitFor(() => expect(navigation.goBack).toHaveBeenCalled())
   })
