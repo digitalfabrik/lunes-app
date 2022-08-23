@@ -4,7 +4,7 @@ const GITKEEP_FILE = '.gitkeep'
 const VERSION_FILE = 'version.json'
 
 const DEFAULT_NOTES =
-  'Wir haben hinter den Kulissen hart gearbeitet, um sicherzustellen, dass alles so funktioniert, wie es soll. Wenn Sie bemerken, dass etwas nicht funktioniert, lassen Sie es uns wissen!\n'
+  'Wir haben die App weiter für Sie verbessert und einige Fehler entfernt. Wenn Sie bemerken, dass etwas nicht funktioniert, lassen Sie es uns wissen!\n'
 
 const PLATFORM_ANDROID = 'android'
 const PLATFORM_IOS = 'ios'
