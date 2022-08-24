@@ -84,12 +84,38 @@ const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKe
   await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(savedProgress))
 }
 
+const calculateScore = (documentsWithResults: DocumentResult[]): number => {
+  const SCORE_FIRST_TRY = 10
+  const SCORE_SECOND_TRY = 4
+  const SCORE_THIRD_TRY = 2
+  return (
+    documentsWithResults
+      .filter(doc => doc.result === 'correct')
+      .reduce((acc, document) => {
+        /* eslint-disable no-param-reassign */
+        switch (document.numberOfTries) {
+          case 1:
+            acc += SCORE_FIRST_TRY
+            break
+          case 2:
+            acc += SCORE_SECOND_TRY
+            break
+          case 3:
+            acc += SCORE_THIRD_TRY
+            break
+        }
+        /* eslint-enable no-param-reassign */
+        return acc
+      }, 0) / documentsWithResults.length
+  )
+}
+
 export const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
   documentsWithResults: DocumentResult[]
 ): Promise<void> => {
-  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
+  const score = calculateScore(documentsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
@@ -202,4 +228,5 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
+  calculateScore,
 }
