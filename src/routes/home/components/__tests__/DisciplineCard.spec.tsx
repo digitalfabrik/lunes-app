@@ -48,4 +48,9 @@ describe('DisciplineCard', () => {
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
     expect(getByText(labels.home.deleteProfession)).toBeDefined()
   })
+
+  it('should not show discipline card on unknown error', () => {
+    mockUseLoadAsyncWithError('UnknownError')
+    expect(renderDisciplineCard().toJSON()).toBeNull()
+  })
 })

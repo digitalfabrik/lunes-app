@@ -7,7 +7,7 @@ import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
-import { Discipline, ForbiddenError } from '../../../constants/endpoints'
+import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
@@ -49,7 +49,7 @@ const DisciplineCard = ({
   refresh: refreshHome,
   navigateToDiscipline,
   navigateToNextExercise,
-}: PropsType): JSX.Element => {
+}: PropsType): JSX.Element | null => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
 
   if (loading) {
@@ -63,9 +63,12 @@ const DisciplineCard = ({
   }
 
   if (!discipline) {
+    if (error?.message !== ForbiddenError && error?.message !== NetworkError) {
+      return null
+    }
     return (
       <Card>
-        {error?.message === ForbiddenError && isTypeLoadProtected(identifier) ? (
+        {error.message === ForbiddenError && isTypeLoadProtected(identifier) ? (
           <>
             <ErrorMessageForbidden>
               {labels.home.errorLoadCustomDiscipline} {identifier.apiKey}
