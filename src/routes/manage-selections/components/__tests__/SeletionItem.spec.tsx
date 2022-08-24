@@ -41,4 +41,11 @@ describe('SelectionItem', () => {
     const { getByText } = renderSelectionItem()
     expect(getByText(`${labels.home.errorLoadCustomDiscipline}`)).toBeDefined()
   })
+
+  it('should allow to delete on unknown error', () => {
+    mockUseLoadAsyncWithError('UnknownError')
+    const { getByText, getByTestId } = renderSelectionItem()
+    expect(getByText(labels.general.error.unknown)).toBeDefined()
+    expect(getByTestId('delete-icon')).toBeDefined()
+  })
 })
