@@ -1,4 +1,6 @@
 .circleci/config.yml
+.yarn/plugins/**
+.yarn/releases/**
 
 android/**/*
 ios/**/*
