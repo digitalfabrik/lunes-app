@@ -180,6 +180,14 @@
       "list": "Vokabelliste",
       "create": "Vokabeln erstellen",
       "practice": "Vokabeln üben"
+    },
+    "creation": {
+      "headline": "Vokabel erstellen",
+      "wordPlaceholder": "Wort eingeben*",
+      "articlePlaceholder": "Artikel auswählen*",
+      "buttonLabel": "Speichern",
+      "addImageLabel" : "Bild hochladen*",
+      "addAudioLabel": "Audio aufnehmen"
     }
   }
 }

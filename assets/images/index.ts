@@ -3,6 +3,7 @@ import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
 import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
 import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
 import ArrowRightIcon from './arrow-right-icon.svg'
+import AudioCircleIcon from './audio-circle-icon.svg'
 import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
@@ -47,6 +48,7 @@ import MenuIcon from './menu-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
+import PhotoCircleIcon from './photo-circle-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import SadSmileyIcon from './sad-smiley-circle-icon-white.svg'
@@ -66,6 +68,7 @@ export {
   ArrowLeftCircleIconWhite,
   ArrowRightIcon,
   ArrowRightCircleIconWhite,
+  AudioCircleIcon,
   BannerGreen,
   BannerRed,
   BannerYellow,
@@ -111,6 +114,7 @@ export {
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
+  PhotoCircleIcon,
   RepeatIcon,
   SadSmileyIcon,
   ShareIcon,

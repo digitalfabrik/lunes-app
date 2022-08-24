@@ -42,6 +42,9 @@ export type RoutesParams = {
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
+  UserVocabularyCreation: {
+    title: string
+  }
   ScopeSelection: {
     initialSelection: boolean
   }

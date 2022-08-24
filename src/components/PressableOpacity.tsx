@@ -10,8 +10,8 @@ interface Props {
   disabled?: boolean
 }
 
-const OPACITY_MIN = 0.2
-const OPACITY_MAX = 1
+export const OPACITY_MIN = 0.2
+export const OPACITY_MAX = 1
 
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
   flex-direction: row;

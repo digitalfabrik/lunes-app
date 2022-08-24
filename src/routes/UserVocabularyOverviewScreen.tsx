@@ -39,7 +39,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
       <ListItem
         icon={<BookIconBlack />}
         title={getLabels().ownVocabulary.overview.create}
-        onPress={() => navigation.navigate('UserVocabularyOverview')}
+        onPress={() => navigation.navigate('UserVocabularyCreation', { title: getLabels().ownVocabulary.myWords })}
       />
       <ListItem
         icon={<BookIconBlack />}
