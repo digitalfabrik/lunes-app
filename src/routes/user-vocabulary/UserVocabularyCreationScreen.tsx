@@ -84,7 +84,7 @@ const UserVocabularyCreationScreen = (): ReactElement => {
         <HintText>{getLabels().ownVocabulary.creation.requiredFields}</HintText>
         <SaveButton
           onPress={onSave}
-          label={getLabels().ownVocabulary.creation.buttonLabel}
+          label={getLabels().ownVocabulary.creation.saveButton}
           buttonTheme={BUTTONS_THEME.contained}
           disabled={!articleId || word.length === 0}
         />

@@ -1,5 +1,5 @@
 import React, { ComponentType, ReactElement, useState } from 'react'
-import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { StyleProp, ViewStyle } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled, { css, useTheme } from 'styled-components/native'
@@ -59,7 +59,6 @@ interface ButtonProps {
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
   style?: StyleProp<ViewStyle>
-  labelStyle?: StyleProp<TextStyle>
   iconSize?: number
 }
 

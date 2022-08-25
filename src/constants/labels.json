@@ -185,8 +185,8 @@
       "headline": "Vokabel erstellen",
       "wordPlaceholder": "Wort eingeben*",
       "articlePlaceholder": "Artikel auswählen*",
-      "buttonLabel": "Speichern",
-      "addImage" : "Bild hochladen*",
+      "saveButton": "Speichern",
+      "addImage": "Bild hochladen*",
       "addAudio": "Audio aufnehmen",
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
       "requiredFields": "*Pflichfelder"
