@@ -186,8 +186,10 @@
       "wordPlaceholder": "Wort eingeben*",
       "articlePlaceholder": "Artikel auswählen*",
       "buttonLabel": "Speichern",
-      "addImageLabel" : "Bild hochladen*",
-      "addAudioLabel": "Audio aufnehmen"
+      "addImage" : "Bild hochladen*",
+      "addAudio": "Audio aufnehmen",
+      "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
+      "requiredFields": "*Pflichfelder"
     }
   }
 }

@@ -5,21 +5,12 @@ import styled from 'styled-components/native'
 import { BookIconBlack } from '../../assets/images'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
-import { Heading } from '../components/text/Heading'
+import ScreenHeading from '../components/ScreenHeading'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
 const Root = styled.View`
   padding: ${props => props.theme.spacings.md};
-`
-
-const StyledHeading = styled(Heading)`
-  text-align: center;
-  margin: ${props => props.theme.spacings.sm};
-`
-
-const Margin = styled.View`
-  margin: ${props => props.theme.spacings.xl};
 `
 
 interface PropsType {
@@ -29,8 +20,7 @@ interface PropsType {
 const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => (
   <RouteWrapper>
     <Root>
-      <StyledHeading>{getLabels().ownVocabulary.myWords}</StyledHeading>
-      <Margin />
+      <ScreenHeading text={getLabels().ownVocabulary.myWords} />
       <ListItem
         icon={<BookIconBlack />}
         title={getLabels().ownVocabulary.overview.list}

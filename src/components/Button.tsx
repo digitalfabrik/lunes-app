@@ -39,7 +39,7 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
   ${props =>
     props.buttonTheme === BUTTONS_THEME.text &&
     css`
-      opacity: ${props => (props.isPressed ? OPACITY_MIN : OPACITY_MAX)};
+      opacity: ${({ isPressed }: { isPressed: boolean }) => (isPressed ? OPACITY_MIN : OPACITY_MAX)};
     `};
 `
 
