@@ -9,4 +9,3 @@ export const Hint = styled.Text`
 export const HintText = styled(Hint)`
   color: ${props => props.theme.colors.text};
 `
-
