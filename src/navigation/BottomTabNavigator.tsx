@@ -5,8 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
-    HeartIconGrey,
-    HeartIconWhite,
+  HeartIconGrey,
+  HeartIconWhite,
   BookIconGrey,
   BookIconWhite,
   HomeIconGrey,
