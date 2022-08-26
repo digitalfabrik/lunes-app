@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
+    HeartIconGrey,
+    HeartIconWhite,
   BookIconGrey,
   BookIconWhite,
   HomeIconGrey,
@@ -17,6 +19,7 @@ import FavoritesScreen from '../routes/FavoritesScreen'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
+import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
@@ -37,6 +40,13 @@ const BottomTabNavigator = (): JSX.Element | null => {
 
   const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <BookIconWhite width={iconSize} height={iconSize} /> : <BookIconGrey width={iconSize} height={iconSize} />
+
+  const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
+    focused ? (
+      <HeartIconWhite width={wp('7%')} height={wp('7%')} />
+    ) : (
+      <HeartIconGrey width={wp('7%')} height={wp('7%')} />
+    )
 
   return (
     <Navigator.Navigator
@@ -65,6 +75,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
         name='DictionaryTab'
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: labels.general.dictionary }}
+      />
+      <Navigator.Screen
+        name='UserVocabularyTab'
+        component={UserVocabularyStackNavigator}
+        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: labels.ownVocabulary.myWords }}
       />
     </Navigator.Navigator>
   )

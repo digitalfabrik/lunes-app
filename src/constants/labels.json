@@ -113,7 +113,7 @@
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "close": "Schließen"
+      "moduleOverview": "Zur Modulübersicht"
     },
     "of": "von",
     "share": {
@@ -175,6 +175,14 @@
       "changeCMS": "change cms",
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode"
+    }
+  },
+  "ownVocabulary": {
+    "myWords": "Meine Wörter",
+    "overview": {
+      "list": "Vokabelliste",
+      "create": "Vokabeln erstellen",
+      "practice": "Vokabeln üben"
     }
   }
 }
