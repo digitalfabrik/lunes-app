@@ -38,8 +38,9 @@ describe('SelectionItem', () => {
 
   it('should display forbidden error', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    const { getByText } = renderSelectionItem()
+    const { getByText, getByTestId } = renderSelectionItem()
     expect(getByText(`${labels.home.errorLoadCustomDiscipline}`)).toBeDefined()
+    expect(getByTestId('delete-icon')).toBeDefined()
   })
 
   it('should allow to delete on unknown error', () => {

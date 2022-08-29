@@ -40,13 +40,9 @@ describe('DisciplineCard', () => {
     expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
   })
 
-  it('should display forbidden error', async () => {
+  it('should not show discipline card on forbidden error', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    const { getByText } = render(
-      <DisciplineCard identifier={{ apiKey: 'abc' }} navigateToDiscipline={navigateToDiscipline} />
-    )
-    expect(getByText(`${labels.home.errorLoadCustomDiscipline} abc`)).toBeDefined()
-    expect(getByText(labels.home.deleteProfession)).toBeDefined()
+    expect(renderDisciplineCard().toJSON()).toBeNull()
   })
 
   it('should not show discipline card on unknown error', () => {

@@ -41,13 +41,8 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
     )
   }
 
-  if (!data) {
-    if (error?.message === ForbiddenError) {
-      return <ListItem title={labels.home.errorLoadCustomDiscipline} />
-    }
-    if (error?.message === NetworkError) {
-      return <ListItem title={`${labels.general.error.noWifi} (${error.message})`} />
-    }
+  if (!data && error?.message === NetworkError) {
+    return <ListItem title={`${labels.general.error.noWifi} (${error.message})`} />
   }
 
   return (
@@ -61,7 +56,10 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
         <Explanation>{labels.manageSelection.deleteModal.explanation}</Explanation>
       </Modal>
       <ListItem
-        title={data?.title ?? labels.general.error.unknown}
+        title={
+          data?.title ??
+          (error?.message === ForbiddenError ? labels.home.errorLoadCustomDiscipline : labels.general.error.unknown)
+        }
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
             <CloseIconRed />
