@@ -74,7 +74,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
       <Navigator.Screen
         name='DictionaryTab'
         component={DictionaryStackNavigator}
-        options={{ tabBarIcon: renderDictionaryTabIcon, title: labels.general.dictionary }}
+        options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
       />
       <Navigator.Screen
         name='UserVocabularyTab'

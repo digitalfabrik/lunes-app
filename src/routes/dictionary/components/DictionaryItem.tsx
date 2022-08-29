@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Document } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 
 const AlternativesContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xs};
@@ -30,7 +30,7 @@ class DictionaryItem extends PureComponent<Props> {
           {showAlternatives && (
             <AlternativesContainer>
               <AlternativeWords>
-                {`${labels.exercises.vocabularyList.alternativeWords}: ${document.alternatives
+                {`${getLabels().exercises.vocabularyList.alternativeWords}: ${document.alternatives
                   .map(item => `${item.article.value} ${item.word}`)
                   .join(', ')}`}
               </AlternativeWords>
