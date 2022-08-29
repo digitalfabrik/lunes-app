@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { useTheme } from 'styled-components'
 
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
