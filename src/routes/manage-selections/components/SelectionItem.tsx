@@ -37,7 +37,7 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
   }
 
   if (!data && error?.message === NetworkError) {
-    return <ListItem title={`${getLabels().general.error.noWifi} (${error.message})`} />
+    return <ListItem title={`${getLabels().general.error.noWifi} (${error.message})`} hideRightChildren />
   }
 
   return (
