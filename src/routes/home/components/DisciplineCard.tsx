@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
-import ErrorMessage from '../../../components/ErrorMessage'
+import DeletionModal from '../../../components/DeletionModal'
+import ErrorMessage, { ErrorText } from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
-import { Discipline, NetworkError } from '../../../constants/endpoints'
+import { Discipline, NetworkError, ForbiddenError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import AsyncStorage from '../../../services/AsyncStorage'
@@ -20,8 +21,11 @@ const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
 `
 
-const ErrorMessageForbidden = styled(ContentSecondaryLight)`
-  padding-top: ${props => props.theme.spacings.xl};
+const ErrorMessageModified = styled(ContentSecondaryLight)`
+  padding: ${props => props.theme.spacings.md};
+  text-align: center;
+  display: flex;
+  align-items: center;
 `
 
 export const NumberText = styled(Subheading)`
@@ -51,6 +55,7 @@ const DisciplineCard = ({
   navigateToNextExercise,
 }: PropsType): JSX.Element | null => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   if (loading) {
     return (
@@ -63,28 +68,43 @@ const DisciplineCard = ({
   }
 
   if (!discipline) {
-    if (error?.message !== NetworkError) {
-      return null
-    }
-    return (
-      <Card>
-        {isTypeLoadProtected(identifier) ? (
-          <>
-            <ErrorMessageForbidden>
-              {getLabels().home.errorLoadCustomDiscipline} {identifier.apiKey}
-            </ErrorMessageForbidden>
-            <ButtonContainer>
-              <Button
-                onPress={() => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)}
-                label={getLabels().home.deleteProfession}
-                buttonTheme={BUTTONS_THEME.outlined}
-              />
-            </ButtonContainer>
-          </>
-        ) : (
+    if (error?.message === NetworkError) {
+      return (
+        <Card>
           <ErrorMessage error={error} refresh={refresh} contained />
-        )}
-      </Card>
+        </Card>
+      )
+    }
+
+    let deleteItem
+    let errorMessage
+    if (error?.message === ForbiddenError && isTypeLoadProtected(identifier)) {
+      deleteItem = () => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)
+      errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
+    } else {
+      deleteItem =
+        'disciplineId' in identifier
+          ? () => AsyncStorage.removeSelectedProfession(identifier.disciplineId).then(refreshHome)
+          : () => setIsModalVisible(false)
+      errorMessage = getLabels().general.error.unknown
+    }
+
+    return (
+      <>
+        <DeletionModal isVisible={isModalVisible} onConfirm={deleteItem} onClose={() => setIsModalVisible(false)} />
+        <Card>
+          <ErrorMessageModified>
+            <ErrorText>{errorMessage}</ErrorText>
+          </ErrorMessageModified>
+          <ButtonContainer testID='delete-button'>
+            <Button
+              onPress={() => setIsModalVisible(true)}
+              label={getLabels().home.deleteProfession}
+              buttonTheme={BUTTONS_THEME.outlined}
+            />
+          </ButtonContainer>
+        </Card>
+      </>
     )
   }
 

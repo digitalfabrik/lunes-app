@@ -19,7 +19,7 @@ const navigateToDiscipline = jest.fn()
 
 describe('DisciplineCard', () => {
   const renderDisciplineCard = (): RenderAPI =>
-    render(<DisciplineCard identifier={{ disciplineId: 1 }} navigateToDiscipline={navigateToDiscipline} />)
+    render(<DisciplineCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
 
   it('should show discipline card', async () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
@@ -40,13 +40,17 @@ describe('DisciplineCard', () => {
     expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
   })
 
-  it('should not show discipline card on forbidden error', () => {
+  it('should show delete button on forbidden error', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    expect(renderDisciplineCard().toJSON()).toBeNull()
+    const { getByText, getByTestId } = renderDisciplineCard()
+    expect(getByText(`${labels.home.errorLoadCustomDiscipline} 1`)).toBeDefined()
+    expect(getByTestId('delete-button')).toBeDefined()
   })
 
-  it('should not show discipline card on unknown error', () => {
+  it('should show delete button on unknown error', () => {
     mockUseLoadAsyncWithError('UnknownError')
-    expect(renderDisciplineCard().toJSON()).toBeNull()
+    const { getByText, getByTestId } = renderDisciplineCard()
+    expect(getByText(labels.general.error.unknown)).toBeDefined()
+    expect(getByTestId('delete-button')).toBeDefined()
   })
 })

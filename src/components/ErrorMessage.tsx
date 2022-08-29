@@ -25,7 +25,7 @@ const ErrorTitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   text-align: center;
 `
-const ErrorText = styled.Text<{ centered?: boolean }>`
+export const ErrorText = styled.Text<{ centered?: boolean }>`
   padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`};
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-family: ${props => props.theme.fonts.contentFontRegular};
