@@ -9,7 +9,7 @@ interface Props {
   route: RouteProp<RoutesParams, 'DictionaryDetail'>
 }
 
-const DictionaryDetailScreen = ({ route }: Props): ReactElement => {
+const VocabularyDetailScreen = ({ route }: Props): ReactElement => {
   const { document } = route.params
   return (
     <RouteWrapper>
@@ -18,4 +18,4 @@ const DictionaryDetailScreen = ({ route }: Props): ReactElement => {
   )
 }
 
-export default DictionaryDetailScreen
+export default VocabularyDetailScreen

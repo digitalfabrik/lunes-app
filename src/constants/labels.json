@@ -146,6 +146,7 @@
     },
     "back": "Zurück",
     "plurals": "Plural",
+    "noResults": "Es wurden leider keine Ergebnisse gefunden.",
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
@@ -161,8 +162,7 @@
   },
   "favorites": "Favoriten",
   "dictionary": {
-    "enterWord": "Wort eingeben",
-    "noResults": "Es wurden leider keine Ergebnisse gefunden."
+    "enterWord": "Wort eingeben"
   },
   "settings": {
     "settings": "Einstellungen",
@@ -177,12 +177,17 @@
       "disableDevMode": "Disable DevMode"
     }
   },
-  "ownVocabulary": {
+  "userVocabulary": {
     "myWords": "Meine Wörter",
+    "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
-      "create": "Vokabeln erstellen",
       "practice": "Vokabeln üben"
+    },
+    "list": {
+      "edit": "Bearbeiten",
+      "finished": "Fertig",
+      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt."
     }
   }
 }

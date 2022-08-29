@@ -5,6 +5,8 @@ import { useTheme } from 'styled-components'
 
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
+import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
+import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions from './screenOptions'
@@ -22,6 +24,16 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='UserVocabularyOverview'
         component={UserVocabularyOverviewScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='UserVocabularyList'
+        component={UserVocabularyListScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='UserVocabularyDetail'
+        component={VocabularyDetailScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
     </Stack.Navigator>
