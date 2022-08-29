@@ -2,6 +2,7 @@
   "name": "lunes",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "yarn@3.2.2",
   "scripts": {
     "android": "react-native run-android --no-packager",
     "android:production": "react-native run-android --no-packager --variant=release",

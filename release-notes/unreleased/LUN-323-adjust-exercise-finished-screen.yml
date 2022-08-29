@@ -1,0 +1,6 @@
+issue_key: LUN-323
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Verbessertes Feedback nach abschließen einer Übung

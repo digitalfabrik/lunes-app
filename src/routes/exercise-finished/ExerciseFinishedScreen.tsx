@@ -117,7 +117,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
       return {
         message: getLabels().results.finishedDiscipline,
         resultColor: theme.colors.correct,
-        buttonText: getLabels().results.action.close,
+        buttonText: getLabels().results.action.moduleOverview,
         navigationAction: navigateToNextDiscipline,
         ResultIcon: PartyHornIcon,
       }
