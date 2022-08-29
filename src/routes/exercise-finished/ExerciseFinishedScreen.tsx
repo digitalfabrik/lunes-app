@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ComponentType } from 'react'
 import * as Progress from 'react-native-progress'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -22,10 +22,10 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
 
 const Root = styled.View`
@@ -83,23 +83,23 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     }
   }
 
-  const navigateToNextModule = (): void => navigation.pop(2)
+  const navigateToNextDiscipline = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
     resultColor: Color
     buttonText: string
-    ResultIcon: React.ComponentType<SvgProps>
+    ResultIcon: ComponentType<SvgProps>
     navigationAction: () => void
   } => {
     const isLastExercise = exercise === EXERCISES.length - 1
     if (unlockedNextExercise && !isLastExercise) {
       return {
-        message: `${labels.results.unlockExercise.part1}, ${EXERCISES[exercise + 1].title} ${
-          labels.results.unlockExercise.part2
+        message: `${getLabels().results.unlockExercise.part1}, ${EXERCISES[exercise + 1].title} ${
+          getLabels().results.unlockExercise.part2
         }`,
         resultColor: theme.colors.primary,
-        buttonText: labels.results.action.nextExercise,
+        buttonText: getLabels().results.action.nextExercise,
         navigationAction: startNextExercise,
         ResultIcon: OpenLockIcon,
       }
@@ -107,25 +107,25 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     if (percentageOfCorrectResults > 1 / 3) {
       if (!isLastExercise) {
         return {
-          message: labels.results.feedbackGood,
+          message: getLabels().results.feedbackGood,
           resultColor: theme.colors.correct,
-          buttonText: labels.results.action.continue,
+          buttonText: getLabels().results.action.continue,
           navigationAction: startNextExercise,
           ResultIcon: HappySmileyIcon,
         }
       }
       return {
-        message: labels.results.finishedModule,
+        message: getLabels().results.finishedDiscipline,
         resultColor: theme.colors.correct,
-        buttonText: labels.results.action.moduleOverview,
-        navigationAction: navigateToNextModule,
+        buttonText: getLabels().results.action.disciplineOverview,
+        navigationAction: navigateToNextDiscipline,
         ResultIcon: PartyHornIcon,
       }
     }
     return {
-      message: labels.results.feedbackBad,
+      message: getLabels().results.feedbackBad,
       resultColor: theme.colors.incorrect,
-      buttonText: labels.results.action.repeat,
+      buttonText: getLabels().results.action.repeat,
       navigationAction: repeatExercise,
       ResultIcon: SadSmileyCircleIcon,
     }
@@ -151,8 +151,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
           <MessageContainer>
             <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
             <Results color={resultColor}>
-              {correctResults.length} {labels.results.of} {results.length} {labels.general.words}{' '}
-              {labels.results.correct}
+              {correctResults.length} {getLabels().results.of} {results.length} {getLabels().general.words}{' '}
+              {getLabels().results.correct}
             </Results>
             <Progress.Bar
               color={resultColor}
@@ -167,7 +167,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
 
         <Button
           label={buttonText}
-          iconLeft={buttonText === labels.results.action.repeat ? RepeatIcon : undefined}
+          iconLeft={buttonText === getLabels().results.action.repeat ? RepeatIcon : undefined}
           buttonTheme={BUTTONS_THEME.contained}
           onPress={() => navigationAction()}
         />

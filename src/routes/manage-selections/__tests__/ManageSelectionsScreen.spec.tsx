@@ -2,11 +2,11 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -33,7 +33,7 @@ describe('ManageSelectionsScreen', () => {
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
-    const confirmButton = getByText(labels.manageSelection.deleteModal.confirm)
+    const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
       const selectedProfessions = await AsyncStorage.getSelectedProfessions()
@@ -51,7 +51,7 @@ describe('ManageSelectionsScreen', () => {
     expect(getByText(mockCustomDiscipline.title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
-    const confirmButton = getByText(labels.manageSelection.deleteModal.confirm)
+    const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
       const customDisciplines = await AsyncStorage.getCustomDisciplines()
@@ -64,7 +64,7 @@ describe('ManageSelectionsScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([]))
 
     const { getByText } = renderScreen()
-    const addCustomDisciplineText = getByText(labels.home.addCustomDiscipline)
+    const addCustomDisciplineText = getByText(getLabels().home.addCustomDiscipline)
     fireEvent.press(addCustomDisciplineText)
     expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
@@ -74,7 +74,7 @@ describe('ManageSelectionsScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([]))
 
     const { getByText } = renderScreen()
-    const addProfessionText = getByText(labels.manageSelection.addProfession)
+    const addProfessionText = getByText(getLabels().manageSelection.addProfession)
     fireEvent.press(addProfessionText)
     expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
   })

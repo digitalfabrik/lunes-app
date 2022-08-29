@@ -3,12 +3,12 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../constants/labels.json'
 import { COLORS } from '../../constants/theme/colors'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
 import { mockDisciplines } from '../../testing/mockDiscipline'
@@ -26,17 +26,7 @@ describe('ProfessionSelectionScreen', () => {
     name: 'ProfessionSelection',
     params: {
       initialSelection,
-      discipline: {
-        id: 5,
-        title: 'Parent Discipline',
-        description: 'Parent Description',
-        icon: 'none',
-        numberOfChildren: 2,
-        isLeaf: false,
-        parentTitle: null,
-        needsTrainingSetEndpoint: false,
-        leafDisciplines: [],
-      },
+      discipline: mockDisciplines()[1],
     },
   })
 
@@ -48,7 +38,7 @@ describe('ProfessionSelectionScreen', () => {
     const { findByText, queryAllByTestId } = render(
       <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
     )
-    expect(await findByText(labels.scopeSelection.skipSelection)).toBeDefined()
+    expect(await findByText(getLabels().scopeSelection.skipSelection)).toBeDefined()
     const profession = await findByText(mockDisciplines()[0].title)
     expect(profession).toBeDefined()
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
@@ -68,7 +58,7 @@ describe('ProfessionSelectionScreen', () => {
     const { findByText, queryAllByTestId } = render(
       <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
     )
-    expect(await findByText(labels.scopeSelection.confirmSelection)).toBeDefined()
+    expect(await findByText(getLabels().scopeSelection.confirmSelection)).toBeDefined()
     const profession = await findByText(mockDisciplines()[0].title)
     expect(profession).toBeDefined()
     expect(queryAllByTestId('check-icon')).toHaveLength(1)

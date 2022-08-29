@@ -8,10 +8,10 @@ import { ContentSecondary, ContentSecondaryLight } from '../../../components/tex
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, NetworkError } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels } from '../../../services/helpers'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
 import ProfessionDetails from './ProfessionDetails'
@@ -71,12 +71,12 @@ const DisciplineCard = ({
         {isTypeLoadProtected(identifier) ? (
           <>
             <ErrorMessageForbidden>
-              {labels.home.errorLoadCustomDiscipline} {identifier.apiKey}
+              {getLabels().home.errorLoadCustomDiscipline} {identifier.apiKey}
             </ErrorMessageForbidden>
             <ButtonContainer>
               <Button
                 onPress={() => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)}
-                label={labels.home.deleteProfession}
+                label={getLabels().home.deleteProfession}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
             </ButtonContainer>

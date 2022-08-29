@@ -11,7 +11,7 @@
     "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewModules": "Module ansehen",
+    "viewDisciplines": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
@@ -60,7 +60,7 @@
     "wordChoice": {
       "title": "Level 1",
       "description": "Das richtige Wort auswählen",
-      "errorWrongModuleSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
+      "errorWrongDisciplineSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
     },
     "articleChoice": {
       "title": "Level 2",
@@ -102,7 +102,7 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedModule": "Super, du hast das Modul abgeschlossen",
+    "finishedDiscipline": "Super, du hast das Modul abgeschlossen",
     "unlockExercise": {
       "part1": "Glückwunsch",
       "part2": "ist jetzt freigeschaltet."
@@ -113,7 +113,7 @@
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "moduleOverview": "Zur Modulübersicht"
+      "disciplineOverview": "Zur Modulübersicht"
     },
     "of": "von",
     "share": {

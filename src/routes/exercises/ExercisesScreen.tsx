@@ -13,10 +13,9 @@ import Title from '../../components/Title'
 import Trophy from '../../components/Trophy'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISES } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getDoneExercises, wordsDescription } from '../../services/helpers'
+import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
 
@@ -104,17 +103,19 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         <Modal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
-          text={labels.exercises.lockedExerciseModal.title}
-          confirmationButtonText={`${labels.exercises.lockedExerciseModal.confirmButtonLabel} ${nextExercise.title}`}
+          text={getLabels().exercises.lockedExerciseModal.title}
+          confirmationButtonText={`${getLabels().exercises.lockedExerciseModal.confirmButtonLabel} ${
+            nextExercise.title
+          }`}
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)
           }}
           testID='locking-modal'>
           <SmallMessage>
-            {labels.exercises.lockedExerciseModal.descriptionPart1}
+            {getLabels().exercises.lockedExerciseModal.descriptionPart1}
             <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
-            {labels.exercises.lockedExerciseModal.descriptionPart2}
+            {getLabels().exercises.lockedExerciseModal.descriptionPart2}
           </SmallMessage>
         </Modal>
       )}

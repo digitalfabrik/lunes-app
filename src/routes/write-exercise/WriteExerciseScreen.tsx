@@ -18,11 +18,10 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../services/AsyncStorage'
-import { moveToEnd, shuffleArray } from '../../services/helpers'
+import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
 const ButtonContainer = styled.View`
@@ -74,7 +73,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const finishExercise = async (results: DocumentResult[]): Promise<void> => {
     if (disciplineId) {
-      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
+      await AsyncStorage.saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
       documents,
@@ -122,8 +121,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const buttonLabel =
     currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
-      ? labels.exercises.showResults
-      : labels.exercises.next
+      ? getLabels().exercises.showResults
+      : getLabels().exercises.next
 
   return (
     <RouteWrapper>
@@ -153,13 +152,13 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           ) : (
             <>
               <Button
-                label={labels.exercises.write.showSolution}
+                label={getLabels().exercises.write.showSolution}
                 onPress={giveUp}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
               {currentIndex < documents.length - 1 && (
                 <Button
-                  label={labels.exercises.tryLater}
+                  label={getLabels().exercises.tryLater}
                   iconRight={ArrowRightIcon}
                   onPress={tryLater}
                   buttonTheme={BUTTONS_THEME.text}

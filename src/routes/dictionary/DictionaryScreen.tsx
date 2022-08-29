@@ -12,9 +12,9 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ARTICLES } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
 import useLoadAllDocuments from '../../hooks/useLoadAllDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
 
 const Root = styled.View`
@@ -59,7 +59,7 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
   const sortedDocuments = filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word))
 
   const description = `${filteredDocuments?.length ?? 0} ${
-    (filteredDocuments?.length ?? 0) === 1 ? labels.general.word : labels.general.words
+    (filteredDocuments?.length ?? 0) === 1 ? getLabels().general.word : getLabels().general.words
   }`
 
   const navigateToDetail = (document: Document): void => {
@@ -75,7 +75,7 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={
                 <Header>
-                  <Title title={labels.general.dictionary} description={description} />
+                  <Title title={getLabels().general.dictionary} description={description} />
                   <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
@@ -91,7 +91,7 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
               ListEmptyComponent={
                 <ListEmptyContainer>
                   <StyledSadSmileyIcon />
-                  <Subheading>{labels.dictionary.noResults}</Subheading>
+                  <Subheading>{getLabels().dictionary.noResults}</Subheading>
                 </ListEmptyContainer>
               }
             />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 import render from '../../../testing/render'
 import SettingsScreen from '../SettingsScreen'
 
@@ -18,9 +18,9 @@ jest.mock('react-native/Libraries/Components/Switch/Switch', () => {
 describe('SettingsScreen', () => {
   it('should render all elements', () => {
     const { getByText } = render(<SettingsScreen />)
-    expect(getByText(labels.settings.settings)).toBeDefined()
-    expect(getByText(labels.settings.appStability)).toBeDefined()
-    expect(getByText(labels.settings.appStabilityExplanation)).toBeDefined()
-    expect(getByText(`${labels.settings.version}: 2022.6.0`)).toBeDefined()
+    expect(getByText(getLabels().settings.settings)).toBeDefined()
+    expect(getByText(getLabels().settings.appStability)).toBeDefined()
+    expect(getByText(getLabels().settings.appStabilityExplanation)).toBeDefined()
+    expect(getByText(`${getLabels().settings.version}: 2022.6.0`)).toBeDefined()
   })
 })
