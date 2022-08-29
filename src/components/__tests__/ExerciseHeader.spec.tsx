@@ -38,7 +38,7 @@ describe('ExerciseHeader', () => {
     expect(getByTestId('customModal').props.visible).toBe(true)
     expect(getByText(getLabels().exercises.cancelModal.cancelAsk)).toBeTruthy()
     expect(getByText(getLabels().exercises.cancelModal.cancel)).toBeTruthy()
-    expect(getByText(getLabels().general.customModalCancel)).toBeTruthy()
+    expect(getByText(getLabels().general.back)).toBeTruthy()
 
     fireEvent.press(getByText(getLabels().exercises.cancelModal.cancel))
 
