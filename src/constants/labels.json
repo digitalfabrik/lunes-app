@@ -69,6 +69,7 @@
     "lockedExerciseModal": {
       "title": "Hoppla, dieses Level ist noch nicht freigeschalten.",
       "confirmButtonLabel": "Zu",
+      "confirmButtonLabelDeclinated": "Zur",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um das nächste Level freizuschalten."
     },
