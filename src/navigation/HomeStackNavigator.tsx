@@ -1,10 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components'
 
 import labels from '../constants/labels.json'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -13,13 +11,12 @@ import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions from './screenOptions'
+import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const headerHeight = useTabletHeaderHeight(wp('15%'))
-  const options = screenOptions(headerHeight)
+  const options = screenOptions(useTabletHeaderHeight())
   const { overview } = labels.general.header
   const theme = useTheme()
 

@@ -52,7 +52,7 @@ const Modal = (props: Props): JSX.Element => {
         buttonTheme={BUTTONS_THEME.contained}
       />
       {showCancelButton && (
-        <Button label={labels.general.customModalCancel} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
+        <Button label={labels.general.back} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
       )}
     </ModalSkeleton>
   )
