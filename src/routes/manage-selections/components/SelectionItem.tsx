@@ -58,7 +58,9 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
       <ListItem
         title={
           data?.title ??
-          (error?.message === ForbiddenError ? labels.home.errorLoadCustomDiscipline : labels.general.error.unknown)
+          (error?.message === ForbiddenError
+            ? getLabels().home.errorLoadCustomDiscipline
+            : getLabels().general.error.unknown)
         }
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
