@@ -2,8 +2,8 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
 import useLoadAllDocuments from '../../../hooks/useLoadAllDocuments'
+import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
@@ -29,9 +29,9 @@ describe('DictionaryScreen', () => {
   it('should render correctly', () => {
     mocked(useLoadAllDocuments).mockReturnValueOnce(getReturnOf(documents))
     const { getByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
-    expect(getByText(labels.general.dictionary)).toBeDefined()
-    expect(getByText(`4 ${labels.general.words}`)).toBeDefined()
-    expect(getByPlaceholderText(labels.dictionary.enterWord)).toBeDefined()
+    expect(getByText(getLabels().general.dictionary)).toBeDefined()
+    expect(getByText(`4 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByPlaceholderText(getLabels().dictionary.enterWord)).toBeDefined()
     expect(getByText(documents[0].word)).toBeDefined()
     expect(getByText(documents[1].word)).toBeDefined()
     expect(getByText(documents[2].word)).toBeDefined()
@@ -41,7 +41,7 @@ describe('DictionaryScreen', () => {
   it('should filter by word', () => {
     mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
-    const searchBar = getByPlaceholderText(labels.dictionary.enterWord)
+    const searchBar = getByPlaceholderText(getLabels().dictionary.enterWord)
     fireEvent.changeText(searchBar, documents[0].word)
     expect(queryByText(documents[0].word)).toBeDefined()
     expect(queryByText(documents[1].word)).toBeNull()
@@ -52,7 +52,7 @@ describe('DictionaryScreen', () => {
   it('should filter by word and article', () => {
     mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
-    const searchBar = getByPlaceholderText(labels.dictionary.enterWord)
+    const searchBar = getByPlaceholderText(getLabels().dictionary.enterWord)
     fireEvent.changeText(searchBar, `${documents[0].article.value} ${documents[0].word}`)
     expect(queryByText(documents[0].word)).toBeDefined()
     expect(queryByText(documents[1].word)).toBeNull()

@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { HeaderCircleIcon } from '../../../../assets/images'
 import AddElement from '../../../components/AddElement'
 import { ContentSecondary } from '../../../components/text/Content'
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 import Card from './Card'
 
 const Explanation = styled(ContentSecondary)`
@@ -16,9 +16,9 @@ interface Props {
 }
 
 const AddCustomDiscipline = ({ navigate }: Props): ReactElement => (
-  <Card heading={labels.home.customDisciplineSection} icon={<HeaderCircleIcon />}>
-    <Explanation>{labels.home.customDisciplineExplanation}</Explanation>
-    <AddElement onPress={navigate} label={labels.home.addCustomDiscipline} />
+  <Card heading={getLabels().home.customDisciplineSection} icon={<HeaderCircleIcon />}>
+    <Explanation>{getLabels().home.customDisciplineExplanation}</Explanation>
+    <AddElement onPress={navigate} label={getLabels().home.addCustomDiscipline} />
   </Card>
 )
 

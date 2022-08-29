@@ -1,5 +1,5 @@
 import { RenderAPI } from '@testing-library/react-native'
-import React from 'react'
+import React, { ComponentProps } from 'react'
 import { Text } from 'react-native'
 
 import { CheckCircleIcon } from '../../../assets/images'
@@ -7,12 +7,12 @@ import render from '../../testing/render'
 import Title from '../Title'
 
 describe('Title', () => {
-  const defaultTitleProps: React.ComponentProps<typeof Title> = {
+  const defaultTitleProps: ComponentProps<typeof Title> = {
     title: 'Title',
     description: 'Description',
   }
 
-  const renderListTitle = (otherProps: Partial<React.ComponentProps<typeof Title>> = {}): RenderAPI =>
+  const renderListTitle = (otherProps: Partial<ComponentProps<typeof Title>> = {}): RenderAPI =>
     render(<Title {...defaultTitleProps} {...otherProps} />)
 
   it('should render ListTitle with title and description', () => {

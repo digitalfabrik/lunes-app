@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
-import labels from '../../constants/labels.json'
+import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
 import ServerResponseHandler from '../ServerResponseHandler'
 
@@ -18,7 +18,7 @@ describe('ServerResponseHandler', () => {
     )
 
     expect(getByText(error.message)).toBeTruthy()
-    fireEvent.press(getByText(labels.general.error.retryButton))
+    fireEvent.press(getByText(getLabels().general.error.retryButton))
     expect(refresh).toHaveBeenCalledTimes(1)
   })
 

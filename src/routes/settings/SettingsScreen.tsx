@@ -5,8 +5,8 @@ import styled from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import labels from '../../constants/labels.json'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
@@ -42,11 +42,11 @@ const SettingsScreen = (): ReactElement => {
   return (
     <RouteWrapper>
       <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
-      <SettingsHeading>{labels.settings.settings}</SettingsHeading>
+      <SettingsHeading>{getLabels().settings.settings}</SettingsHeading>
       <ItemContainer>
         <ItemTextContainer>
-          <Content>{labels.settings.appStability}</Content>
-          <ContentTextLight>{labels.settings.appStabilityExplanation}</ContentTextLight>
+          <Content>{getLabels().settings.appStability}</Content>
+          <ContentTextLight>{getLabels().settings.appStabilityExplanation}</ContentTextLight>
         </ItemTextContainer>
         <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
       </ItemContainer>

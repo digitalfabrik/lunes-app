@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import labels from '../../../constants/labels.json'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 import ShareButton from './ShareButton'
 
 const Container = styled.View`
@@ -33,7 +33,7 @@ interface Props {
 
 const ShareSection = ({ disciplineTitle, results }: Props): ReactElement => (
   <Container>
-    <Description>{labels.results.share.description}</Description>
+    <Description>{getLabels().results.share.description}</Description>
     <ShareButton disciplineTitle={disciplineTitle} results={results} />
   </Container>
 )

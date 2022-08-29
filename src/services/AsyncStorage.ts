@@ -72,7 +72,7 @@ const removeCustomDiscipline = async (customDiscipline: string): Promise<void> =
   await setCustomDisciplines(disciplines)
 }
 
-export const getExerciseProgress = async (): Promise<Progress> => {
+const getExerciseProgress = async (): Promise<Progress> => {
   const progress = await AsyncStorage.getItem(PROGRESS_KEY)
   return progress ? JSON.parse(progress) : {}
 }
@@ -84,7 +84,7 @@ const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKe
   await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(savedProgress))
 }
 
-export const saveExerciseProgress = async (
+const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
   documentsWithResults: DocumentResult[]
@@ -136,12 +136,12 @@ const toggleDevMode = async (): Promise<void> => {
   await AsyncStorage.setItem(DEV_MODE_KEY, JSON.stringify(isDevMode ? !JSON.parse(isDevMode) : true))
 }
 
-export const getDevMode = async (): Promise<boolean | null> => {
+const getDevMode = async (): Promise<boolean | null> => {
   const isDevMode = await AsyncStorage.getItem(DEV_MODE_KEY)
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-export const getUserVocabulary = async (): Promise<UserVocabularyDocument[]> => {
+const getUserVocabulary = async (): Promise<UserVocabularyDocument[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }

@@ -2,13 +2,13 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
@@ -16,7 +16,10 @@ import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
 
-jest.mock('../../../services/helpers')
+jest.mock('../../../services/helpers', () => ({
+  ...jest.requireActual('../../../services/helpers'),
+  childrenLabel: jest.fn(() => []),
+}))
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadProgress')
@@ -54,7 +57,7 @@ describe('HomeScreen', () => {
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
     expect(getByText('Custom Discipline')).toBeDefined()
-    expect(getByText(labels.home.start)).toBeDefined()
+    expect(getByText(getLabels().home.start)).toBeDefined()
   })
 
   it('should show suggestion to add custom discipline', () => {
@@ -63,7 +66,7 @@ describe('HomeScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValue(getReturnOf([]))
 
     const { getByText } = render(<HomeScreen navigation={navigation} />)
-    const addCustomDiscipline = getByText(labels.home.addCustomDiscipline)
+    const addCustomDiscipline = getByText(getLabels().home.addCustomDiscipline)
     expect(addCustomDiscipline).toBeDefined()
 
     fireEvent.press(addCustomDiscipline)

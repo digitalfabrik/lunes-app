@@ -12,12 +12,11 @@ import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
-import labels from '../constants/labels.json'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import AsyncStorage from '../services/AsyncStorage'
-import { childrenDescription } from '../services/helpers'
+import { getLabels, childrenDescription } from '../services/helpers'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -103,7 +102,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
               <ButtonContainer>
                 <Button
                   onPress={navigateToHomeScreen}
-                  label={labels.scopeSelection.skipSelection}
+                  label={getLabels().scopeSelection.skipSelection}
                   buttonTheme={BUTTONS_THEME.contained}
                 />
               </ButtonContainer>
@@ -120,7 +119,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
         <ButtonContainer>
           <Button
             onPress={navigateToHomeScreen}
-            label={labels.scopeSelection.confirmSelection}
+            label={getLabels().scopeSelection.confirmSelection}
             buttonTheme={BUTTONS_THEME.contained}
           />
         </ButtonContainer>

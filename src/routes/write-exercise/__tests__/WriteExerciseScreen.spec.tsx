@@ -5,9 +5,9 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
 import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
@@ -103,89 +103,91 @@ describe('WriteExerciseScreen', () => {
   it('should allow to skip a document and try it out later', () => {
     const { getByText, getByPlaceholderText } = renderWriteExercise()
 
-    fireEvent.press(getByText(labels.exercises.tryLater))
+    fireEvent.press(getByText(getLabels().exercises.tryLater))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Auto')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'das Auto')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    expect(getByText(labels.exercises.write.feedback.correct)).toBeTruthy()
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    expect(getByText(getLabels().exercises.write.feedback.correct)).toBeTruthy()
   })
 
   it('should not allow to skip last document', () => {
     const { queryByText, getByText, getByPlaceholderText } = renderWriteExercise()
 
-    expect(labels.exercises.tryLater).not.toBeNull()
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
-    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+    expect(getLabels().exercises.tryLater).not.toBeNull()
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
+    expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
 
   it('should show solution after three wrong tries', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'das Falsche')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche2')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'das Falsche2')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Falsche3')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'das Falsche3')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${labels.exercises.write.feedback.wrongWithSolution} „${documents[1].article.value} ${documents[1].word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[1].article.value} ${documents[1].word}“`
       )
     ).toBeDefined()
-    expect(getByText(labels.exercises.showResults)).toBeDefined()
+    expect(getByText(getLabels().exercises.showResults)).toBeDefined()
   })
 
   it('should show solution after three times almost correct', () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
     const submission = 'der Spachtl'
 
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, submission)
-    const button = getByText(labels.exercises.write.checkInput)
+    const button = getByText(getLabels().exercises.write.checkInput)
     fireEvent.press(button)
     expect(
       getByText(
-        `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+        `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
+          getLabels().exercises.write.feedback.almostCorrect2
+        }`
       )
     ).toBeDefined()
 
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${labels.exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
       )
     ).toBeDefined()
-    expect(getByText(labels.exercises.next)).toBeDefined()
+    expect(getByText(getLabels().exercises.next)).toBeDefined()
   })
 
   it('should finish exercise and save progress', async () => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'die Spachtel')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    fireEvent.changeText(getByPlaceholderText(labels.exercises.write.insertAnswer), 'das Auto')
-    fireEvent.press(getByText(labels.exercises.write.checkInput))
+    fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'das Auto')
+    fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
     await act(async () => {
-      fireEvent.press(getByText(labels.exercises.showResults))
+      fireEvent.press(getByText(getLabels().exercises.showResults))
     })
 
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
@@ -193,45 +195,49 @@ describe('WriteExerciseScreen', () => {
 
   const evaluate = (input: string, expectedFeedback: string) => {
     const { getByPlaceholderText, getByText } = renderWriteExercise()
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, input)
-    const button = getByText(labels.exercises.write.checkInput)
+    const button = getByText(getLabels().exercises.write.checkInput)
     fireEvent.press(button)
     expect(getByText(expectedFeedback.replace('\n', ''))).toBeDefined()
   }
 
   it('should show correct-feedback for correct solution', () => {
-    evaluate('der Spachtel', labels.exercises.write.feedback.correct)
+    evaluate('der Spachtel', getLabels().exercises.write.feedback.correct)
   })
 
   it('should show correct-feedback for alternative article', () => {
-    evaluate('die Spachtel', labels.exercises.write.feedback.correct)
+    evaluate('die Spachtel', getLabels().exercises.write.feedback.correct)
   })
 
   it('should show correct-feedback for alternative solution', () => {
-    evaluate('die Alternative', labels.exercises.write.feedback.correct)
+    evaluate('die Alternative', getLabels().exercises.write.feedback.correct)
   })
 
   it('should show almost correct feedback', () => {
     const input = 'die Spachtl'
     evaluate(
       input,
-      `${labels.exercises.write.feedback.almostCorrect1} „${input}“ ${labels.exercises.write.feedback.almostCorrect2}`
+      `${getLabels().exercises.write.feedback.almostCorrect1} „${input}“ ${
+        getLabels().exercises.write.feedback.almostCorrect2
+      }`
     )
   })
 
   it('should show wrong feedback with correct solution', () => {
     evaluate(
       'das Falsche',
-      `${labels.exercises.write.feedback.wrong} ${labels.exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+      `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+        documents[0].article.value
+      } ${documents[0].word}“`
     )
   })
 
   it('should play audio if available and no alternative solution submitted', () => {
     const { getByPlaceholderText, getByText, getByTestId } = renderWriteExercise()
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'der Spachtel')
-    const button = getByText(labels.exercises.write.checkInput)
+    const button = getByText(getLabels().exercises.write.checkInput)
     fireEvent.press(button)
 
     // Play audio
@@ -245,9 +251,9 @@ describe('WriteExerciseScreen', () => {
 
   it('should play submitted alternative', async () => {
     const { getByPlaceholderText, getByText, getByTestId } = renderWriteExercise()
-    const inputField = getByPlaceholderText(labels.exercises.write.insertAnswer)
+    const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Alternative')
-    const button = getByText(labels.exercises.write.checkInput)
+    const button = getByText(getLabels().exercises.write.checkInput)
     fireEvent.press(button)
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
