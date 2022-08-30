@@ -82,10 +82,9 @@ const DisciplineCard = ({
       deleteItem = () => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
-      deleteItem =
-        'disciplineId' in identifier
-          ? () => AsyncStorage.removeSelectedProfession(identifier.disciplineId).then(refreshHome)
-          : () => setIsModalVisible(false)
+      deleteItem = !isTypeLoadProtected(identifier)
+        ? () => AsyncStorage.removeSelectedProfession(identifier.disciplineId).then(refreshHome)
+        : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }
 
