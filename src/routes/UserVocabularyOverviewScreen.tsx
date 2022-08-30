@@ -17,27 +17,30 @@ interface PropsType {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyOverview'>
 }
 
-const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => (
-  <RouteWrapper>
-    <Root>
-      <ScreenHeading text={getLabels().ownVocabulary.myWords} />
-      <ListItem
-        icon={<BookIconBlack />}
-        title={getLabels().ownVocabulary.overview.list}
-        onPress={() => navigation.navigate('UserVocabularyOverview')}
-      />
-      <ListItem
-        icon={<BookIconBlack />}
-        title={getLabels().ownVocabulary.overview.create}
-        onPress={() => navigation.navigate('UserVocabularyCreation', { title: getLabels().ownVocabulary.myWords })}
-      />
-      <ListItem
-        icon={<BookIconBlack />}
-        title={getLabels().ownVocabulary.overview.practice}
-        onPress={() => navigation.navigate('UserVocabularyOverview')}
-      />
-    </Root>
-  </RouteWrapper>
-)
+const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => {
+  const { myWords } = getLabels().ownVocabulary
+  return (
+    <RouteWrapper>
+      <Root>
+        <ScreenHeading title={myWords} />
+        <ListItem
+          icon={<BookIconBlack />}
+          title={getLabels().ownVocabulary.overview.list}
+          onPress={() => navigation.navigate('UserVocabularyOverview')}
+        />
+        <ListItem
+          icon={<BookIconBlack />}
+          title={getLabels().ownVocabulary.overview.create}
+          onPress={() => navigation.navigate('UserVocabularyCreation', { title: myWords })}
+        />
+        <ListItem
+          icon={<BookIconBlack />}
+          title={getLabels().ownVocabulary.overview.practice}
+          onPress={() => navigation.navigate('UserVocabularyOverview')}
+        />
+      </Root>
+    </RouteWrapper>
+  )
+}
 
 export default UserVocabularyOverviewScreen

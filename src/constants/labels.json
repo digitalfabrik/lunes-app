@@ -189,7 +189,8 @@
       "addImage": "Bild hochladen*",
       "addAudio": "Audio aufnehmen",
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
-      "requiredFields": "*Pflichfelder"
+      "requiredFields": "*Pflichtfelder",
+      "errorMessage": "Dies ist ein Pflichtfeld."
     }
   }
 }

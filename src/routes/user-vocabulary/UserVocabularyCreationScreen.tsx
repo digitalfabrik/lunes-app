@@ -9,7 +9,7 @@ import Dropdown from '../../components/Dropdown'
 import RouteWrapper from '../../components/RouteWrapper'
 import ScreenHeading from '../../components/ScreenHeading'
 import { HintText } from '../../components/text/Hint'
-import { ARTICLES, ArticleType, BUTTONS_THEME } from '../../constants/data'
+import { ARTICLES, BUTTONS_THEME } from '../../constants/data'
 import { getLabels } from '../../services/helpers'
 
 const Root = styled.View`
@@ -29,10 +29,7 @@ const AddAudioButton = styled(Button)`
 `
 const AddPictureButton = styled(AddAudioButton)`
   margin-bottom: 0;
-`
-
-const StyledCustomTextInput = styled(CustomTextInput)`
-  margin-bottom: ${props => props.theme.spacings.sm};
+  margin-top: ${props => props.theme.spacings.sm};
 `
 
 const StyledHintText = styled(HintText)`
@@ -42,52 +39,76 @@ const StyledHintText = styled(HintText)`
 const UserVocabularyCreationScreen = (): ReactElement => {
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
+  const [textErrorMessage, setTextErrorMessage] = useState<string>('')
+  const [articleErrorMessage, setArticleErrorMessage] = useState<string>('')
+  const {
+    headline,
+    addImage,
+    addAudio,
+    wordPlaceholder,
+    articlePlaceholder,
+    errorMessage,
+    saveButton,
+    maxPictureUpload,
+    requiredFields,
+  } = getLabels().ownVocabulary.creation
 
   const onSave = (): void => {
-    setWord('')
-    setArticleId(null)
+    const hasError = word.length === 0 || !articleId
     // TODO LUN-419
+    if (word.length === 0) {
+      setTextErrorMessage(errorMessage)
+    } else {
+      setTextErrorMessage('')
+    }
+    if (!articleId) {
+      setArticleErrorMessage(errorMessage)
+    } else {
+      setArticleErrorMessage('')
+    }
+
+    if (!hasError) {
+      setWord('')
+      setArticleId(null)
+    }
   }
 
   return (
     <RouteWrapper>
       <Root>
-        <ScreenHeading text={getLabels().ownVocabulary.creation.headline} />
-        <StyledCustomTextInput
+        <ScreenHeading title={headline} />
+        <CustomTextInput
           clearable
           value={word}
           onChangeText={setWord}
-          placeholder={getLabels().ownVocabulary.creation.wordPlaceholder}
+          placeholder={wordPlaceholder}
+          errorMessage={textErrorMessage}
         />
         <Dropdown
           value={articleId}
           setValue={setArticleId}
-          placeholder={getLabels().ownVocabulary.creation.articlePlaceholder}
-          items={ARTICLES.filter(article => article.value !== 'keiner') as ArticleType[]}
+          placeholder={articlePlaceholder}
+          items={ARTICLES.filter(article => article.value !== 'keiner')}
           itemKey='id'
+          errorMessage={articleErrorMessage}
         />
         <AddPictureButton
           onPress={() => null}
-          label={getLabels().ownVocabulary.creation.addImage.toUpperCase()}
+          label={addImage.toUpperCase()}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={PhotoCircleIcon}
           iconSize={wp('10%')}
         />
-        <StyledHintText>{getLabels().ownVocabulary.creation.maxPictureUpload}</StyledHintText>
+        <StyledHintText>{maxPictureUpload}</StyledHintText>
         <AddAudioButton
           onPress={() => null}
-          label={getLabels().ownVocabulary.creation.addAudio.toUpperCase()}
+          label={addAudio.toUpperCase()}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={AudioCircleIcon}
           iconSize={wp('10%')}
         />
-        <HintText>{getLabels().ownVocabulary.creation.requiredFields}</HintText>
-        <SaveButton
-          onPress={onSave}
-          label={getLabels().ownVocabulary.creation.saveButton}
-          buttonTheme={BUTTONS_THEME.contained}
-          disabled={!articleId || word.length === 0}
-        />
+        <HintText>{requiredFields}</HintText>
+        <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
       </Root>
     </RouteWrapper>
   )

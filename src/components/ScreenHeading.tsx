@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { Heading } from './text/Heading'
 
 interface ScreenHeadingProps {
-  text: string
+  title: string
 }
 
 const StyledHeading = styled(Heading)`
@@ -16,9 +16,9 @@ const Spacer = styled.View`
   margin-bottom: ${props => props.theme.spacings.xl};
 `
 
-const ScreenHeading = ({ text }: ScreenHeadingProps): ReactElement => (
+const ScreenHeading = ({ title }: ScreenHeadingProps): ReactElement => (
   <>
-    <StyledHeading>{text}</StyledHeading>
+    <StyledHeading>{title}</StyledHeading>
     <Spacer />
   </>
 )

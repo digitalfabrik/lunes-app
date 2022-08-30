@@ -40,6 +40,7 @@ const IconContainer = styled.View<{ multiLine: boolean }>`
 `
 
 const ErrorContainer = styled.View`
+  margin-top: ${props => props.theme.spacings.xs}
   min-height: ${props => props.theme.spacings.lg};
 `
 
