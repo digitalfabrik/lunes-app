@@ -16,15 +16,17 @@ const Explanation = styled(ContentSecondary)`
   text-align: center;
 `
 
-const DeletionModal = ({ isVisible, onConfirm, onClose }: PropsType): JSX.Element => (
-  <Modal
-    visible={isVisible}
-    onClose={onClose}
-    text={getLabels().manageSelection.deleteModal.confirmationQuestion}
-    confirmationButtonText={getLabels().manageSelection.deleteModal.confirm}
-    confirmationAction={onConfirm}>
-    <Explanation>{getLabels().manageSelection.deleteModal.explanation}</Explanation>
-  </Modal>
-)
-
+const DeletionModal = ({ isVisible, onConfirm, onClose }: PropsType): JSX.Element => {
+  const { confirmationQuestion, confirm, explanation } = getLabels().manageSelection.deleteModal
+  return (
+    <Modal
+      visible={isVisible}
+      onClose={onClose}
+      text={confirmationQuestion}
+      confirmationButtonText={confirm}
+      confirmationAction={onConfirm}>
+      <Explanation>{explanation}</Explanation>
+    </Modal>
+  )
+}
 export default DeletionModal
