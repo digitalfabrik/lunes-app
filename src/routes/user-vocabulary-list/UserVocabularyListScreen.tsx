@@ -13,9 +13,8 @@ import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
-import useLoadAsync from '../../hooks/useLoadAsync'
+import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
 import ListEmptyContent from './components/ListEmptyContent'
 
@@ -40,7 +39,7 @@ interface Props {
 }
 
 const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
-  const documents = useLoadAsync(AsyncStorage.getUserVocabulary, {})
+  const documents = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const isKeyboardVisible = useIsKeyboardVisible()
 
