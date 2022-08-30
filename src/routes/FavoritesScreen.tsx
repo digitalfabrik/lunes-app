@@ -32,6 +32,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       labelOverrides: {
         closeExerciseButtonLabel: getLabels().exercises.cancelModal.cancel,
         closeExerciseHeaderLabel: getLabels().general.back,
+        isCloseButton: false,
       },
     })
   }

@@ -52,6 +52,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         feedbackType={FeedbackType.document}
         feedbackForId={document.id}
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
+        isCloseButton={labelOverrides?.isCloseButton}
       />
       <VocabularyDetail document={document} />
       <Container>

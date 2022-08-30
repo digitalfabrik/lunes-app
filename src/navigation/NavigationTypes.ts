@@ -14,7 +14,7 @@ interface ExerciseParams {
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
-  labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string }
+  labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
 interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
