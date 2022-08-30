@@ -32,9 +32,10 @@ interface VocabularyDetailScreenProps {
 }
 
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
-  const { documents, documentIndex, closeExerciseAction } = route.params
+  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
   const document = documents[documentIndex]
   const hasNextDocument = documentIndex + 1 < documents.length
+  const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().general.header.cancelExercise
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
@@ -50,6 +51,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.document}
         feedbackForId={document.id}
+        labelOverride={labelOverrides?.closeExerciseHeaderLabel}
       />
       <VocabularyDetail document={document} />
       <Container>
@@ -66,11 +68,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
               buttonTheme={BUTTONS_THEME.contained}
             />
           ) : (
-            <Button
-              label={getLabels().general.header.cancelExercise}
-              onPress={navigation.goBack}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
+            <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
           )}
         </ButtonContainer>
       </Container>

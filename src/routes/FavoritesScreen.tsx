@@ -29,6 +29,10 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       documents: data,
       documentIndex: index,
       closeExerciseAction: CommonActions.goBack(),
+      labelOverrides: {
+        closeExerciseButtonLabel: getLabels().exercises.cancelModal.cancel,
+        closeExerciseHeaderLabel: getLabels().general.back,
+      },
     })
   }
 

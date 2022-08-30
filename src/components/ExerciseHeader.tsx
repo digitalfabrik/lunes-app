@@ -43,6 +43,7 @@ interface ExerciseHeaderProps {
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
+  labelOverride?: string
 }
 
 const ExerciseHeader = ({
@@ -53,6 +54,7 @@ const ExerciseHeader = ({
   currentWord,
   numberOfWords,
   confirmClose = true,
+  labelOverride,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -63,7 +65,7 @@ const ExerciseHeader = ({
   useEffect(() => {
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
-        title={getLabels().general.header.cancelExercise}
+        title={labelOverride ?? getLabels().general.header.cancelExercise}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
         isCloseButton
       />
@@ -86,7 +88,15 @@ const ExerciseHeader = ({
         maxWidth: wp('25%'),
       },
     })
-  }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction])
+  }, [
+    navigation,
+    progressText,
+    setIsModalVisible,
+    setIsFeedbackModalVisible,
+    confirmClose,
+    closeExerciseAction,
+    labelOverride,
+  ])
 
   useEffect(() => {
     const showModal = (): boolean => {
