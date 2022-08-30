@@ -97,6 +97,10 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     </Container>
   )
 
+  const nextExercisePreposition =
+    nextExercise?.key === 0
+      ? getLabels().exercises.lockedExerciseModal.confirmButtonLabelDeclinated
+      : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
     <RouteWrapper>
       {documents && nextExercise && (
@@ -104,9 +108,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
           text={getLabels().exercises.lockedExerciseModal.title}
-          confirmationButtonText={`${getLabels().exercises.lockedExerciseModal.confirmButtonLabel} ${
-            nextExercise.title
-          }`}
+          confirmationButtonText={`${nextExercisePreposition} ${nextExercise.title}`}
           confirmationAction={() => {
             handleNavigation(nextExercise)
             setIsModalVisible(false)

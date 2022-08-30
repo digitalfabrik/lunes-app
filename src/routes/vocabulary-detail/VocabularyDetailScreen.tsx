@@ -67,7 +67,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
             />
           ) : (
             <Button
-              label={getLabels().general.header.cancelExercise}
+              label={getLabels().results.action.backToWordlist}
               onPress={navigation.goBack}
               buttonTheme={BUTTONS_THEME.contained}
             />
