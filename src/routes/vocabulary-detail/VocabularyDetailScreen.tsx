@@ -35,7 +35,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
   const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
   const document = documents[documentIndex]
   const hasNextDocument = documentIndex + 1 < documents.length
-  const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().general.header.cancelExercise
+  const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordList
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
