@@ -6,7 +6,7 @@ import React from 'react'
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
 
 import { FeedbackType } from '../../constants/data'
-import labels from '../../constants/labels.json'
+import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
 import ExerciseHeader from '../ExerciseHeader'
@@ -36,11 +36,11 @@ describe('ExerciseHeader', () => {
 
     expect(getByTestId('customModal')).toBeTruthy()
     expect(getByTestId('customModal').props.visible).toBe(true)
-    expect(getByText(labels.exercises.cancelModal.cancelAsk)).toBeTruthy()
-    expect(getByText(labels.exercises.cancelModal.cancel)).toBeTruthy()
-    expect(getByText(labels.general.customModalCancel)).toBeTruthy()
+    expect(getByText(getLabels().exercises.cancelModal.cancelAsk)).toBeTruthy()
+    expect(getByText(getLabels().exercises.cancelModal.cancel)).toBeTruthy()
+    expect(getByText(getLabels().general.back)).toBeTruthy()
 
-    fireEvent.press(getByText(labels.exercises.cancelModal.cancel))
+    fireEvent.press(getByText(getLabels().exercises.cancelModal.cancel))
 
     expect(navigation.dispatch).toHaveBeenCalledWith(goBack)
   })

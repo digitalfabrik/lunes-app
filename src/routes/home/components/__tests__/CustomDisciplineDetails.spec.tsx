@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../../constants/labels.json'
+import { getLabels } from '../../../../services/helpers'
 import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import render from '../../../../testing/render'
 import CustomDisciplineDetails from '../CustomDisciplineDetails'
@@ -14,7 +14,7 @@ describe('CustomDisciplineDetails', () => {
     const { getByText } = render(
       <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
     )
-    const button = getByText(labels.home.start)
+    const button = getByText(getLabels().home.start)
     fireEvent.press(button)
     expect(navigateToDiscipline).toHaveBeenCalledWith(discipline)
   })

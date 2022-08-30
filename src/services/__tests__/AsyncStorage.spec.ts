@@ -2,7 +2,7 @@ import { ARTICLES, ExerciseKeys, Progress, SIMPLE_RESULTS, SimpleResult } from '
 import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import AsyncStorage, { saveExerciseProgress } from '../AsyncStorage'
+import AsyncStorage from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
   describe('customDisciplines', () => {
@@ -91,7 +91,7 @@ describe('AsyncStorage', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(1, 1, documentsWithResults)
+        await AsyncStorage.saveExerciseProgress(1, 1, documentsWithResults)
         const progress = await AsyncStorage.getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })

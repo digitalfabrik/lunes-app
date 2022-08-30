@@ -2,9 +2,9 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { BUTTONS_THEME, SimpleResult, SIMPLE_RESULTS } from '../constants/data'
-import labels from '../constants/labels.json'
 import { useLoadAsync } from '../hooks/useLoadAsync'
-import { getDevMode } from '../services/AsyncStorage'
+import AsyncStorage from '../services/AsyncStorage'
+import { getLabels } from '../services/helpers'
 import Button from './Button'
 
 const CheatContainer = styled.View`
@@ -21,18 +21,18 @@ interface CheatModeProps {
 }
 
 const CheatMode = ({ cheat }: CheatModeProps): ReactElement => {
-  const { data: cheatsEnabled } = useLoadAsync(getDevMode, null)
+  const { data: cheatsEnabled } = useLoadAsync(AsyncStorage.getDevMode, null)
   return (
     <>
       {cheatsEnabled && (
         <CheatContainer>
           <Button
-            label={labels.exercises.cheat.succeed}
+            label={getLabels().exercises.cheat.succeed}
             onPress={() => cheat(SIMPLE_RESULTS.correct)}
             buttonTheme={BUTTONS_THEME.outlined}
           />
           <Button
-            label={labels.exercises.cheat.fail}
+            label={getLabels().exercises.cheat.fail}
             onPress={() => cheat(SIMPLE_RESULTS.incorrect)}
             buttonTheme={BUTTONS_THEME.outlined}
           />

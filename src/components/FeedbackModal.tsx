@@ -2,8 +2,7 @@ import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
 import { FeedbackType } from '../constants/data'
-import labels from '../constants/labels.json'
-import { sendFeedback } from '../services/helpers'
+import { getLabels, sendFeedback } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import CustomTextInput from './CustomTextInput'
 import Modal from './Modal'
@@ -20,12 +19,7 @@ interface FeedbackModalProps {
   feedbackForId: number
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({
-  visible,
-  onClose,
-  feedbackType,
-  feedbackForId,
-}: FeedbackModalProps): ReactElement => {
+const FeedbackModal = ({ visible, onClose, feedbackType, feedbackForId }: FeedbackModalProps): ReactElement => {
   const [message, setMessage] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
@@ -43,16 +37,16 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
       testID='feedbackModal'
       visible={visible}
       onClose={onCloseFeedback}
-      text={labels.feedback.question}
+      text={getLabels().feedback.question}
       showCancelButton={false}
-      confirmationButtonText={labels.feedback.sendFeedback}
+      confirmationButtonText={getLabels().feedback.sendFeedback}
       confirmationAction={onSubmit}
       confirmationDisabled={message.length === 0}>
       <TextInputContainer>
         <CustomTextInput
           value={message}
           onChangeText={setMessage}
-          placeholder={labels.feedback.feedbackPlaceholder}
+          placeholder={getLabels().feedback.feedbackPlaceholder}
           lines={5}
           clearable
         />
@@ -60,7 +54,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({
           textContentType='emailAddress'
           value={email}
           onChangeText={setEmail}
-          placeholder={labels.feedback.mailPlaceholder}
+          placeholder={getLabels().feedback.mailPlaceholder}
           clearable
         />
       </TextInputContainer>

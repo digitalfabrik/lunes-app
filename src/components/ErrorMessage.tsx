@@ -5,8 +5,8 @@ import styled from 'styled-components/native'
 import { NoInternetConnectionIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
-import labels from '../constants/labels.json'
 import theme from '../constants/theme'
+import { getLabels } from '../services/helpers'
 import Button from './Button'
 import RoundedBackground from './RoundedBackground'
 
@@ -53,12 +53,13 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
     return null
   }
 
-  const message = error.message === NetworkError ? `${labels.general.error.noWifi} (${error.message})` : error.message
+  const message =
+    error.message === NetworkError ? `${getLabels().general.error.noWifi} (${error.message})` : error.message
   if (contained) {
     return (
       <Container>
         <ErrorText>{message}</ErrorText>
-        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
+        <Button label={getLabels().general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
       </Container>
     )
   }
@@ -72,11 +73,11 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
               <NoInternetConnectionIcon testID='no-internet-icon' />
             </IconStyle>
           )}
-          <ErrorTitle>{labels.general.error.somethingWentWrong}</ErrorTitle>
+          <ErrorTitle>{getLabels().general.error.somethingWentWrong}</ErrorTitle>
           <ErrorText centered>{message}</ErrorText>
         </Container>
       </RoundedBackground>
-      <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
+      <Button label={getLabels().general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
     </NetworkErrorWrapper>
   )
 }

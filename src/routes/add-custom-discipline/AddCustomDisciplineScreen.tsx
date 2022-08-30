@@ -12,11 +12,11 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
 
 const Container = styled.View`
@@ -63,7 +63,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       return
     }
     if (customDisciplines.includes(code)) {
-      setErrorMessage(labels.addCustomDiscipline.error.alreadyAdded)
+      setErrorMessage(getLabels().addCustomDiscipline.error.alreadyAdded)
       return
     }
     setLoading(true)
@@ -73,8 +73,8 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       .catch(error => {
         setErrorMessage(
           error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
-            ? labels.addCustomDiscipline.error.wrongCode
-            : labels.addCustomDiscipline.error.technical
+            ? getLabels().addCustomDiscipline.error.wrongCode
+            : getLabels().addCustomDiscipline.error.technical
         )
       })
       .finally(() => setLoading(false))
@@ -89,12 +89,12 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       <Loading isLoading={loading}>
         {customDisciplines && (
           <Container>
-            <CustomDisciplineHeading>{labels.addCustomDiscipline.heading}</CustomDisciplineHeading>
-            <Description>{labels.addCustomDiscipline.description}</Description>
+            <CustomDisciplineHeading>{getLabels().addCustomDiscipline.heading}</CustomDisciplineHeading>
+            <Description>{getLabels().addCustomDiscipline.description}</Description>
             <InputContainer>
               <CustomTextInput
                 errorMessage={errorMessage}
-                placeholder={labels.addCustomDiscipline.placeholder}
+                placeholder={getLabels().addCustomDiscipline.placeholder}
                 value={code}
                 onChangeText={setCode}
                 rightContainer={
@@ -105,13 +105,13 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
               />
             </InputContainer>
             <Button
-              label={labels.addCustomDiscipline.submitLabel}
+              label={getLabels().addCustomDiscipline.submitLabel}
               buttonTheme={BUTTONS_THEME.contained}
               onPress={submit}
               disabled={code.length === 0}
             />
             <Button
-              label={labels.addCustomDiscipline.backNavigation}
+              label={getLabels().addCustomDiscipline.backNavigation}
               buttonTheme={BUTTONS_THEME.outlined}
               onPress={navigation.goBack}
             />

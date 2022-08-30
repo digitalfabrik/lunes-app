@@ -3,8 +3,8 @@ import React from 'react'
 import 'react-native'
 
 import { ARTICLES, SimpleResult } from '../../../../constants/data'
-import labels from '../../../../constants/labels.json'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
@@ -33,7 +33,7 @@ describe('Feedback section', () => {
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
     const { queryByText } = renderFeedback('correct', 1, submission, false)
-    expect(queryByText(labels.exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
+    expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
@@ -42,7 +42,9 @@ describe('Feedback section', () => {
 
     expect(
       queryByText(
-        `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+        `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
+          getLabels().exercises.write.feedback.almostCorrect2
+        }`
       )
     ).toBeTruthy()
   })
@@ -52,7 +54,9 @@ describe('Feedback section', () => {
     const { queryByText } = renderFeedback('incorrect', 1, submission, false)
 
     expect(
-      queryByText(`${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`)
+      queryByText(
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+      )
     ).toBeTruthy()
   })
 
@@ -62,7 +66,9 @@ describe('Feedback section', () => {
 
     expect(
       queryByText(
-        `${labels.exercises.write.feedback.wrong} ${labels.exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+          document.article.value
+        } ${document.word}“`
       )
     ).toBeTruthy()
   })

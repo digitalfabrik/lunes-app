@@ -12,11 +12,11 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 
 const DisciplineContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -86,11 +86,11 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
 
         <TextContainer>
           {initialSelection ? (
-            <StyledText>{labels.scopeSelection.welcome}</StyledText>
+            <StyledText>{getLabels().scopeSelection.welcome}</StyledText>
           ) : (
-            <Heading centered>{labels.manageSelection.addProfession}</Heading>
+            <Heading centered>{getLabels().manageSelection.addProfession}</Heading>
           )}
-          <StyledText>{labels.scopeSelection.selectProfession}</StyledText>
+          <StyledText>{getLabels().scopeSelection.selectProfession}</StyledText>
         </TextContainer>
         <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
           <DisciplineContainer>{disciplineItems}</DisciplineContainer>
@@ -101,8 +101,8 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
               onPress={navigateToHomeScreen}
               label={
                 selectedProfessions && selectedProfessions.length > 0
-                  ? labels.scopeSelection.confirmSelection
-                  : labels.scopeSelection.skipSelection
+                  ? getLabels().scopeSelection.confirmSelection
+                  : getLabels().scopeSelection.skipSelection
               }
               buttonTheme={BUTTONS_THEME.contained}
             />

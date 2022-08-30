@@ -5,8 +5,8 @@ import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
 import OverflowMenu from '../../../components/OverflowMenu'
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.primary};
@@ -56,10 +56,10 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
             </MenuIconContainer>
           }>
           <HiddenItem
-            title={labels.general.header.manageSelection}
+            title={getLabels().general.header.manageSelection}
             onPress={() => navigation.navigate('ManageSelection')}
           />
-          <HiddenItem title={labels.general.header.settings} onPress={() => navigation.navigate('Settings')} />
+          <HiddenItem title={getLabels().general.header.settings} onPress={() => navigation.navigate('Settings')} />
         </OverflowMenu>
       </HeaderButtonsContainer>
     </HeaderStyle>
