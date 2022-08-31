@@ -78,36 +78,42 @@ export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 export interface ArticleType {
   readonly id: number
   readonly value: string
-  readonly label: string
 }
 
 export const ARTICLES: Readonly<ArticleType[]> = [
   {
     id: 0,
     value: 'keiner',
-    label: 'keiner',
   },
   {
     id: 1,
     value: 'der',
-    label: 'der',
   },
   {
     id: 2,
     value: 'die',
-    label: 'die',
   },
   {
     id: 3,
     value: 'das',
-    label: 'das',
   },
   {
     id: 4,
     value: 'die',
-    label: 'die (Plural)',
   },
 ] as const
+
+interface ArticleTypeExtended extends ArticleType {
+  readonly label: string
+}
+
+export const getArticleWithLabel = (): ArticleTypeExtended[] =>
+  ARTICLES.filter(article => article.id !== 0).map(article => {
+    if (article.id === 4) {
+      return { ...article, label: `${article.value} (Plural)` }
+    }
+    return { ...article, label: article.value }
+  })
 
 export type Article = typeof ARTICLES[number]
 

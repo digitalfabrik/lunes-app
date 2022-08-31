@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import { BookIconBlack } from '../../assets/images'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
-import ScreenHeading from '../components/ScreenHeading'
+import { TitleSpacing } from '../components/Title'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
@@ -22,7 +22,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
   return (
     <RouteWrapper>
       <Root>
-        <ScreenHeading title={myWords} />
+        <TitleSpacing title={myWords} />
         <ListItem
           icon={<BookIconBlack />}
           title={getLabels().ownVocabulary.overview.list}
@@ -31,7 +31,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
         <ListItem
           icon={<BookIconBlack />}
           title={getLabels().ownVocabulary.overview.create}
-          onPress={() => navigation.navigate('UserVocabularyCreation', { title: myWords })}
+          onPress={() => navigation.navigate('UserVocabularyEdit', { title: myWords })}
         />
         <ListItem
           icon={<BookIconBlack />}

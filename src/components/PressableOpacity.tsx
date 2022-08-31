@@ -10,12 +10,9 @@ interface Props {
   disabled?: boolean
 }
 
-export const OPACITY_MIN = 0.2
-export const OPACITY_MAX = 1
-
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
   flex-direction: row;
-  opacity: ${props => (props.isPressed ? OPACITY_MIN : OPACITY_MAX)};
+  opacity: ${props => (props.isPressed ? props.theme.styles.opacity.min : props.theme.styles.opacity.max)};
 `
 
 const PressableOpacity = ({ children, onPress, style, testID, disabled = false }: Props): ReactElement => {

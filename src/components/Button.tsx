@@ -6,7 +6,6 @@ import styled, { css, useTheme } from 'styled-components/native'
 
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
-import { OPACITY_MAX, OPACITY_MIN } from './PressableOpacity'
 import { Subheading } from './text/Subheading'
 
 interface ThemedButtonProps {
@@ -39,7 +38,8 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
   ${props =>
     props.buttonTheme === BUTTONS_THEME.text &&
     css`
-      opacity: ${({ isPressed }: { isPressed: boolean }) => (isPressed ? OPACITY_MIN : OPACITY_MAX)};
+      opacity: ${({ isPressed }: { isPressed: boolean }) =>
+        isPressed ? props.theme.styles.opacity.min : props.theme.styles.opacity.max};
     `};
 `
 
