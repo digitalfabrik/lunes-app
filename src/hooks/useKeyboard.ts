@@ -13,9 +13,9 @@ export const useKeyboard = (): UseKeyboardProps => {
   const [keyboardHeight, setKeyboardHeight] = useState(0)
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', ({ endCoordinates }: KeyboardEvent) => {
       setKeyboardVisible(true)
-      setKeyboardHeight(e.endCoordinates.height)
+      setKeyboardHeight(endCoordinates.height)
     })
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardVisible(false)
