@@ -44,7 +44,6 @@ const Modal = (props: Props): JSX.Element => {
     <ModalSkeleton visible={visible} onClose={onClose} testID={testID}>
       <Message>{text}</Message>
       {children}
-
       <Button
         label={confirmationButtonText}
         onPress={confirmationAction}

@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
-import { Keyboard } from 'react-native'
+import { Keyboard, KeyboardEvent } from 'react-native'
 
 // This hook listens to the keyboard and returns boolean whether keyboard is opened or closed
 
-export const useIsKeyboardVisible = (): boolean => {
+interface UseKeyboardProps {
+  isKeyboardVisible: boolean
+  keyboardHeight: number
+}
+
+export const useKeyboard = (): UseKeyboardProps => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
+  const [keyboardHeight, setKeyboardHeight] = useState(0)
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
       setKeyboardVisible(true)
+      setKeyboardHeight(e.endCoordinates.height)
     })
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardVisible(false)
+      setKeyboardHeight(0)
     })
 
     return () => {
@@ -19,5 +27,5 @@ export const useIsKeyboardVisible = (): boolean => {
       keyboardDidShowListener.remove()
     }
   }, [])
-  return isKeyboardVisible
+  return { isKeyboardVisible, keyboardHeight }
 }

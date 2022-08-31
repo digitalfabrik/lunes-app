@@ -7,7 +7,7 @@ import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
-import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
+import { useKeyboard } from '../../../hooks/useKeyboard'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { getLabels, stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -41,7 +41,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
 
   const theme = useTheme()
-  const isKeyboardShown = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
@@ -118,7 +118,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     <>
       <DocumentImageSection
         document={document}
-        minimized={isKeyboardShown}
+        minimized={isKeyboardVisible}
         audioDisabled={retryAllowed}
         submittedAlternative={submittedAlternative}
       />

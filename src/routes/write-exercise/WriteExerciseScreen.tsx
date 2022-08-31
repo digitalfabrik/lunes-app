@@ -18,7 +18,7 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../constants/data'
-import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import { useKeyboard } from '../../hooks/useKeyboard'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
@@ -41,7 +41,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
   )
 
-  const isKeyboardShown = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
   const current = documentsWithResults[currentIndex]
   const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
@@ -60,7 +60,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const tryLater = useCallback(() => {
     // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
-    if (isKeyboardShown) {
+    if (isKeyboardVisible) {
       const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
         setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
         onKeyboardHideSubscription.remove()
@@ -69,7 +69,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     } else {
       setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
     }
-  }, [isKeyboardShown, documentsWithResults, currentIndex])
+  }, [isKeyboardVisible, documentsWithResults, currentIndex])
 
   const finishExercise = async (results: DocumentResult[]): Promise<void> => {
     if (disciplineId) {
