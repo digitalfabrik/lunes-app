@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { Article, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
+import { Article, EXERCISES, FeedbackType, NextExercise, Progress, SCORE_THRESHOLD_UNLOCK } from '../constants/data'
 import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -129,8 +129,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
 
 export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
   const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
-  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
-  return trainingSet
+  return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
 }
 
 export const getLabels = (): typeof labels => labels
@@ -166,3 +165,6 @@ export const calculateScore = (documentsWithResults: DocumentResult[]): number =
       }, 0) / documentsWithResults.length
   )
 }
+
+export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
+  score > SCORE_THRESHOLD_UNLOCK && (previousScore === undefined || previousScore <= SCORE_THRESHOLD_UNLOCK)

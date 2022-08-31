@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState, useCallback } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -20,7 +20,7 @@ import {
 import { AlternativeWord, Document } from '../../../constants/endpoints'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import AsyncStorage from '../../../services/AsyncStorage'
-import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
+import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ButtonContainer = styled.View`
@@ -91,7 +91,7 @@ const ChoiceExerciseScreen = ({
       exercise: exerciseKey,
       results,
       closeExerciseAction: route.params.closeExerciseAction,
-      unlockedNextExercise: progress[disciplineId]?.[exerciseKey] === undefined,
+      unlockedNextExercise: willNextExerciseUnlock(progress[disciplineId]?.[exerciseKey], calculateScore(results)),
     })
     initializeExercise(true)
   }

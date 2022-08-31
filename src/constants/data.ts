@@ -158,3 +158,6 @@ export interface UserVocabularyDocument {
   imagePath: string
   audioPath?: string
 }
+
+export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
+export const SCORE_THRESHOLD_UNLOCK = 2

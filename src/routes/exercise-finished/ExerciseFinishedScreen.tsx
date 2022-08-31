@@ -21,11 +21,11 @@ import RoundedBackground from '../../components/RoundedBackground'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
-import { BUTTONS_THEME, EXERCISES } from '../../constants/data'
+import { BUTTONS_THEME, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { calculateScore, getLabels } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
 
 const Root = styled.View`
@@ -63,6 +63,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
     route.params
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
+  const score = calculateScore(results)
 
   const repeatExercise = (): void =>
     navigation.navigate(EXERCISES[exercise].screen, {
@@ -104,7 +105,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         ResultIcon: OpenLockIcon,
       }
     }
-    if (percentageOfCorrectResults > 1 / 3) {
+    if (score > SCORE_THRESHOLD_POSITIVE_FEEDBACK) {
       if (!isLastExercise) {
         return {
           message: getLabels().results.feedbackGood,

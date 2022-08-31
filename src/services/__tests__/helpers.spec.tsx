@@ -1,8 +1,8 @@
-import { NextExercise } from '../../constants/data'
+import { NextExercise, SCORE_THRESHOLD_UNLOCK } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
-import { getNextExercise, getProgress } from '../helpers'
+import { getNextExercise, getProgress, willNextExerciseUnlock } from '../helpers'
 
 import mocked = jest.mocked
 
@@ -109,6 +109,24 @@ describe('helpers', () => {
       )
       const progress = await getProgress(profession)
       expect(progress).toBe(0.5)
+    })
+  })
+
+  describe('willUnlockNextExercise', () => {
+    it('should unlock if exercise is done good enough for the first time', () => {
+      expect(willNextExerciseUnlock(undefined, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
+    })
+
+    it('should unlock if exercise is done good enough for the scond time', () => {
+      expect(willNextExerciseUnlock(SCORE_THRESHOLD_UNLOCK, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
+    })
+
+    it('should not unlock if exercise is already unlocked', () => {
+      expect(willNextExerciseUnlock(SCORE_THRESHOLD_UNLOCK + 1, SCORE_THRESHOLD_UNLOCK + 3)).toBeFalsy()
+    })
+
+    it('should not unlock if exercise was done bad', () => {
+      expect(willNextExerciseUnlock(undefined, SCORE_THRESHOLD_UNLOCK)).toBeFalsy()
     })
   })
 })
