@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -75,41 +76,43 @@ const UserVocabularyEditScreen = (): ReactElement => {
 
   return (
     <RouteWrapper>
-      <Root>
-        <TitleSpacing title={headline} />
-        <CustomTextInput
-          clearable
-          value={word}
-          onChangeText={setWord}
-          placeholder={wordPlaceholder}
-          errorMessage={wordErrorMessage}
-        />
-        <Dropdown
-          value={articleId}
-          setValue={setArticleId}
-          placeholder={articlePlaceholder}
-          items={getArticleWithLabel()}
-          itemKey='id'
-          errorMessage={articleErrorMessage}
-        />
-        <AddImageButton
-          onPress={() => null}
-          label={addImage}
-          buttonTheme={BUTTONS_THEME.text}
-          iconLeft={PhotoCircleIcon}
-          iconSize={wp('10%')}
-        />
-        <StyledHintText>{maxPictureUpload}</StyledHintText>
-        <AddAudioButton
-          onPress={() => null}
-          label={addAudio}
-          buttonTheme={BUTTONS_THEME.text}
-          iconLeft={MicrophoneCircleIcon}
-          iconSize={wp('10%')}
-        />
-        <HintText>{requiredFields}</HintText>
-        <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
-      </Root>
+      <KeyboardAwareScrollView>
+        <Root>
+          <TitleSpacing title={headline} />
+          <CustomTextInput
+            clearable
+            value={word}
+            onChangeText={setWord}
+            placeholder={wordPlaceholder}
+            errorMessage={wordErrorMessage}
+          />
+          <Dropdown
+            value={articleId}
+            setValue={setArticleId}
+            placeholder={articlePlaceholder}
+            items={getArticleWithLabel()}
+            itemKey='id'
+            errorMessage={articleErrorMessage}
+          />
+          <AddImageButton
+            onPress={() => null}
+            label={addImage}
+            buttonTheme={BUTTONS_THEME.text}
+            iconLeft={PhotoCircleIcon}
+            iconSize={wp('10%')}
+          />
+          <StyledHintText>{maxPictureUpload}</StyledHintText>
+          <AddAudioButton
+            onPress={() => null}
+            label={addAudio}
+            buttonTheme={BUTTONS_THEME.text}
+            iconLeft={MicrophoneCircleIcon}
+            iconSize={wp('10%')}
+          />
+          <HintText>{requiredFields}</HintText>
+          <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
+        </Root>
+      </KeyboardAwareScrollView>
     </RouteWrapper>
   )
 }
