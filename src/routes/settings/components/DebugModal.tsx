@@ -7,10 +7,10 @@ import ModalSkeleton from '../../../components/ModalSkeleton'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import useLoadAsync from '../../../hooks/useLoadAsync'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
+import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
 const Container = styled.View`
@@ -67,19 +67,21 @@ const DebugModal = (props: PropsType): JSX.Element => {
       {inputText.toLowerCase() === UNLOCKING_TEXT && (
         <Container>
           <Button
-            label={labels.settings.debugModal.sentry}
+            label={getLabels().settings.debugModal.sentry}
             onPress={throwSentryError}
             buttonTheme={BUTTONS_THEME.contained}
           />
-          <Subheading>{labels.settings.debugModal.currentCMS}:</Subheading>
+          <Subheading>{getLabels().settings.debugModal.currentCMS}:</Subheading>
           <ContentSecondary>{baseURL}</ContentSecondary>
           <Button
-            label={labels.settings.debugModal.changeCMS}
+            label={getLabels().settings.debugModal.changeCMS}
             onPress={switchCMS}
             buttonTheme={BUTTONS_THEME.contained}
           />
           <Button
-            label={isDevMode ? labels.settings.debugModal.disableDevMode : labels.settings.debugModal.enableDevMode}
+            label={
+              isDevMode ? getLabels().settings.debugModal.disableDevMode : getLabels().settings.debugModal.enableDevMode
+            }
             onPress={toggleDevMode}
             buttonTheme={BUTTONS_THEME.contained}
           />

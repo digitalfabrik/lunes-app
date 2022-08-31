@@ -7,10 +7,9 @@ import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
-import { stringifyDocument } from '../../../services/helpers'
+import { getLabels, stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
 
@@ -134,7 +133,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         <TextInputContainer testID='input-field' ref={textInputRef}>
           <CustomTextInput
             customBorderColor={getBorderColor()}
-            placeholder={labels.exercises.write.insertAnswer}
+            placeholder={getLabels().exercises.write.insertAnswer}
             value={input}
             onChangeText={setInput}
             editable={retryAllowed}
@@ -153,7 +152,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         {retryAllowed && (
           <Pressable onPress={Keyboard.dismiss}>
             <Button
-              label={labels.exercises.write.checkInput}
+              label={getLabels().exercises.write.checkInput}
               onPress={checkEntry}
               disabled={!input}
               buttonTheme={BUTTONS_THEME.contained}

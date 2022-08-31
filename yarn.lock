@@ -10134,6 +10134,7 @@ __metadata:
     jest-extended: ^2.0.0
     jest-transform-stub: ^2.0.0
     metro-react-native-babel-preset: ^0.66.2
+    normalize-strings: ^1.1.1
     prettier: ^2.7.1
     react: 17.0.2
     react-dom: 17.0.2
@@ -11047,6 +11048,13 @@ __metadata:
   version: 3.0.0
   resolution: "normalize-path@npm:3.0.0"
   checksum: e008c8142bcc335b5e38cf0d63cfd39d6cf2d97480af9abdbe9a439221fd4d749763bab492a8ee708ce7a194bb00c9da6d0a115018672310850489137b3da046
+  languageName: node
+  linkType: hard
+
+"normalize-strings@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "normalize-strings@npm:1.1.1"
+  checksum: 5090299b495353ea435c31feb3b1b9684a1034b599fd29f1babf210b417c286683dc52a035ddc5cff682148df1e2641a9c40be29254d2b609e27a5e09134657d
   languageName: node
   linkType: hard
 

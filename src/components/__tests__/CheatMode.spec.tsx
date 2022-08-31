@@ -3,8 +3,8 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { SIMPLE_RESULTS } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
+import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
 import CheatMode from '../CheatMode'
 
@@ -28,8 +28,8 @@ describe('CheatMode', () => {
     }))
     const { queryByText } = render(<CheatMode cheat={cheat} />)
 
-    await waitFor(() => expect(queryByText(labels.exercises.cheat.succeed)).toBeNull())
-    await waitFor(() => expect(queryByText(labels.exercises.cheat.fail)).toBeNull())
+    await waitFor(() => expect(queryByText(getLabels().exercises.cheat.succeed)).toBeNull())
+    await waitFor(() => expect(queryByText(getLabels().exercises.cheat.fail)).toBeNull())
   })
 
   it("should call parent's cheat function with proper result type", async () => {
@@ -41,13 +41,13 @@ describe('CheatMode', () => {
     }))
     const { findByText } = render(<CheatMode cheat={cheat} />)
 
-    const succeedButton = await findByText(labels.exercises.cheat.succeed)
+    const succeedButton = await findByText(getLabels().exercises.cheat.succeed)
     act(() => fireEvent.press(succeedButton))
     expect(cheat).toHaveBeenCalledWith(SIMPLE_RESULTS.correct)
 
     cheat.mockClear()
 
-    const failButton = await findByText(labels.exercises.cheat.fail)
+    const failButton = await findByText(getLabels().exercises.cheat.fail)
     act(() => fireEvent.press(failButton))
     expect(cheat).toHaveBeenCalledWith(SIMPLE_RESULTS.incorrect)
   })

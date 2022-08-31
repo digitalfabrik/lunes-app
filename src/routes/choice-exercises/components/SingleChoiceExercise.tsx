@@ -18,10 +18,9 @@ import {
   SimpleResult,
 } from '../../../constants/data'
 import { AlternativeWord, Document } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
-import { moveToEnd, shuffleArray } from '../../../services/helpers'
+import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
 const ButtonContainer = styled.View`
@@ -83,8 +82,8 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
-    const progress = await getExerciseProgress()
-    await saveExerciseProgress(disciplineId, exerciseKey, results)
+    const progress = await AsyncStorage.getExerciseProgress()
+    await AsyncStorage.saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       documents,
       disciplineId,
@@ -137,7 +136,7 @@ const ChoiceExerciseScreen = ({
   }
 
   const lastWord = currentWord + 1 >= count
-  const buttonLabel = lastWord && !needsToBeRepeated ? labels.exercises.showResults : labels.exercises.next
+  const buttonLabel = lastWord && !needsToBeRepeated ? getLabels().exercises.showResults : getLabels().exercises.next
 
   return (
     <>
@@ -170,7 +169,7 @@ const ChoiceExerciseScreen = ({
           ) : (
             !lastWord && (
               <Button
-                label={labels.exercises.tryLater}
+                label={getLabels().exercises.tryLater}
                 iconRight={ArrowRightIcon}
                 onPress={tryLater}
                 buttonTheme={BUTTONS_THEME.text}

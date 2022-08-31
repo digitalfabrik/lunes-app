@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { ContentSecondary } from '../../../components/text/Content'
-import labels from '../../../constants/labels.json'
+import { getLabels } from '../../../services/helpers'
 
 const Container = styled.View`
   flex-direction: row;
@@ -21,7 +21,7 @@ interface HomeFooterProps {
 const HomeFooter = ({ navigateToImprint }: HomeFooterProps): ReactElement => (
   <Container>
     <ContentSecondary>{'\u00A9'}LUNES2022</ContentSecondary>
-    <ContentSecondary onPress={navigateToImprint}>{labels.home.impressum}</ContentSecondary>
+    <ContentSecondary onPress={navigateToImprint}>{getLabels().home.impressum}</ContentSecondary>
   </Container>
 )
 

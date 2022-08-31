@@ -7,8 +7,8 @@ import FeedbackModal from '../../../components/FeedbackModal'
 import { ContentSecondary, ContentTextBold } from '../../../components/text/Content'
 import { FeedbackType } from '../../../constants/data'
 import { Document } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
+import { getLabels } from '../../../services/helpers'
 
 const Heading = styled(ContentSecondary)`
   padding-bottom: ${props => props.theme.spacings.xs};
@@ -50,7 +50,7 @@ const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
       <Content>
         {document.alternatives.length > 0 && (
           <>
-            <Heading>{labels.exercises.vocabularyList.alternativeWords}</Heading>
+            <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
             <AlternativeWords>
               {document.alternatives.map(value => `${value.article.value} ${value.word}`).join(', ')}
             </AlternativeWords>
@@ -58,7 +58,7 @@ const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
         )}
 
         <SuggestionPressable onPress={() => setIsFeedbackModalVisible(true)}>
-          <Label>{labels.exercises.vocabularyList.suggestAlternative}</Label>
+          <Label>{getLabels().exercises.vocabularyList.suggestAlternative}</Label>
           <ArrowRightIcon fill={theme.colors.black} width={wp('6%')} height={wp('6%')} />
         </SuggestionPressable>
       </Content>

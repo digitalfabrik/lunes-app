@@ -8,8 +8,8 @@ import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
 import { ContentSecondary } from '../../../components/text/Content'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { getLabels } from '../../../services/helpers'
 
 interface PropsType {
   identifier: RequestParams
@@ -42,11 +42,11 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
   }
 
   if (!data) {
-    let errorMessage = labels.general.error.unknown
+    let errorMessage = getLabels().general.error.unknown
     if (error?.message === ForbiddenError) {
-      errorMessage = labels.home.errorLoadCustomDiscipline
+      errorMessage = getLabels().home.errorLoadCustomDiscipline
     } else if (error?.message === NetworkError) {
-      errorMessage = `${labels.general.error.noWifi} (${error.message})`
+      errorMessage = `${getLabels().general.error.noWifi} (${error.message})`
     }
     return <ListItem title={errorMessage} />
   }
@@ -56,10 +56,10 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
       <Modal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        text={labels.manageSelection.deleteModal.confirmationQuestion}
-        confirmationButtonText={labels.manageSelection.deleteModal.confirm}
+        text={getLabels().manageSelection.deleteModal.confirmationQuestion}
+        confirmationButtonText={getLabels().manageSelection.deleteModal.confirm}
         confirmationAction={deleteItem}>
-        <Explanation>{labels.manageSelection.deleteModal.explanation}</Explanation>
+        <Explanation>{getLabels().manageSelection.deleteModal.explanation}</Explanation>
       </Modal>
       <ListItem
         title={data.title}

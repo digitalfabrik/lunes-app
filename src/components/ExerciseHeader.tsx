@@ -9,8 +9,8 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
 import { FeedbackType } from '../constants/data'
-import labels from '../constants/labels.json'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
+import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
 import Modal from './Modal'
 import NavigationHeaderLeft from './NavigationHeaderLeft'
@@ -63,7 +63,7 @@ const ExerciseHeader = ({
   useEffect(() => {
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
-        title={labels.general.header.cancelExercise}
+        title={getLabels().general.header.cancelExercise}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
         isCloseButton
       />
@@ -73,7 +73,7 @@ const ExerciseHeader = ({
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
         <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
-          <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+          <HiddenItem title={getLabels().general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
         </OverflowMenu>
       </HeaderRightContainer>
     )
@@ -117,8 +117,8 @@ const ExerciseHeader = ({
         testID='customModal'
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        text={labels.exercises.cancelModal.cancelAsk}
-        confirmationButtonText={labels.exercises.cancelModal.cancel}
+        text={getLabels().exercises.cancelModal.cancelAsk}
+        confirmationButtonText={getLabels().exercises.cancelModal.cancel}
         confirmationAction={goBack}
       />
       <FeedbackModal

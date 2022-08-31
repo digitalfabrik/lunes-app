@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ExerciseKey, Progress, UserVocabularyDocument } from '../constants/data'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
+import { calculateScore } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -72,7 +73,7 @@ const removeCustomDiscipline = async (customDiscipline: string): Promise<void> =
   await setCustomDisciplines(disciplines)
 }
 
-export const getExerciseProgress = async (): Promise<Progress> => {
+const getExerciseProgress = async (): Promise<Progress> => {
   const progress = await AsyncStorage.getItem(PROGRESS_KEY)
   return progress ? JSON.parse(progress) : {}
 }
@@ -84,12 +85,12 @@ const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKe
   await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(savedProgress))
 }
 
-export const saveExerciseProgress = async (
+const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
   documentsWithResults: DocumentResult[]
 ): Promise<void> => {
-  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
+  const score = calculateScore(documentsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
@@ -136,12 +137,12 @@ const toggleDevMode = async (): Promise<void> => {
   await AsyncStorage.setItem(DEV_MODE_KEY, JSON.stringify(isDevMode ? !JSON.parse(isDevMode) : true))
 }
 
-export const getDevMode = async (): Promise<boolean | null> => {
+const getDevMode = async (): Promise<boolean | null> => {
   const isDevMode = await AsyncStorage.getItem(DEV_MODE_KEY)
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-export const getUserVocabulary = async (): Promise<UserVocabularyDocument[]> => {
+const getUserVocabulary = async (): Promise<UserVocabularyDocument[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
@@ -202,4 +203,5 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
+  calculateScore,
 }
