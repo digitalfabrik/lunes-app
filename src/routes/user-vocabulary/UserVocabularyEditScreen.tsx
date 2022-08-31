@@ -3,7 +3,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { MicrophoneCircleIcon, PhotoCircleIcon } from '../../../assets/images'
+import { MicrophoneCircleIcon, ImageCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
@@ -98,7 +98,7 @@ const UserVocabularyEditScreen = (): ReactElement => {
             onPress={() => null}
             label={addImage}
             buttonTheme={BUTTONS_THEME.text}
-            iconLeft={PhotoCircleIcon}
+            iconLeft={ImageCircleIcon}
             iconSize={wp('10%')}
           />
           <StyledHintText>{maxPictureUpload}</StyledHintText>

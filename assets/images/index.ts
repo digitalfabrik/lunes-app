@@ -39,6 +39,7 @@ import HomeCircleIconBlue from './home-circle-icon-blue.svg'
 import HomeCircleIconWhite from './home-circle-icon-white.svg'
 import HomeIconGrey from './home-icon-grey.svg'
 import HomeIconWhite from './home-icon-white.svg'
+import ImageCircleIcon from './image-circle-icon.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
@@ -48,7 +49,6 @@ import MicrophoneCircleIcon from './microphone-circle-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
-import PhotoCircleIcon from './photo-circle-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import SadSmileyIcon from './sad-smiley-circle-icon-white.svg'
@@ -104,6 +104,7 @@ export {
   HomeCircleIconWhite,
   HomeIconGrey,
   HomeIconWhite,
+  ImageCircleIcon,
   InfoCircleIcon,
   ListIcon,
   LockIcon,
@@ -114,7 +115,6 @@ export {
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
-  PhotoCircleIcon,
   RepeatIcon,
   SadSmileyIcon,
   ShareIcon,
