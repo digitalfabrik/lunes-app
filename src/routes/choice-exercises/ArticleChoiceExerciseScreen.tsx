@@ -3,10 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
-import { Answer, ExerciseKeys } from '../../constants/data'
+import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { articleChoiceAnswerOptions } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
 interface ArticleChoiceExerciseScreenProps {
@@ -16,10 +15,14 @@ interface ArticleChoiceExerciseScreenProps {
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const { documents, disciplineTitle, disciplineId } = route.params
-  const singularDocuments = documents.filter(it => articleChoiceAnswerOptions.includes(it.article))
+
+  // Exclude articles 'keiner' and 'die (Plural)'
+  const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
+
+  const singularDocuments = documents.filter(it => answerOptions.includes(it.article))
 
   const documentToAnswers = (document: Document): Answer[] =>
-    articleChoiceAnswerOptions.map(article => ({ article, word: document.word }))
+    answerOptions.map(article => ({ article, word: document.word }))
 
   return (
     <RouteWrapper>
