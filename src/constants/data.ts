@@ -78,34 +78,28 @@ export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 interface ArticleType {
   readonly id: number
   readonly value: string
-  readonly showAsPossibleAnswer: boolean
 }
 
 export const ARTICLES: Readonly<ArticleType[]> = [
   {
     id: 0,
     value: 'keiner',
-    showAsPossibleAnswer: false,
   },
   {
     id: 1,
     value: 'der',
-    showAsPossibleAnswer: true,
   },
   {
     id: 2,
     value: 'die',
-    showAsPossibleAnswer: true,
   },
   {
     id: 3,
     value: 'das',
-    showAsPossibleAnswer: true,
   },
   {
     id: 4,
     value: 'die',
-    showAsPossibleAnswer: false,
   },
 ] as const
 

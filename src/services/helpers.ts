@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { Article, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
+import { Article, ARTICLES, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
 import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -140,3 +140,5 @@ export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: nu
     content_type: feedbackType,
     object_id: id,
   })
+
+export const articleChoiceAnswerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
