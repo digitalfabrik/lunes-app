@@ -1,6 +1,7 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
+import { Text } from 'react-native'
 
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import labels from '../../../constants/labels.json'
@@ -32,8 +33,14 @@ jest.mock('../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
+jest.mock('../../../components/CheatMode', () => {
+  const Text = require('react-native').Text
+  return () => <Text>CheatMode</Text>
+})
+
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 jest.useFakeTimers()
+
 describe('ArticleChoiceExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()

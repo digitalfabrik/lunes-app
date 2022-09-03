@@ -26,7 +26,7 @@ jest.mock('react-native-sound-player', () => ({
 describe('AudioPlayer', () => {
   const noAudioDocument = {
     alternatives: [],
-    article: ARTICLES[2],
+    article: ARTICLES[4],
     audio: '',
     id: 0,
     document_image: [],

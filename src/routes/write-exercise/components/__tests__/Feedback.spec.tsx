@@ -11,7 +11,7 @@ import Feedback from '../Feedback'
 describe('Feedback', () => {
   const document = {
     alternatives: [],
-    article: ARTICLES[2],
+    article: ARTICLES[4],
     audio: '',
     id: 0,
     document_image: [],
