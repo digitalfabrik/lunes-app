@@ -15,7 +15,7 @@ import SelectionItem from '../SelectionItem'
 describe('SelectionItem', () => {
   const deleteItem = jest.fn()
   const renderSelectionItem = (): RenderAPI =>
-    render(<SelectionItem identifier={{ disciplineId: 1 }} deleteItem={deleteItem} />)
+    render(<SelectionItem identifier={{ disciplineId: 1, apiKey: '1' }} deleteItem={deleteItem} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
@@ -38,7 +38,15 @@ describe('SelectionItem', () => {
 
   it('should display forbidden error', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    const { getByText } = renderSelectionItem()
-    expect(getByText(`${labels.home.errorLoadCustomDiscipline}`)).toBeDefined()
+    const { getByText, getByTestId } = renderSelectionItem()
+    expect(getByText(`${labels.home.errorLoadCustomDiscipline} 1`)).toBeDefined()
+    expect(getByTestId('delete-icon')).toBeDefined()
+  })
+
+  it('should allow to delete on unknown error', () => {
+    mockUseLoadAsyncWithError('UnknownError')
+    const { getByText, getByTestId } = renderSelectionItem()
+    expect(getByText(labels.general.error.unknown)).toBeDefined()
+    expect(getByTestId('delete-icon')).toBeDefined()
   })
 })
