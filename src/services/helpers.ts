@@ -167,4 +167,4 @@ export const calculateScore = (documentsWithResults: DocumentResult[]): number =
 }
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
-  score > SCORE_THRESHOLD_UNLOCK && (previousScore === undefined || previousScore <= SCORE_THRESHOLD_UNLOCK)
+  score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK

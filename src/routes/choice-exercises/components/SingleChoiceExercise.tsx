@@ -98,7 +98,9 @@ const ChoiceExerciseScreen = ({
   const count = documents.length
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
-    await onExerciseFinished(results.map(it => ({ ...it, numberOfTries: numberOfMaxRetries, result })))
+    await onExerciseFinished(
+      results.map(it => ({ ...it, numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : numberOfMaxRetries, result }))
+    )
   }
 
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>

@@ -203,5 +203,4 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
-  calculateScore,
 }
