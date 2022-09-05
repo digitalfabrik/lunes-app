@@ -4,6 +4,7 @@ import { ExerciseKey, Progress } from '../constants/data'
 import { Document } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
+import { calculateScore } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -90,7 +91,7 @@ const saveExerciseProgress = async (
   exerciseKey: ExerciseKey,
   documentsWithResults: DocumentResult[]
 ): Promise<void> => {
-  const score = documentsWithResults.filter(doc => doc.result === 'correct').length / documentsWithResults.length
+  const score = calculateScore(documentsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
@@ -202,4 +203,5 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
+  calculateScore,
 }

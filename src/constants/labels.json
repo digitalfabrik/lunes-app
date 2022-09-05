@@ -1,7 +1,7 @@
 {
   "scopeSelection": {
     "welcome": "Willkommen bei Lunes!",
-    "selectProfession": "Wähle jetzt den Beruf, den du lernen möchtest.",
+    "selectProfession": "Wähle den Beruf, den du lernen möchtest.",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten"
   },
@@ -67,8 +67,9 @@
       "description": "Den richtigen Artikel auswählen"
     },
     "lockedExerciseModal": {
-      "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
+      "title": "Hoppla, dieses Level ist noch nicht freigeschalten.",
       "confirmButtonLabel": "Zu",
+      "confirmButtonLabelDeclinated": "Zur",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um das nächste Level freizuschalten."
     },
@@ -113,11 +114,12 @@
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "disciplineOverview": "Zur Modulübersicht"
+      "disciplineOverview": "Zur Modulübersicht",
+      "backToWordlist": "Zurück zur Wortliste"
     },
     "of": "von",
     "share": {
-      "description": "Teile deine Ergebnisse!",
+      "description": "Teile deine Ergebnisse mit deinen Freunden!",
       "button": "Ergebnisse teilen",
       "message1": "Meine Ergebnisse für",
       "message2": "in Lunes:",

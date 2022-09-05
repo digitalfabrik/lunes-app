@@ -7,6 +7,7 @@ import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
+import { DocumentResult } from '../navigation/NavigationTypes'
 import AsyncStorage from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
@@ -141,6 +142,31 @@ export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: nu
     content_type: feedbackType,
     object_id: id,
   })
+
+export const calculateScore = (documentsWithResults: DocumentResult[]): number => {
+  const SCORE_FIRST_TRY = 10
+  const SCORE_SECOND_TRY = 4
+  const SCORE_THIRD_TRY = 2
+  return (
+    documentsWithResults
+      .filter(doc => doc.result === 'correct')
+      .reduce((acc, document) => {
+        let score = acc
+        switch (document.numberOfTries) {
+          case 1:
+            score += SCORE_FIRST_TRY
+            break
+          case 2:
+            score += SCORE_SECOND_TRY
+            break
+          case 3:
+            score += SCORE_THIRD_TRY
+            break
+        }
+        return score
+      }, 0) / documentsWithResults.length
+  )
+}
 
 const normalizeSearchString = (searchString: string): string => {
   const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
