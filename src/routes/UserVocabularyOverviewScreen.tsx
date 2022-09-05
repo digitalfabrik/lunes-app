@@ -25,9 +25,8 @@ const Margin = styled.View`
   margin: ${props => props.theme.spacings.xl};
 `
 
-const ButtonContainer = styled.View`
-  padding: ${props => props.theme.spacings.md} 0;
-  margin: 0 auto 0;
+const StyledButton = styled(Button)`
+  margin: ${props => props.theme.spacings.md} auto;
 `
 
 interface PropsType {
@@ -50,14 +49,12 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
         onPress={() => navigation.navigate('UserVocabularyOverview')}
       />
     </Root>
-    <ButtonContainer>
-      <Button
-        onPress={() => navigation.navigate('UserVocabularyOverview')}
-        label={getLabels().userVocabulary.create}
-        buttonTheme={BUTTONS_THEME.contained}
-        iconRight={AddIconWhite}
-      />
-    </ButtonContainer>
+    <StyledButton
+      onPress={() => navigation.navigate('UserVocabularyOverview')}
+      label={getLabels().userVocabulary.create}
+      buttonTheme={BUTTONS_THEME.contained}
+      iconRight={AddIconWhite}
+    />
   </RouteWrapper>
 )
 
