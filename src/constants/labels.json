@@ -98,6 +98,10 @@
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
       "cancel": "Beenden"
+    },
+    "feedback": {
+      "positive": "Weiter so, das war super!",
+      "negative": "Das geht besser. Probier es nochmal."
     }
   },
   "results": {

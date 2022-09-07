@@ -61,6 +61,8 @@ import StarIconWhite from './star-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
+import ThumbsUpIcon from './thumbs-up.svg'
+import ThumbsDownIcon from './thumbs-down.svg'
 
 export {
   AddCircleIcon,
@@ -126,4 +128,6 @@ export {
   TrashIcon,
   TrophyIcon,
   VolumeUpCircleIcon,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
 }

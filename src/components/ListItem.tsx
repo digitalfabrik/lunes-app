@@ -2,30 +2,38 @@ import React, { ReactElement, useCallback, useState } from 'react'
 import { GestureResponderEvent } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
+import FeedbackBadge from './FeedbackBadge'
 
 import { ChevronRight } from '../../assets/images'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
   margin-bottom: ${props => props.theme.spacings.xxs};
-  align-self: center;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-radius: 2px;
 `
-
 const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean }>`
+  flex-direction: column;
+  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-left-color: ${props => props.theme.colors.incorrect};
+  border-left-radius: 0;
+  border-left-width: 6px;
+`
+
+const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
   min-height: ${hp('12%')}px;
+    display: flex;
+    flex-direction: row;
+  padding: ${props =>
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   background-color: ${prop => {
     if (prop.disabled) {
       return prop.theme.colors.disabled
     }
     return prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent
   }};
-  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
-  padding: ${props =>
-    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
 `
 
 const Title = styled.Text<{ pressed: boolean }>`
@@ -87,6 +95,7 @@ interface ListItemProps {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
+  feedbackInfo?: {disciplineId: number, thisLevel: number, nextLevel: number | null} | null
 }
 
 const ListItem = ({
@@ -100,6 +109,7 @@ const ListItem = ({
   hideRightChildren = false,
   arrowDisabled = false,
   disabled = false,
+  feedbackInfo = null,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -161,6 +171,8 @@ const ListItem = ({
       pressed={pressed}
       delayLongPress={200}
       testID='list-item'>
+      <FeedbackBadge feedbackInfo={feedbackInfo}/>
+      <ContentContainer>
       {iconToRender}
       <FlexContainer>
         {titleToRender}
@@ -171,6 +183,7 @@ const ListItem = ({
         {children}
       </FlexContainer>
       {rightChildrenToRender}
+      </ContentContainer>
     </Container>
   )
 }

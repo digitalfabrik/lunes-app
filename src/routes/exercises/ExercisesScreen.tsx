@@ -10,7 +10,6 @@ import Modal from '../../components/Modal'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import Trophy from '../../components/Trophy'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISES } from '../../constants/data'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
@@ -52,7 +51,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     disciplineId: discipline.id,
     apiKey: discipline.apiKey,
   })
-
+        
   useFocusEffect(
     useCallback(() => {
       getDoneExercises(disciplineId)
@@ -83,19 +82,18 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   }
 
   const renderListItem = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
-    <Container>
-      <LockingLane nextExercise={nextExercise} index={index} />
-      <ListItemResizer>
-        <ListItem
-          title={item.title}
-          description={item.description}
-          onPress={() => handleNavigation(item)}
-          arrowDisabled={nextExercise === null || item.level > nextExercise.level}>
-          <Trophy level={item.level} />
-        </ListItem>
-      </ListItemResizer>
-    </Container>
-  )
+      <Container>
+        <LockingLane nextExercise={nextExercise} index={index} />
+        <ListItemResizer>
+          <ListItem
+            title={item.title}
+            description={item.description}
+            onPress={() => handleNavigation(item)}
+            arrowDisabled={nextExercise === null || item.level > nextExercise.level}
+            feedbackInfo={{disciplineId, thisLevel: item.level, nextLevel: nextExercise?.level}}/>
+        </ListItemResizer>
+      </Container>
+    )
 
   const nextExercisePreposition =
     nextExercise?.key === 0

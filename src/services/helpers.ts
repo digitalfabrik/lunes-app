@@ -74,6 +74,22 @@ const getDoneExercisesByProgress = (disciplineId: number, progress: Progress): n
 export const getDoneExercises = (disciplineId: number): Promise<number> =>
   AsyncStorage.getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
 
+const getFeedbackFromScore = (score: number): number => {
+    // to be replaced by constants from LUN-362
+    const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
+    const SCORE_THRESHOLD_NEGATIVE_FEEDBACK = 2
+
+    if (score >= SCORE_THRESHOLD_POSITIVE_FEEDBACK) { return 1 }
+            if (score <= SCORE_THRESHOLD_NEGATIVE_FEEDBACK) { return -1 }
+            return 0
+
+}
+  
+export const getFeedback = async (disciplineId: number, exerciseKey: number): number => {
+    const progress = await AsyncStorage.getExerciseProgress()
+    return getFeedbackFromScore(progress[disciplineId][exerciseKey])
+}
+
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
