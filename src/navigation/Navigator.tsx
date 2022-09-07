@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
-import labels from '../constants/labels.json'
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
@@ -14,6 +13,7 @@ import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinished
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyDetailScreen from '../routes/vocabulary-detail/VocabularyDetailScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
+import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions from './screenOptions'
@@ -26,7 +26,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
   const headerHeight = useTabletHeaderHeight(wp('15%'))
   const options = screenOptions(headerHeight)
 
-  const { manageSelection, overviewExercises, cancelExercise, overview } = labels.general.header
+  const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
 
   if (loading) {
     return null

@@ -11,8 +11,8 @@ import {
   BannerRed,
   CloseCircleIconBold,
 } from '../../../../assets/images'
-import labels from '../../../constants/labels.json'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 
 const Background = styled.ImageBackground`
   width: ${wp('80%')}px;
@@ -39,7 +39,7 @@ export interface FeedbackProps {
 const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
   const { result, document } = documentWithResult
   const correctSolution = `„${document.article.value} ${document.word}“`
-  const wrongWithCorrectSolution = `${labels.exercises.write.feedback.wrongWithSolution} ${correctSolution}`
+  const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
 
   let Icon
   let background
@@ -48,16 +48,18 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   if (result === 'correct') {
     Icon = CheckCircleIconBold
     background = BannerGreen
-    message = labels.exercises.write.feedback.correct
+    message = getLabels().exercises.write.feedback.correct
   } else if (result === 'similar' && submission) {
     Icon = CheckCloseCircleIconBold
     background = BannerYellow
-    message = `${labels.exercises.write.feedback.almostCorrect1} „${submission}“ ${labels.exercises.write.feedback.almostCorrect2}`
+    message = `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
+      getLabels().exercises.write.feedback.almostCorrect2
+    }`
   } else {
     Icon = CloseCircleIconBold
     background = BannerRed
     message = needsToBeRepeated
-      ? `${labels.exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
       : wrongWithCorrectSolution
   }
 

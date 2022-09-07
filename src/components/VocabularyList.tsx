@@ -3,7 +3,7 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { Document } from '../constants/endpoints'
-import labels from '../constants/labels.json'
+import { getLabels } from '../services/helpers'
 import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'
 
@@ -34,7 +34,9 @@ const VocabularyList = ({
         ListHeaderComponent={
           <Title
             title={title}
-            description={`${documents.length} ${documents.length === 1 ? labels.general.word : labels.general.words}`}
+            description={`${documents.length} ${
+              documents.length === 1 ? getLabels().general.word : getLabels().general.words
+            }`}
           />
         }
         data={documents}

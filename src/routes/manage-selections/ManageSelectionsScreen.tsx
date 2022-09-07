@@ -8,11 +8,11 @@ import AddElement from '../../components/AddElement'
 import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Heading } from '../../components/text/Heading'
-import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
+import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
 
@@ -66,20 +66,20 @@ const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
   return (
     <RouteWrapper>
       <Root contentContainerStyle={{ flexGrow: 1 }}>
-        <Heading>{labels.manageSelection.heading}</Heading>
-        <SectionHeading>{labels.manageSelection.yourProfessions}</SectionHeading>
+        <Heading>{getLabels().manageSelection.heading}</Heading>
+        <SectionHeading>{getLabels().manageSelection.yourProfessions}</SectionHeading>
         <HorizontalLine />
         {professionItems}
-        <AddElement onPress={navigateToProfessionSelection} label={labels.manageSelection.addProfession} />
+        <AddElement onPress={navigateToProfessionSelection} label={getLabels().manageSelection.addProfession} />
 
-        <SectionHeading>{labels.manageSelection.yourCustomDisciplines}</SectionHeading>
+        <SectionHeading>{getLabels().manageSelection.yourCustomDisciplines}</SectionHeading>
         <HorizontalLine />
         {customDisciplineItems}
 
         <AddElement
           onPress={navigateToAddCustomDiscipline}
-          label={labels.home.addCustomDiscipline}
-          explanation={labels.manageSelection.descriptionAddCustomDiscipline}
+          label={getLabels().home.addCustomDiscipline}
+          explanation={getLabels().manageSelection.descriptionAddCustomDiscipline}
         />
         <Padding />
       </Root>

@@ -14,6 +14,7 @@ interface ExerciseParams {
   disciplineTitle: string
   documents: Document[]
   closeExerciseAction: CommonNavigationAction
+  labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
 interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
@@ -62,6 +63,7 @@ export type RoutesParams = {
   ExerciseFinished: ResultParams & {
     unlockedNextExercise: boolean
   }
+  labelOverrides?: ExerciseParams
   Result: ResultParams
   ResultDetail: ResultParams & {
     resultType: Result
@@ -70,6 +72,8 @@ export type RoutesParams = {
   ManageSelection: undefined
   Settings: undefined
   Favorites: undefined
+  Dictionary: undefined
+  DictionaryDetail: { document: Document }
 }
 
 export type Route = keyof RoutesParams

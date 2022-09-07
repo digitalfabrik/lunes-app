@@ -5,10 +5,11 @@ import styled from 'styled-components/native'
 import { NoInternetConnectionIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
-import labels from '../constants/labels.json'
 import theme from '../constants/theme'
+import { getLabels } from '../services/helpers'
 import Button from './Button'
 import RoundedBackground from './RoundedBackground'
+import { Content } from './text/Content'
 
 const Container = styled.View`
   width: ${wp('80%')}px;
@@ -25,10 +26,8 @@ const ErrorTitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   text-align: center;
 `
-const ErrorText = styled.Text<{ centered?: boolean }>`
+export const ErrorText = styled(Content)<{ centered?: boolean }>`
   padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   text-align: ${props => (props.centered ? 'center' : 'left')};
 `
 const NetworkErrorWrapper = styled.View`
@@ -53,12 +52,13 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
     return null
   }
 
-  const message = error.message === NetworkError ? `${labels.general.error.noWifi} (${error.message})` : error.message
+  const message =
+    error.message === NetworkError ? `${getLabels().general.error.noWifi} (${error.message})` : error.message
   if (contained) {
     return (
       <Container>
         <ErrorText>{message}</ErrorText>
-        <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
+        <Button label={getLabels().general.error.retryButton} buttonTheme={BUTTONS_THEME.outlined} onPress={refresh} />
       </Container>
     )
   }
@@ -72,11 +72,11 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
               <NoInternetConnectionIcon testID='no-internet-icon' />
             </IconStyle>
           )}
-          <ErrorTitle>{labels.general.error.somethingWentWrong}</ErrorTitle>
+          <ErrorTitle>{getLabels().general.error.somethingWentWrong}</ErrorTitle>
           <ErrorText centered>{message}</ErrorText>
         </Container>
       </RoundedBackground>
-      <Button label={labels.general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
+      <Button label={getLabels().general.error.retryButton} buttonTheme={BUTTONS_THEME.contained} onPress={refresh} />
     </NetworkErrorWrapper>
   )
 }

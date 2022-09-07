@@ -5,9 +5,9 @@ import React, { ReactElement } from 'react'
 import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import VocabularyList from '../components/VocabularyList'
-import labels from '../constants/labels.json'
 import useLoadFavorites from '../hooks/useLoadFavorites'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import { getLabels } from '../services/helpers'
 
 interface FavoritesScreenProps {
   route: RouteProp<RoutesParams, 'Favorites'>
@@ -25,10 +25,15 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     }
     navigation.navigate('VocabularyDetail', {
       disciplineId: null,
-      disciplineTitle: labels.general.favorites,
+      disciplineTitle: getLabels().general.favorites,
       documents: data,
       documentIndex: index,
       closeExerciseAction: CommonActions.goBack(),
+      labelOverrides: {
+        closeExerciseButtonLabel: getLabels().exercises.cancelModal.cancel,
+        closeExerciseHeaderLabel: getLabels().general.back,
+        isCloseButton: false,
+      },
     })
   }
 
@@ -37,7 +42,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       <ServerResponseHandler error={error} loading={false} refresh={refresh}>
         {data && (
           <VocabularyList
-            title={labels.favorites}
+            title={getLabels().favorites}
             documents={data}
             onFavoritesChanged={refresh}
             onItemPress={onItemPress}

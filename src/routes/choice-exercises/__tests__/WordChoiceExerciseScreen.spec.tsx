@@ -2,8 +2,8 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -49,22 +49,22 @@ describe('WordChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText, queryByText } = render(<WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
-    const tryLater = getByText(labels.exercises.tryLater)
+    const tryLater = getByText(getLabels().exercises.tryLater)
     fireEvent.press(tryLater)
 
     let correctAnswer = getByText('Auto')
     fireEvent(correctAnswer, 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
     correctAnswer = getByText('Hose')
     fireEvent(correctAnswer, 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
     correctAnswer = getByText('Helm')
     fireEvent(correctAnswer, 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
-    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+    expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
     correctAnswer = getByText('Spachtel')
     fireEvent(correctAnswer, 'pressOut')
-    expect(getByText(labels.exercises.showResults)).toBeDefined()
+    expect(getByText(getLabels().exercises.showResults)).toBeDefined()
   })
 })

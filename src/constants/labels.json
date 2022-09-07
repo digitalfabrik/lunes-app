@@ -1,7 +1,7 @@
 {
   "scopeSelection": {
     "welcome": "Willkommen bei Lunes!",
-    "selectProfession": "Wähle jetzt den Beruf, den du lernen möchtest.",
+    "selectProfession": "Wähle den Beruf, den du lernen möchtest.",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten"
   },
@@ -11,7 +11,7 @@
     "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewModules": "Module ansehen",
+    "viewDisciplines": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
@@ -46,7 +46,6 @@
     "qrCodeScanner": {
       "noAuthorization": {
         "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "back": "Zurück",
         "settings": "Einstellungen"
       }
     }
@@ -61,15 +60,16 @@
     "wordChoice": {
       "title": "Level 1",
       "description": "Das richtige Wort auswählen",
-      "errorWrongModuleSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
+      "errorWrongDisciplineSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
     },
     "articleChoice": {
       "title": "Level 2",
       "description": "Den richtigen Artikel auswählen"
     },
     "lockedExerciseModal": {
-      "title": "Hoppla, diese Aufgabe ist noch nicht freigeschaltet.",
+      "title": "Hoppla, dieses Level ist noch nicht freigeschalten.",
       "confirmButtonLabel": "Zu",
+      "confirmButtonLabelDeclinated": "Zur",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um das nächste Level freizuschalten."
     },
@@ -103,7 +103,7 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedModule": "Super, du hast das Modul abgeschlossen",
+    "finishedDiscipline": "Super, du hast das Modul abgeschlossen",
     "unlockExercise": {
       "part1": "Glückwunsch",
       "part2": "ist jetzt freigeschaltet."
@@ -114,11 +114,12 @@
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "moduleOverview": "Zur Modulübersicht"
+      "disciplineOverview": "Zur Modulübersicht",
+      "backToWordlist": "Zurück zur Wortliste"
     },
     "of": "von",
     "share": {
-      "description": "Teile deine Ergebnisse!",
+      "description": "Teile deine Ergebnisse mit deinen Freunden!",
       "button": "Ergebnisse teilen",
       "message1": "Meine Ergebnisse für",
       "message2": "in Lunes:",
@@ -145,6 +146,7 @@
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
     },
+    "back": "Zurück",
     "plurals": "Plural",
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
@@ -157,10 +159,13 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter",
-    "customModalCancel": "Zurück"
+    "words": "Wörter"
   },
   "favorites": "Favoriten",
+  "dictionary": {
+    "enterWord": "Wort eingeben",
+    "noResults": "Es wurden leider keine Ergebnisse gefunden."
+  },
   "settings": {
     "settings": "Einstellungen",
     "appStability": "App Stabilität",

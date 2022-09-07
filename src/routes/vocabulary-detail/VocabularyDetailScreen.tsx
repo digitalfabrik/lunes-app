@@ -6,20 +6,14 @@ import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
-import DocumentImageSection from '../../components/DocumentImageSection'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import FeedbackModal from '../../components/FeedbackModal'
 import HorizontalLine from '../../components/HorizontalLine'
-import WordItem from '../../components/WordItem'
+import VocabularyDetail from '../../components/VocabularyDetail'
 import { BUTTONS_THEME, FeedbackType } from '../../constants/data'
-import labels from '../../constants/labels.json'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 import AlternativeWordsSection from './components/AlternativeWordsSection'
-
-const CorrectInfoBox = styled.View`
-  margin: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.sm};
-  width: 100%;
-`
 
 const Container = styled.View`
   width: 85%;
@@ -38,10 +32,10 @@ interface VocabularyDetailScreenProps {
 }
 
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
-  const { documents, documentIndex, closeExerciseAction } = route.params
+  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
   const document = documents[documentIndex]
-  const { word, article } = document
   const hasNextDocument = documentIndex + 1 < documents.length
+  const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
@@ -57,13 +51,11 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.document}
         feedbackForId={document.id}
+        labelOverride={labelOverrides?.closeExerciseHeaderLabel}
+        isCloseButton={labelOverrides?.isCloseButton}
       />
-      <DocumentImageSection document={document} />
+      <VocabularyDetail document={document} />
       <Container>
-        <CorrectInfoBox>
-          <WordItem answer={{ word, article }} />
-        </CorrectInfoBox>
-
         <HorizontalLine />
 
         <AlternativeWordsSection document={document} />
@@ -71,17 +63,13 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         <ButtonContainer>
           {hasNextDocument ? (
             <Button
-              label={labels.exercises.next}
+              label={getLabels().exercises.next}
               iconRight={ArrowRightIcon}
               onPress={goToNextWord}
               buttonTheme={BUTTONS_THEME.contained}
             />
           ) : (
-            <Button
-              label={labels.general.header.cancelExercise}
-              onPress={navigation.goBack}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
+            <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
           )}
         </ButtonContainer>
       </Container>

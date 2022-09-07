@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { Answer, Article } from '../constants/data'
-import labels from '../constants/labels.json'
-import { getArticleColor } from '../services/helpers'
+import { getLabels, getArticleColor } from '../services/helpers'
 import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 
 const Container = styled.Pressable<StyledListElementProps>`
@@ -179,7 +178,7 @@ const WordItem = ({
       </ArticleBox>
       <Word selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
         {word}
-        {article.id === 4 && ` (${labels.general.plurals})`}
+        {article.id === 4 && ` (${getLabels().general.plurals})`}
       </Word>
       {addOpacity && <Overlay />}
     </Container>

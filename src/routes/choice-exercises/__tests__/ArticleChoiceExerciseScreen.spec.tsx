@@ -1,12 +1,11 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
-import { Text } from 'react-native'
 
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import AsyncStorage from '../../../services/AsyncStorage'
+import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -62,12 +61,12 @@ describe('ArticleChoiceExerciseScreen', () => {
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
-    const tryLater = getByText(labels.exercises.tryLater)
+    const tryLater = getByText(getLabels().exercises.tryLater)
     fireEvent.press(tryLater)
 
     expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
@@ -79,10 +78,10 @@ describe('ArticleChoiceExerciseScreen', () => {
 
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
     expect(getAllByText(/Auto/)).toHaveLength(3)
-    expect(queryByText(labels.exercises.tryLater)).toBeNull()
+    expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
 
   it('should show word again when answered wrong', () => {
@@ -90,11 +89,11 @@ describe('ArticleChoiceExerciseScreen', () => {
 
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
     expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
 
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
@@ -103,13 +102,13 @@ describe('ArticleChoiceExerciseScreen', () => {
     const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
     fireEvent(getByText('der'), 'pressOut')
-    fireEvent.press(getByText(labels.exercises.next))
+    fireEvent.press(getByText(getLabels().exercises.next))
     fireEvent(getByText('das'), 'pressOut')
 
     await act(async () => {
-      fireEvent.press(getByText(labels.exercises.showResults))
+      fireEvent.press(getByText(getLabels().exercises.showResults))
     })
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
+    expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
       { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])

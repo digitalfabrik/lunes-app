@@ -6,11 +6,10 @@ import styled from 'styled-components/native'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
-import labels from '../../../constants/labels.json'
 import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
-import { childrenLabel } from '../../../services/helpers'
+import { childrenLabel, getLabels } from '../../../services/helpers'
 import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
 import NextExerciseCard from './NextExerciseCard'
 
@@ -35,9 +34,11 @@ const ProfessionDetails = ({
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
-  const moduleAlreadyStarted = progress !== null && progress !== 0
-  const completedModules =
-    moduleAlreadyStarted && discipline.leafDisciplines ? Math.floor(progress * discipline.leafDisciplines.length) : 0
+  const disciplineAlreadyStarted = progress !== null && progress !== 0
+  const completedDisciplines =
+    disciplineAlreadyStarted && discipline.leafDisciplines
+      ? Math.floor(progress * discipline.leafDisciplines.length)
+      : 0
 
   useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
@@ -52,7 +53,7 @@ const ProfessionDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={completedModules ? progress ?? 0 : 0}
+          progress={completedDisciplines ? progress ?? 0 : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
@@ -63,22 +64,24 @@ const ProfessionDetails = ({
         />
         {discipline.leafDisciplines && (
           <NumberText>
-            {completedModules}/{discipline.leafDisciplines.length}
+            {completedDisciplines}/{discipline.leafDisciplines.length}
           </NumberText>
         )}
-        <UnitText>{completedModules > 0 ? labels.home.progressDescription : childrenLabel(discipline, true)}</UnitText>
+        <UnitText>
+          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
+        </UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={documents[0].document_image[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
-        buttonLabel={nextExerciseData.exerciseKey === 0 ? labels.home.start : labels.home.continue}
+        buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
         subheading={title}
       />
       <ButtonContainer>
         <Button
           onPress={() => navigateToDiscipline(discipline)}
-          label={labels.home.viewModules}
+          label={getLabels().home.viewDisciplines}
           buttonTheme={BUTTONS_THEME.outlined}
         />
       </ButtonContainer>

@@ -1,0 +1,6 @@
+issue_key: LUN-387
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Berufe, die aus unbekanntem Grund nicht mehr gefunden werden können, sind nun löschbar

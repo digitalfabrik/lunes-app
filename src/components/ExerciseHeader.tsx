@@ -9,8 +9,8 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
 import { FeedbackType } from '../constants/data'
-import labels from '../constants/labels.json'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
+import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
 import Modal from './Modal'
 import NavigationHeaderLeft from './NavigationHeaderLeft'
@@ -43,6 +43,8 @@ interface ExerciseHeaderProps {
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
+  labelOverride?: string
+  isCloseButton?: boolean
 }
 
 const ExerciseHeader = ({
@@ -53,6 +55,8 @@ const ExerciseHeader = ({
   currentWord,
   numberOfWords,
   confirmClose = true,
+  labelOverride,
+  isCloseButton = true,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -63,9 +67,9 @@ const ExerciseHeader = ({
   useEffect(() => {
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
-        title={labels.general.header.cancelExercise}
+        title={labelOverride ?? getLabels().general.header.cancelExercise}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
-        isCloseButton
+        isCloseButton={isCloseButton}
       />
     )
 
@@ -73,7 +77,7 @@ const ExerciseHeader = ({
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
         <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
-          <HiddenItem title={labels.general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+          <HiddenItem title={getLabels().general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
         </OverflowMenu>
       </HeaderRightContainer>
     )
@@ -86,7 +90,16 @@ const ExerciseHeader = ({
         maxWidth: wp('25%'),
       },
     })
-  }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction])
+  }, [
+    navigation,
+    progressText,
+    setIsModalVisible,
+    setIsFeedbackModalVisible,
+    confirmClose,
+    closeExerciseAction,
+    labelOverride,
+    isCloseButton,
+  ])
 
   useEffect(() => {
     const showModal = (): boolean => {
@@ -117,8 +130,8 @@ const ExerciseHeader = ({
         testID='customModal'
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        text={labels.exercises.cancelModal.cancelAsk}
-        confirmationButtonText={labels.exercises.cancelModal.cancel}
+        text={getLabels().exercises.cancelModal.cancelAsk}
+        confirmationButtonText={getLabels().exercises.cancelModal.cancel}
         confirmationAction={goBack}
       />
       <FeedbackModal

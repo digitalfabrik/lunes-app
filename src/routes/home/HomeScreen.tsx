@@ -9,10 +9,10 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import labels from '../../constants/labels.json'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
@@ -91,8 +91,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
       <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
         <View>
           <HomeScreenHeader navigation={navigation} />
-          <WelcomeHeading>{labels.home.welcome}</WelcomeHeading>
-          <WelcomeSubHeading>{labels.home.haveFun}</WelcomeSubHeading>
+          <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
+          <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           {selectedProfessionItems}
           {isCustomDisciplineEmpty ? (
             <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />

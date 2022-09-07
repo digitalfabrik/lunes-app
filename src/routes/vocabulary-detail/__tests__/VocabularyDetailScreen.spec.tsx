@@ -2,8 +2,8 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import labels from '../../../constants/labels.json'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -43,8 +43,8 @@ describe('VocabularyDetailScreen', () => {
     expect(getByText(documents[0].word)).toBeDefined()
     expect('AudioPlayer').toBeDefined()
     expect('FavoriteButton').toBeDefined()
-    expect(getByText(labels.exercises.vocabularyList.alternativeWords)).toBeDefined()
-    const button = getByText(labels.exercises.next)
+    expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()
+    const button = getByText(getLabels().exercises.next)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith('VocabularyDetail', { ...getRoute(1).params })
   })

@@ -39,9 +39,15 @@ interface VocabularyListItemProps {
   document: Document
   onPress: () => void
   onFavoritesChanged?: () => void
+  children?: ReactElement
 }
 
-const VocabularyListItem = ({ document, onPress, onFavoritesChanged }: VocabularyListItemProps): ReactElement => {
+const VocabularyListItem = ({
+  document,
+  onPress,
+  onFavoritesChanged,
+  children,
+}: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -63,8 +69,9 @@ const VocabularyListItem = ({ document, onPress, onFavoritesChanged }: Vocabular
             <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
           </FavButtonContainer>
         </RightChildrenContainer>
-      }
-    />
+      }>
+      {children}
+    </ListItem>
   )
 }
 

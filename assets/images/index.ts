@@ -43,13 +43,15 @@ import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
+import MagnifierIcon from './magnifier-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
-import SadSmileyIcon from './sad-smiley-circle-icon-white.svg'
+import SadSmileyCircleIcon from './sad-smiley-circle-icon-white.svg'
+import SadSmileyIcon from './sad-smiley-icon.svg'
 import ShareIcon from './share-icon.svg'
 import StarCircleIconGreyFilled from './star-circle-icon-grey-filled.svg'
 import StarCircleIconGrey from './star-circle-icon-grey.svg'
@@ -106,6 +108,7 @@ export {
   ListIcon,
   LockIcon,
   LunesIcon,
+  MagnifierIcon,
   MenuIcon,
   NoInternetConnectionIcon,
   OpenLockIcon,
@@ -113,6 +116,7 @@ export {
   PartyHornIcon,
   RepeatIcon,
   SadSmileyIcon,
+  SadSmileyCircleIcon,
   ShareIcon,
   StarCircleIconGrey,
   StarCircleIconGreyFilled,

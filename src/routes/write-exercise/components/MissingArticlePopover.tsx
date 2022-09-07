@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { StyleSheet } from 'react-native'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 
 import { InfoCircleIcon } from '../../../../assets/images'
 import { ContentBackgroundLight } from '../../../components/text/Content'
-import labels from '../../../constants/labels.json'
 import { COLORS } from '../../../constants/theme/colors'
+import { getLabels } from '../../../services/helpers'
 
 export const styles = StyleSheet.create({
   popover: {
@@ -37,7 +37,7 @@ export interface IPopoverProps {
   isVisible: boolean
 }
 
-const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
+const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
   <Popover
     // @ts-expect-error, used for testing purposes
     testID='popover'
@@ -51,7 +51,7 @@ const MissingArticlePopover = React.forwardRef(({ isVisible, setIsPopoverVisible
     backgroundStyle={styles.overlay}>
     <StyledContainer>
       <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
-      <StyledMessage>{labels.exercises.write.feedback.articleMissing}</StyledMessage>
+      <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>
     </StyledContainer>
   </Popover>
 ))
