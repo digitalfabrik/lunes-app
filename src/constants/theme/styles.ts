@@ -1,5 +1,5 @@
 export const STYLES = {
-  opacity: {
+  pressOpacity: {
     min: 0.2,
     max: 1,
   },

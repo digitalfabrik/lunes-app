@@ -12,7 +12,7 @@ interface Props {
 
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
   flex-direction: row;
-  opacity: ${props => (props.isPressed ? props.theme.styles.opacity.min : props.theme.styles.opacity.max)};
+  opacity: ${props => (props.isPressed ? props.theme.styles.pressOpacity.min : props.theme.styles.pressOpacity.max)};
 `
 
 const PressableOpacity = ({ children, onPress, style, testID, disabled = false }: Props): ReactElement => {
