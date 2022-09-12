@@ -151,10 +151,3 @@ export const FeedbackType = {
 export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3
-
-export interface UserVocabularyDocument {
-  word: string
-  article: Article
-  imagePath: string
-  audioPath?: string
-}

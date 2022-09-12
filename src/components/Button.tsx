@@ -1,4 +1,5 @@
 import React, { ComponentType, ReactElement, useState } from 'react'
+import { StyleProp, ViewStyle } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled, { css, useTheme } from 'styled-components/native'
@@ -50,11 +51,12 @@ interface ButtonProps {
   disabled?: boolean
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
+  style?: StyleProp<ViewStyle>
 }
 
 const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
+  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined, style } = props
   const theme = useTheme()
 
   const getTextColor = (): Color => {
@@ -82,6 +84,7 @@ const Button = (props: ButtonProps): ReactElement => {
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
+      style={style}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}>
       {/* eslint-disable-next-line react/destructuring-assignment */}

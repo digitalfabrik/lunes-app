@@ -14,7 +14,7 @@ const SearchBar = ({ query, setQuery }: Props): ReactElement => (
   <CustomTextInput
     value={query}
     onChangeText={setQuery}
-    placeholder={getLabels().dictionary.enterWord}
+    placeholder={getLabels().search.enterWord}
     rightContainer={
       <PressableOpacity onPress={() => setQuery('')}>
         {query === '' ? <MagnifierIcon /> : <CloseIcon />}
