@@ -46,7 +46,9 @@ export type RoutesParams = {
   EditUserVocabulary: {
     headerBackLabel: string
   }
-  UserVocabularyList: undefined
+  UserVocabularyList: {
+    headerBackLabel: string
+  }
   UserVocabularyDetail: { document: Document }
   ScopeSelection: {
     initialSelection: boolean

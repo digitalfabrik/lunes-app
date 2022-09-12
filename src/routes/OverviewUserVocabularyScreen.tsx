@@ -24,7 +24,11 @@ const OverviewUserVocabularyScreen = ({ navigation }: PropsType): JSX.Element =>
     <RouteWrapper>
       <Root>
         <TitleSpacing title={myWords} />
-        <ListItem icon={<BookIconBlack />} title={list} onPress={() => navigation.navigate('OverviewUserVocabulary')} />
+        <ListItem
+          icon={<BookIconBlack />}
+          title={list}
+          onPress={() => navigation.navigate('UserVocabularyList', { headerBackLabel: myWords })}
+        />
         <ListItem
           icon={<BookIconBlack />}
           title={create}

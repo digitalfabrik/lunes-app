@@ -45,6 +45,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const { list } = getLabels().userVocabulary.overview
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('UserVocabularyDetail', { document })
@@ -78,8 +79,8 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
         {!isKeyboardVisible && (
           <ButtonContainer>
             <Button
-              onPress={() => navigation.navigate('UserVocabularyOverview')}
-              label={getLabels().userVocabulary.create}
+              onPress={() => navigation.navigate('EditUserVocabulary', { headerBackLabel: list })}
+              label={getLabels().userVocabulary.list.create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}
             />

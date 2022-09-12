@@ -31,7 +31,7 @@ describe('DictionaryScreen', () => {
     const { getByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     expect(getByText(getLabels().general.dictionary)).toBeDefined()
     expect(getByText(`4 ${getLabels().general.words}`)).toBeDefined()
-    expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
+    expect(getByPlaceholderText(getLabels().dictionary.enterWord)).toBeDefined()
     expect(getByText(documents[0].word)).toBeDefined()
     expect(getByText(documents[1].word)).toBeDefined()
     expect(getByText(documents[2].word)).toBeDefined()
@@ -41,7 +41,7 @@ describe('DictionaryScreen', () => {
   it('should filter by word', () => {
     mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
-    const searchBar = getByPlaceholderText(getLabels().search.enterWord)
+    const searchBar = getByPlaceholderText(getLabels().dictionary.enterWord)
     fireEvent.changeText(searchBar, documents[0].word)
     expect(queryByText(documents[0].word)).toBeDefined()
     expect(queryByText(documents[1].word)).toBeNull()
@@ -52,7 +52,7 @@ describe('DictionaryScreen', () => {
   it('should filter by word and article', () => {
     mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
-    const searchBar = getByPlaceholderText(getLabels().search.enterWord)
+    const searchBar = getByPlaceholderText(getLabels().dictionary.enterWord)
     fireEvent.changeText(searchBar, `${documents[0].article.value} ${documents[0].word}`)
     expect(queryByText(documents[0].word)).toBeDefined()
     expect(queryByText(documents[1].word)).toBeNull()

@@ -182,7 +182,6 @@
   },
   "userVocabulary": {
     "myWords": "Meine Wörter",
-    "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
       "create": "Vokabeln erstellen",
@@ -202,7 +201,8 @@
     "list": {
       "edit": "Bearbeiten",
       "finished": "Fertig",
-      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt."
+      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
+      "create": "Eigenes Wort erstellen"
     }
   }
 }
