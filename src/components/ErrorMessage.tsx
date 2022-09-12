@@ -9,6 +9,7 @@ import theme from '../constants/theme'
 import { getLabels } from '../services/helpers'
 import Button from './Button'
 import RoundedBackground from './RoundedBackground'
+import { Content } from './text/Content'
 
 const Container = styled.View`
   width: ${wp('80%')}px;
@@ -25,10 +26,8 @@ const ErrorTitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   text-align: center;
 `
-const ErrorText = styled.Text<{ centered?: boolean }>`
+export const ErrorText = styled(Content)<{ centered?: boolean }>`
   padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
   text-align: ${props => (props.centered ? 'center' : 'left')};
 `
 const NetworkErrorWrapper = styled.View`

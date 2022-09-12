@@ -3,11 +3,11 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CloseIconRed } from '../../../../assets/images'
+import DeletionModal from '../../../components/DeletionModal'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
-import Modal from '../../../components/Modal'
-import { ContentSecondary } from '../../../components/text/Content'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
+import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { getLabels } from '../../../services/helpers'
 
@@ -24,11 +24,6 @@ const LoadingContainer = styled(View)`
   height: 0px;
 `
 
-const Explanation = styled(ContentSecondary)`
-  padding: 0 ${props => props.theme.spacings.lg} ${props => props.theme.spacings.xl};
-  text-align: center;
-`
-
 const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
   const { data, loading, error } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -41,28 +36,20 @@ const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
     )
   }
 
-  if (!data) {
-    let errorMessage = getLabels().general.error.unknown
-    if (error?.message === ForbiddenError) {
-      errorMessage = getLabels().home.errorLoadCustomDiscipline
-    } else if (error?.message === NetworkError) {
-      errorMessage = `${getLabels().general.error.noWifi} (${error.message})`
-    }
-    return <ListItem title={errorMessage} />
+  if (!data && error?.message === NetworkError) {
+    return <ListItem title={`${getLabels().general.error.noWifi} (${error.message})`} hideRightChildren />
   }
 
   return (
     <>
-      <Modal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        text={getLabels().manageSelection.deleteModal.confirmationQuestion}
-        confirmationButtonText={getLabels().manageSelection.deleteModal.confirm}
-        confirmationAction={deleteItem}>
-        <Explanation>{getLabels().manageSelection.deleteModal.explanation}</Explanation>
-      </Modal>
+      <DeletionModal isVisible={isModalVisible} onConfirm={deleteItem} onClose={() => setIsModalVisible(false)} />
       <ListItem
-        title={data.title}
+        title={
+          data?.title ??
+          (error?.message === ForbiddenError && isTypeLoadProtected(identifier)
+            ? `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
+            : getLabels().general.error.unknown)
+        }
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
             <CloseIconRed />

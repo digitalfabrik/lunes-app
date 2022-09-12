@@ -1,4 +1,5 @@
 import AddCircleIcon from './add-circle-icon.svg'
+import AddIconWhite from './add-icon-white.svg'
 import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
 import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
 import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
@@ -64,6 +65,7 @@ import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
 
 export {
   AddCircleIcon,
+  AddIconWhite,
   ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   ArrowRightIcon,
