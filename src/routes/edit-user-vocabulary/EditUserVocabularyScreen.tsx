@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from 'react'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -37,11 +36,11 @@ const StyledHintText = styled(HintText)`
   margin-left: ${props => props.theme.spacings.xxl};
 `
 
-const UserVocabularyEditScreen = (): ReactElement => {
+const EditUserVocabularyScreen = (): ReactElement => {
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
-  const [wordErrorMessage, setWordErrorMessage] = useState<string>('')
-  const [articleErrorMessage, setArticleErrorMessage] = useState<string>('')
+  const [hasWordErrorMessage, setHasWordErrorMessage] = useState<boolean>(false)
+  const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const {
     headline,
     addImage,
@@ -57,16 +56,9 @@ const UserVocabularyEditScreen = (): ReactElement => {
   const onSave = (): void => {
     const hasError = word.length === 0 || !articleId
     // TODO LUN-419
-    if (word.length === 0) {
-      setWordErrorMessage(errorMessage)
-    } else {
-      setWordErrorMessage('')
-    }
-    if (!articleId) {
-      setArticleErrorMessage(errorMessage)
-    } else {
-      setArticleErrorMessage('')
-    }
+
+    setHasWordErrorMessage(word.length === 0)
+    setHasArticleErrorMessage(!articleId)
 
     if (!hasError) {
       setWord('')
@@ -74,47 +66,46 @@ const UserVocabularyEditScreen = (): ReactElement => {
     }
   }
 
+  // TODO add Keyboard handling for input fields LUN-424
   return (
     <RouteWrapper>
-      <KeyboardAwareScrollView>
-        <Root>
-          <TitleSpacing title={headline} />
-          <CustomTextInput
-            clearable
-            value={word}
-            onChangeText={setWord}
-            placeholder={wordPlaceholder}
-            errorMessage={wordErrorMessage}
-          />
-          <Dropdown
-            value={articleId}
-            setValue={setArticleId}
-            placeholder={articlePlaceholder}
-            items={getArticleWithLabel()}
-            itemKey='id'
-            errorMessage={articleErrorMessage}
-          />
-          <AddImageButton
-            onPress={() => null}
-            label={addImage}
-            buttonTheme={BUTTONS_THEME.text}
-            iconLeft={ImageCircleIcon}
-            iconSize={wp('10%')}
-          />
-          <StyledHintText>{maxPictureUpload}</StyledHintText>
-          <AddAudioButton
-            onPress={() => null}
-            label={addAudio}
-            buttonTheme={BUTTONS_THEME.text}
-            iconLeft={MicrophoneCircleIcon}
-            iconSize={wp('10%')}
-          />
-          <HintText>{requiredFields}</HintText>
-          <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
-        </Root>
-      </KeyboardAwareScrollView>
+      <Root>
+        <TitleSpacing title={headline} />
+        <CustomTextInput
+          clearable
+          value={word}
+          onChangeText={setWord}
+          placeholder={wordPlaceholder}
+          errorMessage={hasWordErrorMessage ? errorMessage : ''}
+        />
+        <Dropdown
+          value={articleId}
+          setValue={setArticleId}
+          placeholder={articlePlaceholder}
+          items={getArticleWithLabel()}
+          itemKey='id'
+          errorMessage={hasArticleErrorMessage ? errorMessage : ''}
+        />
+        <AddImageButton
+          onPress={() => null}
+          label={addImage}
+          buttonTheme={BUTTONS_THEME.text}
+          iconLeft={ImageCircleIcon}
+          iconSize={wp('10%')}
+        />
+        <StyledHintText>{maxPictureUpload}</StyledHintText>
+        <AddAudioButton
+          onPress={() => null}
+          label={addAudio}
+          buttonTheme={BUTTONS_THEME.text}
+          iconLeft={MicrophoneCircleIcon}
+          iconSize={wp('10%')}
+        />
+        <HintText>{requiredFields}</HintText>
+        <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
+      </Root>
     </RouteWrapper>
   )
 }
 
-export default UserVocabularyEditScreen
+export default EditUserVocabularyScreen

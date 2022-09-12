@@ -14,10 +14,10 @@ const Root = styled.View`
 `
 
 interface PropsType {
-  navigation: StackNavigationProp<RoutesParams, 'UserVocabularyOverview'>
+  navigation: StackNavigationProp<RoutesParams, 'OverviewUserVocabulary'>
 }
 
-const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element => {
+const OverviewUserVocabularyScreen = ({ navigation }: PropsType): JSX.Element => {
   const { myWords } = getLabels().ownVocabulary
   return (
     <RouteWrapper>
@@ -26,21 +26,21 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
         <ListItem
           icon={<BookIconBlack />}
           title={getLabels().ownVocabulary.overview.list}
-          onPress={() => navigation.navigate('UserVocabularyOverview')}
+          onPress={() => navigation.navigate('OverviewUserVocabulary')}
         />
         <ListItem
           icon={<BookIconBlack />}
           title={getLabels().ownVocabulary.overview.create}
-          onPress={() => navigation.navigate('UserVocabularyEdit', { title: myWords })}
+          onPress={() => navigation.navigate('EditUserVocabulary', { headerBackLabel: myWords })}
         />
         <ListItem
           icon={<BookIconBlack />}
           title={getLabels().ownVocabulary.overview.practice}
-          onPress={() => navigation.navigate('UserVocabularyOverview')}
+          onPress={() => navigation.navigate('OverviewUserVocabulary')}
         />
       </Root>
     </RouteWrapper>
   )
 }
 
-export default UserVocabularyOverviewScreen
+export default OverviewUserVocabularyScreen
