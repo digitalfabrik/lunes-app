@@ -18,24 +18,21 @@ interface PropsType {
 }
 
 const OverviewUserVocabularyScreen = ({ navigation }: PropsType): JSX.Element => {
-  const { myWords } = getLabels().ownVocabulary
+  const { myWords } = getLabels().userVocabulary
+  const { list, create, practice } = getLabels().userVocabulary.overview
   return (
     <RouteWrapper>
       <Root>
         <TitleSpacing title={myWords} />
+        <ListItem icon={<BookIconBlack />} title={list} onPress={() => navigation.navigate('OverviewUserVocabulary')} />
         <ListItem
           icon={<BookIconBlack />}
-          title={getLabels().ownVocabulary.overview.list}
-          onPress={() => navigation.navigate('OverviewUserVocabulary')}
-        />
-        <ListItem
-          icon={<BookIconBlack />}
-          title={getLabels().ownVocabulary.overview.create}
+          title={create}
           onPress={() => navigation.navigate('EditUserVocabulary', { headerBackLabel: myWords })}
         />
         <ListItem
           icon={<BookIconBlack />}
-          title={getLabels().ownVocabulary.overview.practice}
+          title={practice}
           onPress={() => navigation.navigate('OverviewUserVocabulary')}
         />
       </Root>

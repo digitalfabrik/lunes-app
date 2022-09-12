@@ -51,7 +51,7 @@ const EditUserVocabularyScreen = (): ReactElement => {
     saveButton,
     maxPictureUpload,
     requiredFields,
-  } = getLabels().ownVocabulary.creation
+  } = getLabels().userVocabulary.creation
 
   const onSave = (): void => {
     const hasError = word.length === 0 || !articleId

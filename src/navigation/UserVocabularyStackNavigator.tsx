@@ -1,18 +1,16 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useTheme } from 'styled-components';
-
-
+import { createStackNavigator } from '@react-navigation/stack'
+import React from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { useTheme } from 'styled-components'
 
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import OverviewUserVocabularyScreen from '../routes/OverviewUserVocabularyScreen';
+import OverviewUserVocabularyScreen from '../routes/OverviewUserVocabularyScreen'
 import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
-import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
-import { getLabels } from '../services/helpers';
-import { RoutesParams } from './NavigationTypes';
-import screenOptions from './screenOptions';
 import EditUserVocabularyScreen from '../routes/edit-user-vocabulary/EditUserVocabularyScreen'
+import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
+import { getLabels } from '../services/helpers'
+import { RoutesParams } from './NavigationTypes'
+import screenOptions from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
