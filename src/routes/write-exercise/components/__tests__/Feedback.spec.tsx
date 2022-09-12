@@ -8,7 +8,7 @@ import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
-describe('Feedback section', () => {
+describe('Feedback', () => {
   const document = {
     alternatives: [],
     article: ARTICLES[4],

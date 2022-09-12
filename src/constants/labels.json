@@ -148,6 +148,7 @@
     },
     "back": "Zurück",
     "plurals": "Plural",
+    "noResults": "Es wurden leider keine Ergebnisse gefunden.",
     "error": {
       "unknown": "Ein unbekannter Fehler ist aufgetreten.",
       "noWifi": "Es konnte keine Verbindung mit dem Internet hergestellt werden.",
@@ -179,8 +180,9 @@
       "disableDevMode": "Disable DevMode"
     }
   },
-  "ownVocabulary": {
+  "userVocabulary": {
     "myWords": "Meine Wörter",
+    "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
       "create": "Vokabeln erstellen",
@@ -196,6 +198,11 @@
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
       "requiredFields": "*Pflichtfelder",
       "errorMessage": "Dies ist ein Pflichtfeld."
+    },
+    "list": {
+      "edit": "Bearbeiten",
+      "finished": "Fertig",
+      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt."
     }
   }
 }

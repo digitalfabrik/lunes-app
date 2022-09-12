@@ -79,7 +79,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}
-        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().ownVocabulary.myWords }}
+        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.myWords }}
       />
     </Navigator.Navigator>
   )

@@ -16,13 +16,18 @@ interface ArticleChoiceExerciseScreenProps {
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const { documents, disciplineTitle, disciplineId } = route.params
 
+  // Exclude articles 'keiner' and 'die (Plural)'
+  const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
+
+  const singularDocuments = documents.filter(it => answerOptions.includes(it.article))
+
   const documentToAnswers = (document: Document): Answer[] =>
-    ARTICLES.filter(article => article.id !== 0).map(article => ({ article, word: document.word }))
+    answerOptions.map(article => ({ article, word: document.word }))
 
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        documents={documents}
+        documents={singularDocuments}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
         documentToAnswers={documentToAnswers}
