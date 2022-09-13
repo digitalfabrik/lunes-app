@@ -3,12 +3,12 @@ import React from 'react'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
-import OverviewUserVocabularyScreen from '../OverviewUserVocabularyScreen'
+import UserVocabularyOverviewScreen from '../UserVocabularyOverviewScreen'
 
-describe('OverviewUserVocabularyScreen', () => {
-  const navigation = createNavigationMock<'OverviewUserVocabulary'>()
+describe('UserVocabularyOverviewScreen', () => {
+  const navigation = createNavigationMock<'UserVocabularyOverview'>()
   it('should show content', () => {
-    const { getByText } = render(<OverviewUserVocabularyScreen navigation={navigation} />)
+    const { getByText } = render(<UserVocabularyOverviewScreen navigation={navigation} />)
     expect(getByText(getLabels().userVocabulary.myWords)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.overview.list)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.overview.create)).toBeDefined()

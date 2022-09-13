@@ -79,7 +79,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
         {!isKeyboardVisible && (
           <ButtonContainer>
             <Button
-              onPress={() => navigation.navigate('EditUserVocabulary', { headerBackLabel: list })}
+              onPress={() => navigation.navigate('UserVocabularyEdit', { headerBackLabel: list })}
               label={getLabels().userVocabulary.list.create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}

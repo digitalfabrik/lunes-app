@@ -42,8 +42,8 @@ export type RoutesParams = {
   DictionaryTab: undefined
   UserVocabularyTab: undefined
   Home: undefined
-  OverviewUserVocabulary: undefined
-  EditUserVocabulary: {
+  UserVocabularyOverview: undefined
+  UserVocabularyEdit: {
     headerBackLabel: string
   }
   UserVocabularyList: {

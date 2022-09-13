@@ -4,9 +4,9 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components'
 
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import OverviewUserVocabularyScreen from '../routes/OverviewUserVocabularyScreen'
+import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
-import EditUserVocabularyScreen from '../routes/edit-user-vocabulary/EditUserVocabularyScreen'
+import UserVocabularyEditScreen from '../routes/edit-user-vocabulary/UserVocabularyEditScreen'
 import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
@@ -23,8 +23,8 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
       <Stack.Screen
-        name='OverviewUserVocabulary'
-        component={OverviewUserVocabularyScreen}
+        name='UserVocabularyOverview'
+        component={UserVocabularyOverviewScreen}
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
@@ -38,8 +38,8 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
-        name='EditUserVocabulary'
-        component={EditUserVocabularyScreen}
+        name='UserVocabularyEdit'
+        component={UserVocabularyEditScreen}
         options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
       />
     </Stack.Navigator>
