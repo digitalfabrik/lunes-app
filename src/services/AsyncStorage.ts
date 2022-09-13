@@ -153,8 +153,10 @@ const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
 }
 
 const addUserDocument = async (userDocument: Document): Promise<void> => {
-  console.log('add: ', userDocument.word)
   const userVocabulary = await getUserVocabulary()
+  if (userVocabulary.findIndex(item => item.word === userDocument.word) !== -1) {
+    return
+  }
   await setUserVocabulary([...userVocabulary, userDocument])
 }
 
@@ -170,7 +172,6 @@ const editUserDocument = async (oldUserDocument: Document, newUserDocument: Docu
 }
 
 const deleteUserDocument = async (userDocument: Document): Promise<void> => {
-  console.log('delete')
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )
@@ -203,5 +204,4 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
-  calculateScore,
 }

@@ -1,8 +1,10 @@
-import { NextExercise } from '../../constants/data'
+import { NextExercise, SimpleResult } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
+import { DocumentResult } from '../../navigation/NavigationTypes'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
-import { getNextExercise, getProgress } from '../helpers'
+import { calculateScore, getNextExercise, getProgress } from '../helpers'
 
 import mocked = jest.mocked
 
@@ -109,6 +111,39 @@ describe('helpers', () => {
       )
       const progress = await getProgress(profession)
       expect(progress).toBe(0.5)
+    })
+  })
+
+  describe('calculateScore', () => {
+    const getDocumentsWithResults = (
+      numberOfTries: [number, number, number, number],
+      results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
+    ): DocumentResult[] => {
+      const documents = new DocumentBuilder(4).build()
+      return documents.map((document, index) => ({
+        document,
+        result: results[index],
+        numberOfTries: numberOfTries[index],
+      }))
+    }
+
+    it('should calculate score correctly for different number of tries', () => {
+      const score = calculateScore(
+        getDocumentsWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect'])
+      )
+      expect(score).toBe(4)
+    })
+
+    it('should calculate score correctly for best result', () => {
+      const score = calculateScore(getDocumentsWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct']))
+      expect(score).toBe(10)
+    })
+
+    it('should calculate score correctly for bad result with similar results', () => {
+      const score = calculateScore(
+        getDocumentsWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
+      )
+      expect(score).toBe(0)
     })
   })
 })
