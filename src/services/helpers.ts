@@ -1,7 +1,15 @@
 import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
 
-import { Article, ARTICLES, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
+import {
+  Article,
+  ARTICLES,
+  EXERCISES,
+  FeedbackType,
+  NextExercise,
+  Progress,
+  SCORE_THRESHOLD_UNLOCK,
+} from '../constants/data'
 import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -190,3 +198,6 @@ export const getSortedAndFilteredDocuments = (documents: Document[] | null, sear
   )
   return filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
 }
+
+export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
+  score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
