@@ -1,0 +1,6 @@
+issue_key: LUN-362
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Verbesserung des Freischaltungsmechanismus. (Schwellwert hinzugefügt)
