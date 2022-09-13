@@ -18,7 +18,7 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../constants/data'
-import { useKeyboard } from '../../hooks/useKeyboard'
+import useKeyboard from '../../hooks/useKeyboard'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'

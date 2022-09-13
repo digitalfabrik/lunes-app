@@ -12,7 +12,7 @@ import VocabularyListItem from '../../components/VocabularyListItem'
 import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
@@ -41,7 +41,7 @@ interface Props {
 const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const documents = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
-  const isKeyboardVisible = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)

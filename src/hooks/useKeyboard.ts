@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Keyboard, KeyboardEvent } from 'react-native'
 
-// This hook listens to the keyboard and returns boolean whether keyboard is opened or closed
+// This hook listens to the keyboard and returns boolean whether keyboard is opened or closed & keyBoardHeight
 
 interface UseKeyboardProps {
   isKeyboardVisible: boolean
   keyboardHeight: number
 }
 
-export const useKeyboard = (): UseKeyboardProps => {
+const useKeyboard = (): UseKeyboardProps => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
   const [keyboardHeight, setKeyboardHeight] = useState(0)
 
@@ -29,3 +29,5 @@ export const useKeyboard = (): UseKeyboardProps => {
   }, [])
   return { isKeyboardVisible, keyboardHeight }
 }
+
+export default useKeyboard
