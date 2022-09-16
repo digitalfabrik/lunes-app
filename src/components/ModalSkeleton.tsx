@@ -61,7 +61,9 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): React
             <Icon onPress={onClose}>
               <CloseIcon width={wp('6%')} height={wp('6%')} />
             </Icon>
-            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>{children}</ScrollView>
+            <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
+              {children}
+            </ScrollView>
           </ModalContainer>
         </Overlay>
       </StyledPressable>
