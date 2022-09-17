@@ -5,7 +5,7 @@ export const SPACINGS_PLAIN = {
   xs: wp('1%'), // 8
   sm: wp('2%'), // 16
   md: wp('3%'), // 24
-  lg: wp('4%'), // 32®
+  lg: wp('4%'), // 32
   xl: wp('5%'), // 40
   xxl: wp('6%'), // 48
 }
