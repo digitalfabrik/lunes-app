@@ -10,9 +10,9 @@ export const SPACINGS_PLAIN = {
   xxl: wp('6%'), // 48
 }
 
-// These pixels are calculated for a 800px height mobile screen
+// These pixels are calculated for a 400px width mobile screen
 export const SPACINGS = {
-  xxs: `${SPACINGS_PLAIN.xxs}px`, // 16px
+  xxs: `${SPACINGS_PLAIN.xxs}px`, // 4px
   xs: `${SPACINGS_PLAIN.xs}px`, // 8px
   sm: `${SPACINGS_PLAIN.sm}px`, // 16px
   md: `${SPACINGS_PLAIN.md}px`, // 24px
