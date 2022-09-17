@@ -26,7 +26,7 @@ const headerStyles = (headerHeight?: number) =>
       height: headerHeight,
     },
     headerRightContainer: {
-      paddingHorizontal: theme.spacingsPlain.lg,
+      paddingHorizontal: theme.spacingsPlain.sm,
       maxWidth: 60,
     },
     headerLeftContainer: {
