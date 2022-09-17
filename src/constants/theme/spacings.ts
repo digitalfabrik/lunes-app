@@ -1,13 +1,13 @@
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 export const SPACINGS_PLAIN = {
-  xxs: wp('0.5%'), // 4
-  xs: wp('1%'), // 8
-  sm: wp('2%'), // 16
-  md: wp('3%'), // 24
-  lg: wp('4%'), // 32
-  xl: wp('5%'), // 40
-  xxl: wp('6%'), // 48
+  xxs: wp('1%'), // 4
+  xs: wp('2%'), // 8
+  sm: wp('4%'), // 16
+  md: wp('6%'), // 24
+  lg: wp('8%'), // 32
+  xl: wp('10%'), // 40
+  xxl: wp('12%'), // 48
 }
 
 // These pixels are calculated for a 400px width mobile screen
