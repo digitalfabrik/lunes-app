@@ -45,12 +45,13 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const documents = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
-  const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [documentToDelete, setDocumentToDelete] = useState<Document | null>(null)
   const isKeyboardVisible = useIsKeyboardVisible()
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const { create, myWords, list } = getLabels().userVocabulary
+  const { confirm, confirmDeletionPart1, confirmDeletionPart2, finished, edit } = list
 
   // AsyncStorage.addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
 
@@ -63,29 +64,25 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   }
 
   const openDeleteConfirmationModal = (document: Document): void => {
-    setModalVisible(true)
     setDocumentToDelete(document)
   }
 
   const deleteItem = (document: Document | null): void => {
     if (document) {
-      AsyncStorage.deleteUserDocument(document)
-        .then(documents.refresh)
-        .catch(err => reportError(err))
+      AsyncStorage.deleteUserDocument(document).then(documents.refresh).catch(reportError)
     }
-    setModalVisible(false)
     setDocumentToDelete(null)
   }
 
   return (
     <RouteWrapper>
       <Modal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        text={`${getLabels().userVocabulary.list.confirmDeletionPart1} "${
+        visible={documentToDelete !== null}
+        onClose={() => setDocumentToDelete(null)}
+        text={`${confirmDeletionPart1} "${
           documentToDelete !== null ? documentToDelete.word : ''
-        }" ${getLabels().userVocabulary.list.confirmDeletionPart2}`}
-        confirmationButtonText={getLabels().userVocabulary.list.confirm}
+        }" ${confirmDeletionPart2}`}
+        confirmationButtonText={confirm}
         confirmationAction={() => deleteItem(documentToDelete)}
       />
       <Root>
@@ -95,16 +92,14 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
           ListHeaderComponent={
             <>
               <Title
-                title={getLabels().userVocabulary.myWords}
+                title={myWords}
                 description={`${numberOfDocuments} ${
                   numberOfDocuments === 1 ? getLabels().general.word : getLabels().general.words
                 }`}
               />
               <SearchBar query={searchString} setQuery={setSearchString} />
               <EditPressable onPress={toggleEditMode}>
-                <ContentTextBold>
-                  {editModeEnabled ? getLabels().userVocabulary.list.finished : getLabels().userVocabulary.list.edit}
-                </ContentTextBold>
+                <ContentTextBold>{editModeEnabled ? finished : edit}</ContentTextBold>
               </EditPressable>
             </>
           }
@@ -125,7 +120,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
           <ButtonContainer>
             <Button
               onPress={() => navigation.navigate('UserVocabularyOverview')}
-              label={getLabels().userVocabulary.create}
+              label={create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}
             />
