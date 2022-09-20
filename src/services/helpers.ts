@@ -1,6 +1,15 @@
 import { AxiosResponse } from 'axios'
+import normalizeStrings from 'normalize-strings'
 
-import { Article, EXERCISES, FeedbackType, NextExercise, Progress } from '../constants/data'
+import {
+  Article,
+  ARTICLES,
+  EXERCISES,
+  FeedbackType,
+  NextExercise,
+  Progress,
+  SCORE_THRESHOLD_UNLOCK,
+} from '../constants/data'
 import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
@@ -166,3 +175,29 @@ export const calculateScore = (documentsWithResults: DocumentResult[]): number =
       }, 0) / documentsWithResults.length
   )
 }
+
+const normalizeSearchString = (searchString: string): string => {
+  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
+    searchString.split(' ')[0].toLowerCase()
+  )
+    ? searchString.substring(searchString.indexOf(' ') + 1)
+    : searchString
+  return normalizeStrings(searchStringWithoutArticle).toLowerCase().trim()
+}
+
+export const matchAlternative = (document: Document, searchString: string): boolean =>
+  document.alternatives.filter(alternative =>
+    alternative.word.toLowerCase().includes(normalizeSearchString(searchString))
+  ).length > 0
+
+export const getSortedAndFilteredDocuments = (documents: Document[] | null, searchString: string): Document[] => {
+  const normalizedSearchString = normalizeSearchString(searchString)
+
+  const filteredDocuments = documents?.filter(
+    item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
+  )
+  return filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
+}
+
+export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
+  score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
