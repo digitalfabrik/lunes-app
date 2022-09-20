@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useState, useEffect } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
@@ -17,8 +17,8 @@ export interface AudioPlayerProps {
 }
 
 const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boolean }>`
-  width: ${wp('9%')}px;
-  height: ${wp('9%')}px;
+  width: ${hp('4,5%')}px;
+  height: ${hp('4,5%')}px;
   border-radius: 50px;
   background-color: ${props => {
     if (props.disabled) {
@@ -106,7 +106,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
-      <VolumeUpCircleIcon width={wp('8%')} height={wp('8%')} />
+      <VolumeUpCircleIcon width={hp('4%')} height={hp('4%')} />
     </VolumeIcon>
   )
 }

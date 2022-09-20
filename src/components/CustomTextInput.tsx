@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { TextInputProps } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
@@ -21,8 +21,8 @@ const StyledTextInput = styled.TextInput`
 `
 
 const ClearContainer = styled(PressableOpacity)`
-  width: ${wp('6%')}px;
-  height: ${wp('6%')}px;
+  width: ${hp('3%')}px;
+  height: ${hp('3%')}px;
 `
 
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
@@ -100,7 +100,7 @@ const CustomTextInput = ({
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
-              <CloseIcon width={wp('6%')} height={wp('6%')} />
+              <CloseIcon width={hp('3%')} height={hp('3%')} />
             </ClearContainer>
           ) : (
             rightContainer

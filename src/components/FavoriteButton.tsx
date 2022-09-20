@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
@@ -11,12 +11,12 @@ import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
 const Icon = styled(StarCircleIconGreyFilled)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
+  min-width: ${hp('4%')}px;
+  min-height: ${hp('4%')}px;
 `
 const IconOutline = styled(StarCircleIconGrey)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
+  min-width: ${hp('4%')}px;
+  min-height: ${hp('4%')}px;
 `
 const Button = styled(PressableOpacity)`
   justify-content: center;

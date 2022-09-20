@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
@@ -36,7 +36,7 @@ const AddElement = ({ onPress, label, explanation }: Props): ReactElement => (
   <>
     <PressableContainer onPress={onPress}>
       <FlexRow>
-        <AddCircleIcon width={wp('8%')} height={wp('8%')} />
+        <AddCircleIcon width={hp('4%')} height={hp('4%')} />
         <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
       </FlexRow>
     </PressableContainer>

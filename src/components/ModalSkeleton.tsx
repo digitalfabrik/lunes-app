@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Modal as RNModal } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
@@ -26,8 +26,8 @@ const Icon = styled(PressableOpacity)`
   position: absolute;
   top: 8px;
   right: 8px;
-  width: ${wp('6%')}px;
-  height: ${wp('6%')}px;
+  width: ${hp('3%')}px;
+  height: ${hp('3%')}px;
 `
 
 interface PropsType {
@@ -42,7 +42,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): React
     <Overlay>
       <ModalContainer>
         <Icon onPress={onClose}>
-          <CloseIcon width={wp('6%')} height={wp('6%')} />
+          <CloseIcon width={hp('3%')} height={hp('3%')} />
         </Icon>
         {children}
       </ModalContainer>

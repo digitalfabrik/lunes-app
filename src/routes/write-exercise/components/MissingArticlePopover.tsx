@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { StyleSheet } from 'react-native'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { InfoCircleIcon } from '../../../../assets/images'
@@ -50,7 +50,7 @@ const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IP
     verticalOffset={-10}
     backgroundStyle={styles.overlay}>
     <StyledContainer>
-      <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
+      <InfoCircleIcon width={hp('3%')} height={hp('3%')} />
       <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>
     </StyledContainer>
   </Popover>

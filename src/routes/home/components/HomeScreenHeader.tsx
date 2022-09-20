@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled from 'styled-components/native'
 
@@ -13,24 +14,25 @@ const Wrapper = styled.SafeAreaView`
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.primary};
-  height: 60px;
+  height: ${hp('7%')}px;
   width: 100%;
 `
 
 const SmileIconStyle = styled.Pressable`
   position: absolute;
-  width: 80px;
-  height: 80px;
   left: 50%;
-  margin-left: -40px;
-  top: 20px;
+  margin-left: -${hp('3%')}px;
+  top: 50%;
 `
 
 const HeaderButtonsContainer = styled.View`
   align-self: flex-end;
 `
 const MenuIconContainer = styled.View`
-  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.md};
+  padding: ${props => props.theme.spacings.sm}
+}
+
+;
 `
 
 const MenuIconWhite = styled(MenuIcon)`
@@ -45,14 +47,13 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
-        <LunesIcon />
+        <LunesIcon width={hp('8%')} height={hp('8%')} />
       </SmileIconStyle>
-
       <HeaderButtonsContainer>
         <OverflowMenu
           icon={
             <MenuIconContainer>
-              <MenuIconWhite />
+              <MenuIconWhite width={hp('3%')} height={hp('3%')} />
             </MenuIconContainer>
           }>
           <HiddenItem

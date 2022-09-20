@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Heading } from '../../../components/text/Heading'
 
 const Icon = styled.Image`
-  width: ${wp('7%')}px;
-  height: ${wp('7%')}px;
+  width: ${hp('3,5%')}px;
+  height: ${hp('3,5%')}px;
 `
 
 const Box = styled.Pressable`

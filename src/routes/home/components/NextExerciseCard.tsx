@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ArrowRightCircleIconWhite } from '../../../../assets/images'
@@ -39,8 +39,8 @@ const Label = styled(SubheadingPrimary)`
 `
 
 const Thumbnail = styled.Image`
-  height: ${wp('19%')}px;
-  width: ${wp('18%')}px;
+  height: ${hp('10%')}px;
+  width: ${hp('9%')}px;
   align-self: center;
 `
 
@@ -69,7 +69,7 @@ const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel
         <ActionContainer>
           <PressableOpacity onPress={onPress}>
             <Label>{buttonLabel}</Label>
-            <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
+            <ArrowRightCircleIconWhite width={hp('4%')} height={hp('4%')} />
           </PressableOpacity>
         </ActionContainer>
       </ExerciseDetail>

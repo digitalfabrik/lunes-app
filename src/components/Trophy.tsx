@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { TrophyIcon } from '../../assets/images'
@@ -21,7 +21,7 @@ interface PropsType {
 const Trophy = ({ level }: PropsType): ReactElement => {
   const trophies = []
   for (let i = 0; i < level; i += 1) {
-    trophies.push(<TrophyIconStyled key={`trophy-${i}`} testID={`trophy-${i}`} width={wp('3%')} height={hp('3%')} />)
+    trophies.push(<TrophyIconStyled key={`trophy-${i}`} testID={`trophy-${i}`} width={hp('1.5%')} height={hp('3%')} />)
   }
   return <TrophyContainer>{trophies}</TrophyContainer>
 }
