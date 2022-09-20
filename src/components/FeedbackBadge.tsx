@@ -21,15 +21,15 @@ const BadgeText = styled(ContentSecondaryLight)`
   margin-left: ${props => props.theme.spacings.xs};
 `
 
-interface FeedbackBadgeProps {
-  disciplineId: number
-  level: number
-}
-
 export const enum FEEDBACK {
   POSITIVE,
   NONE,
   NEGATIVE,
+}
+
+interface FeedbackBadgeProps {
+  disciplineId: number
+  level: number
 }
 
 const FeedbackModal = (props: FeedbackBadgeProps | null): ReactElement => {
