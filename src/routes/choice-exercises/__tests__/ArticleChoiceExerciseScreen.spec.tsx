@@ -32,8 +32,14 @@ jest.mock('../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
+jest.mock('../../../components/CheatMode', () => {
+  const Text = require('react-native').Text
+  return () => <Text>CheatMode</Text>
+})
+
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 jest.useFakeTimers()
+
 describe('ArticleChoiceExerciseScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -54,15 +60,15 @@ describe('ArticleChoiceExerciseScreen', () => {
 
   it('should allow to skip an exercise and try it out later', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     const tryLater = getByText(getLabels().exercises.tryLater)
     fireEvent.press(tryLater)
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
   it('should not allow to skip last document', () => {
@@ -70,26 +76,26 @@ describe('ArticleChoiceExerciseScreen', () => {
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
 
   it('should show word again when answered wrong', () => {
     const { getByText, getAllByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
 
-    expect(getAllByText(/Auto/)).toHaveLength(4)
+    expect(getAllByText(/Auto/)).toHaveLength(3)
     fireEvent(getByText('das'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
 
-    expect(getAllByText(/Spachtel/)).toHaveLength(4)
+    expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
   it('should save progress correctly', async () => {
@@ -99,7 +105,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.next))
     fireEvent(getByText('das'), 'pressOut')
 
-    await act(() => {
+    await act(async () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [

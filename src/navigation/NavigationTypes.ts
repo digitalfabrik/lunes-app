@@ -43,6 +43,8 @@ export type RoutesParams = {
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
+  UserVocabularyList: undefined
+  UserVocabularyDetail: { document: Document }
   ScopeSelection: {
     initialSelection: boolean
   }
