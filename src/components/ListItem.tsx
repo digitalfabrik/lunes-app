@@ -2,9 +2,9 @@ import React, { ReactElement, useCallback, useState } from 'react'
 import { GestureResponderEvent } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
-import FeedbackBadge from './FeedbackBadge'
 
 import { ChevronRight } from '../../assets/images'
+import FeedbackBadge, { FEEDBACK } from './FeedbackBadge'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
@@ -14,18 +14,34 @@ export const GenericListItemContainer = styled.Pressable`
   align-items: center;
   border-radius: 2px;
 `
-const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean }>`
+const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean; feedback: FEEDBACK }>`
   flex-direction: column;
-  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
-  border-left-color: ${props => props.theme.colors.incorrect};
+  border-top-width: 1px;
+  border-top-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-right-width: 1px;
+  border-right-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-bottom-width: 1px;
+  border-bottom-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-left-color: ${props => {
+    if (props.feedback === FEEDBACK.POSITIVE) {
+      return props.theme.colors.correct
+    }
+    if (props.feedback === FEEDBACK.NEGATIVE) {
+      return props.theme.colors.incorrect
+    }
+    if (props.pressed) {
+      return props.theme.colors.primary
+    }
+    return props.theme.colors.disabled
+  }};
   border-left-radius: 0;
-  border-left-width: 6px;
+  border-left-width: ${props => (props.feedback !== FEEDBACK.NONE ? '4px' : '1px')};
 `
 
 const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
   min-height: ${hp('12%')}px;
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   background-color: ${prop => {
@@ -95,7 +111,7 @@ interface ListItemProps {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
-  feedbackInfo?: {disciplineId: number, thisLevel: number, nextLevel: number | null} | null
+  feedbackInfo?: { disciplineId: number; level: number } | null
 }
 
 const ListItem = ({
@@ -113,6 +129,7 @@ const ListItem = ({
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
+  const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
   const updatePressed = useCallback((pressed: boolean): void => onPress && setPressed(pressed), [onPress])
 
   const theme = useTheme()
@@ -170,19 +187,20 @@ const ListItem = ({
       onLongPress={() => updatePressed(true)}
       pressed={pressed}
       delayLongPress={200}
+      feedback={feedback}
       testID='list-item'>
-      <FeedbackBadge feedbackInfo={feedbackInfo}/>
+      <FeedbackBadge feedbackInfo={feedbackInfo} setFeedback={setFeedback} />
       <ContentContainer>
-      {iconToRender}
-      <FlexContainer>
-        {titleToRender}
-        <DescriptionContainer>
-          {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
-          {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
-        </DescriptionContainer>
-        {children}
-      </FlexContainer>
-      {rightChildrenToRender}
+        {iconToRender}
+        <FlexContainer>
+          {titleToRender}
+          <DescriptionContainer>
+            {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
+            {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
+          </DescriptionContainer>
+          {children}
+        </FlexContainer>
+        {rightChildrenToRender}
       </ContentContainer>
     </Container>
   )
