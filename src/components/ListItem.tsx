@@ -4,7 +4,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
-import FeedbackBadge, { FEEDBACK } from './FeedbackBadge'
+import { FEEDBACK } from '../constants/data'
+import FeedbackBadge from './FeedbackBadge'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
@@ -36,6 +37,12 @@ const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled:
   }};
   border-left-radius: 0;
   border-left-width: ${props => (props.feedback !== FEEDBACK.NONE ? '4px' : '1px')};
+  background-color: ${prop => {
+    if (prop.disabled) {
+      return prop.theme.colors.disabled
+    }
+    return prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent
+  }};
 `
 
 const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
@@ -44,12 +51,6 @@ const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
   flex-direction: row;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
-  background-color: ${prop => {
-    if (prop.disabled) {
-      return prop.theme.colors.disabled
-    }
-    return prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent
-  }};
 `
 
 const Title = styled.Text<{ pressed: boolean }>`
@@ -190,7 +191,7 @@ const ListItem = ({
       feedback={feedback}
       testID='list-item'>
       <FeedbackBadge feedbackInfo={feedbackInfo} setFeedback={setFeedback} />
-      <ContentContainer>
+      <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}
         <FlexContainer>
           {titleToRender}

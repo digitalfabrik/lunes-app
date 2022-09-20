@@ -3,7 +3,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
-import { SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../constants/data'
+import { FEEDBACK, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
@@ -21,25 +21,22 @@ const BadgeText = styled(ContentSecondaryLight)`
   margin-left: ${props => props.theme.spacings.xs};
 `
 
-export const enum FEEDBACK {
-  POSITIVE,
-  NONE,
-  NEGATIVE,
-}
-
 interface FeedbackBadgeProps {
-  disciplineId: number
-  level: number
+  feedbackInfo: {
+    disciplineId: number
+    level: number
+  } | null
+  setFeedback: (feedback: FEEDBACK) => void
 }
 
-const FeedbackModal = (props: FeedbackBadgeProps | null): ReactElement => {
+const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
   const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
   const { setFeedback: setFeedbackOnParent, feedbackInfo } = props
   const { disciplineId, level } = feedbackInfo ?? {}
   const { data: scores } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
 
   useEffect(() => {
-    const updateFeedback = feedback => {
+    const updateFeedback = (feedback: FEEDBACK) => {
       setFeedback(feedback)
       setFeedbackOnParent(feedback)
     }
@@ -71,4 +68,4 @@ const FeedbackModal = (props: FeedbackBadgeProps | null): ReactElement => {
 
   return null
 }
-export default FeedbackModal
+export default FeedbackBadge
