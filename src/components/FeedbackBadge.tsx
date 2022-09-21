@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
-import { FEEDBACK, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../constants/data'
+import { EXERCISE_FEEDBACK, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../constants/data'
 import { useLoadAsync } from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
@@ -27,18 +27,18 @@ interface FeedbackBadgeProps {
     disciplineId: number
     level: number
   } | null
-  setFeedback: (feedback: FEEDBACK) => void
+  setFeedback: (feedback: EXERCISE_FEEDBACK) => void
 }
 
 const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
-  const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
+  const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK>(EXERCISE_FEEDBACK.NONE)
   const { setFeedback: setFeedbackOnParent, levelIdentifier } = props
   const { disciplineId, level } = levelIdentifier ?? {}
   const { data: scores, loading, refresh } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    const updateFeedback = (feedback: FEEDBACK) => {
+    const updateFeedback = (feedback: EXERCISE_FEEDBACK) => {
       setFeedback(feedback)
       setFeedbackOnParent(feedback)
     }
@@ -46,7 +46,9 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
       /* eslint-disable @typescript-eslint/no-unnecessary-condition */
       const score = scores?.[disciplineId]?.[level]
       if (score) {
-        updateFeedback(score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? FEEDBACK.POSITIVE : FEEDBACK.NEGATIVE)
+        updateFeedback(
+          score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? EXERCISE_FEEDBACK.POSITIVE : EXERCISE_FEEDBACK.NEGATIVE
+        )
       }
     }
   }, [loading, scores, disciplineId, level, setFeedbackOnParent])
@@ -57,7 +59,7 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
     }
   }, [isFocused, refresh])
 
-  if (feedback === FEEDBACK.POSITIVE) {
+  if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
       <BadgeContainer testID='positive-badge'>
         <ThumbsUpIcon width={wp('6%')} height={wp('6%')} />
@@ -66,7 +68,7 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
     )
   }
 
-  if (feedback === FEEDBACK.NEGATIVE) {
+  if (feedback === EXERCISE_FEEDBACK.NEGATIVE) {
     return (
       <BadgeContainer testID='negative-badge'>
         <ThumbsDownIcon width={wp('6%')} height={wp('6%')} />

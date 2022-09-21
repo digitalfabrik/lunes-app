@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
-import { FEEDBACK } from '../constants/data'
+import { EXERCISE_FEEDBACK } from '../constants/data'
 import FeedbackBadge from './FeedbackBadge'
 import { ContentSecondaryLight } from './text/Content'
 
@@ -15,7 +15,11 @@ export const GenericListItemContainer = styled.Pressable`
   align-items: center;
   border-radius: 2px;
 `
-const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean; feedback: FEEDBACK }>`
+const Container = styled(GenericListItemContainer)<{
+  pressed: boolean
+  disabled: boolean
+  feedback: EXERCISE_FEEDBACK
+}>`
   flex-direction: column;
   border-top-width: 1px;
   border-top-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
@@ -24,10 +28,10 @@ const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled:
   border-bottom-width: 1px;
   border-bottom-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-left-color: ${props => {
-    if (props.feedback === FEEDBACK.POSITIVE) {
+    if (props.feedback === EXERCISE_FEEDBACK.POSITIVE) {
       return props.theme.colors.correct
     }
-    if (props.feedback === FEEDBACK.NEGATIVE) {
+    if (props.feedback === EXERCISE_FEEDBACK.NEGATIVE) {
       return props.theme.colors.incorrect
     }
     if (props.pressed) {
@@ -36,7 +40,7 @@ const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled:
     return props.theme.colors.disabled
   }};
   border-left-radius: 0;
-  border-left-width: ${props => (props.feedback !== FEEDBACK.NONE ? '4px' : '1px')};
+  border-left-width: ${props => (props.feedback !== EXERCISE_FEEDBACK.NONE ? '4px' : '1px')};
   background-color: ${prop => {
     if (prop.disabled) {
       return prop.theme.colors.disabled
@@ -130,7 +134,7 @@ const ListItem = ({
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
-  const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
+  const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK>(EXERCISE_FEEDBACK.NONE)
   const updatePressed = useCallback((pressed: boolean): void => onPress && setPressed(pressed), [onPress])
 
   const theme = useTheme()

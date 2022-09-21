@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { SCORE_THRESHOLD_POSITIVE_FEEDBACK, FEEDBACK } from '../../constants/data'
+import { SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
 import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
@@ -74,7 +74,7 @@ describe('FeedbackBadge', () => {
     await waitFor(() => expect(queryByTestId('negative-badge')).toBeNull())
     await waitFor(() => expect(queryByTestId('positive-badge')).not.toBeNull())
     await waitFor(() => expect(queryByText(getLabels().exercises.feedback.positive)).not.toBeNull())
-    await waitFor(() => expect(mockSetFeedback).toHaveBeenCalledWith(FEEDBACK.POSITIVE))
+    await waitFor(() => expect(mockSetFeedback).toHaveBeenCalledWith(EXERCISE_FEEDBACK.POSITIVE))
   })
 
   it('should show negative feedback for scores below threshold', async () => {
@@ -89,6 +89,6 @@ describe('FeedbackBadge', () => {
     await waitFor(() => expect(queryByTestId('positive-badge')).toBeNull())
     await waitFor(() => expect(queryByTestId('negative-badge')).not.toBeNull())
     await waitFor(() => expect(queryByText(getLabels().exercises.feedback.negative)).not.toBeNull())
-    await waitFor(() => expect(mockSetFeedback).toHaveBeenCalledWith(FEEDBACK.NEGATIVE))
+    await waitFor(() => expect(mockSetFeedback).toHaveBeenCalledWith(EXERCISE_FEEDBACK.NEGATIVE))
   })
 })
