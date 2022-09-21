@@ -4,6 +4,7 @@ import 'react-native'
 
 import { ARTICLES } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
 
@@ -16,14 +17,7 @@ jest.mock('../AudioPlayer', () => () => null)
 describe('VocabularyListItem', () => {
   const onPress = jest.fn()
 
-  const document: Document = {
-    article: ARTICLES[1],
-    audio: '',
-    id: 0,
-    document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-    word: 'Winkelmesser',
-    alternatives: [],
-  }
+  const document = new DocumentBuilder(1).build()[0]
 
   it('should display image passed to it', () => {
     const { getByTestId } = render(<VocabularyListItem document={document} onPress={onPress} />)

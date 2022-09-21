@@ -115,6 +115,13 @@ interface ResultType {
   order: number
 }
 
+export const DOCUMENT_TYPES = {
+  lunesStandard: 'lunes-standard',
+  lunesProtected: 'lunes-protected',
+  userVocabulary: 'user-vocabulary',
+}
+export type DocumentType = typeof DOCUMENT_TYPES[keyof typeof DOCUMENT_TYPES]
+
 export interface Answer {
   word: string
   article: Article

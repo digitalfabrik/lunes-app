@@ -5,18 +5,12 @@ import 'react-native'
 import { ARTICLES, SimpleResult } from '../../../../constants/data'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import DocumentBuilder from '../../../../testing/DocumentBuilder'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
 describe('Feedback', () => {
-  const document = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  const document = new DocumentBuilder(1).build()[0]
 
   const renderFeedback = (
     result: SimpleResult,

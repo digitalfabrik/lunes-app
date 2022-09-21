@@ -1,4 +1,4 @@
-import { Article } from './data'
+import { Article, DocumentType } from './data'
 
 export interface Discipline {
   id: number
@@ -27,6 +27,7 @@ export type Images = Image[]
 
 export interface Document {
   id: number
+  documentType: DocumentType
   word: string
   article: Article
   document_image: Images
