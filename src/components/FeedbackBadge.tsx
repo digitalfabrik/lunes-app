@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native'
 import React, { ReactElement, useState, useEffect } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
@@ -62,7 +62,7 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
   if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
       <BadgeContainer testID='positive-badge'>
-        <ThumbsUpIcon width={wp('6%')} height={wp('6%')} />
+        <ThumbsUpIcon width={hp('3.5%')} height={hp('3.5%')} />
         <BadgeText>{getLabels().exercises.feedback.positive}</BadgeText>
       </BadgeContainer>
     )
@@ -71,7 +71,7 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
   if (feedback === EXERCISE_FEEDBACK.NEGATIVE) {
     return (
       <BadgeContainer testID='negative-badge'>
-        <ThumbsDownIcon width={wp('6%')} height={wp('6%')} />
+        <ThumbsDownIcon width={hp('4%')} height={hp('4%')} />
         <BadgeText>{getLabels().exercises.feedback.negative}</BadgeText>
       </BadgeContainer>
     )
