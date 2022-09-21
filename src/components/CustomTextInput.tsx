@@ -8,8 +8,8 @@ import theme from '../constants/theme'
 import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
-const LINE_HEIGHT = 30
-const MIN_HEIGHT = 60
+const LINE_HEIGHT = hp('4%')
+const MIN_HEIGHT = hp('8%')
 
 const StyledTextInput = styled.TextInput`
   font-size: ${props => props.theme.fonts.defaultFontSize};

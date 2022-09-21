@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import { CloseIcon, MagnifierIcon } from '../../assets/images'
+import { MagnifierIcon } from '../../assets/images'
 import { getLabels } from '../services/helpers'
 import CustomTextInput from './CustomTextInput'
-import PressableOpacity from './PressableOpacity'
 
 interface Props {
   query: string
@@ -13,13 +13,10 @@ interface Props {
 const SearchBar = ({ query, setQuery }: Props): ReactElement => (
   <CustomTextInput
     value={query}
+    clearable
     onChangeText={setQuery}
     placeholder={getLabels().search.enterWord}
-    rightContainer={
-      <PressableOpacity onPress={() => setQuery('')}>
-        {query === '' ? <MagnifierIcon /> : <CloseIcon />}
-      </PressableOpacity>
-    }
+    rightContainer={<MagnifierIcon width={hp('3%')} height={hp('3%')} />}
   />
 )
 

@@ -29,14 +29,15 @@ const HeaderButtonsContainer = styled.View`
   align-self: flex-end;
 `
 const MenuIconContainer = styled.View`
-  padding: ${props => props.theme.spacings.sm}
-}
-
-;
+  padding: ${props => props.theme.spacings.sm} 0;
 `
 
 const MenuIconWhite = styled(MenuIcon)`
   color: ${props => props.theme.colors.backgroundAccent};
+`
+
+const StyledHiddenItem = styled(HiddenItem)`
+  height: ${props => props.theme.spacings.xl};
 `
 
 interface Props {
@@ -56,11 +57,16 @@ const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
               <MenuIconWhite width={hp('3%')} height={hp('3%')} />
             </MenuIconContainer>
           }>
-          <HiddenItem
+          <StyledHiddenItem
+            titleStyle={{ fontSize: hp('2%') }}
             title={getLabels().general.header.manageSelection}
             onPress={() => navigation.navigate('ManageSelection')}
           />
-          <HiddenItem title={getLabels().general.header.settings} onPress={() => navigation.navigate('Settings')} />
+          <StyledHiddenItem
+            title={getLabels().general.header.settings}
+            onPress={() => navigation.navigate('Settings')}
+            titleStyle={{ fontSize: hp('2%') }}
+          />
         </OverflowMenu>
       </HeaderButtonsContainer>
     </HeaderStyle>

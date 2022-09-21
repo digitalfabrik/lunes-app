@@ -35,6 +35,10 @@ const StyledMenuIcon = styled(MenuIcon)`
   color: ${props => props.theme.colors.primary};
 `
 
+const StyledHiddenItem = styled(HiddenItem)`
+  height: ${props => props.theme.spacings.xl};
+`
+
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
@@ -77,7 +81,11 @@ const ExerciseHeader = ({
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
         <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
-          <HiddenItem title={getLabels().general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+          <StyledHiddenItem
+            title={getLabels().general.header.wordFeedback}
+            onPress={() => setIsFeedbackModalVisible(true)}
+            titleStyle={{ fontSize: hp('2%') }}
+          />
         </OverflowMenu>
       </HeaderRightContainer>
     )
