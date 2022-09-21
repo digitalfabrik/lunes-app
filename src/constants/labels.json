@@ -189,7 +189,11 @@
     "list": {
       "edit": "Bearbeiten",
       "finished": "Fertig",
-      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt."
+      "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
+      "confirmDeletionPart1": "Willst du das Wort",
+      "confirmDeletionPart2": "wirklich löschen?",
+      "confirm": "Ja, löschen",
+      "cancel": "Schliessen"
     }
   }
 }
