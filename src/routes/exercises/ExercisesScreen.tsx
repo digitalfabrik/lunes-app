@@ -90,7 +90,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           description={item.description}
           onPress={() => handleNavigation(item)}
           arrowDisabled={nextExercise === null || item.level > nextExercise.level}
-          feedbackInfo={{ disciplineId, level: item.level }}
+          levelIdentifier={{ disciplineId, level: item.level }}
         />
       </ListItemResizer>
     </Container>

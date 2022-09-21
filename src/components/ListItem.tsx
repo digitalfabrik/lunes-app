@@ -112,7 +112,7 @@ interface ListItemProps {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
-  feedbackInfo?: { disciplineId: number; level: number } | null
+  levelIdentifier?: { disciplineId: number; level: number } | null
 }
 
 const ListItem = ({
@@ -126,7 +126,7 @@ const ListItem = ({
   hideRightChildren = false,
   arrowDisabled = false,
   disabled = false,
-  feedbackInfo = null,
+  levelIdentifier = null,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -190,7 +190,7 @@ const ListItem = ({
       delayLongPress={200}
       feedback={feedback}
       testID='list-item'>
-      <FeedbackBadge feedbackInfo={feedbackInfo} setFeedback={setFeedback} />
+      <FeedbackBadge levelIdentifier={levelIdentifier} setFeedback={setFeedback} />
       <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}
         <FlexContainer>

@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import { FEEDBACK, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../constants/data'
-import useLoadAsync from '../hooks/useLoadAsync'
+import { useLoadAsync } from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import { ContentSecondaryLight } from './text/Content'
@@ -13,7 +13,7 @@ const BadgeContainer = styled.View`
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  background-color: ${props => props.theme.colors.networkErrorBackground};
+  background-color: ${props => props.theme.colors.lightGreyBackground};
   width: 100%;
 `
 const BadgeText = styled(ContentSecondaryLight)`
@@ -22,7 +22,7 @@ const BadgeText = styled(ContentSecondaryLight)`
 `
 
 interface FeedbackBadgeProps {
-  feedbackInfo: {
+  levelIdentifier: {
     disciplineId: number
     level: number
   } | null
@@ -31,26 +31,27 @@ interface FeedbackBadgeProps {
 
 const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
   const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
-  const { setFeedback: setFeedbackOnParent, feedbackInfo } = props
-  const { disciplineId, level } = feedbackInfo ?? {}
-  const { data: scores } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
+  const { setFeedback: setFeedbackOnParent, levelIdentifier } = props
+  const { disciplineId, level } = levelIdentifier ?? {}
+  const { data: scores, loading } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
 
   useEffect(() => {
     const updateFeedback = (feedback: FEEDBACK) => {
       setFeedback(feedback)
       setFeedbackOnParent(feedback)
     }
-    if (scores && disciplineId && level && level !== 0) {
-      const score = scores[disciplineId]?.[level]
+    if (!loading && disciplineId != null && level != null && level !== 0) {
+      /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+      const score = scores?.[disciplineId]?.[level]
       if (score) {
         updateFeedback(score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? FEEDBACK.POSITIVE : FEEDBACK.NEGATIVE)
       }
     }
-  }, [scores, disciplineId, level, setFeedbackOnParent])
+  }, [loading, scores, disciplineId, level, setFeedbackOnParent])
 
   if (feedback === FEEDBACK.POSITIVE) {
     return (
-      <BadgeContainer>
+      <BadgeContainer testID='positive-badge'>
         <ThumbsUpIcon width={wp('6%')} height={wp('6%')} />
         <BadgeText>{getLabels().exercises.feedback.positive}</BadgeText>
       </BadgeContainer>
@@ -59,7 +60,7 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
 
   if (feedback === FEEDBACK.NEGATIVE) {
     return (
-      <BadgeContainer>
+      <BadgeContainer testID='negative-badge'>
         <ThumbsDownIcon width={wp('6%')} height={wp('6%')} />
         <BadgeText>{getLabels().exercises.feedback.negative}</BadgeText>
       </BadgeContainer>
