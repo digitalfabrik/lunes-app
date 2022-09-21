@@ -1,8 +1,10 @@
-import { NextExercise } from '../../constants/data'
+import { NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
+import { DocumentResult } from '../../navigation/NavigationTypes'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
-import { getNextExercise, getProgress } from '../helpers'
+import { calculateScore, getNextExercise, getProgress, willNextExerciseUnlock } from '../helpers'
 
 import mocked = jest.mocked
 
@@ -109,6 +111,57 @@ describe('helpers', () => {
       )
       const progress = await getProgress(profession)
       expect(progress).toBe(0.5)
+    })
+  })
+
+  describe('willUnlockNextExercise', () => {
+    it('should unlock if exercise is done good enough for the first time', () => {
+      expect(willNextExerciseUnlock(undefined, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
+    })
+
+    it('should unlock if exercise is done good enough for the scond time', () => {
+      expect(willNextExerciseUnlock(SCORE_THRESHOLD_UNLOCK, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
+    })
+
+    it('should not unlock if exercise is already unlocked', () => {
+      expect(willNextExerciseUnlock(SCORE_THRESHOLD_UNLOCK + 1, SCORE_THRESHOLD_UNLOCK + 3)).toBeFalsy()
+    })
+
+    it('should not unlock if exercise was done bad', () => {
+      expect(willNextExerciseUnlock(undefined, SCORE_THRESHOLD_UNLOCK)).toBeFalsy()
+    })
+  })
+
+  describe('calculateScore', () => {
+    const getDocumentsWithResults = (
+      numberOfTries: [number, number, number, number],
+      results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
+    ): DocumentResult[] => {
+      const documents = new DocumentBuilder(4).build()
+      return documents.map((document, index) => ({
+        document,
+        result: results[index],
+        numberOfTries: numberOfTries[index],
+      }))
+    }
+
+    it('should calculate score correctly for different number of tries', () => {
+      const score = calculateScore(
+        getDocumentsWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect'])
+      )
+      expect(score).toBe(4)
+    })
+
+    it('should calculate score correctly for best result', () => {
+      const score = calculateScore(getDocumentsWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct']))
+      expect(score).toBe(10)
+    })
+
+    it('should calculate score correctly for bad result with similar results', () => {
+      const score = calculateScore(
+        getDocumentsWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
+      )
+      expect(score).toBe(0)
     })
   })
 })

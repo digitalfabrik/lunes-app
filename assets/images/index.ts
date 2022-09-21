@@ -51,6 +51,7 @@ import MicrophoneCircleIcon from './microphone-circle-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
+import PenIcon from './pen-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import SadSmileyCircleIcon from './sad-smiley-circle-icon-white.svg'
@@ -61,6 +62,7 @@ import StarCircleIconGrey from './star-circle-icon-grey.svg'
 import StarIconGreyFilled from './star-icon-grey-filled.svg'
 import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
+import TrashIconWhite from './trash-bin-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
@@ -120,6 +122,7 @@ export {
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
+  PenIcon,
   RepeatIcon,
   SadSmileyIcon,
   SadSmileyCircleIcon,
@@ -130,6 +133,7 @@ export {
   StarIconGreyFilled,
   StarIconWhite,
   TrashIcon,
+  TrashIconWhite,
   TrophyIcon,
   VolumeUpCircleIcon,
 }

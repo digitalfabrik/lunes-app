@@ -86,7 +86,7 @@ const ExerciseHeader = ({
       headerLeft: renderHeaderLeft,
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
-        paddingHorizontal: wp('2%'),
+        paddingHorizontal: theme.spacingsPlain.xs,
         maxWidth: wp('25%'),
       },
     })
@@ -99,6 +99,7 @@ const ExerciseHeader = ({
     closeExerciseAction,
     labelOverride,
     isCloseButton,
+    theme.spacingsPlain.xs,
   ])
 
   useEffect(() => {

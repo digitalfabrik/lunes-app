@@ -184,6 +184,7 @@
   },
   "userVocabulary": {
     "myWords": "Meine Wörter",
+    "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
       "create": "Vokabeln erstellen",
@@ -205,6 +206,10 @@
       "finished": "Fertig",
       "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
       "create": "Eigenes Wort erstellen"
+      "confirmDeletionPart1": "Willst du das Wort",
+      "confirmDeletionPart2": "wirklich löschen?",
+      "confirm": "Ja, löschen",
+      "cancel": "Schliessen"
     }
   }
 }
