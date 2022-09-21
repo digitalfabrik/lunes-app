@@ -49,6 +49,6 @@ const Title = ({ titleIcon, title, subtitle, description, children, style }: ITi
 )
 export default Title
 
-export const TitleSpacing = styled(Title)`
+export const TitleWithSpacing = styled(Title)`
   margin-bottom: ${props => props.theme.spacings.xxl};
 `

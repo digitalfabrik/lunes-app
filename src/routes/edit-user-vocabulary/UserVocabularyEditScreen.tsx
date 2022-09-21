@@ -7,7 +7,7 @@ import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
 import RouteWrapper from '../../components/RouteWrapper'
-import { TitleSpacing } from '../../components/Title'
+import { TitleWithSpacing } from '../../components/Title'
 import { HintText } from '../../components/text/Hint'
 import { BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
 import { getLabels } from '../../services/helpers'
@@ -70,7 +70,7 @@ const UserVocabularyEditScreen = (): ReactElement => {
   return (
     <RouteWrapper>
       <Root>
-        <TitleSpacing title={headline} />
+        <TitleWithSpacing title={headline} />
         <CustomTextInput
           clearable
           value={word}

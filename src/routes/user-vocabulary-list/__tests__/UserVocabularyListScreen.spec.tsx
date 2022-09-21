@@ -30,7 +30,7 @@ describe('UserVocabularyListScreen', () => {
     const { getByText, getByPlaceholderText } = render(<UserVocabularyListScreen navigation={navigation} />)
 
     expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
-    expect(getByPlaceholderText(getLabels().dictionary.enterWord)).toBeDefined()
+    expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
     expect(getByText(userDocuments[0].word)).toBeDefined()
     expect(getByText(userDocuments[1].word)).toBeDefined()

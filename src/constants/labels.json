@@ -164,8 +164,10 @@
   },
   "favorites": "Favoriten",
   "dictionary": {
-    "enterWord": "Wort eingeben",
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
+  },
+  "search": {
+    "enterWord": "Wort eingeben"
   },
   "settings": {
     "settings": "Einstellungen",
