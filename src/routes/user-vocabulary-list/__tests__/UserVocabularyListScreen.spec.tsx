@@ -9,6 +9,7 @@ import { getReturnOf } from '../../../testing/helper'
 import render from '../../../testing/render'
 import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
+jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadUserVocabulary')
 
 jest.mock('../../../components/FavoriteButton', () => () => {

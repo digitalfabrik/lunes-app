@@ -12,6 +12,7 @@ import {
 import render from '../../../../testing/render'
 import SelectionItem from '../SelectionItem'
 
+jest.mock('@react-navigation/native')
 describe('SelectionItem', () => {
   const deleteItem = jest.fn()
   const renderSelectionItem = (): RenderAPI =>

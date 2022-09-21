@@ -7,6 +7,7 @@ import { Document } from '../../constants/endpoints'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
 
+jest.mock('@react-navigation/native')
 jest.mock('../FavoriteButton', () => () => {
   const { Text } = require('react-native')
   return <Text>FavoriteButton</Text>

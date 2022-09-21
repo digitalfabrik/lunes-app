@@ -5,6 +5,7 @@ import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
 import UserVocabularyOverviewScreen from '../UserVocabularyOverviewScreen'
 
+jest.mock('@react-navigation/native')
 describe('UserVocabularyOverviewScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyOverview'>()
   it('should show content', () => {

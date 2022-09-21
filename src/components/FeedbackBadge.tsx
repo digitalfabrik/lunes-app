@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native'
 import React, { ReactElement, useState, useEffect } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -33,7 +34,8 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
   const [feedback, setFeedback] = useState<FEEDBACK>(FEEDBACK.NONE)
   const { setFeedback: setFeedbackOnParent, levelIdentifier } = props
   const { disciplineId, level } = levelIdentifier ?? {}
-  const { data: scores, loading } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
+  const { data: scores, loading, refresh } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     const updateFeedback = (feedback: FEEDBACK) => {
@@ -48,6 +50,12 @@ const FeedbackBadge = (props: FeedbackBadgeProps): ReactElement | null => {
       }
     }
   }, [loading, scores, disciplineId, level, setFeedbackOnParent])
+
+  useEffect(() => {
+    if (isFocused) {
+      refresh()
+    }
+  }, [isFocused, refresh])
 
   if (feedback === FEEDBACK.POSITIVE) {
     return (

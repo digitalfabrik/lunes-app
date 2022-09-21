@@ -8,6 +8,7 @@ import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
 import FeedbackBadge from '../FeedbackBadge'
 
+jest.mock('@react-navigation/native')
 jest.mock('../../hooks/useLoadAsync', () => ({
   useLoadAsync: jest.fn(),
 }))
@@ -18,15 +19,9 @@ describe('FeedbackBadge', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
+
   const renderFeedbackBadge = (levelIdentifier: { disciplineId: number; level: number } | null) =>
-    render(
-      <FeedbackBadge
-        levelIdentifier={
-          levelIdentifier ? { disciplineId: levelIdentifier.disciplineId, level: levelIdentifier.level } : null
-        }
-        setFeedback={mockSetFeedback}
-      />
-    )
+    render(<FeedbackBadge levelIdentifier={levelIdentifier} setFeedback={mockSetFeedback} />)
 
   it('should not show when no level info is provided', async () => {
     mocked(useLoadAsync).mockImplementation(() => ({
