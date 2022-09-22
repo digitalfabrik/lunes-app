@@ -32,7 +32,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: PropsType): JSX.Element =>
         <ListItem
           icon={<BookIconBlack />}
           title={create}
-          onPress={() => navigation.navigate('UserVocabularyEdit', { headerBackLabel: myWords })}
+          onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: myWords })}
         />
         <ListItem
           icon={<BookIconBlack />}

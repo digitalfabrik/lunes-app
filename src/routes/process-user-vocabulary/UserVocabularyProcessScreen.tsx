@@ -36,7 +36,7 @@ const StyledHintText = styled(HintText)`
   margin-left: ${props => props.theme.spacings.xxl};
 `
 
-const UserVocabularyEditScreen = (): ReactElement => {
+const UserVocabularyProcessScreen = (): ReactElement => {
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
   const [hasWordErrorMessage, setHasWordErrorMessage] = useState<boolean>(false)
@@ -108,4 +108,4 @@ const UserVocabularyEditScreen = (): ReactElement => {
   )
 }
 
-export default UserVocabularyEditScreen
+export default UserVocabularyProcessScreen

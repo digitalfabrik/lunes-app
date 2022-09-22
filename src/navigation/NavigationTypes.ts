@@ -43,7 +43,7 @@ export type RoutesParams = {
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
-  UserVocabularyEdit: {
+  UserVocabularyProcess: {
     headerBackLabel: string
   }
   UserVocabularyList: {
