@@ -19,7 +19,7 @@ describe('Title', () => {
     const { getByText } = renderListTitle()
 
     expect(getByText(defaultTitleProps.title)).toBeTruthy()
-    expect(getByText(defaultTitleProps.description)).toBeTruthy()
+    expect(getByText(defaultTitleProps.description!)).toBeTruthy()
   })
 
   it('should render ListTitle with subtitle icon and children', () => {
@@ -29,7 +29,7 @@ describe('Title', () => {
     const { getByText, getByLabelText } = renderListTitle({ subtitle, titleIcon, children: <Text>{childText}</Text> })
 
     expect(getByText(defaultTitleProps.title)).toBeTruthy()
-    expect(getByText(defaultTitleProps.description)).toBeTruthy()
+    expect(getByText(defaultTitleProps.description!)).toBeTruthy()
     expect(getByText(subtitle)).toBeTruthy()
     expect(getByText(childText)).toBeTruthy()
     expect(getByLabelText('correct')).toBeTruthy()
