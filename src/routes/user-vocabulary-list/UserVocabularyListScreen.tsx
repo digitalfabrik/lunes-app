@@ -50,8 +50,16 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
-  const { create, myWords, list } = getLabels().userVocabulary
-  const { confirm, confirmDeletionPart1, confirmDeletionPart2, finished, edit } = list
+  const { create, myWords } = getLabels().userVocabulary
+  const { list } = getLabels().userVocabulary.overview
+  const {
+    confirm,
+    confirmDeletionPart1,
+    confirmDeletionPart2,
+    finished,
+    edit,
+  }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
+    getLabels().userVocabulary.list
 
   // AsyncStorage.addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
 
@@ -119,7 +127,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
         {!isKeyboardVisible && (
           <ButtonContainer>
             <Button
-              onPress={() => navigation.navigate('UserVocabularyOverview')}
+              onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: list })}
               label={create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}

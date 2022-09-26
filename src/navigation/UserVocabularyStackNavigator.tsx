@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
+import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
 import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
@@ -29,12 +30,17 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='UserVocabularyList'
         component={UserVocabularyListScreen}
-        options={({ navigation }) => options(back, navigation)}
+        options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
       />
       <Stack.Screen
         name='UserVocabularyDetail'
         component={VocabularyDetailScreen}
         options={({ navigation }) => options(back, navigation)}
+      />
+      <Stack.Screen
+        name='UserVocabularyProcess'
+        component={UserVocabularyProcessScreen}
+        options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
       />
     </Stack.Navigator>
   )
