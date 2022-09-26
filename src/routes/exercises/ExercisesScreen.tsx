@@ -21,6 +21,7 @@ import LockingLane from './components/LockingLane'
 const Container = styled.View`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `
 
 const ListItemResizer = styled.View`
