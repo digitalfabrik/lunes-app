@@ -55,6 +55,7 @@ const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
   flex-direction: row;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+  align-items: center;
 `
 
 const Title = styled.Text<{ pressed: boolean }>`
