@@ -1,6 +1,6 @@
-import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
+import { CommonActions, RouteProp, useIsFocused, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -11,9 +11,11 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
-import { Exercise, EXERCISES } from '../../constants/data'
+import { Exercise, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
+import { useLoadAsync } from '../../hooks/useLoadAsync'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
@@ -42,7 +44,14 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const { discipline, disciplineTitle, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
-
+  const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
+  const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
+  const {
+    data: scores,
+    loading: loadingFeedback,
+    refresh: refreshFeedback,
+  } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
+  const isFocused = useIsFocused()
   const {
     data: documents,
     error,
@@ -53,6 +62,21 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     apiKey: discipline.apiKey,
   })
 
+  useEffect(() => {
+    if (!loadingFeedback && !isFeedbackSet) {
+      const exerciseScores = scores?.[disciplineId] ?? {}
+      const updatedFeedback: EXERCISE_FEEDBACK[] = Object.values(exerciseScores).map(score => {
+        if (!score) {
+          return EXERCISE_FEEDBACK.NONE
+        }
+        return score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? EXERCISE_FEEDBACK.POSITIVE : EXERCISE_FEEDBACK.NEGATIVE
+      })
+      updatedFeedback[0] = EXERCISE_FEEDBACK.NONE
+      setFeedback(updatedFeedback)
+      setIsFeedbackSet(true)
+    }
+  }, [loadingFeedback, isFeedbackSet, disciplineId, scores])
+
   useFocusEffect(
     useCallback(() => {
       getDoneExercises(disciplineId)
@@ -60,6 +84,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         .catch(reportError)
     }, [disciplineId])
   )
+
+  useEffect(() => {
+    if (isFocused) {
+      refreshFeedback()
+      setIsFeedbackSet(false)
+    }
+  }, [isFocused, refreshFeedback])
 
   const handleNavigation = (item: Exercise): void => {
     if (nextExercise && item.level > nextExercise.level) {
@@ -91,7 +122,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
           description={item.description}
           onPress={() => handleNavigation(item)}
           arrowDisabled={nextExercise === null || item.level > nextExercise.level}
-          levelIdentifier={{ disciplineId, level: item.level }}
+          feedback={feedback[item.level] ?? EXERCISE_FEEDBACK.NONE}
         />
       </ListItemResizer>
     </Container>

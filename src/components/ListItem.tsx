@@ -117,7 +117,7 @@ interface ListItemProps {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
-  levelIdentifier?: { disciplineId: number; level: number } | null
+  feedback?: EXERCISE_FEEDBACK
 }
 
 const ListItem = ({
@@ -131,11 +131,10 @@ const ListItem = ({
   hideRightChildren = false,
   arrowDisabled = false,
   disabled = false,
-  levelIdentifier = null,
+  feedback = EXERCISE_FEEDBACK.NONE,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
-  const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK>(EXERCISE_FEEDBACK.NONE)
   const updatePressed = useCallback((pressed: boolean): void => onPress && setPressed(pressed), [onPress])
 
   const theme = useTheme()
@@ -195,7 +194,7 @@ const ListItem = ({
       delayLongPress={200}
       feedback={feedback}
       testID='list-item'>
-      <FeedbackBadge levelIdentifier={levelIdentifier} setFeedback={setFeedback} />
+      <FeedbackBadge feedback={feedback} />
       <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}
         <FlexContainer>
