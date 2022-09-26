@@ -10,7 +10,6 @@ import { getReturnOf } from '../../../testing/helper'
 import render from '../../../testing/render'
 import DictionaryScreen from '../DictionaryScreen'
 
-jest.mock('@react-navigation/native')
 jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
