@@ -109,8 +109,8 @@ describe('ArticleChoiceExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }, // TODO: auf routing überprüfen
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }, // TODO: auf routing überprüfen
+      { vocabularyItem: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 })

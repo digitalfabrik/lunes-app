@@ -96,8 +96,8 @@ const saveExerciseProgress = async (
 }
 
 const getFavorites = async (): Promise<number[]> => {
-  const documents = await AsyncStorage.getItem(FAVORITES_KEY)
-  return documents ? JSON.parse(documents) : []
+  const vocabularyItems = await AsyncStorage.getItem(FAVORITES_KEY)
+  return vocabularyItems ? JSON.parse(vocabularyItems) : []
 }
 
 const setFavorites = async (favorites: number[]): Promise<void> => {

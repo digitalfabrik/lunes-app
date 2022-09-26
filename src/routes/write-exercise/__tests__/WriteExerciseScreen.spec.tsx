@@ -188,8 +188,8 @@ describe('WriteExerciseScreen', () => {
     })
 
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
-      { document: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 
