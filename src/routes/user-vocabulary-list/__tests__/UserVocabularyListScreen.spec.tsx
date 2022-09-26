@@ -40,7 +40,7 @@ describe('UserVocabularyListScreen', () => {
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
     expect(getByText(userDocuments[0].word)).toBeDefined()
     expect(getByText(userDocuments[1].word)).toBeDefined()
-    expect(getByText(getLabels().userVocabulary.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
   it('should render empty list correctly', () => {
@@ -49,7 +49,7 @@ describe('UserVocabularyListScreen', () => {
 
     expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.noWordsYet)).toBeDefined()
-    expect(getByText(getLabels().userVocabulary.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
   it('should delete item', async () => {
