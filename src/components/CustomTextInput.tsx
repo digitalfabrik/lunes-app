@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { StyleProp, TextInputProps, ViewStyle } from 'react-native'
+import { TextInputProps } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -40,7 +40,6 @@ const IconContainer = styled.View<{ multiLine: boolean }>`
 `
 
 const ErrorContainer = styled.View`
-  margin-top: ${props => props.theme.spacings.xs}
   min-height: ${props => props.theme.spacings.lg};
 `
 
@@ -52,7 +51,6 @@ interface CustomTextInputProps extends TextInputProps {
   rightContainer?: ReactElement
   errorMessage?: string
   customBorderColor?: string
-  style?: StyleProp<ViewStyle>
 }
 
 const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
@@ -74,7 +72,6 @@ const CustomTextInput = ({
   editable = true,
   onSubmitEditing,
   customBorderColor,
-  style,
 }: CustomTextInputProps): ReactElement => {
   const theme = useTheme()
   const [isFocused, setIsFocused] = useState<boolean>(false)
@@ -84,7 +81,6 @@ const CustomTextInput = ({
   return (
     <>
       <TextInputContainer
-        style={style}
         lines={lines}
         borderColor={customBorderColor ?? getBorderColor(!!(showErrorValidation && errorMessage.length > 0), isFocused)}
         showErrorValidation={showErrorValidation}>

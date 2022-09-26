@@ -1,5 +1,5 @@
 import { ARTICLES } from '../constants/data'
-import { Document, ENDPOINTS } from '../constants/endpoints'
+import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
@@ -16,8 +16,8 @@ export interface DocumentFromServer {
   audio: string
   alternatives: AlternativeWordFromServer[]
 }
-
-export const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
+// TODO: auf API überprüfen
+export const formatServerResponse = (documents: DocumentFromServer[]): VocabularyItem[] =>
   documents.map(document => ({
     ...document,
     article: ARTICLES[document.article],
@@ -33,13 +33,13 @@ export const loadDocuments = async ({
 }: {
   disciplineId: number
   apiKey?: string
-}): Promise<Document[]> => {
+}): Promise<VocabularyItem[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
   const response = await getFromEndpoint<DocumentFromServer[]>(url, apiKey)
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<Document[]> =>
+const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<VocabularyItem[]> =>
   useLoadAsync(loadDocuments, { disciplineId, apiKey })
 
 export default useLoadDocuments

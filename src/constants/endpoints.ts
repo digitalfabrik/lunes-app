@@ -25,7 +25,7 @@ export interface Image {
 
 export type Images = Image[]
 
-export interface Document {
+export interface VocabularyItem {
   id: number
   word: string
   article: Article
@@ -42,7 +42,7 @@ export const ENDPOINTS = {
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
   documents: 'documents/:id',
-  document: 'words',
+  document: 'words', // TODO: auf API überprüfen
   feedback: 'feedback',
 }
 

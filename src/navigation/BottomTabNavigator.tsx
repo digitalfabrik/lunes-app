@@ -58,7 +58,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
           minHeight: wp('14%'),
           paddingBottom: insets.bottom,
         },
-        tabBarItemStyle: { height: wp('14%'), padding: theme.spacingsPlain.xs },
+        tabBarItemStyle: { height: wp('14%'), padding: wp('2%') },
         tabBarLabelStyle: { fontSize: wp('3%') },
       }}>
       <Navigator.Screen

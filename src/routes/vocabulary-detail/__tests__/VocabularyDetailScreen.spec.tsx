@@ -4,7 +4,7 @@ import React from 'react'
 
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import VocabularyDetailScreen from '../VocabularyDetailScreen'
@@ -22,7 +22,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyDetailScreen', () => {
-  const documents = new DocumentBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build()
 
   const getRoute = (documentIndex: number): RouteProp<RoutesParams, 'VocabularyDetail'> => ({
     key: '',

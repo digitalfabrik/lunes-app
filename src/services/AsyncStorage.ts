@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKey, Progress } from '../constants/data'
-import { Document } from '../constants/endpoints'
-import { DocumentResult } from '../navigation/NavigationTypes'
+import { VocabularyItem } from '../constants/endpoints'
+import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -89,7 +89,7 @@ const setExerciseProgress = async (disciplineId: number, exerciseKey: ExerciseKe
 const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
-  documentsWithResults: DocumentResult[]
+  documentsWithResults: VocabularyItemResult[]
 ): Promise<void> => {
   const score = calculateScore(documentsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
@@ -143,24 +143,22 @@ const getDevMode = async (): Promise<boolean | null> => {
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-const getUserVocabulary = async (): Promise<Document[]> => {
+const getUserVocabulary = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
 
-const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
+const setUserVocabulary = async (userDocument: VocabularyItem[]): Promise<void> => {
   await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userDocument))
 }
 
-const addUserDocument = async (userDocument: Document): Promise<void> => {
+const addUserDocument = async (userDocument: VocabularyItem): Promise<void> => {
+  console.log('add: ', userDocument.word)
   const userVocabulary = await getUserVocabulary()
-  if (userVocabulary.find(item => item.word === userDocument.word)) {
-    return
-  }
   await setUserVocabulary([...userVocabulary, userDocument])
 }
 
-const editUserDocument = async (oldUserDocument: Document, newUserDocument: Document): Promise<boolean> => {
+const editUserDocument = async (oldUserDocument: VocabularyItem, newUserDocument: VocabularyItem): Promise<boolean> => {
   const userVocabulary = await getUserVocabulary()
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserDocument))
   if (index === -1) {
@@ -171,8 +169,8 @@ const editUserDocument = async (oldUserDocument: Document, newUserDocument: Docu
   return true
 }
 
-const deleteUserDocument = async (userDocument: Document): Promise<void> => {
-  console.log('hi')
+const deleteUserDocument = async (userDocument: VocabularyItem): Promise<void> => {
+  console.log('delete')
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )

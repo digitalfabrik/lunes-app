@@ -5,9 +5,10 @@ import { StyleSheet, useWindowDimensions } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
-import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from './NavigationTypes'
+
+export const headerHeightPercentage = wp('15%')
 
 export const useTabletHeaderHeight = (): number | undefined => {
   const { width } = useWindowDimensions()
@@ -26,7 +27,7 @@ const headerStyles = (headerHeight?: number) =>
       height: headerHeight,
     },
     headerRightContainer: {
-      paddingHorizontal: theme.spacingsPlain.sm,
+      paddingHorizontal: wp('4%'),
       maxWidth: 60,
     },
     headerLeftContainer: {

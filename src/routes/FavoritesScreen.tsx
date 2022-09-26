@@ -43,7 +43,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
         {data && (
           <VocabularyList
             title={getLabels().favorites}
-            documents={data}
+            vocabularyItems={data}
             onFavoritesChanged={refresh}
             onItemPress={onItemPress}
           />

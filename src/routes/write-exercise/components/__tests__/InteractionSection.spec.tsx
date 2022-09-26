@@ -2,8 +2,8 @@ import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { ARTICLES } from '../../../../constants/data'
-import { Document } from '../../../../constants/endpoints'
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { VocabularyItem } from '../../../../constants/endpoints'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
@@ -31,7 +31,7 @@ jest.mock('react-native-popover-view', () => ({
 describe('InteractionSection', () => {
   const storeResult = jest.fn()
 
-  const document: Document = {
+  const vocabularyItem = {
     alternatives: [
       {
         word: 'Spachtel',
@@ -49,7 +49,7 @@ describe('InteractionSection', () => {
     word: 'Spachtel',
   }
 
-  const dividedDocument: Document = {
+  const dividedDocument: VocabularyItem = {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
@@ -58,7 +58,7 @@ describe('InteractionSection', () => {
     word: 'kontaktlose Spannungsprüfer',
   }
 
-  const renderInteractionSection = (documentWithResult: DocumentResult, isAnswerSubmitted: boolean): RenderAPI =>
+  const renderInteractionSection = (documentWithResult: VocabularyItemResult, isAnswerSubmitted: boolean): RenderAPI =>
     render(
       <InteractionSection
         documentWithResult={documentWithResult}
@@ -69,7 +69,7 @@ describe('InteractionSection', () => {
 
   it('should render correctly if not submitted answer yet', () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     expect(getByText(getLabels().exercises.write.checkInput)).toBeDisabled()
@@ -77,13 +77,13 @@ describe('InteractionSection', () => {
   })
 
   it('should not show check button if answer submitted', () => {
-    const { queryByText } = renderInteractionSection({ document, result: 'correct', numberOfTries: 1 }, true)
+    const { queryByText } = renderInteractionSection({ vocabularyItem, result: 'correct', numberOfTries: 1 }, true)
     expect(queryByText(getLabels().exercises.write.checkInput)).toBeNull()
   })
 
   it('should show popup if article missing', async () => {
     const { getByText, getByPlaceholderText, getByTestId } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
@@ -95,14 +95,14 @@ describe('InteractionSection', () => {
 
   it('should show incorrect if word is not correct', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die WrongAnswer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'incorrect', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'incorrect', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
@@ -111,14 +111,14 @@ describe('InteractionSection', () => {
 
   it('should show similar if word is similar', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Wachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
@@ -127,14 +127,14 @@ describe('InteractionSection', () => {
 
   it('should show similar if word is correct and article similar', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'das Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'similar', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
@@ -143,14 +143,14 @@ describe('InteractionSection', () => {
 
   it('should show correct', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
@@ -159,14 +159,14 @@ describe('InteractionSection', () => {
 
   it('should show correct for divided words', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document: dividedDocument, result: null, numberOfTries: 0 },
+      { vocabularyItem: dividedDocument, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document: dividedDocument, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem: dividedDocument, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
@@ -175,14 +175,14 @@ describe('InteractionSection', () => {
 
   it('should show correct for articels starting with an uppercase letter', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { document, result: null, numberOfTries: 0 },
+      { vocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: DocumentResult = { document, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)

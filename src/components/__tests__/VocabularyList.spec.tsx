@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { getLabels } from '../../services/helpers'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
 import render from '../../testing/render'
 import VocabularyList from '../VocabularyList'
@@ -22,13 +22,13 @@ describe('VocabularyList', () => {
   })
 
   const onItemPress = jest.fn()
-  const documents = new DocumentBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build()
 
   it('should display vocabulary list', () => {
     mockUseLoadAsyncWithData(documents)
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyList title='Title' documents={documents} onItemPress={onItemPress} />
+      <VocabularyList title='Title' vocabularyItems={documents} onItemPress={onItemPress} />
     )
 
     expect(getByText('Title')).toBeTruthy()
@@ -42,7 +42,7 @@ describe('VocabularyList', () => {
   })
 
   it('should call onItemPress with correct index', () => {
-    const { getByText } = render(<VocabularyList title='Title' documents={documents} onItemPress={onItemPress} />)
+    const { getByText } = render(<VocabularyList title='Title' vocabularyItems={documents} onItemPress={onItemPress} />)
 
     expect(onItemPress).toHaveBeenCalledTimes(0)
 

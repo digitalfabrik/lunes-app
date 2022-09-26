@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ExerciseKeys } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
@@ -17,17 +17,17 @@ interface WordChoiceExerciseScreenProps {
 const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, disciplineTitle, disciplineId } = route.params
+  const { documents, disciplineTitle, disciplineId } = route.params // TODO: auf routing name überprüfen
   const answersCount = Math.min(documents.length, MAX_ANSWERS)
 
-  const generateFalseAnswers = (correctDocument: Document): Answer[] => {
+  const generateFalseAnswers = (correctDocument: VocabularyItem): Answer[] => {
     const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctDocument.id))
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 
-  const documentToAnswers = (document: Document): Answer[] => {
-    const { word, article } = document
-    const answers = generateFalseAnswers(document)
+  const documentToAnswers = (vocabularyItem: VocabularyItem): Answer[] => {
+    const { word, article } = vocabularyItem
+    const answers = generateFalseAnswers(vocabularyItem)
 
     // Insert correct answer on random position
     const positionOfCorrectAnswer = Math.floor(Math.random() * answersCount)
@@ -38,10 +38,10 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        documents={documents}
+        vocabularyItems={documents}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
-        documentToAnswers={documentToAnswers}
+        vocabularyItemToAnswer={documentToAnswers}
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.wordChoiceExercise}

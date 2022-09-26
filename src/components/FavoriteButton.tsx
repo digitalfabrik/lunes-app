@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import AsyncStorage from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
@@ -29,20 +29,20 @@ const Button = styled(PressableOpacity)`
 `
 
 interface Props {
-  document: Document
+  vocabularyItem: VocabularyItem
   onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document.id)
+const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: Props): ReactElement | null => {
+  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, vocabularyItem.id)
 
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await AsyncStorage.removeFavorite(document.id).catch(reportError)
+      await AsyncStorage.removeFavorite(vocabularyItem.id).catch(reportError)
     } else {
-      await AsyncStorage.addFavorite(document.id).catch(reportError)
+      await AsyncStorage.addFavorite(vocabularyItem.id).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

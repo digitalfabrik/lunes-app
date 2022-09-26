@@ -6,7 +6,7 @@ import { NextExerciseData } from '../../../../constants/data'
 import useLoadNextExercise from '../../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../../hooks/useReadProgress'
 import { getLabels } from '../../../../services/helpers'
-import DocumentBuilder from '../../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import { getReturnOf } from '../../../../testing/helper'
 import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import render from '../../../../testing/render'
@@ -23,14 +23,14 @@ jest.mock('../../../../hooks/useLoadNextExercise')
 jest.mock('@react-navigation/native')
 
 const firstExerciseData: NextExerciseData = {
-  documents: new DocumentBuilder(1).build(),
+  documents: new VocabularyItemBuilder(1).build(),
   title: 'Exercise Test',
   exerciseKey: 0,
   disciplineId: 1,
 }
 
 const nextExerciseData: NextExerciseData = {
-  documents: new DocumentBuilder(1).build(),
+  documents: new VocabularyItemBuilder(1).build(),
   title: 'Exercise Test',
   exerciseKey: 1,
   disciplineId: 1,

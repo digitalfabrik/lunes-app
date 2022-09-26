@@ -1,6 +1,6 @@
 import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
-import { DocumentResult } from '../../navigation/NavigationTypes'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import { VocabularyItemResult } from '../../navigation/NavigationTypes'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
 
@@ -78,15 +78,15 @@ describe('AsyncStorage', () => {
       })
 
       it('should calculate and save exercise progress correctly', async () => {
-        const documents = new DocumentBuilder(2).build()
-        const documentsWithResults: DocumentResult[] = [
+        const documents = new VocabularyItemBuilder(2).build()
+        const documentsWithResults: VocabularyItemResult[] = [
           {
-            document: documents[0],
+            vocabularyItem: documents[0],
             result: SIMPLE_RESULTS.correct,
             numberOfTries: 1,
           },
           {
-            document: documents[0],
+            vocabularyItem: documents[0],
             result: SIMPLE_RESULTS.incorrect,
             numberOfTries: 3,
           },
@@ -99,7 +99,7 @@ describe('AsyncStorage', () => {
   })
 
   describe('favorites', () => {
-    const documents = new DocumentBuilder(4).build().map(it => it.id)
+    const documents = new VocabularyItemBuilder(4).build().map(it => it.id)
 
     it('should add favorites', async () => {
       await AsyncStorage.setFavorites(documents.slice(0, 2))
@@ -121,7 +121,7 @@ describe('AsyncStorage', () => {
   })
 
   describe('userVocabulary', () => {
-    const userDocuments = new DocumentBuilder(2).build()
+    const userDocuments = new VocabularyItemBuilder(2).build()
 
     it('should add userDocument', async () => {
       const userVocabulary = await AsyncStorage.getUserVocabulary()

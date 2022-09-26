@@ -8,7 +8,7 @@ import CustomTextInput from '../../../components/CustomTextInput'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
-import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels, stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
@@ -24,9 +24,9 @@ const InputContainer = styled.View`
 `
 
 interface InteractionSectionProps {
-  documentWithResult: DocumentResult
+  documentWithResult: VocabularyItemResult
   isAnswerSubmitted: boolean
-  storeResult: (result: DocumentResult) => void
+  storeResult: (result: VocabularyItemResult) => void
 }
 
 const almostCorrectThreshold = 0.6
@@ -34,7 +34,7 @@ const ttsThreshold = 0.6
 
 const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const { isAnswerSubmitted, documentWithResult, storeResult } = props
-  const { document } = documentWithResult
+  const { vocabularyItem } = documentWithResult
 
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
@@ -46,7 +46,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const isCorrect = documentWithResult.result === 'correct'
   const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
-    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(document)) <= ttsThreshold
+    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
 
   const textInputRef = useRef<View>(null)
@@ -58,12 +58,12 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   }, [isAnswerSubmitted])
 
   const validateAnswer = (article: string, word: string): SimpleResult => {
-    const validAnswers = [{ article: document.article, word: document.word }, ...document.alternatives]
+    const validAnswers = [{ article: vocabularyItem.article, word: vocabularyItem.word }, ...vocabularyItem.alternatives]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
     }
     if (validAnswers.some(answer => answer.word === word)) {
-      // Word is an exact match with either the document or an alternative -> just the article is wrong
+      // Word is an exact match with either the vocabularyItem or an alternative -> just the article is wrong
       return 'similar'
     }
     if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
@@ -117,7 +117,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   return (
     <>
       <DocumentImageSection
-        document={document}
+        vocabularyItem={vocabularyItem}
         minimized={isKeyboardShown}
         audioDisabled={retryAllowed}
         submittedAlternative={submittedAlternative}

@@ -4,12 +4,12 @@ import { Share } from 'react-native'
 import { ShareIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
 interface Props {
   disciplineTitle: string
-  results: DocumentResult[]
+  results: VocabularyItemResult[]
 }
 
 const ShareButton = ({ disciplineTitle, results }: Props): ReactElement => {

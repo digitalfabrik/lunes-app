@@ -4,7 +4,7 @@ import React from 'react'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
 import render from '../../testing/render'
@@ -25,7 +25,7 @@ jest.mock('../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyListScreen', () => {
-  const documents = new DocumentBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {
     key: '',
     name: 'VocabularyList',

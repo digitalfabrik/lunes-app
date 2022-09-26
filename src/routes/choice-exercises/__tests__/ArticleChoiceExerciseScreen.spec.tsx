@@ -6,7 +6,7 @@ import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
@@ -45,13 +45,13 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const documents = new DocumentBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build()
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
-      documents,
+      documents, // TODO: auf routing überprüfen
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
@@ -109,7 +109,7 @@ describe('ArticleChoiceExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }, // TODO: auf routing überprüfen
       { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })

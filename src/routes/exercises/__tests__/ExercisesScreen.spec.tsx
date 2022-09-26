@@ -7,7 +7,7 @@ import React from 'react'
 import { EXERCISES } from '../../../constants/data'
 import useLoadDocuments from '../../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
@@ -18,7 +18,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDocuments')
 
 describe('ExercisesScreen', () => {
-  const documents = new DocumentBuilder(1).build()
+  const documents = new VocabularyItemBuilder(1).build()
   beforeEach(() => {
     jest.clearAllMocks()
     RNAsyncStorage.clear()

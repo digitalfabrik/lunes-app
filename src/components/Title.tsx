@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { StyleProp, ViewStyle } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
@@ -33,22 +32,17 @@ interface ITitleProps {
   titleIcon?: ReactElement<SvgProps>
   title: string
   subtitle?: string
-  description?: string
+  description: string
   children?: ReactElement
-  style?: StyleProp<ViewStyle>
 }
 
-const Title = ({ titleIcon, title, subtitle, description, children, style }: ITitleProps): ReactElement => (
-  <Container style={style}>
+const Title = ({ titleIcon, title, subtitle, description, children }: ITitleProps): ReactElement => (
+  <Container>
     {titleIcon}
     <TitleHeading>{title}</TitleHeading>
     {subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
-    {description && <TitleContent>{description}</TitleContent>}
+    <TitleContent>{description}</TitleContent>
     {children}
   </Container>
 )
 export default Title
-
-export const TitleWithSpacing = styled(Title)`
-  margin-bottom: ${props => props.theme.spacings.xxl};
-`

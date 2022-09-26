@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { ContentSecondary } from '../../../components/text/Content'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 import { getLabels } from '../../../services/helpers'
 
 const AlternativesContainer = styled.View`
@@ -15,22 +15,22 @@ const AlternativeWords = styled(ContentSecondary)`
 `
 
 interface Props {
-  document: Document
+  vocabularyItem: VocabularyItem
   showAlternatives: boolean
-  navigateToDetail: (document: Document) => void
+  navigateToDetail: (vocabularyItem: VocabularyItem) => void
 }
 
 class DictionaryItem extends PureComponent<Props> {
   render(): ReactElement {
-    const { document, navigateToDetail, showAlternatives } = this.props
+    const { vocabularyItem, navigateToDetail, showAlternatives } = this.props
 
     return (
-      <VocabularyListItem key={document.id} document={document} onPress={() => navigateToDetail(document)}>
+      <VocabularyListItem key={vocabularyItem.id} vocabularyItem={vocabularyItem} onPress={() => navigateToDetail(vocabularyItem)}>
         <>
           {showAlternatives && (
             <AlternativesContainer>
               <AlternativeWords>
-                {`${getLabels().exercises.vocabularyList.alternativeWords}: ${document.alternatives
+                {`${getLabels().exercises.vocabularyList.alternativeWords}: ${vocabularyItem.alternatives
                   .map(item => `${item.article.value} ${item.word}`)
                   .join(', ')}`}
               </AlternativeWords>

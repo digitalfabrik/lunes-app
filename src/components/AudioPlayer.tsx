@@ -5,14 +5,14 @@ import Tts, { TtsError } from 'react-native-tts'
 import styled from 'styled-components/native'
 
 import { VolumeUpCircleIcon } from '../../assets/images'
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import { stringifyDocument } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
 
 export interface AudioPlayerProps {
-  document: Document
+  vocabularyItem: VocabularyItem
   disabled: boolean
-  // If the user submitted a correct alternative (differing enough to the document), we want to play the alternative
+  // If the user submitted a correct alternative (differing enough to the vocabularyItem), we want to play the alternative
   submittedAlternative?: string | null
 }
 
@@ -38,8 +38,8 @@ const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boole
   shadow-opacity: 0.5;
 `
 
-const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerProps): ReactElement => {
-  const { audio } = document
+const AudioPlayer = ({ vocabularyItem, disabled, submittedAlternative }: AudioPlayerProps): ReactElement => {
+  const { audio } = vocabularyItem
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
 
@@ -89,7 +89,7 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         SoundPlayer.loadUrl(audio)
       } else {
         // @ts-expect-error ios params should be optional
-        Tts.speak(submittedAlternative ?? stringifyDocument(document), {
+        Tts.speak(submittedAlternative ?? stringifyDocument(vocabularyItem), {
           androidParams: {
             KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,

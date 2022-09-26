@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { Document } from './endpoints'
+import { VocabularyItem } from './endpoints'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -63,7 +63,7 @@ export interface NextExercise {
 }
 
 export type NextExerciseData = NextExercise & {
-  documents: Document[]
+  documents: VocabularyItem[]
   title: string
 }
 
@@ -75,7 +75,7 @@ export const BUTTONS_THEME = {
 
 export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
-export interface ArticleType {
+interface ArticleType {
   readonly id: number
   readonly value: string
 }
@@ -102,18 +102,6 @@ export const ARTICLES: Readonly<ArticleType[]> = [
     value: 'die',
   },
 ] as const
-
-interface ArticleTypeExtended extends ArticleType {
-  readonly label: string
-}
-
-export const getArticleWithLabel = (): ArticleTypeExtended[] =>
-  ARTICLES.filter(article => article.id !== 0).map(article => {
-    if (article.id === 4) {
-      return { ...article, label: `${article.value} (Plural)` }
-    }
-    return { ...article, label: article.value }
-  })
 
 export type Article = typeof ARTICLES[number]
 
@@ -158,7 +146,7 @@ export type Result = typeof RESULTS[number]
 export const FeedbackType = {
   discipline: 'discipline',
   leaf_discipline: 'trainingset',
-  document: 'document',
+  document: 'document', // TODO: auf API überprüfen
 } as const
 export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 

@@ -106,6 +106,13 @@ const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
   }};
 `
 
+const Overlay = styled.View`
+  background-color: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`
+
 export interface SingleChoiceListItemProps {
   answer: Answer
   correct?: boolean
@@ -134,6 +141,9 @@ const WordItem = ({
 }: SingleChoiceListItemProps): JSX.Element => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
+  const addOpacity =
+    anyAnswerSelected &&
+    ((!correct && !selected) || (correct && !delayPassed && !selected) || (!correct && selected && delayPassed))
   const showCorrect = anyAnswerSelected && correct
 
   const onPressIn = (): void => {
@@ -170,6 +180,7 @@ const WordItem = ({
         {word}
         {article.id === 4 && ` (${getLabels().general.plurals})`}
       </Word>
+      {addOpacity && <Overlay />}
     </Container>
   )
 }

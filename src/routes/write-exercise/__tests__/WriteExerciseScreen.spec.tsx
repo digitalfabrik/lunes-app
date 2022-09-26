@@ -58,7 +58,7 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('WriteExerciseScreen', () => {
-  const documents = [
+  const vocabularyItems = [
     {
       id: 1,
       word: 'Spachtel',
@@ -91,7 +91,7 @@ describe('WriteExerciseScreen', () => {
     key: '',
     name: 'WriteExercise',
     params: {
-      documents,
+      documents: vocabularyItems, // TODO: routin
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
@@ -142,7 +142,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[1].article.value} ${documents[1].word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItems[1].article.value} ${vocabularyItems[1].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.showResults)).toBeDefined()
@@ -168,7 +168,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItems[0].article.value} ${vocabularyItems[0].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.next)).toBeDefined()
@@ -188,8 +188,8 @@ describe('WriteExerciseScreen', () => {
     })
 
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { document: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { document: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 
@@ -228,8 +228,8 @@ describe('WriteExerciseScreen', () => {
     evaluate(
       'das Falsche',
       `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
-        documents[0].article.value
-      } ${documents[0].word}“`
+        vocabularyItems[0].article.value
+      } ${vocabularyItems[0].word}“`
     )
   })
 
@@ -245,7 +245,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(audioButton)
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(documents[0].audio)
+    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(vocabularyItems[0].audio)
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 

@@ -36,7 +36,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         feedbackForId={disciplineId}
       />
       <VocabularyList
-        documents={route.params.documents}
+        vocabularyItems={route.params.documents}
         onItemPress={onItemPress}
         title={getLabels().exercises.vocabularyList.title}
       />

@@ -6,7 +6,7 @@ import { ArrowRightIcon, CrystalBallIcon } from '../../../../assets/images'
 import FeedbackModal from '../../../components/FeedbackModal'
 import { ContentSecondary, ContentTextBold } from '../../../components/text/Content'
 import { FeedbackType } from '../../../constants/data'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 import theme from '../../../constants/theme'
 import { getLabels } from '../../../services/helpers'
 
@@ -39,20 +39,20 @@ const Label = styled(ContentTextBold)`
 `
 
 interface Props {
-  document: Document
+  vocabularyItem: VocabularyItem
 }
 
-const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
+const AlternativeWordsSection = ({ vocabularyItem }: Props): JSX.Element => {
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   return (
     <Root>
       <CrystalBallIcon width={wp('7%')} height={wp('7%')} />
       <Content>
-        {document.alternatives.length > 0 && (
+        {vocabularyItem.alternatives.length > 0 && (
           <>
             <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
             <AlternativeWords>
-              {document.alternatives.map(value => `${value.article.value} ${value.word}`).join(', ')}
+              {vocabularyItem.alternatives.map(value => `${value.article.value} ${value.word}`).join(', ')}
             </AlternativeWords>
           </>
         )}
@@ -66,7 +66,7 @@ const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
         visible={isFeedbackModalVisible}
         onClose={() => setIsFeedbackModalVisible(false)}
         feedbackType={FeedbackType.document}
-        feedbackForId={document.id}
+        feedbackForId={vocabularyItem.id}
       />
     </Root>
   )

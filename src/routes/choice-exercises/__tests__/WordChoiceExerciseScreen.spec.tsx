@@ -4,7 +4,7 @@ import React from 'react'
 
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
@@ -33,7 +33,7 @@ jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WordChoiceExerciseScreen', () => {
   // at least 4 documents are needed to generate sufficient false answers
-  const testDocuments = new DocumentBuilder(4).build()
+  const testDocuments = new VocabularyItemBuilder(4).build()
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'WordChoiceExercise'> = {

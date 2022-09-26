@@ -1,10 +1,10 @@
-import { Document, ENDPOINTS } from '../constants/endpoints'
+import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import AsyncStorage from '../services/AsyncStorage'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 import { DocumentFromServer, formatServerResponse } from './useLoadDocuments'
 
-export const loadFavorites = async (): Promise<Document[]> => {
+export const loadFavorites = async (): Promise<VocabularyItem[]> => {
   const favoriteIds = await AsyncStorage.getFavorites()
   const documents = await Promise.all(
     favoriteIds.map(id => {
@@ -16,6 +16,6 @@ export const loadFavorites = async (): Promise<Document[]> => {
   return formatServerResponse(documents)
 }
 
-const useLoadFavorites = (): Return<Document[]> => useLoadAsync(loadFavorites, {})
+const useLoadFavorites = (): Return<VocabularyItem[]> => useLoadAsync(loadFavorites, {})
 
 export default useLoadFavorites

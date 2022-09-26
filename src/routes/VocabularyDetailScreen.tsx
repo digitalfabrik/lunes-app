@@ -10,10 +10,10 @@ interface Props {
 }
 
 const VocabularyDetailScreen = ({ route }: Props): ReactElement => {
-  const { document } = route.params
+  const { document } = route.params // TODO: auf Route configuration überprüfen
   return (
     <RouteWrapper>
-      <VocabularyDetail document={document} />
+      <VocabularyDetail vocabularyItem={document} />
     </RouteWrapper>
   )
 }

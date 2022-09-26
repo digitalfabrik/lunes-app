@@ -1,7 +1,7 @@
 import { NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
-import { DocumentResult } from '../../navigation/NavigationTypes'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import { VocabularyItemResult } from '../../navigation/NavigationTypes'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import AsyncStorage from '../AsyncStorage'
 import { calculateScore, getNextExercise, getProgress, willNextExerciseUnlock } from '../helpers'
@@ -136,10 +136,10 @@ describe('helpers', () => {
     const getDocumentsWithResults = (
       numberOfTries: [number, number, number, number],
       results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
-    ): DocumentResult[] => {
-      const documents = new DocumentBuilder(4).build()
-      return documents.map((document, index) => ({
-        document,
+    ): VocabularyItemResult[] => {
+      const documents = new VocabularyItemBuilder(4).build()
+      return documents.map((vocabularyItem, index) => ({
+        vocabularyItem,
         result: results[index],
         numberOfTries: numberOfTries[index],
       }))

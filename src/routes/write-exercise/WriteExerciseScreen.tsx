@@ -19,7 +19,7 @@ import {
   SimpleResult,
 } from '../../constants/data'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
-import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { VocabularyItemResult, RoutesParams } from '../../navigation/NavigationTypes'
 import AsyncStorage from '../../services/AsyncStorage'
 import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
@@ -34,11 +34,11 @@ export interface WriteExerciseScreenProps {
 }
 
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
-  const { documents, disciplineTitle, closeExerciseAction, disciplineId } = route.params
+  const { documents, disciplineTitle, closeExerciseAction, disciplineId } = route.params // TODO: routing
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
-  const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
-    shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
+  const [documentsWithResults, setDocumentsWithResults] = useState<VocabularyItemResult[]>(
+    shuffleArray(documents.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
   )
 
   const isKeyboardShown = useIsKeyboardVisible()
@@ -50,7 +50,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       if (documents.length !== documentsWithResults.length || force) {
         setCurrentIndex(0)
         setIsAnswerSubmitted(false)
-        setDocumentsWithResults(shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 }))))
+        setDocumentsWithResults(shuffleArray(documents.map(document => ({ vocabularyItem: document, result: null, numberOfTries: 0 }))))
       }
     },
     [documents, documentsWithResults]
@@ -59,7 +59,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   useEffect(initializeExercise, [initializeExercise])
 
   const tryLater = useCallback(() => {
-    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
+    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next vocabularyItem
     if (isKeyboardShown) {
       const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
         setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
@@ -71,7 +71,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }, [isKeyboardShown, documentsWithResults, currentIndex])
 
-  const finishExercise = async (results: DocumentResult[]): Promise<void> => {
+  const finishExercise = async (results: VocabularyItemResult[]): Promise<void> => {
     if (disciplineId) {
       await AsyncStorage.saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
@@ -99,9 +99,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }
 
-  const storeResult = (result: DocumentResult): void => {
+  const storeResult = (result: VocabularyItemResult): void => {
     const updatedDocumentsWithResults = Array.from(documentsWithResults)
-    if (current.document.id !== result.document.id) {
+    if (current.vocabularyItem.id !== result.vocabularyItem.id) {
       return
     }
     updatedDocumentsWithResults[currentIndex] = result

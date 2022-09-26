@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ImageCarousel from './ImageCarousel'
@@ -23,25 +23,25 @@ const Container = styled.View`
 `
 
 interface Props {
-  document: Document
+  vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   minimized?: boolean
   submittedAlternative?: string | null
 }
 
 const DocumentImageSection = ({
-  document,
+  vocabularyItem,
   audioDisabled = false,
   minimized = false,
   submittedAlternative,
 }: Props): ReactElement => (
   <Container>
-    <ImageCarousel images={document.document_image} minimized={minimized} />
+    <ImageCarousel images={vocabularyItem.document_image} minimized={minimized} />
     <AudioContainer>
-      <AudioPlayer document={document} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
+      <AudioPlayer vocabularyItem={vocabularyItem} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
     </AudioContainer>
     <FavoriteContainer>
-      <FavoriteButton document={document} />
+      <FavoriteButton vocabularyItem={vocabularyItem} />
     </FavoriteContainer>
   </Container>
 )

@@ -54,11 +54,11 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
       />
-      <VocabularyDetail document={document} />
+      <VocabularyDetail vocabularyItem={document} />
       <Container>
         <HorizontalLine />
 
-        <AlternativeWordsSection document={document} />
+        <AlternativeWordsSection vocabularyItem={document} />
 
         <ButtonContainer>
           {hasNextDocument ? (

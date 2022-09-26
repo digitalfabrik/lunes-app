@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import ListEmpty from '../../../components/ListEmpty'
 import Loading from '../../../components/Loading'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 import { Return } from '../../../hooks/useLoadAsync'
 import { getLabels } from '../../../services/helpers'
 
@@ -13,7 +13,7 @@ const EmptyContainer = styled.View`
 `
 
 interface Props {
-  documents: Return<Document[]>
+  documents: Return<VocabularyItem[]>
 }
 
 const ListEmptyContent = ({ documents }: Props): ReactElement => {

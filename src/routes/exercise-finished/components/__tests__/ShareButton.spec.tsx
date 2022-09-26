@@ -3,7 +3,7 @@ import React from 'react'
 import { Share } from 'react-native'
 
 import { ARTICLES } from '../../../../constants/data'
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
@@ -13,9 +13,9 @@ jest.mock('react-native/Libraries/Share/Share', () => ({
 }))
 
 describe('ShareButton', () => {
-  const results: DocumentResult[] = [
+  const results: VocabularyItemResult[] = [
     {
-      document: {
+      vocabularyItem: {
         id: 1,
         word: 'Auto',
         article: ARTICLES[1],
@@ -27,7 +27,7 @@ describe('ShareButton', () => {
       numberOfTries: 1,
     },
     {
-      document: {
+      vocabularyItem: {
         id: 2,
         word: 'Nagel',
         article: ARTICLES[1],

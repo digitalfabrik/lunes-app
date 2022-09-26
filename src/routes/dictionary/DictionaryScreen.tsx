@@ -8,7 +8,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import useLoadAllDocuments from '../../hooks/useLoadAllDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredDocuments, matchAlternative } from '../../services/helpers'
@@ -36,8 +36,8 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
     sortedAndFilteredDocuments.length === 1 ? getLabels().general.word : getLabels().general.words
   }`
 
-  const navigateToDetail = (document: Document): void => {
-    navigation.navigate('DictionaryDetail', { document })
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('DictionaryDetail', { document: vocabularyItem }) // TODO: routing
   }
 
   return (
@@ -56,7 +56,7 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
               data={sortedAndFilteredDocuments}
               renderItem={({ item }) => (
                 <DictionaryItem
-                  document={item}
+                  vocabularyItem={item}
                   showAlternatives={matchAlternative(item, searchString) && searchString.length > 0}
                   navigateToDetail={navigateToDetail}
                 />

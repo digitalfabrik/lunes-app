@@ -1,18 +1,18 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, Document } from '../constants/endpoints'
+import { Discipline, VocabularyItem } from '../constants/endpoints'
 
-export interface DocumentResult {
-  document: Document
+export interface VocabularyItemResult {
+  vocabularyItem: VocabularyItem
   result: SimpleResult | null
   numberOfTries: number
 }
-
+// TODO: routing
 interface ExerciseParams {
   disciplineId: number
   disciplineTitle: string
-  documents: Document[]
+  documents: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
@@ -24,13 +24,13 @@ interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplin
 
 export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
   discipline: Discipline
-  documents: Document[] | null
+  documents: VocabularyItem[] | null
   closeExerciseAction?: CommonNavigationAction
 }
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
-  results: DocumentResult[]
+  results: VocabularyItemResult[]
 }
 
 // https://github.com/Microsoft/Script/issues/15300
@@ -43,13 +43,8 @@ export type RoutesParams = {
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
-  UserVocabularyProcess: {
-    headerBackLabel: string
-  }
-  UserVocabularyList: {
-    headerBackLabel: string
-  }
-  UserVocabularyDetail: { document: Document }
+  UserVocabularyList: undefined
+  UserVocabularyDetail: { document: VocabularyItem }
   ScopeSelection: {
     initialSelection: boolean
   }
@@ -80,7 +75,7 @@ export type RoutesParams = {
   Settings: undefined
   Favorites: undefined
   Dictionary: undefined
-  DictionaryDetail: { document: Document }
+  DictionaryDetail: { document: VocabularyItem }
 }
 
 export type Route = keyof RoutesParams

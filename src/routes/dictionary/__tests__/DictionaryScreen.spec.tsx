@@ -4,7 +4,7 @@ import React from 'react'
 
 import useLoadAllDocuments from '../../../hooks/useLoadAllDocuments'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import render from '../../../testing/render'
@@ -23,45 +23,45 @@ jest.mock('../../../components/AudioPlayer', () => {
 jest.mock('../../../hooks/useLoadAllDocuments')
 
 describe('DictionaryScreen', () => {
-  const documents = new DocumentBuilder(4).build()
+  const vocabularyItems = new VocabularyItemBuilder(4).build()
   const navigation = createNavigationMock<'Dictionary'>()
 
   it('should render correctly', () => {
-    mocked(useLoadAllDocuments).mockReturnValueOnce(getReturnOf(documents))
+    mocked(useLoadAllDocuments).mockReturnValueOnce(getReturnOf(vocabularyItems))
     const { getByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     expect(getByText(getLabels().general.dictionary)).toBeDefined()
     expect(getByText(`4 ${getLabels().general.words}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
-    expect(getByText(documents[0].word)).toBeDefined()
-    expect(getByText(documents[1].word)).toBeDefined()
-    expect(getByText(documents[2].word)).toBeDefined()
-    expect(getByText(documents[3].word)).toBeDefined()
+    expect(getByText(vocabularyItems[0].word)).toBeDefined()
+    expect(getByText(vocabularyItems[1].word)).toBeDefined()
+    expect(getByText(vocabularyItems[2].word)).toBeDefined()
+    expect(getByText(vocabularyItems[3].word)).toBeDefined()
   })
 
   it('should filter by word', () => {
-    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
+    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(vocabularyItems))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     const searchBar = getByPlaceholderText(getLabels().search.enterWord)
-    fireEvent.changeText(searchBar, documents[0].word)
-    expect(queryByText(documents[0].word)).toBeDefined()
-    expect(queryByText(documents[1].word)).toBeNull()
-    expect(queryByText(documents[2].word)).toBeNull()
-    expect(queryByText(documents[3].word)).toBeNull()
+    fireEvent.changeText(searchBar, vocabularyItems[0].word)
+    expect(queryByText(vocabularyItems[0].word)).toBeDefined()
+    expect(queryByText(vocabularyItems[1].word)).toBeNull()
+    expect(queryByText(vocabularyItems[2].word)).toBeNull()
+    expect(queryByText(vocabularyItems[3].word)).toBeNull()
   })
 
   it('should filter by word and article', () => {
-    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
+    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(vocabularyItems))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     const searchBar = getByPlaceholderText(getLabels().search.enterWord)
-    fireEvent.changeText(searchBar, `${documents[0].article.value} ${documents[0].word}`)
-    expect(queryByText(documents[0].word)).toBeDefined()
-    expect(queryByText(documents[1].word)).toBeNull()
+    fireEvent.changeText(searchBar, `${vocabularyItems[0].article.value} ${vocabularyItems[0].word}`)
+    expect(queryByText(vocabularyItems[0].word)).toBeDefined()
+    expect(queryByText(vocabularyItems[1].word)).toBeNull()
   })
 
   it('should navigate to DetailScreen', () => {
-    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(documents))
+    mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(vocabularyItems))
     const { getByText } = render(<DictionaryScreen navigation={navigation} />)
-    fireEvent.press(getByText(documents[0].word))
-    expect(navigation.navigate).toHaveBeenCalledWith('DictionaryDetail', { document: documents[0] })
+    fireEvent.press(getByText(vocabularyItems[0].word))
+    expect(navigation.navigate).toHaveBeenCalledWith('DictionaryDetail', { document: vocabularyItems[0] }) // TODO: Routing
   })
 })

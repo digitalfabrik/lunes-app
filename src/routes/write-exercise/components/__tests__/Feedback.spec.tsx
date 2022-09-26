@@ -3,13 +3,13 @@ import React from 'react'
 import 'react-native'
 
 import { ARTICLES, SimpleResult } from '../../../../constants/data'
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
 describe('Feedback', () => {
-  const document = {
+  const vocabularyItem = {
     alternatives: [],
     article: ARTICLES[4],
     audio: '',
@@ -24,7 +24,7 @@ describe('Feedback', () => {
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const documentWithResult: DocumentResult = { document, result, numberOfTries }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
       <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
     )
@@ -55,7 +55,7 @@ describe('Feedback', () => {
 
     expect(
       queryByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItem.article.value} ${vocabularyItem.word}“`
       )
     ).toBeTruthy()
   })
@@ -67,8 +67,8 @@ describe('Feedback', () => {
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
-          document.article.value
-        } ${document.word}“`
+          vocabularyItem.article.value
+        } ${vocabularyItem.word}“`
       )
     ).toBeTruthy()
   })

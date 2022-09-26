@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -21,16 +21,16 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
 
   const singularDocuments = documents.filter(it => answerOptions.includes(it.article))
 
-  const documentToAnswers = (document: Document): Answer[] =>
-    answerOptions.map(article => ({ article, word: document.word }))
+  const documentToAnswers = (vocabularyItem: VocabularyItem): Answer[] =>
+    answerOptions.map(article => ({ article, word: vocabularyItem.word }))
 
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        documents={singularDocuments}
+        vocabularyItems={singularDocuments}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
-        documentToAnswers={documentToAnswers}
+        vocabularyItemToAnswer={documentToAnswers}
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.articleChoiceExercise}

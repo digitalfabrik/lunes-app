@@ -17,8 +17,8 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../../constants/data'
-import { AlternativeWord, Document } from '../../../constants/endpoints'
-import { DocumentResult, RoutesParams } from '../../../navigation/NavigationTypes'
+import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
+import { VocabularyItemResult, RoutesParams } from '../../../navigation/NavigationTypes'
 import AsyncStorage from '../../../services/AsyncStorage'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
@@ -31,10 +31,10 @@ const ButtonContainer = styled.View`
 `
 
 interface SingleChoiceExerciseProps {
-  documents: Document[]
+  vocabularyItems: VocabularyItem[]
   disciplineId: number
   disciplineTitle: string
-  documentToAnswers: (document: Document) => Answer[]
+  vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   exerciseKey: ExerciseKey
@@ -43,10 +43,10 @@ interface SingleChoiceExerciseProps {
 const CORRECT_ANSWER_DELAY = 700
 
 const ChoiceExerciseScreen = ({
-  documents,
+  vocabularyItems,
   disciplineId,
   disciplineTitle,
-  documentToAnswers,
+  vocabularyItemToAnswer,
   navigation,
   route,
   exerciseKey,
@@ -54,38 +54,38 @@ const ChoiceExerciseScreen = ({
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
-  const [results, setResults] = useState<DocumentResult[]>(
-    shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
+  const [results, setResults] = useState<VocabularyItemResult[]>(
+    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
   )
-  const { document, numberOfTries, result } = results[currentWord]
-  const [answers, setAnswers] = useState<Answer[]>(documentToAnswers(document))
+  const { vocabularyItem, numberOfTries, result } = results[currentWord]
+  const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
 
-  const correctAnswers = [{ word: document.word, article: document.article }, ...document.alternatives]
+  const correctAnswers = [{ word: vocabularyItem.word, article: vocabularyItem.article }, ...vocabularyItem.alternatives]
   const needsToBeRepeated = numberOfTries < numberOfMaxRetries && result === SIMPLE_RESULTS.incorrect
 
   const initializeExercise = useCallback(
     (force = false) => {
-      if (documents.length !== results.length || force) {
+      if (vocabularyItems.length !== results.length || force) {
         setCurrentWord(0)
-        setResults(shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 }))))
+        setResults(shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))))
       }
     },
-    [documents, results]
+    [vocabularyItems, results]
   )
 
   useEffect(initializeExercise, [initializeExercise])
 
-  useEffect(() => setAnswers(documentToAnswers(document)), [document, documentToAnswers])
+  useEffect(() => setAnswers(vocabularyItemToAnswer(vocabularyItem)), [vocabularyItem, vocabularyItemToAnswer])
 
   const tryLater = useCallback(() => {
     setResults(moveToEnd(results, currentWord))
   }, [results, currentWord])
 
-  const onExerciseFinished = async (results: DocumentResult[]): Promise<void> => {
+  const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
     const progress = await AsyncStorage.getExerciseProgress()
     await AsyncStorage.saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
-      documents,
+      documents: vocabularyItems, // TODO: routing überprüfen
       disciplineId,
       disciplineTitle,
       exercise: exerciseKey,
@@ -95,7 +95,7 @@ const ChoiceExerciseScreen = ({
     })
     initializeExercise(true)
   }
-  const count = documents.length
+  const count = vocabularyItems.length
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     await onExerciseFinished(
@@ -148,11 +148,11 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={count}
         feedbackType={FeedbackType.document}
-        feedbackForId={document.id}
+        feedbackForId={vocabularyItem.id}
       />
 
       <>
-        <DocumentImageSection document={document} audioDisabled={selectedAnswer === null} />
+        <DocumentImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
         <SingleChoice
           answers={answers}
           onClick={onClickAnswer}

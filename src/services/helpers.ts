@@ -10,16 +10,16 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
+import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
-import { DocumentResult } from '../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import AsyncStorage from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
-export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
+export const stringifyDocument = ({ article, word }: VocabularyItem | AlternativeWord): string => `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -151,16 +151,16 @@ export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: nu
     object_id: id,
   })
 
-export const calculateScore = (documentsWithResults: DocumentResult[]): number => {
+export const calculateScore = (documentsWithResults: VocabularyItemResult[]): number => {
   const SCORE_FIRST_TRY = 10
   const SCORE_SECOND_TRY = 4
   const SCORE_THIRD_TRY = 2
   return (
     documentsWithResults
       .filter(doc => doc.result === 'correct')
-      .reduce((acc, document) => {
+      .reduce((acc, vocabularyItemResult) => {
         let score = acc
-        switch (document.numberOfTries) {
+        switch (vocabularyItemResult.numberOfTries) {
           case 1:
             score += SCORE_FIRST_TRY
             break
@@ -185,12 +185,12 @@ const normalizeSearchString = (searchString: string): string => {
   return normalizeStrings(searchStringWithoutArticle).toLowerCase().trim()
 }
 
-export const matchAlternative = (document: Document, searchString: string): boolean =>
-  document.alternatives.filter(alternative =>
+export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: string): boolean =>
+  vocabularyItem.alternatives.filter(alternative =>
     alternative.word.toLowerCase().includes(normalizeSearchString(searchString))
   ).length > 0
 
-export const getSortedAndFilteredDocuments = (documents: Document[] | null, searchString: string): Document[] => {
+export const getSortedAndFilteredDocuments = (documents: VocabularyItem[] | null, searchString: string): VocabularyItem[] => {
   const normalizedSearchString = normalizeSearchString(searchString)
 
   const filteredDocuments = documents?.filter(

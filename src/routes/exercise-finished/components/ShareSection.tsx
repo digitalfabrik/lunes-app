@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import ShareButton from './ShareButton'
 
@@ -28,7 +28,7 @@ const Description = styled.Text`
 
 interface Props {
   disciplineTitle: string
-  results: DocumentResult[]
+  results: VocabularyItemResult[]
 }
 
 const ShareSection = ({ disciplineTitle, results }: Props): ReactElement => (

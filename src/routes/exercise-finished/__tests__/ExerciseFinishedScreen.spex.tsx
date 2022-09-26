@@ -5,7 +5,7 @@ import React from 'react'
 import { ExerciseKey, EXERCISES } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import ExerciseFinishedScreen from '../ExerciseFinishedScreen'
@@ -22,11 +22,11 @@ describe('ExerciseFinishedScreen', () => {
     params: {
       disciplineId: 1,
       disciplineTitle: 'discipline',
-      documents: new DocumentBuilder(4).build(),
+      documents: new VocabularyItemBuilder(4).build(),
       closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
-      results: new DocumentBuilder(4).build().map(document => ({
-        document,
+      results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
+        vocabularyItem,
         result: correct ? 'correct' : 'incorrect',
         numberOfTries: 1,
       })),

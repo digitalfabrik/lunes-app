@@ -1,15 +1,15 @@
 import React from 'react'
 
 import { getLabels } from '../../../../services/helpers'
-import DocumentBuilder from '../../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import AlternativeWordsSection from '../AlternativeWordsSection'
 
 describe('AlternativeWords', () => {
-  const documents = new DocumentBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build()
 
   it('should display alternative words', () => {
-    const { getByText } = render(<AlternativeWordsSection document={documents[0]} />)
+    const { getByText } = render(<AlternativeWordsSection vocabularyItem={documents[0]} />)
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()
     expect(
       getByText(
@@ -20,7 +20,7 @@ describe('AlternativeWords', () => {
   })
 
   it('should not display alternative words, if word has none', () => {
-    const { getByText, queryByText } = render(<AlternativeWordsSection document={documents[1]} />)
+    const { getByText, queryByText } = render(<AlternativeWordsSection vocabularyItem={documents[1]} />)
     expect(queryByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeNull()
     expect(getByText(getLabels().exercises.vocabularyList.suggestAlternative)).toBeDefined()
   })
