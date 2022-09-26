@@ -22,8 +22,7 @@ const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>
   border-radius: 4px;
   padding: ${props => props.theme.spacings.sm} 0;
   position: relative;
-  ${props => (props.height ? `max-height: ${props.height}px` : '')}
-  ${props => (props.bottomPosition ? `position: 'absolute';bottom: ${props.bottomPosition + KEYBOARD_MARGIN}px` : '')}
+  ${props => (props.bottomPosition ? `position: absolute;bottom: ${props.bottomPosition + KEYBOARD_MARGIN}px` : '')}
 `
 
 const Icon = styled(PressableOpacity)`
