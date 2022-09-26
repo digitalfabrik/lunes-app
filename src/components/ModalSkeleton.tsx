@@ -15,15 +15,15 @@ const Overlay = styled.View`
   align-items: center;
   background-color: ${props => props.theme.colors.overlay};
 `
-const ModalContainer = styled.View<{ bottomPosition: number; height?: number; isKeyboardVisible: boolean }>`
+const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>`
   background-color: ${props => props.theme.colors.backgroundAccent};
   align-items: center;
   width: ${wp('85%')}px;
   border-radius: 4px;
-  position: ${props => (props.isKeyboardVisible ? 'absolute' : 'relative')};
   padding: ${props => props.theme.spacings.sm} 0;
-  bottom: ${props => props.bottomPosition + KEYBOARD_MARGIN}px;
+  position: relative;
   ${props => (props.height ? `max-height: ${props.height}px` : '')}
+  ${props => (props.bottomPosition ? `position: 'absolute';bottom: ${props.bottomPosition + KEYBOARD_MARGIN}px` : '')}
 `
 
 const Icon = styled(PressableOpacity)`
@@ -49,14 +49,14 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): React
   const { keyboardHeight, isKeyboardVisible } = useKeyboard()
   const screenHeight = useScreenHeight()
   const onCloseKeyboard = () => isKeyboardVisible && Keyboard.dismiss()
+  const isKeyboardIosVisible = Platform.OS === 'ios' && isKeyboardVisible
 
   return (
     <RNModal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
       <StyledPressable onPress={onCloseKeyboard}>
         <Overlay>
           <ModalContainer
-            isKeyboardVisible={isKeyboardVisible}
-            bottomPosition={Platform.OS === 'ios' ? keyboardHeight : 0}
+            bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
             height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}>
             <Icon onPress={onClose}>
               <CloseIcon width={wp('6%')} height={wp('6%')} />
