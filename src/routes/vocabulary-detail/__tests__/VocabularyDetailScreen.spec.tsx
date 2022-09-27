@@ -22,7 +22,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyDetailScreen', () => {
-  const documents = new VocabularyItemBuilder(2).build()
+  const documents = new VocabularyItemBuilder(2).build() // TODO : ROUTIN
 
   const getRoute = (documentIndex: number): RouteProp<RoutesParams, 'VocabularyDetail'> => ({
     key: '',

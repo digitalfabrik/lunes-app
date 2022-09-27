@@ -32,7 +32,7 @@ jest.mock('react-native-image-zoom-viewer', () => {
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WordChoiceExerciseScreen', () => {
-  // at least 4 documents are needed to generate sufficient false answers
+  // at least 4 vocabularyItems are needed to generate sufficient false answers
   const testDocuments = new VocabularyItemBuilder(4).build()
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
@@ -40,7 +40,7 @@ describe('WordChoiceExerciseScreen', () => {
     key: '',
     name: 'WordChoiceExercise',
     params: {
-      documents: testDocuments,
+      documents: testDocuments,   // TODO: routin
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),

@@ -78,20 +78,20 @@ describe('AsyncStorage', () => {
       })
 
       it('should calculate and save exercise progress correctly', async () => {
-        const documents = new VocabularyItemBuilder(2).build()
-        const documentsWithResults: VocabularyItemResult[] = [
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
           {
-            vocabularyItem: documents[0],
+            vocabularyItem: vocabularyItems[0],
             result: SIMPLE_RESULTS.correct,
             numberOfTries: 1,
           },
           {
-            vocabularyItem: documents[0],
+            vocabularyItem: vocabularyItems[0],
             result: SIMPLE_RESULTS.incorrect,
             numberOfTries: 3,
           },
         ]
-        await AsyncStorage.saveExerciseProgress(1, 1, documentsWithResults)
+        await AsyncStorage.saveExerciseProgress(1, 1, vocabularyItemResults)
         const progress = await AsyncStorage.getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })
@@ -99,52 +99,52 @@ describe('AsyncStorage', () => {
   })
 
   describe('favorites', () => {
-    const documents = new VocabularyItemBuilder(4).build().map(it => it.id)
+    const vocabularyItems = new VocabularyItemBuilder(4).build().map(it => it.id)
 
     it('should add favorites', async () => {
-      await AsyncStorage.setFavorites(documents.slice(0, 2))
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(documents.slice(0, 2))
-      await AsyncStorage.addFavorite(documents[2])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(documents.slice(0, 3))
-      await AsyncStorage.addFavorite(documents[3])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(documents)
+      await AsyncStorage.setFavorites(vocabularyItems.slice(0, 2))
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 2))
+      await AsyncStorage.addFavorite(vocabularyItems[2])
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 3))
+      await AsyncStorage.addFavorite(vocabularyItems[3])
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems)
     })
 
     it('should remove favorites', async () => {
-      await AsyncStorage.setFavorites(documents)
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(documents)
-      await AsyncStorage.removeFavorite(documents[2])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual([documents[0], documents[1], documents[3]])
-      await AsyncStorage.removeFavorite(documents[0])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual([documents[1], documents[3]])
+      await AsyncStorage.setFavorites(vocabularyItems)
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems)
+      await AsyncStorage.removeFavorite(vocabularyItems[2])
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual([vocabularyItems[0], vocabularyItems[1], vocabularyItems[3]])
+      await AsyncStorage.removeFavorite(vocabularyItems[0])
+      await expect(AsyncStorage.getFavorites()).resolves.toEqual([vocabularyItems[1], vocabularyItems[3]])
     })
   })
 
   describe('userVocabulary', () => {
-    const userDocuments = new VocabularyItemBuilder(2).build()
+    const userVocabularyItems = new VocabularyItemBuilder(2).build()
 
     it('should add userDocument', async () => {
-      const userVocabulary = await AsyncStorage.getUserVocabulary()
+      const userVocabulary = await AsyncStorage.getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(0)
-      await AsyncStorage.addUserDocument(userDocuments[0])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userDocument', async () => {
-      await AsyncStorage.addUserDocument(userDocuments[0])
-      await AsyncStorage.editUserDocument(userDocuments[0], userDocuments[1])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
+      await AsyncStorage.editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect(updatedUserVocabulary[0]).toEqual(userDocuments[1])
+      expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
     })
 
     it('should delete userDocument', async () => {
-      await AsyncStorage.addUserDocument(userDocuments[0])
-      const userVocabulary = await AsyncStorage.getUserVocabulary()
+      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
+      const userVocabulary = await AsyncStorage.getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(1)
-      await AsyncStorage.deleteUserDocument(userDocuments[0])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabulary()
+      await AsyncStorage.deleteUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

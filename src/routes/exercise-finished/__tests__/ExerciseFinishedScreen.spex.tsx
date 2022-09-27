@@ -22,7 +22,7 @@ describe('ExerciseFinishedScreen', () => {
     params: {
       disciplineId: 1,
       disciplineTitle: 'discipline',
-      documents: new VocabularyItemBuilder(4).build(),
+      documents: new VocabularyItemBuilder(4).build(), //TODO : Routin
       closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
       results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({

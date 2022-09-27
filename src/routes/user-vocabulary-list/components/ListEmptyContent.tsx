@@ -13,18 +13,18 @@ const EmptyContainer = styled.View`
 `
 
 interface Props {
-  documents: Return<VocabularyItem[]>
+  vocabularyItems: Return<VocabularyItem[]>
 }
 
-const ListEmptyContent = ({ documents }: Props): ReactElement => {
-  if (documents.loading) {
+const ListEmptyContent = ({ vocabularyItems }: Props): ReactElement => {
+  if (vocabularyItems.loading) {
     return (
       <EmptyContainer>
-        <Loading isLoading={documents.loading} />
+        <Loading isLoading={vocabularyItems.loading} />
       </EmptyContainer>
     )
   }
-  return documents.data?.length === 0 ? (
+  return vocabularyItems.data?.length === 0 ? (
     <ListEmpty label={getLabels().userVocabulary.list.noWordsYet} />
   ) : (
     <ListEmpty label={getLabels().general.noResults} />

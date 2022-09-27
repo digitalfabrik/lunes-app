@@ -190,10 +190,10 @@ export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: s
     alternative.word.toLowerCase().includes(normalizeSearchString(searchString))
   ).length > 0
 
-export const getSortedAndFilteredDocuments = (documents: VocabularyItem[] | null, searchString: string): VocabularyItem[] => {
+export const getSortedAndFilteredVocabularyItems = (vocabularyItems: VocabularyItem[] | null, searchString: string): VocabularyItem[] => {
   const normalizedSearchString = normalizeSearchString(searchString)
 
-  const filteredDocuments = documents?.filter(
+  const filteredDocuments = vocabularyItems?.filter(
     item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
   )
   return filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word)) ?? []

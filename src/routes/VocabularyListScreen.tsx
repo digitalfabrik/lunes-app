@@ -25,7 +25,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
 
   const onItemPress = (index: number) =>
     navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
-
+    // TODO: routin
   return (
     <RouteWrapper>
       <ExerciseHeader

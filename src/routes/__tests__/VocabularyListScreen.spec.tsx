@@ -23,7 +23,7 @@ jest.mock('../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
-
+// TODO: routin
 describe('VocabularyListScreen', () => {
   const documents = new VocabularyItemBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {

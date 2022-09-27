@@ -23,14 +23,14 @@ jest.mock('../../../../hooks/useLoadNextExercise')
 jest.mock('@react-navigation/native')
 
 const firstExerciseData: NextExerciseData = {
-  documents: new VocabularyItemBuilder(1).build(),
+  vocabularyItems: new VocabularyItemBuilder(1).build(),
   title: 'Exercise Test',
   exerciseKey: 0,
   disciplineId: 1,
 }
 
 const nextExerciseData: NextExerciseData = {
-  documents: new VocabularyItemBuilder(1).build(),
+  vocabularyItems: new VocabularyItemBuilder(1).build(),
   title: 'Exercise Test',
   exerciseKey: 1,
   disciplineId: 1,

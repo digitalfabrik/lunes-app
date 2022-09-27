@@ -59,11 +59,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
-    const { exerciseKey, disciplineId, title: disciplineTitle, documents } = nextExerciseData
+    const { exerciseKey, disciplineId, title: disciplineTitle, vocabularyItems: documents } = nextExerciseData
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       disciplineId,
       disciplineTitle,
-      documents,
+      documents, // TODO: routin
       closeExerciseAction: CommonActions.navigate('Home'),
     })
   }

@@ -8,7 +8,7 @@ export interface AlternativeWordFromServer {
   alt_word: string
 }
 
-export interface DocumentFromServer {
+export interface VocabularyItemFromServer {
   id: number
   word: string
   article: number
@@ -16,18 +16,18 @@ export interface DocumentFromServer {
   audio: string
   alternatives: AlternativeWordFromServer[]
 }
-// TODO: auf API überprüfen
-export const formatServerResponse = (documents: DocumentFromServer[]): VocabularyItem[] =>
-  documents.map(document => ({
-    ...document,
-    article: ARTICLES[document.article],
-    alternatives: document.alternatives.map(it => ({
+
+export const formatServerResponse = (vocabularyItemsFromServer: VocabularyItemFromServer[]): VocabularyItem[] =>
+  vocabularyItemsFromServer.map(item => ({
+    ...item,
+    article: ARTICLES[item.article],
+    alternatives: item.alternatives.map(it => ({
       article: ARTICLES[it.article],
       word: it.alt_word,
     })),
   }))
 
-export const loadDocuments = async ({
+export const loadVocabularyItems = async ({
   disciplineId,
   apiKey,
 }: {
@@ -35,11 +35,11 @@ export const loadDocuments = async ({
   apiKey?: string
 }): Promise<VocabularyItem[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
-  const response = await getFromEndpoint<DocumentFromServer[]>(url, apiKey)
+  const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
   return formatServerResponse(response)
 }
 
 const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<VocabularyItem[]> =>
-  useLoadAsync(loadDocuments, { disciplineId, apiKey })
+  useLoadAsync(loadVocabularyItems, { disciplineId, apiKey })
 
 export default useLoadDocuments

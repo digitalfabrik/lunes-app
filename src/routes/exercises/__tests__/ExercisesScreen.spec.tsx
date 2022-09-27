@@ -62,7 +62,7 @@ describe('ExercisesScreen', () => {
       closeExerciseAction: undefined,
       disciplineId: mockDisciplines()[0].id,
       disciplineTitle: mockDisciplines()[0].title,
-      documents,
+      documents, // TODO: routin
     })
   })
 })

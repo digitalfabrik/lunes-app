@@ -1,7 +1,7 @@
 import { mocked } from 'jest-mock'
 
 import { getFromEndpoint } from '../../services/axios'
-import { loadDocuments } from '../useLoadDocuments'
+import { loadVocabularyItems } from '../useLoadDocuments'
 
 jest.mock('../useLoadAsync')
 jest.mock('../../services/axios')
@@ -98,12 +98,12 @@ describe('loadDocuments', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {
-    await loadDocuments({ disciplineId: discipline.id })
+    await loadVocabularyItems({ disciplineId: discipline.id })
     expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234', undefined)
   })
 
   it('should map data correctly', async () => {
-    const responseData = await loadDocuments({ disciplineId: discipline.id })
+    const responseData = await loadVocabularyItems({ disciplineId: discipline.id })
     expect(responseData).toEqual(expectedData)
   })
 })

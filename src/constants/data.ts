@@ -63,7 +63,7 @@ export interface NextExercise {
 }
 
 export type NextExerciseData = NextExercise & {
-  documents: VocabularyItem[]
+  vocabularyItems: VocabularyItem[]
   title: string
 }
 

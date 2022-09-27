@@ -137,8 +137,8 @@ describe('helpers', () => {
       numberOfTries: [number, number, number, number],
       results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
     ): VocabularyItemResult[] => {
-      const documents = new VocabularyItemBuilder(4).build()
-      return documents.map((vocabularyItem, index) => ({
+      const vocabularyItems = new VocabularyItemBuilder(4).build()
+      return vocabularyItems.map((vocabularyItem, index) => ({
         vocabularyItem,
         result: results[index],
         numberOfTries: numberOfTries[index],

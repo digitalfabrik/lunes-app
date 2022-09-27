@@ -44,7 +44,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
 
   const {
-    data: documents,
+    data: documents, // TODO: routin
     error,
     loading,
     refresh,

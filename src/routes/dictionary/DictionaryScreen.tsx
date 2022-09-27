@@ -9,9 +9,9 @@ import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { VocabularyItem } from '../../constants/endpoints'
-import useLoadAllDocuments from '../../hooks/useLoadAllDocuments'
+import useLoadAllVocabularyItems from '../../hooks/useLoadAllDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getSortedAndFilteredDocuments, matchAlternative } from '../../services/helpers'
+import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
 
 const Root = styled.View`
@@ -27,10 +27,10 @@ interface Props {
 }
 
 const DictionaryScreen = ({ navigation }: Props): ReactElement => {
-  const documents = useLoadAllDocuments()
+  const vocabularyItems = useLoadAllVocabularyItems()
   const [searchString, setSearchString] = useState<string>('')
 
-  const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const sortedAndFilteredDocuments = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
   const description = `${sortedAndFilteredDocuments.length} ${
     sortedAndFilteredDocuments.length === 1 ? getLabels().general.word : getLabels().general.words
@@ -42,9 +42,9 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
 
   return (
     <RouteWrapper>
-      <ServerResponseHandler error={documents.error} loading={documents.loading} refresh={documents.refresh}>
+      <ServerResponseHandler error={vocabularyItems.error} loading={vocabularyItems.loading} refresh={vocabularyItems.refresh}>
         <Root>
-          {documents.data && (
+          {vocabularyItems.data && (
             <FlatList
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={

@@ -15,7 +15,7 @@ import { VocabularyItem } from '../../constants/endpoints'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
+import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
 import ListEmptyContent from './components/ListEmptyContent'
 
 const Root = styled.View`
@@ -39,12 +39,12 @@ interface Props {
 }
 
 const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
-  const documents = useReadUserVocabulary()
+  const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const isKeyboardVisible = useIsKeyboardVisible()
 
-  const numberOfDocuments = documents.data?.length ?? 0
-  const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const numberOfDocuments = vocabularyItems.data?.length ?? 0
+  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
   const navigateToDetail = (document: VocabularyItem): void => {
     navigation.navigate('UserVocabularyDetail', { document }) // TODO: routing
@@ -70,10 +70,10 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
               </EditPressable>
             </>
           }
-          data={sortedAndFilteredDocuments}
+          data={sortedAndFilteredVocabularyItems}
           renderItem={({ item }) => <VocabularyListItem vocabularyItem={item} onPress={() => navigateToDetail(item)} />}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<ListEmptyContent documents={documents} />}
+          ListEmptyComponent={<ListEmptyContent vocabularyItems={vocabularyItems} />}
         />
         {!isKeyboardVisible && (
           <ButtonContainer>

@@ -12,7 +12,7 @@ interface ArticleChoiceExerciseScreenProps {
   route: RouteProp<RoutesParams, 'ArticleChoiceExercise'>
   navigation: StackNavigationProp<RoutesParams, 'ArticleChoiceExercise'>
 }
-
+// TODO: routin
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const { documents, disciplineTitle, disciplineId } = route.params
 

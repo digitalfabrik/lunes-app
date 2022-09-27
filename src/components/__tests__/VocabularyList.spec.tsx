@@ -22,13 +22,13 @@ describe('VocabularyList', () => {
   })
 
   const onItemPress = jest.fn()
-  const documents = new VocabularyItemBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
 
   it('should display vocabulary list', () => {
-    mockUseLoadAsyncWithData(documents)
+    mockUseLoadAsyncWithData(vocabularyItems)
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyList title='Title' vocabularyItems={documents} onItemPress={onItemPress} />
+      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />
     )
 
     expect(getByText('Title')).toBeTruthy()
@@ -42,7 +42,7 @@ describe('VocabularyList', () => {
   })
 
   it('should call onItemPress with correct index', () => {
-    const { getByText } = render(<VocabularyList title='Title' vocabularyItems={documents} onItemPress={onItemPress} />)
+    const { getByText } = render(<VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />)
 
     expect(onItemPress).toHaveBeenCalledTimes(0)
 

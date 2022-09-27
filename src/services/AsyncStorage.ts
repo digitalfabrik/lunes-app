@@ -143,38 +143,38 @@ const getDevMode = async (): Promise<boolean | null> => {
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-const getUserVocabulary = async (): Promise<VocabularyItem[]> => {
+const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
 
-const setUserVocabulary = async (userDocument: VocabularyItem[]): Promise<void> => {
+const setUserVocabularyItems = async (userDocument: VocabularyItem[]): Promise<void> => {
   await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userDocument))
 }
 
-const addUserDocument = async (userDocument: VocabularyItem): Promise<void> => {
+const addUserVocabularyItem = async (userDocument: VocabularyItem): Promise<void> => {
   console.log('add: ', userDocument.word)
-  const userVocabulary = await getUserVocabulary()
-  await setUserVocabulary([...userVocabulary, userDocument])
+  const userVocabulary = await getUserVocabularyItems()
+  await setUserVocabularyItems([...userVocabulary, userDocument])
 }
 
-const editUserDocument = async (oldUserDocument: VocabularyItem, newUserDocument: VocabularyItem): Promise<boolean> => {
-  const userVocabulary = await getUserVocabulary()
-  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserDocument))
+const editUserVocabularyItem = async (oldUserVocabularyItem: VocabularyItem, newUserVocabularyItem: VocabularyItem): Promise<boolean> => {
+  const userVocabulary = await getUserVocabularyItems()
+  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
     return false
   }
-  userVocabulary[index] = newUserDocument
-  await setUserVocabulary(userVocabulary)
+  userVocabulary[index] = newUserVocabularyItem
+  await setUserVocabularyItems(userVocabulary)
   return true
 }
 
-const deleteUserDocument = async (userDocument: VocabularyItem): Promise<void> => {
+const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
   console.log('delete')
-  const userVocabulary = getUserVocabulary().then(vocab =>
-    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
+  const userVocabulary = getUserVocabularyItems().then(vocab =>
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
-  await setUserVocabulary(await userVocabulary)
+  await setUserVocabularyItems(await userVocabulary)
 }
 
 export default {
@@ -199,8 +199,8 @@ export default {
   getOverwriteCMS,
   toggleDevMode,
   getDevMode,
-  getUserVocabulary,
-  addUserDocument,
-  editUserDocument,
-  deleteUserDocument,
+  getUserVocabularyItems,
+  addUserVocabularyItem,
+  editUserVocabularyItem,
+  deleteUserVocabularyItem,
 }

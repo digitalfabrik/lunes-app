@@ -47,7 +47,7 @@ const ProfessionDetails = ({
     return null
   }
 
-  const { documents, title, exerciseKey } = nextExerciseData
+  const { vocabularyItems, title, exerciseKey } = nextExerciseData
 
   return (
     <>
@@ -72,7 +72,7 @@ const ProfessionDetails = ({
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
-        thumbnail={documents[0].document_image[0].image}
+        thumbnail={vocabularyItems[0].document_image[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}

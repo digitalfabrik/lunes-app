@@ -59,6 +59,7 @@ interface Props {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
+  //TODO: routin
   const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction, unlockedNextExercise } =
     route.params
   const correctResults = results.filter(doc => doc.result === 'correct')

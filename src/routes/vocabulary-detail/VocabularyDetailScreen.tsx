@@ -32,7 +32,7 @@ interface VocabularyDetailScreenProps {
 }
 
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
-  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
+  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params // TODO: routin
   const document = documents[documentIndex]
   const hasNextDocument = documentIndex + 1 < documents.length
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist

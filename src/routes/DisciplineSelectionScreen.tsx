@@ -27,6 +27,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   const { discipline } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
 
+  // TODO: routin
   const handleNavigation = (selectedItem: Discipline): void => {
     if (selectedItem.isLeaf) {
       navigation.navigate('Exercises', {

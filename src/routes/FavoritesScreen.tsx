@@ -23,6 +23,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     if (!data) {
       return
     }
+    // TODO: routin
     navigation.navigate('VocabularyDetail', {
       disciplineId: null,
       disciplineTitle: getLabels().general.favorites,
