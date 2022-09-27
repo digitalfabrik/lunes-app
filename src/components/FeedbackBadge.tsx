@@ -24,11 +24,12 @@ interface FeedbackBadgeProps {
 }
 
 const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null => {
+  const {positive, negative} = {...getLabels().exercises.feedback}
   if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
       <BadgeContainer testID='positive-badge'>
         <ThumbsUpIcon width={hp('3.5%')} height={hp('3.5%')} />
-        <BadgeText>{getLabels().exercises.feedback.positive}</BadgeText>
+        <BadgeText>{positive}</BadgeText>
       </BadgeContainer>
     )
   }
@@ -37,7 +38,7 @@ const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null =>
     return (
       <BadgeContainer testID='negative-badge'>
         <ThumbsDownIcon width={hp('4%')} height={hp('4%')} />
-        <BadgeText>{getLabels().exercises.feedback.negative}</BadgeText>
+        <BadgeText>{negative}</BadgeText>
       </BadgeContainer>
     )
   }
