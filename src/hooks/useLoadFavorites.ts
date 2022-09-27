@@ -6,14 +6,14 @@ import { VocabularyItemFromServer, formatServerResponse } from './useLoadDocumen
 
 export const loadFavorites = async (): Promise<VocabularyItem[]> => {
   const favoriteIds = await AsyncStorage.getFavorites()
-  const documents = await Promise.all(
+  const vocabularyItemsFromServer = await Promise.all(
     favoriteIds.map(id => {
       const url = `${ENDPOINTS.vocabularyItem}/${id}`
       return getFromEndpoint<VocabularyItemFromServer>(url)
     })
   )
 
-  return formatServerResponse(documents) // TODO: API hier entgegen genommen
+  return formatServerResponse(vocabularyItemsFromServer)
 }
 
 const useLoadFavorites = (): Return<VocabularyItem[]> => useLoadAsync(loadFavorites, {})
