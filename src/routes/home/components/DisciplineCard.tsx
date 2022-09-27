@@ -11,7 +11,7 @@ import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, NetworkError, ForbiddenError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
@@ -79,11 +79,11 @@ const DisciplineCard = ({
     let deleteItem
     let errorMessage
     if (error?.message === ForbiddenError && isTypeLoadProtected(identifier)) {
-      deleteItem = () => AsyncStorage.removeCustomDiscipline(identifier.apiKey).then(refreshHome)
+      deleteItem = () => removeCustomDiscipline(identifier.apiKey).then(refreshHome)
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
       deleteItem = !isTypeLoadProtected(identifier)
-        ? () => AsyncStorage.removeSelectedProfession(identifier.disciplineId).then(refreshHome)
+        ? () => removeSelectedProfession(identifier.disciplineId).then(refreshHome)
         : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }

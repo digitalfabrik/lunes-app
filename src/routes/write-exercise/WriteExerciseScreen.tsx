@@ -20,7 +20,7 @@ import {
 } from '../../constants/data'
 import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
 import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 
@@ -73,7 +73,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const finishExercise = async (results: DocumentResult[]): Promise<void> => {
     if (disciplineId) {
-      await AsyncStorage.saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
+      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
       documents,
