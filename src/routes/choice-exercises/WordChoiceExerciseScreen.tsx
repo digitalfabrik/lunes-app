@@ -20,8 +20,8 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const { documents, disciplineTitle, disciplineId } = route.params // TODO: auf routing name überprüfen
   const answersCount = Math.min(documents.length, MAX_ANSWERS)
 
-  const generateFalseAnswers = (correctDocument: VocabularyItem): Answer[] => {
-    const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctDocument.id))
+  const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
+    const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctVocabularyItem.id))
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 

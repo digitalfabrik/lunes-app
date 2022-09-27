@@ -25,7 +25,7 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         closeExerciseAction={goBack}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={1}
       />
     )

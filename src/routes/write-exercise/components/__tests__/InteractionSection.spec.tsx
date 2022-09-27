@@ -49,7 +49,7 @@ describe('InteractionSection', () => {
     word: 'Spachtel',
   }
 
-  const dividedDocument: VocabularyItem = {
+  const dividedVocabularyItem: VocabularyItem = {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
@@ -159,14 +159,14 @@ describe('InteractionSection', () => {
 
   it('should show correct for divided words', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
-      { vocabularyItem: dividedDocument, result: null, numberOfTries: 0 },
+      { vocabularyItem: dividedVocabularyItem, result: null, numberOfTries: 0 },
       false
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem: dividedDocument, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = { vocabularyItem: dividedVocabularyItem, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
     rerender(<InteractionSection documentWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)

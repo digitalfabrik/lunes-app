@@ -68,13 +68,13 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     }
     if (documents) {
       const closeExerciseAction = CommonActions.navigate('Exercises', {
-        documents: vocabularyItems,
+        documents,
         disciplineTitle,
         disciplineId,
         discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
-        documents: vocabularyItems,
+        documents,
         disciplineId,
         disciplineTitle,
         closeExerciseAction,

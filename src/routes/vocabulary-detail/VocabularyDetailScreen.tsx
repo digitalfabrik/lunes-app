@@ -49,7 +49,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
         numberOfWords={documents.length}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={document.id}
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
@@ -76,7 +76,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
       <FeedbackModal
         visible={isFeedbackModalVisible}
         onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={document.id}
       />
     </SafeAreaView>

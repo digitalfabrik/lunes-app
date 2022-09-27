@@ -148,14 +148,14 @@ const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
 
-const setUserVocabularyItems = async (userDocument: VocabularyItem[]): Promise<void> => {
-  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userDocument))
+const setUserVocabularyItems = async (userVocabularyItems: VocabularyItem[]): Promise<void> => {
+  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userVocabularyItems))
 }
 
-const addUserVocabularyItem = async (userDocument: VocabularyItem): Promise<void> => {
-  console.log('add: ', userDocument.word)
+const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Promise<void> => {
+  console.log('add: ', vocabularyItem.word)
   const userVocabulary = await getUserVocabularyItems()
-  await setUserVocabularyItems([...userVocabulary, userDocument])
+  await setUserVocabularyItems([...userVocabulary, vocabularyItem])
 }
 
 const editUserVocabularyItem = async (oldUserVocabularyItem: VocabularyItem, newUserVocabularyItem: VocabularyItem): Promise<boolean> => {

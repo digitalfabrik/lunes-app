@@ -147,7 +147,7 @@ const ChoiceExerciseScreen = ({
         closeExerciseAction={route.params.closeExerciseAction}
         currentWord={currentWord}
         numberOfWords={count}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={vocabularyItem.id}
       />
 

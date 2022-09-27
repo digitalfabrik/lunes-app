@@ -65,7 +65,7 @@ const AlternativeWordsSection = ({ vocabularyItem }: Props): JSX.Element => {
       <FeedbackModal
         visible={isFeedbackModalVisible}
         onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={vocabularyItem.id}
       />
     </Root>
