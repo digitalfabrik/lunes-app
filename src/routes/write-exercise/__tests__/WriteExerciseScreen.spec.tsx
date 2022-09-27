@@ -91,7 +91,7 @@ describe('WriteExerciseScreen', () => {
     key: '',
     name: 'WriteExercise',
     params: {
-      documents: vocabularyItems, // TODO: routin
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),

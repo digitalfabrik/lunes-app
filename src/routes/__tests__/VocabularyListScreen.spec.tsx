@@ -23,14 +23,14 @@ jest.mock('../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
-// TODO: routin
+
 describe('VocabularyListScreen', () => {
-  const documents = new VocabularyItemBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {
     key: '',
     name: 'VocabularyList',
     params: {
-      documents,
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'My discipline title',
       closeExerciseAction: CommonActions.goBack(),
@@ -45,7 +45,7 @@ describe('VocabularyListScreen', () => {
   })
 
   it('should display vocabulary list', () => {
-    mockUseLoadAsyncWithData(documents)
+    mockUseLoadAsyncWithData(vocabularyItems)
 
     const { getByText, getAllByText, getAllByTestId } = render(
       <VocabularyListScreen route={route} navigation={navigation} />

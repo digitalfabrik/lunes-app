@@ -8,11 +8,11 @@ export interface VocabularyItemResult {
   result: SimpleResult | null
   numberOfTries: number
 }
-// TODO: routing
+
 interface ExerciseParams {
   disciplineId: number
   disciplineTitle: string
-  documents: VocabularyItem[]
+  vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
@@ -22,9 +22,9 @@ interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplin
   disciplineId: number | null
 }
 
-export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
+export interface ExercisesParams extends Omit<ExerciseParams, 'vocabularyItems' | 'closeExerciseAction'> {
   discipline: Discipline
-  documents: VocabularyItem[] | null
+  vocabularyItems: VocabularyItem[] | null
   closeExerciseAction?: CommonNavigationAction
 }
 
@@ -44,7 +44,7 @@ export type RoutesParams = {
   Home: undefined
   UserVocabularyOverview: undefined
   UserVocabularyList: undefined
-  UserVocabularyDetail: { document: VocabularyItem }
+  UserVocabularyDetail: { vocabularyItem: VocabularyItem }
   ScopeSelection: {
     initialSelection: boolean
   }
@@ -75,7 +75,7 @@ export type RoutesParams = {
   Settings: undefined
   Favorites: undefined
   Dictionary: undefined
-  DictionaryDetail: { document: VocabularyItem }
+  DictionaryDetail: { vocabularyItem: VocabularyItem }
 }
 
 export type Route = keyof RoutesParams

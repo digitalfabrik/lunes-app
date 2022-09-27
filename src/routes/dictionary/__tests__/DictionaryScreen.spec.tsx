@@ -62,6 +62,6 @@ describe('DictionaryScreen', () => {
     mocked(useLoadAllDocuments).mockReturnValue(getReturnOf(vocabularyItems))
     const { getByText } = render(<DictionaryScreen navigation={navigation} />)
     fireEvent.press(getByText(vocabularyItems[0].word))
-    expect(navigation.navigate).toHaveBeenCalledWith('DictionaryDetail', { vocabularyItem: vocabularyItems[0] }) // TODO: Routing
+    expect(navigation.navigate).toHaveBeenCalledWith('DictionaryDetail', { vocabularyItem: vocabularyItems[0] })
   })
 })

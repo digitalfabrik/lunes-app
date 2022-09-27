@@ -45,13 +45,13 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const documents = new VocabularyItemBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
-      documents, // TODO: auf routing überprüfen
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
@@ -109,8 +109,8 @@ describe('ArticleChoiceExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
     expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
-      { vocabularyItem: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 }, // TODO: auf routing überprüfen
-      { vocabularyItem: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 })

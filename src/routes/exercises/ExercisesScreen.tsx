@@ -44,7 +44,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
 
   const {
-    data: documents, // TODO: routin
+    data: vocabularyItems,
     error,
     loading,
     refresh,
@@ -66,15 +66,15 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       setIsModalVisible(true)
       return
     }
-    if (documents) {
+    if (vocabularyItems) {
       const closeExerciseAction = CommonActions.navigate('Exercises', {
-        documents,
+        documents: vocabularyItems,
         disciplineTitle,
         disciplineId,
         discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
-        documents,
+        vocabularyItems,
         disciplineId,
         disciplineTitle,
         closeExerciseAction,
@@ -103,7 +103,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
     <RouteWrapper>
-      {documents && nextExercise && (
+      {vocabularyItems && nextExercise && (
         <Modal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
@@ -122,9 +122,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         </Modal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {documents && (
+        {vocabularyItems && (
           <>
-            <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
+            <Title title={disciplineTitle} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
               data={EXERCISES}
               renderItem={renderListItem}

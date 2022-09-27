@@ -32,9 +32,9 @@ interface VocabularyDetailScreenProps {
 }
 
 const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
-  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params // TODO: routin
-  const document = documents[documentIndex]
-  const hasNextDocument = documentIndex + 1 < documents.length
+  const { vocabularyItems, documentIndex, closeExerciseAction, labelOverrides } = route.params
+  const document = vocabularyItems[documentIndex]
+  const hasNextDocument = documentIndex + 1 < vocabularyItems.length
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
@@ -46,7 +46,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
       <ExerciseHeader
         navigation={navigation}
         currentWord={documentIndex}
-        numberOfWords={documents.length}
+        numberOfWords={vocabularyItems.length}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.vocabularyItem}

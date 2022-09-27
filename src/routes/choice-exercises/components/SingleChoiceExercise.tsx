@@ -85,7 +85,7 @@ const ChoiceExerciseScreen = ({
     const progress = await AsyncStorage.getExerciseProgress()
     await AsyncStorage.saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
-      documents: vocabularyItems, // TODO: routing überprüfen
+      vocabularyItems,
       disciplineId,
       disciplineTitle,
       exercise: exerciseKey,

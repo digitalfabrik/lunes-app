@@ -22,7 +22,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyDetailScreen', () => {
-  const documents = new VocabularyItemBuilder(2).build() // TODO : ROUTIN
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
 
   const getRoute = (documentIndex: number): RouteProp<RoutesParams, 'VocabularyDetail'> => ({
     key: '',
@@ -30,7 +30,7 @@ describe('VocabularyDetailScreen', () => {
     params: {
       disciplineId: 1,
       disciplineTitle: 'disciplineTitle',
-      documents,
+      vocabularyItems,
       closeExerciseAction: CommonActions.goBack(),
       documentIndex,
     },
@@ -40,7 +40,7 @@ describe('VocabularyDetailScreen', () => {
 
   it('should render and navigate to next word', () => {
     const { getByText } = render(<VocabularyDetailScreen route={getRoute(0)} navigation={navigation} />)
-    expect(getByText(documents[0].word)).toBeDefined()
+    expect(getByText(vocabularyItems[0].word)).toBeDefined()
     expect('AudioPlayer').toBeDefined()
     expect('FavoriteButton').toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()

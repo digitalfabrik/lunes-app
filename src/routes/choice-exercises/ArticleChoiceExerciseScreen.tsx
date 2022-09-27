@@ -12,14 +12,14 @@ interface ArticleChoiceExerciseScreenProps {
   route: RouteProp<RoutesParams, 'ArticleChoiceExercise'>
   navigation: StackNavigationProp<RoutesParams, 'ArticleChoiceExercise'>
 }
-// TODO: routin
+
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, disciplineTitle, disciplineId } = route.params
+  const { vocabularyItems, disciplineTitle, disciplineId } = route.params
 
   // Exclude articles 'keiner' and 'die (Plural)'
   const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
 
-  const singularDocuments = documents.filter(it => answerOptions.includes(it.article))
+  const singularDocuments = vocabularyItems.filter(it => answerOptions.includes(it.article))
 
   const documentToAnswers = (vocabularyItem: VocabularyItem): Answer[] =>
     answerOptions.map(article => ({ article, word: vocabularyItem.word }))

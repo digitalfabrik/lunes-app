@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       disciplineId,
       disciplineTitle,
-      documents: vocabularyItems, // TODO: routin
+      vocabularyItems,
       closeExerciseAction: CommonActions.navigate('Home'),
     })
   }

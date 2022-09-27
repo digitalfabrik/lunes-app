@@ -17,11 +17,11 @@ interface WordChoiceExerciseScreenProps {
 const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, disciplineTitle, disciplineId } = route.params // TODO: auf routing name überprüfen
-  const answersCount = Math.min(documents.length, MAX_ANSWERS)
+  const { vocabularyItems, disciplineTitle, disciplineId } = route.params
+  const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
 
   const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
-    const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctVocabularyItem.id))
+    const shuffledWrongAnswers = shuffleArray(vocabularyItems.filter(it => it.id !== correctVocabularyItem.id))
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 
@@ -38,7 +38,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        vocabularyItems={documents}
+        vocabularyItems={vocabularyItems}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
         vocabularyItemToAnswer={documentToAnswers}

@@ -33,14 +33,14 @@ jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WordChoiceExerciseScreen', () => {
   // at least 4 vocabularyItems are needed to generate sufficient false answers
-  const testDocuments = new VocabularyItemBuilder(4).build()
+  const vocabularyItems = new VocabularyItemBuilder(4).build()
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
     key: '',
     name: 'WordChoiceExercise',
     params: {
-      documents: testDocuments,   // TODO: routin
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),

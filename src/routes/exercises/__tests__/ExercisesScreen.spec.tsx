@@ -18,11 +18,11 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDocuments')
 
 describe('ExercisesScreen', () => {
-  const documents = new VocabularyItemBuilder(1).build()
+  const vocabularyItems = new VocabularyItemBuilder(1).build()
   beforeEach(() => {
     jest.clearAllMocks()
     RNAsyncStorage.clear()
-    mocked(useLoadDocuments).mockReturnValue(getReturnOf(documents))
+    mocked(useLoadDocuments).mockReturnValue(getReturnOf(vocabularyItems))
   })
 
   const navigation = createNavigationMock<'Exercises'>()
@@ -33,7 +33,7 @@ describe('ExercisesScreen', () => {
       disciplineId: mockDisciplines()[0].id,
       disciplineTitle: mockDisciplines()[0].title,
       discipline: mockDisciplines()[0],
-      documents: null,
+      vocabularyItems: null,
     },
   }
 
@@ -62,7 +62,7 @@ describe('ExercisesScreen', () => {
       closeExerciseAction: undefined,
       disciplineId: mockDisciplines()[0].id,
       disciplineTitle: mockDisciplines()[0].title,
-      documents, // TODO: routin
+      vocabularyItems,
     })
   })
 })

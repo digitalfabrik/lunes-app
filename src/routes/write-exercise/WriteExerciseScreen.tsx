@@ -34,11 +34,11 @@ export interface WriteExerciseScreenProps {
 }
 
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
-  const { documents, disciplineTitle, closeExerciseAction, disciplineId } = route.params // TODO: routing
+  const { vocabularyItems, disciplineTitle, closeExerciseAction, disciplineId } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [documentsWithResults, setDocumentsWithResults] = useState<VocabularyItemResult[]>(
-    shuffleArray(documents.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
   )
 
   const isKeyboardShown = useIsKeyboardVisible()
@@ -47,13 +47,13 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const initializeExercise = useCallback(
     (force = false) => {
-      if (documents.length !== documentsWithResults.length || force) {
+      if (vocabularyItems.length !== documentsWithResults.length || force) {
         setCurrentIndex(0)
         setIsAnswerSubmitted(false)
-        setDocumentsWithResults(shuffleArray(documents.map(document => ({ vocabularyItem: document, result: null, numberOfTries: 0 }))))
+        setDocumentsWithResults(shuffleArray(vocabularyItems.map(document => ({ vocabularyItem: document, result: null, numberOfTries: 0 }))))
       }
     },
-    [documents, documentsWithResults]
+    [vocabularyItems, documentsWithResults]
   )
 
   useEffect(initializeExercise, [initializeExercise])
@@ -76,7 +76,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       await AsyncStorage.saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
-      documents,
+      vocabularyItems,
       disciplineTitle,
       disciplineId,
       results,
@@ -130,10 +130,10 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
         <ExerciseHeader
           navigation={navigation}
           currentWord={currentIndex}
-          numberOfWords={documents.length}
+          numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
           feedbackType={FeedbackType.vocabularyItem}
-          feedbackForId={documents[currentIndex].id}
+          feedbackForId={vocabularyItems[currentIndex].id}
         />
 
         <InteractionSection
@@ -156,7 +156,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
                 onPress={giveUp}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
-              {currentIndex < documents.length - 1 && (
+              {currentIndex < vocabularyItems.length - 1 && (
                 <Button
                   label={getLabels().exercises.tryLater}
                   iconRight={ArrowRightIcon}

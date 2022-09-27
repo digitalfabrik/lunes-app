@@ -22,7 +22,7 @@ describe('ExerciseFinishedScreen', () => {
     params: {
       disciplineId: 1,
       disciplineTitle: 'discipline',
-      documents: new VocabularyItemBuilder(4).build(), // TODO : Routin
+      vocabularyItems: new VocabularyItemBuilder(4).build(),
       closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
       results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
@@ -48,7 +48,7 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
-      vocabularyItems: route.params.documents,
+      vocabularyItems: route.params.vocabularyItems,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
@@ -62,7 +62,7 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.continue)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
-      vocabularyItems: route.params.documents,
+      vocabularyItems: route.params.vocabularyItems,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
@@ -76,7 +76,7 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, {
-      vocabularyItems: route.params.documents,
+      vocabularyItems: route.params.vocabularyItems,
       disciplineId: route.params.disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
