@@ -34,7 +34,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         discipline: selectedItem,
         disciplineTitle: selectedItem.title,
         disciplineId: selectedItem.id,
-        documents: null,
+        vocabularyItems: null,
       })
     } else {
       navigation.push('DisciplineSelection', {

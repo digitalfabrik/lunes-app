@@ -76,7 +76,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       await AsyncStorage.saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
-      documents,
+      documents: vocabularyItems,
       disciplineTitle,
       disciplineId,
       results,

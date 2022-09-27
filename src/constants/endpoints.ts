@@ -41,8 +41,8 @@ export const ENDPOINTS = {
   groupInfo: 'group_info',
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
-  documents: 'documents/:id', // TODO: auf API überprüfen
-  document: 'words', // TODO: auf API überprüfen
+  vocabularyItems: 'documents/:id',
+  vocabularyItem: 'words',
   feedback: 'feedback',
 }
 

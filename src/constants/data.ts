@@ -146,7 +146,7 @@ export type Result = typeof RESULTS[number]
 export const FeedbackType = {
   discipline: 'discipline',
   leaf_discipline: 'trainingset',
-  document: 'document', // TODO: auf API überprüfen
+  vocabularyItem: 'document', // TODO: auf API überprüfen
 } as const
 export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 

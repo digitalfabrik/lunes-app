@@ -34,7 +34,7 @@ export const loadVocabularyItems = async ({
   disciplineId: number
   apiKey?: string
 }): Promise<VocabularyItem[]> => {
-  const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
+  const url = ENDPOINTS.vocabularyItems.replace(':id', `${disciplineId}`)
   const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
   return formatServerResponse(response)
 }

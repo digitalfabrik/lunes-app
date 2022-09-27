@@ -4,7 +4,7 @@ import { Return, useLoadAsync } from './useLoadAsync'
 import { VocabularyItemFromServer, formatServerResponse } from './useLoadDocuments'
 
 export const loadAllDocuments = async (): Promise<VocabularyItem[]> => {
-  const response = await getFromEndpoint<VocabularyItemFromServer[]>(ENDPOINTS.document)
+  const response = await getFromEndpoint<VocabularyItemFromServer[]>(ENDPOINTS.vocabularyItem)
   return formatServerResponse(response)
 }
 

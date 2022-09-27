@@ -8,7 +8,7 @@ export const loadFavorites = async (): Promise<VocabularyItem[]> => {
   const favoriteIds = await AsyncStorage.getFavorites()
   const documents = await Promise.all(
     favoriteIds.map(id => {
-      const url = `${ENDPOINTS.document}/${id}`
+      const url = `${ENDPOINTS.vocabularyItem}/${id}`
       return getFromEndpoint<VocabularyItemFromServer>(url)
     })
   )

@@ -27,7 +27,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     navigation.navigate('VocabularyDetail', {
       disciplineId: null,
       disciplineTitle: getLabels().general.favorites,
-      documents: data,
+      vocabularyItems: data,
       documentIndex: index,
       closeExerciseAction: CommonActions.goBack(),
       labelOverrides: {

@@ -46,8 +46,8 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const numberOfDocuments = vocabularyItems.data?.length ?? 0
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
-  const navigateToDetail = (document: VocabularyItem): void => {
-    navigation.navigate('UserVocabularyDetail', { document }) // TODO: routing
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('UserVocabularyDetail', { document: vocabularyItem }) // TODO: routing
   }
 
   return (
