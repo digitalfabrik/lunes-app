@@ -172,7 +172,6 @@ const editUserDocument = async (oldUserDocument: Document, newUserDocument: Docu
 }
 
 const deleteUserDocument = async (userDocument: Document): Promise<void> => {
-  console.log('hi')
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )

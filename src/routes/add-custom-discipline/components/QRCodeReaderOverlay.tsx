@@ -6,6 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
+import { reportError } from '../../../services/sentry'
 import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.SafeAreaView`
@@ -47,7 +48,7 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement
     if (!permissionRequested) {
       request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
         .then(result => setPermissionGranted(result === RESULTS.GRANTED))
-        .catch(e => console.error(e))
+        .catch(reportError)
         .finally(() => setPermissionRequested(true))
     }
   }, [permissionRequested])
