@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
@@ -10,13 +10,19 @@ import { ContentSecondaryLight } from './text/Content'
 const BadgeContainer = styled.View`
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
+  padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};
   background-color: ${props => props.theme.colors.lightGreyBackground};
   width: 100%;
 `
 const BadgeText = styled(ContentSecondaryLight)`
   font-style: italic;
   margin-left: ${props => props.theme.spacings.xs};
+  align-self: center;
+`
+
+const BadgeIcon = styled.View`
+  height: ${hp('3.5%')}px;
+  max-height: ${wp('5%')}px;
 `
 
 interface FeedbackBadgeProps {
@@ -24,11 +30,13 @@ interface FeedbackBadgeProps {
 }
 
 const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null => {
-  const {positive, negative} = {...getLabels().exercises.feedback}
+  const { positive, negative } = { ...getLabels().exercises.feedback }
   if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
       <BadgeContainer testID='positive-badge'>
-        <ThumbsUpIcon width={hp('3.5%')} height={hp('3.5%')} />
+        <BadgeIcon>
+          <ThumbsUpIcon height='100%' />
+        </BadgeIcon>
         <BadgeText>{positive}</BadgeText>
       </BadgeContainer>
     )
@@ -37,7 +45,9 @@ const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null =>
   if (feedback === EXERCISE_FEEDBACK.NEGATIVE) {
     return (
       <BadgeContainer testID='negative-badge'>
-        <ThumbsDownIcon width={hp('4%')} height={hp('4%')} />
+        <BadgeIcon>
+          <ThumbsDownIcon height='100%' />
+        </BadgeIcon>
         <BadgeText>{negative}</BadgeText>
       </BadgeContainer>
     )
