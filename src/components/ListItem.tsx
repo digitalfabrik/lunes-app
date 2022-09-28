@@ -20,6 +20,8 @@ const Container = styled(GenericListItemContainer)<{
   disabled: boolean
   feedback: EXERCISE_FEEDBACK
 }>`
+  min-height: ${hp('12%')}px;
+  justify-content: center;
   flex-direction: column;
   border-top-width: 1px;
   border-top-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
@@ -49,14 +51,11 @@ const Container = styled(GenericListItemContainer)<{
   }};
 `
 
-const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean; feedback: EXERCISE_FEEDBACK }>`
-  min-height: ${hp('12%')}px;
+const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
   display: flex;
   flex-direction: row;
   padding: ${props =>
-    props.feedback !== EXERCISE_FEEDBACK.NONE
-      ? `${props.theme.spacings.xxs} ${props.theme.spacings.xs} ${props.theme.spacings.xxs} ${props.theme.spacings.sm}`
-      : `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+    `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
   align-items: center;
 `
 
@@ -197,7 +196,7 @@ const ListItem = ({
       feedback={feedback}
       testID='list-item'>
       <FeedbackBadge feedback={feedback} />
-      <ContentContainer pressed={pressed} disabled={disabled} feedback={feedback}>
+      <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}
         <FlexContainer>
           {titleToRender}
