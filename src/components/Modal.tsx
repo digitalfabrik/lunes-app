@@ -9,9 +9,9 @@ import ModalSkeleton from './ModalSkeleton'
 import { HeadingText } from './text/Heading'
 
 const Message = styled(HeadingText)`
-  width: ${wp('60%')}px;
+  width: ${wp('80%')}px;
   margin-bottom: ${props => props.theme.spacings.lg};
-  padding-top: ${props => props.theme.spacings.lg};
+  padding: ${props => props.theme.spacings.xs} ${props => props.theme.spacings.sm};
   text-align: center;
 `
 
@@ -44,7 +44,6 @@ const Modal = (props: Props): JSX.Element => {
     <ModalSkeleton visible={visible} onClose={onClose} testID={testID}>
       <Message>{text}</Message>
       {children}
-
       <Button
         label={confirmationButtonText}
         onPress={confirmationAction}
