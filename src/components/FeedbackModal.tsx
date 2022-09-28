@@ -47,7 +47,7 @@ const FeedbackModal = ({ visible, onClose, feedbackType, feedbackForId }: Feedba
           value={message}
           onChangeText={setMessage}
           placeholder={getLabels().feedback.feedbackPlaceholder}
-          lines={5}
+          lines={3}
           clearable
         />
         <CustomTextInput
