@@ -12,7 +12,7 @@ import Title from '../../components/Title'
 import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { deleteUserDocument } from '../../services/AsyncStorage'
@@ -46,7 +46,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
   const [documentToDelete, setDocumentToDelete] = useState<Document | null>(null)
-  const isKeyboardVisible = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
