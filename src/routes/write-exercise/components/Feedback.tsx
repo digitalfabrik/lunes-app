@@ -31,13 +31,13 @@ const StyledText = styled.Text`
 `
 
 export interface FeedbackProps {
-  documentWithResult: VocabularyItemResult
+  vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
   needsToBeRepeated: boolean
 }
 
-const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
-  const { result, vocabularyItem } = documentWithResult
+const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+  const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
 

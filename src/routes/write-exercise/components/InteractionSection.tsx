@@ -7,7 +7,7 @@ import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
 import DocumentImageSection from '../../../components/DocumentImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
-import { useIsKeyboardVisible } from '../../../hooks/useIsKeyboardVisible'
+import useKeyboard from '../../../hooks/useKeyboard'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels, stringifyDocument } from '../../../services/helpers'
 import Feedback from './Feedback'
@@ -24,7 +24,7 @@ const InputContainer = styled.View`
 `
 
 interface InteractionSectionProps {
-  documentWithResult: VocabularyItemResult
+  vocabularyItemWithResult: VocabularyItemResult
   isAnswerSubmitted: boolean
   storeResult: (result: VocabularyItemResult) => void
 }
@@ -33,18 +33,18 @@ const almostCorrectThreshold = 0.6
 const ttsThreshold = 0.6
 
 const InteractionSection = (props: InteractionSectionProps): ReactElement => {
-  const { isAnswerSubmitted, documentWithResult, storeResult } = props
-  const { vocabularyItem } = documentWithResult
+  const { isAnswerSubmitted, vocabularyItemWithResult, storeResult } = props
+  const { vocabularyItem } = vocabularyItemWithResult
 
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
 
   const theme = useTheme()
-  const isKeyboardShown = useIsKeyboardVisible()
-  const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
-  const isCorrect = documentWithResult.result === 'correct'
-  const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
+  const { isKeyboardVisible } = useKeyboard()
+  const retryAllowed = !isAnswerSubmitted || vocabularyItemWithResult.result === 'similar'
+  const isCorrect = vocabularyItemWithResult.result === 'correct'
+  const needsToBeRepeated = vocabularyItemWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
@@ -75,9 +75,9 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const uncapitalizeFirstLetter = (string: string): string => string.charAt(0).toLowerCase() + string.slice(1)
 
   const updateAndStoreResult = (score: SimpleResult): void => {
-    const nthRetry = documentWithResult.numberOfTries + 1
+    const nthRetry = vocabularyItemWithResult.numberOfTries + 1
     const documentWithResultToStore = {
-      ...documentWithResult,
+      ...vocabularyItemWithResult,
       result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
       numberOfTries: nthRetry,
     }
@@ -101,7 +101,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   const getBorderColor = (): string => {
     if (isAnswerSubmitted) {
-      switch (documentWithResult.result) {
+      switch (vocabularyItemWithResult.result) {
         case 'correct':
           return theme.colors.correct
         case 'incorrect':
@@ -118,7 +118,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     <>
       <DocumentImageSection
         vocabularyItem={vocabularyItem}
-        minimized={isKeyboardShown}
+        minimized={isKeyboardVisible}
         audioDisabled={retryAllowed}
         submittedAlternative={submittedAlternative}
       />
@@ -144,7 +144,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
         {isAnswerSubmitted && (
           <Feedback
-            documentWithResult={documentWithResult}
+            vocabularyItemWithResult={vocabularyItemWithResult}
             submission={submittedInput}
             needsToBeRepeated={needsToBeRepeated}
           />
