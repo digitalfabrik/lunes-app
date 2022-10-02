@@ -15,7 +15,7 @@ import { Exercise, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBA
 import { useLoadAsync } from '../../hooks/useLoadAsync'
 import useLoadDocuments from '../../hooks/useLoadDocuments'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { getExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
@@ -46,11 +46,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
-  const {
-    data: scores,
-    loading: loadingFeedback,
-    refresh: refreshFeedback,
-  } = useLoadAsync(AsyncStorage.getExerciseProgress, null)
+  const { data: scores, loading: loadingFeedback, refresh: refreshFeedback } = useLoadAsync(getExerciseProgress, null)
   const isFocused = useIsFocused()
   const {
     data: documents,
