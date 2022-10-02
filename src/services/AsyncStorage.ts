@@ -175,7 +175,7 @@ export const editUserDocument = async (oldUserDocument: Document, newUserDocumen
   return true
 }
 
-const deleteUserDocument = async (userDocument: Document): Promise<void> => {
+export const deleteUserDocument = async (userDocument: Document): Promise<void> => {
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )
