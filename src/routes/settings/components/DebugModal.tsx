@@ -8,7 +8,7 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import useLoadAsync from '../../../hooks/useLoadAsync'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { toggleDevMode, getDevMode, setOverwriteCMS } from '../../../services/AsyncStorage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
@@ -34,7 +34,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
-  const { data: isDevMode, refresh } = useLoadAsync(AsyncStorage.getDevMode, null)
+  const { data: isDevMode, refresh } = useLoadAsync(getDevMode, null)
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
@@ -52,12 +52,12 @@ const DebugModal = (props: PropsType): JSX.Element => {
 
   const switchCMS = async (): Promise<void> => {
     const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
-    await AsyncStorage.setOverwriteCMS(updatedCMS)
+    await setOverwriteCMS(updatedCMS)
     setBaseURL(updatedCMS)
   }
 
-  const toggleDevMode = async (): Promise<void> => {
-    await AsyncStorage.toggleDevMode()
+  const doToggleDevMode = async (): Promise<void> => {
+    await toggleDevMode()
     refresh()
   }
 
@@ -82,7 +82,7 @@ const DebugModal = (props: PropsType): JSX.Element => {
             label={
               isDevMode ? getLabels().settings.debugModal.disableDevMode : getLabels().settings.debugModal.enableDevMode
             }
-            onPress={toggleDevMode}
+            onPress={doToggleDevMode}
             buttonTheme={BUTTONS_THEME.contained}
           />
         </Container>
