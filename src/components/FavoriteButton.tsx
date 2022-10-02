@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { Document } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
-import AsyncStorage from '../services/AsyncStorage'
+import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
@@ -34,15 +34,15 @@ interface Props {
 }
 
 const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, document.id)
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
 
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await AsyncStorage.removeFavorite(document.id).catch(reportError)
+      await removeFavorite(document.id).catch(reportError)
     } else {
-      await AsyncStorage.addFavorite(document.id).catch(reportError)
+      await addFavorite(document.id).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {
