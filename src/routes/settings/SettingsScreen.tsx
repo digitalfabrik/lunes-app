@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import AsyncStorage from '../../services/AsyncStorage'
+import { isTrackingEnabled, setIsTrackingEnabled } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
@@ -31,12 +31,12 @@ const SettingsScreen = (): ReactElement => {
   const [trackingEnabled, setTrackingEnabled] = useState<boolean>(true)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
-  AsyncStorage.isTrackingEnabled().then(setTrackingEnabled).catch(reportError)
+  isTrackingEnabled().then(setTrackingEnabled).catch(reportError)
 
   const onTrackingChange = async (): Promise<void> => {
     const newValue = !trackingEnabled
     setTrackingEnabled(newValue)
-    return AsyncStorage.setIsTrackingEnabled(newValue)
+    return setIsTrackingEnabled(newValue)
   }
 
   return (

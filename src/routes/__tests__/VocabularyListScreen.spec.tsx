@@ -2,7 +2,7 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { setExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
@@ -43,7 +43,7 @@ describe('VocabularyListScreen', () => {
 
   it('should save progress', () => {
     render(<VocabularyListScreen route={route} navigation={navigation} />)
-    expect(AsyncStorage.setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
+    expect(setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
   })
 
   it('should display vocabulary list', () => {
