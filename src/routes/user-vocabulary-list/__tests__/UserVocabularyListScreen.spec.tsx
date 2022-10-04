@@ -3,7 +3,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import useReadUserVocabulary from '../../../hooks/useReadUserVocabulary'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { deleteUserDocument } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -68,6 +68,6 @@ describe('UserVocabularyListScreen', () => {
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
     fireEvent.press(confirmButton)
 
-    expect(AsyncStorage.deleteUserDocument).toHaveBeenCalled()
+    expect(deleteUserDocument).toHaveBeenCalled()
   })
 })

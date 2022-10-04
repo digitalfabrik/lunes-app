@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
-import AsyncStorage from './AsyncStorage'
+import { getOverwriteCMS } from './AsyncStorage'
 import { addTrailingSlashToUrl } from './url'
 
 export const testCMS = 'https://lunes-test.tuerantuer.org/api'
@@ -9,7 +9,7 @@ export const productionCMS = 'https://lunes.tuerantuer.org/api'
 export type CMS = typeof testCMS | typeof productionCMS
 
 export const getBaseURL = async (): Promise<CMS> => {
-  const overwriteCMS = await AsyncStorage.getOverwriteCMS()
+  const overwriteCMS = await getOverwriteCMS()
   if (overwriteCMS) {
     return overwriteCMS
   }

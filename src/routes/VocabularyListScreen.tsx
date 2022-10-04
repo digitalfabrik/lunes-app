@@ -7,7 +7,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys, FeedbackType } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
+import { setExerciseProgress } from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 
@@ -20,7 +20,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const { disciplineId, closeExerciseAction } = route.params
 
   useEffect(() => {
-    AsyncStorage.setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+    setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
   }, [disciplineId])
 
   const onItemPress = (index: number) =>

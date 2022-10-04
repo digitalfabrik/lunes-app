@@ -40,7 +40,7 @@ const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
   return (
     <Container>
       <Line color={index === 0 ? 'transparent' : colorPre} />
-      <Icon />
+      <Icon width='100%' />
       <Line color={index === EXERCISES.length - 1 ? 'transparent' : colorPost} />
     </Container>
   )

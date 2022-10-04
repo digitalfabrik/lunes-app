@@ -15,7 +15,7 @@ import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import AsyncStorage from '../services/AsyncStorage'
+import { setSelectedProfessions, pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
 import { getLabels, childrenDescription } from '../services/helpers'
 
 const List = styled.FlatList`
@@ -48,9 +48,9 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
     if (selectedProfessions?.includes(selectedItem.id)) {
-      await AsyncStorage.removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
+      await removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
     } else {
-      await AsyncStorage.pushSelectedProfession(selectedItem.id).then(() => {
+      await pushSelectedProfession(selectedItem.id).then(() => {
         if (initialSelection) {
           refreshSelectedProfessions()
         } else {
@@ -83,7 +83,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
 
   const navigateToHomeScreen = async () => {
     if (!isSelectionMade) {
-      await AsyncStorage.setSelectedProfessions([])
+      await setSelectedProfessions([])
     }
     navigation.reset({
       index: 0,
