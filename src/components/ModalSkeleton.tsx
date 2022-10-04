@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Keyboard, Modal as RNModal, Platform, Pressable, ScrollView } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
