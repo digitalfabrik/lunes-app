@@ -20,6 +20,7 @@ import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
 import ListItem from './components/ListItem'
+import {useFocusEffect} from "@react-navigation/native";
 
 const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
@@ -61,7 +62,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
 
-  // AsyncStorage.addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  useFocusEffect(documents.refresh)
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('UserVocabularyDetail', { document })
