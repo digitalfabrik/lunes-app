@@ -199,7 +199,8 @@
       "addAudio": "Audio aufnehmen",
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
       "requiredFields": "*Pflichtfelder",
-      "errorMessage": "Dies ist ein Pflichtfeld."
+      "errorMessage": "Dies ist ein Pflichtfeld.",
+      "imageErrorMessage": "Du musst 1 bis 3 Bilder auswählen"
     },
     "list": {
       "edit": "Bearbeiten",

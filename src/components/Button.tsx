@@ -74,7 +74,7 @@ const Button = (props: ButtonProps): ReactElement => {
 
   const getBackgroundColor = (): Color | 'transparent' => {
     if (disabled) {
-      return theme.colors.disabled
+      return buttonTheme === BUTTONS_THEME.text ? 'transparent' : theme.colors.disabled
     }
     if (isPressed) {
       if (buttonTheme === BUTTONS_THEME.text) {

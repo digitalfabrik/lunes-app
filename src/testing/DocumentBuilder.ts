@@ -6,7 +6,7 @@ const document: Document[] = [
     id: 1,
     word: 'Spachtel',
     article: ARTICLES[1],
-    document_image: [{ id: 1, image: 'Spachtel' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: 'https://example.com/my-audio',
     alternatives: [
       {
@@ -23,7 +23,7 @@ const document: Document[] = [
     id: 2,
     word: 'Auto',
     article: ARTICLES[3],
-    document_image: [{ id: 1, image: 'Auto' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: '',
     alternatives: [],
   },

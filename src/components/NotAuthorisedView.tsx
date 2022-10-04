@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react'
 import { Linking } from 'react-native'
 import styled from 'styled-components/native'
 
-import Button from '../../../components/Button'
-import { ContentSecondary } from '../../../components/text/Content'
-import { BUTTONS_THEME } from '../../../constants/data'
-import { getLabels } from '../../../services/helpers'
+import { BUTTONS_THEME } from '../constants/data'
+import { getLabels } from '../services/helpers'
+import Button from './Button'
+import { ContentSecondary } from './text/Content'
 
 const Container = styled.View`
   display: flex;
@@ -29,7 +29,7 @@ const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
   }
 
   return (
-    <Container>
+    <Container testID='no-auth'>
       <Description>{getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
       <Button

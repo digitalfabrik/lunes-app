@@ -4,7 +4,7 @@ import { ExerciseKey, Progress } from '../constants/data'
 import { Document } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
-import { calculateScore } from './helpers'
+import { calculateScore, getImages } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -14,6 +14,7 @@ const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
 const DEV_MODE_KEY = 'devmode'
 const USER_VOCABULARY = 'userVocabulary'
+const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
 const isTrackingEnabled = async (): Promise<boolean> => {
   const tracking = await AsyncStorage.getItem(SENTRY_KEY)
@@ -143,9 +144,27 @@ const getDevMode = async (): Promise<boolean | null> => {
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-const getUserVocabulary = async (): Promise<Document[]> => {
+const getNextUserVocabularyId = async (): Promise<number> =>
+  parseInt((await AsyncStorage.getItem(USER_VOCABULARY_NEXT_ID)) ?? '1', 10)
+
+const incrementNextUserVocabularyId = async (): Promise<void> => {
+  const nextId = (await getNextUserVocabularyId()) + 1
+  return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
+}
+
+const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
+}
+
+const getUserVocabulary = async (): Promise<Document[]> => {
+  const userVocabulary = await getUserVocabularyWithoutImage()
+  return Promise.all(
+    userVocabulary.map(async item => ({
+      ...item,
+      document_image: await getImages(item),
+    }))
+  )
 }
 
 const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
@@ -153,7 +172,7 @@ const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
 }
 
 const addUserDocument = async (userDocument: Document): Promise<void> => {
-  const userVocabulary = await getUserVocabulary()
+  const userVocabulary = await getUserVocabularyWithoutImage()
   if (userVocabulary.find(item => item.word === userDocument.word)) {
     return
   }
@@ -172,7 +191,6 @@ const editUserDocument = async (oldUserDocument: Document, newUserDocument: Docu
 }
 
 const deleteUserDocument = async (userDocument: Document): Promise<void> => {
-  console.log('hi')
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )
@@ -205,4 +223,6 @@ export default {
   addUserDocument,
   editUserDocument,
   deleteUserDocument,
+  getNextUserVocabularyId,
+  incrementNextUserVocabularyId,
 }
