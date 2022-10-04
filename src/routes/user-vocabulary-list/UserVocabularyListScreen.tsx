@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -20,7 +21,6 @@ import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
 import ListItem from './components/ListItem'
-import {useFocusEffect} from "@react-navigation/native";
 
 const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
