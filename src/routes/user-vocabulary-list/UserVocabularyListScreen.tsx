@@ -12,10 +12,10 @@ import Title from '../../components/Title'
 import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { deleteUserDocument } from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
@@ -46,14 +46,22 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
   const [documentToDelete, setDocumentToDelete] = useState<Document | null>(null)
-  const isKeyboardVisible = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
-  const { create, myWords, list } = getLabels().userVocabulary
-  const { confirm, confirmDeletionPart1, confirmDeletionPart2, finished, edit } = list
+  const { create, myWords } = getLabels().userVocabulary
+  const { list } = getLabels().userVocabulary.overview
+  const {
+    confirm,
+    confirmDeletionPart1,
+    confirmDeletionPart2,
+    finished,
+    edit,
+  }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
+    getLabels().userVocabulary.list
 
-  // AsyncStorage.addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  // addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('UserVocabularyDetail', { document })
@@ -69,7 +77,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
 
   const deleteItem = (document: Document | null): void => {
     if (document) {
-      AsyncStorage.deleteUserDocument(document).then(documents.refresh).catch(reportError)
+      deleteUserDocument(document).then(documents.refresh).catch(reportError)
     }
     setDocumentToDelete(null)
   }
@@ -119,7 +127,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
         {!isKeyboardVisible && (
           <ButtonContainer>
             <Button
-              onPress={() => navigation.navigate('UserVocabularyOverview')}
+              onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: list })}
               label={create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}

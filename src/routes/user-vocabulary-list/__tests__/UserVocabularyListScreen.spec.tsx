@@ -3,7 +3,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import useReadUserVocabulary from '../../../hooks/useReadUserVocabulary'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { deleteUserDocument } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -40,7 +40,7 @@ describe('UserVocabularyListScreen', () => {
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
     expect(getByText(userDocuments[0].word)).toBeDefined()
     expect(getByText(userDocuments[1].word)).toBeDefined()
-    expect(getByText(getLabels().userVocabulary.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
   it('should render empty list correctly', () => {
@@ -49,7 +49,7 @@ describe('UserVocabularyListScreen', () => {
 
     expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.noWordsYet)).toBeDefined()
-    expect(getByText(getLabels().userVocabulary.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
   it('should delete item', async () => {
@@ -68,6 +68,6 @@ describe('UserVocabularyListScreen', () => {
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
     fireEvent.press(confirmButton)
 
-    expect(AsyncStorage.deleteUserDocument).toHaveBeenCalled()
+    expect(deleteUserDocument).toHaveBeenCalled()
   })
 })

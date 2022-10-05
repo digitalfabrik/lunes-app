@@ -15,7 +15,7 @@ import { Discipline } from '../../constants/endpoints'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { setSelectedProfessions } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 
 const DisciplineContainer = styled.View`
@@ -65,7 +65,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
 
   const navigateToHomeScreen = async () => {
     if (selectedProfessions === null) {
-      await AsyncStorage.setSelectedProfessions([])
+      await setSelectedProfessions([])
     }
     navigation.reset({
       index: 0,

@@ -15,7 +15,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { setCustomDisciplines } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
 
@@ -68,7 +68,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
     }
     setLoading(true)
     loadDiscipline({ apiKey: code })
-      .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
+      .then(async () => setCustomDisciplines([...customDisciplines, code]))
       .then(navigation.goBack)
       .catch(error => {
         setErrorMessage(

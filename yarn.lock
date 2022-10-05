@@ -10142,6 +10142,7 @@ __metadata:
     react-native: 0.66.4
     react-native-camera: ^4.2.1
     react-native-device-info: ^9.0.2
+    react-native-dropdown-picker: ^5.4.2
     react-native-gesture-handler: ^2.5.0
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
@@ -11970,6 +11971,16 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: c1c23a1160d914def6907f11cffb8408f053c9e9882bbd5ff50ac5cb5234efe26175a5ef60fa8e783ee5e2981ab809d3f6439c587c24c6fb4f768e7d06620b8f
+  languageName: node
+  linkType: hard
+
+"react-native-dropdown-picker@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "react-native-dropdown-picker@npm:5.4.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 046e0ed4043a104142b96fc26b338d6e5dce578b991b708de6bbe858a55de160374a99fceb468dde10745a7e1f29935ffae8050a0d1b78eacc55c2fff31b4aab
   languageName: node
   linkType: hard
 
