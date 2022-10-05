@@ -12,11 +12,11 @@ const EmptyContainer = styled.View`
   height: ${wp('20%')}px;
 `
 
-interface Props {
+interface ListEmptyContentProps {
   documents: Return<Document[]>
 }
 
-const ListEmptyContent = ({ documents }: Props): ReactElement => {
+const ListEmptyContent = ({ documents }: ListEmptyContentProps): ReactElement => {
   if (documents.loading) {
     return (
       <EmptyContainer>
