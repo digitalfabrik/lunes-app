@@ -15,7 +15,7 @@ import { HintText } from '../../components/text/Hint'
 import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
 import { Images } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
@@ -85,8 +85,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
       return
     }
 
-    await AsyncStorage.getNextUserVocabularyId().then(id => {
-      AsyncStorage.incrementNextUserVocabularyId()
+    await getNextUserVocabularyId().then(id => {
+      incrementNextUserVocabularyId()
         .then(() => {
           const imagePaths: Images = []
           images.forEach(async (image, index) => {
@@ -95,7 +95,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
             await writeFile(path, image, 'utf8')
           })
 
-          AsyncStorage.addUserDocument({
+          addUserDocument({
             id,
             word,
             article: ARTICLES[articleId],
