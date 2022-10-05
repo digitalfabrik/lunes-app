@@ -64,6 +64,7 @@ const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: Props)
       <Camera ref={camera} captureAudio={false} testID='camera'>
         <Container>
           <ActionBar>
+            {/* eslint-disable-next-line no-console */}
             <PressableOpacity onPress={() => console.log('open gallery')}>
               {/* TODO LUN-440 implement gallery */}
               <ImageIcon width={GALLERY_IMAGE_SIZE} height={GALLERY_IMAGE_SIZE} testID='gallery-icon' />
