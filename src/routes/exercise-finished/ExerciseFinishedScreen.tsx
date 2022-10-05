@@ -53,12 +53,12 @@ const Results = styled(Content)<{ color: Color }>`
   padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
 
-interface Props {
+interface ExerciseFinishedScreenProps {
   route: RouteProp<RoutesParams, 'ExerciseFinished'>
   navigation: StackNavigationProp<RoutesParams, 'ExerciseFinished'>
 }
 
-const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
+const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction, unlockedNextExercise } =
     route.params
   const correctResults = results.filter(doc => doc.result === 'correct')

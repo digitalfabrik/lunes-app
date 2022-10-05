@@ -26,12 +26,12 @@ const Camera = styled(RNCamera)`
   position: relative;
 `
 
-interface Props {
+interface AddCustomDisciplineScreenProps {
   setVisible: (visible: boolean) => void
   setCode: (code: string) => void
 }
 
-const AddCustomDisciplineScreen = ({ setVisible, setCode }: Props): ReactElement => {
+const AddCustomDisciplineScreen = ({ setVisible, setCode }: AddCustomDisciplineScreenProps): ReactElement => {
   const appState = useRef(AppState.currentState)
 
   const [isPressed, setIsPressed] = useState<boolean>(false)

@@ -37,11 +37,11 @@ const MenuIconWhite = styled(MenuIcon)`
   color: ${props => props.theme.colors.backgroundAccent};
 `
 
-interface Props {
+interface HomeScreenHeaderProps {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const HomeScreenHeader = ({ navigation }: Props): JSX.Element => (
+const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
