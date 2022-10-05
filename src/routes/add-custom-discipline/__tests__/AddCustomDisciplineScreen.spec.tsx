@@ -5,7 +5,7 @@ import React from 'react'
 import { View } from 'react-native'
 
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { setCustomDisciplines } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
@@ -34,7 +34,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    await AsyncStorage.setCustomDisciplines(['test'])
+    await setCustomDisciplines(['test'])
 
     mocked(loadDiscipline).mockImplementationOnce(async () => mockDisciplines()[0])
 
@@ -51,7 +51,7 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should show duplicate error', async () => {
-    await AsyncStorage.setCustomDisciplines(['test'])
+    await setCustomDisciplines(['test'])
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
 
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)

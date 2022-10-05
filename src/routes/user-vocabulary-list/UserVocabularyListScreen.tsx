@@ -13,10 +13,10 @@ import Title from '../../components/Title'
 import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
-import { useIsKeyboardVisible } from '../../hooks/useIsKeyboardVisible'
+import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { deleteUserDocument } from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
@@ -47,7 +47,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
   const [documentToDelete, setDocumentToDelete] = useState<Document | null>(null)
-  const isKeyboardVisible = useIsKeyboardVisible()
+  const { isKeyboardVisible } = useKeyboard()
 
   const numberOfDocuments = documents.data?.length ?? 0
   const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
@@ -78,7 +78,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
 
   const deleteItem = (document: Document | null): void => {
     if (document) {
-      AsyncStorage.deleteUserDocument(document).then(documents.refresh).catch(reportError)
+      deleteUserDocument(document).then(documents.refresh).catch(reportError)
     }
     setDocumentToDelete(null)
   }
