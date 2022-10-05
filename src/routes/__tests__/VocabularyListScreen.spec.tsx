@@ -24,6 +24,8 @@ jest.mock('../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
+jest.mock('../../components/FeedbackBadge', () => () => null)
+
 describe('VocabularyListScreen', () => {
   const documents = new DocumentBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {
