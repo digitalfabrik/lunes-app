@@ -6,6 +6,7 @@ import { BUTTONS_THEME } from '../constants/data'
 import { getLabels } from '../services/helpers'
 import Button from './Button'
 import { ContentSecondary } from './text/Content'
+import { reportError } from '../services/sentry'
 
 const Container = styled.View`
   display: flex;
@@ -25,7 +26,7 @@ interface Props {
 
 const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
   const openSettings = () => {
-    Linking.openSettings().catch(() => console.error('Unable to open Settings'))
+    Linking.openSettings().catch(reportError)
   }
 
   return (

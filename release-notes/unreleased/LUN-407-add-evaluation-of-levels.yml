@@ -1,0 +1,6 @@
+issue_key: LUN-407
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Zeige Feedback zu bereits abgeschlossenen Leveln
