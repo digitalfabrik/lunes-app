@@ -36,14 +36,14 @@ const IconContainer = styled.View`
   padding-right: ${props => props.theme.spacings.sm};
 `
 
-interface PropsType {
+interface CardProps {
   heading?: string
   icon?: string | ReactElement
   onPress?: () => void
   children: ReactNode
 }
 
-const Card = (props: PropsType): ReactElement => {
+const Card = (props: CardProps): ReactElement => {
   const { heading, icon, onPress, children } = props
   return (
     <Box onPress={onPress}>

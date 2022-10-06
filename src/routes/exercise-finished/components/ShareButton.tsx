@@ -7,12 +7,12 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { DocumentResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
-interface Props {
+interface ShareButtonProps {
   disciplineTitle: string
   results: DocumentResult[]
 }
 
-const ShareButton = ({ disciplineTitle, results }: Props): ReactElement => {
+const ShareButton = ({ disciplineTitle, results }: ShareButtonProps): ReactElement => {
   const share = async () => {
     const correctWords = results.filter(doc => doc.result === 'correct').length
     const xOfAllWords = `${correctWords} ${getLabels().results.of} ${results.length}`

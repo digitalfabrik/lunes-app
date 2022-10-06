@@ -20,11 +20,11 @@ const Description = styled(ContentSecondary)`
   text-align: center;
 `
 
-interface Props {
+interface NotAuthorizedViewProps {
   setVisible: (visible: boolean) => void
 }
 
-const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
+const NotAuthorisedView = ({ setVisible }: NotAuthorizedViewProps): ReactElement => {
   const openSettings = () => {
     Linking.openSettings().catch(reportError)
   }

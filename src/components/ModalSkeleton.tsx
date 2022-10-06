@@ -37,14 +37,14 @@ const StyledPressable = styled(Pressable)`
   flex: 1;
 `
 
-interface PropsType {
+interface ModalSkeletonProps {
   visible: boolean
   onClose: () => void
   testID?: string
   children: ReactNode
 }
 
-const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): ReactElement => {
+const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProps): ReactElement => {
   const { keyboardHeight, isKeyboardVisible } = useKeyboard()
   const screenHeight = useScreenHeight()
   const onCloseKeyboard = () => isKeyboardVisible && Keyboard.dismiss()

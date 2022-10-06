@@ -22,11 +22,11 @@ const Header = styled.View`
   padding-bottom: ${props => props.theme.spacings.md};
 `
 
-interface Props {
+interface DictionaryScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'Dictionary'>
 }
 
-const DictionaryScreen = ({ navigation }: Props): ReactElement => {
+const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement => {
   const documents = useLoadAllDocuments()
   const [searchString, setSearchString] = useState<string>('')
 

@@ -38,11 +38,11 @@ const ButtonContainer = styled.View`
   bottom: 0px;
 `
 
-interface Props {
+interface UserVocabularyListScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyList'>
 }
 
-const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
+const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
   const documents = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
