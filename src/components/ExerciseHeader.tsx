@@ -95,7 +95,18 @@ const ExerciseHeader = ({
         maxWidth: wp('25%'),
       },
     })
-  }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction, labelOverride, isCloseButton, theme.spacingsPlain.xs, theme.spacingsPlain.xl])
+  }, [
+    navigation,
+    progressText,
+    setIsModalVisible,
+    setIsFeedbackModalVisible,
+    confirmClose,
+    closeExerciseAction,
+    labelOverride,
+    isCloseButton,
+    theme.spacingsPlain.xs,
+    theme.spacingsPlain.xl,
+  ])
 
   useEffect(() => {
     const showModal = (): boolean => {
