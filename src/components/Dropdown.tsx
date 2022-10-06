@@ -8,7 +8,7 @@ import { ContentError } from './text/Content'
 
 const StyledDropDownPicker = styled(DropDownPicker)<{ borderColor: string }>`
   border-radius: 0;
-  height: ${hp('6.6%')}px;
+  height: ${hp('7.7%')}px;
   border: 1px solid ${props => props.borderColor};
 `
 
