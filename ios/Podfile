@@ -36,7 +36,7 @@ target 'Lunes' do
   # you should disable these next few lines.
   #   use_flipper!()
 
-  # Added the excluded_arch fix for M1 chips and cocoapods
+  # Added the excluded_arch fix for M1 chips and cocoapods https://github.com/mrousavy/react-native-vision-camera/issues/914
 
   post_install do |installer|
     react_native_post_install(installer)
