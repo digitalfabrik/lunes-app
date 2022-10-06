@@ -181,7 +181,7 @@ const ListItem = ({
         fill={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
         testID='arrow'
         width={theme.spacingsPlain.md}
-        height={theme.spacingsPlain.xxl}
+        height={theme.spacingsPlain.md}
       />
     ))
 

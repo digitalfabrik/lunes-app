@@ -11,8 +11,8 @@ import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
-  width: ${hp('7.5%')}px;
-  height: ${hp('7.5%')}px;
+  width: ${hp('8.25%')}px;
+  height: ${hp('8.25%')}px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
 const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
@@ -20,9 +20,9 @@ const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   background-color: ${props => props.articleColor};
   align-self: flex-start;
-  width: ${hp('5%')}px;
+  width: ${hp('5.5%')}px;
   overflow: hidden;
-  height: ${hp('2.5%')}px;
+  height: ${hp('2.75%')}px;
   text-align: center;
 `
 const RightChildrenContainer = styled.View`

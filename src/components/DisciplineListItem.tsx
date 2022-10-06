@@ -20,14 +20,14 @@ interface DisciplineListItemProps {
 }
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: ${hp('3.85%')}px;
+  height: ${hp('3.85%')}px;
 `
 
 const IconContainer = styled.View`
   position: absolute;
-  top: ${hp('1.75%')}px;
-  left: ${hp('1.75%')}px;
+  top: ${hp('1.925%')}px;
+  left: ${hp('1.925%')}px;
 `
 
 const DisciplineListItem = ({
@@ -55,7 +55,7 @@ const DisciplineListItem = ({
     <>
       <Progress.Circle
         progress={progress}
-        size={Math.round(hp('7%'))}
+        size={Math.round(hp('7.7%'))}
         indeterminate={false}
         color={theme.colors.progressIndicator}
         unfilledColor={theme.colors.disabled}
