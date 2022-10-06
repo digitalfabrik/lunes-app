@@ -26,11 +26,9 @@ const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>
 `
 
 const Icon = styled(PressableOpacity)`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: ${hp('3%')}px;
-  height: ${hp('3%')}px;
+  display: flex;
+  align-self: flex-end;
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const StyledPressable = styled(Pressable)`
@@ -58,7 +56,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
             bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
             height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}>
             <Icon onPress={onClose}>
-              <CloseIcon width={hp('6%')} height={hp('6%')} />
+              <CloseIcon width={hp('3%')} height={hp('3%')} />
             </Icon>
             <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
               {children}
