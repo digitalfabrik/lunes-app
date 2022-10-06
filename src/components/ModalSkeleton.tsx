@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Keyboard, Modal as RNModal, Platform, Pressable, ScrollView } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import useKeyboard from '../hooks/useKeyboard'
@@ -45,6 +45,7 @@ interface ModalSkeletonProps {
 const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProps): ReactElement => {
   const { keyboardHeight, isKeyboardVisible } = useKeyboard()
   const screenHeight = useScreenHeight()
+  const theme = useTheme()
   const onCloseKeyboard = () => isKeyboardVisible && Keyboard.dismiss()
   const isKeyboardIosVisible = Platform.OS === 'ios' && isKeyboardVisible
 
@@ -56,7 +57,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
             bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
             height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}>
             <Icon onPress={onClose}>
-              <CloseIcon width={hp('3%')} height={hp('3%')} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
             </Icon>
             <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
               {children}

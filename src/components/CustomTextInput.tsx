@@ -21,8 +21,8 @@ const StyledTextInput = styled.TextInput`
 `
 
 const ClearContainer = styled(PressableOpacity)`
-  width: ${hp('3%')}px;
-  height: ${hp('3%')}px;
+  width: ${props => props.theme.spacings.md};
+  height: ${props => props.theme.spacings.md};
 `
 
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
@@ -104,7 +104,7 @@ const CustomTextInput = ({
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
-              <CloseIcon width={hp('3%')} height={hp('3%')} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
             </ClearContainer>
           ) : (
             rightContainer
