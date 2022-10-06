@@ -35,10 +35,6 @@ const StyledMenuIcon = styled(MenuIcon)`
   color: ${props => props.theme.colors.primary};
 `
 
-const StyledHiddenItem = styled(HiddenItem)`
-  height: ${props => props.theme.spacings.xl};
-`
-
 interface ExerciseHeaderProps {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
@@ -81,10 +77,11 @@ const ExerciseHeader = ({
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
         <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
-          <StyledHiddenItem
+          <HiddenItem
             title={getLabels().general.header.wordFeedback}
             onPress={() => setIsFeedbackModalVisible(true)}
             titleStyle={{ fontSize: hp('2%') }}
+            style={{ height: theme.spacingsPlain.xl }}
           />
         </OverflowMenu>
       </HeaderRightContainer>
@@ -98,17 +95,7 @@ const ExerciseHeader = ({
         maxWidth: wp('25%'),
       },
     })
-  }, [
-    navigation,
-    progressText,
-    setIsModalVisible,
-    setIsFeedbackModalVisible,
-    confirmClose,
-    closeExerciseAction,
-    labelOverride,
-    isCloseButton,
-    theme.spacingsPlain.xs,
-  ])
+  }, [navigation, progressText, setIsModalVisible, setIsFeedbackModalVisible, confirmClose, closeExerciseAction, labelOverride, isCloseButton, theme.spacingsPlain.xs, theme.spacingsPlain.xl])
 
   useEffect(() => {
     const showModal = (): boolean => {
