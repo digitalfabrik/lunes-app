@@ -54,8 +54,10 @@ const AudioPlayer = ({ document, disabled, submittedAlternative }: AudioPlayerPr
         }
       })
       .catch(async (error: TtsError) => {
+        /* eslint-disable-next-line no-console */
         console.error(`Tts-Error: ${error.code}`)
         if (error.code === 'no_engine') {
+          /* eslint-disable-next-line no-console */
           await Tts.requestInstallEngine().catch(e => console.error('Failed to install tts engine: ', e))
         }
       })

@@ -5,12 +5,12 @@ import { MagnifierIcon } from '../../assets/images'
 import { getLabels } from '../services/helpers'
 import CustomTextInput from './CustomTextInput'
 
-interface Props {
+interface SearchBarProps {
   query: string
   setQuery: (input: string) => void
 }
 
-const SearchBar = ({ query, setQuery }: Props): ReactElement => (
+const SearchBar = ({ query, setQuery }: SearchBarProps): ReactElement => (
   <CustomTextInput
     value={query}
     clearable

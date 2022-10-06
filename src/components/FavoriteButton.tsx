@@ -28,12 +28,12 @@ const Button = styled(PressableOpacity)`
   border-radius: 20px;
 `
 
-interface Props {
+interface FavoriteButtonProps {
   document: Document
   onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
+const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
   const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
 
   useFocusEffect(refresh)

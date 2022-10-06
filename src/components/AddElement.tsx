@@ -26,13 +26,13 @@ const FlexRow = styled.View`
   align-items: center;
 `
 
-interface Props {
+interface AddElementProps {
   onPress: () => void
   label: string
   explanation?: string
 }
 
-const AddElement = ({ onPress, label, explanation }: Props): ReactElement => (
+const AddElement = ({ onPress, label, explanation }: AddElementProps): ReactElement => (
   <>
     <PressableContainer onPress={onPress}>
       <FlexRow>

@@ -22,7 +22,7 @@ const Container = styled.View`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-interface Props {
+interface DocumentImageSectionProps {
   document: Document
   audioDisabled?: boolean
   minimized?: boolean
@@ -34,7 +34,7 @@ const DocumentImageSection = ({
   audioDisabled = false,
   minimized = false,
   submittedAlternative,
-}: Props): ReactElement => (
+}: DocumentImageSectionProps): ReactElement => (
   <Container>
     <ImageCarousel images={document.document_image} minimized={minimized} />
     <AudioContainer>

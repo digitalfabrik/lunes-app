@@ -4,28 +4,59 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
+import { EXERCISE_FEEDBACK } from '../constants/data'
+import FeedbackBadge from './FeedbackBadge'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
   margin-bottom: ${props => props.theme.spacings.xxs};
-  align-self: center;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-radius: 2px;
 `
-
-const Container = styled(GenericListItemContainer)<{ pressed: boolean; disabled: boolean }>`
+const Container = styled(GenericListItemContainer)<{
+  pressed: boolean
+  disabled: boolean
+  feedback: EXERCISE_FEEDBACK
+}>`
   min-height: ${hp('12%')}px;
+  justify-content: center;
+  flex-direction: column;
+  border-top-width: 1px;
+  border-top-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-right-width: 1px;
+  border-right-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-bottom-width: 1px;
+  border-bottom-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+  border-left-color: ${props => {
+    if (props.feedback === EXERCISE_FEEDBACK.POSITIVE) {
+      return props.theme.colors.correct
+    }
+    if (props.feedback === EXERCISE_FEEDBACK.NEGATIVE) {
+      return props.theme.colors.incorrect
+    }
+    if (props.pressed) {
+      return props.theme.colors.primary
+    }
+    return props.theme.colors.disabled
+  }};
+  border-left-radius: 0;
+  border-left-width: ${props => (props.feedback !== EXERCISE_FEEDBACK.NONE ? '4px' : '1px')};
   background-color: ${prop => {
     if (prop.disabled) {
       return prop.theme.colors.disabled
     }
     return prop.pressed ? prop.theme.colors.primary : prop.theme.colors.backgroundAccent
   }};
-  border: 1px solid ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
+`
+
+const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
+  display: flex;
+  flex-direction: row;
   padding: ${props =>
     `${props.theme.spacings.sm} ${props.theme.spacings.xs} ${props.theme.spacings.sm} ${props.theme.spacings.sm}`};
+  align-items: center;
 `
 
 const Title = styled.Text<{ pressed: boolean }>`
@@ -87,6 +118,7 @@ interface ListItemProps {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
+  feedback?: EXERCISE_FEEDBACK
 }
 
 const ListItem = ({
@@ -100,6 +132,7 @@ const ListItem = ({
   hideRightChildren = false,
   arrowDisabled = false,
   disabled = false,
+  feedback = EXERCISE_FEEDBACK.NONE,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -160,17 +193,21 @@ const ListItem = ({
       onLongPress={() => updatePressed(true)}
       pressed={pressed}
       delayLongPress={200}
+      feedback={feedback}
       testID='list-item'>
-      {iconToRender}
-      <FlexContainer>
-        {titleToRender}
-        <DescriptionContainer>
-          {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
-          {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
-        </DescriptionContainer>
-        {children}
-      </FlexContainer>
-      {rightChildrenToRender}
+      <FeedbackBadge feedback={feedback} />
+      <ContentContainer pressed={pressed} disabled={disabled}>
+        {iconToRender}
+        <FlexContainer>
+          {titleToRender}
+          <DescriptionContainer>
+            {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
+            {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
+          </DescriptionContainer>
+          {children}
+        </FlexContainer>
+        {rightChildrenToRender}
+      </ContentContainer>
     </Container>
   )
 }
