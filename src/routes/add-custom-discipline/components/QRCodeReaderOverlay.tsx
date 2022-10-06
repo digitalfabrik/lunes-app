@@ -17,8 +17,8 @@ const Container = styled.SafeAreaView`
 const Icon = styled.Pressable`
   align-self: flex-end;
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: ${hp('3.85%')}px;
+  height: ${hp('3.85%')}px;
 `
 
 const Camera = styled(RNCamera)`
@@ -71,9 +71,9 @@ const AddCustomDisciplineScreen = ({ setVisible, setCode }: AddCustomDisciplineS
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}>
           {isPressed ? (
-            <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
+            <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.85%')} height={hp('3.85%')} />
           ) : (
-            <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
+            <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.85%')} height={hp('3.85%')} />
           )}
         </Icon>
         {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}

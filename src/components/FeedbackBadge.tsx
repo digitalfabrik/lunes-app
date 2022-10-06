@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
@@ -22,7 +22,7 @@ const BadgeText = styled(HintSecondary)`
 
 const BadgeIcon = styled.View`
   height: ${hp('3.5%')}px;
-  max-height: ${wp('5%')}px;
+  max-height: ${hp('2.75%')}px;
 `
 
 interface FeedbackBadgeProps {

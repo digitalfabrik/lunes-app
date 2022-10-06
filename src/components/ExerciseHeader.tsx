@@ -76,11 +76,11 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
+        <OverflowMenu icon={<StyledMenuIcon width={hp('2.75%')} height={hp('2.75%')} />}>
           <HiddenItem
             title={getLabels().general.header.wordFeedback}
             onPress={() => setIsFeedbackModalVisible(true)}
-            titleStyle={{ fontSize: hp('2%') }}
+            titleStyle={{ fontSize: hp('2.2%') }}
             style={{ height: theme.spacingsPlain.xl }}
           />
         </OverflowMenu>

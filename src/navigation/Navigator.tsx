@@ -23,7 +23,7 @@ const Stack = createStackNavigator<RoutesParams>()
 const HomeStackNavigator = (): JSX.Element | null => {
   const { data: professions, loading } = useReadSelectedProfessions()
 
-  const headerHeight = useTabletHeaderHeight(hp('7.5%'))
+  const headerHeight = useTabletHeaderHeight(hp('8.25%'))
   const options = screenOptions(headerHeight)
 
   const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header

@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, ComponentType } from 'react'
 import * as Progress from 'react-native-progress'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -159,8 +159,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
               color={resultColor}
               progress={percentageOfCorrectResults}
               unfilledColor={theme.colors.background}
-              width={wp('40%')}
-              height={wp('2%')}
+              width={hp('22%')}
+              height={hp('1.1%')}
               borderWidth={0}
             />
           </MessageContainer>

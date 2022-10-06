@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { MicrophoneCircleIcon, ImageCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -52,6 +51,7 @@ const UserVocabularyProcessScreen = (): ReactElement => {
     maxPictureUpload,
     requiredFields,
   } = getLabels().userVocabulary.creation
+  const theme = useTheme()
 
   const onSave = (): void => {
     const hasError = word.length === 0 || !articleId
@@ -91,7 +91,7 @@ const UserVocabularyProcessScreen = (): ReactElement => {
           label={addImage}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={ImageCircleIcon}
-          iconSize={wp('10%')}
+          iconSize={theme.spacingsPlain.xl}
         />
         <StyledHintText>{maxPictureUpload}</StyledHintText>
         <AddAudioButton
@@ -99,7 +99,7 @@ const UserVocabularyProcessScreen = (): ReactElement => {
           label={addAudio}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={MicrophoneCircleIcon}
-          iconSize={wp('10%')}
+          iconSize={theme.spacingsPlain.xl}
         />
         <HintText>{requiredFields}</HintText>
         <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />

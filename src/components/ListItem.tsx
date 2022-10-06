@@ -20,7 +20,7 @@ const Container = styled(GenericListItemContainer)<{
   disabled: boolean
   feedback: EXERCISE_FEEDBACK
 }>`
-  min-height: ${hp('12%')}px;
+  min-height: ${hp('13.2%')}px;
   justify-content: center;
   flex-direction: column;
   border-top-width: 1px;
@@ -68,8 +68,8 @@ const Title = styled.Text<{ pressed: boolean }>`
 `
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: ${hp('3.85%')}px;
+  height: ${hp('3.85%')}px;
 `
 
 const IconContainer = styled.View`
@@ -93,8 +93,8 @@ const Description = styled(ContentSecondaryLight)<{ pressed: boolean }>`
 const BadgeLabel = styled.Text<{ pressed: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  min-width: ${hp('3%')}px;
-  height: ${hp('2%')}px;
+  min-width: ${props => props.theme.spacings.md};
+  height: ${props => props.theme.spacings.sm};
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
@@ -180,8 +180,8 @@ const ListItem = ({
       <ChevronRight
         fill={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
         testID='arrow'
-        width={hp('3%')}
-        height={hp('6%')}
+        width={theme.spacingsPlain.md}
+        height={theme.spacingsPlain.xxl}
       />
     ))
 

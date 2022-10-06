@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { useTheme } from 'styled-components/native'
 
 import { MagnifierIcon } from '../../assets/images'
 import { getLabels } from '../services/helpers'
@@ -10,14 +10,17 @@ interface SearchBarProps {
   setQuery: (input: string) => void
 }
 
-const SearchBar = ({ query, setQuery }: SearchBarProps): ReactElement => (
-  <CustomTextInput
-    value={query}
-    clearable
-    onChangeText={setQuery}
-    placeholder={getLabels().search.enterWord}
-    rightContainer={<MagnifierIcon width={hp('3%')} height={hp('3%')} />}
-  />
-)
+const SearchBar = ({ query, setQuery }: SearchBarProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <CustomTextInput
+      value={query}
+      clearable
+      onChangeText={setQuery}
+      placeholder={getLabels().search.enterWord}
+      rightContainer={<MagnifierIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />}
+    />
+  )
+}
 
 export default SearchBar

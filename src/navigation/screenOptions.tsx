@@ -12,7 +12,7 @@ import { RoutesParams } from './NavigationTypes'
 export const useTabletHeaderHeight = (): number | undefined => {
   const { width } = useWindowDimensions()
   const MOBILE_MAX_WIDTH = 550
-  return width > MOBILE_MAX_WIDTH ? hp('7%') : undefined
+  return width > MOBILE_MAX_WIDTH ? hp('7.7%') : undefined
 }
 
 const headerStyles = (headerHeight?: number) =>

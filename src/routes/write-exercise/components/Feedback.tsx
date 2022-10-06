@@ -16,7 +16,7 @@ import { getLabels } from '../../../services/helpers'
 
 const Background = styled.ImageBackground`
   width: ${wp('80%')}px;
-  height: ${hp('9%')}px;
+  height: ${hp('9.9%')}px;
   min-height: 50px;
   margin-bottom: ${props => props.theme.spacings.lg};
   flex-direction: row;

@@ -9,7 +9,7 @@ import ImageCarousel from './ImageCarousel'
 
 const AudioContainer = styled.View`
   position: absolute;
-  bottom: ${hp('-2.25%')}px;
+  bottom: ${hp('-2.35%')}px;
   align-self: center;
 `
 const FavoriteContainer = styled.View`

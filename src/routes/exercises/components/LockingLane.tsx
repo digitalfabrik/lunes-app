@@ -9,12 +9,12 @@ import { COLORS } from '../../../constants/theme/colors'
 const Container = styled.View`
   justify-content: center;
   margin: ${props => props.theme.spacings.xs}
-  max-height: ${hp('10%')}px;
+  max-height: ${hp('11%')}px;
 `
 
 const Line = styled.View<{ color: string }>`
   width: 2px;
-  height: ${hp('6%')}px;
+  height: ${props => props.theme.spacings.xxl};
   background-color: ${props => props.color};
   margin: ${props => props.theme.spacings.xs} 10px;
 `
