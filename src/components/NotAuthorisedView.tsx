@@ -31,11 +31,11 @@ const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
 
   return (
     <Container testID='no-auth'>
-      <Description>{getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
+      <Description>{getLabels().general.camera.noAuthorization.description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
       <Button
         onPress={openSettings}
-        label={getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
+        label={getLabels().general.camera.noAuthorization.settings}
         buttonTheme={BUTTONS_THEME.contained}
       />
     </Container>

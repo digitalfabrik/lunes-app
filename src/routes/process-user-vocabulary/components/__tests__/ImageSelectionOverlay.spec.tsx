@@ -17,7 +17,7 @@ describe('ImageSelectionOverlay', () => {
     const { getByTestId } = render(
       <ImageSelectionOverlay setVisible={jest.fn()} numberOfImages={0} pushImage={jest.fn()} />
     )
-    expect(getByTestId('shutter-button')).toBeDefined()
+    expect(getByTestId('take-image-icon')).toBeDefined()
     expect(getByTestId('gallery-icon')).toBeDefined()
   })
 })

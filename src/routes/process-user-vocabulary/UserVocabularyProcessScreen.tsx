@@ -85,33 +85,32 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
       return
     }
 
-    await getNextUserVocabularyId().then(id => {
-      incrementNextUserVocabularyId()
-        .then(() => {
-          const imagePaths: Images = []
-          images.forEach(async (image, index) => {
-            const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
-            imagePaths.push({ id: index, image: path })
-            await writeFile(path, image, 'utf8')
-          })
+    const id = await getNextUserVocabularyId()
+    await incrementNextUserVocabularyId()
 
-          addUserDocument({
-            id,
-            word,
-            article: ARTICLES[articleId],
-            document_image: imagePaths,
-            audio: '',
-            alternatives: [],
-          })
-            .then(() => navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back }))
-            .finally(() => {
-              setWord('')
-              setArticleId(null)
-              setImages([])
-            })
-        })
+    const imagePaths: Images = []
+    images.forEach(image => {
+      const index = images.indexOf(image)
+      const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
+      writeFile(path, image, 'utf8')
+        .then(() => imagePaths.push({ id: index, image: path }))
         .catch(reportError)
     })
+
+    await addUserDocument({
+      id,
+      word,
+      article: ARTICLES[articleId],
+      document_image: imagePaths,
+      audio: '',
+      alternatives: [],
+    })
+
+    navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
+
+    setWord('')
+    setArticleId(null)
+    setImages([])
   }
 
   const pushImage = (uri: string): void => setImages(old => [...old, uri])

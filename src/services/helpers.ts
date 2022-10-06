@@ -11,7 +11,7 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, Document, ENDPOINTS, Images } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document, ENDPOINTS, Image, Images } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
@@ -203,13 +203,15 @@ export const getSortedAndFilteredDocuments = (documents: Document[] | null, sear
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
   score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
 
-export const getImages = (item: Document): Promise<Images> =>
-  Promise.all(
+export const getImages = async (item: Document): Promise<Images> => {
+  const images = await Promise.all(
     item.document_image.map(async image => ({
       id: image.id,
       image: await readFile(image.image).catch(err => {
         reportError(err)
-        return ''
+        return null
       }),
     }))
   )
+  return images.filter((item): item is Image => item.image !== null)
+}

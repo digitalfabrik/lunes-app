@@ -6,8 +6,8 @@ import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
 import PressableOpacity from '../../../components/PressableOpacity'
 
-const GALLERY_IMAGE_SIZE = 30
-const TAKE_IMAGE_SIZE = 50
+const GALLERY_ICON_SIZE = 30
+const TAKE_IMAGE_ICON_SIZE = 50
 
 const Camera = styled(RNCamera)`
   flex: 1;
@@ -25,7 +25,7 @@ const ActionBar = styled.View`
 const TakeImageButton = styled.Pressable`
   flex: 2;
   align-items: center;
-  margin-right: ${GALLERY_IMAGE_SIZE}px;
+  margin-right: ${GALLERY_ICON_SIZE}px;
 `
 
 const Container = styled.View`
@@ -33,28 +33,22 @@ const Container = styled.View`
   justify-content: center;
 `
 
-interface Props {
+interface ImageSelectionOverlayProps {
   setVisible: (visible: boolean) => void
   numberOfImages: number
   pushImage: (imageUri: string) => void
 }
 
-// TODO
-// adjust and test on ios
-// write test
-
-const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: Props): ReactElement => {
+const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: ImageSelectionOverlayProps): ReactElement => {
   const camera = useRef<RNCamera>(null)
 
-  const takePicture = async () => {
+  const takeImage = async () => {
     if (camera.current) {
       const options = { quality: 0.5, base64: true }
       const data = await camera.current.takePictureAsync(options)
+      setVisible(false)
       if (numberOfImages < 3) {
         pushImage(data.uri)
-      }
-      if (numberOfImages >= 2) {
-        setVisible(false)
       }
     }
   }
@@ -64,13 +58,13 @@ const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: Props)
       <Camera ref={camera} captureAudio={false} testID='camera'>
         <Container>
           <ActionBar>
+            {/* TODO LUN-440 implement gallery */}
             {/* eslint-disable-next-line no-console */}
             <PressableOpacity onPress={() => console.log('open gallery')}>
-              {/* TODO LUN-440 implement gallery */}
-              <ImageIcon width={GALLERY_IMAGE_SIZE} height={GALLERY_IMAGE_SIZE} testID='gallery-icon' />
+              <ImageIcon width={GALLERY_ICON_SIZE} height={GALLERY_ICON_SIZE} testID='gallery-icon' />
             </PressableOpacity>
-            <TakeImageButton onPress={takePicture}>
-              <CircleIconWhite width={TAKE_IMAGE_SIZE} height={TAKE_IMAGE_SIZE} testID='shutter-button' />
+            <TakeImageButton onPress={takeImage}>
+              <CircleIconWhite width={TAKE_IMAGE_ICON_SIZE} height={TAKE_IMAGE_ICON_SIZE} testID='take-image-icon' />
             </TakeImageButton>
           </ActionBar>
         </Container>

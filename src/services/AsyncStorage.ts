@@ -176,7 +176,7 @@ export const setUserVocabulary = async (userDocument: Document[]): Promise<void>
 }
 
 export const addUserDocument = async (userDocument: Document): Promise<void> => {
-  const userVocabulary = await getUserVocabulary()
+  const userVocabulary = await getUserVocabularyWithoutImage()
   if (userVocabulary.find(item => item.word === userDocument.word)) {
     return
   }
