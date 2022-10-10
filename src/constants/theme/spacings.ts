@@ -10,7 +10,7 @@ export const SPACINGS_PLAIN = {
   xxl: hp('6.6%'), // 48
 }
 
-// These pixels are calculated for a 710px height mobile screen
+// These pixels are calculated for a 710px height mobile screen 1px => 0.1375% rounded for better calculation (100/710px)
 export const SPACINGS = {
   xxs: `${SPACINGS_PLAIN.xxs}px`, // 4px
   xs: `${SPACINGS_PLAIN.xs}px`, // 8px
