@@ -25,11 +25,12 @@ const BoxHeading = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: ${props => props.theme.spacings.sm} 0;
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm} 0;
 `
 
 const Title = styled(Heading)`
   font-size: ${props => props.theme.fonts.largeFontSize};
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const IconContainer = styled.View`
