@@ -22,7 +22,7 @@ const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
   width: ${wp('80%')}px;
-  height: ${hp('8.25%')}px;
+  height: ${hp('7.5%')}px;
   padding: ${props => props.theme.spacings.xs};
   border-radius: 2px;
 `

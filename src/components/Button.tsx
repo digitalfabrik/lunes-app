@@ -28,7 +28,7 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
       border-width: 1px;
     `};
   flex-direction: row;
-  padding: ${props => `${hp('1.6%')}px ${props.theme.spacings.sm}`};
+  padding: ${props => `${hp('1.5%')}px ${props.theme.spacings.sm}`};
   width: ${wp('70%')}px;
   align-items: center;
   border-radius: ${hp('7%')}px;

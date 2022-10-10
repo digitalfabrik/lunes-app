@@ -14,14 +14,14 @@ const Wrapper = styled.SafeAreaView`
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.primary};
-  height: ${hp('7.7%')}px;
+  height: ${hp('7%')}px;
   width: 100%;
 `
 
 const SmileIconStyle = styled.Pressable`
   position: absolute;
   left: 50%;
-  margin-left: -${hp('3.3%')}px;
+  margin-left: -${hp('3%')}px;
   top: 50%;
 `
 
@@ -46,7 +46,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element =>
     <Wrapper testID='header'>
       <HeaderStyle>
         <SmileIconStyle>
-          <LunesIcon width={hp('8.8%')} height={hp('8.8%')} />
+          <LunesIcon width={hp('8%')} height={hp('8%')} />
         </SmileIconStyle>
         <HeaderButtonsContainer>
           <OverflowMenu
@@ -56,7 +56,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element =>
               </MenuIconContainer>
             }>
             <HiddenItem
-              titleStyle={{ fontSize: hp('2.2%') }}
+              titleStyle={{ fontSize: hp('2%') }}
               title={getLabels().general.header.manageSelection}
               onPress={() => navigation.navigate('ManageSelection')}
               // iOS has issue using styled(HiddenItem)
@@ -65,7 +65,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element =>
             <HiddenItem
               title={getLabels().general.header.settings}
               onPress={() => navigation.navigate('Settings')}
-              titleStyle={{ fontSize: hp('2.2%') }}
+              titleStyle={{ fontSize: hp('2%') }}
               style={{ height: theme.spacingsPlain.xl }}
             />
           </OverflowMenu>

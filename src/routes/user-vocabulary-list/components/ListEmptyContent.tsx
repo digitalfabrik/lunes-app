@@ -9,7 +9,7 @@ import { Return } from '../../../hooks/useLoadAsync'
 import { getLabels } from '../../../services/helpers'
 
 const EmptyContainer = styled.View`
-  height: ${hp('11%')}px;
+  height: ${hp('10%')}px;
 `
 
 interface ListEmptyContentProps {

@@ -46,7 +46,7 @@ const AlternativeWordsSection = ({ document }: AlternativeWordsSectionProps): JS
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   return (
     <Root>
-      <CrystalBallIcon width={hp('3.85%')} height={hp('3.85%')} />
+      <CrystalBallIcon width={hp('3.5%')} height={hp('3.5%')} />
       <Content>
         {document.alternatives.length > 0 && (
           <>

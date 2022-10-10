@@ -7,7 +7,7 @@ import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
   margin-top: ${props => props.theme.spacings.md};
-  height: ${hp('36.3%')}px;
+  height: ${hp('33%')}px;
   width: 85%;
   align-self: center;
 `

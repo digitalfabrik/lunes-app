@@ -5,8 +5,8 @@ import styled from 'styled-components/native'
 import { Heading } from '../../../components/text/Heading'
 
 const Icon = styled.Image`
-  width: ${hp('3.85%')}px;
-  height: ${hp('3.85%')}px;
+  width: ${hp('3.5%')}px;
+  height: ${hp('3.5%')}px;
 `
 
 const Box = styled.Pressable`
@@ -16,7 +16,7 @@ const Box = styled.Pressable`
   justify-content: space-between;
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
-  min-height: ${hp('30.8%')}px;
+  min-height: ${hp('28%')}px;
 `
 
 const BoxHeading = styled.View`

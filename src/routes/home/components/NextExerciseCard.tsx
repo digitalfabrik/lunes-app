@@ -39,8 +39,8 @@ const Label = styled(SubheadingPrimary)`
 `
 
 const Thumbnail = styled.Image`
-  height: ${hp('11%')}px;
-  width: ${hp('9.9%')}px;
+  height: ${hp('10%')}px;
+  width: ${hp('9%')}px;
   align-self: center;
 `
 

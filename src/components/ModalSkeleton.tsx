@@ -8,7 +8,7 @@ import useKeyboard from '../hooks/useKeyboard'
 import useScreenHeight from '../hooks/useScreenHeight'
 import PressableOpacity from './PressableOpacity'
 
-const KEYBOARD_MARGIN = hp('2.2%')
+const KEYBOARD_MARGIN = hp('2%')
 const Overlay = styled.View`
   flex: 1;
   justify-content: center;

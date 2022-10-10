@@ -20,7 +20,7 @@ const Container = styled(GenericListItemContainer)<{
   disabled: boolean
   feedback: EXERCISE_FEEDBACK
 }>`
-  min-height: ${hp('13.2%')}px;
+  min-height: ${hp('12%')}px;
   justify-content: center;
   flex-direction: column;
   border-top-width: 1px;
@@ -68,8 +68,8 @@ const Title = styled.Text<{ pressed: boolean }>`
 `
 
 const Icon = styled.Image`
-  width: ${hp('3.85%')}px;
-  height: ${hp('3.85%')}px;
+  width: ${hp('3.5%')}px;
+  height: ${hp('3.5%')}px;
 `
 
 const IconContainer = styled.View`
