@@ -78,6 +78,7 @@ const Dropdown = <T extends ValueType>({
           fontFamily: theme.fonts.contentFontRegular,
           paddingHorizontal: theme.spacingsPlain.xs,
         }}
+        listMode='SCROLLVIEW'
       />
       {showErrorValidation && (
         <ErrorContainer>{errorMessage.length > 0 && <ContentError>{errorMessage}</ContentError>}</ErrorContainer>

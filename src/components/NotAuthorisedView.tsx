@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { Linking } from 'react-native'
 import styled from 'styled-components/native'
 
-import Button from '../../../components/Button'
-import { ContentSecondary } from '../../../components/text/Content'
-import { BUTTONS_THEME } from '../../../constants/data'
-import { getLabels } from '../../../services/helpers'
-import { reportError } from '../../../services/sentry'
+import { BUTTONS_THEME } from '../constants/data'
+import { getLabels } from '../services/helpers'
+import { reportError } from '../services/sentry'
+import Button from './Button'
+import { ContentSecondary } from './text/Content'
 
 const Container = styled.View`
   display: flex;
@@ -30,12 +30,12 @@ const NotAuthorisedView = ({ setVisible }: NotAuthorizedViewProps): ReactElement
   }
 
   return (
-    <Container>
-      <Description>{getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
+    <Container testID='no-auth'>
+      <Description>{getLabels().general.camera.noAuthorization.description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
       <Button
         onPress={openSettings}
-        label={getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
+        label={getLabels().general.camera.noAuthorization.settings}
         buttonTheme={BUTTONS_THEME.contained}
       />
     </Container>

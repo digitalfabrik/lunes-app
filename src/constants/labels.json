@@ -42,12 +42,6 @@
       "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
-    },
-    "qrCodeScanner": {
-      "noAuthorization": {
-        "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "settings": "Einstellungen"
-      }
     }
   },
   "exercises": {
@@ -164,7 +158,13 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter"
+    "words": "Wörter",
+    "camera": {
+      "noAuthorization": {
+        "description": "Kamerazugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
+        "settings": "Einstellungen"
+      }
+    }
   },
   "favorites": "Favoriten",
   "dictionary": {
@@ -199,11 +199,12 @@
       "wordPlaceholder": "Wort eingeben*",
       "articlePlaceholder": "Artikel auswählen*",
       "saveButton": "Speichern",
-      "addImage": "Bild hochladen*",
+      "addImage": "Bild hinzufügen*",
       "addAudio": "Audio aufnehmen",
-      "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
+      "maxPictureUpload": "Du kannst bis zu 3 Bilder hinzufügen",
       "requiredFields": "*Pflichtfelder",
-      "errorMessage": "Dies ist ein Pflichtfeld."
+      "errorMessage": "Dies ist ein Pflichtfeld.",
+      "imageErrorMessage": "Du musst 1 bis 3 Bilder auswählen"
     },
     "list": {
       "edit": "Bearbeiten",

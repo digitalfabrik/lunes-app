@@ -1,25 +1,8 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal as RNModal, Platform } from 'react-native'
+import React, { ReactElement } from 'react'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../../../assets/images'
-import { reportError } from '../../../services/sentry'
-import NotAuthorisedView from './NotAuthorisedView'
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${props => props.theme.colors.background};
-`
-
-const Icon = styled.Pressable`
-  align-self: flex-end;
-  margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
-  width: ${hp('3.85%')}px;
-  height: ${hp('3.85%')}px;
-`
+import CameraOverlay from '../../../components/CameraOverlay'
 
 const Camera = styled(RNCamera)`
   flex: 1;
@@ -32,54 +15,15 @@ interface AddCustomDisciplineScreenProps {
 }
 
 const AddCustomDisciplineScreen = ({ setVisible, setCode }: AddCustomDisciplineScreenProps): ReactElement => {
-  const appState = useRef(AppState.currentState)
-
-  const [isPressed, setIsPressed] = useState<boolean>(false)
-  const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
-  const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
-
   const onBarCodeRead = (scanResult: BarCodeReadEvent) => {
     setCode(scanResult.data)
     setVisible(false)
   }
 
-  // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
-  useEffect(() => {
-    if (!permissionRequested) {
-      request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
-        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
-        .catch(reportError)
-        .finally(() => setPermissionRequested(true))
-    }
-  }, [permissionRequested])
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
-        setPermissionRequested(false)
-      }
-      appState.current = nextAppState
-    })
-    return subscription.remove
-  }, [])
-
   return (
-    <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
-      <Container>
-        <Icon
-          onPress={() => setVisible(false)}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}>
-          {isPressed ? (
-            <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.85%')} height={hp('3.85%')} />
-          ) : (
-            <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.85%')} height={hp('3.85%')} />
-          )}
-        </Icon>
-        {permissionGranted && <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />}
-        {permissionRequested && !permissionGranted && <NotAuthorisedView setVisible={setVisible} />}
-      </Container>
-    </RNModal>
+    <CameraOverlay setVisible={setVisible}>
+      <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />
+    </CameraOverlay>
   )
 }
 
