@@ -35,7 +35,6 @@ export interface FeedbackProps {
   submission: string | null
   needsToBeRepeated: boolean
   input: string
-
 }
 
 const Feedback = ({ documentWithResult, submission, needsToBeRepeated, input }: FeedbackProps): ReactElement | null => {
@@ -57,19 +56,16 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated, input }: 
     message = `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
       getLabels().exercises.write.feedback.almostCorrect2
     }`
-  }
-  else if (input === '') {
+  } else if (input === '') {
+    Icon = CloseCircleIconBold
+    background = BannerRed
+    message = needsToBeRepeated ? `Die richtige Antwort ist ${correctSolution}` : correctSolution
+  } else {
     Icon = CloseCircleIconBold
     background = BannerRed
     message = needsToBeRepeated
-      ? `Die richtige Antwort ist ${correctSolution}`
-      : correctSolution
-  }else{
-    Icon = CloseCircleIconBold
-    background = BannerRed
-    message = needsToBeRepeated
-        ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
-        : wrongWithCorrectSolution
+      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+      : wrongWithCorrectSolution
   }
 
   return (
