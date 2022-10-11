@@ -13,6 +13,7 @@ export const COLORS = {
   correct: '#0adb75',
   almostCorrect: '#ffbb4a',
   incorrect: '#ff5252',
+  empty: '#ff5252',
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',

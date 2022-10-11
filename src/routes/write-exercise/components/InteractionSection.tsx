@@ -30,6 +30,7 @@ interface InteractionSectionProps {
 }
 
 const almostCorrectThreshold = 0.6
+const notCorrectThreshold = 0.1
 const ttsThreshold = 0.6
 
 const InteractionSection = (props: InteractionSectionProps): ReactElement => {
@@ -69,7 +70,10 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
       return 'similar'
     }
-    return 'incorrect'
+    if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) >= notCorrectThreshold)) {
+      return 'incorrect'
+    }
+    return 'empty'
   }
 
   const uncapitalizeFirstLetter = (string: string): string => string.charAt(0).toLowerCase() + string.slice(1)
@@ -105,6 +109,8 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         case 'correct':
           return theme.colors.correct
         case 'incorrect':
+          return theme.colors.incorrect
+        case 'empty':
           return theme.colors.incorrect
         case 'similar':
         default:
@@ -147,6 +153,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
             documentWithResult={documentWithResult}
             submission={submittedInput}
             needsToBeRepeated={needsToBeRepeated}
+            input={input}
           />
         )}
         {retryAllowed && (

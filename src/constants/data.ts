@@ -105,7 +105,7 @@ export const ARTICLES: Readonly<ArticleType[]> = [
 
 export type Article = typeof ARTICLES[number]
 
-export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
+export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar', empty: 'empty' } as const
 export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
 interface ResultType {
@@ -138,6 +138,12 @@ export const RESULTS: Readonly<ResultType[]> = [
     Icon: CloseCircleIcon,
     title: 'Falsche',
     order: 2,
+  },
+  {
+    key: 'empty',
+    Icon: CloseCircleIcon,
+    title: 'Leer',
+    order: 3,
   },
 ] as const
 
