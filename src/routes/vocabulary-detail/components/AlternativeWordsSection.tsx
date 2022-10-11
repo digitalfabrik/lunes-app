@@ -38,11 +38,11 @@ const Label = styled(ContentTextBold)`
   text-transform: uppercase;
 `
 
-interface Props {
+interface AlternativeWordsSectionProps {
   document: Document
 }
 
-const AlternativeWordsSection = ({ document }: Props): JSX.Element => {
+const AlternativeWordsSection = ({ document }: AlternativeWordsSectionProps): JSX.Element => {
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   return (
     <Root>

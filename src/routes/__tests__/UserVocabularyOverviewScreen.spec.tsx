@@ -9,9 +9,9 @@ describe('UserVocabularyOverviewScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyOverview'>()
   it('should show content', () => {
     const { getByText } = render(<UserVocabularyOverviewScreen navigation={navigation} />)
-    expect(getByText(getLabels().ownVocabulary.myWords)).toBeDefined()
-    expect(getByText(getLabels().ownVocabulary.overview.list)).toBeDefined()
-    expect(getByText(getLabels().ownVocabulary.overview.create)).toBeDefined()
-    expect(getByText(getLabels().ownVocabulary.overview.practice)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.myWords)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.list)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.practice)).toBeDefined()
   })
 })

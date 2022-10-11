@@ -20,7 +20,7 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-interface PropsType {
+interface ProfessionDetailsProps {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
@@ -30,7 +30,7 @@ const ProfessionDetails = ({
   discipline,
   navigateToDiscipline,
   navigateToNextExercise,
-}: PropsType): ReactElement | null => {
+}: ProfessionDetailsProps): ReactElement | null => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 

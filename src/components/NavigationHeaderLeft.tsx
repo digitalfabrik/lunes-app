@@ -16,13 +16,13 @@ const Container = styled.Pressable`
   align-items: center;
 `
 
-interface Props {
+interface NavigationHeaderLeftProps {
   title: string
   onPress: () => void
   isCloseButton: boolean
 }
 
-const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: Props): ReactElement => {
+const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeaderLeftProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
 
   const closeIcon = pressed ? CloseCircleIconBlue : CloseCircleIconWhite

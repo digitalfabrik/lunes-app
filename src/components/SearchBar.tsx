@@ -5,16 +5,16 @@ import { getLabels } from '../services/helpers'
 import CustomTextInput from './CustomTextInput'
 import PressableOpacity from './PressableOpacity'
 
-interface Props {
+interface SearchBarProps {
   query: string
   setQuery: (input: string) => void
 }
 
-const SearchBar = ({ query, setQuery }: Props): ReactElement => (
+const SearchBar = ({ query, setQuery }: SearchBarProps): ReactElement => (
   <CustomTextInput
     value={query}
     onChangeText={setQuery}
-    placeholder={getLabels().dictionary.enterWord}
+    placeholder={getLabels().search.enterWord}
     rightContainer={
       <PressableOpacity onPress={() => setQuery('')}>
         {query === '' ? <MagnifierIcon /> : <CloseIcon />}

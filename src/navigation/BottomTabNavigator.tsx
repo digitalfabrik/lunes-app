@@ -58,7 +58,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
           minHeight: wp('14%'),
           paddingBottom: insets.bottom,
         },
-        tabBarItemStyle: { height: wp('14%'), padding: wp('2%') },
+        tabBarItemStyle: { height: wp('14%'), padding: theme.spacingsPlain.xs },
         tabBarLabelStyle: { fontSize: wp('3%') },
       }}>
       <Navigator.Screen
@@ -79,7 +79,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}
-        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().ownVocabulary.myWords }}
+        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.myWords }}
       />
     </Navigator.Navigator>
   )

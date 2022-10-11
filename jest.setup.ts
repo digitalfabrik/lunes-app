@@ -27,6 +27,9 @@ jest.mock('react-native-sound-player')
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),
 }))
+jest.mock('@react-navigation/elements', () => ({
+  useHeaderHeight: jest.fn().mockImplementation(() => 200),
+}))
 beforeEach(() => {
   jest.clearAllMocks()
   mockAsyncStorage.clear()
