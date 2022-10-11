@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { Document } from '../constants/endpoints'
 import { getArticleColor } from '../services/helpers'
@@ -11,8 +11,8 @@ import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
-  width: ${wp('15%')}px;
-  height: ${wp('15%')}px;
+  width: ${hp('7.5%')}px;
+  height: ${hp('7.5%')}px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
 const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
@@ -20,9 +20,9 @@ const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   background-color: ${props => props.articleColor};
   align-self: flex-start;
-  width: ${wp('10%')}px;
+  width: ${hp('5%')}px;
   overflow: hidden;
-  height: ${wp('5%')}px;
+  height: ${hp('2.5%')}px;
   text-align: center;
 `
 const RightChildrenContainer = styled.View`
@@ -49,11 +49,17 @@ const VocabularyListItem = ({
   children,
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, document_image: documentImage } = document
+  const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
   const icon =
     documentImage.length > 0 ? (
-      <StyledImage testID='image' source={{ uri: documentImage[0].image }} width={24} height={24} />
+      <StyledImage
+        testID='image'
+        source={{ uri: documentImage[0].image }}
+        width={theme.spacingsPlain.md}
+        height={theme.spacingsPlain.md}
+      />
     ) : undefined
 
   return (

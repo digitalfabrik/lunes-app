@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { Document } from '../constants/endpoints'
@@ -10,15 +9,9 @@ import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../ser
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
-const Icon = styled(StarCircleIconGreyFilled)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
-const IconOutline = styled(StarCircleIconGrey)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
 const Button = styled(PressableOpacity)`
+  width: ${props => props.theme.spacings.lg};
+  height: ${props => props.theme.spacings.lg};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -35,6 +28,7 @@ interface FavoriteButtonProps {
 
 const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
   const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
+  const theme = useTheme()
 
   useFocusEffect(refresh)
 
@@ -56,7 +50,11 @@ const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): 
 
   return (
     <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
-      {isFavorite ? <Icon /> : <IconOutline />}
+      {isFavorite ? (
+        <StarCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      ) : (
+        <StarCircleIconGrey width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      )}
     </Button>
   )
 }

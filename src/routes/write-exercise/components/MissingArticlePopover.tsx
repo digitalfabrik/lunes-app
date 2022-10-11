@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react'
 import { StyleSheet } from 'react-native'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { InfoCircleIcon } from '../../../../assets/images'
 import { ContentBackgroundLight } from '../../../components/text/Content'
@@ -22,7 +22,7 @@ const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
   width: ${wp('80%')}px;
-  height: ${wp('15%')}px;
+  height: ${hp('7.5%')}px;
   padding: ${props => props.theme.spacings.xs};
   border-radius: 2px;
 `
@@ -37,23 +37,26 @@ export interface IPopoverProps {
   isVisible: boolean
 }
 
-const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => (
-  <Popover
-    // @ts-expect-error, used for testing purposes
-    testID='popover'
-    isVisible={isVisible}
-    onRequestClose={() => setIsPopoverVisible(false)}
-    from={ref}
-    placement={PopoverPlacement.TOP}
-    popoverStyle={styles.popover}
-    arrowShift={-0.85}
-    verticalOffset={-10}
-    backgroundStyle={styles.overlay}>
-    <StyledContainer>
-      <InfoCircleIcon width={wp('6%')} height={wp('6%')} />
-      <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>
-    </StyledContainer>
-  </Popover>
-))
+const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => {
+  const theme = useTheme()
+  return (
+    <Popover
+      // @ts-expect-error, used for testing purposes
+      testID='popover'
+      isVisible={isVisible}
+      onRequestClose={() => setIsPopoverVisible(false)}
+      from={ref}
+      placement={PopoverPlacement.TOP}
+      popoverStyle={styles.popover}
+      arrowShift={-0.85}
+      verticalOffset={-10}
+      backgroundStyle={styles.overlay}>
+      <StyledContainer>
+        <InfoCircleIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+        <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>
+      </StyledContainer>
+    </Popover>
+  )
+})
 
 export default MissingArticlePopover

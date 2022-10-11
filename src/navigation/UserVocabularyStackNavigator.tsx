@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components'
 
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
@@ -15,7 +15,7 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const UserVocabularyStackNavigator = (): JSX.Element | null => {
-  const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
   const back = getLabels().general.back
   const theme = useTheme()
