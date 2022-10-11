@@ -35,11 +35,10 @@ const Container = styled.View`
 
 interface ImageSelectionOverlayProps {
   setVisible: (visible: boolean) => void
-  numberOfImages: number
   pushImage: (imageUri: string) => void
 }
 
-const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: ImageSelectionOverlayProps): ReactElement => {
+const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayProps): ReactElement => {
   const camera = useRef<RNCamera>(null)
 
   const takeImage = async () => {
@@ -47,9 +46,7 @@ const ImageSelectionOverlay = ({ setVisible, pushImage, numberOfImages }: ImageS
       const options = { quality: 0.5, base64: true }
       const data = await camera.current.takePictureAsync(options)
       setVisible(false)
-      if (numberOfImages < 3) {
-        pushImage(data.uri)
-      }
+      pushImage(data.uri)
     }
   }
 

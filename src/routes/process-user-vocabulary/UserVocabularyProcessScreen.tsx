@@ -13,7 +13,6 @@ import { TitleWithSpacing } from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
-import { Images } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
@@ -85,45 +84,42 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
       return
     }
 
-    const id = await getNextUserVocabularyId()
-    await incrementNextUserVocabularyId()
+    try {
+      const id = await getNextUserVocabularyId()
+      await incrementNextUserVocabularyId()
 
-    const imagePaths: Images = []
-    images.forEach(image => {
-      const index = images.indexOf(image)
-      const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
-      writeFile(path, image, 'utf8')
-        .then(() => imagePaths.push({ id: index, image: path }))
-        .catch(reportError)
-    })
+      const imagePaths = await Promise.all(
+        images.map(async (image, index) => {
+          const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
+          await writeFile(path, image, 'utf8')
+          return { id: index, image: path }
+        })
+      )
 
-    await addUserDocument({
-      id,
-      word,
-      article: ARTICLES[articleId],
-      document_image: imagePaths,
-      audio: '',
-      alternatives: [],
-    })
+      await addUserDocument({
+        id,
+        word,
+        article: ARTICLES[articleId],
+        document_image: imagePaths,
+        audio: '',
+        alternatives: [],
+      })
 
-    navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
+      navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
 
-    setWord('')
-    setArticleId(null)
-    setImages([])
+      setWord('')
+      setArticleId(null)
+      setImages([])
+    } catch (e) {
+      reportError(e)
+    }
   }
 
   const pushImage = (uri: string): void => setImages(old => [...old, uri])
   const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
 
   if (showImageSelectionOverlay) {
-    return (
-      <ImageSelectionOverlay
-        setVisible={setShowImageSelectionOverlay}
-        pushImage={pushImage}
-        numberOfImages={images.length}
-      />
-    )
+    return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
   }
 
   // TODO add Keyboard handling for input fields LUN-424

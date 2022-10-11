@@ -14,9 +14,7 @@ jest.mock('react-native-camera', () => ({
 
 describe('ImageSelectionOverlay', () => {
   it('should render shutter and gallery icon', () => {
-    const { getByTestId } = render(
-      <ImageSelectionOverlay setVisible={jest.fn()} numberOfImages={0} pushImage={jest.fn()} />
-    )
+    const { getByTestId } = render(<ImageSelectionOverlay setVisible={jest.fn()} pushImage={jest.fn()} />)
     expect(getByTestId('take-image-icon')).toBeDefined()
     expect(getByTestId('gallery-icon')).toBeDefined()
   })
