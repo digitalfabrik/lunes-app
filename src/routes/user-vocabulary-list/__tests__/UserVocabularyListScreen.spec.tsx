@@ -12,6 +12,7 @@ import render from '../../../testing/render'
 import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
 jest.mock('../../../hooks/useReadUserVocabulary')
+jest.mock('@react-navigation/native')
 
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')

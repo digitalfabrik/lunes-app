@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -61,7 +62,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
 
-  // addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  useFocusEffect(documents.refresh)
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('UserVocabularyDetail', { document })
