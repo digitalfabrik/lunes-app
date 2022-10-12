@@ -14,7 +14,7 @@ import {
   StarIconGrey,
   StarIconWhite,
 } from '../../assets/images'
-import FavoritesScreen from '../routes/FavoritesScreen'
+import FavoritesScreen from '../routes/favorites/FavoritesScreen'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'

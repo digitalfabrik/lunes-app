@@ -9,15 +9,17 @@ import Modal from '../../components/Modal'
 import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import Title from '../../components/Title'
+import VocabularyListItem from '../../components/VocabularyListItem'
 import { ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, DOCUMENT_TYPES } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { deleteUserDocument } from '../../services/AsyncStorage'
+import { addUserDocument, deleteUserDocument } from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import ListEmptyContent from './components/ListEmptyContent'
 import ListItem from './components/ListItem'
 
@@ -61,7 +63,9 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
 
-  // addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  const a = new DocumentBuilder(4).build()[2]
+  a.documentType = DOCUMENT_TYPES.userVocabulary
+  addUserDocument(a) /* TODO remove im LUN-401 */
 
   const navigateToDetail = (document: Document): void => {
     navigation.navigate('UserVocabularyDetail', { document })
@@ -113,6 +117,8 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
           }
           data={sortedAndFilteredDocuments}
           renderItem={({ item }) => (
+            // <VocabularyListItem document={item} onPress={() => navigateToDetail(item)} />
+
             <ListItem
               document={item}
               navigateToDetailScreen={() => navigateToDetail(item)}

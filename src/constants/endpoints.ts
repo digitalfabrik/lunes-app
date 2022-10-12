@@ -33,6 +33,7 @@ export interface Document {
   document_image: Images
   audio: string
   alternatives: AlternativeWord[]
+  apiKey?: string
 }
 
 export const ENDPOINTS = {

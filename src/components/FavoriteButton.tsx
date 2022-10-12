@@ -4,6 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
+import { DOCUMENT_TYPES } from '../constants/data'
 import { Document } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../services/AsyncStorage'
@@ -34,15 +35,20 @@ interface Props {
 }
 
 const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
+  const favorite = {
+    id: document.id,
+    documentType: document.documentType,
+    ...(document.apiKey && { apiKey: document.apiKey }),
+  }
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)
 
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(document.id).catch(reportError)
+      await removeFavorite(favorite).catch(reportError)
     } else {
-      await addFavorite(document.id).catch(reportError)
+      await addFavorite(favorite).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

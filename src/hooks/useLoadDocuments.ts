@@ -26,6 +26,7 @@ export const formatServerResponse = (documents: DocumentFromServer[], apiKey?: s
       article: ARTICLES[it.article],
       word: it.alt_word,
     })),
+    apiKey: apiKey,
   }))
 
 export const loadDocuments = async ({
