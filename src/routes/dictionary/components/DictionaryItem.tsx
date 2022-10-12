@@ -14,13 +14,13 @@ const AlternativeWords = styled(ContentSecondary)`
   font-style: italic;
 `
 
-interface Props {
+interface DictionaryItemProps {
   document: Document
   showAlternatives: boolean
   navigateToDetail: (document: Document) => void
 }
 
-class DictionaryItem extends PureComponent<Props> {
+class DictionaryItem extends PureComponent<DictionaryItemProps> {
   render(): ReactElement {
     const { document, navigateToDetail, showAlternatives } = this.props
 

@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
+import { readFile } from 'react-native-fs'
 
 import {
   Article,
@@ -10,7 +11,7 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, Document, ENDPOINTS } from '../constants/endpoints'
+import { AlternativeWord, Discipline, Document, ENDPOINTS, Image, Images } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
@@ -18,6 +19,7 @@ import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
+import { reportError } from './sentry'
 
 export const stringifyDocument = ({ article, word }: Document | AlternativeWord): string => `${article.value} ${word}`
 
@@ -138,8 +140,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
 
 export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
   const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
-  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
-  return trainingSet
+  return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
 }
 
 export const getLabels = (): typeof labels => labels
@@ -201,3 +202,16 @@ export const getSortedAndFilteredDocuments = (documents: Document[] | null, sear
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
   score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
+
+export const getImages = async (item: Document): Promise<Images> => {
+  const images = await Promise.all(
+    item.document_image.map(async image => ({
+      id: image.id,
+      image: await readFile(image.image).catch(err => {
+        reportError(err)
+        return null
+      }),
+    }))
+  )
+  return images.filter((item): item is Image => item.image !== null)
+}

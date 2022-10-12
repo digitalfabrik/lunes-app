@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import theme from '../constants/theme'
 
-interface Props {
+interface RouteWrapperProps {
   backgroundColor?: string
   lightStatusBarContent?: boolean
   children: ReactNode
@@ -22,7 +22,7 @@ const RouteWrapper = ({
   lightStatusBarContent = false,
   children,
   bottomBackgroundColor,
-}: Props): ReactElement => (
+}: RouteWrapperProps): ReactElement => (
   <>
     <Container backgroundColor={backgroundColor} shouldTakeSpace>
       <StatusBar

@@ -24,12 +24,12 @@ const CodeInput = styled.TextInput`
   margin: ${props => props.theme.spacings.md};
 `
 
-interface PropsType {
+interface DebugModalProps {
   visible: boolean
   onClose: () => void
 }
 
-const DebugModal = (props: PropsType): JSX.Element => {
+const DebugModal = (props: DebugModalProps): JSX.Element => {
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')

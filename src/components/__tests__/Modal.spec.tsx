@@ -3,14 +3,14 @@ import React from 'react'
 import { Text } from 'react-native'
 
 import render from '../../testing/render'
-import Modal, { Props } from '../Modal'
+import Modal, { ModalProps } from '../Modal'
 
 describe('Modal', () => {
   const onClose = jest.fn()
   const confirmationAction = jest.fn()
   const childText = 'Children'
 
-  const defaultProps: Props = {
+  const defaultProps: ModalProps = {
     visible: false,
     onClose,
     text: 'Are you sure?',

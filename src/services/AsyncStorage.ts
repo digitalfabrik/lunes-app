@@ -4,7 +4,7 @@ import { DOCUMENT_TYPES, ExerciseKey, Favorite, Progress } from '../constants/da
 import { Document } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
-import { calculateScore } from './helpers'
+import { calculateScore, getImages } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -15,6 +15,7 @@ const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
 const DEV_MODE_KEY = 'devmode'
 const USER_VOCABULARY = 'userVocabulary'
+const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
 export const isTrackingEnabled = async (): Promise<boolean> => {
   const tracking = await AsyncStorage.getItem(SENTRY_KEY)
@@ -168,9 +169,27 @@ export const getDevMode = async (): Promise<boolean | null> => {
   return isDevMode ? JSON.parse(isDevMode) : null
 }
 
-export const getUserVocabulary = async (): Promise<Document[]> => {
+export const getNextUserVocabularyId = async (): Promise<number> =>
+  parseInt((await AsyncStorage.getItem(USER_VOCABULARY_NEXT_ID)) ?? '1', 10)
+
+export const incrementNextUserVocabularyId = async (): Promise<void> => {
+  const nextId = (await getNextUserVocabularyId()) + 1
+  return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
+}
+
+export const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
+}
+
+export const getUserVocabulary = async (): Promise<Document[]> => {
+  const userVocabulary = await getUserVocabularyWithoutImage()
+  return Promise.all(
+    userVocabulary.map(async item => ({
+      ...item,
+      document_image: await getImages(item),
+    }))
+  )
 }
 
 export const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
@@ -178,7 +197,7 @@ export const setUserVocabulary = async (userDocument: Document[]): Promise<void>
 }
 
 export const addUserDocument = async (userDocument: Document): Promise<void> => {
-  const userVocabulary = await getUserVocabulary()
+  const userVocabulary = await getUserVocabularyWithoutImage()
   if (userVocabulary.find(item => item.word === userDocument.word)) {
     return
   }

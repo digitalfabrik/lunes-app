@@ -28,7 +28,7 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
       border-width: 1px;
     `};
   flex-direction: row;
-  padding: ${props => `${wp('3%')}px ${props.theme.spacings.sm}`};
+  padding: ${props => `${hp('1.5%')}px ${props.theme.spacings.sm}`};
   width: ${wp('70%')}px;
   align-items: center;
   border-radius: ${hp('7%')}px;
@@ -64,8 +64,15 @@ interface ButtonProps {
 
 const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined, style, iconSize = wp('6%') } = props
   const theme = useTheme()
+  const {
+    label,
+    onPress,
+    disabled = false,
+    buttonTheme = BUTTONS_THEME.outlined,
+    style,
+    iconSize = theme.spacingsPlain.md,
+  } = props
 
   const getTextColor = (): Color => {
     const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? theme.colors.background : theme.colors.primary
@@ -74,7 +81,7 @@ const Button = (props: ButtonProps): ReactElement => {
 
   const getBackgroundColor = (): Color | 'transparent' => {
     if (disabled) {
-      return theme.colors.disabled
+      return buttonTheme === BUTTONS_THEME.text ? 'transparent' : theme.colors.disabled
     }
     if (isPressed) {
       if (buttonTheme === BUTTONS_THEME.text) {

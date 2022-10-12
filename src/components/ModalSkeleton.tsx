@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Keyboard, Modal as RNModal, Platform, Pressable, ScrollView } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import useKeyboard from '../hooks/useKeyboard'
@@ -26,27 +26,26 @@ const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>
 `
 
 const Icon = styled(PressableOpacity)`
-  position: relative;
+  display: flex;
   align-self: flex-end;
-  margin-right: ${props => props.theme.spacings.sm};
-  width: ${wp('6%')}px;
-  height: ${wp('6%')}px;
+  padding-right: ${props => props.theme.spacings.sm};
 `
 
 const StyledPressable = styled(Pressable)`
   flex: 1;
 `
 
-interface PropsType {
+interface ModalSkeletonProps {
   visible: boolean
   onClose: () => void
   testID?: string
   children: ReactNode
 }
 
-const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): ReactElement => {
+const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProps): ReactElement => {
   const { keyboardHeight, isKeyboardVisible } = useKeyboard()
   const screenHeight = useScreenHeight()
+  const theme = useTheme()
   const onCloseKeyboard = () => isKeyboardVisible && Keyboard.dismiss()
   const isKeyboardIosVisible = Platform.OS === 'ios' && isKeyboardVisible
 
@@ -58,7 +57,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: PropsType): React
             bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
             height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}>
             <Icon onPress={onClose}>
-              <CloseIcon width={wp('6%')} height={wp('6%')} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
             </Icon>
             <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
               {children}

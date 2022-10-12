@@ -21,7 +21,7 @@ const IconContainer = styled.View`
     ${props => props.theme.spacings.xxs};
 `
 
-interface Props {
+interface ListItemProps {
   document: Document
   navigateToDetailScreen: () => void
   navigateToEditScreen: () => void
@@ -35,7 +35,7 @@ const ListItem = ({
   navigateToEditScreen,
   editModeEnabled,
   deleteItem,
-}: Props): ReactElement => (
+}: ListItemProps): ReactElement => (
   <Container>
     {editModeEnabled && (
       <IconContainer>

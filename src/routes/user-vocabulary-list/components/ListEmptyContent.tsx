@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import ListEmpty from '../../../components/ListEmpty'
@@ -9,14 +9,14 @@ import { Return } from '../../../hooks/useLoadAsync'
 import { getLabels } from '../../../services/helpers'
 
 const EmptyContainer = styled.View`
-  height: ${wp('20%')}px;
+  height: ${hp('10%')}px;
 `
 
-interface Props {
+interface ListEmptyContentProps {
   documents: Return<Document[]>
 }
 
-const ListEmptyContent = ({ documents }: Props): ReactElement => {
+const ListEmptyContent = ({ documents }: ListEmptyContentProps): ReactElement => {
   if (documents.loading) {
     return (
       <EmptyContainer>

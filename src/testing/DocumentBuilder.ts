@@ -7,7 +7,7 @@ const document: Document[] = [
     documentType: DOCUMENT_TYPES.lunesStandard,
     word: 'Spachtel',
     article: ARTICLES[1],
-    document_image: [{ id: 1, image: 'Spachtel' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: 'https://example.com/my-audio',
     alternatives: [
       {
@@ -25,7 +25,7 @@ const document: Document[] = [
     documentType: DOCUMENT_TYPES.lunesStandard,
     word: 'Auto',
     article: ARTICLES[3],
-    document_image: [{ id: 1, image: 'Auto' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: '',
     alternatives: [],
   },
