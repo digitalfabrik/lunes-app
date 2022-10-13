@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
-import { Modal as RNModal, Pressable} from 'react-native'
-import AudioRecorderPlayer from 'react-native-audio-recorder-player/index'
+import { Modal as RNModal, Pressable } from 'react-native'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -77,11 +77,12 @@ const MeteringBar = styled.View<{ height: number }>`
 `
 
 const InfoContainer = styled.View`
-justify-content: flex-end
+  justify-content: flex-end;
 `
 
 const accuracy = 0.1
 const factor = 1000
+
 const audioRecorderPlayer = new AudioRecorderPlayer()
 audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(e => e)
 
@@ -106,12 +107,18 @@ const AudioRecordOverlay = ({ setVisible }: AudioRecordOverlayProps): ReactEleme
     console.log(result)
   }
 
+  const onStartPlay = async () => {
+    const msg = await audioRecorderPlayer.startPlayer()
+    // eslint-disable-next-line no-console
+    console.log(msg)
+  }
   const onStopRecord = async () => {
     const result = await audioRecorderPlayer.stopRecorder()
     audioRecorderPlayer.removeRecordBackListener()
     setRecordSecs(0)
     // eslint-disable-next-line no-console
     console.log(result)
+    onStartPlay().catch(e => log(e))
   }
 
   return (
@@ -123,14 +130,13 @@ const AudioRecordOverlay = ({ setVisible }: AudioRecordOverlayProps): ReactEleme
         <Content>
           <Heading>{isPressed ? talk : hold}</Heading>
           <InfoContainer>
-
-          <MeteringInfo>
-            {meteringResults.map((element, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <MeteringBar key={index} height={element*1.5} />
-            ))}
-          </MeteringInfo>
-          <RecordingInfo>{recordTime.slice(1, recordTime.length)}</RecordingInfo>
+            <MeteringInfo>
+              {meteringResults.map((element, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <MeteringBar key={index} height={element * 1.5} />
+              ))}
+            </MeteringInfo>
+            <RecordingInfo>{recordTime.slice(1, recordTime.length)}</RecordingInfo>
           </InfoContainer>
           <RecordIconContainer
             onPressIn={() => {
