@@ -55,18 +55,16 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
     message = `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
       getLabels().exercises.write.feedback.almostCorrect2
     }`
-  } else if (result === 'incorrect' && submission) {
+  } else if (!submission) {
     Icon = CloseCircleIconBold
     background = BannerRed
-    message = submission
-      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
-      : wrongWithCorrectSolution
+    message = wrongWithCorrectSolution
   } else {
     Icon = CloseCircleIconBold
     background = BannerRed
     message = needsToBeRepeated
-      ? wrongWithCorrectSolution
-      : `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+      : wrongWithCorrectSolution
   }
 
   return (
