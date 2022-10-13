@@ -18,6 +18,7 @@ import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
+import AudioRecordOverlay from '../../components/AudioRecordOverlay'
 
 const Root = styled.ScrollView`
   padding: ${props => props.theme.spacings.md};
@@ -60,6 +61,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
+  const [showAudioRecordOverlay, setShowAudioRecordOverlay] = useState<boolean>(false)
 
   const {
     headline,
@@ -122,6 +124,10 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
   }
 
+  if(showAudioRecordOverlay){
+    return <AudioRecordOverlay setVisible={()=>setShowAudioRecordOverlay(false)}/>
+  }
+
   // TODO add Keyboard handling for input fields LUN-424
   return (
     <RouteWrapper>
@@ -159,7 +165,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
 
         <AddAudioButton
-          onPress={() => null}
+          onPress={() => setShowAudioRecordOverlay(true)}
           label={addAudio}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={MicrophoneCircleIcon}

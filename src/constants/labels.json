@@ -164,6 +164,10 @@
         "description": "Kamerazugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
         "settings": "Einstellungen"
       }
+    },
+    "audio": {
+      "hold": "Halte die Aufnahmetaste gedrückt",
+      "talk": "Jetzt sprechen"
     }
   },
   "favorites": "Favoriten",
