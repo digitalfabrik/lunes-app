@@ -22,29 +22,23 @@ describe('Feedback', () => {
     result: SimpleResult,
     numberOfTries: number,
     submission: string,
-    input: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
     const documentWithResult: DocumentResult = { document, result, numberOfTries }
     return render(
-      <Feedback
-        documentWithResult={documentWithResult}
-        submission={submission}
-        needsToBeRepeated={needsToBeRepeated}
-        input={input}
-      />
+      <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
     )
   }
 
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
-    const { queryByText } = renderFeedback('correct', 1, submission, '', false)
+    const { queryByText } = renderFeedback('correct', 1, submission, false)
     expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
     const submission = 'Die Abrissbirn'
-    const { queryByText } = renderFeedback('similar', 1, submission, '', true)
+    const { queryByText } = renderFeedback('similar', 1, submission, true)
 
     expect(
       queryByText(
@@ -57,7 +51,7 @@ describe('Feedback', () => {
 
   it('should render finally incorrect feedback', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission, '', false)
+    const { queryByText } = renderFeedback('incorrect', 1, submission, false)
 
     expect(
       queryByText(
@@ -68,7 +62,7 @@ describe('Feedback', () => {
 
   it('should render incorrect feedback with retries not exceeded', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission, '', true)
+    const { queryByText } = renderFeedback('incorrect', 1, submission, true)
 
     expect(
       queryByText(
