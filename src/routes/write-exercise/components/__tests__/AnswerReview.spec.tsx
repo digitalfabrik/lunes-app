@@ -7,12 +7,12 @@ import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
-import Feedback from '../Feedback'
+import AnswerReview from '../AnswerReview'
 
 describe('Feedback', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
-  const renderFeedback = (
+  const renderAnswerReview = (
     result: SimpleResult,
     numberOfTries: number,
     submission: string,
@@ -20,8 +20,8 @@ describe('Feedback', () => {
   ): RenderAPI => {
     const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
-      <Feedback
-        vocabularyItemWithResult={vocabularyItemWithResult}
+      <AnswerReview
+        documentWithResult={vocabularyItemWithResult}
         submission={submission}
         needsToBeRepeated={needsToBeRepeated}
       />
@@ -30,13 +30,13 @@ describe('Feedback', () => {
 
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
-    const { queryByText } = renderFeedback('correct', 1, submission, false)
+    const { queryByText } = renderAnswerReview('correct', 1, submission, false)
     expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
     const submission = 'Die Abrissbirn'
-    const { queryByText } = renderFeedback('similar', 1, submission, true)
+    const { queryByText } = renderAnswerReview('similar', 1, submission, true)
 
     expect(
       queryByText(
@@ -49,7 +49,7 @@ describe('Feedback', () => {
 
   it('should render finally incorrect feedback', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission, false)
+    const { queryByText } = renderAnswerReview('incorrect', 1, submission, false)
 
     expect(
       queryByText(
@@ -62,7 +62,7 @@ describe('Feedback', () => {
 
   it('should render incorrect feedback with retries not exceeded', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission, true)
+    const { queryByText } = renderAnswerReview('incorrect', 1, submission, true)
 
     expect(
       queryByText(

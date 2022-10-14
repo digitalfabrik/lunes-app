@@ -37,7 +37,7 @@ export interface FeedbackProps {
   needsToBeRepeated: boolean
 }
 
-const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+const AnswerReview = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
@@ -72,4 +72,4 @@ const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: F
   )
 }
 
-export default Feedback
+export default AnswerReview
