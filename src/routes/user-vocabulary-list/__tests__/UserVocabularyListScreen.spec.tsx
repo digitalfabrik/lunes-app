@@ -13,6 +13,7 @@ import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
 jest.mock('../../../hooks/useReadUserVocabulary')
 jest.mock('@react-navigation/native')
+jest.mock('react-native-audio-recorder-player')
 
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
