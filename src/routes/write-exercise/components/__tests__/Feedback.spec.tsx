@@ -2,7 +2,7 @@ import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES, SimpleResult } from '../../../../constants/data'
+import { SimpleResult } from '../../../../constants/data'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import DocumentBuilder from '../../../../testing/DocumentBuilder'

@@ -101,36 +101,30 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
+export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
+  await AsyncStorage.setItem(FAVORITES_KEY_2, JSON.stringify(favorites))
+}
+
+const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
+  favorite1.id === favorite2.id && favorite1.documentType === favorite2.documentType
+
 const migrateToNewFavoriteFormat = async (): Promise<void> => {
   const documents = await AsyncStorage.getItem(FAVORITES_KEY)
   const parsedDocuments = documents ? JSON.parse(documents) : []
   if (parsedDocuments.length === 0) {
     return
   }
-  parsedDocuments.forEach((item: number) => {
-    addFavorite({ id: item, documentType: DOCUMENT_TYPES.lunesStandard })
-  })
-  return
+  await setFavorites(parsedDocuments.map((item: number) => ({ id: item, documentType: DOCUMENT_TYPES.lunesStandard })))
+  await AsyncStorage.removeItem(FAVORITES_KEY)
 }
 
 export const getFavorites = async (): Promise<Favorite[]> => {
-  // await migrateToNewFavoriteFormat()
+  await migrateToNewFavoriteFormat()
   const favorites = await AsyncStorage.getItem(FAVORITES_KEY_2)
   return favorites ? JSON.parse(favorites) : []
 }
 
-export const getFavoritesOld = async (): Promise<number[]> => {
-  // await migrateToNewFavoriteFormat()
-  const documents = await AsyncStorage.getItem(FAVORITES_KEY)
-  return documents ? JSON.parse(documents) : []
-}
-
-export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
-  await AsyncStorage.setItem(FAVORITES_KEY_2, JSON.stringify(favorites))
-}
-
 export const addFavorite = async (favorite: Favorite): Promise<void> => {
-  console.log('Add', favorite)
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
@@ -141,13 +135,13 @@ export const addFavorite = async (favorite: Favorite): Promise<void> => {
 
 export const removeFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()
-  const newFavorites = favorites.filter(it => it !== favorite)
+  const newFavorites = favorites.filter(it => !compareFavorites(it, favorite))
   await setFavorites(newFavorites)
 }
 
 export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
   const favorites = await getFavorites()
-  return favorites.some(item => item.id === favorite.id && item.documentType === favorite.documentType)
+  return favorites.some(it => compareFavorites(it, favorite))
 }
 
 export const setOverwriteCMS = async (cms: CMS): Promise<void> => {
@@ -179,7 +173,12 @@ export const incrementNextUserVocabularyId = async (): Promise<void> => {
 
 export const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
-  return userVocabulary ? JSON.parse(userVocabulary) : []
+  return userVocabulary
+    ? JSON.parse(userVocabulary).map((document: Document) => ({
+        ...document,
+        documentType: DOCUMENT_TYPES.userVocabulary,
+      }))
+    : []
 }
 
 export const getUserVocabulary = async (): Promise<Document[]> => {

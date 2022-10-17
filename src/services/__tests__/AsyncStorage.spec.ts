@@ -1,4 +1,4 @@
-import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { DOCUMENT_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import { DocumentResult } from '../../navigation/NavigationTypes'
 import DocumentBuilder from '../../testing/DocumentBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
@@ -118,7 +118,9 @@ describe('AsyncStorage', () => {
   })
 
   describe('favorites', () => {
-    const documents = new DocumentBuilder(4).build().map(it => it.id)
+    const documents: Favorite[] = new DocumentBuilder(4)
+      .build()
+      .map(it => ({ id: it.id, documentType: DOCUMENT_TYPES.lunesStandard }))
 
     it('should add favorites', async () => {
       await setFavorites(documents.slice(0, 2))
@@ -140,7 +142,9 @@ describe('AsyncStorage', () => {
   })
 
   describe('userVocabulary', () => {
-    const userDocuments = new DocumentBuilder(2).build()
+    const userDocuments = new DocumentBuilder(2)
+      .build()
+      .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userVocabulary }))
 
     it('should add userDocument', async () => {
       const userVocabulary = await getUserVocabulary()

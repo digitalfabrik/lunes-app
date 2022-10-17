@@ -1,71 +1,60 @@
-import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
+import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import VocabularyList from '../../components/VocabularyList'
-import VocabularyListItem from '../../components/VocabularyListItem'
 import { Favorite } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import useLoadAsync from '../../hooks/useLoadAsync'
-import useLoadFavorite, { loadFavorite } from '../../hooks/useLoadFavorite'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getFavorites } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
+import FavoriteItem from './components/FavoriteItem'
 
 interface FavoritesScreenProps {
   route: RouteProp<RoutesParams, 'Favorites'>
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
 }
 
+const Root = styled.View`
+  margin: 10px;
+`
+
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
-  // await favorties = getFavorites()
   const { data, error, refresh } = useLoadAsync(getFavorites, {})
-  const [documents, setDocuments] = useState<Document[]>([])
 
   useFocusEffect(refresh)
 
-  useEffect(() => {
-    const d: Document[] = []
-    data?.forEach(item => {
-      loadFavorite(item)
-        .then(result => {
-          if (result) {
-            d.push(result)
-          }
-        })
-        .catch(reportError)
-    })
-    setDocuments(d)
-  }, [data])
-
-  const onItemPress = (index: number) => {
-    if (!data) {
-      return
-    }
-    navigation.navigate('VocabularyDetail', {
-      disciplineId: null,
-      disciplineTitle: getLabels().general.favorites,
-      documents: documents,
-      documentIndex: index,
-      closeExerciseAction: CommonActions.goBack(),
-      labelOverrides: {
-        closeExerciseButtonLabel: getLabels().exercises.cancelModal.cancel,
-        closeExerciseHeaderLabel: getLabels().general.back,
-        isCloseButton: false,
-      },
-    })
+  const navigateToDetail = (document: Document): void => {
+    navigation.navigate('VocabularyDetail', { document })
   }
+
+  const renderItem = ({ item }: { item: Favorite }): JSX.Element => (
+    <FavoriteItem favorite={item} refresh={refresh} onPress={navigateToDetail} />
+  )
 
   return (
     <RouteWrapper>
-      <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-        {documents && <VocabularyList documents={documents} onItemPress={onItemPress} title={'test'} />}
-      </ServerResponseHandler>
+      <Root>
+        <ServerResponseHandler error={error} loading={false} refresh={refresh}>
+          <FlatList
+            ListHeaderComponent={
+              <Title
+                title={getLabels().favorites}
+                description={`${data?.length ?? 0} ${
+                  data?.length === 1 ? getLabels().general.word : getLabels().general.words
+                }`}
+              />
+            }
+            data={data}
+            renderItem={renderItem}
+          />
+        </ServerResponseHandler>
+      </Root>
     </RouteWrapper>
   )
 }

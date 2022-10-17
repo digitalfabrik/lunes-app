@@ -32,6 +32,7 @@ const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): 
     documentType: document.documentType,
     ...(document.apiKey && { apiKey: document.apiKey }),
   }
+
   const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)
   const theme = useTheme()
   useFocusEffect(refresh)

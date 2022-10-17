@@ -2,7 +2,6 @@ import { DOCUMENT_TYPES, Favorite } from '../constants/data'
 import { Document, ENDPOINTS } from '../constants/endpoints'
 import { getUserVocabulary, removeFavorite } from '../services/AsyncStorage'
 import { getFromEndpoint } from '../services/axios'
-import { reportError } from '../services/sentry'
 import useLoadAsync, { Return } from './useLoadAsync'
 import { DocumentFromServer, formatServerResponse } from './useLoadDocuments'
 

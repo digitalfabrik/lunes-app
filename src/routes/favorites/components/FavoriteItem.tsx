@@ -1,25 +1,34 @@
-import { CommonActions } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { Favorite } from '../../../constants/data'
-import useLoadWord from '../../../hooks/useLoadFavorite'
+import { Document } from '../../../constants/endpoints'
 import useLoadFavorite from '../../../hooks/useLoadFavorite'
-import { getLabels } from '../../../services/helpers'
+import { removeFavorite } from '../../../services/AsyncStorage'
 
 interface FavoriteItemProps {
   favorite: Favorite
-  onPress: () => void
-  onFavoritesChange: () => void
+  refresh: () => void
+  onPress: (document: Document) => void
 }
 
-const FavoriteItem = ({ favorite, onPress, onFavoritesChange }: FavoriteItemProps): ReactElement => {
+const FavoriteItem = ({ favorite, refresh, onPress }: FavoriteItemProps): ReactElement | null => {
   const { data } = useLoadFavorite(favorite)
 
-  return data ? (
-    <VocabularyListItem document={data} onPress={() => onItemPress(index)} onFavoritesChanged={refresh} />
-  ) : (
-    <></>
+  const onFavoriteChange = async () => {
+    await removeFavorite(favorite)
+    refresh()
+  }
+
+  return (
+    data && (
+      <VocabularyListItem
+        key={`${favorite.id}-${favorite.documentType}`}
+        document={data}
+        onPress={() => onPress(data)}
+        onFavoritesChanged={onFavoriteChange}
+      />
+    )
   )
 }
 

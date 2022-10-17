@@ -2,7 +2,6 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Share } from 'react-native'
 
-import { ARTICLES } from '../../../../constants/data'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import DocumentBuilder from '../../../../testing/DocumentBuilder'

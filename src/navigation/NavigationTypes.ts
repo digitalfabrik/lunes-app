@@ -61,7 +61,7 @@ export type RoutesParams = {
     discipline: Discipline
     initialSelection: boolean
   }
-  VocabularyDetail: VocabularyDetailExerciseParams
+  VocabularyDetailExercise: VocabularyDetailExerciseParams
   Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
@@ -80,7 +80,7 @@ export type RoutesParams = {
   Settings: undefined
   Favorites: undefined
   Dictionary: undefined
-  DictionaryDetail: { document: Document }
+  VocabularyDetail: { document: Document }
 }
 
 export type Route = keyof RoutesParams

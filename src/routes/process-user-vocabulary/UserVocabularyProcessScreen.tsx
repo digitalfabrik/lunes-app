@@ -11,7 +11,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { TitleWithSpacing } from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
-import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
+import { ARTICLES, BUTTONS_THEME, DOCUMENT_TYPES, getArticleWithLabel } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
@@ -103,6 +103,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         document_image: imagePaths,
         audio: '',
         alternatives: [],
+        documentType: DOCUMENT_TYPES.userVocabulary,
       })
 
       navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })

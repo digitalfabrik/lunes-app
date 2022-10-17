@@ -10,17 +10,15 @@ import Modal from '../../components/Modal'
 import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import Title from '../../components/Title'
-import VocabularyListItem from '../../components/VocabularyListItem'
 import { ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME, DOCUMENT_TYPES } from '../../constants/data'
+import { BUTTONS_THEME } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { addUserDocument, deleteUserDocument } from '../../services/AsyncStorage'
+import { deleteUserDocument } from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
-import DocumentBuilder from '../../testing/DocumentBuilder'
 import ListEmptyContent from './components/ListEmptyContent'
 import ListItem from './components/ListItem'
 
@@ -116,8 +114,6 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
           }
           data={sortedAndFilteredDocuments}
           renderItem={({ item }) => (
-            // <VocabularyListItem document={item} onPress={() => navigateToDetail(item)} />
-
             <ListItem
               document={item}
               navigateToDetailScreen={() => navigateToDetail(item)}

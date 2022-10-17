@@ -37,7 +37,7 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
   }`
 
   const navigateToDetail = (document: Document): void => {
-    navigation.navigate('DictionaryDetail', { document })
+    navigation.navigate('VocabularyDetail', { document })
   }
 
   return (

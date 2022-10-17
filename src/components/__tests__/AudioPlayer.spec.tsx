@@ -4,7 +4,6 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { stringifyDocument } from '../../services/helpers'
 import DocumentBuilder from '../../testing/DocumentBuilder'

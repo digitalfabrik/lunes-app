@@ -6,18 +6,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
-  HeartIconGrey,
-  HeartIconWhite,
   BookIconGrey,
   BookIconWhite,
+  HeartIconGrey,
+  HeartIconWhite,
   HomeIconGrey,
   HomeIconWhite,
   StarIconGrey,
   StarIconWhite,
 } from '../../assets/images'
-import FavoritesScreen from '../routes/favorites/FavoritesScreen'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
+import FavoritesStackNavigator from './FavoritesStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
@@ -66,7 +66,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
       />
       <Navigator.Screen
         name='FavoritesTab'
-        component={FavoritesScreen}
+        component={FavoritesStackNavigator}
         options={{ tabBarIcon: renderFavoritesTabIcon, title: getLabels().general.favorites }}
       />
       <Navigator.Screen

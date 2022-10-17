@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
+import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
