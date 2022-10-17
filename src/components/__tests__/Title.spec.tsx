@@ -13,7 +13,7 @@ describe('Title', () => {
   }
 
   const renderListTitle = (otherProps: Partial<ComponentProps<typeof Title>> = {}): RenderAPI =>
-      render(<Title {...defaultTitleProps} {...otherProps} />)
+    render(<Title {...defaultTitleProps} {...otherProps} />)
 
   it('should render ListTitle with title and description', () => {
     const { getByText } = renderListTitle()

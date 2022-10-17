@@ -149,7 +149,7 @@ export const getDevMode = async (): Promise<boolean | null> => {
 }
 
 export const getNextUserVocabularyId = async (): Promise<number> =>
-    parseInt((await AsyncStorage.getItem(USER_VOCABULARY_NEXT_ID)) ?? '1', 10)
+  parseInt((await AsyncStorage.getItem(USER_VOCABULARY_NEXT_ID)) ?? '1', 10)
 
 export const incrementNextUserVocabularyId = async (): Promise<void> => {
   const nextId = (await getNextUserVocabularyId()) + 1
@@ -160,7 +160,6 @@ export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]>
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
-
 
 export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
@@ -189,7 +188,10 @@ export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Pro
   await setUserVocabularyItems([...userVocabulary, vocabularyItem])
 }
 
-export const editUserVocabularyItem = async (oldUserVocabularyItem: VocabularyItem, newUserVocabularyItem: VocabularyItem): Promise<boolean> => {
+export const editUserVocabularyItem = async (
+  oldUserVocabularyItem: VocabularyItem,
+  newUserVocabularyItem: VocabularyItem
+): Promise<boolean> => {
   const userVocabulary = await getUserVocabularyItems()
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {

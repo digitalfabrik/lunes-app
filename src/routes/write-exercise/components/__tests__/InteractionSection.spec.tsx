@@ -58,7 +58,10 @@ describe('InteractionSection', () => {
     word: 'kontaktlose Spannungsprüfer',
   }
 
-  const renderInteractionSection = (vocabularyItemWithResult: VocabularyItemResult, isAnswerSubmitted: boolean): RenderAPI =>
+  const renderInteractionSection = (
+    vocabularyItemWithResult: VocabularyItemResult,
+    isAnswerSubmitted: boolean
+  ): RenderAPI =>
     render(
       <InteractionSection
         vocabularyItemWithResult={vocabularyItemWithResult}
@@ -105,7 +108,13 @@ describe('InteractionSection', () => {
     const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result: 'incorrect', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
+    )
     expect(getByText(getLabels().exercises.write.feedback.wrong, { exact: false })).toBeTruthy()
   })
 
@@ -121,7 +130,9 @@ describe('InteractionSection', () => {
     const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+    )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
 
@@ -137,7 +148,9 @@ describe('InteractionSection', () => {
     const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+    )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
 
@@ -153,7 +166,9 @@ describe('InteractionSection', () => {
     const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+    )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
 
@@ -166,10 +181,16 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem: dividedVocabularyItem, result: 'correct', numberOfTries: 1 }
+    const documentWithResult: VocabularyItemResult = {
+      vocabularyItem: dividedVocabularyItem,
+      result: 'correct',
+      numberOfTries: 1,
+    }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+    )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
 
@@ -185,7 +206,9 @@ describe('InteractionSection', () => {
     const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(documentWithResult)
 
-    rerender(<InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />)
+    rerender(
+      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+    )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
 })

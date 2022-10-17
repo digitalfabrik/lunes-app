@@ -21,7 +21,8 @@ import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
 import { reportError } from './sentry'
 
-export const stringifyDocument = ({ article, word }: VocabularyItem | AlternativeWord): string => `${article.value} ${word}`
+export const stringifyDocument = ({ article, word }: VocabularyItem | AlternativeWord): string =>
+  `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -191,7 +192,10 @@ export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: s
     alternative.word.toLowerCase().includes(normalizeSearchString(searchString))
   ).length > 0
 
-export const getSortedAndFilteredVocabularyItems = (vocabularyItems: VocabularyItem[] | null, searchString: string): VocabularyItem[] => {
+export const getSortedAndFilteredVocabularyItems = (
+  vocabularyItems: VocabularyItem[] | null,
+  searchString: string
+): VocabularyItem[] => {
   const normalizedSearchString = normalizeSearchString(searchString)
 
   const filteredDocuments = vocabularyItems?.filter(

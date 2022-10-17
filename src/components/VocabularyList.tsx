@@ -25,7 +25,11 @@ const VocabularyList = ({
   title,
 }: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: VocabularyItem; index: number }): JSX.Element => (
-    <VocabularyListItem vocabularyItem={item} onPress={() => onItemPress(index)} onFavoritesChanged={onFavoritesChanged} />
+    <VocabularyListItem
+      vocabularyItem={item}
+      onPress={() => onItemPress(index)}
+      onFavoritesChanged={onFavoritesChanged}
+    />
   )
 
   return (

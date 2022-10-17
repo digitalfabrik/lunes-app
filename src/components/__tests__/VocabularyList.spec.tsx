@@ -42,7 +42,9 @@ describe('VocabularyList', () => {
   })
 
   it('should call onItemPress with correct index', () => {
-    const { getByText } = render(<VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />)
+    const { getByText } = render(
+      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />
+    )
 
     expect(onItemPress).toHaveBeenCalledTimes(0)
 

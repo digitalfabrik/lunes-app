@@ -59,8 +59,15 @@ interface ExerciseFinishedScreenProps {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, disciplineTitle, disciplineId, vocabularyItems, closeExerciseAction, unlockedNextExercise } =
-    route.params
+  const {
+    exercise,
+    results,
+    disciplineTitle,
+    disciplineId,
+    vocabularyItems,
+    closeExerciseAction,
+    unlockedNextExercise,
+  } = route.params
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)

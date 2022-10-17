@@ -25,7 +25,10 @@ class DictionaryItem extends PureComponent<DictionaryItemProps> {
     const { vocabularyItem, navigateToDetail, showAlternatives } = this.props
 
     return (
-      <VocabularyListItem key={vocabularyItem.id} vocabularyItem={vocabularyItem} onPress={() => navigateToDetail(vocabularyItem)}>
+      <VocabularyListItem
+        key={vocabularyItem.id}
+        vocabularyItem={vocabularyItem}
+        onPress={() => navigateToDetail(vocabularyItem)}>
         <>
           {showAlternatives && (
             <AlternativesContainer>

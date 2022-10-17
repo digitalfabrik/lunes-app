@@ -26,7 +26,11 @@ describe('Feedback', () => {
   ): RenderAPI => {
     const documentWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
-      <Feedback vocabularyItemWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
+      <Feedback
+        vocabularyItemWithResult={documentWithResult}
+        submission={submission}
+        needsToBeRepeated={needsToBeRepeated}
+      />
     )
   }
 
@@ -55,7 +59,9 @@ describe('Feedback', () => {
 
     expect(
       queryByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItem.article.value} ${vocabularyItem.word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItem.article.value} ${
+          vocabularyItem.word
+        }“`
       )
     ).toBeTruthy()
   })

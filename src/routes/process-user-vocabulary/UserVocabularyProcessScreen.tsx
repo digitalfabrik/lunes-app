@@ -13,7 +13,11 @@ import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { addUserVocabularyItem, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
+import {
+  addUserVocabularyItem,
+  getNextUserVocabularyId,
+  incrementNextUserVocabularyId,
+} from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'

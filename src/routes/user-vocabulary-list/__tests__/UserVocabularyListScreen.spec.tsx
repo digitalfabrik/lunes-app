@@ -72,4 +72,3 @@ describe('UserVocabularyListScreen', () => {
     expect(deleteUserVocabularyItem).toHaveBeenCalled()
   })
 })
-

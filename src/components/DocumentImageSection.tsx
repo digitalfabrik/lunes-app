@@ -38,7 +38,11 @@ const DocumentImageSection = ({
   <Container>
     <ImageCarousel images={vocabularyItem.document_image} minimized={minimized} />
     <AudioContainer>
-      <AudioPlayer vocabularyItem={vocabularyItem} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
+      <AudioPlayer
+        vocabularyItem={vocabularyItem}
+        disabled={audioDisabled}
+        submittedAlternative={submittedAlternative}
+      />
     </AudioContainer>
     <FavoriteContainer>
       <FavoriteButton vocabularyItem={vocabularyItem} />

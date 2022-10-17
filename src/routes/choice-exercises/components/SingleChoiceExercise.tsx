@@ -60,14 +60,19 @@ const ChoiceExerciseScreen = ({
   const { vocabularyItem, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
 
-  const correctAnswers = [{ word: vocabularyItem.word, article: vocabularyItem.article }, ...vocabularyItem.alternatives]
+  const correctAnswers = [
+    { word: vocabularyItem.word, article: vocabularyItem.article },
+    ...vocabularyItem.alternatives,
+  ]
   const needsToBeRepeated = numberOfTries < numberOfMaxRetries && result === SIMPLE_RESULTS.incorrect
 
   const initializeExercise = useCallback(
     (force = false) => {
       if (vocabularyItems.length !== results.length || force) {
         setCurrentWord(0)
-        setResults(shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))))
+        setResults(
+          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+        )
       }
     },
     [vocabularyItems, results]

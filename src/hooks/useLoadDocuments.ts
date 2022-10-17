@@ -39,7 +39,12 @@ export const loadVocabularyItems = async ({
   return formatServerResponse(response)
 }
 
-const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<VocabularyItem[]> =>
-  useLoadAsync(loadVocabularyItems, { disciplineId, apiKey })
+const useLoadDocuments = ({
+  disciplineId,
+  apiKey,
+}: {
+  disciplineId: number
+  apiKey?: string
+}): Return<VocabularyItem[]> => useLoadAsync(loadVocabularyItems, { disciplineId, apiKey })
 
 export default useLoadDocuments

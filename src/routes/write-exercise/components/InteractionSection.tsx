@@ -58,7 +58,10 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   }, [isAnswerSubmitted])
 
   const validateAnswer = (article: string, word: string): SimpleResult => {
-    const validAnswers = [{ article: vocabularyItem.article, word: vocabularyItem.word }, ...vocabularyItem.alternatives]
+    const validAnswers = [
+      { article: vocabularyItem.article, word: vocabularyItem.word },
+      ...vocabularyItem.alternatives,
+    ]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
     }

@@ -47,7 +47,9 @@ describe('AudioPlayer', () => {
     submittedAlternative?: string | null
     disabled?: boolean
   }): RenderAPI =>
-    render(<AudioPlayer vocabularyItem={vocabularyItem} disabled={disabled} submittedAlternative={submittedAlternative} />)
+    render(
+      <AudioPlayer vocabularyItem={vocabularyItem} disabled={disabled} submittedAlternative={submittedAlternative} />
+    )
 
   it('should initialize tts', async () => {
     renderAudioPlayer({})

@@ -108,12 +108,12 @@ interface ArticleTypeExtended extends ArticleType {
 }
 
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
-    ARTICLES.filter(article => article.id !== 0).map(article => {
-      if (article.id === 4) {
-        return { ...article, label: `${article.value} (Plural)` }
-      }
-      return { ...article, label: article.value }
-    })
+  ARTICLES.filter(article => article.id !== 0).map(article => {
+    if (article.id === 4) {
+      return { ...article, label: `${article.value} (Plural)` }
+    }
+    return { ...article, label: article.value }
+  })
 
 export type Article = typeof ARTICLES[number]
 

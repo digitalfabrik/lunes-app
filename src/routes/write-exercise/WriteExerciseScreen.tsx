@@ -50,7 +50,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
       if (vocabularyItems.length !== vocabularyItemWithResults.length || force) {
         setCurrentIndex(0)
         setIsAnswerSubmitted(false)
-        setVocabularyItemWithResults(shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))))
+        setVocabularyItemWithResults(
+          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+        )
       }
     },
     [vocabularyItems, vocabularyItemWithResults]
