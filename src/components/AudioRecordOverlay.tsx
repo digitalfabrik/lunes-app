@@ -1,17 +1,12 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useMemo, useState } from 'react'
 import { Modal as RNModal, Pressable } from 'react-native'
-import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseIcon, MicrophoneIcon } from '../../assets/images'
+import { CloseIcon, FloppyDiskIcon, MicrophoneIcon, PlayIcon, StopIcon } from '../../assets/images'
 import { getLabels } from '../services/helpers'
 import { log } from '../services/sentry'
 import { HeadingText } from './text/Heading'
-
-interface AudioRecordOverlayProps {
-  setVisible: (visible: boolean) => void
-}
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -20,27 +15,18 @@ const Container = styled.SafeAreaView`
 
 const Icon = styled.Pressable`
   align-self: flex-end;
-  margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
+  margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.md}`};
 `
 
-const RecordIcon = styled.View`
-  width: ${hp('9%')}px;
-  height: ${hp('9%')}px;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50px;
-  background-color: ${props => props.theme.colors.disabled};
-`
-
-const RecordIconContainer = styled(Pressable)<{ isPressed: boolean }>`
+const RecordIcon = styled(Pressable)<{ isPressed: boolean }>`
   width: ${hp('12%')}px;
   height: ${hp('12%')}px;
   align-self: center;
   align-items: center;
   justify-content: center;
   border-radius: 100px;
-  background-color: ${props => (props.isPressed ? props.theme.colors.correct : props.theme.colors.background)};
+  background-color: ${props =>
+    props.isPressed ? props.theme.colors.audioRecordingActive : props.theme.colors.background};
 `
 
 const Content = styled.View`
@@ -53,6 +39,10 @@ const Content = styled.View`
 const Heading = styled(HeadingText)`
   text-align: center;
   font-size: ${props => props.theme.spacings.lg};
+`
+
+const HeadingContainer = styled.View`
+  min-height: ${hp('12%')}px;
 `
 
 const RecordingInfo = styled.Text`
@@ -68,7 +58,7 @@ const MeteringInfo = styled.View`
 
 const MeteringBar = styled.View<{ height: number }>`
   min-height: ${props => props.theme.spacings.xxs}
-  height: ${props => `${props.height}`}px;
+  height: ${props => `${props.height * 2}`}px;
   width: ${props => props.theme.spacings.xxs}
   background-color: ${props => props.theme.colors.progressIndicator};
   border-radius-: 50px;
@@ -80,65 +70,84 @@ const InfoContainer = styled.View`
   justify-content: flex-end;
 `
 
-const accuracy = 0.1
-const factor = 1000
+const IconContainer = styled.View`
+  justify-content: flex-end;
+  flex-direction: row;
+`
 
-const audioRecorderPlayer = new AudioRecorderPlayer()
-audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(e => e)
+interface AudioRecordOverlayProps {
+  onClose: () => void
+  onStartRecord: () => Promise<void>
+  onStopRecord: () => Promise<void>
+  onStartPlay: () => Promise<void>
+  onStopPlay: () => Promise<void>
+  onSaveRecord: () => void
+  recordTime: string
+  meteringResults: number[]
+  isPlayingAudio: boolean
+}
 
-const AudioRecordOverlay = ({ setVisible }: AudioRecordOverlayProps): ReactElement => {
+// Zero alignment of values with the minimum metering value
+const cleanUpMeteringResults = (meteringResults: number[]): number[] => {
+  const filteredResults = meteringResults.filter(el => el !== Math.min(...meteringResults))
+  return filteredResults.map(el => el + Math.abs(Math.min(...filteredResults)))
+}
+
+const AudioRecordOverlay = ({
+  onClose,
+  onStartRecord,
+  onStopRecord,
+  onStartPlay,
+  onStopPlay,
+  onSaveRecord,
+  recordTime,
+  meteringResults,
+  isPlayingAudio,
+}: AudioRecordOverlayProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const [recordSecs, setRecordSecs] = useState<number>(0)
-  const [metering, setMetering] = useState<number[]>([])
-  const [recordTime, setRecordTime] = useState<string>('00:00')
   const { hold, talk } = getLabels().general.audio
   const theme = useTheme()
 
-  const meteringResults = metering.map(el => el + Math.abs(Math.min(...metering)))
-
-  const onStartRecord = async () => {
-    setMetering([])
-    const result = await audioRecorderPlayer.startRecorder(undefined, undefined, true)
-    audioRecorderPlayer.addRecordBackListener(e => {
-      setMetering(metering => [...metering, Math.floor(e.currentMetering ?? 0)])
-      setRecordTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
-    })
-    // eslint-disable-next-line no-console
-    console.log(result)
-  }
-
-  const onStartPlay = async () => {
-    const msg = await audioRecorderPlayer.startPlayer()
-    // eslint-disable-next-line no-console
-    console.log(msg)
-  }
-  const onStopRecord = async () => {
-    const result = await audioRecorderPlayer.stopRecorder()
-    audioRecorderPlayer.removeRecordBackListener()
-    setRecordSecs(0)
-    // eslint-disable-next-line no-console
-    console.log(result)
-    onStartPlay().catch(e => log(e))
-  }
+  const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
   return (
-    <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
+    <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
       <Container>
-        <Icon onPress={() => setVisible(false)}>
-          <CloseIcon width={hp('3.5%')} height={hp('3.5%')} />
-        </Icon>
+        <IconContainer>
+          {meteringResults.length > 0 && !isPressed && (
+            <>
+              {isPlayingAudio ? (
+                <Icon onPress={() => onStopPlay()}>
+                  <StopIcon width={hp('3.5%')} height={hp('3.5%')} />
+                </Icon>
+              ) : (
+                <Icon onPress={() => onStartPlay()}>
+                  <PlayIcon width={hp('3.5%')} height={hp('3.5%')} />
+                </Icon>
+              )}
+              <Icon onPress={() => onSaveRecord()}>
+                <FloppyDiskIcon width={hp('3.5%')} height={hp('3.5%')} />
+              </Icon>
+            </>
+          )}
+          <Icon onPress={() => onClose()}>
+            <CloseIcon width={hp('3.5%')} height={hp('3.5%')} />
+          </Icon>
+        </IconContainer>
         <Content>
-          <Heading>{isPressed ? talk : hold}</Heading>
+          <HeadingContainer>
+            <Heading>{isPressed ? talk : hold}</Heading>
+          </HeadingContainer>
           <InfoContainer>
             <MeteringInfo>
-              {meteringResults.map((element, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <MeteringBar key={index} height={element * 1.5} />
+              {cleanedMetering.map((element, index) => (
+                // eslint-disable-next-line react/no-array-index-key -- no better key available
+                <MeteringBar key={index} height={element} />
               ))}
             </MeteringInfo>
             <RecordingInfo>{recordTime.slice(1, recordTime.length)}</RecordingInfo>
           </InfoContainer>
-          <RecordIconContainer
+          <RecordIcon
             onPressIn={() => {
               setIsPressed(true)
               onStartRecord().catch(e => log(e))
@@ -148,10 +157,8 @@ const AudioRecordOverlay = ({ setVisible }: AudioRecordOverlayProps): ReactEleme
               onStopRecord().catch(e => log(e))
             }}
             isPressed={isPressed}>
-            <RecordIcon>
-              <MicrophoneIcon width={theme.spacingsPlain.xl} height={theme.spacingsPlain.xl} />
-            </RecordIcon>
-          </RecordIconContainer>
+            <MicrophoneIcon width={theme.spacingsPlain.xl} height={theme.spacingsPlain.xl} />
+          </RecordIcon>
         </Content>
       </Container>
     </RNModal>
