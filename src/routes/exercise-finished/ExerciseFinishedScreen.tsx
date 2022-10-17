@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, ComponentType } from 'react'
 import * as Progress from 'react-native-progress'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -53,12 +53,12 @@ const Results = styled(Content)<{ color: Color }>`
   padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
 
-interface Props {
+interface ExerciseFinishedScreenProps {
   route: RouteProp<RoutesParams, 'ExerciseFinished'>
   navigation: StackNavigationProp<RoutesParams, 'ExerciseFinished'>
 }
 
-const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
+const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, disciplineTitle, disciplineId, vocabularyItems, closeExerciseAction, unlockedNextExercise } =
     route.params
   const correctResults = results.filter(doc => doc.result === 'correct')
@@ -143,12 +143,12 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
         <RoundedBackground color={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
             {unlockedNextExercise ? (
-              <CloseIcon width={wp('6%')} height={wp('6%')} />
+              <CloseIcon width={hp('3%')} height={hp('3%')} />
             ) : (
-              <CloseIconWhite width={wp('6%')} height={wp('6%')} />
+              <CloseIconWhite width={hp('3%')} height={hp('3%')} />
             )}
           </Icon>
-          <ResultIcon width={wp('10%')} height={wp('10%')} />
+          <ResultIcon width={hp('5%')} height={hp('5%')} />
           <MessageContainer>
             <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
             <Results color={resultColor}>
@@ -159,8 +159,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: Props): ReactElement => {
               color={resultColor}
               progress={percentageOfCorrectResults}
               unfilledColor={theme.colors.background}
-              width={wp('40%')}
-              height={wp('2%')}
+              width={hp('22%')}
+              height={hp('1.1%')}
               borderWidth={0}
             />
           </MessageContainer>

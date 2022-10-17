@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, CrystalBallIcon } from '../../../../assets/images'
@@ -38,15 +38,15 @@ const Label = styled(ContentTextBold)`
   text-transform: uppercase;
 `
 
-interface Props {
+interface AlternativeWordsSectionProps {
   vocabularyItem: VocabularyItem
 }
 
-const AlternativeWordsSection = ({ vocabularyItem }: Props): JSX.Element => {
+const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): JSX.Element => {
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   return (
     <Root>
-      <CrystalBallIcon width={wp('7%')} height={wp('7%')} />
+      <CrystalBallIcon width={hp('3.5%')} height={hp('3.5%')} />
       <Content>
         {vocabularyItem.alternatives.length > 0 && (
           <>
@@ -59,7 +59,7 @@ const AlternativeWordsSection = ({ vocabularyItem }: Props): JSX.Element => {
 
         <SuggestionPressable onPress={() => setIsFeedbackModalVisible(true)}>
           <Label>{getLabels().exercises.vocabularyList.suggestAlternative}</Label>
-          <ArrowRightIcon fill={theme.colors.black} width={wp('6%')} height={wp('6%')} />
+          <ArrowRightIcon fill={theme.colors.black} width={hp('3%')} height={hp('3%')} />
         </SuggestionPressable>
       </Content>
       <FeedbackModal

@@ -2,24 +2,43 @@ import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import AsyncStorage from '../AsyncStorage'
+import {
+  getCustomDisciplines,
+  deleteUserVocabularyItem,
+  getFavorites,
+  setFavorites,
+  addUserVocabularyItem,
+  pushSelectedProfession,
+  removeCustomDiscipline,
+  setExerciseProgress,
+  saveExerciseProgress,
+  addFavorite,
+  removeFavorite,
+  setCustomDisciplines,
+  getUserVocabularyItems,
+  getSelectedProfessions,
+  getExerciseProgress,
+  editUserVocabularyItem,
+  removeSelectedProfession,
+  setSelectedProfessions,
+} from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
   describe('customDisciplines', () => {
     const customDisciplines = ['first', 'second', 'third']
 
     it('should delete customDisicpline from array if exists', async () => {
-      await AsyncStorage.setCustomDisciplines(customDisciplines)
-      await expect(AsyncStorage.getCustomDisciplines()).resolves.toHaveLength(3)
-      await AsyncStorage.removeCustomDiscipline('first')
-      await expect(AsyncStorage.getCustomDisciplines()).resolves.toStrictEqual(['second', 'third'])
+      await setCustomDisciplines(customDisciplines)
+      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
+      await removeCustomDiscipline('first')
+      await expect(getCustomDisciplines()).resolves.toStrictEqual(['second', 'third'])
     })
 
     it('should not delete customDiscipline from array if not exists', async () => {
-      await AsyncStorage.setCustomDisciplines(customDisciplines)
-      await expect(AsyncStorage.getCustomDisciplines()).resolves.toHaveLength(3)
-      await expect(AsyncStorage.removeCustomDiscipline('fourth')).rejects.toThrow('customDiscipline not available')
-      await expect(AsyncStorage.getCustomDisciplines()).resolves.toStrictEqual(['first', 'second', 'third'])
+      await setCustomDisciplines(customDisciplines)
+      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
+      await expect(removeCustomDiscipline('fourth')).rejects.toThrow('customDiscipline not available')
+      await expect(getCustomDisciplines()).resolves.toStrictEqual(['first', 'second', 'third'])
     })
   })
 
@@ -27,24 +46,24 @@ describe('AsyncStorage', () => {
     const selectedProfessions = mockDisciplines()
 
     it('should delete selectedProfession from array if exists', async () => {
-      await AsyncStorage.setSelectedProfessions(selectedProfessions.map(item => item.id))
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length)
-      await AsyncStorage.removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length - 1)
+      await setSelectedProfessions(selectedProfessions.map(item => item.id))
+      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length)
+      await removeSelectedProfession(mockDisciplines()[0].id)
+      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await AsyncStorage.setSelectedProfessions([mockDisciplines()[1].id])
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
-      await AsyncStorage.removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
+      await setSelectedProfessions([mockDisciplines()[1].id])
+      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await removeSelectedProfession(mockDisciplines()[0].id)
+      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await AsyncStorage.setSelectedProfessions([mockDisciplines()[0].id])
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(1)
-      await AsyncStorage.pushSelectedProfession(mockDisciplines()[1].id)
-      await expect(AsyncStorage.getSelectedProfessions()).resolves.toHaveLength(2)
+      await setSelectedProfessions([mockDisciplines()[0].id])
+      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await pushSelectedProfession(mockDisciplines()[1].id)
+      await expect(getSelectedProfessions()).resolves.toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -52,28 +71,28 @@ describe('AsyncStorage', () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await expect(AsyncStorage.getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await expect(getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done discipline but not yet done exercise', async () => {
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
-        const progress = await AsyncStorage.getExerciseProgress()
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
+        const progress = await getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
-        const progress = await AsyncStorage.getExerciseProgress()
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
+        const progress = await getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await AsyncStorage.setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
-        const progress = await AsyncStorage.getExerciseProgress()
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
+        const progress = await getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
@@ -91,8 +110,8 @@ describe('AsyncStorage', () => {
             numberOfTries: 3,
           },
         ]
-        await AsyncStorage.saveExerciseProgress(1, 1, vocabularyItemResults)
-        const progress = await AsyncStorage.getExerciseProgress()
+        await saveExerciseProgress(1, 1, vocabularyItemResults)
+        const progress = await getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })
     })
@@ -102,49 +121,49 @@ describe('AsyncStorage', () => {
     const vocabularyItems = new VocabularyItemBuilder(4).build().map(it => it.id)
 
     it('should add favorites', async () => {
-      await AsyncStorage.setFavorites(vocabularyItems.slice(0, 2))
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 2))
-      await AsyncStorage.addFavorite(vocabularyItems[2])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 3))
-      await AsyncStorage.addFavorite(vocabularyItems[3])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems)
+      await setFavorites(vocabularyItems.slice(0, 2))
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 2))
+      await addFavorite(vocabularyItems[2])
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 3))
+      await addFavorite(vocabularyItems[3])
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems)
     })
 
     it('should remove favorites', async () => {
-      await AsyncStorage.setFavorites(vocabularyItems)
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual(vocabularyItems)
-      await AsyncStorage.removeFavorite(vocabularyItems[2])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual([vocabularyItems[0], vocabularyItems[1], vocabularyItems[3]])
-      await AsyncStorage.removeFavorite(vocabularyItems[0])
-      await expect(AsyncStorage.getFavorites()).resolves.toEqual([vocabularyItems[1], vocabularyItems[3]])
+      await setFavorites(vocabularyItems)
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems)
+      await removeFavorite(vocabularyItems[2])
+      await expect(getFavorites()).resolves.toEqual([vocabularyItems[0], vocabularyItems[1], vocabularyItems[3]])
+      await removeFavorite(vocabularyItems[0])
+      await expect(getFavorites()).resolves.toEqual([vocabularyItems[1], vocabularyItems[3]])
     })
   })
 
-  describe('userVocabulary', () => {
+  describe('userVocabularyItems', () => {
     const userVocabularyItems = new VocabularyItemBuilder(2).build()
 
-    it('should add userDocument', async () => {
-      const userVocabulary = await AsyncStorage.getUserVocabularyItems()
+    it('should add userVocabularyItem', async () => {
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(0)
-      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
+      await addUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
-    it('should edit userDocument', async () => {
-      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
-      await AsyncStorage.editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
+    it('should edit userVocabularyItem', async () => {
+      await addUserVocabularyItem(userVocabularyItems[0])
+      await editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
       expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
     })
 
-    it('should delete userDocument', async () => {
-      await AsyncStorage.addUserVocabularyItem(userVocabularyItems[0])
-      const userVocabulary = await AsyncStorage.getUserVocabularyItems()
+    it('should delete userVocabularyItem', async () => {
+      await addUserVocabularyItem(userVocabularyItems[0])
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(1)
-      await AsyncStorage.deleteUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await AsyncStorage.getUserVocabularyItems()
+      await deleteUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

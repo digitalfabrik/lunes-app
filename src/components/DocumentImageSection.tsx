@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
@@ -9,7 +9,7 @@ import ImageCarousel from './ImageCarousel'
 
 const AudioContainer = styled.View`
   position: absolute;
-  bottom: ${wp('-4.5%')}px;
+  bottom: ${hp('-2.25%')}px;
   align-self: center;
 `
 const FavoriteContainer = styled.View`
@@ -22,7 +22,7 @@ const Container = styled.View`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-interface Props {
+interface DocumentImageSectionProps {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   minimized?: boolean
@@ -34,9 +34,9 @@ const DocumentImageSection = ({
   audioDisabled = false,
   minimized = false,
   submittedAlternative,
-}: Props): ReactElement => (
+}: DocumentImageSectionProps): ReactElement => (
   <Container>
-    <ImageCarousel images={vocabularyItem.document_image} minimized={minimized} />
+    <ImageCarousel images={vocabularyItem.vocabulary_item_image} minimized={minimized} />
     <AudioContainer>
       <AudioPlayer vocabularyItem={vocabularyItem} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
     </AudioContainer>

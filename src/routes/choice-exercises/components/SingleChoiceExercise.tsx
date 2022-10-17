@@ -19,7 +19,7 @@ import {
 } from '../../../constants/data'
 import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
 import { VocabularyItemResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -82,8 +82,8 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    const progress = await AsyncStorage.getExerciseProgress()
-    await AsyncStorage.saveExerciseProgress(disciplineId, exerciseKey, results)
+    const progress = await getExerciseProgress()
+    await saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       vocabularyItems,
       disciplineId,

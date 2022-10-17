@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
+import { readFile } from 'react-native-fs'
 
 import {
   Article,
@@ -10,14 +11,15 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS, Image, Images } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import AsyncStorage from './AsyncStorage'
+import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
+import { reportError } from './sentry'
 
 export const stringifyDocument = ({ article, word }: VocabularyItem | AlternativeWord): string => `${article.value} ${word}`
 
@@ -81,7 +83,7 @@ const getDoneExercisesByProgress = (disciplineId: number, progress: Progress): n
 }
 
 export const getDoneExercises = (disciplineId: number): Promise<number> =>
-  AsyncStorage.getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
+  getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
 
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
@@ -95,7 +97,7 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
-  const progress = await AsyncStorage.getExerciseProgress()
+  const progress = await getExerciseProgress()
   const firstUnfinishedDisciplineId = leafDisciplineIds.find(
     id => getDoneExercisesByProgress(id, progress) < EXERCISES.length
   )
@@ -127,7 +129,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   if (!profession.leafDisciplines) {
     return (await getDoneExercises(profession.id)) / EXERCISES.length
   }
-  const progress = await AsyncStorage.getExerciseProgress()
+  const progress = await getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
     (acc, leaf) => acc + getDoneExercisesByProgress(leaf, progress),
     0
@@ -138,8 +140,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
 
 export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
   const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
-  const trainingSet = await getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
-  return trainingSet
+  return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
 }
 
 export const getLabels = (): typeof labels => labels
@@ -201,3 +202,16 @@ export const getSortedAndFilteredVocabularyItems = (vocabularyItems: VocabularyI
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
   score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
+
+export const getImages = async (item: VocabularyItem): Promise<Images> => {
+  const images = await Promise.all(
+    item.vocabulary_item_image.map(async image => ({
+      id: image.id,
+      image: await readFile(image.image).catch(err => {
+        reportError(err)
+        return null
+      }),
+    }))
+  )
+  return images.filter((item): item is Image => item.image !== null)
+}

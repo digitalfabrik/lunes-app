@@ -12,7 +12,7 @@ export interface VocabularyItemFromServer {
   id: number
   word: string
   article: number
-  document_image: Array<{ id: number; image: string }>
+  vocabulary_item_image: Array<{ id: number; image: string }>
   audio: string
   alternatives: AlternativeWordFromServer[]
 }

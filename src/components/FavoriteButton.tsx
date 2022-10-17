@@ -1,24 +1,17 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
-import AsyncStorage from '../services/AsyncStorage'
+import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
-const Icon = styled(StarCircleIconGreyFilled)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
-const IconOutline = styled(StarCircleIconGrey)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
 const Button = styled(PressableOpacity)`
+  width: ${props => props.theme.spacings.lg};
+  height: ${props => props.theme.spacings.lg};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -28,21 +21,22 @@ const Button = styled(PressableOpacity)`
   border-radius: 20px;
 `
 
-interface Props {
+interface FavoriteButtonProps {
   vocabularyItem: VocabularyItem
   onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(AsyncStorage.isFavorite, vocabularyItem.id)
+const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, vocabularyItem.id)
+  const theme = useTheme()
 
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await AsyncStorage.removeFavorite(vocabularyItem.id).catch(reportError)
+      await removeFavorite(vocabularyItem.id).catch(reportError)
     } else {
-      await AsyncStorage.addFavorite(vocabularyItem.id).catch(reportError)
+      await addFavorite(vocabularyItem.id).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {
@@ -56,7 +50,11 @@ const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: Props): ReactEle
 
   return (
     <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
-      {isFavorite ? <Icon /> : <IconOutline />}
+      {isFavorite ? (
+        <StarCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      ) : (
+        <StarCircleIconGrey width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      )}
     </Button>
   )
 }

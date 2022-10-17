@@ -2,7 +2,7 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { setExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
@@ -24,6 +24,8 @@ jest.mock('../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
+jest.mock('../../components/FeedbackBadge', () => () => null)
+
 describe('VocabularyListScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {
@@ -41,7 +43,7 @@ describe('VocabularyListScreen', () => {
 
   it('should save progress', () => {
     render(<VocabularyListScreen route={route} navigation={navigation} />)
-    expect(AsyncStorage.setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
+    expect(setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
   })
 
   it('should display vocabulary list', () => {

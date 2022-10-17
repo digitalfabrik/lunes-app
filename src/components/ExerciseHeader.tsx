@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -76,8 +76,13 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
-          <HiddenItem title={getLabels().general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+        <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
+          <HiddenItem
+            title={getLabels().general.header.wordFeedback}
+            onPress={() => setIsFeedbackModalVisible(true)}
+            titleStyle={{ fontSize: hp('2%') }}
+            style={{ height: theme.spacingsPlain.xl }}
+          />
         </OverflowMenu>
       </HeaderRightContainer>
     )
@@ -86,7 +91,7 @@ const ExerciseHeader = ({
       headerLeft: renderHeaderLeft,
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
-        paddingHorizontal: wp('2%'),
+        paddingHorizontal: theme.spacingsPlain.xs,
         maxWidth: wp('25%'),
       },
     })
@@ -99,6 +104,8 @@ const ExerciseHeader = ({
     closeExerciseAction,
     labelOverride,
     isCloseButton,
+    theme.spacingsPlain.xs,
+    theme.spacingsPlain.xl,
   ])
 
   useEffect(() => {

@@ -29,7 +29,7 @@ describe('AudioPlayer', () => {
     article: ARTICLES[4],
     audio: '',
     id: 0,
-    document_image: [],
+    vocabulary_item_image: [],
     word: 'Abrissbirne',
   }
 

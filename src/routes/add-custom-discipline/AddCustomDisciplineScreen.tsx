@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { QRCodeIcon } from '../../../assets/images'
@@ -15,7 +15,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { setCustomDisciplines } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
 
@@ -68,7 +68,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
     }
     setLoading(true)
     loadDiscipline({ apiKey: code })
-      .then(async () => AsyncStorage.setCustomDisciplines([...customDisciplines, code]))
+      .then(async () => setCustomDisciplines([...customDisciplines, code]))
       .then(navigation.goBack)
       .catch(error => {
         setErrorMessage(
@@ -99,7 +99,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
                 onChangeText={setCode}
                 rightContainer={
                   <PressableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-                    <QRCodeIcon accessibilityLabel='qr-code-scanner' width={wp('6%')} height={wp('6%')} />
+                    <QRCodeIcon accessibilityLabel='qr-code-scanner' width={hp('3%')} height={hp('3%')} />
                   </PressableOpacity>
                 }
               />

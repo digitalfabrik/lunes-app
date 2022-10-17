@@ -20,14 +20,14 @@ describe('VocabularyListItem', () => {
     article: ARTICLES[1],
     audio: '',
     id: 0,
-    document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
+    vocabulary_item_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
     word: 'Winkelmesser',
     alternatives: [],
   }
 
   it('should display image passed to it', () => {
     const { getByTestId } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
-    expect(getByTestId('image')).toHaveProp('source', { uri: vocabularyItem.document_image[0].image })
+    expect(getByTestId('image')).toHaveProp('source', { uri: vocabularyItem.vocabulary_item_image[0].image })
   })
 
   it('should display article passed to it', () => {

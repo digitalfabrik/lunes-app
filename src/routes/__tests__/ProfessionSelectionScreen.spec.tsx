@@ -7,7 +7,7 @@ import { COLORS } from '../../constants/theme/colors'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { getSelectedProfessions, setSelectedProfessions } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
@@ -31,7 +31,7 @@ describe('ProfessionSelectionScreen', () => {
   })
 
   it('should select profession when pressed', async () => {
-    await AsyncStorage.setSelectedProfessions([])
+    await setSelectedProfessions([])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
@@ -44,13 +44,13 @@ describe('ProfessionSelectionScreen', () => {
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
     fireEvent.press(profession)
     await waitFor(async () => {
-      const selectedProfessions = await AsyncStorage.getSelectedProfessions()
+      const selectedProfessions = await getSelectedProfessions()
       expect(selectedProfessions).toEqual([mockDisciplines()[0].id])
     })
   })
 
   it('should unselect profession when pressed', async () => {
-    await AsyncStorage.setSelectedProfessions([mockDisciplines()[0].id])
+    await setSelectedProfessions([mockDisciplines()[0].id])
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
@@ -65,13 +65,13 @@ describe('ProfessionSelectionScreen', () => {
     fireEvent.press(profession)
 
     await waitFor(async () => {
-      const selectedProfessions = await AsyncStorage.getSelectedProfessions()
+      const selectedProfessions = await getSelectedProfessions()
       expect(selectedProfessions).toEqual([])
     })
   })
 
   it('should disable selection when not initial view', async () => {
-    await AsyncStorage.setSelectedProfessions([mockDisciplines()[0].id])
+    await setSelectedProfessions([mockDisciplines()[0].id])
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))

@@ -29,7 +29,7 @@ export interface VocabularyItem {
   id: number
   word: string
   article: Article
-  document_image: Images
+  vocabulary_item_image: Images
   audio: string
   alternatives: AlternativeWord[]
 }

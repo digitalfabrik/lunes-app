@@ -6,7 +6,7 @@ import Tts from 'react-native-tts'
 
 import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import AsyncStorage from '../../../services/AsyncStorage'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -63,7 +63,7 @@ describe('WriteExerciseScreen', () => {
       id: 1,
       word: 'Spachtel',
       article: ARTICLES[1],
-      document_image: [{ id: 1, image: 'Spachtel' }],
+      vocabulary_item_image: [{ id: 1, image: 'Spachtel' }],
       audio: 'https://example.com/my-audio',
       alternatives: [
         {
@@ -80,7 +80,7 @@ describe('WriteExerciseScreen', () => {
       id: 2,
       word: 'Auto',
       article: ARTICLES[3],
-      document_image: [{ id: 1, image: 'Auto' }],
+      vocabulary_item_image: [{ id: 1, image: 'Auto' }],
       audio: '',
       alternatives: [],
     },
@@ -187,7 +187,7 @@ describe('WriteExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
 
-    expect(AsyncStorage.saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
       { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])

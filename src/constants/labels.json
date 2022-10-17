@@ -98,6 +98,10 @@
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
       "cancel": "Beenden"
+    },
+    "feedback": {
+      "positive": "Weiter so, das war super!",
+      "negative": "Das geht besser. Probier es nochmal."
     }
   },
   "results": {
@@ -160,9 +164,18 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter"
+    "words": "Wörter",
+    "camera": {
+      "noAuthorization": {
+        "description": "Kamerazugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
+        "settings": "Einstellungen"
+      }
+    }
   },
   "favorites": "Favoriten",
+  "dictionary": {
+    "noResults": "Es wurden leider keine Ergebnisse gefunden."
+  },
   "search": {
     "enterWord": "Wort eingeben"
   },
@@ -184,7 +197,20 @@
     "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
+      "create": "Vokabeln erstellen",
       "practice": "Vokabeln üben"
+    },
+    "creation": {
+      "headline": "Vokabel erstellen",
+      "wordPlaceholder": "Wort eingeben*",
+      "articlePlaceholder": "Artikel auswählen*",
+      "saveButton": "Speichern",
+      "addImage": "Bild hinzufügen*",
+      "addAudio": "Audio aufnehmen",
+      "maxPictureUpload": "Du kannst bis zu 3 Bilder hinzufügen",
+      "requiredFields": "*Pflichtfelder",
+      "errorMessage": "Dies ist ein Pflichtfeld.",
+      "imageErrorMessage": "Du musst 1 bis 3 Bilder auswählen"
     },
     "list": {
       "edit": "Bearbeiten",

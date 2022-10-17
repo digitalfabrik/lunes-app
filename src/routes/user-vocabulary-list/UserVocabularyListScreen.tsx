@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -15,7 +16,7 @@ import { VocabularyItem } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import AsyncStorage from '../../services/AsyncStorage'
+import { deleteUserVocabularyItem } from '../../services/AsyncStorage'
 import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
@@ -37,11 +38,11 @@ const ButtonContainer = styled.View`
   bottom: 0px;
 `
 
-interface Props {
+interface UserVocabularyListScreenProps {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyList'>
 }
 
-const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
+const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
   const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
@@ -61,12 +62,12 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
 
-  // AsyncStorage.addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  useFocusEffect(vocabularyItems.refresh)
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('UserVocabularyDetail', { vocabularyItem })
   }
-  
+
   const toggleEditMode = (): void => {
     setEditModeEnabled(oldValue => !oldValue)
   }
@@ -77,7 +78,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
 
   const deleteItem = (vocabularyItem: VocabularyItem | null): void => {
     if (vocabularyItem) {
-      AsyncStorage.deleteUserVocabularyItem(vocabularyItem).then(vocabularyItems.refresh).catch(reportError)
+      deleteUserVocabularyItem(vocabularyItem).then(vocabularyItems.refresh).catch(reportError)
     }
     setVocabularyItemToDelete(null)
   }
@@ -114,7 +115,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
           data={sortedAndFilteredVocabularyItems}
           renderItem={({ item }) => (
             <ListItem
-              document={item}
+              vocabularyItem={item}
               navigateToDetailScreen={() => navigateToDetail(item)}
               navigateToEditScreen={() => navigation.navigate('UserVocabularyOverview')} /* TODO LUN-401 */
               editModeEnabled={editModeEnabled}

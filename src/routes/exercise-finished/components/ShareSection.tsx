@@ -26,12 +26,12 @@ const Description = styled.Text`
   padding-bottom: ${props => props.theme.spacings.sm};
 `
 
-interface Props {
+interface ShareSectionProps {
   disciplineTitle: string
   results: VocabularyItemResult[]
 }
 
-const ShareSection = ({ disciplineTitle, results }: Props): ReactElement => (
+const ShareSection = ({ disciplineTitle, results }: ShareSectionProps): ReactElement => (
   <Container>
     <Description>{getLabels().results.share.description}</Description>
     <ShareButton disciplineTitle={disciplineTitle} results={results} />

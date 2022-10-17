@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { PenIcon, TrashIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import VocabularyListItem from '../../../components/VocabularyListItem'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 
 const Container = styled.View`
   flex-direction: row;
@@ -16,25 +16,25 @@ const IconContainer = styled.View`
     ${props => props.theme.spacings.xxs};
 `
 
-interface Props {
-  document: Document
+interface ListItemProps {
+  vocabularyItem: VocabularyItem
   navigateToDetailScreen: () => void
   navigateToEditScreen: () => void
   editModeEnabled: boolean
-  deleteItem: (document: Document) => void
+  deleteItem: (vocabularyItem: VocabularyItem) => void
 }
 
 const ListItem = ({
-  document,
+  vocabularyItem,
   navigateToDetailScreen,
   navigateToEditScreen,
   editModeEnabled,
   deleteItem,
-}: Props): ReactElement => (
+}: ListItemProps): ReactElement => (
   <Container>
     {editModeEnabled && (
       <IconContainer>
-        <PressableOpacity onPress={() => deleteItem(document)}>
+        <PressableOpacity onPress={() => deleteItem(vocabularyItem)}>
           <TrashIcon testID='trash-icon' />
         </PressableOpacity>
         <PressableOpacity onPress={navigateToEditScreen}>
@@ -42,7 +42,7 @@ const ListItem = ({
         </PressableOpacity>
       </IconContainer>
     )}
-    <VocabularyListItem document={document} onPress={navigateToDetailScreen} />
+    <VocabularyListItem vocabularyItem={vocabularyItem} onPress={navigateToDetailScreen} />
   </Container>
 )
 

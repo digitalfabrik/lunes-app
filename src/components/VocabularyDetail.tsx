@@ -12,11 +12,11 @@ const ItemContainer = styled.View`
   align-self: center;
 `
 
-interface Props {
+interface VocabularyDetailProps {
   vocabularyItem: VocabularyItem
 }
 
-const VocabularyDetail = ({ vocabularyItem }: Props): ReactElement => (
+const VocabularyDetail = ({ vocabularyItem }: VocabularyDetailProps): ReactElement => (
   <>
     <DocumentImageSection vocabularyItem={vocabularyItem} />
     <ItemContainer>
