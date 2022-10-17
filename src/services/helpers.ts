@@ -205,7 +205,7 @@ export const willNextExerciseUnlock = (previousScore: number | undefined, score:
 
 export const getImages = async (item: VocabularyItem): Promise<Images> => {
   const images = await Promise.all(
-    item.vocabulary_item_image.map(async image => ({
+    item.document_image.map(async image => ({
       id: image.id,
       image: await readFile(image.image).catch(err => {
         reportError(err)

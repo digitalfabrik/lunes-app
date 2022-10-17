@@ -100,7 +100,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         id,
         word,
         article: ARTICLES[articleId],
-        vocabulary_item_image: imagePaths,
+        document_image: imagePaths,
         audio: '',
         alternatives: [],
       })

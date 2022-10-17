@@ -63,7 +63,7 @@ describe('WriteExerciseScreen', () => {
       id: 1,
       word: 'Spachtel',
       article: ARTICLES[1],
-      vocabulary_item_image: [{ id: 1, image: 'Spachtel' }],
+      document_image: [{ id: 1, image: 'Spachtel' }],
       audio: 'https://example.com/my-audio',
       alternatives: [
         {
@@ -80,7 +80,7 @@ describe('WriteExerciseScreen', () => {
       id: 2,
       word: 'Auto',
       article: ARTICLES[3],
-      vocabulary_item_image: [{ id: 1, image: 'Auto' }],
+      document_image: [{ id: 1, image: 'Auto' }],
       audio: '',
       alternatives: [],
     },

@@ -6,7 +6,7 @@ const vocabularyItems: VocabularyItem[] = [
     id: 1,
     word: 'Spachtel',
     article: ARTICLES[1],
-    vocabulary_item_image: [{ id: 1, image: 'image' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: 'https://example.com/my-audio',
     alternatives: [
       {
@@ -23,7 +23,7 @@ const vocabularyItems: VocabularyItem[] = [
     id: 2,
     word: 'Auto',
     article: ARTICLES[3],
-    vocabulary_item_image: [{ id: 1, image: 'image' }],
+    document_image: [{ id: 1, image: 'image' }],
     audio: '',
     alternatives: [],
   },
@@ -32,7 +32,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Hose',
     id: 3,
     article: ARTICLES[2],
-    vocabulary_item_image: [{ id: 1, image: 'image' }],
+    document_image: [{ id: 1, image: 'image' }],
     alternatives: [],
   },
   {
@@ -40,7 +40,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Helm',
     id: 4,
     article: ARTICLES[1],
-    vocabulary_item_image: [{ id: 2, image: 'image' }],
+    document_image: [{ id: 2, image: 'image' }],
     alternatives: [],
   },
 ]

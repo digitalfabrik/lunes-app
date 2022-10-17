@@ -172,7 +172,7 @@ export const getUserVocabulary = async (): Promise<VocabularyItem[]> => {
   return Promise.all(
     userVocabulary.map(async item => ({
       ...item,
-      vocabulary_item_image: await getImages(item),
+      document_image: await getImages(item),
     }))
   )
 }

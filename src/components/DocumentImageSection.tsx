@@ -36,7 +36,7 @@ const DocumentImageSection = ({
   submittedAlternative,
 }: DocumentImageSectionProps): ReactElement => (
   <Container>
-    <ImageCarousel images={vocabularyItem.vocabulary_item_image} minimized={minimized} />
+    <ImageCarousel images={vocabularyItem.document_image} minimized={minimized} />
     <AudioContainer>
       <AudioPlayer vocabularyItem={vocabularyItem} disabled={audioDisabled} submittedAlternative={submittedAlternative} />
     </AudioContainer>

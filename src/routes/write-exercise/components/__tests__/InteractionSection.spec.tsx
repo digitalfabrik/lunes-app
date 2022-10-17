@@ -45,7 +45,7 @@ describe('InteractionSection', () => {
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
     id: 0,
-    vocabulary_item_image: [],
+    document_image: [],
     word: 'Spachtel',
   }
 
@@ -54,7 +54,7 @@ describe('InteractionSection', () => {
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
     id: 0,
-    vocabulary_item_image: [],
+    document_image: [],
     word: 'kontaktlose Spannungsprüfer',
   }
 

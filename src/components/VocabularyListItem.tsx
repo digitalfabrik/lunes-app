@@ -48,7 +48,7 @@ const VocabularyListItem = ({
   onFavoritesChanged,
   children,
 }: VocabularyListItemProps): ReactElement => {
-  const { article, word, vocabulary_item_image: documentImage } = vocabularyItem
+  const { article, word, document_image: documentImage } = vocabularyItem
   const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
