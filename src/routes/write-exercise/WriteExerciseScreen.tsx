@@ -32,7 +32,7 @@ export interface WriteExerciseScreenProps {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
-
+//TODO: rename document
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
   const { vocabularyItems, disciplineTitle, closeExerciseAction, disciplineId } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
