@@ -13,7 +13,7 @@ export const loadAsync = async <T, P>(
     const response = await request(params)
     setData(response)
     setError(null)
-  } catch (e: any) {
+  } catch (e: unknown) {
     setError(e)
     setData(null)
   } finally {

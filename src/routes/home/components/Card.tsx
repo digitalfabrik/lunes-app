@@ -48,10 +48,10 @@ const Card = (props: CardProps): ReactElement => {
   const { heading, icon, onPress, children } = props
   return (
     <Box onPress={onPress}>
-      {(icon || heading) && (
+      {(!!icon || !!heading) && (
         <BoxHeading>
-          {icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
-          {heading && <Title>{heading}</Title>}
+          {!!icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
+          {!!heading && <Title>{heading}</Title>}
         </BoxHeading>
       )}
       {children}

@@ -41,7 +41,7 @@ const AddElement = ({ onPress, label, explanation }: AddElementProps): ReactElem
           <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
         </FlexRow>
       </PressableContainer>
-      {explanation && <Explanation>{explanation}</Explanation>}
+      {!!explanation && <Explanation>{explanation}</Explanation>}
     </>
   )
 }

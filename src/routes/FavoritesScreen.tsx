@@ -1,4 +1,4 @@
-import { CommonActions, RouteProp, useFocusEffect } from '@react-navigation/native'
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
@@ -10,7 +10,6 @@ import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
 interface FavoritesScreenProps {
-  route: RouteProp<RoutesParams, 'Favorites'>
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
 }
 

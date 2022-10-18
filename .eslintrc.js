@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prefer-arrow'],
+  plugins: ['@typescript-eslint', 'jest', 'jsx-expressions', 'prefer-arrow', 'react', 'react-hooks'],
   extends: [
     'airbnb',
     'airbnb/hooks',
@@ -46,6 +46,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
 
     curly: ['error', 'all'],
+    'func-names': 'error',
     'no-magic-numbers': [
       'error',
       {
@@ -74,6 +75,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unused-vars': [
@@ -94,6 +96,8 @@ module.exports = {
     'jest/no-alias-methods': 'error',
 
     'prefer-arrow/prefer-arrow-functions': 'error',
+
+    'jsx-expressions/strict-logical-expressions': 'error',
   },
   parserOptions: {
     project: './tsconfig.json',
