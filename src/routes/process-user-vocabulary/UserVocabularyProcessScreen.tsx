@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
-import { Platform } from 'react-native'
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
+import { Animated, Platform } from 'react-native'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
@@ -57,7 +57,7 @@ const ThumbnailContainer = styled.View`
   flex-direction: row;
 `
 
-const AudioContainer = styled.View`
+const AudioContainer = styled(Animated.View)`
   margin: ${props => props.theme.spacings.md} 0;
   justify-content: flex-start;
   padding: 0;
@@ -116,8 +116,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [meteringResults, setMeteringResults] = useState<number[]>([])
   const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false)
-  const [isRecording, setIsRecording] = useState<boolean>(false)
 
   const {
     headline,
@@ -131,6 +129,22 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     requiredFields,
   } = getLabels().userVocabulary.creation
   const theme = useTheme()
+
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
+  const fadeIn = useCallback(() => {
+    Animated.timing(fadeAnim, {
+      useNativeDriver: false,
+      toValue: 1,
+      duration: 4000,
+    }).start()
+  }, [fadeAnim])
+
+  useEffect(() => {
+    if (recordingPath) {
+      fadeIn()
+    }
+  }, [fadeIn, recordingPath])
 
   const deleteRecording = (): void => {
     setRecordingPath(null)
@@ -196,7 +210,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         ...oldMeteringResults,
         Math.floor(getCurrentMetering(e.currentMetering)),
       ])
-      setIsRecording(e.isRecording ?? true)
       setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
     })
     setRecordingPath(uri)
@@ -205,24 +218,13 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const onStartPlay = async (): Promise<void> => {
     if (recordingPath) {
       await audioRecorderPlayer.startPlayer(recordingPath)
-      audioRecorderPlayer.addPlayBackListener(e => {
-        setIsPlayingAudio(e.currentPosition < e.duration)
-      })
+      audioRecorderPlayer.removePlayBackListener()
     }
   }
 
   const onStopRecording = async (): Promise<void> => {
     await audioRecorderPlayer.stopRecorder()
     audioRecorderPlayer.removeRecordBackListener()
-    setIsRecording(false)
-  }
-  const onStopPlay = async (): Promise<void> => {
-    await audioRecorderPlayer.stopPlayer()
-    audioRecorderPlayer.removePlayBackListener()
-    setIsPlayingAudio(false)
-  }
-
-  const onSaveRecording = (): void => {
     setShowAudioRecordOverlay(false)
   }
 
@@ -241,13 +243,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         onClose={onCloseRecording}
         onStartRecording={onStartRecording}
         onStopRecording={onStopRecording}
-        onStartPlay={onStartPlay}
-        onStopPlay={onStopPlay}
-        onSaveRecording={onSaveRecording}
         recordingTime={recordingTime}
         meteringResults={meteringResults}
-        isPlaying={isPlayingAudio}
-        isRecording={isRecording}
       />
     )
   }
@@ -288,7 +285,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         <StyledHintText>{maxPictureUpload}</StyledHintText>
         {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
         {recordingPath ? (
-          <AudioContainer>
+          <AudioContainer style={{ opacity: fadeAnim }}>
             <>
               <AudioText>{recordingPath.substring(recordingPath.lastIndexOf('/') + 1).toUpperCase()}</AudioText>
               <DeleteContainer onPress={() => deleteRecording()}>
