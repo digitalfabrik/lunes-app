@@ -130,7 +130,7 @@ interface ResultType {
 export const DOCUMENT_TYPES = {
   lunesStandard: 'lunes-standard',
   lunesProtected: 'lunes-protected',
-  userVocabulary: 'user-vocabulary',
+  userCreated: 'user-created',
 }
 export type DocumentType = typeof DOCUMENT_TYPES[keyof typeof DOCUMENT_TYPES]
 

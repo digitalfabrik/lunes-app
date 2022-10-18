@@ -26,6 +26,9 @@ const Root = styled.View`
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const { data, error, refresh } = useLoadAsync(getFavorites, {})
+  const description = `${data?.length ?? 0} ${
+    data?.length === 1 ? getLabels().general.word : getLabels().general.words
+  }`
 
   useFocusEffect(refresh)
 
@@ -42,14 +45,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
       <Root>
         <ServerResponseHandler error={error} loading={false} refresh={refresh}>
           <FlatList
-            ListHeaderComponent={
-              <Title
-                title={getLabels().favorites}
-                description={`${data?.length ?? 0} ${
-                  data?.length === 1 ? getLabels().general.word : getLabels().general.words
-                }`}
-              />
-            }
+            ListHeaderComponent={<Title title={getLabels().favorites} description={description} />}
             data={data}
             renderItem={renderItem}
           />

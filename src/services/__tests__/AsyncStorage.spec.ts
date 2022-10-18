@@ -144,7 +144,7 @@ describe('AsyncStorage', () => {
   describe('userVocabulary', () => {
     const userDocuments = new DocumentBuilder(2)
       .build()
-      .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userVocabulary }))
+      .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userCreated }))
 
     it('should add userDocument', async () => {
       const userVocabulary = await getUserVocabulary()

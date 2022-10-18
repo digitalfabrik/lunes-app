@@ -3,21 +3,21 @@ import { Document, ENDPOINTS } from '../constants/endpoints'
 import { getUserVocabulary, removeFavorite } from '../services/AsyncStorage'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { DocumentFromServer, formatServerResponse } from './useLoadDocuments'
+import { DocumentFromServer, formatDocumentFromServer } from './useLoadDocuments'
 
 export const loadFavorite = async (favorite: Favorite): Promise<Document | null> => {
-  if (favorite.documentType === DOCUMENT_TYPES.userVocabulary) {
+  if (favorite.documentType === DOCUMENT_TYPES.userCreated) {
     const userVocabulary = await getUserVocabulary()
-    const userVocabFavorite = userVocabulary.find(item => item.id === favorite.id)
-    if (!userVocabFavorite) {
+    const userCreatedFavorite = userVocabulary.find(item => item.id === favorite.id)
+    if (!userCreatedFavorite) {
       await removeFavorite(favorite)
       return null
     }
-    return userVocabFavorite
+    return userCreatedFavorite
   }
   const url = `${ENDPOINTS.document}/${favorite.id}`
   const document = await getFromEndpoint<DocumentFromServer>(url, favorite.apiKey)
-  return formatServerResponse([document])[0]
+  return formatDocumentFromServer(document)
 }
 
 const useLoadFavorite = (favorite: Favorite): Return<Document | null> => useLoadAsync(loadFavorite, favorite)

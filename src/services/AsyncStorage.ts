@@ -176,7 +176,7 @@ export const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
   return userVocabulary
     ? JSON.parse(userVocabulary).map((document: Document) => ({
         ...document,
-        documentType: DOCUMENT_TYPES.userVocabulary,
+        documentType: DOCUMENT_TYPES.userCreated,
       }))
     : []
 }
@@ -218,6 +218,6 @@ export const deleteUserDocument = async (userDocument: Document): Promise<void> 
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )
-  await removeFavorite({ id: userDocument.id, documentType: DOCUMENT_TYPES.userVocabulary })
+  await removeFavorite({ id: userDocument.id, documentType: DOCUMENT_TYPES.userCreated })
   await setUserVocabulary(await userVocabulary)
 }

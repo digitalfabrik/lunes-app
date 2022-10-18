@@ -103,7 +103,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         document_image: imagePaths,
         audio: '',
         alternatives: [],
-        documentType: DOCUMENT_TYPES.userVocabulary,
+        documentType: DOCUMENT_TYPES.userCreated,
       })
 
       navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
