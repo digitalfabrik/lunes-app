@@ -78,7 +78,7 @@ const PlayContainer = styled.Pressable`
 `
 
 const AudioText = styled(Subheading)`
-  align-self: center; ;
+  align-self: center;
 `
 
 interface UserVocabularyProcessScreenProps {
@@ -288,7 +288,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
           <AudioContainer style={{ opacity: fadeAnim }}>
             <>
               <AudioText>{recordingPath.substring(recordingPath.lastIndexOf('/') + 1).toUpperCase()}</AudioText>
-              <DeleteContainer onPress={() => deleteRecording()}>
+              <DeleteContainer onPress={() => deleteRecording()} testID='delete-audio-recording'>
                 <CloseCircleIconBlue width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
               </DeleteContainer>
               <PlayContainer onPress={() => onStartPlay()}>
