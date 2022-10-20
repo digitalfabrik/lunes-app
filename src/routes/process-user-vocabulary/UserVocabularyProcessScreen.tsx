@@ -11,7 +11,6 @@ import {
   MicrophoneCircleIcon,
   VolumeUpCircleOutlineIcon,
 } from '../../../assets/images'
-import AudioRecordOverlay from '../../components/AudioRecordOverlay'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
@@ -25,6 +24,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
+import AudioRecordOverlay from './components/AudioRecordOverlay'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
 

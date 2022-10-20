@@ -4,11 +4,11 @@ import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseIcon, MicrophoneIcon } from '../../assets/images'
-import useGrantPermissions from '../hooks/useGrantPermissions'
-import { getLabels } from '../services/helpers'
-import { reportError } from '../services/sentry'
-import { HeadingText } from './text/Heading'
+import { CloseIcon, MicrophoneIcon } from '../../../../assets/images'
+import { HeadingText } from '../../../components/text/Heading'
+import useGrantPermissions from '../../../hooks/useGrantPermissions'
+import { getLabels } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -139,7 +139,8 @@ const AudioRecordOverlay = ({
                   .catch(reportError)
                   .finally(() => setIsPressed(false))
               }
-              isPressed={isPressed}>
+              isPressed={isPressed}
+              testID='record-audio-button'>
               <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
             </RecordIcon>
           )}
