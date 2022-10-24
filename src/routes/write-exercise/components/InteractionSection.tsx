@@ -67,7 +67,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
       return 'similar'
     }
-
     return 'incorrect'
   }
 
