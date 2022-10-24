@@ -22,6 +22,7 @@ interface FavoritesScreenProps {
 
 const Root = styled.View`
   margin: 10px;
+  margin: ${props => props.theme.spacings.sm};
 `
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {

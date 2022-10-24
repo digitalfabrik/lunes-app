@@ -12,7 +12,7 @@ const Container = styled.View`
 `
 
 const VocabularyListItemContainer = styled.View`
-  min-width: ${wp('90%')};
+  min-width: ${wp('90%')}px;
 `
 
 const IconContainer = styled.View`
