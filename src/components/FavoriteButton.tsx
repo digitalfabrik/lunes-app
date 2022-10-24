@@ -5,7 +5,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { Document } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
-import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../services/AsyncStorage'
+import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
@@ -27,16 +27,21 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
-  const theme = useTheme()
+  const favorite = {
+    id: document.id,
+    documentType: document.documentType,
+    ...(document.apiKey && { apiKey: document.apiKey }),
+  }
 
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)
+  const theme = useTheme()
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(document.id).catch(reportError)
+      await removeFavorite(favorite).catch(reportError)
     } else {
-      await addFavorite(document.id).catch(reportError)
+      await addFavorite(favorite).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

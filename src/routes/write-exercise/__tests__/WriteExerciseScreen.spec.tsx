@@ -4,10 +4,11 @@ import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES, ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
+import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
+import DocumentBuilder from '../../../testing/DocumentBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
@@ -58,33 +59,7 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('WriteExerciseScreen', () => {
-  const documents = [
-    {
-      id: 1,
-      word: 'Spachtel',
-      article: ARTICLES[1],
-      document_image: [{ id: 1, image: 'Spachtel' }],
-      audio: 'https://example.com/my-audio',
-      alternatives: [
-        {
-          word: 'Spachtel',
-          article: ARTICLES[2],
-        },
-        {
-          word: 'Alternative',
-          article: ARTICLES[2],
-        },
-      ],
-    },
-    {
-      id: 2,
-      word: 'Auto',
-      article: ARTICLES[3],
-      document_image: [{ id: 1, image: 'Auto' }],
-      audio: '',
-      alternatives: [],
-    },
-  ]
+  const documents = new DocumentBuilder(2).build()
 
   const navigation = createNavigationMock<'WriteExercise'>()
   const route: RouteProp<RoutesParams, 'WriteExercise'> = {
