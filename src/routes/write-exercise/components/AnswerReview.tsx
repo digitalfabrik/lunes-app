@@ -31,13 +31,13 @@ const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-export interface FeedbackProps {
+export interface AnswerReviewProps {
   vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
   needsToBeRepeated: boolean
 }
 
-const AnswerReview = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+const AnswerReview = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
