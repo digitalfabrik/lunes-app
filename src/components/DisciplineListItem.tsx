@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement, useState } from 'react'
 import * as Progress from 'react-native-progress'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Discipline } from '../constants/endpoints'
@@ -20,14 +20,14 @@ interface DisciplineListItemProps {
 }
 
 const Icon = styled.Image`
-  width: ${wp('7%')}px;
-  height: ${wp('7%')}px;
+  width: ${hp('3.5%')}px;
+  height: ${hp('3.5%')}px;
 `
 
 const IconContainer = styled.View`
   position: absolute;
-  top: ${wp('3.5%')}px;
-  left: ${wp('3.5%')}px;
+  top: ${hp('1.75%')}px;
+  left: ${hp('1.75%')}px;
 `
 
 const DisciplineListItem = ({
@@ -55,7 +55,7 @@ const DisciplineListItem = ({
     <>
       <Progress.Circle
         progress={progress}
-        size={Math.round(wp('14%'))}
+        size={Math.round(hp('7%'))}
         indeterminate={false}
         color={theme.colors.progressIndicator}
         unfilledColor={theme.colors.disabled}

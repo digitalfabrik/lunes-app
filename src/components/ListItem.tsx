@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import { GestureResponderEvent } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
@@ -69,8 +69,8 @@ const Title = styled.Text<{ pressed: boolean }>`
 `
 
 const Icon = styled.Image`
-  width: ${wp('7%')}px;
-  height: ${wp('7%')}px;
+  width: ${hp('3.5%')}px;
+  height: ${hp('3.5%')}px;
 `
 
 const IconContainer = styled.View`
@@ -94,8 +94,8 @@ const Description = styled(ContentSecondaryLight)<{ pressed: boolean }>`
 const BadgeLabel = styled.Text<{ pressed: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  min-width: ${wp('6%')}px;
-  height: ${wp('4%')}px;
+  min-width: ${props => props.theme.spacings.md};
+  height: ${props => props.theme.spacings.sm};
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
@@ -181,8 +181,8 @@ const ListItem = ({
       <ChevronRight
         fill={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
         testID='arrow'
-        width={wp('6%')}
-        height={hp('6%')}
+        width={theme.spacingsPlain.md}
+        height={theme.spacingsPlain.md}
       />
     ))
 

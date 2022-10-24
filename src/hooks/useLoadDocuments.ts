@@ -1,4 +1,4 @@
-import { ARTICLES } from '../constants/data'
+import { ARTICLES, DOCUMENT_TYPES } from '../constants/data'
 import { Document, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
@@ -17,15 +17,19 @@ export interface DocumentFromServer {
   alternatives: AlternativeWordFromServer[]
 }
 
-export const formatServerResponse = (documents: DocumentFromServer[]): Document[] =>
-  documents.map(document => ({
-    ...document,
-    article: ARTICLES[document.article],
-    alternatives: document.alternatives.map(it => ({
-      article: ARTICLES[it.article],
-      word: it.alt_word,
-    })),
-  }))
+export const formatDocumentFromServer = (document: DocumentFromServer, apiKey?: string): Document => ({
+  ...document,
+  documentType: apiKey ? DOCUMENT_TYPES.lunesProtected : DOCUMENT_TYPES.lunesStandard,
+  article: ARTICLES[document.article],
+  alternatives: document.alternatives.map(it => ({
+    article: ARTICLES[it.article],
+    word: it.alt_word,
+  })),
+  apiKey,
+})
+
+export const formatDocumentsFromServer = (documents: DocumentFromServer[], apiKey?: string): Document[] =>
+  documents.map(document => formatDocumentFromServer(document, apiKey))
 
 export const loadDocuments = async ({
   disciplineId,
@@ -36,7 +40,7 @@ export const loadDocuments = async ({
 }): Promise<Document[]> => {
   const url = ENDPOINTS.documents.replace(':id', `${disciplineId}`)
   const response = await getFromEndpoint<DocumentFromServer[]>(url, apiKey)
-  return formatServerResponse(response)
+  return formatDocumentsFromServer(response, apiKey)
 }
 
 const useLoadDocuments = ({ disciplineId, apiKey }: { disciplineId: number; apiKey?: string }): Return<Document[]> =>

@@ -26,12 +26,12 @@ const ButtonContainer = styled.View`
   align-self: center;
 `
 
-interface VocabularyDetailScreenProps {
-  route: RouteProp<RoutesParams, 'VocabularyDetail'>
-  navigation: StackNavigationProp<RoutesParams, 'VocabularyDetail'>
+interface VocabularyDetailExerciseScreenProps {
+  route: RouteProp<RoutesParams, 'VocabularyDetailExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'VocabularyDetailExercise'>
 }
 
-const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenProps): ReactElement => {
+const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
   const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
   const document = documents[documentIndex]
   const hasNextDocument = documentIndex + 1 < documents.length
@@ -39,7 +39,7 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
-    navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: documentIndex + 1 })
+    navigation.navigate('VocabularyDetailExercise', { ...route.params, documentIndex: documentIndex + 1 })
 
   return (
     <SafeAreaView>
@@ -83,4 +83,4 @@ const VocabularyDetailScreen = ({ route, navigation }: VocabularyDetailScreenPro
   )
 }
 
-export default VocabularyDetailScreen
+export default VocabularyDetailExerciseScreen

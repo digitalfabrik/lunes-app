@@ -4,9 +4,9 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES } from '../../constants/data'
 import { Document } from '../../constants/endpoints'
 import { stringifyDocument } from '../../services/helpers'
+import DocumentBuilder from '../../testing/DocumentBuilder'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
@@ -24,14 +24,7 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('AudioPlayer', () => {
-  const noAudioDocument = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  const noAudioDocument = new DocumentBuilder(2).build()[1]
 
   const audioDocument = {
     ...noAudioDocument,

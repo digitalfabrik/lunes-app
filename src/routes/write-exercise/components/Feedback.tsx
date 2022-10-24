@@ -28,6 +28,7 @@ const StyledText = styled.Text`
   width: 100%;
   padding: ${props => `0 ${props.theme.spacings.md} 0 ${props.theme.spacings.sm}`};
   color: ${props => props.theme.colors.primary};
+  font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
 export interface FeedbackProps {

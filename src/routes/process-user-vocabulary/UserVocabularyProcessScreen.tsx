@@ -1,8 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon, MicrophoneCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -12,7 +11,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { TitleWithSpacing } from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
-import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
+import { ARTICLES, BUTTONS_THEME, DOCUMENT_TYPES, getArticleWithLabel } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
@@ -73,6 +72,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     maxPictureUpload,
     requiredFields,
   } = getLabels().userVocabulary.creation
+  const theme = useTheme()
 
   const onSave = async (): Promise<void> => {
     const hasError = word.length === 0 || !articleId || images.length === 0
@@ -103,6 +103,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         document_image: imagePaths,
         audio: '',
         alternatives: [],
+        documentType: DOCUMENT_TYPES.userCreated,
       })
 
       navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
@@ -153,7 +154,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
           label={addImage}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={ImageCircleIcon}
-          iconSize={wp('10%')}
+          iconSize={theme.spacingsPlain.xl}
         />
         <StyledHintText>{maxPictureUpload}</StyledHintText>
         {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
@@ -163,7 +164,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
           label={addAudio}
           buttonTheme={BUTTONS_THEME.text}
           iconLeft={MicrophoneCircleIcon}
-          iconSize={wp('10%')}
+          iconSize={theme.spacingsPlain.xl}
         />
         <HintText>{requiredFields}</HintText>
         <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />

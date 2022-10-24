@@ -2,9 +2,9 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Share } from 'react-native'
 
-import { ARTICLES } from '../../../../constants/data'
 import { DocumentResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import DocumentBuilder from '../../../../testing/DocumentBuilder'
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
 
@@ -13,28 +13,15 @@ jest.mock('react-native/Libraries/Share/Share', () => ({
 }))
 
 describe('ShareButton', () => {
+  const documents = new DocumentBuilder(1).build()
   const results: DocumentResult[] = [
     {
-      document: {
-        id: 1,
-        word: 'Auto',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      document: documents[0],
       result: 'correct',
       numberOfTries: 1,
     },
     {
-      document: {
-        id: 2,
-        word: 'Nagel',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      document: documents[1],
       result: 'incorrect',
       numberOfTries: 1,
     },
