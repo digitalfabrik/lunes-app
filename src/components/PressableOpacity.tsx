@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import { StyleProp, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 
-interface Props {
+interface PressableOpacityProps {
   children: ReactNode
   onPress: () => void
   style?: StyleProp<ViewStyle>
@@ -10,15 +10,18 @@ interface Props {
   disabled?: boolean
 }
 
-const OPACITY_MIN = 0.2
-const OPACITY_MAX = 1
-
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
   flex-direction: row;
-  opacity: ${props => (props.isPressed ? OPACITY_MIN : OPACITY_MAX)};
+  opacity: ${props => (props.isPressed ? props.theme.styles.pressOpacity.min : props.theme.styles.pressOpacity.max)};
 `
 
-const PressableOpacity = ({ children, onPress, style, testID, disabled = false }: Props): ReactElement => {
+const PressableOpacity = ({
+  children,
+  onPress,
+  style,
+  testID,
+  disabled = false,
+}: PressableOpacityProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
 
   return (

@@ -51,7 +51,7 @@ const Subheading = styled(ContentTextLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-interface PropsType {
+interface NextExerciseCardProps {
   thumbnail: string
   heading: string
   subheading: string
@@ -59,7 +59,13 @@ interface PropsType {
   onPress: () => void
 }
 
-const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel }: PropsType): ReactElement => (
+const NextExerciseCard = ({
+  thumbnail,
+  onPress,
+  heading,
+  subheading,
+  buttonLabel,
+}: NextExerciseCardProps): ReactElement => (
   <PressableOpacity onPress={onPress}>
     <Container>
       <Thumbnail source={{ uri: thumbnail }} testID='next-exercise-thumbnail' />

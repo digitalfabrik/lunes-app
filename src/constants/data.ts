@@ -75,7 +75,7 @@ export const BUTTONS_THEME = {
 
 export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
-interface ArticleType {
+export interface ArticleType {
   readonly id: number
   readonly value: string
 }
@@ -102,6 +102,18 @@ export const ARTICLES: Readonly<ArticleType[]> = [
     value: 'die',
   },
 ] as const
+
+interface ArticleTypeExtended extends ArticleType {
+  readonly label: string
+}
+
+export const getArticleWithLabel = (): ArticleTypeExtended[] =>
+  ARTICLES.filter(article => article.id !== 0).map(article => {
+    if (article.id === 4) {
+      return { ...article, label: `${article.value} (Plural)` }
+    }
+    return { ...article, label: article.value }
+  })
 
 export type Article = typeof ARTICLES[number]
 
@@ -156,9 +168,11 @@ export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3
 
-export interface UserVocabularyDocument {
-  word: string
-  article: Article
-  imagePath: string
-  audioPath?: string
+export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
+export const SCORE_THRESHOLD_UNLOCK = 2
+
+export const enum EXERCISE_FEEDBACK {
+  POSITIVE,
+  NONE,
+  NEGATIVE,
 }

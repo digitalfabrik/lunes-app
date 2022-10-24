@@ -1,4 +1,5 @@
 import React, { ComponentType, ReactElement, useState } from 'react'
+import { StyleProp, ViewStyle } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled, { css, useTheme } from 'styled-components/native'
@@ -11,6 +12,7 @@ interface ThemedButtonProps {
   buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
+  isPressed: boolean
 }
 
 interface ThemedLabelProps {
@@ -33,6 +35,12 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
   justify-content: center;
   margin-bottom: ${props => props.theme.spacings.sm};
   background-color: ${props => props.backgroundColor};
+  ${props =>
+    props.buttonTheme === BUTTONS_THEME.text &&
+    css`
+      opacity: ${({ isPressed }: { isPressed: boolean }) =>
+        isPressed ? props.theme.styles.pressOpacity.min : props.theme.styles.pressOpacity.max};
+    `};
 `
 
 export const Label = styled(Subheading)<ThemedLabelProps>`
@@ -50,11 +58,13 @@ interface ButtonProps {
   disabled?: boolean
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
+  style?: StyleProp<ViewStyle>
+  iconSize?: number
 }
 
 const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined } = props
+  const { label, onPress, disabled = false, buttonTheme = BUTTONS_THEME.outlined, style, iconSize = wp('6%') } = props
   const theme = useTheme()
 
   const getTextColor = (): Color => {
@@ -64,9 +74,12 @@ const Button = (props: ButtonProps): ReactElement => {
 
   const getBackgroundColor = (): Color | 'transparent' => {
     if (disabled) {
-      return theme.colors.disabled
+      return buttonTheme === BUTTONS_THEME.text ? 'transparent' : theme.colors.disabled
     }
     if (isPressed) {
+      if (buttonTheme === BUTTONS_THEME.text) {
+        return 'transparent'
+      }
       return buttonTheme === BUTTONS_THEME.contained ? theme.colors.containedButtonSelected : theme.colors.placeholder
     }
     if (buttonTheme === BUTTONS_THEME.contained) {
@@ -79,19 +92,21 @@ const Button = (props: ButtonProps): ReactElement => {
     <ThemedButton
       buttonTheme={buttonTheme}
       testID='button'
+      isPressed={isPressed}
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
+      style={style}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (
-        <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={wp('6%')} height={wp('6%')} />
+        <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />
       )}
       <Label color={getTextColor()}>{label}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconRight && (
-        <props.iconRight fill={getTextColor()} testID='button-icon-right' width={wp('6%')} height={wp('6%')} />
+        <props.iconRight fill={getTextColor()} testID='button-icon-right' width={iconSize} height={iconSize} />
       )}
     </ThemedButton>
   )

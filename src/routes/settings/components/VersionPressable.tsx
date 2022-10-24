@@ -11,13 +11,13 @@ const Version = styled.Pressable`
   padding: ${props => props.theme.spacings.xl} ${props => props.theme.spacings.md};
 `
 
-interface PropsType {
+interface VersionPressableProps {
   onClickThresholdReached: () => void
 }
 
 export const CLICK_THRESHOLD = 10
 
-const VersionPressable = ({ onClickThresholdReached }: PropsType): JSX.Element => {
+const VersionPressable = ({ onClickThresholdReached }: VersionPressableProps): JSX.Element => {
   const [counter, setCounter] = useState<number>(0)
 
   const onPress = () => {

@@ -5,11 +5,11 @@ import RouteWrapper from '../components/RouteWrapper'
 import VocabularyDetail from '../components/VocabularyDetail'
 import { RoutesParams } from '../navigation/NavigationTypes'
 
-interface Props {
+interface VocabularyDetailScreenProps {
   route: RouteProp<RoutesParams, 'DictionaryDetail'>
 }
 
-const DictionaryDetailScreen = ({ route }: Props): ReactElement => {
+const VocabularyDetailScreen = ({ route }: VocabularyDetailScreenProps): ReactElement => {
   const { document } = route.params
   return (
     <RouteWrapper>
@@ -18,4 +18,4 @@ const DictionaryDetailScreen = ({ route }: Props): ReactElement => {
   )
 }
 
-export default DictionaryDetailScreen
+export default VocabularyDetailScreen

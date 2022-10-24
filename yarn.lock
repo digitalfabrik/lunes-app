@@ -5383,6 +5383,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"base-64@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "base-64@npm:0.1.0"
+  checksum: fe0dcf076e823f04db7ee9b02495be08a91c445fbc6db03cb9913be9680e2fcc0af8b74459041fe08ad16800b1f65a549501d8f08696a8a6d32880789b7de69d
+  languageName: node
+  linkType: hard
+
 "base64-js@npm:^1.1.2, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
@@ -10142,6 +10149,8 @@ __metadata:
     react-native: 0.66.4
     react-native-camera: ^4.2.1
     react-native-device-info: ^9.0.2
+    react-native-dropdown-picker: ^5.4.2
+    react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.5.0
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
@@ -11970,6 +11979,32 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: c1c23a1160d914def6907f11cffb8408f053c9e9882bbd5ff50ac5cb5234efe26175a5ef60fa8e783ee5e2981ab809d3f6439c587c24c6fb4f768e7d06620b8f
+  languageName: node
+  linkType: hard
+
+"react-native-dropdown-picker@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "react-native-dropdown-picker@npm:5.4.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 046e0ed4043a104142b96fc26b338d6e5dce578b991b708de6bbe858a55de160374a99fceb468dde10745a7e1f29935ffae8050a0d1b78eacc55c2fff31b4aab
+  languageName: node
+  linkType: hard
+
+"react-native-fs@npm:^2.20.0":
+  version: 2.20.0
+  resolution: "react-native-fs@npm:2.20.0"
+  dependencies:
+    base-64: ^0.1.0
+    utf8: ^3.0.0
+  peerDependencies:
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 3722b5568610cd72f319c90f60ba8b019a005d015f27e49017ddd0ea314d1ea6991f79288c28549fdc2964dc81c0fa24f8a5f87a4a6283c97c6ea88d4caa6851
   languageName: node
   linkType: hard
 
@@ -14211,6 +14246,13 @@ __metadata:
   version: 3.1.1
   resolution: "use@npm:3.1.1"
   checksum: 75b48673ab80d5139c76922630d5a8a44e72ed58dbaf54dee1b88352d10e1c1c1fc332066c782d8ae9a56503b85d3dc67ff6d2ffbd9821120466d1280ebb6d6e
+  languageName: node
+  linkType: hard
+
+"utf8@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "utf8@npm:3.0.0"
+  checksum: 675d008bab65fc463ce718d5cae8fd4c063540f269e4f25afebce643098439d53e7164bb1f193e0c3852825c7e3e32fbd8641163d19a618dbb53f1f09acb0d5a
   languageName: node
   linkType: hard
 

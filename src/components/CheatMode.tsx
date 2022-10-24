@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import { BUTTONS_THEME, SimpleResult, SIMPLE_RESULTS } from '../constants/data'
 import { useLoadAsync } from '../hooks/useLoadAsync'
-import AsyncStorage from '../services/AsyncStorage'
+import { getDevMode } from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import Button from './Button'
 
@@ -21,7 +21,7 @@ interface CheatModeProps {
 }
 
 const CheatMode = ({ cheat }: CheatModeProps): ReactElement => {
-  const { data: cheatsEnabled } = useLoadAsync(AsyncStorage.getDevMode, null)
+  const { data: cheatsEnabled } = useLoadAsync(getDevMode, null)
   return (
     <>
       {cheatsEnabled && (

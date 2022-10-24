@@ -2,10 +2,11 @@ import React, { ReactElement } from 'react'
 import { Linking } from 'react-native'
 import styled from 'styled-components/native'
 
-import Button from '../../../components/Button'
-import { ContentSecondary } from '../../../components/text/Content'
-import { BUTTONS_THEME } from '../../../constants/data'
-import { getLabels } from '../../../services/helpers'
+import { BUTTONS_THEME } from '../constants/data'
+import { getLabels } from '../services/helpers'
+import { reportError } from '../services/sentry'
+import Button from './Button'
+import { ContentSecondary } from './text/Content'
 
 const Container = styled.View`
   display: flex;
@@ -19,22 +20,22 @@ const Description = styled(ContentSecondary)`
   text-align: center;
 `
 
-interface Props {
+interface NotAuthorizedViewProps {
   setVisible: (visible: boolean) => void
 }
 
-const NotAuthorisedView = ({ setVisible }: Props): ReactElement => {
+const NotAuthorisedView = ({ setVisible }: NotAuthorizedViewProps): ReactElement => {
   const openSettings = () => {
-    Linking.openSettings().catch(() => console.error('Unable to open Settings'))
+    Linking.openSettings().catch(reportError)
   }
 
   return (
-    <Container>
-      <Description>{getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.description}</Description>
+    <Container testID='no-auth'>
+      <Description>{getLabels().general.camera.noAuthorization.description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
       <Button
         onPress={openSettings}
-        label={getLabels().addCustomDiscipline.qrCodeScanner.noAuthorization.settings}
+        label={getLabels().general.camera.noAuthorization.settings}
         buttonTheme={BUTTONS_THEME.contained}
       />
     </Container>

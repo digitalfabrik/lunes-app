@@ -19,12 +19,12 @@ const Line = styled.View<{ color: string }>`
   margin: ${props => props.theme.spacings.xs} 10px;
 `
 
-interface PropsType {
+interface LockingLaneProps {
   nextExercise: Exercise | null
   index: number
 }
 
-const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
+const LockingLane = ({ nextExercise, index }: LockingLaneProps): ReactElement => {
   let Icon
   if (nextExercise && nextExercise.level < index) {
     Icon = LockIcon
@@ -40,7 +40,7 @@ const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
   return (
     <Container>
       <Line color={index === 0 ? 'transparent' : colorPre} />
-      <Icon />
+      <Icon width='100%' />
       <Line color={index === EXERCISES.length - 1 ? 'transparent' : colorPost} />
     </Container>
   )

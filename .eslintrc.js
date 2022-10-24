@@ -55,6 +55,7 @@ module.exports = {
     ],
     'prefer-destructuring': ['error', { array: false }],
     'prefer-object-spread': 'error',
+    'no-console': 'error',
 
     'react/function-component-definition': [
       'error',
