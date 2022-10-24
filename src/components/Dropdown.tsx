@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { Color } from '../constants/theme/colors'
@@ -8,7 +8,7 @@ import { ContentError } from './text/Content'
 
 const StyledDropDownPicker = styled(DropDownPicker)<{ borderColor: string }>`
   border-radius: 0;
-  height: 60px;
+  height: ${hp('7.7%')}px;
   border: 1px solid ${props => props.borderColor};
 `
 
@@ -65,18 +65,18 @@ const Dropdown = <T extends ValueType>({
         schema={schema}
         itemKey={itemKey}
         placeholder={placeholder}
-        labelStyle={{ fontSize: wp('4%'), paddingHorizontal: wp('2%') }}
+        labelStyle={{ fontSize: hp('2.2%'), paddingHorizontal: theme.spacingsPlain.xs }}
         placeholderStyle={{
-          fontSize: wp('4%'),
+          fontSize: hp('2.2%'),
           fontFamily: theme.fonts.contentFontRegular,
           color: theme.colors.textSecondary,
-          paddingHorizontal: wp('2%'),
+          paddingHorizontal: theme.spacingsPlain.xs,
         }}
         dropDownContainerStyle={{ borderRadius: 0 }}
         listItemLabelStyle={{
-          fontSize: wp('4%'),
+          fontSize: hp('2.2%'),
           fontFamily: theme.fonts.contentFontRegular,
-          paddingHorizontal: wp('2%'),
+          paddingHorizontal: theme.spacingsPlain.xs,
         }}
         listMode='SCROLLVIEW'
       />

@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { AppState, Modal as RNModal, Platform } from 'react-native'
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
@@ -16,8 +16,8 @@ const Container = styled.SafeAreaView`
 const Icon = styled.Pressable`
   align-self: flex-end;
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
-  width: ${wp('7%')}px;
-  height: ${wp('7%')}px;
+  width: ${hp('3.5%')}px;
+  height: ${hp('3.5%')}px;
 `
 
 interface Props {
@@ -60,9 +60,9 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}>
           {isPressed ? (
-            <CloseCircleIconBlue testID='close-circle-icon-blue' width={wp('7%')} height={wp('7%')} />
+            <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
           ) : (
-            <CloseCircleIconWhite testID='close-circle-icon-white' width={wp('7%')} height={wp('7%')} />
+            <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
           )}
         </Icon>
         {permissionGranted && children}

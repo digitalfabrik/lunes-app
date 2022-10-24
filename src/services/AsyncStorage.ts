@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKey, Progress } from '../constants/data'
+import { DOCUMENT_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { Document } from '../constants/endpoints'
 import { DocumentResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
@@ -9,6 +9,7 @@ import { calculateScore, getImages } from './helpers'
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
+const FAVORITES_KEY_2 = 'favorites-2'
 const PROGRESS_KEY = 'progress'
 const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
@@ -100,16 +101,30 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
-export const getFavorites = async (): Promise<number[]> => {
+export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
+  await AsyncStorage.setItem(FAVORITES_KEY_2, JSON.stringify(favorites))
+}
+
+const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
+  favorite1.id === favorite2.id && favorite1.documentType === favorite2.documentType
+
+const migrateToNewFavoriteFormat = async (): Promise<void> => {
   const documents = await AsyncStorage.getItem(FAVORITES_KEY)
-  return documents ? JSON.parse(documents) : []
+  const parsedDocuments = documents ? JSON.parse(documents) : []
+  if (parsedDocuments.length === 0) {
+    return
+  }
+  await setFavorites(parsedDocuments.map((item: number) => ({ id: item, documentType: DOCUMENT_TYPES.lunesStandard })))
+  await AsyncStorage.removeItem(FAVORITES_KEY)
 }
 
-export const setFavorites = async (favorites: number[]): Promise<void> => {
-  await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
+export const getFavorites = async (): Promise<Favorite[]> => {
+  await migrateToNewFavoriteFormat()
+  const favorites = await AsyncStorage.getItem(FAVORITES_KEY_2)
+  return favorites ? JSON.parse(favorites) : []
 }
 
-export const addFavorite = async (favorite: number): Promise<void> => {
+export const addFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
@@ -118,15 +133,15 @@ export const addFavorite = async (favorite: number): Promise<void> => {
   await setFavorites(newFavorites)
 }
 
-export const removeFavorite = async (favoriteId: number): Promise<void> => {
+export const removeFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()
-  const newFavorites = favorites.filter(it => it !== favoriteId)
+  const newFavorites = favorites.filter(it => !compareFavorites(it, favorite))
   await setFavorites(newFavorites)
 }
 
-export const isFavorite = async (favoriteId: number): Promise<boolean> => {
+export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
   const favorites = await getFavorites()
-  return favorites.includes(favoriteId)
+  return favorites.some(it => compareFavorites(it, favorite))
 }
 
 export const setOverwriteCMS = async (cms: CMS): Promise<void> => {
@@ -158,7 +173,12 @@ export const incrementNextUserVocabularyId = async (): Promise<void> => {
 
 export const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
-  return userVocabulary ? JSON.parse(userVocabulary) : []
+  return userVocabulary
+    ? JSON.parse(userVocabulary).map((document: Document) => ({
+        ...document,
+        documentType: DOCUMENT_TYPES.userCreated,
+      }))
+    : []
 }
 
 export const getUserVocabulary = async (): Promise<Document[]> => {
@@ -198,5 +218,6 @@ export const deleteUserDocument = async (userDocument: Document): Promise<void> 
   const userVocabulary = getUserVocabulary().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
   )
+  await removeFavorite({ id: userDocument.id, documentType: DOCUMENT_TYPES.userCreated })
   await setUserVocabulary(await userVocabulary)
 }

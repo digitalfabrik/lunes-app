@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import { EXERCISE_FEEDBACK } from '../constants/data'
 import { getLabels } from '../services/helpers'
-import { ContentSecondaryLight } from './text/Content'
+import { HintSecondary } from './text/Hint'
 
 const BadgeContainer = styled.View`
   display: flex;
@@ -14,7 +14,7 @@ const BadgeContainer = styled.View`
   background-color: ${props => props.theme.colors.lightGreyBackground};
   width: 100%;
 `
-const BadgeText = styled(ContentSecondaryLight)`
+const BadgeText = styled(HintSecondary)`
   font-style: italic;
   margin-left: ${props => props.theme.spacings.xs};
   align-self: center;
@@ -22,7 +22,7 @@ const BadgeText = styled(ContentSecondaryLight)`
 
 const BadgeIcon = styled.View`
   height: ${hp('3.5%')}px;
-  max-height: ${wp('5%')}px;
+  max-height: ${hp('2.75%')}px;
 `
 
 interface FeedbackBadgeProps {

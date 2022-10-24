@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { AddCircleIcon } from '../../assets/images'
 import PressableOpacity from './PressableOpacity'
@@ -32,16 +31,19 @@ interface AddElementProps {
   explanation?: string
 }
 
-const AddElement = ({ onPress, label, explanation }: AddElementProps): ReactElement => (
-  <>
-    <PressableContainer onPress={onPress}>
-      <FlexRow>
-        <AddCircleIcon width={wp('8%')} height={wp('8%')} />
-        <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
-      </FlexRow>
-    </PressableContainer>
-    {explanation && <Explanation>{explanation}</Explanation>}
-  </>
-)
+const AddElement = ({ onPress, label, explanation }: AddElementProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <>
+      <PressableContainer onPress={onPress}>
+        <FlexRow>
+          <AddCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+          <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
+        </FlexRow>
+      </PressableContainer>
+      {explanation && <Explanation>{explanation}</Explanation>}
+    </>
+  )
+}
 
 export default AddElement
