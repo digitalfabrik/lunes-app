@@ -20,6 +20,6 @@ export const loadFavorite = async (favorite: Favorite): Promise<VocabularyItem |
   return formatVocabularyItemFromServer(document)
 }
 
-const useLoadFavorite = (favorite: Favorite): Return<Document | null> => useLoadAsync(loadFavorite, favorite)
+const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => useLoadAsync(loadFavorite, favorite)
 
 export default useLoadFavorite
