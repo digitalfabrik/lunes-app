@@ -3,9 +3,9 @@ import React from 'react'
 import 'react-native'
 
 import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
-import VocabularyItemBuilder from "../../testing/VocabularyItemBuilder";
 
 jest.mock('../FavoriteButton', () => () => {
   const { Text } = require('react-native')

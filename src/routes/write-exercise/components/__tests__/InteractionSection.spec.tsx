@@ -5,9 +5,9 @@ import { ARTICLES, DOCUMENT_TYPES } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
-import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 jest.mock('../../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')

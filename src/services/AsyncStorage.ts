@@ -106,7 +106,7 @@ export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
 }
 
 const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
-    favorite1.id === favorite2.id && favorite1.documentType === favorite2.documentType
+  favorite1.id === favorite2.id && favorite1.documentType === favorite2.documentType
 
 const migrateToNewFavoriteFormat = async (): Promise<void> => {
   const vocabularyItems = await AsyncStorage.getItem(FAVORITES_KEY)
@@ -114,7 +114,9 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
   if (parsedVocabularyItems.length === 0) {
     return
   }
-  await setFavorites(parsedVocabularyItems.map((item: number) => ({ id: item, documentType: DOCUMENT_TYPES.lunesStandard })))
+  await setFavorites(
+    parsedVocabularyItems.map((item: number) => ({ id: item, documentType: DOCUMENT_TYPES.lunesStandard }))
+  )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
 
@@ -123,7 +125,6 @@ export const getFavorites = async (): Promise<Favorite[]> => {
   const favorites = await AsyncStorage.getItem(FAVORITES_KEY_2)
   return favorites ? JSON.parse(favorites) : []
 }
-
 
 export const addFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()

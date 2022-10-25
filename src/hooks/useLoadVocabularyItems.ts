@@ -17,19 +17,24 @@ export interface VocabularyItemFromServer {
   alternatives: AlternativeWordFromServer[]
 }
 
-export const formatVocabularyItemFromServer = (vocabularyItemFromServer: VocabularyItemFromServer, apiKey?: string): VocabularyItem =>({
-    ...vocabularyItemFromServer,
-    documentType: apiKey ? DOCUMENT_TYPES.lunesProtected : DOCUMENT_TYPES.lunesStandard,
-    article: ARTICLES[vocabularyItemFromServer.article],
-    alternatives: vocabularyItemFromServer.alternatives.map(it => ({
-        article: ARTICLES[it.article],
-        word: it.alt_word,
-    })),
-    apiKey,
+export const formatVocabularyItemFromServer = (
+  vocabularyItemFromServer: VocabularyItemFromServer,
+  apiKey?: string
+): VocabularyItem => ({
+  ...vocabularyItemFromServer,
+  documentType: apiKey ? DOCUMENT_TYPES.lunesProtected : DOCUMENT_TYPES.lunesStandard,
+  article: ARTICLES[vocabularyItemFromServer.article],
+  alternatives: vocabularyItemFromServer.alternatives.map(it => ({
+    article: ARTICLES[it.article],
+    word: it.alt_word,
+  })),
+  apiKey,
 })
 
-export const formatVocabularyItemsFromServer = (vocabularyItemFromServers: VocabularyItemFromServer[], apiKey?: string): VocabularyItem[] =>
-    vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
+export const formatVocabularyItemsFromServer = (
+  vocabularyItemFromServers: VocabularyItemFromServer[],
+  apiKey?: string
+): VocabularyItem[] => vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
 
 export const loadVocabularyItems = async ({
   disciplineId,

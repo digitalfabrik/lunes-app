@@ -5,9 +5,9 @@ import 'react-native'
 import { SimpleResult } from '../../../../constants/data'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
-import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 describe('Feedback', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]

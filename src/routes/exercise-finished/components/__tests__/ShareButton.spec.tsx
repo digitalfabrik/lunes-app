@@ -4,10 +4,9 @@ import { Share } from 'react-native'
 
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
-
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
-import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 jest.mock('react-native/Libraries/Share/Share', () => ({
   share: jest.fn(),

@@ -8,10 +8,10 @@ import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
-import VocabularyItemBuilder from "../../../testing/VocabularyItemBuilder";
 
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')

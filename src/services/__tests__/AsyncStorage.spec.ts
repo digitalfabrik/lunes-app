@@ -120,8 +120,8 @@ describe('AsyncStorage', () => {
   // todo: rename document type
   describe('favorites', () => {
     const vocabularyItems: Favorite[] = new VocabularyItemBuilder(4)
-        .build()
-        .map(it => ({ id: it.id, documentType: DOCUMENT_TYPES.lunesStandard }))
+      .build()
+      .map(it => ({ id: it.id, documentType: DOCUMENT_TYPES.lunesStandard }))
 
     it('should add favorites', async () => {
       await setFavorites(vocabularyItems.slice(0, 2))
@@ -144,8 +144,8 @@ describe('AsyncStorage', () => {
 
   describe('userVocabulary', () => {
     const userVocabularyItems = new VocabularyItemBuilder(2)
-        .build()
-        .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userCreated }))
+      .build()
+      .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
       const userVocabulary = await getUserVocabularyWithoutImage()
