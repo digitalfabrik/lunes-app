@@ -1,7 +1,7 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import {ARTICLES, DOCUMENT_TYPES, SIMPLE_RESULTS} from '../../../../constants/data'
+import { ARTICLES, DOCUMENT_TYPES, SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
@@ -117,7 +117,11 @@ describe('InteractionSection', () => {
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -135,7 +139,11 @@ describe('InteractionSection', () => {
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -153,7 +161,11 @@ describe('InteractionSection', () => {
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -175,7 +187,11 @@ describe('InteractionSection', () => {
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -193,7 +209,11 @@ describe('InteractionSection', () => {
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        isAnswerSubmitted
+        storeResult={storeResult}
+      />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })

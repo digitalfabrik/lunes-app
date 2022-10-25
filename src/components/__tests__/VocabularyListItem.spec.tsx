@@ -2,7 +2,6 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { VocabularyItem } from '../../constants/endpoints'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
