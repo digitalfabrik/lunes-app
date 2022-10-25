@@ -29,7 +29,6 @@ module.exports = {
     // Overly strict rules (for now)
     'no-shadow': 'off',
     'react/display-name': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'off',
 
     // Unwanted
     'lines-between-class-members': 'off',
