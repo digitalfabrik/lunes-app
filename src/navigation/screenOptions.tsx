@@ -5,6 +5,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
+import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from './NavigationTypes'
 
@@ -27,7 +28,7 @@ const headerStyles = (headerHeight?: number) =>
       height: headerHeight,
     },
     headerRightContainer: {
-      paddingHorizontal: hp('4%'),
+      paddingHorizontal: theme.spacingsPlain.sm,
       maxWidth: 60,
     },
     headerLeftContainer: {

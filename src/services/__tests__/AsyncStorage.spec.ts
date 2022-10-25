@@ -15,7 +15,7 @@ import {
   addFavorite,
   removeFavorite,
   setCustomDisciplines,
-  getUserVocabularyItems,
+  getUserVocabularyWithoutImage,
   getSelectedProfessions,
   getExerciseProgress,
   editUserVocabularyItem,
@@ -143,27 +143,27 @@ describe('AsyncStorage', () => {
     const userVocabularyItems = new VocabularyItemBuilder(2).build()
 
     it('should add userVocabularyItem', async () => {
-      const userVocabulary = await getUserVocabularyItems()
+      const userVocabulary = await getUserVocabularyWithoutImage()
       expect(userVocabulary).toHaveLength(0)
       await addUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
       await addUserVocabularyItem(userVocabularyItems[0])
       await editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
       expect(updatedUserVocabulary).toHaveLength(1)
       expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
     })
 
     it('should delete userVocabularyItem', async () => {
       await addUserVocabularyItem(userVocabularyItems[0])
-      const userVocabulary = await getUserVocabularyItems()
+      const userVocabulary = await getUserVocabularyWithoutImage()
       expect(userVocabulary).toHaveLength(1)
       await deleteUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

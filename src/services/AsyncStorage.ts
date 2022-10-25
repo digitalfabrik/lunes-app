@@ -161,11 +161,6 @@ export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]>
   return userVocabulary ? JSON.parse(userVocabulary) : []
 }
 
-export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
-  const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
-  return userVocabulary ? JSON.parse(userVocabulary) : []
-}
-
 export const getUserVocabulary = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await getUserVocabularyWithoutImage()
   return Promise.all(
@@ -181,7 +176,7 @@ export const setUserVocabularyItems = async (userVocabularyItems: VocabularyItem
 }
 
 export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = await getUserVocabularyItems()
+  const userVocabulary = await getUserVocabularyWithoutImage()
   if (userVocabulary.find(item => item.word === vocabularyItem.word)) {
     return
   }
@@ -192,7 +187,7 @@ export const editUserVocabularyItem = async (
   oldUserVocabularyItem: VocabularyItem,
   newUserVocabularyItem: VocabularyItem
 ): Promise<boolean> => {
-  const userVocabulary = await getUserVocabularyItems()
+  const userVocabulary = await getUserVocabularyWithoutImage()
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
     return false
@@ -203,36 +198,8 @@ export const editUserVocabularyItem = async (
 }
 
 export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = getUserVocabularyItems().then(vocab =>
+  const userVocabulary = getUserVocabularyWithoutImage().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
   await setUserVocabularyItems(await userVocabulary)
-}
-
-export default {
-  isTrackingEnabled,
-  setIsTrackingEnabled,
-  getCustomDisciplines,
-  setCustomDisciplines,
-  removeCustomDiscipline,
-  setSelectedProfessions,
-  getSelectedProfessions,
-  pushSelectedProfession,
-  removeSelectedProfession,
-  saveExerciseProgress,
-  setExerciseProgress,
-  getExerciseProgress,
-  getFavorites,
-  setFavorites,
-  addFavorite,
-  removeFavorite,
-  isFavorite,
-  setOverwriteCMS,
-  getOverwriteCMS,
-  toggleDevMode,
-  getDevMode,
-  getUserVocabularyItems,
-  addUserVocabularyItem,
-  editUserVocabularyItem,
-  deleteUserVocabularyItem,
 }

@@ -42,12 +42,6 @@
       "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
-    },
-    "qrCodeScanner": {
-      "noAuthorization": {
-        "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "settings": "Einstellungen"
-      }
     }
   },
   "exercises": {

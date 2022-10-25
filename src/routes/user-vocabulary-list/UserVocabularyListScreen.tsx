@@ -49,7 +49,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
   const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<VocabularyItem | null>(null)
   const { isKeyboardVisible } = useKeyboard()
 
-  const numberOfDocuments = vocabularyItems.data?.length ?? 0
+  const numberOfVocabularyItems = vocabularyItems.data?.length ?? 0
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
   const { create, myWords } = getLabels().userVocabulary
   const { list } = getLabels().userVocabulary.overview
@@ -102,8 +102,8 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
             <>
               <Title
                 title={myWords}
-                description={`${numberOfDocuments} ${
-                  numberOfDocuments === 1 ? getLabels().general.word : getLabels().general.words
+                description={`${numberOfVocabularyItems} ${
+                  numberOfVocabularyItems === 1 ? getLabels().general.word : getLabels().general.words
                 }`}
               />
               <SearchBar query={searchString} setQuery={setSearchString} />
