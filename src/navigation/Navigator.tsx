@@ -11,7 +11,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
-import VocabularyDetailScreen from '../routes/vocabulary-detail/VocabularyDetailScreen'
+import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
@@ -53,8 +53,8 @@ const HomeStackNavigator = (): JSX.Element | null => {
           options={({ navigation }) => options(overviewExercises, navigation, false)}
         />
         <Stack.Screen
-          name='VocabularyDetail'
-          component={VocabularyDetailScreen}
+          name='VocabularyDetailExercise'
+          component={VocabularyDetailExerciseScreen}
           options={({ navigation }) => options('', navigation, true)}
         />
         <Stack.Screen

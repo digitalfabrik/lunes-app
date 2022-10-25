@@ -1,4 +1,4 @@
-import { ARTICLES } from '../constants/data'
+import { ARTICLES, DOCUMENT_TYPES } from '../constants/data'
 import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
@@ -17,15 +17,19 @@ export interface VocabularyItemFromServer {
   alternatives: AlternativeWordFromServer[]
 }
 
-export const formatServerResponse = (vocabularyItemsFromServer: VocabularyItemFromServer[]): VocabularyItem[] =>
-  vocabularyItemsFromServer.map(item => ({
-    ...item,
-    article: ARTICLES[item.article],
-    alternatives: item.alternatives.map(it => ({
-      article: ARTICLES[it.article],
-      word: it.alt_word,
+export const formatVocabularyItemFromServer = (vocabularyItemFromServer: VocabularyItemFromServer, apiKey?: string): VocabularyItem =>({
+    ...vocabularyItemFromServer,
+    documentType: apiKey ? DOCUMENT_TYPES.lunesProtected : DOCUMENT_TYPES.lunesStandard,
+    article: ARTICLES[vocabularyItemFromServer.article],
+    alternatives: vocabularyItemFromServer.alternatives.map(it => ({
+        article: ARTICLES[it.article],
+        word: it.alt_word,
     })),
-  }))
+    apiKey,
+})
+
+export const formatVocabularyItemsFromServer = (vocabularyItemFromServers: VocabularyItemFromServer[], apiKey?: string): VocabularyItem[] =>
+    vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
 
 export const loadVocabularyItems = async ({
   disciplineId,
@@ -36,10 +40,10 @@ export const loadVocabularyItems = async ({
 }): Promise<VocabularyItem[]> => {
   const url = ENDPOINTS.vocabularyItems.replace(':id', `${disciplineId}`)
   const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
-  return formatServerResponse(response)
+  return formatVocabularyItemsFromServer(response, apiKey)
 }
-
-const useLoadDocuments = ({
+// todo: rename
+const useLoadVocabularyItems = ({
   disciplineId,
   apiKey,
 }: {
@@ -47,4 +51,4 @@ const useLoadDocuments = ({
   apiKey?: string
 }): Return<VocabularyItem[]> => useLoadAsync(loadVocabularyItems, { disciplineId, apiKey })
 
-export default useLoadDocuments
+export default useLoadVocabularyItems

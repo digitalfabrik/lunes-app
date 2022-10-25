@@ -13,7 +13,7 @@ import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
+import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
@@ -53,7 +53,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     error,
     loading,
     refresh,
-  } = useLoadDocuments({
+  } = useLoadVocabularyItems({
     disciplineId: discipline.id,
     apiKey: discipline.apiKey,
   })

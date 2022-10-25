@@ -5,7 +5,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
-import useLoadDocuments from '../../../hooks/useLoadDocuments'
+import useLoadVocabularyItems from '../../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -16,14 +16,14 @@ import render from '../../../testing/render'
 import ExercisesScreen from '../ExercisesScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadDocuments')
+jest.mock('../../../hooks/useLoadVocabularyItems')
 
 describe('ExercisesScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(1).build()
   beforeEach(() => {
     jest.clearAllMocks()
     RNAsyncStorage.clear()
-    mocked(useLoadDocuments).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadVocabularyItems).mockReturnValue(getReturnOf(vocabularyItems))
   })
 
   const navigation = createNavigationMock<'Exercises'>()

@@ -2,10 +2,10 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
+import VocabularyItemBuilder from "../../testing/VocabularyItemBuilder";
 
 jest.mock('../FavoriteButton', () => () => {
   const { Text } = require('react-native')
@@ -16,14 +16,7 @@ jest.mock('../AudioPlayer', () => () => null)
 describe('VocabularyListItem', () => {
   const onPress = jest.fn()
 
-  const vocabularyItem: VocabularyItem = {
-    article: ARTICLES[1],
-    audio: '',
-    id: 0,
-    document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-    word: 'Winkelmesser',
-    alternatives: [],
-  }
+  const vocabularyItem: VocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   it('should display image passed to it', () => {
     const { getByTestId } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)

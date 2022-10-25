@@ -1,12 +1,13 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES } from '../../../../constants/data'
+import { ARTICLES, DOCUMENT_TYPES } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import InteractionSection from '../InteractionSection'
+import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 jest.mock('../../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
@@ -31,29 +32,14 @@ jest.mock('react-native-popover-view', () => ({
 describe('InteractionSection', () => {
   const storeResult = jest.fn()
 
-  const vocabularyItem = {
-    alternatives: [
-      {
-        word: 'Spachtel',
-        article: ARTICLES[2],
-      },
-      {
-        word: 'Alternative',
-        article: ARTICLES[2],
-      },
-    ],
-    article: ARTICLES[1],
-    audio: 'https://example.com/my-audio',
-    id: 0,
-    document_image: [],
-    word: 'Spachtel',
-  }
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   const dividedVocabularyItem: VocabularyItem = {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
     id: 0,
+    documentType: DOCUMENT_TYPES.lunesStandard,
     document_image: [],
     word: 'kontaktlose Spannungsprüfer',
   }

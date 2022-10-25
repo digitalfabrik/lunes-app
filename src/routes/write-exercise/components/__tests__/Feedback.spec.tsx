@@ -2,21 +2,15 @@ import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES, SimpleResult } from '../../../../constants/data'
+import { SimpleResult } from '../../../../constants/data'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
+import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 describe('Feedback', () => {
-  const vocabularyItem = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   const renderFeedback = (
     result: SimpleResult,
@@ -24,10 +18,10 @@ describe('Feedback', () => {
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const documentWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
+    const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
       <Feedback
-        vocabularyItemWithResult={documentWithResult}
+        vocabularyItemWithResult={vocabularyItemWithResult}
         submission={submission}
         needsToBeRepeated={needsToBeRepeated}
       />

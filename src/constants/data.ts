@@ -127,6 +127,19 @@ interface ResultType {
   order: number
 }
 
+export const DOCUMENT_TYPES = {
+  lunesStandard: 'lunes-standard',
+  lunesProtected: 'lunes-protected',
+  userCreated: 'user-created',
+}
+export type DocumentType = typeof DOCUMENT_TYPES[keyof typeof DOCUMENT_TYPES]
+
+export interface Favorite {
+  id: number
+  documentType: DocumentType
+  apiKey?: string
+}
+
 export interface Answer {
   word: string
   article: Article

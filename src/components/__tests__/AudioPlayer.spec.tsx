@@ -4,11 +4,11 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import { stringifyDocument } from '../../services/helpers'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
+import VocabularyItemBuilder from "../../testing/VocabularyItemBuilder";
 
 jest.mock('react-native-tts', () => ({
   getInitStatus: jest.fn(async () => 'success'),
@@ -23,15 +23,9 @@ jest.mock('react-native-sound-player', () => ({
   loadUrl: jest.fn(),
 }))
 
+
 describe('AudioPlayer', () => {
-  const noAudioVocabularyItem = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  const noAudioVocabularyItem = new VocabularyItemBuilder(2).build()[1]
 
   const audioVocabularyItem = {
     ...noAudioVocabularyItem,

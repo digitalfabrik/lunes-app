@@ -2,39 +2,27 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Share } from 'react-native'
 
-import { ARTICLES } from '../../../../constants/data'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
+import VocabularyItemBuilder from "../../../../testing/VocabularyItemBuilder";
 
 jest.mock('react-native/Libraries/Share/Share', () => ({
   share: jest.fn(),
 }))
 
 describe('ShareButton', () => {
+  const vocabularyItems = new VocabularyItemBuilder(1).build()
   const results: VocabularyItemResult[] = [
     {
-      vocabularyItem: {
-        id: 1,
-        word: 'Auto',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      vocabularyItem: vocabularyItems[0],
       result: 'correct',
       numberOfTries: 1,
     },
     {
-      vocabularyItem: {
-        id: 2,
-        word: 'Nagel',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      vocabularyItem: vocabularyItems[1],
       result: 'incorrect',
       numberOfTries: 1,
     },

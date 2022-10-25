@@ -1,7 +1,7 @@
 import { VocabularyItem } from '../constants/endpoints'
-import { getUserVocabulary } from '../services/AsyncStorage'
+import { getUserVocabularyItems } from '../services/AsyncStorage'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const useReadUserVocabulary = (): Return<VocabularyItem[]> => useLoadAsync(getUserVocabulary, null)
+const useReadUserVocabulary = (): Return<VocabularyItem[]> => useLoadAsync(getUserVocabularyItems, null)
 
 export default useReadUserVocabulary

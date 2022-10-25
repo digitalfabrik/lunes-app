@@ -67,9 +67,7 @@ const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: F
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
-      <StyledText numberOfLines={3} ellipsizeMode='tail'>
-        {message}
-      </StyledText>
+      <StyledText>{message}</StyledText>
     </Background>
   )
 }

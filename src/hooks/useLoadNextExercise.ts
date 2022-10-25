@@ -3,7 +3,7 @@ import { Discipline } from '../constants/endpoints'
 import { getNextExercise, loadTrainingsSet } from '../services/helpers'
 import { formatDiscipline } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { loadVocabularyItems } from './useLoadDocuments'
+import { loadVocabularyItems } from './useLoadVocabularyItems'
 
 export const loadNextExercise = async (profession: Discipline): Promise<NextExerciseData> => {
   const nextExercise = await getNextExercise(profession)

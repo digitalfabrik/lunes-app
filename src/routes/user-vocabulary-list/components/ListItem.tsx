@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { PenIcon, TrashIcon } from '../../../../assets/images'
@@ -8,6 +9,10 @@ import { VocabularyItem } from '../../../constants/endpoints'
 
 const Container = styled.View`
   flex-direction: row;
+`
+
+const VocabularyListItemContainer = styled.View`
+  min-width: ${wp('90%')}px;
 `
 
 const IconContainer = styled.View`
@@ -42,7 +47,9 @@ const ListItem = ({
         </PressableOpacity>
       </IconContainer>
     )}
-    <VocabularyListItem vocabularyItem={vocabularyItem} onPress={navigateToDetailScreen} />
+    <VocabularyListItemContainer>
+      <VocabularyListItem vocabularyItem={vocabularyItem} onPress={navigateToDetailScreen} />
+    </VocabularyListItemContainer>
   </Container>
 )
 

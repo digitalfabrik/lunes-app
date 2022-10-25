@@ -9,7 +9,7 @@ import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { VocabularyItem } from '../../constants/endpoints'
-import useLoadAllVocabularyItems from '../../hooks/useLoadAllDocuments'
+import useLoadAllVocabularyItems from '../../hooks/useLoadAllVocabularyItems'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
@@ -37,7 +37,7 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
   }`
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
-    navigation.navigate('DictionaryDetail', { vocabularyItem })
+    navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
   return (
