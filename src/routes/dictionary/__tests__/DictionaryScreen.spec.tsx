@@ -20,7 +20,7 @@ jest.mock('../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
-jest.mock('../../../hooks/useLoadAllDocuments')
+jest.mock('../../../hooks/useLoadAllVocabularyItems')
 
 describe('DictionaryScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(4).build()
