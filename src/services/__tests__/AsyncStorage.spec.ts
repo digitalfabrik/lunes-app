@@ -117,7 +117,6 @@ describe('AsyncStorage', () => {
     })
   })
 
-  // todo: rename document type
   describe('favorites', () => {
     const vocabularyItems: Favorite[] = new VocabularyItemBuilder(4)
       .build()

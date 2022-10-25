@@ -23,7 +23,7 @@ jest.mock('../../../components/AudioPlayer', () => () => {
   const { Text } = require('react-native')
   return <Text>AudioPlayer</Text>
 })
-// TODO: rename
+
 jest.mock('../../../services/AsyncStorage', () => ({
   deleteUserVocabularyItem: jest.fn(() => Promise.resolve()),
 }))

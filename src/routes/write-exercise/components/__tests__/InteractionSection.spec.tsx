@@ -1,7 +1,7 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES, DOCUMENT_TYPES } from '../../../../constants/data'
+import {ARTICLES, DOCUMENT_TYPES, SIMPLE_RESULTS} from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
@@ -91,7 +91,7 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'die WrongAnswer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result: 'incorrect', numberOfTries: 1 }
+    const vocabularyItemWithResult = { vocabularyItem, result: SIMPLE_RESULTS.incorrect, numberOfTries: 1 }
     expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
@@ -113,11 +113,11 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'die Wachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
-    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+    const vocabularyItemWithResult = { vocabularyItem, result: SIMPLE_RESULTS.similar, numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -131,11 +131,11 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'das Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'similar', numberOfTries: 1 }
-    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+    const vocabularyItemWithResult = { vocabularyItem, result: SIMPLE_RESULTS.similar, numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -149,11 +149,11 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
-    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+    const vocabularyItemWithResult = { vocabularyItem, result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -167,15 +167,15 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = {
+    const vocabularyItemWithResult = {
       vocabularyItem: dividedVocabularyItem,
-      result: 'correct',
+      result: SIMPLE_RESULTS.correct,
       numberOfTries: 1,
     }
-    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+    expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -189,11 +189,11 @@ describe('InteractionSection', () => {
     fireEvent.changeText(inputField, 'Die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
 
-    const documentWithResult: VocabularyItemResult = { vocabularyItem, result: 'correct', numberOfTries: 1 }
-    expect(storeResult).toHaveBeenCalledWith(documentWithResult)
+    const vocabularyItemWithResult = { vocabularyItem, result: SIMPLE_RESULTS.correct, numberOfTries: 1 }
+    expect(storeResult).toHaveBeenCalledWith(vocabularyItemWithResult)
 
     rerender(
-      <InteractionSection vocabularyItemWithResult={documentWithResult} isAnswerSubmitted storeResult={storeResult} />
+      <InteractionSection vocabularyItemWithResult={vocabularyItemWithResult} isAnswerSubmitted storeResult={storeResult} />
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })

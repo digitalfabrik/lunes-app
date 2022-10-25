@@ -16,7 +16,7 @@ jest.mock('../AudioPlayer', () => () => null)
 describe('VocabularyListItem', () => {
   const onPress = jest.fn()
 
-  const vocabularyItem: VocabularyItem = new VocabularyItemBuilder(1).build()[0]
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   it('should display image passed to it', () => {
     const { getByTestId } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)

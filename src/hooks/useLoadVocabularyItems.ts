@@ -47,7 +47,7 @@ export const loadVocabularyItems = async ({
   const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
   return formatVocabularyItemsFromServer(response, apiKey)
 }
-// todo: rename
+
 const useLoadVocabularyItems = ({
   disciplineId,
   apiKey,
