@@ -1,4 +1,4 @@
-import { ARTICLES, DOCUMENT_TYPES } from '../constants/data'
+import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
@@ -22,8 +22,9 @@ export const formatVocabularyItemFromServer = (
   apiKey?: string
 ): VocabularyItem => ({
   ...vocabularyItemFromServer,
-  documentType: apiKey ? DOCUMENT_TYPES.lunesProtected : DOCUMENT_TYPES.lunesStandard,
+  type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
   article: ARTICLES[vocabularyItemFromServer.article],
+  image: vocabularyItemFromServer.document_image,
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({
     article: ARTICLES[it.article],
     word: it.alt_word,

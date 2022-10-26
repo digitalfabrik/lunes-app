@@ -19,18 +19,18 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
   // Exclude articles 'keiner' and 'die (Plural)'
   const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
 
-  const singularDocuments = vocabularyItems.filter(it => answerOptions.includes(it.article))
+  const singularVocabularyItems = vocabularyItems.filter(it => answerOptions.includes(it.article))
 
-  const documentToAnswers = (vocabularyItem: VocabularyItem): Answer[] =>
+  const vocabularyItemToAnswers = (vocabularyItem: VocabularyItem): Answer[] =>
     answerOptions.map(article => ({ article, word: vocabularyItem.word }))
 
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        vocabularyItems={singularDocuments}
+        vocabularyItems={singularVocabularyItems}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
-        vocabularyItemToAnswer={documentToAnswers}
+        vocabularyItemToAnswer={vocabularyItemToAnswers}
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.articleChoiceExercise}

@@ -127,16 +127,16 @@ interface ResultType {
   order: number
 }
 
-export const DOCUMENT_TYPES = {
+export const VOCABULARY_ITEM_TYPES = {
   lunesStandard: 'lunes-standard',
   lunesProtected: 'lunes-protected',
   userCreated: 'user-created',
 }
-export type DocumentType = typeof DOCUMENT_TYPES[keyof typeof DOCUMENT_TYPES]
+export type VocabularyItemType = typeof VOCABULARY_ITEM_TYPES[keyof typeof VOCABULARY_ITEM_TYPES]
 
 export interface Favorite {
   id: number
-  documentType: DocumentType
+  vocabularyItemType: VocabularyItemType
   apiKey?: string
 }
 

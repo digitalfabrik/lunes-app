@@ -23,7 +23,7 @@ const FavoriteItem = ({ favorite, refresh, onPress }: FavoriteItemProps): ReactE
   return (
     data && (
       <VocabularyListItem
-        key={`${favorite.id}-${favorite.documentType}`}
+        key={`${favorite.id}-${favorite.vocabularyItemType}`}
         vocabularyItem={data}
         onPress={() => onPress(data)}
         onFavoritesChanged={onFavoriteChange}

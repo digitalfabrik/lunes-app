@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import { DOCUMENT_TYPES } from '../../constants/data'
+import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { getFromEndpoint } from '../../services/axios'
 import { loadVocabularyItems } from '../useLoadVocabularyItems'
 
@@ -61,7 +61,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     document_image: [],
     id: 17,
-    documentType: DOCUMENT_TYPES.lunesStandard,
+    documentType: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Zollstock',
     word_type: 'Nomen',
   },
@@ -71,7 +71,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
     document_image: [],
     id: 178,
-    documentType: DOCUMENT_TYPES.lunesStandard,
+    documentType: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkanister',
     word_type: 'Nomen',
   },
@@ -81,7 +81,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
     document_image: [],
     id: 245,
-    documentType: DOCUMENT_TYPES.lunesStandard,
+    documentType: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkreide',
     word_type: 'Nomen',
   },

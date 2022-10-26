@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { DOCUMENT_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
+import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
@@ -106,7 +106,7 @@ export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
 }
 
 const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
-  favorite1.id === favorite2.id && favorite1.documentType === favorite2.documentType
+  favorite1.id === favorite2.id && favorite1.vocabularyItemType === favorite2.vocabularyItemType
 
 const migrateToNewFavoriteFormat = async (): Promise<void> => {
   const vocabularyItems = await AsyncStorage.getItem(FAVORITES_KEY)
@@ -115,7 +115,7 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
     return
   }
   await setFavorites(
-    parsedVocabularyItems.map((item: number) => ({ id: item, documentType: DOCUMENT_TYPES.lunesStandard }))
+    parsedVocabularyItems.map((item: number) => ({ id: item, documentType: VOCABULARY_ITEM_TYPES.lunesStandard }))
   )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
@@ -178,7 +178,7 @@ export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]>
   return userVocabulary
     ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
         ...userVocabulary,
-        documentType: DOCUMENT_TYPES.userCreated,
+        documentType: VOCABULARY_ITEM_TYPES.userCreated,
       }))
     : []
 }
@@ -223,6 +223,6 @@ export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyIte
   const userVocabulary = getUserVocabularyWithoutImage().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
-  await removeFavorite({ id: userVocabularyItem.id, documentType: DOCUMENT_TYPES.userCreated })
+  await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
   await setUserVocabularyItems(await userVocabulary)
 }

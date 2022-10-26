@@ -1,4 +1,4 @@
-import { Article, DocumentType } from './data'
+import { Article, VocabularyItemType } from './data'
 
 export interface Discipline {
   id: number
@@ -27,10 +27,10 @@ export type Images = Image[]
 
 export interface VocabularyItem {
   id: number
-  documentType: DocumentType
+  type: VocabularyItemType
   word: string
   article: Article
-  document_image: Images
+  image: Images
   audio: string
   alternatives: AlternativeWord[]
   apiKey?: string

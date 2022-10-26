@@ -1,7 +1,7 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES, DOCUMENT_TYPES, SIMPLE_RESULTS } from '../../../../constants/data'
+import { ARTICLES, VOCABULARY_ITEM_TYPES, SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
@@ -39,8 +39,8 @@ describe('InteractionSection', () => {
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
     id: 0,
-    documentType: DOCUMENT_TYPES.lunesStandard,
-    document_image: [],
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    image: [],
     word: 'kontaktlose Spannungsprüfer',
   }
 

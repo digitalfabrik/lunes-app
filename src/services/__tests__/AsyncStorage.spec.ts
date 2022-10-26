@@ -1,4 +1,4 @@
-import { DOCUMENT_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { VOCABULARY_ITEM_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
@@ -120,7 +120,7 @@ describe('AsyncStorage', () => {
   describe('favorites', () => {
     const vocabularyItems: Favorite[] = new VocabularyItemBuilder(4)
       .build()
-      .map(it => ({ id: it.id, documentType: DOCUMENT_TYPES.lunesStandard }))
+      .map(it => ({ id: it.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
 
     it('should add favorites', async () => {
       await setFavorites(vocabularyItems.slice(0, 2))
@@ -144,7 +144,7 @@ describe('AsyncStorage', () => {
   describe('userVocabulary', () => {
     const userVocabularyItems = new VocabularyItemBuilder(2)
       .build()
-      .map(item => ({ ...item, documentType: DOCUMENT_TYPES.userCreated }))
+      .map(item => ({ ...item, documentType: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
       const userVocabulary = await getUserVocabularyWithoutImage()
