@@ -63,7 +63,6 @@ const expectedData = [
     id: 17,
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Zollstock',
-    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -73,7 +72,6 @@ const expectedData = [
     id: 178,
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkanister',
-    word_type: 'Nomen',
   },
   {
     alternatives: [],
@@ -83,7 +81,6 @@ const expectedData = [
     id: 245,
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkreide',
-    word_type: 'Nomen',
   },
 ]
 
