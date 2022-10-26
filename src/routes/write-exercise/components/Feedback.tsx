@@ -11,7 +11,7 @@ import {
   BannerRed,
   CloseCircleIconBold,
 } from '../../../../assets/images'
-import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
 const Background = styled.ImageBackground`
@@ -32,14 +32,14 @@ const StyledText = styled.Text`
 `
 
 export interface FeedbackProps {
-  documentWithResult: DocumentResult
+  vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
   needsToBeRepeated: boolean
 }
 
-const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
-  const { result, document } = documentWithResult
-  const correctSolution = `„${document.article.value} ${document.word}“`
+const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+  const { result, vocabularyItem } = vocabularyItemWithResult
+  const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
 
   let Icon

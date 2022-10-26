@@ -4,7 +4,7 @@ import React from 'react'
 
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import VocabularyDetailExerciseScreen from '../VocabularyDetailExerciseScreen'
@@ -22,17 +22,17 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 describe('VocabularyDetailScreen', () => {
-  const documents = new DocumentBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
 
-  const getRoute = (documentIndex: number): RouteProp<RoutesParams, 'VocabularyDetailExercise'> => ({
+  const getRoute = (vocabularyItemIndex: number): RouteProp<RoutesParams, 'VocabularyDetailExercise'> => ({
     key: '',
     name: 'VocabularyDetailExercise',
     params: {
       disciplineId: 1,
       disciplineTitle: 'disciplineTitle',
-      documents,
+      vocabularyItems,
       closeExerciseAction: CommonActions.goBack(),
-      documentIndex,
+      vocabularyItemIndex,
     },
   })
 
@@ -40,7 +40,7 @@ describe('VocabularyDetailScreen', () => {
 
   it('should render and navigate to next word', () => {
     const { getByText } = render(<VocabularyDetailExerciseScreen route={getRoute(0)} navigation={navigation} />)
-    expect(getByText(documents[0].word)).toBeDefined()
+    expect(getByText(vocabularyItems[0].word)).toBeDefined()
     expect('AudioPlayer').toBeDefined()
     expect('FavoriteButton').toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()

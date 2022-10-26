@@ -2,14 +2,14 @@ import React, { ReactElement } from 'react'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { Favorite } from '../../../constants/data'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 import useLoadFavorite from '../../../hooks/useLoadFavorite'
 import { removeFavorite } from '../../../services/AsyncStorage'
 
 interface FavoriteItemProps {
   favorite: Favorite
   refresh: () => void
-  onPress: (document: Document) => void
+  onPress: (vocabularyItem: VocabularyItem) => void
 }
 
 const FavoriteItem = ({ favorite, refresh, onPress }: FavoriteItemProps): ReactElement | null => {
@@ -23,8 +23,8 @@ const FavoriteItem = ({ favorite, refresh, onPress }: FavoriteItemProps): ReactE
   return (
     data && (
       <VocabularyListItem
-        key={`${favorite.id}-${favorite.documentType}`}
-        document={data}
+        key={`${favorite.id}-${favorite.vocabularyItemType}`}
+        vocabularyItem={data}
         onPress={() => onPress(data)}
         onFavoritesChanged={onFavoriteChange}
       />

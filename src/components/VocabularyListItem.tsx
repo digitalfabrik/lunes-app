@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import { getArticleColor } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
@@ -36,27 +36,27 @@ const FavButtonContainer = styled.View`
 `
 
 interface VocabularyListItemProps {
-  document: Document
+  vocabularyItem: VocabularyItem
   onPress: () => void
   onFavoritesChanged?: () => void
   children?: ReactElement
 }
 
 const VocabularyListItem = ({
-  document,
+  vocabularyItem,
   onPress,
   onFavoritesChanged,
   children,
 }: VocabularyListItemProps): ReactElement => {
-  const { article, word, document_image: documentImage } = document
+  const { article, word, images } = vocabularyItem
   const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
   const icon =
-    documentImage.length > 0 ? (
+    images.length > 0 ? (
       <StyledImage
         testID='image'
-        source={{ uri: documentImage[0].image }}
+        source={{ uri: images[0].image }}
         width={theme.spacingsPlain.md}
         height={theme.spacingsPlain.md}
       />
@@ -70,9 +70,9 @@ const VocabularyListItem = ({
       icon={icon}
       rightChildren={
         <RightChildrenContainer>
-          <AudioPlayer document={document} disabled={false} />
+          <AudioPlayer vocabularyItem={vocabularyItem} disabled={false} />
           <FavButtonContainer>
-            <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
+            <FavoriteButton vocabularyItem={vocabularyItem} onFavoritesChanged={onFavoritesChanged} />
           </FavButtonContainer>
         </RightChildrenContainer>
       }>

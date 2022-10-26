@@ -2,20 +2,20 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { DOCUMENT_TYPES } from '../../constants/data'
+import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { setFavorites, isFavorite } from '../../services/AsyncStorage'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import FavoriteButton from '../FavoriteButton'
 
 describe('FavoriteButton', () => {
-  const document = new DocumentBuilder(1).build()[0]
-  const favorite = { id: document.id, documentType: DOCUMENT_TYPES.lunesStandard }
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
+  const favorite = { id: vocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }
 
   const renderFavoriteButton = () =>
     render(
       <NavigationContainer>
-        <FavoriteButton document={document} />
+        <FavoriteButton vocabularyItem={vocabularyItem} />
       </NavigationContainer>
     )
 

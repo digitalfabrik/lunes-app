@@ -32,36 +32,36 @@ interface VocabularyDetailExerciseScreenProps {
 }
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
-  const { documents, documentIndex, closeExerciseAction, labelOverrides } = route.params
-  const document = documents[documentIndex]
-  const hasNextDocument = documentIndex + 1 < documents.length
+  const { vocabularyItems, vocabularyItemIndex, closeExerciseAction, labelOverrides } = route.params
+  const vocabularyItem = vocabularyItems[vocabularyItemIndex]
+  const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
-    navigation.navigate('VocabularyDetailExercise', { ...route.params, documentIndex: documentIndex + 1 })
+    navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex + 1 })
 
   return (
     <SafeAreaView>
       <ExerciseHeader
         navigation={navigation}
-        currentWord={documentIndex}
-        numberOfWords={documents.length}
+        currentWord={vocabularyItemIndex}
+        numberOfWords={vocabularyItems.length}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
-        feedbackType={FeedbackType.document}
-        feedbackForId={document.id}
+        feedbackType={FeedbackType.vocabularyItem}
+        feedbackForId={vocabularyItem.id}
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
       />
-      <VocabularyDetail document={document} />
+      <VocabularyDetail vocabularyItem={vocabularyItem} />
       <Container>
         <HorizontalLine />
 
-        <AlternativeWordsSection document={document} />
+        <AlternativeWordsSection vocabularyItem={vocabularyItem} />
 
         <ButtonContainer>
-          {hasNextDocument ? (
+          {hasNextVocabularyItem ? (
             <Button
               label={getLabels().exercises.next}
               iconRight={ArrowRightIcon}
@@ -76,8 +76,8 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
       <FeedbackModal
         visible={isFeedbackModalVisible}
         onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={FeedbackType.document}
-        feedbackForId={document.id}
+        feedbackType={FeedbackType.vocabularyItem}
+        feedbackForId={vocabularyItem.id}
       />
     </SafeAreaView>
   )

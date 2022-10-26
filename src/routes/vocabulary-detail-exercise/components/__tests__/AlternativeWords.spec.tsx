@@ -1,26 +1,26 @@
 import React from 'react'
 
 import { getLabels } from '../../../../services/helpers'
-import DocumentBuilder from '../../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import AlternativeWordsSection from '../AlternativeWordsSection'
 
 describe('AlternativeWords', () => {
-  const documents = new DocumentBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
 
   it('should display alternative words', () => {
-    const { getByText } = render(<AlternativeWordsSection document={documents[0]} />)
+    const { getByText } = render(<AlternativeWordsSection vocabularyItem={vocabularyItems[0]} />)
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()
     expect(
       getByText(
-        `${documents[0].alternatives[0].article.value} ${documents[0].alternatives[0].word}, ${documents[0].alternatives[1].article.value} ${documents[0].alternatives[1].word}`
+        `${vocabularyItems[0].alternatives[0].article.value} ${vocabularyItems[0].alternatives[0].word}, ${vocabularyItems[0].alternatives[1].article.value} ${vocabularyItems[0].alternatives[1].word}`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.suggestAlternative)).toBeDefined()
   })
 
   it('should not display alternative words, if word has none', () => {
-    const { getByText, queryByText } = render(<AlternativeWordsSection document={documents[1]} />)
+    const { getByText, queryByText } = render(<AlternativeWordsSection vocabularyItem={vocabularyItems[1]} />)
     expect(queryByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeNull()
     expect(getByText(getLabels().exercises.vocabularyList.suggestAlternative)).toBeDefined()
   })
