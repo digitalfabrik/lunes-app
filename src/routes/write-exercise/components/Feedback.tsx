@@ -34,10 +34,9 @@ const StyledText = styled.Text`
 export interface FeedbackProps {
   documentWithResult: DocumentResult
   submission: string | null
-  needsToBeRepeated: boolean
 }
 
-const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+const Feedback = ({ documentWithResult, submission }: FeedbackProps): ReactElement | null => {
   const { result, document } = documentWithResult
   const correctSolution = `„${document.article.value} ${document.word}“`
   const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
@@ -56,18 +55,11 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
     message = `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
       getLabels().exercises.write.feedback.almostCorrect2
     }`
-  } else if (!submission) {
-    Icon = CloseCircleIconBold
-    background = BannerRed
-    message = wrongWithCorrectSolution
   } else {
     Icon = CloseCircleIconBold
     background = BannerRed
-    message = needsToBeRepeated
-      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
-      : wrongWithCorrectSolution
+    message = !submission ? wrongWithCorrectSolution : `${getLabels().exercises.write.feedback.wrong}`
   }
-
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />
