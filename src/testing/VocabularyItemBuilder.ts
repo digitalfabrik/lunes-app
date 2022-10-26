@@ -7,7 +7,7 @@ const vocabularyItems: VocabularyItem[] = [
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Spachtel',
     article: ARTICLES[1],
-    image: [{ id: 1, image: 'image' }],
+    images: [{ id: 1, image: 'image' }],
     audio: 'https://example.com/my-audio',
     alternatives: [
       {
@@ -25,7 +25,7 @@ const vocabularyItems: VocabularyItem[] = [
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Auto',
     article: ARTICLES[3],
-    image: [{ id: 1, image: 'image' }],
+    images: [{ id: 1, image: 'image' }],
     audio: '',
     alternatives: [],
   },
@@ -35,7 +35,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Hose',
     article: ARTICLES[2],
     audio: '',
-    image: [{ id: 1, image: 'image' }],
+    images: [{ id: 1, image: 'image' }],
     alternatives: [],
   },
   {
@@ -44,7 +44,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Helm',
     article: ARTICLES[1],
     audio: '',
-    image: [{ id: 2, image: 'image' }],
+    images: [{ id: 2, image: 'image' }],
     alternatives: [],
   },
 ]

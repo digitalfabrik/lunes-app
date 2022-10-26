@@ -19,7 +19,7 @@ describe('VocabularyListItem', () => {
 
   it('should display image passed to it', () => {
     const { getByTestId } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
-    expect(getByTestId('image')).toHaveProp('source', { uri: vocabularyItem.image[0].image })
+    expect(getByTestId('image')).toHaveProp('source', { uri: vocabularyItem.images[0].image })
   })
 
   it('should display article passed to it', () => {

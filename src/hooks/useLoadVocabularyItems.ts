@@ -26,7 +26,7 @@ export const formatVocabularyItemFromServer = (
   audio: vocabularyItemFromServer.audio,
   type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
   article: ARTICLES[vocabularyItemFromServer.article],
-  image: vocabularyItemFromServer.document_image,
+  images: vocabularyItemFromServer.document_image,
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({
     article: ARTICLES[it.article],
     word: it.alt_word,

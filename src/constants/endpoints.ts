@@ -30,7 +30,7 @@ export interface VocabularyItem {
   type: VocabularyItemType
   word: string
   article: Article
-  image: Images
+  images: Images
   audio: string
   alternatives: AlternativeWord[]
   apiKey?: string

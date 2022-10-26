@@ -36,7 +36,7 @@ const VocabularyItemImageSection = ({
   submittedAlternative,
 }: VocabularyItemSectionProps): ReactElement => (
   <Container>
-    <ImageCarousel images={vocabularyItem.image} minimized={minimized} />
+    <ImageCarousel images={vocabularyItem.images} minimized={minimized} />
     <AudioContainer>
       <AudioPlayer
         vocabularyItem={vocabularyItem}

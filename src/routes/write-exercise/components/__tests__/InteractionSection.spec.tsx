@@ -40,7 +40,7 @@ describe('InteractionSection', () => {
     audio: 'https://example.com/my-audio',
     id: 0,
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
-    image: [],
+    images: [],
     word: 'kontaktlose Spannungsprüfer',
   }
 
