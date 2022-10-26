@@ -10,7 +10,7 @@ import FavoriteButton from '../FavoriteButton'
 
 describe('FavoriteButton', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
-  const favorite = { id: vocabularyItem.id, documentType: VOCABULARY_ITEM_TYPES.lunesStandard }
+  const favorite = { id: vocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }
 
   const renderFavoriteButton = () =>
     render(

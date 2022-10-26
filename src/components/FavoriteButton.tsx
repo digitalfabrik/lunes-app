@@ -29,7 +29,7 @@ interface FavoriteButtonProps {
 const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
   const favorite = {
     id: vocabularyItem.id,
-    documentType: vocabularyItem.type,
+    vocabularyItemType: vocabularyItem.type,
     ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
   }
 
