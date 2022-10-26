@@ -95,7 +95,7 @@ const discipline = {
   needsTrainingSetEndpoint: false,
 }
 
-describe('loadDocuments', () => {
+describe('loadVocabularyItems', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {

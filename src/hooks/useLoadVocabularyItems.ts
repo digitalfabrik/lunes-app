@@ -26,7 +26,6 @@ export const formatVocabularyItemFromServer = (
   audio: vocabularyItemFromServer.audio,
   type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
   article: ARTICLES[vocabularyItemFromServer.article],
-  // eslint-disable-next-line camelcase
   image: vocabularyItemFromServer.document_image,
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({
     article: ARTICLES[it.article],

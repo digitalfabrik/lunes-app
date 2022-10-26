@@ -18,7 +18,7 @@ interface ExerciseParams {
 }
 
 interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
-  documentIndex: number
+  vocabularyItemIndex: number
   disciplineId: number | null
 }
 

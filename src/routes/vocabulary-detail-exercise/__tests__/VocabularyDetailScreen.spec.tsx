@@ -24,7 +24,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 describe('VocabularyDetailScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
 
-  const getRoute = (documentIndex: number): RouteProp<RoutesParams, 'VocabularyDetailExercise'> => ({
+  const getRoute = (vocabularyItemIndex: number): RouteProp<RoutesParams, 'VocabularyDetailExercise'> => ({
     key: '',
     name: 'VocabularyDetailExercise',
     params: {
@@ -32,7 +32,7 @@ describe('VocabularyDetailScreen', () => {
       disciplineTitle: 'disciplineTitle',
       vocabularyItems,
       closeExerciseAction: CommonActions.goBack(),
-      documentIndex,
+      vocabularyItemIndex,
     },
   })
 

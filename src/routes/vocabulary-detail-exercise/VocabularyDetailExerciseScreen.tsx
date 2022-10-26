@@ -32,20 +32,20 @@ interface VocabularyDetailExerciseScreenProps {
 }
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
-  const { vocabularyItems, documentIndex, closeExerciseAction, labelOverrides } = route.params
-  const vocabularyItem = vocabularyItems[documentIndex]
-  const hasNextDocument = documentIndex + 1 < vocabularyItems.length
+  const { vocabularyItems, vocabularyItemIndex, closeExerciseAction, labelOverrides } = route.params
+  const vocabularyItem = vocabularyItems[vocabularyItemIndex]
+  const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
-    navigation.navigate('VocabularyDetailExercise', { ...route.params, documentIndex: documentIndex + 1 })
+    navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex + 1 })
 
   return (
     <SafeAreaView>
       <ExerciseHeader
         navigation={navigation}
-        currentWord={documentIndex}
+        currentWord={vocabularyItemIndex}
         numberOfWords={vocabularyItems.length}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
@@ -61,7 +61,7 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         <AlternativeWordsSection vocabularyItem={vocabularyItem} />
 
         <ButtonContainer>
-          {hasNextDocument ? (
+          {hasNextVocabularyItem ? (
             <Button
               label={getLabels().exercises.next}
               iconRight={ArrowRightIcon}

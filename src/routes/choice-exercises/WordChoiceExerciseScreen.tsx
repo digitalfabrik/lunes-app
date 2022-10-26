@@ -25,7 +25,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 
-  const documentToAnswers = (vocabularyItem: VocabularyItem): Answer[] => {
+  const vocabularyItemToAnswer = (vocabularyItem: VocabularyItem): Answer[] => {
     const { word, article } = vocabularyItem
     const answers = generateFalseAnswers(vocabularyItem)
 
@@ -41,7 +41,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
         vocabularyItems={vocabularyItems}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
-        vocabularyItemToAnswer={documentToAnswers}
+        vocabularyItemToAnswer={vocabularyItemToAnswer}
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.wordChoiceExercise}

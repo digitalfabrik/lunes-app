@@ -44,10 +44,10 @@ export const getArticleColor = (article: Article): string => {
 }
 
 export const moveToEnd = <T>(array: T[], index: number): T[] => {
-  const currDocument = array[index]
-  const newDocuments = array.filter(d => d !== currDocument)
-  newDocuments.push(currDocument)
-  return newDocuments
+  const currentItem = array[index]
+  const newItems = array.filter(it => it !== currentItem)
+  newItems.push(currentItem)
+  return newItems
 }
 
 export const wordsDescription = (numberOfChildren: number): string =>
