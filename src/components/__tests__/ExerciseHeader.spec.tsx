@@ -13,6 +13,7 @@ import ExerciseHeader from '../ExerciseHeader'
 
 jest.useFakeTimers()
 jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
+jest.mock('../AudioPlayer', () => () => null)
 
 describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()

@@ -58,6 +58,11 @@ jest.mock('react-native-sound-player', () => ({
   loadUrl: jest.fn(),
 }))
 
+jest.mock('../../../components/CheatMode', () => {
+  const Text = require('react-native').Text
+  return () => <Text>CheatMode</Text>
+})
+
 describe('WriteExerciseScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
 
