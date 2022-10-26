@@ -5,11 +5,11 @@ import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
-import DocumentImageSection from '../../../components/DocumentImageSection'
+import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import useKeyboard from '../../../hooks/useKeyboard'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
-import { getLabels, stringifyDocument } from '../../../services/helpers'
+import { getLabels, stringifyVocabularyItem } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
 
@@ -46,7 +46,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const isCorrect = vocabularyItemWithResult.result === 'correct'
   const needsToBeRepeated = vocabularyItemWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
-    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(vocabularyItem)) <= ttsThreshold
+    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyVocabularyItem(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
 
   const textInputRef = useRef<View>(null)
@@ -79,12 +79,12 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   const updateAndStoreResult = (score: SimpleResult): void => {
     const nthRetry = vocabularyItemWithResult.numberOfTries + 1
-    const documentWithResultToStore = {
+    const vocabularyItemWithResultToStore = {
       ...vocabularyItemWithResult,
       result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
       numberOfTries: nthRetry,
     }
-    storeResult(documentWithResultToStore)
+    storeResult(vocabularyItemWithResultToStore)
   }
 
   const checkEntry = async (): Promise<void> => {
@@ -119,7 +119,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   return (
     <>
-      <DocumentImageSection
+      <VocabularyItemImageSection
         vocabularyItem={vocabularyItem}
         minimized={isKeyboardVisible}
         audioDisabled={retryAllowed}

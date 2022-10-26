@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
-import DocumentImageSection from './DocumentImageSection'
+import VocabularyItemImageSection from './VocabularyItemImageSection'
 import WordItem from './WordItem'
 
 const ItemContainer = styled.View`
@@ -18,7 +18,7 @@ interface VocabularyDetailProps {
 
 const VocabularyDetail = ({ vocabularyItem }: VocabularyDetailProps): ReactElement => (
   <>
-    <DocumentImageSection vocabularyItem={vocabularyItem} />
+    <VocabularyItemImageSection vocabularyItem={vocabularyItem} />
     <ItemContainer>
       <WordItem answer={{ word: vocabularyItem.word, article: vocabularyItem.article }} />
     </ItemContainer>

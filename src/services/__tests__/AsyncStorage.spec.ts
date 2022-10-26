@@ -144,7 +144,7 @@ describe('AsyncStorage', () => {
   describe('userVocabulary', () => {
     const userVocabularyItems = new VocabularyItemBuilder(2)
       .build()
-      .map(item => ({ ...item, documentType: VOCABULARY_ITEM_TYPES.userCreated }))
+      .map(item => ({ ...item, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
       const userVocabulary = await getUserVocabularyWithoutImage()

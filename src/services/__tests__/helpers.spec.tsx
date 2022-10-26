@@ -127,7 +127,7 @@ describe('helpers', () => {
   })
 
   describe('calculateScore', () => {
-    const getDocumentsWithResults = (
+    const getVocabularyItemWithResults = (
       numberOfTries: [number, number, number, number],
       results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
     ): VocabularyItemResult[] => {
@@ -141,19 +141,21 @@ describe('helpers', () => {
 
     it('should calculate score correctly for different number of tries', () => {
       const score = calculateScore(
-        getDocumentsWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect'])
+        getVocabularyItemWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect'])
       )
       expect(score).toBe(4)
     })
 
     it('should calculate score correctly for best result', () => {
-      const score = calculateScore(getDocumentsWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct']))
+      const score = calculateScore(
+        getVocabularyItemWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct'])
+      )
       expect(score).toBe(10)
     })
 
     it('should calculate score correctly for bad result with similar results', () => {
       const score = calculateScore(
-        getDocumentsWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
+        getVocabularyItemWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
       )
       expect(score).toBe(0)
     })

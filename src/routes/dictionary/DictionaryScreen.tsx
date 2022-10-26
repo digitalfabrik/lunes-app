@@ -30,10 +30,10 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
   const vocabularyItems = useLoadAllVocabularyItems()
   const [searchString, setSearchString] = useState<string>('')
 
-  const sortedAndFilteredDocuments = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
+  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
-  const description = `${sortedAndFilteredDocuments.length} ${
-    sortedAndFilteredDocuments.length === 1 ? getLabels().general.word : getLabels().general.words
+  const description = `${sortedAndFilteredVocabularyItems.length} ${
+    sortedAndFilteredVocabularyItems.length === 1 ? getLabels().general.word : getLabels().general.words
   }`
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
@@ -56,7 +56,7 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
                   <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
-              data={sortedAndFilteredDocuments}
+              data={sortedAndFilteredVocabularyItems}
               renderItem={({ item }) => (
                 <DictionaryItem
                   vocabularyItem={item}

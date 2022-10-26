@@ -50,18 +50,18 @@ const vocabularyItems: VocabularyItem[] = [
 ]
 
 class VocabularyItemBuilder {
-  documentCount: number
+  vocabularyItemCount: number
 
-  constructor(documentCount: number) {
-    this.documentCount = documentCount
+  constructor(vocabularyItemCount: number) {
+    this.vocabularyItemCount = vocabularyItemCount
 
-    if (this.documentCount > vocabularyItems.length) {
-      throw new Error(`Only ${vocabularyItems.length} documents can be created`)
+    if (this.vocabularyItemCount > vocabularyItems.length) {
+      throw new Error(`Only ${vocabularyItems.length} vocabularyItems can be created`)
     }
   }
 
   build(): Array<VocabularyItem> {
-    return vocabularyItems.slice(0, this.documentCount)
+    return vocabularyItems.slice(0, this.vocabularyItemCount)
   }
 }
 

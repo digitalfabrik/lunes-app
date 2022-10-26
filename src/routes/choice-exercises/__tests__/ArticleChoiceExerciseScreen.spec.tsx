@@ -71,7 +71,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
-  it('should not allow to skip last document', () => {
+  it('should not allow to skip last vocabularyItem', () => {
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )

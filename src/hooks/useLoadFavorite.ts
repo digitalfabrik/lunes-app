@@ -16,8 +16,8 @@ export const loadFavorite = async (favorite: Favorite): Promise<VocabularyItem |
     return userCreatedFavorite
   }
   const url = `${ENDPOINTS.vocabularyItem}/${favorite.id}`
-  const document = await getFromEndpoint<VocabularyItemFromServer>(url, favorite.apiKey)
-  return formatVocabularyItemFromServer(document)
+  const vocabularyItemFromServer = await getFromEndpoint<VocabularyItemFromServer>(url, favorite.apiKey)
+  return formatVocabularyItemFromServer(vocabularyItemFromServer)
 }
 
 const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => useLoadAsync(loadFavorite, favorite)

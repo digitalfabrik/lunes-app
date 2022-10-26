@@ -21,7 +21,7 @@ import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
 import { reportError } from './sentry'
 
-export const stringifyDocument = ({ article, word }: VocabularyItem | AlternativeWord): string =>
+export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
   `${article.value} ${word}`
 
 export const getArticleColor = (article: Article): string => {
@@ -153,12 +153,12 @@ export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: nu
     object_id: id,
   })
 
-export const calculateScore = (documentsWithResults: VocabularyItemResult[]): number => {
+export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[]): number => {
   const SCORE_FIRST_TRY = 10
   const SCORE_SECOND_TRY = 4
   const SCORE_THIRD_TRY = 2
   return (
-    documentsWithResults
+    vocabularyItemsWithResults
       .filter(doc => doc.result === 'correct')
       .reduce((acc, vocabularyItemResult) => {
         let score = acc
@@ -174,7 +174,7 @@ export const calculateScore = (documentsWithResults: VocabularyItemResult[]): nu
             break
         }
         return score
-      }, 0) / documentsWithResults.length
+      }, 0) / vocabularyItemsWithResults.length
   )
 }
 
@@ -198,10 +198,10 @@ export const getSortedAndFilteredVocabularyItems = (
 ): VocabularyItem[] => {
   const normalizedSearchString = normalizeSearchString(searchString)
 
-  const filteredDocuments = vocabularyItems?.filter(
+  const filteredVocabularyItems = vocabularyItems?.filter(
     item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
   )
-  return filteredDocuments?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
+  return filteredVocabularyItems?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
 }
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>

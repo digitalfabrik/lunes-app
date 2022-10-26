@@ -5,7 +5,7 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
 import { VocabularyItem } from '../../constants/endpoints'
-import { stringifyDocument } from '../../services/helpers'
+import { stringifyVocabularyItem } from '../../services/helpers'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
@@ -129,7 +129,7 @@ describe('AudioPlayer', () => {
     fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(stringifyDocument(noAudioVocabularyItem), expect.any(Object))
+    expect(Tts.speak).toHaveBeenCalledWith(stringifyVocabularyItem(noAudioVocabularyItem), expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
   })
 })

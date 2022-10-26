@@ -75,7 +75,7 @@ describe('WriteExerciseScreen', () => {
 
   const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
 
-  it('should allow to skip a document and try it out later', () => {
+  it('should allow to skip a vocabularyItem and try it out later', () => {
     const { getByText, getByPlaceholderText } = renderWriteExercise()
 
     fireEvent.press(getByText(getLabels().exercises.tryLater))
@@ -89,7 +89,7 @@ describe('WriteExerciseScreen', () => {
     expect(getByText(getLabels().exercises.write.feedback.correct)).toBeTruthy()
   })
 
-  it('should not allow to skip last document', () => {
+  it('should not allow to skip last vocabularyItem', () => {
     const { queryByText, getByText, getByPlaceholderText } = renderWriteExercise()
 
     expect(getLabels().exercises.tryLater).not.toBeNull()

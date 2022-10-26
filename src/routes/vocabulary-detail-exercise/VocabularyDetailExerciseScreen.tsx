@@ -33,7 +33,7 @@ interface VocabularyDetailExerciseScreenProps {
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
   const { vocabularyItems, documentIndex, closeExerciseAction, labelOverrides } = route.params
-  const document = vocabularyItems[documentIndex]
+  const vocabularyItem = vocabularyItems[documentIndex]
   const hasNextDocument = documentIndex + 1 < vocabularyItems.length
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
@@ -50,15 +50,15 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.vocabularyItem}
-        feedbackForId={document.id}
+        feedbackForId={vocabularyItem.id}
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
       />
-      <VocabularyDetail vocabularyItem={document} />
+      <VocabularyDetail vocabularyItem={vocabularyItem} />
       <Container>
         <HorizontalLine />
 
-        <AlternativeWordsSection vocabularyItem={document} />
+        <AlternativeWordsSection vocabularyItem={vocabularyItem} />
 
         <ButtonContainer>
           {hasNextDocument ? (
@@ -77,7 +77,7 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         visible={isFeedbackModalVisible}
         onClose={() => setIsFeedbackModalVisible(false)}
         feedbackType={FeedbackType.vocabularyItem}
-        feedbackForId={document.id}
+        feedbackForId={vocabularyItem.id}
       />
     </SafeAreaView>
   )

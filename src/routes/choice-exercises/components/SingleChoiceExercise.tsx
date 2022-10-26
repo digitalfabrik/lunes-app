@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import CheatMode from '../../../components/CheatMode'
-import DocumentImageSection from '../../../components/DocumentImageSection'
 import ExerciseHeader from '../../../components/ExerciseHeader'
+import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import {
   Answer,
   BUTTONS_THEME,
@@ -157,7 +157,7 @@ const ChoiceExerciseScreen = ({
       />
 
       <>
-        <DocumentImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
+        <VocabularyItemImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
         <SingleChoice
           answers={answers}
           onClick={onClickAnswer}

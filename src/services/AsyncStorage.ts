@@ -95,9 +95,9 @@ export const setExerciseProgress = async (
 export const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
-  documentsWithResults: VocabularyItemResult[]
+  vocabularyItemsWithResults: VocabularyItemResult[]
 ): Promise<void> => {
-  const score = calculateScore(documentsWithResults)
+  const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
@@ -115,7 +115,7 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
     return
   }
   await setFavorites(
-    parsedVocabularyItems.map((item: number) => ({ id: item, documentType: VOCABULARY_ITEM_TYPES.lunesStandard }))
+    parsedVocabularyItems.map((item: number) => ({ id: item, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
   )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
@@ -178,7 +178,7 @@ export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]>
   return userVocabulary
     ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
         ...userVocabulary,
-        documentType: VOCABULARY_ITEM_TYPES.userCreated,
+        vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
       }))
     : []
 }
@@ -188,7 +188,7 @@ export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   return Promise.all(
     userVocabulary.map(async item => ({
       ...item,
-      document_image: await getImages(item),
+      image: await getImages(item),
     }))
   )
 }

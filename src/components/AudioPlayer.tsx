@@ -5,7 +5,7 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { VolumeUpCircleIcon } from '../../assets/images'
 import { VocabularyItem } from '../constants/endpoints'
-import { stringifyDocument } from '../services/helpers'
+import { stringifyVocabularyItem } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
 
 export interface AudioPlayerProps {
@@ -91,7 +91,7 @@ const AudioPlayer = ({ vocabularyItem, disabled, submittedAlternative }: AudioPl
         SoundPlayer.loadUrl(audio)
       } else {
         // @ts-expect-error ios params should be optional
-        Tts.speak(submittedAlternative ?? stringifyDocument(vocabularyItem), {
+        Tts.speak(submittedAlternative ?? stringifyVocabularyItem(vocabularyItem), {
           androidParams: {
             KEY_PARAM_PAN: 0,
             KEY_PARAM_VOLUME: 0.5,

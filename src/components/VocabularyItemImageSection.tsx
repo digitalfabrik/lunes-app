@@ -22,19 +22,19 @@ const Container = styled.View`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-interface DocumentImageSectionProps {
+interface VocabularyItemSectionProps {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   minimized?: boolean
   submittedAlternative?: string | null
 }
 
-const DocumentImageSection = ({
+const VocabularyItemImageSection = ({
   vocabularyItem,
   audioDisabled = false,
   minimized = false,
   submittedAlternative,
-}: DocumentImageSectionProps): ReactElement => (
+}: VocabularyItemSectionProps): ReactElement => (
   <Container>
     <ImageCarousel images={vocabularyItem.image} minimized={minimized} />
     <AudioContainer>
@@ -50,4 +50,4 @@ const DocumentImageSection = ({
   </Container>
 )
 
-export default DocumentImageSection
+export default VocabularyItemImageSection
