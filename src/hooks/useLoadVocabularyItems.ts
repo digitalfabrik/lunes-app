@@ -24,6 +24,7 @@ export const formatVocabularyItemFromServer = (
   // eslint-disable-next-line camelcase
   const { document_image, ...vocabularyItemFromServerWithoutImage } = vocabularyItemFromServer
   return {
+    apiKey,
     ...vocabularyItemFromServerWithoutImage,
     type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
     article: ARTICLES[vocabularyItemFromServer.article],
@@ -33,7 +34,6 @@ export const formatVocabularyItemFromServer = (
       article: ARTICLES[it.article],
       word: it.alt_word,
     })),
-    apiKey,
   }
 }
 
