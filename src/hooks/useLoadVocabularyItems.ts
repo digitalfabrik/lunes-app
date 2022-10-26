@@ -20,17 +20,22 @@ export interface VocabularyItemFromServer {
 export const formatVocabularyItemFromServer = (
   vocabularyItemFromServer: VocabularyItemFromServer,
   apiKey?: string
-): VocabularyItem => ({
-  ...vocabularyItemFromServer,
-  type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
-  article: ARTICLES[vocabularyItemFromServer.article],
-  image: vocabularyItemFromServer.document_image,
-  alternatives: vocabularyItemFromServer.alternatives.map(it => ({
-    article: ARTICLES[it.article],
-    word: it.alt_word,
-  })),
-  apiKey,
-})
+): VocabularyItem => {
+  // eslint-disable-next-line camelcase
+  const { document_image, ...vocabularyItemFromServerWithoutImage } = vocabularyItemFromServer
+  return {
+    ...vocabularyItemFromServerWithoutImage,
+    type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
+    article: ARTICLES[vocabularyItemFromServer.article],
+    // eslint-disable-next-line camelcase
+    image: document_image,
+    alternatives: vocabularyItemFromServer.alternatives.map(it => ({
+      article: ARTICLES[it.article],
+      word: it.alt_word,
+    })),
+    apiKey,
+  }
+}
 
 export const formatVocabularyItemsFromServer = (
   vocabularyItemFromServers: VocabularyItemFromServer[],
