@@ -23,4 +23,15 @@ export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] 
     needsTrainingSetEndpoint,
     leafDisciplines: [12, 13],
   },
+  {
+    id: 3,
+    title: 'Third Discipline',
+    description: 'Description3',
+    icon: 'none',
+    numberOfChildren: 1,
+    isLeaf: true,
+    parentTitle: null,
+    needsTrainingSetEndpoint,
+    leafDisciplines: [],
+  },
 ]
