@@ -15,7 +15,7 @@ export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] 
   {
     id: 2,
     title: 'Second Discipline',
-    description: 'Description1',
+    description: 'Description2',
     icon: 'none',
     numberOfChildren: 1,
     isLeaf: false,
