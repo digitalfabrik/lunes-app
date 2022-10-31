@@ -47,6 +47,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(document)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
   const textInputRef = useRef<View>(null)
+  const needsToBeRepeated = documentWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
 
   useEffect(() => {
     if (!isAnswerSubmitted) {
@@ -139,7 +140,13 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
           />
         </TextInputContainer>
 
-        {isAnswerSubmitted && <Feedback documentWithResult={documentWithResult} submission={submittedInput} />}
+        {isAnswerSubmitted && (
+          <Feedback
+            documentWithResult={documentWithResult}
+            submission={submittedInput}
+            needsToBeRepeated={needsToBeRepeated}
+          />
+        )}
         {retryAllowed && (
           <Pressable onPress={Keyboard.dismiss}>
             <Button

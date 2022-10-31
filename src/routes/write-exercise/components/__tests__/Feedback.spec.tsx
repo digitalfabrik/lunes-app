@@ -12,20 +12,27 @@ import Feedback from '../Feedback'
 describe('Feedback', () => {
   const document = new DocumentBuilder(1).build()[0]
 
-  const renderFeedback = (result: SimpleResult, numberOfTries: number, submission: string): RenderAPI => {
+  const renderFeedback = (
+    result: SimpleResult,
+    numberOfTries: number,
+    submission: string,
+    needsToBeRepeated: boolean
+  ): RenderAPI => {
     const documentWithResult: DocumentResult = { document, result, numberOfTries }
-    return render(<Feedback documentWithResult={documentWithResult} submission={submission} />)
+    return render(
+      <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
+    )
   }
 
   it('should render correct feedback', () => {
     const submission = 'Die Abrissbirne'
-    const { queryByText } = renderFeedback('correct', 1, submission)
+    const { queryByText } = renderFeedback('correct', 1, submission, false)
     expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
   it('should render similar feedback', () => {
     const submission = 'Die Abrissbirn'
-    const { queryByText } = renderFeedback('similar', 1, submission)
+    const { queryByText } = renderFeedback('similar', 1, submission, true)
 
     expect(
       queryByText(
@@ -38,11 +45,24 @@ describe('Feedback', () => {
 
   it('should render finally incorrect feedback', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission)
+    const { queryByText } = renderFeedback('incorrect', 1, submission, false)
 
     expect(
       queryByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+          document.article.value
+        } ${document.word}“`
+      )
+    ).toBeTruthy()
+  })
+  it('should render incorrect feedback with retries not exceeded', () => {
+    const submission = 'Der Auto'
+    const { queryByText } = renderFeedback('incorrect', 1, submission, true)
+    expect(
+      queryByText(
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+          document.article.value
+        } ${document.word}“`
       )
     ).toBeTruthy()
   })

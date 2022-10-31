@@ -117,7 +117,9 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[1].article.value} ${documents[1].word}“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+          documents[1].article.value
+        } ${documents[1].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.showResults)).toBeDefined()
@@ -143,7 +145,9 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${documents[0].article.value} ${documents[0].word}“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+          documents[0].article.value
+        } ${documents[0].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.next)).toBeDefined()
