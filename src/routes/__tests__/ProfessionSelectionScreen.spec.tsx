@@ -53,7 +53,7 @@ describe('ProfessionSelectionScreen', () => {
     await setSelectedProfessions([mockDisciplines()[0].id])
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    // mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
+    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
     const { findByText, queryAllByTestId } = render(
       <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />

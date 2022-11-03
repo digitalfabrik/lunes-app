@@ -12,6 +12,7 @@ import { mockDisciplines } from '../../testing/mockDiscipline'
 import render from '../../testing/render'
 import DisciplineSelectionScreen from '../DisciplineSelectionScreen'
 
+
 jest.mock('@react-navigation/native')
 jest.mock('../../hooks/useLoadDisciplines')
 jest.mock('../../hooks/useReadSelectedProfessions')
@@ -35,12 +36,18 @@ describe('DisciplineSelectionScreen', () => {
     expect(title).toBeDefined()
   })
 
-  it('should display all disciplines', () => {
+  it('should display all disciplines', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
-    const { findByText } = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation} />)
 
-    Object.keys(mockDisciplines()).forEach(d => expect(findByText(d)).toBeDefined())
+    const {getByText, findByText} = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation}/>)
+
+    const firstDiscipline = await findByText(mockDisciplines()[0].title)
+    const secondDiscipline = await findByText(mockDisciplines()[0].title)
+    const thirdDiscipline = getByText(mockDisciplines()[0].title)
+    expect(firstDiscipline).toBeDefined()
+    expect(secondDiscipline).toBeDefined()
+    expect(thirdDiscipline).toBeDefined()
   })
 
   it('should navigate to exercises when list item pressed', async () => {
