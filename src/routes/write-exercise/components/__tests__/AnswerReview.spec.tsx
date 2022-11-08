@@ -28,13 +28,13 @@ describe('Feedback', () => {
     )
   }
 
-  it('should render correct feedback', () => {
+  it('should render correct answer review', () => {
     const submission = 'Die Abrissbirne'
     const { queryByText } = renderAnswerReview('correct', 1, submission, false)
     expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
-  it('should render similar feedback', () => {
+  it('should render similar answer review', () => {
     const submission = 'Die Abrissbirn'
     const { queryByText } = renderAnswerReview('similar', 1, submission, true)
 
@@ -47,7 +47,7 @@ describe('Feedback', () => {
     ).toBeTruthy()
   })
 
-  it('should render finally incorrect feedback', () => {
+  it('should render finally incorrect answer review', () => {
     const submission = 'Der Auto'
     const { queryByText } = renderAnswerReview('incorrect', 1, submission, false)
 
@@ -60,7 +60,7 @@ describe('Feedback', () => {
     ).toBeTruthy()
   })
 
-  it('should render incorrect feedback with retries not exceeded', () => {
+  it('should render incorrect answer review with retries not exceeded', () => {
     const submission = 'Der Auto'
     const { queryByText } = renderAnswerReview('incorrect', 1, submission, true)
 
