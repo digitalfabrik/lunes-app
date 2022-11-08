@@ -41,9 +41,9 @@ describe('DisciplineSelectionScreen', () => {
 
     const { getByText, findByText } = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation} />)
 
-    const firstDiscipline = await findByText(mockDisciplines()[0].title)
-    const secondDiscipline = await findByText(mockDisciplines()[0].title)
-    const thirdDiscipline = getByText(mockDisciplines()[0].title)
+    const firstDiscipline = getByText(mockDisciplines()[0].title)
+    const secondDiscipline = getByText(mockDisciplines()[1].title)
+    const thirdDiscipline = getByText(mockDisciplines()[2].title)
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
     expect(thirdDiscipline).toBeDefined()
