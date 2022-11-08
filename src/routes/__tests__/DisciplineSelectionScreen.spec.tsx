@@ -4,7 +4,6 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
@@ -14,36 +13,45 @@ import DisciplineSelectionScreen from '../DisciplineSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../hooks/useLoadDisciplines')
-jest.mock('../../hooks/useReadSelectedProfessions')
 
 describe('DisciplineSelectionScreen', () => {
   const navigation = createNavigationMock<'DisciplineSelection'>()
+  const parentDiscipline = {
+    id: 0,
+    title: 'Parent Discipline',
+    description: 'Description0',
+    icon: 'none',
+    numberOfChildren: 1,
+    isLeaf: false,
+    parentTitle: null,
+    needsTrainingSetEndpoint: false,
+    leafDisciplines: [10, 11],
+  }
   const getRoute = (): RouteProp<RoutesParams, 'DisciplineSelection'> => ({
     key: 'key-1',
     name: 'DisciplineSelection',
     params: {
-      discipline: mockDisciplines()[1],
+      discipline: parentDiscipline,
     },
   })
 
   it('should display the correct title', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
     const { getByText } = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation} />)
     const title = getByText(mockDisciplines()[0].title)
     expect(title).toBeDefined()
   })
 
-  it('should display all disciplines', async () => {
+  it('should display all disciplines', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
+    // mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
-    const { getByText, findByText } = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation} />)
+    const { getByText } = render(<DisciplineSelectionScreen route={getRoute()} navigation={navigation} />)
 
-    const firstDiscipline = await findByText(mockDisciplines()[0].title)
-    const secondDiscipline = await findByText(mockDisciplines()[0].title)
-    const thirdDiscipline = getByText(mockDisciplines()[0].title)
+    const firstDiscipline = getByText(mockDisciplines()[0].title)
+    const secondDiscipline = getByText(mockDisciplines()[1].title)
+    const thirdDiscipline = getByText(mockDisciplines()[2].title)
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
     expect(thirdDiscipline).toBeDefined()

@@ -50,7 +50,6 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
-          testID='list'
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
           data={disciplines}
           renderItem={renderListItem}
