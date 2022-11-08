@@ -45,7 +45,6 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   let Icon
   let background
   let message
-
   if (result === 'correct') {
     Icon = CheckCircleIconBold
     background = BannerGreen
