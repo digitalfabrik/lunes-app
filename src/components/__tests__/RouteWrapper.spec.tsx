@@ -9,6 +9,7 @@ jest.mock('../../services/url', () => ({ openExternalUrl: jest.fn() }))
 
 describe('RouteWrapper', () => {
   it('should have an extra container on ios', () => {
+    const platform = Platform.OS
     Platform.OS = 'ios'
     const { queryByTestId } = render(
       <RouteWrapper bottomBackgroundColor={theme.colors.background}>
@@ -16,9 +17,11 @@ describe('RouteWrapper', () => {
       </RouteWrapper>
     )
     expect(queryByTestId('hiddenContainer')).toBeDefined()
+    Platform.OS = platform
   })
 
   it('should not have an extra container when not on ios', () => {
+    const platform = Platform.OS
     Platform.OS = 'android'
     const { queryByTestId } = render(
       <RouteWrapper bottomBackgroundColor={theme.colors.background}>
@@ -26,5 +29,6 @@ describe('RouteWrapper', () => {
       </RouteWrapper>
     )
     expect(queryByTestId('hiddenContainer')).toBeNull()
+    Platform.OS = platform
   })
 })
