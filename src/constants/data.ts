@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { Document } from './endpoints'
+import { VocabularyItem } from './endpoints'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -63,7 +63,7 @@ export interface NextExercise {
 }
 
 export type NextExerciseData = NextExercise & {
-  documents: Document[]
+  vocabularyItems: VocabularyItem[]
   title: string
 }
 
@@ -127,6 +127,19 @@ interface ResultType {
   order: number
 }
 
+export const VOCABULARY_ITEM_TYPES = {
+  lunesStandard: 'lunes-standard',
+  lunesProtected: 'lunes-protected',
+  userCreated: 'user-created',
+}
+export type VocabularyItemType = typeof VOCABULARY_ITEM_TYPES[keyof typeof VOCABULARY_ITEM_TYPES]
+
+export interface Favorite {
+  id: number
+  vocabularyItemType: VocabularyItemType
+  apiKey?: string
+}
+
 export interface Answer {
   word: string
   article: Article
@@ -158,7 +171,7 @@ export type Result = typeof RESULTS[number]
 export const FeedbackType = {
   discipline: 'discipline',
   leaf_discipline: 'trainingset',
-  document: 'document',
+  vocabularyItem: 'document',
 } as const
 export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
 

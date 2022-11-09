@@ -1,4 +1,4 @@
-import { Article } from './data'
+import { Article, VocabularyItemType } from './data'
 
 export interface Discipline {
   id: number
@@ -25,13 +25,15 @@ export interface Image {
 
 export type Images = Image[]
 
-export interface Document {
+export interface VocabularyItem {
   id: number
+  type: VocabularyItemType
   word: string
   article: Article
-  document_image: Images
+  images: Images
   audio: string
   alternatives: AlternativeWord[]
+  apiKey?: string
 }
 
 export const ENDPOINTS = {
@@ -41,8 +43,8 @@ export const ENDPOINTS = {
   groupInfo: 'group_info',
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
-  documents: 'documents/:id',
-  document: 'words',
+  vocabularyItems: 'documents/:id',
+  vocabularyItem: 'words',
   feedback: 'feedback',
 }
 

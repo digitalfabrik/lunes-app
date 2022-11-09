@@ -1,14 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKey, Progress } from '../constants/data'
-import { Document } from '../constants/endpoints'
-import { DocumentResult } from '../navigation/NavigationTypes'
+import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
+import { VocabularyItem } from '../constants/endpoints'
+import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
 import { calculateScore, getImages } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
+const FAVORITES_KEY_2 = 'favorites-2'
 const PROGRESS_KEY = 'progress'
 const SENTRY_KEY = 'sentryTracking'
 const CMS_KEY = 'cms'
@@ -94,22 +95,38 @@ export const setExerciseProgress = async (
 export const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
-  documentsWithResults: DocumentResult[]
+  vocabularyItemsWithResults: VocabularyItemResult[]
 ): Promise<void> => {
-  const score = calculateScore(documentsWithResults)
+  const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
 }
 
-export const getFavorites = async (): Promise<number[]> => {
-  const documents = await AsyncStorage.getItem(FAVORITES_KEY)
-  return documents ? JSON.parse(documents) : []
+export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
+  await AsyncStorage.setItem(FAVORITES_KEY_2, JSON.stringify(favorites))
 }
 
-export const setFavorites = async (favorites: number[]): Promise<void> => {
-  await AsyncStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
+const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
+  favorite1.id === favorite2.id && favorite1.vocabularyItemType === favorite2.vocabularyItemType
+
+const migrateToNewFavoriteFormat = async (): Promise<void> => {
+  const vocabularyItems = await AsyncStorage.getItem(FAVORITES_KEY)
+  const parsedVocabularyItems = vocabularyItems ? JSON.parse(vocabularyItems) : []
+  if (parsedVocabularyItems.length === 0) {
+    return
+  }
+  await setFavorites(
+    parsedVocabularyItems.map((item: number) => ({ id: item, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
+  )
+  await AsyncStorage.removeItem(FAVORITES_KEY)
 }
 
-export const addFavorite = async (favorite: number): Promise<void> => {
+export const getFavorites = async (): Promise<Favorite[]> => {
+  await migrateToNewFavoriteFormat()
+  const favorites = await AsyncStorage.getItem(FAVORITES_KEY_2)
+  return favorites ? JSON.parse(favorites) : []
+}
+
+export const addFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
@@ -118,15 +135,15 @@ export const addFavorite = async (favorite: number): Promise<void> => {
   await setFavorites(newFavorites)
 }
 
-export const removeFavorite = async (favoriteId: number): Promise<void> => {
+export const removeFavorite = async (favorite: Favorite): Promise<void> => {
   const favorites = await getFavorites()
-  const newFavorites = favorites.filter(it => it !== favoriteId)
+  const newFavorites = favorites.filter(it => !compareFavorites(it, favorite))
   await setFavorites(newFavorites)
 }
 
-export const isFavorite = async (favoriteId: number): Promise<boolean> => {
+export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
   const favorites = await getFavorites()
-  return favorites.includes(favoriteId)
+  return favorites.some(it => compareFavorites(it, favorite))
 }
 
 export const setOverwriteCMS = async (cms: CMS): Promise<void> => {
@@ -156,47 +173,56 @@ export const incrementNextUserVocabularyId = async (): Promise<void> => {
   return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
 }
 
-export const getUserVocabularyWithoutImage = async (): Promise<Document[]> => {
+export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
-  return userVocabulary ? JSON.parse(userVocabulary) : []
+  return userVocabulary
+    ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
+        ...userVocabulary,
+        vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
+      }))
+    : []
 }
 
-export const getUserVocabulary = async (): Promise<Document[]> => {
+export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await getUserVocabularyWithoutImage()
   return Promise.all(
     userVocabulary.map(async item => ({
       ...item,
-      document_image: await getImages(item),
+      image: await getImages(item),
     }))
   )
 }
 
-export const setUserVocabulary = async (userDocument: Document[]): Promise<void> => {
-  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userDocument))
+export const setUserVocabularyItems = async (userVocabularyItems: VocabularyItem[]): Promise<void> => {
+  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userVocabularyItems))
 }
 
-export const addUserDocument = async (userDocument: Document): Promise<void> => {
+export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Promise<void> => {
   const userVocabulary = await getUserVocabularyWithoutImage()
-  if (userVocabulary.find(item => item.word === userDocument.word)) {
+  if (userVocabulary.find(item => item.word === vocabularyItem.word)) {
     return
   }
-  await setUserVocabulary([...userVocabulary, userDocument])
+  await setUserVocabularyItems([...userVocabulary, vocabularyItem])
 }
 
-export const editUserDocument = async (oldUserDocument: Document, newUserDocument: Document): Promise<boolean> => {
-  const userVocabulary = await getUserVocabulary()
-  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserDocument))
+export const editUserVocabularyItem = async (
+  oldUserVocabularyItem: VocabularyItem,
+  newUserVocabularyItem: VocabularyItem
+): Promise<boolean> => {
+  const userVocabulary = await getUserVocabularyWithoutImage()
+  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
     return false
   }
-  userVocabulary[index] = newUserDocument
-  await setUserVocabulary(userVocabulary)
+  userVocabulary[index] = newUserVocabularyItem
+  await setUserVocabularyItems(userVocabulary)
   return true
 }
 
-export const deleteUserDocument = async (userDocument: Document): Promise<void> => {
-  const userVocabulary = getUserVocabulary().then(vocab =>
-    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userDocument))
+export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
+  const userVocabulary = getUserVocabularyWithoutImage().then(vocab =>
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
-  await setUserVocabulary(await userVocabulary)
+  await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
+  await setUserVocabularyItems(await userVocabulary)
 }

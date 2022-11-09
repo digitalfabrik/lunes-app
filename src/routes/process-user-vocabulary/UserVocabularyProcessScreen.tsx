@@ -19,9 +19,13 @@ import { TitleWithSpacing } from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import { Subheading } from '../../components/text/Subheading'
-import { ARTICLES, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
+import { ARTICLES, BUTTONS_THEME, VOCABULARY_ITEM_TYPES, getArticleWithLabel } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { addUserDocument, getNextUserVocabularyId, incrementNextUserVocabularyId } from '../../services/AsyncStorage'
+import {
+  addUserVocabularyItem,
+  getNextUserVocabularyId,
+  incrementNextUserVocabularyId,
+} from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import AudioRecordOverlay from './components/AudioRecordOverlay'
@@ -173,13 +177,14 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         })
       )
 
-      await addUserDocument({
+      await addUserVocabularyItem({
         id,
         word,
         article: ARTICLES[articleId],
-        document_image: imagePaths,
+        images: imagePaths,
         audio: recordingPath ?? '',
         alternatives: [],
+        type: VOCABULARY_ITEM_TYPES.userCreated,
       })
 
       navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
