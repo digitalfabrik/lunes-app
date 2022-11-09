@@ -1,9 +1,16 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Permission, request, requestMultiple, RESULTS } from 'react-native-permissions'
 
 import { reportError } from '../services/sentry'
 
-const useGrantPermissions = (permissions: Permission | Permission[]): boolean => {
+interface UseGrantPermissionsReturnType {
+  permissionRequested: boolean
+  permissionGranted: boolean
+  setPermissionRequested: Dispatch<SetStateAction<boolean>>
+  setPermissionGranted: Dispatch<SetStateAction<boolean>>
+}
+
+const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPermissionsReturnType => {
   const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
 
@@ -25,7 +32,7 @@ const useGrantPermissions = (permissions: Permission | Permission[]): boolean =>
       }
     }
   }, [permissionRequested, permissions])
-  return permissionGranted
+  return { permissionRequested, permissionGranted, setPermissionRequested, setPermissionGranted }
 }
 
 export default useGrantPermissions

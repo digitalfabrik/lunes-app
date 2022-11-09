@@ -1,10 +1,12 @@
-import React, { ReactElement, useMemo, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import uuid from 'react-native-uuid'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon, MicrophoneIcon } from '../../../../assets/images'
+import NotAuthorisedView from '../../../components/NotAuthorisedView'
 import { HeadingText } from '../../../components/text/Heading'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import { getLabels } from '../../../services/helpers'
@@ -78,6 +80,7 @@ interface AudioRecordOverlayProps {
   onStopRecording: () => Promise<void>
   recordingTime: string
   meteringResults: number[]
+  setShowAudioRecordOverlay: Dispatch<SetStateAction<boolean>>
 }
 
 // Zero alignment of values with the minimum metering value
@@ -92,61 +95,61 @@ const AudioRecordOverlay = ({
   onStopRecording,
   recordingTime,
   meteringResults,
+  setShowAudioRecordOverlay,
 }: AudioRecordOverlayProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const permissionGranted = useGrantPermissions(
-    Platform.OS === 'android'
-      ? [
-          PERMISSIONS.ANDROID.RECORD_AUDIO,
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        ]
-      : PERMISSIONS.IOS.MICROPHONE
+  const { permissionGranted, permissionRequested } = useGrantPermissions(
+    Platform.OS === 'android' ? PERMISSIONS.ANDROID.RECORD_AUDIO : PERMISSIONS.IOS.MICROPHONE
   )
   const { hold, talk } = getLabels().general.audio
+  const { description } = getLabels().general.audio.noAuthorization
   const theme = useTheme()
 
   const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
   return (
-    <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
-      <Container>
-        <Icon onPress={() => onClose()}>
-          <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
-        </Icon>
-        <Content>
-          <HeadingContainer>
-            <Heading>{isPressed ? talk : hold}</Heading>
-          </HeadingContainer>
-          <InfoContainer>
-            <MeteringInfo>
-              {cleanedMetering.map((element, index) => (
-                // eslint-disable-next-line react/no-array-index-key -- no better key available
-                <MeteringBar key={index} height={element} />
-              ))}
-            </MeteringInfo>
-            <RecordingInfo>{recordingTime.slice(1, recordingTime.length)}</RecordingInfo>
-          </InfoContainer>
-          {permissionGranted && (
-            <RecordIcon
-              onPressIn={() =>
-                onStartRecording()
-                  .catch(reportError)
-                  .finally(() => setIsPressed(true))
-              }
-              onPressOut={() =>
-                onStopRecording()
-                  .catch(reportError)
-                  .finally(() => setIsPressed(false))
-              }
-              isPressed={isPressed}
-              testID='record-audio-button'>
-              <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
-            </RecordIcon>
-          )}
-        </Content>
-      </Container>
-    </RNModal>
+    <>
+      {permissionGranted && (
+        <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
+          <Container>
+            <Icon onPress={() => onClose()}>
+              <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+            </Icon>
+            <Content>
+              <HeadingContainer>
+                <Heading>{isPressed ? talk : hold}</Heading>
+              </HeadingContainer>
+              <InfoContainer>
+                <MeteringInfo>
+                  {cleanedMetering.map(element => (
+                    <MeteringBar key={uuid.v4().toString()} height={element} />
+                  ))}
+                </MeteringInfo>
+                <RecordingInfo>{recordingTime.slice(1, recordingTime.length)}</RecordingInfo>
+              </InfoContainer>
+              <RecordIcon
+                onPressIn={() =>
+                  onStartRecording()
+                    .catch(reportError)
+                    .finally(() => setIsPressed(true))
+                }
+                onPressOut={() =>
+                  onStopRecording()
+                    .catch(reportError)
+                    .finally(() => setIsPressed(false))
+                }
+                isPressed={isPressed}
+                testID='record-audio-button'>
+                <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
+              </RecordIcon>
+            </Content>
+          </Container>
+        </RNModal>
+      )}
+      {permissionRequested && !permissionGranted && (
+        <NotAuthorisedView setVisible={setShowAudioRecordOverlay} description={description} />
+      )}
+    </>
   )
 }
 

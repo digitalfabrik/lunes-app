@@ -22,20 +22,21 @@ const Description = styled(ContentSecondary)`
 
 interface NotAuthorizedViewProps {
   setVisible: (visible: boolean) => void
+  description: string
 }
 
-const NotAuthorisedView = ({ setVisible }: NotAuthorizedViewProps): ReactElement => {
+const NotAuthorisedView = ({ setVisible, description }: NotAuthorizedViewProps): ReactElement => {
   const openSettings = () => {
     Linking.openSettings().catch(reportError)
   }
 
   return (
     <Container testID='no-auth'>
-      <Description>{getLabels().general.camera.noAuthorization.description}</Description>
+      <Description>{description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
       <Button
         onPress={openSettings}
-        label={getLabels().general.camera.noAuthorization.settings}
+        label={getLabels().settings.settings}
         buttonTheme={BUTTONS_THEME.contained}
       />
     </Container>

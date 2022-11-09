@@ -161,11 +161,13 @@
     "words": "Wörter",
     "camera": {
       "noAuthorization": {
-        "description": "Kamerazugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "settings": "Einstellungen"
+        "description": "Kamerazugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben."
       }
     },
     "audio": {
+      "noAuthorization": {
+        "description": "Mikrofonzugriff erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben."
+      },
       "hold": "Aufnahmetaste halten",
       "talk": "Jetzt sprechen"
     }

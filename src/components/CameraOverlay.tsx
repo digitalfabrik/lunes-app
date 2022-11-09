@@ -1,11 +1,12 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { AppState, Modal as RNModal, Platform } from 'react-native'
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
+import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
-import { reportError } from '../services/sentry'
+import useGrantPermissions from '../hooks/useGrantPermissions'
+import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.SafeAreaView`
@@ -29,18 +30,9 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
   const appState = useRef(AppState.currentState)
 
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
-  const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
-
-  // Needed when navigating back from settings, when users selected "ask every time" as camera permission option
-  useEffect(() => {
-    if (!permissionRequested) {
-      request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA)
-        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
-        .catch(reportError)
-        .finally(() => setPermissionRequested(true))
-    }
-  }, [permissionRequested])
+  const { permissionRequested, permissionGranted, setPermissionRequested } = useGrantPermissions(
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
+  )
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -50,7 +42,7 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
       appState.current = nextAppState
     })
     return subscription.remove
-  }, [])
+  }, [setPermissionRequested])
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
@@ -66,7 +58,12 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
           )}
         </Icon>
         {permissionGranted && children}
-        {permissionRequested && !permissionGranted && <NotAuthorisedView setVisible={setVisible} />}
+        {permissionRequested && !permissionGranted && (
+          <NotAuthorisedView
+            description={getLabels().general.camera.noAuthorization.description}
+            setVisible={setVisible}
+          />
+        )}
       </Container>
     </RNModal>
   )

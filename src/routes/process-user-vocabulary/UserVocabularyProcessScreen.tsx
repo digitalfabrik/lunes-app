@@ -5,12 +5,7 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
-import {
-  CloseCircleIconBlue,
-  ImageCircleIcon,
-  MicrophoneCircleIcon,
-  VolumeUpCircleOutlineIcon,
-} from '../../../assets/images'
+import { CloseCircleIconBlue, ImageCircleIcon, MicrophoneCircleIcon, VolumeUpCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
@@ -73,12 +68,25 @@ const DeleteContainer = styled.Pressable`
   justify-content: center;
   align-items: center;
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.md}`};
+  shadow-color: ${props => props.theme.colors.shadow};
+  elevation: 8;
+  shadow-radius: 5px;
+  shadow-offset: 1px 1px;
+  shadow-opacity: 0.5;
 `
 
-const PlayContainer = styled.Pressable`
+const PlayContainer = styled.Pressable<{ isActive: boolean }>`
   align-self: center;
   justify-content: center;
   align-items: center;
+  background-color: ${props =>
+    props.isActive ? props.theme.colors.audioIconSelected : props.theme.colors.audioIconHighlight};
+  border-radius: 50px;
+  shadow-color: ${props => props.theme.colors.shadow};
+  elevation: 8;
+  shadow-radius: 5px;
+  shadow-offset: 1px 1px;
+  shadow-opacity: 0.5;
 `
 
 const AudioText = styled(Subheading)`
@@ -91,6 +99,7 @@ interface UserVocabularyProcessScreenProps {
 
 const accuracy = 0.1
 const factor = 1000
+const playTolerance = 200
 const recordingTimeInit = '00:00'
 // The recording library does align the android power recording level to ios for metering as it's done in different libraries https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
 const androidFactor = 0.25
@@ -120,6 +129,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [meteringResults, setMeteringResults] = useState<number[]>([])
   const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [recordSeconds, setRecordSeconds] = useState<number>(0)
 
   const {
     headline,
@@ -216,6 +227,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         Math.floor(getCurrentMetering(e.currentMetering)),
       ])
       setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
+      setRecordSeconds(e.currentPosition)
     })
     setRecordingPath(uri)
   }
@@ -223,7 +235,9 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const onStartPlay = async (): Promise<void> => {
     if (recordingPath) {
       await audioRecorderPlayer.startPlayer(recordingPath)
-      audioRecorderPlayer.removePlayBackListener()
+      audioRecorderPlayer.addPlayBackListener(e => {
+        setIsPlaying(e.currentPosition < recordSeconds - playTolerance)
+      })
     }
   }
 
@@ -250,6 +264,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         onStopRecording={onStopRecording}
         recordingTime={recordingTime}
         meteringResults={meteringResults}
+        setShowAudioRecordOverlay={setShowAudioRecordOverlay}
       />
     )
   }
@@ -296,8 +311,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
               <DeleteContainer onPress={() => deleteRecording()} testID='delete-audio-recording'>
                 <CloseCircleIconBlue width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
               </DeleteContainer>
-              <PlayContainer onPress={() => onStartPlay()}>
-                <VolumeUpCircleOutlineIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+              <PlayContainer onPress={() => onStartPlay()} isActive={isPlaying}>
+                <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
               </PlayContainer>
             </>
           </AudioContainer>
