@@ -2,21 +2,15 @@ import { RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES, SimpleResult } from '../../../../constants/data'
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { SimpleResult } from '../../../../constants/data'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import Feedback from '../Feedback'
 
 describe('Feedback', () => {
-  const document = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   const renderFeedback = (
     result: SimpleResult,
@@ -24,9 +18,13 @@ describe('Feedback', () => {
     submission: string,
     needsToBeRepeated: boolean
   ): RenderAPI => {
-    const documentWithResult: DocumentResult = { document, result, numberOfTries }
+    const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
-      <Feedback documentWithResult={documentWithResult} submission={submission} needsToBeRepeated={needsToBeRepeated} />
+      <Feedback
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        submission={submission}
+        needsToBeRepeated={needsToBeRepeated}
+      />
     )
   }
 
@@ -55,7 +53,9 @@ describe('Feedback', () => {
 
     expect(
       queryByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${document.article.value} ${document.word}“`
+        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItem.article.value} ${
+          vocabularyItem.word
+        }“`
       )
     ).toBeTruthy()
   })
@@ -67,8 +67,8 @@ describe('Feedback', () => {
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
-          document.article.value
-        } ${document.word}“`
+          vocabularyItem.article.value
+        } ${vocabularyItem.word}“`
       )
     ).toBeTruthy()
   })

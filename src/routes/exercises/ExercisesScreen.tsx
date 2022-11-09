@@ -13,7 +13,7 @@ import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
-import useLoadDocuments from '../../hooks/useLoadDocuments'
+import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
@@ -49,11 +49,11 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   const { data: scores, loading: loadingFeedback, refresh: refreshFeedback } = useLoadAsync(getExerciseProgress, null)
   const isFocused = useIsFocused()
   const {
-    data: documents,
+    data: vocabularyItems,
     error,
     loading,
     refresh,
-  } = useLoadDocuments({
+  } = useLoadVocabularyItems({
     disciplineId: discipline.id,
     apiKey: discipline.apiKey,
   })
@@ -93,15 +93,15 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       setIsModalVisible(true)
       return
     }
-    if (documents) {
+    if (vocabularyItems) {
       const closeExerciseAction = CommonActions.navigate('Exercises', {
-        documents,
+        vocabularyItems,
         disciplineTitle,
         disciplineId,
         discipline,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
-        documents,
+        vocabularyItems,
         disciplineId,
         disciplineTitle,
         closeExerciseAction,
@@ -130,7 +130,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
     <RouteWrapper>
-      {documents && nextExercise && (
+      {vocabularyItems && nextExercise && (
         <Modal
           onClose={() => setIsModalVisible(false)}
           visible={isModalVisible}
@@ -149,9 +149,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
         </Modal>
       )}
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {documents && (
+        {vocabularyItems && (
           <>
-            <Title title={disciplineTitle} description={wordsDescription(documents.length)} />
+            <Title title={disciplineTitle} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
               data={EXERCISES}
               renderItem={renderListItem}

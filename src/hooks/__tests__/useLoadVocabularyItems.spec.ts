@@ -1,7 +1,8 @@
 import { mocked } from 'jest-mock'
 
+import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { getFromEndpoint } from '../../services/axios'
-import { loadDocuments } from '../useLoadDocuments'
+import { loadVocabularyItems } from '../useLoadVocabularyItems'
 
 jest.mock('../useLoadAsync')
 jest.mock('../../services/axios')
@@ -58,28 +59,28 @@ const expectedData = [
     ],
     article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
-    document_image: [],
+    images: [],
     id: 17,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Zollstock',
-    word_type: 'Nomen',
   },
   {
     alternatives: [],
     article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
-    document_image: [],
+    images: [],
     id: 178,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkanister',
-    word_type: 'Nomen',
   },
   {
     alternatives: [],
     article: { id: 2, value: 'die' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
-    document_image: [],
+    images: [],
     id: 245,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Ölkreide',
-    word_type: 'Nomen',
   },
 ]
 
@@ -94,16 +95,16 @@ const discipline = {
   needsTrainingSetEndpoint: false,
 }
 
-describe('loadDocuments', () => {
+describe('loadVocabularyItems', () => {
   mocked(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {
-    await loadDocuments({ disciplineId: discipline.id })
+    await loadVocabularyItems({ disciplineId: discipline.id })
     expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234', undefined)
   })
 
   it('should map data correctly', async () => {
-    const responseData = await loadDocuments({ disciplineId: discipline.id })
+    const responseData = await loadVocabularyItems({ disciplineId: discipline.id })
     expect(responseData).toEqual(expectedData)
   })
 })

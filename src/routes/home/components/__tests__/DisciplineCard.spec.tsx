@@ -15,6 +15,11 @@ import DisciplineCard from '../DisciplineCard'
 jest.mock('@react-navigation/native')
 jest.useFakeTimers()
 
+jest.mock('../../../../components/FeedbackModal', () => {
+  const Text = require('react-native').Text
+  return () => <Text>FeedbackModal</Text>
+})
+
 const navigateToDiscipline = jest.fn()
 
 describe('DisciplineCard', () => {

@@ -10244,7 +10244,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-is: ^18.2.0
-    react-native: 0.66.4
+    react-native: 0.66.5
     react-native-camera: ^4.2.1
     react-native-device-info: ^9.0.2
     react-native-dropdown-picker: ^5.4.2
@@ -12343,9 +12343,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.66.4":
-  version: 0.66.4
-  resolution: "react-native@npm:0.66.4"
+"react-native@npm:0.66.5":
+  version: 0.66.5
+  resolution: "react-native@npm:0.66.5"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^6.0.0
@@ -12382,7 +12382,7 @@ __metadata:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: d0a14a43076e5a2ffe9fa98a08d4d27dced8554d48135d327d46877aeb27de77d63fba2d87679721dcb6aab6278b74fd7d80eb8b02bb04cc6149ce738b6d5d69
+  checksum: 6dae211c0cb099ca78a0e727a56530a3cd5e5891722ba54fe8ce1ccded3e12d4a00fea14e6a91785b404ab18aa4b49e0500b630057820181146b43ba2f304814
   languageName: node
   linkType: hard
 

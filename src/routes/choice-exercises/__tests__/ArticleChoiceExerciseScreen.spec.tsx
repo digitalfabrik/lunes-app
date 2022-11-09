@@ -6,7 +6,7 @@ import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
@@ -45,13 +45,13 @@ describe('ArticleChoiceExerciseScreen', () => {
     jest.clearAllMocks()
   })
 
-  const documents = new DocumentBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
   const navigation = createNavigationMock<'ArticleChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'ArticleChoiceExercise'> = {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
-      documents,
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
@@ -71,7 +71,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     expect(getAllByText(/Spachtel/)).toHaveLength(3)
   })
 
-  it('should not allow to skip last document', () => {
+  it('should not allow to skip last vocabularyItem', () => {
     const { queryByText, getByText, getAllByText } = render(
       <ArticleChoiceExerciseScreen route={route} navigation={navigation} />
     )
@@ -109,8 +109,8 @@ describe('ArticleChoiceExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 })
