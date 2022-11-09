@@ -34,13 +34,12 @@ const StyledText = styled.Text`
 export interface FeedbackProps {
   documentWithResult: DocumentResult
   submission: string | null
-  needsToBeRepeated: boolean
 }
 
-const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+const Feedback = ({ documentWithResult, submission }: FeedbackProps): ReactElement | null => {
   const { result, document } = documentWithResult
   const correctSolution = `„${document.article.value} ${document.word}“`
-  const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
+  const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
 
   let Icon
   let background
@@ -58,10 +57,7 @@ const Feedback = ({ documentWithResult, submission, needsToBeRepeated }: Feedbac
   } else {
     Icon = CloseCircleIconBold
     background = BannerRed
-    message =
-      needsToBeRepeated && !submission
-        ? wrongWithCorrectSolution
-        : `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
+    message = submission ? `${getLabels().exercises.write.feedback.wrong}\n${correctSolutionHint}` : correctSolutionHint
   }
   return (
     <Background source={background} testID='background-image'>

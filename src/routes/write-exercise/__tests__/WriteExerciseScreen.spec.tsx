@@ -117,7 +117,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           documents[1].article.value
         } ${documents[1].word}“`
       )
@@ -145,7 +145,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           documents[0].article.value
         } ${documents[0].word}“`
       )
@@ -206,7 +206,7 @@ describe('WriteExerciseScreen', () => {
   it('should show wrong feedback with correct solution', () => {
     evaluate(
       'das Falsche',
-      `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+      `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
         documents[0].article.value
       } ${documents[0].word}“`
     )
