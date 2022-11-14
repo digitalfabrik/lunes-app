@@ -13,8 +13,8 @@ describe('Feedback', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
   const renderFeedback = (result: SimpleResult, numberOfTries: number, submission: string): RenderAPI => {
-    const documentWithResult: DocumentResult = { document, result, numberOfTries }
-    return render(<Feedback documentWithResult={documentWithResult} submission={submission} />)
+    const vocabularyItemResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
+    return render(<Feedback vocabularyItemWithResult={vocabularyItemResult} submission={submission} />)
   }
 
   it('should render correct feedback', () => {
@@ -43,8 +43,8 @@ describe('Feedback', () => {
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
-          document.article.value
-        } ${document.word}“`
+          vocabularyItem.article.value
+        } ${vocabularyItem.word}“`
       )
     ).toBeTruthy()
   })
@@ -54,8 +54,8 @@ describe('Feedback', () => {
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
-          document.article.value
-        } ${document.word}“`
+          vocabularyItem.article.value
+        } ${vocabularyItem.word}“`
       )
     ).toBeTruthy()
   })

@@ -36,10 +36,9 @@ export interface FeedbackProps {
   submission: string | null
 }
 
-
-const Feedback = ({ documentWithResult, submission }: FeedbackProps): ReactElement | null => {
-  const { result, document } = documentWithResult
-  const correctSolution = `„${document.article.value} ${document.word}“`
+const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): ReactElement | null => {
+  const { result, vocabularyItem } = vocabularyItemWithResult
+  const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
 
   let Icon

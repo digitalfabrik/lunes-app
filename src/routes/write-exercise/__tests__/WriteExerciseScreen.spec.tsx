@@ -123,8 +123,8 @@ describe('WriteExerciseScreen', () => {
     expect(
       getByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
-          documents[1].article.value
-        } ${documents[1].word}“`
+          vocabularyItems[1].article.value
+        } ${vocabularyItems[1].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.showResults)).toBeDefined()
@@ -151,8 +151,8 @@ describe('WriteExerciseScreen', () => {
     expect(
       getByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
-          documents[0].article.value
-        } ${documents[0].word}“`
+          vocabularyItems[0].article.value
+        } ${vocabularyItems[0].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.next)).toBeDefined()
@@ -212,8 +212,8 @@ describe('WriteExerciseScreen', () => {
     evaluate(
       'das Falsche',
       `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
-        documents[0].article.value
-      } ${documents[0].word}“`
+        vocabularyItems[0].article.value
+      } ${vocabularyItems[0].word}“`
     )
   })
 
