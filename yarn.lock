@@ -10173,7 +10173,7 @@ __metadata:
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-paper: 4.12.2
-    react-native-permissions: ^3.4.0
+    react-native-permissions: ^3.6.1
     react-native-popover-view: ^5.0.2
     react-native-progress: ^5.0.0
     react-native-reanimated: 2.9.1
@@ -12113,9 +12113,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "react-native-permissions@npm:3.4.0"
+"react-native-permissions@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "react-native-permissions@npm:3.6.1"
   peerDependencies:
     react: ">=16.13.1"
     react-native: ">=0.63.3"
@@ -12123,7 +12123,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: 9e8544234105d784fcfe8eea256d277c01392e035394dc5c5a9563628efea4f2341300426cf9c02fe5316714856e23249d337191a861314e64e45acbda304600
+  checksum: d8dcc578a696f631d89e7df9f9237545fe5db30cbc0f8d6f47a97e78893abc42dee075cb4f78ee98c91c82bb5e5805329eb04ad49cc71ffda21d41937e80fccb
   languageName: node
   linkType: hard
 

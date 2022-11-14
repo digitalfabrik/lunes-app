@@ -1,5 +1,6 @@
-import React, { Dispatch, ReactElement, SetStateAction, useMemo, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import uuid from 'react-native-uuid'
@@ -76,12 +77,18 @@ const InfoContainer = styled.View`
 
 interface AudioRecordOverlayProps {
   onClose: () => void
-  onStartRecording: () => Promise<void>
-  onStopRecording: () => Promise<void>
-  recordingTime: string
-  meteringResults: number[]
   setShowAudioRecordOverlay: Dispatch<SetStateAction<boolean>>
+  audioRecorderPlayer: AudioRecorderPlayer
+  setRecordingPath: Dispatch<SetStateAction<string | null>>
+  recordingPath: string | null
+  setRecordSeconds: Dispatch<SetStateAction<number>>
+  getCurrentPath: () => Promise<string>
 }
+
+const recordingTimeInit = '00:00'
+const factor = 1000
+// The recording library does align the android power recording level to ios for metering as it's done in different libraries https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
+const androidFactor = 0.25
 
 // Zero alignment of values with the minimum metering value
 const cleanUpMeteringResults = (meteringResults: number[]): number[] => {
@@ -89,32 +96,79 @@ const cleanUpMeteringResults = (meteringResults: number[]): number[] => {
   return filteredResults.map(el => el + Math.abs(Math.min(...filteredResults)))
 }
 
+const getCurrentMetering = (metering?: number): number => {
+  if (!metering) {
+    return 0
+  }
+  return Platform.select({
+    ios: metering,
+    android: metering * androidFactor,
+  }) as number
+}
+
 const AudioRecordOverlay = ({
   onClose,
-  onStartRecording,
-  onStopRecording,
-  recordingTime,
-  meteringResults,
   setShowAudioRecordOverlay,
+  audioRecorderPlayer,
+  setRecordingPath,
+  recordingPath,
+  setRecordSeconds,
+  getCurrentPath,
 }: AudioRecordOverlayProps): ReactElement => {
+  const [meteringResults, setMeteringResults] = useState<number[]>([])
+  const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionGranted, permissionRequested } = useGrantPermissions(
-    Platform.OS === 'android' ? PERMISSIONS.ANDROID.RECORD_AUDIO : PERMISSIONS.IOS.MICROPHONE
+    Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.MICROPHONE
+      : [
+          PERMISSIONS.ANDROID.RECORD_AUDIO,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        ]
   )
   const { hold, talk } = getLabels().general.audio
   const { description } = getLabels().general.audio.noAuthorization
   const theme = useTheme()
 
+  useEffect(() => {
+    if (!recordingPath) {
+      setMeteringResults([])
+      setRecordSeconds(0)
+    }
+  }, [recordingPath, setRecordSeconds])
+
   const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
+  const onStartRecording = async (): Promise<void> => {
+    setMeteringResults([])
+    const path = await getCurrentPath()
+    const uri = await audioRecorderPlayer.startRecorder(path, undefined, true)
+    audioRecorderPlayer.addRecordBackListener(e => {
+      setMeteringResults(oldMeteringResults => [
+        ...oldMeteringResults,
+        Math.floor(getCurrentMetering(e.currentMetering)),
+      ])
+      setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
+      setRecordSeconds(e.currentPosition)
+    })
+    setRecordingPath(uri)
+  }
+
+  const onStopRecording = async (): Promise<void> => {
+    await audioRecorderPlayer.stopRecorder()
+    audioRecorderPlayer.removeRecordBackListener()
+    setShowAudioRecordOverlay(false)
+  }
+
   return (
-    <>
-      {permissionGranted && (
-        <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
-          <Container>
-            <Icon onPress={() => onClose()}>
-              <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
-            </Icon>
+    <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
+      <Container>
+        <Icon onPress={() => onClose()}>
+          <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+        </Icon>
+        <>
+          {permissionGranted && (
             <Content>
               <HeadingContainer>
                 <Heading>{isPressed ? talk : hold}</Heading>
@@ -143,13 +197,13 @@ const AudioRecordOverlay = ({
                 <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
               </RecordIcon>
             </Content>
-          </Container>
-        </RNModal>
-      )}
-      {permissionRequested && !permissionGranted && (
-        <NotAuthorisedView setVisible={setShowAudioRecordOverlay} description={description} />
-      )}
-    </>
+          )}
+        </>
+        {permissionRequested && !permissionGranted && (
+          <NotAuthorisedView description={description} setVisible={setShowAudioRecordOverlay} />
+        )}
+      </Container>
+    </RNModal>
   )
 }
 

@@ -98,24 +98,10 @@ interface UserVocabularyProcessScreenProps {
 }
 
 const accuracy = 0.1
-const factor = 1000
 const playTolerance = 200
-const recordingTimeInit = '00:00'
-// The recording library does align the android power recording level to ios for metering as it's done in different libraries https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
-const androidFactor = 0.25
 
 const audioRecorderPlayer = new AudioRecorderPlayer()
 audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(e => e)
-
-const getCurrentMetering = (metering?: number): number => {
-  if (!metering) {
-    return 0
-  }
-  return Platform.select({
-    ios: metering,
-    android: metering * androidFactor,
-  }) as number
-}
 
 const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreenProps): ReactElement => {
   const [images, setImages] = useState<string[]>([])
@@ -126,11 +112,9 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
   const [showAudioRecordOverlay, setShowAudioRecordOverlay] = useState<boolean>(false)
-  const [meteringResults, setMeteringResults] = useState<number[]>([])
-  const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
+  const [recordSeconds, setRecordSeconds] = useState<number>(0)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [recordSeconds, setRecordSeconds] = useState<number>(0)
 
   const {
     headline,
@@ -161,10 +145,17 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     }
   }, [fadeIn, recordingPath])
 
+  const getAudioPath = async (): Promise<string> => {
+    const id = await getNextUserVocabularyId()
+    const filename = `audio-${id}`
+    return Platform.select({
+      ios: `${filename}.m4a`,
+      android: `${DocumentDirectoryPath}/${filename}.mp3`,
+    })!
+  }
+
   const deleteRecording = (): void => {
     setRecordingPath(null)
-    setMeteringResults([])
-    setRecordingTime(recordingTimeInit)
   }
   const onSave = async (): Promise<void> => {
     const hasError = word.length === 0 || !articleId || images.length === 0
@@ -212,26 +203,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const pushImage = (uri: string): void => setImages(old => [...old, uri])
   const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
 
-  const onStartRecording = async (): Promise<void> => {
-    setMeteringResults([])
-    const id = await getNextUserVocabularyId()
-    const filename = `audio-${id}`
-    const path = Platform.select({
-      ios: `${filename}.m4a`,
-      android: `${DocumentDirectoryPath}/${filename}.mp3`,
-    })
-    const uri = await audioRecorderPlayer.startRecorder(path, undefined, true)
-    audioRecorderPlayer.addRecordBackListener(e => {
-      setMeteringResults(oldMeteringResults => [
-        ...oldMeteringResults,
-        Math.floor(getCurrentMetering(e.currentMetering)),
-      ])
-      setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
-      setRecordSeconds(e.currentPosition)
-    })
-    setRecordingPath(uri)
-  }
-
   const onStartPlay = async (): Promise<void> => {
     if (recordingPath) {
       await audioRecorderPlayer.startPlayer(recordingPath)
@@ -239,12 +210,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         setIsPlaying(e.currentPosition < recordSeconds - playTolerance)
       })
     }
-  }
-
-  const onStopRecording = async (): Promise<void> => {
-    await audioRecorderPlayer.stopRecorder()
-    audioRecorderPlayer.removeRecordBackListener()
-    setShowAudioRecordOverlay(false)
   }
 
   const onCloseRecording = (): void => {
@@ -260,11 +225,12 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     return (
       <AudioRecordOverlay
         onClose={onCloseRecording}
-        onStartRecording={onStartRecording}
-        onStopRecording={onStopRecording}
-        recordingTime={recordingTime}
-        meteringResults={meteringResults}
+        setRecordingPath={setRecordingPath}
+        recordingPath={recordingPath}
         setShowAudioRecordOverlay={setShowAudioRecordOverlay}
+        setRecordSeconds={setRecordSeconds}
+        audioRecorderPlayer={audioRecorderPlayer}
+        getCurrentPath={getAudioPath}
       />
     )
   }
@@ -311,7 +277,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
               <DeleteContainer onPress={() => deleteRecording()} testID='delete-audio-recording'>
                 <CloseCircleIconBlue width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
               </DeleteContainer>
-              <PlayContainer onPress={() => onStartPlay()} isActive={isPlaying}>
+              <PlayContainer onPress={() => onStartPlay()} isActive={isPlaying} testID='play-audio-recording'>
                 <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
               </PlayContainer>
             </>

@@ -66,9 +66,9 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - Permission-Camera (3.4.0):
+  - Permission-Camera (3.6.1):
     - RNPermissions
-  - Permission-Microphone (3.4.0):
+  - Permission-Microphone (3.6.1):
     - RNPermissions
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.2)
@@ -368,7 +368,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.5.0):
     - React-Core
-  - RNPermissions (3.4.0):
+  - RNPermissions (3.6.1):
     - React-Core
   - RNReanimated (2.9.1):
     - DoubleConversion
@@ -606,8 +606,8 @@ SPEC CHECKSUMS:
   MLKitCommon: 20f4aca0ec2bb37cef2b9c211b50586817bac5d3
   MLKitVision: 639a171d937241f3fcf92bc1b3ef8f179f49916c
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  Permission-Camera: 40f43388fa8a648dc6ced73f145ef329ab3ff3fe
-  Permission-Microphone: 62492e9e3026112dfaecd6fff87a245c3d7367b8
+  Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
+  Permission-Microphone: 48212dd4d28025d9930d583e3c7a56da7268665c
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 818c6a87e44193a77f56b87c6a1c106efda7e062
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
@@ -643,7 +643,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
-  RNPermissions: eac721f71748c4472d6e876038270b75397d6ee7
+  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNReanimated: 11e6e30bbc49079b7f0c321ac5830e6d113d0224
   RNScreens: aa9a97835afbbdc18a4757870b2b59b7d9fae16a
   RNSentry: d27112c8fcb77c52a42c3fffb796193c333ee562

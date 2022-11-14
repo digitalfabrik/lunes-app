@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { AppState, Modal as RNModal, Platform } from 'react-native'
+import React, { ReactElement, useState } from 'react'
+import { Modal as RNModal, Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -27,22 +27,10 @@ interface Props {
 }
 
 const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
-  const appState = useRef(AppState.currentState)
-
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { permissionRequested, permissionGranted, setPermissionRequested } = useGrantPermissions(
+  const { permissionRequested, permissionGranted } = useGrantPermissions(
     Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
   )
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
-        setPermissionRequested(false)
-      }
-      appState.current = nextAppState
-    })
-    return subscription.remove
-  }, [setPermissionRequested])
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>

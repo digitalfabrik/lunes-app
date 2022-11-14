@@ -45,7 +45,7 @@
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "4.12.2",
-    "react-native-permissions": "^3.4.0",
+    "react-native-permissions": "^3.6.1",
     "react-native-popover-view": "^5.0.2",
     "react-native-progress": "^5.0.0",
     "react-native-reanimated": "2.9.1",

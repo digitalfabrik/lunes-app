@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { AppState } from 'react-native'
 import { Permission, request, requestMultiple, RESULTS } from 'react-native-permissions'
 
 import { reportError } from '../services/sentry'
@@ -6,13 +7,22 @@ import { reportError } from '../services/sentry'
 interface UseGrantPermissionsReturnType {
   permissionRequested: boolean
   permissionGranted: boolean
-  setPermissionRequested: Dispatch<SetStateAction<boolean>>
-  setPermissionGranted: Dispatch<SetStateAction<boolean>>
 }
 
 const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPermissionsReturnType => {
   const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
+  const appState = useRef(AppState.currentState)
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
+        setPermissionRequested(false)
+      }
+      appState.current = nextAppState
+    })
+    return subscription.remove
+  }, [setPermissionRequested])
 
   useEffect(() => {
     if (!permissionRequested) {
@@ -32,7 +42,7 @@ const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPe
       }
     }
   }, [permissionRequested, permissions])
-  return { permissionRequested, permissionGranted, setPermissionRequested, setPermissionGranted }
+  return { permissionRequested, permissionGranted }
 }
 
 export default useGrantPermissions
