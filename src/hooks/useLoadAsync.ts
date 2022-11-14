@@ -13,8 +13,8 @@ export const loadAsync = async <T, P>(
     const response = await request(params)
     setData(response)
     setError(null)
-  } catch (e: any) {
-    setError(e)
+  } catch (e: unknown) {
+    setError(e instanceof Error ? e : new Error('unknown error'))
     setData(null)
   } finally {
     setLoading(false)

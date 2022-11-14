@@ -50,7 +50,7 @@ const testData = [
   },
 ]
 
-const expectedData = (parent: Discipline | null): Array<Discipline & Record<string, any>> => [
+const expectedData = (parent: Discipline | null): Array<Discipline & Record<string, unknown>> => [
   {
     apiKey: undefined,
     created_by: null,
