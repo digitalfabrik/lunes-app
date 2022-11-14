@@ -1,0 +1,6 @@
+issue_key: LUN-417
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Fehlersatz entfernt, wenn eine korrekte Lösung angezeigt wird.
