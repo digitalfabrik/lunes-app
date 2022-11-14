@@ -1247,7 +1247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-export-namespace-from@npm:^7.17.12, @babel/plugin-proposal-export-namespace-from@npm:^7.18.6":
+"@babel/plugin-proposal-export-namespace-from@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/plugin-proposal-export-namespace-from@npm:7.18.6"
   dependencies:
@@ -10256,7 +10256,7 @@ __metadata:
     react-native-permissions: ^3.4.0
     react-native-popover-view: ^5.0.2
     react-native-progress: ^5.0.0
-    react-native-reanimated: 2.9.1
+    react-native-reanimated: 2.10.0
     react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.14.1
@@ -12215,11 +12215,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.9.1":
-  version: 2.9.1
-  resolution: "react-native-reanimated@npm:2.9.1"
+"react-native-reanimated@npm:2.10.0":
+  version: 2.10.0
+  resolution: "react-native-reanimated@npm:2.10.0"
   dependencies:
-    "@babel/plugin-proposal-export-namespace-from": ^7.17.12
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@types/invariant": ^2.2.35
@@ -12231,7 +12230,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 22effe546ef1939a34ae34e5d2ade2a62bac7783e3bda6be9d7761a1716b785d7de8524395f0d6b2178f80a6345b87f13c073970ddccbbb0de726a90a92a4cc4
+  checksum: 14f216c308746695d3101d9930157b775415681840b6434da8cc273e36459c3ff95471a449c4c51ec9212ab1ea13bb17b5f200be81408a1ada2e4b2dda6b5824
   languageName: node
   linkType: hard
 
