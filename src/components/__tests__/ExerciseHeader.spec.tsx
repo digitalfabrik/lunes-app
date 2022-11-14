@@ -13,6 +13,7 @@ import ExerciseHeader from '../ExerciseHeader'
 
 jest.useFakeTimers()
 jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
+jest.mock('../AudioPlayer', () => () => null)
 
 describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()
@@ -25,7 +26,7 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         closeExerciseAction={goBack}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={1}
       />
     )

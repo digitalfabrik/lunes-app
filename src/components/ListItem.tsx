@@ -202,8 +202,8 @@ const ListItem = ({
         <FlexContainer>
           {titleToRender}
           <DescriptionContainer>
-            {badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
-            {description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
+            {!!badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
+            {!!description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
           </DescriptionContainer>
           {children}
         </FlexContainer>

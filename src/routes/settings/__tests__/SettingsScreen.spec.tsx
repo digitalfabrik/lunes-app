@@ -15,6 +15,11 @@ jest.mock('react-native/Libraries/Components/Switch/Switch', () => {
   }
 })
 
+jest.mock('../components/DebugModal', () => {
+  const Text = require('react-native').Text
+  return () => <Text>DebugModal</Text>
+})
+
 describe('SettingsScreen', () => {
   it('should render all elements', () => {
     const { getByText } = render(<SettingsScreen />)

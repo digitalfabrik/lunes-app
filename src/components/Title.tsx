@@ -42,8 +42,8 @@ const Title = ({ titleIcon, title, subtitle, description, children, style }: ITi
   <Container style={style}>
     {titleIcon}
     <TitleHeading>{title}</TitleHeading>
-    {subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
-    {description && <TitleContent>{description}</TitleContent>}
+    {!!subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
+    {!!description && <TitleContent>{description}</TitleContent>}
     {children}
   </Container>
 )

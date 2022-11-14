@@ -1,13 +1,13 @@
-import { DOCUMENT_TYPES, Favorite } from '../constants/data'
-import { Document, ENDPOINTS } from '../constants/endpoints'
-import { getUserVocabulary, removeFavorite } from '../services/AsyncStorage'
+import { VOCABULARY_ITEM_TYPES, Favorite } from '../constants/data'
+import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { getUserVocabularyItems, removeFavorite } from '../services/AsyncStorage'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { DocumentFromServer, formatDocumentFromServer } from './useLoadDocuments'
+import { VocabularyItemFromServer, formatVocabularyItemFromServer } from './useLoadVocabularyItems'
 
-export const loadFavorite = async (favorite: Favorite): Promise<Document | null> => {
-  if (favorite.documentType === DOCUMENT_TYPES.userCreated) {
-    const userVocabulary = await getUserVocabulary()
+export const loadFavorite = async (favorite: Favorite): Promise<VocabularyItem | null> => {
+  if (favorite.vocabularyItemType === VOCABULARY_ITEM_TYPES.userCreated) {
+    const userVocabulary = await getUserVocabularyItems()
     const userCreatedFavorite = userVocabulary.find(item => item.id === favorite.id)
     if (!userCreatedFavorite) {
       await removeFavorite(favorite)
@@ -15,11 +15,11 @@ export const loadFavorite = async (favorite: Favorite): Promise<Document | null>
     }
     return userCreatedFavorite
   }
-  const url = `${ENDPOINTS.document}/${favorite.id}`
-  const document = await getFromEndpoint<DocumentFromServer>(url, favorite.apiKey)
-  return formatDocumentFromServer(document)
+  const url = `${ENDPOINTS.vocabularyItem}/${favorite.id}`
+  const vocabularyItemFromServer = await getFromEndpoint<VocabularyItemFromServer>(url, favorite.apiKey)
+  return formatVocabularyItemFromServer(vocabularyItemFromServer)
 }
 
-const useLoadFavorite = (favorite: Favorite): Return<Document | null> => useLoadAsync(loadFavorite, favorite)
+const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => useLoadAsync(loadFavorite, favorite)
 
 export default useLoadFavorite

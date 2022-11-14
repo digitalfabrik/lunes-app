@@ -2,9 +2,9 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Share } from 'react-native'
 
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
-import DocumentBuilder from '../../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
 
@@ -13,15 +13,15 @@ jest.mock('react-native/Libraries/Share/Share', () => ({
 }))
 
 describe('ShareButton', () => {
-  const documents = new DocumentBuilder(1).build()
-  const results: DocumentResult[] = [
+  const vocabularyItems = new VocabularyItemBuilder(1).build()
+  const results: VocabularyItemResult[] = [
     {
-      document: documents[0],
+      vocabularyItem: vocabularyItems[0],
       result: 'correct',
       numberOfTries: 1,
     },
     {
-      document: documents[1],
+      vocabularyItem: vocabularyItems[1],
       result: 'incorrect',
       numberOfTries: 1,
     },

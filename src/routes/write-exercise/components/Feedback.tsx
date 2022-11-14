@@ -11,7 +11,7 @@ import {
   BannerRed,
   CloseCircleIconBold,
 } from '../../../../assets/images'
-import { DocumentResult } from '../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
 const Background = styled.ImageBackground`
@@ -32,9 +32,10 @@ const StyledText = styled.Text`
 `
 
 export interface FeedbackProps {
-  documentWithResult: DocumentResult
+  vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
 }
+
 
 const Feedback = ({ documentWithResult, submission }: FeedbackProps): ReactElement | null => {
   const { result, document } = documentWithResult

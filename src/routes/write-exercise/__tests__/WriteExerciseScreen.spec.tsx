@@ -8,7 +8,7 @@ import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
@@ -58,15 +58,20 @@ jest.mock('react-native-sound-player', () => ({
   loadUrl: jest.fn(),
 }))
 
+jest.mock('../../../components/CheatMode', () => {
+  const Text = require('react-native').Text
+  return () => <Text>CheatMode</Text>
+})
+
 describe('WriteExerciseScreen', () => {
-  const documents = new DocumentBuilder(2).build()
+  const vocabularyItems = new VocabularyItemBuilder(2).build()
 
   const navigation = createNavigationMock<'WriteExercise'>()
   const route: RouteProp<RoutesParams, 'WriteExercise'> = {
     key: '',
     name: 'WriteExercise',
     params: {
-      documents,
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
@@ -75,7 +80,7 @@ describe('WriteExerciseScreen', () => {
 
   const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
 
-  it('should allow to skip a document and try it out later', () => {
+  it('should allow to skip a vocabularyItem and try it out later', () => {
     const { getByText, getByPlaceholderText } = renderWriteExercise()
 
     fireEvent.press(getByText(getLabels().exercises.tryLater))
@@ -89,7 +94,7 @@ describe('WriteExerciseScreen', () => {
     expect(getByText(getLabels().exercises.write.feedback.correct)).toBeTruthy()
   })
 
-  it('should not allow to skip last document', () => {
+  it('should not allow to skip last vocabularyItem', () => {
     const { queryByText, getByText, getByPlaceholderText } = renderWriteExercise()
 
     expect(getLabels().exercises.tryLater).not.toBeNull()
@@ -167,8 +172,8 @@ describe('WriteExerciseScreen', () => {
     })
 
     expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
-      { document: documents[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { document: documents[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
   })
 
@@ -224,7 +229,7 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(audioButton)
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(documents[0].audio)
+    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(vocabularyItems[0].audio)
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 

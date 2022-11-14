@@ -5,11 +5,11 @@ import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../../components/Button'
 import CustomTextInput from '../../../components/CustomTextInput'
-import DocumentImageSection from '../../../components/DocumentImageSection'
+import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import useKeyboard from '../../../hooks/useKeyboard'
-import { DocumentResult } from '../../../navigation/NavigationTypes'
-import { getLabels, stringifyDocument } from '../../../services/helpers'
+import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { getLabels, stringifyVocabularyItem } from '../../../services/helpers'
 import Feedback from './Feedback'
 import MissingArticlePopover from './MissingArticlePopover'
 
@@ -24,17 +24,17 @@ const InputContainer = styled.View`
 `
 
 interface InteractionSectionProps {
-  documentWithResult: DocumentResult
+  vocabularyItemWithResult: VocabularyItemResult
   isAnswerSubmitted: boolean
-  storeResult: (result: DocumentResult) => void
+  storeResult: (result: VocabularyItemResult) => void
 }
 
 const almostCorrectThreshold = 0.6
 const ttsThreshold = 0.6
 
 const InteractionSection = (props: InteractionSectionProps): ReactElement => {
-  const { isAnswerSubmitted, documentWithResult, storeResult } = props
-  const { document } = documentWithResult
+  const { isAnswerSubmitted, vocabularyItemWithResult, storeResult } = props
+  const { vocabularyItem } = vocabularyItemWithResult
 
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
@@ -43,8 +43,9 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || documentWithResult.result === 'similar'
   const isCorrect = documentWithResult.result === 'correct'
+
   const isCorrectAlternativeSubmitted =
-    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyDocument(document)) <= ttsThreshold
+    isCorrect && stringSimilarity.compareTwoStrings(input, stringifyVocabularyItem(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
   const textInputRef = useRef<View>(null)
 
@@ -55,12 +56,15 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
     }
   }, [isAnswerSubmitted])
   const validateAnswer = (article: string, word: string): SimpleResult => {
-    const validAnswers = [{ article: document.article, word: document.word }, ...document.alternatives]
+    const validAnswers = [
+      { article: vocabularyItem.article, word: vocabularyItem.word },
+      ...vocabularyItem.alternatives,
+    ]
     if (validAnswers.some(answer => answer.word === word && answer.article.value === article)) {
       return 'correct'
     }
     if (validAnswers.some(answer => answer.word === word)) {
-      // Word is an exact match with either the document or an alternative -> just the article is wrong
+      // Word is an exact match with either the vocabularyItem or an alternative -> just the article is wrong
       return 'similar'
     }
     if (validAnswers.some(answer => stringSimilarity.compareTwoStrings(answer.word, word) > almostCorrectThreshold)) {
@@ -72,13 +76,13 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const uncapitalizeFirstLetter = (string: string): string => string.charAt(0).toLowerCase() + string.slice(1)
 
   const updateAndStoreResult = (score: SimpleResult): void => {
-    const nthRetry = documentWithResult.numberOfTries + 1
-    const documentWithResultToStore = {
-      ...documentWithResult,
+    const nthRetry = vocabularyItemWithResult.numberOfTries + 1
+    const vocabularyItemWithResultToStore = {
+      ...vocabularyItemWithResult,
       result: score === 'similar' && nthRetry >= numberOfMaxRetries ? SIMPLE_RESULTS.incorrect : score,
       numberOfTries: nthRetry,
     }
-    storeResult(documentWithResultToStore)
+    storeResult(vocabularyItemWithResultToStore)
   }
 
   const checkEntry = async (): Promise<void> => {
@@ -98,7 +102,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   const getBorderColor = (): string => {
     if (isAnswerSubmitted) {
-      switch (documentWithResult.result) {
+      switch (vocabularyItemWithResult.result) {
         case 'correct':
           return theme.colors.correct
         case 'incorrect':
@@ -113,8 +117,8 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
 
   return (
     <>
-      <DocumentImageSection
-        document={document}
+      <VocabularyItemImageSection
+        vocabularyItem={vocabularyItem}
         minimized={isKeyboardVisible}
         audioDisabled={retryAllowed}
         submittedAlternative={submittedAlternative}
@@ -138,6 +142,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
             clearable={retryAllowed && input !== ''}
           />
         </TextInputContainer>
+
 
         {isAnswerSubmitted && <Feedback documentWithResult={documentWithResult} submission={submittedInput} />}
         {retryAllowed && (
