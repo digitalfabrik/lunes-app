@@ -60,7 +60,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
 
   const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (
     <PaginationView minimized={minimized}>
-      {currentIndex && allSize && (
+      {!!currentIndex && !!allSize && (
         <Pagination
           activeDotIndex={currentIndex - 1}
           dotsLength={allSize}

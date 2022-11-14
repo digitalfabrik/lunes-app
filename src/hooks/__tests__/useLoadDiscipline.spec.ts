@@ -29,7 +29,7 @@ const testData = [
   ],
 ]
 
-const expectedData: Array<Discipline & Record<string, any>> = [
+const expectedData: Array<Discipline & Record<string, unknown>> = [
   {
     apiKey: undefined,
     created_by: 1,
