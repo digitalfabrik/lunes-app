@@ -24,11 +24,4 @@ export default {
   ],
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
-  globals: {
-    'ts-jest': {
-      diagnostics: {
-        warnOnly: true,
-      },
-    },
-  },
 }
