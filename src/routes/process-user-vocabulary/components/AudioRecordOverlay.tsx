@@ -82,7 +82,6 @@ interface AudioRecordOverlayProps {
   setRecordingPath: Dispatch<SetStateAction<string | null>>
   recordingPath: string | null
   setRecordSeconds: Dispatch<SetStateAction<number>>
-  getCurrentPath: () => Promise<string>
 }
 
 const recordingTimeInit = '00:00'
@@ -113,7 +112,6 @@ const AudioRecordOverlay = ({
   setRecordingPath,
   recordingPath,
   setRecordSeconds,
-  getCurrentPath,
 }: AudioRecordOverlayProps): ReactElement => {
   const [meteringResults, setMeteringResults] = useState<number[]>([])
   const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
@@ -136,8 +134,7 @@ const AudioRecordOverlay = ({
 
   const onStartRecording = async (): Promise<void> => {
     setMeteringResults([])
-    const path = await getCurrentPath()
-    const uri = await audioRecorderPlayer.startRecorder(path, undefined, true)
+    const uri = await audioRecorderPlayer.startRecorder(undefined, undefined, true)
     audioRecorderPlayer.addRecordBackListener(e => {
       setMeteringResults(oldMeteringResults => [
         ...oldMeteringResults,

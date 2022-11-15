@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { Animated, Platform } from 'react-native'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
-import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
+import { DocumentDirectoryPath, writeFile, copyFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, ImageCircleIcon, MicrophoneCircleIcon, VolumeUpCircleIcon } from '../../../assets/images'
@@ -145,15 +145,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     }
   }, [fadeIn, recordingPath])
 
-  const getAudioPath = async (): Promise<string> => {
-    const id = await getNextUserVocabularyId()
-    const filename = `audio-${id}`
-    return Platform.select({
-      ios: `${filename}.m4a`,
-      android: `${DocumentDirectoryPath}/${filename}.mp3`,
-    })!
-  }
-
   const deleteRecording = (): void => {
     setRecordingPath(null)
   }
@@ -179,12 +170,22 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         })
       )
 
+      let destPath = ''
+      if (recordingPath) {
+        const filename = `audio-${id}`
+        destPath = Platform.select({
+          ios: `${filename}.m4a`,
+          android: `${DocumentDirectoryPath}/${filename}.mp4`,
+        })!
+        await copyFile(recordingPath, destPath)
+      }
+
       await addUserVocabularyItem({
         id,
         word,
         article: ARTICLES[articleId],
         images: imagePaths,
-        audio: recordingPath ?? '',
+        audio: destPath,
         alternatives: [],
         type: VOCABULARY_ITEM_TYPES.userCreated,
       })
@@ -230,7 +231,6 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         setShowAudioRecordOverlay={setShowAudioRecordOverlay}
         setRecordSeconds={setRecordSeconds}
         audioRecorderPlayer={audioRecorderPlayer}
-        getCurrentPath={getAudioPath}
       />
     )
   }
