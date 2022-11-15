@@ -10318,7 +10318,7 @@ __metadata:
     react-dom: 17.0.2
     react-is: ^18.2.0
     react-native: 0.66.5
-    react-native-audio-recorder-player: ^3.5.1
+    react-native-audio-recorder-player: 3.5.1
     react-native-camera: ^4.2.1
     react-native-device-info: ^9.0.2
     react-native-dropdown-picker: ^5.4.2
@@ -12167,7 +12167,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-audio-recorder-player@npm:^3.5.1":
+"react-native-audio-recorder-player@npm:3.5.1":
   version: 3.5.1
   resolution: "react-native-audio-recorder-player@npm:3.5.1"
   dependencies:
