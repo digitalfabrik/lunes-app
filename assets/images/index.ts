@@ -70,7 +70,6 @@ import ThumbsUpIcon from './thumbs-up.svg'
 import TrashIconWhite from './trash-bin-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
-import VolumeUpCircleOutlineIcon from './volume-up-circle-outline-icon.svg'
 
 export {
   AddCircleIcon,
@@ -143,7 +142,6 @@ export {
   TrashIcon,
   TrashIconWhite,
   VolumeUpCircleIcon,
-  VolumeUpCircleOutlineIcon,
   ThumbsUpIcon,
   ThumbsDownIcon,
 }
