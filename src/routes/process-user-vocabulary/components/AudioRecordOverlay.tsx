@@ -119,13 +119,7 @@ const AudioRecordOverlay = ({
   const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionGranted, permissionRequested } = useGrantPermissions(
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.MICROPHONE
-      : [
-          PERMISSIONS.ANDROID.RECORD_AUDIO,
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-        ]
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO
   )
   const { hold, talk } = getLabels().general.audio
   const { description } = getLabels().general.audio.noAuthorization
