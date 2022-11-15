@@ -30,7 +30,6 @@ import CloseIcon from './close-icon.svg'
 import CrystalBallIcon from './crystal-ball.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
-import FloppyDiskIcon from './floppy-disk-icon.svg'
 import HappySmileyIcon from './happy-smiley-circle-icon-white.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
 import HeaderLinesIcon from './header-lines-icon.svg'
@@ -56,7 +55,6 @@ import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import PenIcon from './pen-icon.svg'
-import PlayIcon from './play-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
 import RepeatIcon from './repeat-icon.svg'
 import SadSmileyCircleIcon from './sad-smiley-circle-icon-white.svg'
@@ -67,7 +65,6 @@ import StarCircleIconGrey from './star-circle-icon-grey.svg'
 import StarIconGreyFilled from './star-icon-grey-filled.svg'
 import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
-import StopIcon from './stop-icon.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
 import TrashIconWhite from './trash-bin-icon-white.svg'
@@ -109,7 +106,6 @@ export {
   CrystalBallIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
-  FloppyDiskIcon,
   HappySmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,
@@ -135,7 +131,6 @@ export {
   QRCodeIcon,
   PartyHornIcon,
   PenIcon,
-  PlayIcon,
   RepeatIcon,
   SadSmileyIcon,
   SadSmileyCircleIcon,
@@ -145,7 +140,6 @@ export {
   StarIconGrey,
   StarIconGreyFilled,
   StarIconWhite,
-  StopIcon,
   TrashIcon,
   TrashIconWhite,
   VolumeUpCircleIcon,
