@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { Animated, Platform } from 'react-native'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
-import { DocumentDirectoryPath, writeFile, copyFile } from 'react-native-fs'
+import { DocumentDirectoryPath, writeFile, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, ImageCircleIcon, MicrophoneCircleIcon, VolumeUpCircleIcon } from '../../../assets/images'
@@ -177,7 +177,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
           ios: `${filename}.m4a`,
           android: `${DocumentDirectoryPath}/${filename}.mp4`,
         })!
-        await copyFile(recordingPath, destPath)
+        await moveFile(recordingPath, destPath)
       }
 
       await addUserVocabularyItem({
