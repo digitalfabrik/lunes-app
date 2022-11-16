@@ -60,6 +60,7 @@ const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): Reac
     background = BannerRed
     message = submission ? `${getLabels().exercises.write.feedback.wrong}\n${correctSolutionHint}` : correctSolutionHint
   }
+
   return (
     <Background source={background} testID='background-image'>
       <Icon width={28} height={28} />

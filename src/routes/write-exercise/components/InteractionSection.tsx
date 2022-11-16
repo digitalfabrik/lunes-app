@@ -40,14 +40,13 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [input, setInput] = useState<string>('')
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
   const theme = useTheme()
-
   const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || vocabularyItemWithResult.result === 'similar'
   const isCorrect = vocabularyItemWithResult.result === 'correct'
-
   const isCorrectAlternativeSubmitted =
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyVocabularyItem(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
+
   const textInputRef = useRef<View>(null)
 
   useEffect(() => {
