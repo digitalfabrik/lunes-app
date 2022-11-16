@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
+import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon, MicrophoneCircleIcon } from '../../../assets/images'
@@ -94,8 +94,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
-          await writeFile(path, image, 'utf8')
+          const path = `${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          await moveFile(image, path)
           return { id: index, image: path }
         })
       )

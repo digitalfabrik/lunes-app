@@ -4,7 +4,7 @@ import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../const
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
-import { calculateScore, getImages } from './helpers'
+import { calculateScore } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -188,7 +188,7 @@ export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   return Promise.all(
     userVocabulary.map(async item => ({
       ...item,
-      image: await getImages(item),
+      images: item.images.map(el => ({ ...el, image: `file:///${el.image}` })),
     }))
   )
 }
