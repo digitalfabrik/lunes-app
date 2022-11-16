@@ -36,7 +36,9 @@ export interface AnswerReviewProps {
   submission: string | null
 }
 
-const AnswerReview = ({ vocabularyItemWithResult, submission }: AnswerReviewProps): ReactElement | null => {
+const AnswerReview = ({
+  vocabularyItemWithResult,
+  submission}: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
