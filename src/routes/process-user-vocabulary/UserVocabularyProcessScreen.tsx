@@ -94,7 +94,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
           await moveFile(image, path)
           return { id: index, image: path }
         })
