@@ -40,6 +40,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [input, setInput] = useState<string>('')
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
   const theme = useTheme()
+
   const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || vocabularyItemWithResult.result === 'similar'
   const isCorrect = vocabularyItemWithResult.result === 'correct'
@@ -55,6 +56,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
       setSubmittedInput('')
     }
   }, [isAnswerSubmitted])
+
   const validateAnswer = (article: string, word: string): SimpleResult => {
     const validAnswers = [
       { article: vocabularyItem.article, word: vocabularyItem.word },

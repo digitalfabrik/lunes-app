@@ -44,6 +44,7 @@ const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): Reac
   let Icon
   let background
   let message
+
   if (result === 'correct') {
     Icon = CheckCircleIconBold
     background = BannerGreen

@@ -26,7 +26,6 @@ describe('Feedback', () => {
   it('should render similar feedback', () => {
     const submission = 'Die Abrissbirn'
     const { queryByText } = renderFeedback('similar', 1, submission)
-
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
@@ -39,7 +38,6 @@ describe('Feedback', () => {
   it('should render finally incorrect feedback', () => {
     const submission = 'Der Auto'
     const { queryByText } = renderFeedback('incorrect', 1, submission)
-
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
