@@ -39,6 +39,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const [isArticleMissing, setIsArticleMissing] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [submittedInput, setSubmittedInput] = useState<string | null>(null)
+
   const theme = useTheme()
   const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || vocabularyItemWithResult.result === 'similar'
