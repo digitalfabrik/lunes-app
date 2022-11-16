@@ -21,7 +21,7 @@ describe('Feedback', () => {
     const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
     return render(
       <AnswerReview
-        documentWithResult={vocabularyItemWithResult}
+        vocabularyItemWithResult={vocabularyItemWithResult}
         submission={submission}
         needsToBeRepeated={needsToBeRepeated}
       />
