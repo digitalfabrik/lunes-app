@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { mocked } from 'jest-mock'
 
-import { getFromEndpoint } from '../../services/axios'
-import { loadAsync } from '../useLoadAsync'
+import { getFromEndpoint } from '../axios'
 
 jest.mock('axios', () => ({ get: jest.fn() }))
 
@@ -35,32 +34,5 @@ describe('getFromEndpoint', () => {
     expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/abc/', {
       headers: { Authorization: `Api-Key ${apiKey}` },
     })
-  })
-})
-
-describe('loadFromEndpoint', () => {
-  const setData = jest.fn()
-  const setError = jest.fn()
-  const setLoading = jest.fn()
-
-  it('should set everything correctly if loading from endpoint succeeds', async () => {
-    const request = async (): Promise<string> => 'myData'
-
-    await loadAsync(request, undefined, setData, setError, setLoading)
-
-    expect(setError).toHaveBeenCalledTimes(1)
-    expect(setError).toHaveBeenCalledWith(null)
-    expect(setData).toHaveBeenCalledTimes(1)
-    expect(setData).toHaveBeenCalledWith('myData')
-  })
-
-  it('should set everything correctly if loading from endpoint throws an error', async () => {
-    const error = new Error('myError')
-    const request = async (): Promise<void> => Promise.reject(error)
-    await loadAsync(request, undefined, setData, setError, setLoading)
-    expect(setError).toHaveBeenCalledTimes(1)
-    expect(setError).toHaveBeenCalledWith(error)
-    expect(setData).toHaveBeenCalledTimes(1)
-    expect(setData).toHaveBeenCalledWith(null)
   })
 })

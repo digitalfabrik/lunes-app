@@ -4,9 +4,9 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { Document } from '../../constants/endpoints'
-import { stringifyDocument } from '../../services/helpers'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import { VocabularyItem } from '../../constants/endpoints'
+import { stringifyVocabularyItem } from '../../services/helpers'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
@@ -24,23 +24,25 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('AudioPlayer', () => {
-  const noAudioDocument = new DocumentBuilder(2).build()[1]
+  const noAudioVocabularyItem = new VocabularyItemBuilder(2).build()[1]
 
-  const audioDocument = {
-    ...noAudioDocument,
+  const audioVocabularyItem = {
+    ...noAudioVocabularyItem,
     audio: 'https://example.com',
   }
 
   const renderAudioPlayer = ({
-    document = noAudioDocument,
+    vocabularyItem = noAudioVocabularyItem,
     submittedAlternative = null,
     disabled = false,
   }: {
-    document?: Document
+    vocabularyItem?: VocabularyItem
     submittedAlternative?: string | null
     disabled?: boolean
   }): RenderAPI =>
-    render(<AudioPlayer document={document} disabled={disabled} submittedAlternative={submittedAlternative} />)
+    render(
+      <AudioPlayer vocabularyItem={vocabularyItem} disabled={disabled} submittedAlternative={submittedAlternative} />
+    )
 
   it('should initialize tts', async () => {
     renderAudioPlayer({})
@@ -54,7 +56,7 @@ describe('AudioPlayer', () => {
   })
 
   it('should initialize tts if alternative submitted', async () => {
-    renderAudioPlayer({ document: audioDocument, submittedAlternative: 'asdf' })
+    renderAudioPlayer({ vocabularyItem: audioVocabularyItem, submittedAlternative: 'asdf' })
     expect(Tts.getInitStatus).toHaveBeenCalled()
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
@@ -78,7 +80,7 @@ describe('AudioPlayer', () => {
 
   it('should initialize sound player', () => {
     jest.clearAllMocks()
-    renderAudioPlayer({ document: audioDocument })
+    renderAudioPlayer({ vocabularyItem: audioVocabularyItem })
     expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
@@ -100,17 +102,17 @@ describe('AudioPlayer', () => {
   })
 
   it('should play audio if available and no alternative solution submitted', () => {
-    const { getByTestId } = renderAudioPlayer({ document: audioDocument })
+    const { getByTestId } = renderAudioPlayer({ vocabularyItem: audioVocabularyItem })
     fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioDocument.audio)
+    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioVocabularyItem.audio)
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
   it('should play submitted alternative', async () => {
     const submittedAlternative = 'my alternative'
-    const { getByTestId } = renderAudioPlayer({ document: audioDocument, submittedAlternative })
+    const { getByTestId } = renderAudioPlayer({ vocabularyItem: audioVocabularyItem, submittedAlternative })
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     fireEvent.press(getByTestId('audio-player'))
@@ -127,7 +129,7 @@ describe('AudioPlayer', () => {
     fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(stringifyDocument(noAudioDocument), expect.any(Object))
+    expect(Tts.speak).toHaveBeenCalledWith(stringifyVocabularyItem(noAudioVocabularyItem), expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
   })
 })

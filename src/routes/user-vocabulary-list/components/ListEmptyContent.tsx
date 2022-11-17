@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import ListEmpty from '../../../components/ListEmpty'
 import Loading from '../../../components/Loading'
-import { Document } from '../../../constants/endpoints'
+import { VocabularyItem } from '../../../constants/endpoints'
 import { Return } from '../../../hooks/useLoadAsync'
 import { getLabels } from '../../../services/helpers'
 
@@ -13,18 +13,18 @@ const EmptyContainer = styled.View`
 `
 
 interface ListEmptyContentProps {
-  documents: Return<Document[]>
+  vocabularyItems: Return<VocabularyItem[]>
 }
 
-const ListEmptyContent = ({ documents }: ListEmptyContentProps): ReactElement => {
-  if (documents.loading) {
+const ListEmptyContent = ({ vocabularyItems }: ListEmptyContentProps): ReactElement => {
+  if (vocabularyItems.loading) {
     return (
       <EmptyContainer>
-        <Loading isLoading={documents.loading} />
+        <Loading isLoading={vocabularyItems.loading} />
       </EmptyContainer>
     )
   }
-  return documents.data?.length === 0 ? (
+  return vocabularyItems.data?.length === 0 ? (
     <ListEmpty label={getLabels().userVocabulary.list.noWordsYet} />
   ) : (
     <ListEmpty label={getLabels().general.noResults} />

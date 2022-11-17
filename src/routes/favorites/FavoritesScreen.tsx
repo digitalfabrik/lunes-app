@@ -8,7 +8,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { Favorite } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import useLoadAsync from '../../hooks/useLoadAsync'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getFavorites } from '../../services/AsyncStorage'
@@ -33,8 +33,8 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
 
   useFocusEffect(refresh)
 
-  const navigateToDetail = (document: Document): void => {
-    navigation.navigate('VocabularyDetail', { document })
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
   const renderItem = ({ item }: { item: Favorite }): JSX.Element => (

@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
@@ -22,15 +22,15 @@ const Button = styled(PressableOpacity)`
 `
 
 interface FavoriteButtonProps {
-  document: Document
+  vocabularyItem: VocabularyItem
   onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ document, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
+const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
   const favorite = {
-    id: document.id,
-    documentType: document.documentType,
-    ...(document.apiKey && { apiKey: document.apiKey }),
+    id: vocabularyItem.id,
+    vocabularyItemType: vocabularyItem.type,
+    ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
   }
 
   const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)

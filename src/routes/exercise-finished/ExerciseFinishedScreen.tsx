@@ -59,15 +59,22 @@ interface ExerciseFinishedScreenProps {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, disciplineTitle, disciplineId, documents, closeExerciseAction, unlockedNextExercise } =
-    route.params
+  const {
+    exercise,
+    results,
+    disciplineTitle,
+    disciplineId,
+    vocabularyItems,
+    closeExerciseAction,
+    unlockedNextExercise,
+  } = route.params
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
 
   const repeatExercise = (): void =>
     navigation.navigate(EXERCISES[exercise].screen, {
-      documents,
+      vocabularyItems,
       disciplineId,
       disciplineTitle,
       closeExerciseAction,
@@ -76,7 +83,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const startNextExercise = (): void => {
     if (exercise + 1 < EXERCISES.length) {
       navigation.navigate(EXERCISES[exercise + 1].screen, {
-        documents,
+        vocabularyItems,
         disciplineId,
         disciplineTitle,
         closeExerciseAction,
