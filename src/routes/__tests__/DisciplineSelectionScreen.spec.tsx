@@ -69,7 +69,7 @@ describe('DisciplineSelectionScreen', () => {
       discipline: mockDisciplines()[2],
       disciplineTitle: mockDisciplines()[2].title,
       disciplineId: mockDisciplines()[2].id,
-      "vocabularyItems": null,
+      vocabularyItems: null,
     })
   })
 
