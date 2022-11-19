@@ -33,7 +33,7 @@ const RouteWrapper = ({
     </Container>
     {/* For iOS a separate container is needed to overwrite the color of the bottom notch */}
     {bottomBackgroundColor && Platform.OS === 'ios' ? (
-      <Container shouldTakeSpace={false} backgroundColor={bottomBackgroundColor} />
+      <Container shouldTakeSpace={false} backgroundColor={bottomBackgroundColor} testID='hiddenContainer' />
     ) : null}
   </>
 )
