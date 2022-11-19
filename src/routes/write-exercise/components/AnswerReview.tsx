@@ -31,15 +31,16 @@ const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-export interface FeedbackProps {
+export interface AnswerReviewProps {
   vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
 }
 
-const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): ReactElement | null => {
+const AnswerReview = ({ vocabularyItemWithResult, submission }: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
-  const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
+  const wrongSolutionLabel: string = getLabels().exercises.write.feedback.solution
+  const correctSolutionHint = `${wrongSolutionLabel} ${correctSolution}` as string
 
   let Icon
   let background
@@ -69,4 +70,4 @@ const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): Reac
   )
 }
 
-export default Feedback
+export default AnswerReview
