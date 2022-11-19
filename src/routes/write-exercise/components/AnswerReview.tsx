@@ -39,8 +39,7 @@ export interface AnswerReviewProps {
 const AnswerReview = ({ vocabularyItemWithResult, submission }: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
-  const wrongSolutionLabel: string = getLabels().exercises.write.feedback.solution
-  const correctSolutionHint = `${wrongSolutionLabel} ${correctSolution}` as string
+  const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
 
   let Icon
   let background
