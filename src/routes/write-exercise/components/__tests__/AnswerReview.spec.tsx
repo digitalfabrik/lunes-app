@@ -46,6 +46,7 @@ describe('AnswerReview', () => {
       )
     ).toBeTruthy()
   })
+
   it('should render incorrect feedback with retries not exceeded', () => {
     const submission = 'Der Auto'
     const { queryByText } = renderAnswerReview('incorrect', 1, submission)
