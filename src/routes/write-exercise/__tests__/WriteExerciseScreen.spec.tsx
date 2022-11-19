@@ -122,9 +122,9 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItems[1].article.value} ${
-          vocabularyItems[1].word
-        }“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
+          vocabularyItems[1].article.value
+        } ${vocabularyItems[1].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.showResults)).toBeDefined()
@@ -150,9 +150,9 @@ describe('WriteExerciseScreen', () => {
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
     expect(
       getByText(
-        `${getLabels().exercises.write.feedback.wrongWithSolution} „${vocabularyItems[0].article.value} ${
-          vocabularyItems[0].word
-        }“`
+        `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
+          vocabularyItems[0].article.value
+        } ${vocabularyItems[0].word}“`
       )
     ).toBeDefined()
     expect(getByText(getLabels().exercises.next)).toBeDefined()
@@ -211,7 +211,7 @@ describe('WriteExerciseScreen', () => {
   it('should show wrong feedback with correct solution', () => {
     evaluate(
       'das Falsche',
-      `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.wrongWithSolution} „${
+      `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
         vocabularyItems[0].article.value
       } ${vocabularyItems[0].word}“`
     )
