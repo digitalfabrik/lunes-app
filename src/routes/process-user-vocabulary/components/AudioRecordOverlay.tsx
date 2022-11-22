@@ -96,14 +96,7 @@ const cleanUpMeteringResults = (meteringResults: number[]): number[] => {
   return filteredResults.map(el => el + Math.abs(Math.min(...filteredResults)))
 }
 
-const getCurrentMetering = (metering?: number): number => {
-  if (!metering) {
-    return 0
-  }
-  return Platform.select({
-    ios: metering,
-    android: metering * androidFactor,
-  }) as number
+const getCurrentMetering = (metering = 0): number => (Platform.OS === 'android' ? metering * androidFactor : metering)
 }
 
 const AudioRecordOverlay = ({
