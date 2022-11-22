@@ -16,7 +16,7 @@ const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPe
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
+      if (appState.current !== 'active' && nextAppState === 'active') {
         setPermissionRequested(false)
       }
       appState.current = nextAppState
