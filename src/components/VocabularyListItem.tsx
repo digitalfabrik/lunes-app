@@ -48,7 +48,7 @@ const VocabularyListItem = ({
   onFavoritesChanged,
   children,
 }: VocabularyListItemProps): ReactElement => {
-  const { article, word, images, audio } = vocabularyItem
+  const { article, word, images } = vocabularyItem
   const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -70,7 +70,7 @@ const VocabularyListItem = ({
       icon={icon}
       rightChildren={
         <RightChildrenContainer>
-          <AudioPlayer audioPath={audio} disabled={false} />
+          <AudioPlayer vocabularyItem={vocabularyItem} disabled={false} />
           <FavButtonContainer>
             <FavoriteButton vocabularyItem={vocabularyItem} onFavoritesChanged={onFavoritesChanged} />
           </FavButtonContainer>

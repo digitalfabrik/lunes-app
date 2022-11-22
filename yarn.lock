@@ -10312,7 +10312,6 @@ __metadata:
     metro-react-native-babel-preset: ^0.66.2
     normalize-strings: ^1.1.1
     patch-package: ^6.5.0
-    postinstall-postinstall: ^2.1.0
     prettier: ^2.7.1
     react: 17.0.2
     react-dom: 17.0.2
@@ -10340,7 +10339,6 @@ __metadata:
     react-native-svg: ^12.3.0
     react-native-svg-transformer: ^1.0.0
     react-native-tts: 4.1.0
-    react-native-uuid: ^2.0.1
     react-native-vector-icons: ^9.2.0
     react-navigation-header-buttons: ^9.0.1
     react-test-renderer: 17.0.2
@@ -11841,13 +11839,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postinstall-postinstall@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "postinstall-postinstall@npm:2.1.0"
-  checksum: 70488447292c712afa7806126824d6fe93362392cbe261ae60166d9119a350713e0dbf4deb2ca91637c1037bc030ed1de78d61d9041bf2504513070f1caacdfd
-  languageName: node
-  linkType: hard
-
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -12446,13 +12437,6 @@ __metadata:
   version: 4.1.0
   resolution: "react-native-tts@npm:4.1.0"
   checksum: eed2967339041fb3384a39e93d6e7d6acab9a63eee290dde88ca78d7bab0794462a72102b43044c09a4b7d250a14ad9a884a485aedebddefcd5030c0daaa1329
-  languageName: node
-  linkType: hard
-
-"react-native-uuid@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "react-native-uuid@npm:2.0.1"
-  checksum: f938337ff98d1ce55fed69fd3b1fa199767df0be0358773d26f4ec53dd0f3f894852d8f2cbce30d3c0ab9b1ba8640bc87fdf688f9653d202b0422c7d763767c9
   languageName: node
   linkType: hard
 

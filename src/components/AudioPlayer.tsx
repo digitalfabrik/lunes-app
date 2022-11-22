@@ -4,15 +4,30 @@ import Tts, { TtsError } from 'react-native-tts'
 import styled, { useTheme } from 'styled-components/native'
 
 import { VolumeUpCircleIcon } from '../../assets/images'
+import { VocabularyItem } from '../constants/endpoints'
 import { stringifyVocabularyItem } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
 
-export interface AudioPlayerProps {
-  audioPath: string | null
+interface AudioPlayerBaseProps {
   disabled: boolean
   // If the user submitted a correct alternative (differing enough to the vocabularyItem), we want to play the alternative
   submittedAlternative?: string | null
+  vocabularyItem?: never
+  audioPath?: never
 }
+
+interface AudioVocabularyPlayerProps {
+  vocabularyItem: VocabularyItem
+}
+
+interface AudioSoundPlayerProps {
+  audioPath: string
+}
+
+// Either vocabularyItem or audioPath have to be set
+export type AudioPlayerProps =
+  | (Omit<AudioPlayerBaseProps, 'vocabularyItem'> & AudioVocabularyPlayerProps)
+  | (Omit<AudioPlayerBaseProps, 'audioPath'> & AudioSoundPlayerProps)
 
 const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boolean }>`
   width: ${props => props.theme.spacings.lg};
@@ -36,7 +51,9 @@ const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boole
   shadow-opacity: 0.5;
 `
 
-const AudioPlayer = ({ audioPath, disabled, submittedAlternative }: AudioPlayerProps): ReactElement => {
+const AudioPlayer = ({ vocabularyItem, disabled, submittedAlternative, audioPath }: AudioPlayerProps): ReactElement => {
+  const audio = vocabularyItem ? vocabularyItem.audio : audioPath
+
   const theme = useTheme()
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
@@ -62,7 +79,7 @@ const AudioPlayer = ({ audioPath, disabled, submittedAlternative }: AudioPlayerP
   }, [])
 
   useEffect(() => {
-    if (audioPath && !submittedAlternative) {
+    if (audio && !submittedAlternative) {
       const onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', () => {
         SoundPlayer.play()
       })
@@ -80,13 +97,13 @@ const AudioPlayer = ({ audioPath, disabled, submittedAlternative }: AudioPlayerP
     const listener = Tts.addListener('tts-finish', ttsHandler)
 
     return listener.remove
-  }, [submittedAlternative, audioPath, initializeTts])
+  }, [submittedAlternative, audio, initializeTts])
 
   const handleSpeakerClick = (): void => {
     if (isInitialized) {
       setIsActive(true)
-      if (audioPath && !submittedAlternative) {
-        SoundPlayer.loadUrl(audioPath)
+      if (audio && !submittedAlternative) {
+        SoundPlayer.loadUrl(audio)
       } else {
         // @ts-expect-error ios params should be optional
         Tts.speak(submittedAlternative ?? stringifyVocabularyItem(vocabularyItem), {

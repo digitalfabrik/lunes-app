@@ -39,7 +39,7 @@ const VocabularyItemImageSection = ({
     <ImageCarousel images={vocabularyItem.images} minimized={minimized} />
     <AudioContainer>
       <AudioPlayer
-        audioPath={vocabularyItem.audio}
+        vocabularyItem={vocabularyItem}
         disabled={audioDisabled}
         submittedAlternative={submittedAlternative}
       />
