@@ -75,7 +75,7 @@
       "insertAnswer": "Wort mit Artikel eingeben",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
-        "wrongWithSolution": "Die richtige Antwort ist:",
+        "solution": "Die richtige Antwort ist:",
         "wrong": "Das war leider nicht richtig.",
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",

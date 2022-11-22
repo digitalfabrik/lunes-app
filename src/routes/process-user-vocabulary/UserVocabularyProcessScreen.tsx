@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { Animated, Platform } from 'react-native'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
-import { DocumentDirectoryPath, writeFile, moveFile } from 'react-native-fs'
+import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, ImageCircleIcon, MicrophoneCircleIcon, VolumeUpCircleIcon } from '../../../assets/images'
@@ -164,8 +164,8 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
-          await writeFile(path, image, 'utf8')
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          await moveFile(image, path)
           return { id: index, image: path }
         })
       )

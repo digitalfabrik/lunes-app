@@ -44,7 +44,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   const { isKeyboardVisible } = useKeyboard()
   const retryAllowed = !isAnswerSubmitted || vocabularyItemWithResult.result === 'similar'
   const isCorrect = vocabularyItemWithResult.result === 'correct'
-  const needsToBeRepeated = vocabularyItemWithResult.numberOfTries < numberOfMaxRetries && !isCorrect
   const isCorrectAlternativeSubmitted =
     isCorrect && stringSimilarity.compareTwoStrings(input, stringifyVocabularyItem(vocabularyItem)) <= ttsThreshold
   const submittedAlternative = isCorrectAlternativeSubmitted ? input : null
@@ -54,6 +53,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   useEffect(() => {
     if (!isAnswerSubmitted) {
       setInput('')
+      setSubmittedInput('')
     }
   }, [isAnswerSubmitted])
 
@@ -146,11 +146,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         </TextInputContainer>
 
         {isAnswerSubmitted && (
-          <Feedback
-            vocabularyItemWithResult={vocabularyItemWithResult}
-            submission={submittedInput}
-            needsToBeRepeated={needsToBeRepeated}
-          />
+          <Feedback vocabularyItemWithResult={vocabularyItemWithResult} submission={submittedInput} />
         )}
         {retryAllowed && (
           <Pressable onPress={Keyboard.dismiss}>
