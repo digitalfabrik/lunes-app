@@ -31,6 +31,7 @@ describe('UserVocabularyProcessScreen', () => {
     expect(a).toHaveLength(3)
     expect(getByText(getLabels().userVocabulary.creation.addImage)).toBeDisabled()
   })
+
   it('should be able to add a recording', async () => {
     const { findByTestId, getByText } = render(<UserVocabularyProcessScreen navigation={navigation} />)
     const addAudioButton = getByText(getLabels().userVocabulary.creation.addAudio)
