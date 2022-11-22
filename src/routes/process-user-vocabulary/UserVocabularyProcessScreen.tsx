@@ -182,7 +182,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         word,
         article: ARTICLES[articleId],
         images: imagePaths,
-        audio: destPath,
+        audio: recordingPath ? audioPath : null,
         alternatives: [],
         type: VOCABULARY_ITEM_TYPES.userCreated,
       })
