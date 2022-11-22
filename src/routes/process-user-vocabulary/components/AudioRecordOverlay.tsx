@@ -1,9 +1,8 @@
-import React, { Dispatch, ReactElement, SetStateAction, useEffect, useMemo, useState } from 'react'
+import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import uuid from 'react-native-uuid'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon, MicrophoneIcon } from '../../../../assets/images'
@@ -77,11 +76,10 @@ const InfoContainer = styled.View`
 
 interface AudioRecordOverlayProps {
   onClose: () => void
-  setShowAudioRecordOverlay: Dispatch<SetStateAction<boolean>>
+  onAudioRecorded: (recordingPath: string) => void
+  setShowAudioRecordOverlay: (showAudioRecordOverlay: boolean) => void
   audioRecorderPlayer: AudioRecorderPlayer
-  setRecordingPath: Dispatch<SetStateAction<string | null>>
   recordingPath: string | null
-  setRecordSeconds: Dispatch<SetStateAction<number>>
 }
 
 const recordingTimeInit = '00:00'
@@ -92,21 +90,19 @@ const androidFactor = 0.25
 const maxRecordingTime = 5000
 
 // Zero alignment of values with the minimum metering value
-const cleanUpMeteringResults = (meteringResults: number[]): number[] => {
-  const filteredResults = meteringResults.filter(el => el !== Math.min(...meteringResults))
-  return filteredResults.map(el => el + Math.abs(Math.min(...filteredResults)))
-}
+const cleanUpMeteringResults = (meteringResults: number[]): number[] =>
+  meteringResults
+    .filter(el => el !== Math.min(...meteringResults))
+    .map((el, _, filteredResults) => el + Math.abs(Math.min(...filteredResults)))
 
 const getCurrentMetering = (metering = 0): number => (Platform.OS === 'android' ? metering * androidFactor : metering)
-}
 
 const AudioRecordOverlay = ({
   onClose,
   setShowAudioRecordOverlay,
   audioRecorderPlayer,
-  setRecordingPath,
+  onAudioRecorded,
   recordingPath,
-  setRecordSeconds,
 }: AudioRecordOverlayProps): ReactElement => {
   const [meteringResults, setMeteringResults] = useState<number[]>([])
   const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
@@ -121,9 +117,8 @@ const AudioRecordOverlay = ({
   useEffect(() => {
     if (!recordingPath) {
       setMeteringResults([])
-      setRecordSeconds(0)
     }
-  }, [recordingPath, setRecordSeconds])
+  }, [recordingPath])
 
   const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
@@ -142,12 +137,11 @@ const AudioRecordOverlay = ({
         Math.floor(getCurrentMetering(e.currentMetering)),
       ])
       setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
-      setRecordSeconds(e.currentPosition)
       if (e.currentPosition > maxRecordingTime) {
         await onStopRecording()
       }
     })
-    setRecordingPath(uri)
+    onAudioRecorded(uri)
   }
 
   return (
@@ -164,8 +158,9 @@ const AudioRecordOverlay = ({
               </HeadingContainer>
               <InfoContainer>
                 <MeteringInfo>
-                  {cleanedMetering.map(element => (
-                    <MeteringBar key={uuid.v4().toString()} height={element} />
+                  {cleanedMetering.map((element, index) => (
+                    // eslint-disable-next-line react/no-array-index-key -- no better key available and order of items doesn't change
+                    <MeteringBar key={index} height={element} />
                   ))}
                 </MeteringInfo>
                 <RecordingInfo>{recordingTime.slice(1, recordingTime.length)}</RecordingInfo>

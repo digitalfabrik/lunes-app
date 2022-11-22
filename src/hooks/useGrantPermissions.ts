@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppState } from 'react-native'
-import { Permission, request, requestMultiple, RESULTS } from 'react-native-permissions'
+import { Permission, request, RESULTS } from 'react-native-permissions'
 
 import { reportError } from '../services/sentry'
 
@@ -9,7 +9,7 @@ interface UseGrantPermissionsReturnType {
   permissionGranted: boolean
 }
 
-const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPermissionsReturnType => {
+const useGrantPermissions = (permissions: Permission): UseGrantPermissionsReturnType => {
   const [permissionRequested, setPermissionRequested] = useState<boolean>(false)
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
   const appState = useRef(AppState.currentState)
@@ -26,20 +26,10 @@ const useGrantPermissions = (permissions: Permission | Permission[]): UseGrantPe
 
   useEffect(() => {
     if (!permissionRequested) {
-      if (typeof permissions !== 'string') {
-        requestMultiple(permissions)
-          .then(result => {
-            const grants = Object.values(result)
-            setPermissionGranted(grants.filter((el, i) => grants.indexOf(el) === i).toString() === RESULTS.GRANTED)
-          })
-          .catch(reportError)
-          .finally(() => setPermissionRequested(true))
-      } else {
-        request(permissions)
-          .then(result => setPermissionGranted(result === RESULTS.GRANTED))
-          .catch(reportError)
-          .finally(() => setPermissionRequested(true))
-      }
+      request(permissions)
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
+        .catch(reportError)
+        .finally(() => setPermissionRequested(true))
     }
   }, [permissionRequested, permissions])
   return { permissionRequested, permissionGranted }

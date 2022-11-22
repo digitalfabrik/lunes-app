@@ -41,7 +41,7 @@ describe('AudioPlayer', () => {
     disabled?: boolean
   }): RenderAPI =>
     render(
-      <AudioPlayer vocabularyItem={vocabularyItem} disabled={disabled} submittedAlternative={submittedAlternative} />
+      <AudioPlayer audioPath={vocabularyItem.audio} disabled={disabled} submittedAlternative={submittedAlternative} />
     )
 
   it('should initialize tts', async () => {

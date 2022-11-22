@@ -59,7 +59,6 @@
     "react-native-svg": "^12.3.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-tts": "4.1.0",
-    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-navigation-header-buttons": "^9.0.1",
     "string-similarity": "^4.0.4",

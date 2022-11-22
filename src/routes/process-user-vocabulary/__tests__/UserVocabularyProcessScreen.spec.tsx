@@ -38,6 +38,6 @@ describe('UserVocabularyProcessScreen', () => {
     expect(addAudioButton).not.toBeNull()
     fireEvent.press(addAudioButton)
     const recordButton = await findByTestId('record-audio-button')
-    expect(recordButton).not.toBeNull()
+    expect(recordButton).toBeDefined()
   })
 })

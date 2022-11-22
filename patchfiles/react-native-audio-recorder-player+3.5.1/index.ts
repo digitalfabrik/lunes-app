@@ -1,12 +1,6 @@
-import {
-  DeviceEventEmitter,
-  EmitterSubscription,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import { DeviceEventEmitter, EmitterSubscription, NativeEventEmitter, NativeModules, Platform } from 'react-native'
 
-const {RNAudioRecorderPlayer} = NativeModules;
+const { RNAudioRecorderPlayer } = NativeModules
 
 export enum AudioSourceAndroidType {
   DEFAULT = 0,
@@ -77,7 +71,7 @@ type AVEncodingType =
   | AVEncodingOption.alac
   | AVEncodingOption.amr
   | AVEncodingOption.flac
-  | AVEncodingOption.opus;
+  | AVEncodingOption.opus
 
 export enum AVModeIOSOption {
   gamechat = 'gamechat',
@@ -98,7 +92,7 @@ export type AVModeIOSType =
   | AVModeIOSOption.videochat
   | AVModeIOSOption.videorecording
   | AVModeIOSOption.voicechat
-  | AVModeIOSOption.voiceprompt;
+  | AVModeIOSOption.voiceprompt
 
 export enum AVEncoderAudioQualityIOSType {
   min = 0,
@@ -116,87 +110,79 @@ export enum AVLinearPCMBitDepthKeyIOSType {
 }
 
 export interface AudioSet {
-  AVSampleRateKeyIOS?: number;
-  AVFormatIDKeyIOS?: AVEncodingType;
-  AVModeIOS?: AVModeIOSType;
-  AVNumberOfChannelsKeyIOS?: number;
-  AVEncoderAudioQualityKeyIOS?: AVEncoderAudioQualityIOSType;
-  AudioSourceAndroid?: AudioSourceAndroidType;
-  AVLinearPCMBitDepthKeyIOS?: AVLinearPCMBitDepthKeyIOSType;
-  AVLinearPCMIsBigEndianKeyIOS?: boolean;
-  AVLinearPCMIsFloatKeyIOS?: boolean;
-  AVLinearPCMIsNonInterleavedIOS?: boolean;
-  OutputFormatAndroid?: OutputFormatAndroidType;
-  AudioEncoderAndroid?: AudioEncoderAndroidType;
-  AudioEncodingBitRateAndroid?: number;
-  AudioSamplingRateAndroid?: number;
+  AVSampleRateKeyIOS?: number
+  AVFormatIDKeyIOS?: AVEncodingType
+  AVModeIOS?: AVModeIOSType
+  AVNumberOfChannelsKeyIOS?: number
+  AVEncoderAudioQualityKeyIOS?: AVEncoderAudioQualityIOSType
+  AudioSourceAndroid?: AudioSourceAndroidType
+  AVLinearPCMBitDepthKeyIOS?: AVLinearPCMBitDepthKeyIOSType
+  AVLinearPCMIsBigEndianKeyIOS?: boolean
+  AVLinearPCMIsFloatKeyIOS?: boolean
+  AVLinearPCMIsNonInterleavedIOS?: boolean
+  OutputFormatAndroid?: OutputFormatAndroidType
+  AudioEncoderAndroid?: AudioEncoderAndroidType
+  AudioEncodingBitRateAndroid?: number
+  AudioSamplingRateAndroid?: number
 }
 
 const pad = (num: number): string => {
-  return ('0' + num).slice(-2);
-};
+  return ('0' + num).slice(-2)
+}
 
 export type RecordBackType = {
-  isRecording?: boolean;
-  currentPosition: number;
-  currentMetering?: number;
-};
+  isRecording?: boolean
+  currentPosition: number
+  currentMetering?: number
+}
 
 export type PlayBackType = {
-  isMuted?: boolean;
-  currentPosition: number;
-  duration: number;
-};
+  isMuted?: boolean
+  currentPosition: number
+  duration: number
+}
 
 class AudioRecorderPlayer {
-  private _isRecording!: boolean;
-  private _isPlaying!: boolean;
-  private _hasPaused!: boolean;
-  private _hasPausedRecord!: boolean;
-  private _recorderSubscription!: EmitterSubscription | null;
-  private _playerSubscription!: EmitterSubscription;
-  private _playerCallback!: ((event: PlayBackType) => void) | null;
+  private _isRecording!: boolean
+  private _isPlaying!: boolean
+  private _hasPaused!: boolean
+  private _hasPausedRecord!: boolean
+  private _recorderSubscription!: EmitterSubscription | null
+  private _playerSubscription!: EmitterSubscription
+  private _playerCallback!: ((event: PlayBackType) => void) | null
 
   mmss = (secs: number): string => {
-    let minutes = Math.floor(secs / 60);
+    let minutes = Math.floor(secs / 60)
 
-    secs = secs % 60;
-    minutes = minutes % 60;
+    secs = secs % 60
+    minutes = minutes % 60
 
-    return pad(minutes) + ':' + pad(secs);
-  };
+    return pad(minutes) + ':' + pad(secs)
+  }
 
   mmssss = (milisecs: number): string => {
-    const secs = Math.floor(milisecs / 1000);
-    const minutes = Math.floor(secs / 60);
-    const seconds = secs % 60;
-    const miliseconds = Math.floor((milisecs % 1000) / 10);
+    const secs = Math.floor(milisecs / 1000)
+    const minutes = Math.floor(secs / 60)
+    const seconds = secs % 60
+    const miliseconds = Math.floor((milisecs % 1000) / 10)
 
-    return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds);
-  };
+    return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds)
+  }
 
   /**
    * Set listerner from native module for recorder.
    * @returns {callBack((e: RecordBackType): void)}
    */
 
-  addRecordBackListener = (
-    callback: (recordingMeta: RecordBackType) => void,
-  ): void => {
+  addRecordBackListener = (callback: (recordingMeta: RecordBackType) => void): void => {
     if (Platform.OS === 'android') {
-      this._recorderSubscription = DeviceEventEmitter.addListener(
-        'rn-recordback',
-        callback,
-      );
+      this._recorderSubscription = DeviceEventEmitter.addListener('rn-recordback', callback)
     } else {
-      const myModuleEvt = new NativeEventEmitter(RNAudioRecorderPlayer);
+      const myModuleEvt = new NativeEventEmitter(RNAudioRecorderPlayer)
 
-      this._recorderSubscription = myModuleEvt.addListener(
-        'rn-recordback',
-        callback,
-      );
+      this._recorderSubscription = myModuleEvt.addListener('rn-recordback', callback)
     }
-  };
+  }
 
   /**
    * Remove listener for recorder.
@@ -204,51 +190,41 @@ class AudioRecorderPlayer {
    */
   removeRecordBackListener = (): void => {
     if (this._recorderSubscription) {
-      this._recorderSubscription.remove();
-      this._recorderSubscription = null;
+      this._recorderSubscription.remove()
+      this._recorderSubscription = null
     }
-  };
+  }
 
   /**
    * Set listener from native module for player.
    * @returns {callBack((e: PlayBackType): void)}
    */
-  addPlayBackListener = (
-    callback: (playbackMeta: PlayBackType) => void,
-  ): void => {
-    this._playerCallback = callback;
-  };
+  addPlayBackListener = (callback: (playbackMeta: PlayBackType) => void): void => {
+    this._playerCallback = callback
+  }
 
   /**
    * remove listener for player.
    * @returns {void}
    */
   removePlayBackListener = (): void => {
-    this._playerCallback = null;
-  };
+    this._playerCallback = null
+  }
 
   /**
    * start recording with param.
    * @param {string} uri audio uri.
    * @returns {Promise<string>}
    */
-  startRecorder = async (
-    uri?: string,
-    audioSets?: AudioSet,
-    meteringEnabled?: boolean,
-  ): Promise<string> => {
+  startRecorder = async (uri?: string, audioSets?: AudioSet, meteringEnabled?: boolean): Promise<string> => {
     if (!this._isRecording) {
-      this._isRecording = true;
+      this._isRecording = true
 
-      return RNAudioRecorderPlayer.startRecorder(
-        uri ?? 'DEFAULT',
-        audioSets,
-        meteringEnabled ?? false,
-      );
+      return RNAudioRecorderPlayer.startRecorder(uri ?? 'DEFAULT', audioSets, meteringEnabled ?? false)
     }
 
-    return 'Already recording';
-  };
+    return 'Already recording'
+  }
 
   /**
    * Pause recording.
@@ -256,13 +232,13 @@ class AudioRecorderPlayer {
    */
   pauseRecorder = async (): Promise<string> => {
     if (!this._hasPausedRecord) {
-      this._hasPausedRecord = true;
+      this._hasPausedRecord = true
 
-      return RNAudioRecorderPlayer.pauseRecorder();
+      return RNAudioRecorderPlayer.pauseRecorder()
     }
 
-    return 'Already paused recording.';
-  };
+    return 'Already paused recording.'
+  }
 
   /**
    * Resume recording.
@@ -270,13 +246,13 @@ class AudioRecorderPlayer {
    */
   resumeRecorder = async (): Promise<string> => {
     if (this._hasPausedRecord) {
-      this._hasPausedRecord = false;
+      this._hasPausedRecord = false
 
-      return RNAudioRecorderPlayer.resumeRecorder();
+      return RNAudioRecorderPlayer.resumeRecorder()
     }
 
-    return 'Currently recording.';
-  };
+    return 'Currently recording.'
+  }
 
   /**
    * stop recording.
@@ -284,14 +260,14 @@ class AudioRecorderPlayer {
    */
   stopRecorder = async (): Promise<string> => {
     if (this._isRecording) {
-      this._isRecording = false;
-      this._hasPausedRecord = false;
+      this._isRecording = false
+      this._hasPausedRecord = false
 
-      return RNAudioRecorderPlayer.stopRecorder();
+      return RNAudioRecorderPlayer.stopRecorder()
     }
 
-    return 'Already stopped';
-  };
+    return 'Already stopped'
+  }
 
   /**
    * Resume playing.
@@ -299,27 +275,27 @@ class AudioRecorderPlayer {
    */
   resumePlayer = async (): Promise<string> => {
     if (!this._isPlaying) {
-      return 'No audio playing';
+      return 'No audio playing'
     }
 
     if (this._hasPaused) {
-      this._hasPaused = false;
+      this._hasPaused = false
 
-      return RNAudioRecorderPlayer.resumePlayer();
+      return RNAudioRecorderPlayer.resumePlayer()
     }
 
-    return 'Already playing';
-  };
+    return 'Already playing'
+  }
 
   playerCallback = (event: PlayBackType): void => {
     if (this._playerCallback) {
-      this._playerCallback(event);
+      this._playerCallback(event)
     }
 
     if (event.currentPosition === event.duration) {
-      this.stopPlayer();
+      this.stopPlayer()
     }
-  };
+  }
 
   /**
    * Start playing with param.
@@ -327,37 +303,28 @@ class AudioRecorderPlayer {
    * @param {Record<string, string>} httpHeaders Set of http headers.
    * @returns {Promise<string>}
    */
-  startPlayer = async (
-    uri?: string,
-    httpHeaders?: Record<string, string>,
-  ): Promise<string | undefined> => {
+  startPlayer = async (uri?: string, httpHeaders?: Record<string, string>): Promise<string | undefined> => {
     if (!uri) {
-      uri = 'DEFAULT';
+      uri = 'DEFAULT'
     }
 
     if (!this._playerSubscription) {
       if (Platform.OS === 'android') {
-        this._playerSubscription = DeviceEventEmitter.addListener(
-          'rn-playback',
-          this.playerCallback,
-        );
+        this._playerSubscription = DeviceEventEmitter.addListener('rn-playback', this.playerCallback)
       } else {
-        const myModuleEvt = new NativeEventEmitter(RNAudioRecorderPlayer);
+        const myModuleEvt = new NativeEventEmitter(RNAudioRecorderPlayer)
 
-        this._playerSubscription = myModuleEvt.addListener(
-          'rn-playback',
-          this.playerCallback,
-        );
+        this._playerSubscription = myModuleEvt.addListener('rn-playback', this.playerCallback)
       }
     }
 
     if (!this._isPlaying || this._hasPaused) {
-      this._isPlaying = true;
-      this._hasPaused = false;
+      this._isPlaying = true
+      this._hasPaused = false
 
-      return RNAudioRecorderPlayer.startPlayer(uri, httpHeaders);
+      return RNAudioRecorderPlayer.startPlayer(uri, httpHeaders)
     }
-  };
+  }
 
   /**
    * Stop playing.
@@ -365,14 +332,14 @@ class AudioRecorderPlayer {
    */
   stopPlayer = async (): Promise<string> => {
     if (this._isPlaying) {
-      this._isPlaying = false;
-      this._hasPaused = false;
+      this._isPlaying = false
+      this._hasPaused = false
 
-      return RNAudioRecorderPlayer.stopPlayer();
+      return RNAudioRecorderPlayer.stopPlayer()
     }
 
-    return 'Already stopped playing';
-  };
+    return 'Already stopped playing'
+  }
 
   /**
    * Pause playing.
@@ -380,15 +347,15 @@ class AudioRecorderPlayer {
    */
   pausePlayer = async (): Promise<string | undefined> => {
     if (!this._isPlaying) {
-      return 'No audio playing';
+      return 'No audio playing'
     }
 
     if (!this._hasPaused) {
-      this._hasPaused = true;
+      this._hasPaused = true
 
-      return RNAudioRecorderPlayer.pausePlayer();
+      return RNAudioRecorderPlayer.pausePlayer()
     }
-  };
+  }
 
   /**
    * Seek to.
@@ -396,8 +363,8 @@ class AudioRecorderPlayer {
    * @returns {Promise<string>}
    */
   seekToPlayer = async (time: number): Promise<string> => {
-    return RNAudioRecorderPlayer.seekToPlayer(time);
-  };
+    return RNAudioRecorderPlayer.seekToPlayer(time)
+  }
 
   /**
    * Set volume.
@@ -406,11 +373,11 @@ class AudioRecorderPlayer {
    */
   setVolume = async (volume: number): Promise<string> => {
     if (volume < 0 || volume > 1) {
-      throw new Error('Value of volume should be between 0.0 to 1.0');
+      throw new Error('Value of volume should be between 0.0 to 1.0')
     }
 
-    return RNAudioRecorderPlayer.setVolume(volume);
-  };
+    return RNAudioRecorderPlayer.setVolume(volume)
+  }
 
   /**
    * Set subscription duration. Default is 0.5.
@@ -418,8 +385,8 @@ class AudioRecorderPlayer {
    * @returns {Promise<string>}
    */
   setSubscriptionDuration = async (sec: number): Promise<string> => {
-    return RNAudioRecorderPlayer.setSubscriptionDuration(sec);
-  };
+    return RNAudioRecorderPlayer.setSubscriptionDuration(sec)
+  }
 }
 
-export default AudioRecorderPlayer;
+export default AudioRecorderPlayer

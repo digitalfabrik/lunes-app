@@ -1,9 +1,7 @@
 # Patches
 
-
 Sometimes libraries have issues that were not fixed by the community yet.
 Therefore here is a short description how to patch a 3rd party package.
-
 
 ## Manual
 
@@ -13,4 +11,3 @@ Therefore here is a short description how to patch a 3rd party package.
 - `npx patch-package <package name>` (patch-package is required as dev depencency)
 - commit the created patch file
 - lock the package in `package.json` because the patch may not apply correctly on different package versions
-
