@@ -101,7 +101,7 @@ const accuracy = 0.1
 const playTolerance = 200
 
 const audioRecorderPlayer = new AudioRecorderPlayer()
-audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(e => e)
+audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(reportError)
 
 const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreenProps): ReactElement => {
   const [images, setImages] = useState<string[]>([])
