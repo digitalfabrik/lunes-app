@@ -86,7 +86,8 @@ interface AudioRecordOverlayProps {
 
 const recordingTimeInit = '00:00'
 const factor = 1000
-// The recording library does not align the android power recording level to ios for metering as it's done in different libraries https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
+// Power recording levels for metering differ between android and ios
+// https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
 const androidFactor = 0.25
 const maxRecordingTime = 5000
 
