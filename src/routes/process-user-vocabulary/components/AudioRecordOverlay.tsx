@@ -159,7 +159,7 @@ const AudioRecordOverlay = ({
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => onClose()}>
       <Container>
-        <Icon onPress={() => onClose()}>
+        <Icon onPress={onClose}>
           <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
         </Icon>
         <>
