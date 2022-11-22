@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
-import { readFile } from 'react-native-fs'
 
 import {
   Article,
@@ -11,7 +10,7 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS, Image, Images } from '../constants/endpoints'
+import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
@@ -19,7 +18,6 @@ import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
-import { reportError } from './sentry'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
   `${article.value} ${word}`
@@ -206,16 +204,3 @@ export const getSortedAndFilteredVocabularyItems = (
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
   score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
-
-export const getImages = async (item: VocabularyItem): Promise<Images> => {
-  const images = await Promise.all(
-    item.images.map(async image => ({
-      id: image.id,
-      image: await readFile(image.image).catch(err => {
-        reportError(err)
-        return null
-      }),
-    }))
-  )
-  return images.filter((item): item is Image => item.image !== null)
-}
