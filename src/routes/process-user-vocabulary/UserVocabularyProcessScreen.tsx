@@ -170,14 +170,11 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         })
       )
 
-      let destPath = ''
+      const audioFilename = `audio-${id}`
+      const audioPath = Platform.OS === 'ios' ? `${audioFilename}.m4a` : `${DocumentDirectoryPath}/${audioFilename}.mp4`
+      
       if (recordingPath) {
-        const filename = `audio-${id}`
-        destPath = Platform.select({
-          ios: `${filename}.m4a`,
-          android: `${DocumentDirectoryPath}/${filename}.mp4`,
-        })!
-        await moveFile(recordingPath, destPath)
+        await moveFile(recordingPath, audioPath)
       }
 
       await addUserVocabularyItem({
