@@ -65,7 +65,7 @@ const MeteringBar = styled.View<{ height: number }>`
   height: ${props => `${props.height * 2}`}px;
   width: ${props => props.theme.spacings.xxs}
   background-color: ${props => props.theme.colors.audioRecordingActive};
-  border-radius-: 50px;
+  border-radius: 50px;
   align-self: center;
   margin: 0 1px;
 `
