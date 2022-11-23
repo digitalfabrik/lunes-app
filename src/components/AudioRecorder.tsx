@@ -62,20 +62,17 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
     setRecordingPath(null)
   }
 
-  if (showAudioRecordOverlay) {
-    return (
-      <AudioRecordOverlay
-        onClose={onCloseRecording}
-        onAudioRecorded={onAudioRecorded}
-        recordingPath={recordingPath}
-        setShowAudioRecordOverlay={setShowAudioRecordOverlay}
-        audioRecorderPlayer={audioRecorderPlayer}
-      />
-    )
-  }
-
   return (
     <>
+      {showAudioRecordOverlay && (
+        <AudioRecordOverlay
+          onClose={onCloseRecording}
+          onAudioRecorded={onAudioRecorded}
+          recordingPath={recordingPath}
+          setShowAudioRecordOverlay={setShowAudioRecordOverlay}
+          audioRecorderPlayer={audioRecorderPlayer}
+        />
+      )}
       {recordingPath ? (
         <AudioContainer>
           <>
