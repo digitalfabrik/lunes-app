@@ -98,11 +98,11 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         })
       )
 
-      const audioFilename = `audio-${id}`
-      const audioPath = Platform.OS === 'ios' ? `${audioFilename}.m4a` : `${DocumentDirectoryPath}/${audioFilename}.mp4`
+      const audioPath = `${DocumentDirectoryPath}/audio-${id}`
+      const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
 
       if (recordingPath) {
-        await moveFile(recordingPath, audioPath)
+        await moveFile(recordingPath, audioPathWithFormat)
       }
 
       await addUserVocabularyItem({
@@ -110,7 +110,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         word,
         article: ARTICLES[articleId],
         images: imagePaths,
-        audio: recordingPath ? audioPath : null,
+        audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
         type: VOCABULARY_ITEM_TYPES.userCreated,
       })
