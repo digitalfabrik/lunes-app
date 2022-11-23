@@ -80,7 +80,7 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
             <DeleteContainer onPress={() => setRecordingPath(null)} testID='delete-audio-recording'>
               <CloseCircleIconBlue width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
             </DeleteContainer>
-            <AudioPlayer audioPath={recordingPath} disabled={!recordingPath} />
+            <AudioPlayer audio={recordingPath} disabled={!recordingPath} />
           </>
         </AudioContainer>
       ) : (
