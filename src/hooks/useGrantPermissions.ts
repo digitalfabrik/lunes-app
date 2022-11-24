@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AppState } from 'react-native'
 import { Permission, request, RESULTS } from 'react-native-permissions'
 
@@ -14,24 +14,24 @@ const useGrantPermissions = (permissions: Permission): UseGrantPermissionsReturn
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
   const appState = useRef(AppState.currentState)
 
-  const requestPermissions = useCallback(() => {
-    request(permissions)
-      .then(result => setPermissionGranted(result === RESULTS.GRANTED))
-      .catch(reportError)
-      .finally(() => setPermissionRequested(true))
-  }, [permissions])
-
   useEffect(() => {
-    requestPermissions()
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if ((appState.current === 'inactive' || appState.current === 'background') && nextAppState === 'active') {
+      if (appState.current !== 'active' && nextAppState === 'active') {
         setPermissionRequested(false)
-        requestPermissions()
       }
       appState.current = nextAppState
     })
     return subscription.remove
-  }, [requestPermissions])
+  }, [setPermissionRequested])
+
+  useEffect(() => {
+    if (!permissionRequested) {
+      request(permissions)
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
+        .catch(reportError)
+        .finally(() => setPermissionRequested(true))
+    }
+  }, [permissionRequested, permissions])
   return { permissionRequested, permissionGranted }
 }
 
