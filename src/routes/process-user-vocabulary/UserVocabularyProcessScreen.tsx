@@ -98,7 +98,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         })
       )
 
-      const audioPath = `${DocumentDirectoryPath}/audio-${id}`
+      const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
 
       if (recordingPath) {

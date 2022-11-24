@@ -4,9 +4,6 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { VocabularyItem } from '../../constants/endpoints'
-import { stringifyVocabularyItem } from '../../services/helpers'
-import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
@@ -24,50 +21,22 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('AudioPlayer', () => {
-  const noAudioVocabularyItem = new VocabularyItemBuilder(2).build()[1]
+  beforeEach(jest.clearAllMocks)
 
-  const audioVocabularyItem = {
-    ...noAudioVocabularyItem,
-    audio: 'https://example.com',
-  }
-
-  const renderVocabularyPlayer = ({
-    vocabularyItem = noAudioVocabularyItem,
-    submittedAlternative = null,
-    disabled = false,
-  }: {
-    vocabularyItem?: VocabularyItem
-    submittedAlternative?: string | null
-    disabled?: boolean
-  }): RenderAPI =>
-    render(
-      <AudioPlayer vocabularyItem={vocabularyItem} disabled={disabled} submittedAlternative={submittedAlternative} />
-    )
+  const audioPath = 'https://example.com'
 
   const renderAudioPlayer = ({
-    submittedAlternative = null,
+    audio = audioPath,
+    isTtsText = false,
     disabled = false,
-    audioPath = 'defaultPAth',
   }: {
-    submittedAlternative?: string | null
+    audio?: string
+    isTtsText?: boolean
     disabled?: boolean
-    audioPath: string
-  }): RenderAPI =>
-    render(<AudioPlayer audioPath={audioPath} disabled={disabled} submittedAlternative={submittedAlternative} />)
+  }): RenderAPI => render(<AudioPlayer audio={audio} isTtsText={isTtsText} disabled={disabled} />)
 
   it('should initialize tts', async () => {
-    renderVocabularyPlayer({})
-    expect(Tts.getInitStatus).toHaveBeenCalled()
-
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
-
-    expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
-    expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
-  })
-
-  it('should initialize tts if alternative submitted', async () => {
-    renderVocabularyPlayer({ vocabularyItem: audioVocabularyItem, submittedAlternative: 'asdf' })
+    renderAudioPlayer({ isTtsText: true })
     expect(Tts.getInitStatus).toHaveBeenCalled()
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
@@ -79,7 +48,7 @@ describe('AudioPlayer', () => {
 
   it('should request to install tts engine', async () => {
     mocked(Tts.getInitStatus).mockRejectedValueOnce({ code: 'no_engine' })
-    renderVocabularyPlayer({})
+    renderAudioPlayer({ isTtsText: true })
 
     expect(Tts.getInitStatus).toHaveBeenCalled()
     await waitFor(() => expect(Tts.requestInstallEngine).toHaveBeenCalledTimes(1))
@@ -90,8 +59,7 @@ describe('AudioPlayer', () => {
   })
 
   it('should initialize sound player', () => {
-    jest.clearAllMocks()
-    renderVocabularyPlayer({ vocabularyItem: audioVocabularyItem })
+    renderAudioPlayer({})
     expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
@@ -102,55 +70,34 @@ describe('AudioPlayer', () => {
   })
 
   it('should be disabled', async () => {
-    const { getByTestId } = renderVocabularyPlayer({ disabled: true })
+    const { getByTestId } = renderAudioPlayer({ disabled: true })
     expect(getByTestId('audio-player')).toBeDisabled()
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     fireEvent.press(getByTestId('audio-player'))
 
+    expect(Tts.setDefaultLanguage).not.toHaveBeenCalledWith('de-DE')
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
-  it('should play audio if available and no alternative solution submitted', () => {
-    const { getByTestId } = renderVocabularyPlayer({ vocabularyItem: audioVocabularyItem })
-    fireEvent.press(getByTestId('audio-player'))
-
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioVocabularyItem.audio)
-    expect(Tts.speak).not.toHaveBeenCalled()
-  })
-
-  it('should play submitted alternative', async () => {
-    const submittedAlternative = 'my alternative'
-    const { getByTestId } = renderVocabularyPlayer({ vocabularyItem: audioVocabularyItem, submittedAlternative })
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-
-    fireEvent.press(getByTestId('audio-player'))
-
-    expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(submittedAlternative, expect.any(Object))
-    expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
-  })
-
-  it('should play tts if no audio available and no alternative submitted', async () => {
-    const { getByTestId } = renderVocabularyPlayer({})
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-
-    fireEvent.press(getByTestId('audio-player'))
-
-    expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(stringifyVocabularyItem(noAudioVocabularyItem), expect.any(Object))
-    expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
-  })
-
-  it('should play a sound file if just a audioPath was passed', async () => {
-    const audioPath = 'path/test.mp3'
-    const { getByTestId } = renderAudioPlayer({ audioPath })
+  it('should play audio if it is not tts', () => {
+    const { getByTestId } = renderAudioPlayer({})
     fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
     expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioPath)
     expect(Tts.speak).not.toHaveBeenCalled()
+  })
+
+  it('should play audio if it is tts', async () => {
+    const ttsText = 'Die Spachtel'
+    const { getByTestId } = renderAudioPlayer({ audio: ttsText, isTtsText: true })
+    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
+
+    fireEvent.press(getByTestId('audio-player'))
+
+    expect(Tts.speak).toHaveBeenCalledTimes(1)
+    expect(Tts.speak).toHaveBeenCalledWith(ttsText, expect.any(Object))
+    expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
   })
 })
