@@ -53,7 +53,6 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
   useEffect(() => {
     if (!isAnswerSubmitted) {
       setInput('')
-      setSubmittedInput('')
     }
   }, [isAnswerSubmitted])
 

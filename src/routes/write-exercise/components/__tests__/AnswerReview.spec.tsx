@@ -12,9 +12,18 @@ import AnswerReview from '../AnswerReview'
 describe('AnswerReview', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
-  const renderAnswerReview = (result: SimpleResult, numberOfTries: number, submission: string): RenderAPI => {
-    const vocabularyItemResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
-    return render(<AnswerReview vocabularyItemWithResult={vocabularyItemResult} submission={submission} />)
+  const renderAnswerReview = (
+    result: SimpleResult,
+    numberOfTries: number,
+    submission: string,
+  ): RenderAPI => {
+    const vocabularyItemWithResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
+    return render(
+      <AnswerReview
+        vocabularyItemWithResult={vocabularyItemWithResult}
+        submission={submission}
+      />
+    )
   }
 
   it('should render correct answer review', () => {
