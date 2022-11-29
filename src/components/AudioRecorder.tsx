@@ -1,12 +1,10 @@
 import React, { ReactElement, useState } from 'react'
-import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, MicrophoneCircleIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import AudioRecordOverlay from '../routes/process-user-vocabulary/components/AudioRecordOverlay'
 import { getLabels } from '../services/helpers'
-import { reportError } from '../services/sentry'
 import AudioPlayer from './AudioPlayer'
 import Button from './Button'
 import { Subheading } from './text/Subheading'
@@ -43,11 +41,6 @@ interface AudioRecorderProps {
   setRecordingPath: (path: string | null) => void
 }
 
-const accuracy = 0.1
-
-const audioRecorderPlayer = new AudioRecorderPlayer()
-audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(reportError)
-
 const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps): ReactElement => {
   const [showAudioRecordOverlay, setShowAudioRecordOverlay] = useState<boolean>(false)
   const theme = useTheme()
@@ -70,7 +63,6 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
           onAudioRecorded={onAudioRecorded}
           recordingPath={recordingPath}
           setShowAudioRecordOverlay={setShowAudioRecordOverlay}
-          audioRecorderPlayer={audioRecorderPlayer}
         />
       )}
       {recordingPath ? (
