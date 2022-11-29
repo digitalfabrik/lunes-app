@@ -1,0 +1,6 @@
+issue_key: LUN-442
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Button zum vorherigen Wort hinzugefügt
