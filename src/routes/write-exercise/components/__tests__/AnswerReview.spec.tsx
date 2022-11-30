@@ -7,7 +7,7 @@ import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
-import Feedback from '../Feedback'
+import AnswerReview from '../AnswerReview'
 
 describe('Feedback', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
