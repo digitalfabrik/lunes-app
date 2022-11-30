@@ -78,7 +78,6 @@ interface AudioRecordOverlayProps {
   onClose: () => void
   onAudioRecorded: (recordingPath: string) => void
   setShowAudioRecordOverlay: (showAudioRecordOverlay: boolean) => void
-  audioRecorderPlayer: AudioRecorderPlayer
   recordingPath: string | null
 }
 
@@ -97,10 +96,13 @@ const cleanUpMeteringResults = (meteringResults: number[]): number[] =>
 
 const getCurrentMetering = (metering = 0): number => (Platform.OS === 'android' ? metering * androidFactor : metering)
 
+const accuracy = 0.1
+const audioRecorderPlayer = new AudioRecorderPlayer()
+audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(reportError)
+
 const AudioRecordOverlay = ({
   onClose,
   setShowAudioRecordOverlay,
-  audioRecorderPlayer,
   onAudioRecorded,
   recordingPath,
 }: AudioRecordOverlayProps): ReactElement => {
@@ -123,9 +125,19 @@ const AudioRecordOverlay = ({
   const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
   const onStopRecording = async (): Promise<void> => {
-    await audioRecorderPlayer.stopRecorder()
-    audioRecorderPlayer.removeRecordBackListener()
-    setShowAudioRecordOverlay(false)
+    try {
+      await audioRecorderPlayer.stopRecorder()
+      audioRecorderPlayer.removeRecordBackListener()
+      setShowAudioRecordOverlay(false)
+    } catch (e) {
+      // If the recording is stopped to fast, sometimes an error is thrown which can be ignored.
+      // https://github.com/hyochan/react-native-audio-recorder-player/issues/490
+      if (e instanceof Error && e.message !== 'stop failed.') {
+        reportError(e)
+      }
+    } finally {
+      setIsPressed(false)
+    }
   }
 
   const onStartRecording = async (): Promise<void> => {
@@ -171,11 +183,7 @@ const AudioRecordOverlay = ({
                     .catch(reportError)
                     .finally(() => setIsPressed(true))
                 }
-                onPressOut={() =>
-                  onStopRecording()
-                    .catch(reportError)
-                    .finally(() => setIsPressed(false))
-                }
+                onPressOut={onStopRecording}
                 isPressed={isPressed}
                 testID='record-audio-button'>
                 <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
