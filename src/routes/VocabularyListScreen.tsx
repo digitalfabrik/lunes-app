@@ -11,7 +11,7 @@ import { setExerciseProgress } from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 
-interface VocabularyListScreenProps {
+type VocabularyListScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyList'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }

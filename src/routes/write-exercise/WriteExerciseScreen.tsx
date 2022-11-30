@@ -28,7 +28,7 @@ const ButtonContainer = styled.View`
   align-items: center;
 `
 
-export interface WriteExerciseScreenProps {
+export type WriteExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }

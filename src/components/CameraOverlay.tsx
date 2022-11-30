@@ -20,7 +20,7 @@ const Icon = styled.Pressable`
   height: ${hp('3.5%')}px;
 `
 
-interface Props {
+type Props = {
   setVisible: (visible: boolean) => void
   children: ReactElement
 }

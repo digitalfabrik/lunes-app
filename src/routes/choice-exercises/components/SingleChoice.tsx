@@ -12,7 +12,7 @@ export const StyledContainer = styled.View`
   align-self: center;
 `
 
-export interface SingleChoiceProps {
+export type SingleChoiceProps = {
   onClick: (answer: Answer) => void
   answers: Answer[]
   correctAnswers: Answer[]

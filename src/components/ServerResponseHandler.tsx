@@ -3,7 +3,7 @@ import React, { ReactElement, ReactNode } from 'react'
 import ErrorMessage from './ErrorMessage'
 import Loading from './Loading'
 
-interface ServerResponseHandlerProps {
+type ServerResponseHandlerProps = {
   error: Error | null
   loading: boolean
   refresh: () => void

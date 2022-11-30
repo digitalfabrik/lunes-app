@@ -31,7 +31,7 @@ const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-export interface FeedbackProps {
+export type FeedbackProps = {
   vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
 }

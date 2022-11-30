@@ -11,7 +11,7 @@ const Explanation = styled(ContentSecondary)`
   padding: ${props => props.theme.spacings.xs};
 `
 
-interface AddCustomDisciplineProps {
+type AddCustomDisciplineProps = {
   navigate: () => void
 }
 

@@ -108,7 +108,7 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
 const PRESS_ANIMATION_DURATION = 300
 const PRESS_MAX_DRAG_Y = 5
 
-interface ListItemProps {
+type ListItemProps = {
   title: string | ReactElement
   icon?: string | ReactElement
   description?: string

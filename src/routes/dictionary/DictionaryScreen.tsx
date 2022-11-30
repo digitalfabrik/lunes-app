@@ -22,7 +22,7 @@ const Header = styled.View`
   padding-bottom: ${props => props.theme.spacings.md};
 `
 
-interface DictionaryScreenProps {
+type DictionaryScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Dictionary'>
 }
 

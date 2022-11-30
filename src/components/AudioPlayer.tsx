@@ -8,7 +8,7 @@ import { VocabularyItem } from '../constants/endpoints'
 import { stringifyVocabularyItem } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
 
-export interface AudioPlayerProps {
+export type AudioPlayerProps = {
   vocabularyItem: VocabularyItem
   disabled: boolean
   // If the user submitted a correct alternative (differing enough to the vocabularyItem), we want to play the alternative

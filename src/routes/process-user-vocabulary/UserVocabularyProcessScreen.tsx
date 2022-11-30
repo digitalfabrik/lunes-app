@@ -52,7 +52,7 @@ const ThumbnailContainer = styled.View`
   flex-direction: row;
 `
 
-interface UserVocabularyProcessScreenProps {
+type UserVocabularyProcessScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyProcess'>
 }
 

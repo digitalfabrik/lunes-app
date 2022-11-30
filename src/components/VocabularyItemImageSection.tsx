@@ -22,7 +22,7 @@ const Container = styled.View`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-interface VocabularyItemSectionProps {
+type VocabularyItemSectionProps = {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   minimized?: boolean

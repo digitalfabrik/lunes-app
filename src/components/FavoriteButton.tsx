@@ -21,7 +21,7 @@ const Button = styled(PressableOpacity)`
   border-radius: 20px;
 `
 
-interface FavoriteButtonProps {
+type FavoriteButtonProps = {
   vocabularyItem: VocabularyItem
   onFavoritesChanged?: () => void
 }

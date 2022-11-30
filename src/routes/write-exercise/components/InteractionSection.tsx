@@ -23,7 +23,7 @@ const InputContainer = styled.View`
   margin-top: ${props => props.theme.spacings.md};
 `
 
-interface InteractionSectionProps {
+type InteractionSectionProps = {
   vocabularyItemWithResult: VocabularyItemResult
   isAnswerSubmitted: boolean
   storeResult: (result: VocabularyItemResult) => void

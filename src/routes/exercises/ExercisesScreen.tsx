@@ -35,7 +35,7 @@ const SmallMessage = styled(ContentTextLight)`
   text-align: center;
 `
 
-interface ExercisesScreenProps {
+type ExercisesScreenProps = {
   route: RouteProp<RoutesParams, 'Exercises'>
   navigation: StackNavigationProp<RoutesParams, 'Exercises'>
 }

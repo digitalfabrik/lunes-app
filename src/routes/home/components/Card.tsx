@@ -37,7 +37,7 @@ const IconContainer = styled.View`
   padding-right: ${props => props.theme.spacings.sm};
 `
 
-interface CardProps {
+type CardProps = {
   heading?: string
   icon?: string | ReactElement
   onPress?: () => void

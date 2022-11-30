@@ -38,7 +38,7 @@ const Label = styled(ContentTextBold)`
   text-transform: uppercase;
 `
 
-interface AlternativeWordsSectionProps {
+type AlternativeWordsSectionProps = {
   vocabularyItem: VocabularyItem
 }
 

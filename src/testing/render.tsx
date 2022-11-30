@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components/native'
 
 import theme from '../constants/theme'
 
-interface InnerComponent {
+type InnerComponent = {
   children: ReactElement
 }
 

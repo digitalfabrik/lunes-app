@@ -8,7 +8,7 @@ import { VocabularyItem } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
-interface ArticleChoiceExerciseScreenProps {
+type ArticleChoiceExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'ArticleChoiceExercise'>
   navigation: StackNavigationProp<RoutesParams, 'ArticleChoiceExercise'>
 }

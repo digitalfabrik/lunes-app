@@ -22,11 +22,11 @@ const Container = styled.View`
 `
 
 const ButtonContainer = styled.View`
-  padding: ${props => props.theme.spacings.md}
+  padding: ${props => props.theme.spacings.md};
   align-self: center;
 `
 
-interface VocabularyDetailExerciseScreenProps {
+type VocabularyDetailExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyDetailExercise'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyDetailExercise'>
 }

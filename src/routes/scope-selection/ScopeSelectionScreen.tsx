@@ -39,7 +39,7 @@ const StyledScrollView = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
 `
 
-interface IntroScreenProps {
+type IntroScreenProps = {
   route: RouteProp<RoutesParams, 'ScopeSelection'>
   navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
 }
