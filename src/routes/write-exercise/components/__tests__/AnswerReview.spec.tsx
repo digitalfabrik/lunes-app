@@ -7,25 +7,25 @@ import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
-import Feedback from '../Feedback'
+import AnswerReview from '../AnswerReview'
 
-describe('Feedback', () => {
+describe('AnswerReview', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
 
-  const renderFeedback = (result: SimpleResult, numberOfTries: number, submission: string): RenderAPI => {
+  const renderAnswerReview = (result: SimpleResult, numberOfTries: number, submission: string): RenderAPI => {
     const vocabularyItemResult: VocabularyItemResult = { vocabularyItem, result, numberOfTries }
-    return render(<Feedback vocabularyItemWithResult={vocabularyItemResult} submission={submission} />)
+    return render(<AnswerReview vocabularyItemWithResult={vocabularyItemResult} submission={submission} />)
   }
 
-  it('should render correct feedback', () => {
+  it('should render correct answer review', () => {
     const submission = 'Die Abrissbirne'
-    const { queryByText } = renderFeedback('correct', 1, submission)
+    const { queryByText } = renderAnswerReview('correct', 1, submission)
     expect(queryByText(getLabels().exercises.write.feedback.correct.replace('\n', ''))).toBeTruthy()
   })
 
-  it('should render similar feedback', () => {
+  it('should render similar answer review', () => {
     const submission = 'Die Abrissbirn'
-    const { queryByText } = renderFeedback('similar', 1, submission)
+    const { queryByText } = renderAnswerReview('similar', 1, submission)
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
@@ -35,9 +35,9 @@ describe('Feedback', () => {
     ).toBeTruthy()
   })
 
-  it('should render finally incorrect feedback', () => {
+  it('should render finally incorrect answer review', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission)
+    const { queryByText } = renderAnswerReview('incorrect', 1, submission)
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
@@ -46,9 +46,9 @@ describe('Feedback', () => {
       )
     ).toBeTruthy()
   })
-  it('should render incorrect feedback with retries not exceeded', () => {
+  it('should render incorrect answer review with retries not exceeded', () => {
     const submission = 'Der Auto'
-    const { queryByText } = renderFeedback('incorrect', 1, submission)
+    const { queryByText } = renderAnswerReview('incorrect', 1, submission)
     expect(
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
