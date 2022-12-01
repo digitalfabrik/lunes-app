@@ -1,1 +1,12 @@
-<svg id="screenshot" viewBox="698.2928932188144 108.29289321881322 37.414213562373334 37.41421356237328" width="37.414213562373334" height="37.41421356237328" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="-webkit-print-color-adjust: exact;"><g id="shape-b6cf0900-8985-11ec-9eee-afaaa605ed2f" width="36px" height="36px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="shape-b6cf7e30-8985-11ec-9eee-afaaa605ed2f"><g id="shape-b6d01a70-8985-11ec-9eee-afaaa605ed2f"><ellipse fill-rule="evenodd" stroke="none" cx="717" cy="127" rx="18" ry="18" transform="matrix(1,0,0,1,0,0)" style="fill: rgb(61, 70, 98); stroke-width: 1;"/></g><g id="shape-b6d28b70-8985-11ec-9eee-afaaa605ed2f"><g id="shape-b6d2b280-8985-11ec-9eee-afaaa605ed2f"><g id="shape-b6d571a0-8985-11ec-9eee-afaaa605ed2f"><path fill-rule="evenodd" stroke="none" d="M724.000000000001,121.40999999999983L722.5900000000013,119.99999999999979L717.000000000001,125.58999999999982L711.4100000000011,119.99999999999979L710.000000000001,121.40999999999978L715.590000000001,126.9999999999998L710.0000000000014,132.58999999999995L711.4100000000012,133.99999999999983L717.0000000000011,128.40999999999988L722.5900000000009,133.9999999999998L724.0000000000011,132.58999999999992L718.4100000000011,126.99999999999973Z" style="fill: rgb(249, 250, 251); stroke-width: 1;"/></g></g></g></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g transform="translate(-143 -88) translate(143 88)">
+                <circle cx="18" cy="18" r="17.5" stroke="none" fill="rgb(61, 70, 98)" />
+                <g fill="rgb(249, 250, 251)">
+                    <path d="M18 7.209L16.791 6 12 10.791 7.209 6 6 7.209 10.791 12 6 16.791 7.209 18 12 13.209 16.791 18 18 16.791 13.209 12z" transform="translate(6 6)" />
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

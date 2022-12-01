@@ -23,6 +23,7 @@ export const COLORS = {
   articleMasculine: '#8cc8f3',
   link: 'blue',
   lightGreyBackground: '#e0e4ed',
+  audioRecordingActive: '#97aef1',
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]
