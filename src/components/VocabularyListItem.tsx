@@ -3,7 +3,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
-import { getArticleColor } from '../services/helpers'
+import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
@@ -48,7 +48,7 @@ const VocabularyListItem = ({
   onFavoritesChanged,
   children,
 }: VocabularyListItemProps): ReactElement => {
-  const { article, word, images } = vocabularyItem
+  const { article, word, images, audio } = vocabularyItem
   const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -70,7 +70,7 @@ const VocabularyListItem = ({
       icon={icon}
       rightChildren={
         <RightChildrenContainer>
-          <AudioPlayer vocabularyItem={vocabularyItem} disabled={false} />
+          <AudioPlayer audio={audio ?? stringifyVocabularyItem(vocabularyItem)} isTtsText={!audio} disabled={false} />
           <FavButtonContainer>
             <FavoriteButton vocabularyItem={vocabularyItem} onFavoritesChanged={onFavoritesChanged} />
           </FavButtonContainer>
