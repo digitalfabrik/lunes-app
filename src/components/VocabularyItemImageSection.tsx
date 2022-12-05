@@ -3,6 +3,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
+import { stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ImageCarousel from './ImageCarousel'
@@ -22,7 +23,7 @@ const Container = styled.View`
   margin-bottom: ${props => props.theme.spacings.md};
 `
 
-interface VocabularyItemSectionProps {
+type VocabularyItemSectionProps = {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   minimized?: boolean
@@ -39,9 +40,10 @@ const VocabularyItemImageSection = ({
     <ImageCarousel images={vocabularyItem.images} minimized={minimized} />
     <AudioContainer>
       <AudioPlayer
-        vocabularyItem={vocabularyItem}
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- False positive, left hand side is possible null or undefined
+        audio={submittedAlternative ?? vocabularyItem.audio ?? stringifyVocabularyItem(vocabularyItem)}
+        isTtsText={!!submittedAlternative || !vocabularyItem.audio}
         disabled={audioDisabled}
-        submittedAlternative={submittedAlternative}
       />
     </AudioContainer>
     <FavoriteContainer>

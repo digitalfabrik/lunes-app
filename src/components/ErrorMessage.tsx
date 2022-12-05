@@ -41,7 +41,7 @@ const IconStyle = styled.View`
   align-items: center;
 `
 
-interface ErrorMessageProps {
+type ErrorMessageProps = {
   error: Error | null
   refresh: () => void
   contained?: boolean

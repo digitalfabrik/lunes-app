@@ -13,7 +13,7 @@ const Root = styled.View`
   padding: ${props => props.theme.spacings.md};
 `
 
-interface UserVocabularyOverviewScreenProps {
+type UserVocabularyOverviewScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyOverview'>
 }
 

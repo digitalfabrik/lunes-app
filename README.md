@@ -42,7 +42,8 @@ If you want to develop on Windows, follow the steps [here](./docs/setup-windows-
 #### iOS
 
 - Own a Mac or another Apple device.
-- Install [XCode](https://developer.apple.com/xcode/).
+- Install [XCode](https://developer.apple.com/xcode/)
+- In `/ios` run `bundle install` and `bundle exec pod install`
 
 _Note: In order to work with the project in XCode, always open `ios/Lunes.xcworkspace`._
 

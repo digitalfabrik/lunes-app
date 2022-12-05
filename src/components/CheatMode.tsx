@@ -16,7 +16,7 @@ const CheatContainer = styled.View`
   width: 100%;
 `
 
-interface CheatModeProps {
+type CheatModeProps = {
   cheat: (result: SimpleResult) => void
 }
 

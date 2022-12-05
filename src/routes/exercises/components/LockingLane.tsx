@@ -8,7 +8,7 @@ import { COLORS } from '../../../constants/theme/colors'
 
 const Container = styled.View`
   justify-content: center;
-  margin: ${props => props.theme.spacings.xs}
+  margin: ${props => props.theme.spacings.xs};
   max-height: ${hp('10%')}px;
 `
 
@@ -19,7 +19,7 @@ const Line = styled.View<{ color: string }>`
   margin: ${props => props.theme.spacings.xs} 10px;
 `
 
-interface LockingLaneProps {
+type LockingLaneProps = {
   nextExercise: Exercise | null
   index: number
 }

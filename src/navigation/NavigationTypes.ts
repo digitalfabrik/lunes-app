@@ -3,13 +3,13 @@ import { CommonNavigationAction } from '@react-navigation/native'
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import { Discipline, VocabularyItem } from '../constants/endpoints'
 
-export interface VocabularyItemResult {
+export type VocabularyItemResult = {
   vocabularyItem: VocabularyItem
   result: SimpleResult | null
   numberOfTries: number
 }
 
-interface ExerciseParams {
+type ExerciseParams = {
   disciplineId: number
   disciplineTitle: string
   vocabularyItems: VocabularyItem[]
@@ -17,16 +17,16 @@ interface ExerciseParams {
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
-interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
+type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
   disciplineId: number | null
-}
+} & Omit<ExerciseParams, 'disciplineId'>
 
-export interface ExercisesParams extends Omit<ExerciseParams, 'vocabularyItems' | 'closeExerciseAction'> {
+export type ExercisesParams = {
   discipline: Discipline
   vocabularyItems: VocabularyItem[] | null
   closeExerciseAction?: CommonNavigationAction
-}
+} & Omit<ExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey

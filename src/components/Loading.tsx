@@ -8,12 +8,12 @@ const Indicator = styled.View`
   align-items: center;
 `
 
-interface ILoadingProps {
+type LoadingProps = {
   children?: ReactNode
   isLoading: boolean
 }
 
-const Loading = ({ children, isLoading }: ILoadingProps): ReactElement => {
+const Loading = ({ children, isLoading }: LoadingProps): ReactElement => {
   const theme = useTheme()
 
   if (isLoading) {

@@ -20,7 +20,7 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-interface ProfessionDetailsProps {
+type ProfessionDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void

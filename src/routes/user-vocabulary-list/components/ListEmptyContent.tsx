@@ -12,7 +12,7 @@ const EmptyContainer = styled.View`
   height: ${hp('10%')}px;
 `
 
-interface ListEmptyContentProps {
+type ListEmptyContentProps = {
   vocabularyItems: Return<VocabularyItem[]>
 }
 

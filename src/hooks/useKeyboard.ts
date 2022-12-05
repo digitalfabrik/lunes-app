@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Keyboard, KeyboardEvent } from 'react-native'
 
-interface UseKeyboardProps {
+type UseKeyboardProps = {
   isKeyboardVisible: boolean
   keyboardHeight: number
 }

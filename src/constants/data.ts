@@ -14,7 +14,7 @@ export const ExerciseKeys = {
 } as const
 export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
 
-export interface Exercise {
+export type Exercise = {
   key: ExerciseKey
   title: string
   description: string
@@ -53,11 +53,11 @@ export const EXERCISES: Readonly<Exercise[]> = [
   },
 ] as const
 
-export interface Progress {
+export type Progress = {
   [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
 
-export interface NextExercise {
+export type NextExercise = {
   disciplineId: number
   exerciseKey: number
 }
@@ -75,7 +75,7 @@ export const BUTTONS_THEME = {
 
 export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
 
-export interface ArticleType {
+export type ArticleType = {
   readonly id: number
   readonly value: string
 }
@@ -103,9 +103,9 @@ export const ARTICLES: Readonly<ArticleType[]> = [
   },
 ] as const
 
-interface ArticleTypeExtended extends ArticleType {
+type ArticleTypeExtended = {
   readonly label: string
-}
+} & ArticleType
 
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
   ARTICLES.filter(article => article.id !== 0).map(article => {
@@ -117,10 +117,14 @@ export const getArticleWithLabel = (): ArticleTypeExtended[] =>
 
 export type Article = typeof ARTICLES[number]
 
-export const SIMPLE_RESULTS = { correct: 'correct', incorrect: 'incorrect', similar: 'similar' } as const
+export const SIMPLE_RESULTS = {
+  correct: 'correct',
+  incorrect: 'incorrect',
+  similar: 'similar',
+} as const
 export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
 
-interface ResultType {
+type ResultType = {
   key: SimpleResult
   title: string
   Icon: ComponentType<SvgProps>
@@ -134,13 +138,13 @@ export const VOCABULARY_ITEM_TYPES = {
 }
 export type VocabularyItemType = typeof VOCABULARY_ITEM_TYPES[keyof typeof VOCABULARY_ITEM_TYPES]
 
-export interface Favorite {
+export type Favorite = {
   id: number
   vocabularyItemType: VocabularyItemType
   apiKey?: string
 }
 
-export interface Answer {
+export type Answer = {
   word: string
   article: Article
 }

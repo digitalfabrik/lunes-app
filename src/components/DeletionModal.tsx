@@ -5,7 +5,7 @@ import { getLabels } from '../services/helpers'
 import Modal from './Modal'
 import { ContentSecondary } from './text/Content'
 
-interface DeletionModalProps {
+type DeletionModalProps = {
   isVisible: boolean
   onConfirm: () => void
   onClose: () => void

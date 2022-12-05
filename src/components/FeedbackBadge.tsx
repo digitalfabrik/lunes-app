@@ -25,7 +25,7 @@ const BadgeIcon = styled.View`
   max-height: ${hp('2.75%')}px;
 `
 
-interface FeedbackBadgeProps {
+type FeedbackBadgeProps = {
   feedback: EXERCISE_FEEDBACK
 }
 

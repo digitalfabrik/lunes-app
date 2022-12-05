@@ -30,18 +30,18 @@ const PaginationView = styled.View<{ minimized: boolean }>`
   top: ${({ minimized }) => (minimized ? minimizedPosition : normalPosition)}px;
 `
 
-interface ImageCarouselProps {
+type ImageCarouselProps = {
   images: Images
   minimized?: boolean
 }
 
-interface Item {
+type Item = {
   source: {
     uri: string
   }
 }
 
-interface ImageUrl {
+type ImageUrl = {
   url: string
 }
 

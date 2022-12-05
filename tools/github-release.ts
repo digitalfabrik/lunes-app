@@ -3,7 +3,7 @@ import { program } from 'commander'
 import { tagId } from './constants'
 import authenticate from './github-authentication'
 
-interface Options {
+type Options = {
   deliverinoPrivateKey: string
   owner: string
   repo: string

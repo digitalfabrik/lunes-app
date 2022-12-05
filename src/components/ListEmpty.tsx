@@ -13,7 +13,7 @@ const StyledSadSmileyIcon = styled(SadSmileyIcon)`
   padding: ${props => props.theme.spacings.md} 0;
 `
 
-interface ListEmptyProps {
+type ListEmptyProps = {
   label: string
 }
 

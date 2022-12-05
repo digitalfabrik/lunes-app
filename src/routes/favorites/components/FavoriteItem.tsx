@@ -6,7 +6,7 @@ import { VocabularyItem } from '../../../constants/endpoints'
 import useLoadFavorite from '../../../hooks/useLoadFavorite'
 import { removeFavorite } from '../../../services/AsyncStorage'
 
-interface FavoriteItemProps {
+type FavoriteItemProps = {
   favorite: Favorite
   refresh: () => void
   onPress: (vocabularyItem: VocabularyItem) => void

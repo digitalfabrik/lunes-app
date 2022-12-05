@@ -15,12 +15,12 @@ import {
   addFavorite,
   removeFavorite,
   setCustomDisciplines,
-  getUserVocabularyWithoutImage,
   getSelectedProfessions,
   getExerciseProgress,
   editUserVocabularyItem,
   removeSelectedProfession,
   setSelectedProfessions,
+  getUserVocabularyItems,
 } from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
@@ -147,27 +147,27 @@ describe('AsyncStorage', () => {
       .map(item => ({ ...item, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
-      const userVocabulary = await getUserVocabularyWithoutImage()
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(0)
       await addUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
       await addUserVocabularyItem(userVocabularyItems[0])
       await editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
-      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
       expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
     })
 
     it('should delete userVocabularyItem', async () => {
       await addUserVocabularyItem(userVocabularyItems[0])
-      const userVocabulary = await getUserVocabularyWithoutImage()
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(1)
       await deleteUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyWithoutImage()
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

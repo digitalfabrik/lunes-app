@@ -4,7 +4,7 @@ import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../const
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { CMS, productionCMS, testCMS } from './axios'
-import { calculateScore, getImages } from './helpers'
+import { calculateScore } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -173,7 +173,7 @@ export const incrementNextUserVocabularyId = async (): Promise<void> => {
   return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
 }
 
-export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]> => {
+export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
   return userVocabulary
     ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
@@ -183,22 +183,12 @@ export const getUserVocabularyWithoutImage = async (): Promise<VocabularyItem[]>
     : []
 }
 
-export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
-  const userVocabulary = await getUserVocabularyWithoutImage()
-  return Promise.all(
-    userVocabulary.map(async item => ({
-      ...item,
-      image: await getImages(item),
-    }))
-  )
-}
-
 export const setUserVocabularyItems = async (userVocabularyItems: VocabularyItem[]): Promise<void> => {
   await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userVocabularyItems))
 }
 
 export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = await getUserVocabularyWithoutImage()
+  const userVocabulary = await getUserVocabularyItems()
   if (userVocabulary.find(item => item.word === vocabularyItem.word)) {
     return
   }
@@ -209,7 +199,7 @@ export const editUserVocabularyItem = async (
   oldUserVocabularyItem: VocabularyItem,
   newUserVocabularyItem: VocabularyItem
 ): Promise<boolean> => {
-  const userVocabulary = await getUserVocabularyWithoutImage()
+  const userVocabulary = await getUserVocabularyItems()
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
     return false
@@ -220,7 +210,7 @@ export const editUserVocabularyItem = async (
 }
 
 export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = getUserVocabularyWithoutImage().then(vocab =>
+  const userVocabulary = getUserVocabularyItems().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })

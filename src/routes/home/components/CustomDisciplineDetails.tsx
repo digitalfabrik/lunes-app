@@ -14,7 +14,7 @@ const TextContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-interface CustomDisciplineDetailsProps {
+type CustomDisciplineDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
 }

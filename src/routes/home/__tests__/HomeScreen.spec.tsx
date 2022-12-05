@@ -40,12 +40,15 @@ describe('HomeScreen', () => {
     mocked(useLoadDiscipline)
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
+      .mockReturnValueOnce(getReturnOf(mockDisciplines()[2]))
     mocked(useReadProgress).mockReturnValue(getReturnOf(0))
     const { findByText, getByText } = render(<HomeScreen navigation={navigation} />)
     const firstDiscipline = await findByText('First Discipline')
-    const secondDiscipline = getByText('Second Discipline')
+    const secondDiscipline = await findByText('Second Discipline')
+    const thirdDiscipline = getByText('Third Discipline')
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
+    expect(thirdDiscipline).toBeDefined()
   })
 
   it('should render custom discipline', async () => {

@@ -1,9 +1,11 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
+import { Platform } from 'react-native'
+import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
-import { ImageCircleIcon, MicrophoneCircleIcon } from '../../../assets/images'
+import { ImageCircleIcon } from '../../../assets/images'
+import AudioRecorder from '../../components/AudioRecorder'
 import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
@@ -33,15 +35,11 @@ const SaveButton = styled(Button)`
   align-self: center;
 `
 
-const AddAudioButton = styled(Button)`
-  margin-top: ${props => props.theme.spacings.md};
-  justify-content: flex-start;
-  padding: 0;
-`
-
-const AddImageButton = styled(AddAudioButton)`
+const AddImageButton = styled(Button)`
   margin-bottom: 0;
   margin-top: ${props => props.theme.spacings.sm};
+  justify-content: flex-start;
+  padding: 0;
 `
 
 const StyledHintText = styled(HintText)`
@@ -52,7 +50,7 @@ const ThumbnailContainer = styled.View`
   flex-direction: row;
 `
 
-interface UserVocabularyProcessScreenProps {
+type UserVocabularyProcessScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyProcess'>
 }
 
@@ -64,11 +62,11 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
+  const [recordingPath, setRecordingPath] = useState<string | null>(null)
 
   const {
     headline,
     addImage,
-    addAudio,
     wordPlaceholder,
     articlePlaceholder,
     errorMessage,
@@ -94,18 +92,25 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `${DocumentDirectoryPath}/image-${id}-${index}.txt`
-          await writeFile(path, image, 'utf8')
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          await moveFile(image, path)
           return { id: index, image: path }
         })
       )
+
+      const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`
+      const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
+
+      if (recordingPath) {
+        await moveFile(recordingPath, audioPathWithFormat)
+      }
 
       await addUserVocabularyItem({
         id,
         word,
         article: ARTICLES[articleId],
         images: imagePaths,
-        audio: '',
+        audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
         type: VOCABULARY_ITEM_TYPES.userCreated,
       })
@@ -115,6 +120,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
       setWord('')
       setArticleId(null)
       setImages([])
+      setRecordingPath(null)
     } catch (e) {
       reportError(e)
     }
@@ -162,14 +168,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         />
         <StyledHintText>{maxPictureUpload}</StyledHintText>
         {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
-
-        <AddAudioButton
-          onPress={() => null}
-          label={addAudio}
-          buttonTheme={BUTTONS_THEME.text}
-          iconLeft={MicrophoneCircleIcon}
-          iconSize={theme.spacingsPlain.xl}
-        />
+        <AudioRecorder recordingPath={recordingPath} setRecordingPath={setRecordingPath} />
         <HintText>{requiredFields}</HintText>
         <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
       </Root>

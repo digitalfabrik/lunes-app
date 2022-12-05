@@ -9,7 +9,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
-interface WordChoiceExerciseScreenProps {
+type WordChoiceExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
 }

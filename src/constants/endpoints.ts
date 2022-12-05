@@ -1,6 +1,6 @@
 import { Article, VocabularyItemType } from './data'
 
-export interface Discipline {
+export type Discipline = {
   id: number
   title: string
   description: string
@@ -13,25 +13,25 @@ export interface Discipline {
   leafDisciplines?: number[]
 }
 
-export interface AlternativeWord {
+export type AlternativeWord = {
   word: string
   article: Article
 }
 
-export interface Image {
+export type Image = {
   id: number
   image: string
 }
 
 export type Images = Image[]
 
-export interface VocabularyItem {
+export type VocabularyItem = {
   id: number
   type: VocabularyItemType
   word: string
   article: Article
   images: Images
-  audio: string
+  audio: string | null
   alternatives: AlternativeWord[]
   apiKey?: string
 }

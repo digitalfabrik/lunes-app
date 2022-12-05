@@ -5,7 +5,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import VocabularyDetail from '../components/VocabularyDetail'
 import { RoutesParams } from '../navigation/NavigationTypes'
 
-interface VocabularyDetailScreenProps {
+type VocabularyDetailScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyDetail'>
 }
 

@@ -31,16 +31,15 @@ const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-export interface FeedbackProps {
+export type AnswerReviewProps = {
   vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
-  needsToBeRepeated: boolean
 }
 
-const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: FeedbackProps): ReactElement | null => {
+const AnswerReview = ({ vocabularyItemWithResult, submission }: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
-  const wrongWithCorrectSolution = `${getLabels().exercises.write.feedback.wrongWithSolution} ${correctSolution}`
+  const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
 
   let Icon
   let background
@@ -59,9 +58,7 @@ const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: F
   } else {
     Icon = CloseCircleIconBold
     background = BannerRed
-    message = needsToBeRepeated
-      ? `${getLabels().exercises.write.feedback.wrong}\n${wrongWithCorrectSolution}`
-      : wrongWithCorrectSolution
+    message = submission ? `${getLabels().exercises.write.feedback.wrong}\n${correctSolutionHint}` : correctSolutionHint
   }
 
   return (
@@ -72,4 +69,4 @@ const Feedback = ({ vocabularyItemWithResult, submission, needsToBeRepeated }: F
   )
 }
 
-export default Feedback
+export default AnswerReview

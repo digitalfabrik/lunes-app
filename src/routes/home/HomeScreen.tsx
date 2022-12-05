@@ -31,7 +31,7 @@ const WelcomeSubHeading = styled(ContentSecondary)`
   text-align: center;
 `
 
-interface HomeScreenProps {
+type HomeScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Home'>
 }
 
