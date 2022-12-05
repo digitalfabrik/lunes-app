@@ -41,7 +41,7 @@ export const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.xxs} auto;
 `
 
-interface DisciplineCardProps {
+type DisciplineCardProps = {
   identifier: RequestParams
   refresh?: () => void
   navigateToDiscipline: (discipline: Discipline) => void

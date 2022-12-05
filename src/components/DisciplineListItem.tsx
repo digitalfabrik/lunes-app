@@ -10,7 +10,7 @@ import { childrenDescription, childrenLabel, getProgress } from '../services/hel
 import { reportError } from '../services/sentry'
 import ListItem from './ListItem'
 
-interface DisciplineListItemProps {
+type DisciplineListItemProps = {
   item: Discipline
   onPress: () => void
   hasBadge: boolean

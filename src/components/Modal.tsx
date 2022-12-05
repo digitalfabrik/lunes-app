@@ -15,7 +15,7 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
-export interface ModalProps {
+export type ModalProps = {
   visible: boolean
   onClose: () => void
   text: string

@@ -21,7 +21,7 @@ const Image = styled(RNImage)`
   height: ${hp('12%')}px;
 `
 
-interface ThumbnailProps {
+type ThumbnailProps = {
   image: string
   deleteImage: () => void
 }

@@ -32,12 +32,12 @@ const StyledMessage = styled(ContentBackgroundLight)`
   margin-left: ${props => props.theme.spacings.xs};
 `
 
-export interface IPopoverProps {
+export type PopoverProps = {
   setIsPopoverVisible: (isVisible: boolean) => void
   isVisible: boolean
 }
 
-const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: IPopoverProps, ref) => {
+const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: PopoverProps, ref) => {
   const theme = useTheme()
   return (
     <Popover

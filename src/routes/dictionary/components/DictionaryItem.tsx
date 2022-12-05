@@ -14,7 +14,7 @@ const AlternativeWords = styled(ContentSecondary)`
   font-style: italic;
 `
 
-interface DictionaryItemProps {
+type DictionaryItemProps = {
   vocabularyItem: VocabularyItem
   showAlternatives: boolean
   navigateToDetail: (vocabularyItem: VocabularyItem) => void

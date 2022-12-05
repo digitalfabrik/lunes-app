@@ -14,7 +14,7 @@ const Container = styled.View`
   border-top-width: 1px;
 `
 
-interface HomeFooterProps {
+type HomeFooterProps = {
   navigateToImprint: () => void
 }
 

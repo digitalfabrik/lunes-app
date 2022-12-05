@@ -4,7 +4,7 @@ import { Permission, request, RESULTS } from 'react-native-permissions'
 
 import { reportError } from '../services/sentry'
 
-interface UseGrantPermissionsReturnType {
+type UseGrantPermissionsReturnType = {
   permissionRequested: boolean
   permissionGranted: boolean
 }

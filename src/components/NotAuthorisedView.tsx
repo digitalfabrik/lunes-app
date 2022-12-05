@@ -20,7 +20,7 @@ const Description = styled(ContentSecondary)`
   text-align: center;
 `
 
-interface NotAuthorizedViewProps {
+type NotAuthorizedViewProps = {
   setVisible: (visible: boolean) => void
   description: string
 }

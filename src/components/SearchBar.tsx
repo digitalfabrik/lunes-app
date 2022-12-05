@@ -5,7 +5,7 @@ import { MagnifierIcon } from '../../assets/images'
 import { getLabels } from '../services/helpers'
 import CustomTextInput from './CustomTextInput'
 
-interface SearchBarProps {
+type SearchBarProps = {
   query: string
   setQuery: (input: string) => void
 }

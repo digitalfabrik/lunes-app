@@ -35,7 +35,7 @@ const StyledMenuIcon = styled(MenuIcon)`
   color: ${props => props.theme.colors.primary};
 `
 
-interface ExerciseHeaderProps {
+type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
   feedbackType: FeedbackType

@@ -33,7 +33,7 @@ const Container = styled.View`
   justify-content: center;
 `
 
-interface ImageSelectionOverlayProps {
+type ImageSelectionOverlayProps = {
   setVisible: (visible: boolean) => void
   pushImage: (imageUri: string) => void
 }

@@ -8,14 +8,14 @@ import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
 import { Subheading } from './text/Subheading'
 
-interface ThemedButtonProps {
+type ThemedButtonProps = {
   buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
   isPressed: boolean
 }
 
-interface ThemedLabelProps {
+type ThemedLabelProps = {
   color: string
 }
 
@@ -51,7 +51,7 @@ export const Label = styled(Subheading)<ThemedLabelProps>`
   padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
-interface ButtonProps {
+type ButtonProps = {
   onPress: () => void
   label: string
   buttonTheme: ButtonTheme

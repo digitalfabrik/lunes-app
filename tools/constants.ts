@@ -13,7 +13,7 @@ const PLATFORMS = [PLATFORM_IOS, PLATFORM_ANDROID]
 
 const MAIN_BRANCH = 'main'
 
-interface ReleaseInformation {
+type ReleaseInformation = {
   platform: typeof PLATFORMS[number]
   versionName: string
 }

@@ -13,11 +13,11 @@ const StyledDropDownPicker = styled(DropDownPicker)<{ borderColor: string }>`
 `
 
 const ErrorContainer = styled.View`
-  margin-top: ${props => props.theme.spacings.xs}
+  margin-top: ${props => props.theme.spacings.xs};
   min-height: ${props => props.theme.spacings.lg};
 `
 
-interface DropdownProps<T> {
+type DropdownProps<T> = {
   placeholder: string
   items: ItemType<string | number>[]
   itemKey: string

@@ -9,7 +9,7 @@ const Camera = styled(RNCamera)`
   position: relative;
 `
 
-interface AddCustomDisciplineScreenProps {
+type AddCustomDisciplineScreenProps = {
   setVisible: (visible: boolean) => void
   setCode: (code: string) => void
 }

@@ -74,7 +74,7 @@ const InfoContainer = styled.View`
   justify-content: flex-end;
 `
 
-interface AudioRecordOverlayProps {
+type AudioRecordOverlayProps = {
   onClose: () => void
   onAudioRecorded: (recordingPath: string) => void
   setShowAudioRecordOverlay: (showAudioRecordOverlay: boolean) => void

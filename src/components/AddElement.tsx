@@ -25,7 +25,7 @@ const FlexRow = styled.View`
   align-items: center;
 `
 
-interface AddElementProps {
+type AddElementProps = {
   onPress: () => void
   label: string
   explanation?: string
