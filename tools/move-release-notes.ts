@@ -3,7 +3,7 @@ import { program } from 'commander'
 import { GITKEEP_FILE, UNRELEASED_DIR, RELEASE_NOTES_DIR } from './constants'
 import authenticate from './github-authentication'
 
-interface Opts {
+type Opts = {
   deliverinoPrivateKey: string
   owner: string
   repo: string

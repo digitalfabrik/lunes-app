@@ -53,7 +53,7 @@ const Results = styled(Content)<{ color: Color }>`
   padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
 
-interface ExerciseFinishedScreenProps {
+type ExerciseFinishedScreenProps = {
   route: RouteProp<RoutesParams, 'ExerciseFinished'>
   navigation: StackNavigationProp<RoutesParams, 'ExerciseFinished'>
 }

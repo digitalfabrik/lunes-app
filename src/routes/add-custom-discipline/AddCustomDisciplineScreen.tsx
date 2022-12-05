@@ -41,7 +41,7 @@ const InputContainer = styled.View`
 
 const HTTP_STATUS_CODE_FORBIDDEN = 403
 
-interface AddCustomDisciplineScreenProps {
+type AddCustomDisciplineScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'AddCustomDiscipline'>
 }
 

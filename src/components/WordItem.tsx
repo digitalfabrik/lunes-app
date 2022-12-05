@@ -106,7 +106,7 @@ const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
   }};
 `
 
-export interface SingleChoiceListItemProps {
+export type SingleChoiceListItemProps = {
   answer: Answer
   correct?: boolean
   selected?: boolean
@@ -116,7 +116,7 @@ export interface SingleChoiceListItemProps {
   disabled?: boolean
 }
 
-interface StyledListElementProps {
+type StyledListElementProps = {
   pressed: boolean
   selected: boolean
   correct: boolean

@@ -3,12 +3,12 @@ import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-export interface AlternativeWordFromServer {
+export type AlternativeWordFromServer = {
   article: number
   alt_word: string
 }
 
-export interface VocabularyItemFromServer {
+export type VocabularyItemFromServer = {
   id: number
   word: string
   article: number

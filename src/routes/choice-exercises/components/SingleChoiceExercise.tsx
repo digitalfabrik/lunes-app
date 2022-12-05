@@ -30,7 +30,7 @@ const ButtonContainer = styled.View`
   flex: 1;
 `
 
-interface SingleChoiceExerciseProps {
+type SingleChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   disciplineId: number
   disciplineTitle: string
@@ -154,6 +154,7 @@ const ChoiceExerciseScreen = ({
         numberOfWords={count}
         feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={vocabularyItem.id}
+        exerciseKey={exerciseKey}
       />
 
       <>

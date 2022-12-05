@@ -26,7 +26,7 @@ const Description = styled.Text`
   padding-bottom: ${props => props.theme.spacings.sm};
 `
 
-interface ShareSectionProps {
+type ShareSectionProps = {
   disciplineTitle: string
   results: VocabularyItemResult[]
 }

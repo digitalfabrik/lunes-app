@@ -26,7 +26,7 @@ const ButtonContainer = styled.View`
   align-self: center;
 `
 
-interface VocabularyDetailExerciseScreenProps {
+type VocabularyDetailExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyDetailExercise'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyDetailExercise'>
 }

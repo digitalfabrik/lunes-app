@@ -10,7 +10,7 @@ const LinkText = styled(ContentTextLight)`
   color: ${props => props.theme.colors.link};
 `
 
-interface LinkProps {
+type LinkProps = {
   url: string
   text: string
 }

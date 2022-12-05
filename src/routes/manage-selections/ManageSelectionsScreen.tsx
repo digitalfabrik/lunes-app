@@ -30,7 +30,7 @@ const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
 `
 
-interface ManageSelectionScreenProps {
+type ManageSelectionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'ManageSelection'>
 }
 

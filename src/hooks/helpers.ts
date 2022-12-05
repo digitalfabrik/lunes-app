@@ -2,14 +2,14 @@ import { Discipline } from '../constants/endpoints'
 import { RequestParams as DisciplineRequestParams } from './useLoadDiscipline'
 import { RequestParams as DisciplinesRequestParams } from './useLoadDisciplines'
 
-interface ApiKey {
+type ApiKey = {
   apiKey: string
 }
 
 export const isTypeLoadProtected = (value: DisciplineRequestParams | DisciplinesRequestParams): value is ApiKey =>
   !!(value as ApiKey).apiKey
 
-export interface ServerResponseDiscipline {
+export type ServerResponseDiscipline = {
   id: number
   title: string
   description: string
@@ -35,7 +35,7 @@ export const formatDiscipline = (
   leafDisciplines: item.nested_training_sets,
 })
 
-export interface ServerResponseGroup {
+export type ServerResponseGroup = {
   id: number
   name: string
   icon: string

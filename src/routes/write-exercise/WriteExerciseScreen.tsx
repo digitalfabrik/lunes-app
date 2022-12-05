@@ -28,7 +28,7 @@ const ButtonContainer = styled.View`
   align-items: center;
 `
 
-export interface WriteExerciseScreenProps {
+export type WriteExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
@@ -136,6 +136,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           closeExerciseAction={closeExerciseAction}
           feedbackType={FeedbackType.vocabularyItem}
           feedbackForId={vocabularyItems[currentIndex].id}
+          exerciseKey={ExerciseKeys.writeExercise}
         />
 
         <InteractionSection

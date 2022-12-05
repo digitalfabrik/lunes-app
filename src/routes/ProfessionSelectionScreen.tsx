@@ -35,7 +35,7 @@ const Placeholder = styled.View`
   margin-right: ${props => props.theme.spacings.sm};
 `
 
-interface ProfessionSelectionScreenProps {
+type ProfessionSelectionScreenProps = {
   route: RouteProp<RoutesParams, 'ProfessionSelection'>
   navigation: StackNavigationProp<RoutesParams, 'ProfessionSelection'>
 }

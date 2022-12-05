@@ -35,7 +35,7 @@ const StyledPressable = styled(Pressable)`
   flex: 1;
 `
 
-interface ModalSkeletonProps {
+type ModalSkeletonProps = {
   visible: boolean
   onClose: () => void
   testID?: string

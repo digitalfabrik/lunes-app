@@ -1,4 +1,4 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
@@ -15,8 +15,7 @@ import { getFavorites } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import FavoriteItem from './components/FavoriteItem'
 
-interface FavoritesScreenProps {
-  route: RouteProp<RoutesParams, 'Favorites'>
+type FavoritesScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
 }
 

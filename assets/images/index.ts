@@ -51,6 +51,7 @@ import LunesIcon from './lunes-icon.svg'
 import MagnifierIcon from './magnifier-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import MicrophoneCircleIcon from './microphone-circle-icon.svg'
+import MicrophoneIcon from './microphone-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
@@ -125,6 +126,7 @@ export {
   MagnifierIcon,
   MenuIcon,
   MicrophoneCircleIcon,
+  MicrophoneIcon,
   NoInternetConnectionIcon,
   OpenLockIcon,
   QRCodeIcon,

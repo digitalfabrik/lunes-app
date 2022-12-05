@@ -40,11 +40,11 @@ const IconContainer = styled.View<{ multiLine: boolean }>`
 `
 
 const ErrorContainer = styled.View`
-  margin-top: ${props => props.theme.spacings.xs}
+  margin-top: ${props => props.theme.spacings.xs};
   min-height: ${props => props.theme.spacings.lg};
 `
 
-interface CustomTextInputProps extends TextInputProps {
+type CustomTextInputProps = {
   value: string
   onChangeText: (value: string) => void
   lines?: number
@@ -53,7 +53,7 @@ interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string
   customBorderColor?: string
   style?: StyleProp<ViewStyle>
-}
+} & TextInputProps
 
 const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
   if (hasErrorMessage) {

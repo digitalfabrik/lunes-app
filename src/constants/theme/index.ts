@@ -3,7 +3,7 @@ import { FONTS } from './fonts'
 import { SPACINGS, SPACINGS_PLAIN } from './spacings'
 import { STYLES } from './styles'
 
-export interface Theme {
+export type Theme = {
   colors: typeof COLORS
   fonts: typeof FONTS
   spacings: typeof SPACINGS

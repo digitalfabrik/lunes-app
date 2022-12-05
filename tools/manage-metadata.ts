@@ -15,13 +15,13 @@ import {
 
 // Release notes
 type Platform = 'ios' | 'android'
-interface NoteType {
+type NoteType = {
   show_in_stores: boolean
   issue_key: string
   platforms: Platform
   de: string
 }
-interface ParseOptions {
+type ParseOptions = {
   destination?: string
   source: string
   ios: boolean
