@@ -5,7 +5,7 @@ import React from 'react'
 // eslint-disable-next-line jest/no-mocks-import
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
 
-import { FeedbackType } from '../../constants/data'
+import { FeedbackType, ExerciseKeys } from '../../constants/data'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
@@ -28,6 +28,7 @@ describe('ExerciseHeader', () => {
         closeExerciseAction={goBack}
         feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={1}
+        exerciseKey={ExerciseKeys.vocabularyList}
       />
     )
     expect(getByTestId('customModal')).toBeTruthy()

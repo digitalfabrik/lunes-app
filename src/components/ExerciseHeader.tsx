@@ -8,7 +8,7 @@ import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
-import { FeedbackType } from '../constants/data'
+import { FeedbackType, ExerciseKey } from '../constants/data'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
@@ -38,6 +38,7 @@ const StyledMenuIcon = styled(MenuIcon)`
 type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
+  exerciseKey?: ExerciseKey
   feedbackType: FeedbackType
   feedbackForId: number
   currentWord?: number
@@ -57,17 +58,24 @@ const ExerciseHeader = ({
   confirmClose = true,
   labelOverride,
   isCloseButton = true,
+  exerciseKey,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()
   const showProgress = numberOfWords !== undefined && numberOfWords > 0 && currentWord !== undefined
   const progressText = showProgress ? `${currentWord + 1} / ${numberOfWords}` : ''
+  const isWordList = exerciseKey === 0 || exerciseKey === undefined
+  const isLastWordInList = isWordList && numberOfWords === (currentWord ?? 0) + 1
+  const title =
+    labelOverride ?? isLastWordInList
+      ? getLabels().results.action.backToWordlist
+      : getLabels().general.header.cancelExercise
 
   useEffect(() => {
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
-        title={labelOverride ?? getLabels().general.header.cancelExercise}
+        title={title}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
         isCloseButton={isCloseButton}
       />
@@ -96,11 +104,16 @@ const ExerciseHeader = ({
       },
     })
   }, [
+    title,
     navigation,
     progressText,
     setIsModalVisible,
     setIsFeedbackModalVisible,
     confirmClose,
+    currentWord,
+    isLastWordInList,
+    exerciseKey,
+    numberOfWords,
     closeExerciseAction,
     labelOverride,
     isCloseButton,

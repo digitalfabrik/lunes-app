@@ -154,6 +154,7 @@ const ChoiceExerciseScreen = ({
         numberOfWords={count}
         feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={vocabularyItem.id}
+        exerciseKey={exerciseKey}
       />
 
       <>
