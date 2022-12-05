@@ -29,7 +29,7 @@ const TitleSubheading = styled(SubheadingText)`
   margin-top: ${props => props.theme.spacings.xs};
 `
 
-interface ITitleProps {
+type TitleProps = {
   titleIcon?: ReactElement<SvgProps>
   title: string
   subtitle?: string
@@ -38,12 +38,12 @@ interface ITitleProps {
   style?: StyleProp<ViewStyle>
 }
 
-const Title = ({ titleIcon, title, subtitle, description, children, style }: ITitleProps): ReactElement => (
+const Title = ({ titleIcon, title, subtitle, description, children, style }: TitleProps): ReactElement => (
   <Container style={style}>
     {titleIcon}
     <TitleHeading>{title}</TitleHeading>
-    {subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
-    {description && <TitleContent>{description}</TitleContent>}
+    {!!subtitle && <TitleSubheading>{subtitle}</TitleSubheading>}
+    {!!description && <TitleContent>{description}</TitleContent>}
     {children}
   </Container>
 )

@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prefer-arrow'],
+  plugins: ['@typescript-eslint', 'jest', 'jsx-expressions', 'prefer-arrow', 'react', 'react-hooks'],
   extends: [
     'airbnb',
     'airbnb/hooks',
@@ -21,6 +21,7 @@ module.exports = {
     '**/ios/',
     '**/dist/',
     '**/lib-dist/',
+    '**/patchfiles/',
     '.eslintrc.js',
     'babel.config.js',
     'metro.config.js',
@@ -29,7 +30,6 @@ module.exports = {
     // Overly strict rules (for now)
     'no-shadow': 'off',
     'react/display-name': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'off',
 
     // Unwanted
     'lines-between-class-members': 'off',
@@ -46,6 +46,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
 
     curly: ['error', 'all'],
+    'func-names': 'error',
     'no-magic-numbers': [
       'error',
       {
@@ -55,6 +56,7 @@ module.exports = {
     ],
     'prefer-destructuring': ['error', { array: false }],
     'prefer-object-spread': 'error',
+    'no-console': 'error',
 
     'react/function-component-definition': [
       'error',
@@ -70,9 +72,10 @@ module.exports = {
 
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/ban-ts-comment': 'warn',
-    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unused-vars': [
@@ -93,6 +96,8 @@ module.exports = {
     'jest/no-alias-methods': 'error',
 
     'prefer-arrow/prefer-arrow-functions': 'error',
+
+    'jsx-expressions/strict-logical-expressions': 'error',
   },
   parserOptions: {
     project: './tsconfig.json',

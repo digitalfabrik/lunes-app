@@ -5,6 +5,7 @@ import { COLORS } from '../../constants/theme/colors'
 import render from '../../testing/render'
 import ListItem from '../ListItem'
 
+jest.mock('@react-navigation/native')
 describe('ListItem', () => {
   const onPress = jest.fn()
   const description = 'Wörter'

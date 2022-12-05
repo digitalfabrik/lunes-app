@@ -3,15 +3,16 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import useReadUserVocabulary from '../../../hooks/useReadUserVocabulary'
-import { deleteUserDocument } from '../../../services/AsyncStorage'
+import { deleteUserVocabularyItem } from '../../../services/AsyncStorage'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import render from '../../../testing/render'
 import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
 jest.mock('../../../hooks/useReadUserVocabulary')
+jest.mock('@react-navigation/native')
 
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
@@ -24,22 +25,22 @@ jest.mock('../../../components/AudioPlayer', () => () => {
 })
 
 jest.mock('../../../services/AsyncStorage', () => ({
-  deleteUserDocument: jest.fn(() => Promise.resolve()),
+  deleteUserVocabularyItem: jest.fn(() => Promise.resolve()),
 }))
 
 describe('UserVocabularyListScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyList'>()
-  const userDocuments = new DocumentBuilder(2).build()
+  const userVocabularyItems = new VocabularyItemBuilder(2).build()
 
   it('should render list correctly', () => {
-    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userDocuments))
+    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userVocabularyItems))
     const { getByText, getByPlaceholderText } = render(<UserVocabularyListScreen navigation={navigation} />)
 
     expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
-    expect(getByText(userDocuments[0].word)).toBeDefined()
-    expect(getByText(userDocuments[1].word)).toBeDefined()
+    expect(getByText(userVocabularyItems[0].word)).toBeDefined()
+    expect(getByText(userVocabularyItems[1].word)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
@@ -53,10 +54,10 @@ describe('UserVocabularyListScreen', () => {
   })
 
   it('should delete item', async () => {
-    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userDocuments))
+    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userVocabularyItems))
     const { getByText, getAllByTestId } = render(<UserVocabularyListScreen navigation={navigation} />)
 
-    expect(getByText(userDocuments[0].word)).toBeDefined()
+    expect(getByText(userVocabularyItems[0].word)).toBeDefined()
     const editButton = getByText(getLabels().userVocabulary.list.edit)
     expect(editButton).toBeDefined()
     fireEvent.press(editButton)
@@ -68,6 +69,6 @@ describe('UserVocabularyListScreen', () => {
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
     fireEvent.press(confirmButton)
 
-    expect(deleteUserDocument).toHaveBeenCalled()
+    expect(deleteUserVocabularyItem).toHaveBeenCalled()
   })
 })

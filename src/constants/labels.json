@@ -42,12 +42,6 @@
       "alreadyAdded": "Dieser Code wurde bereits erfolgreich hinzufügt.",
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
-    },
-    "qrCodeScanner": {
-      "noAuthorization": {
-        "description": "Kamerazugriff zum Scannen von QR-Codes erforderlich. Öffnen Sie die Einstellungen, tippen Sie auf Berechtigungen und tippen Sie auf Erlauben.",
-        "settings": "Einstellungen"
-      }
     }
   },
   "exercises": {
@@ -81,7 +75,7 @@
       "insertAnswer": "Wort mit Artikel eingeben",
       "feedback": {
         "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
-        "wrongWithSolution": "Die richtige Antwort ist:",
+        "solution": "Die richtige Antwort ist:",
         "wrong": "Das war leider nicht richtig.",
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
@@ -94,10 +88,15 @@
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
       "cancel": "Beenden"
+    },
+    "feedback": {
+      "positive": "Weiter so, das war super!",
+      "negative": "Das geht besser. Probier es nochmal."
     }
   },
   "results": {
@@ -160,7 +159,19 @@
     "discipline": "Modul",
     "disciplines": "Module",
     "word": "Wort",
-    "words": "Wörter"
+    "words": "Wörter",
+    "camera": {
+      "noAuthorization": {
+        "description": "Kamerazugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
+      }
+    },
+    "audio": {
+      "noAuthorization": {
+        "description": "Mikrofonzugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
+      },
+      "hold": "Aufnahmetaste halten",
+      "talk": "Jetzt sprechen"
+    }
   },
   "favorites": "Favoriten",
   "dictionary": {
@@ -195,11 +206,12 @@
       "wordPlaceholder": "Wort eingeben*",
       "articlePlaceholder": "Artikel auswählen*",
       "saveButton": "Speichern",
-      "addImage": "Bild hochladen*",
+      "addImage": "Bild hinzufügen*",
       "addAudio": "Audio aufnehmen",
-      "maxPictureUpload": "Du kannst bis zu 3 Bilder hochladen",
+      "maxPictureUpload": "Du kannst bis zu 3 Bilder hinzufügen",
       "requiredFields": "*Pflichtfelder",
-      "errorMessage": "Dies ist ein Pflichtfeld."
+      "errorMessage": "Dies ist ein Pflichtfeld.",
+      "imageErrorMessage": "Du musst 1 bis 3 Bilder auswählen"
     },
     "list": {
       "edit": "Bearbeiten",

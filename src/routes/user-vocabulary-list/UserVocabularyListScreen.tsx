@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -11,12 +12,12 @@ import SearchBar from '../../components/SearchBar'
 import Title from '../../components/Title'
 import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { deleteUserDocument } from '../../services/AsyncStorage'
-import { getLabels, getSortedAndFilteredDocuments } from '../../services/helpers'
+import { deleteUserVocabularyItem } from '../../services/AsyncStorage'
+import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
 import ListItem from './components/ListItem'
@@ -37,19 +38,19 @@ const ButtonContainer = styled.View`
   bottom: 0px;
 `
 
-interface Props {
+type UserVocabularyListScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyList'>
 }
 
-const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
-  const documents = useReadUserVocabulary()
+const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
+  const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
-  const [documentToDelete, setDocumentToDelete] = useState<Document | null>(null)
+  const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<VocabularyItem | null>(null)
   const { isKeyboardVisible } = useKeyboard()
 
-  const numberOfDocuments = documents.data?.length ?? 0
-  const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const numberOfVocabularyItems = vocabularyItems.data?.length ?? 0
+  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
   const { create, myWords } = getLabels().userVocabulary
   const { list } = getLabels().userVocabulary.overview
   const {
@@ -61,37 +62,37 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
 
-  // addUserDocument(new DocumentBuilder(4).build()[3]) /* TODO remove im LUN-401 */
+  useFocusEffect(vocabularyItems.refresh)
 
-  const navigateToDetail = (document: Document): void => {
-    navigation.navigate('UserVocabularyDetail', { document })
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('UserVocabularyDetail', { vocabularyItem })
   }
 
   const toggleEditMode = (): void => {
     setEditModeEnabled(oldValue => !oldValue)
   }
 
-  const openDeleteConfirmationModal = (document: Document): void => {
-    setDocumentToDelete(document)
+  const openDeleteConfirmationModal = (vocabularyItem: VocabularyItem): void => {
+    setVocabularyItemToDelete(vocabularyItem)
   }
 
-  const deleteItem = (document: Document | null): void => {
-    if (document) {
-      deleteUserDocument(document).then(documents.refresh).catch(reportError)
+  const deleteItem = (vocabularyItem: VocabularyItem | null): void => {
+    if (vocabularyItem) {
+      deleteUserVocabularyItem(vocabularyItem).then(vocabularyItems.refresh).catch(reportError)
     }
-    setDocumentToDelete(null)
+    setVocabularyItemToDelete(null)
   }
 
   return (
     <RouteWrapper>
       <Modal
-        visible={documentToDelete !== null}
-        onClose={() => setDocumentToDelete(null)}
+        visible={vocabularyItemToDelete !== null}
+        onClose={() => setVocabularyItemToDelete(null)}
         text={`${confirmDeletionPart1} "${
-          documentToDelete !== null ? documentToDelete.word : ''
+          vocabularyItemToDelete !== null ? vocabularyItemToDelete.word : ''
         }" ${confirmDeletionPart2}`}
         confirmationButtonText={confirm}
-        confirmationAction={() => deleteItem(documentToDelete)}
+        confirmationAction={() => deleteItem(vocabularyItemToDelete)}
       />
       <Root>
         <FlatList
@@ -101,8 +102,8 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
             <>
               <Title
                 title={myWords}
-                description={`${numberOfDocuments} ${
-                  numberOfDocuments === 1 ? getLabels().general.word : getLabels().general.words
+                description={`${numberOfVocabularyItems} ${
+                  numberOfVocabularyItems === 1 ? getLabels().general.word : getLabels().general.words
                 }`}
               />
               <SearchBar query={searchString} setQuery={setSearchString} />
@@ -111,10 +112,10 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
               </EditPressable>
             </>
           }
-          data={sortedAndFilteredDocuments}
+          data={sortedAndFilteredVocabularyItems}
           renderItem={({ item }) => (
             <ListItem
-              document={item}
+              vocabularyItem={item}
               navigateToDetailScreen={() => navigateToDetail(item)}
               navigateToEditScreen={() => navigation.navigate('UserVocabularyOverview')} /* TODO LUN-401 */
               editModeEnabled={editModeEnabled}
@@ -122,7 +123,7 @@ const UserVocabularyListScreen = ({ navigation }: Props): ReactElement => {
             />
           )}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<ListEmptyContent documents={documents} />}
+          ListEmptyComponent={<ListEmptyContent vocabularyItems={vocabularyItems} />}
         />
         {!isKeyboardVisible && (
           <ButtonContainer>

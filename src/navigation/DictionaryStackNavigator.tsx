@@ -21,7 +21,7 @@ const DictionaryStackNavigator = (): ReactElement => {
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
-        name='DictionaryDetail'
+        name='VocabularyDetail'
         component={VocabularyDetailScreen}
         options={({ navigation }) => options(back, navigation)}
       />

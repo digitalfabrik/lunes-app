@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightCircleIconWhite } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
@@ -39,8 +39,8 @@ const Label = styled(SubheadingPrimary)`
 `
 
 const Thumbnail = styled.Image`
-  height: ${wp('19%')}px;
-  width: ${wp('18%')}px;
+  height: ${hp('10%')}px;
+  width: ${hp('9%')}px;
   align-self: center;
 `
 
@@ -51,7 +51,7 @@ const Subheading = styled(ContentTextLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-interface PropsType {
+type NextExerciseCardProps = {
   thumbnail: string
   heading: string
   subheading: string
@@ -59,22 +59,31 @@ interface PropsType {
   onPress: () => void
 }
 
-const NextExerciseCard = ({ thumbnail, onPress, heading, subheading, buttonLabel }: PropsType): ReactElement => (
-  <PressableOpacity onPress={onPress}>
-    <Container>
-      <Thumbnail source={{ uri: thumbnail }} testID='next-exercise-thumbnail' />
-      <ExerciseDetail>
-        <Heading>{heading}</Heading>
-        <Subheading>{subheading}</Subheading>
-        <ActionContainer>
-          <PressableOpacity onPress={onPress}>
-            <Label>{buttonLabel}</Label>
-            <ArrowRightCircleIconWhite width={wp('8%')} height={wp('8%')} />
-          </PressableOpacity>
-        </ActionContainer>
-      </ExerciseDetail>
-    </Container>
-  </PressableOpacity>
-)
+const NextExerciseCard = ({
+  thumbnail,
+  onPress,
+  heading,
+  subheading,
+  buttonLabel,
+}: NextExerciseCardProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <PressableOpacity onPress={onPress}>
+      <Container>
+        <Thumbnail source={{ uri: thumbnail }} testID='next-exercise-thumbnail' />
+        <ExerciseDetail>
+          <Heading>{heading}</Heading>
+          <Subheading>{subheading}</Subheading>
+          <ActionContainer>
+            <PressableOpacity onPress={onPress}>
+              <Label>{buttonLabel}</Label>
+              <ArrowRightCircleIconWhite width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+            </PressableOpacity>
+          </ActionContainer>
+        </ExerciseDetail>
+      </Container>
+    </PressableOpacity>
+  )
+}
 
 export default NextExerciseCard

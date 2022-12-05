@@ -4,12 +4,12 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ExerciseKeys } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
-interface WordChoiceExerciseScreenProps {
+type WordChoiceExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
 }
@@ -17,17 +17,17 @@ interface WordChoiceExerciseScreenProps {
 const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
-  const { documents, disciplineTitle, disciplineId } = route.params
-  const answersCount = Math.min(documents.length, MAX_ANSWERS)
+  const { vocabularyItems, disciplineTitle, disciplineId } = route.params
+  const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
 
-  const generateFalseAnswers = (correctDocument: Document): Answer[] => {
-    const shuffledWrongAnswers = shuffleArray(documents.filter(it => it.id !== correctDocument.id))
+  const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
+    const shuffledWrongAnswers = shuffleArray(vocabularyItems.filter(it => it.id !== correctVocabularyItem.id))
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 
-  const documentToAnswers = (document: Document): Answer[] => {
-    const { word, article } = document
-    const answers = generateFalseAnswers(document)
+  const vocabularyItemToAnswer = (vocabularyItem: VocabularyItem): Answer[] => {
+    const { word, article } = vocabularyItem
+    const answers = generateFalseAnswers(vocabularyItem)
 
     // Insert correct answer on random position
     const positionOfCorrectAnswer = Math.floor(Math.random() * answersCount)
@@ -38,10 +38,10 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   return (
     <RouteWrapper>
       <SingleChoiceExercise
-        documents={documents}
+        vocabularyItems={vocabularyItems}
         disciplineId={disciplineId}
         disciplineTitle={disciplineTitle}
-        documentToAnswers={documentToAnswers}
+        vocabularyItemToAnswer={vocabularyItemToAnswer}
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.wordChoiceExercise}

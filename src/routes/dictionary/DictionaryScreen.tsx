@@ -8,10 +8,10 @@ import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { Document } from '../../constants/endpoints'
-import useLoadAllDocuments from '../../hooks/useLoadAllDocuments'
+import { VocabularyItem } from '../../constants/endpoints'
+import useLoadAllVocabularyItems from '../../hooks/useLoadAllVocabularyItems'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getSortedAndFilteredDocuments, matchAlternative } from '../../services/helpers'
+import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
 
 const Root = styled.View`
@@ -22,29 +22,32 @@ const Header = styled.View`
   padding-bottom: ${props => props.theme.spacings.md};
 `
 
-interface Props {
+type DictionaryScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Dictionary'>
 }
 
-const DictionaryScreen = ({ navigation }: Props): ReactElement => {
-  const documents = useLoadAllDocuments()
+const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement => {
+  const vocabularyItems = useLoadAllVocabularyItems()
   const [searchString, setSearchString] = useState<string>('')
 
-  const sortedAndFilteredDocuments = getSortedAndFilteredDocuments(documents.data, searchString)
+  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
-  const description = `${sortedAndFilteredDocuments.length} ${
-    sortedAndFilteredDocuments.length === 1 ? getLabels().general.word : getLabels().general.words
+  const description = `${sortedAndFilteredVocabularyItems.length} ${
+    sortedAndFilteredVocabularyItems.length === 1 ? getLabels().general.word : getLabels().general.words
   }`
 
-  const navigateToDetail = (document: Document): void => {
-    navigation.navigate('DictionaryDetail', { document })
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
   return (
     <RouteWrapper>
-      <ServerResponseHandler error={documents.error} loading={documents.loading} refresh={documents.refresh}>
+      <ServerResponseHandler
+        error={vocabularyItems.error}
+        loading={vocabularyItems.loading}
+        refresh={vocabularyItems.refresh}>
         <Root>
-          {documents.data && (
+          {vocabularyItems.data && (
             <FlatList
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={
@@ -53,10 +56,10 @@ const DictionaryScreen = ({ navigation }: Props): ReactElement => {
                   <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
-              data={sortedAndFilteredDocuments}
+              data={sortedAndFilteredVocabularyItems}
               renderItem={({ item }) => (
                 <DictionaryItem
-                  document={item}
+                  vocabularyItem={item}
                   showAlternatives={matchAlternative(item, searchString) && searchString.length > 0}
                   navigateToDetail={navigateToDetail}
                 />

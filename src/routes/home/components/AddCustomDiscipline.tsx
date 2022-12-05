@@ -11,11 +11,11 @@ const Explanation = styled(ContentSecondary)`
   padding: ${props => props.theme.spacings.xs};
 `
 
-interface Props {
+type AddCustomDisciplineProps = {
   navigate: () => void
 }
 
-const AddCustomDiscipline = ({ navigate }: Props): ReactElement => (
+const AddCustomDiscipline = ({ navigate }: AddCustomDisciplineProps): ReactElement => (
   <Card heading={getLabels().home.customDisciplineSection} icon={<HeaderCircleIcon />}>
     <Explanation>{getLabels().home.customDisciplineExplanation}</Explanation>
     <AddElement onPress={navigate} label={getLabels().home.addCustomDiscipline} />

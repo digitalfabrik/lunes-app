@@ -20,7 +20,7 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-interface PropsType {
+type ProfessionDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
@@ -30,7 +30,7 @@ const ProfessionDetails = ({
   discipline,
   navigateToDiscipline,
   navigateToNextExercise,
-}: PropsType): ReactElement | null => {
+}: ProfessionDetailsProps): ReactElement | null => {
   const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
@@ -47,7 +47,7 @@ const ProfessionDetails = ({
     return null
   }
 
-  const { documents, title, exerciseKey } = nextExerciseData
+  const { vocabularyItems, title, exerciseKey } = nextExerciseData
 
   return (
     <>
@@ -72,7 +72,7 @@ const ProfessionDetails = ({
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
-        thumbnail={documents[0].document_image[0].image}
+        thumbnail={vocabularyItems[0].images[0].image}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}

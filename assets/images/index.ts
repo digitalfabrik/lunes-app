@@ -2,6 +2,7 @@ import AddCircleIcon from './add-circle-icon.svg'
 import AddIconWhite from './add-icon-white.svg'
 import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
 import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
+import ArrowLeftIcon from './arrow-left-icon.svg'
 import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
 import ArrowRightIcon from './arrow-right-icon.svg'
 import BannerGreen from './banner-green.png'
@@ -19,6 +20,7 @@ import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
 import CheckCloseCircleIcon from './check-close-circle-icon.svg'
 import ChevronRight from './chevron-right.svg'
 import CircleIconBlue from './circle-icon-blue.svg'
+import CircleIconWhite from './circle-icon-white.svg'
 import CloseCircleIconBlue from './close-circle-icon-blue.svg'
 import CloseCircleIconBold from './close-circle-icon-bold.svg'
 import CloseCircleIconWhite from './close-circle-icon-white.svg'
@@ -41,6 +43,7 @@ import HomeCircleIconWhite from './home-circle-icon-white.svg'
 import HomeIconGrey from './home-icon-grey.svg'
 import HomeIconWhite from './home-icon-white.svg'
 import ImageCircleIcon from './image-circle-icon.svg'
+import ImageIcon from './image-icon.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
@@ -48,6 +51,7 @@ import LunesIcon from './lunes-icon.svg'
 import MagnifierIcon from './magnifier-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import MicrophoneCircleIcon from './microphone-circle-icon.svg'
+import MicrophoneIcon from './microphone-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
@@ -62,14 +66,18 @@ import StarCircleIconGrey from './star-circle-icon-grey.svg'
 import StarIconGreyFilled from './star-icon-grey-filled.svg'
 import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
+import ThumbsDownIcon from './thumbs-down.svg'
+import ThumbsUpIcon from './thumbs-up.svg'
 import TrashIconWhite from './trash-bin-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
-import TrophyIcon from './trophy-icon.svg'
 import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
 
 export {
   AddCircleIcon,
+  CircleIconWhite,
+  ImageIcon,
   AddIconWhite,
+  ArrowLeftIcon,
   ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   ArrowRightIcon,
@@ -118,6 +126,7 @@ export {
   MagnifierIcon,
   MenuIcon,
   MicrophoneCircleIcon,
+  MicrophoneIcon,
   NoInternetConnectionIcon,
   OpenLockIcon,
   QRCodeIcon,
@@ -134,6 +143,7 @@ export {
   StarIconWhite,
   TrashIcon,
   TrashIconWhite,
-  TrophyIcon,
   VolumeUpCircleIcon,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
 }

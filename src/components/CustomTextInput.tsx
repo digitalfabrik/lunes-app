@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { StyleProp, TextInputProps, ViewStyle } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
@@ -8,8 +8,8 @@ import theme from '../constants/theme'
 import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
-const LINE_HEIGHT = 30
-const MIN_HEIGHT = 60
+const LINE_HEIGHT = hp('4%')
+const MIN_HEIGHT = hp('7%')
 
 const StyledTextInput = styled.TextInput`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -21,8 +21,8 @@ const StyledTextInput = styled.TextInput`
 `
 
 const ClearContainer = styled(PressableOpacity)`
-  width: ${wp('6%')}px;
-  height: ${wp('6%')}px;
+  width: ${props => props.theme.spacings.md};
+  height: ${props => props.theme.spacings.md};
 `
 
 const TextInputContainer = styled.View<{ lines: number; borderColor: string; showErrorValidation: boolean }>`
@@ -40,11 +40,11 @@ const IconContainer = styled.View<{ multiLine: boolean }>`
 `
 
 const ErrorContainer = styled.View`
-  margin-top: ${props => props.theme.spacings.xs}
+  margin-top: ${props => props.theme.spacings.xs};
   min-height: ${props => props.theme.spacings.lg};
 `
 
-interface CustomTextInputProps extends TextInputProps {
+type CustomTextInputProps = {
   value: string
   onChangeText: (value: string) => void
   lines?: number
@@ -53,7 +53,7 @@ interface CustomTextInputProps extends TextInputProps {
   errorMessage?: string
   customBorderColor?: string
   style?: StyleProp<ViewStyle>
-}
+} & TextInputProps
 
 const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
   if (hasErrorMessage) {
@@ -104,7 +104,7 @@ const CustomTextInput = ({
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
-              <CloseIcon width={wp('6%')} height={wp('6%')} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
             </ClearContainer>
           ) : (
             rightContainer

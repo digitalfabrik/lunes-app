@@ -2,9 +2,9 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Share } from 'react-native'
 
-import { ARTICLES } from '../../../../constants/data'
-import { DocumentResult } from '../../../../navigation/NavigationTypes'
+import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
+import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
 
@@ -13,28 +13,15 @@ jest.mock('react-native/Libraries/Share/Share', () => ({
 }))
 
 describe('ShareButton', () => {
-  const results: DocumentResult[] = [
+  const vocabularyItems = new VocabularyItemBuilder(1).build()
+  const results: VocabularyItemResult[] = [
     {
-      document: {
-        id: 1,
-        word: 'Auto',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      vocabularyItem: vocabularyItems[0],
       result: 'correct',
       numberOfTries: 1,
     },
     {
-      document: {
-        id: 2,
-        word: 'Nagel',
-        article: ARTICLES[1],
-        document_image: [{ id: 1, image: 'https://lunes.tuerantuer.org/media/images/Winkelmesser.jpeg' }],
-        audio: 'audio',
-        alternatives: [],
-      },
+      vocabularyItem: vocabularyItems[1],
       result: 'incorrect',
       numberOfTries: 1,
     },

@@ -5,7 +5,7 @@ import React from 'react'
 // eslint-disable-next-line jest/no-mocks-import
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
 
-import { FeedbackType } from '../../constants/data'
+import { FeedbackType, ExerciseKeys } from '../../constants/data'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
@@ -13,6 +13,7 @@ import ExerciseHeader from '../ExerciseHeader'
 
 jest.useFakeTimers()
 jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
+jest.mock('../AudioPlayer', () => () => null)
 
 describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()
@@ -25,8 +26,9 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         closeExerciseAction={goBack}
-        feedbackType={FeedbackType.document}
+        feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={1}
+        exerciseKey={ExerciseKeys.vocabularyList}
       />
     )
     expect(getByTestId('customModal')).toBeTruthy()

@@ -22,6 +22,8 @@ On iOS the [iOS Development Bridge (idb)](https://github.com/facebook/idb#quick-
 - `brew install idb-companion`
 - `pip3 install fb-idb`
 
+If that fails, run `pip install fb-idb` instead.
+
 ## Intellij
 
 - Start Android emulator

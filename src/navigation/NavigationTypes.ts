@@ -1,36 +1,36 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, Document } from '../constants/endpoints'
+import { Discipline, VocabularyItem } from '../constants/endpoints'
 
-export interface DocumentResult {
-  document: Document
+export type VocabularyItemResult = {
+  vocabularyItem: VocabularyItem
   result: SimpleResult | null
   numberOfTries: number
 }
 
-interface ExerciseParams {
+type ExerciseParams = {
   disciplineId: number
   disciplineTitle: string
-  documents: Document[]
+  vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
-interface VocabularyDetailExerciseParams extends Omit<ExerciseParams, 'disciplineId'> {
-  documentIndex: number
+type VocabularyDetailExerciseParams = {
+  vocabularyItemIndex: number
   disciplineId: number | null
-}
+} & Omit<ExerciseParams, 'disciplineId'>
 
-export interface ExercisesParams extends Omit<ExerciseParams, 'documents' | 'closeExerciseAction'> {
+export type ExercisesParams = {
   discipline: Discipline
-  documents: Document[] | null
+  vocabularyItems: VocabularyItem[] | null
   closeExerciseAction?: CommonNavigationAction
-}
+} & Omit<ExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
-  results: DocumentResult[]
+  results: VocabularyItemResult[]
 }
 
 // https://github.com/Microsoft/Script/issues/15300
@@ -49,7 +49,7 @@ export type RoutesParams = {
   UserVocabularyList: {
     headerBackLabel: string
   }
-  UserVocabularyDetail: { document: Document }
+  UserVocabularyDetail: { vocabularyItem: VocabularyItem }
   ScopeSelection: {
     initialSelection: boolean
   }
@@ -61,7 +61,7 @@ export type RoutesParams = {
     discipline: Discipline
     initialSelection: boolean
   }
-  VocabularyDetail: VocabularyDetailExerciseParams
+  VocabularyDetailExercise: VocabularyDetailExerciseParams
   Exercises: ExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
@@ -80,7 +80,7 @@ export type RoutesParams = {
   Settings: undefined
   Favorites: undefined
   Dictionary: undefined
-  DictionaryDetail: { document: Document }
+  VocabularyDetail: { vocabularyItem: VocabularyItem }
 }
 
 export type Route = keyof RoutesParams

@@ -8,23 +8,23 @@ import { COLORS } from '../../../constants/theme/colors'
 
 const Container = styled.View`
   justify-content: center;
-  margin: ${props => props.theme.spacings.xs}
+  margin: ${props => props.theme.spacings.xs};
   max-height: ${hp('10%')}px;
 `
 
 const Line = styled.View<{ color: string }>`
   width: 2px;
-  height: ${hp('6%')}px;
+  height: ${props => props.theme.spacings.xxl};
   background-color: ${props => props.color};
   margin: ${props => props.theme.spacings.xs} 10px;
 `
 
-interface PropsType {
+type LockingLaneProps = {
   nextExercise: Exercise | null
   index: number
 }
 
-const LockingLane = ({ nextExercise, index }: PropsType): ReactElement => {
+const LockingLane = ({ nextExercise, index }: LockingLaneProps): ReactElement => {
   let Icon
   if (nextExercise && nextExercise.level < index) {
     Icon = LockIcon

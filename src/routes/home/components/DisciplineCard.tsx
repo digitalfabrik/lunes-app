@@ -41,7 +41,7 @@ export const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.xxs} auto;
 `
 
-interface PropsType {
+type DisciplineCardProps = {
   identifier: RequestParams
   refresh?: () => void
   navigateToDiscipline: (discipline: Discipline) => void
@@ -53,7 +53,7 @@ const DisciplineCard = ({
   refresh: refreshHome,
   navigateToDiscipline,
   navigateToNextExercise,
-}: PropsType): JSX.Element | null => {
+}: DisciplineCardProps): JSX.Element | null => {
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 

@@ -5,7 +5,7 @@ import { getLabels } from '../services/helpers'
 import Modal from './Modal'
 import { ContentSecondary } from './text/Content'
 
-interface PropsType {
+type DeletionModalProps = {
   isVisible: boolean
   onConfirm: () => void
   onClose: () => void
@@ -16,7 +16,7 @@ const Explanation = styled(ContentSecondary)`
   text-align: center;
 `
 
-const DeletionModal = ({ isVisible, onConfirm, onClose }: PropsType): JSX.Element => {
+const DeletionModal = ({ isVisible, onConfirm, onClose }: DeletionModalProps): JSX.Element => {
   const { confirmationQuestion, confirm, explanation } = getLabels().manageSelection.deleteModal
   return (
     <Modal

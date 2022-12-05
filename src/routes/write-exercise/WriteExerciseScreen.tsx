@@ -19,7 +19,7 @@ import {
   SimpleResult,
 } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
-import { DocumentResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { VocabularyItemResult, RoutesParams } from '../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
@@ -28,55 +28,57 @@ const ButtonContainer = styled.View`
   align-items: center;
 `
 
-export interface WriteExerciseScreenProps {
+export type WriteExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WriteExercise'>
   navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>
 }
 
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
-  const { documents, disciplineTitle, closeExerciseAction, disciplineId } = route.params
+  const { vocabularyItems, disciplineTitle, closeExerciseAction, disciplineId } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
-  const [documentsWithResults, setDocumentsWithResults] = useState<DocumentResult[]>(
-    shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 })))
+  const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
+    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
   )
 
   const { isKeyboardVisible } = useKeyboard()
-  const current = documentsWithResults[currentIndex]
+  const current = vocabularyItemWithResults[currentIndex]
   const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
   const initializeExercise = useCallback(
     (force = false) => {
-      if (documents.length !== documentsWithResults.length || force) {
+      if (vocabularyItems.length !== vocabularyItemWithResults.length || force) {
         setCurrentIndex(0)
         setIsAnswerSubmitted(false)
-        setDocumentsWithResults(shuffleArray(documents.map(document => ({ document, result: null, numberOfTries: 0 }))))
+        setVocabularyItemWithResults(
+          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+        )
       }
     },
-    [documents, documentsWithResults]
+    [vocabularyItems, vocabularyItemWithResults]
   )
 
   useEffect(initializeExercise, [initializeExercise])
 
   const tryLater = useCallback(() => {
-    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next document
+    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next vocabularyItem
     if (isKeyboardVisible) {
       const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+        setVocabularyItemWithResults(moveToEnd(vocabularyItemWithResults, currentIndex))
         onKeyboardHideSubscription.remove()
       })
       Keyboard.dismiss()
     } else {
-      setDocumentsWithResults(moveToEnd(documentsWithResults, currentIndex))
+      setVocabularyItemWithResults(moveToEnd(vocabularyItemWithResults, currentIndex))
     }
-  }, [isKeyboardVisible, documentsWithResults, currentIndex])
+  }, [isKeyboardVisible, vocabularyItemWithResults, currentIndex])
 
-  const finishExercise = async (results: DocumentResult[]): Promise<void> => {
+  const finishExercise = async (results: VocabularyItemResult[]): Promise<void> => {
     if (disciplineId) {
       await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
-      documents,
+      vocabularyItems,
       disciplineTitle,
       disciplineId,
       results,
@@ -90,8 +92,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const continueExercise = async (): Promise<void> => {
     setIsAnswerSubmitted(false)
 
-    if (currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated) {
-      await finishExercise(documentsWithResults)
+    if (currentIndex === vocabularyItemWithResults.length - 1 && !needsToBeRepeated) {
+      await finishExercise(vocabularyItemWithResults)
     } else if (needsToBeRepeated) {
       tryLater()
     } else {
@@ -99,19 +101,19 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     }
   }
 
-  const storeResult = (result: DocumentResult): void => {
-    const updatedDocumentsWithResults = Array.from(documentsWithResults)
-    if (current.document.id !== result.document.id) {
+  const storeResult = (result: VocabularyItemResult): void => {
+    const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
+    if (current.vocabularyItem.id !== result.vocabularyItem.id) {
       return
     }
-    updatedDocumentsWithResults[currentIndex] = result
-    setDocumentsWithResults(updatedDocumentsWithResults)
+    updatedVocabularyItemsWithResults[currentIndex] = result
+    setVocabularyItemWithResults(updatedVocabularyItemsWithResults)
     setIsAnswerSubmitted(true)
   }
 
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
-    const cheatedDocuments = documentsWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
-    await finishExercise(cheatedDocuments)
+    const cheatedVocabularyItems = vocabularyItemWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
+    await finishExercise(cheatedVocabularyItems)
   }
 
   const giveUp = async (): Promise<void> => {
@@ -120,7 +122,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   }
 
   const buttonLabel =
-    currentIndex === documentsWithResults.length - 1 && !needsToBeRepeated
+    currentIndex === vocabularyItemWithResults.length - 1 && !needsToBeRepeated
       ? getLabels().exercises.showResults
       : getLabels().exercises.next
 
@@ -130,14 +132,15 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
         <ExerciseHeader
           navigation={navigation}
           currentWord={currentIndex}
-          numberOfWords={documents.length}
+          numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
-          feedbackType={FeedbackType.document}
-          feedbackForId={documents[currentIndex].id}
+          feedbackType={FeedbackType.vocabularyItem}
+          feedbackForId={vocabularyItems[currentIndex].id}
+          exerciseKey={ExerciseKeys.writeExercise}
         />
 
         <InteractionSection
-          documentWithResult={current}
+          vocabularyItemWithResult={current}
           storeResult={storeResult}
           isAnswerSubmitted={isAnswerSubmitted}
         />
@@ -156,7 +159,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
                 onPress={giveUp}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
-              {currentIndex < documents.length - 1 && (
+              {currentIndex < vocabularyItems.length - 1 && (
                 <Button
                   label={getLabels().exercises.tryLater}
                   iconRight={ArrowRightIcon}

@@ -15,7 +15,7 @@ const Message = styled(HeadingText)`
   text-align: center;
 `
 
-export interface Props {
+export type ModalProps = {
   visible: boolean
   onClose: () => void
   text: string
@@ -27,7 +27,7 @@ export interface Props {
   testID?: string
 }
 
-const Modal = (props: Props): JSX.Element => {
+const Modal = (props: ModalProps): JSX.Element => {
   const {
     visible,
     text,

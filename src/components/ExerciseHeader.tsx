@@ -3,12 +3,12 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
-import { FeedbackType } from '../constants/data'
+import { FeedbackType, ExerciseKey } from '../constants/data'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
@@ -35,9 +35,10 @@ const StyledMenuIcon = styled(MenuIcon)`
   color: ${props => props.theme.colors.primary};
 `
 
-interface ExerciseHeaderProps {
+type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
+  exerciseKey?: ExerciseKey
   feedbackType: FeedbackType
   feedbackForId: number
   currentWord?: number
@@ -57,17 +58,24 @@ const ExerciseHeader = ({
   confirmClose = true,
   labelOverride,
   isCloseButton = true,
+  exerciseKey,
 }: ExerciseHeaderProps): JSX.Element => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()
   const showProgress = numberOfWords !== undefined && numberOfWords > 0 && currentWord !== undefined
   const progressText = showProgress ? `${currentWord + 1} / ${numberOfWords}` : ''
+  const isWordList = exerciseKey === 0 || exerciseKey === undefined
+  const isLastWordInList = isWordList && numberOfWords === (currentWord ?? 0) + 1
+  const title =
+    labelOverride ?? isLastWordInList
+      ? getLabels().results.action.backToWordlist
+      : getLabels().general.header.cancelExercise
 
   useEffect(() => {
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
-        title={labelOverride ?? getLabels().general.header.cancelExercise}
+        title={title}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
         isCloseButton={isCloseButton}
       />
@@ -76,8 +84,13 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        <OverflowMenu icon={<StyledMenuIcon width={wp('5%')} height={wp('5%')} />}>
-          <HiddenItem title={getLabels().general.header.wordFeedback} onPress={() => setIsFeedbackModalVisible(true)} />
+        <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
+          <HiddenItem
+            title={getLabels().general.header.wordFeedback}
+            onPress={() => setIsFeedbackModalVisible(true)}
+            titleStyle={{ fontSize: hp('2%') }}
+            style={{ height: theme.spacingsPlain.xl }}
+          />
         </OverflowMenu>
       </HeaderRightContainer>
     )
@@ -91,15 +104,21 @@ const ExerciseHeader = ({
       },
     })
   }, [
+    title,
     navigation,
     progressText,
     setIsModalVisible,
     setIsFeedbackModalVisible,
     confirmClose,
+    currentWord,
+    isLastWordInList,
+    exerciseKey,
+    numberOfWords,
     closeExerciseAction,
     labelOverride,
     isCloseButton,
     theme.spacingsPlain.xs,
+    theme.spacingsPlain.xl,
   ])
 
   useEffect(() => {

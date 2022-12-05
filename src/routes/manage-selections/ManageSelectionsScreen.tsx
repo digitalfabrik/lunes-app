@@ -30,11 +30,11 @@ const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
 `
 
-interface Props {
+type ManageSelectionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'ManageSelection'>
 }
 
-const ManageSelectionsScreen = ({ navigation }: Props): ReactElement => {
+const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 

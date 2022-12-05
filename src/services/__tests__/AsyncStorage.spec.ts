@@ -1,13 +1,13 @@
-import { ExerciseKeys, Progress, SIMPLE_RESULTS } from '../../constants/data'
-import { DocumentResult } from '../../navigation/NavigationTypes'
-import DocumentBuilder from '../../testing/DocumentBuilder'
+import { VOCABULARY_ITEM_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { VocabularyItemResult } from '../../navigation/NavigationTypes'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import {
   getCustomDisciplines,
-  deleteUserDocument,
+  deleteUserVocabularyItem,
   getFavorites,
   setFavorites,
-  addUserDocument,
+  addUserVocabularyItem,
   pushSelectedProfession,
   removeCustomDiscipline,
   setExerciseProgress,
@@ -15,12 +15,12 @@ import {
   addFavorite,
   removeFavorite,
   setCustomDisciplines,
-  getUserVocabulary,
   getSelectedProfessions,
   getExerciseProgress,
-  editUserDocument,
+  editUserVocabularyItem,
   removeSelectedProfession,
   setSelectedProfessions,
+  getUserVocabularyItems,
 } from '../AsyncStorage'
 
 describe('AsyncStorage', () => {
@@ -97,20 +97,20 @@ describe('AsyncStorage', () => {
       })
 
       it('should calculate and save exercise progress correctly', async () => {
-        const documents = new DocumentBuilder(2).build()
-        const documentsWithResults: DocumentResult[] = [
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
           {
-            document: documents[0],
+            vocabularyItem: vocabularyItems[0],
             result: SIMPLE_RESULTS.correct,
             numberOfTries: 1,
           },
           {
-            document: documents[0],
+            vocabularyItem: vocabularyItems[0],
             result: SIMPLE_RESULTS.incorrect,
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(1, 1, documentsWithResults)
+        await saveExerciseProgress(1, 1, vocabularyItemResults)
         const progress = await getExerciseProgress()
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })
@@ -118,52 +118,56 @@ describe('AsyncStorage', () => {
   })
 
   describe('favorites', () => {
-    const documents = new DocumentBuilder(4).build().map(it => it.id)
+    const vocabularyItems: Favorite[] = new VocabularyItemBuilder(4)
+      .build()
+      .map(it => ({ id: it.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
 
     it('should add favorites', async () => {
-      await setFavorites(documents.slice(0, 2))
-      await expect(getFavorites()).resolves.toEqual(documents.slice(0, 2))
-      await addFavorite(documents[2])
-      await expect(getFavorites()).resolves.toEqual(documents.slice(0, 3))
-      await addFavorite(documents[3])
-      await expect(getFavorites()).resolves.toEqual(documents)
+      await setFavorites(vocabularyItems.slice(0, 2))
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 2))
+      await addFavorite(vocabularyItems[2])
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems.slice(0, 3))
+      await addFavorite(vocabularyItems[3])
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems)
     })
 
     it('should remove favorites', async () => {
-      await setFavorites(documents)
-      await expect(getFavorites()).resolves.toEqual(documents)
-      await removeFavorite(documents[2])
-      await expect(getFavorites()).resolves.toEqual([documents[0], documents[1], documents[3]])
-      await removeFavorite(documents[0])
-      await expect(getFavorites()).resolves.toEqual([documents[1], documents[3]])
+      await setFavorites(vocabularyItems)
+      await expect(getFavorites()).resolves.toEqual(vocabularyItems)
+      await removeFavorite(vocabularyItems[2])
+      await expect(getFavorites()).resolves.toEqual([vocabularyItems[0], vocabularyItems[1], vocabularyItems[3]])
+      await removeFavorite(vocabularyItems[0])
+      await expect(getFavorites()).resolves.toEqual([vocabularyItems[1], vocabularyItems[3]])
     })
   })
 
   describe('userVocabulary', () => {
-    const userDocuments = new DocumentBuilder(2).build()
+    const userVocabularyItems = new VocabularyItemBuilder(2)
+      .build()
+      .map(item => ({ ...item, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated }))
 
-    it('should add userDocument', async () => {
-      const userVocabulary = await getUserVocabulary()
+    it('should add userVocabularyItem', async () => {
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(0)
-      await addUserDocument(userDocuments[0])
-      const updatedUserVocabulary = await getUserVocabulary()
+      await addUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
-    it('should edit userDocument', async () => {
-      await addUserDocument(userDocuments[0])
-      await editUserDocument(userDocuments[0], userDocuments[1])
-      const updatedUserVocabulary = await getUserVocabulary()
+    it('should edit userVocabularyItem', async () => {
+      await addUserVocabularyItem(userVocabularyItems[0])
+      await editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect(updatedUserVocabulary[0]).toEqual(userDocuments[1])
+      expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
     })
 
-    it('should delete userDocument', async () => {
-      await addUserDocument(userDocuments[0])
-      const userVocabulary = await getUserVocabulary()
+    it('should delete userVocabularyItem', async () => {
+      await addUserVocabularyItem(userVocabularyItems[0])
+      const userVocabulary = await getUserVocabularyItems()
       expect(userVocabulary).toHaveLength(1)
-      await deleteUserDocument(userDocuments[0])
-      const updatedUserVocabulary = await getUserVocabulary()
+      await deleteUserVocabularyItem(userVocabularyItems[0])
+      const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

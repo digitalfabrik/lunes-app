@@ -4,7 +4,7 @@ import React from 'react'
 
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
-import DocumentBuilder from '../../../testing/DocumentBuilder'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
@@ -32,15 +32,15 @@ jest.mock('react-native-image-zoom-viewer', () => {
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 describe('WordChoiceExerciseScreen', () => {
-  // at least 4 documents are needed to generate sufficient false answers
-  const testDocuments = new DocumentBuilder(4).build()
+  // at least 4 vocabularyItems are needed to generate sufficient false answers
+  const vocabularyItems = new VocabularyItemBuilder(4).build()
 
   const navigation = createNavigationMock<'WordChoiceExercise'>()
   const route: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
     key: '',
     name: 'WordChoiceExercise',
     params: {
-      documents: testDocuments,
+      vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),

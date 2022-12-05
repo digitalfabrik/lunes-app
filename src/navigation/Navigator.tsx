@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
@@ -11,7 +11,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
-import VocabularyDetailScreen from '../routes/vocabulary-detail/VocabularyDetailScreen'
+import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
@@ -23,7 +23,7 @@ const Stack = createStackNavigator<RoutesParams>()
 const HomeStackNavigator = (): JSX.Element | null => {
   const { data: professions, loading } = useReadSelectedProfessions()
 
-  const headerHeight = useTabletHeaderHeight(wp('15%'))
+  const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
   const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
@@ -53,8 +53,8 @@ const HomeStackNavigator = (): JSX.Element | null => {
           options={({ navigation }) => options(overviewExercises, navigation, false)}
         />
         <Stack.Screen
-          name='VocabularyDetail'
-          component={VocabularyDetailScreen}
+          name='VocabularyDetailExercise'
+          component={VocabularyDetailExerciseScreen}
           options={({ navigation }) => options('', navigation, true)}
         />
         <Stack.Screen

@@ -1,6 +1,6 @@
-import { Article } from './data'
+import { Article, VocabularyItemType } from './data'
 
-export interface Discipline {
+export type Discipline = {
   id: number
   title: string
   description: string
@@ -13,25 +13,27 @@ export interface Discipline {
   leafDisciplines?: number[]
 }
 
-export interface AlternativeWord {
+export type AlternativeWord = {
   word: string
   article: Article
 }
 
-export interface Image {
+export type Image = {
   id: number
   image: string
 }
 
 export type Images = Image[]
 
-export interface Document {
+export type VocabularyItem = {
   id: number
+  type: VocabularyItemType
   word: string
   article: Article
-  document_image: Images
-  audio: string
+  images: Images
+  audio: string | null
   alternatives: AlternativeWord[]
+  apiKey?: string
 }
 
 export const ENDPOINTS = {
@@ -41,8 +43,8 @@ export const ENDPOINTS = {
   groupInfo: 'group_info',
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
-  documents: 'documents/:id',
-  document: 'words',
+  vocabularyItems: 'documents/:id',
+  vocabularyItem: 'words',
   feedback: 'feedback',
 }
 

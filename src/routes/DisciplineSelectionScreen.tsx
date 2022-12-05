@@ -18,7 +18,7 @@ const List = styled.FlatList`
   height: 100%;
 ` as unknown as typeof FlatList
 
-interface DisciplineSelectionScreenProps {
+type DisciplineSelectionScreenProps = {
   route: RouteProp<RoutesParams, 'DisciplineSelection'>
   navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
 }
@@ -33,7 +33,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
         discipline: selectedItem,
         disciplineTitle: selectedItem.title,
         disciplineId: selectedItem.id,
-        documents: null,
+        vocabularyItems: null,
       })
     } else {
       navigation.push('DisciplineSelection', {

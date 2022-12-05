@@ -1,0 +1,6 @@
+issue_key: LUN-442
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: In der Wortliste kann man jetzt zum vorherigen Wort zurück gehen

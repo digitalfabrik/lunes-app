@@ -14,12 +14,12 @@ const TextContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-interface PropsType {
+type CustomDisciplineDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
 }
 
-const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: PropsType): JSX.Element => (
+const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: CustomDisciplineDetailsProps): JSX.Element => (
   <>
     <TextContainer>
       <NumberText>{discipline.numberOfChildren}</NumberText>

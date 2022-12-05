@@ -11,7 +11,7 @@ import { setExerciseProgress } from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 
-interface VocabularyListScreenProps {
+type VocabularyListScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyList'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }
@@ -24,7 +24,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   }, [disciplineId])
 
   const onItemPress = (index: number) =>
-    navigation.navigate('VocabularyDetail', { ...route.params, documentIndex: index })
+    navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: index })
 
   return (
     <RouteWrapper>
@@ -34,9 +34,10 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.leaf_discipline}
         feedbackForId={disciplineId}
+        exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList
-        documents={route.params.documents}
+        vocabularyItems={route.params.vocabularyItems}
         onItemPress={onItemPress}
         title={getLabels().exercises.vocabularyList.title}
       />

@@ -13,11 +13,11 @@ const StyledSadSmileyIcon = styled(SadSmileyIcon)`
   padding: ${props => props.theme.spacings.md} 0;
 `
 
-interface Props {
+type ListEmptyProps = {
   label: string
 }
 
-const ListEmpty = ({ label }: Props): ReactElement => (
+const ListEmpty = ({ label }: ListEmptyProps): ReactElement => (
   <ListEmptyContainer>
     <StyledSadSmileyIcon />
     <Subheading>{label}</Subheading>

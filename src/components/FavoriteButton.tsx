@@ -1,24 +1,17 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
-import { Document } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
-import { addFavorite, removeFavorite, isFavorite as getIsFavorite } from '../services/AsyncStorage'
+import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
-const Icon = styled(StarCircleIconGreyFilled)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
-const IconOutline = styled(StarCircleIconGrey)`
-  min-width: ${wp('9%')}px;
-  min-height: ${wp('9%')}px;
-`
 const Button = styled(PressableOpacity)`
+  width: ${props => props.theme.spacings.lg};
+  height: ${props => props.theme.spacings.lg};
   justify-content: center;
   align-items: center;
   shadow-color: ${props => props.theme.colors.shadow};
@@ -28,21 +21,27 @@ const Button = styled(PressableOpacity)`
   border-radius: 20px;
 `
 
-interface Props {
-  document: Document
+type FavoriteButtonProps = {
+  vocabularyItem: VocabularyItem
   onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement | null => {
-  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, document.id)
+const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
+  const favorite = {
+    id: vocabularyItem.id,
+    vocabularyItemType: vocabularyItem.type,
+    ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
+  }
 
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)
+  const theme = useTheme()
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(document.id).catch(reportError)
+      await removeFavorite(favorite).catch(reportError)
     } else {
-      await addFavorite(document.id).catch(reportError)
+      await addFavorite(favorite).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {
@@ -56,7 +55,11 @@ const FavoriteButton = ({ document, onFavoritesChanged }: Props): ReactElement |
 
   return (
     <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
-      {isFavorite ? <Icon /> : <IconOutline />}
+      {isFavorite ? (
+        <StarCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      ) : (
+        <StarCircleIconGrey width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      )}
     </Button>
   )
 }

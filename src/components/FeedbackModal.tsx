@@ -12,7 +12,7 @@ const TextInputContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.xl};
 `
 
-interface FeedbackModalProps {
+type FeedbackModalProps = {
   visible: boolean
   onClose: () => void
   feedbackType: FeedbackType

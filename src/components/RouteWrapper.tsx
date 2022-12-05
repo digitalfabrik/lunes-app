@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import theme from '../constants/theme'
 
-interface Props {
+type RouteWrapperProps = {
   backgroundColor?: string
   lightStatusBarContent?: boolean
   children: ReactNode
@@ -22,7 +22,7 @@ const RouteWrapper = ({
   lightStatusBarContent = false,
   children,
   bottomBackgroundColor,
-}: Props): ReactElement => (
+}: RouteWrapperProps): ReactElement => (
   <>
     <Container backgroundColor={backgroundColor} shouldTakeSpace>
       <StatusBar
@@ -33,7 +33,7 @@ const RouteWrapper = ({
     </Container>
     {/* For iOS a separate container is needed to overwrite the color of the bottom notch */}
     {bottomBackgroundColor && Platform.OS === 'ios' ? (
-      <Container shouldTakeSpace={false} backgroundColor={bottomBackgroundColor} />
+      <Container shouldTakeSpace={false} backgroundColor={bottomBackgroundColor} testID='hiddenContainer' />
     ) : null}
   </>
 )

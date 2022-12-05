@@ -4,9 +4,6 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
-import { ARTICLES } from '../../constants/data'
-import { Document } from '../../constants/endpoints'
-import { stringifyDocument } from '../../services/helpers'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
@@ -24,44 +21,22 @@ jest.mock('react-native-sound-player', () => ({
 }))
 
 describe('AudioPlayer', () => {
-  const noAudioDocument = {
-    alternatives: [],
-    article: ARTICLES[4],
-    audio: '',
-    id: 0,
-    document_image: [],
-    word: 'Abrissbirne',
-  }
+  beforeEach(jest.clearAllMocks)
 
-  const audioDocument = {
-    ...noAudioDocument,
-    audio: 'https://example.com',
-  }
+  const audioPath = 'https://example.com'
 
   const renderAudioPlayer = ({
-    document = noAudioDocument,
-    submittedAlternative = null,
+    audio = audioPath,
+    isTtsText = false,
     disabled = false,
   }: {
-    document?: Document
-    submittedAlternative?: string | null
+    audio?: string
+    isTtsText?: boolean
     disabled?: boolean
-  }): RenderAPI =>
-    render(<AudioPlayer document={document} disabled={disabled} submittedAlternative={submittedAlternative} />)
+  }): RenderAPI => render(<AudioPlayer audio={audio} isTtsText={isTtsText} disabled={disabled} />)
 
   it('should initialize tts', async () => {
-    renderAudioPlayer({})
-    expect(Tts.getInitStatus).toHaveBeenCalled()
-
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
-
-    expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
-    expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
-  })
-
-  it('should initialize tts if alternative submitted', async () => {
-    renderAudioPlayer({ document: audioDocument, submittedAlternative: 'asdf' })
+    renderAudioPlayer({ isTtsText: true })
     expect(Tts.getInitStatus).toHaveBeenCalled()
 
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
@@ -73,7 +48,7 @@ describe('AudioPlayer', () => {
 
   it('should request to install tts engine', async () => {
     mocked(Tts.getInitStatus).mockRejectedValueOnce({ code: 'no_engine' })
-    renderAudioPlayer({})
+    renderAudioPlayer({ isTtsText: true })
 
     expect(Tts.getInitStatus).toHaveBeenCalled()
     await waitFor(() => expect(Tts.requestInstallEngine).toHaveBeenCalledTimes(1))
@@ -84,8 +59,7 @@ describe('AudioPlayer', () => {
   })
 
   it('should initialize sound player', () => {
-    jest.clearAllMocks()
-    renderAudioPlayer({ document: audioDocument })
+    renderAudioPlayer({})
     expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
@@ -98,43 +72,32 @@ describe('AudioPlayer', () => {
   it('should be disabled', async () => {
     const { getByTestId } = renderAudioPlayer({ disabled: true })
     expect(getByTestId('audio-player')).toBeDisabled()
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     fireEvent.press(getByTestId('audio-player'))
 
+    expect(Tts.setDefaultLanguage).not.toHaveBeenCalledWith('de-DE')
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
-  it('should play audio if available and no alternative solution submitted', () => {
-    const { getByTestId } = renderAudioPlayer({ document: audioDocument })
+  it('should play audio if it is not tts', () => {
+    const { getByTestId } = renderAudioPlayer({})
     fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
-    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioDocument.audio)
+    expect(SoundPlayer.loadUrl).toHaveBeenCalledWith(audioPath)
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
-  it('should play submitted alternative', async () => {
-    const submittedAlternative = 'my alternative'
-    const { getByTestId } = renderAudioPlayer({ document: audioDocument, submittedAlternative })
+  it('should play audio if it is tts', async () => {
+    const ttsText = 'Die Spachtel'
+    const { getByTestId } = renderAudioPlayer({ audio: ttsText, isTtsText: true })
     await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
 
     fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(submittedAlternative, expect.any(Object))
-    expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
-  })
-
-  it('should play tts if no audio available and no alternative submitted', async () => {
-    const { getByTestId } = renderAudioPlayer({})
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-
-    fireEvent.press(getByTestId('audio-player'))
-
-    expect(Tts.speak).toHaveBeenCalledTimes(1)
-    expect(Tts.speak).toHaveBeenCalledWith(stringifyDocument(noAudioDocument), expect.any(Object))
+    expect(Tts.speak).toHaveBeenCalledWith(ttsText, expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
   })
 })

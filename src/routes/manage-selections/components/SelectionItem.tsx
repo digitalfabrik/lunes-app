@@ -11,7 +11,7 @@ import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { getLabels } from '../../../services/helpers'
 
-interface PropsType {
+type SelectionItemProps = {
   identifier: RequestParams
   deleteItem: () => void
 }
@@ -24,7 +24,7 @@ const LoadingContainer = styled(View)`
   height: 0px;
 `
 
-const SelectionItem = ({ identifier, deleteItem }: PropsType): JSX.Element => {
+const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): JSX.Element => {
   const { data, loading, error } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 

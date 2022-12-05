@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { Document } from '../constants/endpoints'
-import DocumentImageSection from './DocumentImageSection'
+import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItemImageSection from './VocabularyItemImageSection'
 import WordItem from './WordItem'
 
 const ItemContainer = styled.View`
@@ -12,15 +12,15 @@ const ItemContainer = styled.View`
   align-self: center;
 `
 
-interface Props {
-  document: Document
+type VocabularyDetailProps = {
+  vocabularyItem: VocabularyItem
 }
 
-const VocabularyDetail = ({ document }: Props): ReactElement => (
+const VocabularyDetail = ({ vocabularyItem }: VocabularyDetailProps): ReactElement => (
   <>
-    <DocumentImageSection document={document} />
+    <VocabularyItemImageSection vocabularyItem={vocabularyItem} />
     <ItemContainer>
-      <WordItem answer={{ word: document.word, article: document.article }} />
+      <WordItem answer={{ word: vocabularyItem.word, article: vocabularyItem.article }} />
     </ItemContainer>
   </>
 )

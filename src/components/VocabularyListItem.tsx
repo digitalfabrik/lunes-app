@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import styled, { useTheme } from 'styled-components/native'
 
-import { Document } from '../constants/endpoints'
-import { getArticleColor } from '../services/helpers'
+import { VocabularyItem } from '../constants/endpoints'
+import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
@@ -11,8 +11,8 @@ import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
-  width: ${wp('15%')}px;
-  height: ${wp('15%')}px;
+  width: ${hp('7.5%')}px;
+  height: ${hp('7.5%')}px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
 const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
@@ -20,9 +20,9 @@ const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   background-color: ${props => props.articleColor};
   align-self: flex-start;
-  width: ${wp('10%')}px;
+  width: ${hp('5%')}px;
   overflow: hidden;
-  height: ${wp('5%')}px;
+  height: ${hp('2.5%')}px;
   text-align: center;
 `
 const RightChildrenContainer = styled.View`
@@ -35,25 +35,31 @@ const FavButtonContainer = styled.View`
   align-self: center;
 `
 
-interface VocabularyListItemProps {
-  document: Document
+type VocabularyListItemProps = {
+  vocabularyItem: VocabularyItem
   onPress: () => void
   onFavoritesChanged?: () => void
   children?: ReactElement
 }
 
 const VocabularyListItem = ({
-  document,
+  vocabularyItem,
   onPress,
   onFavoritesChanged,
   children,
 }: VocabularyListItemProps): ReactElement => {
-  const { article, word, document_image: documentImage } = document
+  const { article, word, images, audio } = vocabularyItem
+  const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
   const icon =
-    documentImage.length > 0 ? (
-      <StyledImage testID='image' source={{ uri: documentImage[0].image }} width={24} height={24} />
+    images.length > 0 ? (
+      <StyledImage
+        testID='image'
+        source={{ uri: images[0].image }}
+        width={theme.spacingsPlain.md}
+        height={theme.spacingsPlain.md}
+      />
     ) : undefined
 
   return (
@@ -64,9 +70,9 @@ const VocabularyListItem = ({
       icon={icon}
       rightChildren={
         <RightChildrenContainer>
-          <AudioPlayer document={document} disabled={false} />
+          <AudioPlayer audio={audio ?? stringifyVocabularyItem(vocabularyItem)} isTtsText={!audio} disabled={false} />
           <FavButtonContainer>
-            <FavoriteButton document={document} onFavoritesChanged={onFavoritesChanged} />
+            <FavoriteButton vocabularyItem={vocabularyItem} onFavoritesChanged={onFavoritesChanged} />
           </FavButtonContainer>
         </RightChildrenContainer>
       }>

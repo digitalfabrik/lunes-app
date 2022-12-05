@@ -3,17 +3,17 @@ import JiraApi from 'jira-client'
 
 const JIRA_HOST = 'issues.tuerantuer.org'
 
-interface JiraVersion {
+type JiraVersion = {
   name: string
   releaseDate: string
   id: string
 }
 
-interface JiraIssue {
+type JiraIssue = {
   id: string
 }
 
-interface Opts {
+type Opts = {
   accessToken: string
   privateKey: string
   consumerKey: string
