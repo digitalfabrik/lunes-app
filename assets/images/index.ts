@@ -2,6 +2,7 @@ import AddCircleIcon from './add-circle-icon.svg'
 import AddIconWhite from './add-icon-white.svg'
 import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
 import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
+import ArrowLeftIcon from './arrow-left-icon.svg'
 import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
 import ArrowRightIcon from './arrow-right-icon.svg'
 import BannerGreen from './banner-green.png'
@@ -76,6 +77,7 @@ export {
   CircleIconWhite,
   ImageIcon,
   AddIconWhite,
+  ArrowLeftIcon,
   ArrowLeftCircleIconBlue,
   ArrowLeftCircleIconWhite,
   ArrowRightIcon,
