@@ -10,7 +10,7 @@ import { BUTTONS_THEME, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from 
 import useKeyboard from '../../../hooks/useKeyboard'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels, stringifyVocabularyItem } from '../../../services/helpers'
-import Feedback from './Feedback'
+import AnswerReview from './AnswerReview'
 import MissingArticlePopover from './MissingArticlePopover'
 
 const TextInputContainer = styled.View<{ styledBorderColor: string }>`
@@ -146,7 +146,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         </TextInputContainer>
 
         {isAnswerSubmitted && (
-          <Feedback vocabularyItemWithResult={vocabularyItemWithResult} submission={submittedInput} />
+          <AnswerReview vocabularyItemWithResult={vocabularyItemWithResult} submission={submittedInput} />
         )}
         {retryAllowed && (
           <Pressable onPress={Keyboard.dismiss}>

@@ -31,7 +31,7 @@ export type VocabularyItem = {
   word: string
   article: Article
   images: Images
-  audio: string
+  audio: string | null
   alternatives: AlternativeWord[]
   apiKey?: string
 }

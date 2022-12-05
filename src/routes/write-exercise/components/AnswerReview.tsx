@@ -31,12 +31,12 @@ const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-export type FeedbackProps = {
+export type AnswerReviewProps = {
   vocabularyItemWithResult: VocabularyItemResult
   submission: string | null
 }
 
-const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): ReactElement | null => {
+const AnswerReview = ({ vocabularyItemWithResult, submission }: AnswerReviewProps): ReactElement | null => {
   const { result, vocabularyItem } = vocabularyItemWithResult
   const correctSolution = `„${vocabularyItem.article.value} ${vocabularyItem.word}“`
   const correctSolutionHint = `${getLabels().exercises.write.feedback.solution} ${correctSolution}`
@@ -69,4 +69,4 @@ const Feedback = ({ vocabularyItemWithResult, submission }: FeedbackProps): Reac
   )
 }
 
-export default Feedback
+export default AnswerReview

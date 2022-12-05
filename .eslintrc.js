@@ -21,6 +21,7 @@ module.exports = {
     '**/ios/',
     '**/dist/',
     '**/lib-dist/',
+    '**/patchfiles/',
     '.eslintrc.js',
     'babel.config.js',
     'metro.config.js',
