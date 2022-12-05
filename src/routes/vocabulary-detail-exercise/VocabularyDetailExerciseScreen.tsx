@@ -65,13 +65,15 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
           <AlternativeWordsSection vocabularyItem={vocabularyItem} />
 
           <ButtonContainer>
-            {hasNextVocabularyItem && (
+            {hasNextVocabularyItem ? (
               <Button
                 label={getLabels().exercises.next}
                 iconRight={ArrowRightIcon}
                 onPress={goToNextWord}
                 buttonTheme={BUTTONS_THEME.contained}
               />
+            ) : (
+              <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
             )}
             {hasPreviousVocabularyItem && (
               <Button
@@ -80,9 +82,6 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
                 onPress={goToPreviousWord}
                 buttonTheme={BUTTONS_THEME.text}
               />
-            )}
-            {!hasNextVocabularyItem && (
-              <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
             )}
           </ButtonContainer>
         </Container>
