@@ -3,7 +3,7 @@ import { HeaderButtons, OverflowMenu as RNOverflowMenu } from 'react-navigation-
 
 import { getLabels } from '../services/helpers'
 
-interface OverflowMenuProps {
+type OverflowMenuProps = {
   children: (ReactElement | ReactNode[]) & ReactNode
   icon: ReactElement
 }

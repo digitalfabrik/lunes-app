@@ -41,7 +41,7 @@ const IconStyle = styled.View`
   align-items: center;
 `
 
-interface ErrorMessageProps {
+type ErrorMessageProps = {
   error: Error | null
   refresh: () => void
   contained?: boolean
@@ -65,7 +65,7 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
 
   return (
     <NetworkErrorWrapper>
-      <RoundedBackground color={theme.colors.lightGreyBackground} height='67%'>
+      <RoundedBackground color={theme.colors.lightGreyBackground} height='55%'>
         <Container>
           {error.message === NetworkError && (
             <IconStyle>

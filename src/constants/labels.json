@@ -88,6 +88,7 @@
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",

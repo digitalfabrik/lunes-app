@@ -16,7 +16,7 @@ const Container = styled.Pressable`
   align-items: center;
 `
 
-interface NavigationHeaderLeftProps {
+type NavigationHeaderLeftProps = {
   title: string
   onPress: () => void
   isCloseButton: boolean

@@ -4,7 +4,7 @@ import { program } from 'commander'
 import { VERSION_FILE, PLATFORMS, tagId, MAIN_BRANCH } from './constants'
 import authenticate from './github-authentication'
 
-interface TagOptions {
+type TagOptions = {
   versionName: string
   versionCode: number
   owner: string
@@ -38,7 +38,7 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
   console.warn(`New ref with id ${id} successfully created.`)
 }
 
-interface Options {
+type Options = {
   deliverinoPrivateKey: string
   owner: string
   repo: string

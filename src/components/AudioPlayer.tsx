@@ -28,7 +28,7 @@ const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boole
   shadow-opacity: 0.5;
 `
 
-interface AudioPlayerProps {
+type AudioPlayerProps = {
   disabled: boolean
   audio: string
   isTtsText?: boolean

@@ -21,7 +21,7 @@ const IconContainer = styled.View`
     ${props => props.theme.spacings.xxs};
 `
 
-interface ListItemProps {
+type ListItemProps = {
   vocabularyItem: VocabularyItem
   navigateToDetailScreen: () => void
   navigateToEditScreen: () => void

@@ -18,7 +18,7 @@ const List = styled.FlatList`
   height: 100%;
 ` as unknown as typeof FlatList
 
-interface DisciplineSelectionScreenProps {
+type DisciplineSelectionScreenProps = {
   route: RouteProp<RoutesParams, 'DisciplineSelection'>
   navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
 }

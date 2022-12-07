@@ -1,10 +1,10 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
-import { ArrowRightIcon } from '../../../assets/images'
+import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import FeedbackModal from '../../components/FeedbackModal'
@@ -22,11 +22,11 @@ const Container = styled.View`
 `
 
 const ButtonContainer = styled.View`
-  padding: ${props => props.theme.spacings.md}
+  padding: ${props => props.theme.spacings.md};
   align-self: center;
 `
 
-interface VocabularyDetailExerciseScreenProps {
+type VocabularyDetailExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyDetailExercise'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyDetailExercise'>
 }
@@ -35,11 +35,14 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
   const { vocabularyItems, vocabularyItemIndex, closeExerciseAction, labelOverrides } = route.params
   const vocabularyItem = vocabularyItems[vocabularyItemIndex]
   const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
+  const hasPreviousVocabularyItem = vocabularyItemIndex > 0
   const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
 
   const goToNextWord = () =>
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex + 1 })
+  const goToPreviousWord = () =>
+    navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex - 1 })
 
   return (
     <SafeAreaView>
@@ -54,31 +57,41 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
       />
-      <VocabularyDetail vocabularyItem={vocabularyItem} />
-      <Container>
-        <HorizontalLine />
+      <ScrollView>
+        <VocabularyDetail vocabularyItem={vocabularyItem} />
+        <Container>
+          <HorizontalLine />
 
-        <AlternativeWordsSection vocabularyItem={vocabularyItem} />
+          <AlternativeWordsSection vocabularyItem={vocabularyItem} />
 
-        <ButtonContainer>
-          {hasNextVocabularyItem ? (
-            <Button
-              label={getLabels().exercises.next}
-              iconRight={ArrowRightIcon}
-              onPress={goToNextWord}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          ) : (
-            <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
-          )}
-        </ButtonContainer>
-      </Container>
-      <FeedbackModal
-        visible={isFeedbackModalVisible}
-        onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={FeedbackType.vocabularyItem}
-        feedbackForId={vocabularyItem.id}
-      />
+          <ButtonContainer>
+            {hasNextVocabularyItem ? (
+              <Button
+                label={getLabels().exercises.next}
+                iconRight={ArrowRightIcon}
+                onPress={goToNextWord}
+                buttonTheme={BUTTONS_THEME.contained}
+              />
+            ) : (
+              <Button label={closeExerciseLabel} onPress={navigation.goBack} buttonTheme={BUTTONS_THEME.contained} />
+            )}
+            {hasPreviousVocabularyItem && (
+              <Button
+                label={getLabels().exercises.previous}
+                iconLeft={ArrowLeftIcon}
+                onPress={goToPreviousWord}
+                buttonTheme={BUTTONS_THEME.text}
+              />
+            )}
+          </ButtonContainer>
+        </Container>
+        <FeedbackModal
+          visible={isFeedbackModalVisible}
+          onClose={() => setIsFeedbackModalVisible(false)}
+          feedbackType={FeedbackType.vocabularyItem}
+          feedbackForId={vocabularyItem.id}
+        />
+      </ScrollView>
     </SafeAreaView>
   )
 }

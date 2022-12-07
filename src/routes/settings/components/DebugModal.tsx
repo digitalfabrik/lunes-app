@@ -24,7 +24,7 @@ const CodeInput = styled.TextInput`
   margin: ${props => props.theme.spacings.md};
 `
 
-interface DebugModalProps {
+type DebugModalProps = {
   visible: boolean
   onClose: () => void
 }

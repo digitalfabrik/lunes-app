@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import theme from '../constants/theme'
 
-interface RouteWrapperProps {
+type RouteWrapperProps = {
   backgroundColor?: string
   lightStatusBarContent?: boolean
   children: ReactNode

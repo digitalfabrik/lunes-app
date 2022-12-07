@@ -11,7 +11,7 @@ const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
-interface VocabularyListScreenProps {
+type VocabularyListScreenProps = {
   vocabularyItems: VocabularyItem[]
   onItemPress: (index: number) => void
   onFavoritesChanged?: () => void

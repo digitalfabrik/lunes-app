@@ -36,7 +36,7 @@ const AddAudioButton = styled(Button)`
   padding: 0;
 `
 
-interface AudioRecorderProps {
+type AudioRecorderProps = {
   recordingPath: string | null
   setRecordingPath: (path: string | null) => void
 }

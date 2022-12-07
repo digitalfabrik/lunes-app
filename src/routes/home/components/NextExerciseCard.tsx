@@ -51,7 +51,7 @@ const Subheading = styled(ContentTextLight)`
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
-interface NextExerciseCardProps {
+type NextExerciseCardProps = {
   thumbnail: string
   heading: string
   subheading: string

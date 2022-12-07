@@ -7,7 +7,7 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
-interface ShareButtonProps {
+type ShareButtonProps = {
   disciplineTitle: string
   results: VocabularyItemResult[]
 }

@@ -12,7 +12,7 @@ const ItemContainer = styled.View`
   align-self: center;
 `
 
-interface VocabularyDetailProps {
+type VocabularyDetailProps = {
   vocabularyItem: VocabularyItem
 }
 

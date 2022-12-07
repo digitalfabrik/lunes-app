@@ -11,7 +11,7 @@ import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { getLabels } from '../../../services/helpers'
 
-interface SelectionItemProps {
+type SelectionItemProps = {
   identifier: RequestParams
   deleteItem: () => void
 }
@@ -50,6 +50,7 @@ const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): JSX.Elem
             ? `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
             : getLabels().general.error.unknown)
         }
+        icon={data?.icon}
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
             <CloseIconRed />

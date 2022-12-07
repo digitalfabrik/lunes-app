@@ -11,7 +11,7 @@ const Version = styled.Pressable`
   padding: ${props => props.theme.spacings.xl} ${props => props.theme.spacings.md};
 `
 
-interface VersionPressableProps {
+type VersionPressableProps = {
   onClickThresholdReached: () => void
 }
 

@@ -35,7 +35,7 @@ const FavButtonContainer = styled.View`
   align-self: center;
 `
 
-interface VocabularyListItemProps {
+type VocabularyListItemProps = {
   vocabularyItem: VocabularyItem
   onPress: () => void
   onFavoritesChanged?: () => void

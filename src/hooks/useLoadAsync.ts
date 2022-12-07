@@ -21,7 +21,7 @@ export const loadAsync = async <T, P>(
   }
 }
 
-export interface Return<T> {
+export type Return<T> = {
   data: T | null
   error: Error | null
   loading: boolean

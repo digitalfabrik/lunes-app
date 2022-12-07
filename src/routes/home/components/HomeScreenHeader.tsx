@@ -36,7 +36,7 @@ const MenuIconWhite = styled(MenuIcon)`
   color: ${props => props.theme.colors.backgroundAccent};
 `
 
-interface HomeScreenHeaderProps {
+type HomeScreenHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 

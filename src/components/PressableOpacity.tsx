@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import { StyleProp, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 
-interface PressableOpacityProps {
+type PressableOpacityProps = {
   children: ReactNode
   onPress: () => void
   style?: StyleProp<ViewStyle>

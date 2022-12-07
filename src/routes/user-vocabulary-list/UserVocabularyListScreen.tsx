@@ -38,7 +38,7 @@ const ButtonContainer = styled.View`
   bottom: 0px;
 `
 
-interface UserVocabularyListScreenProps {
+type UserVocabularyListScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyList'>
 }
 

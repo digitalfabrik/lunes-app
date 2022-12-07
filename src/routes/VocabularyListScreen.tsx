@@ -11,7 +11,7 @@ import { setExerciseProgress } from '../services/AsyncStorage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 
-interface VocabularyListScreenProps {
+type VocabularyListScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyList'>
   navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }
@@ -34,6 +34,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.leaf_discipline}
         feedbackForId={disciplineId}
+        exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList
         vocabularyItems={route.params.vocabularyItems}
