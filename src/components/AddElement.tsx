@@ -18,6 +18,7 @@ const AddCustomDisciplineText = styled(SubheadingPrimary)`
 
 const Explanation = styled(ContentSecondary)`
   padding: 0 ${props => props.theme.spacings.xxl} 0 ${props => props.theme.spacings.xs};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
 const FlexRow = styled.View`
