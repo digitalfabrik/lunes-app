@@ -1,0 +1,6 @@
+issue_key: LUN-447
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die Übungen werden jetzt auch auf niedrigen Bildschirmen richtig angezeigt
