@@ -50,6 +50,7 @@ const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): JSX.Elem
             ? `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
             : getLabels().general.error.unknown)
         }
+        icon={data?.icon}
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
             <CloseIconRed />
