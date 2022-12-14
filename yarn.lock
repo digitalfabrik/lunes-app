@@ -3625,17 +3625,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-color@npm:*":
+"@react-native/normalize-color@npm:*, @react-native/normalize-color@npm:2.0.0":
   version: 2.0.0
   resolution: "@react-native/normalize-color@npm:2.0.0"
   checksum: 4d833078dda38858e472ec88b6fbbfe442b3411cfe744b39a39a1c4f3e93148d653a568366e6f1c78533a9c0fec5ec82af33f6927090fe4f0778db2aff80140a
-  languageName: node
-  linkType: hard
-
-"@react-native/normalize-color@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@react-native/normalize-color@npm:1.0.0"
-  checksum: e13c5a681798cba73c5f3e100cfe5b945a602924052c95f155362623bf863a0c4dcd8a3cb8e3f1ac0574e36a03dafe738a31e7f1ab0d41a3604ce1bdbef6d867
   languageName: node
   linkType: hard
 
@@ -10316,7 +10309,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-is: ^18.2.0
-    react-native: 0.66.5
+    react-native: ^0.67.5
     react-native-audio-recorder-player: 3.5.1
     react-native-camera: ^4.2.1
     react-native-device-info: ^9.0.2
@@ -12096,13 +12089,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-devtools-core@npm:^4.13.0":
-  version: 4.21.0
-  resolution: "react-devtools-core@npm:4.21.0"
+"react-devtools-core@npm:4.19.1":
+  version: 4.19.1
+  resolution: "react-devtools-core@npm:4.19.1"
   dependencies:
     shell-quote: ^1.6.1
     ws: ^7
-  checksum: f4a519d253c187be616425818c99510531ddcef76c16fd30f70fbdc4e37697750a4cd7ee546f86eb9700cafe2ffb51a8c4098ff16a963df9d24185236d305996
+  checksum: 3cb83f8890c2974cc26bf9580678eca2d32b93b4076bf70037a3093df22e92aa26c76c0879c53a2f3f889a1bfc8556cd6107b0326a36b13e0b357f06fd7c50c5
   languageName: node
   linkType: hard
 
@@ -12170,14 +12163,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-codegen@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "react-native-codegen@npm:0.0.7"
+"react-native-codegen@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "react-native-codegen@npm:0.0.8"
   dependencies:
     flow-parser: ^0.121.0
     jscodeshift: ^0.11.0
     nullthrows: ^1.1.1
-  checksum: 262ee8bd0809dbcc136c44bdb6deb7de3c007ba5cd8cedbb9ec237828a76f743c3a9181084906b922869f93734e319bbc6dc73005e77e1d0c1d8530f1b67e979
+  checksum: 2553457fece5ab0974d3dd1f5605e1c579a410d61cf537596f4f27517a3d9290136edf222de0574e31a8081c9d52daba7c292660ee8ec7f0e51e0be2453c0977
   languageName: node
   linkType: hard
 
@@ -12453,16 +12446,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.66.5":
-  version: 0.66.5
-  resolution: "react-native@npm:0.66.5"
+"react-native@npm:^0.67.5":
+  version: 0.67.5
+  resolution: "react-native@npm:0.67.5"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^6.0.0
     "@react-native-community/cli-platform-android": ^6.0.0
     "@react-native-community/cli-platform-ios": ^6.0.0
     "@react-native/assets": 1.0.0
-    "@react-native/normalize-color": 1.0.0
+    "@react-native/normalize-color": 2.0.0
     "@react-native/polyfills": 2.0.0
     abort-controller: ^3.0.0
     anser: ^1.4.9
@@ -12471,7 +12464,6 @@ __metadata:
     hermes-engine: ~0.9.0
     invariant: ^2.2.4
     jsc-android: ^250230.2.1
-    metro-babel-register: 0.66.2
     metro-react-native-babel-transformer: 0.66.2
     metro-runtime: 0.66.2
     metro-source-map: 0.66.2
@@ -12479,8 +12471,8 @@ __metadata:
     pretty-format: ^26.5.2
     promise: ^8.0.3
     prop-types: ^15.7.2
-    react-devtools-core: ^4.13.0
-    react-native-codegen: ^0.0.7
+    react-devtools-core: 4.19.1
+    react-native-codegen: ^0.0.8
     react-refresh: ^0.4.0
     regenerator-runtime: ^0.13.2
     scheduler: ^0.20.2
@@ -12492,7 +12484,7 @@ __metadata:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: 6dae211c0cb099ca78a0e727a56530a3cd5e5891722ba54fe8ce1ccded3e12d4a00fea14e6a91785b404ab18aa4b49e0500b630057820181146b43ba2f304814
+  checksum: e38feb5f1e1d9c4759af427863ad0d8a6d7e12af7608758cdf29855179722fbe0b0e38aded730afd307ac8b4f8cc04681467dbbf8f66f6177eca92220020c52e
   languageName: node
   linkType: hard
 

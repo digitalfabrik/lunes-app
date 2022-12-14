@@ -36,7 +36,7 @@
     "normalize-strings": "^1.1.1",
     "react": "17.0.2",
     "react-is": "^18.2.0",
-    "react-native": "0.66.5",
+    "react-native": "^0.67.5",
     "react-native-audio-recorder-player": "3.5.1",
     "react-native-camera": "^4.2.1",
     "react-native-device-info": "^9.0.2",
@@ -108,5 +108,34 @@
     "ts-jest": "^27.1.5",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
+  },
+  "rnx-kit": {
+    "kitType": "app",
+    "alignDeps": {
+      "requirements": [
+        "react-native@0.67"
+      ],
+      "capabilities": [
+        "animation",
+        "babel-preset-react-native",
+        "core",
+        "core-android",
+        "core-ios",
+        "filesystem",
+        "gestures",
+        "jest",
+        "masked-view",
+        "navigation/native",
+        "navigation/stack",
+        "popover",
+        "react",
+        "react-dom",
+        "react-test-renderer",
+        "safe-area",
+        "screens",
+        "storage",
+        "svg"
+      ]
+    }
   }
 }

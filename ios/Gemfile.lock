@@ -295,5 +295,8 @@ DEPENDENCIES
   fastlane
   fastlane-plugin-browserstack
 
+RUBY VERSION
+   ruby 2.7.4p191
+
 BUNDLED WITH
    2.2.21
