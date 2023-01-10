@@ -39,7 +39,7 @@
     "react-is": "^18.2.0",
     "react-native": "0.69.7",
     "react-native-audio-recorder-player": "3.5.1",
-    "react-native-camera": "^4.2.1",
+    "react-native-camera": "4.2.1",
     "react-native-device-info": "^9.0.2",
     "react-native-dropdown-picker": "^5.4.2",
     "react-native-fs": "^2.20.0",
