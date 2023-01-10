@@ -81,6 +81,8 @@ export type RoutesParams = {
   Favorites: undefined
   Dictionary: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
+  UserVocabularyDisciplineSelection: undefined
+  UserVocabularyExercises: ExercisesParams
 }
 
 export type Route = keyof RoutesParams
