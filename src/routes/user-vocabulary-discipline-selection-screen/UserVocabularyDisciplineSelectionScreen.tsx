@@ -12,7 +12,7 @@ import { Discipline, VocabularyItem } from '../../constants/endpoints'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
-import { spiltVocabularyToDisciplines } from './splitVocabularyToDiscipline'
+import { spiltVocabularyIntoDisciplines } from './splitVocabularyToDiscipline'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
@@ -34,16 +34,17 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
 
   useEffect(() => {
     if (data) {
-      setDisciplinesWithVocabulary(spiltVocabularyToDisciplines(data))
+      setDisciplinesWithVocabulary(spiltVocabularyIntoDisciplines(data))
     }
   }, [data])
 
   const handleNavigation = (selectedDiscipline: number): void => {
-    navigation.navigate('UserVocabularyExercises', {
-      discipline: disciplinesWithVocabulary[selectedDiscipline].discipline,
+    const selectedDisciplinesWithVocabulary = disciplinesWithVocabulary[selectedDiscipline]
+    return navigation.navigate('UserVocabularyExercises', {
+      discipline: selectedDisciplinesWithVocabulary.discipline,
       disciplineId: 0,
-      disciplineTitle: disciplinesWithVocabulary[selectedDiscipline].discipline.title,
-      vocabularyItems: disciplinesWithVocabulary[selectedDiscipline].vocabulary,
+      disciplineTitle: selectedDisciplinesWithVocabulary.discipline.title,
+      vocabularyItems: selectedDisciplinesWithVocabulary.vocabulary,
       closeExerciseAction: CommonActions.goBack(),
     })
   }

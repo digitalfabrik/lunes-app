@@ -37,13 +37,13 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
-  it('should render one discipline for ten word', () => {
+  it('should render one discipline for ten words', () => {
     const { getByText } = renderScreen(new VocabularyItemBuilder(10).build())
     expect(getByText(`10 ${getLabels().general.words}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
-  it('should render three discipline for twentyfive word', () => {
+  it('should render three disciplines for twenty-five words', () => {
     const { getByText } = renderScreen(new VocabularyItemBuilder(25).build())
     expect(getByText(`25 ${getLabels().general.words}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()

@@ -11,7 +11,7 @@ import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
 import UserVocabularyExercisesScreen from '../UserVocabularyExercisesScreen'
 
-describe('UserVocabularyExerciseScreen', () => {
+describe('UserVocabularyExercisesScreen', () => {
   let navigation: StackNavigationProp<RoutesParams, 'UserVocabularyExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
   const discipline = mockDisciplines(true)[0]

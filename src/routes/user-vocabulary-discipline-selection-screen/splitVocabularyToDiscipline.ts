@@ -39,7 +39,7 @@ const adjustChildrenSizeOfDisciplines = () => {
   }))
 }
 
-export const spiltVocabularyToDisciplines = (vocabulary: VocabularyItem[]): DisciplineWithVocabulary[] => {
+export const spiltVocabularyIntoDisciplines = (vocabulary: VocabularyItem[]): DisciplineWithVocabulary[] => {
   disciplinesWithVocabulary = []
   createDisciplines(vocabulary.length)
   moveVocabularyToCorrectDiscipline(vocabulary)
