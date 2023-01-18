@@ -1,5 +1,6 @@
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
@@ -17,6 +18,7 @@ import { ARTICLES, BUTTONS_THEME, VOCABULARY_ITEM_TYPES, getArticleWithLabel } f
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   addUserVocabularyItem,
+  editUserVocabularyItem,
   getNextUserVocabularyId,
   incrementNextUserVocabularyId,
 } from '../../services/AsyncStorage'
@@ -52,9 +54,10 @@ const ThumbnailContainer = styled.View`
 
 type UserVocabularyProcessScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyProcess'>
+  route: RouteProp<RoutesParams, 'UserVocabularyProcess'>
 }
 
-const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreenProps): ReactElement => {
+const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
@@ -63,6 +66,16 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
+  const { itemToEdit } = route.params
+
+  useEffect(() => {
+    if (itemToEdit) {
+      setWord(itemToEdit.word)
+      setArticleId(itemToEdit.article.id)
+      setImages(itemToEdit.images.map(image => image.image))
+      setRecordingPath(itemToEdit.audio)
+    }
+  }, [itemToEdit])
 
   const {
     headline,
@@ -76,9 +89,19 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
   } = getLabels().userVocabulary.creation
   const theme = useTheme()
 
+  const resetFields = () => {
+    setWord('')
+    setArticleId(null)
+    setImages([])
+    setRecordingPath(null)
+    setHasWordErrorMessage(false)
+    setHasArticleErrorMessage(false)
+    setHasImageErrorMessage(false)
+    setShowImageSelectionOverlay(false)
+  }
+
   const onSave = async (): Promise<void> => {
     const hasError = word.length === 0 || !articleId || images.length === 0
-
     if (hasError) {
       setHasWordErrorMessage(word.length === 0)
       setHasArticleErrorMessage(!articleId)
@@ -87,8 +110,13 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
     }
 
     try {
-      const id = await getNextUserVocabularyId()
-      await incrementNextUserVocabularyId()
+      let id: number
+      if (itemToEdit) {
+        id = itemToEdit.id
+      } else {
+        id = await getNextUserVocabularyId()
+        await incrementNextUserVocabularyId()
+      }
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
@@ -105,7 +133,7 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         await moveFile(recordingPath, audioPathWithFormat)
       }
 
-      await addUserVocabularyItem({
+      const itemToSave = {
         id,
         word,
         article: ARTICLES[articleId],
@@ -113,14 +141,16 @@ const UserVocabularyProcessScreen = ({ navigation }: UserVocabularyProcessScreen
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
         type: VOCABULARY_ITEM_TYPES.userCreated,
-      })
+      }
+
+      if (itemToEdit) {
+        await editUserVocabularyItem(itemToEdit, itemToSave)
+      } else {
+        await addUserVocabularyItem(itemToSave)
+      }
 
       navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
-
-      setWord('')
-      setArticleId(null)
-      setImages([])
-      setRecordingPath(null)
+      resetFields()
     } catch (e) {
       reportError(e)
     }
