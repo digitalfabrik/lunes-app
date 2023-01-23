@@ -7,6 +7,8 @@ import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
 import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
+import UserVocabularyDisciplineSelectionScreen from '../routes/user-vocabulary-discipline-selection-screen/UserVocabularyDisciplineSelectionScreen'
+import UserVocabularyExercisesScreen from '../routes/user-vocabulary-exercises-screen/UserVocabularyExercisesScreen'
 import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
@@ -41,6 +43,16 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
         name='UserVocabularyProcess'
         component={UserVocabularyProcessScreen}
         options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
+      />
+      <Stack.Screen
+        name='UserVocabularyDisciplineSelection'
+        component={UserVocabularyDisciplineSelectionScreen}
+        options={({ navigation }) => options(back, navigation)}
+      />
+      <Stack.Screen
+        name='UserVocabularyExercises'
+        component={UserVocabularyExercisesScreen}
+        options={({ navigation }) => options(back, navigation)}
       />
     </Stack.Navigator>
   )

@@ -109,8 +109,8 @@ const ChoiceExerciseScreen = ({
     )
   }
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer): boolean =>
-    answer1.article.id === answer2.article.id && answer1.word === answer2.word
+  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
+    answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
 
   const updateResult = (numberOfTries: number, result: SimpleResult): void => {
     const newResults = [...results]
@@ -162,6 +162,7 @@ const ChoiceExerciseScreen = ({
         <VocabularyItemImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
         <SingleChoice
           answers={answers}
+          isAnswerEqual={isAnswerEqual}
           onClick={onClickAnswer}
           correctAnswers={correctAnswers}
           selectedAnswer={selectedAnswer}
