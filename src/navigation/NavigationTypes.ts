@@ -45,6 +45,7 @@ export type RoutesParams = {
   UserVocabularyOverview: undefined
   UserVocabularyProcess: {
     headerBackLabel: string
+    itemToEdit?: VocabularyItem
   }
   UserVocabularyList: {
     headerBackLabel: string

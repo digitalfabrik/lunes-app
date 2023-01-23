@@ -178,7 +178,7 @@ export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
   return userVocabulary
     ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
         ...userVocabulary,
-        vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
+        type: VOCABULARY_ITEM_TYPES.userCreated,
       }))
     : []
 }
