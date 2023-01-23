@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
 import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
-import { Heading } from '../../components/text/Heading'
+import { HeadingText } from '../../components/text/Heading'
+import { SubheadingText } from '../../components/text/Subheading'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -22,12 +22,15 @@ const Root = styled.ScrollView`
   padding: ${props => props.theme.spacings.md};
 `
 
-const SectionHeading = styled(Subheading)`
+const SectionHeading = styled(SubheadingText)`
   padding-top: ${props => props.theme.spacings.xl};
 `
 
 const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
+`
+const StyledHeading = styled(HeadingText)`
+  text-align: center;
 `
 
 type ManageSelectionScreenProps = {
@@ -66,7 +69,7 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
   return (
     <RouteWrapper>
       <Root contentContainerStyle={{ flexGrow: 1 }}>
-        <Heading>{getLabels().manageSelection.heading}</Heading>
+        <StyledHeading>{getLabels().manageSelection.heading}</StyledHeading>
         <SectionHeading>{getLabels().manageSelection.yourProfessions}</SectionHeading>
         <HorizontalLine />
         {professionItems}

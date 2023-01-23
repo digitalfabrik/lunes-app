@@ -13,10 +13,12 @@ const PressableContainer = styled(PressableOpacity)`
 const AddCustomDisciplineText = styled(SubheadingPrimary)`
   text-transform: uppercase;
   padding-left: ${props => props.theme.spacings.xs};
+  margin-right: ${props => props.theme.spacings.xs};
 `
 
 const Explanation = styled(ContentSecondary)`
-  padding: 0 ${props => props.theme.spacings.xxl} 0 11%;
+  padding: 0 ${props => props.theme.spacings.xxl} 0 ${props => props.theme.spacings.xs};
+  font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
 const FlexRow = styled.View`
@@ -37,8 +39,8 @@ const AddElement = ({ onPress, label, explanation }: AddElementProps): ReactElem
     <>
       <PressableContainer onPress={onPress}>
         <FlexRow>
-          <AddCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
           <AddCustomDisciplineText>{label}</AddCustomDisciplineText>
+          <AddCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
         </FlexRow>
       </PressableContainer>
       {!!explanation && <Explanation>{explanation}</Explanation>}

@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -157,7 +158,7 @@ const ChoiceExerciseScreen = ({
         exerciseKey={exerciseKey}
       />
 
-      <>
+      <ScrollView>
         <VocabularyItemImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
         <SingleChoice
           answers={answers}
@@ -187,7 +188,7 @@ const ChoiceExerciseScreen = ({
           )}
           <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
-      </>
+      </ScrollView>
     </>
   )
 }
