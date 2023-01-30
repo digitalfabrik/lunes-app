@@ -117,7 +117,12 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
             <ListItem
               vocabularyItem={item}
               navigateToDetailScreen={() => navigateToDetail(item)}
-              navigateToEditScreen={() => navigation.navigate('UserVocabularyOverview')} /* TODO LUN-401 */
+              navigateToEditScreen={() =>
+                navigation.navigate('UserVocabularyProcess', {
+                  headerBackLabel: getLabels().userVocabulary.myWords,
+                  itemToEdit: item,
+                })
+              }
               editModeEnabled={editModeEnabled}
               deleteItem={openDeleteConfirmationModal}
             />

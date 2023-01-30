@@ -55,8 +55,8 @@ class VocabularyItemBuilder {
   constructor(vocabularyItemCount: number) {
     this.vocabularyItemCount = vocabularyItemCount
 
-    if (this.vocabularyItemCount > vocabularyItems.length) {
-      throw new Error(`Only ${vocabularyItems.length} vocabularyItems can be created`)
+    while (this.vocabularyItemCount > vocabularyItems.length) {
+      vocabularyItems.push(vocabularyItems[0])
     }
   }
 

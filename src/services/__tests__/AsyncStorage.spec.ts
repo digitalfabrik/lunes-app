@@ -142,9 +142,9 @@ describe('AsyncStorage', () => {
   })
 
   describe('userVocabulary', () => {
-    const userVocabularyItems = new VocabularyItemBuilder(2)
+    const userVocabularyItems = new VocabularyItemBuilder(3)
       .build()
-      .map(item => ({ ...item, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated }))
+      .map(item => ({ ...item, type: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
       const userVocabulary = await getUserVocabularyItems()
@@ -155,11 +155,11 @@ describe('AsyncStorage', () => {
     })
 
     it('should edit userVocabularyItem', async () => {
-      await addUserVocabularyItem(userVocabularyItems[0])
-      await editUserVocabularyItem(userVocabularyItems[0], userVocabularyItems[1])
+      await addUserVocabularyItem(userVocabularyItems[1])
+      await editUserVocabularyItem(userVocabularyItems[1], { ...userVocabularyItems[2], id: userVocabularyItems[1].id })
       const updatedUserVocabulary = await getUserVocabularyItems()
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect(updatedUserVocabulary[0]).toEqual(userVocabularyItems[1])
+      expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
     })
 
     it('should delete userVocabularyItem', async () => {
