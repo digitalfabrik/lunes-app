@@ -2,15 +2,25 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import styled from 'styled-components/native'
 
-import { BookIconBlack } from '../../assets/images'
+import { AddIconWhite, BookIconBlack } from '../../assets/images'
+import Button from '../components/Button'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
 import { TitleWithSpacing } from '../components/Title'
+import { BUTTONS_THEME } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
 const Root = styled.View`
   padding: ${props => props.theme.spacings.md};
+  height: 100%;
+`
+
+const ButtonContainer = styled.View`
+  padding-bottom: ${props => props.theme.spacings.sm};
+  position: absolute;
+  align-self: center;
+  bottom: 0px;
 `
 
 type UserVocabularyOverviewScreenProps = {
@@ -31,14 +41,17 @@ const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScre
         />
         <ListItem
           icon={<BookIconBlack />}
-          title={create}
-          onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: myWords })}
-        />
-        <ListItem
-          icon={<BookIconBlack />}
           title={practice}
           onPress={() => navigation.navigate('UserVocabularyDisciplineSelection')}
         />
+        <ButtonContainer>
+          <Button
+            onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: myWords })}
+            label={create}
+            buttonTheme={BUTTONS_THEME.contained}
+            iconRight={AddIconWhite}
+          />
+        </ButtonContainer>
       </Root>
     </RouteWrapper>
   )

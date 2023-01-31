@@ -1,0 +1,6 @@
+issue_key: LUN-207
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Nutzer:innen können nun eigene Vokablen anlegen und üben.

@@ -107,9 +107,11 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
                 }`}
               />
               <SearchBar query={searchString} setQuery={setSearchString} />
-              <EditPressable onPress={toggleEditMode}>
-                <ContentTextBold>{editModeEnabled ? finished : edit}</ContentTextBold>
-              </EditPressable>
+              {sortedAndFilteredVocabularyItems.length > 0 && (
+                <EditPressable onPress={toggleEditMode}>
+                  <ContentTextBold>{editModeEnabled ? finished : edit}</ContentTextBold>
+                </EditPressable>
+              )}
             </>
           }
           data={sortedAndFilteredVocabularyItems}
