@@ -62,6 +62,7 @@ steps:
                 "{
                   \"channel\": \"<< parameters.channel >>\",
                   \"username\": \"circleci\",
+                  \"icon_emoji\": \":lunes:\",
                   \"text\": \"${MM_MESSAGE}\"
                 }" "${MM_WEBHOOK_LUNES}")
 
