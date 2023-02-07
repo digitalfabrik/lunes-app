@@ -12,7 +12,6 @@ const createDisciplines = (vocabularySize: number) => {
         id: i,
         title: `${getLabels().userVocabulary.practice.part} ${i + 1}`,
         description: '',
-        icon: 'none',
         numberOfChildren: 1,
         isLeaf: true,
         parentTitle: getLabels().userVocabulary.myWords,

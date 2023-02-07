@@ -84,6 +84,7 @@ const commitAndTag = async (
       createTag({
         versionName,
         versionCode,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         commitSha: commitSha!,
         appOctokit,
         owner,
