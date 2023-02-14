@@ -3447,6 +3447,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-camera-roll/camera-roll@npm:^5.2.3":
+  version: 5.2.3
+  resolution: "@react-native-camera-roll/camera-roll@npm:5.2.3"
+  peerDependencies:
+    react-native: ">=0.59"
+  checksum: 8b6b57ca8346e476b7450e51f732d48cc90d3c9229b6365cb38d26b834029517ed8fd00a1a46729fe76f4548e75532c2cabf660c272d89c5443d91dac805548b
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-debugger-ui@npm:^6.0.0-rc.0":
   version: 6.0.0-rc.0
   resolution: "@react-native-community/cli-debugger-ui@npm:6.0.0-rc.0"
@@ -10259,6 +10268,7 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@babel/runtime": ^7.18.6
     "@react-native-async-storage/async-storage": ^1.17.7
+    "@react-native-camera-roll/camera-roll": ^5.2.3
     "@react-native-masked-view/masked-view": ^0.2.6
     "@react-navigation/bottom-tabs": ^6.3.2
     "@react-navigation/elements": ^1.3.4

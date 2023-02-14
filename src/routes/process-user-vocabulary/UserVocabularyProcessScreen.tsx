@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
+import { copyFile, DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'
@@ -57,8 +57,13 @@ type UserVocabularyProcessScreenProps = {
   route: RouteProp<RoutesParams, 'UserVocabularyProcess'>
 }
 
+export type UserVocabularyImage = {
+  uri: string
+  shouldBeCopied: boolean
+}
+
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<UserVocabularyImage[]>([])
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
   const [hasWordErrorMessage, setHasWordErrorMessage] = useState<boolean>(false)
@@ -121,7 +126,11 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
           const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
-          await moveFile(image, path)
+          if (image.shouldBeCopied) {
+            await copyFile(image.uri, path)
+          } else {
+            await moveFile(image.uri, path)
+          }
           return { id: index, image: path }
         })
       )
@@ -156,8 +165,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     }
   }
 
-  const pushImage = (uri: string): void => setImages(old => [...old, uri])
-  const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
+  const pushImage = (image: UserVocabularyImage): void => setImages(old => [...old, image])
+  const deleteImage = (image: UserVocabularyImage): void =>
+    setImages(images => images.filter(runningImage => runningImage.uri !== image.uri))
 
   if (showImageSelectionOverlay) {
     return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
@@ -185,7 +195,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         />
         <ThumbnailContainer>
           {images.map(item => (
-            <Thumbnail key={item} image={item} deleteImage={() => deleteImage(item)} />
+            <Thumbnail key={item.uri} image={item.uri} deleteImage={() => deleteImage(item)} />
           ))}
         </ThumbnailContainer>
         <AddImageButton

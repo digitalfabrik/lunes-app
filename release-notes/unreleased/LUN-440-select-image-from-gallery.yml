@@ -1,0 +1,6 @@
+issue_key: LUN-440
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Nutzer:innen können nun Bilder für eigene Vokablen aus der Fotomediathek benutzen.
