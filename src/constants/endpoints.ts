@@ -4,7 +4,7 @@ export type Discipline = {
   id: number
   title: string
   description: string
-  icon: string
+  icon?: string
   numberOfChildren: number
   isLeaf: boolean
   parentTitle: string | null // if null then it is the root discipline

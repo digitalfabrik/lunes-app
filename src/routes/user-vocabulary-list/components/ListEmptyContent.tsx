@@ -8,27 +8,33 @@ import { VocabularyItem } from '../../../constants/endpoints'
 import { Return } from '../../../hooks/useLoadAsync'
 import { getLabels } from '../../../services/helpers'
 
-const EmptyContainer = styled.View`
+const LoadingContainer = styled.View`
   height: ${hp('10%')}px;
+`
+
+const Container = styled.View`
+  padding-top: ${props => props.theme.spacings.xl};
 `
 
 type ListEmptyContentProps = {
   vocabularyItems: Return<VocabularyItem[]>
 }
 
-const ListEmptyContent = ({ vocabularyItems }: ListEmptyContentProps): ReactElement => {
-  if (vocabularyItems.loading) {
-    return (
-      <EmptyContainer>
-        <Loading isLoading={vocabularyItems.loading} />
-      </EmptyContainer>
-    )
-  }
-  return vocabularyItems.data?.length === 0 ? (
-    <ListEmpty label={getLabels().userVocabulary.list.noWordsYet} />
+const ListEmptyContent = ({ vocabularyItems }: ListEmptyContentProps): ReactElement =>
+  vocabularyItems.loading ? (
+    <LoadingContainer>
+      <Loading isLoading={vocabularyItems.loading} />
+    </LoadingContainer>
   ) : (
-    <ListEmpty label={getLabels().general.noResults} />
+    <Container>
+      <ListEmpty
+        label={
+          vocabularyItems.data?.length === 0
+            ? getLabels().userVocabulary.list.noWordsYet
+            : getLabels().general.noResults
+        }
+      />
+    </Container>
   )
-}
 
 export default ListEmptyContent
