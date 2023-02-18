@@ -11,7 +11,7 @@ describe('Modal', () => {
   const childText = 'Children'
 
   const defaultProps: ModalProps = {
-    visible: false,
+    visible: true,
     onClose,
     text: 'Are you sure?',
     children: <Text>{childText}</Text>,
