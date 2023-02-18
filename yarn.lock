@@ -10392,7 +10392,7 @@ __metadata:
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.14.1
     react-native-snap-carousel: 3.9.1
-    react-native-sound-player: 0.12.1
+    react-native-sound-player: 0.13.2
     react-native-splash-screen: ^3.3.0
     react-native-svg: ^12.3.0
     react-native-svg-transformer: ^1.0.0
@@ -12497,10 +12497,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-sound-player@npm:0.12.1":
-  version: 0.12.1
-  resolution: "react-native-sound-player@npm:0.12.1"
-  checksum: f31daf9cd6e02c317b02bc2cc74ab4fc83dfa186a956c24b711a25a911b1085ccb402e05dbbbdc1b7a52818d0ffc9051b5c41cc3282e187e32006b7df0e58ae4
+"react-native-sound-player@npm:0.13.2":
+  version: 0.13.2
+  resolution: "react-native-sound-player@npm:0.13.2"
+  checksum: 318e361c8a6c5cf349ab7b300bb4b2fd4b51359fc5a6ee1a7a5a08b8c1ec31e89a24e745c07c0e9d110868aca994eb08f969aa152e0bdf06ebb6263cf13512e0
   languageName: node
   linkType: hard
 

@@ -415,8 +415,8 @@ PODS:
   - RNSentry (4.1.0):
     - React-Core
     - Sentry (= 7.18.1)
-  - RNSoundPlayer (0.12.1):
-    - React
+  - RNSoundPlayer (0.13.2):
+    - React-Core
   - RNSVG (12.3.0):
     - React-Core
   - RNVectorIcons (9.2.0):
@@ -666,7 +666,7 @@ SPEC CHECKSUMS:
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
   RNScreens: aa9a97835afbbdc18a4757870b2b59b7d9fae16a
   RNSentry: d27112c8fcb77c52a42c3fffb796193c333ee562
-  RNSoundPlayer: d1145002a4dec983165bbce0bfdeddfd4e62cdbc
+  RNSoundPlayer: 369105c565b8fe6ea0a43fc882dc81eba444e842
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Sentry: 2d70348d6247a29702a8317e710c5ba890672df5
