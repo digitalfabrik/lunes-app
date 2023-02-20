@@ -53,7 +53,7 @@ describe('ExercisesScreen', () => {
     })
   })
 
-  it('should show modal on navigation if locked', async () => {
+  it('should show modal that the lesson is not available yet on navigation if locked', async () => {
     const { getByText, getByTestId } = render(<ExercisesScreen route={route} navigation={navigation} />)
     expect(getByTestId('locking-modal')).toHaveProp('visible', false)
     const lockedExercise = getByText(EXERCISES[1].title)
@@ -63,9 +63,9 @@ describe('ExercisesScreen', () => {
   })
 
   it('should trigger navigation if unlocked', () => {
-    const { getAllByText } = render(<ExercisesScreen route={route} navigation={navigation} />)
-    const nextExercise = getAllByText(EXERCISES[0].title)
-    fireEvent.press(nextExercise[1])
+    const { getByText } = render(<ExercisesScreen route={route} navigation={navigation} />)
+    const nextExercise = getByText(EXERCISES[0].title)
+    fireEvent.press(nextExercise)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, {
       closeExerciseAction: undefined,
       disciplineId: mockDisciplines()[0].id,
