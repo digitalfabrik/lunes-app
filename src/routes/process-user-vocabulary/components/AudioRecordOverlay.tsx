@@ -126,7 +126,7 @@ const AudioRecordOverlay = ({
 
   const onStopRecording = async (): Promise<void> => {
     try {
-      await audioRecorderPlayer.stopRecorder()
+      onAudioRecorded(await audioRecorderPlayer.stopRecorder())
       audioRecorderPlayer.removeRecordBackListener()
       setShowAudioRecordOverlay(false)
     } catch (e) {
@@ -142,7 +142,7 @@ const AudioRecordOverlay = ({
 
   const onStartRecording = async (): Promise<void> => {
     setMeteringResults([])
-    const uri = await audioRecorderPlayer.startRecorder(undefined, undefined, true)
+    await audioRecorderPlayer.startRecorder(undefined, undefined, true)
     audioRecorderPlayer.addRecordBackListener(async e => {
       setMeteringResults(oldMeteringResults => [
         ...oldMeteringResults,
@@ -153,7 +153,6 @@ const AudioRecordOverlay = ({
         await onStopRecording()
       }
     })
-    onAudioRecorded(uri)
   }
 
   return (
