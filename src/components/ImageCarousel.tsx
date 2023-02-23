@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Keyboard, useWindowDimensions } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import { Pagination } from 'react-native-snap-carousel'
 import styled, { useTheme } from 'styled-components/native'
 
 import { Images } from '../constants/endpoints'
@@ -23,10 +22,27 @@ const StyledImage = styled.Image<{ height: number; minimized: boolean }>`
 const minimizedPosition = -10
 const normalPosition = 10
 
+const Dot = styled.View`
+  height: 5px;
+  width: 5px;
+  background-color: ${props => props.theme.colors.placeholder};
+  border-radius: 20px;
+  margin: 2px;
+`
+
+const ActiveDot = styled(Dot)`
+  height: 10px;
+  width: 10px;
+  background-color: ${props => props.theme.colors.textSecondary};
+`
+
 const PaginationView = styled.View<{ minimized: boolean }>`
+  width: 100%;
   position: absolute;
-  left: 0px;
-  right: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   top: ${({ minimized }) => (minimized ? minimizedPosition : normalPosition)}px;
 `
 
@@ -60,13 +76,12 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
 
   const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (
     <PaginationView minimized={minimized}>
-      {!!currentIndex && !!allSize && (
-        <Pagination
-          activeDotIndex={currentIndex - 1}
-          dotsLength={allSize}
-          dotStyle={{ backgroundColor: theme.colors.primary }}
-        />
-      )}
+      {!!allSize &&
+        !!currentIndex &&
+        allSize > 1 &&
+        imagesUrls.map((item, index) =>
+          index + 1 === currentIndex ? <ActiveDot key={item.url} /> : <Dot key={item.url} />
+        )}
     </PaginationView>
   )
 
