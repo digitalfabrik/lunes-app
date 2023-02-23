@@ -10,7 +10,7 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
@@ -194,12 +194,19 @@ export const getSortedAndFilteredVocabularyItems = (
   vocabularyItems: VocabularyItem[] | null,
   searchString: string
 ): VocabularyItem[] => {
+  const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
+
   const normalizedSearchString = normalizeSearchString(searchString)
+
+  const getNouns = (word: string): string => {
+    const words = word.split(' ')
+    return words.find((word: string) => word[0] === word[0].toUpperCase()) ?? words.toString()
+  }
 
   const filteredVocabularyItems = vocabularyItems?.filter(
     item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
   )
-  return filteredVocabularyItems?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
+  return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>

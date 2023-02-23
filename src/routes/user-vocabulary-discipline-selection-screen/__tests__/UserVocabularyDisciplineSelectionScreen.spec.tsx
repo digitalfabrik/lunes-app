@@ -61,7 +61,6 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
         id: 1,
         title: `${getLabels().userVocabulary.practice.part} ${2}`,
         description: '',
-        icon: 'none',
         numberOfChildren: 10,
         isLeaf: true,
         parentTitle: getLabels().userVocabulary.myWords,

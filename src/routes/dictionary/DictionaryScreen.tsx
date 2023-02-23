@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -9,7 +10,7 @@ import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { VocabularyItem } from '../../constants/endpoints'
-import useLoadAllVocabularyItems from '../../hooks/useLoadAllVocabularyItems'
+import useGetAllWords from '../../hooks/useGetAllWords'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
@@ -27,8 +28,10 @@ type DictionaryScreenProps = {
 }
 
 const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement => {
-  const vocabularyItems = useLoadAllVocabularyItems()
+  const vocabularyItems = useGetAllWords()
   const [searchString, setSearchString] = useState<string>('')
+
+  useFocusEffect(vocabularyItems.refresh)
 
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
