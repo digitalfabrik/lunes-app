@@ -3536,45 +3536,6 @@ __metadata:
   dependencies:
     serve-static: ^1.13.1
   checksum: 619957ec70e65e37f91aa635ad88de4e4cc36e5aac25ee09fab7c806a388489e2cab725cae50623469538f8ae42a4d4f7a1242e4a58c274515de0a4e5c701a5f
-  languageName: node
-  linkType: hard
-
-"@react-native-community/cli-doctor@npm:^8.0.6":
-  version: 8.0.6
-  resolution: "@react-native-community/cli-doctor@npm:8.0.6"
-  dependencies:
-    "@react-native-community/cli-config": ^8.0.6
-    "@react-native-community/cli-platform-ios": ^8.0.6
-    "@react-native-community/cli-tools": ^8.0.4
-    chalk: ^4.1.2
-    command-exists: ^1.2.8
-    envinfo: ^7.7.2
-    execa: ^1.0.0
-    hermes-profile-transformer: ^0.0.6
-    ip: ^1.1.5
-    node-stream-zip: ^1.9.1
-    ora: ^5.4.1
-    prompts: ^2.4.0
-    semver: ^6.3.0
-    strip-ansi: ^5.2.0
-    sudo-prompt: ^9.0.0
-    wcwidth: ^1.0.1
-  checksum: b8811f0fc4b5af574a77d51f0df90edd5f93fee19c0fde89a4223736d2dcb147dcdcde5532c37e079c18b77a7135f1146bd2395b34ef911dfda11bc10c0bbffe
-  languageName: node
-  linkType: hard
-
-"@react-native-community/cli-hermes@npm:^8.0.5":
-  version: 8.0.5
-  resolution: "@react-native-community/cli-hermes@npm:8.0.5"
-  dependencies:
-    "@react-native-community/cli-platform-android": ^8.0.5
-    "@react-native-community/cli-tools": ^8.0.4
-    chalk: ^4.1.2
-    hermes-profile-transformer: ^0.0.6
-    ip: ^1.1.5
-  checksum: a52b1dba4ab6049f24a61af540e5bd91cdc837886e406afdd895bbcab93565b32858bc76fe7a21f2cea3da76f4554f2e965458b579219ebcd01c757fff7a59a3
-  languageName: node
-  linkType: hard
 
 "@react-native-community/cli-platform-android@npm:^8.0.4, @react-native-community/cli-platform-android@npm:^8.0.5":
   version: 8.0.5
@@ -4452,25 +4413,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native-snap-carousel@npm:^3.8.5":
-  version: 3.8.5
-  resolution: "@types/react-native-snap-carousel@npm:3.8.5"
-  dependencies:
-    "@types/react": "*"
-    "@types/react-native": "*"
-  checksum: b0d2465de6959098e08505e7ee325b7b6da3c7f73f319df34c7e7031c055ccc0f9cf6903d5f52a95ce136cff8f6a43265b9f103d9a40c4e32c18c8af214e5739
-  languageName: node
-  linkType: hard
-
-"@types/react-native@npm:*":
-  version: 0.66.4
-  resolution: "@types/react-native@npm:0.66.4"
-  dependencies:
-    "@types/react": "*"
-  checksum: 180725b6707500d3efc956d304c333ef60a8ad132da3f3c26803d02badd78f9d1f865b36185d575206cc4dc72178d6b835cfcedf775a4ed8e4feeba9384851dd
-  languageName: node
-  linkType: hard
-
 "@types/react-native@npm:^0.65":
   version: 0.65.14
   resolution: "@types/react-native@npm:0.65.14"
@@ -5199,7 +5141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"asap@npm:~2.0.3, asap@npm:~2.0.6":
+"asap@npm:~2.0.6":
   version: 2.0.6
   resolution: "asap@npm:2.0.6"
   checksum: c6d5e39fe1f15e4b87677460bd66b66050cd14c772269cee6688824c1410a08ab20254bb6784f9afb75af9144a9f9a7692d49547f4d19d715aeb7c0318f3136d
@@ -6329,13 +6271,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^1.0.0":
-  version: 1.2.7
-  resolution: "core-js@npm:1.2.7"
-  checksum: 2b2966e40833f522129da4cc979688760654e9b38e32b06517a94c0edf2882d8990c4b1b0087cb2abfbe6219fdb21dc64343fa264a6b6280ec88c3682b8eee66
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -6903,7 +6838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.11, encoding@npm:^0.1.13":
+"encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -7730,21 +7665,6 @@ __metadata:
   dependencies:
     bser: 2.1.1
   checksum: 796ce6de1f915d4230771a6ad2219e0555275f2936d66022321845f7e69c65b10baa74959322b1ab94ac65b91307f1f09a6b8e2097a337ff113101ebbc4c6958
-  languageName: node
-  linkType: hard
-
-"fbjs@npm:^0.8.4":
-  version: 0.8.17
-  resolution: "fbjs@npm:0.8.17"
-  dependencies:
-    core-js: ^1.0.0
-    isomorphic-fetch: ^2.1.1
-    loose-envify: ^1.0.0
-    object-assign: ^4.1.0
-    promise: ^7.1.1
-    setimmediate: ^1.0.5
-    ua-parser-js: ^0.7.18
-  checksum: 5f38f8d73ba8de9bf39fa75c680f54f383118b6138e64a0e3c2617c4ae2f97634e851d38efea227a310f46210e3ee3b52a098f8a77f174e51d713594d8ec7113
   languageName: node
   linkType: hard
 
@@ -9029,7 +8949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-stream@npm:^1.0.1, is-stream@npm:^1.1.0":
+"is-stream@npm:^1.1.0":
   version: 1.1.0
   resolution: "is-stream@npm:1.1.0"
   checksum: b8ae7971e78d2e8488d15f804229c6eed7ed36a28f8807a1815938771f4adff0e705218b7dab968270433f67103e4fef98062a0beea55d64835f705ee72c7002
@@ -9143,16 +9063,6 @@ __metadata:
   version: 3.0.1
   resolution: "isobject@npm:3.0.1"
   checksum: 03344f5064a82f099a0cd1a8a407f4c0d20b7b8485e8e816c39f249e9416b06c322e8dec5b842b6bb8a06de0af9cb48e7bc1b5352f0fadc2f0abac033db3d4db
-  languageName: node
-  linkType: hard
-
-"isomorphic-fetch@npm:^2.1.1":
-  version: 2.2.1
-  resolution: "isomorphic-fetch@npm:2.2.1"
-  dependencies:
-    node-fetch: ^1.0.1
-    whatwg-fetch: ">=0.10.0"
-  checksum: ea9fd37d31ec7b35b82180e1946d4a2f512506d0559fa567ec6ee6701ff1c6d924be90e75499c50982274b707e03ecd9eaa21d618872dd0deff530e4c3bdb074
   languageName: node
   linkType: hard
 
@@ -10340,7 +10250,6 @@ __metadata:
     "@types/jest": ^27.5.2
     "@types/node": ^18.0.3
     "@types/react-native": ^0.66.8
-    "@types/react-native-snap-carousel": ^3.8.5
     "@types/react-test-renderer": ^17.0.1
     "@types/string-similarity": ^4.0.0
     "@types/styled-components-react-native": ^5.1.3
@@ -10391,7 +10300,6 @@ __metadata:
     react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ^3.14.1
-    react-native-snap-carousel: 3.9.1
     react-native-sound-player: 0.13.2
     react-native-splash-screen: ^3.3.0
     react-native-svg: ^12.3.0
@@ -10592,23 +10500,7 @@ __metadata:
   bin:
     metro-inspector-proxy: src/cli.js
   checksum: dcd6488a66dd0b4c08dea289dd255e99050486adfe0cbcca3297cfdf340ab77229c11747e7e1d97be0adc0f175a1fd90329d0369bf54ebe6644f93021df9b77d
-  languageName: node
-  linkType: hard
-
-"metro-minify-uglify@npm:0.70.3":
-  version: 0.70.3
-  resolution: "metro-minify-uglify@npm:0.70.3"
-  dependencies:
-    uglify-es: ^3.1.9
-  checksum: f4a198f4dd6aa0e92e4566d5cd3b9110a56575117072d9716de398b7a476aeb03d560031aa8d2a950eaaf5c6c8a5dea0d49089bed4a4b4a8f2f3041edeb43590
-  languageName: node
-  linkType: hard
-
-"metro-react-native-babel-preset@npm:0.70.3":
-  version: 0.70.3
-  resolution: "metro-react-native-babel-preset@npm:0.70.3"
-  dependencies:
-    "@babel/core": ^7.14.0
+ "@babel/core": ^7.14.0
     "@babel/plugin-proposal-async-generator-functions": ^7.0.0
     "@babel/plugin-proposal-class-properties": ^7.0.0
     "@babel/plugin-proposal-export-default-from": ^7.0.0
@@ -11195,16 +11087,6 @@ __metadata:
   dependencies:
     minimatch: ^3.0.2
   checksum: 16222e871708c405079ff8122d4a7e1d522c5b90fc8f12b3112140af871cfc70128c376e845dcd0044c625db0d2efebd2d852414599d240564db61d53402b4c1
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^1.0.1":
-  version: 1.7.3
-  resolution: "node-fetch@npm:1.7.3"
-  dependencies:
-    encoding: ^0.1.11
-    is-stream: ^1.0.1
-  checksum: 5a6b56b3edf909ccd20414355867d24f15f1885da3b26be90840241c46e63754ebf4697050f897daab676e3952d969611ffe1d4bc4506cf50f70837e20ad5328
   languageName: node
   linkType: hard
 
@@ -12051,15 +11933,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"promise@npm:^7.1.1":
-  version: 7.3.1
-  resolution: "promise@npm:7.3.1"
-  dependencies:
-    asap: ~2.0.3
-  checksum: 742e5c0cc646af1f0746963b8776299701ad561ce2c70b49365d62c8db8ea3681b0a1bf0d4e2fe07910bf72f02d39e51e8e73dc8d7503c3501206ac908be107f
-  languageName: node
-  linkType: hard
-
 "promise@npm:^8.2.0":
   version: 8.3.0
   resolution: "promise@npm:8.3.0"
@@ -12100,7 +11973,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -12183,16 +12056,6 @@ __metadata:
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
   checksum: 96c032ac2475c8027b7a4e9fe22dc0dfe0f6d90b85e496e0f016fbdb99d6d066de0112e680805075bd989905e2123b3b3d002765149294dce0c1f7f01fcc2ea0
-  languageName: node
-  linkType: hard
-
-"react-addons-shallow-compare@npm:15.6.2":
-  version: 15.6.2
-  resolution: "react-addons-shallow-compare@npm:15.6.2"
-  dependencies:
-    fbjs: ^0.8.4
-    object-assign: ^4.1.0
-  checksum: 9295bc5aeb246306d84a840a0b21008818694660346f850cf375802f59556f56c0f8bfbd44bb5b88ecbdbf4ac2264f4edf3b73479f43a64fa335d1b5e45aeccc
   languageName: node
   linkType: hard
 
@@ -12481,19 +12344,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b61693093b52515052e5c495efc2cdb347485545a2d6c2fa6cad5bcdf8118972bbc61650e6967cf38f6f1aa28f3ef98b50b2d4ee6be00a05faa734e681596bd5
-  languageName: node
-  linkType: hard
-
-"react-native-snap-carousel@npm:3.9.1":
-  version: 3.9.1
-  resolution: "react-native-snap-carousel@npm:3.9.1"
-  dependencies:
-    prop-types: ^15.6.1
-    react-addons-shallow-compare: 15.6.2
-  peerDependencies:
-    react: ">=15.0.0"
-    react-native: "*"
-  checksum: 2e5c268bf8106abdae010c679b5b4a4f706c774e0c9874c51146d123574b2ac7b1bab2f757a0eac6c087caeca3610f5b32b8f4e3c9d64d528726ac51df8fbd58
   languageName: node
   linkType: hard
 
@@ -14400,13 +14250,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.18":
-  version: 0.7.33
-  resolution: "ua-parser-js@npm:0.7.33"
-  checksum: d58bf54c91e3e80e6e086b6215fa15266791e23e6e403039179c020129940168634a5b931f65ce70c6550b05d0d62c7c944bf7378b6b42133cd4a7ccb07f1948
-  languageName: node
-  linkType: hard
-
 "uglify-es@npm:^3.1.9":
   version: 3.3.9
   resolution: "uglify-es@npm:3.3.9"
@@ -14737,7 +14580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.0.0":
+"whatwg-fetch@npm:^3.0.0":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: cc10f6893fe71839250b6e2fa9bc293bcf0ca5b93129712a7d1097fb7528b3ff617eb065098dc972e74d1455378e514aa34c0901ded41584be16508db63477c8
