@@ -4,13 +4,14 @@ import normalizeStrings from 'normalize-strings'
 import {
   Article,
   ARTICLES,
+  ExerciseKeys,
   EXERCISES,
   FeedbackType,
   NextExercise,
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
@@ -74,15 +75,20 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-const getDoneExercisesByProgress = (disciplineId: number, progress: Progress): number => {
+const getNumberOfUnlockedExercisesByProgress = (disciplineId: number, progress: Progress): number => {
   const progressOfDiscipline = progress[disciplineId]
   return progressOfDiscipline
-    ? Object.keys(progressOfDiscipline).filter(item => progressOfDiscipline[item] !== undefined).length
+    ? Object.keys(progressOfDiscipline).filter(item => {
+        const score = progressOfDiscipline[item]
+        return (
+          ExerciseKeys.vocabularyList.toString() === item || (score !== undefined && score > SCORE_THRESHOLD_UNLOCK)
+        )
+      }).length
     : 0
 }
 
-export const getDoneExercises = (disciplineId: number): Promise<number> =>
-  getExerciseProgress().then(progress => getDoneExercisesByProgress(disciplineId, progress))
+export const getNumberOfUnlockedExercises = (disciplineId: number): Promise<number> =>
+  getExerciseProgress().then(progress => getNumberOfUnlockedExercisesByProgress(disciplineId, progress))
 
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
@@ -98,7 +104,7 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   }
   const progress = await getExerciseProgress()
   const firstUnfinishedDisciplineId = leafDisciplineIds.find(
-    id => getDoneExercisesByProgress(id, progress) < EXERCISES.length
+    id => getNumberOfUnlockedExercisesByProgress(id, progress) < EXERCISES.length
   )
 
   if (!firstUnfinishedDisciplineId) {
@@ -114,10 +120,10 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
       exerciseKey: 0,
     }
   }
-  const nextExerciseKey = EXERCISES.find(exercise => disciplineProgress[exercise.key] === undefined)
+  const nextExerciseKey = getNumberOfUnlockedExercisesByProgress(firstUnfinishedDisciplineId, progress)
   return {
     disciplineId: firstUnfinishedDisciplineId,
-    exerciseKey: nextExerciseKey?.key ?? 0,
+    exerciseKey: nextExerciseKey,
   }
 }
 
@@ -126,11 +132,11 @@ export const getProgress = async (profession: Discipline | null): Promise<number
     return 0
   }
   if (!profession.leafDisciplines) {
-    return (await getDoneExercises(profession.id)) / EXERCISES.length
+    return (await getNumberOfUnlockedExercises(profession.id)) / EXERCISES.length
   }
   const progress = await getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
-    (acc, leaf) => acc + getDoneExercisesByProgress(leaf, progress),
+    (acc, leaf) => acc + getNumberOfUnlockedExercisesByProgress(leaf, progress),
     0
   )
   const totalExercises = profession.leafDisciplines.length * EXERCISES.length
@@ -194,12 +200,19 @@ export const getSortedAndFilteredVocabularyItems = (
   vocabularyItems: VocabularyItem[] | null,
   searchString: string
 ): VocabularyItem[] => {
+  const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
+
   const normalizedSearchString = normalizeSearchString(searchString)
+
+  const getNouns = (word: string): string => {
+    const words = word.split(' ')
+    return words.find((word: string) => word[0] === word[0].toUpperCase()) ?? words.toString()
+  }
 
   const filteredVocabularyItems = vocabularyItems?.filter(
     item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
   )
-  return filteredVocabularyItems?.sort((a, b) => a.word.localeCompare(b.word)) ?? []
+  return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
