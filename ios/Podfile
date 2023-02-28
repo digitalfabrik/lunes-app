@@ -32,6 +32,7 @@ target 'Lunes' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
@@ -46,7 +47,7 @@ target 'Lunes' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  #   use_flipper!()
+    use_flipper!()
 
   # Added the excluded_arch fix for M1 chips and cocoapods https://github.com/mrousavy/react-native-vision-camera/issues/914
 

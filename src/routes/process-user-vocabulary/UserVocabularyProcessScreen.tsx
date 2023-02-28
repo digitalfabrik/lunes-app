@@ -24,6 +24,7 @@ import {
 } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
+import GalleryOverlay from './components/GalleryOverlay'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
 
@@ -70,6 +71,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
+  const [showGallery, setShowGallery] = useState<boolean>(false)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
   const { itemToEdit } = route.params
 
@@ -170,7 +172,20 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     setImages(images => images.filter(runningImage => runningImage.uri !== image.uri))
 
   if (showImageSelectionOverlay) {
-    return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
+    return (
+      <ImageSelectionOverlay
+        setVisible={setShowImageSelectionOverlay}
+        pushImage={pushImage}
+        openGallery={() => {
+          setShowGallery(true)
+          setShowImageSelectionOverlay(false)
+        }}
+      />
+    )
+  }
+
+  if (showGallery) {
+    return <GalleryOverlay pushImage={pushImage} setVisible={setShowGallery} />
   }
 
   // TODO add Keyboard handling for input fields LUN-424
