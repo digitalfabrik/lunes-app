@@ -16,7 +16,7 @@ import { useLoadAsync } from '../../hooks/useLoadAsync'
 import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getExerciseProgress } from '../../services/AsyncStorage'
-import { getLabels, getDoneExercises, wordsDescription } from '../../services/helpers'
+import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
 
@@ -75,7 +75,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   useFocusEffect(
     useCallback(() => {
-      getDoneExercises(disciplineId)
+      getNumberOfUnlockedExercises(disciplineId)
         .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
         .catch(reportError)
     }, [disciplineId])
