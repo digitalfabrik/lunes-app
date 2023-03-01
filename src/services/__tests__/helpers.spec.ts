@@ -24,6 +24,14 @@ describe('helpers', () => {
       expect(exerciseKey).toBe(0)
     })
 
+    it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '11': { '0': 1, '1': 1 } }))
+      const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
+      expect(exerciseKey).toBe(0)
+    })
+
     it('should open third exercise of first discipline, if two exercise were finished yet', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 10, '1': 10 } }))
