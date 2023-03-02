@@ -1,11 +1,16 @@
-import React, { ReactElement, useRef } from 'react'
+import React, { ReactElement, useRef, useState } from 'react'
+import { Platform } from 'react-native'
 import { RNCamera } from 'react-native-camera'
+import { openPicker } from 'react-native-image-crop-picker'
+import { PERMISSIONS } from 'react-native-permissions'
 import styled from 'styled-components/native'
 
 import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
+import NotAuthorisedView from '../../../components/NotAuthorisedView'
 import PressableOpacity from '../../../components/PressableOpacity'
-import { UserVocabularyImage } from '../UserVocabularyProcessScreen'
+import { getLabels } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 
 const GALLERY_ICON_SIZE = 30
 const TAKE_IMAGE_ICON_SIZE = 50
@@ -36,24 +41,64 @@ const Container = styled.View`
 
 type ImageSelectionOverlayProps = {
   setVisible: (visible: boolean) => void
-  pushImage: (image: UserVocabularyImage) => void
-  openGallery: () => void
+  pushImage: (image: string) => void
 }
 
-const ImageSelectionOverlay = ({ setVisible, pushImage, openGallery }: ImageSelectionOverlayProps): ReactElement => {
+const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayProps): ReactElement => {
   const camera = useRef<RNCamera>(null)
+  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false)
+  const [showNotAuthorised, setShowNotAuthorised] = useState<boolean>(false)
 
   const takePhoto = async () => {
     if (camera.current) {
       const options = { quality: 0.5, base64: true }
       const data = await camera.current.takePictureAsync(options)
       setVisible(false)
-      pushImage({ uri: data.uri, shouldBeCopied: false })
+      pushImage(data.uri)
     }
   }
 
+  const openGallery = () => {
+    setIsGalleryOpen(true)
+    openPicker({
+      mediaType: 'photo',
+    })
+      .then(image => {
+        setVisible(false)
+        pushImage(image.path)
+      })
+      .catch((e: Error) => {
+        if (e.message.includes('permission')) {
+          setShowNotAuthorised(true)
+        } else if (!e.message.includes('cancelled')) {
+          reportError(e)
+        }
+      })
+      .finally(() => {
+        setIsGalleryOpen(false)
+      })
+  }
+
+  const androidMediaPermission =
+    // eslint-disable-next-line no-magic-numbers
+    Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+
+  let permission
+  if (isGalleryOpen) {
+    permission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : androidMediaPermission
+  }
+
+  if (showNotAuthorised) {
+    return (
+      <NotAuthorisedView
+        description={getLabels().general.library.noAuthorization.description}
+        setVisible={setShowNotAuthorised}
+      />
+    )
+  }
+
   return (
-    <CameraOverlay setVisible={setVisible}>
+    <CameraOverlay setVisible={setVisible} permission={permission}>
       <Camera ref={camera} captureAudio={false} testID='camera'>
         <Container>
           <ActionBar>

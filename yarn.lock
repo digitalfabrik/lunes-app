@@ -2064,15 +2064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-camera-roll/camera-roll@npm:^5.2.3":
-  version: 5.2.4
-  resolution: "@react-native-camera-roll/camera-roll@npm:5.2.4"
-  peerDependencies:
-    react-native: ">=0.59"
-  checksum: 1df0b87ad1b314fe80f750a3574d0c06e97101fdca3b3c8da57fb4c881045cca9b90aa869c9fb246bf709fe751d8270b59cb43122f7e5f4de6ec18c1cbfbe1ba
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:^8.0.4":
   version: 8.0.4
   resolution: "@react-native-community/cli-clean@npm:8.0.4"
@@ -3050,12 +3041,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:^0.66.8":
-  version: 0.66.27
-  resolution: "@types/react-native@npm:0.66.27"
+"@types/react-native@npm:0.69.7":
+  version: 0.69.7
+  resolution: "@types/react-native@npm:0.69.7"
   dependencies:
-    "@types/react": ^17
-  checksum: 7650336a55e889d1b70a4d878fd7f8e75a3d6577ca41358aa9cb1e2357a23af1712d0239fd9a3f26d4a94df5d6c20f01619b16a2e24e56ba9ecdcf80aa19918b
+    "@types/react": "*"
+  checksum: 0fb74ec5f5f52aeb527e4146b2017e799c1e4ade4e5acd9d6f3942612025831a923bf7e9a18738a3dd931c55a81cde6eb039bb94f90edb40a4ef10dda39a5995
   languageName: node
   linkType: hard
 
@@ -3068,12 +3059,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-test-renderer@npm:^17.0.1":
-  version: 17.0.2
-  resolution: "@types/react-test-renderer@npm:17.0.2"
+"@types/react-test-renderer@npm:18.0.0":
+  version: 18.0.0
+  resolution: "@types/react-test-renderer@npm:18.0.0"
   dependencies:
-    "@types/react": ^17
-  checksum: de3003e8d86ff2897cc78e963b271054c52d0026b876dd76c1ed1e48fdd1829b0b619db1e4ac896b199cabbeaddd8e89acb82b9da5401a66e60c91e6c550394f
+    "@types/react": "*"
+  checksum: 14986ef0de83246fd609a92bc4165846f9fa757cff6dfee17b987f8417c125e45ac167f677e29fb13fd4c6845da0522e3e03d035291176aa2a674b494ec18eb0
   languageName: node
   linkType: hard
 
@@ -3085,17 +3076,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 6d94ec25c18b39aac687814b3a717e767f2fba3289c3b682caa4d0182160a72a9816a612b5a207c8ea73f1d288019f56f3d08742ac7cfff91719abb77da9d11a
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17":
-  version: 17.0.53
-  resolution: "@types/react@npm:17.0.53"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 4ff3fa58ab32deefacdbd0ee002e294548391238ce2dea2cad213e11b4cc61480be48cb2b7ed3c53220ee1a5b9cadf3417a20db817ab2ca4669c9a4a45042b92
   languageName: node
   linkType: hard
 
@@ -8805,7 +8785,6 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@babel/runtime": ^7.18.6
     "@react-native-async-storage/async-storage": ^1.17.7
-    "@react-native-camera-roll/camera-roll": ^5.2.3
     "@react-native-masked-view/masked-view": ^0.2.6
     "@react-navigation/bottom-tabs": ^6.3.2
     "@react-navigation/elements": ^1.3.4
@@ -8818,9 +8797,9 @@ __metadata:
     "@trivago/prettier-plugin-sort-imports": ^3.2.0
     "@types/jest": ^27.5.2
     "@types/node": ^18.0.3
-    "@types/react-native": ^0.66.8
+    "@types/react-native": 0.69.7
     "@types/react-native-snap-carousel": ^3.8.5
-    "@types/react-test-renderer": ^17.0.1
+    "@types/react-test-renderer": 18.0.0
     "@types/string-similarity": ^4.0.0
     "@types/styled-components-react-native": ^5.1.3
     "@types/uniqid": ^5
@@ -8861,7 +8840,6 @@ __metadata:
     react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.5.0
     react-native-image-crop-picker: ^0.39.0
-    react-native-image-picker: ^5.1.0
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-paper: 4.12.2
@@ -10766,16 +10744,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c1047da6b7eb0d8a80a810eba8dc0c74e11d0b476808c30d1bbc6285c3f8dc8140aba60fb1af35e2c8c114aa32eed64fb545214a6cf1c00d6b80dd3178bdf3f6
-  languageName: node
-  linkType: hard
-
-"react-native-image-picker@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "react-native-image-picker@npm:5.1.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: f85fcd8133a2f1a824a6899212492f622e6b8f1bb491274a71df68e11c24e628b14238575985b13fca0f8d76b677c2138da953e13eec5dad0b23c26539575739
   languageName: node
   linkType: hard
 

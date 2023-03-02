@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { copyFile, DocumentDirectoryPath, moveFile } from 'react-native-fs'
+import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'
@@ -24,7 +24,6 @@ import {
 } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
-import GalleryOverlay from './components/GalleryOverlay'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
 
@@ -58,20 +57,14 @@ type UserVocabularyProcessScreenProps = {
   route: RouteProp<RoutesParams, 'UserVocabularyProcess'>
 }
 
-export type UserVocabularyImage = {
-  uri: string
-  shouldBeCopied: boolean
-}
-
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
-  const [images, setImages] = useState<UserVocabularyImage[]>([])
+  const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
   const [articleId, setArticleId] = useState<number | null>(null)
   const [hasWordErrorMessage, setHasWordErrorMessage] = useState<boolean>(false)
   const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
-  const [showGallery, setShowGallery] = useState<boolean>(false)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
   const { itemToEdit } = route.params
 
@@ -128,11 +121,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
           const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
-          if (image.shouldBeCopied) {
-            await copyFile(image.uri, path)
-          } else {
-            await moveFile(image.uri, path)
-          }
+          await moveFile(image, path)
           return { id: index, image: path }
         })
       )
@@ -167,25 +156,11 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     }
   }
 
-  const pushImage = (image: UserVocabularyImage): void => setImages(old => [...old, image])
-  const deleteImage = (image: UserVocabularyImage): void =>
-    setImages(images => images.filter(runningImage => runningImage.uri !== image.uri))
+  const pushImage = (image: string): void => setImages(old => [...old, image])
+  const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
 
   if (showImageSelectionOverlay) {
-    return (
-      <ImageSelectionOverlay
-        setVisible={setShowImageSelectionOverlay}
-        pushImage={pushImage}
-        openGallery={() => {
-          setShowGallery(true)
-          setShowImageSelectionOverlay(false)
-        }}
-      />
-    )
-  }
-
-  if (showGallery) {
-    return <GalleryOverlay pushImage={pushImage} setVisible={setShowGallery} />
+    return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
   }
 
   // TODO add Keyboard handling for input fields LUN-424
@@ -210,7 +185,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         />
         <ThumbnailContainer>
           {images.map(item => (
-            <Thumbnail key={item.uri} image={item.uri} deleteImage={() => deleteImage(item)} />
+            <Thumbnail key={item} image={item} deleteImage={() => deleteImage(item)} />
           ))}
         </ThumbnailContainer>
         <AddImageButton

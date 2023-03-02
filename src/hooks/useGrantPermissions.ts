@@ -27,7 +27,7 @@ const useGrantPermissions = (permissions: Permission): UseGrantPermissionsReturn
   useEffect(() => {
     if (!permissionRequested) {
       request(permissions)
-        .then(result => setPermissionGranted(result === RESULTS.GRANTED))
+        .then(result => setPermissionGranted(result === RESULTS.GRANTED || result === RESULTS.LIMITED))
         .catch(reportError)
         .finally(() => setPermissionRequested(true))
     }

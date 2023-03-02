@@ -12,7 +12,7 @@ export const ExerciseKeys = {
   articleChoiceExercise: 2,
   writeExercise: 3,
 } as const
-export type ExerciseKey = typeof ExerciseKeys[keyof typeof ExerciseKeys]
+export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
 
 export type Exercise = {
   key: ExerciseKey
@@ -73,7 +73,7 @@ export const BUTTONS_THEME = {
   text: 'text',
 } as const
 
-export type ButtonTheme = typeof BUTTONS_THEME[keyof typeof BUTTONS_THEME]
+export type ButtonTheme = (typeof BUTTONS_THEME)[keyof typeof BUTTONS_THEME]
 
 export type ArticleType = {
   readonly id: number
@@ -115,14 +115,14 @@ export const getArticleWithLabel = (): ArticleTypeExtended[] =>
     return { ...article, label: article.value }
   })
 
-export type Article = typeof ARTICLES[number]
+export type Article = (typeof ARTICLES)[number]
 
 export const SIMPLE_RESULTS = {
   correct: 'correct',
   incorrect: 'incorrect',
   similar: 'similar',
 } as const
-export type SimpleResult = typeof SIMPLE_RESULTS[keyof typeof SIMPLE_RESULTS]
+export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]
 
 type ResultType = {
   key: SimpleResult
@@ -136,7 +136,7 @@ export const VOCABULARY_ITEM_TYPES = {
   lunesProtected: 'lunes-protected',
   userCreated: 'user-created',
 }
-export type VocabularyItemType = typeof VOCABULARY_ITEM_TYPES[keyof typeof VOCABULARY_ITEM_TYPES]
+export type VocabularyItemType = (typeof VOCABULARY_ITEM_TYPES)[keyof typeof VOCABULARY_ITEM_TYPES]
 
 export type Favorite = {
   id: number
@@ -170,14 +170,14 @@ export const RESULTS: Readonly<ResultType[]> = [
   },
 ] as const
 
-export type Result = typeof RESULTS[number]
+export type Result = (typeof RESULTS)[number]
 
 export const FeedbackType = {
   discipline: 'discipline',
   leaf_discipline: 'trainingset',
   vocabularyItem: 'document',
 } as const
-export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType]
+export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3
 
