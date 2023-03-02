@@ -26,4 +26,4 @@ export const COLORS = {
   audioRecordingActive: '#97aef1',
 }
 
-export type Color = (typeof COLORS)[keyof typeof COLORS]
+export type Color = typeof COLORS[keyof typeof COLORS]

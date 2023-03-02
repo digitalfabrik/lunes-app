@@ -14,7 +14,7 @@ const PLATFORMS = [PLATFORM_IOS, PLATFORM_ANDROID]
 const MAIN_BRANCH = 'main'
 
 type ReleaseInformation = {
-  platform: (typeof PLATFORMS)[number]
+  platform: typeof PLATFORMS[number]
   versionName: string
 }
 const tagId = ({ platform, versionName }: ReleaseInformation): string => `${versionName}-${platform}`
