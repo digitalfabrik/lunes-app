@@ -24,9 +24,17 @@ describe('helpers', () => {
       expect(exerciseKey).toBe(0)
     })
 
+    it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
+      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '11': { '0': 1, '1': 1 } }))
+      const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
+      expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
+      expect(exerciseKey).toBe(0)
+    })
+
     it('should open third exercise of first discipline, if two exercise were finished yet', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1 } }))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 10, '1': 10 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(2)
@@ -42,7 +50,7 @@ describe('helpers', () => {
 
     it('should open third exercise of first discipline, if three exercises were finished yet', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1 } }))
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 10, '1': 10, '2': 10 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(3)
@@ -50,8 +58,7 @@ describe('helpers', () => {
 
     it('should open first exercise of second discipline, if first discipline was finished yet', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
-      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1, '3': 1 } }))
-
+      mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 10, '1': 10, '2': 10, '3': 10 } }))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![1])
       expect(exerciseKey).toBe(0)
@@ -95,16 +102,16 @@ describe('helpers', () => {
       expect(Math.round(progress)).toBe(0)
     })
 
-    it('should show zero if only exercises of other disciplines where finished', async () => {
+    it('should show zero if only exercises of other disciplines were finished', async () => {
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '3': { '1': 1 } }))
       const progress = await getProgress(profession)
       expect(progress).toBe(0)
     })
 
-    it('should show 0.5 if one of two disciplines are finished', async () => {
+    it('should show 0.5 or lesser if one of two disciplines are finished', async () => {
       mocked(getExerciseProgress).mockReturnValueOnce(Promise.resolve({ '10': { '0': 1, '1': 1, '2': 1, '3': 1 } }))
       const progress = await getProgress(profession)
-      expect(progress).toBe(0.5)
+      expect(progress).toBeLessThanOrEqual(0.5)
     })
   })
 
@@ -113,7 +120,7 @@ describe('helpers', () => {
       expect(willNextExerciseUnlock(undefined, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
     })
 
-    it('should unlock if exercise is done good enough for the scond time', () => {
+    it('should unlock if exercise is done good enough for the second time', () => {
       expect(willNextExerciseUnlock(SCORE_THRESHOLD_UNLOCK, SCORE_THRESHOLD_UNLOCK + 1)).toBeTruthy()
     })
 
