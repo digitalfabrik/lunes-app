@@ -603,6 +603,7 @@ workflows:
                 requires:
                     - check
                     - bump_version
+                type: approval
             - deliver_browser_stack:
                 context:
                     - mattermost

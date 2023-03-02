@@ -16,6 +16,7 @@ jobs:
         - check
         - bump_version
   - build_ios:
+      type: approval
       context:
         - mattermost
         - fastlane-match
