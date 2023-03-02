@@ -156,7 +156,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     }
   }
 
-  const pushImage = (image: string): void => setImages(old => [...old, image])
+  const pushImage = (uri: string): void => setImages(old => [...old, uri])
   const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
 
   if (showImageSelectionOverlay) {

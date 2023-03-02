@@ -41,7 +41,7 @@ const Container = styled.View`
 
 type ImageSelectionOverlayProps = {
   setVisible: (visible: boolean) => void
-  pushImage: (image: string) => void
+  pushImage: (imageUri: string) => void
 }
 
 const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayProps): ReactElement => {
