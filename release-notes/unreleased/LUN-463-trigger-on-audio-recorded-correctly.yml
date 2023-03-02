@@ -1,0 +1,6 @@
+issue_key: LUN-463
+show_in_stores: false
+platforms:
+  - android
+  - ios
+de: Der Aufnahmepfad wird erst bei Beendigung der Aufnahme gespeichert.
