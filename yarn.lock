@@ -10885,16 +10885,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.0":
-  version: 2.6.2
-  resolution: "node-fetch@npm:2.6.2"
-  checksum: b332ab8a09bde53739116eb86a8857724b3a9a98cbb824f7ecc25a3cb44ff7fd4363ce55236bd04ca8c68bc49d084dc6cb8d77a68905d062a68fa65a2a6bc290
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.6.7":
-  version: 2.6.7
-  resolution: "node-fetch@npm:2.6.7"
+"node-fetch@npm:^2.2.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.7":
+  version: 2.6.9
+  resolution: "node-fetch@npm:2.6.9"
   dependencies:
     whatwg-url: ^5.0.0
   peerDependencies:
@@ -10902,7 +10895,7 @@ __metadata:
   peerDependenciesMeta:
     encoding:
       optional: true
-  checksum: fcae80f5ac52fbf5012f5e19df2bd3915e67d3b3ad51cb5942943df2238d32ba15890fecabd0e166876a9f98a581ab50f3f10eb942b09405c49ef8da36b826c7
+  checksum: 7a4a0e027e509b741bec4172749103f158da23187ff251cb988dd54ea7267519c3fa11838971da0f5f3c54e79da3174e7bd72aa2179c9f69887511ece16c9c0f
   languageName: node
   linkType: hard
 
