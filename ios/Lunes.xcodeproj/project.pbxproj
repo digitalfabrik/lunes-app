@@ -600,7 +600,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.lunes;
 				PRODUCT_NAME = Lunes;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development app.lunes";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.lunes";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -634,7 +633,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.lunes;
 				PRODUCT_NAME = Lunes;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development app.lunes";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.lunes";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
