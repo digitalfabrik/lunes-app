@@ -68,11 +68,11 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - Permission-Camera (3.7.3):
+  - Permission-Camera (3.6.1):
     - RNPermissions
-  - Permission-Microphone (3.7.3):
+  - Permission-Microphone (3.6.1):
     - RNPermissions
-  - Permission-PhotoLibrary (3.7.3):
+  - Permission-PhotoLibrary (3.6.1):
     - RNPermissions
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.12)
@@ -391,7 +391,7 @@ PODS:
     - React-perflogger (= 0.70.7)
   - RNAudioRecorderPlayer (3.5.1):
     - React-Core
-  - RNCAsyncStorage (1.17.11):
+  - RNCAsyncStorage (1.17.7):
     - React-Core
   - RNCMaskedView (0.2.8):
     - React-Core
@@ -410,7 +410,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNPermissions (3.7.3):
+  - RNPermissions (3.6.1):
     - React-Core
   - RNReanimated (2.14.4):
     - DoubleConversion
@@ -672,9 +672,9 @@ SPEC CHECKSUMS:
   MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
   MLKitVision: 96c96571190b7f63eddf4a12068ce8a8689e0d2c
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  Permission-Camera: c0ef0e1f3ff6796f89cdbc3628f405f1b7c381d5
-  Permission-Microphone: d5e2e1117651b7985620068715ceba6a6f047ff5
-  Permission-PhotoLibrary: f5a999c06d7b904322d38790e3d7d8fa25b372fe
+  Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
+  Permission-Microphone: 48212dd4d28025d9930d583e3c7a56da7268665c
+  Permission-PhotoLibrary: 5b34ca67279f7201ae109cef36f9806a6596002d
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 120350fc38646e2dedc26f49ecba778184ea1de2
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
@@ -708,13 +708,13 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7cec9ed92ebde8309902530bb566819645c84ee5
   ReactCommon: 0253d197eaa7f6689dcd3e7d5360449ab93e10df
   RNAudioRecorderPlayer: 308940de4f9d1448a064874fd9d83479ae47c7a7
-  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
+  RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
-  RNPermissions: 314155ed6ce65237e7bd9fb6239219cce83228d3
+  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNReanimated: 6668b0587bebd4b15dd849b99e5a9c70fc12ed95
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSentry: eff1f32fe84682feb09a36c5e5f513d6ef964b70
@@ -727,6 +727,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 92d086bb705a41cc588599b51db726ba7b1d341c
 
-PODFILE CHECKSUM: eaa6d839cfc34a8a9b9f71352b65d2058952a240
+PODFILE CHECKSUM: a0cc092823434a25e9f3f475eb3910f2ca94c0b0
 
 COCOAPODS: 1.11.3

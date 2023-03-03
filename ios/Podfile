@@ -57,7 +57,6 @@ target 'Lunes' do
       # necessary for Mac Catalyst builds
       :mac_catalyst_enabled => false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
           config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = "arm64"
