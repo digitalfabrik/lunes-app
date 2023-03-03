@@ -297,7 +297,7 @@
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Lunes" */;
-			compatibilityVersion = "Xcode 14.2";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -583,6 +583,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7272KE28TJ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7272KE28TJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Lunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -599,6 +600,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.lunes;
 				PRODUCT_NAME = Lunes;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development app.lunes";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.lunes";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -616,6 +618,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7272KE28TJ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7272KE28TJ;
 				INFOPLIST_FILE = Lunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -631,6 +634,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.lunes;
 				PRODUCT_NAME = Lunes;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development app.lunes";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.lunes";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
