@@ -217,3 +217,8 @@ export const getSortedAndFilteredVocabularyItems = (
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
   score > SCORE_THRESHOLD_UNLOCK && (previousScore ?? 0) <= SCORE_THRESHOLD_UNLOCK
+
+/* eslint-disable-next-line no-magic-numbers */
+export const millisecondsToDays = (milliseconds: number): number => milliseconds / (24 * 60 * 60 * 1000)
+/* eslint-disable-next-line no-magic-numbers */
+export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
