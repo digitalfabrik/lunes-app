@@ -165,6 +165,11 @@
         "description": "Kamerazugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
       }
     },
+    "library": {
+      "noAuthorization": {
+        "description": "Zugriff auf die Fotomediathek erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
+      }
+    },
     "audio": {
       "noAuthorization": {
         "description": "Mikrofonzugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
