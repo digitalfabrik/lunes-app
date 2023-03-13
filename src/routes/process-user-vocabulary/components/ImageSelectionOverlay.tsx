@@ -79,9 +79,11 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
       })
   }
 
+  const firstAndroidVersionWithSplitPermissions = 33
   const androidMediaPermission =
-    // eslint-disable-next-line no-magic-numbers
-    Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    Platform.Version >= firstAndroidVersionWithSplitPermissions
+      ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
 
   let permission
   if (isGalleryOpen) {
