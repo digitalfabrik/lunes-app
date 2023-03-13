@@ -9716,11 +9716,11 @@ __metadata:
   linkType: hard
 
 "json5@npm:2.x, json5@npm:^2.1.2, json5@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "json5@npm:2.2.1"
+  version: 2.2.2
+  resolution: "json5@npm:2.2.2"
   bin:
     json5: lib/cli.js
-  checksum: a7174bc4e146613750a04a8a7fe2bc4ab6f4cad20486f8d7026cc4546b3ee1dc3762fc5e7377557ae99414745aac782486e409f31c363084a455e05cb495ce7a
+  checksum: 3e145dd8a0aa96c305904539817b6564e776e26672b0e6107cd65cfb65fd452b8aa7f322fb17f395d0256834a0c68bbfdece503975e90f97fa8a2111e1af8932
   languageName: node
   linkType: hard
 
