@@ -43,11 +43,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Zur Aufnahne von Bildern benötigt LUNES Zugriff auf deine Kamera.</string>
+	<string>Zur Aufnahme von Bildern benötigt LUNES Zugriff auf deine Kamera.</string>
 	<key>NSMicrophoneUsageDescription</key>
-    <string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon</string>
+  <string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+  <string>Zur Auswahl von Bildern benötigt LUNES Zugriff auf deine Bildergalerie.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

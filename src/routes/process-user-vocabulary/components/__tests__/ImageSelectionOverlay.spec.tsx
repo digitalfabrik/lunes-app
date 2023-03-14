@@ -12,6 +12,12 @@ jest.mock('react-native-camera', () => ({
   RNCamera: ({ children }: { children: ReactNode }) => <View>{children}</View>,
 }))
 
+jest.mock('react-native-image-crop-picker', () => ({
+  openPicker: jest.fn(),
+}))
+
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
+
 describe('ImageSelectionOverlay', () => {
   it('should render shutter and gallery icon', () => {
     const { getByTestId } = render(<ImageSelectionOverlay setVisible={jest.fn()} pushImage={jest.fn()} />)

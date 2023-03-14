@@ -20,6 +20,9 @@ jest.mock('../components/AudioRecordOverlay', () => () => {
   const { Text } = require('react-native')
   return <Text>AudioRecorderOverlay</Text>
 })
+jest.mock('react-native-image-crop-picker', () => ({
+  openPicker: jest.fn(),
+}))
 
 describe('UserVocabularyProcessScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyProcess'>()

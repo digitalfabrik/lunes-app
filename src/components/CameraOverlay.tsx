@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { Modal as RNModal, Platform } from 'react-native'
-import { PERMISSIONS } from 'react-native-permissions'
+import { Permission, PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -24,13 +24,16 @@ const Icon = styled.Pressable`
 type Props = {
   setVisible: (visible: boolean) => void
   children: ReactElement
+  permission?: Permission
 }
 
-const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
+const CameraOverlay = ({
+  setVisible,
+  children,
+  permission = Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,
+}: Props): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { permissionRequested, permissionGranted } = useGrantPermissions(
-    Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
-  )
+  const { permissionRequested, permissionGranted } = useGrantPermissions(permission)
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>

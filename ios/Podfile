@@ -34,6 +34,7 @@ target 'Lunes' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
@@ -57,9 +58,17 @@ target 'Lunes' do
       :mac_catalyst_enabled => false
     )
     installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = "arm64"
+      end
+    end
+    # Signing on XCode 14 builds
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
         target.build_configurations.each do |config|
-          config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = "arm64"
+          config.build_settings["DEVELOPMENT_TEAM"] = "7272KE28TJ"
         end
-     end
+      end
+    end
   end
 end
