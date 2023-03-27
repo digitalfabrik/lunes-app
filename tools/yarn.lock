@@ -904,6 +904,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -1111,6 +1118,7 @@ __metadata:
     commander: ^8.3.0
     jira-client: ^8.1.0
     js-yaml: ^4.1.0
+    lodash: ^4.17.21
     node-fetch: ^2.6.7
     ts-node: ^10.8.2
     typescript: ^4.7.4
