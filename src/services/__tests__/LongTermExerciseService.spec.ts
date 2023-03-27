@@ -5,7 +5,7 @@ import {
   addWordToFirstSection,
   daysToStayInASection,
   getNeedsRepetitionScore,
-  getNumberOfWordCardsNeedingRepetitionWithUpperBound,
+  getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound,
   getNumberOfWordsInEachSection,
   getWordNodeCards,
   getWordsForNextRepetition,
@@ -26,22 +26,22 @@ describe('LongTermExerciseService', () => {
       {
         word: testVocabulary[0],
         section: 5,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 90)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       },
       {
         word: testVocabulary[1],
         section: 5,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 180)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 2 * daysToStayInASection[5])),
       },
       {
         word: testVocabulary[2],
         section: 2,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[2] + 9)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[2] + daysToStayInASection[3] + 2)),
       },
       {
         word: testVocabulary[3],
         section: 1,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[1] + 60)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[1] + 2 * daysToStayInASection[4])),
       },
       {
         word: testVocabulary[4],
@@ -91,7 +91,7 @@ describe('LongTermExerciseService', () => {
 
   describe('getNumberOfWordsNeedingRepetitionWithUpperBound', () => {
     it('should return zero, if nothing was saved yet', async () => {
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
     })
 
     it('should return zero, if everything was moved today and no words in zero category', async () => {
@@ -102,7 +102,7 @@ describe('LongTermExerciseService', () => {
           inThisSectionSince: new Date(),
         }))
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
     })
 
     it('should return two, if everything was moved today and two words in zero category', async () => {
@@ -112,7 +112,7 @@ describe('LongTermExerciseService', () => {
           inThisSectionSince: new Date(),
         }))
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(2)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(2)
     })
 
     it('should return eight, if everything was moved long time ago', async () => {
@@ -122,7 +122,7 @@ describe('LongTermExerciseService', () => {
           inThisSectionSince: new Date(2000, 1),
         }))
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(8)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(8)
     })
 
     it('should return upper bound, if more than allowed would be returned', async () => {
@@ -133,7 +133,7 @@ describe('LongTermExerciseService', () => {
           inThisSectionSince: new Date(),
         }))
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toEqual(
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toEqual(
         MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE
       )
     })
@@ -149,7 +149,7 @@ describe('LongTermExerciseService', () => {
           }))
           .filter(item => item.section !== 0)
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(4)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(4)
     })
 
     it('should return zero, if words from every category need repetition tomorrow', async () => {
@@ -163,7 +163,7 @@ describe('LongTermExerciseService', () => {
           }))
           .filter(item => item.section !== 0)
       )
-      await expect(getNumberOfWordCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
+      await expect(getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
     })
   })
 
@@ -188,7 +188,7 @@ describe('LongTermExerciseService', () => {
       const wordWithSecondLowestScore: WordNodeCard = {
         word: testData[0].word,
         section: 5,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 90)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       }
       expect(getNeedsRepetitionScore(wordWithSecondLowestScore)).toBe(1)
     })
@@ -197,14 +197,14 @@ describe('LongTermExerciseService', () => {
       const word1: WordNodeCard = {
         word: testData[0].word,
         section: 5,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 180)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 2 * daysToStayInASection[5])),
       }
       expect(getNeedsRepetitionScore(word1)).toBe(2)
 
       const word2: WordNodeCard = {
         word: testData[0].word,
         section: 4,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[4] + 60)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[4] + 2 * daysToStayInASection[4])),
       }
       expect(getNeedsRepetitionScore(word2)).toBe(2)
     })
@@ -224,7 +224,7 @@ describe('LongTermExerciseService', () => {
       await expect(getWordsForNextRepetition()).resolves.toEqual([])
     })
 
-    it('should return all words, if they need repetition and are less than upper bound', async () => {
+    it('should return all words, if they need repetition and are fewer than upper bound', async () => {
       saveWordNodeCards(
         testData.map((item: WordNodeCard) => ({
           ...item,
@@ -254,14 +254,14 @@ describe('LongTermExerciseService', () => {
       const testData2: WordNodeCard[] = new VocabularyItemBuilder(15).build().map(item => ({
         word: item,
         section: 5,
-        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + 90)),
+        inThisSectionSince: addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       }))
       expect(getNeedsRepetitionScore(testData2[0])).toBe(1)
 
       expect(getNeedsRepetitionScore(testData[0])).toBe(1)
       expect(getNeedsRepetitionScore(testData[1])).toBe(2)
       expect(getNeedsRepetitionScore(testData[2])).toBe(3)
-      expect(getNeedsRepetitionScore(testData[3])).toBe(60)
+      expect(getNeedsRepetitionScore(testData[3])).toBe(daysToStayInASection[4] * 2)
       expect(getNeedsRepetitionScore(testData[4])).toBe(0)
       testData.push(...testData2)
 
@@ -343,7 +343,7 @@ describe('LongTermExerciseService', () => {
       await compareWordCardLists(testData)
     })
 
-    it('should move second word to next section if not last', async () => {
+    it('should move second word to next section if not in last section', async () => {
       await saveWordNodeCards(testData)
       await moveWordToNextSection(testData[2])
       testData[2] = {
@@ -354,7 +354,7 @@ describe('LongTermExerciseService', () => {
       await compareWordCardLists(testData)
     })
 
-    it('should move second word to next section if last', async () => {
+    it('should not move second word to next section if in last section', async () => {
       await saveWordNodeCards(testData)
       await moveWordToNextSection(testData[7])
       testData[7] = {
@@ -364,7 +364,7 @@ describe('LongTermExerciseService', () => {
       await compareWordCardLists(testData)
     })
 
-    it('should move second word to previous section if not first', async () => {
+    it('should move second word to previous section if not in first section', async () => {
       await saveWordNodeCards(testData)
       await moveWordToPreviousSection(testData[2])
       testData[2] = {
@@ -375,7 +375,7 @@ describe('LongTermExerciseService', () => {
       await compareWordCardLists(testData)
     })
 
-    it('should move second word to previous section if first', async () => {
+    it('should move second word to previous section if in first section', async () => {
       await saveWordNodeCards(testData)
       await moveWordToPreviousSection(testData[5])
       testData[5] = {

@@ -39,15 +39,15 @@ export const addDays = (date: Date, days: number): Date => {
   return result
 }
 
-const needsWordNodeCardRepetition = (wordNodeCard: WordNodeCard): boolean =>
+const wordNodeCardNeedsRepetition = (wordNodeCard: WordNodeCard): boolean =>
   addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]) <= new Date() ||
   wordNodeCard.section === 0
 
-const getNumberOfWordCardsNeedingRepetition = (): Promise<number> =>
-  getWordNodeCards().then(info => info.filter(item => needsWordNodeCardRepetition(item)).length)
+const getNumberOfWordNodeCardsNeedingRepetition = (): Promise<number> =>
+  getWordNodeCards().then(info => info.filter(item => wordNodeCardNeedsRepetition(item)).length)
 
-export const getNumberOfWordCardsNeedingRepetitionWithUpperBound = async (): Promise<number> =>
-  Math.min(await getNumberOfWordCardsNeedingRepetition(), MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE)
+export const getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound = async (): Promise<number> =>
+  Math.min(await getNumberOfWordNodeCardsNeedingRepetition(), MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE)
 
 export const getNeedsRepetitionScore = (wordNodeCard: WordNodeCard): number => {
   const daysSinceRepetitionIsNeeded = millisecondsToDays(
@@ -60,7 +60,7 @@ export const getNeedsRepetitionScore = (wordNodeCard: WordNodeCard): number => {
 
 export const getWordsForNextRepetition = (): Promise<WordNodeCard[]> =>
   getWordNodeCards().then(info => {
-    const wordsToRepeat = info.filter(item => needsWordNodeCardRepetition(item))
+    const wordsToRepeat = info.filter(item => wordNodeCardNeedsRepetition(item))
     if (wordsToRepeat.length <= MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE) {
       return wordsToRepeat
     }
@@ -100,11 +100,13 @@ export const addWordsToFirstSection = async (words: VocabularyItem[]): Promise<v
 
 export const addWordToFirstSection = async (word: VocabularyItem): Promise<void> => addWordsToFirstSection([word])
 
+const getSectionWithBoundCheck = (section: number) => sections[Math.min(Math.max(0, section), sections.length - 1)]
+
 const moveWordToSection = async (wordNodeCard: WordNodeCard, targetSection: number): Promise<void> => {
   const wordNodeCards: WordNodeCard[] = await getWordNodeCards()
   const wordNodeCardToMove = wordNodeCards.find(item => JSON.stringify(item) === JSON.stringify(wordNodeCard))
   if (wordNodeCardToMove) {
-    wordNodeCardToMove.section = sections[Math.min(Math.max(0, targetSection), sections.length - 1)]
+    wordNodeCardToMove.section = getSectionWithBoundCheck(targetSection)
     wordNodeCardToMove.inThisSectionSince = new Date()
     await saveWordNodeCards(wordNodeCards)
   }
