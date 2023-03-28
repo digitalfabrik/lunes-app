@@ -369,11 +369,11 @@ __metadata:
   linkType: hard
 
 "@types/jsonwebtoken@npm:^8.3.3":
-  version: 8.5.8
-  resolution: "@types/jsonwebtoken@npm:8.5.8"
+  version: 9.0.0
+  resolution: "@types/jsonwebtoken@npm:9.0.0"
   dependencies:
     "@types/node": "*"
-  checksum: 78b614aa06cb83e6751680448b78daac36bc8f24f7f52b7922e01295ff4b6c2917973e9a359de4219fcc274813f3ae1edc864771dab6cb1de5b68ff8d3d5d611
+  checksum: 168636cad4dc02b7e42ffa7ac71ca93911f783e8478c854194f3adf6ab518a57a19f620f8c3a9ec2a8a8016f7c613d34c9ee004e516c648471c7fb3c98804672
   languageName: node
   linkType: hard
 
@@ -805,8 +805,8 @@ __metadata:
   linkType: hard
 
 "jsonwebtoken@npm:^8.5.1":
-  version: 8.5.1
-  resolution: "jsonwebtoken@npm:8.5.1"
+  version: 9.0.0
+  resolution: "jsonwebtoken@npm:9.0.0"
   dependencies:
     jws: ^3.2.2
     lodash.includes: ^4.3.0
@@ -818,7 +818,7 @@ __metadata:
     lodash.once: ^4.0.0
     ms: ^2.1.1
     semver: ^5.6.0
-  checksum: c5ad937b6fa23a230efa8ed8ca3c0da8ebfdd377bafc3e8432a11b03ef90e733400a00b26c0dfee47db44a2e64b88b154b57e9926a92990f98dd25aaed15006e
+  checksum: 60c30d90d8a69b8e7148306e0c299ac120dbde9c032add48d26df928fe349e952cf4b09f12d7942257681a936e3374e4d49280ab20f8a4578688c7f08d87f9bc
   languageName: node
   linkType: hard
 
@@ -901,6 +901,13 @@ __metadata:
   version: 4.1.1
   resolution: "lodash.once@npm:4.1.1"
   checksum: 46a9a0a66c45dd812fcc016e46605d85ad599fe87d71a02f6736220554b52ffbe82e79a483ad40f52a8a95755b0d1077fba259da8bfb6694a7abbf4a48f1fc04
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
   languageName: node
   linkType: hard
 
@@ -1111,6 +1118,7 @@ __metadata:
     commander: ^8.3.0
     jira-client: ^8.1.0
     js-yaml: ^4.1.0
+    lodash: ^4.17.21
     node-fetch: ^2.6.7
     ts-node: ^10.8.2
     typescript: ^4.7.4
