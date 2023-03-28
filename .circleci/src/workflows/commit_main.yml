@@ -1,0 +1,35 @@
+when:
+  and:
+    - << pipeline.parameters.run_commit >>
+    - equal: [ main, << pipeline.git.branch >> ]
+jobs:
+  - check:
+      context:
+        - mattermost
+  - bump_version:
+      context:
+        - mattermost
+      prepare_delivery: false
+  - build_android:
+      context:
+        - mattermost
+        - credentials-repo
+        - credentials-lunes
+      requires:
+        - check
+        - bump_version
+  - build_ios:
+      context:
+        - mattermost
+        - fastlane-match
+        - tuerantuer-apple
+      requires:
+        - check
+        - bump_version
+  - deliver_browser_stack:
+      context:
+        - mattermost
+        - browserstack
+      requires:
+        - build_android
+        - build_ios

@@ -31,9 +31,12 @@ The easiest way to deliver a new build to production or development is to trigge
 
 Several workflows exist for different purposes:
 
-- **commit**: Executed for all commits of PRs to ensure good code quality and working code.
-- **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development.
-- **prod_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development (not available yet).
+- **commit**: Executed for all commits of PRs to ensure good code quality and working code. Android or iOS apps are not build.
+- **commit_main**: Executed for all commits on main. Code is checked and Android and iOS apps are build.
+- **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development/beta.
+- **prod_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to production.
+- **promote**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which promotes latest beta to production.
+- **browsertack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
 
 ## Services
 
