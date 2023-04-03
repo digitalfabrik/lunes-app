@@ -566,6 +566,9 @@ jobs:
                 working_directory: ios
             - notify
 parameters:
+    run_browserstack_delivery:
+        default: false
+        type: boolean
     run_commit:
         default: true
         type: boolean
@@ -580,7 +583,48 @@ parameters:
         type: boolean
 version: 2.1
 workflows:
+    browserstack_delivery:
+        jobs:
+            - bump_version:
+                context:
+                    - mattermost
+                prepare_delivery: false
+            - build_android:
+                context:
+                    - mattermost
+                    - credentials-repo
+                    - credentials-lunes
+                requires:
+                    - bump_version
+            - build_ios:
+                context:
+                    - mattermost
+                    - fastlane-match
+                    - tuerantuer-apple
+                requires:
+                    - bump_version
+            - deliver_browser_stack:
+                context:
+                    - mattermost
+                    - browserstack
+                requires:
+                    - build_android
+                    - build_ios
+        when: << pipeline.parameters.run_browserstack_delivery >>
     commit:
+        jobs:
+            - check:
+                context:
+                    - mattermost
+        when:
+            and:
+                - << pipeline.parameters.run_commit >>
+                - and:
+                    - not:
+                        equal:
+                            - main
+                            - << pipeline.git.branch >>
+    commit_main:
         jobs:
             - check:
                 context:
@@ -612,7 +656,12 @@ workflows:
                 requires:
                     - build_android
                     - build_ios
-        when: << pipeline.parameters.run_commit >>
+        when:
+            and:
+                - << pipeline.parameters.run_commit >>
+                - equal:
+                    - main
+                    - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - check:
