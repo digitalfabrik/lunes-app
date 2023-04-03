@@ -1,7 +1,7 @@
 when:
   and:
     - << pipeline.parameters.run_commit >>
-    - equal: [ main, << pipeline.git.branch >> ]
+    - equal: [main, << pipeline.git.branch >>]
 jobs:
   - check:
       context:
