@@ -218,6 +218,9 @@
       "errorMessage": "Dies ist ein Pflichtfeld.",
       "imageErrorMessage": "Du musst 1 bis 3 Bilder auswählen"
     },
+    "editing": {
+      "headline": "Vokabel bearbeiten"
+    },
     "list": {
       "edit": "Bearbeiten",
       "finished": "Fertig",
