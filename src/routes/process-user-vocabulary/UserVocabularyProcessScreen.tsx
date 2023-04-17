@@ -167,7 +167,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   return (
     <RouteWrapper>
       <Root>
-        <TitleWithSpacing title={headline} />
+        <TitleWithSpacing title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
         <CustomTextInput
           clearable
           value={word}
