@@ -16,8 +16,7 @@
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
-    "deleteProfession": "Bereich löschen",
-    "impressum": "Impressum"
+    "deleteProfession": "Bereich löschen"
   },
   "manageSelection": {
     "heading": "Verwalte deine Lernbereiche",
@@ -140,7 +139,9 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
-      "manageSelection": "Bereiche verwalten",
+      "impressum": "Impressum",
+      "manageSelection": "Lernbereiche verwalten",
+      "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",
       "overflowMenu": "Mehr Optionen"
@@ -197,6 +198,10 @@
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode"
     }
+  },
+  "sponsors": {
+    "sponsors": "Unterstützer*innen",
+    "sponsorsExplanation": "Hier finden Sie unsere Unterstützer*innen (Wörter-Spenden, Bild-Lieferungen, Kontrolle und/oder finanzielle Hilfe)"
   },
   "userVocabulary": {
     "myWords": "Meine Wörter",
