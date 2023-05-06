@@ -11,7 +11,7 @@ describe('HomeFooter', () => {
 
     const { getByText } = render(<HomeFooter navigateToImprint={navigateToImpressum} />)
 
-    expect(getByText('\u00A9LUNES2022')).toBeTruthy()
+    expect(getByText('\u00A9LUNES2023')).toBeTruthy()
     expect(getByText(getLabels().home.impressum)).toBeTruthy()
 
     fireEvent.press(getByText(getLabels().home.impressum))

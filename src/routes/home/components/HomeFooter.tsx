@@ -20,7 +20,7 @@ type HomeFooterProps = {
 
 const HomeFooter = ({ navigateToImprint }: HomeFooterProps): ReactElement => (
   <Container>
-    <ContentSecondary>{'\u00A9'}LUNES2022</ContentSecondary>
+    <ContentSecondary>{'\u00A9'}LUNES2023</ContentSecondary>
     <ContentSecondary onPress={navigateToImprint}>{getLabels().home.impressum}</ContentSecondary>
   </Container>
 )
