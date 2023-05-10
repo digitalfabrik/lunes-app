@@ -1,6 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -29,8 +28,8 @@ const SmileIconStyle = styled.Pressable`
 const HeaderButtonsContainer = styled.View`
   align-self: flex-end;
 `
-const MenuIconContainer = styled.View`
-  padding: ${props => props.theme.spacings.sm} 0;
+const MenuIconContainer = styled.TouchableOpacity`
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.xxs};
   justify-content: center;
   height: 100%;
 `
@@ -47,11 +46,9 @@ type HomeScreenHeaderProps = {
 const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => {
   const [overlayVisible, setOverlayVisible] = useState(false)
 
-  useFocusEffect(useCallback(() => setOverlayVisible(false), []))
-
   if (overlayVisible) {
     return (
-      <OverlayMenu setVisible={setOverlayVisible}>
+      <OverlayMenu setVisible={setOverlayVisible} navigation={navigation}>
         <OverlayMenuItem
           title={getLabels().general.header.manageSelection}
           onPress={() => navigation.navigate('ManageSelection')}
@@ -83,8 +80,8 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element =>
           <LunesIcon width={hp('8%')} height={hp('8%')} />
         </SmileIconStyle>
         <HeaderButtonsContainer>
-          <MenuIconContainer>
-            <MenuIconWhite testID='menu-icon-white' onPress={() => setOverlayVisible(true)} />
+          <MenuIconContainer onPress={() => setOverlayVisible(true)}>
+            <MenuIconWhite testID='menu-icon-white' />
           </MenuIconContainer>
         </HeaderButtonsContainer>
       </HeaderStyle>
