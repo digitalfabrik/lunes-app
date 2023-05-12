@@ -1,4 +1,5 @@
-package com.lunes.newarchitecture.modules;
+package app.lunes.newarchitecture.modules;
+
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactPackageTurboModuleManagerDelegate;
