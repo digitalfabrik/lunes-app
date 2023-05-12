@@ -1,13 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useState } from 'react'
+import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
-import OverlayMenu, { OverlayMenuSeparator } from '../../../components/OverlayMenu'
-import OverlayMenuItem from '../../../components/OverlayMenuItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { getLabels } from '../../../services/helpers'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.primary};
@@ -43,50 +40,19 @@ type HomeScreenHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => {
-  const [overlayVisible, setOverlayVisible] = useState(false)
-
-  if (overlayVisible) {
-    return (
-      <OverlayMenu setVisible={setOverlayVisible} navigation={navigation}>
-        <OverlayMenuItem
-          title={getLabels().general.header.manageSelection}
-          onPress={() => navigation.navigate('ManageSelection')}
-        />
-        <OverlayMenuSeparator />
-        <OverlayMenuItem
-          isSubItem
-          title={getLabels().general.header.sponsors}
-          onPress={() => navigation.navigate('Sponsors')}
-        />
-        <OverlayMenuItem
-          isSubItem
-          title={getLabels().general.header.settings}
-          onPress={() => navigation.navigate('Settings')}
-        />
-        <OverlayMenuItem
-          isSubItem
-          title={getLabels().general.header.impressum}
-          onPress={() => navigation.navigate('Imprint')}
-        />
-      </OverlayMenu>
-    )
-  }
-
-  return (
-    <Wrapper testID='header'>
-      <HeaderStyle>
-        <SmileIconStyle>
-          <LunesIcon width={hp('8%')} height={hp('8%')} />
-        </SmileIconStyle>
-        <HeaderButtonsContainer>
-          <MenuIconContainer onPress={() => setOverlayVisible(true)}>
-            <MenuIconWhite testID='menu-icon-white' />
-          </MenuIconContainer>
-        </HeaderButtonsContainer>
-      </HeaderStyle>
-    </Wrapper>
-  )
-}
+const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => (
+  <Wrapper testID='header'>
+    <HeaderStyle>
+      <SmileIconStyle>
+        <LunesIcon width={hp('8%')} height={hp('8%')} />
+      </SmileIconStyle>
+      <HeaderButtonsContainer>
+        <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>
+          <MenuIconWhite testID='menu-icon-white' />
+        </MenuIconContainer>
+      </HeaderButtonsContainer>
+    </HeaderStyle>
+  </Wrapper>
+)
 
 export default HomeScreenHeader

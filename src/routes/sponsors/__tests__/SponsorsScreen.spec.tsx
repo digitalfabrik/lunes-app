@@ -15,7 +15,7 @@ describe('SponsorsScreen', () => {
     {
       name: 'Zentralverband des Deutschen Bäckerhandwerks e.V.',
       url: 'https://www.baeckerhandwerk.de/',
-      icon: 'baeckericon',
+      logo: 'baeckericon',
     },
     {
       name: 'Die Gebäudedienstleister',

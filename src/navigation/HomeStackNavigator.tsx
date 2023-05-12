@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
+import OverlayMenu from '../routes/OverlayMenuScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import ExercisesScreen from '../routes/exercises/ExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
@@ -24,6 +25,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
       <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name='OverlayMenu'
+        component={OverlayMenu}
+        options={{ presentation: 'transparentModal', headerShown: false }}
+      />
       <Stack.Screen
         name='DisciplineSelection'
         component={DisciplineSelectionScreen}
