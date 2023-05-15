@@ -41,7 +41,7 @@ PODS:
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.7.2)
-  - hermes-engine (0.70.7)
+  - hermes-engine (0.70.9)
   - libevent (2.1.12)
   - MLImage (1.0.0-beta3)
   - MLKitBarcodeScanning (2.2.0):
@@ -665,7 +665,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  hermes-engine: 566e656aa95456a3f3f739fd76ea9a9656f2633f
+  hermes-engine: 918ec5addfbc430c9f443376d739f088b6dc96c3
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitBarcodeScanning: d92fe1911001ec36870162c5a0eb206f612b7169
@@ -729,4 +729,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4f254e6af2dcfdd38da402b655541ad45735ba8b
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1
