@@ -1,4 +1,5 @@
-package com.lunes.newarchitecture;
+package app.lunes.newarchitecture;
+
 import android.app.Application;
 import androidx.annotation.NonNull;
 import com.facebook.react.PackageList;
@@ -19,8 +20,8 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
 import com.facebook.react.BuildConfig;
-import com.lunes.newarchitecture.components.MainComponentsRegistry;
-import com.lunes.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import app.lunes.newarchitecture.components.MainComponentsRegistry;
+import app.lunes.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 /**
