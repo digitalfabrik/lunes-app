@@ -5,6 +5,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
@@ -41,6 +42,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
           component={ScopeSelection}
           initialParams={{ initialSelection: true }}
           options={({ navigation }) => options(manageSelection, navigation)}
+        />
+        <Stack.Screen
+          name='OverlayMenu'
+          component={OverlayMenu}
+          options={{ presentation: 'transparentModal', headerShown: false, ...OverlayTransition }}
         />
         <Stack.Screen
           name='ProfessionSelection'
