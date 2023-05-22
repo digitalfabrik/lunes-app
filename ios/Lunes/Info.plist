@@ -2,11 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-    <string>mailto</string>
-    <string>tel</string>
-    </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>mailto</string>
+		<string>tel</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -45,11 +46,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Zur Aufnahme von Bildern benötigt LUNES Zugriff auf deine Kamera.</string>
 	<key>NSMicrophoneUsageDescription</key>
-  <string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon.</string>
+	<string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-  <string>Zur Auswahl von Bildern benötigt LUNES Zugriff auf deine Bildergalerie.</string>
+	<string>Zur Auswahl von Bildern benötigt LUNES Zugriff auf deine Bildergalerie.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

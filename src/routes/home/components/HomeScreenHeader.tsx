@@ -1,13 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { HiddenItem } from 'react-navigation-header-buttons'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
-import OverflowMenu from '../../../components/OverflowMenu'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { getLabels } from '../../../services/helpers'
 
 const Wrapper = styled.SafeAreaView`
   background-color: ${props => props.theme.colors.primary};
@@ -28,11 +25,14 @@ const SmileIconStyle = styled.Pressable`
 const HeaderButtonsContainer = styled.View`
   align-self: flex-end;
 `
-const MenuIconContainer = styled.View`
-  padding: ${props => props.theme.spacings.sm} 0;
+const MenuIconContainer = styled.TouchableOpacity`
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.xxs};
+  justify-content: center;
+  height: 100%;
 `
 
 const MenuIconWhite = styled(MenuIcon)`
+  padding: 0 ${props => props.theme.spacings.md};
   color: ${props => props.theme.colors.backgroundAccent};
 `
 
@@ -40,39 +40,19 @@ type HomeScreenHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => {
-  const theme = useTheme()
-  return (
-    <Wrapper testID='header'>
-      <HeaderStyle>
-        <SmileIconStyle>
-          <LunesIcon width={hp('8%')} height={hp('8%')} />
-        </SmileIconStyle>
-        <HeaderButtonsContainer>
-          <OverflowMenu
-            icon={
-              <MenuIconContainer>
-                <MenuIconWhite width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
-              </MenuIconContainer>
-            }>
-            <HiddenItem
-              titleStyle={{ fontSize: hp('2%') }}
-              title={getLabels().general.header.manageSelection}
-              onPress={() => navigation.navigate('ManageSelection')}
-              // iOS has issue using styled(HiddenItem)
-              style={{ height: theme.spacingsPlain.xl }}
-            />
-            <HiddenItem
-              title={getLabels().general.header.settings}
-              onPress={() => navigation.navigate('Settings')}
-              titleStyle={{ fontSize: hp('2%') }}
-              style={{ height: theme.spacingsPlain.xl }}
-            />
-          </OverflowMenu>
-        </HeaderButtonsContainer>
-      </HeaderStyle>
-    </Wrapper>
-  )
-}
+const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => (
+  <Wrapper testID='header'>
+    <HeaderStyle>
+      <SmileIconStyle>
+        <LunesIcon width={hp('8%')} height={hp('8%')} />
+      </SmileIconStyle>
+      <HeaderButtonsContainer>
+        <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>
+          <MenuIconWhite testID='menu-icon-white' />
+        </MenuIconContainer>
+      </HeaderButtonsContainer>
+    </HeaderStyle>
+  </Wrapper>
+)
 
 export default HomeScreenHeader

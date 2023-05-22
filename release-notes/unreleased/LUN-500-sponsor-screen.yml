@@ -1,0 +1,6 @@
+issue_key: LUN-500
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: 'Unterstützer*innen der Lunes-App werden nun aufgelistet.'
