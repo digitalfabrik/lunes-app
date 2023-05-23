@@ -20,6 +20,7 @@ const ItemContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.md};
   padding: ${props => props.theme.spacings.md};
   flex-direction: row;
+  background-color: ${props => props.theme.colors.backgroundAccent};
   border: 1px solid ${props => props.theme.colors.disabled};
 `
 

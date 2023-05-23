@@ -1,5 +1,11 @@
 import { Article, VocabularyItemType } from './data'
 
+export type Sponsor = {
+  name: string
+  logo?: string
+  url?: string
+}
+
 export type Discipline = {
   id: number
   title: string
@@ -46,6 +52,7 @@ export const ENDPOINTS = {
   vocabularyItems: 'documents/:id',
   vocabularyItem: 'words',
   feedback: 'feedback',
+  sponsors: 'sponsors',
 }
 
 export const ForbiddenError = 'Request failed with status code 403'

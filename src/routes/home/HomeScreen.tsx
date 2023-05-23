@@ -44,10 +44,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   useFocusEffect(refreshCustomDisciplines)
   useFocusEffect(refreshSelectedProfessions)
 
-  const navigateToImprintScreen = (): void => {
-    navigation.navigate('Imprint')
-  }
-
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
   }
@@ -100,7 +96,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
             customDisciplineItems
           )}
         </View>
-        <HomeFooter navigateToImprint={navigateToImprintScreen} />
+        <HomeFooter />
       </Root>
     </RouteWrapper>
   )

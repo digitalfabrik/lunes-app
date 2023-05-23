@@ -9,6 +9,7 @@ import ExercisesScreen from '../routes/exercises/ExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
+import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions, { useTabletHeaderHeight } from './screenOptions'
@@ -46,6 +47,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='ManageSelection'
         component={ManageSelectionsScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='Sponsors'
+        component={SponsorsScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen

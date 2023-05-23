@@ -10102,7 +10102,7 @@ __metadata:
     react: 18.1.0
     react-dom: 18.0.0
     react-is: ^18.2.0
-    react-native: 0.70.7
+    react-native: 0.70.9
     react-native-audio-recorder-player: 3.5.1
     react-native-camera: 4.2.1
     react-native-device-info: ^9.0.2
@@ -12161,9 +12161,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.70.7":
-  version: 0.70.7
-  resolution: "react-native@npm:0.70.7"
+"react-native@npm:0.70.9":
+  version: 0.70.9
+  resolution: "react-native@npm:0.70.9"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": 9.3.2
@@ -12201,7 +12201,7 @@ __metadata:
     react: 18.1.0
   bin:
     react-native: cli.js
-  checksum: 283cb62b7d1d1123da17b363f1426c4fc4f2528d074cabf33b58839221d8058d8d4cc3f45e6effb433cdd06ff449e05ba88cf4173ea645ad20b4f69014cde2e4
+  checksum: 98073752686393d4d760c7faaafe7258bb9982ae88160cc92ae6af0b2fdf909ce662558aaf591a1cd5fc61114051886b2342bda48b4d40544b532eb22519264f
   languageName: node
   linkType: hard
 

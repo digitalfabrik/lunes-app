@@ -79,6 +79,8 @@ export type RoutesParams = {
   Imprint: undefined
   ManageSelection: undefined
   Settings: undefined
+  OverlayMenu: undefined
+  Sponsors: undefined
   Favorites: undefined
   Dictionary: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
