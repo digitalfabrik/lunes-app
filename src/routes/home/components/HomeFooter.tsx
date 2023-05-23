@@ -15,7 +15,7 @@ const Container = styled.View`
 
 const HomeFooter = (): ReactElement => (
   <Container>
-    <ContentSecondary>{'\u00A9'}LUNES2022</ContentSecondary>
+    <ContentSecondary>{'\u00A9'}LUNES2023</ContentSecondary>
   </Container>
 )
 
