@@ -1,0 +1,6 @@
+issue_key: LUN-513
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: 'Die Erklärung zu den Unterstützern wurde angepasst.'
