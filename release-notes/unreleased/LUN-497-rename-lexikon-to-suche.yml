@@ -1,0 +1,6 @@
+issue_key: LUN-497
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: 'Der Footer wurde angepasst.'
