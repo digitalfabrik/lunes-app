@@ -14,13 +14,13 @@ const AlternativeWords = styled(ContentSecondary)`
   font-style: italic;
 `
 
-type DictionaryItemProps = {
+type SearchResultItemProps = {
   vocabularyItem: VocabularyItem
   showAlternatives: boolean
   navigateToDetail: (vocabularyItem: VocabularyItem) => void
 }
 
-class DictionaryItem extends PureComponent<DictionaryItemProps> {
+class SearchResultItem extends PureComponent<SearchResultItemProps> {
   render(): ReactElement {
     const { vocabularyItem, navigateToDetail, showAlternatives } = this.props
 
@@ -45,4 +45,4 @@ class DictionaryItem extends PureComponent<DictionaryItemProps> {
   }
 }
 
-export default DictionaryItem
+export default SearchResultItem

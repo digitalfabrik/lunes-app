@@ -16,10 +16,10 @@ import {
   StarIconWhite,
 } from '../../assets/images'
 import { getLabels } from '../services/helpers'
-import DictionaryStackNavigator from './DictionaryStackNavigator'
 import FavoritesStackNavigator from './FavoritesStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
+import SearchStackNavigator from './SearchStackNavigator'
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
@@ -36,7 +36,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const renderFavoritesTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <StarIconWhite width={iconSize} height={iconSize} /> : <StarIconGrey width={iconSize} height={iconSize} />
 
-  const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
+  const renderSearchTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <BookIconWhite width={iconSize} height={iconSize} /> : <BookIconGrey width={iconSize} height={iconSize} />
 
   const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
@@ -70,9 +70,9 @@ const BottomTabNavigator = (): JSX.Element | null => {
         options={{ tabBarIcon: renderFavoritesTabIcon, title: getLabels().general.favorites }}
       />
       <Navigator.Screen
-        name='DictionaryTab'
-        component={DictionaryStackNavigator}
-        options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
+        name='SearchTab'
+        component={SearchStackNavigator}
+        options={{ tabBarIcon: renderSearchTabIcon, title: getLabels().general.search }}
       />
       <Navigator.Screen
         name='UserVocabularyTab'

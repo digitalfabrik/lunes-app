@@ -133,7 +133,7 @@
   "general": {
     "home": "Start",
     "favorites": "Favoriten",
-    "dictionary": "Lexikon",
+    "search": "Suche",
     "userVocabulary": "Meine Vokabeln",
     "header": {
       "overview": "Übersicht",
@@ -180,11 +180,9 @@
     }
   },
   "favorites": "Favoriten",
-  "dictionary": {
-    "noResults": "Es wurden leider keine Ergebnisse gefunden."
-  },
   "search": {
-    "enterWord": "Wort eingeben"
+    "enterWord": "Wort eingeben",
+    "noResults": "Es wurden leider keine Ergebnisse gefunden."
   },
   "settings": {
     "settings": "Einstellungen",

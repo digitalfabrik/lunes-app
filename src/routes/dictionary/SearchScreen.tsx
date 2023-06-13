@@ -13,7 +13,7 @@ import { VocabularyItem } from '../../constants/endpoints'
 import useGetAllWords from '../../hooks/useGetAllWords'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
-import DictionaryItem from './components/DictionaryItem'
+import SearchResultItem from './components/SearchResultItem'
 
 const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
@@ -23,11 +23,11 @@ const Header = styled.View`
   padding-bottom: ${props => props.theme.spacings.md};
 `
 
-type DictionaryScreenProps = {
-  navigation: StackNavigationProp<RoutesParams, 'Dictionary'>
+type SearchScreenProps = {
+  navigation: StackNavigationProp<RoutesParams, 'Search'>
 }
 
-const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement => {
+const SearchScreen = ({ navigation }: SearchScreenProps): ReactElement => {
   const vocabularyItems = useGetAllWords()
   const [searchString, setSearchString] = useState<string>('')
 
@@ -55,13 +55,13 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={
                 <Header>
-                  <Title title={getLabels().general.dictionary} description={description} />
+                  <Title title={getLabels().general.search} description={description} />
                   <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
               data={sortedAndFilteredVocabularyItems}
               renderItem={({ item }) => (
-                <DictionaryItem
+                <SearchResultItem
                   vocabularyItem={item}
                   showAlternatives={matchAlternative(item, searchString) && searchString.length > 0}
                   navigateToDetail={navigateToDetail}
@@ -77,4 +77,4 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
   )
 }
 
-export default DictionaryScreen
+export default SearchScreen
