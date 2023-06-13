@@ -9,8 +9,6 @@ import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
 import BookIconBlack from './book-icon-black.svg'
-import BookIconGrey from './book-icon-grey.svg'
-import BookIconWhite from './book-icon-white.svg'
 import CheckCircleIconBlue from './check-circle-icon-blue.svg'
 import CheckCircleIconBold from './check-circle-icon-bold.svg'
 import CheckCircleIconGreen from './check-circle-icon-green.svg'
@@ -48,6 +46,8 @@ import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
+import MagnifierIconGrey from './magnifier-icon-grey.svg'
+import MagnifierIconWhite from './magnifier-icon-white.svg'
 import MagnifierIcon from './magnifier-icon.svg'
 import MenuIcon from './menu-icon.svg'
 import MicrophoneCircleIcon from './microphone-circle-icon.svg'
@@ -86,8 +86,6 @@ export {
   BannerRed,
   BannerYellow,
   BookIconBlack,
-  BookIconGrey,
-  BookIconWhite,
   CheckCircleIcon,
   CheckCircleIconBlue,
   CheckCircleIconBold,
@@ -123,6 +121,8 @@ export {
   ListIcon,
   LockIcon,
   LunesIcon,
+  MagnifierIconGrey,
+  MagnifierIconWhite,
   MagnifierIcon,
   MenuIcon,
   MicrophoneCircleIcon,
