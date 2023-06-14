@@ -39,7 +39,7 @@ export type RoutesParams = {
   BottomTabNavigator: undefined
   HomeTab: undefined
   FavoritesTab: undefined
-  SearchTab: undefined
+  DictionaryTab: undefined
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
@@ -82,7 +82,7 @@ export type RoutesParams = {
   OverlayMenu: undefined
   Sponsors: undefined
   Favorites: undefined
-  Search: undefined
+  Dictionary: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyDisciplineSelection: undefined
   UserVocabularyExercises: ExercisesParams
