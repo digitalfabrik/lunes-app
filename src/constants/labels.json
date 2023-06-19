@@ -1,7 +1,7 @@
 {
   "scopeSelection": {
     "welcome": "Willkommen bei Lunes!",
-    "selectProfession": "Wähle den Beruf, den du lernen möchtest.",
+    "selectProfession": "Wähle deinen Beruf!",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten"
   },
