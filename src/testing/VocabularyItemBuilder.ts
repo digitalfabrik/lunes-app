@@ -47,6 +47,75 @@ const vocabularyItems: VocabularyItem[] = [
     images: [{ id: 2, image: 'image' }],
     alternatives: [],
   },
+  {
+    id: 5,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Abhänger',
+    article: ARTICLES[3],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [
+      {
+        word: 'Abhänger',
+        article: ARTICLES[2],
+      },
+    ],
+  },
+  {
+    id: 6,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Ölkanne',
+    article: ARTICLES[1],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [
+      {
+        word: 'Ölkännchen',
+        article: ARTICLES[3],
+      },
+    ],
+  },
+  {
+    id: 7,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Riffeldübel',
+    article: ARTICLES[1],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [
+      {
+        word: 'Holzdübel',
+        article: ARTICLES[1],
+      },
+    ],
+  },
+  {
+    id: 8,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Akkuschrauber',
+    article: ARTICLES[1],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [],
+  },
+  {
+    id: 9,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Oberarm',
+    article: ARTICLES[1],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [],
+  },
+  {
+    id: 10,
+    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    word: 'Untergrund',
+    article: ARTICLES[1],
+    audio: '',
+    images: [{ id: 2, image: 'image' }],
+    alternatives: [],
+  },
 ]
 
 class VocabularyItemBuilder {
