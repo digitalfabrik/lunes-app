@@ -19,7 +19,7 @@ export const COLORS = {
   black: '#000000',
   articleNeutral: '#e684ff',
   articlePlural: '#eee12d',
-  articleFeminine: '#eee12d',
+  articleFeminine: '#feb724',
   articleMasculine: '#8cc8f3',
   link: 'blue',
   lightGreyBackground: '#e0e4ed',
