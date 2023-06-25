@@ -1,10 +1,22 @@
-import { NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
+import {
+  ARTICLES,
+  NextExercise,
+  SCORE_THRESHOLD_UNLOCK,
+  SimpleResult,
+  VOCABULARY_ITEM_TYPES,
+} from '../../constants/data'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import { getExerciseProgress } from '../AsyncStorage'
-import { calculateScore, getNextExercise, getProgress, willNextExerciseUnlock } from '../helpers'
+import {
+  calculateScore,
+  getNextExercise,
+  getProgress,
+  getSortedAndFilteredVocabularyItems,
+  willNextExerciseUnlock,
+} from '../helpers'
 
 import mocked = jest.mocked
 
@@ -165,6 +177,150 @@ describe('helpers', () => {
         getVocabularyItemWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
       )
       expect(score).toBe(0)
+    })
+  })
+  describe('getSortedAndFilteredVocabularyItems', () => {
+    const testData = new VocabularyItemBuilder(10).build()
+    it('should check words with ö,ä,ü whether they are found correctly when searching for both ö,ü,a and o,u,a', () => {
+      const resultForO = getSortedAndFilteredVocabularyItems(testData, 'ö')
+      const resultForA = getSortedAndFilteredVocabularyItems(testData, 'ä')
+      const resultForU = getSortedAndFilteredVocabularyItems(testData, 'ü')
+      expect(resultForO).toHaveLength(5)
+      expect(resultForA).toHaveLength(6)
+      expect(resultForU).toHaveLength(4)
+    })
+    it('should check alternative words with ö,ä,ü whether they are found correctly when searching for both ö,ü,a and o,u,a', () => {
+      const resultForOe = getSortedAndFilteredVocabularyItems(testData, 'ölkännchen')
+      const resultForAe = getSortedAndFilteredVocabularyItems(testData, 'abhänger')
+      const resultForUe = getSortedAndFilteredVocabularyItems(testData, 'holzdübel')
+      const resultForO = getSortedAndFilteredVocabularyItems(testData, 'olkannchen')
+      const resultForA = getSortedAndFilteredVocabularyItems(testData, 'abhanger')
+      const resultForU = getSortedAndFilteredVocabularyItems(testData, 'holzdubel')
+      expect(resultForOe).toEqual(resultForO)
+      expect(resultForAe).toEqual(resultForA)
+      expect(resultForUe).toEqual(resultForU)
+    })
+
+    it('should show correctly ordering of the words in the list, words starting with special chars should not be placed at the end', () => {
+      const sortedData = [
+        {
+          id: 5,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Abhänger',
+          article: ARTICLES[3],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [
+            {
+              word: 'Abhänger',
+              article: ARTICLES[2],
+            },
+          ],
+        },
+        {
+          id: 8,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Akkuschrauber',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [],
+        },
+        {
+          id: 2,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Auto',
+          article: ARTICLES[3],
+          images: [{ id: 1, image: 'image' }],
+          audio: '',
+          alternatives: [],
+        },
+        {
+          id: 4,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Helm',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [],
+        },
+        {
+          id: 3,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Hose',
+          article: ARTICLES[2],
+          audio: '',
+          images: [{ id: 1, image: 'image' }],
+          alternatives: [],
+        },
+        {
+          id: 9,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Oberarm',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [],
+        },
+        {
+          id: 6,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Ölkanne',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [
+            {
+              word: 'Ölkännchen',
+              article: ARTICLES[3],
+            },
+          ],
+        },
+        {
+          id: 7,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Riffeldübel',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [
+            {
+              word: 'Holzdübel',
+              article: ARTICLES[1],
+            },
+          ],
+        },
+
+        {
+          id: 1,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Spachtel',
+          article: ARTICLES[1],
+          images: [{ id: 1, image: 'image' }],
+          audio: 'https://example.com/my-audio',
+          alternatives: [
+            {
+              word: 'Spachtel',
+              article: ARTICLES[2],
+            },
+            {
+              word: 'Alternative',
+              article: ARTICLES[2],
+            },
+          ],
+        },
+        {
+          id: 10,
+          type: VOCABULARY_ITEM_TYPES.lunesStandard,
+          word: 'Untergrund',
+          article: ARTICLES[1],
+          audio: '',
+          images: [{ id: 2, image: 'image' }],
+          alternatives: [],
+        },
+      ]
+      const sortedTestData = getSortedAndFilteredVocabularyItems(testData, '')
+      expect(sortedData).toEqual(sortedTestData)
     })
   })
 })
