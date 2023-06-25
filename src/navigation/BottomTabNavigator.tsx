@@ -6,12 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
-  BookIconGrey,
-  BookIconWhite,
   HeartIconGrey,
   HeartIconWhite,
   HomeIconGrey,
   HomeIconWhite,
+  MagnifierIconGrey,
+  MagnifierIconWhite,
   StarIconGrey,
   StarIconWhite,
 } from '../../assets/images'
@@ -37,7 +37,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
     focused ? <StarIconWhite width={iconSize} height={iconSize} /> : <StarIconGrey width={iconSize} height={iconSize} />
 
   const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? <BookIconWhite width={iconSize} height={iconSize} /> : <BookIconGrey width={iconSize} height={iconSize} />
+    focused ? (
+      <MagnifierIconWhite width={iconSize} height={iconSize} />
+    ) : (
+      <MagnifierIconGrey width={iconSize} height={iconSize} />
+    )
 
   const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
