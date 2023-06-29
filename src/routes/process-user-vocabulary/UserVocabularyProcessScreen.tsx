@@ -118,13 +118,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         await incrementNextUserVocabularyId()
       }
 
-      const imagePaths = await Promise.all(
-        images.map(async (image, index) => {
-          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
-          await moveFile(image, path)
-          return { id: index, image: path }
-        })
-      )
+      const imagePaths = await Promise.all(images.map(async (image, index) => ({ id: index, image })))
 
       const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
