@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactElement } from 'react'
+import React, { memo, ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
@@ -20,29 +20,23 @@ type DictionaryItemProps = {
   navigateToDetail: (vocabularyItem: VocabularyItem) => void
 }
 
-class DictionaryItem extends PureComponent<DictionaryItemProps> {
-  render(): ReactElement {
-    const { vocabularyItem, navigateToDetail, showAlternatives } = this.props
+const DictionaryItem = ({ vocabularyItem, navigateToDetail, showAlternatives }: DictionaryItemProps): ReactElement => (
+  <VocabularyListItem
+    key={vocabularyItem.id}
+    vocabularyItem={vocabularyItem}
+    onPress={() => navigateToDetail(vocabularyItem)}>
+    <>
+      {showAlternatives && (
+        <AlternativesContainer>
+          <AlternativeWords>
+            {`${getLabels().exercises.vocabularyList.alternativeWords}: ${vocabularyItem.alternatives
+              .map(item => `${item.article.value} ${item.word}`)
+              .join(', ')}`}
+          </AlternativeWords>
+        </AlternativesContainer>
+      )}
+    </>
+  </VocabularyListItem>
+)
 
-    return (
-      <VocabularyListItem
-        key={vocabularyItem.id}
-        vocabularyItem={vocabularyItem}
-        onPress={() => navigateToDetail(vocabularyItem)}>
-        <>
-          {showAlternatives && (
-            <AlternativesContainer>
-              <AlternativeWords>
-                {`${getLabels().exercises.vocabularyList.alternativeWords}: ${vocabularyItem.alternatives
-                  .map(item => `${item.article.value} ${item.word}`)
-                  .join(', ')}`}
-              </AlternativeWords>
-            </AlternativesContainer>
-          )}
-        </>
-      </VocabularyListItem>
-    )
-  }
-}
-
-export default DictionaryItem
+export default memo(DictionaryItem)

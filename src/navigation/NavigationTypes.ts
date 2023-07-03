@@ -40,6 +40,7 @@ export type RoutesParams = {
   HomeTab: undefined
   FavoritesTab: undefined
   DictionaryTab: undefined
+  RepetitionTab: undefined
   UserVocabularyTab: undefined
   Home: undefined
   UserVocabularyOverview: undefined
@@ -83,6 +84,7 @@ export type RoutesParams = {
   Sponsors: undefined
   Favorites: undefined
   Dictionary: undefined
+  Repetition: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyDisciplineSelection: undefined
   UserVocabularyExercises: ExercisesParams

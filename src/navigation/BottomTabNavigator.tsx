@@ -6,20 +6,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
-  BookIconGrey,
-  BookIconWhite,
   HeartIconGrey,
   HeartIconWhite,
   HomeIconGrey,
   HomeIconWhite,
+  MagnifierIconGrey,
+  MagnifierIconWhite,
   StarIconGrey,
   StarIconWhite,
+  /* RepeatIconGrey, */
+
+  /* RepeatIconWhite, */
 } from '../../assets/images'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import FavoritesStackNavigator from './FavoritesStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
+
+/* import RepetitionStackNavigator from './RepetitionStackNavigator' */
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
@@ -37,7 +42,20 @@ const BottomTabNavigator = (): JSX.Element | null => {
     focused ? <StarIconWhite width={iconSize} height={iconSize} /> : <StarIconGrey width={iconSize} height={iconSize} />
 
   const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? <BookIconWhite width={iconSize} height={iconSize} /> : <BookIconGrey width={iconSize} height={iconSize} />
+    focused ? (
+      <MagnifierIconWhite width={iconSize} height={iconSize} />
+    ) : (
+      <MagnifierIconGrey width={iconSize} height={iconSize} />
+    )
+
+  /*
+  const renderRepetitionTabIcon = ({ focused }: { focused: boolean }) =>
+    focused ? (
+      <RepeatIconWhite width={iconSize} height={iconSize} />
+    ) : (
+      <RepeatIconGrey width={iconSize} height={iconSize} />
+    )
+*/
 
   const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
@@ -74,6 +92,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
       />
+      {/*      <Navigator.Screen
+        name='RepetitionTab'
+        component={RepetitionStackNavigator}
+        options={{ tabBarIcon: renderRepetitionTabIcon, title: getLabels().general.repetition }}
+      /> */}
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}

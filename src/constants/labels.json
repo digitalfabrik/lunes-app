@@ -1,7 +1,7 @@
 {
   "scopeSelection": {
     "welcome": "Willkommen bei Lunes!",
-    "selectProfession": "Wähle den Beruf, den du lernen möchtest.",
+    "selectProfession": "Wähle deinen Beruf!",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten"
   },
@@ -133,7 +133,8 @@
   "general": {
     "home": "Start",
     "favorites": "Favoriten",
-    "dictionary": "Lexikon",
+    "dictionary": "Suche",
+    "repetition": "Wiederholen",
     "userVocabulary": "Meine Vokabeln",
     "header": {
       "overview": "Übersicht",
@@ -182,6 +183,12 @@
   "favorites": "Favoriten",
   "dictionary": {
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
+  },
+  "repetition": {
+    "repeatWords": "Wörter wiederholen",
+    "repeatNow": "Jetzt wiederholen",
+    "wordsToRepeat": "Wörter zum Wiederholen bereit",
+    "yourLearningProgress": "Dein Lernfortschritt"
   },
   "search": {
     "enterWord": "Wort eingeben"

@@ -193,7 +193,7 @@ const normalizeSearchString = (searchString: string): string => {
 
 export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: string): boolean =>
   vocabularyItem.alternatives.filter(alternative =>
-    alternative.word.toLowerCase().includes(normalizeSearchString(searchString))
+    normalizeStrings(alternative.word).toLowerCase().includes(normalizeSearchString(searchString))
   ).length > 0
 
 export const getSortedAndFilteredVocabularyItems = (
@@ -210,7 +210,9 @@ export const getSortedAndFilteredVocabularyItems = (
   }
 
   const filteredVocabularyItems = vocabularyItems?.filter(
-    item => item.word.toLowerCase().includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString)
+    item =>
+      normalizeStrings(item.word).toLowerCase().includes(normalizedSearchString) ||
+      matchAlternative(item, normalizedSearchString)
   )
   return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
