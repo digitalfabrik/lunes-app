@@ -42,6 +42,7 @@ import HomeIconGrey from './home-icon-grey.svg'
 import HomeIconWhite from './home-icon-white.svg'
 import ImageCircleIcon from './image-circle-icon.svg'
 import ImageIcon from './image-icon.svg'
+import InfoCircleBlackIcon from './info-circle-icon-black.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
@@ -57,6 +58,8 @@ import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import PenIcon from './pen-icon.svg'
 import QRCodeIcon from './qr-code-icon.svg'
+import RepeatIconGrey from './repeat-icon-grey.svg'
+import RepeatIconWhite from './repeat-icon-white.svg'
 import RepeatIcon from './repeat-icon.svg'
 import SadSmileyCircleIcon from './sad-smiley-circle-icon-white.svg'
 import SadSmileyIcon from './sad-smiley-icon.svg'
@@ -118,6 +121,7 @@ export {
   HomeIconWhite,
   ImageCircleIcon,
   InfoCircleIcon,
+  InfoCircleBlackIcon,
   ListIcon,
   LockIcon,
   LunesIcon,
@@ -133,6 +137,8 @@ export {
   PartyHornIcon,
   PenIcon,
   RepeatIcon,
+  RepeatIconGrey,
+  RepeatIconWhite,
   SadSmileyIcon,
   SadSmileyCircleIcon,
   ShareIcon,
