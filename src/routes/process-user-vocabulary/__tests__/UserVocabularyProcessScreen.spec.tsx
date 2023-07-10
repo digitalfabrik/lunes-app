@@ -15,6 +15,7 @@ import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 jest.mock('react-native-fs', () => ({
   moveFile: jest.fn(),
+  exists: jest.fn(),
 }))
 jest.mock('../components/AudioRecordOverlay', () => () => {
   const { Text } = require('react-native')

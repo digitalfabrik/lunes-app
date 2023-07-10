@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
+import { DocumentDirectoryPath, exists, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'
@@ -118,7 +118,16 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         await incrementNextUserVocabularyId()
       }
 
-      const imagePaths = images.map((image, index) => ({ id: index, image }))
+      const imagePaths = await Promise.all(
+        images.map(async (image, index) => {
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          const photoSavedPreviously = await exists(path)
+          if (!photoSavedPreviously) {
+            await moveFile(image, path)
+          }
+          return { id: index, image: path }
+        })
+      )
 
       const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
