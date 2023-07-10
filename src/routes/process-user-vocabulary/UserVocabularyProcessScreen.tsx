@@ -57,9 +57,6 @@ type UserVocabularyProcessScreenProps = {
   route: RouteProp<RoutesParams, 'UserVocabularyProcess'>
 }
 
-// latest learning: the image in VocabularyListItem is cached, so even though the image has been replaced, the old one is still there
-// idea: use a timestamp.
-
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
