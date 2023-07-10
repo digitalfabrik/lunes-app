@@ -134,6 +134,7 @@
     "home": "Start",
     "favorites": "Favoriten",
     "dictionary": "Suche",
+    "repetition": "Wiederholen",
     "userVocabulary": "Meine Vokabeln",
     "header": {
       "overview": "Übersicht",
@@ -182,6 +183,12 @@
   "favorites": "Favoriten",
   "dictionary": {
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
+  },
+  "repetition": {
+    "repeatWords": "Wörter wiederholen",
+    "repeatNow": "Jetzt wiederholen",
+    "wordsToRepeat": "Wörter zum Wiederholen bereit",
+    "yourLearningProgress": "Dein Lernfortschritt"
   },
   "search": {
     "enterWord": "Wort eingeben"
