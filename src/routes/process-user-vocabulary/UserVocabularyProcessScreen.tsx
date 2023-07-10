@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { DocumentDirectoryPath, exists, moveFile } from 'react-native-fs'
+import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'
@@ -56,6 +56,9 @@ type UserVocabularyProcessScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyProcess'>
   route: RouteProp<RoutesParams, 'UserVocabularyProcess'>
 }
+
+// latest learning: the image in VocabularyListItem is cached, so even though the image has been replaced, the old one is still there
+// idea: use a timestamp.
 
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const [images, setImages] = useState<string[]>([])
@@ -120,11 +123,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
-          const photoSavedPreviously = await exists(path)
-          if (!photoSavedPreviously) {
-            await moveFile(image, path)
-          }
+          const timestamp = Date.now()
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
+          await moveFile(image, path)
           return { id: index, image: path }
         })
       )
