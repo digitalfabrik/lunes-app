@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction } from 'react'
 import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
@@ -26,6 +26,8 @@ type DropdownProps<T> = {
   value: T | null
   schema?: { label: string; value: string }
   errorMessage?: string
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const Dropdown = <T extends ValueType>({
@@ -37,9 +39,10 @@ const Dropdown = <T extends ValueType>({
   setValue,
   schema = { label: 'label', value: 'id' },
   errorMessage,
+  open,
+  setOpen,
 }: DropdownProps<T>): ReactElement => {
   const theme = useTheme()
-  const [open, setOpen] = useState<boolean>(false)
   const showErrorValidation = errorMessage !== undefined
 
   const getBorderColor = (): Color => {
