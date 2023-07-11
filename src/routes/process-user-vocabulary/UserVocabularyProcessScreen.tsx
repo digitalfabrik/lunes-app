@@ -120,7 +120,8 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+          const timestamp = Date.now()
+          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
           await moveFile(image, path)
           return { id: index, image: path }
         })

@@ -1,0 +1,5 @@
+issue_key: LUN-520
+show_in_stores: true
+platforms:
+  - ios
+de: Ein Fehler beim Bearbeiten der eigenen Vokabeln wurde behoben.
