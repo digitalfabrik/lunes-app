@@ -169,10 +169,8 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     <RouteWrapper>
       <Root>
         <Pressable
-          disabled={!isArticleDropdownOpen}
-          onPress={() => {
-            setIsArticleDropdownOpen(false)
-          }}>
+          onStartShouldSetResponderCapture={() => isArticleDropdownOpen}
+          onPress={() => setIsArticleDropdownOpen(false)}>
           <TitleWithSpacing title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
           <CustomTextInput
             clearable
