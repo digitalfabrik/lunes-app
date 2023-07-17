@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Platform, Pressable } from 'react-native'
+import { Platform } from 'react-native'
 import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -67,7 +67,6 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
-  const [isArticleDropdownOpen, setIsArticleDropdownOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (itemToEdit) {
@@ -168,46 +167,39 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   return (
     <RouteWrapper>
       <Root>
-        <Pressable
-          onStartShouldSetResponderCapture={() => isArticleDropdownOpen}
-          onPress={() => setIsArticleDropdownOpen(false)}>
-          <TitleWithSpacing title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
-          <CustomTextInput
-            clearable
-            value={word}
-            onChangeText={setWord}
-            placeholder={wordPlaceholder}
-            errorMessage={hasWordErrorMessage ? errorMessage : ''}
-          />
-          <Dropdown
-            value={articleId}
-            setValue={setArticleId}
-            placeholder={articlePlaceholder}
-            items={getArticleWithLabel()}
-            itemKey='id'
-            errorMessage={hasArticleErrorMessage ? errorMessage : ''}
-            open={isArticleDropdownOpen}
-            setOpen={setIsArticleDropdownOpen}
-          />
-          <ThumbnailContainer>
-            {images.map(item => (
-              <Thumbnail key={item} image={item} deleteImage={() => deleteImage(item)} />
-            ))}
-          </ThumbnailContainer>
-          <AddImageButton
-            onPress={() => setShowImageSelectionOverlay(true)}
-            disabled={images.length >= 3}
-            label={addImage}
-            buttonTheme={BUTTONS_THEME.text}
-            iconLeft={ImageCircleIcon}
-            iconSize={theme.spacingsPlain.xl}
-          />
-          <StyledHintText>{maxPictureUpload}</StyledHintText>
-          {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
-          <AudioRecorder recordingPath={recordingPath} setRecordingPath={setRecordingPath} />
-          <HintText>{requiredFields}</HintText>
-          <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
-        </Pressable>
+        <TitleWithSpacing title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
+        <CustomTextInput
+          clearable
+          value={word}
+          onChangeText={setWord}
+          placeholder={wordPlaceholder}
+          errorMessage={hasWordErrorMessage ? errorMessage : ''}
+        />
+        <Dropdown
+          items={getArticleWithLabel()}
+          setValue={setArticleId}
+          value={articleId}
+          errorMessage={hasArticleErrorMessage ? errorMessage : ''}
+          placeholder={articlePlaceholder}
+        />
+        <ThumbnailContainer>
+          {images.map(item => (
+            <Thumbnail key={item} image={item} deleteImage={() => deleteImage(item)} />
+          ))}
+        </ThumbnailContainer>
+        <AddImageButton
+          onPress={() => setShowImageSelectionOverlay(true)}
+          disabled={images.length >= 3}
+          label={addImage}
+          buttonTheme={BUTTONS_THEME.text}
+          iconLeft={ImageCircleIcon}
+          iconSize={theme.spacingsPlain.xl}
+        />
+        <StyledHintText>{maxPictureUpload}</StyledHintText>
+        {hasImageErrorMessage && <ContentError>{getLabels().userVocabulary.creation.imageErrorMessage}</ContentError>}
+        <AudioRecorder recordingPath={recordingPath} setRecordingPath={setRecordingPath} />
+        <HintText>{requiredFields}</HintText>
+        <SaveButton onPress={onSave} label={saveButton} buttonTheme={BUTTONS_THEME.contained} />
       </Root>
     </RouteWrapper>
   )

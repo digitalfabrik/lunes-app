@@ -3668,6 +3668,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-picker/picker@npm:^2.4.10":
+  version: 2.4.10
+  resolution: "@react-native-picker/picker@npm:2.4.10"
+  peerDependencies:
+    react: ">=16"
+    react-native: ">=0.57"
+  checksum: c094521b91dbfe95039ffeffb6b75289e9f60fb45f7e339539f10cb9333ca16665405870e921c22b93e5295a0fd9e3774c31cd95b47bd11be552e3a0c679034e
+  languageName: node
+  linkType: hard
+
 "@react-native/assets@npm:1.0.0":
   version: 1.0.0
   resolution: "@react-native/assets@npm:1.0.0"
@@ -10057,6 +10067,7 @@ __metadata:
     "@babel/runtime": ^7.18.6
     "@react-native-async-storage/async-storage": ^1.17.7
     "@react-native-masked-view/masked-view": ^0.2.8
+    "@react-native-picker/picker": ^2.4.10
     "@react-navigation/bottom-tabs": ^6.3.2
     "@react-navigation/elements": ^1.3.4
     "@react-navigation/native": 6.0.11
@@ -10106,7 +10117,7 @@ __metadata:
     react-native-audio-recorder-player: 3.5.1
     react-native-camera: 4.2.1
     react-native-device-info: ^9.0.2
-    react-native-dropdown-picker: ^5.4.2
+    react-native-element-dropdown: ^2.9.0
     react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.9.0
     react-native-image-crop-picker: ^0.39.0
@@ -11900,13 +11911,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-dropdown-picker@npm:^5.4.2":
-  version: 5.4.2
-  resolution: "react-native-dropdown-picker@npm:5.4.2"
+"react-native-element-dropdown@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "react-native-element-dropdown@npm:2.9.0"
+  dependencies:
+    lodash: ^4.17.21
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 046e0ed4043a104142b96fc26b338d6e5dce578b991b708de6bbe858a55de160374a99fceb468dde10745a7e1f29935ffae8050a0d1b78eacc55c2fff31b4aab
+  checksum: bb649415c9ba2fe7248800e7c3290c81c7592d4014af6145bdf774d50a9bb73087cadf81db7d437360ed5afccc6f46dc810929d283d100a868f40709e52a0c7c
   languageName: node
   linkType: hard
 
