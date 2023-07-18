@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Dropdown as RNElementDropdown } from 'react-native-element-dropdown'
 import styled from 'styled-components/native'
 
+import { ArticleTypeExtended } from '../constants/data'
 import theme from '../constants/theme'
 import { ContentError } from './text/Content'
 
@@ -28,27 +29,21 @@ const styles = StyleSheet.create({
   },
 })
 
-type DropdownItemType = {
-  value: string
-  id: number
-  label: string
-}
-
 type DropdownProps = {
   placeholder: string
-  items: Array<DropdownItemType>
-  setValue: Dispatch<SetStateAction<number | null>>
-  value: string | null
+  data: Array<ArticleTypeExtended>
+  setValue: Dispatch<SetStateAction<ArticleTypeExtended | null>>
+  value: ArticleTypeExtended | null
   errorMessage?: string
 }
 
-const Dropdown = ({ items, placeholder, value, setValue, errorMessage }: DropdownProps): ReactElement => (
+const Dropdown = ({ data, placeholder, value, setValue, errorMessage }: DropdownProps): ReactElement => (
   <>
     <RNElementDropdown
-      data={items}
+      data={data}
       labelField='label'
       valueField='id'
-      onChange={item => setValue(item.id)}
+      onChange={item => setValue(item)}
       placeholder={placeholder}
       style={[styles.dropdown, !!errorMessage && { borderColor: 'red' }]}
       value={value}

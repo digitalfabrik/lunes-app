@@ -103,7 +103,7 @@ export const ARTICLES: Readonly<ArticleType[]> = [
   },
 ] as const
 
-type ArticleTypeExtended = {
+export type ArticleTypeExtended = {
   readonly label: string
 } & ArticleType
 

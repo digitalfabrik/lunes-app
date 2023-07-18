@@ -14,7 +14,13 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { TitleWithSpacing } from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
-import { ARTICLES, BUTTONS_THEME, VOCABULARY_ITEM_TYPES, getArticleWithLabel } from '../../constants/data'
+import {
+  ARTICLES,
+  BUTTONS_THEME,
+  VOCABULARY_ITEM_TYPES,
+  getArticleWithLabel,
+  ArticleTypeExtended,
+} from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   addUserVocabularyItem,
@@ -61,7 +67,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   const { itemToEdit } = route.params
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
-  const [articleId, setArticleId] = useState<number | null>(null)
+  const [article, setArticle] = useState<ArticleTypeExtended | null>(null)
   const [hasWordErrorMessage, setHasWordErrorMessage] = useState<boolean>(false)
   const [hasArticleErrorMessage, setHasArticleErrorMessage] = useState<boolean>(false)
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
@@ -71,7 +77,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   useEffect(() => {
     if (itemToEdit) {
       setWord(itemToEdit.word)
-      setArticleId(itemToEdit.article.id)
+      setArticle(getArticleWithLabel().find(item => item.id === itemToEdit.article.id) ?? null)
       setImages(itemToEdit.images.map(image => image.image))
       setRecordingPath(itemToEdit.audio)
     }
@@ -91,7 +97,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
   const resetFields = () => {
     setWord('')
-    setArticleId(null)
+    setArticle(null)
     setImages([])
     setRecordingPath(null)
     setHasWordErrorMessage(false)
@@ -101,10 +107,10 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   }
 
   const onSave = async (): Promise<void> => {
-    const hasError = word.length === 0 || !articleId || images.length === 0
+    const hasError = word.length === 0 || !article || images.length === 0
     if (hasError) {
       setHasWordErrorMessage(word.length === 0)
-      setHasArticleErrorMessage(!articleId)
+      setHasArticleErrorMessage(!article)
       setHasImageErrorMessage(images.length === 0 || images.length > 3)
       return
     }
@@ -136,7 +142,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const itemToSave = {
         id,
         word,
-        article: ARTICLES[articleId],
+        article: ARTICLES[article.id],
         images: imagePaths,
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
@@ -176,9 +182,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
           errorMessage={hasWordErrorMessage ? errorMessage : ''}
         />
         <Dropdown
-          items={getArticleWithLabel()}
-          setValue={setArticleId}
-          value={articleId}
+          data={getArticleWithLabel()}
+          setValue={setArticle}
+          value={article}
           errorMessage={hasArticleErrorMessage ? errorMessage : ''}
           placeholder={articlePlaceholder}
         />
