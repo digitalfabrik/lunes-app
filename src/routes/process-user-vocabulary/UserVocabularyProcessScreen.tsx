@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { DocumentDirectoryPath, moveFile } from 'react-native-fs'
+import { DocumentDirectoryPath, moveFile, unlink } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'
@@ -66,6 +66,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   const [hasImageErrorMessage, setHasImageErrorMessage] = useState<boolean>(false)
   const [showImageSelectionOverlay, setShowImageSelectionOverlay] = useState<boolean>(false)
   const [recordingPath, setRecordingPath] = useState<string | null>(null)
+  const [locallyDeletedImages, setLocallyDeletedImages] = useState<string[]>([])
   const { itemToEdit } = route.params
 
   useEffect(() => {
@@ -113,6 +114,13 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       let id: number
       if (itemToEdit) {
         id = itemToEdit.id
+        const originalImages = itemToEdit.images.map(image => image.image)
+        const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
+        await Promise.all(
+          imagesToBeDeletedInStorage.map(async image => {
+            await unlink(image)
+          })
+        )
       } else {
         id = await getNextUserVocabularyId()
         await incrementNextUserVocabularyId()
@@ -158,7 +166,10 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   }
 
   const pushImage = (uri: string): void => setImages(old => [...old, uri])
-  const deleteImage = (uri: string): void => setImages(images => images.filter(image => image !== uri))
+  const deleteImage = (uri: string): void => {
+    setImages(images => images.filter(image => image !== uri))
+    setLocallyDeletedImages([...locallyDeletedImages, uri])
+  }
 
   if (showImageSelectionOverlay) {
     return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />

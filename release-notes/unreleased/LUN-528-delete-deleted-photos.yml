@@ -1,0 +1,6 @@
+issue_key: LUN-528
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Entfernte Fotos werden jetzt nicht mehr auf dem Handy gespeichert.
