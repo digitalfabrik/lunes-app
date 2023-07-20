@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: theme.fonts.defaultFontSizeWithoutUnit,
   },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  }
 })
 
 type DropdownProps = {
@@ -43,6 +47,7 @@ const Dropdown = ({ data, placeholder, value, setValue, errorMessage }: Dropdown
       data={data}
       labelField='label'
       valueField='id'
+      iconStyle={styles.iconStyle}
       onChange={item => setValue(item)}
       placeholder={placeholder}
       style={[styles.dropdown, !!errorMessage && { borderColor: 'red' }]}
