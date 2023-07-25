@@ -116,11 +116,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         id = itemToEdit.id
         const originalImages = itemToEdit.images.map(image => image.image)
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
-        await Promise.all(
-          imagesToBeDeletedInStorage.map(async image => {
-            await unlink(image)
-          })
-        )
+        imagesToBeDeletedInStorage.map(async image => {
+          await unlink(image)
+        })
       } else {
         id = await getNextUserVocabularyId()
         await incrementNextUserVocabularyId()
@@ -128,9 +126,14 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
-          const timestamp = Date.now()
-          const path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
-          await moveFile(image, path)
+          let path: string
+          const imageHasBeenSavedPreviously = itemToEdit?.images.map(image => image.image).includes(image)
+          if (imageHasBeenSavedPreviously) {
+            path = image
+          } else {
+            path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+            await moveFile(image, path)
+          }
           return { id: index, image: path }
         })
       )
