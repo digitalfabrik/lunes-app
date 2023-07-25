@@ -211,13 +211,13 @@ export const editUserVocabularyItem = async (
 }
 
 export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = (await getUserVocabularyItems().then(vocab =>
-    vocab.find(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
-  )) as VocabularyItem
-  const { images } = userVocabulary
+  const userVocabulary = await getUserVocabularyItems().then(vocab =>
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
+  )
+  const images = userVocabulary.flatMap(items => items.images.map(image => image.image))
   images.map(async image => {
-    await unlink(image.image)
+    await unlink(image)
   })
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
-  await setUserVocabularyItems([userVocabulary])
+  await setUserVocabularyItems(userVocabulary)
 }
