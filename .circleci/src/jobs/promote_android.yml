@@ -1,6 +1,6 @@
 # Promote the app from the beta to the production track in the Google Play Store.
 docker:
-  - image: cimg/android:2022.03.1-node
+  - image: cimg/android:2022.08.1-node
 resource_class: small
 shell: /bin/bash -eo pipefail
 environment:
