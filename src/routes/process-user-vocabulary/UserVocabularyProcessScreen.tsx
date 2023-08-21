@@ -137,7 +137,8 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
           if (imageHasBeenSavedPreviously) {
             path = image
           } else {
-            path = `file:///${DocumentDirectoryPath}/image-${id}-${index}.jpg`
+            const timestamp = Date.now()
+            path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
             await moveFile(image, path)
           }
           return { id: index, image: path }
@@ -185,6 +186,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   }
 
   // TODO add Keyboard handling for input fields LUN-424
+  // TODO: find the new number
   return (
     <RouteWrapper>
       <Root>
