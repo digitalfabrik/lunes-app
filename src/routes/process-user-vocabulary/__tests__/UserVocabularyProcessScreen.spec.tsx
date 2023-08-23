@@ -38,6 +38,10 @@ describe('UserVocabularyProcessScreen', () => {
     },
   })
 
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('should view and delete thumbnail', async () => {
     const realUseState = React.useState
     const setState = jest.fn()

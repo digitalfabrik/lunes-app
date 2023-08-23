@@ -122,9 +122,11 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         id = itemToEdit.id
         const originalImages = itemToEdit.images.map(image => image.image)
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
-        await Promise.all([imagesToBeDeletedInStorage.map(async image => {
-          await unlink(image)
-        })])
+        await Promise.all([
+          imagesToBeDeletedInStorage.map(async image => {
+            await unlink(image)
+          }),
+        ])
       } else {
         id = await getNextUserVocabularyId()
         await incrementNextUserVocabularyId()
@@ -186,7 +188,6 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   }
 
   // TODO add Keyboard handling for input fields LUN-424
-  // TODO: find the new number
   return (
     <RouteWrapper>
       <Root>
