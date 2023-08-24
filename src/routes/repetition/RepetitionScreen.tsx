@@ -10,8 +10,9 @@ import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
 import { getLabels } from '../../services/helpers'
+import Chart from './components/Chart'
 
-const Root = styled.View`
+const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
   height: 100%;
 `
@@ -34,7 +35,6 @@ const Container = styled.View`
   align-items: center;
   margin: ${props => props.theme.spacings.sm} 0;
   padding: ${props => props.theme.spacings.sm} 0;
-  height: ${hp('24%')}px;
 `
 const Subheading = styled.Text`
   color: ${props => props.theme.colors.primary};
@@ -59,9 +59,11 @@ const ModalContainer = styled.View`
   align-items: center;
   height: ${hp('24%')}px;
 `
+
 const RepetitionScreen = (): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
+
   return (
     <RouteWrapper>
       <Root>
@@ -82,6 +84,7 @@ const RepetitionScreen = (): ReactElement => {
               />
             </IconWrapper>
           </HeaderWrapper>
+          <Chart />
         </Container>
         {isModalVisible && (
           <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='info-modal'>
