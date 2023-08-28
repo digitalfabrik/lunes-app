@@ -187,7 +187,6 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     return <ImageSelectionOverlay setVisible={setShowImageSelectionOverlay} pushImage={pushImage} />
   }
 
-  // TODO add Keyboard handling for input fields LUN-424
   return (
     <RouteWrapper>
       <Root>
