@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { useState } from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -14,17 +15,17 @@ import {
   MagnifierIconWhite,
   StarIconGrey,
   StarIconWhite,
-  /* RepeatIconGrey, */
-
-  /* RepeatIconWhite, */
+  RepeatIconGrey,
+  RepeatIconWhite,
 } from '../../assets/images'
+import useLoadAsync from '../hooks/useLoadAsync'
+import { getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound } from '../services/LongTermExerciseService'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import FavoritesStackNavigator from './FavoritesStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
-
-/* import RepetitionStackNavigator from './RepetitionStackNavigator' */
+import RepetitionStackNavigator from './RepetitionStackNavigator'
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
@@ -34,6 +35,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const insets = useSafeAreaInsets()
 
   const iconSize = hp('3.5%')
+
+  const { data: repetitionBadgeNumber } = useLoadAsync(
+    getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound,
+    undefined
+  )
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <HomeIconWhite width={hp('5%')} height={hp('5%')} /> : <HomeIconGrey width={hp('5%')} height={hp('5%')} />
@@ -48,14 +54,12 @@ const BottomTabNavigator = (): JSX.Element | null => {
       <MagnifierIconGrey width={iconSize} height={iconSize} />
     )
 
-  /*
   const renderRepetitionTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
       <RepeatIconWhite width={iconSize} height={iconSize} />
     ) : (
       <RepeatIconGrey width={iconSize} height={iconSize} />
     )
-*/
 
   const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
@@ -92,11 +96,15 @@ const BottomTabNavigator = (): JSX.Element | null => {
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
       />
-      {/*      <Navigator.Screen
+      <Navigator.Screen
         name='RepetitionTab'
         component={RepetitionStackNavigator}
-        options={{ tabBarIcon: renderRepetitionTabIcon, title: getLabels().general.repetition }}
-      /> */}
+        options={{
+          tabBarIcon: renderRepetitionTabIcon,
+          tabBarBadge: repetitionBadgeNumber ?? 0,
+          title: getLabels().general.repetition,
+        }}
+      />
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}
