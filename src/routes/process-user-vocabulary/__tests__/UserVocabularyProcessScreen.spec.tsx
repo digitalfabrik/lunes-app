@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import { DocumentDirectoryPath } from 'react-native-fs'
+import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
 import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
@@ -15,6 +15,7 @@ import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 jest.mock('react-native-fs', () => ({
   moveFile: jest.fn(),
+  unlink: jest.fn(),
 }))
 jest.mock('../components/AudioRecordOverlay', () => () => {
   const { Text } = require('react-native')
@@ -37,9 +38,17 @@ describe('UserVocabularyProcessScreen', () => {
     },
   })
 
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('should view and delete thumbnail', async () => {
+    const realUseState = React.useState
     const setState = jest.fn()
-    jest.spyOn(React, 'useState').mockImplementationOnce(() => [['image'], setState])
+    jest
+      .spyOn(React, 'useState')
+      .mockImplementationOnce(() => [['image'], setState])
+      .mockImplementation(() => ['', jest.fn()])
 
     const { getByText, getByTestId } = render(
       <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />
@@ -48,6 +57,8 @@ describe('UserVocabularyProcessScreen', () => {
     expect(getByText(getLabels().userVocabulary.creation.addImage)).not.toBeDisabled()
     fireEvent.press(deleteThumbnail)
     expect(setState).toHaveBeenCalled()
+
+    React.useState = realUseState
   })
 
   it('should disable image button, if already three images selected', () => {
@@ -114,6 +125,22 @@ describe('UserVocabularyProcessScreen', () => {
         const userVocabulary = await getUserVocabularyItems()
         expect(userVocabulary).toEqual([shouldBe])
       })
+    })
+
+    it('should delete a photo', () => {
+      jest.spyOn(ReactNativeFS, 'unlink')
+
+      const { getByText, getAllByTestId } = render(
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+      )
+      expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(2)
+      const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]
+      fireEvent.press(deleteThumbnail)
+      expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(1)
+      const saveButton = getByText(getLabels().userVocabulary.creation.saveButton)
+      fireEvent.press(saveButton)
+
+      expect(ReactNativeFS.unlink).toHaveBeenCalled()
     })
   })
 })

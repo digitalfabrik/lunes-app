@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { unlink } from 'react-native-fs'
 
 import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
@@ -210,9 +211,13 @@ export const editUserVocabularyItem = async (
 }
 
 export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = getUserVocabularyItems().then(vocab =>
+  const userVocabulary = await getUserVocabularyItems().then(vocab =>
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
+  const images = userVocabularyItem.images.map(image => image.image)
+  images.map(async image => {
+    await unlink(image)
+  })
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
-  await setUserVocabularyItems(await userVocabulary)
+  await setUserVocabularyItems(userVocabulary)
 }
