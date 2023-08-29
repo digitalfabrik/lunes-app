@@ -266,7 +266,7 @@ jobs:
             TOTAL_CPUS: 4
         macos:
             xcode: 14.2.0
-        resource_class: medium
+        resource_class: macos.m1.medium.gen1
         shell: /bin/bash --login -o pipefail
         steps:
             - add_ssh_keys:
