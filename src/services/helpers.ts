@@ -115,7 +115,7 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
     return {
       disciplineId: leafDisciplineIds[0],
       exerciseKey: 0,
-    } // TODO LUN-319 show success that every exercise is done
+    } // TODO #965: show success that every exercise is done
   }
   const disciplineProgress = progress[firstUnfinishedDisciplineId]
   if (!disciplineProgress) {

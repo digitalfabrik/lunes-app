@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
 import { getOverwriteCMS } from './AsyncStorage'
-import { addTrailingSlashToUrl } from './url'
 
 export const testCMS = 'https://lunes-test.tuerantuer.org/api'
 export const productionCMS = 'https://lunes.tuerantuer.org/api'
@@ -30,7 +29,7 @@ setupCache(axios, {
 
 const getUrl = async (endpoint: string): Promise<string> => {
   const baseURL = await getBaseURL()
-  return `${baseURL}/${addTrailingSlashToUrl(endpoint)}`
+  return `${baseURL}/${endpoint}`
 }
 
 export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {

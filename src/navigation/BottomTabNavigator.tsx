@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { useState } from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -19,6 +20,7 @@ import {
 } from '../../assets/images'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { getDevMode } from '../services/AsyncStorage'
+import { getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound } from '../services/RepetitionService'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import FavoritesStackNavigator from './FavoritesStackNavigator'
@@ -36,6 +38,10 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const iconSize = hp('3.5%')
 
   const { data: isDevMode } = useLoadAsync(getDevMode, null)
+  const { data: repetitionBadgeNumber } = useLoadAsync(
+    getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound,
+    undefined
+  )
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <HomeIconWhite width={hp('5%')} height={hp('5%')} /> : <HomeIconGrey width={hp('5%')} height={hp('5%')} />
@@ -96,7 +102,11 @@ const BottomTabNavigator = (): JSX.Element | null => {
         <Navigator.Screen
           name='RepetitionTab'
           component={RepetitionStackNavigator}
-          options={{ tabBarIcon: renderRepetitionTabIcon, title: getLabels().general.repetition }}
+          options={{
+            tabBarIcon: renderRepetitionTabIcon,
+            tabBarBadge: repetitionBadgeNumber ?? 0,
+            title: getLabels().general.repetition,
+          }}
         />
       )}
       <Navigator.Screen
