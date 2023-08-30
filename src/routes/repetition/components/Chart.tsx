@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { ReactElement, useCallback, useEffect, useState } from 'react'
-import { Text } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
@@ -9,9 +8,9 @@ import useLoadAsync from '../../../hooks/useLoadAsync'
 import { getNumberOfWordsInEachSection, sections } from '../../../services/RepetitionService'
 import { getLabels } from '../../../services/helpers'
 
+const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
+const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
 const Chart: () => ReactElement = () => {
-  const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
-  const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
   const { new_, learned, sectionOneToFive } = getLabels().repetition.chart
   const { words } = getLabels().general
 
