@@ -29,7 +29,8 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
 
   const handleNavigation = (selectedItem: Discipline): void => {
     if (selectedItem.isLeaf) {
-      navigation.navigate('Exercises', {
+      navigation.navigate('StandardExercises', {
+        contentType: 'standard',
         discipline: selectedItem,
         disciplineTitle: selectedItem.title,
         disciplineId: selectedItem.id,

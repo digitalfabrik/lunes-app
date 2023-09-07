@@ -7,8 +7,8 @@ import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import VocabularyDetailScreen from '../routes/VocabularyDetailScreen'
 import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
-import UserVocabularyDisciplineSelectionScreen from '../routes/user-vocabulary-discipline-selection-screen/UserVocabularyDisciplineSelectionScreen'
-import UserVocabularyExercisesScreen from '../routes/user-vocabulary-exercises-screen/UserVocabularyExercisesScreen'
+import SpecialExercisesScreen from '../routes/special-exercises/SpecialExercisesScreen'
+import UserVocabularyDisciplineSelectionScreen from '../routes/user-vocabulary-discipline-selection/UserVocabularyDisciplineSelectionScreen'
 import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
@@ -50,8 +50,8 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
-        name='UserVocabularyExercises'
-        component={UserVocabularyExercisesScreen}
+        name='SpecialExercises'
+        component={SpecialExercisesScreen}
         options={({ navigation }) => options(back, navigation)}
       />
     </Stack.Navigator>

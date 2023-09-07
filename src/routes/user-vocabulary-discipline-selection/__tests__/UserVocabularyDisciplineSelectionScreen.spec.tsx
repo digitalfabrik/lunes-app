@@ -56,7 +56,8 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
     const { getByText } = renderScreen(vocabularyItems)
     const partTwo = getByText(`${getLabels().userVocabulary.practice.part} 2`)
     fireEvent.press(partTwo)
-    expect(navigation.navigate).toHaveBeenCalledWith('UserVocabularyExercises', {
+    expect(navigation.navigate).toHaveBeenCalledWith('SpecialExercises', {
+      contentType: 'userVocabulary',
       discipline: {
         id: 1,
         title: `${getLabels().userVocabulary.practice.part} ${2}`,
@@ -66,7 +67,6 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
         parentTitle: getLabels().userVocabulary.myWords,
         needsTrainingSetEndpoint: true,
       },
-      disciplineId: 0,
       disciplineTitle: `${getLabels().userVocabulary.practice.part} 2`,
       vocabularyItems: vocabularyItems.slice(10, 20),
       closeExerciseAction: undefined,

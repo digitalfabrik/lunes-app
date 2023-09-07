@@ -34,7 +34,7 @@ export type WriteExerciseScreenProps = {
 }
 
 const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): ReactElement => {
-  const { vocabularyItems, disciplineTitle, closeExerciseAction, disciplineId } = route.params
+  const { vocabularyItems, closeExerciseAction, contentType } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
@@ -74,16 +74,14 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   }, [isKeyboardVisible, vocabularyItemWithResults, currentIndex])
 
   const finishExercise = async (results: VocabularyItemResult[]): Promise<void> => {
-    if (disciplineId) {
-      await saveExerciseProgress(disciplineId, ExerciseKeys.writeExercise, results)
+    if (contentType === 'standard') {
+      await saveExerciseProgress(route.params.disciplineId, ExerciseKeys.writeExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
+      ...route.params,
       vocabularyItems,
-      disciplineTitle,
-      disciplineId,
       results,
       exercise: ExerciseKeys.writeExercise,
-      closeExerciseAction,
       unlockedNextExercise: false,
     })
     initializeExercise(true)

@@ -40,9 +40,9 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
 
   const handleNavigation = (selectedDiscipline: number): void => {
     const selectedDisciplinesWithVocabulary = disciplinesWithVocabulary[selectedDiscipline]
-    return navigation.navigate('UserVocabularyExercises', {
+    return navigation.navigate('SpecialExercises', {
+      contentType: 'userVocabulary',
       discipline: selectedDisciplinesWithVocabulary.discipline,
-      disciplineId: 0,
       disciplineTitle: selectedDisciplinesWithVocabulary.discipline.title,
       vocabularyItems: selectedDisciplinesWithVocabulary.vocabulary,
       closeExerciseAction: CommonActions.goBack(),

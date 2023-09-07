@@ -34,7 +34,6 @@ const ButtonContainer = styled.View`
 type SingleChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   disciplineId: number
-  disciplineTitle: string
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -46,7 +45,6 @@ const CORRECT_ANSWER_DELAY = 700
 const ChoiceExerciseScreen = ({
   vocabularyItems,
   disciplineId,
-  disciplineTitle,
   vocabularyItemToAnswer,
   navigation,
   route,
@@ -91,12 +89,9 @@ const ChoiceExerciseScreen = ({
     const progress = await getExerciseProgress()
     await saveExerciseProgress(disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
-      vocabularyItems,
-      disciplineId,
-      disciplineTitle,
+      ...route.params,
       exercise: exerciseKey,
       results,
-      closeExerciseAction: route.params.closeExerciseAction,
       unlockedNextExercise: willNextExerciseUnlock(progress[disciplineId]?.[exerciseKey], calculateScore(results)),
     })
     initializeExercise(true)

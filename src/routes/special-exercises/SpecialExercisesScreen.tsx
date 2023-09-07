@@ -16,23 +16,22 @@ const Container = styled.View`
 `
 
 type ExercisesScreenProps = {
-  route: RouteProp<RoutesParams, 'UserVocabularyExercises'>
-  navigation: StackNavigationProp<RoutesParams, 'UserVocabularyExercises'>
+  route: RouteProp<RoutesParams, 'SpecialExercises'>
+  navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { disciplineTitle, disciplineId, vocabularyItems } = route.params
+  const { disciplineTitle, vocabularyItems } = route.params
 
   const handleNavigation = (item: Exercise): void => {
     if (vocabularyItems) {
-      const closeExerciseAction = CommonActions.navigate('UserVocabularyExercises', {
+      const closeExerciseAction = CommonActions.navigate('SpecialExercises', {
         vocabularyItems,
         disciplineTitle,
-        disciplineId,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
+        contentType: 'userVocabulary',
         vocabularyItems,
-        disciplineId: 0,
         disciplineTitle,
         closeExerciseAction,
       })

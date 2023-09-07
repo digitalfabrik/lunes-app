@@ -28,6 +28,7 @@ describe('VocabularyDetailScreen', () => {
     key: '',
     name: 'VocabularyDetailExercise',
     params: {
+      contentType: 'standard',
       disciplineId: 1,
       disciplineTitle: 'disciplineTitle',
       vocabularyItems,

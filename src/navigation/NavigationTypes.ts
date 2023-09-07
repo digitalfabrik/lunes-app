@@ -9,24 +9,36 @@ export type VocabularyItemResult = {
   numberOfTries: number
 }
 
-type ExerciseParams = {
+type StandardExercise = {
+  contentType: 'standard'
   disciplineId: number
+}
+
+type SpecialExercise = {
+  contentType: 'userVocabulary' | 'repetition'
+}
+
+type SharedExerciseParams = {
   disciplineTitle: string
   vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
+type ExerciseParams = (StandardExercise | SpecialExercise) & SharedExerciseParams
+
 type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
-  disciplineId: number | null
-} & Omit<ExerciseParams, 'disciplineId'>
+} & ExerciseParams
 
-export type ExercisesParams = {
+type SharedExercisesParams = {
   discipline: Discipline
   vocabularyItems: VocabularyItem[] | null
   closeExerciseAction?: CommonNavigationAction
-} & Omit<ExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
+} & Omit<SharedExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
+
+export type StandardExercisesParams = StandardExercise & SharedExercisesParams
+export type SpecialExercisesParams = SpecialExercise & SharedExercisesParams
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
@@ -64,7 +76,7 @@ export type RoutesParams = {
     initialSelection: boolean
   }
   VocabularyDetailExercise: VocabularyDetailExerciseParams
-  Exercises: ExercisesParams
+  StandardExercises: StandardExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ArticleChoiceExercise: ExerciseParams
@@ -87,7 +99,7 @@ export type RoutesParams = {
   Repetition: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyDisciplineSelection: undefined
-  UserVocabularyExercises: ExercisesParams
+  SpecialExercises: SpecialExercisesParams
 }
 
 export type Route = keyof RoutesParams
