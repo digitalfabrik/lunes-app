@@ -19,7 +19,8 @@ import {
   RepeatIconWhite,
 } from '../../assets/images'
 import useLoadAsync from '../hooks/useLoadAsync'
-import { getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound } from '../services/LongTermExerciseService'
+import { getDevMode } from '../services/AsyncStorage'
+import { getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound } from '../services/RepetitionService'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import FavoritesStackNavigator from './FavoritesStackNavigator'
@@ -36,6 +37,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
 
   const iconSize = hp('3.5%')
 
+  const { data: isDevMode } = useLoadAsync(getDevMode, null)
   const { data: repetitionBadgeNumber } = useLoadAsync(
     getNumberOfWordNodeCardsNeedingRepetitionWithUpperBound,
     undefined
@@ -96,15 +98,17 @@ const BottomTabNavigator = (): JSX.Element | null => {
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
       />
-      <Navigator.Screen
-        name='RepetitionTab'
-        component={RepetitionStackNavigator}
-        options={{
-          tabBarIcon: renderRepetitionTabIcon,
-          tabBarBadge: repetitionBadgeNumber ?? 0,
-          title: getLabels().general.repetition,
-        }}
-      />
+      {isDevMode && (
+        <Navigator.Screen
+          name='RepetitionTab'
+          component={RepetitionStackNavigator}
+          options={{
+            tabBarIcon: renderRepetitionTabIcon,
+            tabBarBadge: repetitionBadgeNumber ?? 0,
+            title: getLabels().general.repetition,
+          }}
+        />
+      )}
       <Navigator.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}

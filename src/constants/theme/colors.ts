@@ -24,6 +24,10 @@ export const COLORS = {
   link: 'blue',
   lightGreyBackground: '#e0e4ed',
   audioRecordingActive: '#97aef1',
+  chartColor1: '#E0E4ED',
+  chartColor2: '#EEEEEE',
+  chartColor3: '#8CC8F3',
+  chartColor4: '#D9D9D9',
 }
 
 export type Color = typeof COLORS[keyof typeof COLORS]

@@ -49,6 +49,10 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
   return newItems
 }
 
+// The maximum is inclusive and the minimum is inclusive
+export const getRandomNumberBetween = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min + 1) + min)
+
 export const wordsDescription = (numberOfChildren: number): string =>
   `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
 
