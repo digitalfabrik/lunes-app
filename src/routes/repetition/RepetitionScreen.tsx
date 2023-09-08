@@ -10,7 +10,7 @@ import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
 import { getLabels } from '../../services/helpers'
-import Chart from './components/Chart'
+import RepetitionProgressChart from './components/RepetitionProgressChart'
 
 const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
@@ -84,7 +84,7 @@ const RepetitionScreen = (): ReactElement => {
               />
             </IconWrapper>
           </HeaderWrapper>
-          <Chart />
+          <RepetitionProgressChart />
         </Container>
         {isModalVisible && (
           <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='info-modal'>

@@ -190,7 +190,7 @@
     "wordsToRepeat": "Wörter zum Wiederholen bereit",
     "yourLearningProgress": "Dein Lernfortschritt",
     "chart": {
-      "new_": "Neue",
+      "untrained": "Neue",
       "learned": "Gelernte",
       "sectionOneToFive": "Lernstufen 1-5"
     }

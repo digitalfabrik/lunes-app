@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
@@ -10,26 +10,29 @@ import { getLabels } from '../../../services/helpers'
 
 const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
 const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
-const Chart: () => ReactElement = () => {
-  const { new_, learned, sectionOneToFive } = getLabels().repetition.chart
+const RepetitionProgressChart: () => ReactElement = () => {
+  const { untrained, learned, sectionOneToFive } = getLabels().repetition.chart
   const { words } = getLabels().general
 
-  const [chartData, setChartData] = useState<{ y: number; x: number; fill: string }[]>(
+  const getChartData = useCallback(async () => {
+    const data = await getNumberOfWordsInEachSection()
+    return data.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
+  }, [])
+
+  const { data, refresh } = useLoadAsync(getChartData, undefined)
+
+  const chartData =
+    data ??
     Array(sections.length).fill({
       y: 0,
       fill: chartColor2,
     })
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh()
+    }, [refresh])
   )
-
-  const { data, refresh } = useLoadAsync(getNumberOfWordsInEachSection, undefined)
-
-  useEffect(() => {
-    if (data) {
-      setChartData(data.map((item, index) => ({ y: item, x: index, fill: barColors[index] })))
-    }
-  }, [data])
-
-  useFocusEffect(useCallback(() => refresh(), [refresh]))
 
   return (
     <VictoryChart height={hp('35%')}>
@@ -37,7 +40,7 @@ const Chart: () => ReactElement = () => {
         crossAxis
         offsetY={40}
         tickValues={sections}
-        tickFormat={[[new_, words], '', '', sectionOneToFive, '', '', [learned, words]]}
+        tickFormat={[[untrained, words], '', '', sectionOneToFive, '', '', [learned, words]]}
         axisComponent={
           <LineSegment
             style={{
@@ -65,4 +68,4 @@ const Chart: () => ReactElement = () => {
   )
 }
 
-export default Chart
+export default RepetitionProgressChart
