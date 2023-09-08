@@ -94,7 +94,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
       return
     }
     if (vocabularyItems) {
-      const closeExerciseAction = CommonActions.navigate('Exercises', {
+      const closeExerciseAction = CommonActions.navigate('StandardExercises', {
         vocabularyItems,
         disciplineTitle,
         disciplineId,
