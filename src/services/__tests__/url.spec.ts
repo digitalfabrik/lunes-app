@@ -1,7 +1,7 @@
 import { mocked } from 'jest-mock'
 import { Linking } from 'react-native'
 
-import { addTrailingSlashToUrl, openExternalUrl } from '../url'
+import { openExternalUrl } from '../url'
 
 jest.mock('react-native/Libraries/Linking/Linking', () => ({
   canOpenURL: jest.fn(),
@@ -19,17 +19,5 @@ describe('url', () => {
 
     expect(Linking.canOpenURL).toHaveBeenCalledWith(url)
     expect(Linking.openURL).toHaveBeenCalledWith(url)
-  })
-
-  it('should add trailing slash to url', () => {
-    const url = 'https://lunes-app.de'
-
-    expect(addTrailingSlashToUrl(url)).toBe('https://lunes-app.de/')
-  })
-
-  it('should not add trailing slash to url', () => {
-    const url = 'https://lunes-app.de/'
-
-    expect(addTrailingSlashToUrl(url)).toBe('https://lunes-app.de/')
   })
 })

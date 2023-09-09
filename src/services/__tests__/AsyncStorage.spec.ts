@@ -23,6 +23,10 @@ import {
   getUserVocabularyItems,
 } from '../AsyncStorage'
 
+jest.mock('react-native-fs', () => ({
+  unlink: jest.fn(),
+}))
+
 describe('AsyncStorage', () => {
   describe('customDisciplines', () => {
     const customDisciplines = ['first', 'second', 'third']

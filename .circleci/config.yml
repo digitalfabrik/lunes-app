@@ -186,6 +186,7 @@ commands:
             - restore_cache:
                 keys:
                     - yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
+                    - yarn-packages-{{ arch }}-
                 name: Restore Yarn Package Cache
             - run:
                 command: yarn install --immutable
@@ -213,7 +214,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2022.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
@@ -265,7 +266,7 @@ jobs:
             TOTAL_CPUS: 4
         macos:
             xcode: 14.2.0
-        resource_class: medium
+        resource_class: macos.m1.medium.gen1
         shell: /bin/bash --login -o pipefail
         steps:
             - add_ssh_keys:
@@ -300,7 +301,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:18.17.1
         parameters:
             prepare_delivery:
                 default: false
@@ -333,7 +334,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:18.17.1
         steps:
             - checkout
             - restore_yarn_cache
@@ -354,7 +355,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2022.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -390,7 +391,7 @@ jobs:
             - notify
     deliver_browser_stack:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2022.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
@@ -464,7 +465,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:18.17.1
         resource_class: small
         steps:
             - checkout
@@ -478,7 +479,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:18.17.1
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
@@ -506,7 +507,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
     notify_ios:
         docker:
-            - image: cimg/node:14.19.0
+            - image: cimg/node:18.17.1
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
@@ -534,7 +535,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on iOS!\n${RELEASE_NOTES}\n${IOS_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2022.03.1-node
+            - image: cimg/android:2022.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
