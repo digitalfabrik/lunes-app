@@ -188,7 +188,15 @@
     "repeatWords": "Wörter wiederholen",
     "repeatNow": "Jetzt wiederholen",
     "wordsToRepeat": "Wörter zum Wiederholen bereit",
-    "yourLearningProgress": "Dein Lernfortschritt"
+    "yourLearningProgress": "Dein Lernfortschritt",
+    "hintModalHeaderText": "Du kannst gelernte Wörter jetzt wiederholen",
+    "hintModalContentText": "Unter dem Kapitel „Wiederholen“ kannst du nun dein Langzeitgedächtnis trainieren.",
+    "repeatLater": "später",
+    "chart": {
+      "untrained": "Neue",
+      "learned": "Gelernte",
+      "sectionOneToFive": "Lernstufen 1-5"
+    }
   },
   "search": {
     "enterWord": "Wort eingeben"
@@ -203,7 +211,8 @@
       "currentCMS": "current cms",
       "changeCMS": "change cms",
       "enableDevMode": "Enable DevMode",
-      "disableDevMode": "Disable DevMode"
+      "disableDevMode": "Disable DevMode",
+      "fillRepetitionExerciseWithData": "Fill repetition exercise with data"
     }
   },
   "sponsors": {
