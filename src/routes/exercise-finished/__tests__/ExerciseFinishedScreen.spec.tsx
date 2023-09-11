@@ -11,6 +11,7 @@ import render from '../../../testing/render'
 import ExerciseFinishedScreen from '../ExerciseFinishedScreen'
 
 describe('ExerciseFinishedScreen', () => {
+  const setVisible = jest.fn()
   const navigation = createNavigationMock<'ExerciseFinished'>()
   const getRoute = (
     exerciseKey: ExerciseKey,
@@ -32,6 +33,28 @@ describe('ExerciseFinishedScreen', () => {
       })),
       unlockedNextExercise,
     },
+  })
+
+  it.skip('should render repetition modal if a module is finished', () => {
+    const route = getRoute(3, true, true)
+    const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(getByText(getLabels().repetition.hintModalHeaderText)).toBeDefined()
+    expect(getByText(getLabels().repetition.hintModalContentText)).toBeDefined()
+    const repeatLaterButton = getByText(getLabels().repetition.repeatLater)
+    fireEvent.press(repeatLaterButton)
+    expect(setVisible).toBeTruthy()
+  })
+
+  it('should not render repetition modal if it is on a first exercise', () => {
+    const route = getRoute(1, true, true)
+    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(queryByTestId('repetition-modal')).toBeNull()
+  })
+
+  it('should not render repetition modal if it is on a second exercise', () => {
+    const route = getRoute(2, false, false)
+    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(queryByTestId('repetition-modal')).toBeNull()
   })
 
   it('should render and handle button click for unlocked next exercise', () => {

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -21,10 +21,12 @@ export type ModalProps = {
   text: string
   children?: ReactNode
   confirmationButtonText: string
+  cancelButtonText?: string
   showCancelButton?: boolean
   confirmationAction: () => void
   confirmationDisabled?: boolean
   testID?: string
+  icon?: string | ReactElement
 }
 
 const Modal = (props: ModalProps): JSX.Element => {
@@ -34,14 +36,17 @@ const Modal = (props: ModalProps): JSX.Element => {
     confirmationButtonText,
     showCancelButton = true,
     confirmationAction,
+    cancelButtonText = getLabels().general.back,
     children,
     onClose,
     confirmationDisabled = false,
     testID,
+    icon,
   } = props
 
   return (
     <ModalSkeleton visible={visible} onClose={onClose} testID={testID}>
+      {icon}
       <Message>{text}</Message>
       {children}
       <Button
@@ -50,9 +55,7 @@ const Modal = (props: ModalProps): JSX.Element => {
         disabled={confirmationDisabled}
         buttonTheme={BUTTONS_THEME.contained}
       />
-      {showCancelButton && (
-        <Button label={getLabels().general.back} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />
-      )}
+      {showCancelButton && <Button label={cancelButtonText} onPress={onClose} buttonTheme={BUTTONS_THEME.outlined} />}
     </ModalSkeleton>
   )
 }
