@@ -71,6 +71,7 @@ describe('WriteExerciseScreen', () => {
     key: '',
     name: 'WriteExercise',
     params: {
+      contentType: 'standard',
       vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',

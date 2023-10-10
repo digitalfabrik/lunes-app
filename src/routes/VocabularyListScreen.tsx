@@ -17,7 +17,8 @@ type VocabularyListScreenProps = {
 }
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
-  const { disciplineId, closeExerciseAction } = route.params
+  const { contentType, closeExerciseAction } = route.params
+  const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
 
   useEffect(() => {
     setExerciseProgress(disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)

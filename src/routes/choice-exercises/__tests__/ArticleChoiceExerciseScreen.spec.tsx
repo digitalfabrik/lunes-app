@@ -51,6 +51,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     key: '',
     name: 'ArticleChoiceExercise',
     params: {
+      contentType: 'standard',
       vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',

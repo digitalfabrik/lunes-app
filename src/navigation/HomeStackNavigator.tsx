@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
-import ExercisesScreen from '../routes/exercises/ExercisesScreen'
+import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
@@ -30,8 +30,8 @@ const HomeStackNavigator = (): JSX.Element | null => {
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen
-        name='Exercises'
-        component={ExercisesScreen}
+        name='StandardExercises'
+        component={StandardExercisesScreen}
         options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
       />
       <Stack.Screen

@@ -36,11 +36,11 @@ const SmallMessage = styled(ContentTextLight)`
 `
 
 type ExercisesScreenProps = {
-  route: RouteProp<RoutesParams, 'Exercises'>
-  navigation: StackNavigationProp<RoutesParams, 'Exercises'>
+  route: RouteProp<RoutesParams, 'StandardExercises'>
+  navigation: StackNavigationProp<RoutesParams, 'StandardExercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
+const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline, disciplineTitle, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
@@ -94,7 +94,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       return
     }
     if (vocabularyItems) {
-      const closeExerciseAction = CommonActions.navigate('Exercises', {
+      const closeExerciseAction = CommonActions.navigate('StandardExercises', {
         vocabularyItems,
         disciplineTitle,
         disciplineId,
@@ -102,6 +102,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         vocabularyItems,
+        contentType: 'standard',
         disciplineId,
         disciplineTitle,
         closeExerciseAction,
@@ -165,4 +166,4 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
   )
 }
 
-export default ExercisesScreen
+export default StandardExercisesScreen

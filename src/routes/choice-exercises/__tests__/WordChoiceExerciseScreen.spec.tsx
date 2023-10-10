@@ -40,6 +40,7 @@ describe('WordChoiceExerciseScreen', () => {
     key: '',
     name: 'WordChoiceExercise',
     params: {
+      contentType: 'standard',
       vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'TestTitel',

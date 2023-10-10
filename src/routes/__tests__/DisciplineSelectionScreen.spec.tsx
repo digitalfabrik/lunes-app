@@ -65,7 +65,8 @@ describe('DisciplineSelectionScreen', () => {
     expect(discipline).toBeDefined()
     fireEvent.press(discipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('Exercises', {
+    expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', {
+      contentType: 'standard',
       discipline: mockDisciplines()[2],
       disciplineTitle: mockDisciplines()[2].title,
       disciplineId: mockDisciplines()[2].id,

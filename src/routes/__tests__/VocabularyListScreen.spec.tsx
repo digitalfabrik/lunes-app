@@ -32,6 +32,7 @@ describe('VocabularyListScreen', () => {
     key: '',
     name: 'VocabularyList',
     params: {
+      contentType: 'standard',
       vocabularyItems,
       disciplineId: 1,
       disciplineTitle: 'My discipline title',

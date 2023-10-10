@@ -11,6 +11,7 @@ import render from '../../../testing/render'
 import ExerciseFinishedScreen from '../ExerciseFinishedScreen'
 
 describe('ExerciseFinishedScreen', () => {
+  const disciplineId = 1
   const setVisible = jest.fn()
   const navigation = createNavigationMock<'ExerciseFinished'>()
   const getRoute = (
@@ -21,7 +22,8 @@ describe('ExerciseFinishedScreen', () => {
     key: '',
     name: 'ExerciseFinished',
     params: {
-      disciplineId: 1,
+      contentType: 'standard',
+      disciplineId,
       disciplineTitle: 'discipline',
       vocabularyItems: new VocabularyItemBuilder(4).build(),
       closeExerciseAction: CommonActions.goBack(),
@@ -71,8 +73,9 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
+      contentType: 'standard',
       vocabularyItems: route.params.vocabularyItems,
-      disciplineId: route.params.disciplineId,
+      disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
     })
@@ -85,8 +88,9 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.continue)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
+      contentType: 'standard',
       vocabularyItems: route.params.vocabularyItems,
-      disciplineId: route.params.disciplineId,
+      disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
     })
@@ -99,8 +103,9 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, {
+      contentType: 'standard',
       vocabularyItems: route.params.vocabularyItems,
-      disciplineId: route.params.disciplineId,
+      disciplineId,
       disciplineTitle: route.params.disciplineTitle,
       closeExerciseAction: route.params.closeExerciseAction,
     })

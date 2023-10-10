@@ -9,25 +9,25 @@ import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
-import UserVocabularyExercisesScreen from '../UserVocabularyExercisesScreen'
+import SpecialExercisesScreen from '../SpecialExercisesScreen'
 
-describe('UserVocabularyExercisesScreen', () => {
-  let navigation: StackNavigationProp<RoutesParams, 'UserVocabularyExercises'>
+describe('SpecialExercisesScreen', () => {
+  let navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
   const discipline = mockDisciplines(true)[0]
   const renderScreen = (): RenderAPI => {
-    const route: RouteProp<RoutesParams, 'UserVocabularyExercises'> = {
+    const route: RouteProp<RoutesParams, 'SpecialExercises'> = {
       key: '',
-      name: 'UserVocabularyExercises',
+      name: 'SpecialExercises',
       params: {
         discipline,
-        disciplineId: 0,
+        contentType: 'userVocabulary',
         disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
         vocabularyItems,
       },
     }
-    navigation = createNavigationMock<'UserVocabularyExercises'>()
-    return render(<UserVocabularyExercisesScreen route={route} navigation={navigation} />)
+    navigation = createNavigationMock<'SpecialExercises'>()
+    return render(<SpecialExercisesScreen route={route} navigation={navigation} />)
   }
 
   it('should render correctly', () => {
@@ -46,14 +46,13 @@ describe('UserVocabularyExercisesScreen', () => {
     const wordChoiceExercise = getByText(getLabels().exercises.wordChoice.title)
     fireEvent.press(wordChoiceExercise)
     expect(navigation.navigate).toHaveBeenCalledWith('WordChoiceExercise', {
-      closeExerciseAction: CommonActions.navigate('UserVocabularyExercises', {
+      closeExerciseAction: CommonActions.navigate('SpecialExercises', {
         vocabularyItems,
         disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-        disciplineId: 0,
       }),
+      contentType: 'userVocabulary',
       vocabularyItems,
       disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-      disciplineId: 0,
     })
   })
 })

@@ -14,7 +14,8 @@ type ArticleChoiceExerciseScreenProps = {
 }
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
-  const { vocabularyItems, disciplineTitle, disciplineId } = route.params
+  const { vocabularyItems, contentType } = route.params
+  const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
 
   // Exclude articles 'keiner' and 'die (Plural)'
   const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
@@ -31,7 +32,6 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
       <SingleChoiceExercise
         vocabularyItems={singularVocabularyItems}
         disciplineId={disciplineId}
-        disciplineTitle={disciplineTitle}
         vocabularyItemToAnswer={vocabularyItemToAnswers}
         navigation={navigation}
         route={route}
