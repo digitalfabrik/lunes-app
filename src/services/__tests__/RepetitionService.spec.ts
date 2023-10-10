@@ -14,10 +14,10 @@ import {
   moveWordToPreviousSection,
   saveWordNodeCards,
   WordNodeCard,
-} from '../LongTermExerciseService'
+} from '../RepetitionService'
 import { milliSecondsToHours } from '../helpers'
 
-describe('LongTermExerciseService', () => {
+describe('RepetitionService', () => {
   const testVocabulary = new VocabularyItemBuilder(8).build()
   let testData: WordNodeCard[] = []
 

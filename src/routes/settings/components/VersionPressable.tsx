@@ -15,7 +15,7 @@ type VersionPressableProps = {
   onClickThresholdReached: () => void
 }
 
-export const CLICK_THRESHOLD = 10
+export const CLICK_THRESHOLD = 5
 
 const VersionPressable = ({ onClickThresholdReached }: VersionPressableProps): JSX.Element => {
   const [counter, setCounter] = useState<number>(0)

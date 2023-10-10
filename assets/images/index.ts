@@ -9,6 +9,7 @@ import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
 import BookIconBlack from './book-icon-black.svg'
+import BottomTabsIcon from './bottom-tabs-icon.svg'
 import CheckCircleIconBlue from './check-circle-icon-blue.svg'
 import CheckCircleIconBold from './check-circle-icon-bold.svg'
 import CheckCircleIconGreen from './check-circle-icon-green.svg'
@@ -44,6 +45,7 @@ import ImageCircleIcon from './image-circle-icon.svg'
 import ImageIcon from './image-icon.svg'
 import InfoCircleBlackIcon from './info-circle-icon-black.svg'
 import InfoCircleIcon from './info-circle-icon.svg'
+import LightBulbIconBlack from './lightbulb-black.svg'
 import ListIcon from './list-icon.svg'
 import LockIcon from './lock-icon.svg'
 import LunesIcon from './lunes-icon.svg'
@@ -108,6 +110,7 @@ export {
   CrystalBallIcon,
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
+  BottomTabsIcon,
   HappySmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,
@@ -122,6 +125,7 @@ export {
   ImageCircleIcon,
   InfoCircleIcon,
   InfoCircleBlackIcon,
+  LightBulbIconBlack,
   ListIcon,
   LockIcon,
   LunesIcon,

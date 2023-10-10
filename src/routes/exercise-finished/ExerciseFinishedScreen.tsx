@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, ComponentType } from 'react'
+import React, { ReactElement, ComponentType, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
@@ -9,13 +9,16 @@ import styled from 'styled-components/native'
 import {
   CloseIcon,
   CloseIconWhite,
+  BottomTabsIcon,
   HappySmileyIcon,
+  LightBulbIconBlack,
   OpenLockIcon,
   PartyHornIcon,
   RepeatIcon,
   SadSmileyCircleIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
+import Modal from '../../components/Modal'
 import PressableOpacity from '../../components/PressableOpacity'
 import RoundedBackground from '../../components/RoundedBackground'
 import RouteWrapper from '../../components/RouteWrapper'
@@ -24,7 +27,9 @@ import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
+import useLoadAsync from '../../hooks/useLoadAsync'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getDevMode } from '../../services/AsyncStorage'
 import { calculateScore, getLabels } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
 
@@ -52,6 +57,15 @@ const Results = styled(Content)<{ color: Color }>`
   color: ${props => props.color};
   padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
+const ContainerText = styled.Text`
+  text-align: center;
+  text-wrap: wrap;
+  margin: -22px ${props => props.theme.spacings.xl} ${props => props.theme.spacings.md}
+    ${props => props.theme.spacings.xl};
+  color: ${props => props.theme.colors.textSecondary};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+`
 
 type ExerciseFinishedScreenProps = {
   route: RouteProp<RoutesParams, 'ExerciseFinished'>
@@ -60,6 +74,8 @@ type ExerciseFinishedScreenProps = {
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, disciplineTitle, closeExerciseAction, unlockedNextExercise } = route.params
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
+  const { data: isDevMode } = useLoadAsync(getDevMode, null)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
@@ -133,6 +149,20 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
       bottomBackgroundColor={theme.colors.background}>
+      {exercise === EXERCISES.length - 1 && isDevMode && (
+        <Modal
+          visible={isModalVisible}
+          confirmationAction={() => navigation.navigate('RepetitionTab')}
+          cancelButtonText={getLabels().repetition.repeatLater}
+          confirmationButtonText={getLabels().repetition.repeatNow}
+          onClose={() => setIsModalVisible(false)}
+          testID='repetition-modal'
+          icon={<LightBulbIconBlack width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />}
+          text={getLabels().repetition.hintModalHeaderText}>
+          <ContainerText>{getLabels().repetition.hintModalContentText}</ContainerText>
+          <BottomTabsIcon style={{ marginBottom: 40 }} />
+        </Modal>
+      )}
       <Root>
         <RoundedBackground color={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>

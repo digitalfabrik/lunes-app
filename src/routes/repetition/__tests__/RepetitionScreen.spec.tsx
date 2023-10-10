@@ -5,6 +5,9 @@ import { getLabels } from '../../../services/helpers'
 import render from '../../../testing/render'
 import RepetitionScreen from '../RepetitionScreen'
 
+jest.mock('victory-native')
+jest.mock('@react-navigation/native')
+
 describe('RepetitionScreen', () => {
   const setVisible = jest.fn()
 
