@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
-import { Keyboard } from 'react-native'
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
 
@@ -20,9 +19,10 @@ import {
 } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import { VocabularyItemResult, RoutesParams } from '../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../services/AsyncStorage'
-import { getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
+import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
+import RepetitionWriteExerciseService from './services/RepetitionWriteExerciseService'
+import StandardWriteExerciseService from './services/StandardWriteExerciseService'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -45,78 +45,45 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const current = vocabularyItemWithResults[currentIndex]
   const needsToBeRepeated = current.numberOfTries < numberOfMaxRetries && current.result !== SIMPLE_RESULTS.correct
 
+  const writeExerciseService = useMemo(
+    () =>
+      contentType !== 'standard'
+        ? new RepetitionWriteExerciseService(
+            route,
+            navigation,
+            contentType,
+            setCurrentIndex,
+            setIsAnswerSubmitted,
+            setVocabularyItemWithResults
+          )
+        : new StandardWriteExerciseService(
+            route,
+            navigation,
+            contentType,
+            setCurrentIndex,
+            setIsAnswerSubmitted,
+            setVocabularyItemWithResults
+          ),
+    [contentType, route, navigation]
+  )
+
   const initializeExercise = useCallback(
-    (force = false) => {
-      if (vocabularyItems.length !== vocabularyItemWithResults.length || force) {
-        setCurrentIndex(0)
-        setIsAnswerSubmitted(false)
-        setVocabularyItemWithResults(
-          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
-        )
-      }
-    },
-    [vocabularyItems, vocabularyItemWithResults]
+    () => writeExerciseService.initializeExercise(vocabularyItems, vocabularyItemWithResults),
+    [vocabularyItems, vocabularyItemWithResults, writeExerciseService]
   )
 
   useEffect(initializeExercise, [initializeExercise])
 
   const tryLater = useCallback(() => {
-    // ImageViewer is not resized correctly if keyboard is not dismissed before going to next vocabularyItem
-    if (isKeyboardVisible) {
-      const onKeyboardHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        setVocabularyItemWithResults(moveToEnd(vocabularyItemWithResults, currentIndex))
-        onKeyboardHideSubscription.remove()
-      })
-      Keyboard.dismiss()
-    } else {
-      setVocabularyItemWithResults(moveToEnd(vocabularyItemWithResults, currentIndex))
-    }
-  }, [isKeyboardVisible, vocabularyItemWithResults, currentIndex])
+    writeExerciseService.tryLater(currentIndex, isKeyboardVisible, vocabularyItemWithResults)
+  }, [isKeyboardVisible, vocabularyItemWithResults, currentIndex, writeExerciseService])
 
-  const finishExercise = async (results: VocabularyItemResult[]): Promise<void> => {
-    if (contentType === 'standard') {
-      await saveExerciseProgress(route.params.disciplineId, ExerciseKeys.writeExercise, results)
-    }
-    navigation.navigate('ExerciseFinished', {
-      ...route.params,
-      vocabularyItems,
-      results,
-      exercise: ExerciseKeys.writeExercise,
-      unlockedNextExercise: false,
-    })
-    initializeExercise(true)
-  }
-
-  const continueExercise = async (): Promise<void> => {
-    setIsAnswerSubmitted(false)
-
-    if (currentIndex === vocabularyItemWithResults.length - 1 && !needsToBeRepeated) {
-      await finishExercise(vocabularyItemWithResults)
-    } else if (needsToBeRepeated) {
-      tryLater()
-    } else {
-      setCurrentIndex(oldValue => oldValue + 1)
-    }
-  }
-
-  const storeResult = (result: VocabularyItemResult): void => {
-    const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
-    if (current.vocabularyItem.id !== result.vocabularyItem.id) {
-      return
-    }
-    updatedVocabularyItemsWithResults[currentIndex] = result
-    setVocabularyItemWithResults(updatedVocabularyItemsWithResults)
-    setIsAnswerSubmitted(true)
+  const storeResult = async (result: VocabularyItemResult): Promise<void> => {
+    writeExerciseService.storeResult(result, vocabularyItemWithResults, current, currentIndex)
   }
 
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
-    const cheatedVocabularyItems = vocabularyItemWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
-    await finishExercise(cheatedVocabularyItems)
-  }
-
-  const giveUp = async (): Promise<void> => {
-    setIsAnswerSubmitted(true)
-    storeResult({ ...current, result: 'incorrect', numberOfTries: current.numberOfTries + 1 })
+    await writeExerciseService.cheatExercise(result, vocabularyItems, vocabularyItemWithResults)
   }
 
   const buttonLabel =
@@ -147,14 +114,22 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             <Button
               label={buttonLabel}
               iconRight={ArrowRightIcon}
-              onPress={continueExercise}
+              onPress={() =>
+                writeExerciseService.continueExercise(
+                  currentIndex,
+                  needsToBeRepeated,
+                  vocabularyItemWithResults,
+                  vocabularyItems,
+                  isKeyboardVisible
+                )
+              }
               buttonTheme={BUTTONS_THEME.contained}
             />
           ) : (
             <>
               <Button
                 label={getLabels().exercises.write.showSolution}
-                onPress={giveUp}
+                onPress={() => writeExerciseService.giveUp(vocabularyItemWithResults, current, currentIndex)}
                 buttonTheme={BUTTONS_THEME.outlined}
               />
               {currentIndex < vocabularyItems.length - 1 && (
