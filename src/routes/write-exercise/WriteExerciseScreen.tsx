@@ -47,11 +47,10 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
 
   const writeExerciseService = useMemo(
     () =>
-      contentType !== 'standard'
+      contentType === 'repetition'
         ? new RepetitionWriteExerciseService(
             route,
             navigation,
-            contentType,
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults
@@ -59,7 +58,6 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
         : new StandardWriteExerciseService(
             route,
             navigation,
-            contentType,
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults
@@ -78,9 +76,8 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
     writeExerciseService.tryLater(currentIndex, isKeyboardVisible, vocabularyItemWithResults)
   }, [isKeyboardVisible, vocabularyItemWithResults, currentIndex, writeExerciseService])
 
-  const storeResult = async (result: VocabularyItemResult): Promise<void> => {
+  const storeResult = async (result: VocabularyItemResult): Promise<void> =>
     writeExerciseService.storeResult(result, vocabularyItemWithResults, current, currentIndex)
-  }
 
   const cheatExercise = async (result: SimpleResult): Promise<void> => {
     await writeExerciseService.cheatExercise(result, vocabularyItems, vocabularyItemWithResults)
