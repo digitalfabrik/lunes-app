@@ -31,10 +31,11 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     vocabularyItemWithResults: VocabularyItemResult[]
   ): Promise<void> => {
     const cheatedVocabularyItems = vocabularyItemWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
-    cheatedVocabularyItems.forEach(async vocabularyItem => {
+    /* eslint-disable no-restricted-syntax */
+    for (const vocabularyItem of cheatedVocabularyItems) {
       /* eslint-disable no-await-in-loop */
       await RepetitionService.updateWordNodeCard(vocabularyItem)
-    })
+    }
     await this.finishExercise()
   }
 }
