@@ -1,3 +1,5 @@
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -9,6 +11,9 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
+import useLoadAsync from '../../hooks/useLoadAsync'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import { RepetitionService } from '../../services/RepetitionService'
 import { getLabels } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
 
@@ -60,17 +65,39 @@ const ModalContainer = styled.View`
   height: ${hp('24%')}px;
 `
 
-const RepetitionScreen = (): ReactElement => {
+type RepetitionScreenProps = {
+  navigation: StackNavigationProp<RoutesParams, 'Repetition'>
+}
+const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
+  const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
+    RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
+    undefined
+  )
+
+  useFocusEffect(refreshNumberOfWordsNeedingRepetition)
+
+  const navigate = async () => {
+    const closeExerciseAction = CommonActions.navigate('Repetition')
+    const wordNodeCards = await RepetitionService.getWordNodeCardsForNextRepetition()
+    if (wordNodeCards.length > 0) {
+      navigation.navigate('WriteExercise', {
+        vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
+        contentType: 'repetition',
+        disciplineTitle: '',
+        closeExerciseAction,
+      })
+    }
+  }
 
   return (
     <RouteWrapper>
       <Root>
         <StyledHeading>{repeatWords}</StyledHeading>
         <Container>
-          <TextContainer>{wordsToRepeat}</TextContainer>
-          <Button onPress={() => setIsModalVisible(true)} label={repeatNow} buttonTheme={BUTTONS_THEME.contained} />
+          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${wordsToRepeat}`}</TextContainer>
+          <Button onPress={navigate} label={repeatNow} buttonTheme={BUTTONS_THEME.contained} />
         </Container>
         <Container>
           <HeaderWrapper>
@@ -86,11 +113,9 @@ const RepetitionScreen = (): ReactElement => {
           </HeaderWrapper>
           <RepetitionProgressChart />
         </Container>
-        {isModalVisible && (
-          <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='info-modal'>
-            <ModalContainer />
-          </ModalSkeleton>
-        )}
+        <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='infoModal'>
+          <ModalContainer />
+        </ModalSkeleton>
       </Root>
     </RouteWrapper>
   )

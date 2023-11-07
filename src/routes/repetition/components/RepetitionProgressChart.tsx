@@ -5,7 +5,7 @@ import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from
 
 import theme from '../../../constants/theme'
 import useLoadAsync from '../../../hooks/useLoadAsync'
-import { getNumberOfWordsInEachSection, sections } from '../../../services/RepetitionService'
+import { RepetitionService, sections } from '../../../services/RepetitionService'
 import { getLabels } from '../../../services/helpers'
 
 const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
@@ -15,7 +15,7 @@ const RepetitionProgressChart: () => ReactElement = () => {
   const { words } = getLabels().general
 
   const getChartData = useCallback(async () => {
-    const data = await getNumberOfWordsInEachSection()
+    const data = await RepetitionService.getNumberOfWordsInEachSection()
     return data.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
   }, [])
 

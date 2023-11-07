@@ -10,7 +10,7 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { getAllWords } from '../../../hooks/useGetAllWords'
 import useLoadAsync from '../../../hooks/useLoadAsync'
 import { toggleDevMode, getDevMode, setOverwriteCMS } from '../../../services/AsyncStorage'
-import { addDays, saveWordNodeCards, sections } from '../../../services/RepetitionService'
+import { RepetitionService, sections } from '../../../services/RepetitionService'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
@@ -65,16 +65,16 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
     refresh()
   }
 
-  const NUMBER_OF_TEST_VOCABULARY = 50
+  const NUMBER_OF_TEST_VOCABULARY = 5
   const MAX_DAYS_IN_A_SECTION = 100
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
     const allWords = await getAllWords()
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       word: vocabularyItem,
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
-      inThisSectionSince: addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
+      inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
-    await saveWordNodeCards(wordCards)
+    await RepetitionService.saveWordNodeCards(wordCards)
   }
 
   return (

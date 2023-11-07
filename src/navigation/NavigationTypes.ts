@@ -9,6 +9,8 @@ export type VocabularyItemResult = {
   numberOfTries: number
 }
 
+export type ContentType = 'standard' | 'userVocabulary' | 'repetition'
+
 type StandardExercise = {
   contentType: 'standard'
   disciplineId: number
