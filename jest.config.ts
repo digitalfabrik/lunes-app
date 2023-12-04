@@ -10,6 +10,7 @@ export default {
     '.+\\.(styl|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '\\.(css|less)$': 'identity-obj-proxy',
     '\\.svg': '<rootDir>/__mocks__/svgrMock.js',
+    '^axios$': 'axios/dist/axios.js',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {

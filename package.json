@@ -32,7 +32,7 @@
     "@react-navigation/stack": "6.2.2",
     "@sentry/react-native": "^5.0.0",
     "@sentry/types": "^7.39.0",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "axios-cache-interceptor": "0.10.6",
     "deprecated-react-native-prop-types": "^4.0.0",
     "normalize-strings": "^1.1.1",
