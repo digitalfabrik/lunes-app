@@ -4,4 +4,4 @@
 
 
 app_identifier("app.lunes") # The bundle identifier of your app
-apple_id("delivery@lunes.app") # Your Apple email address
+apple_id("app-team@integreat-app.de") # Your Apple email address
