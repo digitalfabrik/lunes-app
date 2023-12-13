@@ -169,7 +169,7 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
     vocabularyItemsWithResults
       .filter(doc => doc.result === 'correct')
       .reduce((acc, vocabularyItemResult) => {
-        let score = acc
+        let score: number = acc
         switch (vocabularyItemResult.numberOfTries) {
           case 1:
             score += SCORE_FIRST_TRY
@@ -228,3 +228,16 @@ export const willNextExerciseUnlock = (previousScore: number | undefined, score:
 export const millisecondsToDays = (milliseconds: number): number => milliseconds / (24 * 60 * 60 * 1000)
 /* eslint-disable-next-line no-magic-numbers */
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
+
+export const splitTextBySearchString = (allText: string, highlight: string): [string] | [string, string, string] => {
+  const highlightIndex = normalizeStrings(allText.toLowerCase()).indexOf(normalizeStrings(highlight.toLowerCase()))
+  if (highlightIndex === -1) {
+    return [allText]
+  }
+  const indexAfterHighlight = highlightIndex + highlight.length
+  return [
+    allText.slice(0, highlightIndex),
+    allText.slice(highlightIndex, indexAfterHighlight),
+    allText.slice(indexAfterHighlight),
+  ]
+}

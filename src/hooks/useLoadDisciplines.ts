@@ -9,11 +9,15 @@ export type RequestParams =
     }
   | {
       parent: Discipline | null
+      allLevels?: boolean
     }
 
 const getEndpoint = (params: RequestParams): string => {
   if (isTypeLoadProtected(params)) {
     return ENDPOINTS.groupInfo
+  }
+  if (params.allLevels) {
+    return `${ENDPOINTS.discipline}/`
   }
   if (params.parent?.needsTrainingSetEndpoint) {
     return `${ENDPOINTS.trainingSet}/${params.parent.id}`
