@@ -55,9 +55,19 @@ const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.md} auto;
 `
 
-export const searchProfessions = (disciplines: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
-  disciplines?.filter(discipline =>
-    normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase()))
+export const searchProfessions = (
+  disciplines: Discipline[] | null,
+  searchKey: string,
+  selectedDisciplineIds: number[] | null
+): Discipline[] | undefined =>
+  disciplines?.filter(
+    discipline =>
+      normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase())) &&
+      // don't show professions that have already been selected
+      selectedDisciplineIds?.reduce(
+        (previousId, currentId) => previousId + (currentId === discipline.id ? 1 : 0),
+        0
+      ) === 0
   )
 
 type IntroScreenProps = {
@@ -73,8 +83,8 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const [searchString, setSearchString] = useState<string>('')
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
   const filteredProfessions = useMemo(
-    () => searchProfessions(allProfessions, searchString),
-    [allProfessions, searchString]
+    () => searchProfessions(allProfessions, searchString, selectedProfessions),
+    [allProfessions, searchString, selectedProfessions]
   )
   const theme = useTheme()
 

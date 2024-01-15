@@ -11,6 +11,7 @@ import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
+import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
@@ -43,6 +44,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
           initialParams={{ initialSelection: true }}
           options={({ navigation }) => options(manageSelection, navigation)}
         />
+        <Stack.Screen name='ManageSelection' component={ManageSelectionsScreen} />
         <Stack.Screen
           name='OverlayMenu'
           component={OverlayMenu}
