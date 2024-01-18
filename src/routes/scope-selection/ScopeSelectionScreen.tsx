@@ -22,8 +22,9 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { pushSelectedProfession, setSelectedProfessions } from '../../services/AsyncStorage'
 import { getLabels, splitTextBySearchString } from '../../services/helpers'
 
-const HighlightContainer = styled.View`
+const HighlightContainer = styled.Text<{ disabled: boolean }>`
   flex-direction: row;
+  color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
 `
 
 const BoldText = styled.Text`
@@ -51,24 +52,26 @@ const ScopeContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
 `
 
+const ButtonSecondLine = styled.Text<{ disabled: boolean }>`
+  color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
+`
+
 const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.md} auto;
 `
 
-export const searchProfessions = (
-  disciplines: Discipline[] | null,
-  searchKey: string,
-  selectedDisciplineIds: number[] | null
-): Discipline[] | undefined =>
-  disciplines?.filter(
-    discipline =>
-      normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase())) &&
-      // don't show professions that have already been selected
-      selectedDisciplineIds?.reduce(
-        (previousId, currentId) => previousId + (currentId === discipline.id ? 1 : 0),
-        0
-      ) === 0
+export const searchProfessions = (disciplines: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
+  disciplines?.filter(discipline =>
+    normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase()))
   )
+
+const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
+  <HighlightContainer disabled={disabled}>
+    <Text>{textArray[0]}</Text>
+    <BoldText>{textArray[1]}</BoldText>
+    <Text>{textArray[2]}</Text>
+  </HighlightContainer>
+)
 
 type IntroScreenProps = {
   route: RouteProp<RoutesParams, 'ScopeSelection'>
@@ -83,8 +86,8 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const [searchString, setSearchString] = useState<string>('')
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
   const filteredProfessions = useMemo(
-    () => searchProfessions(allProfessions, searchString, selectedProfessions),
-    [allProfessions, searchString, selectedProfessions]
+    () => searchProfessions(allProfessions, searchString),
+    [allProfessions, searchString]
   )
   const theme = useTheme()
 
@@ -110,14 +113,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
       routes: [{ name: 'BottomTabNavigator' }],
     })
   }
-
-  const highlightText = (textArray: [string] | [string, string, string]): JSX.Element => (
-    <HighlightContainer>
-      <Text>{textArray[0]}</Text>
-      <BoldText>{textArray[1]}</BoldText>
-      <Text>{textArray[2]}</Text>
-    </HighlightContainer>
-  )
 
   const disciplineItems = disciplines?.map(item => (
     <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} hasBadge={false} />
@@ -150,19 +145,23 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
         </SearchContainer>
         {showSearchResults ? (
           <ScopeContainer>
-            {filteredProfessions?.map(profession => (
-              <Pressable
-                key={profession.id}
-                onPress={async () => {
-                  await pushSelectedProfession(profession.id).then(() => {
-                    navigation.navigate('ManageSelection')
-                  })
-                }}>
-                {highlightText(splitTextBySearchString(profession.title, searchString))}
-                <Text>{profession.parentTitle}</Text>
-                <HorizontalLine />
-              </Pressable>
-            ))}
+            {filteredProfessions?.map(profession => {
+              const disabled = !!selectedProfessions?.includes(profession.id)
+              return (
+                <Pressable
+                  key={profession.id}
+                  onPress={async () => {
+                    await pushSelectedProfession(profession.id).then(() => {
+                      navigation.navigate('ManageSelection')
+                    })
+                  }}
+                  disabled={disabled}>
+                  {highlightText(splitTextBySearchString(profession.title, searchString), disabled)}
+                  <ButtonSecondLine disabled={disabled}>{profession.parentTitle}</ButtonSecondLine>
+                  <HorizontalLine />
+                </Pressable>
+              )
+            })}
           </ScopeContainer>
         ) : (
           <ServerResponseHandler error={error} loading={loading} refresh={refresh}>

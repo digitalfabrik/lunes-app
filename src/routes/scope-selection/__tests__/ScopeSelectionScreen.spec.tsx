@@ -91,16 +91,15 @@ describe('ScopeSelection', () => {
   describe('searchProfessions', () => {
     it('should find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'disc', [])).toStrictEqual(professions)
-      expect(searchProfessions(professions, 'SECOND', [3])).toStrictEqual([professions[1]])
-      expect(searchProfessions(professions, 'd discipline', [])).toStrictEqual([professions[1], professions[2]])
+      expect(searchProfessions(professions, 'disc')).toStrictEqual(professions)
+      expect(searchProfessions(professions, 'SECOND')).toStrictEqual([professions[1]])
+      expect(searchProfessions(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
     })
 
     it('should not find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'fourth discipline', [])).toStrictEqual([])
-      expect(searchProfessions(professions, 'Maler', [])).toStrictEqual([])
-      expect(searchProfessions(professions, 'second', [2])).toStrictEqual([])
+      expect(searchProfessions(professions, 'fourth discipline')).toStrictEqual([])
+      expect(searchProfessions(professions, 'Maler')).toStrictEqual([])
     })
   })
 })
