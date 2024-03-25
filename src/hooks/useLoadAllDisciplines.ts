@@ -5,7 +5,7 @@ import useLoadAsync, { Return } from './useLoadAsync'
 
 export const loadAllDisciplines = async (): Promise<ServerResponseDiscipline[]> => {
   const endpoint = `${ENDPOINTS.discipline}/`
-  return await getFromEndpoint<ServerResponseDiscipline[]>(endpoint)
+  return getFromEndpoint<ServerResponseDiscipline[]>(endpoint)
 }
 
 export const useLoadAllDisciplines = (): Return<ServerResponseDiscipline[]> => useLoadAsync(loadAllDisciplines, {})
