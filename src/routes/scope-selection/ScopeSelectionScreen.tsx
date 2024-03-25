@@ -2,7 +2,7 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import normalize from 'normalize-strings'
 import React, { useLayoutEffect, useMemo, useState } from 'react'
-import { Pressable, Text } from 'react-native'
+import { Pressable, ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../components/Button'
@@ -12,10 +12,12 @@ import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
-import { ContentSecondary } from '../../components/text/Content'
+import { ContentSecondary, ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
+import { formatDiscipline } from '../../hooks/helpers'
+import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -25,14 +27,6 @@ import { getLabels, splitTextBySearchString } from '../../services/helpers'
 const HighlightContainer = styled.Text<{ disabled: boolean }>`
   flex-direction: row;
   color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
-`
-
-const BoldText = styled.Text`
-  font-weight: bold;
-`
-
-const StyledScrollView = styled.ScrollView`
-  background-color: ${props => props.theme.colors.background};
 `
 
 const TextContainer = styled.View`
@@ -52,24 +46,20 @@ const ScopeContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
 `
 
-const ButtonSecondLine = styled.Text<{ disabled: boolean }>`
-  color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
-`
-
 const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.md} auto;
 `
 
-export const searchProfessions = (disciplines: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
+export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
   disciplines?.filter(discipline =>
     normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase()))
   )
 
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
   <HighlightContainer disabled={disabled}>
-    <Text>{textArray[0]}</Text>
-    <BoldText>{textArray[1]}</BoldText>
-    <Text>{textArray[2]}</Text>
+    <ContentTextLight>{textArray[0]}</ContentTextLight>
+    <ContentTextBold>{textArray[1]}</ContentTextBold>
+    <ContentTextLight>{textArray[2]}</ContentTextLight>
   </HighlightContainer>
 )
 
@@ -82,7 +72,9 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const { initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
-  const { data: allProfessions } = useLoadDisciplines({ onlyChildren: true })
+  const allProfessions = useLoadAllDisciplines()
+    .data?.filter(discipline => discipline.total_discipline_children === 0)
+    .map(discipline => formatDiscipline(discipline, {}))
   const [searchString, setSearchString] = useState<string>('')
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
   const filteredProfessions = useMemo(
@@ -122,7 +114,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     <RouteWrapper
       backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
       lightStatusBarContent={initialSelection}>
-      <StyledScrollView>
+      <ScrollView>
         {initialSelection && <Header />}
 
         <TextContainer>
@@ -157,7 +149,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
                   }}
                   disabled={disabled}>
                   {highlightText(splitTextBySearchString(profession.title, searchString), disabled)}
-                  <ButtonSecondLine disabled={disabled}>{profession.parentTitle}</ButtonSecondLine>
                   <HorizontalLine />
                 </Pressable>
               )
@@ -181,7 +172,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
             />
           </ButtonContainer>
         )}
-      </StyledScrollView>
+      </ScrollView>
     </RouteWrapper>
   )
 }
