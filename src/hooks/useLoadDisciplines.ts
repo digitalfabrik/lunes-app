@@ -8,7 +8,7 @@ export type RequestParams =
       apiKey: string
     }
   | {
-      parent: Discipline | null
+      parent?: Discipline | null
     }
 
 const getEndpoint = (params: RequestParams): string => {
@@ -28,7 +28,7 @@ export const loadDisciplines = async (loadingInfo: RequestParams): Promise<Disci
   const url = getEndpoint(loadingInfo)
   const apiKey = isTypeLoadProtected(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey
   const response = await getFromEndpoint<ServerResponseDiscipline[]>(url, apiKey)
-  return response.map(item => formatDiscipline(item, loadingInfo))
+  return response.map(discipline => formatDiscipline(discipline, loadingInfo))
 }
 
 export const useLoadDisciplines = (loadingInfo: RequestParams): Return<Discipline[]> =>

@@ -25,7 +25,7 @@ export const ContentSecondaryLight = styled(ContentSecondary)`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
-export const ContentTextLight = styled(ContentText)`
+export const ContentTextLight = styled(Content)`
   font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 

@@ -8,16 +8,17 @@ import CustomTextInput from './CustomTextInput'
 type SearchBarProps = {
   query: string
   setQuery: (input: string) => void
+  placeholder?: string
 }
 
-const SearchBar = ({ query, setQuery }: SearchBarProps): ReactElement => {
+const SearchBar = ({ query, setQuery, placeholder = getLabels().search.enterWord }: SearchBarProps): ReactElement => {
   const theme = useTheme()
   return (
     <CustomTextInput
       value={query}
       clearable
       onChangeText={setQuery}
-      placeholder={getLabels().search.enterWord}
+      placeholder={placeholder}
       rightContainer={<MagnifierIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />}
     />
   )

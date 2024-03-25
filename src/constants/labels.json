@@ -3,7 +3,8 @@
     "welcome": "Willkommen bei Lunes!",
     "selectProfession": "Wähle deinen Beruf!",
     "skipSelection": "Überspringen",
-    "confirmSelection": "Starten"
+    "confirmSelection": "Starten",
+    "searchProfession": "Nach Beruf suchen"
   },
   "home": {
     "welcome": "Willkommen bei Lunes!",

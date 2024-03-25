@@ -1,33 +1,32 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useLayoutEffect } from 'react'
+import normalize from 'normalize-strings'
+import React, { useLayoutEffect, useMemo, useState } from 'react'
+import { Pressable, ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../components/Button'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import Header from '../../components/Header'
+import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
+import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
-import { ContentSecondary } from '../../components/text/Content'
+import { ContentSecondary, ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
+import { formatDiscipline } from '../../hooks/helpers'
+import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { setSelectedProfessions } from '../../services/AsyncStorage'
-import { getLabels } from '../../services/helpers'
+import { pushSelectedProfession, setSelectedProfessions } from '../../services/AsyncStorage'
+import { getLabels, splitTextBySearchString } from '../../services/helpers'
 
-const DisciplineContainer = styled.View`
-  margin: 0 ${props => props.theme.spacings.sm};
-`
-
-const ButtonContainer = styled.View`
-  margin: ${props => props.theme.spacings.md} auto;
-`
-
-const StyledText = styled(ContentSecondary)`
-  text-align: center;
+const HighlightContainer = styled.Text<{ disabled: boolean }>`
+  flex-direction: row;
+  color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
 `
 
 const TextContainer = styled.View`
@@ -35,9 +34,34 @@ const TextContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
-const StyledScrollView = styled.ScrollView`
-  background-color: ${props => props.theme.colors.background};
+const StyledText = styled(ContentSecondary)`
+  text-align: center;
 `
+
+const SearchContainer = styled.View`
+  margin: ${props => props.theme.spacings.sm};
+`
+
+const ScopeContainer = styled.View`
+  margin: 0 ${props => props.theme.spacings.sm};
+`
+
+const ButtonContainer = styled.View`
+  margin: ${props => props.theme.spacings.md} auto;
+`
+
+export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
+  disciplines?.filter(discipline =>
+    normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase()))
+  )
+
+const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
+  <HighlightContainer disabled={disabled}>
+    <ContentTextLight>{textArray[0]}</ContentTextLight>
+    <ContentTextBold>{textArray[1]}</ContentTextBold>
+    <ContentTextLight>{textArray[2]}</ContentTextLight>
+  </HighlightContainer>
+)
 
 type IntroScreenProps = {
   route: RouteProp<RoutesParams, 'ScopeSelection'>
@@ -48,6 +72,15 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const { initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const allProfessions = useLoadAllDisciplines()
+    .data?.filter(discipline => discipline.total_discipline_children === 0)
+    .map(discipline => formatDiscipline(discipline, {}))
+  const [searchString, setSearchString] = useState<string>('')
+  const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
+  const filteredProfessions = useMemo(
+    () => searchProfessions(allProfessions, searchString),
+    [allProfessions, searchString]
+  )
   const theme = useTheme()
 
   useFocusEffect(refreshSelectedProfessions)
@@ -81,7 +114,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     <RouteWrapper
       backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
       lightStatusBarContent={initialSelection}>
-      <StyledScrollView>
+      <ScrollView>
         {initialSelection && <Header />}
 
         <TextContainer>
@@ -92,9 +125,40 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           )}
           <StyledText>{getLabels().scopeSelection.selectProfession}</StyledText>
         </TextContainer>
-        <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-          <DisciplineContainer>{disciplineItems}</DisciplineContainer>
-        </ServerResponseHandler>
+        <SearchContainer>
+          <SearchBar
+            query={searchString}
+            setQuery={input => {
+              setSearchString(input)
+              setShowSearchResults(input.length > 0)
+            }}
+            placeholder={getLabels().scopeSelection.searchProfession}
+          />
+        </SearchContainer>
+        {showSearchResults ? (
+          <ScopeContainer>
+            {filteredProfessions?.map(profession => {
+              const disabled = !!selectedProfessions?.includes(profession.id)
+              return (
+                <Pressable
+                  key={profession.id}
+                  onPress={async () => {
+                    await pushSelectedProfession(profession.id).then(() => {
+                      navigation.navigate('ManageSelection')
+                    })
+                  }}
+                  disabled={disabled}>
+                  {highlightText(splitTextBySearchString(profession.title, searchString), disabled)}
+                  <HorizontalLine />
+                </Pressable>
+              )
+            })}
+          </ScopeContainer>
+        ) : (
+          <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+            <ScopeContainer>{disciplineItems}</ScopeContainer>
+          </ServerResponseHandler>
+        )}
         {initialSelection && (
           <ButtonContainer>
             <Button
@@ -108,7 +172,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
             />
           </ButtonContainer>
         )}
-      </StyledScrollView>
+      </ScrollView>
     </RouteWrapper>
   )
 }
