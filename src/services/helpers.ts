@@ -108,7 +108,7 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   }
   const progress = await getExerciseProgress()
   const firstUnfinishedDisciplineId = leafDisciplineIds.find(
-    id => getNumberOfUnlockedExercisesByProgress(id, progress) < EXERCISES.length
+    id => getNumberOfUnlockedExercisesByProgress(id, progress) < EXERCISES.length,
   )
 
   if (!firstUnfinishedDisciplineId) {
@@ -141,7 +141,7 @@ export const getProgress = async (profession: Discipline | null): Promise<number
   const progress = await getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
     (acc, leaf) => acc + getNumberOfUnlockedExercisesByProgress(leaf, progress),
-    0
+    0,
   )
   const totalExercises = profession.leafDisciplines.length * EXERCISES.length
   return doneExercises / totalExercises
@@ -188,7 +188,7 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
 
 const normalizeSearchString = (searchString: string): string => {
   const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
-    searchString.split(' ')[0].toLowerCase()
+    searchString.split(' ')[0].toLowerCase(),
   )
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString
@@ -197,12 +197,12 @@ const normalizeSearchString = (searchString: string): string => {
 
 export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: string): boolean =>
   vocabularyItem.alternatives.filter(alternative =>
-    normalizeStrings(alternative.word).toLowerCase().includes(normalizeSearchString(searchString))
+    normalizeStrings(alternative.word).toLowerCase().includes(normalizeSearchString(searchString)),
   ).length > 0
 
 export const getSortedAndFilteredVocabularyItems = (
   vocabularyItems: VocabularyItem[] | null,
-  searchString: string
+  searchString: string,
 ): VocabularyItem[] => {
   const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
 
@@ -216,7 +216,7 @@ export const getSortedAndFilteredVocabularyItems = (
   const filteredVocabularyItems = vocabularyItems?.filter(
     item =>
       normalizeStrings(item.word).toLowerCase().includes(normalizedSearchString) ||
-      matchAlternative(item, normalizedSearchString)
+      matchAlternative(item, normalizedSearchString),
   )
   return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }

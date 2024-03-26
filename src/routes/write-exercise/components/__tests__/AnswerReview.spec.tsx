@@ -30,8 +30,8 @@ describe('AnswerReview', () => {
       queryByText(
         `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
           getLabels().exercises.write.feedback.almostCorrect2
-        }`
-      )
+        }`,
+      ),
     ).toBeTruthy()
   })
 
@@ -42,8 +42,8 @@ describe('AnswerReview', () => {
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           vocabularyItem.article.value
-        } ${vocabularyItem.word}“`
-      )
+        } ${vocabularyItem.word}“`,
+      ),
     ).toBeTruthy()
   })
   it('should render incorrect answer review with retries not exceeded', () => {
@@ -53,8 +53,8 @@ describe('AnswerReview', () => {
       queryByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           vocabularyItem.article.value
-        } ${vocabularyItem.word}“`
-      )
+        } ${vocabularyItem.word}“`,
+      ),
     ).toBeTruthy()
   })
 })

@@ -17,7 +17,7 @@ describe('RepetitionScreen', () => {
 
   it('should render screen correctly', async () => {
     mocked(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound).mockImplementation(() =>
-      Promise.resolve(2)
+      Promise.resolve(2),
     )
     const { getByText, getByTestId } = render(<RepetitionScreen navigation={navigation} />)
     await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat}`)).toBeDefined())

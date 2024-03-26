@@ -14,7 +14,7 @@ describe('ServerResponseHandler', () => {
     const { getByText } = render(
       <ServerResponseHandler error={error} loading={false} refresh={refresh}>
         TestContent
-      </ServerResponseHandler>
+      </ServerResponseHandler>,
     )
 
     expect(getByText(error.message)).toBeTruthy()
@@ -26,7 +26,7 @@ describe('ServerResponseHandler', () => {
     const { getByTestId } = render(
       <ServerResponseHandler error={null} loading refresh={refresh}>
         TestContent
-      </ServerResponseHandler>
+      </ServerResponseHandler>,
     )
 
     expect(getByTestId('loading')).toBeTruthy()
@@ -36,7 +36,7 @@ describe('ServerResponseHandler', () => {
     const { getByText } = render(
       <ServerResponseHandler error={null} loading={false} refresh={refresh}>
         <Text>TestContent</Text>
-      </ServerResponseHandler>
+      </ServerResponseHandler>,
     )
 
     expect(getByText('TestContent')).toBeTruthy()

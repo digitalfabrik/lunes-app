@@ -80,7 +80,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
         !!currentIndex &&
         allSize > 1 &&
         imagesUrls.map((item, index) =>
-          index + 1 === currentIndex ? <ActiveDot key={item.url} /> : <Dot key={item.url} />
+          index + 1 === currentIndex ? <ActiveDot key={item.url} /> : <Dot key={item.url} />,
         )}
     </PaginationView>
   )

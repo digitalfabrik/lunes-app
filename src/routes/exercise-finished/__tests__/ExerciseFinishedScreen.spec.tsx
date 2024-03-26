@@ -17,7 +17,7 @@ describe('ExerciseFinishedScreen', () => {
   const getRoute = (
     exerciseKey: ExerciseKey,
     correct: boolean,
-    unlockedNextExercise: boolean
+    unlockedNextExercise: boolean,
   ): RouteProp<RoutesParams, 'ExerciseFinished'> => ({
     key: '',
     name: 'ExerciseFinished',
@@ -64,11 +64,11 @@ describe('ExerciseFinishedScreen', () => {
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(
       getByText(
-        `${getLabels().results.unlockExercise.part1}, ${EXERCISES[2].title} ${getLabels().results.unlockExercise.part2}`
-      )
+        `${getLabels().results.unlockExercise.part1}, ${EXERCISES[2].title} ${getLabels().results.unlockExercise.part2}`,
+      ),
     ).toBeDefined()
     expect(
-      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.words} ${getLabels().results.correct}`)
+      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.words} ${getLabels().results.correct}`),
     ).toBeDefined()
     const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)

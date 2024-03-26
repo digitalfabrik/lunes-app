@@ -14,7 +14,7 @@ describe('RouteWrapper', () => {
     const { queryByTestId } = render(
       <RouteWrapper bottomBackgroundColor={theme.colors.background}>
         <div />
-      </RouteWrapper>
+      </RouteWrapper>,
     )
     expect(queryByTestId('hiddenContainer')).toBeDefined()
     Platform.OS = platform
@@ -26,7 +26,7 @@ describe('RouteWrapper', () => {
     const { queryByTestId } = render(
       <RouteWrapper bottomBackgroundColor={theme.colors.background}>
         <div />
-      </RouteWrapper>
+      </RouteWrapper>,
     )
     expect(queryByTestId('hiddenContainer')).toBeNull()
     Platform.OS = platform

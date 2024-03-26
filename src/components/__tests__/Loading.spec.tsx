@@ -12,7 +12,7 @@ describe('Loading', () => {
     render(
       <Loading isLoading={isLoading}>
         <Text>{childText}</Text>
-      </Loading>
+      </Loading>,
     )
 
   it('should not render children when isLoading is true', () => {

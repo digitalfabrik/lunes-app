@@ -23,7 +23,7 @@ describe('ListItem', () => {
         badgeLabel={badge}
         arrowDisabled={arrowDisabled}
         disabled={disabled}
-      />
+      />,
     )
 
   it('should render texts', () => {

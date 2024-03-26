@@ -13,7 +13,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     result: VocabularyItemResult,
     vocabularyItemWithResults: VocabularyItemResult[],
     current: VocabularyItemResult,
-    currentIndex: number
+    currentIndex: number,
   ): Promise<void> => {
     const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
     if (current.vocabularyItem.id !== result.vocabularyItem.id) {
@@ -28,7 +28,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
   cheatExercise = async (
     result: SimpleResult,
     vocabularyItems: VocabularyItem[],
-    vocabularyItemWithResults: VocabularyItemResult[]
+    vocabularyItemWithResults: VocabularyItemResult[],
   ): Promise<void> => {
     const cheatedVocabularyItems = vocabularyItemWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
     /* eslint-disable no-restricted-syntax */

@@ -21,7 +21,7 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
   const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
 
   const singularVocabularyItems = vocabularyItems.filter(it =>
-    answerOptions.some(answerOption => JSON.stringify(it.article) === JSON.stringify(answerOption))
+    answerOptions.some(answerOption => JSON.stringify(it.article) === JSON.stringify(answerOption)),
   )
 
   const vocabularyItemToAnswers = (vocabularyItem: VocabularyItem): Answer[] =>

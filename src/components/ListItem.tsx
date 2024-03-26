@@ -159,7 +159,7 @@ const ListItem = ({
       }
       setPressInY(null)
     },
-    [pressInY, updatePressed, onPress]
+    [pressInY, updatePressed, onPress],
   )
 
   const titleToRender =

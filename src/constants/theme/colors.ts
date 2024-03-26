@@ -30,4 +30,4 @@ export const COLORS = {
   chartColor4: '#D9D9D9',
 }
 
-export type Color = typeof COLORS[keyof typeof COLORS]
+export type Color = (typeof COLORS)[keyof typeof COLORS]

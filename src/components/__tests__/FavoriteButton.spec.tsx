@@ -16,7 +16,7 @@ describe('FavoriteButton', () => {
     render(
       <NavigationContainer>
         <FavoriteButton vocabularyItem={vocabularyItem} />
-      </NavigationContainer>
+      </NavigationContainer>,
     )
 
   it('should add favorite on click', async () => {

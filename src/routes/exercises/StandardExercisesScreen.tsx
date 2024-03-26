@@ -78,7 +78,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
       getNumberOfUnlockedExercises(disciplineId)
         .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
         .catch(reportError)
-    }, [disciplineId])
+    }, [disciplineId]),
   )
 
   useEffect(() => {

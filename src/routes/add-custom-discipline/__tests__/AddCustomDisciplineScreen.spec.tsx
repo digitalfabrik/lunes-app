@@ -45,7 +45,7 @@ describe('AddCustomDisciplineScreen', () => {
     const submitButton = await findByText(getLabels().addCustomDiscipline.submitLabel)
     fireEvent.press(submitButton)
     await waitFor(() =>
-      expect(RNAsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_discipline"]')
+      expect(RNAsyncStorage.setItem).toHaveBeenCalledWith('customDisciplines', '["test","another_test_discipline"]'),
     )
     await waitFor(() => expect(navigation.goBack).toHaveBeenCalled())
   })
@@ -63,7 +63,7 @@ describe('AddCustomDisciplineScreen', () => {
 
   it('should show wrong-code-error', async () => {
     const { findByText, getByText, findByPlaceholderText } = render(
-      <AddCustomDisciplineScreen navigation={navigation} />
+      <AddCustomDisciplineScreen navigation={navigation} />,
     )
     mocked(loadDiscipline).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)

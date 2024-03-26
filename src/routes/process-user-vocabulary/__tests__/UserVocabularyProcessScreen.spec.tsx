@@ -63,7 +63,7 @@ describe('UserVocabularyProcessScreen', () => {
       <UserVocabularyProcessScreen
         navigation={navigation}
         route={getRoute({ ...itemToEdit, images: [itemToEdit.images[0]] })}
-      />
+      />,
     )
     const deleteThumbnail = getByTestId('delete-on-thumbnail')
     expect(getByText(getLabels().userVocabulary.creation.addImage)).not.toBeDisabled()
@@ -76,7 +76,7 @@ describe('UserVocabularyProcessScreen', () => {
     jest.spyOn(React, 'useState').mockImplementationOnce(() => [['image-1', 'image-2', 'image-3'], setState])
 
     const { getAllByTestId, getByText } = render(
-      <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />
+      <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />,
     )
     const a = getAllByTestId('delete-on-thumbnail')
     expect(a).toHaveLength(3)
@@ -97,7 +97,7 @@ describe('UserVocabularyProcessScreen', () => {
 
     it('should fill all fields correctly', async () => {
       const { getByPlaceholderText, getByTestId, getAllByTestId } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
       expect(textField.props.value).toEqual(itemToEdit.word)
@@ -109,7 +109,7 @@ describe('UserVocabularyProcessScreen', () => {
 
     it('should keep all fields except word if only word is updated', async () => {
       const { getByPlaceholderText, getByText } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
       fireEvent.changeText(textField, 'new-word')
@@ -127,7 +127,7 @@ describe('UserVocabularyProcessScreen', () => {
       jest.spyOn(ReactNativeFS, 'unlink')
 
       const { getByText, getAllByTestId } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(2)
       const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]

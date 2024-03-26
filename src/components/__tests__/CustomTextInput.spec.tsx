@@ -8,21 +8,21 @@ describe('CustomTextInput', () => {
 
   it('should show placeholder text', () => {
     const { getByPlaceholderText } = render(
-      <CustomTextInput value='' clearable placeholder='Test' onChangeText={onChangeText} />
+      <CustomTextInput value='' clearable placeholder='Test' onChangeText={onChangeText} />,
     )
     expect(getByPlaceholderText('Test')).toBeTruthy()
   })
 
   it('should not show clear indicator with empty input', () => {
     const { queryByTestId } = render(
-      <CustomTextInput value='' clearable placeholder='Test' onChangeText={onChangeText} />
+      <CustomTextInput value='' clearable placeholder='Test' onChangeText={onChangeText} />,
     )
     expect(queryByTestId('clearInput')).toBeNull()
   })
 
   it('should show indicator when input was set', () => {
     const { getByTestId } = render(
-      <CustomTextInput value='My Input' clearable placeholder='Test' onChangeText={onChangeText} />
+      <CustomTextInput value='My Input' clearable placeholder='Test' onChangeText={onChangeText} />,
     )
     expect(getByTestId('clearInput')).toBeTruthy()
   })
