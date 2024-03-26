@@ -25,7 +25,8 @@ describe('ImageCarousel', () => {
 
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
-  it('should display the images', async () => {
+  // TODO #1010: Uncomment after upgrading react-native and fixing roles
+  it.skip('should display the images', async () => {
     const { getByTestId, findAllByRole } = render(<ImageCarousel images={images} />)
 
     const row = getByTestId('Swipeable')
@@ -44,14 +45,13 @@ describe('ImageCarousel', () => {
     // as the image is then rendered and accessible by role, even without swiping
     swipeable.instance.loadImage(1) // load the second image
 
-    // TODO #1010: Uncomment after upgrading react-native and fixing roles
-    // const swipedDisplayedImages = await findAllByRole('image')
-    // expect(swipedDisplayedImages).toHaveLength(2)
-    //
-    // const swipedFirstImage = swipedDisplayedImages[0]
-    // expect(swipedFirstImage).toBe(firstImage)
-    //
-    // const secondImage = swipedDisplayedImages[1]
-    // expect(getUri(secondImage)).toBe('Arbeitsschuhe')
+    const swipedDisplayedImages = await findAllByRole('image')
+    expect(swipedDisplayedImages).toHaveLength(2)
+
+    const swipedFirstImage = swipedDisplayedImages[0]
+    expect(swipedFirstImage).toBe(firstImage)
+
+    const secondImage = swipedDisplayedImages[1]
+    expect(getUri(secondImage)).toBe('Arbeitsschuhe')
   })
 })
