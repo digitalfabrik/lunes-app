@@ -55,29 +55,29 @@ describe('Button', () => {
 
   it('should have correct style when light theme', () => {
     const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.outlined })
-    expect(getByTestId('button').props.style[0].backgroundColor).toBe('transparent')
-    expect(getByTestId('button').props.style[0].borderColor).toBe(COLORS.primary)
-    expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
+    expect(getByTestId('button')).toHaveStyle({ backgroundColor: 'transparent' })
+    expect(getByTestId('button')).toHaveStyle({ borderColor: COLORS.primary })
+    expect(getByText('Button label')).toHaveStyle({ color: COLORS.primary })
   })
 
   it('should have correct style when dark theme', () => {
     const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.contained })
-    expect(getByTestId('button').props.style[0].backgroundColor).toEqual(COLORS.primary)
-    expect(getByTestId('button').props.style[0].borderColor).toBeUndefined()
-    expect(getByText('Button label').props.style[0].color).toBe(COLORS.background)
+    expect(getByTestId('button')).toHaveStyle({ backgroundColor: COLORS.primary })
+    expect(getByTestId('button')).not.toHaveStyle({ borderColor: expect.anything() })
+    expect(getByText('Button label')).toHaveStyle({ color: COLORS.background })
   })
 
   it('should have correct style when no-outline theme', () => {
     const { getByTestId, getByText } = renderButton({ buttonTheme: BUTTONS_THEME.text })
-    expect(getByTestId('button').props.style[0].backgroundColor).toBe('transparent')
-    expect(getByTestId('button').props.style[0].borderColor).toBeUndefined()
-    expect(getByText('Button label').props.style[0].color).toBe(COLORS.primary)
+    expect(getByTestId('button')).toHaveStyle({ backgroundColor: 'transparent' })
+    expect(getByTestId('button')).not.toHaveStyle({ borderColor: expect.anything() })
+    expect(getByText('Button label')).toHaveStyle({ color: COLORS.primary })
   })
 
   it('should have correct style when disabled', () => {
     const { getByTestId, getByText } = renderButton({ disabled: true })
-    expect(getByTestId('button').props.style[0].backgroundColor).toBe(COLORS.disabled)
-    expect(getByTestId('button').props.style[0].borderColor).toBeUndefined()
-    expect(getByText('Button label').props.style[0].color).toBe(COLORS.placeholder)
+    expect(getByTestId('button')).toHaveStyle({ backgroundColor: COLORS.disabled })
+    expect(getByTestId('button')).not.toHaveStyle({ borderColor: expect.anything() })
+    expect(getByText('Button label')).toHaveStyle({ color: COLORS.placeholder })
   })
 })

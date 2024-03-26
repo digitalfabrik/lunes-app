@@ -8,13 +8,13 @@ import { RoutesParams, VocabularyItemResult } from '../../../navigation/Navigati
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 
 export default abstract class AbstractWriteExerciseService {
-  // eslint-disable-next-line no-useless-constructor
+  // eslint-disable-next-line no-useless-constructor,no-empty-function
   constructor(
     public route: RouteProp<RoutesParams, 'WriteExercise'>,
     public navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     public setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     public setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
-    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>
+    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>> // eslint-disable-next-line no-empty-function
   ) {}
 
   initializeExercise = (
