@@ -116,7 +116,10 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
     return
   }
   await setFavorites(
-    parsedVocabularyItems.map((item: number) => ({ id: item, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
+    parsedVocabularyItems.map((item: number) => ({
+      id: item,
+      vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard,
+    }))
   )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
