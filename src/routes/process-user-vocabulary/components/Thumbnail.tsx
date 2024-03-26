@@ -12,7 +12,7 @@ const Container = styled.View`
 
 const CloseIcon = styled(PressableOpacity)`
   position: absolute;
-  right: 0px;
+  right: 0;
   padding: ${props => props.theme.spacings.xxs};
 `
 

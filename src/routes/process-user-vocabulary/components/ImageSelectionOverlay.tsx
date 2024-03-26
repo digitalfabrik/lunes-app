@@ -1,14 +1,13 @@
 import React, { ReactElement, useRef, useState } from 'react'
-import { Platform } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 import { openPicker } from 'react-native-image-crop-picker'
-import { PERMISSIONS } from 'react-native-permissions'
 import styled from 'styled-components/native'
 
 import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
 import NotAuthorisedView from '../../../components/NotAuthorisedView'
 import PressableOpacity from '../../../components/PressableOpacity'
+import getGalleryPermission from '../../../services/getGalleryPermission'
 import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
@@ -79,17 +78,6 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
       })
   }
 
-  const firstAndroidVersionWithSplitPermissions = 33
-  const androidMediaPermission =
-    Platform.Version >= firstAndroidVersionWithSplitPermissions
-      ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-
-  let permission
-  if (isGalleryOpen) {
-    permission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : androidMediaPermission
-  }
-
   if (showNotAuthorised) {
     return (
       <NotAuthorisedView
@@ -100,7 +88,7 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
   }
 
   return (
-    <CameraOverlay setVisible={setVisible} permission={permission}>
+    <CameraOverlay setVisible={setVisible} permission={isGalleryOpen ? getGalleryPermission() : undefined}>
       <Camera ref={camera} captureAudio={false} testID='camera'>
         <Container>
           <ActionBar>

@@ -14,7 +14,7 @@ describe('OverlayMenu', () => {
     const { getByTestId } = renderWithTheme(
       <NavigationContainer>
         <OverlayMenu navigation={navigation} />
-      </NavigationContainer>
+      </NavigationContainer>,
     )
     const close = getByTestId('close-icon-white')
     expect(close).toBeTruthy()
@@ -31,7 +31,7 @@ describe('OverlayMenu', () => {
     const { getByText } = renderWithTheme(
       <NavigationContainer>
         <OverlayMenu navigation={navigation} />
-      </NavigationContainer>
+      </NavigationContainer>,
     )
 
     const item = getByText(menuItem)

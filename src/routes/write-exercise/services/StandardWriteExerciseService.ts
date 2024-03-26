@@ -24,7 +24,7 @@ class StandardWriteExerciseService extends AbstractWriteExerciseService {
     needsToBeRepeated: boolean,
     vocabularyItemWithResults: VocabularyItemResult[],
     vocabularyItems: VocabularyItem[],
-    isKeyboardVisible: boolean
+    isKeyboardVisible: boolean,
   ): Promise<void> => {
     this.setIsAnswerSubmitted(false)
 
@@ -41,7 +41,7 @@ class StandardWriteExerciseService extends AbstractWriteExerciseService {
     result: VocabularyItemResult,
     vocabularyItemWithResults: VocabularyItemResult[],
     current: VocabularyItemResult,
-    currentIndex: number
+    currentIndex: number,
   ): void => {
     const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
     if (current.vocabularyItem.id !== result.vocabularyItem.id) {
@@ -55,7 +55,7 @@ class StandardWriteExerciseService extends AbstractWriteExerciseService {
   cheatExercise = async (
     result: SimpleResult,
     vocabularyItems: VocabularyItem[],
-    vocabularyItemWithResults: VocabularyItemResult[]
+    vocabularyItemWithResults: VocabularyItemResult[],
   ): Promise<void> => {
     const cheatedVocabularyItems = vocabularyItemWithResults.map(it => ({ ...it, numberOfTries: 1, result }))
     await this.finishExercise(cheatedVocabularyItems, vocabularyItems)

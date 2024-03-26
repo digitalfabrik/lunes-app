@@ -20,7 +20,7 @@ const List = styled.FlatList`
 
 const SponsorsHeading = styled(Heading)`
   padding-top: ${props => props.theme.spacings.xl};
-  padding-bottom: ${props => props.theme.spacings.xs}
+  padding-bottom: ${props => props.theme.spacings.xs};
   text-align: center;
 `
 const SponsorsSubHeading = styled(ContentSecondary)`

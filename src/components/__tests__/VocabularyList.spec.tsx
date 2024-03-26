@@ -28,7 +28,7 @@ describe('VocabularyList', () => {
     mockUseLoadAsyncWithData(vocabularyItems)
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />
+      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />,
     )
 
     expect(getByText('Title')).toBeTruthy()
@@ -43,7 +43,7 @@ describe('VocabularyList', () => {
 
   it('should call onItemPress with correct index', () => {
     const { getByText } = render(
-      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />
+      <VocabularyList title='Title' vocabularyItems={vocabularyItems} onItemPress={onItemPress} />,
     )
 
     expect(onItemPress).toHaveBeenCalledTimes(0)

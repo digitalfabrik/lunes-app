@@ -47,7 +47,7 @@ describe('RepetitionWriteExerciseService', () => {
       navigation,
       setCurrentIndex,
       setIsAnswerSubmitted,
-      setVocabularyItemWithResults
+      setVocabularyItemWithResults,
     )
   }
 
@@ -117,13 +117,13 @@ describe('RepetitionWriteExerciseService', () => {
           vocabularyItemsWithResults[1],
           vocabularyItemsWithResults[2],
           vocabularyItemsWithResults[3],
-        ])
+        ]),
       )
       await waitFor(() =>
         expect(RepetitionService.updateWordNodeCard).toHaveBeenCalledWith({
           ...vocabularyItemsWithResults[0],
           numberOfTries: 1,
-        })
+        }),
       )
     })
   })

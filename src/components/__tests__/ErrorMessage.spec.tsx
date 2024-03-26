@@ -33,9 +33,9 @@ describe('ErrorMessage', () => {
   })
 
   it('should show nothing if no error', () => {
-    const { container } = renderWithoutTheme(<ErrorMessage error={null} refresh={refresh} />)
+    const { root } = renderWithoutTheme(<ErrorMessage error={null} refresh={refresh} />)
 
-    expect(container).toBeEmpty()
+    expect(root).toBeUndefined()
   })
 
   it('should show message if other error', () => {

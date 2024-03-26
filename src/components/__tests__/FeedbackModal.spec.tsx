@@ -16,7 +16,7 @@ describe('FeedbackModal', () => {
 
   it('should have a disabled send button when message is empty', () => {
     const { getByText, getByPlaceholderText } = render(
-      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />
+      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />,
     )
     expect(getByText(getLabels().feedback.sendFeedback)).toBeDisabled()
     const feedbackInputField = getByPlaceholderText(getLabels().feedback.feedbackPlaceholder)
@@ -26,7 +26,7 @@ describe('FeedbackModal', () => {
 
   it('should get a cleared feedback text when clear button was clicked', () => {
     const { getByPlaceholderText, getByTestId } = render(
-      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />
+      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />,
     )
     const feedbackInputField = getByPlaceholderText(getLabels().feedback.feedbackPlaceholder)
     fireEvent.changeText(feedbackInputField, 'Mein Feedback')
@@ -36,7 +36,7 @@ describe('FeedbackModal', () => {
 
   it('should send feedback', () => {
     const { getByText, getByPlaceholderText } = render(
-      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />
+      <FeedbackModal visible onClose={onClose} feedbackType={FeedbackType.vocabularyItem} feedbackForId={1} />,
     )
     const feedbackInputField = getByPlaceholderText(getLabels().feedback.feedbackPlaceholder)
     const emailInputField = getByPlaceholderText(getLabels().feedback.mailPlaceholder)

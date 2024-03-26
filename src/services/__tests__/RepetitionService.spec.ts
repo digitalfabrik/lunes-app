@@ -25,7 +25,7 @@ describe('RepetitionService', () => {
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5] + 2 * daysToStayInASection[5])
+          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
         ),
       },
       {
@@ -33,7 +33,7 @@ describe('RepetitionService', () => {
         section: 2,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[2] + daysToStayInASection[3] + 2)
+          -(daysToStayInASection[2] + daysToStayInASection[3] + 2),
         ),
       },
       {
@@ -41,7 +41,7 @@ describe('RepetitionService', () => {
         section: 1,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[1] + 2 * daysToStayInASection[4])
+          -(daysToStayInASection[1] + 2 * daysToStayInASection[4]),
         ),
       },
       {
@@ -74,7 +74,7 @@ describe('RepetitionService', () => {
       expect(wordNodeCard.word).toEqual(expected[index].word)
       expect(wordNodeCard.section).toEqual(expected[index].section)
       expect(milliSecondsToHours(wordNodeCard.inThisSectionSince.valueOf())).toBeCloseTo(
-        milliSecondsToHours(expected[index].inThisSectionSince.valueOf())
+        milliSecondsToHours(expected[index].inThisSectionSince.valueOf()),
       )
     })
   }
@@ -101,7 +101,7 @@ describe('RepetitionService', () => {
           ...item,
           section: item.section === 0 ? 1 : item.section,
           inThisSectionSince: new Date(),
-        }))
+        })),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
     })
@@ -111,7 +111,7 @@ describe('RepetitionService', () => {
         testData.map((item: WordNodeCard) => ({
           ...item,
           inThisSectionSince: new Date(),
-        }))
+        })),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toBe(2)
     })
@@ -121,7 +121,7 @@ describe('RepetitionService', () => {
         testData.map((item: WordNodeCard) => ({
           ...item,
           inThisSectionSince: new Date(2000, 1),
-        }))
+        })),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toBe(8)
     })
@@ -132,10 +132,10 @@ describe('RepetitionService', () => {
           word: item,
           section: 0,
           inThisSectionSince: new Date(),
-        }))
+        })),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toEqual(
-        MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE
+        MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE,
       )
     })
 
@@ -148,7 +148,7 @@ describe('RepetitionService', () => {
               ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section])
               : new Date(),
           }))
-          .filter(item => item.section !== 0)
+          .filter(item => item.section !== 0),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toBe(4)
     })
@@ -162,7 +162,7 @@ describe('RepetitionService', () => {
               ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section] + 1)
               : new Date(),
           }))
-          .filter(item => item.section !== 0)
+          .filter(item => item.section !== 0),
       )
       await expect(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).resolves.toBe(0)
     })
@@ -200,7 +200,7 @@ describe('RepetitionService', () => {
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5] + 2 * daysToStayInASection[5])
+          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word1)).toBe(2)
@@ -210,7 +210,7 @@ describe('RepetitionService', () => {
         section: 4,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[4] + 2 * daysToStayInASection[4])
+          -(daysToStayInASection[4] + 2 * daysToStayInASection[4]),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word2)).toBe(2)
@@ -236,13 +236,13 @@ describe('RepetitionService', () => {
         testData.map((item: WordNodeCard) => ({
           ...item,
           inThisSectionSince: new Date(2000, 1),
-        }))
+        })),
       )
       await expect(RepetitionService.getWordNodeCardsForNextRepetition()).resolves.toEqual(
         testData.map((item: WordNodeCard) => ({
           ...item,
           inThisSectionSince: new Date(2000, 1),
-        }))
+        })),
       )
     })
 
@@ -252,7 +252,7 @@ describe('RepetitionService', () => {
           ...item,
           section: item.section === 0 ? 1 : item.section,
           inThisSectionSince: new Date(),
-        }))
+        })),
       )
       await expect(RepetitionService.getWordNodeCardsForNextRepetition()).resolves.toHaveLength(0)
     })
@@ -322,7 +322,7 @@ describe('RepetitionService', () => {
             section: 0,
             inThisSectionSince: new Date(),
           },
-        ])
+        ]),
       )
     })
 
@@ -336,7 +336,7 @@ describe('RepetitionService', () => {
             section: 0,
             inThisSectionSince: new Date(),
           },
-        ])
+        ]),
       )
     })
 

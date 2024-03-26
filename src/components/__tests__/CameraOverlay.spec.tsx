@@ -14,7 +14,7 @@ describe('CameraOverlay', () => {
     const { getByTestId, queryByTestId, findByTestId } = render(
       <CameraOverlay setVisible={setVisible}>
         <Text>Children</Text>
-      </CameraOverlay>
+      </CameraOverlay>,
     )
     const closeIcon = await findByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()
@@ -27,7 +27,7 @@ describe('CameraOverlay', () => {
     const { findByTestId } = render(
       <CameraOverlay setVisible={setVisible}>
         <Text>Children</Text>
-      </CameraOverlay>
+      </CameraOverlay>,
     )
     const closeIcon = await findByTestId('close-circle-icon-white')
     expect(closeIcon).toBeDefined()

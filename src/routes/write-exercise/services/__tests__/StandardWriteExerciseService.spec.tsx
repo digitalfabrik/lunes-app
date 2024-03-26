@@ -46,7 +46,7 @@ describe('StandardWriteExerciseService', () => {
       navigation,
       setCurrentIndex,
       setIsAnswerSubmitted,
-      setVocabularyItemWithResults
+      setVocabularyItemWithResults,
     )
   }
 

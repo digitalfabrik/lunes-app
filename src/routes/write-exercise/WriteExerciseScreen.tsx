@@ -38,7 +38,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
   const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
-    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
 
   const { isKeyboardVisible } = useKeyboard()
@@ -53,21 +53,21 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             navigation,
             setCurrentIndex,
             setIsAnswerSubmitted,
-            setVocabularyItemWithResults
+            setVocabularyItemWithResults,
           )
         : new StandardWriteExerciseService(
             route,
             navigation,
             setCurrentIndex,
             setIsAnswerSubmitted,
-            setVocabularyItemWithResults
+            setVocabularyItemWithResults,
           ),
-    [contentType, route, navigation]
+    [contentType, route, navigation],
   )
 
   const initializeExercise = useCallback(
     () => writeExerciseService.initializeExercise(vocabularyItems, vocabularyItemWithResults),
-    [vocabularyItems, vocabularyItemWithResults, writeExerciseService]
+    [vocabularyItems, vocabularyItemWithResults, writeExerciseService],
   )
 
   useEffect(initializeExercise, [initializeExercise])
@@ -117,7 +117,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
                   needsToBeRepeated,
                   vocabularyItemWithResults,
                   vocabularyItems,
-                  isKeyboardVisible
+                  isKeyboardVisible,
                 )
               }
               buttonTheme={BUTTONS_THEME.contained}

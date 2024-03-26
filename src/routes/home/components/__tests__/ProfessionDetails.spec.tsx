@@ -43,7 +43,7 @@ describe('ProfessionDetails', () => {
         discipline={mockDisciplines()[0]}
         navigateToDiscipline={navigateToDiscipline}
         navigateToNextExercise={navigateToExercise}
-      />
+      />,
     )
 
   it('should show next exercise details on the card', () => {

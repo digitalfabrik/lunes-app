@@ -144,7 +144,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
             await moveFile(image, path)
           }
           return { id: index, image: path }
-        })
+        }),
       )
 
       const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`

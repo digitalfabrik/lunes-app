@@ -20,7 +20,7 @@ const Container = styled.View`
   align-items: center;
 `
 const ErrorTitle = styled.Text`
-  padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`} 0 ${props => props.theme.spacings.xl}};
+  padding: ${props => `${props.theme.spacings.md} ${props.theme.spacings.xl}`} 0 ${props => props.theme.spacings.xl};
   font-size: ${props => props.theme.fonts.headingFontSize};
   font-family: ${props => props.theme.fonts.contentFontBold};
   color: ${props => props.theme.colors.primary};

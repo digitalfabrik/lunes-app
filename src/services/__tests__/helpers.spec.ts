@@ -148,7 +148,7 @@ describe('helpers', () => {
   describe('calculateScore', () => {
     const getVocabularyItemWithResults = (
       numberOfTries: [number, number, number, number],
-      results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult]
+      results: [SimpleResult, SimpleResult, SimpleResult, SimpleResult],
     ): VocabularyItemResult[] => {
       const vocabularyItems = new VocabularyItemBuilder(4).build()
       return vocabularyItems.map((vocabularyItem, index) => ({
@@ -160,21 +160,21 @@ describe('helpers', () => {
 
     it('should calculate score correctly for different number of tries', () => {
       const score = calculateScore(
-        getVocabularyItemWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect'])
+        getVocabularyItemWithResults([1, 2, 3, 3], ['correct', 'correct', 'correct', 'incorrect']),
       )
       expect(score).toBe(4)
     })
 
     it('should calculate score correctly for best result', () => {
       const score = calculateScore(
-        getVocabularyItemWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct'])
+        getVocabularyItemWithResults([1, 1, 1, 1], ['correct', 'correct', 'correct', 'correct']),
       )
       expect(score).toBe(10)
     })
 
     it('should calculate score correctly for bad result with similar results', () => {
       const score = calculateScore(
-        getVocabularyItemWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect'])
+        getVocabularyItemWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect']),
       )
       expect(score).toBe(0)
     })

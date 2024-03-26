@@ -17,8 +17,8 @@ import NavigationHeaderLeft from './NavigationHeaderLeft'
 import OverflowMenu from './OverflowMenu'
 import { ContentSecondary } from './text/Content'
 
-const ProgressBar = styled(RNProgressBar)`
-  background-color: ${props => props.theme.colors.disabled};
+const ProgressBar = styled(RNProgressBar)<{ disabledColor: string }>`
+  background-color: ${props => props.disabledColor};
 `
 
 const HeaderRightContainer = styled.View`
@@ -135,6 +135,7 @@ const ExerciseHeader = ({
         <ProgressBar
           progress={numberOfWords > 0 ? currentWord / numberOfWords : 0}
           color={theme.colors.progressIndicator}
+          disabledColor={theme.colors.disabled}
         />
       )}
 

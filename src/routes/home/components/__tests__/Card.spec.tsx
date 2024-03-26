@@ -11,7 +11,7 @@ describe('Card', () => {
     const { getByText } = render(
       <Card heading='heading' onPress={press}>
         <Text>children-text</Text>
-      </Card>
+      </Card>,
     )
     const heading = getByText('heading')
     expect(heading).toBeDefined()

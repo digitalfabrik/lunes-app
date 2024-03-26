@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
 import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
@@ -9,6 +9,7 @@ import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
 import { ContentTextLight } from './text/Content'
 
+// TODO check width (md)
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
   width: ${hp('7.5%')}px;
@@ -49,18 +50,9 @@ const VocabularyListItem = ({
   children,
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
-  const theme = useTheme()
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
-  const icon =
-    images.length > 0 ? (
-      <StyledImage
-        testID='image'
-        source={{ uri: images[0].image }}
-        width={theme.spacingsPlain.md}
-        height={theme.spacingsPlain.md}
-      />
-    ) : undefined
+  const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0].image }} /> : undefined
 
   return (
     <ListItem
