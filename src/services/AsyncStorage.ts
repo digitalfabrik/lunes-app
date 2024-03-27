@@ -116,7 +116,10 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
     return
   }
   await setFavorites(
-    parsedVocabularyItems.map((item: number) => ({ id: item, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }))
+    parsedVocabularyItems.map((item: number) => ({
+      id: item,
+      vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard,
+    }))
   )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
@@ -215,9 +218,11 @@ export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyIte
     vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
   )
   const images = userVocabularyItem.images.map(image => image.image)
-  images.map(async image => {
-    await unlink(image)
-  })
+  await Promise.all(
+    images.map(async image => {
+      await unlink(image)
+    })
+  )
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
   await setUserVocabularyItems(userVocabulary)
 }

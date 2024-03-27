@@ -35,7 +35,7 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
         options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
       />
       <Stack.Screen
-        name='UserVocabularyDetail'
+        name='VocabularyDetail'
         component={VocabularyDetailScreen}
         options={({ navigation }) => options(back, navigation)}
       />

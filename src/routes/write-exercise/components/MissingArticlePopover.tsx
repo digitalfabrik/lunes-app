@@ -41,7 +41,6 @@ const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: Po
   const theme = useTheme()
   return (
     <Popover
-      // @ts-expect-error, used for testing purposes
       testID='popover'
       isVisible={isVisible}
       onRequestClose={() => setIsPopoverVisible(false)}

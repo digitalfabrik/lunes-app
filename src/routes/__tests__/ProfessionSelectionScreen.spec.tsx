@@ -78,7 +78,7 @@ describe('ProfessionSelectionScreen', () => {
 
     const { findAllByTestId } = render(<ProfessionSelectionScreen route={getRoute(false)} navigation={navigation} />)
     const professions = await findAllByTestId('list-item')
-    expect(professions[0].props.style[0].backgroundColor).toEqual(COLORS.disabled)
+    expect(professions[0]).toHaveStyle({ backgroundColor: COLORS.disabled })
   })
 
   it('should navigate on selection when not initial view', async () => {

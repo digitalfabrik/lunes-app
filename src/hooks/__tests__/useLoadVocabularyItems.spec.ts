@@ -96,7 +96,7 @@ const discipline = {
 }
 
 describe('loadVocabularyItems', () => {
-  mocked(getFromEndpoint).mockImplementation(async () => testData)
+  mocked<typeof getFromEndpoint<typeof testData>>(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {
     await loadVocabularyItems({ disciplineId: discipline.id })
