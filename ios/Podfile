@@ -1,5 +1,6 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native-permissions/scripts/setup'
 
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
@@ -31,10 +32,28 @@ target 'Lunes' do
     'BarcodeDetectorMLKit'
   ]
 
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  # ⬇️ uncomment wanted permissions
+  setup_permissions([
+    # 'AppTrackingTransparency',
+    # 'BluetoothPeripheral',
+    # 'Calendars',
+    'Camera',
+    # 'Contacts',
+    # 'FaceID',
+    # 'LocationAccuracy',
+    # 'LocationAlways',
+    # 'LocationWhenInUse',
+    # 'MediaLibrary',
+    'Microphone',
+    # 'Motion',
+    # 'Notifications',
+    'PhotoLibrary',
+    # 'PhotoLibraryAddOnly',
+    # 'Reminders',
+    # 'Siri',
+    # 'SpeechRecognition',
+    # 'StoreKit',
+  ])
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
