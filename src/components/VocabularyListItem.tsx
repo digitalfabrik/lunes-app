@@ -9,7 +9,6 @@ import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
 import { ContentTextLight } from './text/Content'
 
-// TODO check width (md)
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
   width: ${hp('7.5%')}px;
