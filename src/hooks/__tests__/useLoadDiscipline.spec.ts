@@ -63,13 +63,13 @@ const expectedData: Array<Discipline & Record<string, unknown>> = [
 
 describe('loadDiscipline', () => {
   it('should map data correctly for discipline', async () => {
-    mocked(getFromEndpoint).mockImplementation(async () => testData[0])
+    mocked<typeof getFromEndpoint<(typeof testData)[0]>>(getFromEndpoint).mockImplementation(async () => testData[0])
     const responseData = await loadDiscipline({ disciplineId: 3 })
     expect(responseData).toEqual(expectedData[0])
   })
 
   it('should map data correctly for group', async () => {
-    mocked(getFromEndpoint).mockImplementation(async () => testData[1])
+    mocked<typeof getFromEndpoint<(typeof testData)[1]>>(getFromEndpoint).mockImplementation(async () => testData[1])
     const responseData = await loadDiscipline({ apiKey: 'api-key123' })
     expect(responseData).toEqual(expectedData[1])
   })

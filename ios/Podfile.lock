@@ -68,12 +68,6 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - Permission-Camera (3.7.3):
-    - RNPermissions
-  - Permission-Microphone (3.7.3):
-    - RNPermissions
-  - Permission-PhotoLibrary (3.7.3):
-    - RNPermissions
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.9)
   - RCT-Folly (2021.07.22.00):
@@ -315,12 +309,8 @@ PODS:
     - React-Core
   - react-native-camera/RN (4.2.1):
     - React-Core
-  - react-native-safe-area-context (4.5.0):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.9.0):
     - React-Core
-    - ReactCommon/turbomodule/core
   - react-native-splash-screen (3.3.0):
     - React-Core
   - React-perflogger (0.70.9)
@@ -391,30 +381,30 @@ PODS:
     - React-perflogger (= 0.70.9)
   - RNAudioRecorderPlayer (3.5.1):
     - React-Core
-  - RNCAsyncStorage (1.17.7):
+  - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNCMaskedView (0.2.8):
+  - RNCMaskedView (0.3.1):
     - React-Core
-  - RNCPicker (2.4.10):
+  - RNCPicker (2.7.2):
     - React-Core
-  - RNDeviceInfo (9.0.2):
+  - RNDeviceInfo (10.13.1):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNImageCropPicker (0.39.0):
+  - RNImageCropPicker (0.40.3):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.39.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.40.3)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.39.0):
+  - RNImageCropPicker/QBImagePickerController (0.40.3):
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNPermissions (3.7.3):
+  - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (2.14.4):
+  - RNReanimated (2.17.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -441,21 +431,23 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNSentry (5.0.0):
+  - RNSentry (5.20.0):
+    - hermes-engine
     - React-Core
-    - Sentry/HybridSDK (= 8.0.0)
+    - React-hermes
+    - Sentry/HybridSDK (= 8.21.0)
   - RNSoundPlayer (0.13.2):
     - React-Core
-  - RNSVG (12.5.1):
+  - RNSVG (15.1.0):
     - React-Core
-  - RNVectorIcons (9.2.0):
+  - RNVectorIcons (10.0.3):
     - React-Core
-  - Sentry/HybridSDK (8.0.0):
-    - SentryPrivate (= 8.0.0)
-  - SentryPrivate (8.0.0)
+  - Sentry/HybridSDK (8.21.0):
+    - SentryPrivate (= 8.21.0)
+  - SentryPrivate (8.21.0)
   - TextToSpeech (4.1.0):
     - React
   - TOCropViewController (2.6.1)
@@ -469,9 +461,6 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
-  - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone`)
-  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -556,12 +545,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes/hermes-engine.podspec"
-  Permission-Camera:
-    :path: "../node_modules/react-native-permissions/ios/Camera"
-  Permission-Microphone:
-    :path: "../node_modules/react-native-permissions/ios/Microphone"
-  Permission-PhotoLibrary:
-    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -677,9 +660,6 @@ SPEC CHECKSUMS:
   MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
   MLKitVision: 96c96571190b7f63eddf4a12068ce8a8689e0d2c
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  Permission-Camera: c0ef0e1f3ff6796f89cdbc3628f405f1b7c381d5
-  Permission-Microphone: d5e2e1117651b7985620068715ceba6a6f047ff5
-  Permission-PhotoLibrary: f5a999c06d7b904322d38790e3d7d8fa25b372fe
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 02524ec14183fe08fb259741659e79683788158b
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
@@ -698,7 +678,7 @@ SPEC CHECKSUMS:
   React-jsinspector: d76d32327f21d4f40dcf696231fdbbca60de4711
   React-logger: 1b3522f1e05c6360e93df3607a016c39e30a7351
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
-  react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
+  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: cce000b5caa4bcecbb29ee9cfdb47f26202d2599
   React-RCTActionSheet: ba29f52a82d970e2aba5804490ecaea587c7a751
@@ -713,26 +693,26 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: ed23be8c1e02b73e7e2f88ac7eaab8faf6961a38
   ReactCommon: 153bd73ed963731a8e3e7f03a747b353fed7363e
   RNAudioRecorderPlayer: 308940de4f9d1448a064874fd9d83479ae47c7a7
-  RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
-  RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
-  RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
-  RNDeviceInfo: 1e3f62b9ec32f7754fac60bd06b8f8a27124e7f0
+  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
+  RNCPicker: 82ccad5b08259dc09310082118cbb6c136d7da67
+  RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
-  RNPermissions: 314155ed6ce65237e7bd9fb6239219cce83228d3
-  RNReanimated: 6668b0587bebd4b15dd849b99e5a9c70fc12ed95
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
-  RNSentry: eff1f32fe84682feb09a36c5e5f513d6ef964b70
+  RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
+  RNPermissions: 21eb37e6d608f1c0e5337e149bc9a64d5efba8a6
+  RNReanimated: bec7736122a268883bdede07f1bf9cf4b40158db
+  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNSentry: 5381e9284aec59a546e4a7d40e33ad0839b99c1e
   RNSoundPlayer: 369105c565b8fe6ea0a43fc882dc81eba444e842
-  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  Sentry: 2158a4621096dcd0a3a4f7c80b84b04dde261035
-  SentryPrivate: 1e3acf96ee818a8d0d95b8e922d39ab6be338ea0
+  RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
+  RNVectorIcons: bc7ee28cadf39c77a49232a14738dfce690f66cd
+  Sentry: ebc12276bd17613a114ab359074096b6b3725203
+  SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: dc109b79db907f0f589fc423e991b09ec42d2295
 
-PODFILE CHECKSUM: 4f254e6af2dcfdd38da402b655541ad45735ba8b
+PODFILE CHECKSUM: 658f754af1cd9e98de4195b9a18fcc28e03c847b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

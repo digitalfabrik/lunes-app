@@ -14,7 +14,7 @@ export default abstract class AbstractWriteExerciseService {
     public navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     public setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     public setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
-    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>
+    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>> // eslint-disable-next-line no-empty-function
   ) {}
 
   initializeExercise = (

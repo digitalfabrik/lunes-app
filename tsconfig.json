@@ -13,7 +13,7 @@
     "typeRoots": ["./node_modules/@types", "./src/@types"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "types": ["jest", "node", "react", "styled-components-react-native"],
+    "types": ["jest", "node", "react"],
     "skipLibCheck": true
   },
   "include": [
