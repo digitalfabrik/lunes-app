@@ -10,7 +10,7 @@ steps:
         - 3-gems-{{ arch }}-
   - run:
       name: Install Fastlane
-      command: bundle check || bundle install
+      command: bundle check || sudo bundle install
       working_directory: << parameters.directory >>
   - save_cache:
       key: 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}

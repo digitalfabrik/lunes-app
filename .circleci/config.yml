@@ -173,7 +173,7 @@ commands:
                     - 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
                     - 3-gems-{{ arch }}-
             - run:
-                command: bundle check || bundle install
+                command: bundle check || sudo bundle install
                 name: Install Fastlane
                 working_directory: << parameters.directory >>
             - save_cache:
