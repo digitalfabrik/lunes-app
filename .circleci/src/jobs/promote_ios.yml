@@ -1,6 +1,6 @@
 # Promotes the app from Testflight to the Apple App Store.
 macos:
-  xcode: 14.2.0
+  xcode: 15.2.0
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
 shell: /bin/bash --login -o pipefail

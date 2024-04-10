@@ -1,5 +1,5 @@
 macos:
-  xcode: 14.2.0
+  xcode: 15.2.0
 resource_class: macos.m1.medium.gen1
 environment:
   FL_OUTPUT_DIR: output
