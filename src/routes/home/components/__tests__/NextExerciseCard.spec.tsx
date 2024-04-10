@@ -14,7 +14,7 @@ describe('NextExerciseCard', () => {
         subheading='subheading'
         buttonLabel='button'
         onPress={onPress}
-      />
+      />,
     )
     expect(getByText('heading')).toBeDefined()
     expect(getByText('subheading')).toBeDefined()

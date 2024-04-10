@@ -31,7 +31,7 @@ const RepetitionProgressChart: () => ReactElement = () => {
   useFocusEffect(
     useCallback(() => {
       refresh()
-    }, [refresh])
+    }, [refresh]),
   )
 
   return (

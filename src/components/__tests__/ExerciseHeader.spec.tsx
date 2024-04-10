@@ -29,7 +29,7 @@ describe('ExerciseHeader', () => {
         feedbackType={FeedbackType.vocabularyItem}
         feedbackForId={1}
         exerciseKey={ExerciseKeys.vocabularyList}
-      />
+      />,
     )
     expect(getByTestId('customModal')).toBeTruthy()
     expect(getByTestId('customModal').props.visible).toBe(false)

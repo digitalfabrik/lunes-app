@@ -51,7 +51,7 @@ describe('VocabularyListScreen', () => {
     mockUseLoadAsyncWithData(vocabularyItems)
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <VocabularyListScreen route={route} navigation={navigation} />
+      <VocabularyListScreen route={route} navigation={navigation} />,
     )
 
     expect(getByText(getLabels().exercises.vocabularyList.title)).toBeTruthy()

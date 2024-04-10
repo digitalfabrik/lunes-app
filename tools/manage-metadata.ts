@@ -93,7 +93,7 @@ const formatDevelopmentNotes = (params: { notes: NoteType[]; platforms: string[]
 
 const parseReleaseNotes = ({ source, ios, android, production }: ParseOptions): string => {
   const platforms: string[] = [android ? PLATFORM_ANDROID : undefined, ios ? PLATFORM_IOS : undefined].filter(
-    (platform): platform is string => !!platform
+    (platform): platform is string => !!platform,
   )
 
   if (platforms.length === 0) {
@@ -146,19 +146,19 @@ const parseNotesProgram = (options: ParseOptions) => {
 program
   .command('parse-release-notes')
   .description(
-    'parse the release notes and outputs the release notes as JSON string and writes them to the specified file'
+    'parse the release notes and outputs the release notes as JSON string and writes them to the specified file',
   )
   .option('--ios', 'include release notes for ios')
   .option('--android', 'include release notes for android')
   .option(
     '--production',
-    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store. may not be used with multiple platforms.'
+    'whether to hide extra information, e.g. issue keys, hidden notes and platforms and prepare the notes for a store. may not be used with multiple platforms.',
   )
   .option('--destination <destination>', 'if specified the parsed notes are saved to the directory')
   .requiredOption(
     '--source <source>',
     'the directory of the release notes to parse',
-    `../${RELEASE_NOTES_DIR}/${UNRELEASED_DIR}`
+    `../${RELEASE_NOTES_DIR}/${UNRELEASED_DIR}`,
   )
   .action(parseNotesProgram)
 
@@ -195,7 +195,7 @@ program
   .description('prepare metadata for store')
   .option(
     '--override-version-name <override-version-name>',
-    'if specified the release notes will be generated from the specified version name instead of the unreleased notes'
+    'if specified the release notes will be generated from the specified version name instead of the unreleased notes',
   )
   .action((storeName: string, options: { overrideVersionName: string }) => {
     try {

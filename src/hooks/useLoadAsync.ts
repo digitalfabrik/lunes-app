@@ -5,7 +5,7 @@ export const loadAsync = async <T, P>(
   params: P,
   setData: (data: T | null) => void,
   setError: (error: Error | null) => void,
-  setLoading: (loading: boolean) => void
+  setLoading: (loading: boolean) => void,
 ): Promise<void> => {
   setLoading(true)
 

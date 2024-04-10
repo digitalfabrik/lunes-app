@@ -19,7 +19,7 @@ export type VocabularyItemFromServer = {
 
 export const formatVocabularyItemFromServer = (
   vocabularyItemFromServer: VocabularyItemFromServer,
-  apiKey?: string
+  apiKey?: string,
 ): VocabularyItem => ({
   id: vocabularyItemFromServer.id,
   word: vocabularyItemFromServer.word,
@@ -36,7 +36,7 @@ export const formatVocabularyItemFromServer = (
 
 export const formatVocabularyItemsFromServer = (
   vocabularyItemFromServers: VocabularyItemFromServer[],
-  apiKey?: string
+  apiKey?: string,
 ): VocabularyItem[] => vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
 
 export const loadVocabularyItems = async ({

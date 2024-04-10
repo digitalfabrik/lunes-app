@@ -12,7 +12,7 @@ describe('CustomDisciplineDetails', () => {
   it('should handle button click', () => {
     const discipline = mockDisciplines(false)[0]
     const { getByText } = render(
-      <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
+      <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />,
     )
     const button = getByText(getLabels().home.start)
     fireEvent.press(button)
