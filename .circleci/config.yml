@@ -37,7 +37,7 @@ commands:
                 default: lunes-app
                 type: string
             failure_mentions:
-                default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle @andreas.fischer'
+                default: '@stefanie.metzger @steffen.kleinle @andreas.fischer @leandra.hahn'
                 type: string
             only_for_branch:
                 default: main
