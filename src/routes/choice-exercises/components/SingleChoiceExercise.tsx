@@ -54,7 +54,7 @@ const ChoiceExerciseScreen = ({
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const [results, setResults] = useState<VocabularyItemResult[]>(
-    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+    shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
   const { vocabularyItem, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
@@ -70,11 +70,11 @@ const ChoiceExerciseScreen = ({
       if (vocabularyItems.length !== results.length || force) {
         setCurrentWord(0)
         setResults(
-          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
         )
       }
     },
-    [vocabularyItems, results]
+    [vocabularyItems, results],
   )
 
   useEffect(initializeExercise, [initializeExercise])
@@ -100,7 +100,7 @@ const ChoiceExerciseScreen = ({
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     await onExerciseFinished(
-      results.map(it => ({ ...it, numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : numberOfMaxRetries, result }))
+      results.map(it => ({ ...it, numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : numberOfMaxRetries, result })),
     )
   }
 

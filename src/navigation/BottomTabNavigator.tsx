@@ -41,7 +41,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const { data: isDevMode } = useLoadAsync(getDevMode, null)
   const { data: numberOfWordsNeedingRepetition, refresh: refreshRepetitionBadge } = useLoadAsync(
     RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
-    undefined
+    undefined,
   )
 
   useFocusEffect(refreshRepetitionBadge)

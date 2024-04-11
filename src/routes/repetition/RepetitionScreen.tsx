@@ -73,7 +73,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
   const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
     RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
-    undefined
+    undefined,
   )
 
   useFocusEffect(refreshNumberOfWordsNeedingRepetition)

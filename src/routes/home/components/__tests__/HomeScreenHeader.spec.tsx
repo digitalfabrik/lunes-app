@@ -13,7 +13,7 @@ describe('HomeScreenHeader', () => {
     const { getByTestId } = render(
       <NavigationContainer>
         <HomeScreenHeader navigation={navigation} />
-      </NavigationContainer>
+      </NavigationContainer>,
     )
 
     const menu = getByTestId('menu-icon-white')

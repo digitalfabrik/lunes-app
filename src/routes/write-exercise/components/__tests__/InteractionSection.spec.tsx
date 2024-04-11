@@ -46,20 +46,20 @@ describe('InteractionSection', () => {
 
   const renderInteractionSection = (
     vocabularyItemWithResult: VocabularyItemResult,
-    isAnswerSubmitted: boolean
+    isAnswerSubmitted: boolean,
   ): RenderAPI =>
     render(
       <InteractionSection
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted={isAnswerSubmitted}
         storeResult={storeResult}
-      />
+      />,
     )
 
   it('should render correctly if not submitted answer yet', () => {
     const { getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     expect(getByText(getLabels().exercises.write.checkInput)).toBeDisabled()
     expect(getByPlaceholderText(getLabels().exercises.write.insertAnswer)).toBeDefined()
@@ -73,7 +73,7 @@ describe('InteractionSection', () => {
   it('should show popup if article missing', async () => {
     const { getByText, getByPlaceholderText, getByTestId } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Spachtel')
@@ -85,7 +85,7 @@ describe('InteractionSection', () => {
   it('should show incorrect if word is not correct', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die WrongAnswer')
@@ -99,7 +99,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText(getLabels().exercises.write.feedback.wrong, { exact: false })).toBeTruthy()
   })
@@ -107,7 +107,7 @@ describe('InteractionSection', () => {
   it('should show similar if word is similar', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Wachtel')
@@ -121,7 +121,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -129,7 +129,7 @@ describe('InteractionSection', () => {
   it('should show similar if word is correct and article similar', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'das Spachtel')
@@ -143,7 +143,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText(getLabels().exercises.write.feedback.almostCorrect2, { exact: false })).toBeTruthy()
   })
@@ -151,7 +151,7 @@ describe('InteractionSection', () => {
   it('should show correct', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'die Spachtel')
@@ -165,7 +165,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -173,7 +173,7 @@ describe('InteractionSection', () => {
   it('should show correct for divided words', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem: dividedVocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'der kontaktlose Spannungsprüfer')
@@ -191,7 +191,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })
@@ -199,7 +199,7 @@ describe('InteractionSection', () => {
   it('should show correct for articels starting with an uppercase letter', async () => {
     const { rerender, getByText, getByPlaceholderText } = renderInteractionSection(
       { vocabularyItem, result: null, numberOfTries: 0 },
-      false
+      false,
     )
     const inputField = getByPlaceholderText(getLabels().exercises.write.insertAnswer)
     fireEvent.changeText(inputField, 'Die Spachtel')
@@ -213,7 +213,7 @@ describe('InteractionSection', () => {
         vocabularyItemWithResult={vocabularyItemWithResult}
         isAnswerSubmitted
         storeResult={storeResult}
-      />
+      />,
     )
     expect(getByText('Toll, weiter so!', { exact: false })).toBeTruthy()
   })

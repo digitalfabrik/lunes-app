@@ -74,7 +74,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
         setErrorMessage(
           error.response?.status === HTTP_STATUS_CODE_FORBIDDEN
             ? getLabels().addCustomDiscipline.error.wrongCode
-            : getLabels().addCustomDiscipline.error.technical
+            : getLabels().addCustomDiscipline.error.technical,
         )
       })
       .finally(() => setLoading(false))

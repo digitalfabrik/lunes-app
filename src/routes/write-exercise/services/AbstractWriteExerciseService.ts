@@ -14,19 +14,19 @@ export default abstract class AbstractWriteExerciseService {
     public navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     public setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     public setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
-    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>> // eslint-disable-next-line no-empty-function
+    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>, // eslint-disable-next-line no-empty-function
   ) {}
 
   initializeExercise = (
     vocabularyItems: VocabularyItem[],
     vocabularyItemWithResults: VocabularyItemResult[],
-    force = false
+    force = false,
   ): void => {
     if (vocabularyItems.length !== vocabularyItemWithResults.length || force) {
       this.setCurrentIndex(0)
       this.setIsAnswerSubmitted(false)
       this.setVocabularyItemWithResults(
-        shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })))
+        shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
       )
     }
   }
@@ -34,7 +34,7 @@ export default abstract class AbstractWriteExerciseService {
   tryLater = (
     currentIndex: number,
     isKeyboardVisible: boolean,
-    vocabularyItemWithResults: VocabularyItemResult[]
+    vocabularyItemWithResults: VocabularyItemResult[],
   ): void => {
     // ImageViewer is not resized correctly if keyboard is not dismissed before going to next vocabularyItem
     if (isKeyboardVisible) {
@@ -51,7 +51,7 @@ export default abstract class AbstractWriteExerciseService {
   giveUp = async (
     vocabularyItemWithResults: VocabularyItemResult[],
     current: VocabularyItemResult,
-    currentIndex: number
+    currentIndex: number,
   ): Promise<void> => {
     this.setIsAnswerSubmitted(true)
     await this.storeResult(
@@ -62,7 +62,7 @@ export default abstract class AbstractWriteExerciseService {
       },
       vocabularyItemWithResults,
       current,
-      currentIndex
+      currentIndex,
     )
   }
 
@@ -71,7 +71,7 @@ export default abstract class AbstractWriteExerciseService {
     needsToBeRepeated: boolean,
     vocabularyItemWithResults: VocabularyItemResult[],
     vocabularyItems: VocabularyItem[],
-    isKeyboardVisible: boolean
+    isKeyboardVisible: boolean,
   ): Promise<void> => {
     this.setIsAnswerSubmitted(false)
     if (currentIndex === vocabularyItemWithResults.length - 1 && !needsToBeRepeated) {
@@ -87,12 +87,12 @@ export default abstract class AbstractWriteExerciseService {
     result: VocabularyItemResult,
     vocabularyItemWithResults: VocabularyItemResult[],
     current: VocabularyItemResult,
-    currentIndex: number
+    currentIndex: number,
   ) => Promise<void> | void
   abstract cheatExercise: (
     result: SimpleResult,
     vocabularyItems: VocabularyItem[],
-    vocabularyItemWithResults: VocabularyItemResult[]
+    vocabularyItemWithResults: VocabularyItemResult[],
   ) => void
   abstract finishExercise: (results: VocabularyItemResult[], vocabularyItems: VocabularyItem[]) => Promise<void>
 }

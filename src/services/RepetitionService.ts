@@ -50,7 +50,7 @@ export class RepetitionService {
 
   public static getNumberOfWordsNeedingRepetition = (): Promise<number> =>
     this.getWordNodeCards().then(
-      wordNodeCards => wordNodeCards.filter(item => this.wordNodeCardNeedsRepetition(item)).length
+      wordNodeCards => wordNodeCards.filter(item => this.wordNodeCardNeedsRepetition(item)).length,
     )
 
   public static getNumberOfWordsNeedingRepetitionWithUpperBound = async (): Promise<number> => {
@@ -61,7 +61,7 @@ export class RepetitionService {
   public static getNeedsRepetitionScore = (wordNodeCard: WordNodeCard): number => {
     const daysSinceRepetitionIsNeeded = millisecondsToDays(
       new Date().valueOf() -
-        this.addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]).valueOf()
+        this.addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]).valueOf(),
     )
     const daysToStayInThisSectionWithDivideByZeroProtection = Math.max(daysToStayInASection[wordNodeCard.section], 1)
     return Math.round(daysSinceRepetitionIsNeeded / daysToStayInThisSectionWithDivideByZeroProtection)
@@ -97,7 +97,7 @@ export class RepetitionService {
     await this.getWordNodeCards().then(wordNodeCards =>
       wordNodeCards.forEach(item => {
         result[item.section] += 1
-      })
+      }),
     )
     return result
   }

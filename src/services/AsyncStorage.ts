@@ -85,7 +85,7 @@ export const getExerciseProgress = async (): Promise<Progress> => {
 export const setExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
-  score: number
+  score: number,
 ): Promise<void> => {
   const savedProgress = await getExerciseProgress()
   const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
@@ -96,7 +96,7 @@ export const setExerciseProgress = async (
 export const saveExerciseProgress = async (
   disciplineId: number,
   exerciseKey: ExerciseKey,
-  vocabularyItemsWithResults: VocabularyItemResult[]
+  vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(disciplineId, exerciseKey, score)
@@ -119,7 +119,7 @@ const migrateToNewFavoriteFormat = async (): Promise<void> => {
     parsedVocabularyItems.map((item: number) => ({
       id: item,
       vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard,
-    }))
+    })),
   )
   await AsyncStorage.removeItem(FAVORITES_KEY)
 }
@@ -201,7 +201,7 @@ export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Pro
 
 export const editUserVocabularyItem = async (
   oldUserVocabularyItem: VocabularyItem,
-  newUserVocabularyItem: VocabularyItem
+  newUserVocabularyItem: VocabularyItem,
 ): Promise<boolean> => {
   const userVocabulary = await getUserVocabularyItems()
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
@@ -215,13 +215,13 @@ export const editUserVocabularyItem = async (
 
 export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
   const userVocabulary = await getUserVocabularyItems().then(vocab =>
-    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem))
+    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem)),
   )
   const images = userVocabularyItem.images.map(image => image.image)
   await Promise.all(
     images.map(async image => {
       await unlink(image)
-    })
+    }),
   )
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
   await setUserVocabularyItems(userVocabulary)
