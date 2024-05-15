@@ -4,14 +4,14 @@ import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
 export type AlternativeWordFromServer = {
-  article: number
+  singular_article: number
   alt_word: string
 }
 
 export type VocabularyItemFromServer = {
   id: number
   word: string
-  article: number
+  singular_article: number
   document_image: Array<{ id: number; image: string }>
   audio: string
   alternatives: AlternativeWordFromServer[]
@@ -25,10 +25,10 @@ export const formatVocabularyItemFromServer = (
   word: vocabularyItemFromServer.word,
   audio: vocabularyItemFromServer.audio,
   type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
-  article: ARTICLES[vocabularyItemFromServer.article],
+  article: ARTICLES[vocabularyItemFromServer.singular_article],
   images: vocabularyItemFromServer.document_image,
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({
-    article: ARTICLES[it.article],
+    article: ARTICLES[it.singular_article],
     word: it.alt_word,
   })),
   apiKey,

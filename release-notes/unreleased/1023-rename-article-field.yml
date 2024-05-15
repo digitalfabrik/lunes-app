@@ -1,0 +1,6 @@
+issue_key: 1023
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die App crasht nicht mehr, wenn man die Vokabelliste öffnet

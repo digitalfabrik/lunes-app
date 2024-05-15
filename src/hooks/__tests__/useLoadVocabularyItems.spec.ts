@@ -12,18 +12,18 @@ const testData = [
     alternatives: [
       {
         alt_word: 'Meterstab',
-        article: 1,
+        singular_article: 1,
       },
       {
         alt_word: 'Gliedermaßstab',
-        article: 1,
+        singular_article: 1,
       },
       {
         alt_word: 'Zoll-Stock',
-        article: 1,
+        singular_article: 1,
       },
     ],
-    article: 1,
+    singular_article: 1,
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     document_image: [],
     id: 17,
@@ -32,7 +32,7 @@ const testData = [
   },
   {
     alternatives: [],
-    article: 1,
+    singular_article: 1,
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
     document_image: [],
     id: 178,
@@ -41,7 +41,7 @@ const testData = [
   },
   {
     alternatives: [],
-    article: 2,
+    singular_article: 2,
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
     document_image: [],
     id: 245,
