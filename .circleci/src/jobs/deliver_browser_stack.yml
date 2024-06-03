@@ -1,5 +1,5 @@
 docker:
-  - image: cimg/android:2022.08.1-node
+  - image: cimg/android:2024.01.1-node
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
 shell: /bin/bash -eo pipefail

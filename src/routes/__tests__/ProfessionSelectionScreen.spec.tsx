@@ -36,7 +36,7 @@ describe('ProfessionSelectionScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
 
     const { findByText, queryAllByTestId } = render(
-      <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
+      <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />,
     )
     expect(await findByText(getLabels().scopeSelection.skipSelection)).toBeDefined()
     const profession = await findByText(mockDisciplines()[0].title)
@@ -56,7 +56,7 @@ describe('ProfessionSelectionScreen', () => {
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
 
     const { findByText, queryAllByTestId } = render(
-      <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />
+      <ProfessionSelectionScreen route={getRoute()} navigation={navigation} />,
     )
     expect(await findByText(getLabels().scopeSelection.confirmSelection)).toBeDefined()
     const profession = await findByText(mockDisciplines()[0].title)
@@ -78,7 +78,7 @@ describe('ProfessionSelectionScreen', () => {
 
     const { findAllByTestId } = render(<ProfessionSelectionScreen route={getRoute(false)} navigation={navigation} />)
     const professions = await findAllByTestId('list-item')
-    expect(professions[0].props.style[0].backgroundColor).toEqual(COLORS.disabled)
+    expect(professions[0]).toHaveStyle({ backgroundColor: COLORS.disabled })
   })
 
   it('should navigate on selection when not initial view', async () => {

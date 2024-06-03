@@ -16,7 +16,10 @@ describe('NotAuthorisedView', () => {
 
   it('should render description', () => {
     const { getByText } = render(
-      <NotAuthorisedView setVisible={setVisible} description={getLabels().general.camera.noAuthorization.description} />
+      <NotAuthorisedView
+        setVisible={setVisible}
+        description={getLabels().general.camera.noAuthorization.description}
+      />,
     )
     const isNoAuthDescription = getByText(getLabels().general.camera.noAuthorization.description)
     expect(isNoAuthDescription).toBeTruthy()
@@ -24,7 +27,10 @@ describe('NotAuthorisedView', () => {
 
   it('should successfully go back', () => {
     const { getByText } = render(
-      <NotAuthorisedView setVisible={setVisible} description={getLabels().general.camera.noAuthorization.description} />
+      <NotAuthorisedView
+        setVisible={setVisible}
+        description={getLabels().general.camera.noAuthorization.description}
+      />,
     )
     const buttonVisible = getByText(getLabels().general.back)
     fireEvent.press(buttonVisible)
@@ -34,7 +40,10 @@ describe('NotAuthorisedView', () => {
   it('should open settings successfully', () => {
     mocked(Linking.openSettings).mockImplementationOnce(Promise.resolve)
     const { getByText } = render(
-      <NotAuthorisedView setVisible={setVisible} description={getLabels().general.camera.noAuthorization.description} />
+      <NotAuthorisedView
+        setVisible={setVisible}
+        description={getLabels().general.camera.noAuthorization.description}
+      />,
     )
     const message = getByText(getLabels().settings.settings)
     fireEvent.press(message)

@@ -21,6 +21,10 @@ jest.mock('../components/AudioRecordOverlay', () => () => {
   const { Text } = require('react-native')
   return <Text>AudioRecorderOverlay</Text>
 })
+jest.mock('../../../components/AudioPlayer', () => () => {
+  const { Text } = require('react-native')
+  return <Text>AudioPlayer</Text>
+})
 jest.mock('react-native-image-crop-picker', () => ({
   openPicker: jest.fn(),
 }))
@@ -28,6 +32,18 @@ jest.mock('react-native-image-crop-picker', () => ({
 Date.now = jest.fn(() => 2000)
 
 describe('UserVocabularyProcessScreen', () => {
+  const itemToEdit = {
+    id: 2,
+    type: VOCABULARY_ITEM_TYPES.userCreated,
+    word: 'Auto',
+    article: ARTICLES[3],
+    images: [
+      { id: 0, image: `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg` },
+      { id: 1, image: `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg` },
+    ],
+    audio: `file:///${DocumentDirectoryPath}/audio-2.m4a`,
+    alternatives: [],
+  }
   const navigation = createNavigationMock<'UserVocabularyProcess'>()
   const getRoute = (itemToEdit?: VocabularyItem): RouteProp<RoutesParams, 'UserVocabularyProcess'> => ({
     key: 'key1',
@@ -43,22 +59,16 @@ describe('UserVocabularyProcessScreen', () => {
   })
 
   it('should view and delete thumbnail', async () => {
-    const realUseState = React.useState
-    const setState = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockImplementationOnce(() => [['image'], setState])
-      .mockImplementation(() => ['', jest.fn()])
-
-    const { getByText, getByTestId } = render(
-      <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />
+    const { getByText, getByTestId, queryByTestId } = render(
+      <UserVocabularyProcessScreen
+        navigation={navigation}
+        route={getRoute({ ...itemToEdit, images: [itemToEdit.images[0]] })}
+      />,
     )
     const deleteThumbnail = getByTestId('delete-on-thumbnail')
     expect(getByText(getLabels().userVocabulary.creation.addImage)).not.toBeDisabled()
     fireEvent.press(deleteThumbnail)
-    expect(setState).toHaveBeenCalled()
-
-    React.useState = realUseState
+    expect(queryByTestId('delete-on-thumbnail')).toBeFalsy()
   })
 
   it('should disable image button, if already three images selected', () => {
@@ -66,7 +76,7 @@ describe('UserVocabularyProcessScreen', () => {
     jest.spyOn(React, 'useState').mockImplementationOnce(() => [['image-1', 'image-2', 'image-3'], setState])
 
     const { getAllByTestId, getByText } = render(
-      <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />
+      <UserVocabularyProcessScreen navigation={navigation} route={getRoute()} />,
     )
     const a = getAllByTestId('delete-on-thumbnail')
     expect(a).toHaveLength(3)
@@ -83,24 +93,11 @@ describe('UserVocabularyProcessScreen', () => {
   })
 
   describe('edit vocabulary', () => {
-    const itemToEdit = {
-      id: 2,
-      type: VOCABULARY_ITEM_TYPES.userCreated,
-      word: 'Auto',
-      article: ARTICLES[3],
-      images: [
-        { id: 0, image: `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg` },
-        { id: 1, image: `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg` },
-      ],
-      audio: `file:///${DocumentDirectoryPath}/audio-2.m4a`,
-      alternatives: [],
-    }
-
     beforeEach(async () => setUserVocabularyItems([itemToEdit]))
 
     it('should fill all fields correctly', async () => {
       const { getByPlaceholderText, getByTestId, getAllByTestId } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
       expect(textField.props.value).toEqual(itemToEdit.word)
@@ -112,15 +109,14 @@ describe('UserVocabularyProcessScreen', () => {
 
     it('should keep all fields except word if only word is updated', async () => {
       const { getByPlaceholderText, getByText } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
       fireEvent.changeText(textField, 'new-word')
       const saveButton = getByText(getLabels().userVocabulary.creation.saveButton)
       fireEvent.press(saveButton)
 
-      const shouldBe = { ...itemToEdit }
-      shouldBe.word = 'new-word'
+      const shouldBe = { ...itemToEdit, word: 'new-word' }
       await waitFor(async () => {
         const userVocabulary = await getUserVocabularyItems()
         expect(userVocabulary).toEqual([shouldBe])
@@ -131,7 +127,7 @@ describe('UserVocabularyProcessScreen', () => {
       jest.spyOn(ReactNativeFS, 'unlink')
 
       const { getByText, getAllByTestId } = render(
-        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(2)
       const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]

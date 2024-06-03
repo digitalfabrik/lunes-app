@@ -20,7 +20,7 @@ describe('CheatMode', () => {
   })
 
   it('should not show cheat buttons in normal mode', async () => {
-    mocked(useLoadAsync).mockImplementation(() => ({
+    mocked<typeof useLoadAsync<boolean, never>>(useLoadAsync).mockImplementation(() => ({
       data: false,
       error: null,
       loading: false,
@@ -33,7 +33,7 @@ describe('CheatMode', () => {
   })
 
   it("should call parent's cheat function with proper result type", async () => {
-    mocked(useLoadAsync).mockImplementation(() => ({
+    mocked<typeof useLoadAsync<boolean, never>>(useLoadAsync).mockImplementation(() => ({
       data: true,
       error: null,
       loading: false,

@@ -98,7 +98,7 @@ const expectedData = (parent: Discipline | null): Array<Discipline & Record<stri
 ]
 
 describe('loadDiscipline', () => {
-  mocked(getFromEndpoint).mockImplementation(async () => testData)
+  mocked<typeof getFromEndpoint<typeof testData>>(getFromEndpoint).mockImplementation(async () => testData)
 
   describe('it should use correct url if', () => {
     it('has no parent', async () => {

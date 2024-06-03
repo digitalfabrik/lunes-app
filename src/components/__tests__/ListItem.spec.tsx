@@ -23,7 +23,7 @@ describe('ListItem', () => {
         badgeLabel={badge}
         arrowDisabled={arrowDisabled}
         disabled={disabled}
-      />
+      />,
     )
 
   it('should render texts', () => {
@@ -38,18 +38,18 @@ describe('ListItem', () => {
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+    expect(getByText(title)).toHaveStyle({ color: COLORS.text })
 
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
 
     expect(onPress).toHaveBeenCalled()
     expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+    expect(getByText(title)).toHaveStyle({ color: COLORS.backgroundAccent })
 
     await waitFor(() => {
       expect(arrowIcon.props.fill).toBe(COLORS.primary)
-      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+      expect(getByText(title)).toHaveStyle({ color: COLORS.text })
     })
   })
 
@@ -67,14 +67,14 @@ describe('ListItem', () => {
     fireEvent(arrowIcon, 'longPress')
 
     expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
-    expect(getByText(title).instance.props.style[0].color).toBe(COLORS.backgroundAccent)
+    expect(getByText(title)).toHaveStyle({ color: COLORS.backgroundAccent })
 
     fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
     expect(onPress).toHaveBeenCalled()
 
     await waitFor(() => {
       expect(arrowIcon.props.fill).toBe(COLORS.primary)
-      expect(getByText(title).instance.props.style[0].color).toBe(COLORS.text)
+      expect(getByText(title)).toHaveStyle({ color: COLORS.text })
     })
   })
 
@@ -93,12 +93,12 @@ describe('ListItem', () => {
 
   it('should have correct background color', () => {
     const { getByTestId } = renderDisciplineItem()
-    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.backgroundAccent)
+    expect(getByTestId('list-item')).toHaveStyle({ backgroundColor: COLORS.backgroundAccent })
   })
 
   it('should handle disable correctly', () => {
     const { getByTestId, getByText } = renderDisciplineItem(true)
-    expect(getByTestId('list-item').props.style[0].backgroundColor).toBe(COLORS.disabled)
+    expect(getByTestId('list-item')).toHaveStyle({ backgroundColor: COLORS.disabled })
     fireEvent.press(getByText(title))
     expect(onPress).not.toHaveBeenCalled()
   })

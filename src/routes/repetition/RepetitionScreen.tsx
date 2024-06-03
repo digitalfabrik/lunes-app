@@ -56,7 +56,7 @@ const HeaderWrapper = styled.View`
 const IconWrapper = styled.View`
   position: absolute;
   left: ${hp('18%')}px;
-  top: ${hp('0.2%')}px; ;
+  top: ${hp('0.2%')}px;
 `
 const ModalContainer = styled.View`
   display: flex;
@@ -73,7 +73,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
   const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
     RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
-    undefined
+    undefined,
   )
 
   useFocusEffect(refreshNumberOfWordsNeedingRepetition)

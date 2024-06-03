@@ -37,7 +37,7 @@ commands:
                 default: lunes-app
                 type: string
             failure_mentions:
-                default: '@max.ammann @stefanie.metzger @sarah.sporck @steffen.kleinle @andreas.fischer'
+                default: '@stefanie.metzger @steffen.kleinle @andreas.fischer @leandra.hahn'
                 type: string
             only_for_branch:
                 default: main
@@ -173,7 +173,7 @@ commands:
                     - 3-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
                     - 3-gems-{{ arch }}-
             - run:
-                command: bundle check || bundle install
+                command: bundle check || sudo bundle install
                 name: Install Fastlane
                 working_directory: << parameters.directory >>
             - save_cache:
@@ -214,7 +214,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2022.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 3
@@ -265,7 +265,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 4
         macos:
-            xcode: 14.2.0
+            xcode: 15.2.0
         resource_class: macos.m1.medium.gen1
         shell: /bin/bash --login -o pipefail
         steps:
@@ -355,7 +355,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2022.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -391,7 +391,7 @@ jobs:
             - notify
     deliver_browser_stack:
         docker:
-            - image: cimg/android:2022.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
@@ -427,7 +427,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 14.2.0
+            xcode: 15.2.0
         parameters:
             production_delivery:
                 default: false
@@ -535,7 +535,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on iOS!\n${RELEASE_NOTES}\n${IOS_ARTIFACT_URLS}
     promote_android:
         docker:
-            - image: cimg/android:2022.08.1-node
+            - image: cimg/android:2024.01.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -553,7 +553,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 14.2.0
+            xcode: 15.2.0
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout

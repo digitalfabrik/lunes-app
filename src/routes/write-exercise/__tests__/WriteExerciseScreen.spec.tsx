@@ -125,8 +125,8 @@ describe('WriteExerciseScreen', () => {
       getByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           vocabularyItems[1].article.value
-        } ${vocabularyItems[1].word}“`
-      )
+        } ${vocabularyItems[1].word}“`,
+      ),
     ).toBeDefined()
     expect(getByText(getLabels().exercises.showResults)).toBeDefined()
   })
@@ -143,8 +143,8 @@ describe('WriteExerciseScreen', () => {
       getByText(
         `${getLabels().exercises.write.feedback.almostCorrect1} „${submission}“ ${
           getLabels().exercises.write.feedback.almostCorrect2
-        }`
-      )
+        }`,
+      ),
     ).toBeDefined()
 
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
@@ -153,8 +153,8 @@ describe('WriteExerciseScreen', () => {
       getByText(
         `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
           vocabularyItems[0].article.value
-        } ${vocabularyItems[0].word}“`
-      )
+        } ${vocabularyItems[0].word}“`,
+      ),
     ).toBeDefined()
     expect(getByText(getLabels().exercises.next)).toBeDefined()
   })
@@ -205,7 +205,7 @@ describe('WriteExerciseScreen', () => {
       input,
       `${getLabels().exercises.write.feedback.almostCorrect1} „${input}“ ${
         getLabels().exercises.write.feedback.almostCorrect2
-      }`
+      }`,
     )
   })
 
@@ -214,7 +214,7 @@ describe('WriteExerciseScreen', () => {
       'das Falsche',
       `${getLabels().exercises.write.feedback.wrong} ${getLabels().exercises.write.feedback.solution} „${
         vocabularyItems[0].article.value
-      } ${vocabularyItems[0].word}“`
+      } ${vocabularyItems[0].word}“`,
     )
   })
 

@@ -22,7 +22,7 @@ export type ServerResponseDiscipline = {
 
 export const formatDiscipline = (
   item: ServerResponseDiscipline,
-  loadingInfo: DisciplinesRequestParams
+  loadingInfo: DisciplinesRequestParams,
 ): Discipline => ({
   ...item,
   numberOfChildren: item.total_discipline_children || item.total_training_sets || item.total_documents,
