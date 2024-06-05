@@ -2,13 +2,12 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import normalize from 'normalize-strings'
 import React, { useLayoutEffect, useMemo, useState } from 'react'
-import { Pressable, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../components/Button'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import Header from '../../components/Header'
-import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -44,6 +43,13 @@ const SearchContainer = styled.View`
 
 const ScopeContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
+  padding: ${props => props.theme.spacings.xs} 0;
+  background-color: ${props => props.theme.colors.background};
+`
+
+const StyledPressable = styled.Pressable`
+  padding: ${props => props.theme.spacings.sm};
+  border-bottom: 1px solid ${props => props.theme.colors.disabled};
 `
 
 const ButtonContainer = styled.View`
@@ -52,7 +58,7 @@ const ButtonContainer = styled.View`
 
 export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
   disciplines?.filter(discipline =>
-    normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase()))
+    normalize(discipline.title).toLowerCase().includes(normalize(searchKey.toLowerCase())),
   )
 
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
@@ -79,7 +85,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
   const filteredProfessions = useMemo(
     () => searchProfessions(allProfessions, searchString),
-    [allProfessions, searchString]
+    [allProfessions, searchString],
   )
   const theme = useTheme()
 
@@ -133,6 +139,9 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
               setShowSearchResults(input.length > 0)
             }}
             placeholder={getLabels().scopeSelection.searchProfession}
+            style={{
+              backgroundColor: theme.colors.background,
+            }}
           />
         </SearchContainer>
         {showSearchResults ? (
@@ -140,7 +149,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
             {filteredProfessions?.map(profession => {
               const disabled = !!selectedProfessions?.includes(profession.id)
               return (
-                <Pressable
+                <StyledPressable
                   key={profession.id}
                   onPress={async () => {
                     await pushSelectedProfession(profession.id).then(() => {
@@ -149,8 +158,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
                   }}
                   disabled={disabled}>
                   {highlightText(splitTextBySearchString(profession.title, searchString), disabled)}
-                  <HorizontalLine />
-                </Pressable>
+                </StyledPressable>
               )
             })}
           </ScopeContainer>

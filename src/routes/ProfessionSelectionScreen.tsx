@@ -27,9 +27,11 @@ const ButtonContainer = styled.View`
   padding: ${props => props.theme.spacings.md} 0;
   margin: 0 auto 0;
 `
+
 const IconContainer = styled.View`
   margin-right: ${props => props.theme.spacings.sm};
 `
+
 const Placeholder = styled.View`
   width: 24px;
   margin-right: ${props => props.theme.spacings.sm};

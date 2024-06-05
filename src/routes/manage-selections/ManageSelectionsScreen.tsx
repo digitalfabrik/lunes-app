@@ -29,6 +29,7 @@ const SectionHeading = styled(SubheadingText)`
 const Padding = styled.View`
   padding-bottom: ${props => props.theme.spacings.xxl};
 `
+
 const StyledHeading = styled(HeadingText)`
   text-align: center;
 `

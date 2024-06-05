@@ -44,7 +44,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
           initialParams={{ initialSelection: true }}
           options={({ navigation }) => options(manageSelection, navigation)}
         />
-        <Stack.Screen name='ManageSelection' component={ManageSelectionsScreen} />
+        <Stack.Screen
+          name='ManageSelection'
+          component={ManageSelectionsScreen}
+          options={({ navigation }) => options(manageSelection, navigation)}
+        />
         <Stack.Screen
           name='OverlayMenu'
           component={OverlayMenu}
