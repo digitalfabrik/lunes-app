@@ -3,7 +3,6 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { Discipline } from '../../../constants/endpoints'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadSelectedProfessions from '../../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
@@ -12,7 +11,7 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import render from '../../../testing/render'
-import ScopeSelection, { searchProfessions } from '../ScopeSelectionScreen'
+import ScopeSelection from '../ScopeSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDisciplines')
@@ -86,20 +85,5 @@ describe('ScopeSelection', () => {
     expect(queryByText(getLabels().scopeSelection.welcome)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.skipSelection)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
-  })
-
-  describe('searchProfessions', () => {
-    it('should find a profession', () => {
-      const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'disc')).toStrictEqual(professions)
-      expect(searchProfessions(professions, 'SECOND')).toStrictEqual([professions[1]])
-      expect(searchProfessions(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
-    })
-
-    it('should not find a profession', () => {
-      const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'fourth discipline')).toStrictEqual([])
-      expect(searchProfessions(professions, 'Maler')).toStrictEqual([])
-    })
   })
 })

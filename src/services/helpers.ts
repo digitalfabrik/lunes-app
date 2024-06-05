@@ -241,3 +241,8 @@ export const splitTextBySearchString = (allText: string, highlight: string): [st
     allText.slice(indexAfterHighlight),
   ]
 }
+
+export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
+  disciplines?.filter(discipline =>
+    normalizeStrings(discipline.title).toLowerCase().includes(normalizeStrings(searchKey.toLowerCase())),
+  )
