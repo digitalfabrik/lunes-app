@@ -47,8 +47,6 @@ const highlightText = (textArray: [string] | [string, string, string], disabled:
 type ScopeSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
-  showSearchResults: boolean
-  setShowSearchResults: (shouldShow: boolean) => void
   navigateToDiscipline: (item: Discipline) => void
   navigateToManageSelection: () => void
   selectedProfessions: number[] | null
@@ -57,8 +55,6 @@ type ScopeSelectionProps = {
 const ScopeSelection = ({
   queryTerm,
   setQueryTerm,
-  showSearchResults,
-  setShowSearchResults,
   navigateToDiscipline,
   navigateToManageSelection,
   selectedProfessions,
@@ -81,7 +77,6 @@ const ScopeSelection = ({
           query={queryTerm}
           setQuery={input => {
             setQueryTerm(input)
-            setShowSearchResults(input.length > 0)
           }}
           placeholder={getLabels().scopeSelection.searchProfession}
           style={{
@@ -89,7 +84,7 @@ const ScopeSelection = ({
           }}
         />
       </SearchContainer>
-      {showSearchResults ? (
+      {queryTerm.length > 0 ? (
         <ScopeContainer>
           {filteredProfessions?.map(profession => {
             const disabled = !!selectedProfessions?.includes(profession.id)
@@ -97,9 +92,8 @@ const ScopeSelection = ({
               <StyledPressable
                 key={profession.id}
                 onPress={async () => {
-                  await pushSelectedProfession(profession.id).then(() => {
-                    navigateToManageSelection()
-                  })
+                  await pushSelectedProfession(profession.id)
+                  navigateToManageSelection()
                 }}
                 disabled={disabled}>
                 {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}

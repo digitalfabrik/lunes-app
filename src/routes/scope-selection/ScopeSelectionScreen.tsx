@@ -39,7 +39,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   const { initialSelection } = route.params
   const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
   const [queryTerm, setQueryTerm] = useState<string>('')
-  const [showSearchResults, setShowSearchResults] = useState<boolean>(false)
   const theme = useTheme()
 
   useFocusEffect(refreshSelectedProfessions)
@@ -83,8 +82,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
         <ScopeSelection
           queryTerm={queryTerm}
           setQueryTerm={setQueryTerm}
-          showSearchResults={showSearchResults}
-          setShowSearchResults={setShowSearchResults}
           navigateToDiscipline={navigateToDiscipline}
           navigateToManageSelection={() => navigation.navigate('ManageSelection')}
           selectedProfessions={selectedProfessions}

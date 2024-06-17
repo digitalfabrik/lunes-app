@@ -182,6 +182,7 @@ describe('helpers', () => {
       expect(score).toBe(0)
     })
   })
+
   describe('getSortedAndFilteredVocabularyItems', () => {
     const testData = new VocabularyItemBuilder(10).build()
     it('should check words with ö,ä,ü whether they are found correctly when searching for both ö,ü,a and o,u,a', () => {

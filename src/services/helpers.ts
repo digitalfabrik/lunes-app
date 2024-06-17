@@ -186,18 +186,20 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
   )
 }
 
+const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
+
 const normalizeSearchString = (searchString: string): string => {
   const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
     searchString.split(' ')[0].toLowerCase(),
   )
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString
-  return normalizeStrings(searchStringWithoutArticle).toLowerCase().trim()
+  return normalizeString(searchStringWithoutArticle)
 }
 
 export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: string): boolean =>
   vocabularyItem.alternatives.filter(alternative =>
-    normalizeStrings(alternative.word).toLowerCase().includes(normalizeSearchString(searchString)),
+    normalizeString(alternative.word).includes(normalizeSearchString(searchString)),
   ).length > 0
 
 export const getSortedAndFilteredVocabularyItems = (
@@ -215,8 +217,7 @@ export const getSortedAndFilteredVocabularyItems = (
 
   const filteredVocabularyItems = vocabularyItems?.filter(
     item =>
-      normalizeStrings(item.word).toLowerCase().includes(normalizedSearchString) ||
-      matchAlternative(item, normalizedSearchString),
+      normalizeString(item.word).includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString),
   )
   return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
@@ -230,7 +231,7 @@ export const millisecondsToDays = (milliseconds: number): number => milliseconds
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
 
 export const splitTextBySearchString = (allText: string, highlight: string): [string] | [string, string, string] => {
-  const highlightIndex = normalizeStrings(allText.toLowerCase()).indexOf(normalizeStrings(highlight.toLowerCase()))
+  const highlightIndex = normalizeString(allText).indexOf(normalizeString(highlight))
   if (highlightIndex === -1) {
     return [allText]
   }
@@ -243,6 +244,4 @@ export const splitTextBySearchString = (allText: string, highlight: string): [st
 }
 
 export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
-  disciplines?.filter(discipline =>
-    normalizeStrings(discipline.title).toLowerCase().includes(normalizeStrings(searchKey.toLowerCase())),
-  )
+  disciplines?.filter(discipline => normalizeString(discipline.title).includes(normalizeString(searchKey)))
