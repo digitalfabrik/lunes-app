@@ -75,8 +75,7 @@ const ScopeSelection = ({
       <SearchContainer>
         <SearchBar
           query={queryTerm}
-          setQuery={input => {
-            setQueryTerm(input)
+          setQuery={setQueryTerm}
           }}
           placeholder={getLabels().scopeSelection.searchProfession}
           style={{
