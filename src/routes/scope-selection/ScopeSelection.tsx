@@ -76,7 +76,6 @@ const ScopeSelection = ({
         <SearchBar
           query={queryTerm}
           setQuery={setQueryTerm}
-          }}
           placeholder={getLabels().scopeSelection.searchProfession}
           style={{
             backgroundColor: theme.colors.background,
