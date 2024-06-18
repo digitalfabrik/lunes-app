@@ -30,6 +30,7 @@ describe('ScopeSelection', () => {
   it('should navigate to profession selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     expect(getByText(getLabels().scopeSelection.welcome)).toBeDefined()
@@ -49,6 +50,7 @@ describe('ScopeSelection', () => {
   it('should skip selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf(null))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     const button = getByText(getLabels().scopeSelection.skipSelection)
     fireEvent.press(button)
@@ -64,6 +66,7 @@ describe('ScopeSelection', () => {
   it('should confirm selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { getByText } = render(<ScopeSelection navigation={navigation} route={getRoute()} />)
     const button = getByText(getLabels().scopeSelection.confirmSelection)
     fireEvent.press(button)
@@ -77,6 +80,7 @@ describe('ScopeSelection', () => {
   it('should hide welcome message and buttons for non initial view', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useReadSelectedProfessions).mockReturnValueOnce(getReturnOf([mockDisciplines()[0].id]))
+    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { queryByText } = render(<ScopeSelection navigation={navigation} route={getRoute(false)} />)
     expect(queryByText(getLabels().scopeSelection.welcome)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.skipSelection)).toBeNull()

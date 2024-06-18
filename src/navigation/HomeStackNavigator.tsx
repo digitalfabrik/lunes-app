@@ -7,7 +7,6 @@ import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
-import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import { getLabels } from '../services/helpers'
@@ -42,11 +41,6 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='Imprint'
         component={ImprintScreen}
-        options={({ navigation }) => options(overview, navigation)}
-      />
-      <Stack.Screen
-        name='ManageSelection'
-        component={ManageSelectionsScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen

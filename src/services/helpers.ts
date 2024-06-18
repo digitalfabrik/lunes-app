@@ -169,7 +169,7 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
     vocabularyItemsWithResults
       .filter(doc => doc.result === 'correct')
       .reduce((acc, vocabularyItemResult) => {
-        let score = acc
+        let score: number = acc
         switch (vocabularyItemResult.numberOfTries) {
           case 1:
             score += SCORE_FIRST_TRY
@@ -186,18 +186,20 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
   )
 }
 
+const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
+
 const normalizeSearchString = (searchString: string): string => {
   const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
     searchString.split(' ')[0].toLowerCase(),
   )
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString
-  return normalizeStrings(searchStringWithoutArticle).toLowerCase().trim()
+  return normalizeString(searchStringWithoutArticle)
 }
 
 export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: string): boolean =>
   vocabularyItem.alternatives.filter(alternative =>
-    normalizeStrings(alternative.word).toLowerCase().includes(normalizeSearchString(searchString)),
+    normalizeString(alternative.word).includes(normalizeSearchString(searchString)),
   ).length > 0
 
 export const getSortedAndFilteredVocabularyItems = (
@@ -215,8 +217,7 @@ export const getSortedAndFilteredVocabularyItems = (
 
   const filteredVocabularyItems = vocabularyItems?.filter(
     item =>
-      normalizeStrings(item.word).toLowerCase().includes(normalizedSearchString) ||
-      matchAlternative(item, normalizedSearchString),
+      normalizeString(item.word).includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString),
   )
   return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
@@ -228,3 +229,19 @@ export const willNextExerciseUnlock = (previousScore: number | undefined, score:
 export const millisecondsToDays = (milliseconds: number): number => milliseconds / (24 * 60 * 60 * 1000)
 /* eslint-disable-next-line no-magic-numbers */
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
+
+export const splitTextBySearchString = (allText: string, highlight: string): [string] | [string, string, string] => {
+  const highlightIndex = normalizeString(allText).indexOf(normalizeString(highlight))
+  if (highlightIndex === -1) {
+    return [allText]
+  }
+  const indexAfterHighlight = highlightIndex + highlight.length
+  return [
+    allText.slice(0, highlightIndex),
+    allText.slice(highlightIndex, indexAfterHighlight),
+    allText.slice(indexAfterHighlight),
+  ]
+}
+
+export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
+  disciplines?.filter(discipline => normalizeString(discipline.title).includes(normalizeString(searchKey)))

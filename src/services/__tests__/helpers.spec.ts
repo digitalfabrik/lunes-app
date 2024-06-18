@@ -5,6 +5,7 @@ import {
   SimpleResult,
   VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
+import { Discipline } from '../../constants/endpoints'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -15,6 +16,8 @@ import {
   getNextExercise,
   getProgress,
   getSortedAndFilteredVocabularyItems,
+  searchProfessions,
+  splitTextBySearchString,
   willNextExerciseUnlock,
 } from '../helpers'
 
@@ -179,6 +182,7 @@ describe('helpers', () => {
       expect(score).toBe(0)
     })
   })
+
   describe('getSortedAndFilteredVocabularyItems', () => {
     const testData = new VocabularyItemBuilder(10).build()
     it('should check words with ö,ä,ü whether they are found correctly when searching for both ö,ü,a and o,u,a', () => {
@@ -189,6 +193,7 @@ describe('helpers', () => {
       expect(resultForA).toHaveLength(6)
       expect(resultForU).toHaveLength(4)
     })
+
     it('should check alternative words with ö,ä,ü whether they are found correctly when searching for both ö,ü,a and o,u,a', () => {
       const resultForOe = getSortedAndFilteredVocabularyItems(testData, 'ölkännchen')
       const resultForAe = getSortedAndFilteredVocabularyItems(testData, 'abhänger')
@@ -321,6 +326,54 @@ describe('helpers', () => {
       ]
       const sortedTestData = getSortedAndFilteredVocabularyItems(testData, '')
       expect(sortedData).toEqual(sortedTestData)
+    })
+  })
+
+  describe('splitTextBySearchString', () => {
+    const allText = 'Hello World'
+    it('should not find a search string', () => {
+      const highlight = 'Goodbye'
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual([allText])
+    })
+
+    it('should find a search string at the start', () => {
+      const highlight = 'Hel'
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['', 'Hel', 'lo World'])
+    })
+
+    it('should find a search string at the end', () => {
+      const highlight = 'World'
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'World', ''])
+    })
+
+    it('should find a search string in the middle', () => {
+      const highlight = 'lo '
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hel', 'lo ', 'World'])
+    })
+
+    it('should ignore casing', () => {
+      const highlight = 'wor'
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'Wor', 'ld'])
+    })
+
+    it('should find a search string with umlauts', () => {
+      const highlight = 'Wörld'
+      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'World', ''])
+    })
+  })
+
+  describe('searchProfessions', () => {
+    it('should find a profession', () => {
+      const professions: Discipline[] = mockDisciplines()
+      expect(searchProfessions(professions, 'disc')).toStrictEqual(professions)
+      expect(searchProfessions(professions, 'SECOND')).toStrictEqual([professions[1]])
+      expect(searchProfessions(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
+    })
+
+    it('should not find a profession', () => {
+      const professions: Discipline[] = mockDisciplines()
+      expect(searchProfessions(professions, 'fourth discipline')).toStrictEqual([])
+      expect(searchProfessions(professions, 'Maler')).toStrictEqual([])
     })
   })
 })
