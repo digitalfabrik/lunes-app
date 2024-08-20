@@ -573,6 +573,9 @@ parameters:
     run_commit:
         default: true
         type: boolean
+    run_commit_main:
+        default: false
+        type: boolean
     run_dev_delivery:
         default: false
         type: boolean
@@ -658,11 +661,14 @@ workflows:
                     - build_android
                     - build_ios
         when:
-            and:
-                - << pipeline.parameters.run_commit >>
+            or:
                 - equal:
-                    - main
-                    - << pipeline.git.branch >>
+                    - << pipeline.parameters.run_commit_main >>
+                - and:
+                    - << pipeline.parameters.run_commit >>
+                    - equal:
+                        - main
+                        - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - check:

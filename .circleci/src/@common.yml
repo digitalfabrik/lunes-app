@@ -5,6 +5,10 @@ parameters:
     default: true
     type: boolean
 
+  run_commit_main:
+    default: false
+    type: boolean
+
   run_dev_delivery:
     default: false
     type: boolean
