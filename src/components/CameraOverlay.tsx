@@ -1,13 +1,9 @@
-import React, { ReactElement, useState } from 'react'
-import { Modal as RNModal, Platform } from 'react-native'
-import { Permission, PERMISSIONS } from 'react-native-permissions'
+import React, { ReactElement, ReactNode, useState } from 'react'
+import { Modal as RNModal } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
-import useGrantPermissions from '../hooks/useGrantPermissions'
-import { getLabels } from '../services/helpers'
-import NotAuthorisedView from './NotAuthorisedView'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -23,17 +19,11 @@ const Icon = styled.Pressable`
 
 type Props = {
   setVisible: (visible: boolean) => void
-  children: ReactElement
-  permission?: Permission
+  children: ReactNode
 }
 
-const CameraOverlay = ({
-  setVisible,
-  children,
-  permission = Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,
-}: Props): ReactElement => {
+const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const { permissionRequested, permissionGranted } = useGrantPermissions(permission)
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
@@ -48,13 +38,7 @@ const CameraOverlay = ({
             <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
           )}
         </Icon>
-        {permissionGranted && children}
-        {permissionRequested && !permissionGranted && (
-          <NotAuthorisedView
-            description={getLabels().general.camera.noAuthorization.description}
-            setVisible={setVisible}
-          />
-        )}
+        {children}
       </Container>
     </RNModal>
   )

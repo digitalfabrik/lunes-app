@@ -8561,7 +8561,6 @@ __metadata:
     react-dom: 18.2.0
     react-native: 0.70.9
     react-native-audio-recorder-player: 3.5.1
-    react-native-camera: 4.2.1
     react-native-device-info: ^10.13.1
     react-native-element-dropdown: ^2.10.4
     react-native-fs: ^2.20.0
@@ -8583,6 +8582,7 @@ __metadata:
     react-native-svg-transformer: ^1.3.0
     react-native-tts: 4.1.0
     react-native-vector-icons: ^10.0.3
+    react-native-vision-camera: ^4.5.3
     react-navigation-header-buttons: ^10.0.0
     react-test-renderer: 18.2.0
     string-similarity: ^4.0.4
@@ -10245,15 +10245,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-camera@npm:4.2.1":
-  version: 4.2.1
-  resolution: "react-native-camera@npm:4.2.1"
-  dependencies:
-    prop-types: ^15.6.2
-  checksum: af4e4ac8f18a45b90a98e2aa80fe4e5f01ec4ed1ce247b95eebd16bccd15123810844542008e71e07297607e5ae51c2a3ff97f6c6344b9ba477d57d9860d7412
-  languageName: node
-  linkType: hard
-
 "react-native-codegen@npm:^0.70.6":
   version: 0.70.7
   resolution: "react-native-codegen@npm:0.70.7"
@@ -10542,6 +10533,26 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: f7741e03cba701ac577779784db64ef581d5056a14698ac34de0bea731ff0d2bbe4b1c5ede441caa1b8748b18e57ee96b4d8dd75d53ef1b240995d1ffdc6419d
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:^4.5.3":
+  version: 4.5.3
+  resolution: "react-native-vision-camera@npm:4.5.3"
+  peerDependencies:
+    "@shopify/react-native-skia": "*"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: "*"
+    react-native-worklets-core: "*"
+  peerDependenciesMeta:
+    "@shopify/react-native-skia":
+      optional: true
+    react-native-reanimated:
+      optional: true
+    react-native-worklets-core:
+      optional: true
+  checksum: b17d5f55a7785727292ccee0b0fbcc171ddfefdf150a61374191ac6ef07ff90ee2bd4b76ffa9ff0673c4333ee00a877a2b5aa367aa2e01967b8113cf79f83e22
   languageName: node
   linkType: hard
 
