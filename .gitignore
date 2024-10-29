@@ -30,6 +30,8 @@ build/
 local.properties
 *.iml
 *.hprof
+*.keystore
+!debug.keystore
 
 # Visual Studio Code
 #
@@ -40,12 +42,6 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-
-# BUCK
-buck-out/
-\.buckd/
-*.keystore
-!debug.keystore
 
 # fastlane
 #
@@ -80,6 +76,9 @@ tools/.yarn/*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
 
 # Coverage
 src/coverage/
