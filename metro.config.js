@@ -1,4 +1,5 @@
-const { getDefaultConfig, wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
+const { getDefaultConfig } = require('@react-native/metro-config')
+const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
 
 /**
  * Metro configuration
