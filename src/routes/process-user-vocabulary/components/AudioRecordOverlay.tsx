@@ -81,12 +81,12 @@ type AudioRecordOverlayProps = {
   recordingPath: string | null
 }
 
-const recordingTimeInit = '00:00'
 const factor = 1000
 // Power recording levels for metering differ between android and ios
 // https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
 const androidFactor = 0.25
 const maxRecordingTime = 5000
+const minRecordingTime = 100
 
 // Zero alignment of values with the minimum metering value
 const cleanUpMeteringResults = (meteringResults: number[]): number[] =>
@@ -107,7 +107,7 @@ const AudioRecordOverlay = ({
   recordingPath,
 }: AudioRecordOverlayProps): ReactElement => {
   const [meteringResults, setMeteringResults] = useState<number[]>([])
-  const [recordingTime, setRecordingTime] = useState<string>(recordingTimeInit)
+  const [recordingTime, setRecordingTime] = useState<number>(0)
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionGranted, permissionRequested } = useGrantPermissions(
     Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO,
@@ -115,6 +115,7 @@ const AudioRecordOverlay = ({
   const { hold, talk } = getLabels().general.audio
   const { description } = getLabels().general.audio.noAuthorization
   const theme = useTheme()
+  const stringifiedRecordingTime = audioRecorderPlayer.mmss(Math.floor(recordingTime / factor))
 
   useEffect(() => {
     if (!recordingPath) {
@@ -125,10 +126,20 @@ const AudioRecordOverlay = ({
   const cleanedMetering = useMemo(() => cleanUpMeteringResults(meteringResults), [meteringResults])
 
   const onStopRecording = async (): Promise<void> => {
+    audioRecorderPlayer.removeRecordBackListener()
+    if (recordingTime < minRecordingTime) {
+      setIsPressed(false)
+      setTimeout(() => {
+        audioRecorderPlayer.stopRecorder().catch(reportError)
+      }, minRecordingTime)
+      return
+    }
     try {
-      onAudioRecorded(await audioRecorderPlayer.stopRecorder())
-      audioRecorderPlayer.removeRecordBackListener()
-      setShowAudioRecordOverlay(false)
+      const recordingPath = await audioRecorderPlayer.stopRecorder()
+      if (recordingPath.includes('file://')) {
+        onAudioRecorded(recordingPath)
+        setShowAudioRecordOverlay(false)
+      }
     } catch (e) {
       // If the recording is stopped to fast, sometimes an error is thrown which can be ignored.
       // https://github.com/hyochan/react-native-audio-recorder-player/issues/490
@@ -141,18 +152,26 @@ const AudioRecordOverlay = ({
   }
 
   const onStartRecording = async (): Promise<void> => {
-    setMeteringResults([])
-    await audioRecorderPlayer.startRecorder(undefined, undefined, true)
-    audioRecorderPlayer.addRecordBackListener(async e => {
-      setMeteringResults(oldMeteringResults => [
-        ...oldMeteringResults,
-        Math.floor(getCurrentMetering(e.currentMetering)),
-      ])
-      setRecordingTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / factor)))
-      if (e.currentPosition > maxRecordingTime) {
-        await onStopRecording()
-      }
-    })
+    if (recordingTime !== 0) {
+      return
+    }
+    try {
+      setMeteringResults([])
+      await audioRecorderPlayer.startRecorder(undefined, undefined, true)
+      audioRecorderPlayer.addRecordBackListener(async e => {
+        setMeteringResults(oldMeteringResults => [
+          ...oldMeteringResults,
+          Math.floor(getCurrentMetering(e.currentMetering)),
+        ])
+        setRecordingTime(e.currentPosition)
+        if (e.currentPosition > maxRecordingTime) {
+          await onStopRecording()
+        }
+      })
+    } catch (error) {
+      reportError(error)
+    }
+    setIsPressed(true)
   }
 
   return (
@@ -174,14 +193,10 @@ const AudioRecordOverlay = ({
                     <MeteringBar key={index} height={element} />
                   ))}
                 </MeteringInfo>
-                <RecordingInfo>{recordingTime.slice(1, recordingTime.length)}</RecordingInfo>
+                <RecordingInfo>{stringifiedRecordingTime.slice(1, stringifiedRecordingTime.length)}</RecordingInfo>
               </InfoContainer>
               <RecordIcon
-                onPressIn={() =>
-                  onStartRecording()
-                    .catch(reportError)
-                    .finally(() => setIsPressed(true))
-                }
+                onPressIn={onStartRecording}
                 onPressOut={onStopRecording}
                 isPressed={isPressed}
                 testID='record-audio-button'>
