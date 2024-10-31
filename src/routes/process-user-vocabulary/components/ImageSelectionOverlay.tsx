@@ -1,22 +1,18 @@
-import { useIsFocused } from '@react-navigation/native'
 import React, { ReactElement, useRef, useState } from 'react'
-import { Platform } from 'react-native'
+import { Pressable } from 'react-native'
 import { openPicker } from 'react-native-image-crop-picker'
-import { PERMISSIONS } from 'react-native-permissions'
 import { Camera, useCameraDevice } from 'react-native-vision-camera'
 import styled from 'styled-components/native'
 
 import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
-import NotAuthorisedView from '../../../components/NotAuthorisedView'
 import PressableOpacity from '../../../components/PressableOpacity'
-import useGrantPermissions from '../../../hooks/useGrantPermissions'
+import useAppState from '../../../hooks/useAppState'
 import getGalleryPermission from '../../../services/getGalleryPermission'
-import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
 const GALLERY_ICON_SIZE = 30
-const TAKE_IMAGE_ICON_SIZE = 50
+const TAKE_IMAGE_ICON_SIZE = 70
 
 const StyledCamera = styled(Camera)`
   flex: 1;
@@ -25,13 +21,7 @@ const StyledCamera = styled(Camera)`
   padding: ${props => props.theme.spacings.sm};
 `
 
-const ActionBar = styled.View`
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-`
-
-const TakeImageButton = styled.Pressable`
+const TakeImageButtonContainer = styled.View`
   flex: 2;
   align-items: center;
   margin-right: ${GALLERY_ICON_SIZE}px;
@@ -39,11 +29,15 @@ const TakeImageButton = styled.Pressable`
 
 const Container = styled.View`
   flex-direction: row;
+  opacity: 0.5;
+  position: absolute;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  bottom: 0;
+  padding: ${props => props.theme.spacings.lg};
+  background-color: ${props => props.theme.colors.black};
 `
-
-const CameraPermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
-const GalleryPermission = getGalleryPermission()
 
 type ImageSelectionOverlayProps = {
   setVisible: (visible: boolean) => void
@@ -52,19 +46,19 @@ type ImageSelectionOverlayProps = {
 
 const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayProps): ReactElement | null => {
   const device = useCameraDevice('back')
-  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(!!device)
-  const { permissionRequested, permissionGranted } = useGrantPermissions(
-    isGalleryOpen ? GalleryPermission : CameraPermission,
-  )
+  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(true)
   const camera = useRef<Camera>(null)
-  const isFocused = useIsFocused()
-  const permissionDenied = permissionRequested && !permissionGranted
+  const { inForeground } = useAppState()
 
   const takePhoto = async () => {
-    if (camera.current) {
-      const data = await camera.current.takePhoto()
-      setVisible(false)
-      pushImage(data.path)
+    try {
+      if (camera.current) {
+        const data = await camera.current.takePhoto()
+        setVisible(false)
+        pushImage(`file://${data.path}`)
+      }
+    } catch (error) {
+      console.warn(error)
     }
   }
 
@@ -72,11 +66,13 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
     setIsGalleryOpen(true)
     try {
       const image = await openPicker({ mediaType: 'photo' })
+      console.log('asf')
       setVisible(false)
       pushImage(image.path)
     } catch (error: unknown) {
       const isCancel = error instanceof Error && error.message.includes('cancelled')
       if (!isCancel) {
+        console.log(JSON.stringify(error))
         reportError(error)
       }
     }
@@ -88,34 +84,25 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
   }
 
   return (
-    <CameraOverlay setVisible={setVisible}>
-      {permissionDenied && (
-        <NotAuthorisedView
-          description={getLabels().general.library.noAuthorization.description}
-          setVisible={setVisible}
-        />
-      )}
-      {permissionGranted && (
-        <StyledCamera
-          ref={camera}
-          device={device}
-          photo
-          photoQualityBalance='speed'
-          isActive={isFocused}
-          preview={false}
-          testID='camera'>
-          <Container>
-            <ActionBar>
-              <PressableOpacity onPress={openGallery}>
-                <ImageIcon width={GALLERY_ICON_SIZE} height={GALLERY_ICON_SIZE} testID='gallery-icon' />
-              </PressableOpacity>
-              <TakeImageButton onPress={takePhoto}>
-                <CircleIconWhite width={TAKE_IMAGE_ICON_SIZE} height={TAKE_IMAGE_ICON_SIZE} testID='take-image-icon' />
-              </TakeImageButton>
-            </ActionBar>
-          </Container>
-        </StyledCamera>
-      )}
+    <CameraOverlay setVisible={setVisible} permission={isGalleryOpen ? getGalleryPermission() : undefined}>
+      <StyledCamera
+        ref={camera}
+        device={device}
+        photo
+        photoQualityBalance='speed'
+        isActive={inForeground}
+        testID='camera'
+      />
+      <Container>
+        <PressableOpacity onPress={openGallery}>
+          <ImageIcon width={GALLERY_ICON_SIZE} height={GALLERY_ICON_SIZE} testID='gallery-icon' />
+        </PressableOpacity>
+        <TakeImageButtonContainer>
+          <Pressable onPress={takePhoto}>
+            <CircleIconWhite width={TAKE_IMAGE_ICON_SIZE} height={TAKE_IMAGE_ICON_SIZE} testID='take-image-icon' />
+          </Pressable>
+        </TakeImageButtonContainer>
+      </Container>
     </CameraOverlay>
   )
 }
