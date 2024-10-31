@@ -128,6 +128,8 @@ const AudioRecordOverlay = ({
   const onStopRecording = async (): Promise<void> => {
     audioRecorderPlayer.removeRecordBackListener()
     if (recordingTime < minRecordingTime) {
+      // If the button is just tapped and the recording is stopped to fast, an error is thrown from which it is not possible to recover
+      // https://github.com/hyochan/react-native-audio-recorder-player/issues/490
       setIsPressed(false)
       setTimeout(() => {
         audioRecorderPlayer.stopRecorder().catch(reportError)
@@ -141,11 +143,7 @@ const AudioRecordOverlay = ({
         setShowAudioRecordOverlay(false)
       }
     } catch (e) {
-      // If the recording is stopped to fast, sometimes an error is thrown which can be ignored.
-      // https://github.com/hyochan/react-native-audio-recorder-player/issues/490
-      if (e instanceof Error && e.message !== 'stop failed.') {
-        reportError(e)
-      }
+      reportError(e)
     } finally {
       setIsPressed(false)
     }
