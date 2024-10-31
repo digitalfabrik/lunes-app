@@ -1,6 +1,6 @@
-import React, { ReactElement, useRef, useState } from 'react'
+import React, { ReactElement, useRef } from 'react'
 import { Pressable } from 'react-native'
-import { openPicker } from 'react-native-image-crop-picker'
+import { launchImageLibrary } from 'react-native-image-picker'
 import { Camera, useCameraDevice } from 'react-native-vision-camera'
 import styled from 'styled-components/native'
 
@@ -8,7 +8,6 @@ import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
 import PressableOpacity from '../../../components/PressableOpacity'
 import useAppState from '../../../hooks/useAppState'
-import getGalleryPermission from '../../../services/getGalleryPermission'
 import { reportError } from '../../../services/sentry'
 
 const GALLERY_ICON_SIZE = 30
@@ -16,9 +15,6 @@ const TAKE_IMAGE_ICON_SIZE = 70
 
 const StyledCamera = styled(Camera)`
   flex: 1;
-  justify-content: flex-end;
-  position: relative;
-  padding: ${props => props.theme.spacings.sm};
 `
 
 const TakeImageButtonContainer = styled.View`
@@ -46,7 +42,6 @@ type ImageSelectionOverlayProps = {
 
 const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayProps): ReactElement | null => {
   const device = useCameraDevice('back')
-  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(true)
   const camera = useRef<Camera>(null)
   const { inForeground } = useAppState()
 
@@ -58,25 +53,21 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
         pushImage(`file://${data.path}`)
       }
     } catch (error) {
-      console.warn(error)
+      reportError(error)
     }
   }
 
   const openGallery = async () => {
-    setIsGalleryOpen(true)
     try {
-      const image = await openPicker({ mediaType: 'photo' })
-      console.log('asf')
-      setVisible(false)
-      pushImage(image.path)
-    } catch (error: unknown) {
-      const isCancel = error instanceof Error && error.message.includes('cancelled')
-      if (!isCancel) {
-        console.log(JSON.stringify(error))
-        reportError(error)
+      const { assets } = await launchImageLibrary({ mediaType: 'photo' })
+      const imageUri = assets?.[0]?.uri
+      if (imageUri) {
+        pushImage(imageUri)
+        setVisible(false)
       }
+    } catch (error) {
+      reportError(error)
     }
-    setIsGalleryOpen(false)
   }
 
   if (!device) {
@@ -84,7 +75,7 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
   }
 
   return (
-    <CameraOverlay setVisible={setVisible} permission={isGalleryOpen ? getGalleryPermission() : undefined}>
+    <CameraOverlay setVisible={setVisible}>
       <StyledCamera
         ref={camera}
         device={device}
