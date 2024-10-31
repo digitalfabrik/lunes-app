@@ -55,8 +55,10 @@ describe('StandardExercisesScreen', () => {
   })
 
   it('should show modal that the lesson is not available yet on navigation if locked', async () => {
-    const { getByText, getByTestId } = render(<StandardExercisesScreen route={route} navigation={navigation} />)
-    expect(getByTestId('locking-modal')).toHaveProp('visible', false)
+    const { getByText, getByTestId, queryByTestId } = render(
+      <StandardExercisesScreen route={route} navigation={navigation} />,
+    )
+    expect(queryByTestId('locking-modal')).toBeFalsy()
     const lockedExercise = getByText(EXERCISES[1].title)
     fireEvent.press(lockedExercise)
     expect(getByTestId('locking-modal')).toHaveProp('visible', true)

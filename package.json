@@ -73,7 +73,7 @@
     "@react-native/babel-preset": "0.74.88",
     "@react-native/metro-config": "0.74.88",
     "@testing-library/jest-native": "^5.4.3",
-    "@testing-library/react-native": "^12.8.0",
+    "@testing-library/react-native": "^12.8.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.17.2",

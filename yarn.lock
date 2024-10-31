@@ -3739,9 +3739,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-native@npm:^12.8.0":
-  version: 12.8.0
-  resolution: "@testing-library/react-native@npm:12.8.0"
+"@testing-library/react-native@npm:^12.8.1":
+  version: 12.8.1
+  resolution: "@testing-library/react-native@npm:12.8.1"
   dependencies:
     jest-matcher-utils: ^29.7.0
     pretty-format: ^29.7.0
@@ -3754,7 +3754,7 @@ __metadata:
   peerDependenciesMeta:
     jest:
       optional: true
-  checksum: 216d40eefc3afa3259b37611213dcd6667cd0b8deb30521a8aaabe3afc15f07116ce64acba150f8c88b8e268df80639baf6bc38f05af1dbbae247e1d07639bde
+  checksum: 8fc3ba4b1e5767fc1d24133a907515aa155b3b400fd8a681bf5957a9bb56e0885569234ab4f7fe66441e91ca9de5f761b1db1fdfc049735bc0c4ecc2b6d92bc5
   languageName: node
   linkType: hard
 
@@ -9225,7 +9225,7 @@ __metadata:
     "@sentry/react-native": ^5.20.0
     "@sentry/types": ^7.108.0
     "@testing-library/jest-native": ^5.4.3
-    "@testing-library/react-native": ^12.8.0
+    "@testing-library/react-native": ^12.8.1
     "@trivago/prettier-plugin-sort-imports": ^4.3.0
     "@types/jest": ^29.5.14
     "@types/node": ^20.17.2
@@ -9261,7 +9261,7 @@ __metadata:
     react-native-element-dropdown: ^2.12.2
     react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.20.2
-    react-native-image-crop-picker: ^0.41.4
+    react-native-image-picker: ^7.1.2
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-paper: 5.12.5
@@ -10786,15 +10786,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-crop-picker@npm:^0.41.4":
-  version: 0.41.4
-  resolution: "react-native-image-crop-picker@npm:0.41.4"
-  peerDependencies:
-    react-native: ">=0.40.0"
-  checksum: b229d6e12088bd651dc6106e81bd630a843b22ed5694518b68d707d88dd9a4ff0df0ec62779ff69f6052fb770f57ad97b5f04a30594b7cb6db320622bd4d4f78
-  languageName: node
-  linkType: hard
-
 "react-native-image-pan-zoom@npm:^2.1.12":
   version: 2.1.12
   resolution: "react-native-image-pan-zoom@npm:2.1.12"
@@ -10802,6 +10793,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c1047da6b7eb0d8a80a810eba8dc0c74e11d0b476808c30d1bbc6285c3f8dc8140aba60fb1af35e2c8c114aa32eed64fb545214a6cf1c00d6b80dd3178bdf3f6
+  languageName: node
+  linkType: hard
+
+"react-native-image-picker@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "react-native-image-picker@npm:7.1.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 3621e2462b4026ba2d3e0d71179161a09bf744b09ed53cf62944356971fc6204e06845298d99e69437517a51b5b7b434318e16018e62e14a3031976b67e801a3
   languageName: node
   linkType: hard
 

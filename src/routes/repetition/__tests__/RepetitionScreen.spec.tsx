@@ -26,11 +26,10 @@ describe('RepetitionScreen', () => {
   })
 
   it('should open modal on icon click', async () => {
-    const { getByTestId } = render(<RepetitionScreen navigation={navigation} />)
+    const { getByTestId, queryByTestId } = render(<RepetitionScreen navigation={navigation} />)
     const isInfoIconPressed = getByTestId('info-circle-black-icon')
     expect(isInfoIconPressed).toBeDefined()
-    expect(getByTestId('infoModal')).toBeTruthy()
-    expect(getByTestId('infoModal').props.visible).toBe(false)
+    expect(queryByTestId('infoModal')).toBeFalsy()
     fireEvent.press(isInfoIconPressed)
     expect(getByTestId('infoModal')).toBeTruthy()
     expect(getByTestId('infoModal').props.visible).toBe(true)

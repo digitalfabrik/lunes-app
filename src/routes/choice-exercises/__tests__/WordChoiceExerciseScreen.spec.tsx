@@ -9,8 +9,6 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import WordChoiceExerciseScreen from '../WordChoiceExerciseScreen'
 
-jest.useFakeTimers()
-
 jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
