@@ -21,6 +21,7 @@
 		87A466CFEE17407CAB2AC921 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */; };
 		8B2742D73CAE4F48896CED3E /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18CD2FA065EC4EFFB6F0212B /* SourceSansPro-ExtraLight.ttf */; };
 		961F0746F19745779C0FC013 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73CBB64724D84F818FE6A37A /* SourceSansPro-Black.ttf */; };
+		976D6F3B4BEA1C25172821AF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 00314D2A729F9F61792BE8E6 /* PrivacyInfo.xcprivacy */; };
 		A2FD8237265506B300572C26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8236265506B300572C26 /* Images.xcassets */; };
 		A2FD8239265506C400572C26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8238265506C400572C26 /* LaunchScreen.storyboard */; };
 		AA3EF9AC3F80EE58BB867CCC /* libPods-Lunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E066DB1812569755D50F120 /* libPods-Lunes.a */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00314D2A729F9F61792BE8E6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = ../PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* LunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LunesTests.m; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				A2FD8238265506C400572C26 /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				00314D2A729F9F61792BE8E6 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Lunes;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				5E0B7EAB596A4035A1549427 /* SourceSansPro-Regular.ttf in Resources */,
 				015AB6CFBF504B71AB7585F8 /* SourceSansPro-SemiBold.ttf in Resources */,
 				48103CCAE64E4B54A8BD0C8C /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
+				976D6F3B4BEA1C25172821AF /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,8 +649,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -672,6 +677,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -691,6 +697,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -702,8 +710,13 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -711,8 +724,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -740,6 +754,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;
+				CXX = "";
 				DEVELOPMENT_TEAM = 7272KE28TJ;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -753,6 +768,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -763,9 +780,14 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PROVISIONING_PROFILE_SPECIFIER = None;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

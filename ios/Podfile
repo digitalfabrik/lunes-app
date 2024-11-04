@@ -29,10 +29,6 @@ target 'Lunes' do
 
   pod 'RNSoundPlayer', :path => '../node_modules/react-native-sound-player'
 
-  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
-    'BarcodeDetectorMLKit'
-  ]
-
   # ⬇️ uncomment wanted permissions
   setup_permissions([
     # 'AppTrackingTransparency',
