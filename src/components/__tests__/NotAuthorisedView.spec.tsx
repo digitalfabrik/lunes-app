@@ -1,5 +1,4 @@
 import { fireEvent } from '@testing-library/react-native'
-import { mocked } from 'jest-mock'
 import React from 'react'
 import { openSettings } from 'react-native-permissions'
 
