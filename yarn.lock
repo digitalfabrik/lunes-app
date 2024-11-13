@@ -6981,7 +6981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:*, invariant@npm:>=2, invariant@npm:^2.2.4":
+"invariant@npm:*, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -8449,7 +8449,7 @@ __metadata:
     react-native-tts: 4.1.1
     react-native-vector-icons: ^10.2.0
     react-native-vision-camera: ^4.6.1
-    react-navigation-header-buttons: ^10.0.0
+    react-navigation-header-buttons: ^11.2.1
     react-test-renderer: ^18.3.1
     string-similarity: ^4.0.4
     styled-components: ^6.1.13
@@ -10227,15 +10227,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-navigation-header-buttons@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "react-navigation-header-buttons@npm:10.0.0"
+"react-navigation-header-buttons@npm:^11.2.1":
+  version: 11.2.1
+  resolution: "react-navigation-header-buttons@npm:11.2.1"
   dependencies:
-    invariant: ">=2"
+    react-to-imperative: ^0.2.0
   peerDependencies:
-    "@react-navigation/native": ">=5"
-    react-native: ">=0.65.0"
-  checksum: 4456b8dd796ed8a8c7c2f0cac9bfa3511ade9cba7aaffec6ec40b4852648994128e7ec1f544bbc5b1303c2b3c540071caf68487c4ecd9601b734f8625b6b73fd
+    "@react-navigation/elements": ">=1"
+    "@react-navigation/native": ">=6"
+    react: "*"
+    react-native: ">=0.72.0"
+  checksum: 91eddf0ae4b7e00d09d7b4f5bea8266094fa7698f96d66c364a2d169748d1ff21215118c6c76d9b7d48ca665fa59c1a2b811bbdb93507b6a6f47a3065ce1ac01
   languageName: node
   linkType: hard
 
@@ -10268,6 +10270,15 @@ __metadata:
   peerDependencies:
     react: ^18.3.1
   checksum: c633558ef9af33bc68f0c4dbb5163a004c4fb9eade7bd0a7cfc0355fb367f36bd9d96533c90b7e85a146be6c525113a15f58683d269e0177ad77e2b04d4fe51c
+  languageName: node
+  linkType: hard
+
+"react-to-imperative@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "react-to-imperative@npm:0.2.0"
+  peerDependencies:
+    react: "*"
+  checksum: 561adbc15f97e2677ed14d85df3e9ef855567c691327ef2abcbeb34f27477a1cc63bbd5a6244d3f1070874171f3a92c5518dbb89b0e4f0802ee75217d460448c
   languageName: node
   linkType: hard
 

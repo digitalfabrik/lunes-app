@@ -1,8 +1,9 @@
+import { NavigationContainer } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import { LogBox } from 'react-native'
 import 'react-native-gesture-handler'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
-import { OverflowMenuProvider } from 'react-navigation-header-buttons'
+import { HeaderButtonsProvider } from 'react-navigation-header-buttons'
 import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
@@ -19,9 +20,11 @@ const App = (): ReactElement => {
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <OverflowMenuProvider>
-          <Navigator />
-        </OverflowMenuProvider>
+        <NavigationContainer>
+          <HeaderButtonsProvider stackType='native'>
+            <Navigator />
+          </HeaderButtonsProvider>
+        </NavigationContainer>
       </SafeAreaProvider>
     </ThemeProvider>
   )

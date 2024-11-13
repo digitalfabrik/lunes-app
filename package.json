@@ -59,7 +59,7 @@
     "react-native-tts": "4.1.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-vision-camera": "^4.6.1",
-    "react-navigation-header-buttons": "^10.0.0",
+    "react-navigation-header-buttons": "^11.2.1",
     "string-similarity": "^4.0.4",
     "styled-components": "^6.1.13",
     "victory-native": "^36.9.2"
