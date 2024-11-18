@@ -5,7 +5,7 @@
   "packageManager": "yarn@3.2.2",
   "scripts": {
     "android": "react-native run-android --no-packager --active-arch-only",
-    "android:production": "react-native run-android --no-packager --variant=release",
+    "android:production": "react-native run-android --no-packager --mode=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --verbose --maxWorkers=1",

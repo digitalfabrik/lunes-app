@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import App from '../App'
 
 jest.mock('react-navigation-header-buttons', () => ({
-  OverflowMenuProvider: ({ children }: { children: ReactNode }) => <View>{children}</View>,
+  HeaderButtonsProvider: ({ children }: { children: ReactNode }) => <View>{children}</View>,
 }))
 jest.mock('../navigation/Navigator', () => {
   const Text = require('react-native').Text
