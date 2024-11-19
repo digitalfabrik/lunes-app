@@ -13,6 +13,10 @@ jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
+jest.mock('../../../components/CheatMode', () => {
+  const Text = require('react-native').Text
+  return () => <Text>CheatMode</Text>
+})
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it),
