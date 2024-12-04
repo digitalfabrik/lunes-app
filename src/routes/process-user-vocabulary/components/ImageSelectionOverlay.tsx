@@ -70,20 +70,18 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
     }
   }
 
-  if (!device) {
-    return null
-  }
-
   return (
     <CameraOverlay setVisible={setVisible}>
-      <StyledCamera
-        ref={camera}
-        device={device}
-        photo
-        photoQualityBalance='speed'
-        isActive={inForeground}
-        testID='camera'
-      />
+      {device && (
+        <StyledCamera
+          ref={camera}
+          device={device}
+          photo
+          photoQualityBalance='speed'
+          isActive={inForeground}
+          testID='camera'
+        />
+      )}
       <Container>
         <PressableOpacity onPress={openGallery}>
           <ImageIcon width={GALLERY_ICON_SIZE} height={GALLERY_ICON_SIZE} testID='gallery-icon' />
