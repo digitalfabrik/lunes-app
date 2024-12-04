@@ -1,31 +1,26 @@
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config')
+const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
+
 /**
- * Metro configuration for React Native
- * https://github.com/facebook/react-native
- *
- * @format
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
  */
 
-const { getDefaultConfig } = require('metro-config')
+/** @type {import('metro-config').MetroConfig} */
+const defaultConfig = getDefaultConfig(__dirname)
+const {
+  resolver: { assetExts, sourceExts },
+} = defaultConfig
 
-module.exports = (async () => {
-  const {
-    resolver: { sourceExts, assetExts },
-  } = await getDefaultConfig()
-  return {
-    transformer: {
-      getTransformOptions: async () => ({
-        transform: {
-          experimentalImportSupport: false,
-          inlineRequires: true,
-        },
-      }),
-      babelTransformerPath: require.resolve('react-native-svg-transformer'),
-    },
-    resolver: {
-      assetExts: [...assetExts.filter(ext => ext !== 'svg')],
-      // 'cjs' file extension needed for axios-cache-interceptor
-      // https://github.com/facebook/metro/issues/535
-      sourceExts: [...sourceExts, 'svg', 'cjs'],
-    },
-  }
-})()
+/** @type {import('metro-config').MetroConfig} */
+const config = {
+  resolver: {
+    assetExts: assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...sourceExts, 'svg'],
+  },
+  transformer: {
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+  },
+}
+
+module.exports = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config))

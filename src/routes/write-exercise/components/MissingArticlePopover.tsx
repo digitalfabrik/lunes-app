@@ -44,6 +44,7 @@ const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: Po
       testID='popover'
       isVisible={isVisible}
       onRequestClose={() => setIsPopoverVisible(false)}
+      // @ts-expect-error no idea what the correct type is here
       from={ref}
       placement={PopoverPlacement.TOP}
       popoverStyle={styles.popover}

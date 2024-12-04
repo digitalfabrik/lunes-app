@@ -3,15 +3,16 @@ import { Linking } from 'react-native'
 
 import { openExternalUrl } from '../url'
 
-jest.mock('react-native/Libraries/Linking/Linking', () => ({
-  canOpenURL: jest.fn(),
-  openURL: jest.fn(),
+jest.mock('react-native', () => ({
+  Linking: {
+    canOpenURL: jest.fn(),
+    openURL: jest.fn(),
+  },
 }))
 
 describe('url', () => {
   it('should successfully open an url', async () => {
     mocked(Linking.canOpenURL).mockResolvedValueOnce(true)
-    mocked(Linking.openURL).mockImplementationOnce(Promise.resolve)
 
     const url = 'https://lunes-app.de'
 

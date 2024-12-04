@@ -20,7 +20,7 @@ describe('ExerciseHeader', () => {
 
   it('should render header', () => {
     const goBack = CommonActions.goBack()
-    const { getByText, getByTestId } = render(
+    const { getByText, getByTestId, queryByTestId } = render(
       <ExerciseHeader
         navigation={navigation}
         currentWord={4}
@@ -31,8 +31,7 @@ describe('ExerciseHeader', () => {
         exerciseKey={ExerciseKeys.vocabularyList}
       />,
     )
-    expect(getByTestId('customModal')).toBeTruthy()
-    expect(getByTestId('customModal').props.visible).toBe(false)
+    expect(queryByTestId('customModal')).toBeFalsy()
 
     act(BackHandler.mockPressBack)
 

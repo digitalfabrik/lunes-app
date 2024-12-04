@@ -11,7 +11,7 @@ import Button from '../../components/Button'
 import CustomTextInput from '../../components/CustomTextInput'
 import Dropdown from '../../components/Dropdown'
 import RouteWrapper from '../../components/RouteWrapper'
-import { TitleWithSpacing } from '../../components/Title'
+import Title from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import {
@@ -56,6 +56,10 @@ const StyledHintText = styled(HintText)`
 
 const ThumbnailContainer = styled.View`
   flex-direction: row;
+`
+
+const StyledTitle = styled(Title)`
+  margin-top: 0;
 `
 
 type UserVocabularyProcessScreenProps = {
@@ -190,7 +194,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   return (
     <RouteWrapper>
       <Root>
-        <TitleWithSpacing title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
+        <StyledTitle title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
         <CustomTextInput
           clearable
           value={word}

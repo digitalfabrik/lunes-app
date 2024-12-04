@@ -9,7 +9,7 @@ import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${props => props.theme.colors.background};
 `

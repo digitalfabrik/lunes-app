@@ -7,7 +7,6 @@ export default {
   automock: false,
   moduleDirectories: ['node_modules'],
   moduleNameMapper: {
-    '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '\\.svg': '<rootDir>/src/__mocks__/svgrMock.js',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],

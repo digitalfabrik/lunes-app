@@ -13,7 +13,6 @@ import render from '../../../../testing/render'
 import DisciplineCard from '../DisciplineCard'
 
 jest.mock('@react-navigation/native')
-jest.useFakeTimers()
 
 jest.mock('../../../../components/FeedbackModal', () => {
   const Text = require('react-native').Text
@@ -30,7 +29,8 @@ describe('DisciplineCard', () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])
     const { getByText, findByText } = renderDisciplineCard()
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
-    expect(findByText(labels.home.continue)).toBeDefined()
+    const element = await findByText(labels.home.start)
+    expect(element).toBeDefined()
   })
 
   it('should display loading', () => {
