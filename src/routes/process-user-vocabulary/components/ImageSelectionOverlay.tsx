@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef } from 'react'
-import { Pressable } from 'react-native'
+import { Platform, Pressable } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { Camera, useCameraDevice } from 'react-native-vision-camera'
 import styled from 'styled-components/native'
@@ -48,9 +48,10 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
   const takePhoto = async () => {
     try {
       if (camera.current) {
-        const data = await camera.current.takePhoto()
+        const file = await camera.current.takePhoto()
+        const filePath = Platform.OS === 'ios' ? file.path : `file://${file.path}`
+        pushImage(filePath)
         setVisible(false)
-        pushImage(`file://${data.path}`)
       }
     } catch (error) {
       reportError(error)
