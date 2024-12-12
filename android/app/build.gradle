@@ -143,7 +143,6 @@ android {
             versionCode project.VERSION_CODE.toInteger()
             versionName project.VERSION_NAME
         }
-        missingDimensionStrategy 'react-native-camera', 'general'
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         vectorDrawables.useSupportLibrary = true
         if (isNewArchitectureEnabled()) {

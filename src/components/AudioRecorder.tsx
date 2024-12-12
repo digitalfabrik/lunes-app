@@ -46,10 +46,6 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
   const theme = useTheme()
   const { addAudio } = getLabels().userVocabulary.creation
 
-  const onAudioRecorded = (recordingPath: string) => {
-    setRecordingPath(recordingPath)
-  }
-
   const onCloseRecording = (): void => {
     setShowAudioRecordOverlay(false)
     setRecordingPath(null)
@@ -60,7 +56,7 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
       {showAudioRecordOverlay && (
         <AudioRecordOverlay
           onClose={onCloseRecording}
-          onAudioRecorded={onAudioRecorded}
+          onAudioRecorded={setRecordingPath}
           recordingPath={recordingPath}
           setShowAudioRecordOverlay={setShowAudioRecordOverlay}
         />
