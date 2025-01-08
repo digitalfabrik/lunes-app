@@ -2,8 +2,9 @@
 
 Android and iOS React native Apps for [Lunes](https://lunes.app)
 
-If you are interested in contributing, write an e-mail to [Steffi](mailto:stefanie.metzger@tuerantuer.org)
-for development issues or to [Daniel](mailto:info@lunes.app) for non-technical stuff.
+If you are interested in contributing, write an e-mail to [David](mailto:david.venhoff@tuerantuer.org)
+or [Sascha](mailto:sascha.beele@tuerantuer.org) for development issues or to [Daniel](mailto:info@lunes.app)
+for non-technical stuff.
 
 ## Contents
 
