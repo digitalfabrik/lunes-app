@@ -185,14 +185,14 @@ commands:
         steps:
             - restore_cache:
                 keys:
-                    - yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
-                    - yarn-packages-{{ arch }}-
+                    - 1-yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
+                    - 1-yarn-packages-{{ arch }}-
                 name: Restore Yarn Package Cache
             - run:
                 command: yarn install --immutable
                 name: Install Dependencies
             - save_cache:
-                key: yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
+                key: 1-yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}
                 name: Save Yarn Package Cache
                 paths:
                     - .yarn/cache
