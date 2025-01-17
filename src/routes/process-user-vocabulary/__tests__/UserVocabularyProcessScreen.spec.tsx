@@ -25,8 +25,12 @@ jest.mock('../../../components/AudioPlayer', () => () => {
   const { Text } = require('react-native')
   return <Text>AudioPlayer</Text>
 })
-jest.mock('react-native-image-crop-picker', () => ({
-  openPicker: jest.fn(),
+jest.mock('react-native-image-picker', () => ({
+  launchImageLibrary: jest.fn(),
+}))
+jest.mock('react-native-vision-camera', () => ({
+  Camera: jest.fn(),
+  useCameraDevice: jest.fn(),
 }))
 
 Date.now = jest.fn(() => 2000)

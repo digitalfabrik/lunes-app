@@ -3,6 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { View } from 'react-native'
+import { Code } from 'react-native-vision-camera'
 
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { setCustomDisciplines } from '../../../services/AsyncStorage'
@@ -15,8 +16,11 @@ import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDiscipline')
 
-jest.mock('react-native-camera', () => ({
-  RNCamera: () => <View accessibilityLabel='RNCamera' />,
+type OnCodeScanned = (codes: Code[]) => Code[]
+jest.mock('react-native-vision-camera', () => ({
+  Camera: () => <View accessibilityLabel='RNCamera' />,
+  useCameraDevice: () => ({ id: 'device1' }),
+  useCodeScanner: ({ onCodeScanned }: { onCodeScanned: OnCodeScanned }) => ({ onCodeScanned }),
 }))
 
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
