@@ -86,7 +86,7 @@ const factor = 1000
 // https://github.com/ziscloud/sound_recorder/blob/46544fc23b71e6f929b372fad0313c70b0301371/android/src/main/java/com/neuronbit/sound_recorder/SoundRecorderPlugin.java#L375
 const androidFactor = 0.25
 const maxRecordingTime = 5000
-const minRecordingTime = 100
+const minRecordingTime = 250
 
 // Zero alignment of values with the minimum metering value
 const cleanUpMeteringResults = (meteringResults: number[]): number[] =>
@@ -133,6 +133,7 @@ const AudioRecordOverlay = ({
       setIsPressed(false)
       setTimeout(() => {
         audioRecorderPlayer.stopRecorder().catch(reportError)
+        setRecordingTime(0)
       }, minRecordingTime)
       return
     }
@@ -141,6 +142,8 @@ const AudioRecordOverlay = ({
       if (recordingPath.includes('file://')) {
         onAudioRecorded(recordingPath)
         setShowAudioRecordOverlay(false)
+      } else {
+        setRecordingTime(0)
       }
     } catch (e) {
       reportError(e)
