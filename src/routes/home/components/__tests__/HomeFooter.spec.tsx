@@ -4,6 +4,8 @@ import render from '../../../../testing/render'
 import HomeFooter from '../HomeFooter'
 
 describe('HomeFooter', () => {
+  jest.useFakeTimers().setSystemTime(new Date('2023-05-05'))
+
   it('should render the HomeFooter', () => {
     const { getByText } = render(<HomeFooter />)
 
