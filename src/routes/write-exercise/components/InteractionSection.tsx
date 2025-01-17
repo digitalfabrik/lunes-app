@@ -110,6 +110,7 @@ const InteractionSection = (props: InteractionSectionProps): ReactElement => {
         case 'incorrect':
           return theme.colors.incorrect
         case 'similar':
+        case null:
         default:
           return theme.colors.almostCorrect
       }

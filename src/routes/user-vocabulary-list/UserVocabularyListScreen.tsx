@@ -65,7 +65,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
   useFocusEffect(vocabularyItems.refresh)
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
-    navigation.navigate('UserVocabularyDetail', { vocabularyItem })
+    navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
   const toggleEditMode = (): void => {

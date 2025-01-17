@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 
 import render from '../../../../testing/render'
@@ -8,12 +8,18 @@ jest.mock('../../../../components/CameraOverlay', () => ({ children }: { childre
   <View>{children}</View>
 ))
 
-jest.mock('react-native-camera', () => ({
-  RNCamera: ({ children }: { children: ReactNode }) => <View>{children}</View>,
+jest.mock('../../../../hooks/useAppState', () => ({
+  __esModule: true,
+  default: () => () => jest.fn(),
 }))
 
-jest.mock('react-native-image-crop-picker', () => ({
-  openPicker: jest.fn(),
+jest.mock('react-native-vision-camera', () => ({
+  Camera: jest.fn(),
+  useCameraDevice: jest.fn(() => ({ id: 'device1' })),
+}))
+
+jest.mock('react-native-image-picker', () => ({
+  launchImageLibrary: jest.fn(),
 }))
 
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))

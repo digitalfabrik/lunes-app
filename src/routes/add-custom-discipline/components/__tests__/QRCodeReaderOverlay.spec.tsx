@@ -1,20 +1,30 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Pressable, View } from 'react-native'
+import { Code } from 'react-native-vision-camera'
 
 import render from '../../../../testing/render'
 import QRCodeReaderOverlay from '../QRCodeReaderOverlay'
 
 const apiCode = 'scanned-api-code'
 
+jest.mock('../../../../hooks/useAppState', () => ({
+  __esModule: true,
+  default: () => () => jest.fn(),
+}))
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 
-jest.mock('react-native-camera', () => ({
-  RNCamera: ({ onBarCodeRead }: { onBarCodeRead: ({ data }: { data: string }) => void }) => (
+const codes: Code[] = [{ type: 'qr', value: 'scanned-api-code' }]
+type OnCodeScanned = (codes: Code[]) => Code[]
+
+jest.mock('react-native-vision-camera', () => ({
+  Camera: ({ codeScanner }: { codeScanner: { onCodeScanned: OnCodeScanned } }) => (
     <View accessibilityLabel='scanner'>
-      <Pressable accessibilityLabel='mockOnBarCodeRead' onPress={() => onBarCodeRead({ data: apiCode })} />
+      <Pressable accessibilityLabel='mockOnBarCodeRead' onPress={() => codeScanner.onCodeScanned(codes)} />
     </View>
   ),
+  useCameraDevice: () => ({ id: 'device1' }),
+  useCodeScanner: ({ onCodeScanned }: { onCodeScanned: OnCodeScanned }) => ({ onCodeScanned }),
 }))
 
 describe('QRCodeReaderOverlay', () => {
