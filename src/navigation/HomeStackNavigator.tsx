@@ -7,6 +7,7 @@ import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
+import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import { getLabels } from '../services/helpers'
@@ -17,7 +18,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const { overview } = getLabels().general.header
+  const { manageSelection, overview } = getLabels().general.header
   const theme = useTheme()
 
   return (
@@ -27,6 +28,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
         name='DisciplineSelection'
         component={DisciplineSelectionScreen}
         options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='ManageSelection'
+        component={ManageSelectionsScreen}
+        options={({ navigation }) => options(manageSelection, navigation)}
       />
       <Stack.Screen
         name='StandardExercises'
