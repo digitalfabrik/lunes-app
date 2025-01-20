@@ -27,6 +27,20 @@ The easiest way to deliver a new build to production or development is to trigge
   - Per default a development delivery is made.
   - For more information on how to use it, execute it without parameters to see usage information.
 
+An example cURL request to start a dev delivery would be the following:
+
+```
+curl -X POST https://circleci.com/api/v2/project/github/digitalfabrik/lunes-app/pipeline \
+  -H "Content-Type: application/json" \
+  -H "Circle-Token: <your token>" \
+  -d '{
+        "branch": "<your branch>",
+        "parameters": {
+          "run_dev_delivery": true
+        }
+      }'
+```
+
 ## Workflows
 
 Several workflows exist for different purposes:

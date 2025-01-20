@@ -319,7 +319,7 @@ jobs:
         parameters:
             prepare_delivery:
                 default: false
-                description: Whether to prepare for a delivery. If true, the version bump is committed and a JIRA release is created.
+                description: Whether to prepare for a delivery. If true, the version bump is committed.
                 type: boolean
         resource_class: small
         steps:
@@ -339,10 +339,6 @@ jobs:
                     - run:
                         command: yarn git-version bump-to ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --deliverino-private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
                         name: Bump git version
-                        working_directory: tools
-                    - run:
-                        command: yarn jira-release create ${NEW_VERSION_NAME} --private-key ${JIRA_PRIVATE_KEY} --access-token ${JIRA_OAUTH_TOKEN} --consumer-key ${JIRA_CONSUMER_KEY} --project-name ${CIRCLE_PROJECT_REPONAME}
-                        name: Create jira release
                         working_directory: tools
             - persist_environment_variables
             - notify
@@ -496,7 +492,7 @@ jobs:
             - image: cimg/node:18.17.1
         parameters:
             production_delivery:
-                description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
+                description: Whether builds are delivered to the production store. If set to true, a github release is created.
                 type: boolean
         resource_class: small
         steps:
@@ -524,7 +520,7 @@ jobs:
             - image: cimg/node:18.17.1
         parameters:
             production_delivery:
-                description: Whether builds are delivered to the production store. If set to true, jira and github releases are created.
+                description: Whether builds are delivered to the production store. If set to true, a github release is created.
                 type: boolean
         resource_class: small
         steps:
@@ -686,7 +682,6 @@ workflows:
                 context:
                     - mattermost
                     - deliverino
-                    - jira
                 prepare_delivery: true
             - build_android:
                 context:
@@ -758,7 +753,6 @@ workflows:
                 context:
                     - mattermost
                     - deliverino
-                    - jira
                 prepare_delivery: true
             - build_android:
                 context:
