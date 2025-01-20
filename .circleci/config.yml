@@ -675,7 +675,7 @@ workflows:
             and:
                 - << pipeline.parameters.run_commit >>
                 - equal:
-                    - fix-builds
+                    - main
                     - << pipeline.git.branch >>
     dev_delivery:
         jobs:
