@@ -15,6 +15,22 @@ steps:
   - restore_yarn_cache
   - prepare_workspace
   - restore_environment_variables
+  # The following commands are necessary since react-native-reanimated requires Ninja and CMake to build
+  # https://github.com/software-mansion/react-native-reanimated/issues/5498#issuecomment-1857506574
+  - run:
+      name: Install Ninja
+      command: |
+        sudo apt-get update && sudo apt-get install -y ninja-build
+  - run:
+      name: Install CMake
+      command: |
+        wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+        tar -xzvf cmake-3.22.1-Linux-x86_64.tar.gz -C $HOME
+        export PATH=$HOME/ninja:$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH
+  - run:
+      name: Set CMake and Ninja Paths
+      command: |
+        export PATH=$HOME/ninja:$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH
   - run:
       name: '[FL] Prepare Android Keystore'
       command: bundle exec fastlane keystore
