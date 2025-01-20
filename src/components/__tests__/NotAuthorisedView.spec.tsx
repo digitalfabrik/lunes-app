@@ -1,15 +1,12 @@
 import { fireEvent } from '@testing-library/react-native'
-import { mocked } from 'jest-mock'
 import React from 'react'
-import { Linking } from 'react-native'
+import { openSettings } from 'react-native-permissions'
 
 import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
 import NotAuthorisedView from '../NotAuthorisedView'
 
-jest.mock('react-native/Libraries/Linking/Linking', () => ({
-  openSettings: jest.fn(),
-}))
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 
 describe('NotAuthorisedView', () => {
   const setVisible = jest.fn()
@@ -38,7 +35,6 @@ describe('NotAuthorisedView', () => {
   })
 
   it('should open settings successfully', () => {
-    mocked(Linking.openSettings).mockImplementationOnce(Promise.resolve)
     const { getByText } = render(
       <NotAuthorisedView
         setVisible={setVisible}
@@ -47,6 +43,6 @@ describe('NotAuthorisedView', () => {
     )
     const message = getByText(getLabels().settings.settings)
     fireEvent.press(message)
-    expect(Linking.openSettings).toBeDefined()
+    expect(openSettings).toBeDefined()
   })
 })

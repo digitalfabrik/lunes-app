@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react'
-import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { Camera, Code, useCameraDevice, useCodeScanner } from 'react-native-vision-camera'
 import styled from 'styled-components/native'
 
 import CameraOverlay from '../../../components/CameraOverlay'
+import useAppState from '../../../hooks/useAppState'
 
-const Camera = styled(RNCamera)`
+const StyledCamera = styled(Camera)`
   flex: 1;
   position: relative;
 `
@@ -14,15 +15,25 @@ type AddCustomDisciplineScreenProps = {
   setCode: (code: string) => void
 }
 
-const AddCustomDisciplineScreen = ({ setVisible, setCode }: AddCustomDisciplineScreenProps): ReactElement => {
-  const onBarCodeRead = (scanResult: BarCodeReadEvent) => {
-    setCode(scanResult.data)
-    setVisible(false)
+const AddCustomDisciplineScreen = ({ setVisible, setCode }: AddCustomDisciplineScreenProps): ReactElement | null => {
+  const device = useCameraDevice('back')
+  const onCodeScanned = (codes: Code[]) => {
+    const code = codes[0]?.value
+    if (code) {
+      setCode(code)
+      setVisible(false)
+    }
+  }
+  const codeScanner = useCodeScanner({ codeTypes: ['qr'], onCodeScanned })
+  const { inForeground } = useAppState()
+
+  if (!device) {
+    return null
   }
 
   return (
     <CameraOverlay setVisible={setVisible}>
-      <Camera captureAudio={false} onBarCodeRead={onBarCodeRead} testID='camera' />
+      <StyledCamera isActive={inForeground} device={device} codeScanner={codeScanner} />
     </CameraOverlay>
   )
 }

@@ -86,7 +86,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   )
 
   const renderItem = (item: Item): ReactElement => (
-    <StyledImage source={item.source} accessibilityRole='image' minimized={minimized} height={viewerHeight} />
+    <StyledImage source={item.source} minimized={minimized} height={viewerHeight} testID='image' />
   )
 
   return (
