@@ -1,6 +1,6 @@
 docker:
-  - image: cimg/android:2024.01.1-node
-resource_class: medium+
+  - image: cimg/android:2024.08.1-node
+resource_class: xlarge
 environment:
   TOTAL_CPUS: 3
   FASTLANE_SKIP_UPDATE_CHECK: true
@@ -15,6 +15,22 @@ steps:
   - restore_yarn_cache
   - prepare_workspace
   - restore_environment_variables
+  # The following commands are necessary since react-native-reanimated requires Ninja and CMake to build
+  # https://github.com/software-mansion/react-native-reanimated/issues/5498#issuecomment-1857506574
+  - run:
+      name: Install Ninja
+      command: |
+        sudo apt-get update && sudo apt-get install -y ninja-build
+  - run:
+      name: Install CMake
+      command: |
+        wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+        tar -xzvf cmake-3.22.1-Linux-x86_64.tar.gz -C $HOME
+        export PATH=$HOME/ninja:$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH
+  - run:
+      name: Set CMake and Ninja Paths
+      command: |
+        export PATH=$HOME/ninja:$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH
   - run:
       name: '[FL] Prepare Android Keystore'
       command: bundle exec fastlane keystore
@@ -28,7 +44,7 @@ steps:
       command: |
         mkdir -p sourcemaps/
         cp android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
-        cp android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
+        cp android/app/build/generated/assets/createBundleReleaseJsAndAssets/index.android.bundle sourcemaps/
   - persist_to_workspace:
       root: .
       paths:
