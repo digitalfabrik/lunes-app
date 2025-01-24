@@ -59,6 +59,7 @@ type ButtonProps = {
   iconRight?: ComponentType<SvgProps>
   style?: StyleProp<ViewStyle>
   iconSize?: number
+  testID?: string
 }
 
 const Button = (props: ButtonProps): ReactElement => {
@@ -71,6 +72,7 @@ const Button = (props: ButtonProps): ReactElement => {
     buttonTheme = BUTTONS_THEME.outlined,
     style,
     iconSize = theme.spacingsPlain.md,
+    testID = 'button',
   } = props
 
   const getTextColor = (): Color => {
@@ -97,7 +99,7 @@ const Button = (props: ButtonProps): ReactElement => {
   return (
     <ThemedButton
       buttonTheme={buttonTheme}
-      testID='button'
+      testID={testID}
       isPressed={isPressed}
       backgroundColor={getBackgroundColor()}
       onPress={onPress}

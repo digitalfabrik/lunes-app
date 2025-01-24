@@ -21,8 +21,20 @@ describe('RepetitionScreen', () => {
     )
     const { getByText, getByTestId } = render(<RepetitionScreen navigation={navigation} />)
     await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat.plural}`)).toBeDefined())
+    await waitFor(() => expect(getByTestId('repetition-button')).toBeEnabled())
     expect(getByTestId('info-circle-black-icon')).toBeDefined()
     expect(getByText(getLabels().repetition.repeatNow)).toBeDefined()
+  })
+
+  it('should disable button correctly', async () => {
+    mocked(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound).mockImplementation(() =>
+      Promise.resolve(0),
+    )
+
+    const { getByTestId } = render(<RepetitionScreen navigation={navigation} />)
+    await waitFor(() => {
+      expect(getByTestId('repetition-button')).toBeDisabled()
+    })
   })
 
   it('should open modal on icon click', async () => {

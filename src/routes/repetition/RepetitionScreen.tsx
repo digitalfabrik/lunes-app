@@ -101,7 +101,13 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         <StyledHeading>{repeatWords}</StyledHeading>
         <Container>
           <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
-          <Button onPress={navigate} label={repeatNow} buttonTheme={BUTTONS_THEME.contained} />
+          <Button
+            testID='repetition-button'
+            onPress={navigate}
+            label={repeatNow}
+            buttonTheme={BUTTONS_THEME.contained}
+            disabled={(numberOfWordsNeedingRepetition ?? 0) === 0}
+          />
         </Container>
         <Container>
           <HeaderWrapper>
