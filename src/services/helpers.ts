@@ -154,6 +154,13 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
 
 export const getLabels = (): typeof labels => labels
 
+export const pluralize = (labels: { singular: string; plural: string }, n: number | null): string => {
+  if (n === 1) {
+    return labels.singular
+  }
+  return labels.plural
+}
+
 export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>
   postToEndpoint(ENDPOINTS.feedback, {
     comment,

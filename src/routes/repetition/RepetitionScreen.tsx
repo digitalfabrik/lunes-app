@@ -8,15 +8,15 @@ import { InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ModalSkeleton from '../../components/ModalSkeleton'
 import RouteWrapper from '../../components/RouteWrapper'
+import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
 import useLoadAsync from '../../hooks/useLoadAsync'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { RepetitionService } from '../../services/RepetitionService'
-import { getLabels } from '../../services/helpers'
+import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
-import { ContentSecondary } from '../../components/text/Content'
 
 const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
@@ -100,7 +100,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
       <Root>
         <StyledHeading>{repeatWords}</StyledHeading>
         <Container>
-          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${wordsToRepeat}`}</TextContainer>
+          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
           <Button onPress={navigate} label={repeatNow} buttonTheme={BUTTONS_THEME.contained} />
         </Container>
         <Container>

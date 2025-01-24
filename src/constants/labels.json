@@ -188,7 +188,10 @@
   "repetition": {
     "repeatWords": "Wörter wiederholen",
     "repeatNow": "Jetzt wiederholen",
-    "wordsToRepeat": "Wörter zum Wiederholen bereit",
+    "wordsToRepeat": {
+      "singular": "Wort zum Wiederholen bereit",
+      "plural": "Wörter zum Wiederholen bereit"
+    },
     "yourLearningProgress": "Dein Lernfortschritt",
     "hintModalHeaderText": "Du kannst gelernte Wörter jetzt wiederholen",
     "hintModalContentText": "Unter dem Kapitel „Wiederholen“ kannst du nun dein Langzeitgedächtnis trainieren.",

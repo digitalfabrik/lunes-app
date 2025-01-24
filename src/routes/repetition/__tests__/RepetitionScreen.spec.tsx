@@ -20,7 +20,7 @@ describe('RepetitionScreen', () => {
       Promise.resolve(2),
     )
     const { getByText, getByTestId } = render(<RepetitionScreen navigation={navigation} />)
-    await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat}`)).toBeDefined())
+    await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat.plural}`)).toBeDefined())
     expect(getByTestId('info-circle-black-icon')).toBeDefined()
     expect(getByText(getLabels().repetition.repeatNow)).toBeDefined()
   })
