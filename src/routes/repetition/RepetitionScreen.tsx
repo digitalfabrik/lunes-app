@@ -16,6 +16,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { RepetitionService } from '../../services/RepetitionService'
 import { getLabels } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
+import { ContentSecondary } from '../../components/text/Content'
 
 const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
@@ -64,13 +65,16 @@ const ModalContainer = styled.View`
   align-items: center;
   height: ${hp('24%')}px;
 `
+const ModalContent = styled(ContentSecondary)`
+  padding: ${props => props.theme.spacings.xs};
+`
 
 type RepetitionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Repetition'>
 }
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
+  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText } = getLabels().repetition
   const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
     RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
     undefined,
@@ -114,7 +118,9 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           <RepetitionProgressChart />
         </Container>
         <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='infoModal'>
-          <ModalContainer />
+          <ModalContainer>
+            <ModalContent>{infoModalContentText}</ModalContent>
+          </ModalContainer>
         </ModalSkeleton>
       </Root>
     </RouteWrapper>
