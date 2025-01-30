@@ -8,13 +8,14 @@ import { InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ModalSkeleton from '../../components/ModalSkeleton'
 import RouteWrapper from '../../components/RouteWrapper'
+import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
 import useLoadAsync from '../../hooks/useLoadAsync'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { RepetitionService } from '../../services/RepetitionService'
-import { getLabels } from '../../services/helpers'
+import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
 
 const Root = styled.ScrollView`
@@ -64,13 +65,16 @@ const ModalContainer = styled.View`
   align-items: center;
   height: ${hp('24%')}px;
 `
+const ModalContent = styled(ContentSecondary)`
+  padding: ${props => props.theme.spacings.xs};
+`
 
 type RepetitionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Repetition'>
 }
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress } = getLabels().repetition
+  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText } = getLabels().repetition
   const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
     RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
     undefined,
@@ -96,8 +100,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
       <Root>
         <StyledHeading>{repeatWords}</StyledHeading>
         <Container>
-          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${wordsToRepeat}`}</TextContainer>
-          <Button onPress={navigate} label={repeatNow} buttonTheme={BUTTONS_THEME.contained} />
+          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          <Button
+            testID='repetition-button'
+            onPress={navigate}
+            label={repeatNow}
+            buttonTheme={BUTTONS_THEME.contained}
+            disabled={(numberOfWordsNeedingRepetition ?? 0) === 0}
+          />
         </Container>
         <Container>
           <HeaderWrapper>
@@ -114,7 +124,9 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           <RepetitionProgressChart />
         </Container>
         <ModalSkeleton visible={isModalVisible} onClose={() => setIsModalVisible(false)} testID='infoModal'>
-          <ModalContainer />
+          <ModalContainer>
+            <ModalContent>{infoModalContentText}</ModalContent>
+          </ModalContainer>
         </ModalSkeleton>
       </Root>
     </RouteWrapper>
