@@ -107,7 +107,10 @@ const BottomTabNavigator = (): JSX.Element | null => {
           component={RepetitionStackNavigator}
           options={{
             tabBarIcon: renderRepetitionTabIcon,
-            tabBarBadge: numberOfWordsNeedingRepetition ?? undefined,
+            tabBarBadge:
+              numberOfWordsNeedingRepetition !== null && numberOfWordsNeedingRepetition > 0
+                ? numberOfWordsNeedingRepetition
+                : undefined,
             title: getLabels().general.repetition,
           }}
         />
