@@ -11,6 +11,7 @@ import { getAllWords } from '../../../hooks/useGetAllWords'
 import useLoadAsync from '../../../hooks/useLoadAsync'
 import { toggleDevMode, getDevMode, setOverwriteCMS } from '../../../services/AsyncStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
+import { useWordNodeCards } from '../../../services/SyncStorage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
@@ -39,6 +40,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const { data: isDevMode, refresh } = useLoadAsync(getDevMode, null)
   const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData } =
     getLabels().settings.debugModal
+  const [_wordNodeCards, setWordNodeCards] = useWordNodeCards()
 
   useEffect(() => {
     getBaseURL().then(setBaseURL).catch(reportError)
@@ -74,7 +76,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
-    await RepetitionService.saveWordNodeCards(wordCards)
+    setWordNodeCards(wordCards)
   }
 
   return (

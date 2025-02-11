@@ -8493,6 +8493,7 @@ __metadata:
     react-native-image-picker: ^7.1.2
     react-native-image-zoom-viewer: ^3.0.1
     react-native-keyboard-aware-scroll-view: ^0.9.5
+    react-native-mmkv-storage: ^0.11.2
     react-native-pager-view: ^6.7.0
     react-native-paper: 5.12.5
     react-native-permissions: ^5.1.0
@@ -10046,6 +10047,17 @@ __metadata:
   peerDependencies:
     react-native: ">=0.48.4"
   checksum: 932c724f86ba355f1a1db938123eef67844550dd6e2d117222eff0012a47c6a293ad79c965e16930e5eb14adb58a5c340c00e03eeabbe3d78229236125b8a6aa
+  languageName: node
+  linkType: hard
+
+"react-native-mmkv-storage@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "react-native-mmkv-storage@npm:0.11.2"
+  peerDependencies:
+    react-native: "*"
+  bin:
+    mmkv-link: autolink/postlink/run.js
+  checksum: 0b53482335c7a7963deff3534fa4887af705a300787462657ec9c3437bb31d938b72265dafac608a44f2c9c6426be2d1f4869364c26ad5b4de00f5494dbc517b
   languageName: node
   linkType: hard
 
