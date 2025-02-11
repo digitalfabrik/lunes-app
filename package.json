@@ -45,6 +45,7 @@
     "react-native-image-picker": "^7.1.2",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-mmkv-storage": "^0.11.2",
     "react-native-paper": "5.12.5",
     "react-native-permissions": "^5.1.0",
     "react-native-popover-view": "^5.1.9",
