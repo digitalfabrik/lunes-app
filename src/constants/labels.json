@@ -135,7 +135,7 @@
     "home": "Start",
     "favorites": "Favoriten",
     "dictionary": "Suche",
-    "repetition": "Wiederholen",
+    "repetition": "Vertiefen",
     "userVocabulary": "Meine Vokabeln",
     "header": {
       "overview": "Übersicht",
@@ -225,7 +225,7 @@
     "sponsorsExplanation": "Unsere Unterstützer*innen helfen uns mit Vokabel- oder Bildspenden, Inhaltsüberprüfung und/oder finanzieller Hilfe"
   },
   "userVocabulary": {
-    "myWords": "Meine Wörter",
+    "myWords": "Sammlung",
     "create": "Eigenes Wort erstellen",
     "overview": {
       "list": "Vokabelliste",
