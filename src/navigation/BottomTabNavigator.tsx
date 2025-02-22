@@ -29,6 +29,7 @@ import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
 import RepetitionStackNavigator from './RepetitionStackNavigator'
 import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
+import VocabularyCollectionTabNavigator from './VocabularyCollectionTabNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
@@ -116,8 +117,8 @@ const BottomTabNavigator = (): JSX.Element | null => {
         />
       )}
       <Navigator.Screen
-        name='UserVocabularyTab'
-        component={UserVocabularyStackNavigator}
+        name='VocabularyCollection'
+        component={VocabularyCollectionTabNavigator}
         options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.myWords }}
       />
     </Navigator.Navigator>
