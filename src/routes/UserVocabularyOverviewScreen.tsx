@@ -6,7 +6,6 @@ import { AddIconWhite, BookIconBlack } from '../../assets/images'
 import Button from '../components/Button'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
-import { TitleWithSpacing } from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -33,7 +32,6 @@ const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScre
   return (
     <RouteWrapper>
       <Root>
-        <TitleWithSpacing title={myWords} />
         <ListItem
           icon={<BookIconBlack />}
           title={list}
