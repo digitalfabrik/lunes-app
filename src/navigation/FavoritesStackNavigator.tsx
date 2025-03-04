@@ -15,11 +15,7 @@ const FavoritesStackNavigator = (): ReactElement => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='Favorites'
-        component={FavoritesScreen}
-        options={({ navigation }) => options(back, navigation)}
-      />
+      <Stack.Screen name='Favorites' component={FavoritesScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name='VocabularyDetail'
         component={VocabularyDetailScreen}

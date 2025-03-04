@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
-import Title from '../../components/Title'
+import { ContentSecondary } from '../../components/text/Content'
 import { Favorite } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import useLoadAsync from '../../hooks/useLoadAsync'
@@ -22,6 +22,9 @@ type FavoritesScreenProps = {
 const Root = styled.View`
   margin: 10px;
   margin: ${props => props.theme.spacings.sm};
+`
+const ListHeader = styled(ContentSecondary)`
+  padding: ${props => props.theme.spacings.xs};
 `
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
@@ -44,11 +47,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     <RouteWrapper>
       <Root>
         <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-          <FlatList
-            ListHeaderComponent={<Title title={getLabels().favorites} description={description} />}
-            data={data}
-            renderItem={renderItem}
-          />
+          <FlatList ListHeaderComponent={<ListHeader>{description}</ListHeader>} data={data} renderItem={renderItem} />
         </ServerResponseHandler>
       </Root>
     </RouteWrapper>
