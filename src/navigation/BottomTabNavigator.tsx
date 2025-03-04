@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useFocusEffect } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -24,11 +24,10 @@ import { getDevMode } from '../services/AsyncStorage'
 import { RepetitionService } from '../services/RepetitionService'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
-import FavoritesStackNavigator from './FavoritesStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import { RoutesParams } from './NavigationTypes'
 import RepetitionStackNavigator from './RepetitionStackNavigator'
-import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
+import VocabularyCollectionTabNavigator from './VocabularyCollectionTabNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
@@ -92,11 +91,6 @@ const BottomTabNavigator = (): JSX.Element | null => {
         options={{ tabBarIcon: renderHomeTabIcon, title: getLabels().general.home }}
       />
       <Navigator.Screen
-        name='FavoritesTab'
-        component={FavoritesStackNavigator}
-        options={{ tabBarIcon: renderFavoritesTabIcon, title: getLabels().general.favorites }}
-      />
-      <Navigator.Screen
         name='DictionaryTab'
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
@@ -116,8 +110,8 @@ const BottomTabNavigator = (): JSX.Element | null => {
         />
       )}
       <Navigator.Screen
-        name='UserVocabularyTab'
-        component={UserVocabularyStackNavigator}
+        name='VocabularyCollection'
+        component={VocabularyCollectionTabNavigator}
         options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.myWords }}
       />
     </Navigator.Navigator>
