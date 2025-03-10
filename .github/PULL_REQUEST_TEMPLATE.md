@@ -1,22 +1,24 @@
-### Short description
+### Short Description
 
 <!-- Describe this PR in one or two sentences. -->
 
-### Proposed changes
+### Proposed Changes
 
 <!-- Describe this PR in more detail. -->
 
 -
--
 
-### Side effects
+### Side Effects
 
 <!-- List all related components that have not been explicitly changed but may be affected by this PR -->
 
 -
--
 
-### Resolved issues
+### Testing
+
+<!-- List all things that should be tested while reviewing this PR. -->
+
+### Resolved Issues
 
 <!-- List all issues which should be closed when this PR is merged. -->
 
@@ -26,9 +28,9 @@ Fixes: #
 
 <!--
 DOR:
-- [Release notes](https://github.com/Integreat/integreat-react-native-app/blob/develop/docs/contributing.md#release-notes) have been added for user visible changes
+- [Release notes](https://github.com/digitalfabrik/lunes-app/blob/main/docs/conventions.md#release-notes) have been added for user visible changes
 - Linting: `yarn lint`
 - Typescript: `yarn ts:check`
 - Prettier: `yarn prettier`
 - Unit tests: `yarn test`
-- -->
+-->
