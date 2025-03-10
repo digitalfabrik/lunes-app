@@ -37,7 +37,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const { vocabularyItems, closeExerciseAction, contentType } = route.params
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState<boolean>(false)
-  const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
+  const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(() =>
     shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
 
