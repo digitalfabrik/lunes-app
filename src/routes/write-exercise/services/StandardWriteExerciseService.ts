@@ -2,12 +2,15 @@ import { ExerciseKeys, SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { RepetitionService } from '../../../services/RepetitionService'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
 
 class StandardWriteExerciseService extends AbstractWriteExerciseService {
   finishExercise = async (results: VocabularyItemResult[], vocabularyItems: VocabularyItem[]): Promise<void> => {
     if (this.route.params.contentType === 'standard') {
       await saveExerciseProgress(this.route.params.disciplineId, ExerciseKeys.writeExercise, results)
+
+      await RepetitionService.addWordsToFirstSection(vocabularyItems)
     }
     this.navigation.navigate('ExerciseFinished', {
       ...this.route.params,
