@@ -56,6 +56,7 @@ export type RoutesParams = {
   DictionaryTab: undefined
   RepetitionTab: undefined
   UserVocabularyTab: undefined
+  VocabularyCollection: undefined
   Home: undefined
   UserVocabularyOverview: undefined
   UserVocabularyProcess: {
