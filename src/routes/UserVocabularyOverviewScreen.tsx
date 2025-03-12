@@ -27,16 +27,11 @@ type UserVocabularyOverviewScreenProps = {
 }
 
 const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScreenProps): JSX.Element => {
-  const { collection } = getLabels().userVocabulary
   const { list, create, practice } = getLabels().userVocabulary.overview
   return (
     <RouteWrapper>
       <Root>
-        <ListItem
-          icon={<BookIconBlack />}
-          title={list}
-          onPress={() => navigation.navigate('UserVocabularyList', { headerBackLabel: collection })}
-        />
+        <ListItem icon={<BookIconBlack />} title={list} onPress={() => navigation.navigate('UserVocabularyList')} />
         <ListItem
           icon={<BookIconBlack />}
           title={practice}
@@ -44,7 +39,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScre
         />
         <ButtonContainer>
           <Button
-            onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: collection })}
+            onPress={() => navigation.navigate('UserVocabularyProcess', {})}
             label={create}
             buttonTheme={BUTTONS_THEME.contained}
             iconRight={AddIconWhite}

@@ -26,7 +26,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
 
   it('should render zero disciplines for zero words', () => {
     const { getByText, queryByText } = renderScreen([])
-    expect(getByText(getLabels().userVocabulary.collection)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.practice)).toBeDefined()
     expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
     expect(queryByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeNull()
   })

@@ -32,7 +32,7 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='UserVocabularyList'
         component={UserVocabularyListScreen}
-        options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
+        options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
         name='VocabularyDetail'
@@ -42,7 +42,7 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='UserVocabularyProcess'
         component={UserVocabularyProcessScreen}
-        options={({ navigation, route }) => options(route.params.headerBackLabel, navigation)}
+        options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
         name='UserVocabularyDisciplineSelection'
