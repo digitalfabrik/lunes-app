@@ -174,7 +174,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         await addUserVocabularyItem(itemToSave)
       }
 
-      navigation.navigate('UserVocabularyList', { headerBackLabel: getLabels().general.back })
+      navigation.navigate('UserVocabularyList')
       resetFields()
     } catch (e) {
       reportError(e)

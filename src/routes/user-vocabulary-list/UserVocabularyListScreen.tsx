@@ -51,8 +51,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
 
   const numberOfVocabularyItems = vocabularyItems.data?.length ?? 0
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
-  const { create, collection } = getLabels().userVocabulary
-  const { list } = getLabels().userVocabulary.overview
+  const { create, overview } = getLabels().userVocabulary
   const {
     confirm,
     confirmDeletionPart1,
@@ -101,7 +100,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
           ListHeaderComponent={
             <>
               <Title
-                title={collection}
+                title={overview.list}
                 description={`${numberOfVocabularyItems} ${
                   numberOfVocabularyItems === 1 ? getLabels().general.word : getLabels().general.words
                 }`}
@@ -121,7 +120,6 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
               navigateToDetailScreen={() => navigateToDetail(item)}
               navigateToEditScreen={() =>
                 navigation.navigate('UserVocabularyProcess', {
-                  headerBackLabel: getLabels().userVocabulary.collection,
                   itemToEdit: item,
                 })
               }
@@ -135,7 +133,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
         {!isKeyboardVisible && (
           <ButtonContainer>
             <Button
-              onPress={() => navigation.navigate('UserVocabularyProcess', { headerBackLabel: list })}
+              onPress={() => navigation.navigate('UserVocabularyProcess', {})}
               label={create}
               buttonTheme={BUTTONS_THEME.contained}
               iconRight={AddIconWhite}

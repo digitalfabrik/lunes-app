@@ -58,7 +58,10 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
           ListHeaderComponent={
-            <Title title={getLabels().userVocabulary.collection} description={wordsDescription(data?.length ?? 0)} />
+            <Title
+              title={getLabels().userVocabulary.overview.practice}
+              description={wordsDescription(data?.length ?? 0)}
+            />
           }
           data={disciplinesWithVocabulary}
           renderItem={renderListItem}
