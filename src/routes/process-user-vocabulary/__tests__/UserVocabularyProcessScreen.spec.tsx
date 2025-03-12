@@ -53,7 +53,6 @@ describe('UserVocabularyProcessScreen', () => {
     key: 'key1',
     name: 'UserVocabularyProcess',
     params: {
-      headerBackLabel: 'back',
       itemToEdit,
     },
   })
