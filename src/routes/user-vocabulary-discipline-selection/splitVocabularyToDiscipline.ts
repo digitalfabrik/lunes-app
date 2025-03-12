@@ -14,7 +14,7 @@ const createDisciplines = (vocabularySize: number) => {
         description: '',
         numberOfChildren: 1,
         isLeaf: true,
-        parentTitle: getLabels().userVocabulary.myWords,
+        parentTitle: getLabels().userVocabulary.collection,
         needsTrainingSetEndpoint: true,
       },
       vocabulary: [],

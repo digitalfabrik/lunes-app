@@ -51,7 +51,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
 
   const numberOfVocabularyItems = vocabularyItems.data?.length ?? 0
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
-  const { create, myWords } = getLabels().userVocabulary
+  const { create, collection } = getLabels().userVocabulary
   const { list } = getLabels().userVocabulary.overview
   const {
     confirm,
@@ -101,7 +101,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
           ListHeaderComponent={
             <>
               <Title
-                title={myWords}
+                title={collection}
                 description={`${numberOfVocabularyItems} ${
                   numberOfVocabularyItems === 1 ? getLabels().general.word : getLabels().general.words
                 }`}
@@ -121,7 +121,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
               navigateToDetailScreen={() => navigateToDetail(item)}
               navigateToEditScreen={() =>
                 navigation.navigate('UserVocabularyProcess', {
-                  headerBackLabel: getLabels().userVocabulary.myWords,
+                  headerBackLabel: getLabels().userVocabulary.collection,
                   itemToEdit: item,
                 })
               }
