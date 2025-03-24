@@ -4,8 +4,9 @@ import { unlink } from 'react-native-fs'
 import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import { RepetitionService } from './RepetitionService'
 import { CMS, productionCMS, testCMS } from './axios'
-import { calculateScore } from './helpers'
+import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
@@ -130,11 +131,14 @@ export const getFavorites = async (): Promise<Favorite[]> => {
   return favorites ? JSON.parse(favorites) : []
 }
 
-export const addFavorite = async (favorite: Favorite): Promise<void> => {
+export const addFavorite = async (vocabularyItem: VocabularyItem): Promise<void> => {
+  const favorite = vocabularyItemToFavorite(vocabularyItem)
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
   }
+
+  await RepetitionService.addWordToFirstSection(vocabularyItem)
   const newFavorites = [...favorites, favorite]
   await setFavorites(newFavorites)
 }
