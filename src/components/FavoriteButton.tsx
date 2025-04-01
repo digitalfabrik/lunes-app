@@ -5,6 +5,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
+import useRepetitionService from '../hooks/useRepetitionService'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
 import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
@@ -28,6 +29,7 @@ type FavoriteButtonProps = {
 }
 
 const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
+  const repetitionService = useRepetitionService()
   const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, vocabularyItemToFavorite(vocabularyItem))
   const theme = useTheme()
   useFocusEffect(refresh)
@@ -36,7 +38,7 @@ const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonPr
     if (isFavorite) {
       await removeFavorite(vocabularyItemToFavorite(vocabularyItem)).catch(reportError)
     } else {
-      await addFavorite(vocabularyItem).catch(reportError)
+      await addFavorite(repetitionService, vocabularyItem).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

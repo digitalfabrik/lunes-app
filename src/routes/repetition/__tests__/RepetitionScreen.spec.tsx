@@ -1,9 +1,10 @@
-import { fireEvent, waitFor } from '@testing-library/react-native'
-import { mocked } from 'jest-mock'
-import React from 'react'
+import { fireEvent, RenderResult, waitFor } from '@testing-library/react-native'
+import React, { ReactElement } from 'react'
 
-import { RepetitionService } from '../../../services/RepetitionService'
+import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
+import { newDefaultStorage, Storage, StorageContext } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
 import RepetitionScreen from '../RepetitionScreen'
@@ -11,15 +12,21 @@ import RepetitionScreen from '../RepetitionScreen'
 jest.mock('victory-native')
 jest.mock('@react-navigation/native')
 
+const mockedStorageRender = (storage: Storage, ui: ReactElement): RenderResult =>
+  render(<StorageContext.Provider value={storage}>{ui}</StorageContext.Provider>)
+
 describe('RepetitionScreen', () => {
   const navigation = createNavigationMock<'Repetition'>()
-  RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound = jest.fn()
 
   it('should render screen correctly', async () => {
-    mocked(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound).mockImplementation(() =>
-      Promise.resolve(2),
-    )
-    const { getByText, getByTestId } = render(<RepetitionScreen navigation={navigation} />)
+    const storage = newDefaultStorage()
+    const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
+      word: item,
+      section: 1,
+      inThisSectionSince: RepetitionService.addDays(new Date(), -1),
+    }))
+    storage.wordNodeCards.set(wordNodeCards)
+    const { getByText, getByTestId } = mockedStorageRender(storage, <RepetitionScreen navigation={navigation} />)
     await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat.plural}`)).toBeDefined())
     await waitFor(() => expect(getByTestId('repetition-button')).toBeEnabled())
     expect(getByTestId('info-circle-black-icon')).toBeDefined()
@@ -27,10 +34,6 @@ describe('RepetitionScreen', () => {
   })
 
   it('should disable button correctly', async () => {
-    mocked(RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound).mockImplementation(() =>
-      Promise.resolve(0),
-    )
-
     const { getByTestId } = render(<RepetitionScreen navigation={navigation} />)
     await waitFor(() => {
       expect(getByTestId('repetition-button')).toBeDisabled()

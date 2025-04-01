@@ -1,10 +1,24 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+
 import { SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
-import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
 
 class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
+  constructor(
+    route: RouteProp<RoutesParams, 'WriteExercise'>,
+    navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
+    setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
+    setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>, // eslint-disable-next-line no-empty-function
+    public repetitionService: RepetitionService,
+  ) {
+    super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults)
+  }
+
   finishExercise = async (): Promise<void> => {
     this.navigation.navigate('Repetition')
   }
@@ -19,7 +33,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     if (current.vocabularyItem.id !== result.vocabularyItem.id) {
       return
     }
-    await RepetitionService.updateWordNodeCard(result)
+    this.repetitionService.updateWordNodeCard(result)
     updatedVocabularyItemsWithResults[currentIndex] = result
     this.setVocabularyItemWithResults(updatedVocabularyItemsWithResults)
     this.setIsAnswerSubmitted(true)
@@ -34,7 +48,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     /* eslint-disable no-restricted-syntax */
     for (const vocabularyItem of cheatedVocabularyItems) {
       /* eslint-disable no-await-in-loop */
-      await RepetitionService.updateWordNodeCard(vocabularyItem)
+      this.repetitionService.updateWordNodeCard(vocabularyItem)
     }
     await this.finishExercise()
   }

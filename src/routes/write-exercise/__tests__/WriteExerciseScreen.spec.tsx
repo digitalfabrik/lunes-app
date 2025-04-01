@@ -7,7 +7,7 @@ import Tts from 'react-native-tts'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
-import { RepetitionService } from '../../../services/RepetitionService'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -161,8 +161,6 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should finish exercise and save progress', async () => {
-    jest.spyOn(RepetitionService, 'addWordsToFirstSection')
-
     const { getByPlaceholderText, getByText } = renderWriteExercise()
     fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
@@ -179,7 +177,7 @@ describe('WriteExerciseScreen', () => {
       { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
-    expect(RepetitionService.addWordsToFirstSection).toHaveBeenCalledWith(vocabularyItems)
+    expect(storageCache.getItem('wordNodeCards')).toHaveLength(2)
   })
 
   const evaluate = (input: string, expectedFeedback: string) => {
