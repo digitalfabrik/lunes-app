@@ -11,6 +11,7 @@ export type StorageField<T> = {
 
 export type Storage = {
   wordNodeCards: StorageField<WordNodeCard[]>
+  isTrackingEnabled: StorageField<boolean>
 }
 
 class DefaultStorageField<T> {
@@ -33,6 +34,7 @@ class DefaultStorageField<T> {
  */
 export const newDefaultStorage = (): Storage => ({
   wordNodeCards: new DefaultStorageField<WordNodeCard[]>([]),
+  isTrackingEnabled: new DefaultStorageField(true),
 })
 const defaultStorage = newDefaultStorage()
 
@@ -48,16 +50,9 @@ const getStorageKey = (key: keyof Storage): string => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     case 'wordNodeCards':
       return 'wordNodeCards'
+    case 'isTrackingEnabled':
+      return 'sentryTracking'
   }
-}
-
-const getStorageItem = async <T,>(key: keyof Storage): Promise<T> => {
-  const value = await AsyncStorage.getItem(getStorageKey(key))
-  return value ? JSON.parse(value) : defaultStorage[key].value
-}
-
-const setStorageItem = async <T,>(key: keyof Storage, value: T): Promise<void> => {
-  await AsyncStorage.setItem(getStorageKey(key), JSON.stringify(value))
 }
 
 /**
@@ -65,11 +60,20 @@ const setStorageItem = async <T,>(key: keyof Storage, value: T): Promise<void> =
  */
 type StorageValue<T> = T extends keyof Storage ? Storage[T]['value'] : never
 
+export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<StorageValue<T>> => {
+  const value = await AsyncStorage.getItem(getStorageKey(key))
+  return value ? JSON.parse(value) : defaultStorage[key].value
+}
+
+export const setStorageItem = async <T extends keyof Storage>(key: T, value: StorageValue<T>): Promise<void> => {
+  await AsyncStorage.setItem(getStorageKey(key), JSON.stringify(value))
+}
+
 const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageValue<T>> | null => {
   const [value, setValue] = useState<StorageValue<T> | null>(null)
 
   useEffect(() => {
-    getStorageItem<StorageValue<T>>(key)
+    getStorageItem(key)
       .then(value => setValue(value))
       .catch(reportError)
   }, [key])
@@ -85,9 +89,19 @@ const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageV
 }
 
 const StorageContextProvider = ({ children }: StorageContextProviderProps): ReactElement | null => {
+  const isTrackingEnabled = useStorageField('isTrackingEnabled')
   const wordNodeCards = useStorageField('wordNodeCards')
 
-  const context = useMemo(() => (wordNodeCards !== null ? { wordNodeCards } : null), [wordNodeCards])
+  const context = useMemo(
+    () =>
+      wordNodeCards !== null && isTrackingEnabled !== null
+        ? {
+            isTrackingEnabled,
+            wordNodeCards,
+          }
+        : null,
+    [isTrackingEnabled, wordNodeCards],
+  )
 
   if (context !== null) {
     return <StorageContext.Provider value={context}>{children}</StorageContext.Provider>
