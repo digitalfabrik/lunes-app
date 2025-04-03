@@ -88,7 +88,7 @@ export class RepetitionService {
     return result
   }
 
-  public addWordsToFirstSection = (words: VocabularyItem[]): void => {
+  public addWordsToFirstSection = async (words: VocabularyItem[]): Promise<void> => {
     const newWordCards = this.wordNodeCardStorage.value.slice()
     words.forEach(word => {
       if (
@@ -104,26 +104,26 @@ export class RepetitionService {
     return this.wordNodeCardStorage.set(newWordCards)
   }
 
-  public addWordToFirstSection = (word: VocabularyItem): void => this.addWordsToFirstSection([word])
+  public addWordToFirstSection = async (word: VocabularyItem): Promise<void> => this.addWordsToFirstSection([word])
 
   private static getSectionWithBoundCheck = (section: number) =>
     sections[Math.min(Math.max(0, section), sections.length - 1)]
 
-  private moveWordToSection = (word: VocabularyItem, offset: 1 | -1): void => {
+  private moveWordToSection = async (word: VocabularyItem, offset: 1 | -1): Promise<void> => {
     const wordNodeCards = this.wordNodeCardStorage.value.slice()
     const wordNodeCard = wordNodeCards.find(wordNodeCard => JSON.stringify(wordNodeCard.word) === JSON.stringify(word))
     if (wordNodeCard) {
       const targetSection = wordNodeCard.section + offset
       wordNodeCard.section = RepetitionService.getSectionWithBoundCheck(targetSection)
       wordNodeCard.inThisSectionSince = new Date()
-      this.wordNodeCardStorage.set(wordNodeCards)
+      await this.wordNodeCardStorage.set(wordNodeCards)
     }
   }
 
-  public moveWordToNextSection = (word: VocabularyItem): void => this.moveWordToSection(word, 1)
+  public moveWordToNextSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, 1)
 
-  public moveWordToPreviousSection = (word: VocabularyItem): void => this.moveWordToSection(word, -1)
+  public moveWordToPreviousSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, -1)
 
-  public updateWordNodeCard = (wordWithResult: VocabularyItemResult): void =>
+  public updateWordNodeCard = async (wordWithResult: VocabularyItemResult): Promise<void> =>
     this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct' ? 1 : -1)
 }

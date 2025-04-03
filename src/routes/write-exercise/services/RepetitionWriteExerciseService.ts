@@ -33,7 +33,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     if (current.vocabularyItem.id !== result.vocabularyItem.id) {
       return
     }
-    this.repetitionService.updateWordNodeCard(result)
+    await this.repetitionService.updateWordNodeCard(result)
     updatedVocabularyItemsWithResults[currentIndex] = result
     this.setVocabularyItemWithResults(updatedVocabularyItemsWithResults)
     this.setIsAnswerSubmitted(true)
@@ -48,7 +48,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     /* eslint-disable no-restricted-syntax */
     for (const vocabularyItem of cheatedVocabularyItems) {
       /* eslint-disable no-await-in-loop */
-      this.repetitionService.updateWordNodeCard(vocabularyItem)
+      await this.repetitionService.updateWordNodeCard(vocabularyItem)
     }
     await this.finishExercise()
   }

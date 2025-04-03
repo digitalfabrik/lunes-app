@@ -6,7 +6,7 @@ import { reportError } from './sentry'
 
 export type StorageField<T> = {
   value: T
-  set: (value: T) => void
+  set: (value: T) => Promise<void>
 }
 
 export type Storage = {
@@ -22,6 +22,7 @@ class DefaultStorageField<T> {
 
   set = (value: T) => {
     this.value = value
+    return Promise.resolve()
   }
 }
 
@@ -74,9 +75,9 @@ const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageV
   }, [key])
 
   const updateValue = useCallback(
-    (newValue: StorageValue<T>) => {
+    async (newValue: StorageValue<T>) => {
       setValue(newValue)
-      setStorageItem(key, newValue).catch(reportError)
+      return setStorageItem(key, newValue).catch(reportError)
     },
     [key],
   )
