@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -13,9 +13,9 @@ import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
-import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { setSelectedProfessions, pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
+import { pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
+import { setStorageItem, StorageContext } from '../services/Storage'
 import { getLabels, childrenDescription } from '../services/helpers'
 
 const List = styled.FlatList`
@@ -43,22 +43,20 @@ type ProfessionSelectionScreenProps = {
 }
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
+  const storage = useContext(StorageContext)
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const { value: selectedProfessions } = storage.selectedProfessions
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
     if (selectedProfessions?.includes(selectedItem.id)) {
-      await removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
+      await removeSelectedProfession(selectedItem.id)
     } else {
-      await pushSelectedProfession(selectedItem.id).then(() => {
-        if (initialSelection) {
-          refreshSelectedProfessions()
-        } else {
-          navigation.navigate('ManageSelection')
-        }
-      })
+      await pushSelectedProfession(selectedItem.id)
+      if (!initialSelection) {
+        navigation.navigate('ManageSelection')
+      }
     }
   }
 
@@ -85,7 +83,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
 
   const navigateToHomeScreen = async () => {
     if (!isSelectionMade) {
-      await setSelectedProfessions([])
+      await setStorageItem('selectedProfessions', [])
     }
     navigation.reset({
       index: 0,

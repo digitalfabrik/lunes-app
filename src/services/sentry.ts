@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import * as Sentry from '@sentry/react-native'
 import { SeverityLevel } from '@sentry/types'
+
 import { getStorageItem } from './Storage'
 
 export const initSentry = (): void => {

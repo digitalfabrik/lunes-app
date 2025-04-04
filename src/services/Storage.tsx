@@ -12,6 +12,8 @@ export type StorageField<T> = {
 export type Storage = {
   wordNodeCards: StorageField<WordNodeCard[]>
   isTrackingEnabled: StorageField<boolean>
+  // Null means the selected professions were never set before, which means that the intro should be shown
+  selectedProfessions: StorageField<number[] | null>
 }
 
 class DefaultStorageField<T> {
@@ -35,6 +37,7 @@ class DefaultStorageField<T> {
 export const newDefaultStorage = (): Storage => ({
   wordNodeCards: new DefaultStorageField<WordNodeCard[]>([]),
   isTrackingEnabled: new DefaultStorageField(true),
+  selectedProfessions: new DefaultStorageField<number[] | null>(null),
 })
 const defaultStorage = newDefaultStorage()
 
@@ -52,6 +55,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'wordNodeCards'
     case 'isTrackingEnabled':
       return 'sentryTracking'
+    case 'selectedProfessions':
+      return 'selectedProfessions'
   }
 }
 
@@ -70,7 +75,7 @@ export const setStorageItem = async <T extends keyof Storage>(key: T, value: Sto
 }
 
 const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageValue<T>> | null => {
-  const [value, setValue] = useState<StorageValue<T> | null>(null)
+  const [value, setValue] = useState<StorageValue<T> | undefined>(undefined)
 
   useEffect(() => {
     getStorageItem(key)
@@ -85,22 +90,24 @@ const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageV
     },
     [key],
   )
-  return useMemo(() => (value != null ? { value, set: updateValue } : null), [value, updateValue])
+  return useMemo(() => (value !== undefined ? { value, set: updateValue } : null), [value, updateValue])
 }
 
 const StorageContextProvider = ({ children }: StorageContextProviderProps): ReactElement | null => {
-  const isTrackingEnabled = useStorageField('isTrackingEnabled')
   const wordNodeCards = useStorageField('wordNodeCards')
+  const isTrackingEnabled = useStorageField('isTrackingEnabled')
+  const selectedProfessions = useStorageField('selectedProfessions')
 
   const context = useMemo(
     () =>
-      wordNodeCards !== null && isTrackingEnabled !== null
+      wordNodeCards !== null && isTrackingEnabled !== null && selectedProfessions !== null
         ? {
-            isTrackingEnabled,
             wordNodeCards,
+            isTrackingEnabled,
+            selectedProfessions,
           }
         : null,
-    [isTrackingEnabled, wordNodeCards],
+    [selectedProfessions, isTrackingEnabled, wordNodeCards],
   )
 
   if (context !== null) {

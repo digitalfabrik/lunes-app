@@ -1,8 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { useContext } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
@@ -13,6 +12,7 @@ import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinished
 import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
+import { StorageContext } from '../services/Storage'
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
@@ -21,16 +21,13 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const { data: professions, loading } = useReadSelectedProfessions()
+  const storage = useContext(StorageContext)
+  const { value: professions } = storage.selectedProfessions
 
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
   const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
-
-  if (loading) {
-    return null
-  }
 
   return (
     <Stack.Navigator initialRouteName={professions === null ? 'ScopeSelection' : 'BottomTabNavigator'}>

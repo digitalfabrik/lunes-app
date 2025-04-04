@@ -1,6 +1,6 @@
 import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useContext } from 'react'
 import { View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -10,8 +10,8 @@ import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { StorageContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import DisciplineCard from './components/DisciplineCard'
@@ -36,13 +36,13 @@ type HomeScreenProps = {
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
+  const storage = useContext(StorageContext)
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const { value: selectedProfessions } = storage.selectedProfessions
   const isCustomDisciplineEmpty = !customDisciplines || customDisciplines.length <= 0
   const theme = useTheme()
 
   useFocusEffect(refreshCustomDisciplines)
-  useFocusEffect(refreshSelectedProfessions)
 
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')

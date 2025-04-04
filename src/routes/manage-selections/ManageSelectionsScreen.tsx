@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useContext } from 'react'
 import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
@@ -9,9 +9,9 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
+import { StorageContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
@@ -39,15 +39,15 @@ type ManageSelectionScreenProps = {
 }
 
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const storage = useContext(StorageContext)
+  const { value: selectedProfessions } = storage.selectedProfessions
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
   useFocusEffect(refreshCustomDisciplines)
-  useFocusEffect(refreshSelectedProfessions)
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
+      removeSelectedProfession(id).catch(reportError)
     }
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })

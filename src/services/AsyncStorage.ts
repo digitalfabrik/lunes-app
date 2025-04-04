@@ -4,11 +4,11 @@ import { unlink } from 'react-native-fs'
 import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import { getStorageItem, setStorageItem } from './Storage'
 import { RepetitionService } from './RepetitionService'
 import { CMS, productionCMS, testCMS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
-const SELECTED_PROFESSIONS_KEY = 'selectedProfessions'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
@@ -18,34 +18,23 @@ const DEV_MODE_KEY = 'devmode'
 const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
-// return value of null means the selected profession was never set before, therefore the intro screen must be shown
-export const getSelectedProfessions = async (): Promise<number[] | null> => {
-  const professions = await AsyncStorage.getItem(SELECTED_PROFESSIONS_KEY)
-  return professions ? JSON.parse(professions) : null
-}
-
-export const setSelectedProfessions = async (selectedProfessions: number[]): Promise<void> => {
-  await AsyncStorage.setItem(SELECTED_PROFESSIONS_KEY, JSON.stringify(selectedProfessions))
-}
-
-export const pushSelectedProfession = async (professionId: number): Promise<number[]> => {
-  let professions = await getSelectedProfessions()
+export const pushSelectedProfession = async (professionId: number): Promise<void> => {
+  let professions = await getStorageItem('selectedProfessions')
   if (professions === null) {
     professions = [professionId]
   } else {
     professions.push(professionId)
   }
-  await setSelectedProfessions(professions)
-  return professions
+  await setStorageItem('selectedProfessions', professions)
 }
 
 export const removeSelectedProfession = async (professionId: number): Promise<number[]> => {
-  const professions = await getSelectedProfessions()
+  const professions = await getStorageItem('selectedProfessions')
   if (professions === null) {
     throw new Error('professions not set')
   }
   const updatedProfessions = professions.filter(item => item !== professionId)
-  await setSelectedProfessions(updatedProfessions)
+  await setStorageItem('selectedProfessions', updatedProfessions)
   return updatedProfessions
 }
 
@@ -121,14 +110,14 @@ export const getFavorites = async (): Promise<Favorite[]> => {
   return favorites ? JSON.parse(favorites) : []
 }
 
-export const addFavorite = async (vocabularyItem: VocabularyItem): Promise<void> => {
+export const addFavorite = async (repetitionService: RepetitionService, vocabularyItem: VocabularyItem): Promise<void> => {
   const favorite = vocabularyItemToFavorite(vocabularyItem)
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {
     return
   }
 
-  await RepetitionService.addWordToFirstSection(vocabularyItem)
+  await repetitionService.addWordToFirstSection(vocabularyItem)
   const newFavorites = [...favorites, favorite]
   await setFavorites(newFavorites)
 }

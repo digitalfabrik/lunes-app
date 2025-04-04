@@ -16,13 +16,12 @@ import {
   addFavorite,
   removeFavorite,
   setCustomDisciplines,
-  getSelectedProfessions,
   getExerciseProgress,
   editUserVocabularyItem,
   removeSelectedProfession,
-  setSelectedProfessions,
   getUserVocabularyItems,
 } from '../AsyncStorage'
+import { getStorageItem, newDefaultStorage, setStorageItem } from '../Storage'
 import { RepetitionService } from '../RepetitionService'
 
 jest.mock('react-native-fs', () => ({
@@ -30,6 +29,9 @@ jest.mock('react-native-fs', () => ({
 }))
 
 describe('AsyncStorage', () => {
+  const storage = newDefaultStorage()
+  const repetitionService = new RepetitionService(storage.wordNodeCards)
+
   describe('customDisciplines', () => {
     const customDisciplines = ['first', 'second', 'third']
 
@@ -52,24 +54,27 @@ describe('AsyncStorage', () => {
     const selectedProfessions = mockDisciplines()
 
     it('should delete selectedProfession from array if exists', async () => {
-      await setSelectedProfessions(selectedProfessions.map(item => item.id))
-      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length)
+      await setStorageItem(
+        'selectedProfessions',
+        selectedProfessions.map(item => item.id),
+      )
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(selectedProfessions.length)
       await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length - 1)
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await setSelectedProfessions([mockDisciplines()[1].id])
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await setStorageItem('selectedProfessions', [mockDisciplines()[1].id])
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
       await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await setSelectedProfessions([mockDisciplines()[0].id])
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await setStorageItem('selectedProfessions', [mockDisciplines()[0].id])
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
       await pushSelectedProfession(mockDisciplines()[1].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(2)
+      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -133,15 +138,15 @@ describe('AsyncStorage', () => {
     it('should add favorites', async () => {
       await setFavorites(favoriteItems.slice(0, 2))
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 2))
-      expect(await RepetitionService.getWordNodeCards()).toHaveLength(0)
-      await addFavorite(vocabularyItems[2])
-      expect((await RepetitionService.getWordNodeCards()).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.wordNodeCardStorage.value).toHaveLength(0)
+      await addFavorite(repetitionService, vocabularyItems[2])
+      expect((repetitionService.wordNodeCardStorage.value).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
       ])
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 3))
-      await addFavorite(vocabularyItems[3])
+      await addFavorite(repetitionService, vocabularyItems[3])
       await expect(getFavorites()).resolves.toEqual(favoriteItems)
-      expect((await RepetitionService.getWordNodeCards()).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect((repetitionService.wordNodeCardStorage.value).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
         vocabularyItems[3].id,
       ])
