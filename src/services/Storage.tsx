@@ -1,32 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { createContext, ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { createContext, ReactElement, useMemo } from 'react'
 
+import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
-import { reportError } from './sentry'
-
-export type StorageField<T> = {
-  value: T
-  set: (value: T) => Promise<void>
-}
 
 export type Storage = {
-  wordNodeCards: StorageField<WordNodeCard[]>
-  isTrackingEnabled: StorageField<boolean>
+  wordNodeCards: WordNodeCard[]
+  isTrackingEnabled: boolean
   // Null means the selected professions were never set before, which means that the intro should be shown
-  selectedProfessions: StorageField<number[] | null>
-}
-
-class DefaultStorageField<T> {
-  value: T
-
-  constructor(value: T) {
-    this.value = value
-  }
-
-  set = (value: T) => {
-    this.value = value
-    return Promise.resolve()
-  }
+  selectedProfessions: number[] | null
 }
 
 /**
@@ -35,22 +17,15 @@ class DefaultStorageField<T> {
  * It is also useful for testing, to mock the actual storage implementation.
  */
 export const newDefaultStorage = (): Storage => ({
-  wordNodeCards: new DefaultStorageField<WordNodeCard[]>([]),
-  isTrackingEnabled: new DefaultStorageField(true),
-  selectedProfessions: new DefaultStorageField<number[] | null>(null),
+  wordNodeCards: [],
+  isTrackingEnabled: true,
+  selectedProfessions: null,
 })
 const defaultStorage = newDefaultStorage()
-
-export const StorageContext = createContext<Storage>(defaultStorage)
-
-type StorageContextProviderProps = {
-  children: ReactElement
-}
 
 // eslint-disable-next-line consistent-return
 const getStorageKey = (key: keyof Storage): string => {
   switch (key) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     case 'wordNodeCards':
       return 'wordNodeCards'
     case 'isTrackingEnabled':
@@ -60,58 +35,76 @@ const getStorageKey = (key: keyof Storage): string => {
   }
 }
 
-/**
- * Represents the type of the value in the storage for the given key
- */
-type StorageValue<T> = T extends keyof Storage ? Storage[T]['value'] : never
-
-export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<StorageValue<T>> => {
+export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<Storage[T]> => {
   const value = await AsyncStorage.getItem(getStorageKey(key))
-  return value ? JSON.parse(value) : defaultStorage[key].value
+  return value ? JSON.parse(value) : defaultStorage[key]
 }
 
-export const setStorageItem = async <T extends keyof Storage>(key: T, value: StorageValue<T>): Promise<void> => {
+const setStorageItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
   await AsyncStorage.setItem(getStorageKey(key), JSON.stringify(value))
 }
 
-const useStorageField = <T extends keyof Storage>(key: T): StorageField<StorageValue<T>> | null => {
-  const [value, setValue] = useState<StorageValue<T> | undefined>(undefined)
+// https://github.com/react-native-async-storage/async-storage/issues/401#issuecomment-2508924008
+export class StorageCache {
+  private readonly listeners: Map<string, Set<() => void>> = new Map()
+  private readonly storage: Storage
 
-  useEffect(() => {
-    getStorageItem(key)
-      .then(value => setValue(value))
-      .catch(reportError)
-  }, [key])
+  constructor(storage: Storage) {
+    this.storage = storage
+  }
 
-  const updateValue = useCallback(
-    async (newValue: StorageValue<T>) => {
-      setValue(newValue)
-      return setStorageItem(key, newValue).catch(reportError)
-    },
-    [key],
-  )
-  return useMemo(() => (value !== undefined ? { value, set: updateValue } : null), [value, updateValue])
+  getItem = <T extends keyof Storage>(key: T): Storage[T] => this.storage[key]
+
+  setItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
+    this.storage[key] = value
+    await setStorageItem(key, value)
+    this.notifyListeners(key)
+  }
+
+  addListener = <T extends keyof Storage>(key: T, listener: () => void): (() => void) => {
+    if (!this.listeners.has(key)) {
+      this.listeners.set(key, new Set())
+    }
+    this.listeners.get(key)?.add(listener)
+
+    return () => {
+      this.listeners.get(key)?.delete(listener)
+    }
+  }
+
+  private notifyListeners = (key: keyof Storage) => {
+    this.listeners.get(key)?.forEach(listener => {
+      listener()
+    })
+  }
 }
 
-const StorageContextProvider = ({ children }: StorageContextProviderProps): ReactElement | null => {
-  const wordNodeCards = useStorageField('wordNodeCards')
-  const isTrackingEnabled = useStorageField('isTrackingEnabled')
-  const selectedProfessions = useStorageField('selectedProfessions')
+export const StorageCacheContext = createContext<StorageCache>(new StorageCache(newDefaultStorage()))
 
-  const context = useMemo(
-    () =>
-      wordNodeCards !== null && isTrackingEnabled !== null && selectedProfessions !== null
-        ? {
-            wordNodeCards,
-            isTrackingEnabled,
-            selectedProfessions,
-          }
-        : null,
-    [selectedProfessions, isTrackingEnabled, wordNodeCards],
-  )
+type StorageCacheContextProviderProps = {
+  children: ReactElement
+}
 
-  if (context !== null) {
-    return <StorageContext.Provider value={context}>{children}</StorageContext.Provider>
+const resolveObject = async <T extends Record<keyof T, unknown>>(
+  obj: T,
+): Promise<{ [K in keyof T]: Awaited<T[K]> }> => {
+  const entries = await Promise.all(Object.entries(obj).map(async ([k, v]) => [k, await v]))
+  return Object.fromEntries(entries)
+}
+
+const loadStorage = async (): Promise<Storage> =>
+  resolveObject({
+    wordNodeCards: getStorageItem('wordNodeCards'),
+    isTrackingEnabled: getStorageItem('isTrackingEnabled'),
+    selectedProfessions: getStorageItem('selectedProfessions'),
+  })
+
+const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {
+  const { data } = useLoadAsync(loadStorage, null)
+  const storageCache = useMemo(() => (data != null ? new StorageCache(data) : null), [data])
+
+  if (storageCache !== null) {
+    return <StorageCacheContext.Provider value={storageCache}>{children}</StorageCacheContext.Provider>
   }
   return null
 }

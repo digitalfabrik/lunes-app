@@ -6,12 +6,12 @@ import React from 'react'
 import { COLORS } from '../../constants/theme/colors'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getStorageItem, newDefaultStorage, setStorageItem } from '../../services/Storage'
+import { newDefaultStorage, StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import { renderWithStorage } from '../../testing/render'
+import { renderWithStorageCache } from '../../testing/render'
 import ProfessionSelectionScreen from '../ProfessionSelectionScreen'
 
 jest.mock('@react-navigation/native')
@@ -28,16 +28,19 @@ describe('ProfessionSelectionScreen', () => {
     },
   })
 
-  const storage = newDefaultStorage()
+  const storageCache = new StorageCache(newDefaultStorage())
   const renderScreen = (initialSelection = true) =>
-    renderWithStorage(storage, <ProfessionSelectionScreen route={getRoute(initialSelection)} navigation={navigation} />)
+    renderWithStorageCache(
+      storageCache,
+      <ProfessionSelectionScreen route={getRoute(initialSelection)} navigation={navigation} />,
+    )
 
   beforeEach(async () => {
-    await storage.selectedProfessions.set(null)
+    await storageCache.setItem('selectedProfessions', null)
   })
 
   it('should select profession when pressed', async () => {
-    await setStorageItem('selectedProfessions', [])
+    await storageCache.setItem('selectedProfessions', [])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
     const { findByText, queryAllByTestId } = renderScreen()
@@ -47,16 +50,16 @@ describe('ProfessionSelectionScreen', () => {
     expect(queryAllByTestId('check-icon')).toHaveLength(0)
     fireEvent.press(profession)
     await waitFor(async () => {
-      const selectedProfessions = await getStorageItem('selectedProfessions')
+      const selectedProfessions = storageCache.getItem('selectedProfessions')
       expect(selectedProfessions).toEqual([mockDisciplines()[0].id])
     })
   })
 
   it('should unselect profession when pressed', async () => {
-    await setStorageItem('selectedProfessions', [mockDisciplines()[0].id])
+    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
 
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    await storage.selectedProfessions.set([mockDisciplines()[0].id])
+    mocked(useLoadDisciplines).mockReturnValue(getReturnOf(mockDisciplines()))
+    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
 
     const { findByText, queryAllByTestId } = renderScreen()
     expect(await findByText(getLabels().scopeSelection.confirmSelection)).toBeDefined()
@@ -66,13 +69,13 @@ describe('ProfessionSelectionScreen', () => {
     fireEvent.press(profession)
 
     await waitFor(async () => {
-      const selectedProfessions = await getStorageItem('selectedProfessions')
+      const selectedProfessions = storageCache.getItem('selectedProfessions')
       expect(selectedProfessions).toEqual([])
     })
   })
 
   it('should disable selection when not initial view', async () => {
-    await storage.selectedProfessions.set([mockDisciplines()[0].id])
+    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
 
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
@@ -82,7 +85,7 @@ describe('ProfessionSelectionScreen', () => {
   })
 
   it('should navigate on selection when not initial view', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useLoadDisciplines).mockReturnValue(getReturnOf(mockDisciplines()))
 
     const { findByText } = renderScreen(false)
     const profession = await findByText(mockDisciplines()[0].title)

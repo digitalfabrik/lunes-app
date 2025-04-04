@@ -76,7 +76,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
-    repetitionService.wordNodeCardStorage.set(wordCards)
+    await repetitionService.setWordNodeCards(wordCards)
   }
 
   return (

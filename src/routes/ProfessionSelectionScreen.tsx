@@ -13,10 +13,11 @@ import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import useStorage from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
-import { setStorageItem, StorageContext } from '../services/Storage'
-import { getLabels, childrenDescription } from '../services/helpers'
+import { StorageCacheContext } from '../services/Storage'
+import { childrenDescription, getLabels } from '../services/helpers'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -43,17 +44,17 @@ type ProfessionSelectionScreenProps = {
 }
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
-  const storage = useContext(StorageContext)
+  const storageCache = useContext(StorageCacheContext)
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
-  const { value: selectedProfessions } = storage.selectedProfessions
+  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
     if (selectedProfessions?.includes(selectedItem.id)) {
-      await removeSelectedProfession(selectedItem.id)
+      await removeSelectedProfession(storageCache, selectedItem.id)
     } else {
-      await pushSelectedProfession(selectedItem.id)
+      await pushSelectedProfession(storageCache, selectedItem.id)
       if (!initialSelection) {
         navigation.navigate('ManageSelection')
       }
@@ -83,7 +84,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
 
   const navigateToHomeScreen = async () => {
     if (!isSelectionMade) {
-      await setStorageItem('selectedProfessions', [])
+      await setSelectedProfessions([])
     }
     navigation.reset({
       index: 0,

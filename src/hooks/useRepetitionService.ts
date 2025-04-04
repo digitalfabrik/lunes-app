@@ -1,11 +1,12 @@
-import { useContext, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { RepetitionService } from '../services/RepetitionService'
-import { StorageContext } from '../services/Storage'
+import useStorage from './useStorage'
 
 const useRepetitionService = (): RepetitionService => {
-  const storage = useContext(StorageContext)
-  return useMemo(() => new RepetitionService(storage.wordNodeCards), [storage.wordNodeCards])
+  const [wordNodeCards, setWordNodeCards] = useStorage('wordNodeCards')
+  const getWordNodeCards = useCallback(() => wordNodeCards, [wordNodeCards])
+  return useMemo(() => new RepetitionService(getWordNodeCards, setWordNodeCards), [getWordNodeCards, setWordNodeCards])
 }
 
 export default useRepetitionService

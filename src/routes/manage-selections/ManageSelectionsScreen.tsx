@@ -9,9 +9,10 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
 import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
-import { StorageContext } from '../../services/Storage'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import SelectionItem from './components/SelectionItem'
@@ -39,15 +40,15 @@ type ManageSelectionScreenProps = {
 }
 
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
-  const storage = useContext(StorageContext)
-  const { value: selectedProfessions } = storage.selectedProfessions
+  const storageCache = useContext(StorageCacheContext)
+  const [selectedProfessions] = useStorage('selectedProfessions')
   const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
 
   useFocusEffect(refreshCustomDisciplines)
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(id).catch(reportError)
+      removeSelectedProfession(storageCache, id).catch(reportError)
     }
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })

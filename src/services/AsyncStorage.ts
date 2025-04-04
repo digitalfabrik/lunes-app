@@ -4,8 +4,8 @@ import { unlink } from 'react-native-fs'
 import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { getStorageItem, setStorageItem } from './Storage'
 import { RepetitionService } from './RepetitionService'
+import { StorageCache } from './Storage'
 import { CMS, productionCMS, testCMS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
@@ -18,23 +18,23 @@ const DEV_MODE_KEY = 'devmode'
 const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
-export const pushSelectedProfession = async (professionId: number): Promise<void> => {
-  let professions = await getStorageItem('selectedProfessions')
+export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
+  let professions = storageCache.getItem('selectedProfessions')
   if (professions === null) {
     professions = [professionId]
   } else {
     professions.push(professionId)
   }
-  await setStorageItem('selectedProfessions', professions)
+  await storageCache.setItem('selectedProfessions', professions)
 }
 
-export const removeSelectedProfession = async (professionId: number): Promise<number[]> => {
-  const professions = await getStorageItem('selectedProfessions')
+export const removeSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<number[]> => {
+  const professions = storageCache.getItem('selectedProfessions')
   if (professions === null) {
     throw new Error('professions not set')
   }
   const updatedProfessions = professions.filter(item => item !== professionId)
-  await setStorageItem('selectedProfessions', updatedProfessions)
+  await storageCache.setItem('selectedProfessions', updatedProfessions)
   return updatedProfessions
 }
 
@@ -110,7 +110,10 @@ export const getFavorites = async (): Promise<Favorite[]> => {
   return favorites ? JSON.parse(favorites) : []
 }
 
-export const addFavorite = async (repetitionService: RepetitionService, vocabularyItem: VocabularyItem): Promise<void> => {
+export const addFavorite = async (
+  repetitionService: RepetitionService,
+  vocabularyItem: VocabularyItem,
+): Promise<void> => {
   const favorite = vocabularyItemToFavorite(vocabularyItem)
   const favorites = await getFavorites()
   if (favorites.includes(favorite)) {

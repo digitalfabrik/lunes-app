@@ -2,11 +2,11 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
-import { newDefaultStorage } from '../../../services/Storage'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import render, { renderWithStorage } from '../../../testing/render'
+import render, { renderWithStorageCache } from '../../../testing/render'
 import RepetitionScreen from '../RepetitionScreen'
 
 jest.mock('victory-native')
@@ -16,14 +16,17 @@ describe('RepetitionScreen', () => {
   const navigation = createNavigationMock<'Repetition'>()
 
   it('should render screen correctly', async () => {
-    const storage = newDefaultStorage()
+    const storageCache = new StorageCache(newDefaultStorage())
     const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
       word: item,
       section: 1,
       inThisSectionSince: RepetitionService.addDays(new Date(), -1),
     }))
-    await storage.wordNodeCards.set(wordNodeCards)
-    const { getByText, getByTestId } = renderWithStorage(storage, <RepetitionScreen navigation={navigation} />)
+    await storageCache.setItem('wordNodeCards', wordNodeCards)
+    const { getByText, getByTestId } = renderWithStorageCache(
+      storageCache,
+      <RepetitionScreen navigation={navigation} />,
+    )
     await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat.plural}`)).toBeDefined())
     await waitFor(() => expect(getByTestId('repetition-button')).toBeEnabled())
     expect(getByTestId('info-circle-black-icon')).toBeDefined()

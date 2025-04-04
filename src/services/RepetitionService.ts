@@ -1,6 +1,5 @@
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { StorageField } from './Storage'
 import { millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
@@ -20,14 +19,16 @@ export type WordNodeCard = {
 export const MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE = 15
 
 export class RepetitionService {
-  readonly wordNodeCardStorage: StorageField<WordNodeCard[]>
+  public readonly getWordNodeCards: () => WordNodeCard[]
+  public readonly setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>
 
-  constructor(wordNodeCardStorage: StorageField<WordNodeCard[]>) {
-    this.wordNodeCardStorage = wordNodeCardStorage
+  constructor(getWordNodeCards: () => WordNodeCard[], setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>) {
+    this.getWordNodeCards = getWordNodeCards
+    this.setWordNodeCards = setWordNodeCards
   }
 
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
-    this.wordNodeCardStorage.value.find(wordNodeCard => wordNodeCard.word === word)
+    this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
   public static addDays = (date: Date, days: number): Date => {
     const result = new Date(date)
@@ -40,7 +41,7 @@ export class RepetitionService {
     wordNodeCard.section === 0
 
   public getNumberOfWordsNeedingRepetition = (): number =>
-    this.wordNodeCardStorage.value.filter(item => RepetitionService.wordNodeCardNeedsRepetition(item)).length
+    this.getWordNodeCards().filter(item => RepetitionService.wordNodeCardNeedsRepetition(item)).length
 
   public getNumberOfWordsNeedingRepetitionWithUpperBound = (): number => {
     const numberOfWordNodeCardsNeedingRepetition = this.getNumberOfWordsNeedingRepetition()
@@ -57,9 +58,7 @@ export class RepetitionService {
   }
 
   public getWordNodeCardsForNextRepetition = (): WordNodeCard[] => {
-    const wordsToRepeat = this.wordNodeCardStorage.value.filter(item =>
-      RepetitionService.wordNodeCardNeedsRepetition(item),
-    )
+    const wordsToRepeat = this.getWordNodeCards().filter(item => RepetitionService.wordNodeCardNeedsRepetition(item))
     if (wordsToRepeat.length <= MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE) {
       return wordsToRepeat
     }
@@ -74,7 +73,7 @@ export class RepetitionService {
   }
 
   public getVocabularyItemsWithResultsForNextRepetition = (): VocabularyItemResult[] =>
-    this.wordNodeCardStorage.value.map(wordNodeCard => ({
+    this.getWordNodeCards().map(wordNodeCard => ({
       vocabularyItem: wordNodeCard.word,
       result: null,
       numberOfTries: 0,
@@ -82,18 +81,16 @@ export class RepetitionService {
 
   public getNumberOfWordsInEachSection = (): number[] => {
     const result = Array(sections.length).fill(0)
-    this.wordNodeCardStorage.value.forEach(item => {
+    this.getWordNodeCards().forEach(item => {
       result[item.section] += 1
     })
     return result
   }
 
   public addWordsToFirstSection = async (words: VocabularyItem[]): Promise<void> => {
-    const newWordCards = this.wordNodeCardStorage.value.slice()
+    const newWordCards = this.getWordNodeCards().slice()
     words.forEach(word => {
-      if (
-        this.wordNodeCardStorage.value.filter(item => JSON.stringify(item.word) === JSON.stringify(word)).length === 0
-      ) {
+      if (this.getWordNodeCards().filter(item => JSON.stringify(item.word) === JSON.stringify(word)).length === 0) {
         newWordCards.push({
           word,
           section: 0,
@@ -101,7 +98,7 @@ export class RepetitionService {
         })
       }
     })
-    return this.wordNodeCardStorage.set(newWordCards)
+    return this.setWordNodeCards(newWordCards)
   }
 
   public addWordToFirstSection = async (word: VocabularyItem): Promise<void> => this.addWordsToFirstSection([word])
@@ -110,13 +107,13 @@ export class RepetitionService {
     sections[Math.min(Math.max(0, section), sections.length - 1)]
 
   private moveWordToSection = async (word: VocabularyItem, offset: 1 | -1): Promise<void> => {
-    const wordNodeCards = this.wordNodeCardStorage.value.slice()
+    const wordNodeCards = this.getWordNodeCards().slice()
     const wordNodeCard = wordNodeCards.find(wordNodeCard => JSON.stringify(wordNodeCard.word) === JSON.stringify(word))
     if (wordNodeCard) {
       const targetSection = wordNodeCard.section + offset
       wordNodeCard.section = RepetitionService.getSectionWithBoundCheck(targetSection)
       wordNodeCard.inThisSectionSince = new Date()
-      await this.wordNodeCardStorage.set(wordNodeCards)
+      await this.setWordNodeCards(wordNodeCards)
     }
   }
 

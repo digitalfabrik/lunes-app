@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -12,6 +12,7 @@ import { Discipline, NetworkError, ForbiddenError } from '../../../constants/end
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/AsyncStorage'
+import { StorageCacheContext } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
@@ -54,6 +55,7 @@ const DisciplineCard = ({
   navigateToDiscipline,
   navigateToNextExercise,
 }: DisciplineCardProps): JSX.Element | null => {
+  const storageCache = useContext(StorageCacheContext)
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -83,7 +85,7 @@ const DisciplineCard = ({
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
       deleteItem = !isTypeLoadProtected(identifier)
-        ? () => removeSelectedProfession(identifier.disciplineId).then(refreshHome)
+        ? () => removeSelectedProfession(storageCache, identifier.disciplineId).then(refreshHome)
         : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }

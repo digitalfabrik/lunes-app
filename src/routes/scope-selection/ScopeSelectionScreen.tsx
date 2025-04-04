@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useContext, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -11,8 +11,8 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { StorageContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import ScopeSelection from './ScopeSelection'
 
@@ -36,8 +36,7 @@ type IntroScreenProps = {
 
 const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   const { initialSelection } = route.params
-  const storage = useContext(StorageContext)
-  const { value: selectedProfessions, set: setSelectedProfessions } = storage.selectedProfessions
+  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
 

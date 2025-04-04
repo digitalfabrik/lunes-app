@@ -1,36 +1,39 @@
-import { VOCABULARY_ITEM_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import {
-  getCustomDisciplines,
-  deleteUserVocabularyItem,
-  getFavorites,
-  setFavorites,
+  addFavorite,
   addUserVocabularyItem,
+  deleteUserVocabularyItem,
+  editUserVocabularyItem,
+  getCustomDisciplines,
+  getExerciseProgress,
+  getFavorites,
+  getUserVocabularyItems,
   pushSelectedProfession,
   removeCustomDiscipline,
-  setExerciseProgress,
-  saveExerciseProgress,
-  addFavorite,
   removeFavorite,
-  setCustomDisciplines,
-  getExerciseProgress,
-  editUserVocabularyItem,
   removeSelectedProfession,
-  getUserVocabularyItems,
+  saveExerciseProgress,
+  setCustomDisciplines,
+  setExerciseProgress,
+  setFavorites,
 } from '../AsyncStorage'
-import { getStorageItem, newDefaultStorage, setStorageItem } from '../Storage'
 import { RepetitionService } from '../RepetitionService'
+import { newDefaultStorage, StorageCache } from '../Storage'
 
 jest.mock('react-native-fs', () => ({
   unlink: jest.fn(),
 }))
 
 describe('AsyncStorage', () => {
-  const storage = newDefaultStorage()
-  const repetitionService = new RepetitionService(storage.wordNodeCards)
+  const storageCache = new StorageCache(newDefaultStorage())
+  const repetitionService = new RepetitionService(
+    () => storageCache.getItem('wordNodeCards'),
+    value => storageCache.setItem('wordNodeCards', value),
+  )
 
   describe('customDisciplines', () => {
     const customDisciplines = ['first', 'second', 'third']
@@ -54,27 +57,27 @@ describe('AsyncStorage', () => {
     const selectedProfessions = mockDisciplines()
 
     it('should delete selectedProfession from array if exists', async () => {
-      await setStorageItem(
+      await storageCache.setItem(
         'selectedProfessions',
         selectedProfessions.map(item => item.id),
       )
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(selectedProfessions.length)
-      await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(selectedProfessions.length - 1)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length)
+      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await setStorageItem('selectedProfessions', [mockDisciplines()[1].id])
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
-      await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
+      await storageCache.setItem('selectedProfessions', [mockDisciplines()[1].id])
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await setStorageItem('selectedProfessions', [mockDisciplines()[0].id])
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(1)
-      await pushSelectedProfession(mockDisciplines()[1].id)
-      await expect(getStorageItem('selectedProfessions')).resolves.toHaveLength(2)
+      await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await pushSelectedProfession(storageCache, mockDisciplines()[1].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -138,15 +141,15 @@ describe('AsyncStorage', () => {
     it('should add favorites', async () => {
       await setFavorites(favoriteItems.slice(0, 2))
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 2))
-      expect(repetitionService.wordNodeCardStorage.value).toHaveLength(0)
+      expect(repetitionService.getWordNodeCards()).toHaveLength(0)
       await addFavorite(repetitionService, vocabularyItems[2])
-      expect((repetitionService.wordNodeCardStorage.value).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
       ])
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 3))
       await addFavorite(repetitionService, vocabularyItems[3])
       await expect(getFavorites()).resolves.toEqual(favoriteItems)
-      expect((repetitionService.wordNodeCardStorage.value).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
         vocabularyItems[3].id,
       ])

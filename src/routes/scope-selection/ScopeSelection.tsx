@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import DisciplineListItem from '../../components/DisciplineListItem'
@@ -10,6 +10,7 @@ import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import { pushSelectedProfession } from '../../services/AsyncStorage'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
 
 const SearchContainer = styled.View`
@@ -59,6 +60,7 @@ const ScopeSelection = ({
   navigateToManageSelection,
   selectedProfessions,
 }: ScopeSelectionProps): JSX.Element => {
+  const storageCache = useContext(StorageCacheContext)
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const allProfessions = useLoadAllDisciplines()
     .data?.filter(discipline => discipline.total_discipline_children === 0)
@@ -90,7 +92,7 @@ const ScopeSelection = ({
               <StyledPressable
                 key={profession.id}
                 onPress={async () => {
-                  await pushSelectedProfession(profession.id)
+                  await pushSelectedProfession(storageCache, profession.id)
                   navigateToManageSelection()
                 }}
                 disabled={disabled}>

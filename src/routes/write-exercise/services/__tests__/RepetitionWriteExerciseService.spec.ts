@@ -6,7 +6,7 @@ import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../../services/RepetitionService'
-import { newDefaultStorage } from '../../../../services/Storage'
+import { newDefaultStorage, StorageCache } from '../../../../services/Storage'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import RepetitionWriteExerciseService from '../RepetitionWriteExerciseService'
@@ -26,8 +26,11 @@ describe('RepetitionWriteExerciseService', () => {
   const setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>> = jest.fn()
   const setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>> = jest.fn()
 
-  const storage = newDefaultStorage()
-  const repetitionService = new RepetitionService(storage.wordNodeCards)
+  const storageCache = new StorageCache(newDefaultStorage())
+  const repetitionService = new RepetitionService(
+    () => storageCache.getItem('wordNodeCards'),
+    value => storageCache.setItem('wordNodeCards', value),
+  )
 
   const initTestData = () => {
     vocabularyItems = new VocabularyItemBuilder(4).build()

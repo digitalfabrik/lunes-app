@@ -5,13 +5,13 @@ import React from 'react'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import { getCustomDisciplines, pushSelectedProfession, setCustomDisciplines } from '../../../services/AsyncStorage'
-import { getStorageItem, newDefaultStorage } from '../../../services/Storage'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
-import { renderWithStorage } from '../../../testing/render'
+import { renderWithStorageCache } from '../../../testing/render'
 import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
 jest.mock('@react-navigation/native')
@@ -20,17 +20,17 @@ jest.mock('../../../hooks/useLoadDiscipline')
 
 describe('ManageSelectionsScreen', () => {
   const navigation = createNavigationMock<'ManageSelection'>()
-  const storage = newDefaultStorage()
-  const renderScreen = () => renderWithStorage(storage, <ManageSelectionsScreen navigation={navigation} />)
+  const storageCache = new StorageCache(newDefaultStorage())
+  const renderScreen = () => renderWithStorageCache(storageCache, <ManageSelectionsScreen navigation={navigation} />)
 
   beforeEach(async () => {
-    await storage.selectedProfessions.set([])
+    await storageCache.setItem('selectedProfessions', [])
   })
 
   it('should show and delete selected professions', async () => {
     mocked(useReadCustomDisciplines).mockReturnValueOnce(getReturnOf([]))
-    await pushSelectedProfession(mockDisciplines()[0].id)
-    await storage.selectedProfessions.set([mockDisciplines()[0].id])
+    await pushSelectedProfession(storageCache, mockDisciplines()[0].id)
+    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
     mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
@@ -40,7 +40,7 @@ describe('ManageSelectionsScreen', () => {
     const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
-      const selectedProfessions = await getStorageItem('selectedProfessions')
+      const selectedProfessions = storageCache.getItem('selectedProfessions')
       expect(selectedProfessions).toEqual([])
     })
   })

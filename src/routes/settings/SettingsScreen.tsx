@@ -1,11 +1,11 @@
-import React, { ReactElement, useContext, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { StorageContext } from '../../services/Storage'
+import useStorage from '../../hooks/useStorage'
 import { getLabels } from '../../services/helpers'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
@@ -30,8 +30,7 @@ const ItemTextContainer = styled.View`
 const SettingsScreen = (): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
-  const storage = useContext(StorageContext)
-  const { value: trackingEnabled, set: setTrackingEnabled } = storage.isTrackingEnabled
+  const [trackingEnabled, setTrackingEnabled] = useStorage('isTrackingEnabled')
 
   const onTrackingChange = async (): Promise<void> => {
     const newValue = !trackingEnabled
