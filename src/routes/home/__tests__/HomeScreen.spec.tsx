@@ -52,7 +52,7 @@ describe('HomeScreen', () => {
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[2]))
-    mocked(useReadProgress).mockReturnValue(getReturnOf(0))
+    mocked(useReadProgress).mockReturnValue(0)
     const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = await findByText('Second Discipline')

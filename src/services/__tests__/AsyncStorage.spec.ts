@@ -9,7 +9,6 @@ import {
   deleteUserVocabularyItem,
   editUserVocabularyItem,
   getCustomDisciplines,
-  getExerciseProgress,
   getFavorites,
   getUserVocabularyItems,
   pushSelectedProfession,
@@ -29,11 +28,16 @@ jest.mock('react-native-fs', () => ({
 }))
 
 describe('AsyncStorage', () => {
-  const storageCache = new StorageCache(newDefaultStorage())
-  const repetitionService = new RepetitionService(
-    () => storageCache.getItem('wordNodeCards'),
-    value => storageCache.setItem('wordNodeCards', value),
-  )
+  let storageCache: StorageCache
+  let repetitionService: RepetitionService
+
+  beforeEach(() => {
+    storageCache = new StorageCache(newDefaultStorage())
+    repetitionService = new RepetitionService(
+      () => storageCache.getItem('wordNodeCards'),
+      value => storageCache.setItem('wordNodeCards', value),
+    )
+  })
 
   describe('customDisciplines', () => {
     const customDisciplines = ['first', 'second', 'third']
@@ -85,28 +89,28 @@ describe('AsyncStorage', () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await expect(getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done discipline but not yet done exercise', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.writeExercise, 0.6)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.8)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.4)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
@@ -124,8 +128,8 @@ describe('AsyncStorage', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(1, 1, vocabularyItemResults)
-        const progress = await getExerciseProgress()
+        await saveExerciseProgress(storageCache, 1, 1, vocabularyItemResults)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })
     })

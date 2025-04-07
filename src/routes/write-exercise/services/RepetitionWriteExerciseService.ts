@@ -5,18 +5,26 @@ import { SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
+import { StorageCache } from '../../../services/Storage'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
 
 class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
+  public repetitionService: RepetitionService
+
   constructor(
     route: RouteProp<RoutesParams, 'WriteExercise'>,
     navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
     setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>, // eslint-disable-next-line no-empty-function
-    public repetitionService: RepetitionService,
+    storageCache: StorageCache,
   ) {
-    super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults)
+    super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults, storageCache)
+
+    this.repetitionService = new RepetitionService(
+      () => storageCache.getItem('wordNodeCards'),
+      value => storageCache.setItem('wordNodeCards', value),
+    )
   }
 
   finishExercise = async (): Promise<void> => {

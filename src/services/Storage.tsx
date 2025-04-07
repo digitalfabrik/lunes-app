@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, ReactElement, useMemo } from 'react'
 
+import { Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
 
@@ -10,6 +11,7 @@ export type Storage = {
   // Null means the selected professions were never set before, which means that the intro should be shown
   selectedProfessions: number[] | null
   isDevModeEnabled: boolean
+  progress: Progress
 }
 
 /**
@@ -22,6 +24,7 @@ export const newDefaultStorage = (): Storage => ({
   isTrackingEnabled: true,
   selectedProfessions: null,
   isDevModeEnabled: false,
+  progress: {},
 })
 const defaultStorage = newDefaultStorage()
 
@@ -36,6 +39,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'selectedProfessions'
     case 'isDevModeEnabled':
       return 'devmode'
+    case 'progress':
+      return 'progress'
   }
 }
 
@@ -102,6 +107,7 @@ const loadStorage = async (): Promise<Storage> =>
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
+    progress: getStorageItem('progress'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {

@@ -4,8 +4,9 @@ import React from 'react'
 
 import { SIMPLE_RESULTS } from '../../constants/data'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
+import { newDefaultStorage, StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
-import render from '../../testing/render'
+import render, { renderWithStorageCache } from '../../testing/render'
 import CheatMode from '../CheatMode'
 
 jest.mock('../../hooks/useLoadAsync', () => ({
@@ -15,6 +16,8 @@ jest.mock('../../hooks/useLoadAsync', () => ({
 const cheat = jest.fn()
 
 describe('CheatMode', () => {
+  const storageCache = new StorageCache(newDefaultStorage())
+
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -33,13 +36,8 @@ describe('CheatMode', () => {
   })
 
   it("should call parent's cheat function with proper result type", async () => {
-    mocked<typeof useLoadAsync<boolean, never>>(useLoadAsync).mockImplementation(() => ({
-      data: true,
-      error: null,
-      loading: false,
-      refresh: () => null,
-    }))
-    const { findByText } = render(<CheatMode cheat={cheat} />)
+    await storageCache.setItem('isDevModeEnabled', true)
+    const { findByText } = renderWithStorageCache(storageCache, <CheatMode cheat={cheat} />)
 
     const succeedButton = await findByText(getLabels().exercises.cheat.succeed)
     act(() => fireEvent.press(succeedButton))

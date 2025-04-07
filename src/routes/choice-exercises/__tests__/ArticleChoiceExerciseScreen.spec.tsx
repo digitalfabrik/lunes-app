@@ -5,10 +5,11 @@ import React from 'react'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import render from '../../../testing/render'
+import render, { renderWithStorageCache } from '../../../testing/render'
 import ArticleChoiceExerciseScreen from '../ArticleChoiceExerciseScreen'
 
 jest.mock('../../../components/FavoriteButton', () => () => {
@@ -41,8 +42,11 @@ jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 jest.useFakeTimers()
 
 describe('ArticleChoiceExerciseScreen', () => {
+  let storageCache: StorageCache
+
   beforeEach(() => {
     jest.clearAllMocks()
+    storageCache = new StorageCache(newDefaultStorage())
   })
 
   const vocabularyItems = new VocabularyItemBuilder(2).build()
@@ -100,7 +104,10 @@ describe('ArticleChoiceExerciseScreen', () => {
   })
 
   it('should save progress correctly', async () => {
-    const { getByText } = render(<ArticleChoiceExerciseScreen route={route} navigation={navigation} />)
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ArticleChoiceExerciseScreen route={route} navigation={navigation} />,
+    )
 
     fireEvent(getByText('der'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
@@ -109,7 +116,7 @@ describe('ArticleChoiceExerciseScreen', () => {
     await act(async () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.articleChoiceExercise, [
+    expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, ExerciseKeys.articleChoiceExercise, [
       { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])

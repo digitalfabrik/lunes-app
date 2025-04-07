@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
 
@@ -18,8 +18,8 @@ import {
   SimpleResult,
 } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
-import useRepetitionService from '../../hooks/useRepetitionService'
-import { VocabularyItemResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 import RepetitionWriteExerciseService from './services/RepetitionWriteExerciseService'
@@ -41,7 +41,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
     shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
-  const repetitionService = useRepetitionService()
+  const storageCache = useContext(StorageCacheContext)
 
   const { isKeyboardVisible } = useKeyboard()
   const current = vocabularyItemWithResults[currentIndex]
@@ -56,7 +56,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults,
-            repetitionService,
+            storageCache,
           )
         : new StandardWriteExerciseService(
             route,
@@ -64,8 +64,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults,
+            storageCache,
           ),
-    [repetitionService, contentType, route, navigation],
+    [storageCache, contentType, route, navigation],
   )
 
   const initializeExercise = useCallback(

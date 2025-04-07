@@ -20,17 +20,13 @@ describe('RepetitionWriteExerciseService', () => {
   let vocabularyItemsWithResults: VocabularyItemResult[]
   let service: RepetitionWriteExerciseService
   let route: RouteProp<RoutesParams, 'WriteExercise'>
+  let storageCache: StorageCache
+  let repetitionService: RepetitionService
 
   const navigation = createNavigationMock<'WriteExercise'>()
   const setCurrentIndex: React.Dispatch<React.SetStateAction<number>> = jest.fn()
   const setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>> = jest.fn()
   const setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>> = jest.fn()
-
-  const storageCache = new StorageCache(newDefaultStorage())
-  const repetitionService = new RepetitionService(
-    () => storageCache.getItem('wordNodeCards'),
-    value => storageCache.setItem('wordNodeCards', value),
-  )
 
   const initTestData = () => {
     vocabularyItems = new VocabularyItemBuilder(4).build()
@@ -49,18 +45,19 @@ describe('RepetitionWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
+    storageCache = new StorageCache(newDefaultStorage())
     service = new RepetitionWriteExerciseService(
       route,
       navigation,
       setCurrentIndex,
       setIsAnswerSubmitted,
       setVocabularyItemWithResults,
-      repetitionService,
+      storageCache,
     )
+    repetitionService = service.repetitionService
+    repetitionService.moveWordToPreviousSection = jest.fn()
+    repetitionService.updateWordNodeCard = jest.fn()
   }
-
-  repetitionService.moveWordToPreviousSection = jest.fn()
-  repetitionService.updateWordNodeCard = jest.fn()
 
   beforeEach(initTestData)
 

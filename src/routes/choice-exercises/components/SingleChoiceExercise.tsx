@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -19,8 +19,9 @@ import {
   SimpleResult,
 } from '../../../constants/data'
 import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
-import { VocabularyItemResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
+import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { saveExerciseProgress } from '../../../services/AsyncStorage'
+import { StorageCacheContext } from '../../../services/Storage'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { SingleChoice } from './SingleChoice'
 
@@ -50,6 +51,7 @@ const ChoiceExerciseScreen = ({
   route,
   exerciseKey,
 }: SingleChoiceExerciseProps): ReactElement => {
+  const storageCache = useContext(StorageCacheContext)
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -86,8 +88,8 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    const progress = await getExerciseProgress()
-    await saveExerciseProgress(disciplineId, exerciseKey, results)
+    const progress = storageCache.getItem('progress')
+    await saveExerciseProgress(storageCache, disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,

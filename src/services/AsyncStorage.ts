@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
-import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite, Progress } from '../constants/data'
+import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
@@ -12,7 +12,6 @@ import { calculateScore, vocabularyItemToFavorite } from './helpers'
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
-const PROGRESS_KEY = 'progress'
 const CMS_KEY = 'cms'
 const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
@@ -56,29 +55,26 @@ export const removeCustomDiscipline = async (customDiscipline: string): Promise<
   await setCustomDisciplines(disciplines)
 }
 
-export const getExerciseProgress = async (): Promise<Progress> => {
-  const progress = await AsyncStorage.getItem(PROGRESS_KEY)
-  return progress ? JSON.parse(progress) : {}
-}
-
 export const setExerciseProgress = async (
+  storageCache: StorageCache,
   disciplineId: number,
   exerciseKey: ExerciseKey,
   score: number,
 ): Promise<void> => {
-  const savedProgress = await getExerciseProgress()
+  const savedProgress = storageCache.getItem('progress')
   const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
   savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
-  await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(savedProgress))
+  await storageCache.setItem('progress', savedProgress)
 }
 
 export const saveExerciseProgress = async (
+  storageCache: StorageCache,
   disciplineId: number,
   exerciseKey: ExerciseKey,
   vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
-  await setExerciseProgress(disciplineId, exerciseKey, score)
+  await setExerciseProgress(storageCache, disciplineId, exerciseKey, score)
 }
 
 export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
