@@ -13,14 +13,13 @@ import {
   HomeIconWhite,
   MagnifierIconGrey,
   MagnifierIconWhite,
-  StarIconGrey,
-  StarIconWhite,
   RepeatIconGrey,
   RepeatIconWhite,
+  StarIconGrey,
+  StarIconWhite,
 } from '../../assets/images'
-import useLoadAsync from '../hooks/useLoadAsync'
 import useRepetitionService from '../hooks/useRepetitionService'
-import { getDevMode } from '../services/AsyncStorage'
+import useStorage from '../hooks/useStorage'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
@@ -36,7 +35,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
 
   const iconSize = hp('3.5%')
 
-  const { data: isDevMode } = useLoadAsync(getDevMode, null)
+  const [isDevModeEnabled] = useStorage('isDevModeEnabled')
 
   const repetitionService = useRepetitionService()
   const numberOfWordsNeedingRepetition = useMemo(
@@ -94,7 +93,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
         component={DictionaryStackNavigator}
         options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
       />
-      {isDevMode && (
+      {isDevModeEnabled && (
         <Navigator.Screen
           name='RepetitionTab'
           component={RepetitionStackNavigator}

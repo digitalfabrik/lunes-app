@@ -9,6 +9,7 @@ export type Storage = {
   isTrackingEnabled: boolean
   // Null means the selected professions were never set before, which means that the intro should be shown
   selectedProfessions: number[] | null
+  isDevModeEnabled: boolean
 }
 
 /**
@@ -20,6 +21,7 @@ export const newDefaultStorage = (): Storage => ({
   wordNodeCards: [],
   isTrackingEnabled: true,
   selectedProfessions: null,
+  isDevModeEnabled: false,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -32,6 +34,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'sentryTracking'
     case 'selectedProfessions':
       return 'selectedProfessions'
+    case 'isDevModeEnabled':
+      return 'devmode'
   }
 }
 
@@ -97,6 +101,7 @@ const loadStorage = async (): Promise<Storage> =>
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),
+    isDevModeEnabled: getStorageItem('isDevModeEnabled'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {

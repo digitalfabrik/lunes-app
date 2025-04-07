@@ -14,7 +14,6 @@ const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
 const PROGRESS_KEY = 'progress'
 const CMS_KEY = 'cms'
-const DEV_MODE_KEY = 'devmode'
 const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
@@ -143,16 +142,6 @@ export const setOverwriteCMS = async (cms: CMS): Promise<void> => {
 export const getOverwriteCMS = async (): Promise<CMS | null> => {
   const cms = await AsyncStorage.getItem(CMS_KEY)
   return cms === productionCMS || cms === testCMS ? cms : null
-}
-
-export const toggleDevMode = async (): Promise<void> => {
-  const isDevMode = await AsyncStorage.getItem(DEV_MODE_KEY)
-  await AsyncStorage.setItem(DEV_MODE_KEY, JSON.stringify(isDevMode ? !JSON.parse(isDevMode) : true))
-}
-
-export const getDevMode = async (): Promise<boolean | null> => {
-  const isDevMode = await AsyncStorage.getItem(DEV_MODE_KEY)
-  return isDevMode ? JSON.parse(isDevMode) : null
 }
 
 export const getNextUserVocabularyId = async (): Promise<number> =>

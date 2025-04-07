@@ -8,9 +8,9 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { getAllWords } from '../../../hooks/useGetAllWords'
-import useLoadAsync from '../../../hooks/useLoadAsync'
 import useRepetitionService from '../../../hooks/useRepetitionService'
-import { toggleDevMode, getDevMode, setOverwriteCMS } from '../../../services/AsyncStorage'
+import useStorage from '../../../hooks/useStorage'
+import { setOverwriteCMS } from '../../../services/AsyncStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
@@ -37,7 +37,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const [inputText, setInputText] = useState<string>('')
   const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
-  const { data: isDevMode, refresh } = useLoadAsync(getDevMode, null)
+  const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
   const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData } =
     getLabels().settings.debugModal
   const repetitionService = useRepetitionService()
@@ -63,8 +63,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   }
 
   const doToggleDevMode = async (): Promise<void> => {
-    await toggleDevMode()
-    refresh()
+    await setIsDevModeEnabled(!isDevModeEnabled)
   }
 
   const NUMBER_OF_TEST_VOCABULARY = 5
@@ -89,7 +88,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
           <ContentSecondary>{baseURL}</ContentSecondary>
           <Button label={changeCMS} onPress={switchCMS} buttonTheme={BUTTONS_THEME.contained} />
           <Button
-            label={isDevMode ? disableDevMode : enableDevMode}
+            label={isDevModeEnabled ? disableDevMode : enableDevMode}
             onPress={doToggleDevMode}
             buttonTheme={BUTTONS_THEME.contained}
           />
