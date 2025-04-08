@@ -1,14 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
-import { VOCABULARY_ITEM_TYPES, ExerciseKey, Favorite } from '../constants/data'
+import { ExerciseKey, Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { StorageCache } from './Storage'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
-const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
 const USER_VOCABULARY = 'userVocabulary'
@@ -34,23 +33,14 @@ export const removeSelectedProfession = async (storageCache: StorageCache, profe
   return updatedProfessions
 }
 
-export const getCustomDisciplines = async (): Promise<string[]> => {
-  const disciplines = await AsyncStorage.getItem(CUSTOM_DISCIPLINES_KEY)
-  return disciplines ? JSON.parse(disciplines) : []
-}
-
-export const setCustomDisciplines = async (customDisciplines: string[]): Promise<void> => {
-  await AsyncStorage.setItem(CUSTOM_DISCIPLINES_KEY, JSON.stringify(customDisciplines))
-}
-
-export const removeCustomDiscipline = async (customDiscipline: string): Promise<void> => {
-  const disciplines = await getCustomDisciplines()
+export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
+  const disciplines = storageCache.getItem('customDisciplines')
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
     throw new Error('customDiscipline not available')
   }
   disciplines.splice(index, 1)
-  await setCustomDisciplines(disciplines)
+  await storageCache.setItem('customDisciplines', disciplines)
 }
 
 export const setExerciseProgress = async (

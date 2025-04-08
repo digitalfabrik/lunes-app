@@ -14,6 +14,7 @@ export type Storage = {
   isDevModeEnabled: boolean
   progress: Progress
   cmsUrlOverwrite: CMS | null
+  customDisciplines: string[]
 }
 
 /**
@@ -28,6 +29,7 @@ export const newDefaultStorage = (): Storage => ({
   isDevModeEnabled: false,
   progress: {},
   cmsUrlOverwrite: null,
+  customDisciplines: [],
 })
 const defaultStorage = newDefaultStorage()
 
@@ -46,6 +48,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'progress'
     case 'cmsUrlOverwrite':
       return 'cms'
+    case 'customDisciplines':
+      return 'customDisciplines'
   }
 }
 
@@ -114,6 +118,7 @@ const loadStorage = async (): Promise<Storage> =>
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
     progress: getStorageItem('progress'),
     cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),
+    customDisciplines: getStorageItem('customDisciplines'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {

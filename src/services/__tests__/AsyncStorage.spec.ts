@@ -8,7 +8,6 @@ import {
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
-  getCustomDisciplines,
   getFavorites,
   getUserVocabularyItems,
   pushSelectedProfession,
@@ -16,7 +15,6 @@ import {
   removeFavorite,
   removeSelectedProfession,
   saveExerciseProgress,
-  setCustomDisciplines,
   setExerciseProgress,
   setFavorites,
 } from '../AsyncStorage'
@@ -40,20 +38,20 @@ describe('AsyncStorage', () => {
   })
 
   describe('customDisciplines', () => {
-    const customDisciplines = ['first', 'second', 'third']
+    const makeCustomDisciplines = () => ['first', 'second', 'third']
 
-    it('should delete customDisicpline from array if exists', async () => {
-      await setCustomDisciplines(customDisciplines)
-      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
-      await removeCustomDiscipline('first')
-      await expect(getCustomDisciplines()).resolves.toStrictEqual(['second', 'third'])
+    it('should delete customDiscipline from array if exists', async () => {
+      await storageCache.setItem('customDisciplines', makeCustomDisciplines())
+      expect(storageCache.getItem('customDisciplines')).toHaveLength(3)
+      await removeCustomDiscipline(storageCache, 'first')
+      expect(storageCache.getItem('customDisciplines')).toStrictEqual(['second', 'third'])
     })
 
     it('should not delete customDiscipline from array if not exists', async () => {
-      await setCustomDisciplines(customDisciplines)
-      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
-      await expect(removeCustomDiscipline('fourth')).rejects.toThrow('customDiscipline not available')
-      await expect(getCustomDisciplines()).resolves.toStrictEqual(['first', 'second', 'third'])
+      await storageCache.setItem('customDisciplines', makeCustomDisciplines())
+      expect(storageCache.getItem('customDisciplines')).toHaveLength(3)
+      await expect(removeCustomDiscipline(storageCache, 'fourth')).rejects.toThrow('customDiscipline not available')
+      expect(storageCache.getItem('customDisciplines')).toStrictEqual(['first', 'second', 'third'])
     })
   })
 

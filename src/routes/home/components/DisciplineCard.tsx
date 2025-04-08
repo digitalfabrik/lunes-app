@@ -8,7 +8,7 @@ import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
-import { Discipline, NetworkError, ForbiddenError } from '../../../constants/endpoints'
+import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/AsyncStorage'
@@ -44,14 +44,12 @@ export const ButtonContainer = styled.View`
 
 type DisciplineCardProps = {
   identifier: RequestParams
-  refresh?: () => void
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
 const DisciplineCard = ({
   identifier,
-  refresh: refreshHome,
   navigateToDiscipline,
   navigateToNextExercise,
 }: DisciplineCardProps): JSX.Element | null => {
@@ -81,11 +79,11 @@ const DisciplineCard = ({
     let deleteItem
     let errorMessage
     if (error?.message === ForbiddenError && isTypeLoadProtected(identifier)) {
-      deleteItem = () => removeCustomDiscipline(identifier.apiKey).then(refreshHome)
+      deleteItem = () => removeCustomDiscipline(storageCache, identifier.apiKey)
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
       deleteItem = !isTypeLoadProtected(identifier)
-        ? () => removeSelectedProfession(storageCache, identifier.disciplineId).then(refreshHome)
+        ? () => removeSelectedProfession(storageCache, identifier.disciplineId)
         : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }

@@ -4,9 +4,7 @@ import React from 'react'
 
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
-import useReadCustomDisciplines from '../../../hooks/useReadCustomDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
-import { setCustomDisciplines } from '../../../services/AsyncStorage'
 import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -21,7 +19,6 @@ jest.mock('../../../services/helpers', () => ({
   childrenLabel: jest.fn(() => []),
 }))
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useReadCustomDisciplines')
 jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
@@ -32,18 +29,13 @@ jest.mock('../components/HomeScreenHeader', () => {
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock<'Home'>()
-  const storageCache = new StorageCache(newDefaultStorage())
-  storageCache.setItem(
-    'selectedProfessions',
-    mockDisciplines().map(item => item.id),
-  )
+  let storageCache: StorageCache
 
   beforeEach(async () => {
-    await storageCache.setItem('selectedProfessions', [])
+    storageCache = new StorageCache(newDefaultStorage())
   })
 
   it('should render professions', async () => {
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
     await storageCache.setItem(
       'selectedProfessions',
       mockDisciplines().map(item => item.id),
@@ -63,9 +55,8 @@ describe('HomeScreen', () => {
   })
 
   it('should render custom discipline', async () => {
-    await setCustomDisciplines(['test'])
+    await storageCache.setItem('customDisciplines', ['test'])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf(['abc']))
     mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
 
     const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
@@ -75,7 +66,6 @@ describe('HomeScreen', () => {
 
   it('should show suggestion to add custom discipline', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
-    mocked(useReadCustomDisciplines).mockReturnValue(getReturnOf([]))
 
     const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const addCustomDiscipline = getByText(getLabels().home.addCustomDiscipline)

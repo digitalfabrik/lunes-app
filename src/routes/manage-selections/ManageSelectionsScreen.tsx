@@ -1,4 +1,3 @@
-import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useContext } from 'react'
 import styled from 'styled-components/native'
@@ -8,7 +7,6 @@ import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
-import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
@@ -42,9 +40,7 @@ type ManageSelectionScreenProps = {
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
   const storageCache = useContext(StorageCacheContext)
   const [selectedProfessions] = useStorage('selectedProfessions')
-  const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
-
-  useFocusEffect(refreshCustomDisciplines)
+  const [customDisciplines] = useStorage('customDisciplines')
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
@@ -53,9 +49,9 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
-  const customDisciplineItems = customDisciplines?.map(apiKey => {
-    const deleteCustomDisciplineAndRefresh = () => {
-      removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
+  const customDisciplineItems = customDisciplines.map(apiKey => {
+    const deleteCustomDisciplineAndRefresh = async () => {
+      await removeCustomDiscipline(storageCache, apiKey)
     }
     return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })

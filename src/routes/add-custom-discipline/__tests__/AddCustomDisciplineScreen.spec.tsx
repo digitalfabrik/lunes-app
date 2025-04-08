@@ -6,11 +6,11 @@ import { View } from 'react-native'
 import { Code } from 'react-native-vision-camera'
 
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { setCustomDisciplines } from '../../../services/AsyncStorage'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
-import render from '../../../testing/render'
+import render, { renderWithStorageCache } from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
@@ -27,6 +27,11 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 
 describe('AddCustomDisciplineScreen', () => {
   const navigation = createNavigationMock<'AddCustomDiscipline'>()
+  let storageCache: StorageCache
+
+  beforeEach(() => {
+    storageCache = new StorageCache(newDefaultStorage())
+  })
 
   it('should enable submit button on text input', async () => {
     const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
@@ -38,11 +43,14 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should navigate on successfully submit', async () => {
-    await setCustomDisciplines(['test'])
+    await storageCache.setItem('customDisciplines', ['test'])
 
     mocked(loadDiscipline).mockImplementationOnce(async () => mockDisciplines()[0])
 
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
+    const { findByText, findByPlaceholderText } = renderWithStorageCache(
+      storageCache,
+      <AddCustomDisciplineScreen navigation={navigation} />,
+    )
 
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'another_test_discipline')
@@ -55,8 +63,11 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should show duplicate error', async () => {
-    await setCustomDisciplines(['test'])
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
+    await storageCache.setItem('customDisciplines', ['test'])
+    const { findByText, findByPlaceholderText } = renderWithStorageCache(
+      storageCache,
+      <AddCustomDisciplineScreen navigation={navigation} />,
+    )
 
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'test')
