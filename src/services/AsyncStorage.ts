@@ -6,13 +6,11 @@ import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { StorageCache } from './Storage'
-import { CMS, productionCMS, testCMS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 const CUSTOM_DISCIPLINES_KEY = 'customDisciplines'
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
-const CMS_KEY = 'cms'
 const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
@@ -129,15 +127,6 @@ export const removeFavorite = async (favorite: Favorite): Promise<void> => {
 export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
   const favorites = await getFavorites()
   return favorites.some(it => compareFavorites(it, favorite))
-}
-
-export const setOverwriteCMS = async (cms: CMS): Promise<void> => {
-  await AsyncStorage.setItem(CMS_KEY, cms)
-}
-
-export const getOverwriteCMS = async (): Promise<CMS | null> => {
-  const cms = await AsyncStorage.getItem(CMS_KEY)
-  return cms === productionCMS || cms === testCMS ? cms : null
 }
 
 export const getNextUserVocabularyId = async (): Promise<number> =>

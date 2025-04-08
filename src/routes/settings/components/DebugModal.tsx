@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -10,7 +10,6 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { getAllWords } from '../../../hooks/useGetAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage from '../../../hooks/useStorage'
-import { setOverwriteCMS } from '../../../services/AsyncStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
@@ -35,16 +34,14 @@ type DebugModalProps = {
 const DebugModal = (props: DebugModalProps): JSX.Element => {
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
-  const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
   const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData } =
     getLabels().settings.debugModal
   const repetitionService = useRepetitionService()
 
-  useEffect(() => {
-    getBaseURL().then(setBaseURL).catch(reportError)
-  }, [])
+  const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
+  const baseURL = getBaseURL(cmsUrlOverwrite)
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -58,8 +55,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
 
   const switchCMS = async (): Promise<void> => {
     const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
-    await setOverwriteCMS(updatedCMS)
-    setBaseURL(updatedCMS)
+    await setCmsUrlOverwrite(updatedCMS)
   }
 
   const doToggleDevMode = async (): Promise<void> => {

@@ -4,6 +4,7 @@ import React, { createContext, ReactElement, useMemo } from 'react'
 import { Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
+import { CMS } from './axios'
 
 export type Storage = {
   wordNodeCards: WordNodeCard[]
@@ -12,6 +13,7 @@ export type Storage = {
   selectedProfessions: number[] | null
   isDevModeEnabled: boolean
   progress: Progress
+  cmsUrlOverwrite: CMS | null
 }
 
 /**
@@ -25,6 +27,7 @@ export const newDefaultStorage = (): Storage => ({
   selectedProfessions: null,
   isDevModeEnabled: false,
   progress: {},
+  cmsUrlOverwrite: null,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -41,6 +44,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'devmode'
     case 'progress':
       return 'progress'
+    case 'cmsUrlOverwrite':
+      return 'cms'
   }
 }
 
@@ -108,6 +113,7 @@ const loadStorage = async (): Promise<Storage> =>
     selectedProfessions: getStorageItem('selectedProfessions'),
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
     progress: getStorageItem('progress'),
+    cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {
