@@ -4,7 +4,7 @@ parameters:
     description: Whether builds are delivered to the production store. If set to true, a github release is created.
     type: boolean
 docker:
-  - image: cimg/node:18.17.1
+  - image: cimg/node:18.20.6
 resource_class: small
 steps:
   - checkout
