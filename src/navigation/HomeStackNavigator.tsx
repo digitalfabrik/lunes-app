@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { useTheme } from 'styled-components'
 
+import { Theme } from '../constants/theme'
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
 import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
@@ -19,7 +20,7 @@ const Stack = createStackNavigator<RoutesParams>()
 const HomeStackNavigator = (): JSX.Element | null => {
   const options = screenOptions(useTabletHeaderHeight())
   const { manageSelection, overview } = getLabels().general.header
-  const theme = useTheme()
+  const theme = useTheme() as Theme
 
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
