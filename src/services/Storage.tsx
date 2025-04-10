@@ -71,7 +71,20 @@ export class StorageCache {
     this.storage = storage
   }
 
-  getItem = <T extends keyof Storage>(key: T): Storage[T] => this.storage[key]
+  /**
+   * Returns a storage item for the given key.
+   * The item should be treated as immutable and may not be modified.
+   *
+   * @param key The key of the storage item
+   */
+  getItem = <T extends keyof Storage>(key: T): Readonly<Storage[T]> => this.storage[key]
+
+  /**
+   * Returns a storage item that may be modified
+   *
+   * @param key The key of the storage item
+   */
+  getMutableItem = <T extends keyof Storage>(key: T): Storage[T] => JSON.parse(JSON.stringify(this.getItem(key)))
 
   setItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
     this.storage[key] = value

@@ -41,7 +41,7 @@ describe('ProfessionSelectionScreen', () => {
 
   it('should select profession when pressed', async () => {
     await storageCache.setItem('selectedProfessions', [])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
+    mocked(useLoadDisciplines).mockReturnValue(getReturnOf(mockDisciplines()))
 
     const { findByText, queryAllByTestId } = renderScreen()
     expect(await findByText(getLabels().scopeSelection.skipSelection)).toBeDefined()

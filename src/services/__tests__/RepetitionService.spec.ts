@@ -77,7 +77,7 @@ describe('RepetitionService', () => {
   })
 
   const compareWordCardLists = (expected: WordNodeCard[]) => {
-    const result: WordNodeCard[] = repetitionService.getWordNodeCards()
+    const result: readonly WordNodeCard[] = repetitionService.getWordNodeCards()
     expect(result).toHaveLength(expected.length)
     result.forEach((wordNodeCard: WordNodeCard, index: number) => {
       expect(wordNodeCard.word).toEqual(expected[index].word)

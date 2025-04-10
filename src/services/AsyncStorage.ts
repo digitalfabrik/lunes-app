@@ -14,7 +14,7 @@ const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
 export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
-  let professions = storageCache.getItem('selectedProfessions')
+  let professions = storageCache.getMutableItem('selectedProfessions')
   if (professions === null) {
     professions = [professionId]
   } else {
@@ -34,7 +34,7 @@ export const removeSelectedProfession = async (storageCache: StorageCache, profe
 }
 
 export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
-  const disciplines = storageCache.getItem('customDisciplines')
+  const disciplines = storageCache.getMutableItem('customDisciplines')
   const index = disciplines.indexOf(customDiscipline)
   if (index === -1) {
     throw new Error('customDiscipline not available')
@@ -49,7 +49,7 @@ export const setExerciseProgress = async (
   exerciseKey: ExerciseKey,
   score: number,
 ): Promise<void> => {
-  const savedProgress = storageCache.getItem('progress')
+  const savedProgress = storageCache.getMutableItem('progress')
   const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
   savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
   await storageCache.setItem('progress', savedProgress)

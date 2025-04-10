@@ -50,7 +50,7 @@ type ScopeSelectionProps = {
   setQueryTerm: (newString: string) => void
   navigateToDiscipline: (item: Discipline) => void
   navigateToManageSelection: () => void
-  selectedProfessions: number[] | null
+  selectedProfessions: Readonly<number[]> | null
 }
 
 const ScopeSelection = ({

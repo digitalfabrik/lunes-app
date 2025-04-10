@@ -19,10 +19,13 @@ export type WordNodeCard = {
 export const MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE = 15
 
 export class RepetitionService {
-  public readonly getWordNodeCards: () => WordNodeCard[]
+  public readonly getWordNodeCards: () => readonly WordNodeCard[]
   public readonly setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>
 
-  constructor(getWordNodeCards: () => WordNodeCard[], setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>) {
+  constructor(
+    getWordNodeCards: () => readonly WordNodeCard[],
+    setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>,
+  ) {
     this.getWordNodeCards = getWordNodeCards
     this.setWordNodeCards = setWordNodeCards
   }
