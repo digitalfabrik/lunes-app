@@ -1,5 +1,5 @@
 docker:
-  - image: cimg/node:18.20.6
+  - image: cimg/node:20.18.3
 steps:
   - checkout
   - restore_yarn_cache

@@ -315,7 +315,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: cimg/node:18.20.6
+            - image: cimg/node:20.18.3
         parameters:
             prepare_delivery:
                 default: false
@@ -344,7 +344,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: cimg/node:18.20.6
+            - image: cimg/node:20.18.3
         steps:
             - checkout
             - restore_yarn_cache
@@ -475,7 +475,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: cimg/node:18.20.6
+            - image: cimg/node:20.18.3
         resource_class: small
         steps:
             - checkout
@@ -489,7 +489,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: cimg/node:18.20.6
+            - image: cimg/node:20.18.3
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, a github release is created.
@@ -517,7 +517,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
     notify_ios:
         docker:
-            - image: cimg/node:18.20.6
+            - image: cimg/node:20.18.3
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, a github release is created.
