@@ -23,7 +23,8 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
   const theme = useTheme()
 
   return (
-    <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
+    <Stack.Navigator
+      screenOptions={{ cardStyle: { backgroundColor: theme.colors.background }, headerStatusBarHeight: 0 }}>
       <Stack.Screen
         name='UserVocabularyOverview'
         component={UserVocabularyOverviewScreen}
