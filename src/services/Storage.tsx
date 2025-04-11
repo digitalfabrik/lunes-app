@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, ReactElement, useMemo } from 'react'
 
 import { Progress } from '../constants/data'
+import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
@@ -15,6 +16,7 @@ export type Storage = {
   progress: Progress
   cmsUrlOverwrite: CMS | null
   customDisciplines: string[]
+  userVocabulary: UserVocabularyItem[]
 }
 
 /**
@@ -30,6 +32,7 @@ export const newDefaultStorage = (): Storage => ({
   progress: {},
   cmsUrlOverwrite: null,
   customDisciplines: [],
+  userVocabulary: [],
 })
 const defaultStorage = newDefaultStorage()
 
@@ -50,6 +53,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'cms'
     case 'customDisciplines':
       return 'customDisciplines'
+    case 'userVocabulary':
+      return 'userVocabulary'
   }
 }
 
@@ -132,6 +137,7 @@ const loadStorage = async (): Promise<Storage> =>
     progress: getStorageItem('progress'),
     cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),
     customDisciplines: getStorageItem('customDisciplines'),
+    userVocabulary: getStorageItem('userVocabulary'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {

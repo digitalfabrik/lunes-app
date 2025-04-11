@@ -42,6 +42,8 @@ export type VocabularyItem = {
   apiKey?: string
 }
 
+export type UserVocabularyItem = Omit<VocabularyItem, 'type'>
+
 export const ENDPOINTS = {
   discipline: 'disciplines',
   disciplines: 'disciplines_by_level',

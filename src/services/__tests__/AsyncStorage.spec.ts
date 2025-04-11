@@ -173,27 +173,30 @@ describe('AsyncStorage', () => {
       .map(item => ({ ...item, type: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
-      const userVocabulary = await getUserVocabularyItems()
+      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(userVocabulary).toHaveLength(0)
-      await addUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
-      await addUserVocabularyItem(userVocabularyItems[1])
-      await editUserVocabularyItem(userVocabularyItems[1], { ...userVocabularyItems[2], id: userVocabularyItems[1].id })
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[1])
+      await editUserVocabularyItem(storageCache, userVocabularyItems[1], {
+        ...userVocabularyItems[2],
+        id: userVocabularyItems[1].id,
+      })
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(1)
       expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
     })
 
     it('should delete userVocabularyItem', async () => {
-      await addUserVocabularyItem(userVocabularyItems[0])
-      const userVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(userVocabulary).toHaveLength(1)
-      await deleteUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

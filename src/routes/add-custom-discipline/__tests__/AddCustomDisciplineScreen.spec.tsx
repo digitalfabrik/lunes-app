@@ -34,7 +34,10 @@ describe('AddCustomDisciplineScreen', () => {
   })
 
   it('should enable submit button on text input', async () => {
-    const { findByText, findByPlaceholderText } = render(<AddCustomDisciplineScreen navigation={navigation} />)
+    const { findByText, findByPlaceholderText } = renderWithStorageCache(
+      storageCache,
+      <AddCustomDisciplineScreen navigation={navigation} />,
+    )
     const submitButton = await findByText(getLabels().addCustomDiscipline.submitLabel)
     expect(submitButton).toBeDisabled()
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)

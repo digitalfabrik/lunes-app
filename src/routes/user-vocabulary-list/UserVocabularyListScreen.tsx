@@ -1,6 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useContext, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -17,6 +16,7 @@ import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { deleteUserVocabularyItem } from '../../services/AsyncStorage'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ListEmptyContent from './components/ListEmptyContent'
@@ -43,14 +43,15 @@ type UserVocabularyListScreenProps = {
 }
 
 const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
+  const storageCache = useContext(StorageCacheContext)
   const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
   const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<VocabularyItem | null>(null)
   const { isKeyboardVisible } = useKeyboard()
 
-  const numberOfVocabularyItems = vocabularyItems.data?.length ?? 0
-  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
+  const numberOfVocabularyItems = vocabularyItems.length
+  const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems, searchString)
   const { create, overview } = getLabels().userVocabulary
   const {
     confirm,
@@ -60,8 +61,6 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
     edit,
   }: { confirm: string; confirmDeletionPart1: string; confirmDeletionPart2: string; finished: string; edit: string } =
     getLabels().userVocabulary.list
-
-  useFocusEffect(vocabularyItems.refresh)
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
@@ -77,7 +76,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
 
   const deleteItem = (vocabularyItem: VocabularyItem | null): void => {
     if (vocabularyItem) {
-      deleteUserVocabularyItem(vocabularyItem).then(vocabularyItems.refresh).catch(reportError)
+      deleteUserVocabularyItem(storageCache, vocabularyItem).catch(reportError)
     }
     setVocabularyItemToDelete(null)
   }

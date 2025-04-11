@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { StorageCache } from './Storage'
@@ -10,7 +10,6 @@ import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
-const USER_VOCABULARY = 'userVocabulary'
 const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
 export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
@@ -127,45 +126,44 @@ export const incrementNextUserVocabularyId = async (): Promise<void> => {
   return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
 }
 
-export const getUserVocabularyItems = async (): Promise<VocabularyItem[]> => {
-  const userVocabulary = await AsyncStorage.getItem(USER_VOCABULARY)
-  return userVocabulary
-    ? JSON.parse(userVocabulary).map((userVocabulary: VocabularyItem) => ({
-        ...userVocabulary,
-        type: VOCABULARY_ITEM_TYPES.userCreated,
-      }))
-    : []
-}
+export const getUserVocabularyItems = (userVocabulary: readonly UserVocabularyItem[]): VocabularyItem[] =>
+  userVocabulary.map((vocabularyItem: UserVocabularyItem) => ({
+    ...vocabularyItem,
+    type: VOCABULARY_ITEM_TYPES.userCreated,
+  }))
 
-export const setUserVocabularyItems = async (userVocabularyItems: VocabularyItem[]): Promise<void> => {
-  await AsyncStorage.setItem(USER_VOCABULARY, JSON.stringify(userVocabularyItems))
-}
-
-export const addUserVocabularyItem = async (vocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = await getUserVocabularyItems()
+export const addUserVocabularyItem = async (
+  storageCache: StorageCache,
+  vocabularyItem: VocabularyItem,
+): Promise<void> => {
+  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
   if (userVocabulary.find(item => item.word === vocabularyItem.word)) {
     return
   }
-  await setUserVocabularyItems([...userVocabulary, vocabularyItem])
+  await storageCache.setItem('userVocabulary', [...userVocabulary, vocabularyItem])
 }
 
 export const editUserVocabularyItem = async (
+  storageCache: StorageCache,
   oldUserVocabularyItem: VocabularyItem,
   newUserVocabularyItem: VocabularyItem,
 ): Promise<boolean> => {
-  const userVocabulary = await getUserVocabularyItems()
+  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
     return false
   }
   userVocabulary[index] = newUserVocabularyItem
-  await setUserVocabularyItems(userVocabulary)
+  await storageCache.setItem('userVocabulary', userVocabulary)
   return true
 }
 
-export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyItem): Promise<void> => {
-  const userVocabulary = await getUserVocabularyItems().then(vocab =>
-    vocab.filter(item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem)),
+export const deleteUserVocabularyItem = async (
+  storageCache: StorageCache,
+  userVocabularyItem: VocabularyItem,
+): Promise<void> => {
+  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary')).filter(
+    item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem),
   )
   const images = userVocabularyItem.images.map(image => image.image)
   await Promise.all(
@@ -174,5 +172,5 @@ export const deleteUserVocabularyItem = async (userVocabularyItem: VocabularyIte
     }),
   )
   await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
-  await setUserVocabularyItems(userVocabulary)
+  await storageCache.setItem('userVocabulary', userVocabulary)
 }

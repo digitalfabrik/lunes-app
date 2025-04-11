@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -11,6 +11,7 @@ import { getAllWords } from '../../../hooks/useGetAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
+import { StorageCacheContext } from '../../../services/Storage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
@@ -32,6 +33,7 @@ type DebugModalProps = {
 }
 
 const DebugModal = (props: DebugModalProps): JSX.Element => {
+  const storageCache = useContext(StorageCacheContext)
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
@@ -65,7 +67,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const NUMBER_OF_TEST_VOCABULARY = 5
   const MAX_DAYS_IN_A_SECTION = 100
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
-    const allWords = await getAllWords()
+    const allWords = await getAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       word: vocabularyItem,
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
