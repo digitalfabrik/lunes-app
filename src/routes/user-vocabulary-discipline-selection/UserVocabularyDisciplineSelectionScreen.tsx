@@ -1,12 +1,11 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import DisciplineListItem from '../../components/DisciplineListItem'
 import RouteWrapper from '../../components/RouteWrapper'
-import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { Discipline, VocabularyItem } from '../../constants/endpoints'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
@@ -29,14 +28,8 @@ export type DisciplineWithVocabulary = {
 }
 
 const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProps): JSX.Element => {
-  const { data, error, loading, refresh } = useReadUserVocabulary()
-  const [disciplinesWithVocabulary, setDisciplinesWithVocabulary] = useState<DisciplineWithVocabulary[]>([])
-
-  useEffect(() => {
-    if (data) {
-      setDisciplinesWithVocabulary(spiltVocabularyIntoDisciplines(data))
-    }
-  }, [data])
+  const userVocabulary = useReadUserVocabulary()
+  const disciplinesWithVocabulary = spiltVocabularyIntoDisciplines(userVocabulary)
 
   const handleNavigation = (selectedDiscipline: number): void => {
     const selectedDisciplinesWithVocabulary = disciplinesWithVocabulary[selectedDiscipline]
@@ -55,19 +48,17 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
 
   return (
     <RouteWrapper>
-      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <List
-          ListHeaderComponent={
-            <Title
-              title={getLabels().userVocabulary.overview.practice}
-              description={wordsDescription(data?.length ?? 0)}
-            />
-          }
-          data={disciplinesWithVocabulary}
-          renderItem={renderListItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </ServerResponseHandler>
+      <List
+        ListHeaderComponent={
+          <Title
+            title={getLabels().userVocabulary.overview.practice}
+            description={wordsDescription(userVocabulary.length)}
+          />
+        }
+        data={disciplinesWithVocabulary}
+        renderItem={renderListItem}
+        showsVerticalScrollIndicator={false}
+      />
     </RouteWrapper>
   )
 }

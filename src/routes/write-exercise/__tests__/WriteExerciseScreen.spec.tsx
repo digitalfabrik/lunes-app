@@ -7,11 +7,11 @@ import Tts from 'react-native-tts'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
-import { RepetitionService } from '../../../services/RepetitionService'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import render from '../../../testing/render'
+import { renderWithStorageCache } from '../../../testing/render'
 import WriteExerciseScreen from '../WriteExerciseScreen'
 
 jest.mock('../../../components/FavoriteButton', () => () => {
@@ -79,8 +79,10 @@ describe('WriteExerciseScreen', () => {
       closeExerciseAction: CommonActions.goBack(),
     },
   }
+  const storageCache = new StorageCache(newDefaultStorage())
 
-  const renderWriteExercise = (): RenderAPI => render(<WriteExerciseScreen route={route} navigation={navigation} />)
+  const renderWriteExercise = (): RenderAPI =>
+    renderWithStorageCache(storageCache, <WriteExerciseScreen route={route} navigation={navigation} />)
 
   it('should allow to skip a vocabularyItem and try it out later', () => {
     const { getByText, getByPlaceholderText } = renderWriteExercise()
@@ -161,8 +163,6 @@ describe('WriteExerciseScreen', () => {
   })
 
   it('should finish exercise and save progress', async () => {
-    jest.spyOn(RepetitionService, 'addWordsToFirstSection')
-
     const { getByPlaceholderText, getByText } = renderWriteExercise()
     fireEvent.changeText(getByPlaceholderText(getLabels().exercises.write.insertAnswer), 'die Spachtel')
     fireEvent.press(getByText(getLabels().exercises.write.checkInput))
@@ -175,11 +175,11 @@ describe('WriteExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
 
-    expect(saveExerciseProgress).toHaveBeenCalledWith(1, ExerciseKeys.writeExercise, [
+    expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, ExerciseKeys.writeExercise, [
       { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
-    expect(RepetitionService.addWordsToFirstSection).toHaveBeenCalledWith(vocabularyItems)
+    expect(storageCache.getItem('wordNodeCards')).toHaveLength(2)
   })
 
   const evaluate = (input: string, expectedFeedback: string) => {

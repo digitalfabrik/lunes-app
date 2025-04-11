@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 import { DocumentDirectoryPath, moveFile, unlink } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
@@ -28,6 +28,7 @@ import {
   getNextUserVocabularyId,
   incrementNextUserVocabularyId,
 } from '../../services/AsyncStorage'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
@@ -69,6 +70,7 @@ type UserVocabularyProcessScreenProps = {
 
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const { itemToEdit } = route.params
+  const storageCache = useContext(StorageCacheContext)
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
   const [article, setArticle] = useState<ArticleTypeExtended | null>(null)
@@ -169,9 +171,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       }
 
       if (itemToEdit) {
-        await editUserVocabularyItem(itemToEdit, itemToSave)
+        await editUserVocabularyItem(storageCache, itemToEdit, itemToSave)
       } else {
-        await addUserVocabularyItem(itemToSave)
+        await addUserVocabularyItem(storageCache, itemToSave)
       }
 
       navigation.navigate('UserVocabularyList')

@@ -5,6 +5,7 @@ import { Keyboard } from 'react-native'
 import { SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { StorageCache } from '../../../services/Storage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'
 
 export default abstract class AbstractWriteExerciseService {
@@ -14,7 +15,8 @@ export default abstract class AbstractWriteExerciseService {
     public navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     public setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     public setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
-    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>, // eslint-disable-next-line no-empty-function
+    public setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>,
+    public storageCache: StorageCache, // eslint-disable-next-line no-empty-function
   ) {}
 
   initializeExercise = (

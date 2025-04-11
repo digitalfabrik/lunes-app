@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react-native'
+import { render, waitFor } from '@testing-library/react-native'
 import React, { ReactNode } from 'react'
 import { View } from 'react-native'
 
@@ -14,14 +14,11 @@ jest.mock('../navigation/Navigator', () => {
 jest.useFakeTimers()
 
 describe('App', () => {
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     const { getByText } = render(<App />)
 
-    // wait for splash screen to disappear
-    act(() => {
-      jest.advanceTimersByTime(3000)
+    await waitFor(() => {
+      expect(getByText('Navigator')).toBeTruthy()
     })
-
-    expect(getByText('Navigator')).toBeTruthy()
   })
 })

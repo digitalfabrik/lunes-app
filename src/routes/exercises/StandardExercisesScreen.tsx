@@ -1,6 +1,6 @@
-import { CommonActions, RouteProp, useIsFocused, useFocusEffect } from '@react-navigation/native'
+import { CommonActions, RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -11,13 +11,11 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
-import { Exercise, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
-import { useLoadAsync } from '../../hooks/useLoadAsync'
+import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getExerciseProgress } from '../../services/AsyncStorage'
 import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
 import LockingLane from './components/LockingLane'
 
 const Container = styled.View`
@@ -43,10 +41,11 @@ type ExercisesScreenProps = {
 const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
   const { discipline, disciplineTitle, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [nextExercise, setNextExercise] = useState<Exercise | null>(EXERCISES[0])
+  const [scores] = useStorage('progress')
+  const nextExerciseNumber = getNumberOfUnlockedExercises(scores, disciplineId)
+  const nextExercise = nextExerciseNumber < EXERCISES.length ? EXERCISES[nextExerciseNumber] : null
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
-  const { data: scores, loading: loadingFeedback, refresh: refreshFeedback } = useLoadAsync(getExerciseProgress, null)
   const isFocused = useIsFocused()
   const {
     data: vocabularyItems,
@@ -59,8 +58,8 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
   })
 
   useEffect(() => {
-    if (!loadingFeedback && !isFeedbackSet) {
-      const exerciseScores = scores?.[disciplineId] ?? {}
+    if (!isFeedbackSet) {
+      const exerciseScores = scores[disciplineId] ?? {}
       const updatedFeedback: EXERCISE_FEEDBACK[] = Object.values(exerciseScores).map(score => {
         if (!score) {
           return EXERCISE_FEEDBACK.NONE
@@ -71,22 +70,13 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
       setFeedback(updatedFeedback)
       setIsFeedbackSet(true)
     }
-  }, [loadingFeedback, isFeedbackSet, disciplineId, scores])
-
-  useFocusEffect(
-    useCallback(() => {
-      getNumberOfUnlockedExercises(disciplineId)
-        .then(value => setNextExercise(value < EXERCISES.length ? EXERCISES[value] : null))
-        .catch(reportError)
-    }, [disciplineId]),
-  )
+  }, [isFeedbackSet, disciplineId, scores])
 
   useEffect(() => {
     if (isFocused) {
-      refreshFeedback()
       setIsFeedbackSet(false)
     }
-  }, [isFocused, refreshFeedback])
+  }, [isFocused])
 
   const handleNavigation = (item: Exercise): void => {
     if (nextExercise && item.level > nextExercise.level) {

@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -13,10 +13,11 @@ import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
-import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
+import useStorage from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { setSelectedProfessions, pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
-import { getLabels, childrenDescription } from '../services/helpers'
+import { pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
+import { StorageCacheContext } from '../services/Storage'
+import { childrenDescription, getLabels } from '../services/helpers'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -43,22 +44,20 @@ type ProfessionSelectionScreenProps = {
 }
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
+  const storageCache = useContext(StorageCacheContext)
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
   const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
     if (selectedProfessions?.includes(selectedItem.id)) {
-      await removeSelectedProfession(selectedItem.id).then(refreshSelectedProfessions)
+      await removeSelectedProfession(storageCache, selectedItem.id)
     } else {
-      await pushSelectedProfession(selectedItem.id).then(() => {
-        if (initialSelection) {
-          refreshSelectedProfessions()
-        } else {
-          navigation.navigate('ManageSelection')
-        }
-      })
+      await pushSelectedProfession(storageCache, selectedItem.id)
+      if (!initialSelection) {
+        navigation.navigate('ManageSelection')
+      }
     }
   }
 

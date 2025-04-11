@@ -27,9 +27,8 @@ import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
-import useLoadAsync from '../../hooks/useLoadAsync'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getDevMode } from '../../services/AsyncStorage'
 import { calculateScore, getLabels } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
 
@@ -75,7 +74,7 @@ type ExerciseFinishedScreenProps = {
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, disciplineTitle, closeExerciseAction, unlockedNextExercise } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
-  const { data: isDevMode } = useLoadAsync(getDevMode, null)
+  const [isDevModeEnabled] = useStorage('isDevModeEnabled')
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
@@ -149,7 +148,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
       bottomBackgroundColor={theme.colors.background}>
-      {exercise === EXERCISES.length - 1 && isDevMode && (
+      {exercise === EXERCISES.length - 1 && isDevModeEnabled && (
         <Modal
           visible={isModalVisible}
           confirmationAction={() => navigation.navigate('RepetitionTab')}

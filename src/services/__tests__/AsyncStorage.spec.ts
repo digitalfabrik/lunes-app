@@ -1,50 +1,57 @@
-import { VOCABULARY_ITEM_TYPES, ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import {
-  getCustomDisciplines,
-  deleteUserVocabularyItem,
-  getFavorites,
-  setFavorites,
+  addFavorite,
   addUserVocabularyItem,
+  deleteUserVocabularyItem,
+  editUserVocabularyItem,
+  getFavorites,
+  getUserVocabularyItems,
   pushSelectedProfession,
   removeCustomDiscipline,
-  setExerciseProgress,
-  saveExerciseProgress,
-  addFavorite,
   removeFavorite,
-  setCustomDisciplines,
-  getSelectedProfessions,
-  getExerciseProgress,
-  editUserVocabularyItem,
   removeSelectedProfession,
-  setSelectedProfessions,
-  getUserVocabularyItems,
+  saveExerciseProgress,
+  setExerciseProgress,
+  setFavorites,
 } from '../AsyncStorage'
 import { RepetitionService } from '../RepetitionService'
+import { newDefaultStorage, StorageCache } from '../Storage'
 
 jest.mock('react-native-fs', () => ({
   unlink: jest.fn(),
 }))
 
 describe('AsyncStorage', () => {
-  describe('customDisciplines', () => {
-    const customDisciplines = ['first', 'second', 'third']
+  let storageCache: StorageCache
+  let repetitionService: RepetitionService
 
-    it('should delete customDisicpline from array if exists', async () => {
-      await setCustomDisciplines(customDisciplines)
-      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
-      await removeCustomDiscipline('first')
-      await expect(getCustomDisciplines()).resolves.toStrictEqual(['second', 'third'])
+  beforeEach(() => {
+    storageCache = new StorageCache(newDefaultStorage())
+    repetitionService = new RepetitionService(
+      () => storageCache.getItem('wordNodeCards'),
+      value => storageCache.setItem('wordNodeCards', value),
+    )
+  })
+
+  describe('customDisciplines', () => {
+    const makeCustomDisciplines = () => ['first', 'second', 'third']
+
+    it('should delete customDiscipline from array if exists', async () => {
+      await storageCache.setItem('customDisciplines', makeCustomDisciplines())
+      expect(storageCache.getItem('customDisciplines')).toHaveLength(3)
+      await removeCustomDiscipline(storageCache, 'first')
+      expect(storageCache.getItem('customDisciplines')).toStrictEqual(['second', 'third'])
     })
 
     it('should not delete customDiscipline from array if not exists', async () => {
-      await setCustomDisciplines(customDisciplines)
-      await expect(getCustomDisciplines()).resolves.toHaveLength(3)
-      await expect(removeCustomDiscipline('fourth')).rejects.toThrow('customDiscipline not available')
-      await expect(getCustomDisciplines()).resolves.toStrictEqual(['first', 'second', 'third'])
+      await storageCache.setItem('customDisciplines', makeCustomDisciplines())
+      expect(storageCache.getItem('customDisciplines')).toHaveLength(3)
+      await expect(removeCustomDiscipline(storageCache, 'fourth')).rejects.toThrow('customDiscipline not available')
+      expect(storageCache.getItem('customDisciplines')).toStrictEqual(['first', 'second', 'third'])
     })
   })
 
@@ -52,24 +59,27 @@ describe('AsyncStorage', () => {
     const selectedProfessions = mockDisciplines()
 
     it('should delete selectedProfession from array if exists', async () => {
-      await setSelectedProfessions(selectedProfessions.map(item => item.id))
-      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length)
-      await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(selectedProfessions.length - 1)
+      await storageCache.setItem(
+        'selectedProfessions',
+        selectedProfessions.map(item => item.id),
+      )
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length)
+      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await setSelectedProfessions([mockDisciplines()[1].id])
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
-      await removeSelectedProfession(mockDisciplines()[0].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
+      await storageCache.setItem('selectedProfessions', [mockDisciplines()[1].id])
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await setSelectedProfessions([mockDisciplines()[0].id])
-      await expect(getSelectedProfessions()).resolves.toHaveLength(1)
-      await pushSelectedProfession(mockDisciplines()[1].id)
-      await expect(getSelectedProfessions()).resolves.toHaveLength(2)
+      await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await pushSelectedProfession(storageCache, mockDisciplines()[1].id)
+      expect(storageCache.getItem('selectedProfessions')).toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -77,28 +87,28 @@ describe('AsyncStorage', () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await expect(getExerciseProgress()).resolves.toStrictEqual(progressOneExercise)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done discipline but not yet done exercise', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.writeExercise, 0.6)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.writeExercise, 0.6)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.8)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.8)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(1, ExerciseKeys.wordChoiceExercise, 0.4)
-        const progress = await getExerciseProgress()
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.4)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
@@ -116,8 +126,8 @@ describe('AsyncStorage', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(1, 1, vocabularyItemResults)
-        const progress = await getExerciseProgress()
+        await saveExerciseProgress(storageCache, 1, 1, vocabularyItemResults)
+        const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
       })
     })
@@ -133,15 +143,15 @@ describe('AsyncStorage', () => {
     it('should add favorites', async () => {
       await setFavorites(favoriteItems.slice(0, 2))
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 2))
-      expect(await RepetitionService.getWordNodeCards()).toHaveLength(0)
-      await addFavorite(vocabularyItems[2])
-      expect((await RepetitionService.getWordNodeCards()).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards()).toHaveLength(0)
+      await addFavorite(repetitionService, vocabularyItems[2])
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
       ])
       await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 3))
-      await addFavorite(vocabularyItems[3])
+      await addFavorite(repetitionService, vocabularyItems[3])
       await expect(getFavorites()).resolves.toEqual(favoriteItems)
-      expect((await RepetitionService.getWordNodeCards()).map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
         vocabularyItems[3].id,
       ])
@@ -163,27 +173,30 @@ describe('AsyncStorage', () => {
       .map(item => ({ ...item, type: VOCABULARY_ITEM_TYPES.userCreated }))
 
     it('should add userVocabularyItem', async () => {
-      const userVocabulary = await getUserVocabularyItems()
+      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(userVocabulary).toHaveLength(0)
-      await addUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
-      await addUserVocabularyItem(userVocabularyItems[1])
-      await editUserVocabularyItem(userVocabularyItems[1], { ...userVocabularyItems[2], id: userVocabularyItems[1].id })
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[1])
+      await editUserVocabularyItem(storageCache, userVocabularyItems[1], {
+        ...userVocabularyItems[2],
+        id: userVocabularyItems[1].id,
+      })
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(1)
       expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
     })
 
     it('should delete userVocabularyItem', async () => {
-      await addUserVocabularyItem(userVocabularyItems[0])
-      const userVocabulary = await getUserVocabularyItems()
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(userVocabulary).toHaveLength(1)
-      await deleteUserVocabularyItem(userVocabularyItems[0])
-      const updatedUserVocabulary = await getUserVocabularyItems()
+      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
+      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })

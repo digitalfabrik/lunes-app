@@ -1,14 +1,13 @@
 import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
-import { getOverwriteCMS } from './AsyncStorage'
+import { getStorageItem } from './Storage'
 
 export const testCMS = 'https://lunes-test.tuerantuer.org/api'
 export const productionCMS = 'https://lunes.tuerantuer.org/api'
 export type CMS = typeof testCMS | typeof productionCMS
 
-export const getBaseURL = async (): Promise<CMS> => {
-  const overwriteCMS = await getOverwriteCMS()
+export const getBaseURL = (overwriteCMS: CMS | null): CMS => {
   if (overwriteCMS) {
     return overwriteCMS
   }
@@ -28,7 +27,7 @@ setupCache(axios, {
 })
 
 const getUrl = async (endpoint: string): Promise<string> => {
-  const baseURL = await getBaseURL()
+  const baseURL = getBaseURL(await getStorageItem('cmsUrlOverwrite'))
   return `${baseURL}/${endpoint}`
 }
 

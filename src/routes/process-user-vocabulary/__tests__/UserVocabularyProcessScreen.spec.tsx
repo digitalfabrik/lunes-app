@@ -6,10 +6,11 @@ import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { getUserVocabularyItems, setUserVocabularyItems } from '../../../services/AsyncStorage'
+import { getUserVocabularyItems } from '../../../services/AsyncStorage'
+import { newDefaultStorage, StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import render from '../../../testing/render'
+import render, { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
 
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
@@ -57,6 +58,11 @@ describe('UserVocabularyProcessScreen', () => {
     },
   })
 
+  let storageCache: StorageCache
+  beforeEach(() => {
+    storageCache = new StorageCache(newDefaultStorage())
+  })
+
   afterAll(() => {
     jest.clearAllMocks()
   })
@@ -96,10 +102,11 @@ describe('UserVocabularyProcessScreen', () => {
   })
 
   describe('edit vocabulary', () => {
-    beforeEach(async () => setUserVocabularyItems([itemToEdit]))
+    beforeEach(async () => storageCache.setItem('userVocabulary', [itemToEdit]))
 
     it('should fill all fields correctly', async () => {
-      const { getByPlaceholderText, getByTestId, getAllByTestId } = render(
+      const { getByPlaceholderText, getByTestId, getAllByTestId } = renderWithStorageCache(
+        storageCache,
         <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
@@ -111,7 +118,8 @@ describe('UserVocabularyProcessScreen', () => {
     })
 
     it('should keep all fields except word if only word is updated', async () => {
-      const { getByPlaceholderText, getByText } = render(
+      const { getByPlaceholderText, getByText } = renderWithStorageCache(
+        storageCache,
         <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       const textField = getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder)
@@ -121,7 +129,7 @@ describe('UserVocabularyProcessScreen', () => {
 
       const shouldBe = { ...itemToEdit, word: 'new-word' }
       await waitFor(async () => {
-        const userVocabulary = await getUserVocabularyItems()
+        const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
         expect(userVocabulary).toEqual([shouldBe])
       })
     })
