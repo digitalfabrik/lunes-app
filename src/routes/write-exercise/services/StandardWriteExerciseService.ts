@@ -1,8 +1,8 @@
 import { ExerciseKeys, SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { RepetitionService } from '../../../services/RepetitionService'
+import { saveExerciseProgress } from '../../../services/storageUtils'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
 
 class StandardWriteExerciseService extends AbstractWriteExerciseService {

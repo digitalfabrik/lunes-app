@@ -4,9 +4,9 @@ import React, { createContext, ReactElement } from 'react'
 import { Favorite, Progress } from '../constants/data'
 import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
-import { migrateToNewFavoriteFormat } from './AsyncStorage'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
+import { migrateToNewFavoriteFormat } from './storageUtils'
 
 export type Storage = {
   wordNodeCards: WordNodeCard[]

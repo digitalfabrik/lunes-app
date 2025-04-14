@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
 import { VocabularyItem } from '../constants/endpoints'
-import { getUserVocabularyItems } from '../services/AsyncStorage'
 import { StorageCache, StorageCacheContext } from '../services/Storage'
+import { getUserVocabularyItems } from '../services/storageUtils'
 import { loadAllVocabularyItems } from './useLoadAllVocabularyItems'
 import { Return, useLoadAsync } from './useLoadAsync'
 

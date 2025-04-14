@@ -6,9 +6,9 @@ import Tts from 'react-native-tts'
 
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../services/AsyncStorage'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
+import { saveExerciseProgress } from '../../../services/storageUtils'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { renderWithStorageCache } from '../../../testing/render'
@@ -24,7 +24,7 @@ jest.mock('../../../services/helpers', () => ({
   shuffleArray: jest.fn(it => it),
 }))
 
-jest.mock('../../../services/AsyncStorage', () => ({
+jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
   getDevMode: jest.fn(async () => false),
 }))

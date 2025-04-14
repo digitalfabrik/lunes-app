@@ -9,9 +9,9 @@ import { Discipline } from '../../constants/endpoints'
 import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import { pushSelectedProfession } from '../../services/AsyncStorage'
 import { StorageCacheContext } from '../../services/Storage'
 import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
+import { pushSelectedProfession } from '../../services/storageUtils'
 
 const SearchContainer = styled.View`
   margin: ${props => props.theme.spacings.sm};

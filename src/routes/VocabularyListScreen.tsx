@@ -7,10 +7,10 @@ import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys, FeedbackType } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { setExerciseProgress } from '../services/AsyncStorage'
 import { StorageCacheContext } from '../services/Storage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
+import { setExerciseProgress } from '../services/storageUtils'
 
 type VocabularyListScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyList'>

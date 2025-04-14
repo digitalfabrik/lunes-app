@@ -1,5 +1,5 @@
 import { VocabularyItem } from '../constants/endpoints'
-import { getUserVocabularyItems } from '../services/AsyncStorage'
+import { getUserVocabularyItems } from '../services/storageUtils'
 import useStorage from './useStorage'
 
 const useReadUserVocabulary = (): VocabularyItem[] => {

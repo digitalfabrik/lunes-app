@@ -22,14 +22,14 @@ import {
   ArticleTypeExtended,
 } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { StorageCacheContext } from '../../services/Storage'
+import { getLabels } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import {
   addUserVocabularyItem,
   editUserVocabularyItem,
   incrementNextUserVocabularyId,
-} from '../../services/AsyncStorage'
-import { StorageCacheContext } from '../../services/Storage'
-import { getLabels } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
+} from '../../services/storageUtils'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
 

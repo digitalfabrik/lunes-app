@@ -5,10 +5,10 @@ import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/image
 import { VocabularyItem } from '../constants/endpoints'
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage from '../hooks/useStorage'
-import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
 import { StorageCacheContext } from '../services/Storage'
 import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
+import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/storageUtils'
 import PressableOpacity from './PressableOpacity'
 
 const Button = styled(PressableOpacity)`

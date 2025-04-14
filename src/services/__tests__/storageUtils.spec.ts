@@ -3,6 +3,8 @@ import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
+import { RepetitionService } from '../RepetitionService'
+import { StorageCache } from '../Storage'
 import {
   addFavorite,
   addUserVocabularyItem,
@@ -15,15 +17,13 @@ import {
   removeSelectedProfession,
   saveExerciseProgress,
   setExerciseProgress,
-} from '../AsyncStorage'
-import { RepetitionService } from '../RepetitionService'
-import { StorageCache } from '../Storage'
+} from '../storageUtils'
 
 jest.mock('react-native-fs', () => ({
   unlink: jest.fn(),
 }))
 
-describe('AsyncStorage', () => {
+describe('storageUtils', () => {
   let storageCache: StorageCache
   let repetitionService: RepetitionService
 

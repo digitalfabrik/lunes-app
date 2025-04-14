@@ -9,10 +9,10 @@ import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
 import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
+import { removeCustomDiscipline, removeSelectedProfession } from '../../services/storageUtils'
 import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`

@@ -11,7 +11,7 @@ import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import RepetitionWriteExerciseService from '../RepetitionWriteExerciseService'
 
-jest.mock('../../../../services/AsyncStorage', () => ({
+jest.mock('../../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
 }))
 

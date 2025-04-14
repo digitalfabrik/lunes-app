@@ -24,7 +24,7 @@ import {
 import mocked = jest.mocked
 
 jest.mock('../../hooks/useLoadDiscipline')
-jest.mock('../AsyncStorage')
+jest.mock('../storageUtils')
 
 describe('helpers', () => {
   const profession = mockDisciplines()[0]

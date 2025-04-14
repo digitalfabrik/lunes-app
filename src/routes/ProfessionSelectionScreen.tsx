@@ -15,9 +15,9 @@ import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useStorage from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { pushSelectedProfession, removeSelectedProfession } from '../services/AsyncStorage'
 import { StorageCacheContext } from '../services/Storage'
 import { childrenDescription, getLabels } from '../services/helpers'
+import { pushSelectedProfession, removeSelectedProfession } from '../services/storageUtils'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};

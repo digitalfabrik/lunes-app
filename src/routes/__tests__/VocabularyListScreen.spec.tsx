@@ -2,9 +2,9 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { setExerciseProgress } from '../../services/AsyncStorage'
 import { StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
+import { setExerciseProgress } from '../../services/storageUtils'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
@@ -16,7 +16,7 @@ jest.mock('../../components/FavoriteButton', () => {
   return () => <Text>FavoriteButton</Text>
 })
 
-jest.mock('../../services/AsyncStorage', () => ({
+jest.mock('../../services/storageUtils', () => ({
   setExerciseProgress: jest.fn(() => Promise.resolve()),
 }))
 

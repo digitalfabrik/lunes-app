@@ -2,9 +2,9 @@ import { useCallback, useContext } from 'react'
 
 import { Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { ENDPOINTS, VocabularyItem } from '../constants/endpoints'
-import { getUserVocabularyItems, removeFavorite } from '../services/AsyncStorage'
 import { StorageCache, StorageCacheContext } from '../services/Storage'
 import { getFromEndpoint } from '../services/axios'
+import { getUserVocabularyItems, removeFavorite } from '../services/storageUtils'
 import useLoadAsync, { Return } from './useLoadAsync'
 import { formatVocabularyItemFromServer, VocabularyItemFromServer } from './useLoadVocabularyItems'
 

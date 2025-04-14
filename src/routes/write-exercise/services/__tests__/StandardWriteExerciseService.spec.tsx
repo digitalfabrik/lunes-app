@@ -5,13 +5,13 @@ import React from 'react'
 import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { ContentType, RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../../services/AsyncStorage'
 import { StorageCache } from '../../../../services/Storage'
+import { saveExerciseProgress } from '../../../../services/storageUtils'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import StandardWriteExerciseService from '../StandardWriteExerciseService'
 
-jest.mock('../../../../services/AsyncStorage', () => ({
+jest.mock('../../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
 }))
 
