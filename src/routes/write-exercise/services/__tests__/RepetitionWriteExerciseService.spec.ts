@@ -6,7 +6,7 @@ import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../../services/RepetitionService'
-import { newDefaultStorage, StorageCache } from '../../../../services/Storage'
+import { StorageCache } from '../../../../services/Storage'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import RepetitionWriteExerciseService from '../RepetitionWriteExerciseService'
@@ -45,7 +45,7 @@ describe('RepetitionWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
     service = new RepetitionWriteExerciseService(
       route,
       navigation,

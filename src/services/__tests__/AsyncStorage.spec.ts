@@ -8,7 +8,6 @@ import {
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
-  getFavorites,
   getUserVocabularyItems,
   pushSelectedProfession,
   removeCustomDiscipline,
@@ -16,10 +15,9 @@ import {
   removeSelectedProfession,
   saveExerciseProgress,
   setExerciseProgress,
-  setFavorites,
 } from '../AsyncStorage'
 import { RepetitionService } from '../RepetitionService'
-import { newDefaultStorage, StorageCache } from '../Storage'
+import { StorageCache } from '../Storage'
 
 jest.mock('react-native-fs', () => ({
   unlink: jest.fn(),
@@ -30,7 +28,7 @@ describe('AsyncStorage', () => {
   let repetitionService: RepetitionService
 
   beforeEach(() => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
     repetitionService = new RepetitionService(
       () => storageCache.getItem('wordNodeCards'),
       value => storageCache.setItem('wordNodeCards', value),
@@ -141,16 +139,16 @@ describe('AsyncStorage', () => {
     }))
 
     it('should add favorites', async () => {
-      await setFavorites(favoriteItems.slice(0, 2))
-      await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 2))
+      await storageCache.setItem('favorites', favoriteItems.slice(0, 2))
+      expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 2))
       expect(repetitionService.getWordNodeCards()).toHaveLength(0)
-      await addFavorite(repetitionService, vocabularyItems[2])
+      await addFavorite(storageCache, repetitionService, vocabularyItems[2])
       expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
       ])
-      await expect(getFavorites()).resolves.toEqual(favoriteItems.slice(0, 3))
-      await addFavorite(repetitionService, vocabularyItems[3])
-      await expect(getFavorites()).resolves.toEqual(favoriteItems)
+      expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 3))
+      await addFavorite(storageCache, repetitionService, vocabularyItems[3])
+      expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
       expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
         vocabularyItems[2].id,
         vocabularyItems[3].id,
@@ -158,12 +156,12 @@ describe('AsyncStorage', () => {
     })
 
     it('should remove favorites', async () => {
-      await setFavorites(favoriteItems)
-      await expect(getFavorites()).resolves.toEqual(favoriteItems)
-      await removeFavorite(favoriteItems[2])
-      await expect(getFavorites()).resolves.toEqual([favoriteItems[0], favoriteItems[1], favoriteItems[3]])
-      await removeFavorite(favoriteItems[0])
-      await expect(getFavorites()).resolves.toEqual([favoriteItems[1], favoriteItems[3]])
+      await storageCache.setItem('favorites', favoriteItems)
+      expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
+      await removeFavorite(storageCache, favoriteItems[2])
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0], favoriteItems[1], favoriteItems[3]])
+      await removeFavorite(storageCache, favoriteItems[0])
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1], favoriteItems[3]])
     })
   })
 

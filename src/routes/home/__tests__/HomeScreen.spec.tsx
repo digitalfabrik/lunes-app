@@ -5,7 +5,7 @@ import React from 'react'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
@@ -32,7 +32,7 @@ describe('HomeScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(async () => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   it('should render professions', async () => {

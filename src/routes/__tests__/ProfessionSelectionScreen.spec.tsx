@@ -6,7 +6,7 @@ import React from 'react'
 import { COLORS } from '../../constants/theme/colors'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { newDefaultStorage, StorageCache } from '../../services/Storage'
+import { StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
@@ -28,7 +28,7 @@ describe('ProfessionSelectionScreen', () => {
     },
   })
 
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
   const renderScreen = (initialSelection = true) =>
     renderWithStorageCache(
       storageCache,

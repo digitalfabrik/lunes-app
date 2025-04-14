@@ -5,11 +5,10 @@ import { ExerciseKey, Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
-import { StorageCache } from './Storage'
+import { getStorageItemOr, StorageCache } from './Storage'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
-const FAVORITES_KEY = 'favorites'
-const FAVORITES_KEY_2 = 'favorites-2'
+const FAVORITES_KEY_VERSION_0 = 'favorites'
 
 export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
   let professions = storageCache.getMutableItem('selectedProfessions')
@@ -63,59 +62,48 @@ export const saveExerciseProgress = async (
   await setExerciseProgress(storageCache, disciplineId, exerciseKey, score)
 }
 
-export const setFavorites = async (favorites: Favorite[]): Promise<void> => {
-  await AsyncStorage.setItem(FAVORITES_KEY_2, JSON.stringify(favorites))
-}
-
 const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
   favorite1.id === favorite2.id && favorite1.vocabularyItemType === favorite2.vocabularyItemType
 
-const migrateToNewFavoriteFormat = async (): Promise<void> => {
-  const vocabularyItems = await AsyncStorage.getItem(FAVORITES_KEY)
-  const parsedVocabularyItems = vocabularyItems ? JSON.parse(vocabularyItems) : []
+export const migrateToNewFavoriteFormat = async (storageCache: StorageCache): Promise<void> => {
+  const parsedVocabularyItems = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
   if (parsedVocabularyItems.length === 0) {
     return
   }
-  await setFavorites(
+  await storageCache.setItem(
+    'favorites',
     parsedVocabularyItems.map((item: number) => ({
       id: item,
       vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard,
     })),
   )
-  await AsyncStorage.removeItem(FAVORITES_KEY)
-}
-
-export const getFavorites = async (): Promise<Favorite[]> => {
-  await migrateToNewFavoriteFormat()
-  const favorites = await AsyncStorage.getItem(FAVORITES_KEY_2)
-  return favorites ? JSON.parse(favorites) : []
+  await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
 }
 
 export const addFavorite = async (
+  storageCache: StorageCache,
   repetitionService: RepetitionService,
   vocabularyItem: VocabularyItem,
 ): Promise<void> => {
   const favorite = vocabularyItemToFavorite(vocabularyItem)
-  const favorites = await getFavorites()
+  const favorites = storageCache.getItem('favorites')
   if (favorites.includes(favorite)) {
     return
   }
 
   await repetitionService.addWordToFirstSection(vocabularyItem)
   const newFavorites = [...favorites, favorite]
-  await setFavorites(newFavorites)
+  await storageCache.setItem('favorites', newFavorites)
 }
 
-export const removeFavorite = async (favorite: Favorite): Promise<void> => {
-  const favorites = await getFavorites()
+export const removeFavorite = async (storageCache: StorageCache, favorite: Favorite): Promise<void> => {
+  const favorites = storageCache.getItem('favorites')
   const newFavorites = favorites.filter(it => !compareFavorites(it, favorite))
-  await setFavorites(newFavorites)
+  await storageCache.setItem('favorites', newFavorites)
 }
 
-export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
-  const favorites = await getFavorites()
-  return favorites.some(it => compareFavorites(it, favorite))
-}
+export const isFavorite = (favorites: readonly Favorite[], favorite: Favorite): boolean =>
+  favorites.some(it => compareFavorites(it, favorite))
 
 export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<number> => {
   const nextId = storageCache.getItem('nextUserVocabularyId')
@@ -168,6 +156,9 @@ export const deleteUserVocabularyItem = async (
       await unlink(image)
     }),
   )
-  await removeFavorite({ id: userVocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated })
+  await removeFavorite(storageCache, {
+    id: userVocabularyItem.id,
+    vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
+  })
   await storageCache.setItem('userVocabulary', userVocabulary)
 }

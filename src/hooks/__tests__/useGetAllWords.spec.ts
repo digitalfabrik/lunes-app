@@ -1,7 +1,7 @@
 import { mocked } from 'jest-mock'
 
 import { VocabularyItem } from '../../constants/endpoints'
-import { newDefaultStorage, StorageCache } from '../../services/Storage'
+import { StorageCache } from '../../services/Storage'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { getAllWords } from '../useGetAllWords'
 import { loadAllVocabularyItems } from '../useLoadAllVocabularyItems'
@@ -15,7 +15,7 @@ describe('useGetAllWords', () => {
   let storageCache: StorageCache
 
   beforeEach(() => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   it('should return concatenation', async () => {

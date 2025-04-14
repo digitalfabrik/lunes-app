@@ -13,7 +13,7 @@ export const loadFavorite = async (storageCache: StorageCache, favorite: Favorit
     const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
     const userCreatedFavorite = userVocabulary.find(item => item.id === favorite.id)
     if (!userCreatedFavorite) {
-      await removeFavorite(favorite)
+      await removeFavorite(storageCache, favorite)
       return null
     }
     return userCreatedFavorite

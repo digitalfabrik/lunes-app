@@ -10,7 +10,7 @@ import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import { newDefaultStorage, StorageCache } from '../Storage'
+import { StorageCache } from '../Storage'
 import {
   calculateScore,
   getNextExercise,
@@ -28,7 +28,7 @@ jest.mock('../AsyncStorage')
 
 describe('helpers', () => {
   const profession = mockDisciplines()[0]
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
 
   beforeEach(async () => {
     await storageCache.setItem('progress', {})

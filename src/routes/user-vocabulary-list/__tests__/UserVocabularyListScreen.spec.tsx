@@ -1,7 +1,7 @@
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -30,7 +30,7 @@ describe('UserVocabularyListScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(() => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   it('should render list correctly', async () => {

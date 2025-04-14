@@ -6,7 +6,7 @@ import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { ContentType, RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../../services/AsyncStorage'
-import { newDefaultStorage, StorageCache } from '../../../../services/Storage'
+import { StorageCache } from '../../../../services/Storage'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import StandardWriteExerciseService from '../StandardWriteExerciseService'
@@ -43,7 +43,7 @@ describe('StandardWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
     service = new StandardWriteExerciseService(
       route,
       navigation,

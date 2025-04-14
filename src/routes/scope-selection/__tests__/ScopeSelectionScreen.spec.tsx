@@ -5,7 +5,7 @@ import React from 'react'
 
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
@@ -26,7 +26,7 @@ describe('ScopeSelection', () => {
     },
   })
 
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
 
   beforeEach(async () => {
     await storageCache.setItem('selectedProfessions', null)

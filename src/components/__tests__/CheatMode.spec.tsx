@@ -4,7 +4,7 @@ import React from 'react'
 
 import { SIMPLE_RESULTS } from '../../constants/data'
 import { useLoadAsync } from '../../hooks/useLoadAsync'
-import { newDefaultStorage, StorageCache } from '../../services/Storage'
+import { StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import render, { renderWithStorageCache } from '../../testing/render'
 import CheatMode from '../CheatMode'
@@ -16,7 +16,7 @@ jest.mock('../../hooks/useLoadAsync', () => ({
 const cheat = jest.fn()
 
 describe('CheatMode', () => {
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
 
   beforeEach(() => {
     jest.clearAllMocks()

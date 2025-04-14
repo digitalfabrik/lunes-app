@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { createContext, ReactElement, useMemo } from 'react'
+import React, { createContext, ReactElement } from 'react'
 
-import { Progress } from '../constants/data'
+import { Favorite, Progress } from '../constants/data'
 import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
+import { migrateToNewFavoriteFormat } from './AsyncStorage'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 
@@ -18,6 +19,7 @@ export type Storage = {
   customDisciplines: string[]
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
+  favorites: Favorite[]
 }
 
 /**
@@ -35,6 +37,7 @@ export const newDefaultStorage = (): Storage => ({
   customDisciplines: [],
   userVocabulary: [],
   nextUserVocabularyId: 1,
+  favorites: [],
 })
 const defaultStorage = newDefaultStorage()
 
@@ -59,13 +62,18 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'userVocabulary'
     case 'nextUserVocabularyId':
       return 'userVocabularyNextId'
+    case 'favorites':
+      return 'favorites-2'
   }
 }
 
-export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<Storage[T]> => {
-  const value = await AsyncStorage.getItem(getStorageKey(key))
-  return value ? JSON.parse(value) : defaultStorage[key]
+export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
+  const value = await AsyncStorage.getItem(key)
+  return value ? JSON.parse(value) : defaultValue
 }
+
+export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<Storage[T]> =>
+  getStorageItemOr(getStorageKey(key), defaultStorage[key])
 
 const setStorageItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
   await AsyncStorage.setItem(getStorageKey(key), JSON.stringify(value))
@@ -76,8 +84,20 @@ export class StorageCache {
   private readonly listeners: Map<string, Set<() => void>> = new Map()
   private readonly storage: Storage
 
-  constructor(storage: Storage) {
+  private constructor(storage: Storage) {
     this.storage = storage
+  }
+
+  static createForTesting = (): StorageCache => new StorageCache(newDefaultStorage())
+
+  static create = async (storage: Storage): Promise<StorageCache> => {
+    const storageCache = new StorageCache(storage)
+    await storageCache.migrate()
+    return storageCache
+  }
+
+  migrate = async (): Promise<void> => {
+    await migrateToNewFavoriteFormat(this)
   }
 
   /**
@@ -119,7 +139,7 @@ export class StorageCache {
   }
 }
 
-export const StorageCacheContext = createContext<StorageCache>(new StorageCache(newDefaultStorage()))
+export const StorageCacheContext = createContext<StorageCache>(StorageCache.createForTesting())
 
 type StorageCacheContextProviderProps = {
   children: ReactElement
@@ -132,8 +152,8 @@ const resolveObject = async <T extends Record<keyof T, unknown>>(
   return Object.fromEntries(entries)
 }
 
-const loadStorage = async (): Promise<Storage> =>
-  resolveObject({
+const loadStorageCache = async (): Promise<StorageCache> => {
+  const storage: Storage = await resolveObject({
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),
@@ -143,11 +163,13 @@ const loadStorage = async (): Promise<Storage> =>
     customDisciplines: getStorageItem('customDisciplines'),
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
+    favorites: getStorageItem('favorites'),
   })
+  return StorageCache.create(storage)
+}
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {
-  const { data } = useLoadAsync(loadStorage, null)
-  const storageCache = useMemo(() => (data != null ? new StorageCache(data) : null), [data])
+  const { data: storageCache } = useLoadAsync(loadStorageCache, null)
 
   if (storageCache !== null) {
     return <StorageCacheContext.Provider value={storageCache}>{children}</StorageCacheContext.Provider>

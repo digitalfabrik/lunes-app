@@ -5,7 +5,7 @@ import React from 'react'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -46,7 +46,7 @@ describe('ArticleChoiceExerciseScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   const vocabularyItems = new VocabularyItemBuilder(2).build()

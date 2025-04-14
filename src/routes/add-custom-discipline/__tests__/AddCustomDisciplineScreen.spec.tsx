@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import { Code } from 'react-native-vision-camera'
 
 import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
@@ -30,7 +30,7 @@ describe('AddCustomDisciplineScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(() => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   it('should enable submit button on text input', async () => {

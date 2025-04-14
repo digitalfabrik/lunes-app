@@ -4,7 +4,7 @@ import React from 'react'
 
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { pushSelectedProfession } from '../../../services/AsyncStorage'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
@@ -22,7 +22,7 @@ describe('ManageSelectionsScreen', () => {
   const renderScreen = () => renderWithStorageCache(storageCache, <ManageSelectionsScreen navigation={navigation} />)
 
   beforeEach(async () => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   it('should show and delete selected professions', async () => {

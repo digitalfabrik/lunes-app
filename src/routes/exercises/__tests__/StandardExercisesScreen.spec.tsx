@@ -7,7 +7,7 @@ import React from 'react'
 import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
 import useLoadVocabularyItems from '../../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
@@ -38,7 +38,7 @@ describe('StandardExercisesScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     RNAsyncStorage.clear()
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
     storageCache.setItem('progress', {
       [route.params.disciplineId]: {
         '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,

@@ -7,14 +7,14 @@ import {
   RepetitionService,
   WordNodeCard,
 } from '../RepetitionService'
-import { newDefaultStorage, StorageCache } from '../Storage'
+import { StorageCache } from '../Storage'
 import { milliSecondsToHours } from '../helpers'
 
 describe('RepetitionService', () => {
   const testVocabulary = new VocabularyItemBuilder(8).build()
   let testData: WordNodeCard[] = []
 
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
   const repetitionService = new RepetitionService(
     () => storageCache.getItem('wordNodeCards'),
     value => storageCache.setItem('wordNodeCards', value),

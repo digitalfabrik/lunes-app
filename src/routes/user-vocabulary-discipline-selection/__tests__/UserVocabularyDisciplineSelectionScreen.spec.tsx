@@ -4,7 +4,7 @@ import React from 'react'
 
 import { VocabularyItem } from '../../../constants/endpoints'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -18,7 +18,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(async () => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   const renderScreen = async (mockVocabulary: VocabularyItem[]): Promise<RenderAPI> => {

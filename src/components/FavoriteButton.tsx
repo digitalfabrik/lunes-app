@@ -1,12 +1,12 @@
-import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useContext } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { VocabularyItem } from '../constants/endpoints'
-import useLoadAsync from '../hooks/useLoadAsync'
 import useRepetitionService from '../hooks/useRepetitionService'
+import useStorage from '../hooks/useStorage'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
+import { StorageCacheContext } from '../services/Storage'
 import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
@@ -25,29 +25,21 @@ const Button = styled(PressableOpacity)`
 
 type FavoriteButtonProps = {
   vocabularyItem: VocabularyItem
-  onFavoritesChanged?: () => void
 }
 
-const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
+const FavoriteButton = ({ vocabularyItem }: FavoriteButtonProps): ReactElement | null => {
   const repetitionService = useRepetitionService()
-  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, vocabularyItemToFavorite(vocabularyItem))
+  const storageCache = useContext(StorageCacheContext)
+  const [favorites] = useStorage('favorites')
+  const isFavorite = getIsFavorite(favorites, vocabularyItemToFavorite(vocabularyItem))
   const theme = useTheme()
-  useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(vocabularyItemToFavorite(vocabularyItem)).catch(reportError)
+      await removeFavorite(storageCache, vocabularyItemToFavorite(vocabularyItem)).catch(reportError)
     } else {
-      await addFavorite(repetitionService, vocabularyItem).catch(reportError)
+      await addFavorite(storageCache, repetitionService, vocabularyItem).catch(reportError)
     }
-    refresh()
-    if (onFavoritesChanged) {
-      onFavoritesChanged()
-    }
-  }
-
-  if (isFavorite === null) {
-    return null
   }
 
   return (

@@ -7,7 +7,7 @@ import Tts from 'react-native-tts'
 import { ExerciseKeys, SIMPLE_RESULTS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/AsyncStorage'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -79,7 +79,7 @@ describe('WriteExerciseScreen', () => {
       closeExerciseAction: CommonActions.goBack(),
     },
   }
-  const storageCache = new StorageCache(newDefaultStorage())
+  const storageCache = StorageCache.createForTesting()
 
   const renderWriteExercise = (): RenderAPI =>
     renderWithStorageCache(storageCache, <WriteExerciseScreen route={route} navigation={navigation} />)

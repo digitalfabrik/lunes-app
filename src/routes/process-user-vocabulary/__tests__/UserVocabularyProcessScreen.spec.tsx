@@ -7,7 +7,7 @@ import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getUserVocabularyItems } from '../../../services/AsyncStorage'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render, { renderWithStorageCache } from '../../../testing/render'
@@ -60,7 +60,7 @@ describe('UserVocabularyProcessScreen', () => {
 
   let storageCache: StorageCache
   beforeEach(() => {
-    storageCache = new StorageCache(newDefaultStorage())
+    storageCache = StorageCache.createForTesting()
   })
 
   afterAll(() => {

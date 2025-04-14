@@ -2,7 +2,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
-import { newDefaultStorage, StorageCache } from '../../../services/Storage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -16,7 +16,7 @@ describe('RepetitionScreen', () => {
   const navigation = createNavigationMock<'Repetition'>()
 
   it('should render screen correctly', async () => {
-    const storageCache = new StorageCache(newDefaultStorage())
+    const storageCache = StorageCache.createForTesting()
     const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
       word: item,
       section: 1,
