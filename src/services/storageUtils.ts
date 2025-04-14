@@ -8,7 +8,7 @@ import { RepetitionService } from './RepetitionService'
 import { getStorageItemOr, StorageCache } from './Storage'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
-const FAVORITES_KEY_VERSION_0 = 'favorites'
+export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
 export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
   let professions = storageCache.getMutableItem('selectedProfessions')

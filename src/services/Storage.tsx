@@ -42,7 +42,7 @@ export const newDefaultStorage = (): Storage => ({
 const defaultStorage = newDefaultStorage()
 
 // eslint-disable-next-line consistent-return
-const getStorageKey = (key: keyof Storage): string => {
+export const getStorageKey = (key: keyof Storage): string => {
   switch (key) {
     case 'wordNodeCards':
       return 'wordNodeCards'
@@ -152,7 +152,7 @@ const resolveObject = async <T extends Record<keyof T, unknown>>(
   return Object.fromEntries(entries)
 }
 
-const loadStorageCache = async (): Promise<StorageCache> => {
+export const loadStorageCache = async (): Promise<StorageCache> => {
   const storage: Storage = await resolveObject({
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
