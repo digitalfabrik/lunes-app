@@ -1,16 +1,19 @@
-import { VOCABULARY_ITEM_TYPES, Favorite } from '../constants/data'
-import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
-import { getUserVocabularyItems, removeFavorite } from '../services/AsyncStorage'
-import { getFromEndpoint } from '../services/axios'
-import useLoadAsync, { Return } from './useLoadAsync'
-import { VocabularyItemFromServer, formatVocabularyItemFromServer } from './useLoadVocabularyItems'
+import { useCallback, useContext } from 'react'
 
-export const loadFavorite = async (favorite: Favorite): Promise<VocabularyItem | null> => {
+import { Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
+import { ENDPOINTS, VocabularyItem } from '../constants/endpoints'
+import { StorageCache, StorageCacheContext } from '../services/Storage'
+import { getFromEndpoint } from '../services/axios'
+import { getUserVocabularyItems, removeFavorite } from '../services/storageUtils'
+import useLoadAsync, { Return } from './useLoadAsync'
+import { formatVocabularyItemFromServer, VocabularyItemFromServer } from './useLoadVocabularyItems'
+
+export const loadFavorite = async (storageCache: StorageCache, favorite: Favorite): Promise<VocabularyItem | null> => {
   if (favorite.vocabularyItemType === VOCABULARY_ITEM_TYPES.userCreated) {
-    const userVocabulary = await getUserVocabularyItems()
+    const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
     const userCreatedFavorite = userVocabulary.find(item => item.id === favorite.id)
     if (!userCreatedFavorite) {
-      await removeFavorite(favorite)
+      await removeFavorite(storageCache, favorite)
       return null
     }
     return userCreatedFavorite
@@ -20,6 +23,12 @@ export const loadFavorite = async (favorite: Favorite): Promise<VocabularyItem |
   return formatVocabularyItemFromServer(vocabularyItemFromServer)
 }
 
-const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => useLoadAsync(loadFavorite, favorite)
+const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => {
+  const storageCache = useContext(StorageCacheContext)
+  return useLoadAsync(
+    useCallback(() => loadFavorite(storageCache, favorite), [storageCache, favorite]),
+    null,
+  )
+}
 
 export default useLoadFavorite

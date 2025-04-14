@@ -14,22 +14,12 @@ const Root = styled.View`
 type VocabularyListScreenProps = {
   vocabularyItems: VocabularyItem[]
   onItemPress: (index: number) => void
-  onFavoritesChanged?: () => void
   title: string
 }
 
-const VocabularyList = ({
-  vocabularyItems,
-  onItemPress,
-  onFavoritesChanged,
-  title,
-}: VocabularyListScreenProps): JSX.Element => {
+const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListScreenProps): JSX.Element => {
   const renderItem = ({ item, index }: { item: VocabularyItem; index: number }): JSX.Element => (
-    <VocabularyListItem
-      vocabularyItem={item}
-      onPress={() => onItemPress(index)}
-      onFavoritesChanged={onFavoritesChanged}
-    />
+    <VocabularyListItem vocabularyItem={item} onPress={() => onItemPress(index)} />
   )
 
   return (

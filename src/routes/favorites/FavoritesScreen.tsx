@@ -1,17 +1,14 @@
-import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
-import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
 import { Favorite } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
-import useLoadAsync from '../../hooks/useLoadAsync'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getFavorites } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import FavoriteItem from './components/FavoriteItem'
 
@@ -28,27 +25,21 @@ const ListHeader = styled(ContentSecondary)`
 `
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
-  const { data, error, refresh } = useLoadAsync(getFavorites, {})
-  const description = `${data?.length ?? 0} ${
-    data?.length === 1 ? getLabels().general.word : getLabels().general.words
-  }`
-
-  useFocusEffect(refresh)
+  const [data] = useStorage('favorites')
+  const description = `${data.length} ${data.length === 1 ? getLabels().general.word : getLabels().general.words}`
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
   const renderItem = ({ item }: { item: Favorite }): JSX.Element => (
-    <FavoriteItem favorite={item} refresh={refresh} onPress={navigateToDetail} />
+    <FavoriteItem favorite={item} onPress={navigateToDetail} />
   )
 
   return (
     <RouteWrapper>
       <Root>
-        <ServerResponseHandler error={error} loading={false} refresh={refresh}>
-          <FlatList ListHeaderComponent={<ListHeader>{description}</ListHeader>} data={data} renderItem={renderItem} />
-        </ServerResponseHandler>
+        <FlatList ListHeaderComponent={<ListHeader>{description}</ListHeader>} data={data} renderItem={renderItem} />
       </Root>
     </RouteWrapper>
   )

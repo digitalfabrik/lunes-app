@@ -1,6 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useContext } from 'react'
 import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
@@ -8,12 +7,12 @@ import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
-import useReadCustomDisciplines from '../../hooks/useReadCustomDisciplines'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../services/AsyncStorage'
+import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
+import { removeCustomDiscipline, removeSelectedProfession } from '../../services/storageUtils'
 import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
@@ -39,22 +38,20 @@ type ManageSelectionScreenProps = {
 }
 
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
-  const { data: customDisciplines, refresh: refreshCustomDisciplines } = useReadCustomDisciplines()
-
-  useFocusEffect(refreshCustomDisciplines)
-  useFocusEffect(refreshSelectedProfessions)
+  const storageCache = useContext(StorageCacheContext)
+  const [selectedProfessions] = useStorage('selectedProfessions')
+  const [customDisciplines] = useStorage('customDisciplines')
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(id).then(refreshSelectedProfessions).catch(reportError)
+      removeSelectedProfession(storageCache, id).catch(reportError)
     }
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
-  const customDisciplineItems = customDisciplines?.map(apiKey => {
-    const deleteCustomDisciplineAndRefresh = () => {
-      removeCustomDiscipline(apiKey).then(refreshCustomDisciplines).catch(reportError)
+  const customDisciplineItems = customDisciplines.map(apiKey => {
+    const deleteCustomDisciplineAndRefresh = async () => {
+      await removeCustomDiscipline(storageCache, apiKey)
     }
     return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
   })

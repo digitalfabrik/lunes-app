@@ -5,9 +5,8 @@ import styled from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { isTrackingEnabled, setIsTrackingEnabled } from '../../services/AsyncStorage'
+import useStorage from '../../hooks/useStorage'
 import { getLabels } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
 
@@ -29,15 +28,13 @@ const ItemTextContainer = styled.View`
 `
 
 const SettingsScreen = (): ReactElement => {
-  const [trackingEnabled, setTrackingEnabled] = useState<boolean>(true)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
-  isTrackingEnabled().then(setTrackingEnabled).catch(reportError)
+  const [trackingEnabled, setTrackingEnabled] = useStorage('isTrackingEnabled')
 
   const onTrackingChange = async (): Promise<void> => {
     const newValue = !trackingEnabled
-    setTrackingEnabled(newValue)
-    return setIsTrackingEnabled(newValue)
+    await setTrackingEnabled(newValue)
   }
 
   return (
