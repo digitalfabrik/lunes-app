@@ -25,7 +25,6 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   addUserVocabularyItem,
   editUserVocabularyItem,
-  getNextUserVocabularyId,
   incrementNextUserVocabularyId,
 } from '../../services/AsyncStorage'
 import { StorageCacheContext } from '../../services/Storage'
@@ -134,8 +133,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
           }),
         ])
       } else {
-        id = await getNextUserVocabularyId()
-        await incrementNextUserVocabularyId()
+        id = await incrementNextUserVocabularyId(storageCache)
       }
 
       const imagePaths = await Promise.all(

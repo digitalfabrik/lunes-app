@@ -17,6 +17,7 @@ export type Storage = {
   cmsUrlOverwrite: CMS | null
   customDisciplines: string[]
   userVocabulary: UserVocabularyItem[]
+  nextUserVocabularyId: number
 }
 
 /**
@@ -33,6 +34,7 @@ export const newDefaultStorage = (): Storage => ({
   cmsUrlOverwrite: null,
   customDisciplines: [],
   userVocabulary: [],
+  nextUserVocabularyId: 1,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -55,6 +57,8 @@ const getStorageKey = (key: keyof Storage): string => {
       return 'customDisciplines'
     case 'userVocabulary':
       return 'userVocabulary'
+    case 'nextUserVocabularyId':
+      return 'userVocabularyNextId'
   }
 }
 
@@ -138,6 +142,7 @@ const loadStorage = async (): Promise<Storage> =>
     cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),
     customDisciplines: getStorageItem('customDisciplines'),
     userVocabulary: getStorageItem('userVocabulary'),
+    nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
   })
 
 const StorageContextProvider = ({ children }: StorageCacheContextProviderProps): ReactElement | null => {

@@ -10,7 +10,6 @@ import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 const FAVORITES_KEY = 'favorites'
 const FAVORITES_KEY_2 = 'favorites-2'
-const USER_VOCABULARY_NEXT_ID = 'userVocabularyNextId'
 
 export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
   let professions = storageCache.getMutableItem('selectedProfessions')
@@ -118,12 +117,10 @@ export const isFavorite = async (favorite: Favorite): Promise<boolean> => {
   return favorites.some(it => compareFavorites(it, favorite))
 }
 
-export const getNextUserVocabularyId = async (): Promise<number> =>
-  parseInt((await AsyncStorage.getItem(USER_VOCABULARY_NEXT_ID)) ?? '1', 10)
-
-export const incrementNextUserVocabularyId = async (): Promise<void> => {
-  const nextId = (await getNextUserVocabularyId()) + 1
-  return AsyncStorage.setItem(USER_VOCABULARY_NEXT_ID, nextId.toString())
+export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<number> => {
+  const nextId = storageCache.getItem('nextUserVocabularyId')
+  await storageCache.setItem('nextUserVocabularyId', nextId + 1)
+  return nextId
 }
 
 export const getUserVocabularyItems = (userVocabulary: readonly UserVocabularyItem[]): VocabularyItem[] =>
