@@ -1,9 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/native'
 
-import { Theme } from '../constants/theme'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import { EditableVocabularyDetailsScreen } from '../routes/VocabularyDetailScreen'
@@ -21,7 +20,7 @@ const UserVocabularyStackNavigator = (): JSX.Element | null => {
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
   const back = getLabels().general.back
-  const theme = useTheme() as Theme
+  const theme = useTheme()
 
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
