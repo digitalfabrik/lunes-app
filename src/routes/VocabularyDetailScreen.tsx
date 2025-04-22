@@ -9,7 +9,6 @@ import VocabularyDetail from '../components/VocabularyDetail'
 import { VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { getLabels } from '../services/helpers'
 
 type VocabularyDetailScreenProps = {
   route: RouteProp<RoutesParams, 'VocabularyDetail'>
@@ -29,7 +28,6 @@ const EditButton = ({ navigation, vocabularyItem }: EditButtonProps) => (
   <PressableOpacity
     onPress={() =>
       navigation.navigate('UserVocabularyProcess', {
-        headerBackLabel: getLabels().general.back,
         itemToEdit: vocabularyItem,
       })
     }>

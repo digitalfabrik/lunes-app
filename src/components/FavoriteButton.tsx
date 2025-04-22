@@ -6,6 +6,7 @@ import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/image
 import { VocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/AsyncStorage'
+import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import PressableOpacity from './PressableOpacity'
 
@@ -27,21 +28,15 @@ type FavoriteButtonProps = {
 }
 
 const FavoriteButton = ({ vocabularyItem, onFavoritesChanged }: FavoriteButtonProps): ReactElement | null => {
-  const favorite = {
-    id: vocabularyItem.id,
-    vocabularyItemType: vocabularyItem.type,
-    ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
-  }
-
-  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, favorite)
+  const { data: isFavorite, refresh } = useLoadAsync(getIsFavorite, vocabularyItemToFavorite(vocabularyItem))
   const theme = useTheme()
   useFocusEffect(refresh)
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(favorite).catch(reportError)
+      await removeFavorite(vocabularyItemToFavorite(vocabularyItem)).catch(reportError)
     } else {
-      await addFavorite(favorite).catch(reportError)
+      await addFavorite(vocabularyItem).catch(reportError)
     }
     refresh()
     if (onFavoritesChanged) {

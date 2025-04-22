@@ -26,7 +26,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
 
   it('should render zero disciplines for zero words', () => {
     const { getByText, queryByText } = renderScreen([])
-    expect(getByText(getLabels().userVocabulary.myWords)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.practice)).toBeDefined()
     expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
     expect(queryByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeNull()
   })
@@ -64,7 +64,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
         description: '',
         numberOfChildren: 10,
         isLeaf: true,
-        parentTitle: getLabels().userVocabulary.myWords,
+        parentTitle: getLabels().userVocabulary.collection,
         needsTrainingSetEndpoint: true,
       },
       disciplineTitle: `${getLabels().userVocabulary.practice.part} 2`,

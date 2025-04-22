@@ -6,6 +6,7 @@ import {
   ARTICLES,
   ExerciseKeys,
   EXERCISES,
+  Favorite,
   FeedbackType,
   NextExercise,
   Progress,
@@ -252,3 +253,9 @@ export const splitTextBySearchString = (allText: string, highlight: string): [st
 
 export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
   disciplines?.filter(discipline => normalizeString(discipline.title).includes(normalizeString(searchKey)))
+
+export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
+  id: vocabularyItem.id,
+  vocabularyItemType: vocabularyItem.type,
+  ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
+})

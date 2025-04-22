@@ -60,12 +60,9 @@ export type RoutesParams = {
   Home: undefined
   UserVocabularyOverview: undefined
   UserVocabularyProcess: {
-    headerBackLabel: string
     itemToEdit?: VocabularyItem
   }
-  UserVocabularyList: {
-    headerBackLabel: string
-  }
+  UserVocabularyList: undefined
   UserVocabularyDetail: { vocabularyItem: VocabularyItem }
   ScopeSelection: {
     initialSelection: boolean
