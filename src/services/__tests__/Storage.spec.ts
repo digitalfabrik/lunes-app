@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { getStorageItem, getStorageKey, loadStorageCache } from '../Storage'
+import { getStorageItem, loadStorageCache, storageKeys } from '../Storage'
 import { FAVORITES_KEY_VERSION_0 } from '../storageUtils'
 
 describe('Storage', () => {
   it('Should be able to load from async storage', async () => {
     await expect(getStorageItem('isDevModeEnabled')).resolves.toBeFalsy()
-    const devModeKey = getStorageKey('isDevModeEnabled')
+    const devModeKey = storageKeys.isDevModeEnabled
     await AsyncStorage.setItem(devModeKey, 'true')
     await expect(getStorageItem('isDevModeEnabled')).resolves.toBeTruthy()
 

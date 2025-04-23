@@ -41,30 +41,17 @@ export const newDefaultStorage = (): Storage => ({
 })
 const defaultStorage = newDefaultStorage()
 
-// eslint-disable-next-line consistent-return
-export const getStorageKey = (key: keyof Storage): string => {
-  switch (key) {
-    case 'wordNodeCards':
-      return 'wordNodeCards'
-    case 'isTrackingEnabled':
-      return 'sentryTracking'
-    case 'selectedProfessions':
-      return 'selectedProfessions'
-    case 'isDevModeEnabled':
-      return 'devmode'
-    case 'progress':
-      return 'progress'
-    case 'cmsUrlOverwrite':
-      return 'cms'
-    case 'customDisciplines':
-      return 'customDisciplines'
-    case 'userVocabulary':
-      return 'userVocabulary'
-    case 'nextUserVocabularyId':
-      return 'userVocabularyNextId'
-    case 'favorites':
-      return 'favorites-2'
-  }
+export const storageKeys: Record<keyof Storage, string> = {
+  wordNodeCards: 'wordNodeCards',
+  isTrackingEnabled: 'sentryTracking',
+  selectedProfessions: 'selectedProfessions',
+  isDevModeEnabled: 'devmode',
+  progress: 'progress',
+  cmsUrlOverwrite: 'cms',
+  customDisciplines: 'customDisciplines',
+  userVocabulary: 'userVocabulary',
+  nextUserVocabularyId: 'userVocabularyNextId',
+  favorites: 'favorites-2',
 }
 
 export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
@@ -73,10 +60,10 @@ export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promis
 }
 
 export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<Storage[T]> =>
-  getStorageItemOr(getStorageKey(key), defaultStorage[key])
+  getStorageItemOr(storageKeys[key], defaultStorage[key])
 
 const setStorageItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
-  await AsyncStorage.setItem(getStorageKey(key), JSON.stringify(value))
+  await AsyncStorage.setItem(storageKeys[key], JSON.stringify(value))
 }
 
 // https://github.com/react-native-async-storage/async-storage/issues/401#issuecomment-2508924008
