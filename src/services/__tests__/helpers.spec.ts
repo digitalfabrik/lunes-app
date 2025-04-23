@@ -36,7 +36,7 @@ describe('helpers', () => {
 
   describe('getNextExercise', () => {
     const getNextExerciseWithCheck = async (): Promise<NextExercise> =>
-      getNextExercise(storageCache.getItem('progress'), profession)
+      getNextExercise({ progress: storageCache.getItem('progress'), profession })
 
     it('should open first exercise, if no exercise was finished yet', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
@@ -95,7 +95,7 @@ describe('helpers', () => {
 
     it('should open first exercise of first discipline, if exercise progress is undefined', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
-      await storageCache.setItem('progress', { '10': { '1': undefined } })
+      await storageCache.setItem('progress', { '10': {} })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
@@ -103,7 +103,7 @@ describe('helpers', () => {
 
     it('should open first exercise of first discipline, if discipline progress is undefined', async () => {
       mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
-      await storageCache.setItem('progress', { '10': undefined })
+      await storageCache.setItem('progress', {})
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)

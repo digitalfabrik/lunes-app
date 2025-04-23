@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -38,10 +38,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
 
   const repetitionService = useRepetitionService()
-  const numberOfWordsNeedingRepetition = useMemo(
-    () => repetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound(),
-    [repetitionService],
-  )
+  const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? <HomeIconWhite width={hp('5%')} height={hp('5%')} /> : <HomeIconGrey width={hp('5%')} height={hp('5%')} />

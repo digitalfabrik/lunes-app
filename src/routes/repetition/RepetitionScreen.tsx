@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useMemo, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -75,10 +75,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText } = getLabels().repetition
   const repetitionService = useRepetitionService()
-  const numberOfWordsNeedingRepetition = useMemo(
-    () => repetitionService.getNumberOfWordsNeedingRepetition(),
-    [repetitionService],
-  )
+  const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
     const closeExerciseAction = CommonActions.navigate('Repetition')

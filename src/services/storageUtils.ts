@@ -132,15 +132,14 @@ export const editUserVocabularyItem = async (
   storageCache: StorageCache,
   oldUserVocabularyItem: VocabularyItem,
   newUserVocabularyItem: VocabularyItem,
-): Promise<boolean> => {
+): Promise<void> => {
   const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
   const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
   if (index === -1) {
-    return false
+    return
   }
   userVocabulary[index] = newUserVocabularyItem
   await storageCache.setItem('userVocabulary', userVocabulary)
-  return true
 }
 
 export const deleteUserVocabularyItem = async (

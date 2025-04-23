@@ -9,7 +9,7 @@ import { loadVocabularyItems } from './useLoadVocabularyItems'
 import useStorage from './useStorage'
 
 export const loadNextExercise = async (progress: Progress, profession: Discipline): Promise<NextExerciseData> => {
-  const nextExercise = await getNextExercise(progress, profession)
+  const nextExercise = await getNextExercise({ progress, profession })
   const trainingSet = await loadTrainingsSet(nextExercise.disciplineId)
   const vocabularyItems = await loadVocabularyItems({ disciplineId: nextExercise.disciplineId })
   return {

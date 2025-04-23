@@ -16,7 +16,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
     setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
-    setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>, // eslint-disable-next-line no-empty-function
+    setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>,
     storageCache: StorageCache,
   ) {
     super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults, storageCache)

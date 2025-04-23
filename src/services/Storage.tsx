@@ -146,9 +146,9 @@ type StorageCacheContextProviderProps = {
 }
 
 const resolveObject = async <T extends Record<keyof T, unknown>>(
-  obj: T,
+  object: T,
 ): Promise<{ [K in keyof T]: Awaited<T[K]> }> => {
-  const entries = await Promise.all(Object.entries(obj).map(async ([k, v]) => [k, await v]))
+  const entries = await Promise.all(Object.entries(object).map(async ([key, value]) => [key, await value]))
   return Object.fromEntries(entries)
 }
 

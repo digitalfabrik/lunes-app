@@ -94,13 +94,17 @@ const getNumberOfUnlockedExercisesByProgress = (disciplineId: number, progress: 
 export const getNumberOfUnlockedExercises = (progress: Progress, disciplineId: number): number =>
   getNumberOfUnlockedExercisesByProgress(disciplineId, progress)
 
+export type GetNextExerciseParams = {
+  progress: Progress
+  profession: Discipline
+}
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
   disciplineId: the leaf discipline which needs to be done next
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
-export const getNextExercise = async (progress: Progress, profession: Discipline): Promise<NextExercise> => {
+export const getNextExercise = async ({ progress, profession }: GetNextExerciseParams): Promise<NextExercise> => {
   const discipline = await loadDiscipline({ disciplineId: profession.id })
   const leafDisciplineIds = discipline.leafDisciplines
   if (!leafDisciplineIds?.length) {

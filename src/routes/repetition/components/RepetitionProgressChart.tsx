@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from 'react'
+import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
@@ -15,10 +15,8 @@ const RepetitionProgressChart: () => ReactElement = () => {
   const { words } = getLabels().general
 
   const repetitionService = useRepetitionService()
-  const chartData = useMemo(() => {
-    const data = repetitionService.getNumberOfWordsInEachSection()
-    return data.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
-  }, [repetitionService])
+  const numberOfWordsInEachSection = repetitionService.getNumberOfWordsInEachSection()
+  const chartData = numberOfWordsInEachSection.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
 
   return (
     <VictoryChart height={hp('35%')}>
