@@ -88,7 +88,7 @@ export class StorageCache {
     this.storage = storage
   }
 
-  static createForTesting = (): StorageCache => new StorageCache(newDefaultStorage())
+  static createDummy = (): StorageCache => new StorageCache(newDefaultStorage())
 
   static create = async (storage: Storage): Promise<StorageCache> => {
     const storageCache = new StorageCache(storage)
@@ -139,7 +139,7 @@ export class StorageCache {
   }
 }
 
-export const StorageCacheContext = createContext<StorageCache>(StorageCache.createForTesting())
+export const StorageCacheContext = createContext<StorageCache>(StorageCache.createDummy())
 
 type StorageCacheContextProviderProps = {
   children: ReactElement

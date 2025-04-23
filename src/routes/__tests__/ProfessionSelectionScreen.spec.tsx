@@ -28,7 +28,7 @@ describe('ProfessionSelectionScreen', () => {
     },
   })
 
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
   const renderScreen = (initialSelection = true) =>
     renderWithStorageCache(
       storageCache,

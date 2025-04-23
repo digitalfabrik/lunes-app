@@ -16,7 +16,7 @@ jest.mock('../../hooks/useLoadAsync', () => ({
 const cheat = jest.fn()
 
 describe('CheatMode', () => {
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
 
   beforeEach(() => {
     jest.clearAllMocks()

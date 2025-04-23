@@ -24,7 +24,7 @@ describe('FavoriteButton', () => {
     )
 
   beforeEach(() => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   it('should add favorite on click', async () => {

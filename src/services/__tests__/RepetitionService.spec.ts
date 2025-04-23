@@ -14,7 +14,7 @@ describe('RepetitionService', () => {
   const testVocabulary = new VocabularyItemBuilder(8).build()
   let testData: WordNodeCard[] = []
 
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
   const repetitionService = new RepetitionService(
     () => storageCache.getItem('wordNodeCards'),
     value => storageCache.setItem('wordNodeCards', value),

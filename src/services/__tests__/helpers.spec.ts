@@ -28,7 +28,7 @@ jest.mock('../storageUtils')
 
 describe('helpers', () => {
   const profession = mockDisciplines()[0]
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
 
   beforeEach(async () => {
     await storageCache.setItem('progress', {})

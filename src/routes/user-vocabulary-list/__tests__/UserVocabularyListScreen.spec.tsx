@@ -30,7 +30,7 @@ describe('UserVocabularyListScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(() => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   it('should render list correctly', async () => {

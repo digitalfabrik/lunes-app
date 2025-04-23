@@ -38,7 +38,7 @@ describe('StandardExercisesScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     RNAsyncStorage.clear()
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
       [route.params.disciplineId]: {
         '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,

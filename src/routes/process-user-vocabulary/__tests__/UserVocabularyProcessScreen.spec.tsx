@@ -60,7 +60,7 @@ describe('UserVocabularyProcessScreen', () => {
 
   let storageCache: StorageCache
   beforeEach(() => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   afterAll(() => {

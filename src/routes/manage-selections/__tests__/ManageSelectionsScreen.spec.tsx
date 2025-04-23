@@ -22,7 +22,7 @@ describe('ManageSelectionsScreen', () => {
   const renderScreen = () => renderWithStorageCache(storageCache, <ManageSelectionsScreen navigation={navigation} />)
 
   beforeEach(async () => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   it('should show and delete selected professions', async () => {

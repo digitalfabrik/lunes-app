@@ -28,7 +28,7 @@ describe('storageUtils', () => {
   let repetitionService: RepetitionService
 
   beforeEach(() => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
     repetitionService = new RepetitionService(
       () => storageCache.getItem('wordNodeCards'),
       value => storageCache.setItem('wordNodeCards', value),

@@ -79,7 +79,7 @@ describe('WriteExerciseScreen', () => {
       closeExerciseAction: CommonActions.goBack(),
     },
   }
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
 
   const renderWriteExercise = (): RenderAPI =>
     renderWithStorageCache(storageCache, <WriteExerciseScreen route={route} navigation={navigation} />)

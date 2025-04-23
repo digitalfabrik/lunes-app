@@ -16,7 +16,7 @@ describe('RepetitionScreen', () => {
   const navigation = createNavigationMock<'Repetition'>()
 
   it('should render screen correctly', async () => {
-    const storageCache = StorageCache.createForTesting()
+    const storageCache = StorageCache.createDummy()
     const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
       word: item,
       section: 1,

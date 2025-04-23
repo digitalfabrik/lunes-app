@@ -42,7 +42,7 @@ describe('VocabularyListScreen', () => {
   }
 
   const navigation = createNavigationMock<'VocabularyList'>()
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
 
   it('should save progress', () => {
     renderWithStorageCache(storageCache, <VocabularyListScreen route={route} navigation={navigation} />)

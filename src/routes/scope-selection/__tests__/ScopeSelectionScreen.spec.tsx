@@ -26,7 +26,7 @@ describe('ScopeSelection', () => {
     },
   })
 
-  const storageCache = StorageCache.createForTesting()
+  const storageCache = StorageCache.createDummy()
 
   beforeEach(async () => {
     await storageCache.setItem('selectedProfessions', null)

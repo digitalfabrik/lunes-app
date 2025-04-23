@@ -43,7 +43,7 @@ describe('StandardWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
     service = new StandardWriteExerciseService(
       route,
       navigation,

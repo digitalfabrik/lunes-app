@@ -45,7 +45,7 @@ describe('RepetitionWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
     service = new RepetitionWriteExerciseService(
       route,
       navigation,

@@ -46,7 +46,7 @@ describe('ArticleChoiceExerciseScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   const vocabularyItems = new VocabularyItemBuilder(2).build()

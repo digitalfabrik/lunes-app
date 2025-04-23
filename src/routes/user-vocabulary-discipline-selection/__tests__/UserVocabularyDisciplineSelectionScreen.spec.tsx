@@ -18,7 +18,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(async () => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   const renderScreen = async (mockVocabulary: VocabularyItem[]): Promise<RenderAPI> => {

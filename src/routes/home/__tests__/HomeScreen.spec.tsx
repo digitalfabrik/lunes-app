@@ -32,7 +32,7 @@ describe('HomeScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(async () => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   it('should render professions', async () => {

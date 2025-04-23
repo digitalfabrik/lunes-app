@@ -30,7 +30,7 @@ describe('AddCustomDisciplineScreen', () => {
   let storageCache: StorageCache
 
   beforeEach(() => {
-    storageCache = StorageCache.createForTesting()
+    storageCache = StorageCache.createDummy()
   })
 
   it('should enable submit button on text input', async () => {
