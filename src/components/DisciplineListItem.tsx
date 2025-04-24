@@ -1,13 +1,12 @@
-import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { Discipline } from '../constants/endpoints'
 import theme from '../constants/theme'
-import { childrenDescription, childrenLabel, getProgress } from '../services/helpers'
-import { reportError } from '../services/sentry'
+import useReadProgress from '../hooks/useReadProgress'
+import { childrenDescription, childrenLabel } from '../services/helpers'
 import ListItem from './ListItem'
 
 type DisciplineListItemProps = {
@@ -43,13 +42,8 @@ const DisciplineListItem = ({
   // Description either contains the number of children and the type of children or just the type of children if the number is shown as badge
   const description = hasBadge ? childrenLabel(item) : childrenDescription(item)
 
-  const [progress, setProgress] = useState<number>(0)
-
-  useFocusEffect(() => {
-    if (showProgress) {
-      getProgress(item).then(setProgress).catch(reportError)
-    }
-  })
+  const actualProgress = useReadProgress(item)
+  const progress = showProgress ? actualProgress : 0
 
   const iconWithProgress = (
     <>

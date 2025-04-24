@@ -16,20 +16,20 @@ import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import {
   ARTICLES,
-  BUTTONS_THEME,
-  VOCABULARY_ITEM_TYPES,
-  getArticleWithLabel,
   ArticleTypeExtended,
+  BUTTONS_THEME,
+  getArticleWithLabel,
+  VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import {
   addUserVocabularyItem,
   editUserVocabularyItem,
-  getNextUserVocabularyId,
   incrementNextUserVocabularyId,
-} from '../../services/AsyncStorage'
-import { getLabels } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
+} from '../../services/storageUtils'
 import ImageSelectionOverlay from './components/ImageSelectionOverlay'
 import Thumbnail from './components/Thumbnail'
 
@@ -69,6 +69,7 @@ type UserVocabularyProcessScreenProps = {
 
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const { itemToEdit } = route.params
+  const storageCache = useStorageCache()
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
   const [article, setArticle] = useState<ArticleTypeExtended | null>(null)
@@ -132,8 +133,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
           }),
         ])
       } else {
-        id = await getNextUserVocabularyId()
-        await incrementNextUserVocabularyId()
+        id = await incrementNextUserVocabularyId(storageCache)
       }
 
       const imagePaths = await Promise.all(
@@ -169,9 +169,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       }
 
       if (itemToEdit) {
-        await editUserVocabularyItem(itemToEdit, itemToSave)
+        await editUserVocabularyItem(storageCache, itemToEdit, itemToSave)
       } else {
-        await addUserVocabularyItem(itemToSave)
+        await addUserVocabularyItem(storageCache, itemToSave)
       }
 
       navigation.navigate('UserVocabularyList')

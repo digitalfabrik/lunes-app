@@ -18,7 +18,6 @@ import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { getExerciseProgress } from './AsyncStorage'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
@@ -92,22 +91,25 @@ const getNumberOfUnlockedExercisesByProgress = (disciplineId: number, progress: 
     : 0
 }
 
-export const getNumberOfUnlockedExercises = (disciplineId: number): Promise<number> =>
-  getExerciseProgress().then(progress => getNumberOfUnlockedExercisesByProgress(disciplineId, progress))
+export const getNumberOfUnlockedExercises = (progress: Progress, disciplineId: number): number =>
+  getNumberOfUnlockedExercisesByProgress(disciplineId, progress)
 
+export type GetNextExerciseParams = {
+  progress: Progress
+  profession: Discipline
+}
 /*
   Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
   returns
   disciplineId: the leaf discipline which needs to be done next
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
-export const getNextExercise = async (profession: Discipline): Promise<NextExercise> => {
+export const getNextExercise = async ({ progress, profession }: GetNextExerciseParams): Promise<NextExercise> => {
   const discipline = await loadDiscipline({ disciplineId: profession.id })
   const leafDisciplineIds = discipline.leafDisciplines
   if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
   }
-  const progress = await getExerciseProgress()
   const firstUnfinishedDisciplineId = leafDisciplineIds.find(
     id => getNumberOfUnlockedExercisesByProgress(id, progress) < EXERCISES.length,
   )
@@ -132,14 +134,13 @@ export const getNextExercise = async (profession: Discipline): Promise<NextExerc
   }
 }
 
-export const getProgress = async (profession: Discipline | null): Promise<number> => {
+export const getProgress = (progress: Progress, profession: Discipline | null): number => {
   if (!profession) {
     return 0
   }
   if (!profession.leafDisciplines) {
-    return (await getNumberOfUnlockedExercises(profession.id)) / EXERCISES.length
+    return getNumberOfUnlockedExercises(progress, profession.id) / EXERCISES.length
   }
-  const progress = await getExerciseProgress()
   const doneExercises = profession.leafDisciplines.reduce(
     (acc, leaf) => acc + getNumberOfUnlockedExercisesByProgress(leaf, progress),
     0,

@@ -2,7 +2,7 @@
 import * as Sentry from '@sentry/react-native'
 import { SeverityLevel } from '@sentry/types'
 
-import { isTrackingEnabled } from './AsyncStorage'
+import { getStorageItem } from './Storage'
 
 export const initSentry = (): void => {
   if (!__DEV__) {
@@ -41,7 +41,7 @@ export const reportError = (err: unknown): void => {
   if (__DEV__) {
     console.error('Sentry reported error: ', err)
   } else {
-    isTrackingEnabled()
+    getStorageItem('isTrackingEnabled')
       .then(isTrackingEnabled => {
         if (isTrackingEnabled) {
           Sentry.captureException(err)

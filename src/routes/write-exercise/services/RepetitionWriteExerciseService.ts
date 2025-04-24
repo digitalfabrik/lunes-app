@@ -1,10 +1,32 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+
 import { SimpleResult } from '../../../constants/data'
 import { VocabularyItem } from '../../../constants/endpoints'
-import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
+import { StorageCache } from '../../../services/Storage'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
 
 class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
+  public repetitionService: RepetitionService
+
+  constructor(
+    route: RouteProp<RoutesParams, 'WriteExercise'>,
+    navigation: StackNavigationProp<RoutesParams, 'WriteExercise'>,
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
+    setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>>,
+    setVocabularyItemWithResults: React.Dispatch<React.SetStateAction<VocabularyItemResult[]>>,
+    storageCache: StorageCache,
+  ) {
+    super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults, storageCache)
+
+    this.repetitionService = new RepetitionService(
+      () => storageCache.getItem('wordNodeCards'),
+      value => storageCache.setItem('wordNodeCards', value),
+    )
+  }
+
   finishExercise = async (): Promise<void> => {
     this.navigation.navigate('Repetition')
   }
@@ -19,7 +41,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     if (current.vocabularyItem.id !== result.vocabularyItem.id) {
       return
     }
-    await RepetitionService.updateWordNodeCard(result)
+    await this.repetitionService.updateWordNodeCard(result)
     updatedVocabularyItemsWithResults[currentIndex] = result
     this.setVocabularyItemWithResults(updatedVocabularyItemsWithResults)
     this.setIsAnswerSubmitted(true)
@@ -34,7 +56,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     /* eslint-disable no-restricted-syntax */
     for (const vocabularyItem of cheatedVocabularyItems) {
       /* eslint-disable no-await-in-loop */
-      await RepetitionService.updateWordNodeCard(vocabularyItem)
+      await this.repetitionService.updateWordNodeCard(vocabularyItem)
     }
     await this.finishExercise()
   }

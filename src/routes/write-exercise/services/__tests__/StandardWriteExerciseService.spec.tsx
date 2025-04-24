@@ -5,12 +5,13 @@ import React from 'react'
 import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { ContentType, RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
-import { saveExerciseProgress } from '../../../../services/AsyncStorage'
+import { StorageCache } from '../../../../services/Storage'
+import { saveExerciseProgress } from '../../../../services/storageUtils'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import StandardWriteExerciseService from '../StandardWriteExerciseService'
 
-jest.mock('../../../../services/AsyncStorage', () => ({
+jest.mock('../../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
 }))
 
@@ -19,6 +20,7 @@ describe('StandardWriteExerciseService', () => {
   let vocabularyItemsWithResults: VocabularyItemResult[]
   let service: StandardWriteExerciseService
   let route: RouteProp<RoutesParams, 'WriteExercise'>
+  let storageCache: StorageCache
   const navigation = createNavigationMock<'WriteExercise'>()
   const setCurrentIndex: React.Dispatch<React.SetStateAction<number>> = jest.fn()
   const setIsAnswerSubmitted: React.Dispatch<React.SetStateAction<boolean>> = jest.fn()
@@ -41,12 +43,14 @@ describe('StandardWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
+    storageCache = StorageCache.createDummy()
     service = new StandardWriteExerciseService(
       route,
       navigation,
       setCurrentIndex,
       setIsAnswerSubmitted,
       setVocabularyItemWithResults,
+      storageCache,
     )
   }
 
@@ -85,8 +89,8 @@ describe('StandardWriteExerciseService', () => {
     })
 
     it('should finish exercise with saving, if all words are done', async () => {
-      service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
-      expect(saveExerciseProgress).toHaveBeenCalledWith(1, 3, vocabularyItemsWithResults)
+      await service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
+      expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, 3, vocabularyItemsWithResults)
       await waitFor(() => {
         expect(navigation.navigate).toHaveBeenCalled()
         expect(setCurrentIndex).toHaveBeenCalledWith(0)
@@ -95,7 +99,7 @@ describe('StandardWriteExerciseService', () => {
 
     it('should finish exercise without saving, if all words are done and userVocabulary', async () => {
       initTestData('userVocabulary')
-      service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
+      await service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
       expect(saveExerciseProgress).toHaveBeenCalledTimes(0)
       await waitFor(() => {
         expect(navigation.navigate).toHaveBeenCalled()

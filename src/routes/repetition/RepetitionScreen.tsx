@@ -1,4 +1,4 @@
-import { CommonActions, useFocusEffect } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -12,9 +12,8 @@ import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
-import useLoadAsync from '../../hooks/useLoadAsync'
+import useRepetitionService from '../../hooks/useRepetitionService'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { RepetitionService } from '../../services/RepetitionService'
 import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
 
@@ -75,16 +74,12 @@ type RepetitionScreenProps = {
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText } = getLabels().repetition
-  const { data: numberOfWordsNeedingRepetition, refresh: refreshNumberOfWordsNeedingRepetition } = useLoadAsync(
-    RepetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound,
-    undefined,
-  )
-
-  useFocusEffect(refreshNumberOfWordsNeedingRepetition)
+  const repetitionService = useRepetitionService()
+  const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
     const closeExerciseAction = CommonActions.navigate('Repetition')
-    const wordNodeCards = await RepetitionService.getWordNodeCardsForNextRepetition()
+    const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
     if (wordNodeCards.length > 0) {
       navigation.navigate('WriteExercise', {
         vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
@@ -100,13 +95,13 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
       <Root>
         <StyledHeading>{repeatWords}</StyledHeading>
         <Container>
-          <TextContainer>{`${numberOfWordsNeedingRepetition ?? 0} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          <TextContainer>{`${numberOfWordsNeedingRepetition} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
           <Button
             testID='repetition-button'
             onPress={navigate}
             label={repeatNow}
             buttonTheme={BUTTONS_THEME.contained}
-            disabled={(numberOfWordsNeedingRepetition ?? 0) === 0}
+            disabled={numberOfWordsNeedingRepetition === 0}
           />
         </Container>
         <Container>

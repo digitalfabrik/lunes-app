@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -8,8 +8,8 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { getAllWords } from '../../../hooks/useGetAllWords'
-import useLoadAsync from '../../../hooks/useLoadAsync'
-import { toggleDevMode, getDevMode, setOverwriteCMS } from '../../../services/AsyncStorage'
+import useRepetitionService from '../../../hooks/useRepetitionService'
+import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
@@ -32,17 +32,17 @@ type DebugModalProps = {
 }
 
 const DebugModal = (props: DebugModalProps): JSX.Element => {
+  const storageCache = useStorageCache()
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
-  const [baseURL, setBaseURL] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
-  const { data: isDevMode, refresh } = useLoadAsync(getDevMode, null)
+  const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
   const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData } =
     getLabels().settings.debugModal
+  const repetitionService = useRepetitionService()
 
-  useEffect(() => {
-    getBaseURL().then(setBaseURL).catch(reportError)
-  }, [])
+  const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
+  const baseURL = getBaseURL(cmsUrlOverwrite)
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -56,25 +56,23 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
 
   const switchCMS = async (): Promise<void> => {
     const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
-    await setOverwriteCMS(updatedCMS)
-    setBaseURL(updatedCMS)
+    await setCmsUrlOverwrite(updatedCMS)
   }
 
   const doToggleDevMode = async (): Promise<void> => {
-    await toggleDevMode()
-    refresh()
+    await setIsDevModeEnabled(!isDevModeEnabled)
   }
 
   const NUMBER_OF_TEST_VOCABULARY = 5
   const MAX_DAYS_IN_A_SECTION = 100
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
-    const allWords = await getAllWords()
+    const allWords = await getAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       word: vocabularyItem,
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
-    await RepetitionService.saveWordNodeCards(wordCards)
+    await repetitionService.setWordNodeCards(wordCards)
   }
 
   return (
@@ -87,7 +85,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
           <ContentSecondary>{baseURL}</ContentSecondary>
           <Button label={changeCMS} onPress={switchCMS} buttonTheme={BUTTONS_THEME.contained} />
           <Button
-            label={isDevMode ? disableDevMode : enableDevMode}
+            label={isDevModeEnabled ? disableDevMode : enableDevMode}
             onPress={doToggleDevMode}
             buttonTheme={BUTTONS_THEME.contained}
           />

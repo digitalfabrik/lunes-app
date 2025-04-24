@@ -7,12 +7,12 @@ import React from 'react'
 import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
 import useLoadVocabularyItems from '../../../hooks/useLoadVocabularyItems'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
-import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
-import render from '../../../testing/render'
+import { renderWithStorageCache } from '../../../testing/render'
 import StandardExercisesScreen from '../StandardExercisesScreen'
 
 jest.mock('@react-navigation/native')
@@ -20,11 +20,7 @@ jest.mock('../../../hooks/useLoadVocabularyItems')
 
 describe('StandardExercisesScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(1).build()
-  beforeEach(() => {
-    jest.clearAllMocks()
-    RNAsyncStorage.clear()
-    mocked(useLoadVocabularyItems).mockReturnValue(getReturnOf(vocabularyItems))
-  })
+  let storageCache: StorageCache
 
   const navigation = createNavigationMock<'StandardExercises'>()
   const route: RouteProp<RoutesParams, 'StandardExercises'> = {
@@ -39,15 +35,24 @@ describe('StandardExercisesScreen', () => {
     },
   }
 
-  mockUseLoadAsyncWithData({
-    [route.params.disciplineId]: {
-      '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
-      '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
-    },
+  beforeEach(() => {
+    jest.clearAllMocks()
+    RNAsyncStorage.clear()
+    storageCache = StorageCache.createDummy()
+    storageCache.setItem('progress', {
+      [route.params.disciplineId]: {
+        '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
+        '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
+      },
+    })
+    mocked(useLoadVocabularyItems).mockReturnValue(getReturnOf(vocabularyItems))
   })
 
   it('should render correctly', () => {
-    const { getAllByText } = render(<StandardExercisesScreen route={route} navigation={navigation} />)
+    const { getAllByText } = renderWithStorageCache(
+      storageCache,
+      <StandardExercisesScreen route={route} navigation={navigation} />,
+    )
     EXERCISES.forEach(exercise => {
       expect(getAllByText(exercise.title)).toBeDefined()
       expect(getAllByText(exercise.description)).toBeDefined()
@@ -55,18 +60,23 @@ describe('StandardExercisesScreen', () => {
   })
 
   it('should show modal that the lesson is not available yet on navigation if locked', async () => {
-    const { getByText, getByTestId, queryByTestId } = render(
+    await storageCache.setItem('progress', {})
+    const { getByText, getByTestId, queryByTestId } = renderWithStorageCache(
+      storageCache,
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
     expect(queryByTestId('locking-modal')).toBeFalsy()
     const lockedExercise = getByText(EXERCISES[1].title)
     fireEvent.press(lockedExercise)
-    expect(getByTestId('locking-modal')).toHaveProp('visible', true)
+    await waitFor(() => expect(getByTestId('locking-modal')).toHaveProp('visible', true))
     expect(navigation.navigate).not.toHaveBeenCalled()
   })
 
   it('should trigger navigation if unlocked', () => {
-    const { getByText } = render(<StandardExercisesScreen route={route} navigation={navigation} />)
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <StandardExercisesScreen route={route} navigation={navigation} />,
+    )
     const nextExercise = getByText(EXERCISES[0].title)
     fireEvent.press(nextExercise)
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, {
@@ -79,12 +89,18 @@ describe('StandardExercisesScreen', () => {
   })
 
   it('should show feedback badge for done levels', async () => {
-    const { queryByTestId } = render(<StandardExercisesScreen route={route} navigation={navigation} />)
+    const { queryByTestId } = renderWithStorageCache(
+      storageCache,
+      <StandardExercisesScreen route={route} navigation={navigation} />,
+    )
     await waitFor(() => expect(queryByTestId('positive-badge')).not.toBeNull())
   })
 
   it('should not show feedback badge for wordlist level', async () => {
-    const { queryByTestId } = render(<StandardExercisesScreen route={route} navigation={navigation} />)
+    const { queryByTestId } = renderWithStorageCache(
+      storageCache,
+      <StandardExercisesScreen route={route} navigation={navigation} />,
+    )
     await waitFor(() => expect(queryByTestId('negative-badge')).toBeNull())
   })
 })

@@ -18,7 +18,8 @@ import {
   SimpleResult,
 } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
-import { VocabularyItemResult, RoutesParams } from '../../navigation/NavigationTypes'
+import { useStorageCache } from '../../hooks/useStorage'
+import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
 import RepetitionWriteExerciseService from './services/RepetitionWriteExerciseService'
@@ -40,6 +41,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
   const [vocabularyItemWithResults, setVocabularyItemWithResults] = useState<VocabularyItemResult[]>(
     shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
+  const storageCache = useStorageCache()
 
   const { isKeyboardVisible } = useKeyboard()
   const current = vocabularyItemWithResults[currentIndex]
@@ -54,6 +56,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults,
+            storageCache,
           )
         : new StandardWriteExerciseService(
             route,
@@ -61,8 +64,9 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
             setCurrentIndex,
             setIsAnswerSubmitted,
             setVocabularyItemWithResults,
+            storageCache,
           ),
-    [contentType, route, navigation],
+    [storageCache, contentType, route, navigation],
   )
 
   const initializeExercise = useCallback(

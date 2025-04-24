@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
 import Navigator from './navigation/Navigator'
+import StorageProvider from './services/Storage'
 import { initSentry } from './services/sentry'
 
 LogBox.ignoreLogs(['NativeEventEmitter'])
@@ -20,11 +21,13 @@ const App = (): ReactElement => {
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <NavigationContainer>
-          <HeaderButtonsProvider stackType='native'>
-            <Navigator />
-          </HeaderButtonsProvider>
-        </NavigationContainer>
+        <StorageProvider>
+          <NavigationContainer>
+            <HeaderButtonsProvider stackType='native'>
+              <Navigator />
+            </HeaderButtonsProvider>
+          </NavigationContainer>
+        </StorageProvider>
       </SafeAreaProvider>
     </ThemeProvider>
   )

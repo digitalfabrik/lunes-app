@@ -1,4 +1,4 @@
-import { RouteProp, useFocusEffect } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -11,9 +11,8 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import useReadSelectedProfessions from '../../hooks/useReadSelectedProfessions'
+import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { setSelectedProfessions } from '../../services/AsyncStorage'
 import { getLabels } from '../../services/helpers'
 import ScopeSelection from './ScopeSelection'
 
@@ -37,11 +36,9 @@ type IntroScreenProps = {
 
 const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   const { initialSelection } = route.params
-  const { data: selectedProfessions, refresh: refreshSelectedProfessions } = useReadSelectedProfessions()
+  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
-
-  useFocusEffect(refreshSelectedProfessions)
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: !initialSelection })
