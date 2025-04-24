@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useContext, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -14,8 +14,8 @@ import { BUTTONS_THEME } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { StorageCacheContext } from '../../services/Storage'
 import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import { deleteUserVocabularyItem } from '../../services/storageUtils'
@@ -43,7 +43,7 @@ type UserVocabularyListScreenProps = {
 }
 
 const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -11,7 +11,7 @@ import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { StorageCacheContext } from '../../../services/Storage'
+import { useStorageCache } from '../../../hooks/useStorage'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/storageUtils'
 import Card from './Card'
@@ -53,7 +53,7 @@ const DisciplineCard = ({
   navigateToDiscipline,
   navigateToNextExercise,
 }: DisciplineCardProps): JSX.Element | null => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 

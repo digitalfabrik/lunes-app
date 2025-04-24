@@ -1,11 +1,10 @@
-import React, { ReactElement, useContext } from 'react'
+import React, { ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import { VocabularyItem } from '../constants/endpoints'
 import useRepetitionService from '../hooks/useRepetitionService'
-import useStorage from '../hooks/useStorage'
-import { StorageCacheContext } from '../services/Storage'
+import useStorage, { useStorageCache } from '../hooks/useStorage'
 import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/storageUtils'
@@ -29,7 +28,7 @@ type FavoriteButtonProps = {
 
 const FavoriteButton = ({ vocabularyItem }: FavoriteButtonProps): ReactElement | null => {
   const repetitionService = useRepetitionService()
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const [favorites] = useStorage('favorites')
   const isFavorite = getIsFavorite(favorites, vocabularyItemToFavorite(vocabularyItem))
   const theme = useTheme()

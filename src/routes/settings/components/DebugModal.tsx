@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -9,9 +9,8 @@ import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { getAllWords } from '../../../hooks/useGetAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
-import useStorage from '../../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
-import { StorageCacheContext } from '../../../services/Storage'
 import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
@@ -33,7 +32,7 @@ type DebugModalProps = {
 }
 
 const DebugModal = (props: DebugModalProps): JSX.Element => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const { visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'

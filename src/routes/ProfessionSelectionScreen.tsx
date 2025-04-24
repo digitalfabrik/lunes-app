@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useContext } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -13,9 +13,8 @@ import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
 import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
-import useStorage from '../hooks/useStorage'
+import useStorage, { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { StorageCacheContext } from '../services/Storage'
 import { childrenDescription, getLabels } from '../services/helpers'
 import { pushSelectedProfession, removeSelectedProfession } from '../services/storageUtils'
 
@@ -44,7 +43,7 @@ type ProfessionSelectionScreenProps = {
 }
 
 const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
   const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')

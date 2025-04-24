@@ -1,13 +1,13 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys, FeedbackType } from '../constants/data'
+import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { StorageCacheContext } from '../services/Storage'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import { setExerciseProgress } from '../services/storageUtils'
@@ -20,7 +20,7 @@ type VocabularyListScreenProps = {
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
   const { contentType, closeExerciseAction } = route.params
   const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
 
   useEffect(() => {
     setExerciseProgress(storageCache, disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)

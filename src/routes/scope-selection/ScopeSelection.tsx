@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import DisciplineListItem from '../../components/DisciplineListItem'
@@ -9,7 +9,7 @@ import { Discipline } from '../../constants/endpoints'
 import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import { StorageCacheContext } from '../../services/Storage'
+import { useStorageCache } from '../../hooks/useStorage'
 import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
 import { pushSelectedProfession } from '../../services/storageUtils'
 
@@ -60,7 +60,7 @@ const ScopeSelection = ({
   navigateToManageSelection,
   selectedProfessions,
 }: ScopeSelectionProps): JSX.Element => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const allProfessions = useLoadAllDisciplines()
     .data?.filter(discipline => discipline.total_discipline_children === 0)

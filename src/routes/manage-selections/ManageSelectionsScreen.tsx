@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useContext } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import AddElement from '../../components/AddElement'
@@ -7,9 +7,8 @@ import HorizontalLine from '../../components/HorizontalLine'
 import RouteWrapper from '../../components/RouteWrapper'
 import { HeadingText } from '../../components/text/Heading'
 import { SubheadingText } from '../../components/text/Subheading'
-import useStorage from '../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import { removeCustomDiscipline, removeSelectedProfession } from '../../services/storageUtils'
@@ -38,7 +37,7 @@ type ManageSelectionScreenProps = {
 }
 
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const [selectedProfessions] = useStorage('selectedProfessions')
   const [customDisciplines] = useStorage('customDisciplines')
 

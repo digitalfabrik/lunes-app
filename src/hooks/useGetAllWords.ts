@@ -1,10 +1,9 @@
-import { useContext } from 'react'
-
 import { VocabularyItem } from '../constants/endpoints'
-import { StorageCache, StorageCacheContext } from '../services/Storage'
+import { StorageCache } from '../services/Storage'
 import { getUserVocabularyItems } from '../services/storageUtils'
 import { loadAllVocabularyItems } from './useLoadAllVocabularyItems'
 import { Return, useLoadAsync } from './useLoadAsync'
+import { useStorageCache } from './useStorage'
 
 export const getAllWords = async (storageCache: StorageCache): Promise<VocabularyItem[]> => {
   const lunesStandardVocabulary = await loadAllVocabularyItems()
@@ -12,6 +11,6 @@ export const getAllWords = async (storageCache: StorageCache): Promise<Vocabular
   return [...lunesStandardVocabulary, ...userVocabulary]
 }
 
-const useGetAllWords = (): Return<VocabularyItem[]> => useLoadAsync(getAllWords, useContext(StorageCacheContext))
+const useGetAllWords = (): Return<VocabularyItem[]> => useLoadAsync(getAllWords, useStorageCache())
 
 export default useGetAllWords

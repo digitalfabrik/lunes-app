@@ -1,6 +1,6 @@
 import { useCallback, useContext, useSyncExternalStore } from 'react'
 
-import { Storage, StorageCacheContext } from '../services/Storage'
+import { Storage, StorageCache, StorageCacheContext } from '../services/Storage'
 
 const useStorage = <T extends keyof Storage>(
   key: T,
@@ -14,5 +14,7 @@ const useStorage = <T extends keyof Storage>(
 
   return [value, setValue]
 }
+
+export const useStorageCache = (): StorageCache => useContext(StorageCacheContext)
 
 export default useStorage

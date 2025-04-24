@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 import { DocumentDirectoryPath, moveFile, unlink } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
@@ -16,13 +16,13 @@ import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
 import {
   ARTICLES,
-  BUTTONS_THEME,
-  VOCABULARY_ITEM_TYPES,
-  getArticleWithLabel,
   ArticleTypeExtended,
+  BUTTONS_THEME,
+  getArticleWithLabel,
+  VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { StorageCacheContext } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import {
@@ -69,7 +69,7 @@ type UserVocabularyProcessScreenProps = {
 
 const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProcessScreenProps): ReactElement => {
   const { itemToEdit } = route.params
-  const storageCache = useContext(StorageCacheContext)
+  const storageCache = useStorageCache()
   const [images, setImages] = useState<string[]>([])
   const [word, setWord] = useState<string>('')
   const [article, setArticle] = useState<ArticleTypeExtended | null>(null)
