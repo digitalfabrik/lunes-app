@@ -37,7 +37,7 @@ describe('ExerciseFinishedScreen', () => {
     },
   })
 
-  it.skip('should render repetition modal if a module is finished', () => {
+  it('should render repetition modal if a module is finished', () => {
     const route = getRoute(3, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().repetition.hintModalHeaderText)).toBeDefined()

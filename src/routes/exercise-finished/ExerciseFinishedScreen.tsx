@@ -1,15 +1,15 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, ComponentType, useState } from 'react'
+import React, { ComponentType, ReactElement, useState } from 'react'
 import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import {
+  BottomTabsIcon,
   CloseIcon,
   CloseIconWhite,
-  BottomTabsIcon,
   HappySmileyIcon,
   LightBulbIconBlack,
   OpenLockIcon,
@@ -27,7 +27,6 @@ import { HeadingBackground } from '../../components/text/Heading'
 import { BUTTONS_THEME, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
-import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { calculateScore, getLabels } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
@@ -74,7 +73,6 @@ type ExerciseFinishedScreenProps = {
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, disciplineTitle, closeExerciseAction, unlockedNextExercise } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
-  const [isDevModeEnabled] = useStorage('isDevModeEnabled')
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
@@ -148,7 +146,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
       bottomBackgroundColor={theme.colors.background}>
-      {exercise === EXERCISES.length - 1 && isDevModeEnabled && (
+      {exercise === EXERCISES.length - 1 && (
         <Modal
           visible={isModalVisible}
           confirmationAction={() => navigation.navigate('RepetitionTab')}
