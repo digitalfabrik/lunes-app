@@ -1,0 +1,6 @@
+issue_key: 1072
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die App friert nicht mehr ein, wenn ein Wort ohne Artikel eingegeben wurde
