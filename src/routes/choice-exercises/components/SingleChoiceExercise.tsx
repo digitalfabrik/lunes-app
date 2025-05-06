@@ -19,9 +19,10 @@ import {
   SimpleResult,
 } from '../../../constants/data'
 import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
-import { VocabularyItemResult, RoutesParams } from '../../../navigation/NavigationTypes'
-import { getExerciseProgress, saveExerciseProgress } from '../../../services/AsyncStorage'
+import { useStorageCache } from '../../../hooks/useStorage'
+import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
+import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
 
 const ButtonContainer = styled.View`
@@ -50,6 +51,7 @@ const ChoiceExerciseScreen = ({
   route,
   exerciseKey,
 }: SingleChoiceExerciseProps): ReactElement => {
+  const storageCache = useStorageCache()
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
@@ -86,8 +88,8 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    const progress = await getExerciseProgress()
-    await saveExerciseProgress(disciplineId, exerciseKey, results)
+    const progress = storageCache.getItem('progress')
+    await saveExerciseProgress(storageCache, disciplineId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,

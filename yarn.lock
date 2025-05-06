@@ -8403,7 +8403,7 @@ __metadata:
     react-native-pager-view: ^6.7.0
     react-native-paper: 5.12.5
     react-native-permissions: ^5.1.0
-    react-native-popover-view: ^5.1.9
+    react-native-popover-view: ^6.1.0
     react-native-progress: ^5.0.1
     react-native-reanimated: ^3.16.7
     react-native-responsive-screen: ^1.4.2
@@ -10016,13 +10016,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-popover-view@npm:^5.1.9":
-  version: 5.1.9
-  resolution: "react-native-popover-view@npm:5.1.9"
+"react-native-popover-view@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "react-native-popover-view@npm:6.1.0"
   dependencies:
     deprecated-react-native-prop-types: ^2.3.0
     prop-types: ^15.8.1
-  checksum: 64c58f85572564edaafa1ff03903919086bf053c2515eb14e80cf8d19f14c89adb10a06ad672a5aaa91d8a770d4bf8253fa9b0dda8cc3e4e764f62cde9ea2ffc
+  checksum: 1b3c71078b466e5368231384900caaf54ca7aded6edad7cfb8200a2337d5073c07214a0bee8d1741247989270c313d0a9fc7c394098eab5603f6d0a6245f579b
   languageName: node
   linkType: hard
 

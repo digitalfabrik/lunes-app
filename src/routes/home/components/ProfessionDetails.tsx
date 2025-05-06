@@ -31,16 +31,15 @@ const ProfessionDetails = ({
   navigateToDiscipline,
   navigateToNextExercise,
 }: ProfessionDetailsProps): ReactElement | null => {
-  const { data: progress, refresh: refreshProgress } = useReadProgress(discipline)
+  const progress = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
-  const disciplineAlreadyStarted = progress !== null && progress !== 0
+  const disciplineAlreadyStarted = progress !== 0
   const completedDisciplines =
     disciplineAlreadyStarted && discipline.leafDisciplines
       ? Math.floor(progress * discipline.leafDisciplines.length)
       : 0
 
-  useFocusEffect(refreshProgress)
   useFocusEffect(refreshNextExercise)
 
   if (!nextExerciseData) {
@@ -53,7 +52,7 @@ const ProfessionDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={completedDisciplines ? (progress ?? 0) : 0}
+          progress={completedDisciplines ? progress : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}

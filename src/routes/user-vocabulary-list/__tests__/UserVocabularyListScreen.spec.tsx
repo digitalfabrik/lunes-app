@@ -1,18 +1,17 @@
-import { fireEvent } from '@testing-library/react-native'
-import { mocked } from 'jest-mock'
+import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import useReadUserVocabulary from '../../../hooks/useReadUserVocabulary'
-import { deleteUserVocabularyItem } from '../../../services/AsyncStorage'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../../testing/helper'
-import render from '../../../testing/render'
+import { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
-jest.mock('../../../hooks/useReadUserVocabulary')
 jest.mock('@react-navigation/native')
+jest.mock('react-native-fs', () => ({
+  unlink: jest.fn(),
+}))
 
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
@@ -24,17 +23,22 @@ jest.mock('../../../components/AudioPlayer', () => () => {
   return <Text>AudioPlayer</Text>
 })
 
-jest.mock('../../../services/AsyncStorage', () => ({
-  deleteUserVocabularyItem: jest.fn(() => Promise.resolve()),
-}))
-
 describe('UserVocabularyListScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyList'>()
-  const userVocabularyItems = new VocabularyItemBuilder(2).build()
+  const userVocabularyItems = new VocabularyItemBuilder(2).build().map(item => ({ ...item, type: 'user-created' }))
 
-  it('should render list correctly', () => {
-    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userVocabularyItems))
-    const { getByText, getByPlaceholderText } = render(<UserVocabularyListScreen navigation={navigation} />)
+  let storageCache: StorageCache
+
+  beforeEach(() => {
+    storageCache = StorageCache.createDummy()
+  })
+
+  it('should render list correctly', async () => {
+    await storageCache.setItem('userVocabulary', userVocabularyItems)
+    const { getByText, getByPlaceholderText } = renderWithStorageCache(
+      storageCache,
+      <UserVocabularyListScreen navigation={navigation} />,
+    )
 
     expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
@@ -44,9 +48,8 @@ describe('UserVocabularyListScreen', () => {
     expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
-  it('should render empty list correctly', () => {
-    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf([]))
-    const { getByText } = render(<UserVocabularyListScreen navigation={navigation} />)
+  it('should render empty list correctly', async () => {
+    const { getByText } = renderWithStorageCache(storageCache, <UserVocabularyListScreen navigation={navigation} />)
 
     expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.noWordsYet)).toBeDefined()
@@ -54,21 +57,25 @@ describe('UserVocabularyListScreen', () => {
   })
 
   it('should delete item', async () => {
-    mocked(useReadUserVocabulary).mockReturnValue(getReturnOf(userVocabularyItems))
-    const { getByText, getAllByTestId } = render(<UserVocabularyListScreen navigation={navigation} />)
+    await storageCache.setItem('userVocabulary', userVocabularyItems)
+    const { getByText, getAllByTestId } = renderWithStorageCache(
+      storageCache,
+      <UserVocabularyListScreen navigation={navigation} />,
+    )
 
     expect(getByText(userVocabularyItems[0].word)).toBeDefined()
     const editButton = getByText(getLabels().userVocabulary.list.edit)
     expect(editButton).toBeDefined()
-    fireEvent.press(editButton)
+
+    await act(() => fireEvent.press(editButton))
 
     const trashIcons = getAllByTestId('trash-icon')
     expect(trashIcons).toHaveLength(2)
 
-    fireEvent.press(trashIcons[0])
+    await act(() => fireEvent.press(trashIcons[0]))
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
-    fireEvent.press(confirmButton)
+    await act(() => fireEvent.press(confirmButton))
 
-    expect(deleteUserVocabularyItem).toHaveBeenCalled()
+    expect(storageCache.getItem('userVocabulary')).toEqual([userVocabularyItems[0]])
   })
 })

@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import useReadSelectedProfessions from '../hooks/useReadSelectedProfessions'
+import useStorage from '../hooks/useStorage'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
@@ -21,16 +21,12 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const { data: professions, loading } = useReadSelectedProfessions()
+  const [professions] = useStorage('selectedProfessions')
 
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
   const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
-
-  if (loading) {
-    return null
-  }
 
   return (
     <Stack.Navigator initialRouteName={professions === null ? 'ScopeSelection' : 'BottomTabNavigator'}>

@@ -2,12 +2,13 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import React from 'react'
 
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { setExerciseProgress } from '../../services/AsyncStorage'
+import { StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
+import { setExerciseProgress } from '../../services/storageUtils'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import { mockUseLoadAsyncWithData } from '../../testing/mockUseLoadFromEndpoint'
-import render from '../../testing/render'
+import { renderWithStorageCache } from '../../testing/render'
 import VocabularyListScreen from '../VocabularyListScreen'
 
 jest.mock('../../components/FavoriteButton', () => {
@@ -15,7 +16,7 @@ jest.mock('../../components/FavoriteButton', () => {
   return () => <Text>FavoriteButton</Text>
 })
 
-jest.mock('../../services/AsyncStorage', () => ({
+jest.mock('../../services/storageUtils', () => ({
   setExerciseProgress: jest.fn(() => Promise.resolve()),
 }))
 
@@ -41,16 +42,18 @@ describe('VocabularyListScreen', () => {
   }
 
   const navigation = createNavigationMock<'VocabularyList'>()
+  const storageCache = StorageCache.createDummy()
 
   it('should save progress', () => {
-    render(<VocabularyListScreen route={route} navigation={navigation} />)
-    expect(setExerciseProgress).toHaveBeenCalledWith(1, 0, 1)
+    renderWithStorageCache(storageCache, <VocabularyListScreen route={route} navigation={navigation} />)
+    expect(setExerciseProgress).toHaveBeenCalledWith(storageCache, 1, 0, 1)
   })
 
   it('should display vocabulary list', () => {
     mockUseLoadAsyncWithData(vocabularyItems)
 
-    const { getByText, getAllByText, getAllByTestId } = render(
+    const { getByText, getAllByText, getAllByTestId } = renderWithStorageCache(
+      storageCache,
       <VocabularyListScreen route={route} navigation={navigation} />,
     )
 

@@ -6,11 +6,12 @@ import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { VocabularyItem } from '../../../../constants/endpoints'
 import { RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../../services/RepetitionService'
+import { StorageCache } from '../../../../services/Storage'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../../testing/createNavigationPropMock'
 import RepetitionWriteExerciseService from '../RepetitionWriteExerciseService'
 
-jest.mock('../../../../services/AsyncStorage', () => ({
+jest.mock('../../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
 }))
 
@@ -19,6 +20,8 @@ describe('RepetitionWriteExerciseService', () => {
   let vocabularyItemsWithResults: VocabularyItemResult[]
   let service: RepetitionWriteExerciseService
   let route: RouteProp<RoutesParams, 'WriteExercise'>
+  let storageCache: StorageCache
+  let repetitionService: RepetitionService
 
   const navigation = createNavigationMock<'WriteExercise'>()
   const setCurrentIndex: React.Dispatch<React.SetStateAction<number>> = jest.fn()
@@ -42,17 +45,19 @@ describe('RepetitionWriteExerciseService', () => {
         closeExerciseAction: CommonActions.goBack(),
       },
     }
+    storageCache = StorageCache.createDummy()
     service = new RepetitionWriteExerciseService(
       route,
       navigation,
       setCurrentIndex,
       setIsAnswerSubmitted,
       setVocabularyItemWithResults,
+      storageCache,
     )
+    repetitionService = service.repetitionService
+    repetitionService.moveWordToPreviousSection = jest.fn()
+    repetitionService.updateWordNodeCard = jest.fn()
   }
-
-  RepetitionService.moveWordToPreviousSection = jest.fn()
-  RepetitionService.updateWordNodeCard = jest.fn()
 
   beforeEach(initTestData)
 
@@ -65,7 +70,7 @@ describe('RepetitionWriteExerciseService', () => {
         vocabularyItemsWithResults[3],
         vocabularyItemsWithResults[0],
       ])
-      expect(RepetitionService.moveWordToPreviousSection).not.toHaveBeenCalled()
+      expect(repetitionService.moveWordToPreviousSection).not.toHaveBeenCalled()
     })
   })
 
@@ -90,7 +95,7 @@ describe('RepetitionWriteExerciseService', () => {
     })
 
     it('should finish exercise, if all words are done', async () => {
-      service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
+      await service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
       expect(navigation.navigate).toHaveBeenCalled()
     })
 
@@ -107,7 +112,7 @@ describe('RepetitionWriteExerciseService', () => {
     it('should be set to incorrect and not be repeated', async () => {
       vocabularyItemsWithResults[0].result = SIMPLE_RESULTS.incorrect
       vocabularyItemsWithResults[0].numberOfTries = 0
-      service.giveUp(vocabularyItemsWithResults, vocabularyItemsWithResults[0], 0)
+      await service.giveUp(vocabularyItemsWithResults, vocabularyItemsWithResults[0], 0)
       await waitFor(() =>
         expect(setVocabularyItemWithResults).toHaveBeenCalledWith([
           {
@@ -120,7 +125,7 @@ describe('RepetitionWriteExerciseService', () => {
         ]),
       )
       await waitFor(() =>
-        expect(RepetitionService.updateWordNodeCard).toHaveBeenCalledWith({
+        expect(repetitionService.updateWordNodeCard).toHaveBeenCalledWith({
           ...vocabularyItemsWithResults[0],
           numberOfTries: 1,
         }),

@@ -9,8 +9,9 @@ import { Discipline } from '../../constants/endpoints'
 import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import { pushSelectedProfession } from '../../services/AsyncStorage'
+import { useStorageCache } from '../../hooks/useStorage'
 import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
+import { pushSelectedProfession } from '../../services/storageUtils'
 
 const SearchContainer = styled.View`
   margin: ${props => props.theme.spacings.sm};
@@ -49,7 +50,7 @@ type ScopeSelectionProps = {
   setQueryTerm: (newString: string) => void
   navigateToDiscipline: (item: Discipline) => void
   navigateToManageSelection: () => void
-  selectedProfessions: number[] | null
+  selectedProfessions: Readonly<number[]> | null
 }
 
 const ScopeSelection = ({
@@ -59,6 +60,7 @@ const ScopeSelection = ({
   navigateToManageSelection,
   selectedProfessions,
 }: ScopeSelectionProps): JSX.Element => {
+  const storageCache = useStorageCache()
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const allProfessions = useLoadAllDisciplines()
     .data?.filter(discipline => discipline.total_discipline_children === 0)
@@ -90,7 +92,7 @@ const ScopeSelection = ({
               <StyledPressable
                 key={profession.id}
                 onPress={async () => {
-                  await pushSelectedProfession(profession.id)
+                  await pushSelectedProfession(storageCache, profession.id)
                   navigateToManageSelection()
                 }}
                 disabled={disabled}>

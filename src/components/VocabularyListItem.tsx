@@ -38,16 +38,10 @@ const FavButtonContainer = styled.View`
 type VocabularyListItemProps = {
   vocabularyItem: VocabularyItem
   onPress: () => void
-  onFavoritesChanged?: () => void
   children?: ReactElement
 }
 
-const VocabularyListItem = ({
-  vocabularyItem,
-  onPress,
-  onFavoritesChanged,
-  children,
-}: VocabularyListItemProps): ReactElement => {
+const VocabularyListItem = ({ vocabularyItem, onPress, children }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -63,7 +57,7 @@ const VocabularyListItem = ({
         <RightChildrenContainer>
           <AudioPlayer audio={audio ?? stringifyVocabularyItem(vocabularyItem)} isTtsText={!audio} disabled={false} />
           <FavButtonContainer>
-            <FavoriteButton vocabularyItem={vocabularyItem} onFavoritesChanged={onFavoritesChanged} />
+            <FavoriteButton vocabularyItem={vocabularyItem} />
           </FavButtonContainer>
         </RightChildrenContainer>
       }>
