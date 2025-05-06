@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/native'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'

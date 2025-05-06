@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/native'
 
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'

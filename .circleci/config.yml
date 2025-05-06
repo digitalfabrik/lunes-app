@@ -279,7 +279,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 4
         macos:
-            xcode: 15.2.0
+            xcode: 16.2.0
         resource_class: macos.m1.medium.gen1
         shell: /bin/bash --login -o pipefail
         steps:
@@ -315,7 +315,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: cimg/node:18.17.1
+            - image: cimg/node:20.18.3
         parameters:
             prepare_delivery:
                 default: false
@@ -344,7 +344,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: cimg/node:18.17.1
+            - image: cimg/node:20.18.3
         steps:
             - checkout
             - restore_yarn_cache
@@ -437,7 +437,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 15.2.0
+            xcode: 16.2.0
         parameters:
             production_delivery:
                 default: false
@@ -475,7 +475,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: cimg/node:18.17.1
+            - image: cimg/node:20.18.3
         resource_class: small
         steps:
             - checkout
@@ -489,7 +489,7 @@ jobs:
             - notify
     notify_android:
         docker:
-            - image: cimg/node:18.17.1
+            - image: cimg/node:20.18.3
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, a github release is created.
@@ -517,7 +517,7 @@ jobs:
                 success_message: <<^ parameters.production_delivery >>[Development] <</ parameters.production_delivery >>Lunes ${NEW_VERSION_NAME} has been released successfully on Android!\n${RELEASE_NOTES}\n${ANDROID_ARTIFACT_URLS}
     notify_ios:
         docker:
-            - image: cimg/node:18.17.1
+            - image: cimg/node:20.18.3
         parameters:
             production_delivery:
                 description: Whether builds are delivered to the production store. If set to true, a github release is created.
@@ -563,7 +563,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 15.2.0
+            xcode: 16.2.0
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout

@@ -8,15 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		015AB6CFBF504B71AB7585F8 /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC4B8F0DEC124BA4A544CE7D /* SourceSansPro-SemiBold.ttf */; };
+		03DD7D1C6F5E1F05EA71F0E7 /* libPods-Lunes-LunesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BE36DD820A0077F50B9BC9B /* libPods-Lunes-LunesTests.a */; };
 		078F4DB97D1F4037ADA4002A /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E272399053254CF78A178832 /* SourceSansPro-ExtraLightItalic.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		16E3945C9A824F49502186D9 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		16E3945C9A824F49502186D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		24D7D730211F40CF8E3B1217 /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA094344FD844F3088B28CD5 /* SourceSansPro-Italic.ttf */; };
 		33D4D410B3E64F4DB1368910 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B3E5FD9A1E84C23A7FB5C96 /* SourceSansPro-Bold.ttf */; };
-		40A4FC7F6D897F6C859C6931 /* libPods-Lunes-LunesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 101D24FC18639F6D2AA9AA34 /* libPods-Lunes-LunesTests.a */; };
 		40B164F70E7D4FEE82BD9606 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BE88ACDF44242A79F381E35 /* SourceSansPro-Light.ttf */; };
 		48103CCAE64E4B54A8BD0C8C /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED45C262CF141B981FD2CB6 /* SourceSansPro-SemiBoldItalic.ttf */; };
+		56E8E4E17208A251B1AE60BD /* libPods-Lunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A839855F47DCA4C1EF4D59CD /* libPods-Lunes.a */; };
 		5E0B7EAB596A4035A1549427 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B79239CD3DE946A0BE953DCC /* SourceSansPro-Regular.ttf */; };
 		87A466CFEE17407CAB2AC921 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */; };
 		8B2742D73CAE4F48896CED3E /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18CD2FA065EC4EFFB6F0212B /* SourceSansPro-ExtraLight.ttf */; };
@@ -24,7 +25,6 @@
 		976D6F3B4BEA1C25172821AF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 00314D2A729F9F61792BE8E6 /* PrivacyInfo.xcprivacy */; };
 		A2FD8237265506B300572C26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8236265506B300572C26 /* Images.xcassets */; };
 		A2FD8239265506C400572C26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FD8238265506C400572C26 /* LaunchScreen.storyboard */; };
-		AA3EF9AC3F80EE58BB867CCC /* libPods-Lunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E066DB1812569755D50F120 /* libPods-Lunes.a */; };
 		B1C5BFD5DE9F4EF9A3A2ED30 /* SourceSansPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA2E84947F15410887178E3A /* SourceSansPro-BlackItalic.ttf */; };
 		B5FC35564B2D4B4AA46B58B8 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC7F38E52EE2434E87FD7AD1 /* SourceSansPro-LightItalic.ttf */; };
 /* End PBXBuildFile section */
@@ -46,37 +46,35 @@
 		00E356F21AD99517003FC87E /* LunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LunesTests.m; sourceTree = "<group>"; };
 		01EFA7062D01415C933BD0E7 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		0BE88ACDF44242A79F381E35 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../assets/fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
-		101D24FC18639F6D2AA9AA34 /* libPods-Lunes-LunesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lunes-LunesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Lunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		14CA31386A6589AFC3367946 /* Pods-Lunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes.release.xcconfig"; path = "Target Support Files/Pods-Lunes/Pods-Lunes.release.xcconfig"; sourceTree = "<group>"; };
 		18CD2FA065EC4EFFB6F0212B /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
 		1E4AC75791794EADB37D7F6D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		1F326A2692B1EC2106212327 /* Pods-Lunes-LunesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes-LunesTests.release.xcconfig"; path = "Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests.release.xcconfig"; sourceTree = "<group>"; };
 		2278F345EAE14CE7B1CEED6D /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		295BDA40656E416BB251A914 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		2B3A9DB0BF6B4C56BF569BBE /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		2E7954588AE04BAC8ABCE523 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		32DE79D09E9F4158AE115506 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		346217A0BBE743298535B63D /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		3B8182B0C9916ED6EC62F8BC /* Pods-Lunes-LunesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes-LunesTests.debug.xcconfig"; path = "Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		46BE70DB130A4F4495582257 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/native-base/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		4E066DB1812569755D50F120 /* libPods-Lunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BF065CDD17532E574435330 /* Pods-Lunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes.debug.xcconfig"; path = "Target Support Files/Pods-Lunes/Pods-Lunes.debug.xcconfig"; sourceTree = "<group>"; };
 		58046D1E998E4E05A6DE0AA2 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		61AA4FBA1FF046ADA254868A /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		6DEFEB8BA3064E79B4B816C2 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		73CBB64724D84F818FE6A37A /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.ttf"; path = "../assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
 		7B3E5FD9A1E84C23A7FB5C96 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		7ED45C262CF141B981FD2CB6 /* SourceSansPro-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBoldItalic.ttf"; path = "../assets/fonts/SourceSansPro-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		8BE36DD820A0077F50B9BC9B /* libPods-Lunes-LunesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lunes-LunesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9115F02E44E04C69B47F11AC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		9236C43035F84B7280C8147F /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
-		92D11CC431B2AAA09AE3E6CC /* Pods-Lunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes.debug.xcconfig"; path = "Target Support Files/Pods-Lunes/Pods-Lunes.debug.xcconfig"; sourceTree = "<group>"; };
+		9591E9BC36E0B4B4D972D165 /* Pods-Lunes-LunesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes-LunesTests.release.xcconfig"; path = "Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B6B134C8FCE47C68E89F684 /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldItalic.ttf"; path = "../assets/fonts/SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; };
 		A2FD8236265506B300572C26 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A2FD8238265506C400572C26 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A839855F47DCA4C1EF4D59CD /* libPods-Lunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79239CD3DE946A0BE953DCC /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		BA2E84947F15410887178E3A /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 		BC4B8F0DEC124BA4A544CE7D /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBold.ttf"; path = "../assets/fonts/SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -87,6 +85,8 @@
 		D4D37F9D082642D5B5B27E38 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		D6EE5B25720846D789AD4534 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		E272399053254CF78A178832 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightItalic.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		E3D99D6C22B1860D2E957F90 /* Pods-Lunes-LunesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes-LunesTests.debug.xcconfig"; path = "Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E8E67C0123E2DC7AE1236EFA /* Pods-Lunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lunes.release.xcconfig"; path = "Target Support Files/Pods-Lunes/Pods-Lunes.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F9B6336D338E4103BE62C473 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40A4FC7F6D897F6C859C6931 /* libPods-Lunes-LunesTests.a in Frameworks */,
+				03DD7D1C6F5E1F05EA71F0E7 /* libPods-Lunes-LunesTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +104,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16E3945C9A824F49502186D9 /* (null) in Frameworks */,
-				AA3EF9AC3F80EE58BB867CCC /* libPods-Lunes.a in Frameworks */,
+				16E3945C9A824F49502186D9 /* BuildFile in Frameworks */,
+				56E8E4E17208A251B1AE60BD /* libPods-Lunes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,8 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				4E066DB1812569755D50F120 /* libPods-Lunes.a */,
-				101D24FC18639F6D2AA9AA34 /* libPods-Lunes-LunesTests.a */,
+				A839855F47DCA4C1EF4D59CD /* libPods-Lunes.a */,
+				8BE36DD820A0077F50B9BC9B /* libPods-Lunes-LunesTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -226,10 +226,10 @@
 		CC2F30BB3A8D1D541ECE1056 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				92D11CC431B2AAA09AE3E6CC /* Pods-Lunes.debug.xcconfig */,
-				14CA31386A6589AFC3367946 /* Pods-Lunes.release.xcconfig */,
-				3B8182B0C9916ED6EC62F8BC /* Pods-Lunes-LunesTests.debug.xcconfig */,
-				1F326A2692B1EC2106212327 /* Pods-Lunes-LunesTests.release.xcconfig */,
+				4BF065CDD17532E574435330 /* Pods-Lunes.debug.xcconfig */,
+				E8E67C0123E2DC7AE1236EFA /* Pods-Lunes.release.xcconfig */,
+				E3D99D6C22B1860D2E957F90 /* Pods-Lunes-LunesTests.debug.xcconfig */,
+				9591E9BC36E0B4B4D972D165 /* Pods-Lunes-LunesTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -241,12 +241,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "LunesTests" */;
 			buildPhases = (
-				94290B94A1F7B79F35753868 /* [CP] Check Pods Manifest.lock */,
+				9C493439214EF6D736FBF0ED /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				CB8C57040C5EF4AE16E6CC2D /* [CP] Copy Pods Resources */,
-				007589C38BD9E41EB5596664 /* [CP] Embed Pods Frameworks */,
+				D78121ACC63C883E7D57EEB0 /* [CP] Embed Pods Frameworks */,
+				649EDDE05788AA0640DA65BE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -262,14 +262,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Lunes" */;
 			buildPhases = (
-				974976BD6A23610D21079172 /* [CP] Check Pods Manifest.lock */,
+				DDE9D8B0B631DCDAAA6A6A6F /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D7ADED3195ADB34340C8E83D /* [CP] Copy Pods Resources */,
-				1E8D8B919B04BEEC9D3DCB61 /* [CP] Embed Pods Frameworks */,
+				6DB8ED9115671E1814AC6658 /* [CP] Embed Pods Frameworks */,
+				E5F3B3EC6EA1A4358DB3E5FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -351,23 +351,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		007589C38BD9E41EB5596664 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -382,7 +365,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		1E8D8B919B04BEEC9D3DCB61 /* [CP] Embed Pods Frameworks */ = {
+		649EDDE05788AA0640DA65BE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DB8ED9115671E1814AC6658 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -399,7 +399,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lunes/Pods-Lunes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		94290B94A1F7B79F35753868 /* [CP] Check Pods Manifest.lock */ = {
+		9C493439214EF6D736FBF0ED /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -421,7 +421,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		974976BD6A23610D21079172 /* [CP] Check Pods Manifest.lock */ = {
+		D78121ACC63C883E7D57EEB0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDE9D8B0B631DCDAAA6A6A6F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -443,24 +460,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CB8C57040C5EF4AE16E6CC2D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lunes-LunesTests/Pods-Lunes-LunesTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D7ADED3195ADB34340C8E83D /* [CP] Copy Pods Resources */ = {
+		E5F3B3EC6EA1A4358DB3E5FD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -528,7 +528,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B8182B0C9916ED6EC62F8BC /* Pods-Lunes-LunesTests.debug.xcconfig */;
+			baseConfigurationReference = E3D99D6C22B1860D2E957F90 /* Pods-Lunes-LunesTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -555,7 +555,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F326A2692B1EC2106212327 /* Pods-Lunes-LunesTests.release.xcconfig */;
+			baseConfigurationReference = 9591E9BC36E0B4B4D972D165 /* Pods-Lunes-LunesTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -579,7 +579,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92D11CC431B2AAA09AE3E6CC /* Pods-Lunes.debug.xcconfig */;
+			baseConfigurationReference = 4BF065CDD17532E574435330 /* Pods-Lunes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -614,7 +614,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14CA31386A6589AFC3367946 /* Pods-Lunes.release.xcconfig */;
+			baseConfigurationReference = E8E67C0123E2DC7AE1236EFA /* Pods-Lunes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -710,7 +710,10 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -778,7 +781,10 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PROVISIONING_PROFILE_SPECIFIER = None;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
