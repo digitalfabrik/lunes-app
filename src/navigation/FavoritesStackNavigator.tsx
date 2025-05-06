@@ -14,7 +14,7 @@ const FavoritesStackNavigator = (): ReactElement => {
   const { back } = getLabels().general
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerStatusBarHeight: 0 }}>
       <Stack.Screen name='Favorites' component={FavoritesScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name='VocabularyDetail'
