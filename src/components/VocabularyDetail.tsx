@@ -7,7 +7,6 @@ import WordItem from './WordItem'
 
 const ItemContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xl};
-  height: 10%;
   width: 85%;
   align-self: center;
 `
