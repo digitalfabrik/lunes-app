@@ -1,0 +1,6 @@
+issue_key: 1083
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Der Lautsprecher-Button zeigt in Übungen nun an, ob er aktiviert werden kann
