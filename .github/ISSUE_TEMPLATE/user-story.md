@@ -1,9 +1,7 @@
 ---
 name: User Story
 about: Bundle multiple tasks/ideas into one user story
-title: ''
-labels: Story
-assignees: ''
+type: Story
 ---
 
 As a user I want XYZ such that XYZ.
