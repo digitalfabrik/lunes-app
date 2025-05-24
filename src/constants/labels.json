@@ -217,7 +217,8 @@
       "changeCMS": "change cms",
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode",
-      "fillRepetitionExerciseWithData": "Fill repetition exercise with data"
+      "fillRepetitionExerciseWithData": "Fill repetition exercise with data",
+      "clearProfessions": "Clear selected professions"
     }
   },
   "sponsors": {

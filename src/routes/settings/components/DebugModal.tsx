@@ -37,12 +37,20 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
-  const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData } =
-    getLabels().settings.debugModal
+  const {
+    sentry,
+    currentCMS,
+    changeCMS,
+    disableDevMode,
+    enableDevMode,
+    fillRepetitionExerciseWithData,
+    clearProfessions,
+  } = getLabels().settings.debugModal
   const repetitionService = useRepetitionService()
 
   const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
   const baseURL = getBaseURL(cmsUrlOverwrite)
+  const [_, setSelectedProfessions] = useStorage('selectedProfessions')
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -61,6 +69,10 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
 
   const doToggleDevMode = async (): Promise<void> => {
     await setIsDevModeEnabled(!isDevModeEnabled)
+  }
+
+  const resetProfessions = async (): Promise<void> => {
+    await setSelectedProfessions(null)
   }
 
   const NUMBER_OF_TEST_VOCABULARY = 5
@@ -94,6 +106,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
             label={fillRepetitionExerciseWithData}
             buttonTheme={BUTTONS_THEME.contained}
           />
+          <Button onPress={resetProfessions} label={clearProfessions} buttonTheme={BUTTONS_THEME.contained} />
         </Container>
       )}
     </ModalSkeleton>
