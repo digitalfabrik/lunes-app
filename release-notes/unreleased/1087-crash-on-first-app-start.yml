@@ -1,0 +1,6 @@
+issue_key: 1087
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Ein potentieller Absturz beim ersten Start der App wurde behoben
