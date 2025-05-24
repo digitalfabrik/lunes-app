@@ -2,9 +2,11 @@ import React, { ReactElement, useState } from 'react'
 import { Switch } from 'react-native'
 import styled from 'styled-components/native'
 
+import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
+import { BUTTONS_THEME } from '../../constants/data'
 import useStorage from '../../hooks/useStorage'
 import { getLabels } from '../../services/helpers'
 import DebugModal from './components/DebugModal'
@@ -31,6 +33,9 @@ const SettingsScreen = (): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const [trackingEnabled, setTrackingEnabled] = useStorage('isTrackingEnabled')
+  const [isDevModeEnabled] = useStorage('isDevModeEnabled')
+
+  const { settings, appStability, appStabilityExplanation, devSettings } = getLabels().settings
 
   const onTrackingChange = async (): Promise<void> => {
     const newValue = !trackingEnabled
@@ -39,15 +44,24 @@ const SettingsScreen = (): ReactElement => {
 
   return (
     <RouteWrapper>
-      <DebugModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
-      <SettingsHeading>{getLabels().settings.settings}</SettingsHeading>
+      <DebugModal
+        isCodeRequired={!isDevModeEnabled}
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
+      <SettingsHeading>{settings}</SettingsHeading>
       <ItemContainer>
         <ItemTextContainer>
-          <Content>{getLabels().settings.appStability}</Content>
-          <ContentTextLight>{getLabels().settings.appStabilityExplanation}</ContentTextLight>
+          <Content>{appStability}</Content>
+          <ContentTextLight>{appStabilityExplanation}</ContentTextLight>
         </ItemTextContainer>
         <Switch testID='tracking-switch' value={trackingEnabled} onChange={onTrackingChange} />
       </ItemContainer>
+      {isDevModeEnabled && (
+        <ItemContainer>
+          <Button onPress={() => setIsModalVisible(true)} label={devSettings} buttonTheme={BUTTONS_THEME.contained} />
+        </ItemContainer>
+      )}
       <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
     </RouteWrapper>
   )
