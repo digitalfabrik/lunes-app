@@ -27,13 +27,14 @@ const CodeInput = styled.TextInput`
 `
 
 type DebugModalProps = {
+  isCodeRequired: boolean
   visible: boolean
   onClose: () => void
 }
 
 const DebugModal = (props: DebugModalProps): JSX.Element => {
   const storageCache = useStorageCache()
-  const { visible, onClose } = props
+  const { isCodeRequired, visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
@@ -90,7 +91,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   return (
     <ModalSkeleton testID='debug-modal' visible={visible} onClose={resetTextAndClose}>
       <CodeInput placeholder='Development Code' onChangeText={setInputText} />
-      {inputText.toLowerCase() === UNLOCKING_TEXT && (
+      {(!isCodeRequired || inputText.toLowerCase() === UNLOCKING_TEXT) && (
         <Container>
           <Button label={sentry} onPress={throwSentryError} buttonTheme={BUTTONS_THEME.contained} />
           <Subheading>{currentCMS}:</Subheading>

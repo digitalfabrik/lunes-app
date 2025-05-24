@@ -211,6 +211,7 @@
     "appStability": "App Stabilität",
     "appStabilityExplanation": "Durch das automatische Senden von Fehlerberichten die Lunes App verbessern",
     "version": "Version",
+    "devSettings": "Dev settings",
     "debugModal": {
       "sentry": "Send Sentry Error",
       "currentCMS": "current cms",
