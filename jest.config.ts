@@ -1,4 +1,10 @@
-const transformNodeModules = ['react-native', '@react-native', 'react-navigation-header-buttons', 'victory-(.+)']
+const transformNodeModules = [
+  'react-native',
+  '@react-native',
+  'react-navigation-header-buttons',
+  'victory-(.+)',
+  '@notifee',
+]
 export default {
   rootDir: '.',
   roots: ['src'],
@@ -15,5 +21,9 @@ export default {
     '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }],
   },
   transformIgnorePatterns: [`node_modules/(?!${transformNodeModules.join('|')}/)`],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts', '<rootDir>/node_modules/@testing-library/jest-native/extend-expect'],
+  setupFilesAfterEnv: [
+    '<rootDir>/jest.setup.ts',
+    '<rootDir>/node_modules/@testing-library/jest-native/extend-expect',
+    '<rootDir>/node_modules/@notifee/react-native/jest-mock.js',
+  ],
 }

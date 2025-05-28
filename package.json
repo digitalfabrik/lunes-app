@@ -8,7 +8,7 @@
     "android:production": "react-native run-android --no-packager --mode=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest --verbose --maxWorkers=1",
+    "test": "TZ=UTC jest --verbose --maxWorkers=1",
     "test:changed": "yarn run test -o",
     "test:update": "yarn run test -u --maxWorkers=1",
     "lint": "eslint .",
