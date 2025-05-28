@@ -1,5 +1,6 @@
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import NotificationService from './NotificationService'
 import { millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
@@ -20,18 +21,32 @@ export const MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE = 15
 
 export class RepetitionService {
   public readonly getWordNodeCards: () => readonly WordNodeCard[]
-  public readonly setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>
+  private readonly setWordNodeCardsWithoutReminder: (cards: WordNodeCard[]) => Promise<void>
 
   constructor(
     getWordNodeCards: () => readonly WordNodeCard[],
     setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>,
   ) {
     this.getWordNodeCards = getWordNodeCards
-    this.setWordNodeCards = setWordNodeCards
+    this.setWordNodeCardsWithoutReminder = setWordNodeCards
   }
 
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
+
+  private static updateRepetitionReminder = async (cards: WordNodeCard[]): Promise<void> => {
+    const nextRepetitionDate = RepetitionService.getNextRepetitionDate(cards)
+    if (nextRepetitionDate !== null && nextRepetitionDate.valueOf() > new Date().valueOf()) {
+      await NotificationService.scheduleRepetitionReminder(nextRepetitionDate)
+    } else {
+      await NotificationService.clearRepetitionReminder()
+    }
+  }
+
+  public setWordNodeCards = async (cards: WordNodeCard[]): Promise<void> => {
+    await RepetitionService.updateRepetitionReminder(cards)
+    await this.setWordNodeCardsWithoutReminder(cards)
+  }
 
   public static addDays = (date: Date, days: number): Date => {
     const result = new Date(date)
@@ -39,9 +54,24 @@ export class RepetitionService {
     return result
   }
 
+  public static wordNodeCardDateOfNextRepetition = (card: WordNodeCard): Date =>
+    this.addDays(card.inThisSectionSince, daysToStayInASection[card.section])
+
+  public static getNextRepetitionDate = (cards: WordNodeCard[]): Date | null => {
+    let nextDate: Date | null = null
+
+    cards.forEach(card => {
+      const nextRepetitionOfCard = RepetitionService.wordNodeCardDateOfNextRepetition(card)
+      if (nextDate === null || nextDate.valueOf() > nextRepetitionOfCard.valueOf()) {
+        nextDate = nextRepetitionOfCard
+      }
+    })
+
+    return nextDate
+  }
+
   public static wordNodeCardNeedsRepetition = (wordNodeCard: WordNodeCard): boolean =>
-    this.addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]) <= new Date() ||
-    wordNodeCard.section === 0
+    this.wordNodeCardDateOfNextRepetition(wordNodeCard) <= new Date()
 
   public getNumberOfWordsNeedingRepetition = (): number =>
     this.getWordNodeCards().filter(item => RepetitionService.wordNodeCardNeedsRepetition(item)).length
