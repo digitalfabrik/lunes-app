@@ -23,6 +23,7 @@
     "create-release-note": "bash ./release-notes/createReleaseNotes.sh $1"
   },
   "dependencies": {
+    "@notifee/react-native": "^9.1.8",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-native-picker/picker": "^2.9.0",

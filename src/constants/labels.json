@@ -186,6 +186,11 @@
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
   },
   "repetition": {
+    "reminder": {
+      "channelName": "Erinnerungen",
+      "title": "Zeit zum Vertiefen!",
+      "body": "Deine nächste Vertiefungsphase ist jetzt freigeschaltet. Viel Erfolg!"
+    },
     "repeatWords": "Wörter wiederholen",
     "repeatNow": "Jetzt wiederholen",
     "wordsToRepeat": {

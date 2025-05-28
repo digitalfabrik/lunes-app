@@ -177,6 +177,12 @@ describe('RepetitionService', () => {
     })
   })
 
+  describe('calculateTimeUntilNextRepetition', () => {
+    it('should return null if there are not cards', () => {
+      expect(RepetitionService.getNextRepetitionDate([])).toBeNull()
+    })
+  })
+
   describe('getNeedsRepetitionScore', () => {
     it('should return 0, if the word needs repetition since today', () => {
       const word1: WordNodeCard = {
