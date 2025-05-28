@@ -177,6 +177,50 @@ describe('RepetitionService', () => {
     })
   })
 
+  describe('calculateNextRepetitionDate', () => {
+    it('should return null if there are no cards', () => {
+      expect(RepetitionService.getNextRepetitionDate([])).toBeNull()
+    })
+
+    describe('should return the correct day', () => {
+      it(`for a card in section 0`, () => {
+        const date = new Date('2025-01-01')
+        const card: WordNodeCard = {
+          word: testData[0].word,
+          section: 0,
+          inThisSectionSince: date,
+        }
+
+        const nextDate = RepetitionService.getNextRepetitionDate([card])
+        expect(nextDate).toEqual(date)
+      })
+
+      it('for a card in section 1', () => {
+        const date = new Date('2025-01-01')
+        const card: WordNodeCard = {
+          word: testData[0].word,
+          section: 1,
+          inThisSectionSince: date,
+        }
+
+        const nextDate = RepetitionService.getNextRepetitionDate([card])
+        expect(nextDate).toEqual(new Date('2025-01-02'))
+      })
+
+      it('for a card in section 5', () => {
+        const date = new Date('2025-01-01')
+        const card: WordNodeCard = {
+          word: testData[0].word,
+          section: 5,
+          inThisSectionSince: date,
+        }
+
+        const nextDate = RepetitionService.getNextRepetitionDate([card])
+        expect(nextDate).toEqual(new Date('2025-04-01'))
+      })
+    })
+  })
+
   describe('getNeedsRepetitionScore', () => {
     it('should return 0, if the word needs repetition since today', () => {
       const word1: WordNodeCard = {
