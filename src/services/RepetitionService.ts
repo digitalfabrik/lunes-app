@@ -25,10 +25,10 @@ export class RepetitionService {
 
   constructor(
     getWordNodeCards: () => readonly WordNodeCard[],
-    setWordNodeCards: (cards: WordNodeCard[]) => Promise<void>,
+    setWordNodeCardsWithoutReminder: (cards: WordNodeCard[]) => Promise<void>,
   ) {
     this.getWordNodeCards = getWordNodeCards
-    this.setWordNodeCardsWithoutReminder = setWordNodeCards
+    this.setWordNodeCardsWithoutReminder = setWordNodeCardsWithoutReminder
   }
 
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
@@ -36,7 +36,7 @@ export class RepetitionService {
 
   private static updateRepetitionReminder = async (cards: WordNodeCard[]): Promise<void> => {
     const nextRepetitionDate = RepetitionService.getNextRepetitionDate(cards)
-    if (nextRepetitionDate !== null && nextRepetitionDate.valueOf() > new Date().valueOf()) {
+    if (nextRepetitionDate !== null && nextRepetitionDate > new Date()) {
       await NotificationService.scheduleRepetitionReminder(nextRepetitionDate)
     } else {
       await NotificationService.clearRepetitionReminder()
@@ -62,7 +62,7 @@ export class RepetitionService {
 
     cards.forEach(card => {
       const nextRepetitionOfCard = RepetitionService.wordNodeCardDateOfNextRepetition(card)
-      if (nextDate === null || nextDate.valueOf() > nextRepetitionOfCard.valueOf()) {
+      if (nextDate === null || nextDate > nextRepetitionOfCard) {
         nextDate = nextRepetitionOfCard
       }
     })
