@@ -8,7 +8,7 @@ import DebugModal from '../DebugModal'
 
 describe('DebugModal', () => {
   it('should show buttons only for correct text input', async () => {
-    const { queryByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
+    const { queryByText, getByPlaceholderText } = render(<DebugModal isCodeRequired visible onClose={jest.fn()} />)
     expect(queryByText(getLabels().settings.debugModal.sentry)).toBeNull()
     const textField = getByPlaceholderText('Development Code')
     await act(async () => {
@@ -18,7 +18,7 @@ describe('DebugModal', () => {
   })
 
   it('should show and switch cms url', async () => {
-    const { getByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
+    const { getByText, getByPlaceholderText } = render(<DebugModal isCodeRequired visible onClose={jest.fn()} />)
     const textField = getByPlaceholderText('Development Code')
     await act(async () => {
       fireEvent.changeText(textField, 'wirschaffendas')
@@ -37,7 +37,9 @@ describe('DebugModal', () => {
   })
 
   it('should show and toggle devmode status', async () => {
-    const { queryByText, getByText, getByPlaceholderText } = render(<DebugModal visible onClose={jest.fn()} />)
+    const { queryByText, getByText, getByPlaceholderText } = render(
+      <DebugModal isCodeRequired visible onClose={jest.fn()} />,
+    )
     const textField = getByPlaceholderText('Development Code')
 
     await act(async () => {
