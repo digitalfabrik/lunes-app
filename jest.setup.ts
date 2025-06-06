@@ -4,6 +4,7 @@ import { Animated } from 'react-native'
 import 'react-native-gesture-handler/jestSetup'
 import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock'
 
+jest.mock('@notifee/react-native', () => require('@notifee/react-native/jest-mock'))
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
