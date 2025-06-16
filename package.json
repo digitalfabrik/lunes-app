@@ -8,7 +8,7 @@
     "android:production": "react-native run-android --no-packager --mode=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest --verbose --maxWorkers=1",
+    "test": "TZ=UTC jest --verbose --maxWorkers=1",
     "test:changed": "yarn run test -o",
     "test:update": "yarn run test -u --maxWorkers=1",
     "lint": "eslint .",
@@ -23,6 +23,7 @@
     "create-release-note": "bash ./release-notes/createReleaseNotes.sh $1"
   },
   "dependencies": {
+    "@notifee/react-native": "^9.1.8",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-native-picker/picker": "^2.9.0",
