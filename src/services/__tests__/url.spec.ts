@@ -10,6 +10,12 @@ jest.mock('react-native', () => ({
   },
 }))
 
+jest.mock('react-native-responsive-screen', () => ({
+  heightPercentageToDP: jest.fn((value) => value),
+  widthPercentageToDP: jest.fn((value) => value),
+}))
+
+
 describe('url', () => {
   it('should successfully open an url', async () => {
     mocked(Linking.canOpenURL).mockResolvedValueOnce(true)
