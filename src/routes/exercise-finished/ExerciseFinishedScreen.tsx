@@ -24,7 +24,12 @@ import RoundedBackground from '../../components/RoundedBackground'
 import RouteWrapper from '../../components/RouteWrapper'
 import { Content } from '../../components/text/Content'
 import { HeadingBackground } from '../../components/text/Heading'
-import { BUTTONS_THEME, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
+import {
+  BUTTONS_THEME,
+  EXERCISES,
+  FIRST_EXERCISE_FOR_REPETITION,
+  SCORE_THRESHOLD_POSITIVE_FEEDBACK,
+} from '../../constants/data'
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -146,7 +151,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
       bottomBackgroundColor={theme.colors.background}>
-      {exercise === EXERCISES.length - 1 && (
+      {exercise === FIRST_EXERCISE_FOR_REPETITION && (
         <Modal
           visible={isModalVisible}
           confirmationAction={() => navigation.navigate('RepetitionTab')}
