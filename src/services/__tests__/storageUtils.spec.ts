@@ -29,10 +29,7 @@ describe('storageUtils', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
-    repetitionService = new RepetitionService(
-      () => storageCache.getItem('wordNodeCards'),
-      value => storageCache.setItem('wordNodeCards', value),
-    )
+    repetitionService = RepetitionService.fromStorageCache(storageCache)
   })
 
   describe('customDisciplines', () => {

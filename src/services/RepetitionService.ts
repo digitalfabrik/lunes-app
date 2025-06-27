@@ -1,6 +1,7 @@
 import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
+import { StorageCache } from './Storage'
 import { millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
@@ -30,6 +31,12 @@ export class RepetitionService {
     this.getWordNodeCards = getWordNodeCards
     this.setWordNodeCardsWithoutReminder = setWordNodeCardsWithoutReminder
   }
+
+  public static fromStorageCache = (storageCache: StorageCache): RepetitionService =>
+    new RepetitionService(
+      () => storageCache.getItem('wordNodeCards'),
+      value => storageCache.setItem('wordNodeCards', value),
+    )
 
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
