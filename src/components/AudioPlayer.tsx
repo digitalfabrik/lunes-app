@@ -3,7 +3,8 @@ import SoundPlayer from 'react-native-sound-player'
 import Tts, { Options, TtsError } from 'react-native-tts'
 import styled, { useTheme } from 'styled-components/native'
 
-import { VolumeUpCircleIcon } from '../../assets/images'
+import { VolumeDisabled, VolumeUpCircleIcon } from '../../assets/images'
+import useVolumeState from '../hooks/useVolumeState'
 import PressableOpacity from './PressableOpacity'
 
 const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boolean }>`
@@ -38,6 +39,8 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
   const theme = useTheme()
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
+  const volumeState = useVolumeState()
+  const isSilent = volumeState.volume === 0 || volumeState.isSilentSwitchActive
 
   const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
@@ -97,11 +100,15 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
 
   return (
     <VolumeIcon
-      disabled={disabled || !isInitialized}
+      disabled={disabled || !isInitialized || isSilent}
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
-      <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      {isSilent ? (
+        <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+      ) : (
+        <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      )}
     </VolumeIcon>
   )
 }
