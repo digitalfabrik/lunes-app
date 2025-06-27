@@ -1,0 +1,6 @@
+issue_key: 1098
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Der Lautsprecher-Button zeigt nun an, wenn der Ton auf dem Gerät deaktiviert ist
