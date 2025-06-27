@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
-import { ExerciseKey, ExerciseKeys, Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
+import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
@@ -61,7 +61,7 @@ export const saveExerciseProgress = async (
   const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(storageCache, disciplineId, exerciseKey, score)
 
-  if (exerciseKey > ExerciseKeys.vocabularyList && score > 0) {
+  if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && score > 0) {
     const repetitionService = RepetitionService.fromStorageCache(storageCache)
     const words = vocabularyItemsWithResults.map(result => result.vocabularyItem)
     await repetitionService.addWordsToFirstSection(words)
