@@ -115,7 +115,7 @@ describe('ExerciseFinishedScreen', () => {
     const route = getRoute(3, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.finishedDiscipline)).toBeDefined()
-    const button = getByText(getLabels().results.action.disciplineOverview)
+    const button = getByText(getLabels().results.action.back)
     fireEvent.press(button)
     expect(navigation.pop).toHaveBeenCalledWith(2)
   })

@@ -125,7 +125,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       return {
         message: getLabels().results.finishedDiscipline,
         resultColor: theme.colors.correct,
-        buttonText: getLabels().results.action.disciplineOverview,
+        buttonText: getLabels().results.action.back,
         navigationAction: navigateToNextDiscipline,
         ResultIcon: PartyHornIcon,
       }
