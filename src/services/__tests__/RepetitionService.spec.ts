@@ -15,10 +15,7 @@ describe('RepetitionService', () => {
   let testData: WordNodeCard[] = []
 
   const storageCache = StorageCache.createDummy()
-  const repetitionService = new RepetitionService(
-    () => storageCache.getItem('wordNodeCards'),
-    value => storageCache.setItem('wordNodeCards', value),
-  )
+  const repetitionService = RepetitionService.fromStorageCache(storageCache)
 
   beforeEach(() => {
     storageCache.setItem('wordNodeCards', [])
