@@ -121,9 +121,29 @@ describe('storageUtils', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(storageCache, 1, 1, vocabularyItemResults)
+        await saveExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, vocabularyItemResults)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
+
+        const words = repetitionService.getWordNodeCards()
+        expect(words).toHaveLength(2)
+      })
+
+      it('should not update the repetition words for the first level', async () => {
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
+          {
+            vocabularyItem: vocabularyItems[0],
+            result: SIMPLE_RESULTS.correct,
+            numberOfTries: 1,
+          },
+        ]
+        await saveExerciseProgress(storageCache, 1, ExerciseKeys.vocabularyList, vocabularyItemResults)
+        const progress = storageCache.getItem('progress')
+        expect(progress[1]).toStrictEqual({ [ExerciseKeys.vocabularyList]: 10 })
+
+        const words = repetitionService.getWordNodeCards()
+        expect(words).toHaveLength(0)
       })
     })
   })
