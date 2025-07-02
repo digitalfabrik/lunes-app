@@ -2,7 +2,7 @@ import { CommonActions, RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import { ExerciseKey, EXERCISES } from '../../../constants/data'
+import { ExerciseKey, EXERCISES, FIRST_EXERCISE_FOR_REPETITION } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
@@ -38,7 +38,7 @@ describe('ExerciseFinishedScreen', () => {
   })
 
   it('should render repetition modal if a module is finished', () => {
-    const route = getRoute(3, true, true)
+    const route = getRoute(FIRST_EXERCISE_FOR_REPETITION, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().repetition.hintModalHeaderText)).toBeDefined()
     expect(getByText(getLabels().repetition.hintModalContentText)).toBeDefined()
@@ -48,15 +48,15 @@ describe('ExerciseFinishedScreen', () => {
   })
 
   it('should not render repetition modal if it is on a first exercise', () => {
-    const route = getRoute(1, true, true)
+    const route = getRoute(0, true, true)
     const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(queryByTestId('repetition-modal')).toBeNull()
   })
 
-  it('should not render repetition modal if it is on a second exercise', () => {
-    const route = getRoute(2, false, false)
+  it('should render repetition modal if it is on a second exercise', () => {
+    const route = getRoute(1, false, false)
     const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(queryByTestId('repetition-modal')).toBeNull()
+    expect(queryByTestId('repetition-modal')).toBeTruthy()
   })
 
   it('should render and handle button click for unlocked next exercise', () => {
