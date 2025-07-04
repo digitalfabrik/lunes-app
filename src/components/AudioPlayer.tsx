@@ -1,9 +1,12 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import { Tooltip } from 'react-native-paper'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { Options, TtsError } from 'react-native-tts'
 import styled, { useTheme } from 'styled-components/native'
 
-import { VolumeUpCircleIcon } from '../../assets/images'
+import { VolumeDisabled, VolumeUpCircleIcon } from '../../assets/images'
+import { useIsSilent } from '../hooks/useVolumeState'
+import { getLabels } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
 
 const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boolean }>`
@@ -38,6 +41,7 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
   const theme = useTheme()
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
+  const isSilent = useIsSilent()
 
   const initializeTts = useCallback((): void => {
     Tts.getInitStatus()
@@ -97,11 +101,17 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
 
   return (
     <VolumeIcon
-      disabled={disabled || !isInitialized}
+      disabled={disabled || !isInitialized || isSilent}
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
-      <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      {isSilent ? (
+        <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
+          <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+        </Tooltip>
+      ) : (
+        <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+      )}
     </VolumeIcon>
   )
 }

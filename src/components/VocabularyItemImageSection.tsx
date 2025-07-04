@@ -12,6 +12,7 @@ const AudioContainer = styled.View`
   position: absolute;
   bottom: ${hp('-2.25%')}px;
   align-self: center;
+  align-items: center;
 `
 const FavoriteContainer = styled.View`
   position: absolute;
