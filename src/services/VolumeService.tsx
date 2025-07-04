@@ -1,4 +1,6 @@
 import React, { createContext, ReactElement, useEffect, useMemo, useState } from 'react'
+import { Platform } from 'react-native'
+import DeviceInfo from 'react-native-device-info'
 import { useSilentSwitch, VolumeManager } from 'react-native-volume-manager'
 
 import { reportError } from './sentry'
@@ -36,9 +38,14 @@ export type VolumeServiceProviderProps = {
   children: ReactElement
 }
 
+const isIphoneSimulator = (): boolean => DeviceInfo.isEmulatorSync() && Platform.OS === 'ios'
+
 const VolumeServiceProvider = ({ children }: VolumeServiceProviderProps): ReactElement | null => {
   const silentModeResult = useSilentSwitch()
-  const volume = useVolume()
+  const initialVolume = useVolume()
+  // The iPhone simulator does not report the actual volume. To make it possible to use it with sound
+  // we will just assume that its volume is 1.0
+  const volume = isIphoneSimulator() ? 1 : initialVolume
 
   const volumeState = useMemo(
     () => ({
