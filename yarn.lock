@@ -8417,7 +8417,7 @@ __metadata:
     react-native-progress: ^5.0.1
     react-native-reanimated: ^3.16.7
     react-native-responsive-screen: ^1.4.2
-    react-native-safe-area-context: ^4.14.0
+    react-native-safe-area-context: ^5.5.1
     react-native-screens: ^3.35.0
     react-native-sound-player: 0.14.3
     react-native-svg: ^15.9.0
@@ -10080,13 +10080,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.14.0":
-  version: 4.14.1
-  resolution: "react-native-safe-area-context@npm:4.14.1"
+"react-native-safe-area-context@npm:^5.5.1":
+  version: 5.5.1
+  resolution: "react-native-safe-area-context@npm:5.5.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: c34c6fe9002a89c80ddb206fc68db99f1e432e19c7cf5aaa93b430584051b7e7caf889093224029437dc5b66fe434b09e9950d755aa40b58e1e3a1f976c2fec1
+  checksum: 603d9f4cdfd34b494ae64dbcbcd57f306271b9843971c0fb820e8d50e6470f63cdd06472536e8ff9668f79a33c3d1ef32741ed6fe71ca81b093ec01ac99054f0
   languageName: node
   linkType: hard
 
