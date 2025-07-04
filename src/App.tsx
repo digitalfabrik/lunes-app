@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import { LogBox } from 'react-native'
 import 'react-native-gesture-handler'
+import { PaperProvider } from 'react-native-paper'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
 import { HeaderButtonsProvider } from 'react-navigation-header-buttons'
 import { ThemeProvider } from 'styled-components/native'
@@ -21,17 +22,19 @@ const App = (): ReactElement => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <StorageProvider>
-          <VolumeServiceProvider>
-            <NavigationContainer>
-              <HeaderButtonsProvider stackType='native'>
-                <Navigator />
-              </HeaderButtonsProvider>
-            </NavigationContainer>
-          </VolumeServiceProvider>
-        </StorageProvider>
-      </SafeAreaProvider>
+      <PaperProvider>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <StorageProvider>
+            <VolumeServiceProvider>
+              <NavigationContainer>
+                <HeaderButtonsProvider stackType='native'>
+                  <Navigator />
+                </HeaderButtonsProvider>
+              </NavigationContainer>
+            </VolumeServiceProvider>
+          </StorageProvider>
+        </SafeAreaProvider>
+      </PaperProvider>
     </ThemeProvider>
   )
 }
