@@ -1,11 +1,14 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock'
 import '@testing-library/jest-native/extend-expect'
 import { Animated } from 'react-native'
+// @ts-expect-error file is js
+import mockRNDeviceInfo from 'react-native-device-info/jest/react-native-device-info-mock'
 import 'react-native-gesture-handler/jestSetup'
 import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock'
 
 jest.mock('@notifee/react-native', () => require('@notifee/react-native/jest-mock'))
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
+jest.mock('react-native-device-info', () => mockRNDeviceInfo)
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Reanimated = require('react-native-reanimated/mock')
