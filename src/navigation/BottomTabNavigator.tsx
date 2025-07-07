@@ -65,7 +65,7 @@ const BottomTabNavigator = (): JSX.Element | null => {
         tabBarActiveTintColor: theme.colors.background,
         tabBarStyle: {
           backgroundColor: theme.colors.primary,
-          minHeight: hp('7%'),
+          minHeight: hp('7%') + insets.bottom,
           paddingBottom: insets.bottom,
         },
         tabBarItemStyle: { height: hp('7%'), padding: theme.spacingsPlain.xs },
