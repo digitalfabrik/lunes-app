@@ -8426,6 +8426,7 @@ __metadata:
     react-native-tts: 4.1.1
     react-native-vector-icons: ^10.2.0
     react-native-vision-camera: ^4.6.1
+    react-native-volume-manager: ^2.0.8
     react-navigation-header-buttons: ^11.2.1
     react-test-renderer: ^18.3.1
     string-similarity: ^4.0.4
@@ -10191,6 +10192,16 @@ __metadata:
     react-native-worklets-core:
       optional: true
   checksum: e626763b481ad435bb72632d275cfb0e9b415ce29efa0239c2575d626cb9096cd1be27fb004741bc57ae1c25ab4e70d70583f30a5471a00ddda5cb84519ed42a
+  languageName: node
+  linkType: hard
+
+"react-native-volume-manager@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "react-native-volume-manager@npm:2.0.8"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: e4ea8d6c1ec1601f1910742c1111f1658740fdfff201455bd043730543071832d37e690ad2b2b1d3d30836243aa8e9418e561f2ca6a3b3210ce382b079b201d0
   languageName: node
   linkType: hard
 
