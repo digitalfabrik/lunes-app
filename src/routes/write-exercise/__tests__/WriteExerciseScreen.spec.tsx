@@ -179,7 +179,6 @@ describe('WriteExerciseScreen', () => {
       { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
       { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
     ])
-    expect(storageCache.getItem('wordNodeCards')).toHaveLength(2)
   })
 
   const evaluate = (input: string, expectedFeedback: string) => {

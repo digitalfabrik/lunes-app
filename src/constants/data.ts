@@ -13,6 +13,8 @@ export const ExerciseKeys = {
 } as const
 export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
 
+export const FIRST_EXERCISE_FOR_REPETITION = ExerciseKeys.wordChoiceExercise
+
 export type Exercise = {
   key: ExerciseKey
   title: string

@@ -21,10 +21,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
   ) {
     super(route, navigation, setCurrentIndex, setIsAnswerSubmitted, setVocabularyItemWithResults, storageCache)
 
-    this.repetitionService = new RepetitionService(
-      () => storageCache.getItem('wordNodeCards'),
-      value => storageCache.setItem('wordNodeCards', value),
-    )
+    this.repetitionService = RepetitionService.fromStorageCache(this.storageCache)
   }
 
   finishExercise = async (): Promise<void> => {
