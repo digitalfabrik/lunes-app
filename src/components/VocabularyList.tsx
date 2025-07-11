@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
 import { getLabels } from '../services/helpers'
+import SafeBottomPadding from './SafeBottomPadding'
 import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'
 
@@ -33,6 +34,7 @@ const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListS
             }`}
           />
         }
+        ListFooterComponent={<SafeBottomPadding />}
         data={vocabularyItems}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
