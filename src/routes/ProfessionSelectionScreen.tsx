@@ -1,13 +1,14 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { CheckCircleIconGreen } from '../../assets/images'
 import Button from '../components/Button'
 import DisciplineListItem from '../components/DisciplineListItem'
 import RouteWrapper from '../components/RouteWrapper'
+import SafeBottomPadding from '../components/SafeBottomPadding'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
@@ -24,8 +25,8 @@ const List = styled.FlatList`
 ` as unknown as typeof FlatList
 
 const ButtonContainer = styled.View`
-  padding: ${props => props.theme.spacings.md} 0;
-  margin: 0 auto 0;
+  padding: ${props => props.theme.spacings.md};
+  margin: 0 auto ${props => props.theme.spacings.md};
 `
 
 const IconContainer = styled.View`
@@ -98,15 +99,18 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
           contentContainerStyle={{ flexGrow: 1 }}
           ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           ListFooterComponent={
-            !isSelectionMade ? (
-              <ButtonContainer>
-                <Button
-                  onPress={navigateToHomeScreen}
-                  label={getLabels().scopeSelection.skipSelection}
-                  buttonTheme={BUTTONS_THEME.contained}
-                />
-              </ButtonContainer>
-            ) : null
+            <View>
+              {!isSelectionMade && (
+                <ButtonContainer>
+                  <Button
+                    onPress={navigateToHomeScreen}
+                    label={getLabels().scopeSelection.skipSelection}
+                    buttonTheme={BUTTONS_THEME.contained}
+                  />
+                </ButtonContainer>
+              )}
+              <SafeBottomPadding />
+            </View>
           }
           ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
           data={disciplines}

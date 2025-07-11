@@ -7,6 +7,7 @@ import styled, { useTheme } from 'styled-components/native'
 import Button from '../../components/Button'
 import Header from '../../components/Header'
 import RouteWrapper from '../../components/RouteWrapper'
+import SafeBottomPadding from '../../components/SafeBottomPadding'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
@@ -95,6 +96,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
             />
           </ButtonContainer>
         )}
+        <SafeBottomPadding />
       </ScrollView>
     </RouteWrapper>
   )
