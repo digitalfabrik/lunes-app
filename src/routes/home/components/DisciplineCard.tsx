@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -56,10 +57,11 @@ const DisciplineCard = ({
   const storageCache = useStorageCache()
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const cardWidth = wp('75%')
 
   if (loading) {
     return (
-      <Card>
+      <Card width={cardWidth}>
         <LoadingContainer>
           <Loading isLoading={loading} />
         </LoadingContainer>
@@ -70,7 +72,7 @@ const DisciplineCard = ({
   if (!discipline) {
     if (error?.message === NetworkError) {
       return (
-        <Card>
+        <Card width={cardWidth}>
           <ErrorMessage error={error} refresh={refresh} contained />
         </Card>
       )
@@ -91,7 +93,7 @@ const DisciplineCard = ({
     return (
       <>
         <DeletionModal isVisible={isModalVisible} onConfirm={deleteItem} onClose={() => setIsModalVisible(false)} />
-        <Card>
+        <Card width={cardWidth}>
           <ErrorMessageModified>
             <ErrorText>{errorMessage}</ErrorText>
           </ErrorMessageModified>
@@ -108,7 +110,11 @@ const DisciplineCard = ({
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon} onPress={() => navigateToDiscipline(discipline)}>
+    <Card
+      width={cardWidth}
+      heading={discipline.title}
+      icon={discipline.icon}
+      onPress={() => navigateToDiscipline(discipline)}>
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (

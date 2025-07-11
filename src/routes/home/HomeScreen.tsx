@@ -9,13 +9,12 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import AddCustomDisciplineCard from './components/AddCustomDiscipline'
-import DisciplineCard from './components/DisciplineCard'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
+import SelectedProfessions from './components/SelectedProfessions'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -35,13 +34,18 @@ type HomeScreenProps = {
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
-  const [customDisciplines] = useStorage('customDisciplines')
-  const [selectedProfessions] = useStorage('selectedProfessions')
-  const isCustomDisciplineEmpty = customDisciplines.length <= 0
   const theme = useTheme()
 
   const navigateToAddCustomDisciplineScreen = (): void => {
     navigation.navigate('AddCustomDiscipline')
+  }
+
+  const navigateToManageSelection = (): void => {
+    navigation.navigate('ManageSelection')
+  }
+
+  const navigateToProfessionSelection = () => {
+    navigation.navigate('ScopeSelection', { initialSelection: false })
   }
 
   const navigateToDiscipline = (discipline: Discipline): void => {
@@ -61,23 +65,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
-  const customDisciplineItems = customDisciplines.map(customDiscipline => (
-    <DisciplineCard
-      key={customDiscipline}
-      identifier={{ apiKey: customDiscipline }}
-      navigateToDiscipline={navigateToDiscipline}
-    />
-  ))
-
-  const selectedProfessionItems = selectedProfessions?.map(profession => (
-    <DisciplineCard
-      key={profession}
-      identifier={{ disciplineId: profession }}
-      navigateToDiscipline={navigateToDiscipline}
-      navigateToNextExercise={navigateToNextExercise}
-    />
-  ))
-
   return (
     <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent>
       <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
@@ -85,12 +72,13 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           <HomeScreenHeader navigation={navigation} />
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
-          {selectedProfessionItems}
-          {isCustomDisciplineEmpty ? (
-            <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
-          ) : (
-            customDisciplineItems
-          )}
+          <SelectedProfessions
+            navigateToDiscipline={navigateToDiscipline}
+            navigateToNextExercise={navigateToNextExercise}
+            navigateToManageSelection={navigateToManageSelection}
+            navigateToProfessionSelection={navigateToProfessionSelection}
+          />
+          <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />
         </View>
         <HomeFooter />
       </Root>

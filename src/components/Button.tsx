@@ -12,6 +12,7 @@ type ThemedButtonProps = {
   buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
+  fitToContentWidth: boolean
   isPressed: boolean
 }
 
@@ -29,7 +30,11 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
     `};
   flex-direction: row;
   padding: ${props => `${hp('1.5%')}px ${props.theme.spacings.sm}`};
-  width: ${wp('70%')}px;
+  ${props =>
+    !props.fitToContentWidth &&
+    css`
+      width: ${wp('70%')}px;
+    `};
   align-items: center;
   border-radius: ${hp('7%')}px;
   justify-content: center;
@@ -58,6 +63,7 @@ type ButtonProps = {
   iconLeft?: ComponentType<SvgProps>
   iconRight?: ComponentType<SvgProps>
   style?: StyleProp<ViewStyle>
+  fitToContentWidth?: boolean
   iconSize?: number
   testID?: string
 }
@@ -72,6 +78,7 @@ const Button = (props: ButtonProps): ReactElement => {
     buttonTheme = BUTTONS_THEME.outlined,
     style,
     iconSize = theme.spacingsPlain.md,
+    fitToContentWidth,
     testID = 'button',
   } = props
 
@@ -105,6 +112,7 @@ const Button = (props: ButtonProps): ReactElement => {
       onPress={onPress}
       disabled={disabled}
       style={style}
+      fitToContentWidth={!!fitToContentWidth}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}>
       {/* eslint-disable-next-line react/destructuring-assignment */}
