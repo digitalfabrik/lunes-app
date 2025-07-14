@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   ))
 
   return (
-    <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent>
+    <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent shouldSetTopInset>
       <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
         <View>
           <HomeScreenHeader navigation={navigation} />
