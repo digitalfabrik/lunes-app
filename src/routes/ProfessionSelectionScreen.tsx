@@ -92,7 +92,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   }
 
   return (
-    <RouteWrapper>
+    <RouteWrapper shouldSetBottomInset>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
           contentContainerStyle={{ flexGrow: 1 }}

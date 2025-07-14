@@ -2,6 +2,7 @@ import { CardStyleInterpolators, StackNavigationProp } from '@react-navigation/s
 import { StackNavigationOptions } from '@react-navigation/stack/lib/typescript/src/types'
 import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
 import { CloseIconWhite } from '../../assets/images'
@@ -34,9 +35,10 @@ const DismissArea = styled.Pressable`
   flex: 1;
 `
 
-const Sidebar = styled.SafeAreaView`
+const Sidebar = styled.SafeAreaView<{ paddingTop: number }>`
   height: 100%;
   width: 80%;
+  padding-top: ${props => props.paddingTop}px;
   align-self: flex-end;
   background-color: ${props => props.theme.colors.primary};
 `
@@ -59,35 +61,39 @@ type OverlayProps = {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => (
-  <Container>
-    <DismissArea onPress={navigation.goBack} style={{ height: '100%', flex: 1 }} />
-    <Sidebar>
-      <Icon onPress={navigation.goBack}>
-        <CloseIconWhite testID='close-icon-white' />
-      </Icon>
-      <OverlayMenuItem
-        title={getLabels().general.header.manageSelection}
-        onPress={() => navigation.navigate('ManageSelection')}
-      />
-      <OverlayMenuSeparator />
-      <OverlayMenuItem
-        isSubItem
-        title={getLabels().general.header.sponsors}
-        onPress={() => navigation.navigate('Sponsors')}
-      />
-      <OverlayMenuItem
-        isSubItem
-        title={getLabels().general.header.settings}
-        onPress={() => navigation.navigate('Settings')}
-      />
-      <OverlayMenuItem
-        isSubItem
-        title={getLabels().general.header.impressum}
-        onPress={() => navigation.navigate('Imprint')}
-      />
-    </Sidebar>
-  </Container>
-)
+const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
+  const insets = useSafeAreaInsets()
+
+  return (
+    <Container>
+      <DismissArea onPress={navigation.goBack} style={{ height: '100%', flex: 1 }} />
+      <Sidebar paddingTop={insets.top}>
+        <Icon onPress={navigation.goBack}>
+          <CloseIconWhite testID='close-icon-white' />
+        </Icon>
+        <OverlayMenuItem
+          title={getLabels().general.header.manageSelection}
+          onPress={() => navigation.navigate('ManageSelection')}
+        />
+        <OverlayMenuSeparator />
+        <OverlayMenuItem
+          isSubItem
+          title={getLabels().general.header.sponsors}
+          onPress={() => navigation.navigate('Sponsors')}
+        />
+        <OverlayMenuItem
+          isSubItem
+          title={getLabels().general.header.settings}
+          onPress={() => navigation.navigate('Settings')}
+        />
+        <OverlayMenuItem
+          isSubItem
+          title={getLabels().general.header.impressum}
+          onPress={() => navigation.navigate('Imprint')}
+        />
+      </Sidebar>
+    </Container>
+  )
+}
 
 export default OverlayMenu

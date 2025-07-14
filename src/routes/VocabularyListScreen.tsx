@@ -30,7 +30,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: index })
 
   return (
-    <RouteWrapper>
+    <RouteWrapper shouldSetBottomInset>
       <ExerciseHeader
         navigation={navigation}
         confirmClose={false}
