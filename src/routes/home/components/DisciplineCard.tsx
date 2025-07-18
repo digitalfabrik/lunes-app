@@ -44,12 +44,14 @@ export const ButtonContainer = styled.View`
 
 type DisciplineCardProps = {
   identifier: RequestParams
+  width?: number
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
 const DisciplineCard = ({
   identifier,
+  width: cardWidth,
   navigateToDiscipline,
   navigateToNextExercise,
 }: DisciplineCardProps): JSX.Element | null => {
@@ -59,7 +61,7 @@ const DisciplineCard = ({
 
   if (loading) {
     return (
-      <Card>
+      <Card width={cardWidth}>
         <LoadingContainer>
           <Loading isLoading={loading} />
         </LoadingContainer>
@@ -70,7 +72,7 @@ const DisciplineCard = ({
   if (!discipline) {
     if (error?.message === NetworkError) {
       return (
-        <Card>
+        <Card width={cardWidth}>
           <ErrorMessage error={error} refresh={refresh} contained />
         </Card>
       )
@@ -91,7 +93,7 @@ const DisciplineCard = ({
     return (
       <>
         <DeletionModal isVisible={isModalVisible} onConfirm={deleteItem} onClose={() => setIsModalVisible(false)} />
-        <Card>
+        <Card width={cardWidth}>
           <ErrorMessageModified>
             <ErrorText>{errorMessage}</ErrorText>
           </ErrorMessageModified>
@@ -100,6 +102,7 @@ const DisciplineCard = ({
               onPress={() => setIsModalVisible(true)}
               label={getLabels().home.deleteProfession}
               buttonTheme={BUTTONS_THEME.outlined}
+              fitToContentWidth
             />
           </ButtonContainer>
         </Card>
@@ -108,7 +111,11 @@ const DisciplineCard = ({
   }
 
   return (
-    <Card heading={discipline.title} icon={discipline.icon} onPress={() => navigateToDiscipline(discipline)}>
+    <Card
+      width={cardWidth}
+      heading={discipline.title}
+      icon={discipline.icon}
+      onPress={() => navigateToDiscipline(discipline)}>
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (

@@ -5,7 +5,7 @@ import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import { getLabels, childrenLabel } from '../../../services/helpers'
-import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
+import { NumberText, UnitText } from './DisciplineCard'
 
 const TextContainer = styled.View`
   display: flex;
@@ -25,13 +25,12 @@ const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: CustomDis
       <NumberText>{discipline.numberOfChildren}</NumberText>
       <UnitText>{childrenLabel(discipline)}</UnitText>
     </TextContainer>
-    <ButtonContainer>
-      <Button
-        onPress={() => navigateToDiscipline(discipline)}
-        label={getLabels().home.start}
-        buttonTheme={BUTTONS_THEME.outlined}
-      />
-    </ButtonContainer>
+    <Button
+      onPress={() => navigateToDiscipline(discipline)}
+      label={getLabels().home.start}
+      buttonTheme={BUTTONS_THEME.outlined}
+      fitToContentWidth
+    />
   </>
 )
 

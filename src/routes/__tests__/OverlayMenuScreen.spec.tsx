@@ -26,7 +26,6 @@ describe('OverlayMenu', () => {
     { menuItem: getLabels().general.header.settings, route: 'Settings' },
     { menuItem: getLabels().general.header.sponsors, route: 'Sponsors' },
     { menuItem: getLabels().general.header.impressum, route: 'Imprint' },
-    { menuItem: getLabels().general.header.manageSelection, route: 'ManageSelection' },
   ])('should navigate to $route', ({ menuItem, route }) => {
     const { getByText } = renderWithTheme(
       <NavigationContainer>

@@ -11,7 +11,7 @@ const Container = styled.View`
   flex-direction: row;
   flex: 1;
   background-color: ${props => props.theme.colors.background};
-  padding: ${props => props.theme.spacings.sm};
+  padding: ${props => props.theme.spacings.xs};
   margin: ${props => props.theme.spacings.sm} 0;
   shadow-color: ${props => props.theme.colors.shadow};
   elevation: 8;
@@ -21,6 +21,7 @@ const Container = styled.View`
 `
 
 const ExerciseDetail = styled.View`
+  flex: 1;
   padding: 0 ${props => props.theme.spacings.sm};
   align-self: center;
 `
