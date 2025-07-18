@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { PenIcon, TrashIcon } from '../../../../assets/images'
@@ -12,7 +11,7 @@ const Container = styled.View`
 `
 
 const VocabularyListItemContainer = styled.View`
-  min-width: ${wp('90%')}px;
+  flex: 1;
 `
 
 const IconContainer = styled.View`
