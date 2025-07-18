@@ -9,7 +9,7 @@ const Icon = styled.Image`
   height: ${hp('3.5%')}px;
 `
 
-const Box = styled.Pressable`
+const Box = styled.Pressable<{ width?: number }>`
   background-color: ${props => props.theme.colors.backgroundAccent};
   border: 1px solid ${props => props.theme.colors.disabled};
   display: flex;
@@ -17,6 +17,7 @@ const Box = styled.Pressable`
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
   min-height: ${hp('28%')}px;
+  ${props => props.width && `width: ${props.width}px;`}
 `
 
 const BoxHeading = styled.View`
@@ -29,7 +30,7 @@ const BoxHeading = styled.View`
 `
 
 const Title = styled(Heading)`
-  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   padding-right: ${props => props.theme.spacings.sm};
 `
 
@@ -41,13 +42,14 @@ type CardProps = {
   heading?: string
   icon?: string | ReactElement
   onPress?: () => void
+  width?: number
   children: ReactNode
 }
 
 const Card = (props: CardProps): ReactElement => {
-  const { heading, icon, onPress, children } = props
+  const { heading, icon, onPress, width, children } = props
   return (
-    <Box onPress={onPress}>
+    <Box onPress={onPress} width={width}>
       {(!!icon || !!heading) && (
         <BoxHeading>
           {!!icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
