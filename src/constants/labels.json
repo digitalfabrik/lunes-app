@@ -17,7 +17,8 @@
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
-    "deleteProfession": "Bereich löschen"
+    "deleteProfession": "Bereich löschen",
+    "disciplines": "Berufe"
   },
   "manageSelection": {
     "heading": "Verwalte deine Lernbereiche",
