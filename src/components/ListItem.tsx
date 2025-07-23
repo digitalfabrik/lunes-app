@@ -21,7 +21,6 @@ const Container = styled(GenericListItemContainer)<{
   feedback: EXERCISE_FEEDBACK
 }>`
   min-height: ${hp('12%')}px;
-  width: 100%;
   justify-content: center;
   flex-direction: column;
   border-top-width: 1px;
