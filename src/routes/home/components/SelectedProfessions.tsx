@@ -70,10 +70,6 @@ const SelectedProfessions = ({
   const professions = useAllProfessions()
   const { disciplines } = getLabels().home
 
-  if (professions.length === 0) {
-    return null
-  }
-
   return (
     <Box>
       <BoxHeading>
@@ -81,10 +77,10 @@ const SelectedProfessions = ({
           {disciplines} [{professions.length}]
         </Title>
         <IconContainer>
-          <PressableOpacity onPress={navigateToManageSelection}>
+          <PressableOpacity onPress={navigateToManageSelection} testID='edit-professions-button'>
             <PenIcon />
           </PressableOpacity>
-          <PressableOpacity onPress={navigateToProfessionSelection}>
+          <PressableOpacity onPress={navigateToProfessionSelection} testID='add-profession-button'>
             <AddCircleIcon />
           </PressableOpacity>
         </IconContainer>
