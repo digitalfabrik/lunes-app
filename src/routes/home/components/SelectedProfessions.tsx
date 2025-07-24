@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -69,6 +69,7 @@ const SelectedProfessions = ({
 }: SelectedProfessionsProps): JSX.Element | null => {
   const professions = useAllProfessions()
   const { disciplines } = getLabels().home
+  const listRef = useRef<FlatList>(null)
 
   return (
     <Box>
@@ -95,6 +96,9 @@ const SelectedProfessions = ({
       ) : (
         <FlatList
           horizontal
+          ref={listRef}
+          // Workaround for https://github.com/facebook/react-native/issues/27504
+          onEndReached={() => listRef.current?.scrollToEnd()}
           data={professions}
           keyExtractor={item => JSON.stringify(item)}
           renderItem={({ item }) => (
