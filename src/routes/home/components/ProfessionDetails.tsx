@@ -10,7 +10,7 @@ import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel, getLabels } from '../../../services/helpers'
-import { ButtonContainer, NumberText, UnitText } from './DisciplineCard'
+import { NumberText, UnitText } from './DisciplineCard'
 import NextExerciseCard from './NextExerciseCard'
 
 const ProgressContainer = styled.View`
@@ -77,13 +77,12 @@ const ProfessionDetails = ({
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
         subheading={title}
       />
-      <ButtonContainer>
-        <Button
-          onPress={() => navigateToDiscipline(discipline)}
-          label={getLabels().home.viewDisciplines}
-          buttonTheme={BUTTONS_THEME.outlined}
-        />
-      </ButtonContainer>
+      <Button
+        onPress={() => navigateToDiscipline(discipline)}
+        label={getLabels().home.viewDisciplines}
+        buttonTheme={BUTTONS_THEME.outlined}
+        fitToContentWidth
+      />
     </>
   )
 }

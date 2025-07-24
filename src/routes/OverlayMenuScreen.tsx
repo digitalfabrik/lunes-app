@@ -10,13 +10,6 @@ import OverlayMenuItem from '../components/OverlayMenuItem'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
-export const OverlayMenuSeparator = styled.View`
-  height: 2px;
-  border-radius: 20px;
-  background-color: ${props => props.theme.colors.backgroundAccent};
-  margin: ${props => props.theme.spacings.sm};
-`
-
 const OverlayContainer = styled.View`
   width: 100%;
   height: 100%;
@@ -71,11 +64,6 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
         <Icon onPress={navigation.goBack}>
           <CloseIconWhite testID='close-icon-white' />
         </Icon>
-        <OverlayMenuItem
-          title={getLabels().general.header.manageSelection}
-          onPress={() => navigation.navigate('ManageSelection')}
-        />
-        <OverlayMenuSeparator />
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.sponsors}
