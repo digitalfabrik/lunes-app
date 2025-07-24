@@ -52,30 +52,34 @@ type FilteredProfessionListProps = {
 const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): JSX.Element => {
   const storageCache = useStorageCache()
   const [selectedProfessions] = useStorage('selectedProfessions')
-  const allProfessions = useLoadAllDisciplines()
-    .data?.filter(discipline => discipline.total_discipline_children === 0)
+
+  const { data: disciplines, loading, error, refresh } = useLoadAllDisciplines()
+  const allProfessions = disciplines
+    ?.filter(discipline => discipline.total_discipline_children === 0)
     .map(discipline => formatDiscipline(discipline, {}))
   const filteredProfessions = useMemo(() => searchProfessions(allProfessions, queryTerm), [allProfessions, queryTerm])
 
   return (
-    <ScopeContainer>
-      {filteredProfessions?.map(profession => {
-        const disabled = !!selectedProfessions?.includes(profession.id)
-        return (
-          <StyledPressable
-            key={profession.id}
-            onPress={async () => {
-              if (selectedProfessions?.includes(profession.id)) {
-                await removeSelectedProfession(storageCache, profession.id)
-              } else {
-                await pushSelectedProfession(storageCache, profession.id)
-              }
-            }}>
-            {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
-          </StyledPressable>
-        )
-      })}
-    </ScopeContainer>
+    <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+      <ScopeContainer>
+        {filteredProfessions?.map(profession => {
+          const disabled = !!selectedProfessions?.includes(profession.id)
+          return (
+            <StyledPressable
+              key={profession.id}
+              onPress={async () => {
+                if (selectedProfessions?.includes(profession.id)) {
+                  await removeSelectedProfession(storageCache, profession.id)
+                } else {
+                  await pushSelectedProfession(storageCache, profession.id)
+                }
+              }}>
+              {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
+            </StyledPressable>
+          )
+        })}
+      </ScopeContainer>
+    </ServerResponseHandler>
   )
 }
 

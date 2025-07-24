@@ -81,7 +81,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           queryTerm={queryTerm}
           setQueryTerm={setQueryTerm}
           navigateToDiscipline={navigateToDiscipline}
-          selectedProfessions={selectedProfessions}
         />
         {initialSelection && (
           <ButtonContainer>
