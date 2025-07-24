@@ -4,7 +4,8 @@
     "selectProfession": "Wähle deinen Beruf!",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten",
-    "searchProfession": "Nach Beruf suchen"
+    "searchProfession": "Nach Beruf suchen",
+    "noProfessionsFound": "Keine Berufe gefunden"
   },
   "home": {
     "welcome": "Willkommen bei Lunes!",

@@ -77,12 +77,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           )}
           <StyledText>{getLabels().scopeSelection.selectProfession}</StyledText>
         </TextContainer>
-        <ScopeSelection
-          queryTerm={queryTerm}
-          setQueryTerm={setQueryTerm}
-          navigateToDiscipline={navigateToDiscipline}
-          selectedProfessions={selectedProfessions}
-        />
+        <ScopeSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} navigateToDiscipline={navigateToDiscipline} />
         {initialSelection && (
           <ButtonContainer>
             <Button

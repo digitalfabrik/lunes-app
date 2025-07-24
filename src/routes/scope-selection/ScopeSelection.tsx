@@ -9,7 +9,7 @@ import { Discipline } from '../../constants/endpoints'
 import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
-import { useStorageCache } from '../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
 import { pushSelectedProfession, removeSelectedProfession } from '../../services/storageUtils'
 
@@ -37,6 +37,12 @@ const HighlightContainer = styled.Text<{ disabled: boolean }>`
   color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
 `
 
+const EmptyListIndicator = styled.Text`
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  text-align: center;
+`
+
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
   <HighlightContainer disabled={disabled}>
     <ContentTextLight>{textArray[0]}</ContentTextLight>
@@ -45,25 +51,55 @@ const highlightText = (textArray: [string] | [string, string, string], disabled:
   </HighlightContainer>
 )
 
+type FilteredProfessionListProps = {
+  queryTerm: string
+}
+
+const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): JSX.Element => {
+  const storageCache = useStorageCache()
+  const [selectedProfessions] = useStorage('selectedProfessions')
+
+  const { data: disciplines, loading, error, refresh } = useLoadAllDisciplines()
+  const allProfessions = disciplines
+    ?.filter(discipline => discipline.total_discipline_children === 0)
+    .map(discipline => formatDiscipline(discipline, {}))
+  const filteredProfessions = useMemo(() => searchProfessions(allProfessions, queryTerm), [allProfessions, queryTerm])
+
+  return (
+    <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+      <ScopeContainer>
+        {filteredProfessions?.map(profession => {
+          const disabled = !!selectedProfessions?.includes(profession.id)
+          return (
+            <StyledPressable
+              key={profession.id}
+              onPress={async () => {
+                if (selectedProfessions?.includes(profession.id)) {
+                  await removeSelectedProfession(storageCache, profession.id)
+                } else {
+                  await pushSelectedProfession(storageCache, profession.id)
+                }
+              }}>
+              {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
+            </StyledPressable>
+          )
+        })}
+        {filteredProfessions !== undefined && filteredProfessions.length === 0 && (
+          <EmptyListIndicator>{getLabels().scopeSelection.noProfessionsFound}</EmptyListIndicator>
+        )}
+      </ScopeContainer>
+    </ServerResponseHandler>
+  )
+}
+
 type ScopeSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
   navigateToDiscipline: (item: Discipline) => void
-  selectedProfessions: Readonly<number[]> | null
 }
 
-const ScopeSelection = ({
-  queryTerm,
-  setQueryTerm,
-  navigateToDiscipline,
-  selectedProfessions,
-}: ScopeSelectionProps): JSX.Element => {
-  const storageCache = useStorageCache()
+const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: ScopeSelectionProps): JSX.Element => {
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
-  const allProfessions = useLoadAllDisciplines()
-    .data?.filter(discipline => discipline.total_discipline_children === 0)
-    .map(discipline => formatDiscipline(discipline, {}))
-  const filteredProfessions = useMemo(() => searchProfessions(allProfessions, queryTerm), [allProfessions, queryTerm])
   const theme = useTheme()
 
   const disciplineItems = disciplines?.map(item => (
@@ -83,24 +119,7 @@ const ScopeSelection = ({
         />
       </SearchContainer>
       {queryTerm.length > 0 ? (
-        <ScopeContainer>
-          {filteredProfessions?.map(profession => {
-            const disabled = !!selectedProfessions?.includes(profession.id)
-            return (
-              <StyledPressable
-                key={profession.id}
-                onPress={async () => {
-                  if (selectedProfessions?.includes(profession.id)) {
-                    await removeSelectedProfession(storageCache, profession.id)
-                  } else {
-                    await pushSelectedProfession(storageCache, profession.id)
-                  }
-                }}>
-                {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
-              </StyledPressable>
-            )
-          })}
-        </ScopeContainer>
+        <FilteredProfessionList queryTerm={queryTerm} />
       ) : (
         <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
           <DisciplineContainer>{disciplineItems}</DisciplineContainer>
