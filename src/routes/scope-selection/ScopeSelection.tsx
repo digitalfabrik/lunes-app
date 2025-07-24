@@ -37,6 +37,12 @@ const HighlightContainer = styled.Text<{ disabled: boolean }>`
   color: ${props => (props.disabled ? props.theme.colors.disabled : props.theme.colors.black)};
 `
 
+const EmptyListIndicator = styled.Text`
+  font-size: ${props => props.theme.fonts.largeFontSize};
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  text-align: center;
+`
+
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
   <HighlightContainer disabled={disabled}>
     <ContentTextLight>{textArray[0]}</ContentTextLight>
@@ -78,6 +84,9 @@ const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): JSX
             </StyledPressable>
           )
         })}
+        {filteredProfessions !== undefined && filteredProfessions.length === 0 && (
+          <EmptyListIndicator>{getLabels().scopeSelection.noProfessionsFound}</EmptyListIndicator>
+        )}
       </ScopeContainer>
     </ServerResponseHandler>
   )
