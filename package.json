@@ -13,7 +13,6 @@
     "test:update": "yarn run test -u --maxWorkers=1",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "lint:ci": "yarn run eslint --quiet --format junit -o reports/lint/junit-lint.xml",
     "lint:changed": "eslint . -c ./.eslintrc_changed.js",
     "prettier:check": "yarn prettier --check .",
     "prettier:write": "yarn prettier --write .",

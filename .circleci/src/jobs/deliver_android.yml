@@ -16,7 +16,7 @@ steps:
       directory: android
   - run:
       name: Parse german android release notes
-      command: yarn manage-metadata prepare-metadata playstore
+      command: yarn app-toolbelt v0 release-notes prepare-metadata lunes playstore ../android/fastlane/metadata
       working_directory: tools
   - run:
       name: Validate Play Store Key
