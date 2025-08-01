@@ -50,7 +50,6 @@ Several workflows exist for different purposes:
 - **commit_main**: Executed for all commits on main. Code is checked and Android and iOS apps are build.
 - **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development/beta.
 - **promote**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which promotes latest beta to production.
-- **browserstack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
 
 ## Services
 

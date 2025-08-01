@@ -12,7 +12,3 @@ parameters:
   run_promote:
     default: false
     type: boolean
-
-  run_browserstack_delivery:
-    default: false
-    type: boolean
