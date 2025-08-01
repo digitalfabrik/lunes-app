@@ -9,10 +9,6 @@ parameters:
     default: false
     type: boolean
 
-  run_prod_delivery:
-    default: false
-    type: boolean
-
   run_promote:
     default: false
     type: boolean

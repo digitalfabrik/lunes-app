@@ -3,24 +3,9 @@
   "name": "tools",
   "private": true,
   "scripts": {
-    "manage-metadata": "ts-node manage-metadata.ts",
-    "git-version": "ts-node git-version.ts",
-    "github-release": "ts-node github-release.ts",
-    "move-release-notes": "ts-node move-release-notes.ts",
-    "next-version": "ts-node next-version.ts",
-    "ts:check": "tsc --build"
+    "app-toolbelt": "$(yarn bin app-toolbelt)"
   },
   "devDependencies": {
-    "@octokit/auth-app": "^4.0.4",
-    "@octokit/rest": "^19.0.3",
-    "@types/js-yaml": "^4.0.3",
-    "@types/node": "^18.0.3",
-    "@types/node-fetch": "^2.6.2",
-    "commander": "^8.3.0",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "node-fetch": "^2.6.7",
-    "ts-node": "^10.8.2",
-    "typescript": "^4.7.4"
+    "app-toolbelt": "github:digitalfabrik/app-toolbelt#lunes-integration"
   }
 }
