@@ -9,7 +9,7 @@
 
 ## Triggering a Delivery using the CI
 
-The easiest way to deliver a new build to production or development is to trigger the corresponding CircleCI workflows _triggered_native_development_delivery_ and _triggered_production_delivery_.
+The easiest way to deliver a new build to development is to trigger the corresponding CircleCI workflow _dev_delivery_.
 You can either use the CircleCI web UI (press the "Trigger Pipeline" button) or by sending a POST request to CircleCI:
 
 - Get a CircleCI [Personal API Token](https://circleci.com/docs/2.0/managing-api-tokens/).
@@ -25,7 +25,6 @@ You can either use the CircleCI web UI (press the "Trigger Pipeline" button) or 
     }
     ```
   - If no branch is specified, main is used as default. This should normally not be changed.
-  - Per default a development delivery is made.
   - For more information on how to use it, execute it without parameters to see usage information.
 
 An example cURL request to start a dev delivery would be the following:
@@ -37,6 +36,7 @@ curl -X POST https://circleci.com/api/v2/project/github/digitalfabrik/lunes-app/
   -d '{
         "branch": "<your branch>",
         "parameters": {
+          "run_commit": false,
           "run_dev_delivery": true
         }
       }'
@@ -49,9 +49,8 @@ Several workflows exist for different purposes:
 - **commit**: Executed for all commits of PRs to ensure good code quality and working code. Android or iOS apps are not build.
 - **commit_main**: Executed for all commits on main. Code is checked and Android and iOS apps are build.
 - **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development/beta.
-- **prod_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to production.
 - **promote**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which promotes latest beta to production.
-- **browsertack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
+- **browserstack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
 
 ## Services
 
@@ -76,10 +75,6 @@ The Play Store has the concept of tracks to manage released versions of the app.
 
 Authentication happens by setting the `APP_STORE_CONNECT_API_KEY_CONTENT` environment variable as documented [below](#ios-variables).
 
-### BrowserStack
-
-We are using BrowserStack to run our E2E tests on real iOS and Android devices.
-
 ## Fastlane
 
 Fastlane is a task-runner for triggering build relevant tasks. It offers integration with XCode and the Android SDK for building and delivering the app.
@@ -94,15 +89,13 @@ Fastlane is a task-runner for triggering build relevant tasks. It offers integra
 
 To run a lane run `bundle exec fastlane [lane]`
 
-Lanes for Android live in [./android/fastlane](./android/fastlane) and for iOS in [./ios/fastlane](./ios/fastlane)
+Lanes for Android live in [../android/fastlane](../android/fastlane) and for iOS in [../ios/fastlane](../ios/fastlane)
 
 ## Environment Variables and Dependencies
 
-| Variable                | Description                    | Where do I get it from? | Reference                                                                                  |                                                  |
-| ----------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| BROWSERSTACK_ACCESS_KEY | Access Key for BrowserStack    | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |                                                  |
-| BROWSERSTACK_USERNAME   | Username for BrowserStack      | Password Manager        | [Appium REST API](https://www.browserstack.com/app-automate/rest-api)                      |                                                  |
-| DELIVERINO_PRIVATE_KEY  | Base64 encoded PEM private key | Password Manager        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
+| Variable               | Description                    | Where do I get it from? | Reference                                                                                  |                                                  |
+| ---------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| DELIVERINO_PRIVATE_KEY | Base64 encoded PEM private key | Password Manager        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
 
 ### Android Variables
 

@@ -119,12 +119,5 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
       },
     },
-    {
-      files: ['**/tools/**'],
-      rules: {
-        'no-console': 'off',
-        'import/no-extraneous-dependencies': 'off',
-      },
-    },
   ],
 }
