@@ -1,0 +1,15 @@
+{
+  "appstore": {
+    "de": {}
+  },
+  "common": {
+    "de": {
+      "name": "",
+      "description": "",
+      "defaultReleaseNote": "Wir haben die App weiter für Sie verbessert und einige Fehler entfernt. Wenn Sie bemerken, dass etwas nicht funktioniert, lassen Sie es uns wissen!\n"
+    }
+  },
+  "playstore": {
+    "de": {}
+  }
+}
