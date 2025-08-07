@@ -624,9 +624,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-toolbelt@github:digitalfabrik/app-toolbelt#lunes-integration":
+"app-toolbelt@github:digitalfabrik/app-toolbelt#semver:0.5.7":
   version: 0.5.6
-  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=ec8a2ff9ed58aa39c105977538b972c288407ebd"
+  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=9331111b9eb249c4825c7b3f6fbcfe342f76224a"
   dependencies:
     "@octokit/auth-app": ^7.1.5
     "@octokit/rest": ^21.1.1
@@ -644,7 +644,7 @@ __metadata:
     typescript: ^5.7.3
   bin:
     app-toolbelt: bin/app-toolbelt
-  checksum: b2e6a20b8e4d27926ffab05ee28ce7e52057e0aee34493d82c174dbfd96688db1d156fa23b1d2bae8b998f10d8b1411b47a4c4a635885638ac7aaf9f4e013741
+  checksum: ce5eff26308cf96bfc98e3b7ed36d5e285096ab74fd3336364d2e4cafbd78c389397615e99d293104e6d3be7af05e71940dc307846aa21ebf25b4d4df9358b5d
   languageName: node
   linkType: hard
 
@@ -1582,7 +1582,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tools@workspace:."
   dependencies:
-    app-toolbelt: "github:digitalfabrik/app-toolbelt#lunes-integration"
+    app-toolbelt: "github:digitalfabrik/app-toolbelt#semver:0.5.7"
   languageName: unknown
   linkType: soft
 

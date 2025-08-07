@@ -6,6 +6,6 @@
     "app-toolbelt": "$(yarn bin app-toolbelt)"
   },
   "devDependencies": {
-    "app-toolbelt": "github:digitalfabrik/app-toolbelt#lunes-integration"
+    "app-toolbelt": "github:digitalfabrik/app-toolbelt#semver:0.5.7"
   }
 }
