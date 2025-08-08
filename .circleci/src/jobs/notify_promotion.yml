@@ -14,6 +14,6 @@ steps:
         echo "export PROMOTION_MESSAGE='${PROMOTION_MESSAGE}'" >> $BASH_ENV
       working_directory: tools
   - notify:
-      success_message: '${PROMOTION_MESSAGE}'
+      success_message: 'Lunes - ${PROMOTION_MESSAGE}'
       channel: releases
       only_for_branch: ${CIRCLE_BRANCH}

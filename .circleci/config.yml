@@ -497,7 +497,7 @@ jobs:
             - notify:
                 channel: releases
                 only_for_branch: ${CIRCLE_BRANCH}
-                success_message: ${PROMOTION_MESSAGE}
+                success_message: Lunes - ${PROMOTION_MESSAGE}
     promote_android:
         docker:
             - image: cimg/android:2024.08.1-node
