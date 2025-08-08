@@ -272,6 +272,13 @@ jobs:
                 root: android/attached_workspace
             - store_artifacts:
                 path: android/attached_workspace/app-release.apk
+            - run:
+                command: echo "[lunes.apk](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/android/attached_workspace/app-release.apk)" >> lunes-apk-url
+                name: Persist artifact url
+            - persist_to_workspace:
+                paths:
+                    - lunes-apk-url
+                root: .
             - notify
     build_ios:
         environment:
@@ -312,6 +319,13 @@ jobs:
                 paths:
                     - app-release.ipa
                 root: ios/output/gym
+            - run:
+                command: echo "[lunes.ipa](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/ios/output/gym/app-release.ipa)" >> lunes-ipa-url
+                name: Persist artifact url
+            - persist_to_workspace:
+                paths:
+                    - lunes-ipa-url
+                root: .
             - notify
     bump_version:
         docker:

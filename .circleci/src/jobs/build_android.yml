@@ -59,4 +59,11 @@ steps:
         - app-release.apk
   - store_artifacts:
       path: android/attached_workspace/app-release.apk
+  - run:
+      name: Persist artifact url
+      command: echo "[lunes.apk](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/android/attached_workspace/app-release.apk)" >> lunes-apk-url
+  - persist_to_workspace:
+      root: .
+      paths:
+        - lunes-apk-url
   - notify
