@@ -26,10 +26,3 @@ jobs:
       requires:
         - check
         - bump_version
-  - deliver_browser_stack:
-      context:
-        - mattermost
-        - browserstack
-      requires:
-        - build_android
-        - build_ios

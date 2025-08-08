@@ -399,40 +399,6 @@ jobs:
                 command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
             - notify
-    deliver_browser_stack:
-        docker:
-            - image: cimg/android:2024.08.1-node
-        environment:
-            FASTLANE_SKIP_UPDATE_CHECK: true
-        shell: /bin/bash -eo pipefail
-        steps:
-            - checkout
-            - prepare_workspace
-            - restore_ruby_cache:
-                directory: android
-            - run:
-                command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH////-}.apk
-                name: Rename apk
-            - run:
-                command: mv ~/attached_workspace/app-release.ipa ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa
-                name: Rename ipa
-            - run:
-                command: bundle exec fastlane android upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH////-}.apk
-                name: BrowserStack Upload android
-                working_directory: android
-            - restore_ruby_cache:
-                directory: ios
-            - run:
-                command: bundle exec fastlane ios upload_to_browserstack file_path:attached_workspace/${CIRCLE_BRANCH////-}.ipa
-                name: BrowserStack Upload iOS
-                working_directory: ios
-            - run:
-                command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.apk ~/attached_workspace/app-release.apk
-                name: Undo rename apk
-            - run:
-                command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
-                name: Undo raname ipa
-            - notify
     deliver_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -566,9 +532,6 @@ jobs:
                 working_directory: ios
             - notify
 parameters:
-    run_browserstack_delivery:
-        default: false
-        type: boolean
     run_commit:
         default: true
         type: boolean
@@ -580,34 +543,6 @@ parameters:
         type: boolean
 version: 2.1
 workflows:
-    browserstack_delivery:
-        jobs:
-            - bump_version:
-                context:
-                    - mattermost
-                prepare_delivery: false
-            - build_android:
-                context:
-                    - mattermost
-                    - credentials-repo
-                    - credentials-lunes
-                requires:
-                    - bump_version
-            - build_ios:
-                context:
-                    - mattermost
-                    - fastlane-match
-                    - tuerantuer-apple
-                requires:
-                    - bump_version
-            - deliver_browser_stack:
-                context:
-                    - mattermost
-                    - browserstack
-                requires:
-                    - build_android
-                    - build_ios
-        when: << pipeline.parameters.run_browserstack_delivery >>
     commit:
         jobs:
             - check:
@@ -646,13 +581,6 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browser_stack:
-                context:
-                    - mattermost
-                    - browserstack
-                requires:
-                    - build_android
-                    - build_ios
         when:
             and:
                 - << pipeline.parameters.run_commit >>
@@ -685,13 +613,6 @@ workflows:
                 requires:
                     - check
                     - bump_version
-            - deliver_browser_stack:
-                context:
-                    - mattermost
-                    - browserstack
-                requires:
-                    - build_android
-                    - build_ios
             - deliver_android:
                 context:
                     - mattermost
