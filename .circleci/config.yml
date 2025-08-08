@@ -359,6 +359,7 @@ jobs:
     check:
         docker:
             - image: cimg/node:20.18.3
+        resource_class: small
         steps:
             - checkout
             - restore_yarn_cache
@@ -386,6 +387,7 @@ jobs:
             production_delivery:
                 description: Whether to deliver the build to production.
                 type: boolean
+        resource_class: small
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
@@ -533,6 +535,7 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 16.2.0
+        resource_class: small
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
