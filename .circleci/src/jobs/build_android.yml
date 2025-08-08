@@ -2,7 +2,7 @@ docker:
   - image: cimg/android:2024.08.1-node
 resource_class: xlarge
 environment:
-  TOTAL_CPUS: 3
+  TOTAL_CPUS: 8
   FASTLANE_SKIP_UPDATE_CHECK: true
 shell: /bin/bash -eo pipefail
 steps:
