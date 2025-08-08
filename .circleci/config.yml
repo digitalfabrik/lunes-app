@@ -217,7 +217,7 @@ jobs:
             - image: cimg/android:2024.08.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
-            TOTAL_CPUS: 3
+            TOTAL_CPUS: 8
         resource_class: xlarge
         shell: /bin/bash -eo pipefail
         steps:
@@ -272,6 +272,13 @@ jobs:
                 root: android/attached_workspace
             - store_artifacts:
                 path: android/attached_workspace/app-release.apk
+            - run:
+                command: echo "[lunes.apk](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/android/attached_workspace/app-release.apk)" >> lunes-apk-url
+                name: Persist artifact url
+            - persist_to_workspace:
+                paths:
+                    - lunes-apk-url
+                root: .
             - notify
     build_ios:
         environment:
@@ -312,6 +319,13 @@ jobs:
                 paths:
                     - app-release.ipa
                 root: ios/output/gym
+            - run:
+                command: echo "[lunes.ipa](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/ios/output/gym/app-release.ipa)" >> lunes-ipa-url
+                name: Persist artifact url
+            - persist_to_workspace:
+                paths:
+                    - lunes-ipa-url
+                root: .
             - notify
     bump_version:
         docker:
@@ -345,6 +359,7 @@ jobs:
     check:
         docker:
             - image: cimg/node:20.18.3
+        resource_class: small
         steps:
             - checkout
             - restore_yarn_cache
@@ -372,6 +387,7 @@ jobs:
             production_delivery:
                 description: Whether to deliver the build to production.
                 type: boolean
+        resource_class: small
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
@@ -477,7 +493,7 @@ jobs:
                 working_directory: tools
             - notify:
                 channel: releases
-                success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME}-native)\n${ANDROID_ARTIFACT_URLS}${IOS_ARTIFACT_URLS}'
+                success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME}-all)\n${ANDROID_ARTIFACT_URLS}${IOS_ARTIFACT_URLS}'
     notify_promotion:
         docker:
             - image: cimg/node:20.17.0
@@ -497,7 +513,7 @@ jobs:
             - notify:
                 channel: releases
                 only_for_branch: ${CIRCLE_BRANCH}
-                success_message: ${PROMOTION_MESSAGE}
+                success_message: Lunes - ${PROMOTION_MESSAGE}
     promote_android:
         docker:
             - image: cimg/android:2024.08.1-node
@@ -519,6 +535,7 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 16.2.0
+        resource_class: small
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout

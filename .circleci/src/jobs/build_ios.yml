@@ -36,4 +36,11 @@ steps:
       root: ios/output/gym
       paths:
         - app-release.ipa
+  - run:
+      name: Persist artifact url
+      command: echo "[lunes.ipa](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/ios/output/gym/app-release.ipa)" >> lunes-ipa-url
+  - persist_to_workspace:
+      root: .
+      paths:
+        - lunes-ipa-url
   - notify
