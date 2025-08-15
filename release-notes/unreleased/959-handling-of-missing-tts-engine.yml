@@ -1,0 +1,6 @@
+issue_key: 959
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Einige Probleme im Zusammenhang mit der Text-zu-Sprache Funktion wurden behoben
