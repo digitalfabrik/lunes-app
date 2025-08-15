@@ -1,10 +1,11 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Tooltip } from 'react-native-paper'
 import SoundPlayer from 'react-native-sound-player'
-import Tts, { Options, TtsError } from 'react-native-tts'
+import Tts, { Options } from 'react-native-tts'
 import styled, { useTheme } from 'styled-components/native'
 
 import { VolumeDisabled, VolumeUpCircleIcon } from '../../assets/images'
+import useTtsState from '../hooks/useTtsState'
 import { useIsSilent } from '../hooks/useVolumeState'
 import { getLabels } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
@@ -39,32 +40,17 @@ type AudioPlayerProps = {
 
 const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): ReactElement => {
   const theme = useTheme()
-  const [isInitialized, setIsInitialized] = useState<boolean>(false)
+  const ttsInitialized = useTtsState().initialized
+  const [soundPlayerInitialized, setSoundPlayerInitialized] = useState<boolean>(false)
+  const isInitialized = isTtsText ? ttsInitialized : soundPlayerInitialized
   const [isActive, setIsActive] = useState(false)
   const isSilent = useIsSilent()
-
-  const initializeTts = useCallback((): void => {
-    Tts.getInitStatus()
-      .then(async () => {
-        setIsInitialized(true)
-        await Tts.setDefaultLanguage('de-DE')
-      })
-      .catch(async (error: TtsError) => {
-        /* eslint-disable-next-line no-console */
-        console.error(`Tts-Error: ${error.code}`)
-        if (error.code === 'no_engine') {
-          /* eslint-disable-next-line no-console */
-          await Tts.requestInstallEngine().catch(e => console.error('Failed to install tts engine: ', e))
-        }
-      })
-  }, [])
 
   useEffect(() => {
     if (disabled) {
       return () => undefined
     }
     if (isTtsText) {
-      initializeTts()
       return Tts.addListener('tts-finish', () => setIsActive(false)).remove
     }
 
@@ -72,13 +58,13 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
       SoundPlayer.play()
     })
     const onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
-    setIsInitialized(true)
+    setSoundPlayerInitialized(true)
 
     return () => {
       onFinishedLoadingSubscription.remove()
       onSoundPlayerFinishPlaying.remove()
     }
-  }, [disabled, isTtsText, audio, initializeTts])
+  }, [disabled, isTtsText, audio])
 
   const handleSpeakerClick = (): void => {
     if (isInitialized) {
