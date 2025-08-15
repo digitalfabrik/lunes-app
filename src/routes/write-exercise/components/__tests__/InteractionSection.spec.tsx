@@ -14,11 +14,6 @@ jest.mock('../../../../components/FavoriteButton', () => () => {
   return <Text>FavoriteButton</Text>
 })
 
-jest.mock('react-native-tts', () => ({
-  getInitStatus: jest.fn(async () => 'success'),
-  addListener: jest.fn(async () => ({ remove: jest.fn() })),
-}))
-
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() })),
 }))

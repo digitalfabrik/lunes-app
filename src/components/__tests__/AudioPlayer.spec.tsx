@@ -4,6 +4,7 @@ import React from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
 
+import TtsServiceProvider from '../../services/TtsService'
 import render from '../../testing/render'
 import AudioPlayer from '../AudioPlayer'
 
@@ -25,7 +26,7 @@ describe('AudioPlayer', () => {
 
   const audioPath = 'https://example.com'
 
-  const renderAudioPlayer = ({
+  const renderAudioPlayer = async ({
     audio = audioPath,
     isTtsText = false,
     disabled = false,
@@ -33,55 +34,66 @@ describe('AudioPlayer', () => {
     audio?: string
     isTtsText?: boolean
     disabled?: boolean
-  }): RenderAPI => render(<AudioPlayer audio={audio} isTtsText={isTtsText} disabled={disabled} />)
+  }): Promise<RenderAPI> => {
+    const api = render(
+      <TtsServiceProvider>
+        <AudioPlayer audio={audio} isTtsText={isTtsText} disabled={disabled} />
+      </TtsServiceProvider>,
+    )
+
+    // Wait until tts has initialized
+    await waitFor(() => expect(Tts.getInitStatus).toHaveBeenCalled())
+
+    return api
+  }
 
   it('should initialize tts', async () => {
-    renderAudioPlayer({ isTtsText: true })
-    expect(Tts.getInitStatus).toHaveBeenCalled()
+    await renderAudioPlayer({ isTtsText: true })
 
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
+    expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
     expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
 
     expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
+    expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
   })
 
   it('should request to install tts engine', async () => {
-    mocked(Tts.getInitStatus).mockRejectedValueOnce({ code: 'no_engine' })
-    renderAudioPlayer({ isTtsText: true })
+    mocked(Tts.getInitStatus).mockRejectedValue({ code: 'no_engine' })
+    const ttsText = 'Die Spachtel'
+    const { findByTestId } = await renderAudioPlayer({ audio: ttsText, isTtsText: true })
 
-    expect(Tts.getInitStatus).toHaveBeenCalled()
-    await waitFor(() => expect(Tts.requestInstallEngine).toHaveBeenCalledTimes(1))
     expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
 
-    expect(Tts.setDefaultLanguage).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
+
+    const button = await findByTestId('audio-player')
+    expect(button).not.toBeDisabled()
+    fireEvent.press(button)
+
+    await waitFor(() => expect(Tts.requestInstallEngine).toHaveBeenCalled())
+    mocked(Tts.getInitStatus).mockResolvedValue('success')
   })
 
-  it('should initialize sound player', () => {
-    renderAudioPlayer({})
+  it('should initialize sound player', async () => {
+    await renderAudioPlayer({})
     expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
-
-    expect(Tts.getInitStatus).not.toHaveBeenCalled()
-    expect(Tts.setDefaultLanguage).not.toHaveBeenCalled()
-    expect(Tts.addListener).not.toHaveBeenCalled()
   })
 
   it('should be disabled', async () => {
-    const { getByTestId } = renderAudioPlayer({ disabled: true })
+    const { getByTestId } = await renderAudioPlayer({ disabled: true })
     expect(getByTestId('audio-player')).toBeDisabled()
 
     fireEvent.press(getByTestId('audio-player'))
 
-    expect(Tts.setDefaultLanguage).not.toHaveBeenCalledWith('de-DE')
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
     expect(Tts.speak).not.toHaveBeenCalled()
   })
 
-  it('should play audio if it is not tts', () => {
-    const { getByTestId } = renderAudioPlayer({})
+  it('should play audio if it is not tts', async () => {
+    const { getByTestId } = await renderAudioPlayer({})
     fireEvent.press(getByTestId('audio-player'))
 
     expect(SoundPlayer.loadUrl).toHaveBeenCalledTimes(1)
@@ -91,8 +103,7 @@ describe('AudioPlayer', () => {
 
   it('should play audio if it is tts', async () => {
     const ttsText = 'Die Spachtel'
-    const { getByTestId } = renderAudioPlayer({ audio: ttsText, isTtsText: true })
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
+    const { getByTestId } = await renderAudioPlayer({ audio: ttsText, isTtsText: true })
 
     fireEvent.press(getByTestId('audio-player'))
 

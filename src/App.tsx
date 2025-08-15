@@ -10,6 +10,7 @@ import { ThemeProvider } from 'styled-components/native'
 import theme from './constants/theme'
 import Navigator from './navigation/Navigator'
 import StorageProvider from './services/Storage'
+import TtsServiceProvider from './services/TtsService'
 import VolumeServiceProvider from './services/VolumeService'
 import { initSentry } from './services/sentry'
 
@@ -26,11 +27,13 @@ const App = (): ReactElement => {
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <StorageProvider>
             <VolumeServiceProvider>
-              <NavigationContainer>
-                <HeaderButtonsProvider stackType='native'>
-                  <Navigator />
-                </HeaderButtonsProvider>
-              </NavigationContainer>
+              <TtsServiceProvider>
+                <NavigationContainer>
+                  <HeaderButtonsProvider stackType='native'>
+                    <Navigator />
+                  </HeaderButtonsProvider>
+                </NavigationContainer>
+              </TtsServiceProvider>
             </VolumeServiceProvider>
           </StorageProvider>
         </SafeAreaProvider>

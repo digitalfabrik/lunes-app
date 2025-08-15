@@ -1,10 +1,12 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { ToastAndroid } from 'react-native'
 import { Tooltip } from 'react-native-paper'
 import SoundPlayer from 'react-native-sound-player'
-import Tts, { Options, TtsError } from 'react-native-tts'
+import Tts, { Options } from 'react-native-tts'
 import styled, { useTheme } from 'styled-components/native'
 
 import { VolumeDisabled, VolumeUpCircleIcon } from '../../assets/images'
+import useTtsState from '../hooks/useTtsState'
 import { useIsSilent } from '../hooks/useVolumeState'
 import { getLabels } from '../services/helpers'
 import PressableOpacity from './PressableOpacity'
@@ -31,6 +33,21 @@ const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boole
   shadow-opacity: 0.5;
 `
 
+const Icon = (): ReactElement => {
+  const theme = useTheme()
+  const isSilent = useIsSilent()
+
+  if (isSilent) {
+    return (
+      <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
+        <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+      </Tooltip>
+    )
+  }
+
+  return <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+}
+
 type AudioPlayerProps = {
   disabled: boolean
   audio: string
@@ -38,33 +55,16 @@ type AudioPlayerProps = {
 }
 
 const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): ReactElement => {
-  const theme = useTheme()
-  const [isInitialized, setIsInitialized] = useState<boolean>(false)
+  const ttsInitialized = useTtsState() === 'initialized'
+  const [soundPlayerInitialized, setSoundPlayerInitialized] = useState<boolean>(false)
   const [isActive, setIsActive] = useState(false)
   const isSilent = useIsSilent()
-
-  const initializeTts = useCallback((): void => {
-    Tts.getInitStatus()
-      .then(async () => {
-        setIsInitialized(true)
-        await Tts.setDefaultLanguage('de-DE')
-      })
-      .catch(async (error: TtsError) => {
-        /* eslint-disable-next-line no-console */
-        console.error(`Tts-Error: ${error.code}`)
-        if (error.code === 'no_engine') {
-          /* eslint-disable-next-line no-console */
-          await Tts.requestInstallEngine().catch(e => console.error('Failed to install tts engine: ', e))
-        }
-      })
-  }, [])
 
   useEffect(() => {
     if (disabled) {
       return () => undefined
     }
     if (isTtsText) {
-      initializeTts()
       return Tts.addListener('tts-finish', () => setIsActive(false)).remove
     }
 
@@ -72,18 +72,18 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
       SoundPlayer.play()
     })
     const onSoundPlayerFinishPlaying = SoundPlayer.addEventListener('FinishedPlaying', () => setIsActive(false))
-    setIsInitialized(true)
+    setSoundPlayerInitialized(true)
 
     return () => {
       onFinishedLoadingSubscription.remove()
       onSoundPlayerFinishPlaying.remove()
     }
-  }, [disabled, isTtsText, audio, initializeTts])
+  }, [disabled, isTtsText, audio])
 
   const handleSpeakerClick = (): void => {
-    if (isInitialized) {
-      setIsActive(true)
-      if (isTtsText) {
+    if (isTtsText) {
+      if (ttsInitialized) {
+        setIsActive(true)
         // @ts-expect-error ios params should be optional
         const options: Options = {
           androidParams: {
@@ -94,24 +94,25 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
         }
         Tts.speak(audio, options)
       } else {
-        SoundPlayer.loadUrl(audio)
+        Tts.requestInstallEngine().catch(() => {
+          /* eslint-disable-next-line no-console */
+          console.error('Could not install tts engine')
+          ToastAndroid.show(getLabels().general.audio.noTtsEngine, ToastAndroid.SHORT)
+        })
       }
+    } else if (soundPlayerInitialized) {
+      setIsActive(true)
+      SoundPlayer.loadUrl(audio)
     }
   }
 
   return (
     <VolumeIcon
-      disabled={disabled || !isInitialized || isSilent}
+      disabled={disabled || (!isTtsText && !soundPlayerInitialized) || isSilent}
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
-      {isSilent ? (
-        <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
-          <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
-        </Tooltip>
-      ) : (
-        <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
-      )}
+      <Icon />
     </VolumeIcon>
   )
 }
