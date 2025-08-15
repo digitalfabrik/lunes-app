@@ -1,5 +1,5 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
-import { act, fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, RenderAPI } from '@testing-library/react-native'
 import React, { ReactElement } from 'react'
 import SoundPlayer from 'react-native-sound-player'
 import Tts from 'react-native-tts'
@@ -24,6 +24,8 @@ jest.mock('../../../services/helpers', () => ({
   shuffleArray: jest.fn(it => it),
 }))
 
+jest.mock('../../../hooks/useTtsState', () => () => 'initialized')
+
 jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn(),
   getDevMode: jest.fn(async () => false),
@@ -45,14 +47,6 @@ jest.mock('react-native-keyboard-aware-scroll-view', () => {
     KeyboardAwareScrollView: ({ children }: { children: ReactElement }) => <View>{children}</View>,
   }
 })
-
-jest.mock('react-native-tts', () => ({
-  getInitStatus: jest.fn(async () => 'success'),
-  setDefaultLanguage: jest.fn(async () => undefined),
-  requestInstallEngine: jest.fn(async () => undefined),
-  addListener: jest.fn(() => ({})),
-  speak: jest.fn(),
-}))
 
 jest.mock('react-native-sound-player', () => ({
   addEventListener: jest.fn(() => ({ remove: jest.fn() })),
@@ -244,14 +238,11 @@ describe('WriteExerciseScreen', () => {
     const button = getByText(getLabels().exercises.write.checkInput)
     fireEvent.press(button)
 
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
-
     // Play audio
     fireEvent.press(getByTestId('audio-player'))
 
     expect(Tts.speak).toHaveBeenCalledTimes(1)
     expect(Tts.speak).toHaveBeenCalledWith('die Alternative', expect.any(Object))
     expect(SoundPlayer.loadUrl).not.toHaveBeenCalled()
-    await waitFor(() => expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE'))
   })
 })
