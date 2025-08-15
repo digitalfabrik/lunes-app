@@ -54,7 +54,7 @@ type AudioPlayerProps = {
 }
 
 const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): ReactElement => {
-  const ttsInitialized = useTtsState().initialized
+  const ttsInitialized = useTtsState() === 'initialized'
   const [soundPlayerInitialized, setSoundPlayerInitialized] = useState<boolean>(false)
   const isInitialized = isTtsText ? ttsInitialized : soundPlayerInitialized
   const [isActive, setIsActive] = useState(false)
