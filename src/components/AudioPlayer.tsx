@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
+import { ToastAndroid } from 'react-native'
 import { Tooltip } from 'react-native-paper'
 import SoundPlayer from 'react-native-sound-player'
 import Tts, { Options } from 'react-native-tts'
@@ -56,7 +57,6 @@ type AudioPlayerProps = {
 const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): ReactElement => {
   const ttsInitialized = useTtsState() === 'initialized'
   const [soundPlayerInitialized, setSoundPlayerInitialized] = useState<boolean>(false)
-  const isInitialized = isTtsText ? ttsInitialized : soundPlayerInitialized
   const [isActive, setIsActive] = useState(false)
   const isSilent = useIsSilent()
 
@@ -81,9 +81,9 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
   }, [disabled, isTtsText, audio])
 
   const handleSpeakerClick = (): void => {
-    if (isInitialized) {
-      setIsActive(true)
-      if (isTtsText) {
+    if (isTtsText) {
+      if (ttsInitialized) {
+        setIsActive(true)
         // @ts-expect-error ios params should be optional
         const options: Options = {
           androidParams: {
@@ -94,14 +94,21 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
         }
         Tts.speak(audio, options)
       } else {
-        SoundPlayer.loadUrl(audio)
+        Tts.requestInstallEngine().catch(() => {
+          /* eslint-disable-next-line no-console */
+          console.error('Could not install tts engine')
+          ToastAndroid.show(getLabels().general.audio.noTtsEngine, ToastAndroid.SHORT)
+        })
       }
+    } else if (soundPlayerInitialized) {
+      setIsActive(true)
+      SoundPlayer.loadUrl(audio)
     }
   }
 
   return (
     <VolumeIcon
-      disabled={disabled || !isInitialized || isSilent}
+      disabled={disabled || (!isTtsText && !soundPlayerInitialized) || isSilent}
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
