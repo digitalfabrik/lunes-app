@@ -32,6 +32,21 @@ const VolumeIcon = styled(PressableOpacity)<{ disabled: boolean; isActive: boole
   shadow-opacity: 0.5;
 `
 
+const Icon = (): ReactElement => {
+  const theme = useTheme()
+  const isSilent = useIsSilent()
+
+  if (isSilent) {
+    return (
+      <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
+        <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+      </Tooltip>
+    )
+  }
+
+  return <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+}
+
 type AudioPlayerProps = {
   disabled: boolean
   audio: string
@@ -39,7 +54,6 @@ type AudioPlayerProps = {
 }
 
 const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): ReactElement => {
-  const theme = useTheme()
   const ttsInitialized = useTtsState().initialized
   const [soundPlayerInitialized, setSoundPlayerInitialized] = useState<boolean>(false)
   const isInitialized = isTtsText ? ttsInitialized : soundPlayerInitialized
@@ -91,13 +105,7 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
       isActive={isActive}
       onPress={handleSpeakerClick}
       testID='audio-player'>
-      {isSilent ? (
-        <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
-          <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
-        </Tooltip>
-      ) : (
-        <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
-      )}
+      <Icon />
     </VolumeIcon>
   )
 }
