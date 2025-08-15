@@ -32,7 +32,6 @@ export const ErrorText = styled(Content)<{ centered?: boolean }>`
 `
 const NetworkErrorWrapper = styled.View`
   background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
   align-items: center;
 `
 const IconStyle = styled.View`
@@ -65,7 +64,7 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Ele
 
   return (
     <NetworkErrorWrapper>
-      <RoundedBackground color={theme.colors.lightGreyBackground} height='55%'>
+      <RoundedBackground color={theme.colors.lightGreyBackground}>
         <Container>
           {error.message === NetworkError && (
             <IconStyle>
