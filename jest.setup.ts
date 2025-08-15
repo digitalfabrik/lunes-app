@@ -23,7 +23,13 @@ jest.mock('react-native-reanimated', () => {
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
-jest.mock('react-native-tts')
+jest.mock('react-native-tts', () => ({
+  getInitStatus: jest.fn(async () => 'success'),
+  setDefaultLanguage: jest.fn(async () => undefined),
+  requestInstallEngine: jest.fn(async () => undefined),
+  addListener: jest.fn(() => ({ remove: jest.fn() })),
+  speak: jest.fn(),
+}))
 jest.mock('react-native-sound-player')
 
 jest.mock('@sentry/react-native', () => ({
