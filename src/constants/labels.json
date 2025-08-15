@@ -181,7 +181,8 @@
         "description": "Mikrofonzugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."
       },
       "hold": "Aufnahmetaste halten",
-      "talk": "Jetzt sprechen"
+      "talk": "Jetzt sprechen",
+      "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
     }
   },
   "favorites": "Favoriten",
