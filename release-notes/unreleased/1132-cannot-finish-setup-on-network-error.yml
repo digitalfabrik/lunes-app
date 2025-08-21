@@ -1,0 +1,6 @@
+issue_key: 1132
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Ein potentieller Fehler bei der Einrichtung wurde behoben.
