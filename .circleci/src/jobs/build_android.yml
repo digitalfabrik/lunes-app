@@ -53,12 +53,18 @@ steps:
       name: Move apk
       command: mkdir -p attached_workspace && mv app/build/outputs/apk/release/app-release.apk attached_workspace/app-release.apk
       working_directory: android
+  - run:
+      name: Move aab
+      command: mv app/build/outputs/bundle/release/app-release.aab attached_workspace/app-release.aab
   - persist_to_workspace:
       root: android/attached_workspace
       paths:
         - app-release.apk
+        - app-release.aab
   - store_artifacts:
       path: android/attached_workspace/app-release.apk
+  - store_artifacts:
+      path: android/attached_workspace/app-release.aab
   - run:
       name: Persist artifact url
       command: echo "[lunes.apk](https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/android/attached_workspace/app-release.apk)" >> lunes-apk-url
