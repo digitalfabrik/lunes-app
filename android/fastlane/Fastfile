@@ -65,8 +65,8 @@ platform :android do
         ENV["EXTRA_PACKAGER_ARGS"] = "--config ./metro.config.ci.js"
 
         gradle_system_properties = {
-          # 2GB Gradle + 1GB dex + 2-2.5GB RN < 6GB of circleci resource class medium+
-          :"org.gradle.jvmargs" => "-Xms512m -Xmx2024m",
+          # 2GB Gradle + 1GB dex + 2-2.5GB RN < 16GB of circleci resource class xlarge
+          :"org.gradle.jvmargs" => "-Xms512m -Xmx6g",
           :"org.gradle.daemon" => false
         }
 

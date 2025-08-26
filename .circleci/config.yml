@@ -269,6 +269,7 @@ jobs:
             - run:
                 command: mv app/build/outputs/bundle/release/app-release.aab attached_workspace/app-release.aab
                 name: Move aab
+                working_directory: android
             - persist_to_workspace:
                 paths:
                     - app-release.apk
@@ -541,7 +542,7 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 16.2.0
-        resource_class: small
+        resource_class: macos.m1.medium.gen1
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
