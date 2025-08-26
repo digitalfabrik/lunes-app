@@ -56,6 +56,7 @@ steps:
   - run:
       name: Move aab
       command: mv app/build/outputs/bundle/release/app-release.aab attached_workspace/app-release.aab
+      working_directory: android
   - persist_to_workspace:
       root: android/attached_workspace
       paths:
