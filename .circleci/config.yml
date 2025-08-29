@@ -500,7 +500,7 @@ jobs:
                 working_directory: tools
             - notify:
                 channel: releases
-                success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME}-all)\n${ANDROID_ARTIFACT_URLS}${IOS_ARTIFACT_URLS}'
+                success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME}-all)\n${ANDROID_ARTIFACT_URLS} ${IOS_ARTIFACT_URLS}'
     notify_promotion:
         docker:
             - image: cimg/node:20.17.0
