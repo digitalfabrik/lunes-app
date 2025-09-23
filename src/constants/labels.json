@@ -195,6 +195,7 @@
       "title": "Zeit zum Vertiefen!",
       "body": "Deine nächste Vertiefungsphase ist jetzt freigeschaltet. Viel Erfolg!"
     },
+    "viewWords": "Wortliste ansehen",
     "repeatWords": "Wörter wiederholen",
     "repeatNow": "Jetzt wiederholen",
     "wordsToRepeat": {
@@ -210,6 +211,11 @@
       "untrained": "Neue",
       "learned": "Gelernte",
       "sectionOneToFive": "Lernstufen 1-5"
+    },
+    "wordList": {
+      "title": "Wortliste",
+      "subtitle": "Du kannst hier Wörter aus deiner Wortliste löschen",
+      "empty": "Es gibt momentan keine Wörter in deiner Wortliste."
     }
   },
   "search": {

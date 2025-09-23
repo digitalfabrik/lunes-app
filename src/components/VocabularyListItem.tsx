@@ -31,17 +31,23 @@ const RightChildrenContainer = styled.View`
 `
 
 const FavButtonContainer = styled.View`
-  padding: ${props => `0 ${props.theme.spacings.xs} 0 ${props.theme.spacings.sm}`};
+  padding: ${props => `0 ${props.theme.spacings.xs}`};
   align-self: center;
 `
 
 type VocabularyListItemProps = {
   vocabularyItem: VocabularyItem
   onPress: () => void
+  extraActions?: ReactElement
   children?: ReactElement
 }
 
-const VocabularyListItem = ({ vocabularyItem, onPress, children }: VocabularyListItemProps): ReactElement => {
+const VocabularyListItem = ({
+  vocabularyItem,
+  onPress,
+  extraActions,
+  children,
+}: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
@@ -59,6 +65,7 @@ const VocabularyListItem = ({ vocabularyItem, onPress, children }: VocabularyLis
           <FavButtonContainer>
             <FavoriteButton vocabularyItem={vocabularyItem} />
           </FavButtonContainer>
+          {extraActions}
         </RightChildrenContainer>
       }>
       {children}

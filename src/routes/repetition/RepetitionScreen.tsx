@@ -4,11 +4,11 @@ import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { InfoCircleBlackIcon } from '../../../assets/images'
+import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ModalSkeleton from '../../components/ModalSkeleton'
 import RouteWrapper from '../../components/RouteWrapper'
-import { ContentSecondary } from '../../components/text/Content'
+import { ContentSecondary, ContentTextBold } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
@@ -68,12 +68,18 @@ const ModalContent = styled(ContentSecondary)`
   padding: ${props => props.theme.spacings.xs};
 `
 
+const PressableText = styled.Pressable`
+  flex-direction: row;
+  gap: ${theme => theme.theme.spacings.xs};
+`
+
 type RepetitionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Repetition'>
 }
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText } = getLabels().repetition
+  const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText, viewWords } =
+    getLabels().repetition
   const repetitionService = useRepetitionService()
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
@@ -103,6 +109,12 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
             buttonTheme={BUTTONS_THEME.contained}
             disabled={numberOfWordsNeedingRepetition === 0}
           />
+          {numberOfWordsNeedingRepetition > 0 && (
+            <PressableText onPress={() => navigation.navigate('RepetitionWordList')}>
+              <ContentTextBold>{viewWords}</ContentTextBold>
+              <ArrowRightIcon />
+            </PressableText>
+          )}
         </Container>
         <Container>
           <HeaderWrapper>

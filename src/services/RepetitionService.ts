@@ -41,6 +41,19 @@ export class RepetitionService {
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
+  public removeWordNodeCard = async (word: VocabularyItem): Promise<WordNodeCard | undefined> => {
+    const wordNodeCards = this.getWordNodeCards()
+      .slice()
+      .filter(wordNodeCard => wordNodeCard.word !== word)
+    if (wordNodeCards.length === this.getWordNodeCards().length) {
+      return undefined
+    }
+
+    const removed = this.getWordNodeCard(word)
+    await this.setWordNodeCards(wordNodeCards)
+    return removed
+  }
+
   private static updateRepetitionReminder = async (cards: WordNodeCard[]): Promise<void> => {
     const nextRepetitionDate = RepetitionService.getNextRepetitionDate(cards)
     if (nextRepetitionDate !== null && nextRepetitionDate > new Date()) {
