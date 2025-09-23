@@ -31,6 +31,7 @@ describe('RepetitionScreen', () => {
     await waitFor(() => expect(getByTestId('repetition-button')).toBeEnabled())
     expect(getByTestId('info-circle-black-icon')).toBeDefined()
     expect(getByText(getLabels().repetition.repeatNow)).toBeDefined()
+    expect(getByText(getLabels().repetition.viewWords)).toBeDefined()
   })
 
   it('should disable button correctly', async () => {
@@ -48,5 +49,10 @@ describe('RepetitionScreen', () => {
     fireEvent.press(isInfoIconPressed)
     expect(getByTestId('infoModal')).toBeTruthy()
     expect(getByTestId('infoModal').props.visible).toBe(true)
+  })
+
+  it('should not display word list button if there are no words to repeat', async () => {
+    const { queryByText } = render(<RepetitionScreen navigation={navigation} />)
+    expect(queryByText(getLabels().repetition.viewWords)).toBeNull()
   })
 })

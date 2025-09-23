@@ -97,6 +97,7 @@ export type RoutesParams = {
   Favorites: undefined
   Dictionary: undefined
   Repetition: undefined
+  RepetitionWordList: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyDisciplineSelection: undefined
   SpecialExercises: SpecialExercisesParams

@@ -96,6 +96,17 @@ describe('RepetitionService', () => {
     })
   })
 
+  describe('removeWordNodeCard', () => {
+    it('should remove the correct word node card', async () => {
+      await repetitionService.setWordNodeCards(testData)
+      expect(repetitionService.getWordNodeCards()).toEqual(testData)
+      await repetitionService.removeWordNodeCard(testData[0].word)
+      expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1))
+      await repetitionService.removeWordNodeCard(testData[testData.length - 1].word)
+      expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1, -1))
+    })
+  })
+
   describe('getNumberOfWordsNeedingRepetitionWithUpperBound', () => {
     it('should return zero, if nothing was saved yet', async () => {
       expect(repetitionService.getNumberOfWordsNeedingRepetitionWithUpperBound()).toBe(0)
