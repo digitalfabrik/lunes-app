@@ -38,14 +38,14 @@ const FavButtonContainer = styled.View`
 type VocabularyListItemProps = {
   vocabularyItem: VocabularyItem
   onPress: () => void
-  extraActions?: ReactElement
+  customActions?: ReactElement
   children?: ReactElement
 }
 
 const VocabularyListItem = ({
   vocabularyItem,
   onPress,
-  extraActions,
+  customActions,
   children,
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
@@ -53,21 +53,22 @@ const VocabularyListItem = ({
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
   const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0].image }} /> : undefined
 
+  const actions = customActions ?? (
+    <>
+      <AudioPlayer audio={audio ?? stringifyVocabularyItem(vocabularyItem)} isTtsText={!audio} disabled={false} />
+      <FavButtonContainer>
+        <FavoriteButton vocabularyItem={vocabularyItem} />
+      </FavButtonContainer>
+    </>
+  )
+
   return (
     <ListItem
       title={title}
       description={word}
       onPress={onPress}
       icon={icon}
-      rightChildren={
-        <RightChildrenContainer>
-          <AudioPlayer audio={audio ?? stringifyVocabularyItem(vocabularyItem)} isTtsText={!audio} disabled={false} />
-          <FavButtonContainer>
-            <FavoriteButton vocabularyItem={vocabularyItem} />
-          </FavButtonContainer>
-          {extraActions}
-        </RightChildrenContainer>
-      }>
+      rightChildren={<RightChildrenContainer>{actions}</RightChildrenContainer>}>
       {children}
     </ListItem>
   )

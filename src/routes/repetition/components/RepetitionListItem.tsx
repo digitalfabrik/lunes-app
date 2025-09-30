@@ -28,7 +28,7 @@ const RepetitionListItem = ({
   <VocabularyListItem
     vocabularyItem={vocabularyItem}
     onPress={navigateToDetailScreen}
-    extraActions={
+    customActions={
       <Button onPress={() => removeFromRepetition(vocabularyItem)} testID='delete-button'>
         <CloseIconRed width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
       </Button>
