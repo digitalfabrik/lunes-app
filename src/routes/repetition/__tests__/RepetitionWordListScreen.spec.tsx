@@ -23,7 +23,7 @@ const dummyStorageCache = async (): Promise<StorageCache> => {
 describe('RepetitionWordListScreen', () => {
   const navigation = createNavigationMock<'RepetitionWordList'>()
 
-  it('Should render correctly', async () => {
+  it('should render correctly', async () => {
     const storageCache = await dummyStorageCache()
     const { getAllByTestId, getByText } = renderWithStorageCache(
       storageCache,
@@ -34,7 +34,7 @@ describe('RepetitionWordListScreen', () => {
     expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
   })
 
-  it('Should correctly remove words', async () => {
+  it('should correctly remove words', async () => {
     const storageCache = await dummyStorageCache()
     const { getAllByTestId, getByText, queryByText } = renderWithStorageCache(
       storageCache,
