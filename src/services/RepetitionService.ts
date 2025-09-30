@@ -42,8 +42,7 @@ export class RepetitionService {
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
   public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
-    const newWordNodeCards = this.getWordNodeCards()
-      .filter(wordNodeCard => wordNodeCard.word !== word)
+    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.word !== word)
     await this.setWordNodeCards(newWordNodeCards)
   }
 
