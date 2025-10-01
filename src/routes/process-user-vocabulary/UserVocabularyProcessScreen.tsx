@@ -127,11 +127,11 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         id = itemToEdit.id
         const originalImages = itemToEdit.images.map(image => image.image)
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
-        await Promise.all([
+        await Promise.all(
           imagesToBeDeletedInStorage.map(async image => {
             await unlink(image)
           }),
-        ])
+        )
       } else {
         id = await incrementNextUserVocabularyId(storageCache)
       }
