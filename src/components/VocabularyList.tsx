@@ -3,7 +3,7 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { VocabularyItem } from '../constants/endpoints'
-import { getLabels } from '../services/helpers'
+import { wordsDescription } from '../services/helpers'
 import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'
 
@@ -25,14 +25,7 @@ const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListS
   return (
     <Root>
       <FlatList
-        ListHeaderComponent={
-          <Title
-            title={title}
-            description={`${vocabularyItems.length} ${
-              vocabularyItems.length === 1 ? getLabels().general.word : getLabels().general.words
-            }`}
-          />
-        }
+        ListHeaderComponent={<Title title={title} description={wordsDescription(vocabularyItems.length)} />}
         data={vocabularyItems}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}

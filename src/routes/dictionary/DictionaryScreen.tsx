@@ -12,7 +12,12 @@ import Title from '../../components/Title'
 import { VocabularyItem } from '../../constants/endpoints'
 import useGetAllWords from '../../hooks/useGetAllWords'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getSortedAndFilteredVocabularyItems, matchAlternative } from '../../services/helpers'
+import {
+  getLabels,
+  getSortedAndFilteredVocabularyItems,
+  matchAlternative,
+  wordsDescription,
+} from '../../services/helpers'
 import DictionaryItem from './components/DictionaryItem'
 
 const Root = styled.View`
@@ -35,10 +40,6 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
 
   const sortedAndFilteredVocabularyItems = getSortedAndFilteredVocabularyItems(vocabularyItems.data, searchString)
 
-  const description = `${sortedAndFilteredVocabularyItems.length} ${
-    sortedAndFilteredVocabularyItems.length === 1 ? getLabels().general.word : getLabels().general.words
-  }`
-
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
@@ -55,7 +56,10 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
               keyboardShouldPersistTaps='handled'
               ListHeaderComponent={
                 <Header>
-                  <Title title={getLabels().general.dictionary} description={description} />
+                  <Title
+                    title={getLabels().general.dictionary}
+                    description={wordsDescription(sortedAndFilteredVocabularyItems.length)}
+                  />
                   <SearchBar query={searchString} setQuery={setSearchString} />
                 </Header>
               }
