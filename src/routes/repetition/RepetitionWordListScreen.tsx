@@ -1,0 +1,76 @@
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { ReactElement } from 'react'
+import { FlatList } from 'react-native'
+import styled from 'styled-components/native'
+
+import ListEmpty from '../../components/ListEmpty'
+import RouteWrapper from '../../components/RouteWrapper'
+import Title from '../../components/Title'
+import { SubheadingText } from '../../components/text/Subheading'
+import { VocabularyItem } from '../../constants/endpoints'
+import useRepetitionService from '../../hooks/useRepetitionService'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
+import RepetitionListItem from './components/RepetitionListItem'
+
+const Root = styled.View`
+  padding: 0 ${props => props.theme.spacings.sm};
+`
+
+const Header = styled.View`
+  padding-bottom: ${props => props.theme.spacings.md};
+`
+
+const Subtitle = styled(SubheadingText)`
+  margin-top: ${theme => theme.theme.spacings.md};
+  text-align: center;
+`
+
+type RepetitionWordListScreenProps = {
+  navigation: StackNavigationProp<RoutesParams, 'RepetitionWordList'>
+}
+
+const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps): ReactElement => {
+  const repetitionService = useRepetitionService()
+  const repetitionVocabulary = repetitionService.getWordNodeCards()
+
+  const { title, subtitle, empty } = getLabels().repetition.wordList
+  const description = `${repetitionVocabulary.length} ${repetitionVocabulary.length === 1 ? getLabels().general.word : getLabels().general.words}`
+
+  const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
+    navigation.navigate('VocabularyDetail', { vocabularyItem })
+  }
+
+  const removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
+    await repetitionService.removeWordNodeCard(word)
+  }
+
+  return (
+    <RouteWrapper>
+      <Root>
+        <FlatList
+          ListHeaderComponent={
+            <Header>
+              <Title title={title} description={description}>
+                <Subtitle>{subtitle}</Subtitle>
+              </Title>
+            </Header>
+          }
+          data={repetitionVocabulary}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={({ word }) => word.id.toString()}
+          renderItem={({ item }) => (
+            <RepetitionListItem
+              vocabularyItem={item.word}
+              navigateToDetailScreen={() => navigateToDetail(item.word)}
+              removeFromRepetition={() => removeWordNodeCard(item.word)}
+            />
+          )}
+          ListEmptyComponent={<ListEmpty label={empty} />}
+        />
+      </Root>
+    </RouteWrapper>
+  )
+}
+
+export default RepetitionWordListScreen

@@ -41,6 +41,11 @@ export class RepetitionService {
   public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
+  public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
+    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.word !== word)
+    await this.setWordNodeCards(newWordNodeCards)
+  }
+
   private static updateRepetitionReminder = async (cards: WordNodeCard[]): Promise<void> => {
     const nextRepetitionDate = RepetitionService.getNextRepetitionDate(cards)
     if (nextRepetitionDate !== null && nextRepetitionDate > new Date()) {
