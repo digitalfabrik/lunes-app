@@ -31,7 +31,7 @@ describe('DictionaryScreen', () => {
     mocked(useGetAllWords).mockReturnValueOnce(getReturnOf(vocabularyItems))
     const { getByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     expect(getByText(getLabels().general.dictionary)).toBeDefined()
-    expect(getByText(`4 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`4 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
     expect(getByText(vocabularyItems[0].word)).toBeDefined()
     expect(getByText(vocabularyItems[1].word)).toBeDefined()

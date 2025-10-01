@@ -40,7 +40,7 @@ describe('UserVocabularyListScreen', () => {
       <UserVocabularyListScreen navigation={navigation} />,
     )
 
-    expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
     expect(getByText(userVocabularyItems[0].word)).toBeDefined()
@@ -51,7 +51,7 @@ describe('UserVocabularyListScreen', () => {
   it('should render empty list correctly', async () => {
     const { getByText } = renderWithStorageCache(storageCache, <UserVocabularyListScreen navigation={navigation} />)
 
-    expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`0 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.noWordsYet)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })

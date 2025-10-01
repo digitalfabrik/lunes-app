@@ -31,7 +31,7 @@ describe('RepetitionWordListScreen', () => {
     )
 
     expect(getAllByTestId('list-item')).toHaveLength(2)
-    expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
   })
 
   it('should correctly remove words', async () => {
