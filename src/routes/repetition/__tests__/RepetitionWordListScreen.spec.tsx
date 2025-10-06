@@ -48,12 +48,22 @@ describe('RepetitionWordListScreen', () => {
 
     expect(getByText(wordNodeCards[0].word.word)).toBeDefined()
     fireEvent.press(deleteButtons[0])
+
+    expect(getByText(wordNodeCards[1].word.word)).toBeDefined()
+
+    const confirmButton = getByText(getLabels().repetition.wordList.confirm)
+    expect(confirmButton).toBeDefined()
+    fireEvent.press(confirmButton)
+
     await waitFor(() => expect(queryByText(wordNodeCards[0].word.word)).toBeNull())
 
     const newDeleteButtons = getAllByTestId('delete-button')
     expect(newDeleteButtons).toHaveLength(1)
 
     fireEvent.press(newDeleteButtons[0])
+    const confirmButton2 = getByText(getLabels().repetition.wordList.confirm)
+    expect(confirmButton2).toBeDefined()
+    fireEvent.press(confirmButton2)
     await waitFor(() => expect(getByText(getLabels().repetition.wordList.empty)).toBeDefined())
   })
 })
