@@ -25,15 +25,17 @@ const RepetitionListItem = ({
   removeFromRepetition,
 }: ListItemProps): ReactElement => {
   const [showModal, setShowModal] = useState(false)
-  const { modalDeleteText, confirm } = getLabels().repetition.wordList
+  const { modalDeleteText, confirm, abort } = getLabels().repetition.wordList
 
   return (
     <>
       <Modal
         visible={showModal}
         onClose={() => setShowModal(false)}
+        buttonLayout='horizontal'
         text={modalDeleteText}
         confirmationButtonText={confirm}
+        cancelButtonText={abort}
         confirmationAction={() => removeFromRepetition(vocabularyItem)}
       />
       <VocabularyListItem
