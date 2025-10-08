@@ -7,8 +7,8 @@ import { ContentText } from '../components/text/Content'
 import { HeadingText } from '../components/text/Heading'
 import { Subheading } from '../components/text/Subheading'
 
-const Root = styled.View`
-  padding: ${props => props.theme.spacings.sm};
+const Root = styled.ScrollView`
+  padding: 0 ${props => props.theme.spacings.sm};
 `
 
 const Description = styled(ContentText)`
@@ -20,7 +20,8 @@ const Title = styled(HeadingText)`
 `
 
 const MultiTextContainer = styled.View`
-  flex-direction: row;
+  flex-flow: row wrap;
+  margin-bottom: ${props => props.theme.spacings.xs};
 `
 
 const ImprintScreen = (): ReactElement => (
@@ -29,7 +30,8 @@ const ImprintScreen = (): ReactElement => (
       <Title>Impressum</Title>
       <Description>Angaben gemäß § 5 TMG und verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</Description>
       <Description>Tür an Tür – Digitalfabrik gGmbH Wertachstr. 29 86153 Augsburg</Description>
-      <Description>vertreten durch Herrn Daniel Kehne, Herrn Fritjof Knier</Description>
+      <Description>vertreten durch Clara Bracklo, Daniel Kehne</Description>
+      <Description>Prokura: Fritjof Knier</Description>
       <Subheading>Aufsichtsbehörde:</Subheading>
       <Description>Finanzamt Augsburg-Stadt</Description>
       <Subheading>Sitz der Gesellschaft:</Subheading>
@@ -46,6 +48,17 @@ const ImprintScreen = (): ReactElement => (
       <MultiTextContainer>
         <ContentText>E-Mail: </ContentText>
         <Link text='digitalfabrik@tuerantuer.de' url='mailto:digitalfabrik@tuerantuer.de' />
+      </MultiTextContainer>
+      <Subheading>Verantwortlich für den Inhalt:</Subheading>
+      <Description>Tür an Tür – Digitalfabrik gGmbH, Wertachstr. 29, 86153 Augsburg</Description>
+      <Subheading>Verantwortlich für den technischen Betrieb/Support:</Subheading>
+      <Description>Tür an Tür – Digitalfabrik gGmbH, Wertachstr. 29, 86153 Augsburg</Description>
+      <Subheading>Datenschutz:</Subheading>
+      <MultiTextContainer>
+        <ContentText>
+          Die gesetzlichen Datenschutzbestimmungen werden jederzeit beachtet. Genaue Informationen finden sie unter{' '}
+        </ContentText>
+        <Link text='https://lunes.app/datenschutz-app/' url='https://lunes.app/datenschutz-app/' />
       </MultiTextContainer>
     </Root>
   </RouteWrapper>
