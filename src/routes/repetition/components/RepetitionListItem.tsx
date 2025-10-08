@@ -8,10 +8,7 @@ import { VocabularyItem } from '../../../constants/endpoints'
 import theme from '../../../constants/theme'
 
 const Button = styled(PressableOpacity)`
-  shadow-color: ${props => props.theme.colors.shadow};
-  shadow-radius: 5px;
-  shadow-offset: 1px 1px;
-  shadow-opacity: 0.5;
+  padding-right: ${theme => theme.theme.spacings.xs};
 `
 
 type ListItemProps = {
