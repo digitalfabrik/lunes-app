@@ -221,7 +221,10 @@
     "wordList": {
       "title": "Wortliste",
       "subtitle": "Du kannst hier Wörter aus deiner Wortliste löschen",
-      "empty": "Es gibt momentan keine Wörter in deiner Wortliste."
+      "empty": "Es gibt momentan keine Wörter in deiner Wortliste.",
+      "modalDeleteText": "Willst du das Wort wirklich aus der Wortliste löschen?",
+      "confirm": "Löschen",
+      "abort": "Abbrechen"
     }
   },
   "search": {
