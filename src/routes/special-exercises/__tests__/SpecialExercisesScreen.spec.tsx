@@ -33,7 +33,7 @@ describe('SpecialExercisesScreen', () => {
   it('should render correctly', () => {
     const { getByText } = renderScreen()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
-    expect(getByText(`2 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.title)).toBeDefined()
     expect(getByText(getLabels().exercises.wordChoice.title)).toBeDefined()
     expect(getByText(getLabels().exercises.articleChoice.title)).toBeDefined()

@@ -58,7 +58,7 @@ describe('VocabularyListScreen', () => {
     )
 
     expect(getByText(getLabels().exercises.vocabularyList.title)).toBeTruthy()
-    expect(getByText(`2 ${getLabels().general.words}`)).toBeTruthy()
+    expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeTruthy()
     expect(getByText('der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
     expect(getByText('das')).toBeTruthy()

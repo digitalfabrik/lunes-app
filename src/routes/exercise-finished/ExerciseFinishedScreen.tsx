@@ -33,7 +33,7 @@ import {
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { calculateScore, getLabels } from '../../services/helpers'
+import { calculateScore, getLabels, wordsDescription } from '../../services/helpers'
 import ShareSection from './components/ShareSection'
 
 const Root = styled.View`
@@ -178,7 +178,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           <MessageContainer>
             <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
             <Results color={resultColor}>
-              {correctResults.length} {getLabels().results.of} {results.length} {getLabels().general.words}{' '}
+              {correctResults.length} {getLabels().results.of} {wordsDescription(results.length)}{' '}
               {getLabels().results.correct}
             </Results>
             <Progress.Bar

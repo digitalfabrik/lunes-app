@@ -12,7 +12,7 @@ const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColo
 
 const RepetitionProgressChart: () => ReactElement = () => {
   const { untrained, learned, sectionOneToFive } = getLabels().repetition.chart
-  const { words } = getLabels().general
+  const words = getLabels().general.word.plural
 
   const repetitionService = useRepetitionService()
   const numberOfWordsInEachSection = repetitionService.getNumberOfWordsInEachSection()

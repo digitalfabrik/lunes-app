@@ -16,7 +16,7 @@ import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getSortedAndFilteredVocabularyItems } from '../../services/helpers'
+import { getLabels, getSortedAndFilteredVocabularyItems, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import { deleteUserVocabularyItem } from '../../services/storageUtils'
 import ListEmptyContent from './components/ListEmptyContent'
@@ -98,12 +98,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
           contentContainerStyle={{ paddingBottom: 100 }}
           ListHeaderComponent={
             <>
-              <Title
-                title={overview.list}
-                description={`${numberOfVocabularyItems} ${
-                  numberOfVocabularyItems === 1 ? getLabels().general.word : getLabels().general.words
-                }`}
-              />
+              <Title title={overview.list} description={wordsDescription(numberOfVocabularyItems)} />
               <SearchBar query={searchString} setQuery={setSearchString} />
               {sortedAndFilteredVocabularyItems.length > 0 && (
                 <EditPressable onPress={toggleEditMode}>

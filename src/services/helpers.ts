@@ -23,6 +23,31 @@ import { getFromEndpoint, postToEndpoint } from './axios'
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
   `${article.value} ${word}`
 
+export const getLabels = (): typeof labels => labels
+
+export const pluralize = (labels: { singular: string; plural: string }, n: number | null): string => {
+  if (n === 1) {
+    return labels.singular
+  }
+  return labels.plural
+}
+
+export const wordsDescription = (numberOfWords: number): string =>
+  `${numberOfWords} ${pluralize(getLabels().general.word, numberOfWords)}`
+
+export const childrenLabel = (discipline: Discipline, hasParent = false): string => {
+  if (!discipline.parentTitle && !discipline.apiKey && !hasParent) {
+    return pluralize(getLabels().general.rootDiscipline, discipline.numberOfChildren)
+  }
+  if (discipline.isLeaf) {
+    return pluralize(labels.general.word, discipline.numberOfChildren)
+  }
+  return pluralize(getLabels().general.discipline, discipline.numberOfChildren)
+}
+
+export const childrenDescription = (discipline: Discipline, hasParent = false): string =>
+  `${discipline.numberOfChildren} ${childrenLabel(discipline, hasParent)}`
+
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
     case 1:
@@ -52,23 +77,6 @@ export const moveToEnd = <T>(array: T[], index: number): T[] => {
 // The maximum is inclusive and the minimum is inclusive
 export const getRandomNumberBetween = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1) + min)
-
-export const wordsDescription = (numberOfChildren: number): string =>
-  `${numberOfChildren} ${numberOfChildren === 1 ? labels.general.word : labels.general.words}`
-
-export const childrenLabel = (discipline: Discipline, hasParent = false): string => {
-  const isSingular = discipline.numberOfChildren === 1
-  if (!discipline.parentTitle && !discipline.apiKey && !hasParent) {
-    return isSingular ? labels.general.rootDiscipline : labels.general.rootDisciplines
-  }
-  if (discipline.isLeaf) {
-    return isSingular ? labels.general.word : labels.general.words
-  }
-  return isSingular ? labels.general.discipline : labels.general.disciplines
-}
-
-export const childrenDescription = (discipline: Discipline, hasParent = false): string =>
-  `${discipline.numberOfChildren} ${childrenLabel(discipline, hasParent)}`
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
@@ -152,15 +160,6 @@ export const getProgress = (progress: Progress, profession: Discipline | null): 
 export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
   const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
   return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
-}
-
-export const getLabels = (): typeof labels => labels
-
-export const pluralize = (labels: { singular: string; plural: string }, n: number | null): string => {
-  if (n === 1) {
-    return labels.singular
-  }
-  return labels.plural
 }
 
 export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>

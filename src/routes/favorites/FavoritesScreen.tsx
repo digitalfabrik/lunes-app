@@ -9,7 +9,7 @@ import { Favorite } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { wordsDescription } from '../../services/helpers'
 import FavoriteItem from './components/FavoriteItem'
 
 type FavoritesScreenProps = {
@@ -26,7 +26,6 @@ const ListHeader = styled(ContentSecondary)`
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const [data] = useStorage('favorites')
-  const description = `${data.length} ${data.length === 1 ? getLabels().general.word : getLabels().general.words}`
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
@@ -39,7 +38,11 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
   return (
     <RouteWrapper>
       <Root>
-        <FlatList ListHeaderComponent={<ListHeader>{description}</ListHeader>} data={data} renderItem={renderItem} />
+        <FlatList
+          ListHeaderComponent={<ListHeader>{wordsDescription(data.length)}</ListHeader>}
+          data={data}
+          renderItem={renderItem}
+        />
       </Root>
     </RouteWrapper>
   )

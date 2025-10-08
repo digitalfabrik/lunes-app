@@ -10,7 +10,7 @@ import { SubheadingText } from '../../components/text/Subheading'
 import { VocabularyItem } from '../../constants/endpoints'
 import useRepetitionService from '../../hooks/useRepetitionService'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { getLabels, wordsDescription } from '../../services/helpers'
 import RepetitionListItem from './components/RepetitionListItem'
 
 const Root = styled.View`
@@ -35,7 +35,6 @@ const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps)
   const repetitionVocabulary = repetitionService.getWordNodeCards()
 
   const { title, subtitle, empty } = getLabels().repetition.wordList
-  const description = `${repetitionVocabulary.length} ${repetitionVocabulary.length === 1 ? getLabels().general.word : getLabels().general.words}`
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
@@ -51,7 +50,7 @@ const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps)
         <FlatList
           ListHeaderComponent={
             <Header>
-              <Title title={title} description={description}>
+              <Title title={title} description={wordsDescription(repetitionVocabulary.length)}>
                 <Subtitle>{subtitle}</Subtitle>
               </Title>
             </Header>
