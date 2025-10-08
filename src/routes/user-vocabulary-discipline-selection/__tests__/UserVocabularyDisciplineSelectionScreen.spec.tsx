@@ -30,25 +30,25 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   it('should render zero disciplines for zero words', async () => {
     const { getByText, queryByText } = await renderScreen([])
     expect(getByText(getLabels().userVocabulary.overview.practice)).toBeDefined()
-    expect(getByText(`0 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`0 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(queryByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeNull()
   })
 
   it('should render one discipline for one word', async () => {
     const { getByText } = await renderScreen(new VocabularyItemBuilder(1).build())
-    expect(getByText(`1 ${getLabels().general.word}`)).toBeDefined()
+    expect(getByText(`1 ${getLabels().general.word.singular}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
   it('should render one discipline for ten words', async () => {
     const { getByText } = await renderScreen(new VocabularyItemBuilder(10).build())
-    expect(getByText(`10 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`10 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
   it('should render three disciplines for twenty-five words', async () => {
     const { getByText } = await renderScreen(new VocabularyItemBuilder(25).build())
-    expect(getByText(`25 ${getLabels().general.words}`)).toBeDefined()
+    expect(getByText(`25 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 2`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 3`)).toBeDefined()

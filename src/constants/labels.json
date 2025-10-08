@@ -160,12 +160,18 @@
       "somethingWentWrong": "Ups, da ist etwas schief gelaufen!",
       "deviceIsMuted": "Gerät ist stummgeschaltet"
     },
-    "rootDiscipline": "Beruf",
-    "rootDisciplines": "Berufe",
-    "discipline": "Modul",
-    "disciplines": "Module",
-    "word": "Wort",
-    "words": "Wörter",
+    "rootDiscipline": {
+      "singular": "Beruf",
+      "plural": "Berufe"
+    },
+    "discipline": {
+      "singular": "Modul",
+      "plural": "Module"
+    },
+    "word": {
+      "singular": "Wort",
+      "plural": "Wörter"
+    },
     "camera": {
       "noAuthorization": {
         "description": "Kamerazugriff erforderlich. Öffne die Einstellungen, tippe auf Berechtigungen und dann auf Erlauben."

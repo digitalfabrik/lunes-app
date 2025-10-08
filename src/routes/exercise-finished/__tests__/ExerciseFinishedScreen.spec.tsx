@@ -68,7 +68,7 @@ describe('ExerciseFinishedScreen', () => {
       ),
     ).toBeDefined()
     expect(
-      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.words} ${getLabels().results.correct}`),
+      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.word.plural} ${getLabels().results.correct}`),
     ).toBeDefined()
     const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)
