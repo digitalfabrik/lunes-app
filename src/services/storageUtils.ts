@@ -6,6 +6,7 @@ import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
+import { CMS_URLS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
@@ -88,6 +89,14 @@ export const migrate0To1 = async (): Promise<void> => {
   await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
 }
 
+// Removes the cms url overwrite value in case it has changed between versions
+export const migrateApiEndpointUrl = async (): Promise<void> => {
+  const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
+  if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(overwrite)) {
+    await AsyncStorage.removeItem(storageKeys.cmsUrlOverwrite)
+  }
+}
+
 export const migrateStorage = async (): Promise<void> => {
   const getStorageVersion = async (): Promise<number> => {
     const version = await getStorageItemOr<number | null>(storageKeys.version, null)
@@ -109,6 +118,10 @@ export const migrateStorage = async (): Promise<void> => {
     case 0:
       await migrate0To1()
       break
+  }
+
+  if (__DEV__) {
+    await migrateApiEndpointUrl()
   }
 
   if (lastVersion !== STORAGE_VERSION) {
