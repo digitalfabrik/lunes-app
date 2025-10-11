@@ -34,17 +34,4 @@ describe('getFromEndpoint', () => {
     expect(axios.get).toHaveBeenCalledTimes(1)
     expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/v2/abc', { headers: undefined })
   })
-
-  it('should include api key in header', async () => {
-    const data = 'myData'
-    mocked<typeof axios.get<string>>(axios.get).mockImplementationOnce(async () => ({ data, ...response }))
-
-    const path = 'abc'
-    const apiKey = 'my_api_key'
-    await getFromEndpoint(path, apiKey)
-    expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/v2/abc', {
-      headers: { Authorization: `Api-Key ${apiKey}` },
-    })
-  })
 })

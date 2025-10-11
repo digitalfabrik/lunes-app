@@ -1,4 +1,4 @@
-import { Article, VocabularyItemType } from './data'
+import VocabularyItem from '../model/VocabularyItem'
 
 export type Sponsor = {
   name: string
@@ -17,29 +17,6 @@ export type Discipline = {
   apiKey?: string
   needsTrainingSetEndpoint: boolean // api endpoint requires different endpoint for leaf disciplines
   leafDisciplines?: number[]
-}
-
-export type AlternativeWord = {
-  word: string
-  article: Article
-}
-
-export type Image = {
-  id: number
-  image: string
-}
-
-export type Images = Image[]
-
-export type VocabularyItem = {
-  id: number
-  type: VocabularyItemType
-  word: string
-  article: Article
-  images: Images
-  audio: string | null
-  alternatives: AlternativeWord[]
-  apiKey?: string
 }
 
 export type UserVocabularyItem = Omit<VocabularyItem, 'type'>

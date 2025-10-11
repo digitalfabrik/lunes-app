@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
-import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
+import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION } from '../constants/data'
+import { UserVocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../model/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
@@ -163,7 +164,7 @@ export const incrementNextUserVocabularyId = async (storageCache: StorageCache):
 export const getUserVocabularyItems = (userVocabulary: readonly UserVocabularyItem[]): VocabularyItem[] =>
   userVocabulary.map((vocabularyItem: UserVocabularyItem) => ({
     ...vocabularyItem,
-    type: VOCABULARY_ITEM_TYPES.userCreated,
+    type: 'user-created',
   }))
 
 export const addUserVocabularyItem = async (
@@ -198,7 +199,7 @@ export const deleteUserVocabularyItem = async (
   const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary')).filter(
     item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem),
   )
-  const images = userVocabularyItem.images.map(image => image.image)
+  const images = userVocabularyItem.images
   await Promise.all(
     images.map(async image => {
       await unlink(image)
@@ -206,7 +207,7 @@ export const deleteUserVocabularyItem = async (
   )
   await removeFavorite(storageCache, {
     id: userVocabularyItem.id,
-    vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
+    vocabularyItemType: 'user-created',
   })
   await storageCache.setItem('userVocabulary', userVocabulary)
 }

@@ -34,13 +34,10 @@ const getUrl = async (endpoint: string): Promise<string> => {
   return `${baseURL}/${endpoint}`
 }
 
-export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {
-  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  const response = await axios.get(await getUrl(endpoint), { headers })
+export const getFromEndpoint = async <T>(endpoint: string): Promise<T> => {
+  const response = await axios.get(await getUrl(endpoint))
   return response.data
 }
 
-export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: string): Promise<AxiosResponse> => {
-  const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  return axios.post(await getUrl(endpoint), data, { headers })
-}
+export const postToEndpoint = async <T>(endpoint: string, data: T): Promise<AxiosResponse> =>
+  axios.post(await getUrl(endpoint), data)

@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../model/VocabularyItem'
 import { getLabels } from '../../services/helpers'
 import { DisciplineWithVocabulary } from './UserVocabularyDisciplineSelectionScreen'
 

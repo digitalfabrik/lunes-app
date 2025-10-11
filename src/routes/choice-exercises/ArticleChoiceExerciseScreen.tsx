@@ -3,8 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
-import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import { Answer, ExerciseKeys } from '../../constants/data'
+import { ARTICLES } from '../../model/Article'
+import VocabularyItem from '../../model/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 

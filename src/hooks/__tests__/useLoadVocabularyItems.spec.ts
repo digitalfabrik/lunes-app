@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
+import VocabularyItem from '../../model/VocabularyItem'
 import { getFromEndpoint } from '../../services/axios'
 import { loadVocabularyItems } from '../useLoadVocabularyItems'
 
@@ -50,7 +50,7 @@ const testData = [
   },
 ]
 
-const expectedData = [
+const expectedData: VocabularyItem[] = [
   {
     alternatives: [
       { article: { id: 1, value: 'der' }, word: 'Meterstab' },
@@ -61,7 +61,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     images: [],
     id: 17,
-    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    type: 'lunes-standard',
     word: 'Zollstock',
   },
   {
@@ -70,7 +70,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
     images: [],
     id: 178,
-    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    type: 'lunes-standard',
     word: 'Ölkanister',
   },
   {
@@ -79,7 +79,7 @@ const expectedData = [
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
     images: [],
     id: 245,
-    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    type: 'lunes-standard',
     word: 'Ölkreide',
   },
 ]
@@ -100,7 +100,7 @@ describe('loadVocabularyItems', () => {
 
   it('should get correctly', async () => {
     await loadVocabularyItems({ disciplineId: discipline.id })
-    expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234', undefined)
+    expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234')
   })
 
   it('should map data correctly', async () => {

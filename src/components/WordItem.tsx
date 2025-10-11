@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { Answer, Article } from '../constants/data'
+import { Answer } from '../constants/data'
+import Article from '../model/Article'
 import { getLabels, getArticleColor } from '../services/helpers'
 import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 

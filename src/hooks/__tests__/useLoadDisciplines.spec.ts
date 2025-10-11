@@ -103,32 +103,12 @@ describe('loadDiscipline', () => {
   describe('it should use correct url if', () => {
     it('has no parent', async () => {
       await loadDisciplines({ parent: null })
-      expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_level/', undefined)
-    })
-
-    it('has parent without an api key', async () => {
-      await loadDisciplines({ parent: { ...parent, isLeaf: false } })
-      expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_level/1234', undefined)
+      expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_level/')
     })
 
     it('has training sets as children', async () => {
       await loadDisciplines({ parent: { ...parent, needsTrainingSetEndpoint: true } })
-      expect(getFromEndpoint).toHaveBeenCalledWith('training_set/1234', undefined)
-    })
-
-    it('has a parent with an api key', async () => {
-      const apiKeyParent = {
-        ...parent,
-        isLeaf: false,
-        apiKey: 'my_api_key',
-      }
-      await loadDisciplines({ parent: apiKeyParent })
-      expect(getFromEndpoint).toHaveBeenCalledWith('disciplines_by_group/1234', 'my_api_key')
-    })
-
-    it('has no parent but an api key', async () => {
-      await loadDisciplines({ apiKey: 'api-key123' })
-      expect(getFromEndpoint).toHaveBeenCalledWith('group_info', 'api-key123')
+      expect(getFromEndpoint).toHaveBeenCalledWith('training_set/1234')
     })
   })
 

@@ -1,8 +1,10 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES, VOCABULARY_ITEM_TYPES, SIMPLE_RESULTS } from '../../../../constants/data'
-import { VocabularyItem } from '../../../../constants/endpoints'
+import { SIMPLE_RESULTS } from '../../../../constants/data'
+import { ARTICLES } from '../../../../model/Article'
+import VocabularyItem from '../../../../model/VocabularyItem'
+import { VOCABULARY_ITEM_TYPES } from '../../../../model/VocabularyItemType'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'

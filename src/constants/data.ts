@@ -2,7 +2,9 @@ import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
 import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
-import { VocabularyItem } from './endpoints'
+import Article from '../model/Article'
+import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItemType from '../model/VocabularyItemType'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -76,48 +78,6 @@ export const BUTTONS_THEME = {
 
 export type ButtonTheme = (typeof BUTTONS_THEME)[keyof typeof BUTTONS_THEME]
 
-export type ArticleType = {
-  readonly id: number
-  readonly value: string
-}
-
-export const ARTICLES: Readonly<ArticleType[]> = [
-  {
-    id: 0,
-    value: 'keiner',
-  },
-  {
-    id: 1,
-    value: 'der',
-  },
-  {
-    id: 2,
-    value: 'die',
-  },
-  {
-    id: 3,
-    value: 'das',
-  },
-  {
-    id: 4,
-    value: 'die',
-  },
-] as const
-
-export type ArticleTypeExtended = {
-  readonly label: string
-} & ArticleType
-
-export const getArticleWithLabel = (): ArticleTypeExtended[] =>
-  ARTICLES.filter(article => article.id !== 0).map(article => {
-    if (article.id === 4) {
-      return { ...article, label: `${article.value} (Plural)` }
-    }
-    return { ...article, label: article.value }
-  })
-
-export type Article = (typeof ARTICLES)[number]
-
 export const SIMPLE_RESULTS = {
   correct: 'correct',
   incorrect: 'incorrect',
@@ -132,17 +92,9 @@ type ResultType = {
   order: number
 }
 
-export const VOCABULARY_ITEM_TYPES = {
-  lunesStandard: 'lunes-standard',
-  lunesProtected: 'lunes-protected',
-  userCreated: 'user-created',
-}
-export type VocabularyItemType = (typeof VOCABULARY_ITEM_TYPES)[keyof typeof VOCABULARY_ITEM_TYPES]
-
 export type Favorite = {
   id: number
   vocabularyItemType: VocabularyItemType
-  apiKey?: string
 }
 
 export type Answer = {

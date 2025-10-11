@@ -3,8 +3,6 @@ import { Keyboard, useWindowDimensions } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import styled, { useTheme } from 'styled-components/native'
 
-import { Images } from '../constants/endpoints'
-
 const ImageView = styled.View<{ height: number }>`
   height: ${({ height }) => height}px;
 `
@@ -47,7 +45,7 @@ const PaginationView = styled.View<{ minimized: boolean }>`
 `
 
 type ImageCarouselProps = {
-  images: Images
+  images: string[]
   minimized?: boolean
 }
 
@@ -55,10 +53,6 @@ type Item = {
   source: {
     uri: string
   }
-}
-
-type ImageUrl = {
-  url: string
 }
 
 const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): ReactElement => {
@@ -70,18 +64,12 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   const heightPercent = minimized ? height / 2 : height
   const viewerHeight = (deviceHeight * heightPercent) / percentage
 
-  const imagesUrls: ImageUrl[] = images.map(image => ({
-    url: image.image,
-  }))
-
   const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (
     <PaginationView minimized={minimized}>
       {!!allSize &&
         !!currentIndex &&
         allSize > 1 &&
-        imagesUrls.map((item, index) =>
-          index + 1 === currentIndex ? <ActiveDot key={item.url} /> : <Dot key={item.url} />,
-        )}
+        images.map((item, index) => (index + 1 === currentIndex ? <ActiveDot key={item} /> : <Dot key={item} />))}
     </PaginationView>
   )
 
@@ -92,8 +80,8 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   return (
     <ImageView testID='Swipeable' height={viewerHeight}>
       <ImageViewer
-        key={imagesUrls.map(elem => elem.url).join()}
-        imageUrls={imagesUrls}
+        key={images.join()}
+        imageUrls={images.map(image => ({ url: image }))}
         renderImage={renderItem}
         renderIndicator={renderIndicator}
         backgroundColor={theme.colors.backgroundAccent}

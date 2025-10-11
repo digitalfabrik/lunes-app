@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../model/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -55,7 +55,9 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   })
 
   it('should handle navigation correctly', async () => {
-    const vocabularyItems = new VocabularyItemBuilder(25).build().map(item => ({ ...item, type: 'user-created' }))
+    const vocabularyItems = new VocabularyItemBuilder(25)
+      .build()
+      .map((item): VocabularyItem => ({ ...item, type: 'user-created' }))
     const { getByText } = await renderScreen(vocabularyItems)
     const partTwo = getByText(`${getLabels().userVocabulary.practice.part} 2`)
     fireEvent.press(partTwo)

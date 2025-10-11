@@ -1,4 +1,5 @@
-import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { ENDPOINTS } from '../constants/endpoints'
+import VocabularyItem from '../model/VocabularyItem'
 import { getFromEndpoint } from '../services/axios'
 import { Return, useLoadAsync } from './useLoadAsync'
 import { VocabularyItemFromServer, formatVocabularyItemsFromServer } from './useLoadVocabularyItems'

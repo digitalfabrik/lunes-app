@@ -2,8 +2,6 @@ import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
 
 import {
-  Article,
-  ARTICLES,
   ExerciseKeys,
   EXERCISES,
   Favorite,
@@ -12,11 +10,13 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
+import { Discipline, ENDPOINTS } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
 import { loadDiscipline } from '../hooks/useLoadDiscipline'
+import Article, { ARTICLES } from '../model/Article'
+import VocabularyItem, { AlternativeWord } from '../model/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
@@ -50,6 +50,7 @@ export const childrenDescription = (discipline: Discipline, hasParent = false): 
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
+    case 0:
     case 1:
       return COLORS.articleMasculine
 
@@ -197,7 +198,7 @@ export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[
 const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
 
 const normalizeSearchString = (searchString: string): string => {
-  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
+  const searchStringWithoutArticle = ARTICLES.map(article => article.value as string).includes(
     searchString.split(' ')[0].toLowerCase(),
   )
     ? searchString.substring(searchString.indexOf(' ') + 1)
@@ -257,5 +258,4 @@ export const searchProfessions = (disciplines: Discipline[] | undefined, searchK
 export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
   id: vocabularyItem.id,
   vocabularyItemType: vocabularyItem.type,
-  ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
 })
