@@ -9,6 +9,7 @@ import {
 } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
+// TODO: Remove apiKey
 export type RequestParams =
   | {
       apiKey: string
@@ -20,7 +21,7 @@ export type RequestParams =
 export const loadDiscipline = async (params: RequestParams): Promise<Discipline> => {
   if (isTypeLoadProtected(params)) {
     const url = `${ENDPOINTS.groupInfo}`
-    const response = await getFromEndpoint<ServerResponseGroup[]>(url, params.apiKey)
+    const response = await getFromEndpoint<ServerResponseGroup[]>(url)
     return formatGroup(response, params.apiKey)
   }
   const url = `${ENDPOINTS.discipline}/${params.disciplineId}`
