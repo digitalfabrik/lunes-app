@@ -1,5 +1,5 @@
-import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import VocabularyItem from '../../model/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
@@ -152,7 +152,7 @@ describe('storageUtils', () => {
     const vocabularyItems: VocabularyItem[] = new VocabularyItemBuilder(4).build()
     const favoriteItems: Favorite[] = vocabularyItems.map(it => ({
       id: it.id,
-      vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard,
+      vocabularyItemType: 'lunes-standard',
     }))
 
     it('should add favorites', async () => {
@@ -183,9 +183,9 @@ describe('storageUtils', () => {
   })
 
   describe('userVocabulary', () => {
-    const userVocabularyItems = new VocabularyItemBuilder(3)
+    const userVocabularyItems: VocabularyItem[] = new VocabularyItemBuilder(3)
       .build()
-      .map(item => ({ ...item, type: VOCABULARY_ITEM_TYPES.userCreated }))
+      .map(item => ({ ...item, type: 'user-created' }))
 
     it('should add userVocabularyItem', async () => {
       const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))

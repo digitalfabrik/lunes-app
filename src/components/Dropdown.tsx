@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native'
 import { Dropdown as RNElementDropdown } from 'react-native-element-dropdown'
 import styled from 'styled-components/native'
 
-import { ArticleTypeExtended } from '../constants/data'
 import theme from '../constants/theme'
+import { ArticleTypeExtended } from '../model/Article'
 import { ContentError } from './text/Content'
 
 const ErrorContainer = styled.View`

@@ -1,7 +1,8 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, VocabularyItem } from '../constants/endpoints'
+import { Discipline } from '../constants/endpoints'
+import VocabularyItem from '../model/VocabularyItem'
 
 export type VocabularyItemResult = {
   vocabularyItem: VocabularyItem

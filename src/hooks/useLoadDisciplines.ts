@@ -26,8 +26,7 @@ const getEndpoint = (params: RequestParams): string => {
 
 export const loadDisciplines = async (loadingInfo: RequestParams): Promise<Discipline[]> => {
   const url = getEndpoint(loadingInfo)
-  const apiKey = isTypeLoadProtected(loadingInfo) ? loadingInfo.apiKey : loadingInfo.parent?.apiKey
-  const response = await getFromEndpoint<ServerResponseDiscipline[]>(url, apiKey)
+  const response = await getFromEndpoint<ServerResponseDiscipline[]>(url)
   return response.map(discipline => formatDiscipline(discipline, loadingInfo))
 }
 

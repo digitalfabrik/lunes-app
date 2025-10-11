@@ -9,7 +9,7 @@ import { useStorageCache } from './useStorage'
 
 type LoadFavoriteProps = { storageCache: StorageCache; favorite: Favorite }
 export const loadFavorite = async ({ storageCache, favorite }: LoadFavoriteProps): Promise<VocabularyItem | null> => {
-  if (favorite.vocabularyItemType === VOCABULARY_ITEM_TYPES.userCreated) {
+  if (favorite.vocabularyItemType === 'user-created') {
     const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
     const userCreatedFavorite = userVocabulary.find(item => item.id === favorite.id)
     if (!userCreatedFavorite) {

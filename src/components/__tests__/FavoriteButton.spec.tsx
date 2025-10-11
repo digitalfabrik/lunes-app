@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
+import { VOCABULARY_ITEM_TYPES } from '../../model/VocabularyItemType'
 import { StorageCache } from '../../services/Storage'
 import { isFavorite } from '../../services/storageUtils'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'

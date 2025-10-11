@@ -1,5 +1,5 @@
-import { ARTICLES } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import { ARTICLES } from '../../model/Article'
+import VocabularyItem from '../../model/VocabularyItem'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import {
   daysToStayInASection,
@@ -407,7 +407,7 @@ describe('RepetitionService', () => {
         id: 99,
         word: 'i am unknown',
         article: ARTICLES[1],
-        type: 'st',
+        type: 'lunes-standard',
         audio: '',
         images: [],
         alternatives: [],

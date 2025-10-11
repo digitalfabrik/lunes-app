@@ -1,5 +1,6 @@
-import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { VocabularyItem, ENDPOINTS } from '../constants/endpoints'
+import { ENDPOINTS } from '../constants/endpoints'
+import { ARTICLES } from '../model/Article'
+import VocabularyItem from '../model/VocabularyItem'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
@@ -17,38 +18,27 @@ export type VocabularyItemFromServer = {
   alternatives: AlternativeWordFromServer[]
 }
 
-export const formatVocabularyItemFromServer = (
-  vocabularyItemFromServer: VocabularyItemFromServer,
-  apiKey?: string,
-): VocabularyItem => ({
+export const formatVocabularyItemFromServer = (vocabularyItemFromServer: VocabularyItemFromServer): VocabularyItem => ({
   id: vocabularyItemFromServer.id,
   word: vocabularyItemFromServer.word,
   audio: vocabularyItemFromServer.audio,
-  type: apiKey ? VOCABULARY_ITEM_TYPES.lunesProtected : VOCABULARY_ITEM_TYPES.lunesStandard,
+  type: 'lunes-standard',
   article: ARTICLES[vocabularyItemFromServer.article],
-  images: vocabularyItemFromServer.document_image,
+  images: vocabularyItemFromServer.document_image.map(({ image }) => image),
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({
     article: ARTICLES[it.article],
     word: it.alt_word,
   })),
-  apiKey,
 })
 
 export const formatVocabularyItemsFromServer = (
   vocabularyItemFromServers: VocabularyItemFromServer[],
-  apiKey?: string,
-): VocabularyItem[] => vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
+): VocabularyItem[] => vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item))
 
-export const loadVocabularyItems = async ({
-  disciplineId,
-  apiKey,
-}: {
-  disciplineId: number
-  apiKey?: string
-}): Promise<VocabularyItem[]> => {
+export const loadVocabularyItems = async ({ disciplineId }: { disciplineId: number }): Promise<VocabularyItem[]> => {
   const url = ENDPOINTS.vocabularyItems.replace(':id', `${disciplineId}`)
-  const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
-  return formatVocabularyItemsFromServer(response, apiKey)
+  const response = await getFromEndpoint<VocabularyItemFromServer[]>(url)
+  return formatVocabularyItemsFromServer(response)
 }
 
 const useLoadVocabularyItems = ({

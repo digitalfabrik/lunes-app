@@ -71,7 +71,7 @@ const ProfessionDetails = ({
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
-        thumbnail={vocabularyItems[0].images[0].image}
+        thumbnail={vocabularyItems[0].images[0]}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
