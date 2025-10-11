@@ -9,6 +9,7 @@ import {
 } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
+// TODO: Remove apiKey
 export type RequestParams =
   | {
       apiKey: string
