@@ -7,7 +7,8 @@ import { getStorageItem } from './Storage'
 export const localhostCMS = 'http://10.0.2.2:8080/api/v2'
 export const testCMS = 'https://lunes-test.tuerantuer.org/api/v2'
 export const productionCMS = 'https://lunes.tuerantuer.org/api/v2'
-export type CMS = typeof localhostCMS | typeof testCMS | typeof productionCMS
+export const CMS_URLS = [localhostCMS, testCMS, productionCMS] as const
+export type CMS = (typeof CMS_URLS)[number]
 
 export const getBaseURL = (overwriteCMS: CMS | null): CMS => {
   if (overwriteCMS) {
