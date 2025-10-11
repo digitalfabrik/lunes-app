@@ -1,7 +1,7 @@
 import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { productionCMS, testCMS } from '../../../../services/axios'
+import { localhostCMS, productionCMS, testCMS } from '../../../../services/axios'
 import { getLabels } from '../../../../services/helpers'
 import render from '../../../../testing/render'
 import DebugModal from '../DebugModal'
@@ -30,6 +30,10 @@ describe('DebugModal', () => {
       fireEvent.press(switchCMSButton)
     })
     await waitFor(() => expect(getByText(productionCMS)).toBeDefined())
+    act(() => {
+      fireEvent.press(switchCMSButton)
+    })
+    await waitFor(() => expect(getByText(localhostCMS)).toBeDefined())
     act(() => {
       fireEvent.press(switchCMSButton)
     })

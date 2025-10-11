@@ -11,7 +11,7 @@ import { loadAllWords } from '../../../hooks/useLoadAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
-import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
+import { CMS, getBaseURL, localhostCMS, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
@@ -64,7 +64,21 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   }
 
   const switchCMS = async (): Promise<void> => {
-    const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
+    let updatedCMS: CMS
+    switch (baseURL) {
+      case productionCMS: {
+        updatedCMS = localhostCMS
+        break
+      }
+      case localhostCMS: {
+        updatedCMS = testCMS
+        break
+      }
+      case testCMS: {
+        updatedCMS = productionCMS
+        break
+      }
+    }
     await setCmsUrlOverwrite(updatedCMS)
   }
 
