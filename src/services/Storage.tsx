@@ -8,6 +8,7 @@ import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateApiEndpointUrl, migrateToNewFavoriteFormat } from './storageUtils'
 
+// TODO: Migrate to api v2
 export type Storage = {
   wordNodeCards: WordNodeCard[]
   isTrackingEnabled: boolean
