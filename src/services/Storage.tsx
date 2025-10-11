@@ -6,7 +6,7 @@ import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
-import { migrateToNewFavoriteFormat } from './storageUtils'
+import { migrateApiEndpointUrl, migrateToNewFavoriteFormat } from './storageUtils'
 
 export type Storage = {
   wordNodeCards: WordNodeCard[]
@@ -85,6 +85,7 @@ export class StorageCache {
 
   migrate = async (): Promise<void> => {
     await migrateToNewFavoriteFormat(this)
+    await migrateApiEndpointUrl(this)
   }
 
   /**

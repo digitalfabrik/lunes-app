@@ -6,6 +6,7 @@ import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItemOr, StorageCache } from './Storage'
+import { CMS_URLS, localhostCMS, productionCMS, testCMS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
@@ -84,6 +85,14 @@ export const migrateToNewFavoriteFormat = async (storageCache: StorageCache): Pr
     })),
   )
   await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
+}
+
+// Removes the cms url overwrite value in case it has changed between versions
+export const migrateApiEndpointUrl = async (storageCache: StorageCache): Promise<void> => {
+  const overwrite = storageCache.getItem('cmsUrlOverwrite')
+  if (overwrite !== null && !CMS_URLS.includes(overwrite)) {
+    await storageCache.setItem('cmsUrlOverwrite', null)
+  }
 }
 
 export const addFavorite = async (
