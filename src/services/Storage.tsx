@@ -6,9 +6,14 @@ import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
-import { migrateToNewFavoriteFormat } from './storageUtils'
+import { migrateStorage } from './storageUtils'
+
+export const STORAGE_VERSION = 1
 
 export type Storage = {
+  // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
+  // 0 stands for the versions of the storage where no version number was stored yet.
+  version: number
   wordNodeCards: WordNodeCard[]
   isTrackingEnabled: boolean
   // Null means the selected professions were never set before, which means that the intro should be shown
@@ -28,6 +33,7 @@ export type Storage = {
  * It is also useful for testing, to mock the actual storage implementation.
  */
 export const newDefaultStorage = (): Storage => ({
+  version: STORAGE_VERSION,
   wordNodeCards: [],
   isTrackingEnabled: true,
   selectedProfessions: null,
@@ -42,6 +48,7 @@ export const newDefaultStorage = (): Storage => ({
 const defaultStorage = newDefaultStorage()
 
 export const storageKeys: Record<keyof Storage, string> = {
+  version: 'version',
   wordNodeCards: 'wordNodeCards',
   isTrackingEnabled: 'sentryTracking',
   selectedProfessions: 'selectedProfessions',
@@ -79,12 +86,8 @@ export class StorageCache {
 
   static create = async (storage: Storage): Promise<StorageCache> => {
     const storageCache = new StorageCache(storage)
-    await storageCache.migrate()
+    await migrateStorage(storageCache)
     return storageCache
-  }
-
-  migrate = async (): Promise<void> => {
-    await migrateToNewFavoriteFormat(this)
   }
 
   /**
@@ -140,7 +143,23 @@ const resolveObject = async <T extends Record<keyof T, unknown>>(
 }
 
 export const loadStorageCache = async (): Promise<StorageCache> => {
+  const getStorageVersion = async (): Promise<number> => {
+    const version = await getStorageItemOr<number | null>(storageKeys.version, null)
+    if (version !== null) {
+      return version
+    }
+
+    // If there is no version number stored yet,
+    // this is either a new installation or an update from a version where this field did not exist yet.
+    // In the former case, the storage version should be the latest version to avoid unnecessary startup work.
+    // In the latter case, we should use 0 as the version number so that all migrations are run.
+    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null iff the startup screen was not completed yet.
+    const selectedProfessions = await getStorageItem('selectedProfessions')
+    return selectedProfessions === null ? STORAGE_VERSION : 0
+  }
+
   const storage: Storage = await resolveObject({
+    version: getStorageVersion(),
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),

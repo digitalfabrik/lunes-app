@@ -1,15 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import { RepetitionService } from '../RepetitionService'
-import { StorageCache } from '../Storage'
+import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
+  FAVORITES_KEY_VERSION_0,
   getUserVocabularyItems,
   pushSelectedProfession,
   removeCustomDiscipline,
@@ -179,6 +182,28 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0], favoriteItems[1], favoriteItems[3]])
       await removeFavorite(storageCache, favoriteItems[0])
       expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1], favoriteItems[3]])
+    })
+  })
+
+  describe('migrations', () => {
+    it('should migrate from old version', async () => {
+      await AsyncStorage.setItem(storageKeys.version, '0')
+      const storageCache = await loadStorageCache()
+      expect(storageCache.getItem('version')).toBe(STORAGE_VERSION)
+    })
+
+    it('Should migrate to new favorite storage', async () => {
+      await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
+      await AsyncStorage.setItem(storageKeys.selectedProfessions, '[]')
+      const storageCache = await loadStorageCache()
+      await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
+      expect(storageCache.getItem('favorites')).toEqual([
+        { id: 42, vocabularyItemType: 'lunes-standard' },
+        {
+          id: 84,
+          vocabularyItemType: 'lunes-standard',
+        },
+      ])
     })
   })
 

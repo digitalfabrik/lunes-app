@@ -5,7 +5,7 @@ import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_T
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
-import { getStorageItemOr, StorageCache } from './Storage'
+import { getStorageItemOr, STORAGE_VERSION, StorageCache } from './Storage'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
@@ -84,6 +84,19 @@ export const migrateToNewFavoriteFormat = async (storageCache: StorageCache): Pr
     })),
   )
   await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
+}
+
+export const migrateStorage = async (storageCache: StorageCache): Promise<void> => {
+  const lastVersion = storageCache.getItem('version')
+  switch (lastVersion) {
+    case 0:
+      await migrateToNewFavoriteFormat(storageCache)
+      break
+  }
+
+  if (lastVersion !== STORAGE_VERSION) {
+    await storageCache.setItem('version', STORAGE_VERSION)
+  }
 }
 
 export const addFavorite = async (
