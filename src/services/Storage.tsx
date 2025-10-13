@@ -84,11 +84,7 @@ export class StorageCache {
 
   static createDummy = (): StorageCache => new StorageCache(newDefaultStorage())
 
-  static create = async (storage: Storage): Promise<StorageCache> => {
-    const storageCache = new StorageCache(storage)
-    await migrateStorage(storageCache)
-    return storageCache
-  }
+  static create = async (storage: Storage): Promise<StorageCache> => new StorageCache(storage)
 
   /**
    * Returns a storage item for the given key.
@@ -143,23 +139,10 @@ const resolveObject = async <T extends Record<keyof T, unknown>>(
 }
 
 export const loadStorageCache = async (): Promise<StorageCache> => {
-  const getStorageVersion = async (): Promise<number> => {
-    const version = await getStorageItemOr<number | null>(storageKeys.version, null)
-    if (version !== null) {
-      return version
-    }
-
-    // If there is no version number stored yet,
-    // this is either a new installation or an update from a version where this field did not exist yet.
-    // In the former case, the storage version should be the latest version to avoid unnecessary startup work.
-    // In the latter case, we should use 0 as the version number so that all migrations are run.
-    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null if and only if the startup screen was not completed yet.
-    const selectedProfessions = await getStorageItem('selectedProfessions')
-    return selectedProfessions === null ? STORAGE_VERSION : 0
-  }
+  await migrateStorage()
 
   const storage: Storage = await resolveObject({
-    version: getStorageVersion(),
+    version: getStorageItem('version'),
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),

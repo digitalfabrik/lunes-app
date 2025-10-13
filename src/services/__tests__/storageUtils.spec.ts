@@ -194,6 +194,7 @@ describe('storageUtils', () => {
 
     it('Should migrate to new favorite storage', async () => {
       await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
+      await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.not.toBeNull()
       await AsyncStorage.setItem(storageKeys.selectedProfessions, '[]')
       const storageCache = await loadStorageCache()
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
