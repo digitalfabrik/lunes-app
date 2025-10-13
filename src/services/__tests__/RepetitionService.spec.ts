@@ -9,6 +9,11 @@ import {
 } from '../RepetitionService'
 import { StorageCache } from '../Storage'
 import { milliSecondsToHours } from '../helpers'
+import { deleteUserVocabularyItem } from '../storageUtils'
+
+jest.mock('react-native-fs', () => ({
+  unlink: jest.fn(),
+}))
 
 describe('RepetitionService', () => {
   const testVocabulary = new VocabularyItemBuilder(8).build()
@@ -104,6 +109,13 @@ describe('RepetitionService', () => {
       expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1))
       await repetitionService.removeWordNodeCard(testData[testData.length - 1].word)
       expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1, -1))
+    })
+
+    it('should remove the word node card if the word is deleted from user vocabulary', async () => {
+      await repetitionService.setWordNodeCards(testData)
+      expect(repetitionService.getWordNodeCards()).toContain(testData[0])
+      await deleteUserVocabularyItem(storageCache, testVocabulary[0])
+      expect(repetitionService.getWordNodeCards()).not.toContain(testData[0])
     })
   })
 

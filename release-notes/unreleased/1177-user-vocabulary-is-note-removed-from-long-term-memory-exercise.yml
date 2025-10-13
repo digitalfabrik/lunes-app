@@ -1,0 +1,6 @@
+issue_key:
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Ein Fehler wurde behoben, bei dem Vokabeln in der Langzeitgedächtnisübung nicht korrekt gelöscht wurden
