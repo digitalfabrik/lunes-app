@@ -153,7 +153,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     // this is either a new installation or an update from a version where this field did not exist yet.
     // In the former case, the storage version should be the latest version to avoid unnecessary startup work.
     // In the latter case, we should use 0 as the version number so that all migrations are run.
-    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null iff the startup screen was not completed yet.
+    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null if and only if the startup screen was not completed yet.
     const selectedProfessions = await getStorageItem('selectedProfessions')
     return selectedProfessions === null ? STORAGE_VERSION : 0
   }
