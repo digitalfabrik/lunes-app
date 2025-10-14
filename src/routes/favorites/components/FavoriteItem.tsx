@@ -15,11 +15,7 @@ const FavoriteItem = ({ favorite, onPress }: FavoriteItemProps): ReactElement | 
 
   return (
     data && (
-      <VocabularyListItem
-        key={`${favorite.id}-${favorite.vocabularyItemType}`}
-        vocabularyItem={data}
-        onPress={() => onPress(data)}
-      />
+      <VocabularyListItem key={`${favorite.id}-${favorite.type}`} vocabularyItem={data} onPress={() => onPress(data)} />
     )
   )
 }

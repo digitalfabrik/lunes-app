@@ -11,8 +11,10 @@ import RepetitionWordListScreen from '../RepetitionWordListScreen'
 
 const dummyStorageCache = async (): Promise<StorageCache> => {
   const storageCache = StorageCache.createDummy()
-  const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
-    word: item,
+  const words = new VocabularyItemBuilder(2).buildUserVocabulary()
+  await storageCache.setItem('userVocabulary', words)
+  const wordNodeCards: WordNodeCard[] = words.map(item => ({
+    wordRef: item.ref,
     section: 1,
     inThisSectionSince: RepetitionService.addDays(new Date(), -1),
   }))
@@ -30,7 +32,7 @@ describe('RepetitionWordListScreen', () => {
       <RepetitionWordListScreen navigation={navigation} />,
     )
 
-    expect(getAllByTestId('list-item')).toHaveLength(2)
+    await waitFor(() => expect(getAllByTestId('list-item')).toHaveLength(2))
     expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
   })
 
@@ -41,21 +43,21 @@ describe('RepetitionWordListScreen', () => {
       <RepetitionWordListScreen navigation={navigation} />,
     )
 
-    const wordNodeCards = storageCache.getItem('wordNodeCards')
+    const words = storageCache.getItem('userVocabulary')
 
-    const deleteButtons = getAllByTestId('delete-button')
+    const deleteButtons = await waitFor(() => getAllByTestId('delete-button'))
     expect(deleteButtons).toHaveLength(2)
 
-    expect(getByText(wordNodeCards[0].word.word)).toBeDefined()
+    expect(getByText(words[0].word)).toBeDefined()
     fireEvent.press(deleteButtons[0])
 
-    expect(getByText(wordNodeCards[1].word.word)).toBeDefined()
+    expect(getByText(words[1].word)).toBeDefined()
 
     const confirmButton = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton).toBeDefined()
     fireEvent.press(confirmButton)
 
-    await waitFor(() => expect(queryByText(wordNodeCards[0].word.word)).toBeNull())
+    await waitFor(() => expect(queryByText(words[0].word)).toBeNull())
 
     const newDeleteButtons = getAllByTestId('delete-button')
     expect(newDeleteButtons).toHaveLength(1)

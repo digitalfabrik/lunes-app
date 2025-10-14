@@ -1,10 +1,10 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
+import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
 import Article from '../model/Article'
 import VocabularyItem from '../model/VocabularyItem'
-import VocabularyItemType from '../model/VocabularyItemType'
+import VocabularyItemRef, { StandardVocabularyItemRef } from '../model/VocabularyItemRef'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -92,10 +92,7 @@ type ResultType = {
   order: number
 }
 
-export type Favorite = {
-  id: number
-  vocabularyItemType: VocabularyItemType
-}
+export type Favorite = VocabularyItemRef
 
 export type Answer = {
   word: string
@@ -125,12 +122,25 @@ export const RESULTS: Readonly<ResultType[]> = [
 
 export type Result = (typeof RESULTS)[number]
 
-export const FeedbackType = {
-  discipline: 'discipline',
-  leaf_discipline: 'trainingset',
-  vocabularyItem: 'document',
-} as const
-export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
+export enum FeedbackType {
+  discipline = 'discipline',
+  leaf_discipline = 'trainingset',
+  vocabularyItem = 'document',
+}
+
+export type FeedbackTarget =
+  | {
+      type: FeedbackType.discipline
+      disciplineId: number
+    }
+  | {
+      type: FeedbackType.leaf_discipline
+      disciplineId: number
+    }
+  | {
+      type: FeedbackType.vocabularyItem
+      vocabularyItemRef: StandardVocabularyItemRef
+    }
 
 export const numberOfMaxRetries = 3
 

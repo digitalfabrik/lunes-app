@@ -12,7 +12,9 @@ import { ContentSecondary, ContentTextBold } from '../../components/text/Content
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
+import { getVocabularyItems } from '../../hooks/useLoadVocabularyItemRefs'
 import useRepetitionService from '../../hooks/useRepetitionService'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
@@ -81,14 +83,19 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const { repeatWords, repeatNow, wordsToRepeat, yourLearningProgress, infoModalContentText, viewWords } =
     getLabels().repetition
   const repetitionService = useRepetitionService()
+  const storageCache = useStorageCache()
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
     const closeExerciseAction = CommonActions.navigate('Repetition')
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
     if (wordNodeCards.length > 0) {
+      const vocabularyItems = await getVocabularyItems({
+        storageCache,
+        vocabularyItemRefs: wordNodeCards.map(item => item.wordRef),
+      })
       navigation.navigate('WriteExercise', {
-        vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
+        vocabularyItems,
         contentType: 'repetition',
         disciplineTitle: '',
         closeExerciseAction,

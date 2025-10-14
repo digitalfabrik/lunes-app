@@ -17,8 +17,7 @@ import { HintText } from '../../components/text/Hint'
 import { BUTTONS_THEME } from '../../constants/data'
 import { useStorageCache } from '../../hooks/useStorage'
 import { ARTICLES, ArticleTypeExtended, getArticleWithLabel } from '../../model/Article'
-import VocabularyItem from '../../model/VocabularyItem'
-import { VOCABULARY_ITEM_TYPES } from '../../model/VocabularyItemType'
+import { UserVocabularyItem } from '../../model/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
@@ -121,7 +120,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     try {
       let id: number
       if (itemToEdit) {
-        id = itemToEdit.id
+        id = itemToEdit.ref.id
         const originalImages = itemToEdit.images
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
         await Promise.all(
@@ -155,18 +154,17 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         await moveFile(recordingPath, audioPathWithFormat)
       }
 
-      const itemToSave: VocabularyItem = {
-        id,
+      const itemToSave: UserVocabularyItem = {
+        ref: { type: 'user-created', id },
         word,
         article: ARTICLES[article.id],
         images: imagePaths,
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
-        type: VOCABULARY_ITEM_TYPES.userCreated,
       }
 
       if (itemToEdit) {
-        await editUserVocabularyItem(storageCache, itemToEdit, itemToSave)
+        await editUserVocabularyItem(storageCache, itemToSave)
       } else {
         await addUserVocabularyItem(storageCache, itemToSave)
       }

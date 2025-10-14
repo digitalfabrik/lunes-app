@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
-import { FeedbackType } from '../constants/data'
+import { FeedbackTarget } from '../constants/data'
 import { getLabels, sendFeedback } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import CustomTextInput from './CustomTextInput'
@@ -15,11 +15,10 @@ const TextInputContainer = styled.View`
 type FeedbackModalProps = {
   visible: boolean
   onClose: () => void
-  feedbackType: FeedbackType
-  feedbackForId: number
+  feedbackFor: FeedbackTarget
 }
 
-const FeedbackModal = ({ visible, onClose, feedbackType, feedbackForId }: FeedbackModalProps): ReactElement => {
+const FeedbackModal = ({ visible, onClose, feedbackFor }: FeedbackModalProps): ReactElement => {
   const [message, setMessage] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
@@ -29,7 +28,7 @@ const FeedbackModal = ({ visible, onClose, feedbackType, feedbackForId }: Feedba
     onClose()
   }
   const onSubmit = (): void => {
-    sendFeedback(`${message} ${email}`, feedbackType, feedbackForId).catch(reportError).finally(onCloseFeedback)
+    sendFeedback(`${message} ${email}`, feedbackFor).catch(reportError).finally(onCloseFeedback)
   }
 
   return (

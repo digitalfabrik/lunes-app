@@ -4,7 +4,6 @@ import React from 'react'
 import { SIMPLE_RESULTS } from '../../../../constants/data'
 import { ARTICLES } from '../../../../model/Article'
 import VocabularyItem from '../../../../model/VocabularyItem'
-import { VOCABULARY_ITEM_TYPES } from '../../../../model/VocabularyItemType'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
@@ -35,8 +34,7 @@ describe('InteractionSection', () => {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
-    id: 0,
-    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    ref: { type: 'lunes-standard', id: 0 },
     images: [],
     word: 'kontaktlose Spannungsprüfer',
   }

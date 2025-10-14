@@ -95,7 +95,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
     const allWords = await getAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
-      word: vocabularyItem,
+      wordRef: vocabularyItem.ref,
       section: sections[getRandomNumberBetween(0, sections.length - 1)],
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))

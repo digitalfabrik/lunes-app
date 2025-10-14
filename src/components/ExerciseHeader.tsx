@@ -3,12 +3,12 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
-import { FeedbackType, ExerciseKey } from '../constants/data'
+import { ExerciseKey, FeedbackTarget } from '../constants/data'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
@@ -39,8 +39,7 @@ type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
   exerciseKey?: ExerciseKey
-  feedbackType: FeedbackType
-  feedbackForId: number
+  feedbackFor: FeedbackTarget | null
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
@@ -51,8 +50,7 @@ type ExerciseHeaderProps = {
 const ExerciseHeader = ({
   navigation,
   closeExerciseAction,
-  feedbackType,
-  feedbackForId,
+  feedbackFor,
   currentWord,
   numberOfWords,
   confirmClose = true,
@@ -147,12 +145,13 @@ const ExerciseHeader = ({
         confirmationButtonText={getLabels().exercises.cancelModal.cancel}
         confirmationAction={goBack}
       />
-      <FeedbackModal
-        visible={isFeedbackModalVisible}
-        onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={feedbackType}
-        feedbackForId={feedbackForId}
-      />
+      {feedbackFor != null && (
+        <FeedbackModal
+          visible={isFeedbackModalVisible}
+          onClose={() => setIsFeedbackModalVisible(false)}
+          feedbackFor={feedbackFor}
+        />
+      )}
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '../constants/endpoints'
 import { ARTICLES } from '../model/Article'
-import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItem, { StandardVocabularyItem } from '../model/VocabularyItem'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
@@ -18,11 +18,12 @@ export type VocabularyItemFromServer = {
   alternatives: AlternativeWordFromServer[]
 }
 
-export const formatVocabularyItemFromServer = (vocabularyItemFromServer: VocabularyItemFromServer): VocabularyItem => ({
-  id: vocabularyItemFromServer.id,
+export const formatVocabularyItemFromServer = (
+  vocabularyItemFromServer: VocabularyItemFromServer,
+): StandardVocabularyItem => ({
+  ref: { type: 'lunes-standard', id: vocabularyItemFromServer.id },
   word: vocabularyItemFromServer.word,
   audio: vocabularyItemFromServer.audio,
-  type: 'lunes-standard',
   article: ARTICLES[vocabularyItemFromServer.article],
   images: vocabularyItemFromServer.document_image.map(({ image }) => image),
   alternatives: vocabularyItemFromServer.alternatives.map(it => ({

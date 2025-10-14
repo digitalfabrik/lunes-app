@@ -1,5 +1,3 @@
-import VocabularyItem from '../model/VocabularyItem'
-
 export type Sponsor = {
   name: string
   logo?: string
@@ -18,8 +16,6 @@ export type Discipline = {
   needsTrainingSetEndpoint: boolean // api endpoint requires different endpoint for leaf disciplines
   leafDisciplines?: number[]
 }
-
-export type UserVocabularyItem = Omit<VocabularyItem, 'type'>
 
 export const ENDPOINTS = {
   discipline: 'disciplines',

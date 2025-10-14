@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import VocabularyItem from '../../model/VocabularyItem'
+import { StandardVocabularyItem, UserVocabularyItem } from '../../model/VocabularyItem'
 import { getWords } from '../../services/CmsApi'
 import { StorageCache } from '../../services/Storage'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -9,8 +9,10 @@ import { getAllWords } from '../useGetAllWords'
 jest.mock('../../services/CmsApi')
 
 describe('useGetAllWords', () => {
-  const lunesStandardVocabularyMock: VocabularyItem[] = new VocabularyItemBuilder(3).build()
-  const userVocabularyMock: VocabularyItem[] = [{ ...new VocabularyItemBuilder(4).build()[3], type: 'user-created' }]
+  const lunesStandardVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(3).build()
+  const userVocabularyMock: UserVocabularyItem[] = [
+    { ...new VocabularyItemBuilder(4).build()[3], ref: { type: 'user-created', id: 0 } },
+  ]
 
   let storageCache: StorageCache
 

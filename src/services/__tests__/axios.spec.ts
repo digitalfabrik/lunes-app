@@ -32,6 +32,6 @@ describe('getFromEndpoint', () => {
     const responseData = await getFromEndpoint(path)
     expect(responseData).toBe(data)
     expect(axios.get).toHaveBeenCalledTimes(1)
-    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/v2/abc', { headers: undefined })
+    expect(axios.get).toHaveBeenCalledWith('https://lunes-test.tuerantuer.org/api/v2/abc')
   })
 })

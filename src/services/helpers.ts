@@ -4,7 +4,7 @@ import normalizeStrings from 'normalize-strings'
 import {
   ExerciseKeys,
   EXERCISES,
-  Favorite,
+  FeedbackTarget,
   FeedbackType,
   NextExercise,
   Progress,
@@ -163,12 +163,25 @@ export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResp
   return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
 }
 
-export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>
-  postToEndpoint(ENDPOINTS.feedback, {
+export const sendFeedback = (comment: string, feedbackTarget: FeedbackTarget): Promise<AxiosResponse> => {
+  let objectId: number
+  switch (feedbackTarget.type) {
+    case FeedbackType.discipline:
+      objectId = feedbackTarget.disciplineId
+      break
+    case FeedbackType.leaf_discipline:
+      objectId = feedbackTarget.disciplineId
+      break
+    case FeedbackType.vocabularyItem:
+      objectId = feedbackTarget.vocabularyItemRef.id
+      break
+  }
+  return postToEndpoint(ENDPOINTS.feedback, {
     comment,
-    content_type: feedbackType,
-    object_id: id,
+    content_type: feedbackTarget.type,
+    object_id: objectId,
   })
+}
 
 export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[]): number => {
   const SCORE_FIRST_TRY = 10
@@ -211,10 +224,10 @@ export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: s
     normalizeString(alternative.word).includes(normalizeSearchString(searchString)),
   ).length > 0
 
-export const getSortedAndFilteredVocabularyItems = (
-  vocabularyItems: VocabularyItem[] | null,
+export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
+  vocabularyItems: T[] | null,
   searchString: string,
-): VocabularyItem[] => {
+): T[] => {
   const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
 
   const normalizedSearchString = normalizeSearchString(searchString)
@@ -254,8 +267,3 @@ export const splitTextBySearchString = (allText: string, highlight: string): [st
 
 export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
   disciplines?.filter(discipline => normalizeString(discipline.title).includes(normalizeString(searchKey)))
-
-export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
-  id: vocabularyItem.id,
-  vocabularyItemType: vocabularyItem.type,
-})

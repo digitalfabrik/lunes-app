@@ -1,5 +1,5 @@
 import { ExerciseKeys, SimpleResult } from '../../../constants/data'
-import VocabularyItem from '../../../model/VocabularyItem'
+import VocabularyItem, { areVocabularyItemsEqual } from '../../../model/VocabularyItem'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'
@@ -44,7 +44,7 @@ class StandardWriteExerciseService extends AbstractWriteExerciseService {
     currentIndex: number,
   ): void => {
     const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
-    if (current.vocabularyItem.id !== result.vocabularyItem.id) {
+    if (!areVocabularyItemsEqual(current.vocabularyItem, result.vocabularyItem)) {
       return
     }
     updatedVocabularyItemsWithResults[currentIndex] = result

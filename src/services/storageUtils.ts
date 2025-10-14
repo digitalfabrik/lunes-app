@@ -2,13 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION } from '../constants/data'
-import { UserVocabularyItem } from '../constants/endpoints'
-import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItem, { UserVocabularyItem } from '../model/VocabularyItem'
+import { areVocabularyItemRefsEqual, UserVocabularyItemRef } from '../model/VocabularyItemRef'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
 import { CMS_URLS } from './axios'
-import { calculateScore, vocabularyItemToFavorite } from './helpers'
+import { calculateScore } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
@@ -65,13 +65,12 @@ export const saveExerciseProgress = async (
 
   if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && score > 0) {
     const repetitionService = RepetitionService.fromStorageCache(storageCache)
-    const words = vocabularyItemsWithResults.map(result => result.vocabularyItem)
+    const words = vocabularyItemsWithResults.map(result => result.vocabularyItem.ref)
     await repetitionService.addWordsToFirstSection(words)
   }
 }
 
-const compareFavorites = (favorite1: Favorite, favorite2: Favorite) =>
-  favorite1.id === favorite2.id && favorite1.vocabularyItemType === favorite2.vocabularyItemType
+const compareFavorites = (favorite1: Favorite, favorite2: Favorite) => areVocabularyItemRefsEqual(favorite1, favorite2)
 
 export const migrate0To1 = async (): Promise<void> => {
   const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
@@ -135,14 +134,13 @@ export const addFavorite = async (
   repetitionService: RepetitionService,
   vocabularyItem: VocabularyItem,
 ): Promise<void> => {
-  const favorite = vocabularyItemToFavorite(vocabularyItem)
   const favorites = storageCache.getItem('favorites')
-  if (favorites.includes(favorite)) {
+  if (favorites.includes(vocabularyItem.ref)) {
     return
   }
 
-  await repetitionService.addWordToFirstSection(vocabularyItem)
-  const newFavorites = [...favorites, favorite]
+  await repetitionService.addWordToFirstSection(vocabularyItem.ref)
+  const newFavorites = [...favorites, vocabularyItem.ref]
   await storageCache.setItem('favorites', newFavorites)
 }
 
@@ -161,17 +159,16 @@ export const incrementNextUserVocabularyId = async (storageCache: StorageCache):
   return nextId
 }
 
-export const getUserVocabularyItems = (userVocabulary: readonly UserVocabularyItem[]): VocabularyItem[] =>
-  userVocabulary.map((vocabularyItem: UserVocabularyItem) => ({
-    ...vocabularyItem,
-    type: 'user-created',
-  }))
+export const getUserVocabularyItemByRef = (
+  storageCache: StorageCache,
+  ref: UserVocabularyItemRef,
+): UserVocabularyItem | undefined => storageCache.getItem('userVocabulary').find(item => item.ref.id === ref.id)
 
 export const addUserVocabularyItem = async (
   storageCache: StorageCache,
-  vocabularyItem: VocabularyItem,
+  vocabularyItem: UserVocabularyItem,
 ): Promise<void> => {
-  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+  const userVocabulary = storageCache.getItem('userVocabulary')
   if (userVocabulary.find(item => item.word === vocabularyItem.word)) {
     return
   }
@@ -180,11 +177,10 @@ export const addUserVocabularyItem = async (
 
 export const editUserVocabularyItem = async (
   storageCache: StorageCache,
-  oldUserVocabularyItem: VocabularyItem,
-  newUserVocabularyItem: VocabularyItem,
+  newUserVocabularyItem: UserVocabularyItem,
 ): Promise<void> => {
-  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
-  const index = userVocabulary.findIndex(item => JSON.stringify(item) === JSON.stringify(oldUserVocabularyItem))
+  const userVocabulary = storageCache.getMutableItem('userVocabulary')
+  const index = userVocabulary.findIndex(item => areVocabularyItemRefsEqual(item.ref, newUserVocabularyItem.ref))
   if (index === -1) {
     return
   }
@@ -194,20 +190,17 @@ export const editUserVocabularyItem = async (
 
 export const deleteUserVocabularyItem = async (
   storageCache: StorageCache,
-  userVocabularyItem: VocabularyItem,
+  userVocabularyItem: UserVocabularyItem,
 ): Promise<void> => {
-  const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary')).filter(
-    item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem),
-  )
+  const userVocabulary = storageCache
+    .getItem('userVocabulary')
+    .filter(item => !areVocabularyItemRefsEqual(item.ref, userVocabularyItem.ref))
   const images = userVocabularyItem.images
   await Promise.all(
     images.map(async image => {
       await unlink(image)
     }),
   )
-  await removeFavorite(storageCache, {
-    id: userVocabularyItem.id,
-    vocabularyItemType: 'user-created',
-  })
+  await removeFavorite(storageCache, userVocabularyItem.ref)
   await storageCache.setItem('userVocabulary', userVocabulary)
 }

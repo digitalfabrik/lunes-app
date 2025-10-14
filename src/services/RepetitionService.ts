@@ -1,4 +1,4 @@
-import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItemRef, { areVocabularyItemRefsEqual } from '../model/VocabularyItemRef'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
@@ -13,7 +13,7 @@ export const daysToStayInASection: daysToStayInASection[] = [0, 1, 3, 7, 30, 90,
 /* eslint-enable no-magic-numbers */
 
 export type WordNodeCard = {
-  word: VocabularyItem
+  wordRef: VocabularyItemRef
   section: sections
   inThisSectionSince: Date
 }
@@ -38,11 +38,8 @@ export class RepetitionService {
       value => storageCache.setItem('wordNodeCards', value),
     )
 
-  public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
-    this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
-
-  public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
-    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.word !== word)
+  public removeWordNodeCard = async (wordRef: VocabularyItemRef): Promise<void> => {
+    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.wordRef !== wordRef)
     await this.setWordNodeCards(newWordNodeCards)
   }
 
@@ -117,13 +114,6 @@ export class RepetitionService {
       .map(({ needsRepetitionScore, ...rest }) => rest)
   }
 
-  public getVocabularyItemsWithResultsForNextRepetition = (): VocabularyItemResult[] =>
-    this.getWordNodeCards().map(wordNodeCard => ({
-      vocabularyItem: wordNodeCard.word,
-      result: null,
-      numberOfTries: 0,
-    }))
-
   public getNumberOfWordsInEachSection = (): number[] => {
     const result = Array(sections.length).fill(0)
     this.getWordNodeCards().forEach(item => {
@@ -132,12 +122,12 @@ export class RepetitionService {
     return result
   }
 
-  public addWordsToFirstSection = async (words: VocabularyItem[]): Promise<void> => {
+  public addWordsToFirstSection = async (wordRefs: VocabularyItemRef[]): Promise<void> => {
     const newWordCards = this.getWordNodeCards().slice()
-    words.forEach(word => {
-      if (this.getWordNodeCards().filter(item => JSON.stringify(item.word) === JSON.stringify(word)).length === 0) {
+    wordRefs.forEach(wordRef => {
+      if (this.getWordNodeCards().filter(item => areVocabularyItemRefsEqual(item.wordRef, wordRef)).length === 0) {
         newWordCards.push({
-          word,
+          wordRef,
           section: 0,
           inThisSectionSince: new Date(),
         })
@@ -146,14 +136,14 @@ export class RepetitionService {
     return this.setWordNodeCards(newWordCards)
   }
 
-  public addWordToFirstSection = async (word: VocabularyItem): Promise<void> => this.addWordsToFirstSection([word])
+  public addWordToFirstSection = async (word: VocabularyItemRef): Promise<void> => this.addWordsToFirstSection([word])
 
   private static getSectionWithBoundCheck = (section: number) =>
     sections[Math.min(Math.max(0, section), sections.length - 1)]
 
-  private moveWordToSection = async (word: VocabularyItem, offset: 1 | -1): Promise<void> => {
+  private moveWordToSection = async (wordRef: VocabularyItemRef, offset: 1 | -1): Promise<void> => {
     const wordNodeCards = this.getWordNodeCards().slice()
-    const wordNodeCard = wordNodeCards.find(wordNodeCard => JSON.stringify(wordNodeCard.word) === JSON.stringify(word))
+    const wordNodeCard = wordNodeCards.find(wordNodeCard => areVocabularyItemRefsEqual(wordNodeCard.wordRef, wordRef))
     if (wordNodeCard) {
       const targetSection = wordNodeCard.section + offset
       wordNodeCard.section = RepetitionService.getSectionWithBoundCheck(targetSection)
@@ -162,10 +152,11 @@ export class RepetitionService {
     }
   }
 
-  public moveWordToNextSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, 1)
+  public moveWordToNextSection = async (wordRef: VocabularyItemRef): Promise<void> => this.moveWordToSection(wordRef, 1)
 
-  public moveWordToPreviousSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, -1)
+  public moveWordToPreviousSection = async (wordRef: VocabularyItemRef): Promise<void> =>
+    this.moveWordToSection(wordRef, -1)
 
   public updateWordNodeCard = async (wordWithResult: VocabularyItemResult): Promise<void> =>
-    this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct' ? 1 : -1)
+    this.moveWordToSection(wordWithResult.vocabularyItem.ref, wordWithResult.result === 'correct' ? 1 : -1)
 }

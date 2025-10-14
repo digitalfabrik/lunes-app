@@ -5,8 +5,10 @@ import styled from 'styled-components/native'
 
 import ListEmpty from '../../components/ListEmpty'
 import RouteWrapper from '../../components/RouteWrapper'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { SubheadingText } from '../../components/text/Subheading'
+import useLoadVocabularyItemRefs from '../../hooks/useLoadVocabularyItemRefs'
 import useRepetitionService from '../../hooks/useRepetitionService'
 import VocabularyItem from '../../model/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -32,7 +34,13 @@ type RepetitionWordListScreenProps = {
 
 const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps): ReactElement => {
   const repetitionService = useRepetitionService()
-  const repetitionVocabulary = repetitionService.getWordNodeCards()
+  const wordNodeCards = repetitionService.getWordNodeCards()
+  const {
+    data: vocabulary,
+    error,
+    loading,
+    refresh,
+  } = useLoadVocabularyItemRefs(wordNodeCards.map(card => card.wordRef))
 
   const { title, subtitle, empty } = getLabels().repetition.wordList
 
@@ -41,32 +49,36 @@ const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps)
   }
 
   const removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
-    await repetitionService.removeWordNodeCard(word)
+    await repetitionService.removeWordNodeCard(word.ref)
   }
 
   return (
     <RouteWrapper>
       <Root>
-        <FlatList
-          ListHeaderComponent={
-            <Header>
-              <Title title={title} description={wordsDescription(repetitionVocabulary.length)}>
-                <Subtitle>{subtitle}</Subtitle>
-              </Title>
-            </Header>
-          }
-          data={repetitionVocabulary}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={({ word }) => word.id.toString()}
-          renderItem={({ item }) => (
-            <RepetitionListItem
-              vocabularyItem={item.word}
-              navigateToDetailScreen={() => navigateToDetail(item.word)}
-              removeFromRepetition={() => removeWordNodeCard(item.word)}
+        <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+          {vocabulary != null && (
+            <FlatList
+              ListHeaderComponent={
+                <Header>
+                  <Title title={title} description={wordsDescription(vocabulary.length)}>
+                    <Subtitle>{subtitle}</Subtitle>
+                  </Title>
+                </Header>
+              }
+              data={vocabulary}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={word => JSON.stringify(word.ref)}
+              renderItem={({ item }) => (
+                <RepetitionListItem
+                  vocabularyItem={item}
+                  navigateToDetailScreen={() => navigateToDetail(item)}
+                  removeFromRepetition={() => removeWordNodeCard(item)}
+                />
+              )}
+              ListEmptyComponent={<ListEmpty label={empty} />}
             />
           )}
-          ListEmptyComponent={<ListEmpty label={empty} />}
-        />
+        </ServerResponseHandler>
       </Root>
     </RouteWrapper>
   )

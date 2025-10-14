@@ -2,7 +2,7 @@ import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
-import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItem, { UserVocabularyItem } from '../model/VocabularyItem'
 
 export type VocabularyItemResult = {
   vocabularyItem: VocabularyItem
@@ -61,10 +61,10 @@ export type RoutesParams = {
   Home: undefined
   UserVocabularyOverview: undefined
   UserVocabularyProcess: {
-    itemToEdit?: VocabularyItem
+    itemToEdit?: UserVocabularyItem
   }
   UserVocabularyList: undefined
-  UserVocabularyDetail: { vocabularyItem: VocabularyItem }
+  UserVocabularyDetail: { vocabularyItem: UserVocabularyItem }
   ScopeSelection: {
     initialSelection: boolean
   }

@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { PenIcon, TrashIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import VocabularyListItem from '../../../components/VocabularyListItem'
-import VocabularyItem from '../../../model/VocabularyItem'
+import { UserVocabularyItem } from '../../../model/VocabularyItem'
 
 const Container = styled.View`
   flex-direction: row;
@@ -21,11 +21,11 @@ const IconContainer = styled.View`
 `
 
 type ListItemProps = {
-  vocabularyItem: VocabularyItem
+  vocabularyItem: UserVocabularyItem
   navigateToDetailScreen: () => void
   navigateToEditScreen: () => void
   editModeEnabled: boolean
-  deleteItem: (vocabularyItem: VocabularyItem) => void
+  deleteItem: (vocabularyItem: UserVocabularyItem) => void
 }
 
 const ListItem = ({

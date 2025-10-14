@@ -1,5 +1,6 @@
 import { ARTICLES } from '../model/Article'
-import VocabularyItem from '../model/VocabularyItem'
+import VocabularyItem, { StandardVocabularyItem } from '../model/VocabularyItem'
+import { StandardVocabularyItemRef } from '../model/VocabularyItemRef'
 import { getFromEndpoint } from './axios'
 
 const ENDPOINTS = {
@@ -15,22 +16,21 @@ type WordResponse = {
   audio: string
 }
 
-const transformWordResponse = ({ id, word, article, image, audio }: WordResponse): VocabularyItem => ({
-  id,
+const transformWordResponse = ({ id, word, article, image, audio }: WordResponse): StandardVocabularyItem => ({
+  ref: { id, type: 'lunes-standard' },
   word,
   article: ARTICLES[article],
   images: [image],
   audio,
-  type: 'user-created',
   alternatives: [],
 })
 
-export const getWords = async (): Promise<VocabularyItem[]> => {
+export const getWords = async (): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(ENDPOINTS.words)
   return response.map(transformWordResponse)
 }
 
-export const getWordById = async (id: number): Promise<VocabularyItem> => {
-  const response = await getFromEndpoint<WordResponse>(ENDPOINTS.word(id))
+export const getWordByRef = async (ref: StandardVocabularyItemRef): Promise<VocabularyItem> => {
+  const response = await getFromEndpoint<WordResponse>(ENDPOINTS.word(ref.id))
   return transformWordResponse(response)
 }

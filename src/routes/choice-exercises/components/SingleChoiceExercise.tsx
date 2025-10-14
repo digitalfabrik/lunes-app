@@ -19,7 +19,7 @@ import {
   SimpleResult,
 } from '../../../constants/data'
 import { useStorageCache } from '../../../hooks/useStorage'
-import VocabularyItem, { AlternativeWord } from '../../../model/VocabularyItem'
+import VocabularyItem, { AlternativeWord, isStandardVocabularyItem } from '../../../model/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
@@ -150,8 +150,11 @@ const ChoiceExerciseScreen = ({
         closeExerciseAction={route.params.closeExerciseAction}
         currentWord={currentWord}
         numberOfWords={count}
-        feedbackType={FeedbackType.vocabularyItem}
-        feedbackForId={vocabularyItem.id}
+        feedbackFor={
+          isStandardVocabularyItem(vocabularyItem)
+            ? { type: FeedbackType.vocabularyItem, vocabularyItemRef: vocabularyItem.ref }
+            : null
+        }
         exerciseKey={exerciseKey}
       />
 

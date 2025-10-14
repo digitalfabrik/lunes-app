@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ExerciseKeys } from '../../constants/data'
-import VocabularyItem from '../../model/VocabularyItem'
+import VocabularyItem, { areVocabularyItemsEqual } from '../../model/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
@@ -22,7 +22,9 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
 
   const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
-    const shuffledWrongAnswers = shuffleArray(vocabularyItems.filter(it => it.id !== correctVocabularyItem.id))
+    const shuffledWrongAnswers = shuffleArray(
+      vocabularyItems.filter(it => !areVocabularyItemsEqual(it, correctVocabularyItem)),
+    )
     return shuffledWrongAnswers.slice(0, answersCount - 1)
   }
 

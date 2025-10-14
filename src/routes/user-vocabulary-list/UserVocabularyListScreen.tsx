@@ -14,7 +14,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { useStorageCache } from '../../hooks/useStorage'
-import VocabularyItem from '../../model/VocabularyItem'
+import VocabularyItem, { UserVocabularyItem } from '../../model/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredVocabularyItems, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
@@ -47,7 +47,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
   const vocabularyItems = useReadUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
-  const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<VocabularyItem | null>(null)
+  const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<UserVocabularyItem | null>(null)
   const { isKeyboardVisible } = useKeyboard()
 
   const numberOfVocabularyItems = vocabularyItems.length
@@ -70,11 +70,11 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
     setEditModeEnabled(oldValue => !oldValue)
   }
 
-  const openDeleteConfirmationModal = (vocabularyItem: VocabularyItem): void => {
+  const openDeleteConfirmationModal = (vocabularyItem: UserVocabularyItem): void => {
     setVocabularyItemToDelete(vocabularyItem)
   }
 
-  const deleteItem = (vocabularyItem: VocabularyItem | null): void => {
+  const deleteItem = (vocabularyItem: UserVocabularyItem | null): void => {
     if (vocabularyItem) {
       deleteUserVocabularyItem(storageCache, vocabularyItem).catch(reportError)
     }

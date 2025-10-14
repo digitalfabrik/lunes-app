@@ -1,10 +1,9 @@
-import VocabularyItem from '../model/VocabularyItem'
-import { getUserVocabularyItems } from '../services/storageUtils'
+import { UserVocabularyItem } from '../model/VocabularyItem'
 import useStorage from './useStorage'
 
-const useReadUserVocabulary = (): VocabularyItem[] => {
+const useReadUserVocabulary = (): UserVocabularyItem[] => {
   const [userVocabulary] = useStorage('userVocabulary')
-  return getUserVocabularyItems(userVocabulary)
+  return userVocabulary.slice()
 }
 
 export default useReadUserVocabulary

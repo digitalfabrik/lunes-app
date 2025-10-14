@@ -25,7 +25,7 @@ jest.mock('../../../components/AudioPlayer', () => () => {
 
 describe('UserVocabularyListScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyList'>()
-  const userVocabularyItems = new VocabularyItemBuilder(2).build().map(item => ({ ...item, type: 'user-created' }))
+  const userVocabularyItems = new VocabularyItemBuilder(2).buildUserVocabulary()
 
   let storageCache: StorageCache
 

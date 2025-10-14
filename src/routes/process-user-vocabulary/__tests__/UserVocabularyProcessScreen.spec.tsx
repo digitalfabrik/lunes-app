@@ -4,11 +4,10 @@ import React from 'react'
 import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
 import { ARTICLES } from '../../../model/Article'
-import VocabularyItem from '../../../model/VocabularyItem'
+import { UserVocabularyItem } from '../../../model/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
-import { getUserVocabularyItems } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render, { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
@@ -37,9 +36,8 @@ jest.mock('react-native-vision-camera', () => ({
 Date.now = jest.fn(() => 2000)
 
 describe('UserVocabularyProcessScreen', () => {
-  const itemToEdit: VocabularyItem = {
-    id: 2,
-    type: 'user-created',
+  const itemToEdit: UserVocabularyItem = {
+    ref: { type: 'user-created', id: 2 },
     word: 'Auto',
     article: ARTICLES[3],
     images: [
@@ -50,7 +48,7 @@ describe('UserVocabularyProcessScreen', () => {
     alternatives: [],
   }
   const navigation = createNavigationMock<'UserVocabularyProcess'>()
-  const getRoute = (itemToEdit?: VocabularyItem): RouteProp<RoutesParams, 'UserVocabularyProcess'> => ({
+  const getRoute = (itemToEdit?: UserVocabularyItem): RouteProp<RoutesParams, 'UserVocabularyProcess'> => ({
     key: 'key1',
     name: 'UserVocabularyProcess',
     params: {
@@ -129,7 +127,7 @@ describe('UserVocabularyProcessScreen', () => {
 
       const shouldBe = { ...itemToEdit, word: 'new-word' }
       await waitFor(async () => {
-        const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+        const userVocabulary = storageCache.getItem('userVocabulary')
         expect(userVocabulary).toEqual([shouldBe])
       })
     })

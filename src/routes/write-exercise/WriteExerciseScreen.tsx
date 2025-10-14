@@ -19,6 +19,7 @@ import {
 } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import { useStorageCache } from '../../hooks/useStorage'
+import { isStandardVocabularyItem } from '../../model/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
@@ -100,8 +101,14 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           currentWord={currentIndex}
           numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
-          feedbackType={FeedbackType.vocabularyItem}
-          feedbackForId={vocabularyItems[currentIndex].id}
+          feedbackFor={
+            isStandardVocabularyItem(current.vocabularyItem)
+              ? {
+                  type: FeedbackType.vocabularyItem,
+                  vocabularyItemRef: current.vocabularyItem.ref,
+                }
+              : null
+          }
           exerciseKey={ExerciseKeys.writeExercise}
         />
 

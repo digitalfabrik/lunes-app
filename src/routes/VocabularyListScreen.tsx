@@ -35,8 +35,10 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         navigation={navigation}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
-        feedbackType={FeedbackType.leaf_discipline}
-        feedbackForId={disciplineId}
+        feedbackFor={{
+          type: FeedbackType.leaf_discipline,
+          disciplineId,
+        }}
         exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList

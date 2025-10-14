@@ -60,8 +60,7 @@ const expectedData: VocabularyItem[] = [
     article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/c966db1e-250e-11ec-991f-960000c17cb9.mp3',
     images: [],
-    id: 17,
-    type: 'lunes-standard',
+    ref: { type: 'lunes-standard', id: 17 },
     word: 'Zollstock',
   },
   {
@@ -69,8 +68,7 @@ const expectedData: VocabularyItem[] = [
     article: { id: 1, value: 'der' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkanister-conv.mp3',
     images: [],
-    id: 178,
-    type: 'lunes-standard',
+    ref: { type: 'lunes-standard', id: 178 },
     word: 'Ölkanister',
   },
   {
@@ -78,8 +76,7 @@ const expectedData: VocabularyItem[] = [
     article: { id: 2, value: 'die' },
     audio: 'https://lunes-test.tuerantuer.org/media/audio/Oelkreide-conv.mp3',
     images: [],
-    id: 245,
-    type: 'lunes-standard',
+    ref: { type: 'lunes-standard', id: 245 },
     word: 'Ölkreide',
   },
 ]

@@ -17,8 +17,10 @@ describe('RepetitionScreen', () => {
 
   it('should render screen correctly', async () => {
     const storageCache = StorageCache.createDummy()
-    const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
-      word: item,
+    const words = new VocabularyItemBuilder(2).buildUserVocabulary()
+    await storageCache.setItem('userVocabulary', words)
+    const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).buildUserVocabulary().map(({ ref }) => ({
+      wordRef: ref,
       section: 1,
       inThisSectionSince: RepetitionService.addDays(new Date(), -1),
     }))

@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 import { SimpleResult } from '../../../constants/data'
-import VocabularyItem from '../../../model/VocabularyItem'
+import VocabularyItem, { areVocabularyItemsEqual } from '../../../model/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
@@ -35,7 +35,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
     currentIndex: number,
   ): Promise<void> => {
     const updatedVocabularyItemsWithResults = Array.from(vocabularyItemWithResults)
-    if (current.vocabularyItem.id !== result.vocabularyItem.id) {
+    if (!areVocabularyItemsEqual(current.vocabularyItem, result.vocabularyItem)) {
       return
     }
     await this.repetitionService.updateWordNodeCard(result)

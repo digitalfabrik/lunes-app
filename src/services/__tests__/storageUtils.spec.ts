@@ -13,7 +13,6 @@ import {
   deleteUserVocabularyItem,
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
-  getUserVocabularyItems,
   pushSelectedProfession,
   removeCustomDiscipline,
   removeFavorite,
@@ -153,25 +152,22 @@ describe('storageUtils', () => {
 
   describe('favorites', () => {
     const vocabularyItems: VocabularyItem[] = new VocabularyItemBuilder(4).build()
-    const favoriteItems: Favorite[] = vocabularyItems.map(it => ({
-      id: it.id,
-      vocabularyItemType: 'lunes-standard',
-    }))
+    const favoriteItems: Favorite[] = vocabularyItems.map(it => it.ref)
 
     it('should add favorites', async () => {
       await storageCache.setItem('favorites', favoriteItems.slice(0, 2))
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 2))
       expect(repetitionService.getWordNodeCards()).toHaveLength(0)
       await addFavorite(storageCache, repetitionService, vocabularyItems[2])
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
-        vocabularyItems[2].id,
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordRef)).toStrictEqual([
+        vocabularyItems[2].ref,
       ])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 3))
       await addFavorite(storageCache, repetitionService, vocabularyItems[3])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
-        vocabularyItems[2].id,
-        vocabularyItems[3].id,
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordRef)).toStrictEqual([
+        vocabularyItems[2].ref,
+        vocabularyItems[3].ref,
       ])
     })
 
@@ -209,35 +205,33 @@ describe('storageUtils', () => {
   })
 
   describe('userVocabulary', () => {
-    const userVocabularyItems: VocabularyItem[] = new VocabularyItemBuilder(3)
-      .build()
-      .map(item => ({ ...item, type: 'user-created' }))
+    const userVocabularyItems = new VocabularyItemBuilder(3).buildUserVocabulary()
 
     it('should add userVocabularyItem', async () => {
-      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+      const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(0)
       await addUserVocabularyItem(storageCache, userVocabularyItems[0])
-      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+      const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
       await addUserVocabularyItem(storageCache, userVocabularyItems[1])
-      await editUserVocabularyItem(storageCache, userVocabularyItems[1], {
-        ...userVocabularyItems[2],
-        id: userVocabularyItems[1].id,
+      await editUserVocabularyItem(storageCache, {
+        ...userVocabularyItems[1],
+        word: 'edited',
       })
-      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+      const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
+      expect({ ...userVocabularyItems[1], word: 'edited' }).toEqual(updatedUserVocabulary[0])
     })
 
     it('should delete userVocabularyItem', async () => {
       await addUserVocabularyItem(storageCache, userVocabularyItems[0])
-      const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+      const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(1)
       await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
-      const updatedUserVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+      const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
     })
   })
