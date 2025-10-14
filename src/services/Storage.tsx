@@ -6,10 +6,11 @@ import useLoadAsync from '../hooks/useLoadAsync'
 import { UserVocabularyItem } from '../model/VocabularyItem'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
-import { migrateStorage } from './storageUtils'
+import { migrateStorage } from '../migrations/migrations'
 
 export const STORAGE_VERSION = 1
 
+// TODO: Migrate to api v2
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
   // 0 stands for the versions of the storage where no version number was stored yet.
