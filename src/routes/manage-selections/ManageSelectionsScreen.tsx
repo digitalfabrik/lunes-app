@@ -11,7 +11,7 @@ import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
-import { removeSelectedProfession } from '../../services/storageUtils'
+import { removeCustomDiscipline, removeSelectedJob } from '../../services/storageUtils'
 import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
@@ -38,16 +38,16 @@ type ManageSelectionScreenProps = {
 
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
   const storageCache = useStorageCache()
-  const [selectedProfessions] = useStorage('selectedProfessions')
+  const [selectedJobs] = useStorage('selectedJobs')
 
-  const professionItems = selectedProfessions?.map(id => {
-    const unselectProfessionAndRefresh = () => {
-      removeSelectedProfession(storageCache, id).catch(reportError)
+  const jobItems = selectedJobs?.map(id => {
+    const unselectJobAndRefresh = () => {
+      removeSelectedJob(storageCache, id).catch(reportError)
     }
-    return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
+    return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectJobAndRefresh} />
   })
 
-  const navigateToProfessionSelection = () => {
+  const navigateToScopeSelection = () => {
     navigation.navigate('ScopeSelection', { initialSelection: false })
   }
 
@@ -55,10 +55,10 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
     <RouteWrapper>
       <Root contentContainerStyle={{ flexGrow: 1 }}>
         <StyledHeading>{getLabels().manageSelection.heading}</StyledHeading>
-        <SectionHeading>{getLabels().manageSelection.yourProfessions}</SectionHeading>
+        <SectionHeading>{getLabels().manageSelection.yourJobs}</SectionHeading>
         <HorizontalLine />
-        {professionItems}
-        <AddElement onPress={navigateToProfessionSelection} label={getLabels().manageSelection.addProfession} />
+        {jobItems}
+        <AddElement onPress={navigateToScopeSelection} label={getLabels().manageSelection.addJob} />
         <Padding />
       </Root>
     </RouteWrapper>

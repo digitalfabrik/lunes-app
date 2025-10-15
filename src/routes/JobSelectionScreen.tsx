@@ -16,7 +16,7 @@ import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
 import useStorage, { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription, getLabels } from '../services/helpers'
-import { pushSelectedProfession, removeSelectedProfession } from '../services/storageUtils'
+import { pushSelectedJob, removeSelectedJob } from '../services/storageUtils'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.sm};
@@ -37,23 +37,23 @@ const Placeholder = styled.View`
   margin-right: ${props => props.theme.spacings.sm};
 `
 
-type ProfessionSelectionScreenProps = {
-  route: RouteProp<RoutesParams, 'ProfessionSelection'>
-  navigation: StackNavigationProp<RoutesParams, 'ProfessionSelection'>
+type JobSelectionScreenProps = {
+  route: RouteProp<RoutesParams, 'JobSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'JobSelection'>
 }
 
-const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
+const JobSelectionScreen = ({ route, navigation }: JobSelectionScreenProps): JSX.Element => {
   const storageCache = useStorageCache()
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
-  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
-  const isSelectionMade = selectedProfessions && selectedProfessions.length > 0
+  const [selectedJobs, setSelectedJobs] = useStorage('selectedJobs')
+  const isSelectionMade = selectedJobs && selectedJobs.length > 0
 
   const selectDiscipline = async (selectedItem: Discipline): Promise<void> => {
-    if (selectedProfessions?.includes(selectedItem.id)) {
-      await removeSelectedProfession(storageCache, selectedItem.id)
+    if (selectedJobs?.includes(selectedItem.id)) {
+      await removeSelectedJob(storageCache, selectedItem.id)
     } else {
-      await pushSelectedProfession(storageCache, selectedItem.id)
+      await pushSelectedJob(storageCache, selectedItem.id)
       if (!initialSelection) {
         navigation.navigate('ManageSelection')
       }
@@ -61,7 +61,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   }
 
   const renderListItem = ({ item }: { item: Discipline }): JSX.Element => {
-    const isSelected = selectedProfessions?.includes(item.id)
+    const isSelected = selectedJobs?.includes(item.id)
     return (
       <DisciplineListItem
         item={item}
@@ -83,7 +83,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
 
   const navigateToHomeScreen = async () => {
     if (!isSelectionMade) {
-      await setSelectedProfessions([])
+      await setSelectedJobs([])
     }
     navigation.reset({
       index: 0,
@@ -128,4 +128,4 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
   )
 }
 
-export default ProfessionSelectionScreen
+export default JobSelectionScreen

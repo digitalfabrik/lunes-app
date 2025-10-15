@@ -36,7 +36,7 @@ type IntroScreenProps = {
 
 const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
   const { initialSelection } = route.params
-  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
+  const [selectedJobs, setSelectedJobs] = useStorage('selectedJobs')
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
 
@@ -45,15 +45,15 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   })
 
   const navigateToDiscipline = (item: Discipline): void => {
-    navigation.navigate('ProfessionSelection', {
+    navigation.navigate('JobSelection', {
       discipline: item,
       initialSelection,
     })
   }
 
   const navigateToHomeScreen = async () => {
-    if (selectedProfessions === null) {
-      await setSelectedProfessions([])
+    if (selectedJobs === null) {
+      await setSelectedJobs([])
     }
     navigation.reset({
       index: 0,
@@ -73,9 +73,9 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           {initialSelection ? (
             <StyledText>{getLabels().scopeSelection.welcome}</StyledText>
           ) : (
-            <Heading centered>{getLabels().manageSelection.addProfession}</Heading>
+            <Heading centered>{getLabels().manageSelection.addJob}</Heading>
           )}
-          <StyledText>{getLabels().scopeSelection.selectProfession}</StyledText>
+          <StyledText>{getLabels().scopeSelection.selectJob}</StyledText>
         </TextContainer>
         <ScopeSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} navigateToDiscipline={navigateToDiscipline} />
         {initialSelection && (
@@ -83,7 +83,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
             <Button
               onPress={navigateToHomeScreen}
               label={
-                selectedProfessions && selectedProfessions.length > 0
+                selectedJobs && selectedJobs.length > 0
                   ? getLabels().scopeSelection.confirmSelection
                   : getLabels().scopeSelection.skipSelection
               }

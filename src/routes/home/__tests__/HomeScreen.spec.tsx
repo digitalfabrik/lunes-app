@@ -31,9 +31,9 @@ describe('HomeScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
-  it('should render professions', async () => {
+  it('should render jobs', async () => {
     await storageCache.setItem(
-      'selectedProfessions',
+      'selectedJobs',
       mockDisciplines().map(item => item.id),
     )
     mocked(useLoadDiscipline)

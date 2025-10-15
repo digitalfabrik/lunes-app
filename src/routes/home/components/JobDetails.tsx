@@ -20,17 +20,17 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-type ProfessionDetailsProps = {
+type JobDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
-const ProfessionDetails = ({
+const JobDetails = ({
   discipline,
   navigateToDiscipline,
   navigateToNextExercise,
-}: ProfessionDetailsProps): ReactElement | null => {
+}: JobDetailsProps): ReactElement | null => {
   const progress = useReadProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
@@ -87,4 +87,4 @@ const ProfessionDetails = ({
   )
 }
 
-export default ProfessionDetails
+export default JobDetails

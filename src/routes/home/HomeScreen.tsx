@@ -13,7 +13,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
-import SelectedProfessions from './components/SelectedProfessions'
+import SelectedJobs from './components/SelectedJobs'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -39,7 +39,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('ManageSelection')
   }
 
-  const navigateToProfessionSelection = () => {
+  const navigateToScopeSelection = () => {
     navigation.navigate('ScopeSelection', { initialSelection: false })
   }
 
@@ -67,11 +67,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           <HomeScreenHeader navigation={navigation} />
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
-          <SelectedProfessions
+          <SelectedJobs
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
-            navigateToProfessionSelection={navigateToProfessionSelection}
+            navigateToJobSelection={navigateToScopeSelection}
           />
         </View>
         <HomeFooter />

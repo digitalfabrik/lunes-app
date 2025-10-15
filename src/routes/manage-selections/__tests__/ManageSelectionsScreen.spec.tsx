@@ -5,7 +5,7 @@ import React from 'react'
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
-import { pushSelectedProfession } from '../../../services/storageUtils'
+import { pushSelectedJob } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
@@ -24,9 +24,9 @@ describe('ManageSelectionsScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
-  it('should show and delete selected professions', async () => {
-    await pushSelectedProfession(storageCache, mockDisciplines()[0].id)
-    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
+  it('should show and delete selected jobs', async () => {
+    await pushSelectedJob(storageCache, mockDisciplines()[0].id)
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
     mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
@@ -36,15 +36,15 @@ describe('ManageSelectionsScreen', () => {
     const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
-      const selectedProfessions = storageCache.getItem('selectedProfessions')
-      expect(selectedProfessions).toEqual([])
+      const selectedJobs = storageCache.getItem('selectedJobs')
+      expect(selectedJobs).toEqual([])
     })
   })
 
-  it('should navigate to select another profession', () => {
+  it('should navigate to select another job', () => {
     const { getByText } = renderScreen()
-    const addProfessionText = getByText(getLabels().manageSelection.addProfession)
-    fireEvent.press(addProfessionText)
+    const addJobText = getByText(getLabels().manageSelection.addJob)
+    fireEvent.press(addJobText)
     expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
   })
 })

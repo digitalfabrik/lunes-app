@@ -13,10 +13,10 @@ import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { getLabels } from '../../../services/helpers'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/storageUtils'
+import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
-import ProfessionDetails from './ProfessionDetails'
+import JobDetails from './JobDetails'
 
 const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
@@ -85,7 +85,7 @@ const DisciplineCard = ({
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
       deleteItem = !isTypeLoadProtected(identifier)
-        ? () => removeSelectedProfession(storageCache, identifier.disciplineId)
+        ? () => removeSelectedJob(storageCache, identifier.disciplineId)
         : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }
@@ -100,7 +100,7 @@ const DisciplineCard = ({
           <ButtonContainer testID='delete-button'>
             <Button
               onPress={() => setIsModalVisible(true)}
-              label={getLabels().home.deleteProfession}
+              label={getLabels().home.deleteJob}
               buttonTheme={BUTTONS_THEME.outlined}
               fitToContentWidth
             />
@@ -120,7 +120,7 @@ const DisciplineCard = ({
         <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
       ) : (
         navigateToNextExercise && (
-          <ProfessionDetails
+          <JobDetails
             discipline={discipline}
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}

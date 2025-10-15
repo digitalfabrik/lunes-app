@@ -4,8 +4,8 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import useStorage from '../hooks/useStorage'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import JobSelectionScreen from '../routes/JobSelectionScreen'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
-import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
@@ -21,7 +21,7 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const [professions] = useStorage('selectedProfessions')
+  const [jobs] = useStorage('selectedJobs')
 
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
@@ -29,7 +29,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
   const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
 
   return (
-    <Stack.Navigator initialRouteName={professions === null ? 'ScopeSelection' : 'BottomTabNavigator'}>
+    <Stack.Navigator initialRouteName={jobs === null ? 'ScopeSelection' : 'BottomTabNavigator'}>
       <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
         name='ScopeSelection'
@@ -43,8 +43,8 @@ const HomeStackNavigator = (): JSX.Element | null => {
         options={{ presentation: 'transparentModal', headerShown: false, ...OverlayTransition }}
       />
       <Stack.Screen
-        name='ProfessionSelection'
-        component={ProfessionSelectionScreen}
+        name='JobSelection'
+        component={JobSelectionScreen}
         options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
       />
       <Stack.Screen

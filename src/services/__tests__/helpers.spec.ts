@@ -16,7 +16,7 @@ import {
   getNextExercise,
   getProgress,
   getSortedAndFilteredVocabularyItems,
-  searchProfessions,
+  searchJobs,
   splitTextBySearchString,
   willNextExerciseUnlock,
 } from '../helpers'
@@ -371,15 +371,15 @@ describe('helpers', () => {
   describe('searchProfessions', () => {
     it('should find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'disc')).toStrictEqual(professions)
-      expect(searchProfessions(professions, 'SECOND')).toStrictEqual([professions[1]])
-      expect(searchProfessions(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
+      expect(searchJobs(professions, 'disc')).toStrictEqual(professions)
+      expect(searchJobs(professions, 'SECOND')).toStrictEqual([professions[1]])
+      expect(searchJobs(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
     })
 
     it('should not find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'fourth discipline')).toStrictEqual([])
-      expect(searchProfessions(professions, 'Maler')).toStrictEqual([])
+      expect(searchJobs(professions, 'fourth discipline')).toStrictEqual([])
+      expect(searchJobs(professions, 'Maler')).toStrictEqual([])
     })
   })
 })

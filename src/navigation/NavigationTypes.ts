@@ -71,7 +71,7 @@ export type RoutesParams = {
   DisciplineSelection: {
     discipline: Discipline
   }
-  ProfessionSelection: {
+  JobSelection: {
     discipline: Discipline
     initialSelection: boolean
   }

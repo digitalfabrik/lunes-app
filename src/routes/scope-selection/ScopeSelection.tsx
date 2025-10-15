@@ -10,8 +10,8 @@ import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
 import useStorage, { useStorageCache } from '../../hooks/useStorage'
-import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
-import { pushSelectedProfession, removeSelectedProfession } from '../../services/storageUtils'
+import { getLabels, searchJobs, splitTextBySearchString } from '../../services/helpers'
+import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
 
 const SearchContainer = styled.View`
   margin: ${props => props.theme.spacings.sm};
@@ -51,41 +51,41 @@ const highlightText = (textArray: [string] | [string, string, string], disabled:
   </HighlightContainer>
 )
 
-type FilteredProfessionListProps = {
+type FilteredJobListProps = {
   queryTerm: string
 }
 
-const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): JSX.Element => {
+const FilteredJobList = ({ queryTerm }: FilteredJobListProps): JSX.Element => {
   const storageCache = useStorageCache()
-  const [selectedProfessions] = useStorage('selectedProfessions')
+  const [selectedJobs] = useStorage('selectedJobs')
 
   const { data: disciplines, loading, error, refresh } = useLoadAllDisciplines()
-  const allProfessions = disciplines
+  const allJobs = disciplines
     ?.filter(discipline => discipline.total_discipline_children === 0)
     .map(discipline => formatDiscipline(discipline, {}))
-  const filteredProfessions = useMemo(() => searchProfessions(allProfessions, queryTerm), [allProfessions, queryTerm])
+  const filteredJobs = useMemo(() => searchJobs(allJobs, queryTerm), [allJobs, queryTerm])
 
   return (
     <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
       <ScopeContainer>
-        {filteredProfessions?.map(profession => {
-          const disabled = !!selectedProfessions?.includes(profession.id)
+        {filteredJobs?.map(job => {
+          const disabled = !!selectedJobs?.includes(job.id)
           return (
             <StyledPressable
-              key={profession.id}
+              key={job.id}
               onPress={async () => {
-                if (selectedProfessions?.includes(profession.id)) {
-                  await removeSelectedProfession(storageCache, profession.id)
+                if (selectedJobs?.includes(job.id)) {
+                  await removeSelectedJob(storageCache, job.id)
                 } else {
-                  await pushSelectedProfession(storageCache, profession.id)
+                  await pushSelectedJob(storageCache, job.id)
                 }
               }}>
-              {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
+              {highlightText(splitTextBySearchString(job.title, queryTerm), disabled)}
             </StyledPressable>
           )
         })}
-        {filteredProfessions !== undefined && filteredProfessions.length === 0 && (
-          <EmptyListIndicator>{getLabels().scopeSelection.noProfessionsFound}</EmptyListIndicator>
+        {filteredJobs !== undefined && filteredJobs.length === 0 && (
+          <EmptyListIndicator>{getLabels().scopeSelection.noJobsFound}</EmptyListIndicator>
         )}
       </ScopeContainer>
     </ServerResponseHandler>
@@ -112,14 +112,14 @@ const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: Scope
         <SearchBar
           query={queryTerm}
           setQuery={setQueryTerm}
-          placeholder={getLabels().scopeSelection.searchProfession}
+          placeholder={getLabels().scopeSelection.searchJob}
           style={{
             backgroundColor: theme.colors.background,
           }}
         />
       </SearchContainer>
       {queryTerm.length > 0 ? (
-        <FilteredProfessionList queryTerm={queryTerm} />
+        <FilteredJobList queryTerm={queryTerm} />
       ) : (
         <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
           <DisciplineContainer>{disciplineItems}</DisciplineContainer>
