@@ -1,4 +1,4 @@
-import { ARTICLES } from '../constants/data'
+import { Article, ARTICLES } from '../constants/data'
 import { VocabularyItem } from '../constants/endpoints'
 import { getFromEndpoint } from './axios'
 
@@ -7,10 +7,20 @@ const ENDPOINTS = {
   word: (id: number) => `words/${id}`,
 }
 
+type CMSArticle = 'keiner' | 'der' | 'die' | 'das' | 'die (Plural)'
+
+const CMSArticleToArticle: Record<CMSArticle, Article> = {
+  keiner: ARTICLES[0],
+  der: ARTICLES[1],
+  die: ARTICLES[2],
+  das: ARTICLES[3],
+  'die (Plural)': ARTICLES[4],
+}
+
 type WordResponse = {
   id: number
   word: string
-  article: number
+  article: CMSArticle
   image: string
   audio: string
 }
@@ -18,7 +28,7 @@ type WordResponse = {
 const transformWordResponse = ({ id, word, article, image, audio }: WordResponse): VocabularyItem => ({
   id,
   word,
-  article: ARTICLES[article],
+  article: CMSArticleToArticle[article],
   images: [image],
   audio,
   type: 'user-created',
