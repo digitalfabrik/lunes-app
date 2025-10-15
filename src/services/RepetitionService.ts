@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../constants/endpoints'
+import { areVocabularyItemsEqual, VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
@@ -42,7 +42,9 @@ export class RepetitionService {
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
   public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
-    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.word !== word)
+    const newWordNodeCards = this.getWordNodeCards().filter(
+      wordNodeCard => !areVocabularyItemsEqual(wordNodeCard.word, word),
+    )
     await this.setWordNodeCards(newWordNodeCards)
   }
 
