@@ -3,14 +3,13 @@ import React, { createContext, ReactElement } from 'react'
 
 import { Favorite, Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
+import { migrateStorage } from '../migrations/migrations'
 import { UserVocabularyItem } from '../model/VocabularyItem'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
-import { migrateStorage } from '../migrations/migrations'
 
-export const STORAGE_VERSION = 1
+export const STORAGE_VERSION = 2
 
-// TODO: Migrate to api v2
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
   // 0 stands for the versions of the storage where no version number was stored yet.
