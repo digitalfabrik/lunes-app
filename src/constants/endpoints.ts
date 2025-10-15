@@ -52,7 +52,6 @@ export const ENDPOINTS = {
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
   vocabularyItems: 'documents/:id',
-  vocabularyItem: 'words',
   feedback: 'feedback',
   sponsors: 'sponsors',
 }
