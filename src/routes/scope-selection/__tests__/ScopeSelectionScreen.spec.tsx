@@ -29,10 +29,10 @@ describe('ScopeSelection', () => {
   const storageCache = StorageCache.createDummy()
 
   beforeEach(async () => {
-    await storageCache.setItem('selectedProfessions', null)
+    await storageCache.setItem('selectedJobs', null)
   })
 
-  it('should navigate to profession selection', () => {
+  it('should navigate to job selection', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
@@ -48,7 +48,7 @@ describe('ScopeSelection', () => {
 
     fireEvent.press(firstDiscipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('ProfessionSelection', {
+    expect(navigation.navigate).toHaveBeenCalledWith('JobSelection', {
       discipline: mockDisciplines()[0],
       initialSelection: true,
     })
@@ -74,7 +74,7 @@ describe('ScopeSelection', () => {
 
   it('should confirm selection', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { getByText } = renderWithStorageCache(
       storageCache,
@@ -91,7 +91,7 @@ describe('ScopeSelection', () => {
 
   it('should hide welcome message and buttons for non initial view', async () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { queryByText } = renderWithStorageCache(
       storageCache,
