@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { getStorageItem, loadStorageCache, storageKeys } from '../Storage'
-import { FAVORITES_KEY_VERSION_0 } from '../storageUtils'
 
 describe('Storage', () => {
   it('Should be able to load from async storage', async () => {
@@ -40,20 +39,5 @@ describe('Storage', () => {
     removeListener()
     await storageCache.setItem('isTrackingEnabled', true)
     expect(listenerCalls).toBe(2)
-  })
-
-  describe('migrations', () => {
-    it('Should migrate to new favorite storage', async () => {
-      await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
-      const storageCache = await loadStorageCache()
-      await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
-      expect(storageCache.getItem('favorites')).toEqual([
-        { id: 42, vocabularyItemType: 'lunes-standard' },
-        {
-          id: 84,
-          vocabularyItemType: 'lunes-standard',
-        },
-      ])
-    })
   })
 })

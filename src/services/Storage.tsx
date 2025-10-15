@@ -6,9 +6,14 @@ import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
-import { migrateToNewFavoriteFormat } from './storageUtils'
+import { migrateStorage } from './storageUtils'
+
+export const STORAGE_VERSION = 1
 
 export type Storage = {
+  // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
+  // 0 stands for the versions of the storage where no version number was stored yet.
+  version: number
   wordNodeCards: WordNodeCard[]
   isTrackingEnabled: boolean
   // Null means the selected professions were never set before, which means that the intro should be shown
@@ -28,6 +33,7 @@ export type Storage = {
  * It is also useful for testing, to mock the actual storage implementation.
  */
 export const newDefaultStorage = (): Storage => ({
+  version: STORAGE_VERSION,
   wordNodeCards: [],
   isTrackingEnabled: true,
   selectedProfessions: null,
@@ -42,6 +48,7 @@ export const newDefaultStorage = (): Storage => ({
 const defaultStorage = newDefaultStorage()
 
 export const storageKeys: Record<keyof Storage, string> = {
+  version: 'version',
   wordNodeCards: 'wordNodeCards',
   isTrackingEnabled: 'sentryTracking',
   selectedProfessions: 'selectedProfessions',
@@ -77,15 +84,7 @@ export class StorageCache {
 
   static createDummy = (): StorageCache => new StorageCache(newDefaultStorage())
 
-  static create = async (storage: Storage): Promise<StorageCache> => {
-    const storageCache = new StorageCache(storage)
-    await storageCache.migrate()
-    return storageCache
-  }
-
-  migrate = async (): Promise<void> => {
-    await migrateToNewFavoriteFormat(this)
-  }
+  static create = async (storage: Storage): Promise<StorageCache> => new StorageCache(storage)
 
   /**
    * Returns a storage item for the given key.
@@ -140,7 +139,10 @@ const resolveObject = async <T extends Record<keyof T, unknown>>(
 }
 
 export const loadStorageCache = async (): Promise<StorageCache> => {
+  await migrateStorage()
+
   const storage: Storage = await resolveObject({
+    version: getStorageItem('version'),
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
     selectedProfessions: getStorageItem('selectedProfessions'),
