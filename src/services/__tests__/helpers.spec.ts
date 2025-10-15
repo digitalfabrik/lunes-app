@@ -5,7 +5,7 @@ import {
   SimpleResult,
   VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
+import { Discipline, VocabularyItem } from '../../constants/endpoints'
 import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -213,14 +213,14 @@ describe('helpers', () => {
     })
 
     it('should show correctly ordering of the words in the list, words starting with special chars should not be placed at the end', () => {
-      const sortedData = [
+      const sortedData: VocabularyItem[] = [
         {
           id: 5,
           type: VOCABULARY_ITEM_TYPES.lunesStandard,
           word: 'Abhänger',
           article: ARTICLES[3],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [
             {
               word: 'Abhänger',
@@ -234,7 +234,7 @@ describe('helpers', () => {
           word: 'Akkuschrauber',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [],
         },
         {
@@ -242,7 +242,7 @@ describe('helpers', () => {
           type: VOCABULARY_ITEM_TYPES.lunesStandard,
           word: 'Auto',
           article: ARTICLES[3],
-          images: [{ id: 1, image: 'image' }],
+          images: ['image'],
           audio: '',
           alternatives: [],
         },
@@ -252,7 +252,7 @@ describe('helpers', () => {
           word: 'Helm',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [],
         },
         {
@@ -261,7 +261,7 @@ describe('helpers', () => {
           word: 'Hose',
           article: ARTICLES[2],
           audio: '',
-          images: [{ id: 1, image: 'image' }],
+          images: ['image'],
           alternatives: [],
         },
         {
@@ -270,7 +270,7 @@ describe('helpers', () => {
           word: 'Oberarm',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [],
         },
         {
@@ -279,7 +279,7 @@ describe('helpers', () => {
           word: 'Ölkanne',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [
             {
               word: 'Ölkännchen',
@@ -293,7 +293,7 @@ describe('helpers', () => {
           word: 'Riffeldübel',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [
             {
               word: 'Holzdübel',
@@ -307,7 +307,7 @@ describe('helpers', () => {
           type: VOCABULARY_ITEM_TYPES.lunesStandard,
           word: 'Spachtel',
           article: ARTICLES[1],
-          images: [{ id: 1, image: 'image' }],
+          images: ['image'],
           audio: 'https://example.com/my-audio',
           alternatives: [
             {
@@ -326,7 +326,7 @@ describe('helpers', () => {
           word: 'Untergrund',
           article: ARTICLES[1],
           audio: '',
-          images: [{ id: 2, image: 'image' }],
+          images: ['image'],
           alternatives: [],
         },
       ]

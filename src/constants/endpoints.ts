@@ -24,19 +24,12 @@ export type AlternativeWord = {
   article: Article
 }
 
-export type Image = {
-  id: number
-  image: string
-}
-
-export type Images = Image[]
-
 export type VocabularyItem = {
   id: number
   type: VocabularyItemType
   word: string
   article: Article
-  images: Images
+  images: string[]
   audio: string | null
   alternatives: AlternativeWord[]
   apiKey?: string
@@ -52,7 +45,6 @@ export const ENDPOINTS = {
   trainingSet: 'training_set',
   trainingSets: 'training_sets',
   vocabularyItems: 'documents/:id',
-  vocabularyItem: 'words',
   feedback: 'feedback',
   sponsors: 'sponsors',
 }
