@@ -19,7 +19,7 @@ const transformWordResponse = ({ id, word, article, image, audio }: WordResponse
   id,
   word,
   article: ARTICLES[article],
-  images: [{ id: -1, image }],
+  images: [image],
   audio,
   type: 'user-created',
   alternatives: [],

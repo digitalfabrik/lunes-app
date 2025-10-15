@@ -89,6 +89,25 @@ export const migrate0To1 = async (): Promise<void> => {
   await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
 }
 
+// Migrates the `images` field of `VocabularyItem` to a flat array of urls
+export const migrate1To2 = async (): Promise<void> => {
+  type OldVocabularyItem = { images: { image: string }[] }
+  type OldWordNodeCard = { word: OldVocabularyItem }
+
+  const updateVocabularyItem = (oldWord: OldVocabularyItem): { images: string[] } => ({
+    ...oldWord,
+    images: oldWord.images.map(image => image.image),
+  })
+
+  const oldUserVocabulary = await getStorageItemOr<OldVocabularyItem[]>('userVocabulary', [])
+  const newUserVocabulary = oldUserVocabulary.map(updateVocabularyItem)
+  await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
+
+  const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
+  const newWordNodeCards = oldWordNodeCards.map(card => ({ ...card, word: updateVocabularyItem(card.word) }))
+  await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newWordNodeCards))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cmsUrlOverwrite')
@@ -117,6 +136,9 @@ export const migrateStorage = async (): Promise<void> => {
   switch (lastVersion) {
     case 0:
       await migrate0To1()
+    // eslint-disable-next-line no-fallthrough
+    case 1:
+      await migrate1To2()
       break
   }
 
@@ -198,9 +220,8 @@ export const deleteUserVocabularyItem = async (
   const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary')).filter(
     item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem),
   )
-  const images = userVocabularyItem.images.map(image => image.image)
   await Promise.all(
-    images.map(async image => {
+    userVocabularyItem.images.map(async image => {
       await unlink(image)
     }),
   )
