@@ -40,6 +40,6 @@ Enables the developer mode which simplifies some testing. For example, it adds a
 
 Adds some random words to the repetition exercise.
 
-### Clear selected professions
+### Clear selected jobs
 
-Removes all selected professions. Useful on ios to get into the setup screen.
+Removes all selected jobs. Useful on ios to get into the setup screen.
