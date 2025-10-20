@@ -2,12 +2,11 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import { pushSelectedJob } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
@@ -15,6 +14,7 @@ import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDiscipline')
+jest.mock('../../../services/CmsApi')
 
 describe('ManageSelectionsScreen', () => {
   const navigation = createNavigationMock<'ManageSelection'>()
@@ -28,10 +28,10 @@ describe('ManageSelectionsScreen', () => {
   it('should show and delete selected jobs', async () => {
     await pushSelectedJob(storageCache, mockDisciplines()[0].id)
     await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
-    mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
-    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
+    await waitFor(() => expect(getByText(mockDisciplines()[0].title)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)
@@ -44,10 +44,10 @@ describe('ManageSelectionsScreen', () => {
 
   it('should show and delete custom disciplines', async () => {
     await storageCache.setItem('customDisciplines', [mockCustomDiscipline.apiKey])
-    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockCustomDiscipline))
 
     const { getByText, getByTestId } = renderScreen()
-    expect(getByText(mockCustomDiscipline.title)).toBeDefined()
+    await waitFor(() => expect(getByText(mockCustomDiscipline.title)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)
