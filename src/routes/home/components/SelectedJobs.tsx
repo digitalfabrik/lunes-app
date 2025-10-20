@@ -8,8 +8,8 @@ import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 import { NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
-import { RequestParams } from '../../../hooks/useLoadDiscipline'
 import useStorage from '../../../hooks/useStorage'
+import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
 import JobCard from './JobCard'
 
@@ -51,7 +51,7 @@ type SelectedJobsProps = {
   navigateToJobSelection: () => void
 }
 
-const useAllJobs = (): RequestParams[] => {
+const useAllJobs = (): JobId[] => {
   const [selectedJobs] = useStorage('selectedJobs')
   return selectedJobs?.map(id => ({ disciplineId: id })) ?? []
 }

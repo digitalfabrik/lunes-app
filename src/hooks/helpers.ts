@@ -1,12 +1,12 @@
 import { Discipline } from '../constants/endpoints'
-import { RequestParams as DisciplineRequestParams } from './useLoadDiscipline'
+import { JobId } from '../services/CmsApi'
 import { RequestParams as DisciplinesRequestParams } from './useLoadDisciplines'
 
 type ApiKey = {
   apiKey: string
 }
 
-export const isTypeLoadProtected = (value: DisciplineRequestParams | DisciplinesRequestParams): value is ApiKey =>
+export const isTypeLoadProtected = (value: JobId | DisciplinesRequestParams): value is ApiKey =>
   !!(value as ApiKey).apiKey
 
 export type ServerResponseDiscipline = {
