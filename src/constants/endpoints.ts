@@ -44,9 +44,6 @@ export type VocabularyItem = {
 
 export type UserVocabularyItem = Omit<VocabularyItem, 'type'>
 
-export const areVocabularyItemsEqual = (vocabularyItem1: VocabularyItem, vocabularyItem2: VocabularyItem): boolean =>
-  vocabularyItem1.id === vocabularyItem2.id && vocabularyItem1.type === vocabularyItem2.type
-
 export const ENDPOINTS = {
   discipline: 'disciplines',
   disciplines: 'disciplines_by_level',

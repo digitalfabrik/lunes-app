@@ -1,8 +1,8 @@
-import { areVocabularyItemsEqual, VocabularyItem } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
-import { millisecondsToDays } from './helpers'
+import { areVocabularyItemsEqual, millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
 type sections = 0 | 1 | 2 | 3 | 4 | 5 | 6
