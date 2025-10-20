@@ -10,9 +10,11 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import useStorage from '../../hooks/useStorage'
+import { Discipline } from '../../constants/endpoints'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
+import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
 import JobSelection from './JobSelection'
 
 const TextContainer = styled.View`
@@ -35,6 +37,7 @@ type JobSelectionScreenProps = {
 
 const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX.Element => {
   const { initialSelection } = route.params
+  const storageCache = useStorageCache()
   const [selectedJobs, setSelectedJobs] = useStorage('selectedJobs')
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
@@ -53,6 +56,14 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX
     })
   }
 
+  const selectJob = async (job: Discipline) => {
+    await pushSelectedJob(storageCache, job.id)
+  }
+
+  const unselectJob = async (job: Discipline) => {
+    await removeSelectedJob(storageCache, job.id)
+  }
+
   return (
     <RouteWrapper
       backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
@@ -69,7 +80,12 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX
           )}
           <StyledText>{getLabels().scopeSelection.selectJob}</StyledText>
         </TextContainer>
-        <JobSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} />
+        <JobSelection
+          queryTerm={queryTerm}
+          setQueryTerm={setQueryTerm}
+          onSelectJob={selectJob}
+          onUnselectJob={initialSelection ? unselectJob : undefined}
+        />
         {initialSelection && (
           <ButtonContainer>
             <Button

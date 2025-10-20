@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
+import { CheckCircleIconGreen } from '../../../assets/images'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
-import { formatDiscipline } from '../../hooks/helpers'
-import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
-import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
+import { Discipline } from '../../constants/endpoints'
+import useLoadAllJobs from '../../hooks/useLoadAllJobs'
 import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { getLabels, searchJobs, splitTextBySearchString } from '../../services/helpers'
 import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
@@ -42,6 +42,10 @@ const EmptyListIndicator = styled.Text`
   text-align: center;
 `
 
+const IconContainer = styled.View`
+  margin-right: ${props => props.theme.spacings.sm};
+`
+
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
   <HighlightContainer disabled={disabled}>
     <ContentTextLight>{textArray[0]}</ContentTextLight>
@@ -58,10 +62,7 @@ const FilteredJobList = ({ queryTerm }: FilteredJobListProps): JSX.Element => {
   const storageCache = useStorageCache()
   const [selectedJobs] = useStorage('selectedJobs')
 
-  const { data: disciplines, loading, error, refresh } = useLoadAllDisciplines()
-  const allJobs = disciplines
-    ?.filter(discipline => discipline.total_discipline_children === 0)
-    .map(discipline => formatDiscipline(discipline, {}))
+  const { data: allJobs, loading, error, refresh } = useLoadAllJobs()
   const filteredJobs = useMemo(() => searchJobs(allJobs, queryTerm), [allJobs, queryTerm])
 
   return (
@@ -94,22 +95,33 @@ const FilteredJobList = ({ queryTerm }: FilteredJobListProps): JSX.Element => {
 type JobSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
+  onSelectJob: (job: Discipline) => void
+  onUnselectJob?: (job: Discipline) => void
 }
 
-const JobSelection = ({ queryTerm, setQueryTerm }: JobSelectionProps): JSX.Element => {
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
+const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: JobSelectionProps): JSX.Element => {
+  const { data: disciplines, error, loading, refresh } = useLoadAllJobs()
   const theme = useTheme()
+  const [selectedJobs] = useStorage('selectedJobs')
 
-  const disciplineItems = disciplines?.map(item => (
-    <DisciplineListItem
-      key={item.id}
-      item={item}
-      onPress={() => {
-        /* TODO */
-      }}
-      hasBadge={false}
-    />
-  ))
+  const disciplineItems = disciplines?.map(item => {
+    const isSelected = selectedJobs?.includes(item.id)
+    return (
+      <DisciplineListItem
+        key={item.id}
+        item={item}
+        onPress={() => {
+          if (isSelected) {
+            onUnselectJob?.(item)
+          } else {
+            onSelectJob(item)
+          }
+        }}
+        disabled={isSelected && !onUnselectJob}
+        rightChildren={<IconContainer>{isSelected && <CheckCircleIconGreen testID='check-icon' />}</IconContainer>}
+      />
+    )
+  })
 
   return (
     <>

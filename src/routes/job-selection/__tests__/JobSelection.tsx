@@ -5,6 +5,7 @@ import React from 'react'
 
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getJobs } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -15,6 +16,7 @@ import ScopeSelection from '../JobSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDisciplines')
+jest.mock('../../../services/CmsApi')
 
 describe('JobSelection', () => {
   const navigation = createNavigationMock<'JobSelection'>()
@@ -30,28 +32,6 @@ describe('JobSelection', () => {
 
   beforeEach(async () => {
     await storageCache.setItem('selectedJobs', null)
-  })
-
-  it('should navigate to job selection', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-
-    const { getByText } = renderWithStorageCache(
-      storageCache,
-      <ScopeSelection navigation={navigation} route={getRoute()} />,
-    )
-    expect(getByText(getLabels().scopeSelection.welcome)).toBeDefined()
-    const firstDiscipline = getByText('First Discipline')
-    const secondDiscipline = getByText('Second Discipline')
-    expect(firstDiscipline).toBeDefined()
-    expect(secondDiscipline).toBeDefined()
-
-    fireEvent.press(firstDiscipline)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('JobSelection', {
-      discipline: mockDisciplines()[0],
-      initialSelection: true,
-    })
   })
 
   it('should skip selection', async () => {
@@ -100,5 +80,52 @@ describe('JobSelection', () => {
     expect(queryByText(getLabels().scopeSelection.welcome)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.skipSelection)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
+  })
+
+  it('should select job', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+    )
+
+    expect(storageCache.getItem('selectedJobs')).toBeNull()
+
+    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    fireEvent.press(button)
+
+    expect(storageCache.getItem('selectedJobs')).toEqual([mockDisciplines()[0].id])
+  })
+
+  it('should unselect job on initial selection', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { queryAllByTestId } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(true)} />,
+    )
+
+    await waitFor(() => expect(queryAllByTestId('check-icon')).toHaveLength(1))
+
+    const button = queryAllByTestId('check-icon')[0]
+    fireEvent.press(button)
+
+    await waitFor(() => expect(storageCache.getItem('selectedJobs')).toEqual([]))
+    expect(queryAllByTestId('check-icon')).toHaveLength(0)
+  })
+
+  it('should disable button if not on initial selection', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+    )
+
+    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    expect(button).toBeDisabled()
+
+    const secondDiscipline = getByText(mockDisciplines()[1].title)
+    expect(secondDiscipline).not.toBeDisabled()
   })
 })

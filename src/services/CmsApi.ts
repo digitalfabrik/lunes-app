@@ -1,10 +1,34 @@
 import { Article, ARTICLES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import { Discipline, VocabularyItem } from '../constants/endpoints'
 import { getFromEndpoint } from './axios'
 
-const ENDPOINTS = {
+const Endpoints = {
+  jobs: 'jobs',
   words: 'words',
   word: (id: number) => `words/${id}`,
+}
+
+type JobResponse = {
+  id: number
+  name: string
+  icon: string | null
+  number_units: number
+}
+
+const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: JobResponse): Discipline => ({
+  id,
+  title: name,
+  description: '',
+  icon: icon ?? undefined,
+  numberOfChildren: numberUnits,
+  isLeaf: false,
+  parentTitle: null,
+  needsTrainingSetEndpoint: false,
+})
+
+export const getJobs = async (): Promise<Discipline[]> => {
+  const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
+  return response.map(transformJobsResponse)
 }
 
 type CMSArticle = 'keiner' | 'der' | 'die' | 'das' | 'die (Plural)'
@@ -36,11 +60,11 @@ const transformWordResponse = ({ id, word, article, image, audio }: WordResponse
 })
 
 export const getWords = async (): Promise<VocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(ENDPOINTS.words)
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
   return response.map(transformWordResponse)
 }
 
 export const getWordById = async (id: number): Promise<VocabularyItem> => {
-  const response = await getFromEndpoint<WordResponse>(ENDPOINTS.word(id))
+  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
   return transformWordResponse(response)
 }
