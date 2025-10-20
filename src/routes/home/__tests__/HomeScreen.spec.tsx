@@ -1,10 +1,12 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { Discipline } from '../../../constants/endpoints'
+import { isTypeLoadProtected } from '../../../hooks/helpers'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useReadProgress from '../../../hooks/useReadProgress'
+import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -22,6 +24,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
+jest.mock('../../../services/CmsApi')
 jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
   return () => <Text>HeaderWithMenu</Text>
@@ -40,11 +43,11 @@ describe('HomeScreen', () => {
       'selectedJobs',
       mockDisciplines().map(item => item.id),
     )
-    mocked(useLoadDiscipline)
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[2]))
-    mocked(useReadProgress).mockReturnValue(0)
+    mocked(getJob).mockImplementation(id =>
+      isTypeLoadProtected(id)
+        ? Promise.reject()
+        : Promise.resolve(mockDisciplines().find(item => item.id === id.disciplineId) as Discipline),
+    )
     const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = await findByText('Second Discipline')
@@ -56,11 +59,10 @@ describe('HomeScreen', () => {
 
   it('should render custom discipline', async () => {
     await storageCache.setItem('customDisciplines', ['test'])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockCustomDiscipline))
 
     const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    expect(getByText('Custom Discipline')).toBeDefined()
+    await waitFor(() => expect(getByText('Custom Discipline')).toBeDefined())
     expect(getByText(getLabels().home.start)).toBeDefined()
   })
 

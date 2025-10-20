@@ -10,7 +10,8 @@ import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { RequestParams } from '../../../hooks/useLoadDiscipline'
+import useLoadJob from '../../../hooks/useLoadJob'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
@@ -49,14 +50,14 @@ type DisciplineCardProps = {
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
-const DisciplineCard = ({
+const JobCard = ({
   identifier,
   width: cardWidth,
   navigateToDiscipline,
   navigateToNextExercise,
 }: DisciplineCardProps): JSX.Element | null => {
   const storageCache = useStorageCache()
-  const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
+  const { data: job, loading, error, refresh } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   if (loading) {
@@ -69,7 +70,7 @@ const DisciplineCard = ({
     )
   }
 
-  if (!discipline) {
+  if (!job) {
     if (error?.message === NetworkError) {
       return (
         <Card width={cardWidth}>
@@ -111,17 +112,13 @@ const DisciplineCard = ({
   }
 
   return (
-    <Card
-      width={cardWidth}
-      heading={discipline.title}
-      icon={discipline.icon}
-      onPress={() => navigateToDiscipline(discipline)}>
+    <Card width={cardWidth} heading={job.title} icon={job.icon} onPress={() => navigateToDiscipline(job)}>
       {isTypeLoadProtected(identifier) ? (
-        <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
+        <CustomDisciplineDetails discipline={job} navigateToDiscipline={navigateToDiscipline} />
       ) : (
         navigateToNextExercise && (
           <JobDetails
-            discipline={discipline}
+            discipline={job}
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
           />
@@ -131,4 +128,4 @@ const DisciplineCard = ({
   )
 }
 
-export default DisciplineCard
+export default JobCard

@@ -10,7 +10,7 @@ import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
 import { childrenLabel, getLabels } from '../../../services/helpers'
-import { NumberText, UnitText } from './DisciplineCard'
+import { NumberText, UnitText } from './JobCard'
 import NextExerciseCard from './NextExerciseCard'
 
 const ProgressContainer = styled.View`
