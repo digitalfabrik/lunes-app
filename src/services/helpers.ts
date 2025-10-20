@@ -16,8 +16,8 @@ import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../const
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
-import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import { getJob } from './CmsApi'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
@@ -110,7 +110,7 @@ export type GetNextExerciseParams = {
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
 export const getNextExercise = async ({ progress, profession }: GetNextExerciseParams): Promise<NextExercise> => {
-  const discipline = await loadDiscipline({ disciplineId: profession.id })
+  const discipline = await getJob({ disciplineId: profession.id })
   const leafDisciplineIds = discipline.leafDisciplines
   if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
