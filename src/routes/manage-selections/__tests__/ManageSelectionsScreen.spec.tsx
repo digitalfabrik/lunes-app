@@ -12,7 +12,6 @@ import { renderWithStorageCache } from '../../../testing/render'
 import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../../../services/CmsApi')
 
 describe('ManageSelectionsScreen', () => {
