@@ -4,12 +4,10 @@ import React from 'react'
 
 import { Discipline } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
-import { getJob } from '../../../services/CmsApi'
+import { getJob, getJobs } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../../testing/helper'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
@@ -21,8 +19,6 @@ jest.mock('../../../services/helpers', () => ({
 }))
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadProgress')
-jest.mock('../../../hooks/useLoadDisciplines')
-jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../../../services/CmsApi')
 jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
@@ -66,7 +62,7 @@ describe('HomeScreen', () => {
   })
 
   it('should show suggestion to add custom discipline', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve([]))
 
     const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const addCustomDiscipline = getByText(getLabels().home.addCustomDiscipline)

@@ -1,4 +1,5 @@
 import { Discipline, ENDPOINTS } from '../constants/endpoints'
+import { JobId } from '../services/CmsApi'
 import { getFromEndpoint } from '../services/axios'
 import {
   formatDiscipline,
@@ -9,15 +10,7 @@ import {
 } from './helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-export type RequestParams =
-  | {
-      apiKey: string
-    }
-  | {
-      disciplineId: number
-    }
-
-export const loadDiscipline = async (params: RequestParams): Promise<Discipline> => {
+export const loadDiscipline = async (params: JobId): Promise<Discipline> => {
   if (isTypeLoadProtected(params)) {
     const url = `${ENDPOINTS.groupInfo}`
     const response = await getFromEndpoint<ServerResponseGroup[]>(url, params.apiKey)
@@ -28,4 +21,4 @@ export const loadDiscipline = async (params: RequestParams): Promise<Discipline>
   return formatDiscipline(response, { parent: null })
 }
 
-export const useLoadDiscipline = (loadData: RequestParams): Return<Discipline> => useLoadAsync(loadDiscipline, loadData)
+export const useLoadDiscipline = (loadData: JobId): Return<Discipline> => useLoadAsync(loadDiscipline, loadData)

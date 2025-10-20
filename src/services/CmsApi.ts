@@ -1,6 +1,5 @@
 import { Discipline, NetworkError } from '../constants/endpoints'
 import { isTypeLoadProtected } from '../hooks/helpers'
-import { RequestParams } from '../hooks/useLoadDiscipline'
 import { getFromEndpoint } from './axios'
 
 const Endpoints = {
@@ -31,7 +30,15 @@ export const getJobs = async (): Promise<Discipline[]> => {
   return response.map(transformJobsResponse)
 }
 
-export const getJob = async (id: RequestParams): Promise<Discipline> =>
+export type JobId =
+  | {
+      apiKey: string
+    }
+  | {
+      disciplineId: number
+    }
+
+export const getJob = async (id: JobId): Promise<Discipline> =>
   !isTypeLoadProtected(id)
     ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id.disciplineId)))
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms

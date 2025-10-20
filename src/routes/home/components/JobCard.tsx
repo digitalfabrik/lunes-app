@@ -10,9 +10,9 @@ import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams } from '../../../hooks/useLoadDiscipline'
 import useLoadJob from '../../../hooks/useLoadJob'
 import { useStorageCache } from '../../../hooks/useStorage'
+import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
@@ -43,8 +43,8 @@ export const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.xxs} auto;
 `
 
-type DisciplineCardProps = {
-  identifier: RequestParams
+type JobCardProps = {
+  identifier: JobId
   width?: number
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
@@ -55,7 +55,7 @@ const JobCard = ({
   width: cardWidth,
   navigateToDiscipline,
   navigateToNextExercise,
-}: DisciplineCardProps): JSX.Element | null => {
+}: JobCardProps): JSX.Element | null => {
   const storageCache = useStorageCache()
   const { data: job, loading, error, refresh } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)

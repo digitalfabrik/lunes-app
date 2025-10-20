@@ -8,12 +8,12 @@ import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams } from '../../../hooks/useLoadDiscipline'
 import useLoadJob from '../../../hooks/useLoadJob'
+import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
 
 type SelectionItemProps = {
-  identifier: RequestParams
+  identifier: JobId
   deleteItem: () => void
 }
 
