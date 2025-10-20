@@ -67,7 +67,7 @@ const JobDetails = ({
           </NumberText>
         )}
         <UnitText>
-          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
+          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline)}
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
