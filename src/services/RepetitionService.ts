@@ -2,7 +2,7 @@ import { VocabularyItem } from '../constants/endpoints'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
-import { millisecondsToDays } from './helpers'
+import { areVocabularyItemsEqual, millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
 type sections = 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -42,7 +42,9 @@ export class RepetitionService {
     this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
 
   public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
-    const newWordNodeCards = this.getWordNodeCards().filter(wordNodeCard => wordNodeCard.word !== word)
+    const newWordNodeCards = this.getWordNodeCards().filter(
+      wordNodeCard => !areVocabularyItemsEqual(wordNodeCard.word, word),
+    )
     await this.setWordNodeCards(newWordNodeCards)
   }
 

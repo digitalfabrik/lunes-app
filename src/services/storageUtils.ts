@@ -195,5 +195,6 @@ export const deleteUserVocabularyItem = async (
     id: userVocabularyItem.id,
     vocabularyItemType: VOCABULARY_ITEM_TYPES.userCreated,
   })
+  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem)
   await storageCache.setItem('userVocabulary', userVocabulary)
 }
