@@ -8,7 +8,8 @@ import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { RequestParams } from '../../../hooks/useLoadDiscipline'
+import useLoadJob from '../../../hooks/useLoadJob'
 import { getLabels } from '../../../services/helpers'
 
 type SelectionItemProps = {
@@ -25,7 +26,7 @@ const LoadingContainer = styled(View)`
 `
 
 const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): JSX.Element => {
-  const { data, loading, error } = useLoadDiscipline(identifier)
+  const { data, loading, error } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   if (loading) {
