@@ -1,11 +1,11 @@
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import useReadProgress from '../../../hooks/useReadProgress'
+import { Discipline } from '../../../constants/endpoints'
+import { isTypeLoadProtected } from '../../../hooks/helpers'
+import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
@@ -18,6 +18,7 @@ jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
+jest.mock('../../../services/CmsApi')
 jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
   return () => <Text>HeaderWithMenu</Text>
@@ -36,11 +37,11 @@ describe('HomeScreen', () => {
       'selectedJobs',
       mockDisciplines().map(item => item.id),
     )
-    mocked(useLoadDiscipline)
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
-      .mockReturnValueOnce(getReturnOf(mockDisciplines()[2]))
-    mocked(useReadProgress).mockReturnValue(0)
+    mocked(getJob).mockImplementation(id =>
+      isTypeLoadProtected(id)
+        ? Promise.reject()
+        : Promise.resolve(mockDisciplines().find(item => item.id === id.disciplineId) as Discipline),
+    )
     const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = await findByText('Second Discipline')

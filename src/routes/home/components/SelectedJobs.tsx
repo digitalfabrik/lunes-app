@@ -11,7 +11,7 @@ import { Discipline } from '../../../constants/endpoints'
 import { RequestParams } from '../../../hooks/useLoadDiscipline'
 import useStorage from '../../../hooks/useStorage'
 import { getLabels } from '../../../services/helpers'
-import DisciplineCard from './DisciplineCard'
+import JobCard from './JobCard'
 
 const Box = styled.View``
 
@@ -82,7 +82,7 @@ const SelectedJobs = ({
       </BoxHeading>
 
       {jobs.length === 1 ? (
-        <DisciplineCard
+        <JobCard
           identifier={jobs[0]}
           navigateToDiscipline={navigateToDiscipline}
           navigateToNextExercise={navigateToNextExercise}
@@ -96,7 +96,7 @@ const SelectedJobs = ({
           data={jobs}
           keyExtractor={item => JSON.stringify(item)}
           renderItem={({ item }) => (
-            <DisciplineCard
+            <JobCard
               identifier={item}
               width={wp('75%')}
               navigateToDiscipline={navigateToDiscipline}
