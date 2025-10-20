@@ -10,11 +10,10 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
-import ScopeSelection from './ScopeSelection'
+import JobSelection from './JobSelection'
 
 const TextContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xxl};
@@ -29,12 +28,12 @@ const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.md} auto;
 `
 
-type IntroScreenProps = {
-  route: RouteProp<RoutesParams, 'ScopeSelection'>
-  navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
+type JobSelectionScreenProps = {
+  route: RouteProp<RoutesParams, 'JobSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'JobSelection'>
 }
 
-const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
+const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX.Element => {
   const { initialSelection } = route.params
   const [selectedJobs, setSelectedJobs] = useStorage('selectedJobs')
   const [queryTerm, setQueryTerm] = useState<string>('')
@@ -43,13 +42,6 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: !initialSelection })
   })
-
-  const navigateToDiscipline = (item: Discipline): void => {
-    navigation.navigate('JobSelection', {
-      discipline: item,
-      initialSelection,
-    })
-  }
 
   const navigateToHomeScreen = async () => {
     if (selectedJobs === null) {
@@ -77,7 +69,7 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           )}
           <StyledText>{getLabels().scopeSelection.selectJob}</StyledText>
         </TextContainer>
-        <ScopeSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} navigateToDiscipline={navigateToDiscipline} />
+        <JobSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} />
         {initialSelection && (
           <ButtonContainer>
             <Button
@@ -96,4 +88,4 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   )
 }
 
-export default ScopeSelectionScreen
+export default JobSelectionScreen

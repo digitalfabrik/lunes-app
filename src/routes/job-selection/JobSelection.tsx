@@ -5,7 +5,6 @@ import DisciplineListItem from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
-import { Discipline } from '../../constants/endpoints'
 import { formatDiscipline } from '../../hooks/helpers'
 import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
 import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
@@ -92,18 +91,24 @@ const FilteredJobList = ({ queryTerm }: FilteredJobListProps): JSX.Element => {
   )
 }
 
-type ScopeSelectionProps = {
+type JobSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
-  navigateToDiscipline: (item: Discipline) => void
 }
 
-const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: ScopeSelectionProps): JSX.Element => {
+const JobSelection = ({ queryTerm, setQueryTerm }: JobSelectionProps): JSX.Element => {
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const theme = useTheme()
 
   const disciplineItems = disciplines?.map(item => (
-    <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} hasBadge={false} />
+    <DisciplineListItem
+      key={item.id}
+      item={item}
+      onPress={() => {
+        /* TODO */
+      }}
+      hasBadge={false}
+    />
   ))
 
   return (
@@ -129,4 +134,4 @@ const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: Scope
   )
 }
 
-export default ScopeSelection
+export default JobSelection

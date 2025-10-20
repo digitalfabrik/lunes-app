@@ -64,16 +64,12 @@ export type RoutesParams = {
   }
   UserVocabularyList: undefined
   UserVocabularyDetail: { vocabularyItem: VocabularyItem }
-  ScopeSelection: {
+  JobSelection: {
     initialSelection: boolean
   }
   AddCustomDiscipline: undefined
   DisciplineSelection: {
     discipline: Discipline
-  }
-  JobSelection: {
-    discipline: Discipline
-    initialSelection: boolean
   }
   VocabularyDetailExercise: VocabularyDetailExerciseParams
   StandardExercises: StandardExercisesParams
