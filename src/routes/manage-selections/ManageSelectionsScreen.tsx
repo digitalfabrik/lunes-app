@@ -48,7 +48,7 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
   })
 
   const navigateToScopeSelection = () => {
-    navigation.navigate('ScopeSelection', { initialSelection: false })
+    navigation.navigate('JobSelection', { initialSelection: false })
   }
 
   return (

@@ -39,8 +39,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('ManageSelection')
   }
 
-  const navigateToScopeSelection = () => {
-    navigation.navigate('ScopeSelection', { initialSelection: false })
+  const navigateToJobSelection = () => {
+    navigation.navigate('JobSelection', { initialSelection: false })
   }
 
   const navigateToDiscipline = (discipline: Discipline): void => {
@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
-            navigateToJobSelection={navigateToScopeSelection}
+            navigateToJobSelection={navigateToJobSelection}
           />
         </View>
         <HomeFooter />

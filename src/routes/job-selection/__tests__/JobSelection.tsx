@@ -11,16 +11,16 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
-import ScopeSelection from '../ScopeSelectionScreen'
+import ScopeSelection from '../JobSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useLoadDisciplines')
 
-describe('ScopeSelection', () => {
-  const navigation = createNavigationMock<'ScopeSelection'>()
-  const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'ScopeSelection'> => ({
+describe('JobSelection', () => {
+  const navigation = createNavigationMock<'JobSelection'>()
+  const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'JobSelection'> => ({
     key: '',
-    name: 'ScopeSelection',
+    name: 'JobSelection',
     params: {
       initialSelection,
     },

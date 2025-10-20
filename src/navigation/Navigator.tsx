@@ -4,13 +4,12 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import useStorage from '../hooks/useStorage'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
-import JobSelectionScreen from '../routes/JobSelectionScreen'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
-import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
+import JobSelectionScreen from '../routes/job-selection/JobSelectionScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
@@ -26,14 +25,14 @@ const HomeStackNavigator = (): JSX.Element | null => {
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
-  const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
+  const { manageSelection, overviewExercises, cancelExercise } = getLabels().general.header
 
   return (
-    <Stack.Navigator initialRouteName={jobs === null ? 'ScopeSelection' : 'BottomTabNavigator'}>
+    <Stack.Navigator initialRouteName={jobs === null ? 'JobSelection' : 'BottomTabNavigator'}>
       <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
-        name='ScopeSelection'
-        component={ScopeSelection}
+        name='JobSelection'
+        component={JobSelectionScreen}
         initialParams={{ initialSelection: true }}
         options={({ navigation }) => options(manageSelection, navigation)}
       />
@@ -41,11 +40,6 @@ const HomeStackNavigator = (): JSX.Element | null => {
         name='OverlayMenu'
         component={OverlayMenu}
         options={{ presentation: 'transparentModal', headerShown: false, ...OverlayTransition }}
-      />
-      <Stack.Screen
-        name='JobSelection'
-        component={JobSelectionScreen}
-        options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
       />
       <Stack.Screen
         name='VocabularyList'
