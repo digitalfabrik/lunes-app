@@ -3,7 +3,6 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getJobs } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
@@ -15,7 +14,6 @@ import { renderWithStorageCache } from '../../../testing/render'
 import ScopeSelection from '../JobSelectionScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../services/CmsApi')
 
 describe('JobSelection', () => {
@@ -35,8 +33,6 @@ describe('JobSelection', () => {
   })
 
   it('should skip selection', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute()} />,
@@ -53,9 +49,7 @@ describe('JobSelection', () => {
   })
 
   it('should confirm selection', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute()} />,
@@ -70,9 +64,7 @@ describe('JobSelection', () => {
   })
 
   it('should hide welcome message and buttons for non initial view', async () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
     const { queryByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
