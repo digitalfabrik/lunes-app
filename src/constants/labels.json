@@ -21,7 +21,7 @@
     "deleteJob": "Bereich löschen",
     "jobs": "Berufe"
   },
-  "manageSelection": {
+  "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
     "yourJobs": "Deine Berufsauswahl",
     "yourCustomDisciplines": "Deine individuellen Bereiche",
@@ -144,7 +144,7 @@
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "impressum": "Impressum",
-      "manageSelection": "Lernbereiche verwalten",
+      "manageJobs": "Lernbereiche verwalten",
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",

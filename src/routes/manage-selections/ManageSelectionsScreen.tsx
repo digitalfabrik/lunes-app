@@ -66,20 +66,20 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
   return (
     <RouteWrapper>
       <Root contentContainerStyle={{ flexGrow: 1 }}>
-        <StyledHeading>{getLabels().manageSelection.heading}</StyledHeading>
-        <SectionHeading>{getLabels().manageSelection.yourJobs}</SectionHeading>
+        <StyledHeading>{getLabels().manageJobs.heading}</StyledHeading>
+        <SectionHeading>{getLabels().manageJobs.yourJobs}</SectionHeading>
         <HorizontalLine />
         {jobItems}
-        <AddElement onPress={navigateToScopeSelection} label={getLabels().manageSelection.addJob} />
+        <AddElement onPress={navigateToScopeSelection} label={getLabels().manageJobs.addJob} />
 
-        <SectionHeading>{getLabels().manageSelection.yourCustomDisciplines}</SectionHeading>
+        <SectionHeading>{getLabels().manageJobs.yourCustomDisciplines}</SectionHeading>
         <HorizontalLine />
         {customDisciplineItems}
 
         <AddElement
           onPress={navigateToAddCustomDiscipline}
           label={getLabels().home.addCustomDiscipline}
-          explanation={getLabels().manageSelection.descriptionAddCustomDiscipline}
+          explanation={getLabels().manageJobs.descriptionAddCustomDiscipline}
         />
         <Padding />
       </Root>

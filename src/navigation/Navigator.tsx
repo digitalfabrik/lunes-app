@@ -25,7 +25,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
-  const { manageSelection, overviewExercises, cancelExercise } = getLabels().general.header
+  const { manageJobs, overviewExercises, cancelExercise } = getLabels().general.header
 
   return (
     <Stack.Navigator initialRouteName={jobs === null ? 'JobSelection' : 'BottomTabNavigator'}>
@@ -34,7 +34,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
         name='JobSelection'
         component={JobSelectionScreen}
         initialParams={{ initialSelection: true }}
-        options={({ navigation }) => options(manageSelection, navigation)}
+        options={({ navigation }) => options(manageJobs, navigation)}
       />
       <Stack.Screen
         name='OverlayMenu'

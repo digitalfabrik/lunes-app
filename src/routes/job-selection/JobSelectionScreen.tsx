@@ -65,7 +65,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX
           {initialSelection ? (
             <StyledText>{getLabels().scopeSelection.welcome}</StyledText>
           ) : (
-            <Heading centered>{getLabels().manageSelection.addJob}</Heading>
+            <Heading centered>{getLabels().manageJobs.addJob}</Heading>
           )}
           <StyledText>{getLabels().scopeSelection.selectJob}</StyledText>
         </TextContainer>
