@@ -11,7 +11,7 @@ import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
-import { removeCustomDiscipline, removeSelectedJob } from '../../services/storageUtils'
+import { removeSelectedJob } from '../../services/storageUtils'
 import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
@@ -54,11 +54,11 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
   return (
     <RouteWrapper>
       <Root contentContainerStyle={{ flexGrow: 1 }}>
-        <StyledHeading>{getLabels().manageSelection.heading}</StyledHeading>
-        <SectionHeading>{getLabels().manageSelection.yourJobs}</SectionHeading>
+        <StyledHeading>{getLabels().manageJobs.heading}</StyledHeading>
+        <SectionHeading>{getLabels().manageJobs.yourJobs}</SectionHeading>
         <HorizontalLine />
         {jobItems}
-        <AddElement onPress={navigateToScopeSelection} label={getLabels().manageSelection.addJob} />
+        <AddElement onPress={navigateToScopeSelection} label={getLabels().manageJobs.addJob} />
         <Padding />
       </Root>
     </RouteWrapper>

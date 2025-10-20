@@ -33,7 +33,7 @@ describe('ManageSelectionsScreen', () => {
     expect(getByText(mockDisciplines()[0].title)).toBeDefined()
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
-    const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
+    const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
       const selectedJobs = storageCache.getItem('selectedJobs')
@@ -43,7 +43,7 @@ describe('ManageSelectionsScreen', () => {
 
   it('should navigate to select another job', () => {
     const { getByText } = renderScreen()
-    const addJobText = getByText(getLabels().manageSelection.addJob)
+    const addJobText = getByText(getLabels().manageJobs.addJob)
     fireEvent.press(addJobText)
     expect(navigation.navigate).toHaveBeenCalledWith('JobSelection', { initialSelection: false })
   })
