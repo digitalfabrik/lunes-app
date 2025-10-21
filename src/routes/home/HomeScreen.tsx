@@ -9,10 +9,8 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
-import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
 import SelectedProfessions from './components/SelectedProfessions'
@@ -36,12 +34,6 @@ type HomeScreenProps = {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const theme = useTheme()
-  const [customDisciplines] = useStorage('customDisciplines')
-  const hasNoCustomDisciplines = customDisciplines.length === 0
-
-  const navigateToAddCustomDisciplineScreen = (): void => {
-    navigation.navigate('AddCustomDiscipline')
-  }
 
   const navigateToManageSelection = (): void => {
     navigation.navigate('ManageSelection')
@@ -81,7 +73,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
             navigateToManageSelection={navigateToManageSelection}
             navigateToProfessionSelection={navigateToProfessionSelection}
           />
-          {hasNoCustomDisciplines && <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />}
         </View>
         <HomeFooter />
       </Root>

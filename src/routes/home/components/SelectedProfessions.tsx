@@ -53,12 +53,7 @@ type SelectedProfessionsProps = {
 
 const useAllProfessions = (): RequestParams[] => {
   const [selectedProfessions] = useStorage('selectedProfessions')
-  const [customDisciplines] = useStorage('customDisciplines')
-
-  const localProfessionParams = selectedProfessions?.map(id => ({ disciplineId: id })) ?? []
-  const customProfessionParams = customDisciplines.map(id => ({ apiKey: id }))
-
-  return [...localProfessionParams, ...customProfessionParams]
+  return selectedProfessions?.map(id => ({ disciplineId: id })) ?? []
 }
 
 const SelectedProfessions = ({

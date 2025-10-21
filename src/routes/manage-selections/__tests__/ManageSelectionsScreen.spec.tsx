@@ -8,7 +8,6 @@ import { getLabels } from '../../../services/helpers'
 import { pushSelectedProfession } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
-import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
 import ManageSelectionsScreen from '../ManageSelectionsScreen'
@@ -40,29 +39,6 @@ describe('ManageSelectionsScreen', () => {
       const selectedProfessions = storageCache.getItem('selectedProfessions')
       expect(selectedProfessions).toEqual([])
     })
-  })
-
-  it('should show and delete custom disciplines', async () => {
-    await storageCache.setItem('customDisciplines', [mockCustomDiscipline.apiKey])
-    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
-
-    const { getByText, getByTestId } = renderScreen()
-    expect(getByText(mockCustomDiscipline.title)).toBeDefined()
-    const deleteIcon = getByTestId('delete-icon')
-    fireEvent.press(deleteIcon)
-    const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
-    fireEvent.press(confirmButton)
-    await waitFor(() => {
-      const customDisciplines = storageCache.getItem('customDisciplines')
-      expect(customDisciplines).toEqual([])
-    })
-  })
-
-  it('should navigate to add custom discipline', () => {
-    const { getByText } = renderScreen()
-    const addCustomDisciplineText = getByText(getLabels().home.addCustomDiscipline)
-    fireEvent.press(addCustomDisciplineText)
-    expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
 
   it('should navigate to select another profession', () => {

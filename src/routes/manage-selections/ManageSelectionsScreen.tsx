@@ -11,7 +11,7 @@ import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../services/storageUtils'
+import { removeSelectedProfession } from '../../services/storageUtils'
 import SelectionItem from './components/SelectionItem'
 
 const Root = styled.ScrollView`
@@ -39,7 +39,6 @@ type ManageSelectionScreenProps = {
 const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): ReactElement => {
   const storageCache = useStorageCache()
   const [selectedProfessions] = useStorage('selectedProfessions')
-  const [customDisciplines] = useStorage('customDisciplines')
 
   const professionItems = selectedProfessions?.map(id => {
     const unselectProfessionAndRefresh = () => {
@@ -48,19 +47,8 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
     return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectProfessionAndRefresh} />
   })
 
-  const customDisciplineItems = customDisciplines.map(apiKey => {
-    const deleteCustomDisciplineAndRefresh = async () => {
-      await removeCustomDiscipline(storageCache, apiKey)
-    }
-    return <SelectionItem key={apiKey} identifier={{ apiKey }} deleteItem={deleteCustomDisciplineAndRefresh} />
-  })
-
   const navigateToProfessionSelection = () => {
     navigation.navigate('ScopeSelection', { initialSelection: false })
-  }
-
-  const navigateToAddCustomDiscipline = () => {
-    navigation.navigate('AddCustomDiscipline')
   }
 
   return (
@@ -71,16 +59,6 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
         <HorizontalLine />
         {professionItems}
         <AddElement onPress={navigateToProfessionSelection} label={getLabels().manageSelection.addProfession} />
-
-        <SectionHeading>{getLabels().manageSelection.yourCustomDisciplines}</SectionHeading>
-        <HorizontalLine />
-        {customDisciplineItems}
-
-        <AddElement
-          onPress={navigateToAddCustomDiscipline}
-          label={getLabels().home.addCustomDiscipline}
-          explanation={getLabels().manageSelection.descriptionAddCustomDiscipline}
-        />
         <Padding />
       </Root>
     </RouteWrapper>
