@@ -43,9 +43,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate('JobSelection', { initialSelection: false })
   }
 
-  const navigateToDiscipline = (discipline: Discipline): void => {
-    navigation.navigate('DisciplineSelection', {
-      discipline,
+  const navigateToJob = (job: Discipline): void => {
+    navigation.navigate('UnitSelection', {
+      job,
     })
   }
 
@@ -68,7 +68,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           <SelectedJobs
-            navigateToDiscipline={navigateToDiscipline}
+            navigateToDiscipline={navigateToJob}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
             navigateToJobSelection={navigateToJobSelection}

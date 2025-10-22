@@ -18,29 +18,23 @@ const List = styled.FlatList`
   height: 100%;
 ` as unknown as typeof FlatList
 
-type DisciplineSelectionScreenProps = {
-  route: RouteProp<RoutesParams, 'DisciplineSelection'>
-  navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
+type UnitSelectionScreenProps = {
+  route: RouteProp<RoutesParams, 'UnitSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'UnitSelection'>
 }
 
-const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenProps): JSX.Element => {
-  const { discipline } = route.params
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
+const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): JSX.Element => {
+  const { job } = route.params
+  const { data: units, error, loading, refresh } = useLoadDisciplines({ parent: job })
 
   const handleNavigation = (selectedItem: Discipline): void => {
-    if (selectedItem.isLeaf) {
-      navigation.navigate('StandardExercises', {
-        contentType: 'standard',
-        discipline: selectedItem,
-        disciplineTitle: selectedItem.title,
-        disciplineId: selectedItem.id,
-        vocabularyItems: null,
-      })
-    } else {
-      navigation.push('DisciplineSelection', {
-        discipline: selectedItem,
-      })
-    }
+    navigation.navigate('StandardExercises', {
+      contentType: 'standard',
+      discipline: selectedItem,
+      disciplineTitle: selectedItem.title,
+      disciplineId: selectedItem.id,
+      vocabularyItems: null,
+    })
   }
 
   const renderListItem = ({ item }: { item: Discipline }): JSX.Element => (
@@ -51,8 +45,8 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
-          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
-          data={disciplines}
+          ListHeaderComponent={<Title title={job.title} description={childrenDescription(job)} />}
+          data={units}
           renderItem={renderListItem}
           keyExtractor={({ id }) => id.toString()}
           showsVerticalScrollIndicator={false}
@@ -62,4 +56,4 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   )
 }
 
-export default DisciplineSelectionScreen
+export default UnitSelectionScreen

@@ -9,13 +9,13 @@ import createNavigationMock from '../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../testing/helper'
 import { mockDisciplines } from '../../testing/mockDiscipline'
 import render from '../../testing/render'
-import DisciplineSelectionScreen from '../DisciplineSelectionScreen'
+import UnitSelectionScreen from '../UnitSelectionScreen'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../hooks/useLoadDisciplines')
 
 describe('DisciplineSelectionScreen', () => {
-  const navigation = createNavigationMock<'DisciplineSelection'>()
+  const navigation = createNavigationMock<'UnitSelection'>()
   const parentDiscipline = {
     id: 0,
     title: 'Parent Discipline',
@@ -28,18 +28,18 @@ describe('DisciplineSelectionScreen', () => {
     leafDisciplines: [10, 11],
   }
 
-  const route: RouteProp<RoutesParams, 'DisciplineSelection'> = {
+  const route: RouteProp<RoutesParams, 'UnitSelection'> = {
     key: 'key-1',
-    name: 'DisciplineSelection',
+    name: 'UnitSelection',
     params: {
-      discipline: parentDiscipline,
+      job: parentDiscipline,
     },
   }
 
   it('should display the correct title', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
-    const { getByText } = render(<DisciplineSelectionScreen route={route} navigation={navigation} />)
+    const { getByText } = render(<UnitSelectionScreen route={route} navigation={navigation} />)
     const title = getByText(mockDisciplines()[0].title)
     expect(title).toBeDefined()
   })
@@ -47,7 +47,7 @@ describe('DisciplineSelectionScreen', () => {
   it('should display all disciplines', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
-    const { getByText } = render(<DisciplineSelectionScreen route={route} navigation={navigation} />)
+    const { getByText } = render(<UnitSelectionScreen route={route} navigation={navigation} />)
 
     const firstDiscipline = getByText(mockDisciplines()[0].title)
     const secondDiscipline = getByText(mockDisciplines()[1].title)
@@ -60,7 +60,7 @@ describe('DisciplineSelectionScreen', () => {
   it('should navigate to exercises when list item pressed', () => {
     mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
 
-    const { getByText } = render(<DisciplineSelectionScreen route={route} navigation={navigation} />)
+    const { getByText } = render(<UnitSelectionScreen route={route} navigation={navigation} />)
     const discipline = getByText(mockDisciplines()[2].title)
     expect(discipline).toBeDefined()
     fireEvent.press(discipline)
@@ -71,19 +71,6 @@ describe('DisciplineSelectionScreen', () => {
       disciplineTitle: mockDisciplines()[2].title,
       disciplineId: mockDisciplines()[2].id,
       vocabularyItems: null,
-    })
-  })
-
-  it('should navigate to exercises when non-leaf list item pressed', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-
-    const { getByText } = render(<DisciplineSelectionScreen route={route} navigation={navigation} />)
-    const discipline = getByText(mockDisciplines()[1].title)
-    expect(discipline).toBeDefined()
-    fireEvent.press(discipline)
-
-    expect(navigation.push).toHaveBeenCalledWith('DisciplineSelection', {
-      discipline: mockDisciplines()[1],
     })
   })
 })

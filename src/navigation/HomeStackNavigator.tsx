@@ -2,8 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { useTheme } from 'styled-components/native'
 
-import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
+import UnitSelectionScreen from '../routes/UnitSelectionScreen'
+import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
@@ -24,8 +25,8 @@ const HomeStackNavigator = (): JSX.Element | null => {
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
       <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen
-        name='DisciplineSelection'
-        component={DisciplineSelectionScreen}
+        name='UnitSelection'
+        component={UnitSelectionScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen
