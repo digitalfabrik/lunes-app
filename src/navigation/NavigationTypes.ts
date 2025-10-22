@@ -68,8 +68,8 @@ export type RoutesParams = {
     initialSelection: boolean
   }
   AddCustomDiscipline: undefined
-  DisciplineSelection: {
-    discipline: Discipline
+  UnitSelection: {
+    job: Discipline
   }
   VocabularyDetailExercise: VocabularyDetailExerciseParams
   StandardExercises: StandardExercisesParams
