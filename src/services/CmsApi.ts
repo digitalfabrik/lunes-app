@@ -1,8 +1,7 @@
-import { Article, ARTICLES } from '../constants/data';
+import { Article, ARTICLES } from '../constants/data'
 import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
-import { isTypeLoadProtected } from '../hooks/helpers';
-import { getFromEndpoint } from './axios';
-
+import { isTypeLoadProtected } from '../hooks/helpers'
+import { getFromEndpoint } from './axios'
 
 const Endpoints = {
   jobs: 'jobs',

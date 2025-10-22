@@ -1,10 +1,16 @@
-import { ARTICLES, NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult, VOCABULARY_ITEM_TYPES } from '../../constants/data';
-import { Discipline, VocabularyItem } from '../../constants/endpoints';
-import { VocabularyItemResult } from '../../navigation/NavigationTypes';
-import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder';
-import { mockDisciplines } from '../../testing/mockDiscipline';
-import { getJob } from '../CmsApi';
-import { StorageCache } from '../Storage';
+import {
+  ARTICLES,
+  NextExercise,
+  SCORE_THRESHOLD_UNLOCK,
+  SimpleResult,
+  VOCABULARY_ITEM_TYPES,
+} from '../../constants/data'
+import { Discipline, VocabularyItem } from '../../constants/endpoints'
+import { VocabularyItemResult } from '../../navigation/NavigationTypes'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
+import { mockDisciplines } from '../../testing/mockDiscipline'
+import { getJob } from '../CmsApi'
+import { StorageCache } from '../Storage'
 import {
   calculateScore,
   getNextExercise,
