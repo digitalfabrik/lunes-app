@@ -10,7 +10,7 @@ import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
 import { getReturnOf } from '../../../../testing/helper'
 import { mockDisciplines } from '../../../../testing/mockDiscipline'
 import render from '../../../../testing/render'
-import ProfessionDetails from '../ProfessionDetails'
+import JobDetails from '../JobDetails'
 
 const navigateToDiscipline = jest.fn()
 const navigateToExercise = jest.fn()
@@ -36,10 +36,10 @@ const nextExerciseData: NextExerciseData = {
   disciplineId: 1,
 }
 
-describe('ProfessionDetails', () => {
-  const renderProfessionDetails = (): RenderAPI =>
+describe('JobDetails', () => {
+  const renderJobDetails = (): RenderAPI =>
     render(
-      <ProfessionDetails
+      <JobDetails
         discipline={mockDisciplines()[0]}
         navigateToDiscipline={navigateToDiscipline}
         navigateToNextExercise={navigateToExercise}
@@ -49,7 +49,7 @@ describe('ProfessionDetails', () => {
   it('should show next exercise details on the card', () => {
     mocked(useReadProgress).mockReturnValue(1)
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
-    const { getByText, findByText, getByTestId } = renderProfessionDetails()
+    const { getByText, findByText, getByTestId } = renderJobDetails()
     expect(getByText(nextExerciseData.title)).toBeDefined()
     expect(getByTestId('progress-circle')).toBeDefined()
     expect(findByText(getLabels().home.continue)).toBeDefined()
@@ -58,7 +58,7 @@ describe('ProfessionDetails', () => {
   it('should show starting label if next exercise is a wordlist', () => {
     mocked(useReadProgress).mockReturnValue(0)
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(firstExerciseData))
-    const { queryByText, findByText, queryByTestId } = renderProfessionDetails()
+    const { queryByText, findByText, queryByTestId } = renderJobDetails()
     expect(queryByTestId('progress-circle')).toBeDefined()
     expect(findByText(getLabels().home.start)).toBeDefined()
     expect(queryByText(getLabels().home.continue)).toBeNull()
@@ -67,7 +67,7 @@ describe('ProfessionDetails', () => {
   it('should show continue label if next exercise is not a wordlist', () => {
     mocked(useReadProgress).mockReturnValue(1)
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
-    const { queryByText, findByText, queryByTestId } = renderProfessionDetails()
+    const { queryByText, findByText, queryByTestId } = renderJobDetails()
     expect(queryByTestId('progress-circle')).toBeDefined()
     expect(findByText(getLabels().home.continue)).toBeDefined()
     expect(queryByText(getLabels().home.start)).toBeNull()
@@ -76,7 +76,7 @@ describe('ProfessionDetails', () => {
   it('should navigate to NextExercise', () => {
     mocked(useReadProgress).mockReturnValue(1)
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
-    const { getByText } = renderProfessionDetails()
+    const { getByText } = renderJobDetails()
     const button = getByText(getLabels().home.continue)
     fireEvent.press(button)
     expect(navigateToExercise).toHaveBeenCalledWith(nextExerciseData)
