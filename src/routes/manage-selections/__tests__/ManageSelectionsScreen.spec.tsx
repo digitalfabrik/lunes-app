@@ -7,7 +7,7 @@ import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import { pushSelectedJob } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
 import { renderWithStorageCache } from '../../../testing/render'
 import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
@@ -24,12 +24,12 @@ describe('ManageSelectionsScreen', () => {
   })
 
   it('should show and delete selected jobs', async () => {
-    await pushSelectedJob(storageCache, mockDisciplines()[0].id)
-    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
-    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines()[0]))
+    await pushSelectedJob(storageCache, mockJobs()[0].id)
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
 
     const { getByText, getByTestId } = renderScreen()
-    await waitFor(() => expect(getByText(mockDisciplines()[0].title)).toBeDefined())
+    await waitFor(() => expect(getByText(mockJobs()[0].title)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)

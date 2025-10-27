@@ -27,14 +27,14 @@ const Description = styled.Text`
 `
 
 type ShareSectionProps = {
-  disciplineTitle: string
+  jobTitle: string
   results: VocabularyItemResult[]
 }
 
-const ShareSection = ({ disciplineTitle, results }: ShareSectionProps): ReactElement => (
+const ShareSection = ({ jobTitle, results }: ShareSectionProps): ReactElement => (
   <Container>
     <Description>{getLabels().results.share.description}</Description>
-    <ShareButton disciplineTitle={disciplineTitle} results={results} />
+    <ShareButton jobTitle={jobTitle} results={results} />
   </Container>
 )
 

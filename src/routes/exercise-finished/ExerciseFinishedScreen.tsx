@@ -76,7 +76,7 @@ type ExerciseFinishedScreenProps = {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, disciplineTitle, closeExerciseAction, unlockedNextExercise } = route.params
+  const { exercise, results, jobTitle, closeExerciseAction, unlockedNextExercise } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
@@ -198,7 +198,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           buttonTheme={BUTTONS_THEME.contained}
           onPress={() => navigationAction()}
         />
-        <ShareSection disciplineTitle={disciplineTitle} results={results} />
+        <ShareSection jobTitle={jobTitle} results={results} />
       </Root>
     </RouteWrapper>
   )

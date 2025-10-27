@@ -6,7 +6,7 @@ import useStorage from './useStorage'
 
 const useReadNextExercise = (profession: Discipline): Return<NextExercise> => {
   const [progress] = useStorage('progress')
-  return useLoadAsync(getNextExercise, { progress, profession })
+  return useLoadAsync(getNextExercise, { progress, job: profession })
 }
 
 export default useReadNextExercise

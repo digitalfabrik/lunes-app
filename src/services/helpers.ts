@@ -15,10 +15,10 @@ import {
 import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { ServerResponseDiscipline } from '../hooks/helpers'
+import { StandardUnitId } from '../model/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { getJob } from './CmsApi'
-import { getFromEndpoint, postToEndpoint } from './axios'
+import { getUnitsOfJob } from './CmsApi'
+import { postToEndpoint } from './axios'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
   `${article.value} ${word}`
@@ -39,7 +39,7 @@ export const childrenLabel = (discipline: Discipline): string => {
   if (discipline.isLeaf) {
     return pluralize(labels.general.word, discipline.numberOfChildren)
   }
-  return pluralize(getLabels().general.discipline, discipline.numberOfChildren)
+  return pluralize(getLabels().general.unit, discipline.numberOfChildren)
 }
 
 export const childrenDescription = (discipline: Discipline): string =>
@@ -84,11 +84,12 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
-const getNumberOfUnlockedExercisesByProgress = (disciplineId: number, progress: Progress): number => {
-  const progressOfDiscipline = progress[disciplineId]
-  return progressOfDiscipline
-    ? Object.keys(progressOfDiscipline).filter(item => {
-        const score = progressOfDiscipline[item]
+const getNumberOfUnlockedExercisesByProgress = (unitId: StandardUnitId, progress: Progress): number => {
+  const progressOfUnit = progress[unitId.id]
+  return progressOfUnit
+    ? Object.keys(progressOfUnit).filter(item => {
+        const score = progressOfUnit[item]
+        // FIXME: This calculation looks incorrect
         return (
           ExerciseKeys.vocabularyList.toString() === item || (score !== undefined && score > SCORE_THRESHOLD_UNLOCK)
         )
@@ -96,67 +97,56 @@ const getNumberOfUnlockedExercisesByProgress = (disciplineId: number, progress: 
     : 0
 }
 
-export const getNumberOfUnlockedExercises = (progress: Progress, disciplineId: number): number =>
-  getNumberOfUnlockedExercisesByProgress(disciplineId, progress)
+export const getNumberOfUnlockedExercises = (progress: Progress, unitId: StandardUnitId): number =>
+  getNumberOfUnlockedExercisesByProgress(unitId, progress)
 
 export type GetNextExerciseParams = {
   progress: Progress
-  profession: Discipline
+  job: Discipline
 }
 /*
-  Calculates the next exercise that needs to be done for a profession (= second level discipline of lunes standard vocabulary)
-  returns
-  disciplineId: the leaf discipline which needs to be done next
-  exerciseKey: exerciseKey of the next exercise which needs to be done
+  Calculates the next exercise that needs to be done for a profession
   */
-export const getNextExercise = async ({ progress, profession }: GetNextExerciseParams): Promise<NextExercise> => {
-  const discipline = await getJob({ disciplineId: profession.id })
-  const leafDisciplineIds = discipline.leafDisciplines
-  if (!leafDisciplineIds?.length) {
-    throw new Error(`No Disciplines for id ${profession.id}`)
+export const getNextExercise = async ({ progress, job }: GetNextExerciseParams): Promise<NextExercise> => {
+  const units = await getUnitsOfJob(job.id)
+  if (!units.length) {
+    throw new Error(`No units for id ${job.id}`)
   }
-  const firstUnfinishedDisciplineId = leafDisciplineIds.find(
-    id => getNumberOfUnlockedExercisesByProgress(id, progress) < EXERCISES.length,
+  const firstUnfinishedUnit = units.find(
+    unit => getNumberOfUnlockedExercisesByProgress(unit.id, progress) < EXERCISES.length,
   )
 
-  if (!firstUnfinishedDisciplineId) {
+  if (!firstUnfinishedUnit) {
     return {
-      disciplineId: leafDisciplineIds[0],
+      unit: units[0],
       exerciseKey: 0,
     } // TODO #965: show success that every exercise is done
   }
-  const disciplineProgress = progress[firstUnfinishedDisciplineId]
+  const disciplineProgress = progress[firstUnfinishedUnit.id.id]
   if (!disciplineProgress) {
     return {
-      disciplineId: firstUnfinishedDisciplineId,
+      unit: firstUnfinishedUnit,
       exerciseKey: 0,
     }
   }
-  const nextExerciseKey = getNumberOfUnlockedExercisesByProgress(firstUnfinishedDisciplineId, progress)
+  const nextExerciseKey = getNumberOfUnlockedExercisesByProgress(firstUnfinishedUnit.id, progress)
   return {
-    disciplineId: firstUnfinishedDisciplineId,
+    unit: firstUnfinishedUnit,
     exerciseKey: nextExerciseKey,
   }
 }
 
-export const getProgress = (progress: Progress, profession: Discipline | null): number => {
-  if (!profession) {
+export const getProgress = async (progress: Progress, job: Discipline | null): Promise<number> => {
+  if (!job) {
     return 0
   }
-  if (!profession.leafDisciplines) {
-    return getNumberOfUnlockedExercises(progress, profession.id) / EXERCISES.length
+  const units = await getUnitsOfJob(job.id)
+  if (units.length === 0) {
+    return 0
   }
-  const doneExercises = profession.leafDisciplines.reduce(
-    (acc, leaf) => acc + getNumberOfUnlockedExercisesByProgress(leaf, progress),
-    0,
-  )
-  const totalExercises = profession.leafDisciplines.length * EXERCISES.length
+  const doneExercises = units.reduce((acc, unit) => acc + getNumberOfUnlockedExercisesByProgress(unit.id, progress), 0)
+  const totalExercises = units.length * EXERCISES.length
   return doneExercises / totalExercises
-}
-
-export const loadTrainingsSet = async (disciplineId: number): Promise<ServerResponseDiscipline> => {
-  const trainingSetUrl = `${ENDPOINTS.trainingSets}/${disciplineId}`
-  return getFromEndpoint<ServerResponseDiscipline>(trainingSetUrl)
 }
 
 export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>

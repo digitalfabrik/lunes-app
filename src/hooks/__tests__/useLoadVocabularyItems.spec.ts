@@ -1,6 +1,7 @@
 import { mocked } from 'jest-mock'
 
 import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
+import { StandardUnit } from '../../model/Unit'
 import { getFromEndpoint } from '../../services/axios'
 import { loadVocabularyItems } from '../useLoadVocabularyItems'
 
@@ -84,27 +85,24 @@ const expectedData = [
   },
 ]
 
-const discipline = {
-  id: 1234,
+const unit: StandardUnit = {
+  id: { id: 1234, type: 'standard' },
   title: 'title',
-  numberOfChildren: 12,
-  isLeaf: false,
+  numberWords: 12,
   description: '',
-  icon: '',
-  parentTitle: null,
-  needsTrainingSetEndpoint: false,
+  iconUrl: '',
 }
 
 describe('loadVocabularyItems', () => {
   mocked<typeof getFromEndpoint<typeof testData>>(getFromEndpoint).mockImplementation(async () => testData)
 
   it('should get correctly', async () => {
-    await loadVocabularyItems({ disciplineId: discipline.id })
+    await loadVocabularyItems({ unitId: unit.id })
     expect(getFromEndpoint).toHaveBeenCalledWith('documents/1234', undefined)
   })
 
   it('should map data correctly', async () => {
-    const responseData = await loadVocabularyItems({ disciplineId: discipline.id })
+    const responseData = await loadVocabularyItems({ unitId: unit.id })
     expect(responseData).toEqual(expectedData)
   })
 })
