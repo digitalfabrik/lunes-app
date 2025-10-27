@@ -1,5 +1,3 @@
-# Deliver the app to Testflight
-# TODO add Apple App Store delivery with parameter
 parameters:
   production_delivery:
     description: Whether to deliver the build to production.
