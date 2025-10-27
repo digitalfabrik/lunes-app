@@ -50,11 +50,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   }
 
   const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
-    const { exerciseKey, disciplineId, title: disciplineTitle, vocabularyItems } = nextExerciseData
+    const { exerciseKey, unit, vocabularyItems, title } = nextExerciseData
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       contentType: 'standard',
-      disciplineId,
-      disciplineTitle,
+      unitId: unit.id,
+      jobTitle: title,
       vocabularyItems,
       closeExerciseAction: CommonActions.navigate('Home'),
     })

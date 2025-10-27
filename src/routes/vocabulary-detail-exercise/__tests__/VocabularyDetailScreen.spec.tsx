@@ -29,8 +29,8 @@ describe('VocabularyDetailScreen', () => {
     name: 'VocabularyDetailExercise',
     params: {
       contentType: 'standard',
-      disciplineId: 1,
-      disciplineTitle: 'disciplineTitle',
+      unitId: { id: 1, type: 'standard' },
+      jobTitle: 'disciplineTitle',
       vocabularyItems,
       closeExerciseAction: CommonActions.goBack(),
       vocabularyItemIndex,

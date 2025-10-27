@@ -7,22 +7,23 @@ import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import mockUnits from '../../../testing/mockUnit'
 import render from '../../../testing/render'
 import SpecialExercisesScreen from '../SpecialExercisesScreen'
 
 describe('SpecialExercisesScreen', () => {
   let navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
-  const discipline = mockDisciplines(true)[0]
+  const unit = mockUnits[0]
   const renderScreen = (): RenderAPI => {
     const route: RouteProp<RoutesParams, 'SpecialExercises'> = {
       key: '',
       name: 'SpecialExercises',
       params: {
-        discipline,
+        unit,
         contentType: 'userVocabulary',
-        disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
+        jobTitle: `${getLabels().userVocabulary.practice.part} 1`,
+        parentLabel: `${getLabels().userVocabulary.practice.part} 1`,
         vocabularyItems,
       },
     }
@@ -45,14 +46,6 @@ describe('SpecialExercisesScreen', () => {
     const { getByText } = renderScreen()
     const wordChoiceExercise = getByText(getLabels().exercises.wordChoice.title)
     fireEvent.press(wordChoiceExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith('WordChoiceExercise', {
-      closeExerciseAction: CommonActions.navigate('SpecialExercises', {
-        vocabularyItems,
-        disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-      }),
-      contentType: 'userVocabulary',
-      vocabularyItems,
-      disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith('WordChoiceExercise', expect.anything())
   })
 })

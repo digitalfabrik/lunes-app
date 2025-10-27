@@ -21,24 +21,17 @@ const ProgressContainer = styled.View`
 `
 
 type JobDetailsProps = {
-  discipline: Discipline
+  job: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
-const JobDetails = ({
-  discipline,
-  navigateToDiscipline,
-  navigateToNextExercise,
-}: JobDetailsProps): ReactElement | null => {
-  const progress = useReadProgress(discipline)
-  const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
+const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDetailsProps): ReactElement | null => {
+  const { data: progress } = useReadProgress(job)
+  const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(job)
 
   const disciplineAlreadyStarted = progress !== 0
-  const completedDisciplines =
-    disciplineAlreadyStarted && discipline.leafDisciplines
-      ? Math.floor(progress * discipline.leafDisciplines.length)
-      : 0
+  const completedDisciplines = disciplineAlreadyStarted ? Math.floor((progress ?? 0) * job.numberOfChildren) : 0
 
   useFocusEffect(refreshNextExercise)
 
@@ -52,7 +45,7 @@ const JobDetails = ({
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={completedDisciplines ? progress : 0}
+          progress={completedDisciplines ? (progress ?? 0) : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
@@ -61,14 +54,12 @@ const JobDetails = ({
           thickness={6}
           testID='progress-circle'
         />
-        {discipline.leafDisciplines && (
-          <NumberText>
-            {completedDisciplines}/{discipline.leafDisciplines.length}
-          </NumberText>
-        )}
-        <UnitText>
-          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline)}
-        </UnitText>
+
+        <NumberText>
+          {completedDisciplines}/{job.numberOfChildren}
+        </NumberText>
+
+        <UnitText>{completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(job)}</UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={vocabularyItems[0].images[0]}
@@ -78,7 +69,7 @@ const JobDetails = ({
         subheading={title}
       />
       <Button
-        onPress={() => navigateToDiscipline(discipline)}
+        onPress={() => navigateToDiscipline(job)}
         label={getLabels().home.viewDisciplines}
         buttonTheme={BUTTONS_THEME.outlined}
         fitToContentWidth

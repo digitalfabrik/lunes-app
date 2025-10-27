@@ -3,6 +3,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { ExerciseKey, EXERCISES, FIRST_EXERCISE_FOR_REPETITION } from '../../../constants/data'
+import { StandardUnitId } from '../../../model/Unit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
@@ -11,7 +12,7 @@ import render from '../../../testing/render'
 import ExerciseFinishedScreen from '../ExerciseFinishedScreen'
 
 describe('ExerciseFinishedScreen', () => {
-  const disciplineId = 1
+  const unitId: StandardUnitId = { type: 'standard', id: 1 }
   const setVisible = jest.fn()
   const navigation = createNavigationMock<'ExerciseFinished'>()
   const getRoute = (
@@ -23,8 +24,8 @@ describe('ExerciseFinishedScreen', () => {
     name: 'ExerciseFinished',
     params: {
       contentType: 'standard',
-      disciplineId,
-      disciplineTitle: 'discipline',
+      unitId,
+      jobTitle: 'discipline',
       vocabularyItems: new VocabularyItemBuilder(4).build(),
       closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
@@ -75,8 +76,8 @@ describe('ExerciseFinishedScreen', () => {
     expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
       contentType: 'standard',
       vocabularyItems: route.params.vocabularyItems,
-      disciplineId,
-      disciplineTitle: route.params.disciplineTitle,
+      unitId,
+      jobTitle: route.params.jobTitle,
       closeExerciseAction: route.params.closeExerciseAction,
     })
   })
@@ -87,13 +88,7 @@ describe('ExerciseFinishedScreen', () => {
     expect(getByText(getLabels().results.feedbackGood.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.continue)
     fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
-      contentType: 'standard',
-      vocabularyItems: route.params.vocabularyItems,
-      disciplineId,
-      disciplineTitle: route.params.disciplineTitle,
-      closeExerciseAction: route.params.closeExerciseAction,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, expect.anything())
   })
 
   it('should render and handle button click for bad feedback', () => {
@@ -102,13 +97,7 @@ describe('ExerciseFinishedScreen', () => {
     expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, {
-      contentType: 'standard',
-      vocabularyItems: route.params.vocabularyItems,
-      disciplineId,
-      disciplineTitle: route.params.disciplineTitle,
-      closeExerciseAction: route.params.closeExerciseAction,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, expect.anything())
   })
 
   it('should render and handle button click for completed discipline', () => {

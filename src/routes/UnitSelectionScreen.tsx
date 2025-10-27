@@ -4,12 +4,12 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import DisciplineListItem from '../components/DisciplineListItem'
+import { UnitListItem } from '../components/DisciplineListItem'
 import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
-import { Discipline } from '../constants/endpoints'
-import { useLoadDisciplines } from '../hooks/useLoadDisciplines'
+import useLoadUnits from '../hooks/useLoadUnits'
+import { StandardUnit } from '../model/Unit'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
@@ -25,20 +25,21 @@ type UnitSelectionScreenProps = {
 
 const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): JSX.Element => {
   const { job } = route.params
-  const { data: units, error, loading, refresh } = useLoadDisciplines({ parent: job })
+  const { data: units, error, loading, refresh } = useLoadUnits(job.id)
 
-  const handleNavigation = (selectedItem: Discipline): void => {
+  const handleNavigation = (selectedItem: StandardUnit): void => {
     navigation.navigate('StandardExercises', {
       contentType: 'standard',
-      discipline: selectedItem,
-      disciplineTitle: selectedItem.title,
-      disciplineId: selectedItem.id,
+      unit: selectedItem,
+      jobTitle: selectedItem.title,
+      parentLabel: selectedItem.title,
+      unitId: selectedItem.id,
       vocabularyItems: null,
     })
   }
 
-  const renderListItem = ({ item }: { item: Discipline }): JSX.Element => (
-    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} showProgress />
+  const renderListItem = ({ item }: { item: StandardUnit }): JSX.Element => (
+    <UnitListItem unit={item} onPress={() => handleNavigation(item)} />
   )
 
   return (
@@ -48,7 +49,7 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): J
           ListHeaderComponent={<Title title={job.title} description={childrenDescription(job)} />}
           data={units}
           renderItem={renderListItem}
-          keyExtractor={({ id }) => id.toString()}
+          keyExtractor={({ id }) => JSON.stringify(id)}
           showsVerticalScrollIndicator={false}
         />
       </ServerResponseHandler>

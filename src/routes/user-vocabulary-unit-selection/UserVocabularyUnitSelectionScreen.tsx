@@ -4,46 +4,48 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import DisciplineListItem from '../../components/DisciplineListItem'
+import { UnitListItem } from '../../components/DisciplineListItem'
 import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
-import { Discipline, VocabularyItem } from '../../constants/endpoints'
+import { VocabularyItem } from '../../constants/endpoints'
 import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
+import { UserVocabularyUnit, UserVocabularyUnitId } from '../../model/Unit'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
-import { spiltVocabularyIntoDisciplines } from './splitVocabularyToDiscipline'
+import { splitVocabularyIntoDisciplines } from './splitVocabularyToUnits'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
   height: 100%;
 ` as unknown as typeof FlatList
 
-type DisciplineSelectionScreenProps = {
-  navigation: StackNavigationProp<RoutesParams, 'UserVocabularyDisciplineSelection'>
+type UnitSelectionScreenProps = {
+  navigation: StackNavigationProp<RoutesParams, 'UserVocabularyUnitSelection'>
 }
 
-export type DisciplineWithVocabulary = {
-  discipline: Discipline
+export type UnitWithVocabulary = {
+  unit: UserVocabularyUnit
   vocabulary: VocabularyItem[]
 }
 
-const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProps): JSX.Element => {
+const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): JSX.Element => {
   const userVocabulary = useReadUserVocabulary()
-  const disciplinesWithVocabulary = spiltVocabularyIntoDisciplines(userVocabulary)
+  const unitsWithVocabulary = splitVocabularyIntoDisciplines(userVocabulary)
 
-  const handleNavigation = (selectedDiscipline: number): void => {
-    const selectedDisciplinesWithVocabulary = disciplinesWithVocabulary[selectedDiscipline]
+  const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {
+    const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.id]
     return navigation.navigate('SpecialExercises', {
       contentType: 'userVocabulary',
-      discipline: selectedDisciplinesWithVocabulary.discipline,
-      disciplineTitle: selectedDisciplinesWithVocabulary.discipline.title,
-      vocabularyItems: selectedDisciplinesWithVocabulary.vocabulary,
+      unit: selectedUnitWithVocabulary.unit,
+      parentLabel: selectedUnitWithVocabulary.unit.title,
+      jobTitle: selectedUnitWithVocabulary.unit.title,
+      vocabularyItems: selectedUnitWithVocabulary.vocabulary,
       closeExerciseAction: CommonActions.goBack(),
     })
   }
 
-  const renderListItem = ({ item }: { item: DisciplineWithVocabulary }): JSX.Element => (
-    <DisciplineListItem item={item.discipline} onPress={() => handleNavigation(item.discipline.id)} />
+  const renderListItem = ({ item }: { item: UnitWithVocabulary }): JSX.Element => (
+    <UnitListItem unit={item.unit} onPress={() => handleNavigation(item.unit.id)} />
   )
 
   return (
@@ -55,7 +57,7 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
             description={wordsDescription(userVocabulary.length)}
           />
         }
-        data={disciplinesWithVocabulary}
+        data={unitsWithVocabulary}
         renderItem={renderListItem}
         showsVerticalScrollIndicator={false}
       />
@@ -63,4 +65,4 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
   )
 }
 
-export default DisciplineSelectionScreen
+export default UnitSelectionScreen

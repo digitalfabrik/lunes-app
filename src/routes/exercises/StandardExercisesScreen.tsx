@@ -39,27 +39,19 @@ type ExercisesScreenProps = {
 }
 
 const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { discipline, disciplineTitle, disciplineId } = route.params
+  const { unit, jobTitle, unitId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
-  const nextExerciseNumber = getNumberOfUnlockedExercises(scores, disciplineId)
+  const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unitId)
   const nextExercise = nextExerciseNumber < EXERCISES.length ? EXERCISES[nextExerciseNumber] : null
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
-  const {
-    data: vocabularyItems,
-    error,
-    loading,
-    refresh,
-  } = useLoadVocabularyItems({
-    disciplineId: discipline.id,
-    apiKey: discipline.apiKey,
-  })
+  const { data: vocabularyItems, error, loading, refresh } = useLoadVocabularyItems({ unitId })
 
   useEffect(() => {
     if (!isFeedbackSet) {
-      const exerciseScores = scores[disciplineId] ?? {}
+      const exerciseScores = scores[unitId.id] ?? {}
       const updatedFeedback: EXERCISE_FEEDBACK[] = Object.values(exerciseScores).map(score => {
         if (!score) {
           return EXERCISE_FEEDBACK.NONE
@@ -70,7 +62,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
       setFeedback(updatedFeedback)
       setIsFeedbackSet(true)
     }
-  }, [isFeedbackSet, disciplineId, scores])
+  }, [isFeedbackSet, unitId, scores])
 
   useEffect(() => {
     if (isFocused) {
@@ -86,15 +78,14 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
     if (vocabularyItems) {
       const closeExerciseAction = CommonActions.navigate('StandardExercises', {
         vocabularyItems,
-        disciplineTitle,
-        disciplineId,
-        discipline,
+        unitTitle: unit.title,
+        unitId,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
-        vocabularyItems,
         contentType: 'standard',
-        disciplineId,
-        disciplineTitle,
+        vocabularyItems,
+        unitId,
+        jobTitle,
         closeExerciseAction,
       })
     }
@@ -142,7 +133,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {vocabularyItems && (
           <>
-            <Title title={disciplineTitle} description={wordsDescription(vocabularyItems.length)} />
+            <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
               data={EXERCISES}
               renderItem={renderListItem}

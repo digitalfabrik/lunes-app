@@ -35,8 +35,8 @@ describe('VocabularyListScreen', () => {
     params: {
       contentType: 'standard',
       vocabularyItems,
-      disciplineId: 1,
-      disciplineTitle: 'My discipline title',
+      unitId: { id: 1, type: 'standard' },
+      jobTitle: 'My discipline title',
       closeExerciseAction: CommonActions.goBack(),
     },
   }
@@ -46,7 +46,7 @@ describe('VocabularyListScreen', () => {
 
   it('should save progress', () => {
     renderWithStorageCache(storageCache, <VocabularyListScreen route={route} navigation={navigation} />)
-    expect(setExerciseProgress).toHaveBeenCalledWith(storageCache, 1, 0, 1)
+    expect(setExerciseProgress).toHaveBeenCalledWith(storageCache, { id: 1, type: 'standard' }, 0, 1)
   })
 
   it('should display vocabulary list', () => {

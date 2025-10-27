@@ -1,15 +1,18 @@
 import { Article, ARTICLES } from '../constants/data'
 import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
 import { isTypeLoadProtected } from '../hooks/helpers'
+import { StandardUnit, StandardUnitId } from '../model/Unit'
 import Sponsor from '../models/sponsor'
 import { getFromEndpoint } from './axios'
 
 const Endpoints = {
   jobs: 'jobs',
   job: (id: number) => `jobs/${id}`,
+  unitsOfJob: (jobId: number) => `jobs/${jobId}/units`,
   sponsors: 'sponsors',
   words: 'words',
   word: (id: number) => `words/${id}`,
+  wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
 }
 
 type JobResponse = {
@@ -47,6 +50,33 @@ export const getJob = async (id: JobId): Promise<Discipline> =>
   !isTypeLoadProtected(id)
     ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id.disciplineId)))
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
+
+type UnitResponse = {
+  id: number
+  title: string
+  description: string
+  icon: string | null
+  number_words: number
+}
+
+const transformUnitsResponse = ({
+  id,
+  title,
+  description,
+  icon: iconUrl,
+  number_words: numberWords,
+}: UnitResponse): StandardUnit => ({
+  id: { id, type: 'standard' },
+  title,
+  description,
+  iconUrl,
+  numberWords,
+})
+
+export const getUnitsOfJob = async (jobId: number): Promise<StandardUnit[]> => {
+  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId))
+  return response.map(transformUnitsResponse)
+}
 
 type SponsorResponse = {
   id: number
@@ -102,4 +132,9 @@ export const getWords = async (): Promise<VocabularyItem[]> => {
 export const getWordById = async (id: number): Promise<VocabularyItem> => {
   const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
   return transformWordResponse(response)
+}
+
+export const getWordsByUnit = async (unitId: StandardUnitId): Promise<VocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId))
+  return response.map(transformWordResponse)
 }

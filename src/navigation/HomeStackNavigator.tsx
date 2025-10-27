@@ -37,7 +37,7 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='StandardExercises'
         component={StandardExercisesScreen}
-        options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
+        options={({ navigation, route }) => options(route.params.unit.title, navigation)}
       />
       <Stack.Screen
         name='Imprint'

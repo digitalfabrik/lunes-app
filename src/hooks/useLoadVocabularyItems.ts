@@ -1,5 +1,6 @@
 import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { ENDPOINTS, VocabularyItem } from '../constants/endpoints'
+import { StandardUnitId } from '../model/Unit'
 import { getFromEndpoint } from '../services/axios'
 import useLoadAsync, { Return } from './useLoadAsync'
 
@@ -40,23 +41,23 @@ export const formatVocabularyItemsFromServer = (
 ): VocabularyItem[] => vocabularyItemFromServers.map(item => formatVocabularyItemFromServer(item, apiKey))
 
 export const loadVocabularyItems = async ({
-  disciplineId,
+  unitId,
   apiKey,
 }: {
-  disciplineId: number
+  unitId: StandardUnitId
   apiKey?: string
 }): Promise<VocabularyItem[]> => {
-  const url = ENDPOINTS.vocabularyItems.replace(':id', `${disciplineId}`)
+  const url = ENDPOINTS.vocabularyItems.replace(':id', `${unitId.id}`)
   const response = await getFromEndpoint<VocabularyItemFromServer[]>(url, apiKey)
   return formatVocabularyItemsFromServer(response, apiKey)
 }
 
 const useLoadVocabularyItems = ({
-  disciplineId,
+  unitId,
   apiKey,
 }: {
-  disciplineId: number
+  unitId: StandardUnitId
   apiKey?: string
-}): Return<VocabularyItem[]> => useLoadAsync(loadVocabularyItems, { disciplineId, apiKey })
+}): Return<VocabularyItem[]> => useLoadAsync(loadVocabularyItems, { unitId, apiKey })
 
 export default useLoadVocabularyItems
