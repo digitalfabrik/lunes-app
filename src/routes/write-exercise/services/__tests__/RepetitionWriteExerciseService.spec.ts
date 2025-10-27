@@ -41,7 +41,7 @@ describe('RepetitionWriteExerciseService', () => {
       params: {
         contentType: 'repetition',
         vocabularyItems,
-        disciplineTitle: 'TestTitel',
+        jobTitle: 'TestTitel',
         closeExerciseAction: CommonActions.goBack(),
       },
     }

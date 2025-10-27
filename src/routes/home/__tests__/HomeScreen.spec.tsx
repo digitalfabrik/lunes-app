@@ -4,12 +4,12 @@ import React from 'react'
 
 import { Discipline } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { getJob, getJobs } from '../../../services/CmsApi'
+import { getJob, getJobs, getUnitsOfJob, getWordsByUnit } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
 import { renderWithStorageCache } from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
 
@@ -18,7 +18,6 @@ jest.mock('../../../services/helpers', () => ({
   childrenLabel: jest.fn(() => []),
 }))
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useReadProgress')
 jest.mock('../../../services/CmsApi')
 jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
@@ -36,15 +35,17 @@ describe('HomeScreen', () => {
   it('should render jobs', async () => {
     await storageCache.setItem(
       'selectedJobs',
-      mockDisciplines().map(item => item.id),
+      mockJobs().map(item => item.id),
     )
     mocked(getJob).mockImplementation(id =>
       isTypeLoadProtected(id)
         ? Promise.reject()
-        : Promise.resolve(mockDisciplines().find(item => item.id === id.disciplineId) as Discipline),
+        : Promise.resolve(mockJobs().find(item => item.id === id.disciplineId) as Discipline),
     )
+    mocked(getUnitsOfJob).mockReturnValue(Promise.resolve([]))
+    mocked(getWordsByUnit).mockReturnValue(Promise.resolve([]))
     const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    const firstDiscipline = await findByText('First Discipline')
+    const firstDiscipline = await waitFor(() => getByText('First Discipline'))
     const secondDiscipline = await findByText('Second Discipline')
     const thirdDiscipline = getByText('Third Discipline')
     expect(firstDiscipline).toBeDefined()

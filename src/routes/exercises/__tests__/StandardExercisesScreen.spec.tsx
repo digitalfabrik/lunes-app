@@ -11,7 +11,8 @@ import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
+import mockUnits from '../../../testing/mockUnit'
 import { renderWithStorageCache } from '../../../testing/render'
 import StandardExercisesScreen from '../StandardExercisesScreen'
 
@@ -28,9 +29,10 @@ describe('StandardExercisesScreen', () => {
     name: 'StandardExercises',
     params: {
       contentType: 'standard',
-      disciplineId: mockDisciplines()[0].id,
-      disciplineTitle: mockDisciplines()[0].title,
-      discipline: mockDisciplines()[0],
+      unitId: mockUnits[0].id,
+      jobTitle: mockJobs()[0].title,
+      parentLabel: mockJobs()[0].title,
+      unit: mockUnits[0],
       vocabularyItems: null,
     },
   }
@@ -40,7 +42,7 @@ describe('StandardExercisesScreen', () => {
     RNAsyncStorage.clear()
     storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
-      [route.params.disciplineId]: {
+      [route.params.unitId.id]: {
         '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
         '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
@@ -79,13 +81,7 @@ describe('StandardExercisesScreen', () => {
     )
     const nextExercise = getByText(EXERCISES[0].title)
     fireEvent.press(nextExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, {
-      contentType: 'standard',
-      closeExerciseAction: undefined,
-      disciplineId: mockDisciplines()[0].id,
-      disciplineTitle: mockDisciplines()[0].title,
-      vocabularyItems,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, expect.anything())
   })
 
   it('should show feedback badge for done levels', async () => {

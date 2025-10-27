@@ -8,15 +8,15 @@ import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
 type ShareButtonProps = {
-  disciplineTitle: string
+  jobTitle: string
   results: VocabularyItemResult[]
 }
 
-const ShareButton = ({ disciplineTitle, results }: ShareButtonProps): ReactElement => {
+const ShareButton = ({ jobTitle, results }: ShareButtonProps): ReactElement => {
   const share = async () => {
     const correctWords = results.filter(doc => doc.result === 'correct').length
     const xOfAllWords = `${correctWords} ${getLabels().results.of} ${results.length}`
-    const message = `${getLabels().results.share.message1} '${disciplineTitle}' ${
+    const message = `${getLabels().results.share.message1} '${jobTitle}' ${
       getLabels().results.share.message2
     } ${xOfAllWords} ${getLabels().results.share.message3}`
 
