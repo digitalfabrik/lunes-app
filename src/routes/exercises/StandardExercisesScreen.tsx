@@ -12,7 +12,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
-import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
+import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
@@ -47,7 +47,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
-  const { data: vocabularyItems, error, loading, refresh } = useLoadVocabularyItems({ unitId })
+  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByUnit(unitId)
 
   useEffect(() => {
     if (!isFeedbackSet) {
