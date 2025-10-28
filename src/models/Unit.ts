@@ -5,7 +5,7 @@ export type StandardUnitId = {
 
 export type UserVocabularyUnitId = {
   type: 'user-vocabulary-unit'
-  id: number
+  index: number
 }
 
 export type UnitId = StandardUnitId | UserVocabularyUnitId

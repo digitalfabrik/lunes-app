@@ -9,7 +9,7 @@ const createUnits = (vocabularySize: number) => {
   for (let i = 0; i < vocabularySize / DISCIPLINE_SIZE; i += 1) {
     unitsWithVocabulary.push({
       unit: {
-        id: { id: i, type: 'user-vocabulary-unit' },
+        id: { index: i, type: 'user-vocabulary-unit' },
         title: `${getLabels().userVocabulary.practice.part} ${i + 1}`,
         description: '',
         numberWords: 1,
