@@ -5,7 +5,7 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
-import useLoadVocabularyItems from '../../../hooks/useLoadVocabularyItems'
+import useLoadWordsByUnit from '../../../hooks/useLoadWordsByUnit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
@@ -17,7 +17,7 @@ import { renderWithStorageCache } from '../../../testing/render'
 import StandardExercisesScreen from '../StandardExercisesScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadVocabularyItems')
+jest.mock('../../../hooks/useLoadWordsByUnit')
 
 describe('StandardExercisesScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(1).build()
@@ -47,7 +47,7 @@ describe('StandardExercisesScreen', () => {
         '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
     })
-    mocked(useLoadVocabularyItems).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadWordsByUnit).mockReturnValue(getReturnOf(vocabularyItems))
   })
 
   it('should render correctly', () => {
