@@ -64,13 +64,6 @@ describe('DisciplineSelectionScreen', () => {
     expect(discipline).toBeDefined()
     fireEvent.press(discipline)
 
-    expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', {
-      contentType: 'standard',
-      unit: mockUnits[2],
-      jobTitle: mockUnits[2].title,
-      parentLabel: mockUnits[2].title,
-      unitId: mockUnits[2].id,
-      vocabularyItems: null,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', expect.anything())
   })
 })

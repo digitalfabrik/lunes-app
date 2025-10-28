@@ -35,12 +35,9 @@ const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): JSX.Elem
   const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {
     const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.id]
     return navigation.navigate('SpecialExercises', {
-      contentType: 'userVocabulary',
       unit: selectedUnitWithVocabulary.unit,
-      parentLabel: selectedUnitWithVocabulary.unit.title,
       jobTitle: selectedUnitWithVocabulary.unit.title,
       vocabularyItems: selectedUnitWithVocabulary.vocabulary,
-      closeExerciseAction: CommonActions.goBack(),
     })
   }
 
