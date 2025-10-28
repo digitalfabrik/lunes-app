@@ -45,7 +45,7 @@ describe('WordChoiceExerciseScreen', () => {
       contentType: 'standard',
       vocabularyItems,
       unitId: { id: 1, type: 'standard' },
-      jobTitle: 'TestTitel',
+      unitTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
     },
   }

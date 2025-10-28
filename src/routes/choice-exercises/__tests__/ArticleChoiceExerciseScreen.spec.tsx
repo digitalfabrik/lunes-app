@@ -58,7 +58,7 @@ describe('ArticleChoiceExerciseScreen', () => {
       contentType: 'standard',
       vocabularyItems,
       unitId: { type: 'standard', id: 1 },
-      jobTitle: 'TestTitel',
+      unitTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
     },
   }

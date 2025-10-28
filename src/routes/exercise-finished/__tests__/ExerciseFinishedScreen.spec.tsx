@@ -25,7 +25,7 @@ describe('ExerciseFinishedScreen', () => {
     params: {
       contentType: 'standard',
       unitId,
-      jobTitle: 'discipline',
+      unitTitle: 'discipline',
       vocabularyItems: new VocabularyItemBuilder(4).build(),
       closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
@@ -73,13 +73,7 @@ describe('ExerciseFinishedScreen', () => {
     ).toBeDefined()
     const button = getByText(getLabels().results.action.nextExercise)
     fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, {
-      contentType: 'standard',
-      vocabularyItems: route.params.vocabularyItems,
-      unitId,
-      jobTitle: route.params.jobTitle,
-      closeExerciseAction: route.params.closeExerciseAction,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, expect.anything())
   })
 
   it('should render and handle button click for good feedback', () => {

@@ -7,23 +7,21 @@ import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import mockUnits from '../../../testing/mockUnit'
+import { mockUserVocabularyUnits } from '../../../testing/mockUnit'
 import render from '../../../testing/render'
 import SpecialExercisesScreen from '../SpecialExercisesScreen'
 
 describe('SpecialExercisesScreen', () => {
   let navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
-  const unit = mockUnits[0]
+  const unit = mockUserVocabularyUnits[0]
   const renderScreen = (): RenderAPI => {
     const route: RouteProp<RoutesParams, 'SpecialExercises'> = {
       key: '',
       name: 'SpecialExercises',
       params: {
         unit,
-        contentType: 'userVocabulary',
         jobTitle: `${getLabels().userVocabulary.practice.part} 1`,
-        parentLabel: `${getLabels().userVocabulary.practice.part} 1`,
         vocabularyItems,
       },
     }

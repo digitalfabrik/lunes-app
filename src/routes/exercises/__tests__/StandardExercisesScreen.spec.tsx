@@ -28,12 +28,8 @@ describe('StandardExercisesScreen', () => {
     key: 'key-0',
     name: 'StandardExercises',
     params: {
-      contentType: 'standard',
-      unitId: mockUnits[0].id,
       jobTitle: mockJobs()[0].title,
-      parentLabel: mockJobs()[0].title,
       unit: mockUnits[0],
-      vocabularyItems: null,
     },
   }
 
@@ -42,7 +38,7 @@ describe('StandardExercisesScreen', () => {
     RNAsyncStorage.clear()
     storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
-      [route.params.unitId.id]: {
+      [route.params.unit.id.id]: {
         '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
         '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
