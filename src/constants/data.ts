@@ -137,7 +137,7 @@ export const VOCABULARY_ITEM_TYPES = {
   lunesStandard: 'lunes-standard',
   lunesProtected: 'lunes-protected',
   userCreated: 'user-created',
-}
+} as const
 export type VocabularyItemType = (typeof VOCABULARY_ITEM_TYPES)[keyof typeof VOCABULARY_ITEM_TYPES]
 
 export type Favorite = {
