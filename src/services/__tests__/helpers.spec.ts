@@ -1,13 +1,26 @@
-import { ARTICLES, NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult, VOCABULARY_ITEM_TYPES } from '../../constants/data';
-import { Discipline, VocabularyItem } from '../../constants/endpoints';
-import { VocabularyItemResult } from '../../navigation/NavigationTypes';
-import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder';
-import { mockJobs } from '../../testing/mockJob';
-import mockUnits from '../../testing/mockUnit';
-import { getJob, getUnitsOfJob } from '../CmsApi';
-import { StorageCache } from '../Storage';
-import { calculateScore, getNextExercise, getProgress, getSortedAndFilteredVocabularyItems, searchJobs, splitTextBySearchString, willNextExerciseUnlock } from '../helpers';
-
+import {
+  ARTICLES,
+  NextExercise,
+  SCORE_THRESHOLD_UNLOCK,
+  SimpleResult,
+  VOCABULARY_ITEM_TYPES,
+} from '../../constants/data'
+import { Discipline, VocabularyItem } from '../../constants/endpoints'
+import { VocabularyItemResult } from '../../navigation/NavigationTypes'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
+import { mockJobs } from '../../testing/mockJob'
+import mockUnits from '../../testing/mockUnit'
+import { getJob, getUnitsOfJob } from '../CmsApi'
+import { StorageCache } from '../Storage'
+import {
+  calculateScore,
+  getNextExercise,
+  getProgress,
+  getSortedAndFilteredVocabularyItems,
+  searchJobs,
+  splitTextBySearchString,
+  willNextExerciseUnlock,
+} from '../helpers'
 
 import mocked = jest.mocked
 
