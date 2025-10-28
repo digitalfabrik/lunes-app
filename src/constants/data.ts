@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
 import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
-import { StandardUnit } from '../model/Unit'
+import { StandardUnit } from '../models/Unit'
 import { VocabularyItem } from './endpoints'
 import labels from './labels.json'
 

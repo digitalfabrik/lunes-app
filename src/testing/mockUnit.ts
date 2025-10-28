@@ -1,4 +1,4 @@
-import { StandardUnit, UserVocabularyUnit } from '../model/Unit'
+import { StandardUnit, UserVocabularyUnit } from '../models/Unit'
 
 const mockUnits: StandardUnit[] = [
   {

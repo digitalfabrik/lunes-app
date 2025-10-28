@@ -1,7 +1,7 @@
 import { Article, ARTICLES } from '../constants/data'
 import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
 import { isTypeLoadProtected } from '../hooks/helpers'
-import { StandardUnit, StandardUnitId } from '../model/Unit'
+import { StandardUnit, StandardUnitId } from '../models/Unit'
 import Sponsor from '../models/sponsor'
 import { getFromEndpoint } from './axios'
 

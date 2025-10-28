@@ -1,5 +1,5 @@
 import { VocabularyItem } from '../constants/endpoints'
-import { StandardUnitId } from '../model/Unit'
+import { StandardUnitId } from '../models/Unit'
 import { getWordsByUnit } from '../services/CmsApi'
 import useLoadAsync, { Return } from './useLoadAsync'
 

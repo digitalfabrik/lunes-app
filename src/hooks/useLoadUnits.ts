@@ -1,4 +1,4 @@
-import { StandardUnit } from '../model/Unit'
+import { StandardUnit } from '../models/Unit'
 import { getUnitsOfJob } from '../services/CmsApi'
 import { Return, useLoadAsync } from './useLoadAsync'
 

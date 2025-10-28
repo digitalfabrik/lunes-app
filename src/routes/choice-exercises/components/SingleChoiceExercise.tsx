@@ -20,7 +20,7 @@ import {
 } from '../../../constants/data'
 import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
 import { useStorageCache } from '../../../hooks/useStorage'
-import { StandardUnitId } from '../../../model/Unit'
+import { StandardUnitId } from '../../../models/Unit'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'

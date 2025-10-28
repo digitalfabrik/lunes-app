@@ -7,7 +7,7 @@ import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import theme from '../constants/theme'
 import useStorage from '../hooks/useStorage'
-import Unit from '../model/Unit'
+import Unit from '../models/Unit'
 import { getLabels, getNumberOfUnlockedExercises, pluralize } from '../services/helpers'
 import ListItem from './ListItem'
 
