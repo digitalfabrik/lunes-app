@@ -12,7 +12,7 @@ export const loadNextExercise = async (progress: Progress, job: Discipline): Pro
   const vocabularyItems = await getWordsByUnit(unit.id)
   return {
     vocabularyItems,
-    title: unit.title,
+    jobTitle: job.title,
     exerciseKey,
     unit,
   }

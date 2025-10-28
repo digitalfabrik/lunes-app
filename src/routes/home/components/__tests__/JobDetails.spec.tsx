@@ -25,14 +25,14 @@ jest.mock('@react-navigation/native')
 
 const firstExerciseData: NextExerciseData = {
   vocabularyItems: new VocabularyItemBuilder(1).build(),
-  title: 'Exercise Test',
+  jobTitle: 'Exercise Test',
   exerciseKey: 0,
   unit: mockUnits[0],
 }
 
 const nextExerciseData: NextExerciseData = {
   vocabularyItems: new VocabularyItemBuilder(1).build(),
-  title: 'Exercise Test',
+  jobTitle: 'Exercise Test',
   exerciseKey: 1,
   unit: mockUnits[1],
 }
@@ -51,7 +51,7 @@ describe('JobDetails', () => {
     mocked(useReadProgress).mockReturnValue(getReturnOf(1))
     mocked(useLoadNextExercise).mockReturnValue(getReturnOf(nextExerciseData))
     const { getByText, findByText, getByTestId } = renderJobDetails()
-    expect(getByText(nextExerciseData.title)).toBeDefined()
+    expect(getByText(nextExerciseData.jobTitle)).toBeDefined()
     expect(getByTestId('progress-circle')).toBeDefined()
     expect(findByText(getLabels().home.continue)).toBeDefined()
   })

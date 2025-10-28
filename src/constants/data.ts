@@ -66,8 +66,7 @@ export type NextExercise = {
 
 export type NextExerciseData = NextExercise & {
   vocabularyItems: VocabularyItem[]
-  // TODO: check whether this is unused now
-  title: string
+  jobTitle: string
 }
 
 export const BUTTONS_THEME = {
