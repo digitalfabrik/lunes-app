@@ -90,7 +90,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
       navigation.navigate('WriteExercise', {
         vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
         contentType: 'repetition',
-        jobTitle: '',
+        unitTitle: '',
         closeExerciseAction,
       })
     }

@@ -29,12 +29,8 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): J
 
   const handleNavigation = (selectedItem: StandardUnit): void => {
     navigation.navigate('StandardExercises', {
-      contentType: 'standard',
       unit: selectedItem,
       jobTitle: selectedItem.title,
-      parentLabel: selectedItem.title,
-      unitId: selectedItem.id,
-      vocabularyItems: null,
     })
   }
 

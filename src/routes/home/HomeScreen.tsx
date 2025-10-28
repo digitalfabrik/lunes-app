@@ -54,7 +54,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       contentType: 'standard',
       unitId: unit.id,
-      jobTitle: nextExerciseData.jobTitle,
+      unitTitle: nextExerciseData.jobTitle,
       vocabularyItems,
       closeExerciseAction: CommonActions.navigate('Home'),
     })

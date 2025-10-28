@@ -2,7 +2,7 @@ import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import { Discipline, VocabularyItem } from '../constants/endpoints'
-import Unit, { StandardUnitId } from '../model/Unit'
+import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../model/Unit'
 
 export type VocabularyItemResult = {
   vocabularyItem: VocabularyItem
@@ -22,7 +22,7 @@ type SpecialExercise = {
 }
 
 type SharedExerciseParams = {
-  jobTitle: string
+  unitTitle: string
   vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
@@ -34,16 +34,15 @@ type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
 } & ExerciseParams
 
-type SharedExercisesParams = {
-  unit: Unit
-  // TODO: Get rid of this
-  parentLabel: string
-  vocabularyItems: VocabularyItem[] | null
-  closeExerciseAction?: CommonNavigationAction
-} & Omit<SharedExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
-
-export type StandardExercisesParams = StandardExercise & SharedExercisesParams
-export type SpecialExercisesParams = SpecialExercise & SharedExercisesParams
+export type StandardExercisesParams = {
+  unit: StandardUnit
+  jobTitle: string
+}
+export type SpecialExercisesParams = {
+  vocabularyItems: VocabularyItem[]
+  unit: UserVocabularyUnit
+  jobTitle: string
+}
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
