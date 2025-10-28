@@ -39,7 +39,7 @@ const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDe
     return null
   }
 
-  const { vocabularyItems, title, exerciseKey } = nextExerciseData
+  const { vocabularyItems, jobTitle, exerciseKey } = nextExerciseData
 
   return (
     <>
@@ -66,7 +66,7 @@ const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDe
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
-        subheading={title}
+        subheading={jobTitle}
       />
       <Button
         onPress={() => navigateToDiscipline(job)}
