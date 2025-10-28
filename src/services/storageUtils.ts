@@ -3,7 +3,7 @@ import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
-import { StandardUnitId } from '../model/Unit'
+import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'

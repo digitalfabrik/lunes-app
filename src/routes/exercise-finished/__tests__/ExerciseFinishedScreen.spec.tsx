@@ -3,7 +3,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { ExerciseKey, EXERCISES, FIRST_EXERCISE_FOR_REPETITION } from '../../../constants/data'
-import { StandardUnitId } from '../../../model/Unit'
+import { StandardUnitId } from '../../../models/Unit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'

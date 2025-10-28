@@ -15,7 +15,7 @@ import {
 import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
-import { StandardUnitId } from '../model/Unit'
+import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
 import { postToEndpoint } from './axios'

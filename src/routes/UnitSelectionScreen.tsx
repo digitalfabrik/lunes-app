@@ -9,7 +9,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import useLoadUnits from '../hooks/useLoadUnits'
-import { StandardUnit } from '../model/Unit'
+import { StandardUnit } from '../models/Unit'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
 
