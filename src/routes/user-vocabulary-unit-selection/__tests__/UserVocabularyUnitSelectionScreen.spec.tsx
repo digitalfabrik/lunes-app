@@ -55,7 +55,9 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   })
 
   it('should handle navigation correctly', async () => {
-    const vocabularyItems = new VocabularyItemBuilder(25).build().map(item => ({ ...item, type: 'user-created' }))
+    const vocabularyItems = new VocabularyItemBuilder(25)
+      .build()
+      .map(item => ({ ...item, type: 'user-created' }) as const)
     const { getByText } = await renderScreen(vocabularyItems)
     const partTwo = getByText(`${getLabels().userVocabulary.practice.part} 2`)
     fireEvent.press(partTwo)
