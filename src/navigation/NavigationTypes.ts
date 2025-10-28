@@ -22,7 +22,7 @@ type SpecialExercise = {
 }
 
 type SharedExerciseParams = {
-  jobTitle: string
+  unitTitle: string
   vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }

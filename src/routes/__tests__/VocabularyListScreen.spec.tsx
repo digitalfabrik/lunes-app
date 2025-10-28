@@ -36,7 +36,7 @@ describe('VocabularyListScreen', () => {
       contentType: 'standard',
       vocabularyItems,
       unitId: { id: 1, type: 'standard' },
-      jobTitle: 'My discipline title',
+      unitTitle: 'My discipline title',
       closeExerciseAction: CommonActions.goBack(),
     },
   }

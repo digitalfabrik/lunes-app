@@ -39,7 +39,7 @@ type ExercisesScreenProps = {
 }
 
 const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { unit, jobTitle } = route.params
+  const { unit } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
   const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unit.id)
@@ -77,15 +77,13 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
     }
     if (vocabularyItems) {
       const closeExerciseAction = CommonActions.navigate('StandardExercises', {
-        vocabularyItems,
-        unitTitle: unit.title,
-        unitId: unit.id,
+        unit,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
         contentType: 'standard',
         vocabularyItems,
         unitId: unit.id,
-        jobTitle,
+        unitTitle: unit.title,
         closeExerciseAction,
       })
     }
