@@ -26,21 +26,21 @@ const mockUnits: StandardUnit[] = [
 
 export const mockUserVocabularyUnits: UserVocabularyUnit[] = [
   {
-    id: { type: 'user-vocabulary-unit', id: 1 },
+    id: { type: 'user-vocabulary-unit', index: 1 },
     iconUrl: null,
     numberWords: 20,
     title: 'Unit 1',
     description: 'User unit 1 description',
   },
   {
-    id: { type: 'user-vocabulary-unit', id: 2 },
+    id: { type: 'user-vocabulary-unit', index: 2 },
     iconUrl: null,
     numberWords: 42,
     title: 'Unit 2',
     description: 'User unit 2 description',
   },
   {
-    id: { type: 'user-vocabulary-unit', id: 3 },
+    id: { type: 'user-vocabulary-unit', index: 3 },
     iconUrl: null,
     numberWords: 1,
     title: 'Unit 3',
