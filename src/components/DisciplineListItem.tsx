@@ -6,7 +6,6 @@ import styled from 'styled-components/native'
 import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import theme from '../constants/theme'
-import useReadProgress from '../hooks/useReadProgress'
 import useStorage from '../hooks/useStorage'
 import Unit from '../model/Unit'
 import { getLabels, getNumberOfUnlockedExercises, pluralize } from '../services/helpers'
@@ -24,7 +23,6 @@ type JobListItemProps = {
   onPress: () => void
   rightChildren?: ReactElement
   disabled?: boolean
-  showProgress?: boolean
 }
 
 const Icon = styled.Image`
@@ -87,18 +85,14 @@ export const JobListItem = ({
   onPress,
   rightChildren,
   disabled = false,
-  showProgress = false,
 }: JobListItemProps): ReactElement | null => {
   const badgeLabel = job.numberOfChildren.toString()
   const description = pluralize(getLabels().general.unit, job.numberOfChildren)
 
-  const { data: actualProgress } = useReadProgress(job)
-  const displayedProgress = showProgress ? (actualProgress ?? 0) : 0
-
   return (
     <ListItem
       title={job.title}
-      icon={iconWithProgress(job.icon, displayedProgress)}
+      icon={iconWithProgress(job.icon, 0)}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}
