@@ -89,16 +89,17 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    if (unitId === null) {
-      return
+    let unlockedNextExercise = true
+    if (unitId !== null) {
+      const progress = storageCache.getItem('progress')
+      await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
+      unlockedNextExercise = willNextExerciseUnlock(progress[unitId.id]?.[exerciseKey], calculateScore(results))
     }
-    const progress = storageCache.getItem('progress')
-    await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,
       results,
-      unlockedNextExercise: willNextExerciseUnlock(progress[unitId.id]?.[exerciseKey], calculateScore(results)),
+      unlockedNextExercise,
     })
     initializeExercise(true)
   }
