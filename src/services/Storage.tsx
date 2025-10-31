@@ -8,7 +8,7 @@ import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
 
-export const STORAGE_VERSION = 1
+export const STORAGE_VERSION = 2
 
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
@@ -16,8 +16,8 @@ export type Storage = {
   version: number
   wordNodeCards: WordNodeCard[]
   isTrackingEnabled: boolean
-  // Null means the selected professions were never set before, which means that the intro should be shown
-  selectedProfessions: number[] | null
+  // Null means the selected jobs were never set before, which means that the intro should be shown
+  selectedJobs: number[] | null
   isDevModeEnabled: boolean
   progress: Progress
   cmsUrlOverwrite: CMS | null
@@ -36,7 +36,7 @@ export const newDefaultStorage = (): Storage => ({
   version: STORAGE_VERSION,
   wordNodeCards: [],
   isTrackingEnabled: true,
-  selectedProfessions: null,
+  selectedJobs: null,
   isDevModeEnabled: false,
   progress: {},
   cmsUrlOverwrite: null,
@@ -51,7 +51,7 @@ export const storageKeys: Record<keyof Storage, string> = {
   version: 'version',
   wordNodeCards: 'wordNodeCards',
   isTrackingEnabled: 'sentryTracking',
-  selectedProfessions: 'selectedProfessions',
+  selectedJobs: 'selectedProfessions',
   isDevModeEnabled: 'devmode',
   progress: 'progress',
   cmsUrlOverwrite: 'cms',
@@ -145,7 +145,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     version: getStorageItem('version'),
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
-    selectedProfessions: getStorageItem('selectedProfessions'),
+    selectedJobs: getStorageItem('selectedJobs'),
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
     progress: getStorageItem('progress'),
     cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),

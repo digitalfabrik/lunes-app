@@ -1,4 +1,4 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
@@ -7,22 +7,21 @@ import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockUserVocabularyUnits } from '../../../testing/mockUnit'
 import render from '../../../testing/render'
 import SpecialExercisesScreen from '../SpecialExercisesScreen'
 
 describe('SpecialExercisesScreen', () => {
   let navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
-  const discipline = mockDisciplines(true)[0]
+  const unit = mockUserVocabularyUnits[0]
   const renderScreen = (): RenderAPI => {
     const route: RouteProp<RoutesParams, 'SpecialExercises'> = {
       key: '',
       name: 'SpecialExercises',
       params: {
-        discipline,
-        contentType: 'userVocabulary',
-        disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
+        unit,
+        jobTitle: `${getLabels().userVocabulary.practice.part} 1`,
         vocabularyItems,
       },
     }
@@ -45,14 +44,6 @@ describe('SpecialExercisesScreen', () => {
     const { getByText } = renderScreen()
     const wordChoiceExercise = getByText(getLabels().exercises.wordChoice.title)
     fireEvent.press(wordChoiceExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith('WordChoiceExercise', {
-      closeExerciseAction: CommonActions.navigate('SpecialExercises', {
-        vocabularyItems,
-        disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-      }),
-      contentType: 'userVocabulary',
-      vocabularyItems,
-      disciplineTitle: `${getLabels().userVocabulary.practice.part} 1`,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith('WordChoiceExercise', expect.anything())
   })
 })

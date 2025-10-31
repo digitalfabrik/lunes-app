@@ -3,14 +3,14 @@ import React from 'react'
 
 import { ForbiddenError, NetworkError } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
-import { mockDisciplines } from '../../../../testing/mockDiscipline'
+import { mockJobs } from '../../../../testing/mockJob'
 import {
   mockUseLoadAsyncLoading,
   mockUseLoadAsyncWithData,
   mockUseLoadAsyncWithError,
 } from '../../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../../testing/render'
-import DisciplineCard from '../DisciplineCard'
+import JobCard from '../JobCard'
 
 jest.mock('@react-navigation/native')
 
@@ -23,12 +23,12 @@ const navigateToDiscipline = jest.fn()
 
 describe('DisciplineCard', () => {
   const renderDisciplineCard = (): RenderAPI =>
-    render(<DisciplineCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
+    render(<JobCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
 
   it('should show discipline card', async () => {
-    mockUseLoadAsyncWithData(mockDisciplines()[0])
+    mockUseLoadAsyncWithData(mockJobs()[0])
     const { getByText, findByText } = renderDisciplineCard()
-    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
+    expect(getByText(mockJobs()[0].title)).toBeDefined()
     const element = await findByText(labels.home.start)
     expect(element).toBeDefined()
   })
