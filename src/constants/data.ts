@@ -174,13 +174,6 @@ export const RESULTS: Readonly<ResultType[]> = [
 
 export type Result = (typeof RESULTS)[number]
 
-export const FeedbackType = {
-  discipline: 'discipline',
-  leaf_discipline: 'trainingset',
-  vocabularyItem: 'document',
-} as const
-export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
-
 export const numberOfMaxRetries = 3
 
 export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
