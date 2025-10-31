@@ -1,16 +1,40 @@
 import { Article, ARTICLES } from '../constants/data'
 import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
 import { isTypeLoadProtected } from '../hooks/helpers'
+import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
-import { getFromEndpoint } from './axios'
+import { getFromEndpoint, postToEndpoint } from './axios'
 
 const Endpoints = {
+  feedback: 'feedback',
   jobs: 'jobs',
   job: (id: number) => `jobs/${id}`,
   unitsOfJob: (jobId: number) => `jobs/${jobId}/units`,
   words: 'words',
   word: (id: number) => `words/${id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
+}
+
+type PostFeedback = {
+  comment: string
+  object_id: number
+  content_type: FeedbackTarget['type']
+}
+
+// eslint-disable-next-line consistent-return
+const transformFeedbackToPostFeedback = ({ comment, target }: Feedback): PostFeedback => {
+  switch (target.type) {
+    case 'job':
+      return { comment, content_type: target.type, object_id: target.jobId }
+    case 'unit':
+      return { comment, content_type: target.type, object_id: target.unitId.id }
+    case 'word':
+      return { comment, content_type: target.type, object_id: target.wordId }
+  }
+}
+
+export const postFeedback = async (feedback: Feedback): Promise<void> => {
+  await postToEndpoint(Endpoints.feedback, transformFeedbackToPostFeedback(feedback))
 }
 
 type JobResponse = {
