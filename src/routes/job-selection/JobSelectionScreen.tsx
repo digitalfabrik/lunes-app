@@ -11,10 +11,11 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import useStorage from '../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
-import ScopeSelection from './ScopeSelection'
+import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
+import JobSelection from './JobSelection'
 
 const TextContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xxl};
@@ -29,14 +30,15 @@ const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.md} auto;
 `
 
-type IntroScreenProps = {
-  route: RouteProp<RoutesParams, 'ScopeSelection'>
-  navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
+type JobSelectionScreenProps = {
+  route: RouteProp<RoutesParams, 'JobSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'JobSelection'>
 }
 
-const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
+const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): JSX.Element => {
   const { initialSelection } = route.params
-  const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
+  const storageCache = useStorageCache()
+  const [selectedJobs, setSelectedJobs] = useStorage('selectedJobs')
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
 
@@ -44,21 +46,22 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
     navigation.setOptions({ headerShown: !initialSelection })
   })
 
-  const navigateToDiscipline = (item: Discipline): void => {
-    navigation.navigate('ProfessionSelection', {
-      discipline: item,
-      initialSelection,
-    })
-  }
-
   const navigateToHomeScreen = async () => {
-    if (selectedProfessions === null) {
-      await setSelectedProfessions([])
+    if (selectedJobs === null) {
+      await setSelectedJobs([])
     }
     navigation.reset({
       index: 0,
       routes: [{ name: 'BottomTabNavigator' }],
     })
+  }
+
+  const selectJob = async (job: Discipline) => {
+    await pushSelectedJob(storageCache, job.id)
+  }
+
+  const unselectJob = async (job: Discipline) => {
+    await removeSelectedJob(storageCache, job.id)
   }
 
   return (
@@ -73,17 +76,22 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
           {initialSelection ? (
             <StyledText>{getLabels().scopeSelection.welcome}</StyledText>
           ) : (
-            <Heading centered>{getLabels().manageSelection.addProfession}</Heading>
+            <Heading centered>{getLabels().manageJobs.addJob}</Heading>
           )}
-          <StyledText>{getLabels().scopeSelection.selectProfession}</StyledText>
+          <StyledText>{getLabels().scopeSelection.selectJob}</StyledText>
         </TextContainer>
-        <ScopeSelection queryTerm={queryTerm} setQueryTerm={setQueryTerm} navigateToDiscipline={navigateToDiscipline} />
+        <JobSelection
+          queryTerm={queryTerm}
+          setQueryTerm={setQueryTerm}
+          onSelectJob={selectJob}
+          onUnselectJob={initialSelection ? unselectJob : undefined}
+        />
         {initialSelection && (
           <ButtonContainer>
             <Button
               onPress={navigateToHomeScreen}
               label={
-                selectedProfessions && selectedProfessions.length > 0
+                selectedJobs && selectedJobs.length > 0
                   ? getLabels().scopeSelection.confirmSelection
                   : getLabels().scopeSelection.skipSelection
               }
@@ -96,4 +104,4 @@ const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Elem
   )
 }
 
-export default ScopeSelectionScreen
+export default JobSelectionScreen

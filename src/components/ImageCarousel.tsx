@@ -3,8 +3,6 @@ import { Keyboard, useWindowDimensions } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import styled, { useTheme } from 'styled-components/native'
 
-import { Images } from '../constants/endpoints'
-
 const ImageView = styled.View<{ height: number }>`
   height: ${({ height }) => height}px;
 `
@@ -47,7 +45,7 @@ const PaginationView = styled.View<{ minimized: boolean }>`
 `
 
 type ImageCarouselProps = {
-  images: Images
+  images: string[]
   minimized?: boolean
 }
 
@@ -71,7 +69,7 @@ const ImageCarousel = ({ images, minimized = false }: ImageCarouselProps): React
   const viewerHeight = (deviceHeight * heightPercent) / percentage
 
   const imagesUrls: ImageUrl[] = images.map(image => ({
-    url: image.image,
+    url: image,
   }))
 
   const renderIndicator = (currentIndex?: number, allSize?: number): ReactElement => (

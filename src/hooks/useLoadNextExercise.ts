@@ -2,21 +2,19 @@ import { useCallback } from 'react'
 
 import { NextExerciseData, Progress } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
-import { getNextExercise, loadTrainingsSet } from '../services/helpers'
-import { formatDiscipline } from './helpers'
+import { getWordsByUnit } from '../services/CmsApi'
+import { getNextExercise } from '../services/helpers'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { loadVocabularyItems } from './useLoadVocabularyItems'
 import useStorage from './useStorage'
 
-export const loadNextExercise = async (progress: Progress, profession: Discipline): Promise<NextExerciseData> => {
-  const nextExercise = await getNextExercise({ progress, profession })
-  const trainingSet = await loadTrainingsSet(nextExercise.disciplineId)
-  const vocabularyItems = await loadVocabularyItems({ disciplineId: nextExercise.disciplineId })
+export const loadNextExercise = async (progress: Progress, job: Discipline): Promise<NextExerciseData> => {
+  const { unit, exerciseKey } = await getNextExercise({ progress, job })
+  const vocabularyItems = await getWordsByUnit(unit.id)
   return {
     vocabularyItems,
-    title: formatDiscipline(trainingSet, { parent: null }).title,
-    exerciseKey: nextExercise.exerciseKey,
-    disciplineId: nextExercise.disciplineId,
+    jobTitle: job.title,
+    exerciseKey,
+    unit,
   }
 }
 

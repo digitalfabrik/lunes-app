@@ -1,7 +1,8 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import { CheckCloseCircleIcon, CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
+import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
+import { StandardUnit } from '../models/Unit'
 import { VocabularyItem } from './endpoints'
 import labels from './labels.json'
 
@@ -55,17 +56,17 @@ export const EXERCISES: Readonly<Exercise[]> = [
 ] as const
 
 export type Progress = {
-  [disciplineId: string]: { [exerciseKey: string]: number | undefined } | undefined
+  [unitId: string]: { [exerciseKey: string]: number | undefined } | undefined
 }
 
 export type NextExercise = {
-  disciplineId: number
+  unit: StandardUnit
   exerciseKey: number
 }
 
 export type NextExerciseData = NextExercise & {
   vocabularyItems: VocabularyItem[]
-  title: string
+  jobTitle: string
 }
 
 export const BUTTONS_THEME = {
@@ -136,7 +137,7 @@ export const VOCABULARY_ITEM_TYPES = {
   lunesStandard: 'lunes-standard',
   lunesProtected: 'lunes-protected',
   userCreated: 'user-created',
-}
+} as const
 export type VocabularyItemType = (typeof VOCABULARY_ITEM_TYPES)[keyof typeof VOCABULARY_ITEM_TYPES]
 
 export type Favorite = {
@@ -172,13 +173,6 @@ export const RESULTS: Readonly<ResultType[]> = [
 ] as const
 
 export type Result = (typeof RESULTS)[number]
-
-export const FeedbackType = {
-  discipline: 'discipline',
-  leaf_discipline: 'trainingset',
-  vocabularyItem: 'document',
-} as const
-export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
 
 export const numberOfMaxRetries = 3
 

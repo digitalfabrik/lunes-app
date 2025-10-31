@@ -43,8 +43,8 @@ describe('UserVocabularyProcessScreen', () => {
     word: 'Auto',
     article: ARTICLES[3],
     images: [
-      { id: 0, image: `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg` },
-      { id: 1, image: `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg` },
+      `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg`,
+      `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg`,
     ],
     audio: `file:///${DocumentDirectoryPath}/audio-2.m4a`,
     alternatives: [],
