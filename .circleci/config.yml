@@ -291,10 +291,10 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             FL_OUTPUT_DIR: output
-            TOTAL_CPUS: 4
+            TOTAL_CPUS: 6
         macos:
             xcode: 16.2.0
-        resource_class: macos.m1.medium.gen1
+        resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
             - add_ssh_keys:
@@ -542,7 +542,7 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 16.2.0
-        resource_class: macos.m1.medium.gen1
+        resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
