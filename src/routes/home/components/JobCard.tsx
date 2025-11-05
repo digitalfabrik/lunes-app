@@ -10,13 +10,14 @@ import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import useLoadJob from '../../../hooks/useLoadJob'
 import { useStorageCache } from '../../../hooks/useStorage'
+import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
-import { removeCustomDiscipline, removeSelectedProfession } from '../../../services/storageUtils'
+import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
-import ProfessionDetails from './ProfessionDetails'
+import JobDetails from './JobDetails'
 
 const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
@@ -42,21 +43,21 @@ export const ButtonContainer = styled.View`
   margin: ${props => props.theme.spacings.xxs} auto;
 `
 
-type DisciplineCardProps = {
-  identifier: RequestParams
+type JobCardProps = {
+  identifier: JobId
   width?: number
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
-const DisciplineCard = ({
+const JobCard = ({
   identifier,
   width: cardWidth,
   navigateToDiscipline,
   navigateToNextExercise,
-}: DisciplineCardProps): JSX.Element | null => {
+}: JobCardProps): JSX.Element | null => {
   const storageCache = useStorageCache()
-  const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
+  const { data: job, loading, error, refresh } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   if (loading) {
@@ -69,7 +70,7 @@ const DisciplineCard = ({
     )
   }
 
-  if (!discipline) {
+  if (!job) {
     if (error?.message === NetworkError) {
       return (
         <Card width={cardWidth}>
@@ -85,7 +86,7 @@ const DisciplineCard = ({
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
       deleteItem = !isTypeLoadProtected(identifier)
-        ? () => removeSelectedProfession(storageCache, identifier.disciplineId)
+        ? () => removeSelectedJob(storageCache, identifier.disciplineId)
         : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }
@@ -100,7 +101,7 @@ const DisciplineCard = ({
           <ButtonContainer testID='delete-button'>
             <Button
               onPress={() => setIsModalVisible(true)}
-              label={getLabels().home.deleteProfession}
+              label={getLabels().home.deleteJob}
               buttonTheme={BUTTONS_THEME.outlined}
               fitToContentWidth
             />
@@ -111,17 +112,13 @@ const DisciplineCard = ({
   }
 
   return (
-    <Card
-      width={cardWidth}
-      heading={discipline.title}
-      icon={discipline.icon}
-      onPress={() => navigateToDiscipline(discipline)}>
+    <Card width={cardWidth} heading={job.title} icon={job.icon} onPress={() => navigateToDiscipline(job)}>
       {isTypeLoadProtected(identifier) ? (
-        <CustomDisciplineDetails discipline={discipline} navigateToDiscipline={navigateToDiscipline} />
+        <CustomDisciplineDetails discipline={job} navigateToDiscipline={navigateToDiscipline} />
       ) : (
         navigateToNextExercise && (
-          <ProfessionDetails
-            discipline={discipline}
+          <JobDetails
+            discipline={job}
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
           />
@@ -131,4 +128,4 @@ const DisciplineCard = ({
   )
 }
 
-export default DisciplineCard
+export default JobCard

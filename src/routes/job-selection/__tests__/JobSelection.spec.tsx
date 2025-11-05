@@ -1,0 +1,122 @@
+import { RouteProp } from '@react-navigation/native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
+import { mocked } from 'jest-mock'
+import React from 'react'
+
+import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getJobs } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
+import { getLabels } from '../../../services/helpers'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { renderWithStorageCache } from '../../../testing/render'
+import ScopeSelection from '../JobSelectionScreen'
+
+jest.mock('@react-navigation/native')
+jest.mock('../../../services/CmsApi')
+
+describe('JobSelection', () => {
+  const navigation = createNavigationMock<'JobSelection'>()
+  const getRoute = (initialSelection = true): RouteProp<RoutesParams, 'JobSelection'> => ({
+    key: '',
+    name: 'JobSelection',
+    params: {
+      initialSelection,
+    },
+  })
+
+  const storageCache = StorageCache.createDummy()
+
+  beforeEach(async () => {
+    await storageCache.setItem('selectedJobs', null)
+  })
+
+  it('should skip selection', async () => {
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute()} />,
+    )
+    const button = getByText(getLabels().scopeSelection.skipSelection)
+    fireEvent.press(button)
+
+    await waitFor(() => {
+      expect(navigation.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'BottomTabNavigator' }],
+      })
+    })
+  })
+
+  it('should confirm selection', async () => {
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute()} />,
+    )
+    const button = getByText(getLabels().scopeSelection.confirmSelection)
+    fireEvent.press(button)
+
+    expect(navigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{ name: 'BottomTabNavigator' }],
+    })
+  })
+
+  it('should hide welcome message and buttons for non initial view', async () => {
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { queryByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+    )
+    expect(queryByText(getLabels().scopeSelection.welcome)).toBeNull()
+    expect(queryByText(getLabels().scopeSelection.skipSelection)).toBeNull()
+    expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
+  })
+
+  it('should select job', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+    )
+
+    expect(storageCache.getItem('selectedJobs')).toBeNull()
+
+    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    fireEvent.press(button)
+
+    expect(storageCache.getItem('selectedJobs')).toEqual([mockDisciplines()[0].id])
+  })
+
+  it('should unselect job on initial selection', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { queryAllByTestId } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(true)} />,
+    )
+
+    await waitFor(() => expect(queryAllByTestId('check-icon')).toHaveLength(1))
+
+    const button = queryAllByTestId('check-icon')[0]
+    fireEvent.press(button)
+
+    await waitFor(() => expect(storageCache.getItem('selectedJobs')).toEqual([]))
+    expect(queryAllByTestId('check-icon')).toHaveLength(0)
+  })
+
+  it('should disable button if not on initial selection', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+    )
+
+    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    expect(button).toBeDisabled()
+
+    const secondDiscipline = getByText(mockDisciplines()[1].title)
+    expect(secondDiscipline).not.toBeDisabled()
+  })
+})
