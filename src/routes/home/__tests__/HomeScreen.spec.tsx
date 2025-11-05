@@ -16,8 +16,6 @@ jest.mock('../../../services/helpers', () => ({
 }))
 jest.mock('@react-navigation/native')
 jest.mock('../../../hooks/useReadProgress')
-jest.mock('../../../hooks/useLoadDisciplines')
-jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../../../services/CmsApi')
 jest.mock('../components/HomeScreenHeader', () => {
   const Text = require('react-native').Text
