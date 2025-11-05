@@ -21,6 +21,8 @@ export type Storage = {
   isDevModeEnabled: boolean
   progress: Progress
   cmsUrlOverwrite: CMS | null
+  // Unused, old feature
+  // TODO: fully delete if we decide that this is not needed anymore
   customDisciplines: string[]
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
