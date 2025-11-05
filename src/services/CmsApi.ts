@@ -31,7 +31,7 @@ const transformWordResponse = ({ id, word, article, image, audio }: WordResponse
   article: CMSArticleToArticle[article],
   images: [image],
   audio,
-  type: 'user-created',
+  type: 'lunes-standard',
   alternatives: [],
 })
 
