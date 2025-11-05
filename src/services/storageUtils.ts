@@ -91,10 +91,11 @@ export const migrate0To1 = async (): Promise<void> => {
 
 // Migrates the `images` field of `VocabularyItem` to a flat array of urls
 export const migrate1To2 = async (): Promise<void> => {
-  type OldVocabularyItem = { images: { image: string }[] }
-  type OldWordNodeCard = { word: OldVocabularyItem }
+  type Incomplete<T> = T & Record<string, unknown>
+  type OldVocabularyItem = Incomplete<{ images: { image: string }[] }>
+  type OldWordNodeCard = Incomplete<{ word: OldVocabularyItem }>
 
-  const updateVocabularyItem = (oldWord: OldVocabularyItem): { images: string[] } => ({
+  const updateVocabularyItem = (oldWord: OldVocabularyItem): Incomplete<{ images: string[] }> => ({
     ...oldWord,
     images: oldWord.images.map(image => image.image),
   })
