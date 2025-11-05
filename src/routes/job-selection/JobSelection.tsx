@@ -1,17 +1,16 @@
 import React, { useMemo, ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
+import { CheckCircleIconGreen } from '../../../assets/images'
 import DisciplineListItem from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Discipline } from '../../constants/endpoints'
-import { formatDiscipline } from '../../hooks/helpers'
-import { useLoadAllDisciplines } from '../../hooks/useLoadAllDisciplines'
-import { useLoadDisciplines } from '../../hooks/useLoadDisciplines'
+import useLoadAllJobs from '../../hooks/useLoadAllJobs'
 import useStorage, { useStorageCache } from '../../hooks/useStorage'
-import { getLabels, searchProfessions, splitTextBySearchString } from '../../services/helpers'
-import { pushSelectedProfession, removeSelectedProfession } from '../../services/storageUtils'
+import { getLabels, searchJobs, splitTextBySearchString } from '../../services/helpers'
+import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
 
 const SearchContainer = styled.View`
   margin: ${props => props.theme.spacings.sm};
@@ -43,6 +42,10 @@ const EmptyListIndicator = styled.Text`
   text-align: center;
 `
 
+const IconContainer = styled.View`
+  margin-right: ${props => props.theme.spacings.sm};
+`
+
 const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): ReactElement => (
   <HighlightContainer disabled={disabled}>
     <ContentTextLight>{textArray[0]}</ContentTextLight>
@@ -51,60 +54,74 @@ const highlightText = (textArray: [string] | [string, string, string], disabled:
   </HighlightContainer>
 )
 
-type FilteredProfessionListProps = {
+type FilteredJobListProps = {
   queryTerm: string
 }
 
-const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): ReactElement => {
+const FilteredJobList = ({ queryTerm }: FilteredJobListProps): ReactElement => {
   const storageCache = useStorageCache()
-  const [selectedProfessions] = useStorage('selectedProfessions')
+  const [selectedJobs] = useStorage('selectedJobs')
 
-  const { data: disciplines, loading, error, refresh } = useLoadAllDisciplines()
-  const allProfessions = disciplines
-    ?.filter(discipline => discipline.total_discipline_children === 0)
-    .map(discipline => formatDiscipline(discipline, {}))
-  const filteredProfessions = useMemo(() => searchProfessions(allProfessions, queryTerm), [allProfessions, queryTerm])
+  const { data: allJobs, loading, error, refresh } = useLoadAllJobs()
+  const filteredJobs = useMemo(() => searchJobs(allJobs, queryTerm), [allJobs, queryTerm])
 
   return (
     <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
       <ScopeContainer>
-        {filteredProfessions?.map(profession => {
-          const disabled = !!selectedProfessions?.includes(profession.id)
+        {filteredJobs?.map(job => {
+          const disabled = !!selectedJobs?.includes(job.id)
           return (
             <StyledPressable
-              key={profession.id}
+              key={job.id}
               onPress={async () => {
-                if (selectedProfessions?.includes(profession.id)) {
-                  await removeSelectedProfession(storageCache, profession.id)
+                if (selectedJobs?.includes(job.id)) {
+                  await removeSelectedJob(storageCache, job.id)
                 } else {
-                  await pushSelectedProfession(storageCache, profession.id)
+                  await pushSelectedJob(storageCache, job.id)
                 }
               }}>
-              {highlightText(splitTextBySearchString(profession.title, queryTerm), disabled)}
+              {highlightText(splitTextBySearchString(job.title, queryTerm), disabled)}
             </StyledPressable>
           )
         })}
-        {filteredProfessions !== undefined && filteredProfessions.length === 0 && (
-          <EmptyListIndicator>{getLabels().scopeSelection.noProfessionsFound}</EmptyListIndicator>
+        {filteredJobs !== undefined && filteredJobs.length === 0 && (
+          <EmptyListIndicator>{getLabels().scopeSelection.noJobsFound}</EmptyListIndicator>
         )}
       </ScopeContainer>
     </ServerResponseHandler>
   )
 }
 
-type ScopeSelectionProps = {
+type JobSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
-  navigateToDiscipline: (item: Discipline) => void
+  onSelectJob: (job: Discipline) => void
+  onUnselectJob?: (job: Discipline) => void
 }
 
-const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: ScopeSelectionProps): ReactElement => {
-  const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
+const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: JobSelectionProps): ReactElement => {
+  const { data: disciplines, error, loading, refresh } = useLoadAllJobs()
   const theme = useTheme()
+  const [selectedJobs] = useStorage('selectedJobs')
 
-  const disciplineItems = disciplines?.map(item => (
-    <DisciplineListItem key={item.id} item={item} onPress={() => navigateToDiscipline(item)} hasBadge={false} />
-  ))
+  const disciplineItems = disciplines?.map(item => {
+    const isSelected = selectedJobs?.includes(item.id)
+    return (
+      <DisciplineListItem
+        key={item.id}
+        item={item}
+        onPress={() => {
+          if (isSelected) {
+            onUnselectJob?.(item)
+          } else {
+            onSelectJob(item)
+          }
+        }}
+        disabled={isSelected && !onUnselectJob}
+        rightChildren={<IconContainer>{isSelected && <CheckCircleIconGreen testID='check-icon' />}</IconContainer>}
+      />
+    )
+  })
 
   return (
     <>
@@ -112,14 +129,14 @@ const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: Scope
         <SearchBar
           query={queryTerm}
           setQuery={setQueryTerm}
-          placeholder={getLabels().scopeSelection.searchProfession}
+          placeholder={getLabels().scopeSelection.searchJob}
           style={{
             backgroundColor: theme.colors.background,
           }}
         />
       </SearchContainer>
       {queryTerm.length > 0 ? (
-        <FilteredProfessionList queryTerm={queryTerm} />
+        <FilteredJobList queryTerm={queryTerm} />
       ) : (
         <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
           <DisciplineContainer>{disciplineItems}</DisciplineContainer>
@@ -129,4 +146,4 @@ const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: Scope
   )
 }
 
-export default ScopeSelection
+export default JobSelection

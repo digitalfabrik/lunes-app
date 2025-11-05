@@ -5,7 +5,7 @@ import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import { getLabels, childrenLabel } from '../../../services/helpers'
-import { NumberText, UnitText } from './DisciplineCard'
+import { NumberText, UnitText } from './JobCard'
 
 const TextContainer = styled.View`
   display: flex;

@@ -10,7 +10,7 @@ import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useProgress from '../../../hooks/useProgress'
 import { childrenLabel, getLabels } from '../../../services/helpers'
-import { NumberText, UnitText } from './DisciplineCard'
+import { NumberText, UnitText } from './JobCard'
 import NextExerciseCard from './NextExerciseCard'
 
 const ProgressContainer = styled.View`
@@ -20,17 +20,17 @@ const ProgressContainer = styled.View`
   padding: ${props => props.theme.spacings.sm} 0 ${props => props.theme.spacings.xs};
 `
 
-type ProfessionDetailsProps = {
+type JobDetailsProps = {
   discipline: Discipline
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
-const ProfessionDetails = ({
+const JobDetails = ({
   discipline,
   navigateToDiscipline,
   navigateToNextExercise,
-}: ProfessionDetailsProps): ReactElement | null => {
+}: JobDetailsProps): ReactElement | null => {
   const progress = useProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
@@ -67,7 +67,7 @@ const ProfessionDetails = ({
           </NumberText>
         )}
         <UnitText>
-          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline, true)}
+          {completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(discipline)}
         </UnitText>
       </ProgressContainer>
       <NextExerciseCard
@@ -87,4 +87,4 @@ const ProfessionDetails = ({
   )
 }
 
-export default ProfessionDetails
+export default JobDetails

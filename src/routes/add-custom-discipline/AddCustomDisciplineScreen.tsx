@@ -12,9 +12,9 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getJob } from '../../services/CmsApi'
 import { getLabels } from '../../services/helpers'
 import QRCodeReaderOverlay from './components/QRCodeReaderOverlay'
 
@@ -63,7 +63,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): Re
       return
     }
     setLoading(true)
-    loadDiscipline({ apiKey: code })
+    getJob({ apiKey: code })
       .then(async () => setCustomDisciplines([...customDisciplines, code]))
       .then(navigation.goBack)
       .catch(error => {

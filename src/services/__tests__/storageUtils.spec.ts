@@ -14,10 +14,10 @@ import {
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
   getUserVocabularyItems,
-  pushSelectedProfession,
+  pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
-  removeSelectedProfession,
+  removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
 } from '../storageUtils'
@@ -58,26 +58,26 @@ describe('storageUtils', () => {
 
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
-        'selectedProfessions',
+        'selectedJobs',
         selectedProfessions.map(item => item.id),
       )
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length)
-      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length - 1)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
+      await removeSelectedJob(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedProfessions', [mockDisciplines()[1].id])
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
-      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await storageCache.setItem('selectedJobs', [mockDisciplines()[1].id])
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
+      await removeSelectedJob(storageCache, mockDisciplines()[0].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
-      await pushSelectedProfession(storageCache, mockDisciplines()[1].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(2)
+      await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
+      await pushSelectedJob(storageCache, mockDisciplines()[1].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -195,7 +195,7 @@ describe('storageUtils', () => {
     it('should migrate to new favorite storage', async () => {
       await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.not.toBeNull()
-      await AsyncStorage.setItem(storageKeys.selectedProfessions, '[]')
+      await AsyncStorage.setItem(storageKeys.selectedJobs, '[]')
       const storageCache = await loadStorageCache()
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
       expect(storageCache.getItem('favorites')).toEqual([

@@ -1,11 +1,50 @@
 import { Article, ARTICLES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
+import { isTypeLoadProtected } from '../hooks/helpers'
 import { getFromEndpoint } from './axios'
 
-const ENDPOINTS = {
+const Endpoints = {
+  jobs: 'jobs',
+  job: (id: number) => `jobs/${id}`,
   words: 'words',
   word: (id: number) => `words/${id}`,
 }
+
+type JobResponse = {
+  id: number
+  name: string
+  icon: string | null
+  number_units: number
+}
+
+const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: JobResponse): Discipline => ({
+  id,
+  title: name,
+  description: '',
+  icon: icon ?? undefined,
+  numberOfChildren: numberUnits,
+  isLeaf: false,
+  parentTitle: null,
+  needsTrainingSetEndpoint: false,
+})
+
+export const getJobs = async (): Promise<Discipline[]> => {
+  const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
+  return response.map(transformJobsResponse)
+}
+
+export type JobId =
+  | {
+      apiKey: string
+    }
+  | {
+      disciplineId: number
+    }
+
+export const getJob = async (id: JobId): Promise<Discipline> =>
+  !isTypeLoadProtected(id)
+    ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id.disciplineId)))
+    : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
 
 type CMSArticle = 'keiner' | 'der' | 'die' | 'das' | 'die (Plural)'
 
@@ -36,11 +75,11 @@ const transformWordResponse = ({ id, word, article, image, audio }: WordResponse
 })
 
 export const getWords = async (): Promise<VocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(ENDPOINTS.words)
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
   return response.map(transformWordResponse)
 }
 
 export const getWordById = async (id: number): Promise<VocabularyItem> => {
-  const response = await getFromEndpoint<WordResponse>(ENDPOINTS.word(id))
+  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
   return transformWordResponse(response)
 }
