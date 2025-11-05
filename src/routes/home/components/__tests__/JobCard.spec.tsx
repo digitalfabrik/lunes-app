@@ -10,7 +10,7 @@ import {
   mockUseLoadAsyncWithError,
 } from '../../../../testing/mockUseLoadFromEndpoint'
 import render from '../../../../testing/render'
-import DisciplineCard from '../DisciplineCard'
+import JobCard from '../JobCard'
 
 jest.mock('@react-navigation/native')
 
@@ -23,7 +23,7 @@ const navigateToDiscipline = jest.fn()
 
 describe('DisciplineCard', () => {
   const renderDisciplineCard = (): RenderAPI =>
-    render(<DisciplineCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
+    render(<JobCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
 
   it('should show discipline card', async () => {
     mockUseLoadAsyncWithData(mockDisciplines()[0])

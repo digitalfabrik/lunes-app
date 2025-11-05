@@ -43,7 +43,7 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
   }
 
   const renderListItem = ({ item }: { item: DisciplineWithVocabulary }): JSX.Element => (
-    <DisciplineListItem item={item.discipline} onPress={() => handleNavigation(item.discipline.id)} hasBadge />
+    <DisciplineListItem item={item.discipline} onPress={() => handleNavigation(item.discipline.id)} />
   )
 
   return (

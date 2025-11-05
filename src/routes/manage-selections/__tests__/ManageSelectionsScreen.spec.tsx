@@ -2,18 +2,17 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
-import { pushSelectedProfession } from '../../../services/storageUtils'
+import { pushSelectedJob } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { getReturnOf } from '../../../testing/helper'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
 import ManageSelectionsScreen from '../ManageSelectionsScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadDiscipline')
+jest.mock('../../../services/CmsApi')
 
 describe('ManageSelectionsScreen', () => {
   const navigation = createNavigationMock<'ManageSelection'>()
@@ -24,27 +23,27 @@ describe('ManageSelectionsScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
-  it('should show and delete selected professions', async () => {
-    await pushSelectedProfession(storageCache, mockDisciplines()[0].id)
-    await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
-    mocked(useLoadDiscipline).mockReturnValue(getReturnOf(mockDisciplines()[0]))
+  it('should show and delete selected jobs', async () => {
+    await pushSelectedJob(storageCache, mockDisciplines()[0].id)
+    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines()[0]))
 
     const { getByText, getByTestId } = renderScreen()
-    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
+    await waitFor(() => expect(getByText(mockDisciplines()[0].title)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
-    const confirmButton = getByText(getLabels().manageSelection.deleteModal.confirm)
+    const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)
     fireEvent.press(confirmButton)
     await waitFor(async () => {
-      const selectedProfessions = storageCache.getItem('selectedProfessions')
-      expect(selectedProfessions).toEqual([])
+      const selectedJobs = storageCache.getItem('selectedJobs')
+      expect(selectedJobs).toEqual([])
     })
   })
 
-  it('should navigate to select another profession', () => {
+  it('should navigate to select another job', () => {
     const { getByText } = renderScreen()
-    const addProfessionText = getByText(getLabels().manageSelection.addProfession)
-    fireEvent.press(addProfessionText)
-    expect(navigation.navigate).toHaveBeenCalledWith('ScopeSelection', { initialSelection: false })
+    const addJobText = getByText(getLabels().manageJobs.addJob)
+    fireEvent.press(addJobText)
+    expect(navigation.navigate).toHaveBeenCalledWith('JobSelection', { initialSelection: false })
   })
 })
