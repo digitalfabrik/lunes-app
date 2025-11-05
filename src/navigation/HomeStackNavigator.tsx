@@ -4,7 +4,6 @@ import { useTheme } from 'styled-components/native'
 
 import ImprintScreen from '../routes/ImprintScreen'
 import UnitSelectionScreen from '../routes/UnitSelectionScreen'
-import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
