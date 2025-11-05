@@ -13,7 +13,7 @@ import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
-import SelectedProfessions from './components/SelectedProfessions'
+import SelectedJobs from './components/SelectedJobs'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -39,8 +39,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
     navigation.navigate('ManageSelection')
   }
 
-  const navigateToProfessionSelection = () => {
-    navigation.navigate('ScopeSelection', { initialSelection: false })
+  const navigateToJobSelection = () => {
+    navigation.navigate('JobSelection', { initialSelection: false })
   }
 
   const navigateToDiscipline = (discipline: Discipline): void => {
@@ -67,11 +67,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
           <HomeScreenHeader navigation={navigation} />
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
-          <SelectedProfessions
+          <SelectedJobs
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
-            navigateToProfessionSelection={navigateToProfessionSelection}
+            navigateToJobSelection={navigateToJobSelection}
           />
         </View>
         <HomeFooter />

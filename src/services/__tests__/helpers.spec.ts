@@ -6,24 +6,24 @@ import {
   VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
 import { Discipline, VocabularyItem } from '../../constants/endpoints'
-import { loadDiscipline } from '../../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
+import { getJob } from '../CmsApi'
 import { StorageCache } from '../Storage'
 import {
   calculateScore,
   getNextExercise,
   getProgress,
   getSortedAndFilteredVocabularyItems,
-  searchProfessions,
+  searchJobs,
   splitTextBySearchString,
   willNextExerciseUnlock,
 } from '../helpers'
 
 import mocked = jest.mocked
 
-jest.mock('../../hooks/useLoadDiscipline')
+jest.mock('../CmsApi')
 jest.mock('../storageUtils')
 
 describe('helpers', () => {
@@ -39,14 +39,14 @@ describe('helpers', () => {
       getNextExercise({ progress: storageCache.getItem('progress'), profession })
 
     it('should open first exercise, if no exercise was finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
       expect(exerciseKey).toBe(0)
     })
 
     it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '11': { '0': 1, '1': 1 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -54,7 +54,7 @@ describe('helpers', () => {
     })
 
     it('should open third exercise of first discipline, if two exercise were finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '10': { '0': 10, '1': 10 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -62,7 +62,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise, if only second exercise was finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '10': { '1': 1 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -70,7 +70,7 @@ describe('helpers', () => {
     })
 
     it('should open third exercise of first discipline, if three exercises were finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '10': { '0': 10, '1': 10, '2': 10 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -78,7 +78,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of second discipline, if first discipline was finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '10': { '0': 10, '1': 10, '2': 10, '3': 10 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![1])
@@ -86,7 +86,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first discipline, if second discipline was partly finished yet', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '11': { '1': 1, '2': 1 } })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -94,7 +94,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first discipline, if exercise progress is undefined', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', { '10': {} })
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -102,7 +102,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first discipline, if discipline progress is undefined', async () => {
-      mocked(loadDiscipline).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockDisciplines(true)[0]))
       await storageCache.setItem('progress', {})
       const { disciplineId, exerciseKey } = await getNextExerciseWithCheck()
       expect(disciplineId).toBe(mockDisciplines()[0].leafDisciplines![0])
@@ -371,15 +371,15 @@ describe('helpers', () => {
   describe('searchProfessions', () => {
     it('should find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'disc')).toStrictEqual(professions)
-      expect(searchProfessions(professions, 'SECOND')).toStrictEqual([professions[1]])
-      expect(searchProfessions(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
+      expect(searchJobs(professions, 'disc')).toStrictEqual(professions)
+      expect(searchJobs(professions, 'SECOND')).toStrictEqual([professions[1]])
+      expect(searchJobs(professions, 'd discipline')).toStrictEqual([professions[1], professions[2]])
     })
 
     it('should not find a profession', () => {
       const professions: Discipline[] = mockDisciplines()
-      expect(searchProfessions(professions, 'fourth discipline')).toStrictEqual([])
-      expect(searchProfessions(professions, 'Maler')).toStrictEqual([])
+      expect(searchJobs(professions, 'fourth discipline')).toStrictEqual([])
+      expect(searchJobs(professions, 'Maler')).toStrictEqual([])
     })
   })
 })

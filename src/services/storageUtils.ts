@@ -11,24 +11,24 @@ import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
-  let professions = storageCache.getMutableItem('selectedProfessions')
-  if (professions === null) {
-    professions = [professionId]
+export const pushSelectedJob = async (storageCache: StorageCache, professionId: number): Promise<void> => {
+  let jobs = storageCache.getMutableItem('selectedJobs')
+  if (jobs === null) {
+    jobs = [professionId]
   } else {
-    professions.push(professionId)
+    jobs.push(professionId)
   }
-  await storageCache.setItem('selectedProfessions', professions)
+  await storageCache.setItem('selectedJobs', jobs)
 }
 
-export const removeSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<number[]> => {
-  const professions = storageCache.getItem('selectedProfessions')
-  if (professions === null) {
+export const removeSelectedJob = async (storageCache: StorageCache, professionId: number): Promise<number[]> => {
+  const jobs = storageCache.getItem('selectedJobs')
+  if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedProfessions = professions.filter(item => item !== professionId)
-  await storageCache.setItem('selectedProfessions', updatedProfessions)
-  return updatedProfessions
+  const updatedJobs = jobs.filter(item => item !== professionId)
+  await storageCache.setItem('selectedJobs', updatedJobs)
+  return updatedJobs
 }
 
 export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
@@ -128,9 +128,9 @@ export const migrateStorage = async (): Promise<void> => {
     // this is either a new installation or an update from a version where this field did not exist yet.
     // In the former case, the storage version should be the latest version to avoid unnecessary startup work.
     // In the latter case, we should use 0 as the version number so that all migrations are run.
-    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null if and only if the startup screen was not completed yet.
-    const selectedProfessions = await getStorageItem('selectedProfessions')
-    return selectedProfessions === null ? STORAGE_VERSION : 0
+    // To differentiate between the two cases, we can use the fact that `selectedJobs` is null if and only if the startup screen was not completed yet.
+    const selectedJobs = await getStorageItem('selectedJobs')
+    return selectedJobs === null ? STORAGE_VERSION : 0
   }
 
   const lastVersion = await getStorageVersion()
