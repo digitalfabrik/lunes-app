@@ -4,7 +4,6 @@ import { useTheme } from 'styled-components/native'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
-import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
@@ -38,11 +37,6 @@ const HomeStackNavigator = (): ReactElement | null => {
         name='StandardExercises'
         component={StandardExercisesScreen}
         options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
-      />
-      <Stack.Screen
-        name='AddCustomDiscipline'
-        component={AddCustomDisciplineScreen}
-        options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen
         name='Imprint'
