@@ -5,7 +5,7 @@ import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockDisciplines } from '../../testing/mockDiscipline'
-import { RepetitionService } from '../RepetitionService'
+import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
@@ -192,7 +192,7 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('version')).toBe(STORAGE_VERSION)
     })
 
-    it('Should migrate to new favorite storage', async () => {
+    it('should migrate to new favorite storage', async () => {
       await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.not.toBeNull()
       await AsyncStorage.setItem(storageKeys.selectedProfessions, '[]')
@@ -205,6 +205,100 @@ describe('storageUtils', () => {
           vocabularyItemType: 'lunes-standard',
         },
       ])
+    })
+
+    describe('should migrate to v2', () => {
+      it('should migrate userVocabulary', async () => {
+        await AsyncStorage.setItem('version', '1')
+        await AsyncStorage.setItem(
+          'userVocabulary',
+          JSON.stringify([
+            {
+              id: 1,
+              word: 'Testwort',
+              article: { id: 3, value: 'das' },
+              images: [{ id: 0, image: 'image-1' }],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+            {
+              id: 2,
+              word: 'Hund',
+              article: { id: 1, value: 'der' },
+              images: [{ id: 0, image: 'image-2' }],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        const expectedUserVocabulary: VocabularyItem[] = [
+          {
+            id: 1,
+            word: 'Testwort',
+            article: { id: 3, value: 'das' },
+            images: ['image-1'],
+            audio: null,
+            alternatives: [],
+            type: 'user-created',
+          },
+          {
+            id: 2,
+            word: 'Hund',
+            article: { id: 1, value: 'der' },
+            images: ['image-2'],
+            audio: null,
+            alternatives: [],
+            type: 'user-created',
+          },
+        ]
+        expect(storageCache.getItem('userVocabulary')).toEqual(expectedUserVocabulary)
+      })
+
+      it('should migrate wordNodeCards', async () => {
+        await AsyncStorage.setItem('version', '1')
+        await AsyncStorage.setItem(
+          'wordNodeCards',
+          JSON.stringify([
+            {
+              word: {
+                id: 2,
+                word: 'Hund',
+                article: { id: 1, value: 'der' },
+                images: [{ id: 0, image: 'image-1' }],
+                audio: null,
+                alternatives: [],
+                type: 'user-created',
+              },
+              section: 0,
+              inThisSectionSince: new Date('2025-10-13'),
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        const expectedWordNodeCards: WordNodeCard[] = [
+          {
+            word: {
+              id: 2,
+              word: 'Hund',
+              article: { id: 1, value: 'der' },
+              images: ['image-1'],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+            section: 0,
+            inThisSectionSince: new Date('2025-10-13'),
+          },
+        ]
+        expect(JSON.stringify(storageCache.getItem('wordNodeCards'))).toStrictEqual(
+          JSON.stringify(expectedWordNodeCards),
+        )
+      })
     })
   })
 
