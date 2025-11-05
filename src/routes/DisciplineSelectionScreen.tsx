@@ -44,14 +44,14 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
   }
 
   const renderListItem = ({ item }: { item: Discipline }): ReactElement => (
-    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge showProgress />
+    <DisciplineListItem item={item} onPress={() => handleNavigation(item)} showProgress />
   )
 
   return (
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
-          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline, true)} />}
+          ListHeaderComponent={<Title title={discipline.title} description={childrenDescription(discipline)} />}
           data={disciplines}
           renderItem={renderListItem}
           keyExtractor={({ id }) => id.toString()}

@@ -17,7 +17,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const { manageSelection, overview } = getLabels().general.header
+  const { manageJobs, overview } = getLabels().general.header
   const theme = useTheme()
 
   return (
@@ -31,7 +31,7 @@ const HomeStackNavigator = (): ReactElement | null => {
       <Stack.Screen
         name='ManageSelection'
         component={ManageSelectionsScreen}
-        options={({ navigation }) => options(manageSelection, navigation)}
+        options={({ navigation }) => options(manageJobs, navigation)}
       />
       <Stack.Screen
         name='StandardExercises'
