@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ForbiddenError, NetworkError } from '../../../../constants/endpoints'
 import labels from '../../../../constants/labels.json'
-import { mockDisciplines } from '../../../../testing/mockDiscipline'
+import { mockJobs } from '../../../../testing/mockJob'
 import {
   mockUseLoadAsyncLoading,
   mockUseLoadAsyncWithData,
@@ -18,9 +18,9 @@ describe('SelectionItem', () => {
     render(<SelectionItem identifier={{ disciplineId: 1, apiKey: '1' }} deleteItem={deleteItem} />)
 
   it('should display data', () => {
-    mockUseLoadAsyncWithData(mockDisciplines()[0])
+    mockUseLoadAsyncWithData(mockJobs()[0])
     const { getByText, getByTestId } = renderSelectionItem()
-    expect(getByText(mockDisciplines()[0].title)).toBeDefined()
+    expect(getByText(mockJobs()[0].title)).toBeDefined()
     expect(getByTestId('delete-icon')).toBeDefined()
   })
 
