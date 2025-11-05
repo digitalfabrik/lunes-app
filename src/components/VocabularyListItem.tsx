@@ -51,7 +51,7 @@ const VocabularyListItem = ({
   const { article, word, images, audio } = vocabularyItem
 
   const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
-  const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0].image }} /> : undefined
+  const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0] }} /> : undefined
 
   const actions = customActions ?? (
     <>

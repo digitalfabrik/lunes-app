@@ -84,7 +84,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     if (itemToEdit) {
       setWord(itemToEdit.word)
       setArticle(getArticleWithLabel().find(item => item.id === itemToEdit.article.id) ?? null)
-      setImages(itemToEdit.images.map(image => image.image))
+      setImages(itemToEdit.images)
       setRecordingPath(itemToEdit.audio)
     }
   }, [itemToEdit])
@@ -125,7 +125,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       let id: number
       if (itemToEdit) {
         id = itemToEdit.id
-        const originalImages = itemToEdit.images.map(image => image.image)
+        const originalImages = itemToEdit.images
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
         await Promise.all(
           imagesToBeDeletedInStorage.map(async image => {
@@ -139,7 +139,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
           let path: string
-          const imageHasBeenSavedPreviously = itemToEdit?.images.map(image => image.image).includes(image)
+          const imageHasBeenSavedPreviously = itemToEdit?.images.includes(image)
           if (imageHasBeenSavedPreviously) {
             path = image
           } else {
@@ -147,7 +147,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
             path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
             await moveFile(image, path)
           }
-          return { id: index, image: path }
+          return path
         }),
       )
 
