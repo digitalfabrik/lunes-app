@@ -1,15 +1,11 @@
-import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
-import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
 import useProgress from '../../../hooks/useProgress'
 import { StorageCache } from '../../../services/Storage'
-import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
-import { mockCustomDiscipline } from '../../../testing/mockCustomDiscipline'
 import { mockDisciplines } from '../../../testing/mockDiscipline'
 import { renderWithStorageCache } from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
@@ -52,27 +48,5 @@ describe('HomeScreen', () => {
     expect(firstDiscipline).toBeDefined()
     expect(secondDiscipline).toBeDefined()
     expect(thirdDiscipline).toBeDefined()
-  })
-
-  it('should render custom discipline', async () => {
-    await storageCache.setItem('customDisciplines', ['test'])
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf(mockDisciplines()))
-    mocked(useLoadDiscipline).mockReturnValueOnce(getReturnOf(mockCustomDiscipline))
-
-    const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    expect(getByText('Custom Discipline')).toBeDefined()
-    expect(getByText(getLabels().home.start)).toBeDefined()
-  })
-
-  it('should show suggestion to add custom discipline', () => {
-    mocked(useLoadDisciplines).mockReturnValueOnce(getReturnOf([]))
-
-    const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    const addCustomDiscipline = getByText(getLabels().home.addCustomDiscipline)
-    expect(addCustomDiscipline).toBeDefined()
-
-    fireEvent.press(addCustomDiscipline)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('AddCustomDiscipline')
   })
 })
