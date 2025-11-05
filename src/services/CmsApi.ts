@@ -60,15 +60,15 @@ type WordResponse = {
   id: number
   word: string
   article: CMSArticle
-  image: string
+  images: string[]
   audio: string
 }
 
-const transformWordResponse = ({ id, word, article, image, audio }: WordResponse): VocabularyItem => ({
+const transformWordResponse = ({ id, word, article, images, audio }: WordResponse): VocabularyItem => ({
   id,
   word,
   article: CMSArticleToArticle[article],
-  images: [image],
+  images,
   audio,
   type: 'lunes-standard',
   alternatives: [],
