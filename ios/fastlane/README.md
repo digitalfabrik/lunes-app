@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Create a release build
 
+### ios upload_to_browserstack
+
+```sh
+[bundle exec] fastlane ios upload_to_browserstack
+```
+
+Upload iOS App to BrowserStack
+
 ### ios upload_to_appstoreconnect
 
 ```sh

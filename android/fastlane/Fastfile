@@ -90,6 +90,25 @@ platform :android do
         )
     end
 
+    desc "Upload Android App to BrowserStack"
+    lane :upload_to_browserstack do |options|
+        file_path = options[:file_path]
+
+        if [file_path].include?(nil)
+            raise "'nil' passed as parameter! Aborting..."
+        end
+
+        ensure_env_vars(
+            env_vars: ["BROWSERSTACK_USERNAME_LUNES", "BROWSERSTACK_ACCESS_KEY_LUNES"]
+        )
+
+        upload_to_browserstack_app_live(
+            browserstack_username: ENV["BROWSERSTACK_USERNAME_LUNES"],
+            browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY_LUNES"],
+            file_path: "#{ENV['HOME']}/#{file_path}"
+        )
+    end
+
     desc "Upload Android App to Google Play"
     lane :upload_to_playstore do |options|
         ensure_env_vars(

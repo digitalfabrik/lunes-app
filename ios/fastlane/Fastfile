@@ -56,7 +56,26 @@ platform :ios do
       scheme: "Lunes",
       output_name: "app-release.ipa",
       export_method: "app-store",
-      include_bitcode: false
+      include_bitcode: false # Uploading to BrowserStack does not work when including Bitcode
+    )
+  end
+
+  desc "Upload iOS App to BrowserStack"
+  lane :upload_to_browserstack do |options|
+    file_path = options[:file_path]
+
+    if [file_path].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    ensure_env_vars(
+      env_vars: ["BROWSERSTACK_USERNAME_LUNES", "BROWSERSTACK_ACCESS_KEY_LUNES"]
+    )
+
+    upload_to_browserstack_app_live(
+      browserstack_username: ENV["BROWSERSTACK_USERNAME_LUNES"],
+      browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY_LUNES"],
+      file_path: "#{ENV['HOME']}/#{file_path}"
     )
   end
 
