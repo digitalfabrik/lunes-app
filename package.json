@@ -70,7 +70,7 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
     "@babel/runtime": "^7.26.10",
-    "@react-native-community/cli": "15.1.2",
+    "@react-native-community/cli": "17.0.1",
     "@react-native-community/cli-platform-android": "15.1.2",
     "@react-native-community/cli-platform-ios": "15.1.2",
     "@react-native/babel-preset": "0.77.3",
