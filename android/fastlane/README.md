@@ -39,6 +39,14 @@ Validate Play Store Key
 
 Build Android App
 
+### android upload_to_browserstack
+
+```sh
+[bundle exec] fastlane android upload_to_browserstack
+```
+
+Upload Android App to BrowserStack
+
 ### android upload_to_playstore
 
 ```sh
