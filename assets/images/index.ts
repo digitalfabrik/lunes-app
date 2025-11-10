@@ -56,6 +56,7 @@ import MenuIcon from './menu-icon.svg'
 import MicrophoneCircleIcon from './microphone-circle-icon.svg'
 import MicrophoneIcon from './microphone-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
+import NurseImage from './nurse.png'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import PenIcon from './pen-icon.svg'
@@ -73,6 +74,9 @@ import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
+import TrainingImages from './training-images.svg'
+import TrainingSentences from './training-sentences.svg'
+import TrainingSpeech from './training-speech.svg'
 import TrashIconWhite from './trash-bin-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import VolumeDisabled from './volume-disabled.svg'
@@ -137,6 +141,7 @@ export {
   MicrophoneCircleIcon,
   MicrophoneIcon,
   NoInternetConnectionIcon,
+  NurseImage,
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,
@@ -152,6 +157,9 @@ export {
   StarIconGrey,
   StarIconGreyFilled,
   StarIconWhite,
+  TrainingImages,
+  TrainingSentences,
+  TrainingSpeech,
   TrashIcon,
   TrashIconWhite,
   VolumeUpCircleIcon,
