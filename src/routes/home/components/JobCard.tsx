@@ -11,13 +11,14 @@ import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
 import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import { isTypeLoadProtected } from '../../../hooks/helpers'
 import useLoadJob from '../../../hooks/useLoadJob'
-import { useStorageCache } from '../../../hooks/useStorage'
+import { loadNextExercise } from '../../../hooks/useLoadNextExercise'
+import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
-import JobDetails from './JobDetails'
+import ModeSelection from './ModeSelection'
 
 const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
@@ -47,16 +48,19 @@ type JobCardProps = {
   identifier: JobId
   width?: number
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
+  navigateToExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToTrainingExerciseSelection: (job: Discipline) => void
 }
 
 const JobCard = ({
   identifier,
   width: cardWidth,
   navigateToDiscipline,
-  navigateToNextExercise,
+  navigateToExercise,
+  navigateToTrainingExerciseSelection,
 }: JobCardProps): JSX.Element | null => {
   const storageCache = useStorageCache()
+  const [progress] = useStorage('progress')
   const { data: job, loading, error, refresh } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -111,18 +115,21 @@ const JobCard = ({
     )
   }
 
+  const navigateToNextExercise = async (): Promise<void> => {
+    const nextExerciseData = await loadNextExercise(progress, job)
+    navigateToExercise(nextExerciseData)
+  }
+
   return (
     <Card width={cardWidth} heading={job.title} icon={job.icon} onPress={() => navigateToDiscipline(job)}>
       {isTypeLoadProtected(identifier) ? (
         <CustomDisciplineDetails discipline={job} navigateToDiscipline={navigateToDiscipline} />
       ) : (
-        navigateToNextExercise && (
-          <JobDetails
-            job={job}
-            navigateToDiscipline={navigateToDiscipline}
-            navigateToNextExercise={navigateToNextExercise}
-          />
-        )
+        <ModeSelection
+          job={job}
+          navigateToNextExercise={navigateToNextExercise}
+          navigateToTrainingExerciseSelection={() => navigateToTrainingExerciseSelection(job)}
+        />
       )}
     </Card>
   )

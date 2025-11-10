@@ -46,7 +46,8 @@ const Title = styled(Heading)`
 
 type SelectedJobsProps = {
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToTrainingExerciseSelection: (job: Discipline) => void
   navigateToManageSelection: () => void
   navigateToJobSelection: () => void
 }
@@ -58,7 +59,8 @@ const useAllJobs = (): JobId[] => {
 
 const SelectedJobs = ({
   navigateToDiscipline,
-  navigateToNextExercise,
+  navigateToExercise,
+  navigateToTrainingExerciseSelection,
   navigateToManageSelection,
   navigateToJobSelection,
 }: SelectedJobsProps): JSX.Element | null => {
@@ -85,7 +87,8 @@ const SelectedJobs = ({
         <JobCard
           identifier={jobs[0]}
           navigateToDiscipline={navigateToDiscipline}
-          navigateToNextExercise={navigateToNextExercise}
+          navigateToExercise={navigateToExercise}
+          navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
         />
       ) : (
         <FlatList
@@ -100,7 +103,8 @@ const SelectedJobs = ({
               identifier={item}
               width={wp('75%')}
               navigateToDiscipline={navigateToDiscipline}
-              navigateToNextExercise={navigateToNextExercise}
+              navigateToExercise={navigateToExercise}
+              navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             />
           )}
         />
