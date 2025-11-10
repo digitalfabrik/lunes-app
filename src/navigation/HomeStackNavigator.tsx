@@ -3,6 +3,7 @@ import React from 'react'
 import { useTheme } from 'styled-components/native'
 
 import ImprintScreen from '../routes/ImprintScreen'
+import TrainingExerciseSelectionScreen from '../routes/TrainingExerciseSelectionScreen'
 import UnitSelectionScreen from '../routes/UnitSelectionScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
@@ -26,6 +27,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='UnitSelection'
         component={UnitSelectionScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='TrainingExerciseSelection'
+        component={TrainingExerciseSelectionScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen

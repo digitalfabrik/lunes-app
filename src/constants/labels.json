@@ -19,7 +19,9 @@
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteJob": "Bereich löschen",
-    "jobs": "Berufe"
+    "jobs": "Berufe",
+    "learnVocabulary": "Vokabeln lernen",
+    "trainVocabulary": "Vokabeln trainieren"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -82,6 +84,21 @@
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
+      }
+    },
+    "training": {
+      "train": "Vokabeln trainieren",
+      "images": {
+        "title": "Bilderrätsel",
+        "description": "Die richtige Vokabel finden"
+      },
+      "voice": {
+        "title": "Spracherkennung",
+        "description": "Wörter sprechen"
+      },
+      "sentence": {
+        "title": "Satzbaustein-Chaos",
+        "description": "Satzbausteine sortieren"
       }
     },
     "tryLater": "Später versuchen",

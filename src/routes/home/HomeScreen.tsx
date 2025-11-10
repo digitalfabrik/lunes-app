@@ -60,6 +60,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
     })
   }
 
+  const navigateToTrainingExerciseSelection = (job: Discipline): void => {
+    navigation.navigate('TrainingExerciseSelection', { job })
+  }
+
   return (
     <RouteWrapper backgroundColor={theme.colors.primary} lightStatusBarContent shouldSetTopInset>
       <Root contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
@@ -69,7 +73,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           <SelectedJobs
             navigateToDiscipline={navigateToJob}
-            navigateToNextExercise={navigateToNextExercise}
+            navigateToExercise={navigateToNextExercise}
+            navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             navigateToManageSelection={navigateToManageSelection}
             navigateToJobSelection={navigateToJobSelection}
           />
