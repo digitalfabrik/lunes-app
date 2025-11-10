@@ -1,11 +1,5 @@
 import { Article, VocabularyItemType } from './data'
 
-export type Sponsor = {
-  name: string
-  logo?: string
-  url?: string
-}
-
 export type Discipline = {
   id: number
   title: string
