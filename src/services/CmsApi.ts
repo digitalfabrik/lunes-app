@@ -1,11 +1,13 @@
 import { Article, ARTICLES } from '../constants/data'
 import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
 import { isTypeLoadProtected } from '../hooks/helpers'
+import Sponsor from '../models/Sponsor'
 import { getFromEndpoint } from './axios'
 
 const Endpoints = {
   jobs: 'jobs',
   job: (id: number) => `jobs/${id}`,
+  sponsors: 'sponsors',
   words: 'words',
   word: (id: number) => `words/${id}`,
 }
@@ -45,6 +47,24 @@ export const getJob = async (id: JobId): Promise<Discipline> =>
   !isTypeLoadProtected(id)
     ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id.disciplineId)))
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
+
+type SponsorResponse = {
+  id: number
+  name: string
+  url: string
+  logo: string | null
+}
+
+const transformSponsorResponse = ({ name, url, logo }: SponsorResponse): Sponsor => ({
+  name,
+  url: url || null,
+  logo,
+})
+
+export const getSponsors = async (): Promise<Sponsor[]> => {
+  const response = await getFromEndpoint<SponsorResponse[]>(Endpoints.sponsors)
+  return response.map(transformSponsorResponse)
+}
 
 type CMSArticle = 'keiner' | 'der' | 'die' | 'das' | 'die (Plural)'
 
