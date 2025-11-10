@@ -19,7 +19,9 @@
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteJob": "Bereich löschen",
-    "jobs": "Berufe"
+    "jobs": "Berufe",
+    "learnVocabulary": "Vokabeln lernen",
+    "trainVocabulary": "Vokabeln trainieren"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -83,12 +85,36 @@
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
+    "training": {
+      "train": "Vokabeln trainieren",
+      "images": {
+        "title": "Bilderrätsel",
+        "description": "Die richtige Vokabel finden",
+        "selectImage": "Wähle das richtige Bild aus!",
+        "whatIs": "Was ist"
+      },
+      "voice": {
+        "title": "Spracherkennung",
+        "description": "Wörter sprechen"
+      },
+      "sentence": {
+        "title": "Satzbaustein-Chaos",
+        "description": "Satzbausteine sortieren",
+        "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
+        "listen": "Höre dir den Satz an!",
+        "correct": "\uD83D\uDC4F Super, das war richtig!",
+        "incorrect": "\uD83D\uDE41 Das war leider nicht richtig."
+      }
+    },
     "tryLater": "Später versuchen",
+    "tryAgain": "Nochmal versuchen",
     "cheat": {
       "succeed": "Solve All",
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "skip": "Überspringen",
+    "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {

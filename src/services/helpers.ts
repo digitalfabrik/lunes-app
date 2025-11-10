@@ -75,6 +75,8 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
+export const shuffleIndexes = <T>(array: T[]): number[] => shuffleArray([...array.keys()])
+
 const getNumberOfUnlockedExercisesByProgress = (unitId: StandardUnitId, progress: Progress): number => {
   const progressOfUnit = progress[unitId.id]
   return progressOfUnit

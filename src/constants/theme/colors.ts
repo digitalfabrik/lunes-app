@@ -2,9 +2,12 @@ export const COLORS = {
   primary: '#000e38',
   backgroundAccent: '#ffffff',
   background: '#f9fafb',
+  backgroundLow: '#F5F6F7',
+  backgroundHigh: '#E0E4ED',
   text: '#3a4049',
   textSecondary: '#5b616a',
   placeholder: '#777e91',
+  textLight: '#F9FAFB',
   disabled: '#e0e4ed',
   progressIndicator: '#425bee',
   containedButtonSelected: '#3d4662',
@@ -28,6 +31,10 @@ export const COLORS = {
   chartColor2: '#EEEEEE',
   chartColor3: '#8CC8F3',
   chartColor4: '#D9D9D9',
+  backgroundBlue: '#6588F2',
+  backgroundTeal: '#04ACA7',
+  backgroundRed: '#FAA7A7',
+  buttonBlue: '#A6E0FF',
 }
 
-export type Color = (typeof COLORS)[keyof typeof COLORS]
+export type Color = string
