@@ -88,9 +88,16 @@
     },
     "training": {
       "train": "Vokabeln trainieren",
+      "finished": {
+        "askContinue": "Möchtest du eine weitere {} Übung machen?",
+        "continueYes": "Ja, weiter",
+        "continueNo": "Nein, andere Übung auswählen"
+      },
       "image": {
         "title": "Bilderrätsel",
-        "description": "Die richtige Vokabel finden"
+        "description": "Die richtige Vokabel finden",
+        "selectImage": "Wähle das richtige Bild aus!",
+        "whatIs": "Was ist"
       },
       "voice": {
         "title": "Sprechstudio",
@@ -98,15 +105,22 @@
       },
       "sentence": {
         "title": "Satzbausteine",
-        "description": "Die Vokabel richtig anwenden"
+        "description": "Die Vokabel richtig anwenden",
+        "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
+        "listen": "Höre dir den Satz an!",
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig."
       }
     },
     "tryLater": "Später versuchen",
+    "tryAgain": "Nochmal versuchen",
     "cheat": {
       "succeed": "Solve All",
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "skip": "Überspringen",
+    "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
@@ -202,7 +216,8 @@
       "hold": "Aufnahmetaste halten",
       "talk": "Jetzt sprechen",
       "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
-    }
+    },
+    "new": "Neu"
   },
   "favorites": "Favoriten",
   "dictionary": {
