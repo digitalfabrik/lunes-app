@@ -6,7 +6,6 @@ import styled from 'styled-components/native'
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
-import { NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import useStorage from '../../../hooks/useStorage'
 import { JobId } from '../../../services/CmsApi'
@@ -46,7 +45,6 @@ const Title = styled(Heading)`
 
 type SelectedJobsProps = {
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToExercise: (nextExerciseData: NextExerciseData) => void
   navigateToTrainingExerciseSelection: (job: Discipline) => void
   navigateToManageSelection: () => void
   navigateToJobSelection: () => void
@@ -59,7 +57,6 @@ const useAllJobs = (): JobId[] => {
 
 const SelectedJobs = ({
   navigateToDiscipline,
-  navigateToExercise,
   navigateToTrainingExerciseSelection,
   navigateToManageSelection,
   navigateToJobSelection,
@@ -87,7 +84,6 @@ const SelectedJobs = ({
         <JobCard
           identifier={jobs[0]}
           navigateToDiscipline={navigateToDiscipline}
-          navigateToExercise={navigateToExercise}
           navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
         />
       ) : (
@@ -103,7 +99,6 @@ const SelectedJobs = ({
               identifier={item}
               width={wp('75%')}
               navigateToDiscipline={navigateToDiscipline}
-              navigateToExercise={navigateToExercise}
               navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             />
           )}

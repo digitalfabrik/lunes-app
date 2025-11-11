@@ -81,13 +81,13 @@ const LearningModeCard = ({
 
 export type ModeSelectionProps = {
   job: Discipline
-  navigateToNextExercise: () => void
+  navigateToJob: () => void
   navigateToTrainingExerciseSelection: () => void
 }
 
 const ModeSelection = ({
   job,
-  navigateToNextExercise,
+  navigateToJob,
   navigateToTrainingExerciseSelection,
 }: ModeSelectionProps): ReactElement => {
   const { data: progress } = useReadProgress(job)
@@ -100,7 +100,7 @@ const ModeSelection = ({
         numberUnits={job.numberOfChildren}
         unitsCompleted={completedUnits}
         color={COLORS.backgroundBlue}
-        onPress={navigateToNextExercise}
+        onPress={navigateToJob}
       />
       <LearningModeCard
         title={getLabels().home.trainVocabulary}
