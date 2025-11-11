@@ -1,22 +1,28 @@
 import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import ListItem from '../components/ListItem'
-import RouteWrapper from '../components/RouteWrapper'
-import Title from '../components/Title'
-import { RoutesParams } from '../navigation/NavigationTypes'
-import { getLabels } from '../services/helpers'
+import ListItem from '../../components/ListItem'
+import RouteWrapper from '../../components/RouteWrapper'
+import Title from '../../components/Title'
+import { Discipline } from '../../constants/endpoints'
+import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getLabels } from '../../services/helpers'
 
 type TrainingExercise = {
   title: string
   description: string
-  screen?: string
+  navigate?: (navigation: StackNavigationProp<RoutesParams, 'TrainingExerciseSelection'>, job: Discipline) => void
 }
 
 const TRAINING_EXERCISES: Readonly<TrainingExercise[]> = [
-  getLabels().exercises.training.images,
+  {
+    title: getLabels().exercises.training.images.title,
+    description: getLabels().exercises.training.images.description,
+    navigate: (navigation, job) => navigation.navigate('ImageTraining', { job }),
+  },
   getLabels().exercises.training.voice,
   getLabels().exercises.training.sentence,
 ]
@@ -27,8 +33,9 @@ const Container = styled.View`
 
 export type TrainingExerciseSelectionScreenProps = {
   route: RouteProp<RoutesParams, 'TrainingExerciseSelection'>
+  navigation: StackNavigationProp<RoutesParams, 'TrainingExerciseSelection'>
 }
-const TrainingExerciseSelectionScreen = ({ route }: TrainingExerciseSelectionScreenProps): ReactElement => {
+const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExerciseSelectionScreenProps): ReactElement => {
   const { job } = route.params
 
   const renderListItem = ({ item }: { item: TrainingExercise }): JSX.Element | null => (
@@ -37,8 +44,11 @@ const TrainingExerciseSelectionScreen = ({ route }: TrainingExerciseSelectionScr
         title={item.title}
         description={item.description}
         onPress={() => {
-          // TODO
+          if (item.navigate !== undefined) {
+            item.navigate(navigation, job)
+          }
         }}
+        disabled={item.navigate === undefined}
       />
     </Container>
   )

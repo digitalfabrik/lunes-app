@@ -90,7 +90,9 @@
       "train": "Vokabeln trainieren",
       "images": {
         "title": "Bilderrätsel",
-        "description": "Die richtige Vokabel finden"
+        "description": "Die richtige Vokabel finden",
+        "selectImage": "Wähle das richtige Bild aus!",
+        "whatIs": "Was ist"
       },
       "voice": {
         "title": "Spracherkennung",
@@ -107,6 +109,8 @@
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "skip": "Überspringen",
+    "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
