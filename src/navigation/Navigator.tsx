@@ -10,6 +10,7 @@ import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoic
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import JobSelectionScreen from '../routes/job-selection/JobSelectionScreen'
+import ImageTrainingScreen from '../routes/training/ImageTrainingScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
@@ -64,6 +65,11 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='WriteExercise'
         component={WriteExerciseScreen}
+        options={({ navigation }) => options(cancelExercise, navigation, true)}
+      />
+      <Stack.Screen
+        name='ImageTraining'
+        component={ImageTrainingScreen}
         options={({ navigation }) => options(cancelExercise, navigation, true)}
       />
       <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />

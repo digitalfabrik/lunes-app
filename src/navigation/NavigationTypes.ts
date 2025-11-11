@@ -102,6 +102,9 @@ export type RoutesParams = {
   TrainingExerciseSelection: {
     job: Discipline
   }
+  ImageTraining: {
+    job: Discipline
+  }
 }
 
 export type Route = keyof RoutesParams
