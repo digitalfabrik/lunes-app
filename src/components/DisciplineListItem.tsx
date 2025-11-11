@@ -3,6 +3,7 @@ import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
+import { EXERCISES } from '../constants/data'
 import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import theme from '../constants/theme'
@@ -65,7 +66,8 @@ export const UnitListItem = ({
   const badgeLabel = unit.numberWords.toString()
   const description = pluralize(labels.general.word, unit.numberWords)
 
-  const actualProgress = unit.id.type === 'standard' ? getNumberOfUnlockedExercises(progress, unit.id) : 0
+  const unlockedExercises = unit.id.type === 'standard' ? getNumberOfUnlockedExercises(progress, unit.id) : 0
+  const actualProgress = unlockedExercises / EXERCISES.length
 
   return (
     <ListItem
