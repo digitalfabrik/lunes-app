@@ -16,8 +16,8 @@ import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../const
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { ServerResponseDiscipline } from '../hooks/helpers'
-import { loadDiscipline } from '../hooks/useLoadDiscipline'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import { getJob } from './CmsApi'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
@@ -35,18 +35,15 @@ export const pluralize = (labels: { singular: string; plural: string }, n: numbe
 export const wordsDescription = (numberOfWords: number): string =>
   `${numberOfWords} ${pluralize(getLabels().general.word, numberOfWords)}`
 
-export const childrenLabel = (discipline: Discipline, hasParent = false): string => {
-  if (!discipline.parentTitle && !discipline.apiKey && !hasParent) {
-    return pluralize(getLabels().general.rootDiscipline, discipline.numberOfChildren)
-  }
+export const childrenLabel = (discipline: Discipline): string => {
   if (discipline.isLeaf) {
     return pluralize(labels.general.word, discipline.numberOfChildren)
   }
   return pluralize(getLabels().general.discipline, discipline.numberOfChildren)
 }
 
-export const childrenDescription = (discipline: Discipline, hasParent = false): string =>
-  `${discipline.numberOfChildren} ${childrenLabel(discipline, hasParent)}`
+export const childrenDescription = (discipline: Discipline): string =>
+  `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -113,7 +110,7 @@ export type GetNextExerciseParams = {
   exerciseKey: exerciseKey of the next exercise which needs to be done
   */
 export const getNextExercise = async ({ progress, profession }: GetNextExerciseParams): Promise<NextExercise> => {
-  const discipline = await loadDiscipline({ disciplineId: profession.id })
+  const discipline = await getJob({ disciplineId: profession.id })
   const leafDisciplineIds = discipline.leafDisciplines
   if (!leafDisciplineIds?.length) {
     throw new Error(`No Disciplines for id ${profession.id}`)
@@ -251,8 +248,8 @@ export const splitTextBySearchString = (allText: string, highlight: string): [st
   ]
 }
 
-export const searchProfessions = (disciplines: Discipline[] | undefined, searchKey: string): Discipline[] | undefined =>
-  disciplines?.filter(discipline => normalizeString(discipline.title).includes(normalizeString(searchKey)))
+export const searchJobs = (jobs: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
+  jobs?.filter(job => normalizeString(job.title).includes(normalizeString(searchKey)))
 
 export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
   id: vocabularyItem.id,

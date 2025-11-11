@@ -4,7 +4,6 @@ import { useTheme } from 'styled-components/native'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
 import ImprintScreen from '../routes/ImprintScreen'
-import AddCustomDisciplineScreen from '../routes/add-custom-discipline/AddCustomDisciplineScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
@@ -18,7 +17,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const { manageSelection, overview } = getLabels().general.header
+  const { manageJobs, overview } = getLabels().general.header
   const theme = useTheme()
 
   return (
@@ -32,17 +31,12 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='ManageSelection'
         component={ManageSelectionsScreen}
-        options={({ navigation }) => options(manageSelection, navigation)}
+        options={({ navigation }) => options(manageJobs, navigation)}
       />
       <Stack.Screen
         name='StandardExercises'
         component={StandardExercisesScreen}
         options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
-      />
-      <Stack.Screen
-        name='AddCustomDiscipline'
-        component={AddCustomDisciplineScreen}
-        options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen
         name='Imprint'

@@ -8,10 +8,10 @@ import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 import { NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
-import { RequestParams } from '../../../hooks/useLoadDiscipline'
 import useStorage from '../../../hooks/useStorage'
+import { JobId } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
-import DisciplineCard from './DisciplineCard'
+import JobCard from './JobCard'
 
 const Box = styled.View``
 
@@ -44,52 +44,46 @@ const Title = styled(Heading)`
   padding-right: ${props => props.theme.spacings.sm};
 `
 
-type SelectedProfessionsProps = {
+type SelectedJobsProps = {
   navigateToDiscipline: (discipline: Discipline) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
   navigateToManageSelection: () => void
-  navigateToProfessionSelection: () => void
+  navigateToJobSelection: () => void
 }
 
-const useAllProfessions = (): RequestParams[] => {
-  const [selectedProfessions] = useStorage('selectedProfessions')
-  const [customDisciplines] = useStorage('customDisciplines')
-
-  const localProfessionParams = selectedProfessions?.map(id => ({ disciplineId: id })) ?? []
-  const customProfessionParams = customDisciplines.map(id => ({ apiKey: id }))
-
-  return [...localProfessionParams, ...customProfessionParams]
+const useAllJobs = (): JobId[] => {
+  const [selectedJobs] = useStorage('selectedJobs')
+  return selectedJobs?.map(id => ({ disciplineId: id })) ?? []
 }
 
-const SelectedProfessions = ({
+const SelectedJobs = ({
   navigateToDiscipline,
   navigateToNextExercise,
   navigateToManageSelection,
-  navigateToProfessionSelection,
-}: SelectedProfessionsProps): JSX.Element | null => {
-  const professions = useAllProfessions()
-  const { disciplines } = getLabels().home
+  navigateToJobSelection,
+}: SelectedJobsProps): JSX.Element | null => {
+  const jobs = useAllJobs()
   const listRef = useRef<FlatList>(null)
 
   return (
     <Box>
       <BoxHeading>
         <Title>
-          {disciplines} [{professions.length}]
+          {getLabels().home.jobs} [{jobs.length}]
         </Title>
         <IconContainer>
           <PressableOpacity onPress={navigateToManageSelection} testID='edit-professions-button'>
             <PenIcon />
           </PressableOpacity>
-          <PressableOpacity onPress={navigateToProfessionSelection} testID='add-profession-button'>
+          <PressableOpacity onPress={navigateToJobSelection} testID='add-profession-button'>
             <AddCircleIcon />
           </PressableOpacity>
         </IconContainer>
       </BoxHeading>
 
-      {professions.length === 1 ? (
-        <DisciplineCard
-          identifier={professions[0]}
+      {jobs.length === 1 ? (
+        <JobCard
+          identifier={jobs[0]}
           navigateToDiscipline={navigateToDiscipline}
           navigateToNextExercise={navigateToNextExercise}
         />
@@ -99,10 +93,10 @@ const SelectedProfessions = ({
           ref={listRef}
           // Workaround for https://github.com/facebook/react-native/issues/27504
           onEndReached={() => listRef.current?.scrollToEnd()}
-          data={professions}
+          data={jobs}
           keyExtractor={item => JSON.stringify(item)}
           renderItem={({ item }) => (
-            <DisciplineCard
+            <JobCard
               identifier={item}
               width={wp('75%')}
               navigateToDiscipline={navigateToDiscipline}
@@ -117,4 +111,4 @@ const SelectedProfessions = ({
   )
 }
 
-export default SelectedProfessions
+export default SelectedJobs
