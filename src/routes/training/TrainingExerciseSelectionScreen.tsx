@@ -24,7 +24,11 @@ const TRAINING_EXERCISES: Readonly<TrainingExercise[]> = [
     navigate: (navigation, job) => navigation.navigate('ImageTraining', { job }),
   },
   getLabels().exercises.training.voice,
-  getLabels().exercises.training.sentence,
+  {
+    title: getLabels().exercises.training.sentence.title,
+    description: getLabels().exercises.training.sentence.description,
+    navigate: (navigation, job) => navigation.navigate('SentenceTraining', { job }),
+  },
 ]
 
 const Container = styled.View`
