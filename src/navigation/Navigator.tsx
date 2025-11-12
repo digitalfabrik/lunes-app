@@ -5,12 +5,13 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import useStorage from '../hooks/useStorage'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
-import ProfessionSelectionScreen from '../routes/ProfessionSelectionScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
-import ScopeSelection from '../routes/scope-selection/ScopeSelectionScreen'
+import JobSelectionScreen from '../routes/job-selection/JobSelectionScreen'
+import ImageTrainingScreen from '../routes/training/ImageTrainingScreen'
+import SentenceTrainingScreen from '../routes/training/SentenceTrainingScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
 import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
@@ -21,31 +22,26 @@ import screenOptions from './screenOptions'
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): JSX.Element | null => {
-  const [professions] = useStorage('selectedProfessions')
+  const [jobs] = useStorage('selectedJobs')
 
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
 
-  const { manageSelection, overviewExercises, cancelExercise, overview } = getLabels().general.header
+  const { manageJobs, overviewExercises, cancelExercise } = getLabels().general.header
 
   return (
-    <Stack.Navigator initialRouteName={professions === null ? 'ScopeSelection' : 'BottomTabNavigator'}>
+    <Stack.Navigator initialRouteName={jobs === null ? 'JobSelection' : 'BottomTabNavigator'}>
       <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
-        name='ScopeSelection'
-        component={ScopeSelection}
+        name='JobSelection'
+        component={JobSelectionScreen}
         initialParams={{ initialSelection: true }}
-        options={({ navigation }) => options(manageSelection, navigation)}
+        options={({ navigation }) => options(manageJobs, navigation)}
       />
       <Stack.Screen
         name='OverlayMenu'
         component={OverlayMenu}
         options={{ presentation: 'transparentModal', headerShown: false, ...OverlayTransition }}
-      />
-      <Stack.Screen
-        name='ProfessionSelection'
-        component={ProfessionSelectionScreen}
-        options={({ navigation, route }) => options(route.params.discipline.parentTitle ?? overview, navigation)}
       />
       <Stack.Screen
         name='VocabularyList'
@@ -70,6 +66,16 @@ const HomeStackNavigator = (): JSX.Element | null => {
       <Stack.Screen
         name='WriteExercise'
         component={WriteExerciseScreen}
+        options={({ navigation }) => options(cancelExercise, navigation, true)}
+      />
+      <Stack.Screen
+        name='ImageTraining'
+        component={ImageTrainingScreen}
+        options={({ navigation }) => options(cancelExercise, navigation, true)}
+      />
+      <Stack.Screen
+        name='SentenceTraining'
+        component={SentenceTrainingScreen}
         options={({ navigation }) => options(cancelExercise, navigation, true)}
       />
       <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />

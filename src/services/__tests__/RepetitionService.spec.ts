@@ -419,7 +419,7 @@ describe('RepetitionService', () => {
         id: 99,
         word: 'i am unknown',
         article: ARTICLES[1],
-        type: 'st',
+        type: 'lunes-standard',
         audio: '',
         images: [],
         alternatives: [],

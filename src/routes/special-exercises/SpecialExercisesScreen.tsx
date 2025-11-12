@@ -21,21 +21,20 @@ type ExercisesScreenProps = {
 }
 
 const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
-  const { disciplineTitle, vocabularyItems } = route.params
+  const { jobTitle, vocabularyItems, unit } = route.params
 
   const handleNavigation = (item: Exercise): void => {
-    if (vocabularyItems) {
-      const closeExerciseAction = CommonActions.navigate('SpecialExercises', {
-        vocabularyItems,
-        disciplineTitle,
-      })
-      navigation.navigate(EXERCISES[item.key].screen, {
-        contentType: 'userVocabulary',
-        vocabularyItems,
-        disciplineTitle,
-        closeExerciseAction,
-      })
-    }
+    const closeExerciseAction = CommonActions.navigate('SpecialExercises', {
+      vocabularyItems,
+      jobTitle,
+      unit,
+    })
+    navigation.navigate(EXERCISES[item.key].screen, {
+      contentType: 'userVocabulary',
+      vocabularyItems,
+      unitTitle: unit.title,
+      closeExerciseAction,
+    })
   }
 
   const renderListItem = ({ item }: { item: Exercise }): JSX.Element | null => (
@@ -46,7 +45,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
 
   return (
     <RouteWrapper>
-      <Title title={disciplineTitle} description={wordsDescription(vocabularyItems ? vocabularyItems.length : 0)} />
+      <Title title={jobTitle} description={wordsDescription(vocabularyItems.length)} />
       <FlatList
         data={EXERCISES}
         renderItem={renderListItem}

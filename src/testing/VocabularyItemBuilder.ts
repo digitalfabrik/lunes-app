@@ -7,7 +7,7 @@ const vocabularyItems: VocabularyItem[] = [
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Spachtel',
     article: ARTICLES[1],
-    images: [{ id: 1, image: 'image' }],
+    images: ['image'],
     audio: 'https://example.com/my-audio',
     alternatives: [
       {
@@ -25,7 +25,7 @@ const vocabularyItems: VocabularyItem[] = [
     type: VOCABULARY_ITEM_TYPES.lunesStandard,
     word: 'Auto',
     article: ARTICLES[3],
-    images: [{ id: 1, image: 'image' }],
+    images: ['image'],
     audio: '',
     alternatives: [],
   },
@@ -35,7 +35,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Hose',
     article: ARTICLES[2],
     audio: '',
-    images: [{ id: 1, image: 'image' }],
+    images: ['image'],
     alternatives: [],
   },
   {
@@ -44,7 +44,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Helm',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [],
   },
   {
@@ -53,7 +53,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Abhänger',
     article: ARTICLES[3],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [
       {
         word: 'Abhänger',
@@ -67,7 +67,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Ölkanne',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [
       {
         word: 'Ölkännchen',
@@ -81,7 +81,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Riffeldübel',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [
       {
         word: 'Holzdübel',
@@ -95,7 +95,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Akkuschrauber',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [],
   },
   {
@@ -104,7 +104,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Oberarm',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [],
   },
   {
@@ -113,7 +113,7 @@ const vocabularyItems: VocabularyItem[] = [
     word: 'Untergrund',
     article: ARTICLES[1],
     audio: '',
-    images: [{ id: 2, image: 'image' }],
+    images: ['image'],
     alternatives: [],
   },
 ]

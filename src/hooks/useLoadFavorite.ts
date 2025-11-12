@@ -1,10 +1,9 @@
 import { Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { ENDPOINTS, VocabularyItem } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
+import { getWordById } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
-import { getFromEndpoint } from '../services/axios'
 import { getUserVocabularyItems, removeFavorite } from '../services/storageUtils'
 import useLoadAsync, { Return } from './useLoadAsync'
-import { formatVocabularyItemFromServer, VocabularyItemFromServer } from './useLoadVocabularyItems'
 import { useStorageCache } from './useStorage'
 
 type LoadFavoriteProps = { storageCache: StorageCache; favorite: Favorite }
@@ -18,9 +17,7 @@ export const loadFavorite = async ({ storageCache, favorite }: LoadFavoriteProps
     }
     return userCreatedFavorite
   }
-  const url = `${ENDPOINTS.vocabularyItem}/${favorite.id}`
-  const vocabularyItemFromServer = await getFromEndpoint<VocabularyItemFromServer>(url, favorite.apiKey)
-  return formatVocabularyItemFromServer(vocabularyItemFromServer)
+  return getWordById(favorite.id)
 }
 
 const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => {
