@@ -2,6 +2,8 @@ export const COLORS = {
   primary: '#000e38',
   backgroundAccent: '#ffffff',
   background: '#f9fafb',
+  backgroundLow: '#F5F6F7',
+  backgroundHigh: '#E0E4ED',
   text: '#3a4049',
   textSecondary: '#5b616a',
   placeholder: '#777e91',
@@ -32,6 +34,7 @@ export const COLORS = {
   backgroundBlue: '#6588F2',
   backgroundTeal: '#04ACA7',
   backgroundRed: '#FAA7A7',
+  buttonBlue: '#A6E0FF',
 }
 
 export type Color = string
