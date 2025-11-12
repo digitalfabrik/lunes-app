@@ -10,7 +10,6 @@ import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
@@ -18,6 +17,7 @@ import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem } from './components/ImageGrid'
+import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 
 type State = {
@@ -82,21 +82,6 @@ const stateReducer = (state: State, action: Action): State => {
   }
 }
 
-const Root = styled.ScrollView`
-  padding: ${props => props.theme.spacings.md} 0;
-  background: ${props => props.theme.colors.background};
-`
-
-const Header = styled.View`
-  padding: 0 ${props => props.theme.spacings.md};
-`
-
-const Content = styled.View`
-  background: ${props => props.theme.colors.backgroundAccent};
-  padding: ${props => props.theme.spacings.xs} 0;
-  margin: ${props => props.theme.spacings.md} ${props => props.theme.spacings.xs};
-`
-
 const QuestionContainer = styled.View`
   display: flex;
   flex-flow: row wrap;
@@ -106,12 +91,6 @@ const QuestionContainer = styled.View`
 
 const AudioPlayerContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
-`
-
-const ButtonContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  padding: ${props => props.theme.spacings.md};
 `
 
 type ImageTrainingProps = {
@@ -149,6 +128,22 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
     return null
   }
 
+  const nextWordButton = state.answer?.isCorrect ? (
+    <Button
+      onPress={() => dispatch({ type: 'nextWord' })}
+      label={getLabels().exercises.continue}
+      buttonTheme={BUTTONS_THEME.contained}
+    />
+  ) : (
+    <Button
+      onPress={() => dispatch({ type: 'nextWord' })}
+      label={getLabels().exercises.skip}
+      iconRight={ChevronRight}
+      buttonTheme={BUTTONS_THEME.text}
+      testID='button-skip'
+    />
+  )
+
   return (
     <>
       <TrainingExerciseHeader
@@ -157,42 +152,20 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
         navigation={navigation}
       />
 
-      <Root>
-        <Header>
-          <Heading>{getLabels().exercises.training.images.selectImage}</Heading>
-        </Header>
-        <Content>
-          <QuestionContainer>
-            <ContentText>
-              {getLabels().exercises.training.images.whatIs} {word.article.value}{' '}
-            </ContentText>
-            <ContentTextBold>{word.word}</ContentTextBold>
-            <ContentText>?</ContentText>
-            <AudioPlayerContainer>
-              <AudioPlayer disabled={word.audio === null} audio={word.audio ?? ''} />
-            </AudioPlayerContainer>
-          </QuestionContainer>
-          <ImageGrid items={imageGridItems} onPress={item => dispatch({ type: 'selectAnswer', key: item })} />
-        </Content>
+      <TrainingExerciseContainer title={getLabels().exercises.training.images.selectImage} footer={nextWordButton}>
+        <QuestionContainer>
+          <ContentText>
+            {getLabels().exercises.training.images.whatIs} {word.article.value}{' '}
+          </ContentText>
+          <ContentTextBold>{word.word}</ContentTextBold>
+          <ContentText>?</ContentText>
+          <AudioPlayerContainer>
+            <AudioPlayer disabled={word.audio === null} audio={word.audio ?? ''} />
+          </AudioPlayerContainer>
+        </QuestionContainer>
 
-        <ButtonContainer>
-          {state.answer?.isCorrect ? (
-            <Button
-              onPress={() => dispatch({ type: 'nextWord' })}
-              label={getLabels().exercises.continue}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          ) : (
-            <Button
-              onPress={() => dispatch({ type: 'nextWord' })}
-              label={getLabels().exercises.skip}
-              iconRight={ChevronRight}
-              buttonTheme={BUTTONS_THEME.text}
-              testID='button-skip'
-            />
-          )}
-        </ButtonContainer>
-      </Root>
+        <ImageGrid items={imageGridItems} onPress={item => dispatch({ type: 'selectAnswer', key: item })} />
+      </TrainingExerciseContainer>
     </>
   )
 }
