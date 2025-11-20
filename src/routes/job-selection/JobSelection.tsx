@@ -2,7 +2,7 @@ import React, { useMemo, ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CheckCircleIconGreen } from '../../../assets/images'
-import DisciplineListItem from '../../components/DisciplineListItem'
+import { JobListItem } from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
@@ -107,9 +107,9 @@ const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: J
   const disciplineItems = disciplines?.map(item => {
     const isSelected = selectedJobs?.includes(item.id)
     return (
-      <DisciplineListItem
+      <JobListItem
         key={item.id}
-        item={item}
+        job={item}
         onPress={() => {
           if (isSelected) {
             onUnselectJob?.(item)

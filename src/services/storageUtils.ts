@@ -3,6 +3,7 @@ import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
+import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
@@ -43,24 +44,24 @@ export const removeCustomDiscipline = async (storageCache: StorageCache, customD
 
 export const setExerciseProgress = async (
   storageCache: StorageCache,
-  disciplineId: number,
+  unitId: StandardUnitId,
   exerciseKey: ExerciseKey,
   score: number,
 ): Promise<void> => {
   const savedProgress = storageCache.getMutableItem('progress')
-  const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
-  savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
+  const newScore = Math.max(savedProgress[unitId.id]?.[exerciseKey] ?? score, score)
+  savedProgress[unitId.id] = { ...(savedProgress[unitId.id] ?? {}), [exerciseKey]: newScore }
   await storageCache.setItem('progress', savedProgress)
 }
 
 export const saveExerciseProgress = async (
   storageCache: StorageCache,
-  disciplineId: number,
+  unitId: StandardUnitId,
   exerciseKey: ExerciseKey,
   vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
-  await setExerciseProgress(storageCache, disciplineId, exerciseKey, score)
+  await setExerciseProgress(storageCache, unitId, exerciseKey, score)
 
   if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && score > 0) {
     const repetitionService = RepetitionService.fromStorageCache(storageCache)

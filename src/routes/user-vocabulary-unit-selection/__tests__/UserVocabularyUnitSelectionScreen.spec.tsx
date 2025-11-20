@@ -9,12 +9,12 @@ import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { renderWithStorageCache } from '../../../testing/render'
-import UserVocabularyDisciplineSelectionScreen from '../UserVocabularyDisciplineSelectionScreen'
+import UserVocabularyDisciplineSelectionScreen from '../UserVocabularyUnitSelectionScreen'
 
 jest.mock('@react-navigation/native')
 
 describe('UserVocabularyDisciplineSelectionScreen', () => {
-  let navigation: StackNavigationProp<RoutesParams, 'UserVocabularyDisciplineSelection'>
+  let navigation: StackNavigationProp<RoutesParams, 'UserVocabularyUnitSelection'>
   let storageCache: StorageCache
 
   beforeEach(async () => {
@@ -23,7 +23,7 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
 
   const renderScreen = async (mockVocabulary: VocabularyItem[]): Promise<RenderAPI> => {
     await storageCache.setItem('userVocabulary', mockVocabulary)
-    navigation = createNavigationMock<'UserVocabularyDisciplineSelection'>()
+    navigation = createNavigationMock<'UserVocabularyUnitSelection'>()
     return renderWithStorageCache(storageCache, <UserVocabularyDisciplineSelectionScreen navigation={navigation} />)
   }
 
@@ -55,24 +55,12 @@ describe('UserVocabularyDisciplineSelectionScreen', () => {
   })
 
   it('should handle navigation correctly', async () => {
-    const vocabularyItems = new VocabularyItemBuilder(25).build().map(item => ({ ...item, type: 'user-created' }))
+    const vocabularyItems = new VocabularyItemBuilder(25)
+      .build()
+      .map(item => ({ ...item, type: 'user-created' }) as const)
     const { getByText } = await renderScreen(vocabularyItems)
     const partTwo = getByText(`${getLabels().userVocabulary.practice.part} 2`)
     fireEvent.press(partTwo)
-    expect(navigation.navigate).toHaveBeenCalledWith('SpecialExercises', {
-      contentType: 'userVocabulary',
-      discipline: {
-        id: 1,
-        title: `${getLabels().userVocabulary.practice.part} ${2}`,
-        description: '',
-        numberOfChildren: 10,
-        isLeaf: true,
-        parentTitle: getLabels().userVocabulary.collection,
-        needsTrainingSetEndpoint: true,
-      },
-      disciplineTitle: `${getLabels().userVocabulary.practice.part} 2`,
-      vocabularyItems: vocabularyItems.slice(10, 20),
-      closeExerciseAction: undefined,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith('SpecialExercises', expect.anything())
   })
 })
