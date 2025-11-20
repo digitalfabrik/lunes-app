@@ -8,7 +8,7 @@ import { getJobs } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
 import { renderWithStorageCache } from '../../../testing/render'
 import ScopeSelection from '../JobSelectionScreen'
 
@@ -48,7 +48,7 @@ describe('JobSelection', () => {
   })
 
   it('should confirm selection', async () => {
-    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute()} />,
@@ -63,7 +63,7 @@ describe('JobSelection', () => {
   })
 
   it('should hide welcome message and buttons for non initial view', async () => {
-    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
     const { queryByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
@@ -74,7 +74,7 @@ describe('JobSelection', () => {
   })
 
   it('should select job', async () => {
-    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
@@ -82,15 +82,15 @@ describe('JobSelection', () => {
 
     expect(storageCache.getItem('selectedJobs')).toBeNull()
 
-    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    const button = await waitFor(() => getByText(mockJobs()[0].title))
     fireEvent.press(button)
 
-    expect(storageCache.getItem('selectedJobs')).toEqual([mockDisciplines()[0].id])
+    expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0].id])
   })
 
   it('should unselect job on initial selection', async () => {
-    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
-    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
     const { queryAllByTestId } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(true)} />,
@@ -106,17 +106,17 @@ describe('JobSelection', () => {
   })
 
   it('should disable button if not on initial selection', async () => {
-    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockDisciplines()))
-    await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
     )
 
-    const button = await waitFor(() => getByText(mockDisciplines()[0].title))
+    const button = await waitFor(() => getByText(mockJobs()[0].title))
     expect(button).toBeDisabled()
 
-    const secondDiscipline = getByText(mockDisciplines()[1].title)
+    const secondDiscipline = getByText(mockJobs()[1].title)
     expect(secondDiscipline).not.toBeDisabled()
   })
 })

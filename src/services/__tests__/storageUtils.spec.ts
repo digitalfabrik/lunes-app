@@ -4,7 +4,7 @@ import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES
 import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
-import { mockDisciplines } from '../../testing/mockDiscipline'
+import { mockJobs } from '../../testing/mockJob'
 import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
@@ -54,7 +54,7 @@ describe('storageUtils', () => {
   })
 
   describe('selectedProfessions', () => {
-    const selectedProfessions = mockDisciplines()
+    const selectedProfessions = mockJobs()
 
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
@@ -62,21 +62,21 @@ describe('storageUtils', () => {
         selectedProfessions.map(item => item.id),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
-      await removeSelectedJob(storageCache, mockDisciplines()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockDisciplines()[1].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[1].id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await removeSelectedJob(storageCache, mockDisciplines()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockDisciplines()[0].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockDisciplines()[1].id)
+      await pushSelectedJob(storageCache, mockJobs()[1].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
@@ -85,27 +85,27 @@ describe('storageUtils', () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done discipline but not yet done exercise', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.writeExercise, 0.6)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.writeExercise, 0.6)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.8)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.8)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.4)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.4)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
       })
@@ -124,7 +124,12 @@ describe('storageUtils', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, vocabularyItemResults)
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.wordChoiceExercise,
+          vocabularyItemResults,
+        )
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
 
@@ -141,7 +146,12 @@ describe('storageUtils', () => {
             numberOfTries: 1,
           },
         ]
-        await saveExerciseProgress(storageCache, 1, ExerciseKeys.vocabularyList, vocabularyItemResults)
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.vocabularyList,
+          vocabularyItemResults,
+        )
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.vocabularyList]: 10 })
 

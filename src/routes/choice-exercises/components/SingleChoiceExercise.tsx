@@ -20,6 +20,7 @@ import {
 } from '../../../constants/data'
 import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
 import { useStorageCache } from '../../../hooks/useStorage'
+import { StandardUnitId } from '../../../models/Unit'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
@@ -34,7 +35,7 @@ const ButtonContainer = styled.View`
 
 type SingleChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
-  disciplineId: number
+  unitId: StandardUnitId | null
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
@@ -45,7 +46,7 @@ const CORRECT_ANSWER_DELAY = 700
 
 const ChoiceExerciseScreen = ({
   vocabularyItems,
-  disciplineId,
+  unitId,
   vocabularyItemToAnswer,
   navigation,
   route,
@@ -88,13 +89,17 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    const progress = storageCache.getItem('progress')
-    await saveExerciseProgress(storageCache, disciplineId, exerciseKey, results)
+    let unlockedNextExercise = true
+    if (unitId !== null) {
+      const progress = storageCache.getItem('progress')
+      await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
+      unlockedNextExercise = willNextExerciseUnlock(progress[unitId.id]?.[exerciseKey], calculateScore(results))
+    }
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,
       results,
-      unlockedNextExercise: willNextExerciseUnlock(progress[disciplineId]?.[exerciseKey], calculateScore(results)),
+      unlockedNextExercise,
     })
     initializeExercise(true)
   }

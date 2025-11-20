@@ -9,7 +9,7 @@ import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
 import render, { renderWithStorageCache } from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
@@ -48,7 +48,7 @@ describe('AddCustomDisciplineScreen', () => {
   it('should navigate on successfully submit', async () => {
     await storageCache.setItem('customDisciplines', ['test'])
 
-    mocked(getJob).mockImplementationOnce(async () => mockDisciplines()[0])
+    mocked(getJob).mockImplementationOnce(async () => mockJobs()[0])
 
     const { findByText, findByPlaceholderText } = renderWithStorageCache(
       storageCache,
