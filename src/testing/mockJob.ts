@@ -1,6 +1,6 @@
 import { Discipline } from '../constants/endpoints'
 
-export const mockDisciplines = (needsTrainingSetEndpoint = false): Discipline[] => [
+export const mockJobs = (needsTrainingSetEndpoint = false): Discipline[] => [
   {
     id: 1,
     title: 'First Discipline',

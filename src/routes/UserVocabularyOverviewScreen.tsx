@@ -35,7 +35,7 @@ const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScre
         <ListItem
           icon={<BookIconBlack />}
           title={practice}
-          onPress={() => navigation.navigate('UserVocabularyDisciplineSelection')}
+          onPress={() => navigation.navigate('UserVocabularyUnitSelection')}
         />
         <ButtonContainer>
           <Button

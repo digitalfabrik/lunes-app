@@ -13,15 +13,7 @@ type FavoriteItemProps = {
 const FavoriteItem = ({ favorite, onPress }: FavoriteItemProps): ReactElement | null => {
   const { data } = useLoadFavorite(favorite)
 
-  return (
-    data && (
-      <VocabularyListItem
-        key={`${favorite.id}-${favorite.vocabularyItemType}`}
-        vocabularyItem={data}
-        onPress={() => onPress(data)}
-      />
-    )
-  )
+  return data && <VocabularyListItem vocabularyItem={data} onPress={() => onPress(data)} />
 }
 
 export default FavoriteItem
