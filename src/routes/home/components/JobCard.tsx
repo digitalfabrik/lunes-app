@@ -118,7 +118,7 @@ const JobCard = ({
       ) : (
         navigateToNextExercise && (
           <JobDetails
-            discipline={job}
+            job={job}
             navigateToDiscipline={navigateToDiscipline}
             navigateToNextExercise={navigateToNextExercise}
           />

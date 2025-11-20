@@ -42,6 +42,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
           ListHeaderComponent={<ListHeader>{wordsDescription(data.length)}</ListHeader>}
           data={data}
           renderItem={renderItem}
+          keyExtractor={(item: Favorite) => `${item.id}-${item.vocabularyItemType}`}
         />
       </Root>
     </RouteWrapper>

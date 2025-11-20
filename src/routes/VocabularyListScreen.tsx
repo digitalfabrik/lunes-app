@@ -19,12 +19,14 @@ type VocabularyListScreenProps = {
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): ReactElement => {
   const { contentType, closeExerciseAction } = route.params
-  const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
+  const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
   useEffect(() => {
-    setExerciseProgress(storageCache, disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
-  }, [disciplineId, storageCache])
+    if (unitId !== null) {
+      setExerciseProgress(storageCache, unitId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+    }
+  }, [unitId, storageCache])
 
   const onItemPress = (index: number) =>
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: index })
@@ -36,7 +38,8 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
         feedbackType={FeedbackType.leaf_discipline}
-        feedbackForId={disciplineId}
+        // Fixme: Feedback should not be available for user vocabulary exercises...
+        feedbackForId={unitId?.id ?? 0}
         exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList

@@ -43,18 +43,18 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
     navigation.navigate('JobSelection', { initialSelection: false })
   }
 
-  const navigateToDiscipline = (discipline: Discipline): void => {
-    navigation.navigate('DisciplineSelection', {
-      discipline,
+  const navigateToJob = (job: Discipline): void => {
+    navigation.navigate('UnitSelection', {
+      job,
     })
   }
 
   const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
-    const { exerciseKey, disciplineId, title: disciplineTitle, vocabularyItems } = nextExerciseData
+    const { exerciseKey, unit, vocabularyItems } = nextExerciseData
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       contentType: 'standard',
-      disciplineId,
-      disciplineTitle,
+      unitId: unit.id,
+      unitTitle: nextExerciseData.jobTitle,
       vocabularyItems,
       closeExerciseAction: CommonActions.navigate('Home'),
     })
@@ -68,7 +68,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           <SelectedJobs
-            navigateToDiscipline={navigateToDiscipline}
+            navigateToDiscipline={navigateToJob}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
             navigateToJobSelection={navigateToJobSelection}
