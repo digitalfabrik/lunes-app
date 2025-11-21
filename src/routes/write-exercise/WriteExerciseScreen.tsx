@@ -9,14 +9,7 @@ import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
-import {
-  BUTTONS_THEME,
-  ExerciseKeys,
-  FeedbackType,
-  numberOfMaxRetries,
-  SIMPLE_RESULTS,
-  SimpleResult,
-} from '../../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
@@ -100,8 +93,11 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           currentWord={currentIndex}
           numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
-          feedbackType={FeedbackType.vocabularyItem}
-          feedbackForId={vocabularyItems[currentIndex].id}
+          feedbackTarget={
+            current.vocabularyItem.type !== 'user-created'
+              ? { type: 'word', wordId: current.vocabularyItem.id }
+              : undefined
+          }
           exerciseKey={ExerciseKeys.writeExercise}
         />
 

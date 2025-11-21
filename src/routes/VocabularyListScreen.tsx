@@ -5,7 +5,7 @@ import React, { useEffect, ReactElement } from 'react'
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
-import { ExerciseKeys, FeedbackType } from '../constants/data'
+import { ExerciseKeys } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -37,9 +37,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         navigation={navigation}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
-        feedbackType={FeedbackType.leaf_discipline}
-        // Fixme: Feedback should not be available for user vocabulary exercises...
-        feedbackForId={unitId?.id ?? 0}
+        feedbackTarget={unitId !== null ? { type: 'unit', unitId } : undefined}
         exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList
