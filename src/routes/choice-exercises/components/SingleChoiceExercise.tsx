@@ -13,7 +13,6 @@ import {
   Answer,
   BUTTONS_THEME,
   ExerciseKey,
-  FeedbackType,
   numberOfMaxRetries,
   SIMPLE_RESULTS,
   SimpleResult,
@@ -155,8 +154,9 @@ const ChoiceExerciseScreen = ({
         closeExerciseAction={route.params.closeExerciseAction}
         currentWord={currentWord}
         numberOfWords={count}
-        feedbackType={FeedbackType.vocabularyItem}
-        feedbackForId={vocabularyItem.id}
+        feedbackTarget={
+          vocabularyItem.type === 'user-created' ? undefined : { type: 'word', wordId: vocabularyItem.id }
+        }
         exerciseKey={exerciseKey}
       />
 

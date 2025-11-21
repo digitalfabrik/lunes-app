@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import normalizeStrings from 'normalize-strings'
 
 import {
@@ -7,18 +6,16 @@ import {
   ExerciseKeys,
   EXERCISES,
   Favorite,
-  FeedbackType,
   NextExercise,
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, ENDPOINTS, VocabularyItem } from '../constants/endpoints'
+import { AlternativeWord, Discipline, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
-import { postToEndpoint } from './axios'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
   `${article.value} ${word}`
@@ -148,13 +145,6 @@ export const getProgress = async (progress: Progress, job: Discipline | null): P
   const totalExercises = units.length * EXERCISES.length
   return doneExercises / totalExercises
 }
-
-export const sendFeedback = (comment: string, feedbackType: FeedbackType, id: number): Promise<AxiosResponse> =>
-  postToEndpoint(ENDPOINTS.feedback, {
-    comment,
-    content_type: feedbackType,
-    object_id: id,
-  })
 
 export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[]): number => {
   const SCORE_FIRST_TRY = 10
