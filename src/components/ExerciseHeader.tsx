@@ -3,12 +3,13 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { HiddenItem } from 'react-navigation-header-buttons'
 import styled, { useTheme } from 'styled-components/native'
 
 import { MenuIcon } from '../../assets/images'
-import { FeedbackType, ExerciseKey } from '../constants/data'
+import { ExerciseKey } from '../constants/data'
+import { FeedbackTarget } from '../models/Feedback'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
@@ -39,8 +40,7 @@ type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
   closeExerciseAction: CommonNavigationAction
   exerciseKey?: ExerciseKey
-  feedbackType: FeedbackType
-  feedbackForId: number
+  feedbackTarget?: FeedbackTarget
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
@@ -51,8 +51,7 @@ type ExerciseHeaderProps = {
 const ExerciseHeader = ({
   navigation,
   closeExerciseAction,
-  feedbackType,
-  feedbackForId,
+  feedbackTarget,
   currentWord,
   numberOfWords,
   confirmClose = true,
@@ -62,6 +61,7 @@ const ExerciseHeader = ({
 }: ExerciseHeaderProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
+  const shouldDisplayOverflowMenu = feedbackTarget !== undefined
   const theme = useTheme()
   const showProgress = numberOfWords !== undefined && numberOfWords > 0 && currentWord !== undefined
   const progressText = showProgress ? `${currentWord + 1} / ${numberOfWords}` : ''
@@ -78,14 +78,16 @@ const ExerciseHeader = ({
     const renderHeaderRight = () => (
       <HeaderRightContainer>
         <ProgressText>{progressText}</ProgressText>
-        <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
-          <HiddenItem
-            title={getLabels().general.header.wordFeedback}
-            onPress={() => setIsFeedbackModalVisible(true)}
-            titleStyle={{ fontSize: hp('2%') }}
-            style={{ height: theme.spacingsPlain.xl }}
-          />
-        </OverflowMenu>
+        {shouldDisplayOverflowMenu && (
+          <OverflowMenu icon={<StyledMenuIcon width={hp('2.5%')} height={hp('2.5%')} />}>
+            <HiddenItem
+              title={getLabels().general.header.wordFeedback}
+              onPress={() => setIsFeedbackModalVisible(true)}
+              titleStyle={{ fontSize: hp('2%') }}
+              style={{ height: theme.spacingsPlain.xl }}
+            />
+          </OverflowMenu>
+        )}
       </HeaderRightContainer>
     )
 
@@ -98,6 +100,7 @@ const ExerciseHeader = ({
       },
     })
   }, [
+    shouldDisplayOverflowMenu,
     navigation,
     progressText,
     setIsModalVisible,
@@ -147,12 +150,13 @@ const ExerciseHeader = ({
         confirmationButtonText={getLabels().exercises.cancelModal.cancel}
         confirmationAction={goBack}
       />
-      <FeedbackModal
-        visible={isFeedbackModalVisible}
-        onClose={() => setIsFeedbackModalVisible(false)}
-        feedbackType={feedbackType}
-        feedbackForId={feedbackForId}
-      />
+      {feedbackTarget !== undefined && (
+        <FeedbackModal
+          visible={isFeedbackModalVisible}
+          onClose={() => setIsFeedbackModalVisible(false)}
+          feedbackTarget={feedbackTarget}
+        />
+      )}
     </>
   )
 }
