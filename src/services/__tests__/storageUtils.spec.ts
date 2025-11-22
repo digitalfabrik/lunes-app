@@ -4,8 +4,8 @@ import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS, VOCABULARY_ITEM_TYPES
 import { VocabularyItem } from '../../constants/endpoints'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
-import { mockDisciplines } from '../../testing/mockDiscipline'
-import { RepetitionService } from '../RepetitionService'
+import { mockJobs } from '../../testing/mockJob'
+import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
@@ -14,10 +14,10 @@ import {
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
   getUserVocabularyItems,
-  pushSelectedProfession,
+  pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
-  removeSelectedProfession,
+  removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
 } from '../storageUtils'
@@ -54,30 +54,30 @@ describe('storageUtils', () => {
   })
 
   describe('selectedProfessions', () => {
-    const selectedProfessions = mockDisciplines()
+    const selectedProfessions = mockJobs()
 
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
-        'selectedProfessions',
+        'selectedJobs',
         selectedProfessions.map(item => item.id),
       )
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length)
-      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(selectedProfessions.length - 1)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedProfessions', [mockDisciplines()[1].id])
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
-      await removeSelectedProfession(storageCache, mockDisciplines()[0].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
+      await storageCache.setItem('selectedJobs', [mockJobs()[1].id])
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedProfessions', [mockDisciplines()[0].id])
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(1)
-      await pushSelectedProfession(storageCache, mockDisciplines()[1].id)
-      expect(storageCache.getItem('selectedProfessions')).toHaveLength(2)
+      await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
+      await pushSelectedJob(storageCache, mockJobs()[1].id)
+      expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
@@ -85,27 +85,27 @@ describe('storageUtils', () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done discipline but not yet done exercise', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.writeExercise, 0.6)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.writeExercise, 0.6)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.8)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.8)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, 0.4)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.4)
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
       })
@@ -124,7 +124,12 @@ describe('storageUtils', () => {
             numberOfTries: 3,
           },
         ]
-        await saveExerciseProgress(storageCache, 1, ExerciseKeys.wordChoiceExercise, vocabularyItemResults)
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.wordChoiceExercise,
+          vocabularyItemResults,
+        )
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
 
@@ -141,7 +146,12 @@ describe('storageUtils', () => {
             numberOfTries: 1,
           },
         ]
-        await saveExerciseProgress(storageCache, 1, ExerciseKeys.vocabularyList, vocabularyItemResults)
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.vocabularyList,
+          vocabularyItemResults,
+        )
         const progress = storageCache.getItem('progress')
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.vocabularyList]: 10 })
 
@@ -192,10 +202,10 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('version')).toBe(STORAGE_VERSION)
     })
 
-    it('Should migrate to new favorite storage', async () => {
+    it('should migrate to new favorite storage', async () => {
       await AsyncStorage.setItem(FAVORITES_KEY_VERSION_0, JSON.stringify([42, 84]))
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.not.toBeNull()
-      await AsyncStorage.setItem(storageKeys.selectedProfessions, '[]')
+      await AsyncStorage.setItem(storageKeys.selectedJobs, '[]')
       const storageCache = await loadStorageCache()
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
       expect(storageCache.getItem('favorites')).toEqual([
@@ -205,6 +215,100 @@ describe('storageUtils', () => {
           vocabularyItemType: 'lunes-standard',
         },
       ])
+    })
+
+    describe('should migrate to v2', () => {
+      it('should migrate userVocabulary', async () => {
+        await AsyncStorage.setItem('version', '1')
+        await AsyncStorage.setItem(
+          'userVocabulary',
+          JSON.stringify([
+            {
+              id: 1,
+              word: 'Testwort',
+              article: { id: 3, value: 'das' },
+              images: [{ id: 0, image: 'image-1' }],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+            {
+              id: 2,
+              word: 'Hund',
+              article: { id: 1, value: 'der' },
+              images: [{ id: 0, image: 'image-2' }],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        const expectedUserVocabulary: VocabularyItem[] = [
+          {
+            id: 1,
+            word: 'Testwort',
+            article: { id: 3, value: 'das' },
+            images: ['image-1'],
+            audio: null,
+            alternatives: [],
+            type: 'user-created',
+          },
+          {
+            id: 2,
+            word: 'Hund',
+            article: { id: 1, value: 'der' },
+            images: ['image-2'],
+            audio: null,
+            alternatives: [],
+            type: 'user-created',
+          },
+        ]
+        expect(storageCache.getItem('userVocabulary')).toEqual(expectedUserVocabulary)
+      })
+
+      it('should migrate wordNodeCards', async () => {
+        await AsyncStorage.setItem('version', '1')
+        await AsyncStorage.setItem(
+          'wordNodeCards',
+          JSON.stringify([
+            {
+              word: {
+                id: 2,
+                word: 'Hund',
+                article: { id: 1, value: 'der' },
+                images: [{ id: 0, image: 'image-1' }],
+                audio: null,
+                alternatives: [],
+                type: 'user-created',
+              },
+              section: 0,
+              inThisSectionSince: new Date('2025-10-13'),
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        const expectedWordNodeCards: WordNodeCard[] = [
+          {
+            word: {
+              id: 2,
+              word: 'Hund',
+              article: { id: 1, value: 'der' },
+              images: ['image-1'],
+              audio: null,
+              alternatives: [],
+              type: 'user-created',
+            },
+            section: 0,
+            inThisSectionSince: new Date('2025-10-13'),
+          },
+        ]
+        expect(JSON.stringify(storageCache.getItem('wordNodeCards'))).toStrictEqual(
+          JSON.stringify(expectedWordNodeCards),
+        )
+      })
     })
   })
 

@@ -9,13 +9,11 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
 import { Discipline } from '../../constants/endpoints'
-import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
-import AddCustomDisciplineCard from './components/AddCustomDiscipline'
 import HomeFooter from './components/HomeFooter'
 import HomeScreenHeader from './components/HomeScreenHeader'
-import SelectedProfessions from './components/SelectedProfessions'
+import SelectedJobs from './components/SelectedJobs'
 
 const Root = styled.ScrollView`
   background-color: ${props => props.theme.colors.background};
@@ -36,33 +34,27 @@ type HomeScreenProps = {
 
 const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
   const theme = useTheme()
-  const [customDisciplines] = useStorage('customDisciplines')
-  const hasNoCustomDisciplines = customDisciplines.length === 0
-
-  const navigateToAddCustomDisciplineScreen = (): void => {
-    navigation.navigate('AddCustomDiscipline')
-  }
 
   const navigateToManageSelection = (): void => {
     navigation.navigate('ManageSelection')
   }
 
-  const navigateToProfessionSelection = () => {
-    navigation.navigate('ScopeSelection', { initialSelection: false })
+  const navigateToJobSelection = () => {
+    navigation.navigate('JobSelection', { initialSelection: false })
   }
 
-  const navigateToDiscipline = (discipline: Discipline): void => {
-    navigation.navigate('DisciplineSelection', {
-      discipline,
+  const navigateToJob = (job: Discipline): void => {
+    navigation.navigate('UnitSelection', {
+      job,
     })
   }
 
   const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
-    const { exerciseKey, disciplineId, title: disciplineTitle, vocabularyItems } = nextExerciseData
+    const { exerciseKey, unit, vocabularyItems } = nextExerciseData
     navigation.navigate(EXERCISES[exerciseKey].screen, {
       contentType: 'standard',
-      disciplineId,
-      disciplineTitle,
+      unitId: unit.id,
+      unitTitle: nextExerciseData.jobTitle,
       vocabularyItems,
       closeExerciseAction: CommonActions.navigate('Home'),
     })
@@ -75,13 +67,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
           <HomeScreenHeader navigation={navigation} />
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
-          <SelectedProfessions
-            navigateToDiscipline={navigateToDiscipline}
+          <SelectedJobs
+            navigateToDiscipline={navigateToJob}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
-            navigateToProfessionSelection={navigateToProfessionSelection}
+            navigateToJobSelection={navigateToJobSelection}
           />
-          {hasNoCustomDisciplines && <AddCustomDisciplineCard navigate={navigateToAddCustomDisciplineScreen} />}
         </View>
         <HomeFooter />
       </Root>
