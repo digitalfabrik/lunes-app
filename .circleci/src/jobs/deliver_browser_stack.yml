@@ -6,8 +6,13 @@ shell: /bin/bash -eo pipefail
 steps:
   - checkout
   - prepare_workspace
+  - restore_yarn_cache
+  - restore_yarn_tools_cache
   - restore_ruby_cache:
       directory: android
+  - run:
+      name: Calculate PR number
+      command: echo "export PR_NUMBER=$(echo $CIRCLE_PULL_REQUEST | awk -F'/' '{print $NF}')" >> $BASH_ENV
   - run:
       name: Rename apk
       command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH////-}.apk
@@ -28,6 +33,17 @@ steps:
       name: Undo rename apk
       command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.apk ~/attached_workspace/app-release.apk
   - run:
-      name: Undo raname ipa
+      name: Undo rename ipa
       command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
+  - run:
+      name: Build message
+      command: |
+        printf "## App uploaded to Browserstack\n" >> message 
+        printf "This pull request can now be tested online:\n" >> message
+        printf -- "- [Android](%s)\n" "$(cat android/fastlane/browserstack_live_url)" >> message
+        printf -- "- [iOS](%s)\n" "$(cat ios/fastlane/browserstack_live_url)" >> message
+  - run:
+      name: Post pull request comment with a link to the browserstack live apps
+      command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+      working_directory: tools
   - notify
