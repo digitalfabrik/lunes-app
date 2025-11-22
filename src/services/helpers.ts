@@ -215,19 +215,6 @@ export const millisecondsToDays = (milliseconds: number): number => milliseconds
 /* eslint-disable-next-line no-magic-numbers */
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
 
-export const splitTextBySearchString = (allText: string, highlight: string): [string] | [string, string, string] => {
-  const highlightIndex = normalizeString(allText).indexOf(normalizeString(highlight))
-  if (highlightIndex === -1) {
-    return [allText]
-  }
-  const indexAfterHighlight = highlightIndex + highlight.length
-  return [
-    allText.slice(0, highlightIndex),
-    allText.slice(highlightIndex, indexAfterHighlight),
-    allText.slice(indexAfterHighlight),
-  ]
-}
-
 export const searchJobs = (jobs: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
   jobs?.filter(job => normalizeString(job.title).includes(normalizeString(searchKey)))
 
