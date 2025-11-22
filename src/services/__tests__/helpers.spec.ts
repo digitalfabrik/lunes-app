@@ -18,7 +18,6 @@ import {
   getProgress,
   getSortedAndFilteredVocabularyItems,
   searchJobs,
-  splitTextBySearchString,
   willNextExerciseUnlock,
 } from '../helpers'
 
@@ -341,39 +340,6 @@ describe('helpers', () => {
       ]
       const sortedTestData = getSortedAndFilteredVocabularyItems(testData, '')
       expect(sortedData).toEqual(sortedTestData)
-    })
-  })
-
-  describe('splitTextBySearchString', () => {
-    const allText = 'Hello World'
-    it('should not find a search string', () => {
-      const highlight = 'Goodbye'
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual([allText])
-    })
-
-    it('should find a search string at the start', () => {
-      const highlight = 'Hel'
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['', 'Hel', 'lo World'])
-    })
-
-    it('should find a search string at the end', () => {
-      const highlight = 'World'
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'World', ''])
-    })
-
-    it('should find a search string in the middle', () => {
-      const highlight = 'lo '
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hel', 'lo ', 'World'])
-    })
-
-    it('should ignore casing', () => {
-      const highlight = 'wor'
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'Wor', 'ld'])
-    })
-
-    it('should find a search string with umlauts', () => {
-      const highlight = 'Wörld'
-      expect(splitTextBySearchString(allText, highlight)).toStrictEqual(['Hello ', 'World', ''])
     })
   })
 
