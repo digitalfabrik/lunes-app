@@ -22,6 +22,7 @@ jobs:
       context:
         - mattermost
         - browserstack
+        - deliverino
       requires:
         - build_android
         - build_ios

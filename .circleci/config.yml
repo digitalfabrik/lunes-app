@@ -431,8 +431,13 @@ jobs:
         steps:
             - checkout
             - prepare_workspace
+            - restore_yarn_cache
+            - restore_yarn_tools_cache
             - restore_ruby_cache:
                 directory: android
+            - run:
+                command: echo "export PR_NUMBER=$(echo $CIRCLE_PULL_REQUEST | awk -F'/' '{print $NF}')" >> $BASH_ENV
+                name: Calculate PR number
             - run:
                 command: mv ~/attached_workspace/app-release.apk ~/attached_workspace/${CIRCLE_BRANCH////-}.apk
                 name: Rename apk
@@ -454,7 +459,14 @@ jobs:
                 name: Undo rename apk
             - run:
                 command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
-                name: Undo raname ipa
+                name: Undo rename ipa
+            - run:
+                command: "printf \"## App uploaded to Browserstack\\n\" >> message \nprintf \"This pull request can now be tested online:\\n\" >> message\nprintf -- \"- [Android](%s)\\n\" \"$(cat android/fastlane/browserstack_live_url)\" >> message\nprintf -- \"- [iOS](%s)\\n\" \"$(cat ios/fastlane/browserstack_live_url)\" >> message\n"
+                name: Build message
+            - run:
+                command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Post pull request comment with a link to the browserstack live apps
+                working_directory: tools
             - notify
     deliver_ios:
         environment:
@@ -630,6 +642,7 @@ workflows:
                 context:
                     - mattermost
                     - browserstack
+                    - deliverino
                 requires:
                     - build_android
                     - build_ios
