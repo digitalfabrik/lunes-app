@@ -99,6 +99,15 @@ export type RoutesParams = {
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyUnitSelection: undefined
   SpecialExercises: SpecialExercisesParams
+  TrainingExerciseSelection: {
+    job: Discipline
+  }
+  ImageTraining: {
+    job: Discipline
+  }
+  SentenceTraining: {
+    job: Discipline
+  }
 }
 
 export type Route = keyof RoutesParams

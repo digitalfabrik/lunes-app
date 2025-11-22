@@ -6,7 +6,6 @@ import styled from 'styled-components/native'
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
-import { NextExerciseData } from '../../../constants/data'
 import { Discipline } from '../../../constants/endpoints'
 import useStorage from '../../../hooks/useStorage'
 import { JobId } from '../../../services/CmsApi'
@@ -46,7 +45,7 @@ const Title = styled(Heading)`
 
 type SelectedJobsProps = {
   navigateToDiscipline: (discipline: Discipline) => void
-  navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToTrainingExerciseSelection: (job: Discipline) => void
   navigateToManageSelection: () => void
   navigateToJobSelection: () => void
 }
@@ -58,7 +57,7 @@ const useAllJobs = (): JobId[] => {
 
 const SelectedJobs = ({
   navigateToDiscipline,
-  navigateToNextExercise,
+  navigateToTrainingExerciseSelection,
   navigateToManageSelection,
   navigateToJobSelection,
 }: SelectedJobsProps): JSX.Element | null => {
@@ -85,7 +84,7 @@ const SelectedJobs = ({
         <JobCard
           identifier={jobs[0]}
           navigateToDiscipline={navigateToDiscipline}
-          navigateToNextExercise={navigateToNextExercise}
+          navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
         />
       ) : (
         <FlatList
@@ -100,7 +99,7 @@ const SelectedJobs = ({
               identifier={item}
               width={wp('75%')}
               navigateToDiscipline={navigateToDiscipline}
-              navigateToNextExercise={navigateToNextExercise}
+              navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             />
           )}
         />

@@ -27,6 +27,10 @@ export type VocabularyItem = {
   audio: string | null
   alternatives: AlternativeWord[]
   apiKey?: string
+  exampleSentence?: {
+    sentence: string
+    audio: string
+  }
 }
 
 export type UserVocabularyItem = Omit<VocabularyItem, 'type'>
