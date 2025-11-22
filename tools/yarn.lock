@@ -624,9 +624,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-toolbelt@github:digitalfabrik/app-toolbelt#semver:0.5.7":
-  version: 0.5.6
-  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=9331111b9eb249c4825c7b3f6fbcfe342f76224a"
+"app-toolbelt@github:digitalfabrik/app-toolbelt#3950a1c56760b394a6fad46c9e4de8f87db763f7":
+  version: 0.9.0
+  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=3950a1c56760b394a6fad46c9e4de8f87db763f7"
   dependencies:
     "@octokit/auth-app": ^7.1.5
     "@octokit/rest": ^21.1.1
@@ -1582,7 +1582,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tools@workspace:."
   dependencies:
-    app-toolbelt: "github:digitalfabrik/app-toolbelt#semver:0.5.7"
+    app-toolbelt: "github:digitalfabrik/app-toolbelt#3950a1c56760b394a6fad46c9e4de8f87db763f7"
   languageName: unknown
   linkType: soft
 
