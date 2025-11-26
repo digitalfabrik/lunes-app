@@ -13,6 +13,9 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+require_relative '../../tools/browserstack_utils'
+extend BrowserstackUtils
+
 CREDENTIALS_GIT_REPOSITORY_URL = ENV['CREDENTIALS_GIT_REPOSITORY_URL']
 CREDENTIALS_DIRECTORY_PATH = ENV['CREDENTIALS_DIRECTORY_PATH']
 CREDENTIALS_KEYSTORE_PATH = ENV['CREDENTIALS_KEYSTORE_PATH']
@@ -102,11 +105,15 @@ platform :android do
             env_vars: ["BROWSERSTACK_USERNAME_LUNES", "BROWSERSTACK_ACCESS_KEY_LUNES"]
         )
 
-        upload_to_browserstack_app_live(
+        app_id = upload_to_browserstack_app_live(
             browserstack_username: ENV["BROWSERSTACK_USERNAME_LUNES"],
             browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY_LUNES"],
             file_path: "#{ENV['HOME']}/#{file_path}"
         )
+
+        android_url = build_android_live_url(app_id: app_id)
+        UI.success "The android url is #{android_url}"
+        File.write("browserstack_live_url", android_url)
     end
 
     desc "Upload Android App to Google Play"

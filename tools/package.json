@@ -6,6 +6,6 @@
     "app-toolbelt": "$(yarn bin app-toolbelt)"
   },
   "devDependencies": {
-    "app-toolbelt": "github:digitalfabrik/app-toolbelt#semver:0.5.7"
+    "app-toolbelt": "github:digitalfabrik/app-toolbelt#3950a1c56760b394a6fad46c9e4de8f87db763f7"
   }
 }

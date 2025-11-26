@@ -52,6 +52,12 @@ Several workflows exist for different purposes:
 - **promote**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which promotes latest beta to production.
 - **browserstack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
 
+## UI/UX workflow
+
+To simplify the testing process for the UI/UX team, we use the **browserstack_delivery** workflow.
+Start the **browserstack_delivery** workflow on any PR that should be tested on browserstack.
+After completion, the deliverino bot will post a comment with links to the browserstack builds.
+
 ## Services
 
 ### deliverino (GitHub)
