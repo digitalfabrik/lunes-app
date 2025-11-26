@@ -27,7 +27,7 @@ type PostFeedback = {
 const transformFeedbackToPostFeedback = ({ comment, target }: Feedback): PostFeedback => {
   switch (target.type) {
     case 'job':
-      return { comment, content_type: target.type, object_id: target.jobId }
+      return { comment, content_type: target.type, object_id: target.jobId.id }
     case 'unit':
       return { comment, content_type: target.type, object_id: target.unitId.id }
     case 'word':
