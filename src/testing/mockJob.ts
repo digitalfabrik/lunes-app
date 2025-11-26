@@ -3,19 +3,19 @@ import { StandardJob } from '../models/Job'
 export const mockJobs = (): StandardJob[] => [
   {
     id: { type: 'standard', id: 1 },
-    name: 'First Discipline',
+    name: 'First Job',
     icon: 'none',
     numberUnits: 1,
   },
   {
     id: { type: 'standard', id: 2 },
-    name: 'Second Discipline',
+    name: 'Second Job',
     icon: 'none',
     numberUnits: 1,
   },
   {
     id: { type: 'standard', id: 3 },
-    name: 'Third Discipline',
+    name: 'Third Job',
     icon: 'none',
     numberUnits: 1,
   },

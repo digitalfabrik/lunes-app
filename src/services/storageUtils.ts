@@ -34,13 +34,13 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
 }
 
 export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
-  const disciplines = storageCache.getMutableItem('customDisciplines')
-  const index = disciplines.indexOf(customDiscipline)
+  const customDisciplines = storageCache.getMutableItem('customDisciplines')
+  const index = customDisciplines.indexOf(customDiscipline)
   if (index === -1) {
     throw new Error('customDiscipline not available')
   }
-  disciplines.splice(index, 1)
-  await storageCache.setItem('customDisciplines', disciplines)
+  customDisciplines.splice(index, 1)
+  await storageCache.setItem('customDisciplines', customDisciplines)
 }
 
 export const setExerciseProgress = async (

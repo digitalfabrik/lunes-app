@@ -81,7 +81,7 @@ describe('storageUtils', () => {
     })
 
     describe('ExerciseProgress', () => {
-      it('should save progress for not yet done discipline', async () => {
+      it('should save progress for not yet done unit', async () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
@@ -89,7 +89,7 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
-      it('should save progress for done discipline but not yet done exercise', async () => {
+      it('should save progress for done unit but not yet done exercise', async () => {
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.writeExercise, 0.6)
         const progress = storageCache.getItem('progress')

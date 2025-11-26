@@ -116,7 +116,7 @@ describe('JobSelection', () => {
     const button = await waitFor(() => getByText(mockJobs()[0].name))
     expect(button).toBeDisabled()
 
-    const secondDiscipline = getByText(mockJobs()[1].name)
-    expect(secondDiscipline).not.toBeDisabled()
+    const secondJob = getByText(mockJobs()[1].name)
+    expect(secondJob).not.toBeDisabled()
   })
 })

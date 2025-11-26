@@ -14,7 +14,7 @@ const SearchContainer = styled.View`
   margin: ${props => props.theme.spacings.sm};
 `
 
-const DisciplineContainer = styled.View`
+const JobContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.sm};
 `
 
@@ -78,12 +78,12 @@ const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: J
         />
       </SearchContainer>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <DisciplineContainer>
+        <JobContainer>
           {jobItems}
           {!!filteredJobs && filteredJobs.length === 0 && (
             <EmptyListIndicator>{getLabels().scopeSelection.noJobsFound}</EmptyListIndicator>
           )}
-        </DisciplineContainer>
+        </JobContainer>
       </ServerResponseHandler>
     </>
   )

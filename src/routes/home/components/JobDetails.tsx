@@ -70,7 +70,7 @@ const JobDetails = ({ job, navigateToJob, navigateToNextExercise }: JobDetailsPr
       />
       <Button
         onPress={() => navigateToJob(job)}
-        label={getLabels().home.viewDisciplines}
+        label={getLabels().home.viewUnits}
         buttonTheme={BUTTONS_THEME.outlined}
         fitToContentWidth
       />

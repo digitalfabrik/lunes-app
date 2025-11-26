@@ -115,8 +115,8 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
       exerciseKey: 0,
     } // TODO #965: show success that every exercise is done
   }
-  const disciplineProgress = progress[firstUnfinishedUnit.id.id]
-  if (!disciplineProgress) {
+  const unitProgress = progress[firstUnfinishedUnit.id.id]
+  if (!unitProgress) {
     return {
       unit: firstUnfinishedUnit,
       exerciseKey: 0,

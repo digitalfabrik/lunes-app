@@ -2,17 +2,17 @@ import { VocabularyItem } from '../../constants/endpoints'
 import { getLabels } from '../../services/helpers'
 import { UnitWithVocabulary } from './UserVocabularyUnitSelectionScreen'
 
-const DISCIPLINE_SIZE = 10
+const UNIT_SIZE = 10
 
 const groupVocabulary = (vocabulary: VocabularyItem[]): VocabularyItem[][] => {
   const result: VocabularyItem[][] = []
-  for (let i = 0; i < vocabulary.length / DISCIPLINE_SIZE; i += 1) {
-    result.push(vocabulary.slice(i * DISCIPLINE_SIZE, (i + 1) * DISCIPLINE_SIZE))
+  for (let i = 0; i < vocabulary.length / UNIT_SIZE; i += 1) {
+    result.push(vocabulary.slice(i * UNIT_SIZE, (i + 1) * UNIT_SIZE))
   }
   return result
 }
 
-export const splitVocabularyIntoDisciplines = (vocabulary: VocabularyItem[]): UnitWithVocabulary[] => {
+export const splitVocabularyIntoUnits = (vocabulary: VocabularyItem[]): UnitWithVocabulary[] => {
   const groups = groupVocabulary(vocabulary)
   return groups.map((vocabulary, index) => ({
     unit: {
