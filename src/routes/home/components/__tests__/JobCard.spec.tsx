@@ -19,16 +19,16 @@ jest.mock('../../../../components/FeedbackModal', () => {
   return () => <Text>FeedbackModal</Text>
 })
 
-const navigateToDiscipline = jest.fn()
+const navigateToJob = jest.fn()
 
 describe('DisciplineCard', () => {
   const renderDisciplineCard = (): RenderAPI =>
-    render(<JobCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
+    render(<JobCard identifier={{ apiKey: '1', type: 'load-protected' }} navigateToJob={navigateToJob} />)
 
   it('should show discipline card', async () => {
     mockUseLoadAsyncWithData(mockJobs()[0])
     const { getByText, findByText } = renderDisciplineCard()
-    expect(getByText(mockJobs()[0].title)).toBeDefined()
+    expect(getByText(mockJobs()[0].name)).toBeDefined()
     const element = await findByText(labels.home.start)
     expect(element).toBeDefined()
   })

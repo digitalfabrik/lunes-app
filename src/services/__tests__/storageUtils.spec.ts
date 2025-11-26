@@ -59,7 +59,7 @@ describe('storageUtils', () => {
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
         'selectedJobs',
-        selectedProfessions.map(item => item.id),
+        selectedProfessions.map(item => item.id.id),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
       await removeSelectedJob(storageCache, mockJobs()[0].id)
@@ -67,14 +67,14 @@ describe('storageUtils', () => {
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[1].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[1].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await removeSelectedJob(storageCache, mockJobs()[0].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await pushSelectedJob(storageCache, mockJobs()[1].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)

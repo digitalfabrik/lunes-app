@@ -48,7 +48,7 @@ describe('JobSelection', () => {
   })
 
   it('should confirm selection', async () => {
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute()} />,
@@ -63,7 +63,7 @@ describe('JobSelection', () => {
   })
 
   it('should hide welcome message and buttons for non initial view', async () => {
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     const { queryByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
@@ -82,15 +82,15 @@ describe('JobSelection', () => {
 
     expect(storageCache.getItem('selectedJobs')).toBeNull()
 
-    const button = await waitFor(() => getByText(mockJobs()[0].title))
+    const button = await waitFor(() => getByText(mockJobs()[0].name))
     fireEvent.press(button)
 
-    expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0].id])
+    expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0].id.id])
   })
 
   it('should unselect job on initial selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     const { queryAllByTestId } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(true)} />,
@@ -107,16 +107,16 @@ describe('JobSelection', () => {
 
   it('should disable button if not on initial selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
     )
 
-    const button = await waitFor(() => getByText(mockJobs()[0].title))
+    const button = await waitFor(() => getByText(mockJobs()[0].name))
     expect(button).toBeDisabled()
 
-    const secondDiscipline = getByText(mockJobs()[1].title)
+    const secondDiscipline = getByText(mockJobs()[1].name)
     expect(secondDiscipline).not.toBeDisabled()
   })
 })

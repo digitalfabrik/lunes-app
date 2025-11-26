@@ -5,10 +5,10 @@ import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
 import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/data'
-import { Discipline } from '../../../constants/endpoints'
 import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
 import useReadProgress from '../../../hooks/useReadProgress'
+import Job from '../../../models/Job'
 import { childrenLabel, getLabels } from '../../../services/helpers'
 import { NumberText, UnitText } from './JobCard'
 import NextExerciseCard from './NextExerciseCard'
@@ -21,17 +21,17 @@ const ProgressContainer = styled.View`
 `
 
 type JobDetailsProps = {
-  job: Discipline
-  navigateToDiscipline: (discipline: Discipline) => void
+  job: Job
+  navigateToJob: (job: Job) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
 }
 
-const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDetailsProps): ReactElement | null => {
+const JobDetails = ({ job, navigateToJob, navigateToNextExercise }: JobDetailsProps): ReactElement | null => {
   const { data: progress } = useReadProgress(job)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(job)
 
-  const disciplineAlreadyStarted = progress !== 0
-  const completedDisciplines = disciplineAlreadyStarted ? Math.floor((progress ?? 0) * job.numberOfChildren) : 0
+  const jobAlreadyStarted = progress !== 0
+  const completedUnits = jobAlreadyStarted ? Math.floor((progress ?? 0) * job.numberUnits) : 0
 
   useFocusEffect(refreshNextExercise)
 
@@ -45,7 +45,7 @@ const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDe
     <>
       <ProgressContainer>
         <Progress.Circle
-          progress={completedDisciplines ? (progress ?? 0) : 0}
+          progress={completedUnits ? (progress ?? 0) : 0}
           size={50}
           indeterminate={false}
           color={theme.colors.progressIndicator}
@@ -56,10 +56,10 @@ const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDe
         />
 
         <NumberText>
-          {completedDisciplines}/{job.numberOfChildren}
+          {completedUnits}/{job.numberUnits}
         </NumberText>
 
-        <UnitText>{completedDisciplines > 0 ? getLabels().home.progressDescription : childrenLabel(job)}</UnitText>
+        <UnitText>{completedUnits > 0 ? getLabels().home.progressDescription : childrenLabel(job)}</UnitText>
       </ProgressContainer>
       <NextExerciseCard
         thumbnail={vocabularyItems[0].images[0]}
@@ -69,7 +69,7 @@ const JobDetails = ({ job, navigateToDiscipline, navigateToNextExercise }: JobDe
         subheading={jobTitle}
       />
       <Button
-        onPress={() => navigateToDiscipline(job)}
+        onPress={() => navigateToJob(job)}
         label={getLabels().home.viewDisciplines}
         buttonTheme={BUTTONS_THEME.outlined}
         fitToContentWidth

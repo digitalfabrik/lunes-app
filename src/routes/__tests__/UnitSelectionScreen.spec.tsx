@@ -3,6 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { StandardJob } from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getUnitsOfJob } from '../../services/CmsApi'
 import createNavigationMock from '../../testing/createNavigationPropMock'
@@ -15,24 +16,17 @@ jest.mock('../../services/CmsApi')
 
 describe('DisciplineSelectionScreen', () => {
   const navigation = createNavigationMock<'UnitSelection'>()
-  const parentDiscipline = {
-    id: 0,
-    title: 'Parent Discipline',
-    description: 'Description0',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false,
-    leafDisciplines: [10, 11],
+  const job: StandardJob = {
+    id: { id: 0, type: 'standard' },
+    name: 'Parent Discipline',
+    icon: null,
+    numberUnits: 1,
   }
 
   const route: RouteProp<RoutesParams, 'UnitSelection'> = {
     key: 'key-1',
     name: 'UnitSelection',
-    params: {
-      job: parentDiscipline,
-    },
+    params: { job },
   }
 
   it('should display the correct title', async () => {

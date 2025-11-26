@@ -10,7 +10,7 @@ describe('SelectedJobs', () => {
     const navigateToJobSelection = jest.fn()
     const { getByText, getByTestId } = render(
       <SelectedJobs
-        navigateToDiscipline={jest.fn()}
+        navigateToJob={jest.fn()}
         navigateToNextExercise={jest.fn()}
         navigateToJobSelection={navigateToJobSelection}
         navigateToManageSelection={jest.fn()}

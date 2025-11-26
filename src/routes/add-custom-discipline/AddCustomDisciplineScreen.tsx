@@ -63,7 +63,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JS
       return
     }
     setLoading(true)
-    getJob({ apiKey: code })
+    getJob({ type: 'load-protected', apiKey: code })
       .then(async () => setCustomDisciplines([...customDisciplines, code]))
       .then(navigation.goBack)
       .catch(error => {

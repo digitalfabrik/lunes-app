@@ -5,9 +5,9 @@ import { CheckCircleIconGreen } from '../../../assets/images'
 import { JobListItem } from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
-import { Discipline } from '../../constants/endpoints'
 import useLoadAllJobs from '../../hooks/useLoadAllJobs'
 import useStorage from '../../hooks/useStorage'
+import { StandardJob } from '../../models/Job'
 import { getLabels, searchJobs } from '../../services/helpers'
 
 const SearchContainer = styled.View`
@@ -33,8 +33,8 @@ const IconContainer = styled.View`
 type JobSelectionProps = {
   queryTerm: string
   setQueryTerm: (newString: string) => void
-  onSelectJob: (job: Discipline) => void
-  onUnselectJob?: (job: Discipline) => void
+  onSelectJob: (job: StandardJob) => void
+  onUnselectJob?: (job: StandardJob) => void
 }
 
 const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: JobSelectionProps): JSX.Element => {
@@ -47,10 +47,10 @@ const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: J
     [allJobs, queryTerm],
   )
   const jobItems = filteredJobs?.map(item => {
-    const isSelected = selectedJobs?.includes(item.id)
+    const isSelected = selectedJobs?.includes(item.id.id)
     return (
       <JobListItem
-        key={item.id}
+        key={item.id.id}
         job={item}
         onPress={() => {
           if (isSelected) {

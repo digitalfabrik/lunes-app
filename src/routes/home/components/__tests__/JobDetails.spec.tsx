@@ -42,7 +42,7 @@ describe('JobDetails', () => {
     render(
       <JobDetails
         job={mockJobs()[0]}
-        navigateToDiscipline={navigateToDiscipline}
+        navigateToJob={navigateToDiscipline}
         navigateToNextExercise={navigateToExercise}
       />,
     )
