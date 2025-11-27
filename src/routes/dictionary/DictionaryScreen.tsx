@@ -9,8 +9,8 @@ import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { VocabularyItem } from '../../constants/endpoints'
 import useGetAllWords from '../../hooks/useGetAllWords'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   getLabels,

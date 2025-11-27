@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { wordsDescription } from '../services/helpers'
 import Title from './Title'
 import VocabularyListItem from './VocabularyListItem'

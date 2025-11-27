@@ -1,8 +1,9 @@
 import { Article, ARTICLES } from '../constants/data'
-import { NetworkError, VocabularyItem } from '../constants/endpoints'
+import { NetworkError } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
+import VocabularyItem from '../models/VocabularyItem'
 import Sponsor from '../models/sponsor'
 import { getFromEndpoint, postToEndpoint } from './axios'
 

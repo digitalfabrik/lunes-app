@@ -4,7 +4,7 @@ import React from 'react'
 import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
 import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../../../constants/data'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'

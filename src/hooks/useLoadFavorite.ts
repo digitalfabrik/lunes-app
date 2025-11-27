@@ -1,5 +1,5 @@
 import { Favorite, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { getWordById } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
 import { getUserVocabularyItems, removeFavorite } from '../services/storageUtils'

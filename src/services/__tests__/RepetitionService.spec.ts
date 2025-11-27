@@ -1,5 +1,5 @@
 import { ARTICLES } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../models/VocabularyItem'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import {
   daysToStayInASection,

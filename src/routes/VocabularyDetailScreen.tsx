@@ -7,7 +7,7 @@ import PressableOpacity from '../components/PressableOpacity'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyDetail from '../components/VocabularyDetail'
 import { VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { RoutesParams } from '../navigation/NavigationTypes'
 
 type VocabularyDetailScreenProps = {

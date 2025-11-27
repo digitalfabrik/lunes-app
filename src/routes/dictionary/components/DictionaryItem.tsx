@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { ContentSecondary } from '../../../components/text/Content'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
 
 const AlternativesContainer = styled.View`

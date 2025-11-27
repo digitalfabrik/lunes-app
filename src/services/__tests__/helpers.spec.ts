@@ -5,7 +5,7 @@ import {
   SimpleResult,
   VOCABULARY_ITEM_TYPES,
 } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockJobs } from '../../testing/mockJob'

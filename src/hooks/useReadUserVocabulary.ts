@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { getUserVocabularyItems } from '../services/storageUtils'
 import useStorage from './useStorage'
 

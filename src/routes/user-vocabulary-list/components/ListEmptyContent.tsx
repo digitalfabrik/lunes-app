@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import ListEmpty from '../../../components/ListEmpty'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
 
 const Container = styled.View`

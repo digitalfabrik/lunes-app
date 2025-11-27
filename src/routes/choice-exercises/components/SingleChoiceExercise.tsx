@@ -17,9 +17,9 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../../constants/data'
-import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
+import VocabularyItem, { AlternativeWord } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'

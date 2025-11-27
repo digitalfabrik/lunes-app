@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'

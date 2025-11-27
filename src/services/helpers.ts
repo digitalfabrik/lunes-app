@@ -10,11 +10,11 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
 import Job, { StandardJob } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
+import VocabularyItem, { AlternativeWord } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
 

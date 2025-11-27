@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { StandardUnit } from '../models/Unit'
-import { VocabularyItem } from './endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import labels from './labels.json'
 
 export const ExerciseKeys = {

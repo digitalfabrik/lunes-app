@@ -1,5 +1,5 @@
 import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../constants/data'
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 
 const vocabularyItems: VocabularyItem[] = [
   {

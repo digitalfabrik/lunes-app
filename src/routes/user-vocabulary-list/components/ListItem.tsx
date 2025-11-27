@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { PenIcon, TrashIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import VocabularyListItem from '../../../components/VocabularyListItem'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 
 const Container = styled.View`
   flex-direction: row;

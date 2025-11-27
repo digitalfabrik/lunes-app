@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import VocabularyItemImageSection from './VocabularyItemImageSection'
 import WordItem from './WordItem'
 

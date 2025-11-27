@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../models/VocabularyItem'
 import { getWords } from '../../services/CmsApi'
 import { StorageCache } from '../../services/Storage'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'

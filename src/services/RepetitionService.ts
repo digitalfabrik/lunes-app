@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
