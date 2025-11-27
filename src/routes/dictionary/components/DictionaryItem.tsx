@@ -22,7 +22,7 @@ type DictionaryItemProps = {
 
 const DictionaryItem = ({ vocabularyItem, navigateToDetail, showAlternatives }: DictionaryItemProps): ReactElement => (
   <VocabularyListItem
-    key={JSON.stringify({ id: vocabularyItem.id, type: vocabularyItem.type })}
+    key={JSON.stringify(vocabularyItem.id)}
     vocabularyItem={vocabularyItem}
     onPress={() => navigateToDetail(vocabularyItem)}>
     <>

@@ -28,7 +28,7 @@ const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListS
         ListHeaderComponent={<Title title={title} description={wordsDescription(vocabularyItems.length)} />}
         data={vocabularyItems}
         renderItem={renderItem}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => JSON.stringify(item.id)}
         showsVerticalScrollIndicator={false}
       />
     </Root>

@@ -1,5 +1,6 @@
 import { StandardJobId } from './Job'
 import { StandardUnitId } from './Unit'
+import { StandardVocabularyId } from './VocabularyItem'
 
 export type JobFeedbackTarget = {
   type: 'job'
@@ -13,7 +14,7 @@ export type UnitFeedbackTarget = {
 
 export type WordFeedbackTarget = {
   type: 'word'
-  wordId: number
+  wordId: StandardVocabularyId
 }
 
 export type FeedbackTarget = JobFeedbackTarget | UnitFeedbackTarget | WordFeedbackTarget

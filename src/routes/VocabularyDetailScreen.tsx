@@ -6,8 +6,7 @@ import { PenIcon } from '../../assets/images'
 import PressableOpacity from '../components/PressableOpacity'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyDetail from '../components/VocabularyDetail'
-import { VOCABULARY_ITEM_TYPES } from '../constants/data'
-import VocabularyItem from '../models/VocabularyItem'
+import { isUserVocabularyItem, UserVocabularyItem } from '../models/VocabularyItem'
 import { RoutesParams } from '../navigation/NavigationTypes'
 
 type VocabularyDetailScreenProps = {
@@ -21,7 +20,7 @@ type EditableVocabularyDetailScreenProps = {
 
 type EditButtonProps = {
   navigation: StackNavigationProp<RoutesParams, 'VocabularyDetail'>
-  vocabularyItem: VocabularyItem
+  vocabularyItem: UserVocabularyItem
 }
 
 const EditButton = ({ navigation, vocabularyItem }: EditButtonProps) => (
@@ -53,7 +52,7 @@ export const EditableVocabularyDetailsScreen = ({
 
   useFocusEffect(
     useCallback(() => {
-      if (vocabularyItem.type === VOCABULARY_ITEM_TYPES.userCreated) {
+      if (isUserVocabularyItem(vocabularyItem)) {
         navigation.setOptions({
           headerRight: () => EditButton({ navigation, vocabularyItem }),
         })

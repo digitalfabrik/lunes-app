@@ -5,7 +5,6 @@ import {
   ARTICLES,
   ExerciseKeys,
   EXERCISES,
-  Favorite,
   NextExercise,
   Progress,
   SCORE_THRESHOLD_UNLOCK,
@@ -183,10 +182,10 @@ export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: s
     normalizeString(alternative.word).includes(normalizeSearchString(searchString)),
   ).length > 0
 
-export const getSortedAndFilteredVocabularyItems = (
-  vocabularyItems: VocabularyItem[] | null,
+export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
+  vocabularyItems: readonly T[] | null,
   searchString: string,
-): VocabularyItem[] => {
+): T[] => {
   const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
 
   const normalizedSearchString = normalizeSearchString(searchString)
@@ -213,12 +212,3 @@ export const milliSecondsToHours = (milliseconds: number): number => millisecond
 
 export const searchJobs = (jobs: StandardJob[] | null, searchKey: string): StandardJob[] | undefined =>
   jobs?.filter(job => normalizeString(job.name).includes(normalizeString(searchKey)))
-
-export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
-  id: vocabularyItem.id,
-  vocabularyItemType: vocabularyItem.type,
-  ...(vocabularyItem.apiKey && { apiKey: vocabularyItem.apiKey }),
-})
-
-export const areVocabularyItemsEqual = (vocabularyItem1: VocabularyItem, vocabularyItem2: VocabularyItem): boolean =>
-  vocabularyItem1.id === vocabularyItem2.id && vocabularyItem1.type === vocabularyItem2.type

@@ -10,7 +10,7 @@ const Container = styled.View`
 `
 
 type ListEmptyContentProps = {
-  vocabularyItems: VocabularyItem[]
+  vocabularyItems: readonly VocabularyItem[]
 }
 
 const ListEmptyContent = ({ vocabularyItems }: ListEmptyContentProps): ReactElement => (

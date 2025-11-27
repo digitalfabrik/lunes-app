@@ -5,7 +5,6 @@ import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/image
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../hooks/useStorage'
 import VocabularyItem from '../models/VocabularyItem'
-import { vocabularyItemToFavorite } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/storageUtils'
 import PressableOpacity from './PressableOpacity'
@@ -30,12 +29,12 @@ const FavoriteButton = ({ vocabularyItem }: FavoriteButtonProps): ReactElement |
   const repetitionService = useRepetitionService()
   const storageCache = useStorageCache()
   const [favorites] = useStorage('favorites')
-  const isFavorite = getIsFavorite(favorites, vocabularyItemToFavorite(vocabularyItem))
+  const isFavorite = getIsFavorite(favorites, vocabularyItem.id)
   const theme = useTheme()
 
   const onPress = async () => {
     if (isFavorite) {
-      await removeFavorite(storageCache, vocabularyItemToFavorite(vocabularyItem)).catch(reportError)
+      await removeFavorite(storageCache, vocabularyItem.id).catch(reportError)
     } else {
       await addFavorite(storageCache, repetitionService, vocabularyItem).catch(reportError)
     }

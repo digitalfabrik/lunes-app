@@ -1,8 +1,8 @@
-import VocabularyItem from '../models/VocabularyItem'
+import VocabularyItem, { areVocabularyItemIdsEqual } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
-import { areVocabularyItemsEqual, millisecondsToDays } from './helpers'
+import { millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
 type sections = 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -43,7 +43,7 @@ export class RepetitionService {
 
   public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
     const newWordNodeCards = this.getWordNodeCards().filter(
-      wordNodeCard => !areVocabularyItemsEqual(wordNodeCard.word, word),
+      wordNodeCard => !areVocabularyItemIdsEqual(wordNodeCard.word.id, word.id),
     )
     await this.setWordNodeCards(newWordNodeCards)
   }

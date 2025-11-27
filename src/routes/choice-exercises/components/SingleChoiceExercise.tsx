@@ -155,7 +155,7 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={count}
         feedbackTarget={
-          vocabularyItem.type === 'user-created' ? undefined : { type: 'word', wordId: vocabularyItem.id }
+          vocabularyItem.id.type === 'lunes-standard' ? { type: 'word', wordId: vocabularyItem.id } : undefined
         }
         exerciseKey={exerciseKey}
       />

@@ -20,21 +20,21 @@ const IconContainer = styled.View`
     ${props => props.theme.spacings.xxs};
 `
 
-type ListItemProps = {
-  vocabularyItem: VocabularyItem
+type ListItemProps<T extends VocabularyItem> = {
+  vocabularyItem: T
   navigateToDetailScreen: () => void
   navigateToEditScreen: () => void
   editModeEnabled: boolean
-  deleteItem: (vocabularyItem: VocabularyItem) => void
+  deleteItem: (vocabularyItem: T) => void
 }
 
-const ListItem = ({
+const ListItem = <T extends VocabularyItem>({
   vocabularyItem,
   navigateToDetailScreen,
   navigateToEditScreen,
   editModeEnabled,
   deleteItem,
-}: ListItemProps): ReactElement => (
+}: ListItemProps<T>): ReactElement => (
   <Container>
     {editModeEnabled && (
       <IconContainer>

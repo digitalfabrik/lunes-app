@@ -416,10 +416,9 @@ describe('RepetitionService', () => {
     it('should not move to next section, if word is not in long term exercise data', async () => {
       await repetitionService.setWordNodeCards(testData)
       const notInLongTermExerciseWord: VocabularyItem = {
-        id: 99,
+        id: { id: 99, type: 'lunes-standard' },
         word: 'i am unknown',
         article: ARTICLES[1],
-        type: 'lunes-standard',
         audio: '',
         images: [],
         alternatives: [],

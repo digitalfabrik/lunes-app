@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { StandardUnit } from '../models/Unit'
-import VocabularyItem from '../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
@@ -133,18 +133,7 @@ type ResultType = {
   order: number
 }
 
-export const VOCABULARY_ITEM_TYPES = {
-  lunesStandard: 'lunes-standard',
-  lunesProtected: 'lunes-protected',
-  userCreated: 'user-created',
-} as const
-export type VocabularyItemType = (typeof VOCABULARY_ITEM_TYPES)[keyof typeof VOCABULARY_ITEM_TYPES]
-
-export type Favorite = {
-  id: number
-  vocabularyItemType: VocabularyItemType
-  apiKey?: string
-}
+export type Favorite = VocabularyItemId
 
 export type Answer = {
   word: string
