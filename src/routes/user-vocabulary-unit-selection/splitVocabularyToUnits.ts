@@ -3,43 +3,25 @@ import { getLabels } from '../../services/helpers'
 import { UnitWithVocabulary } from './UserVocabularyUnitSelectionScreen'
 
 const DISCIPLINE_SIZE = 10
-let unitsWithVocabulary: UnitWithVocabulary[] = []
 
-const createUnits = (vocabularySize: number) => {
-  for (let i = 0; i < vocabularySize / DISCIPLINE_SIZE; i += 1) {
-    unitsWithVocabulary.push({
-      unit: {
-        id: { index: i, type: 'user-vocabulary-unit' },
-        title: `${getLabels().userVocabulary.practice.part} ${i + 1}`,
-        description: '',
-        numberWords: 1,
-        iconUrl: null,
-      },
-      vocabulary: [],
-    })
+const groupVocabulary = (vocabulary: VocabularyItem[]): VocabularyItem[][] => {
+  const result: VocabularyItem[][] = []
+  for (let i = 0; i < vocabulary.length / DISCIPLINE_SIZE; i += 1) {
+    result.push(vocabulary.slice(i * DISCIPLINE_SIZE, (i + 1) * DISCIPLINE_SIZE))
   }
-}
-
-const moveVocabularyToCorrectDiscipline = (vocabulary: VocabularyItem[]) => {
-  vocabulary.forEach((item, index) => {
-    unitsWithVocabulary[Math.floor(index / DISCIPLINE_SIZE)].vocabulary.push(item)
-  })
-}
-
-const adjustChildrenSizeOfDisciplines = () => {
-  unitsWithVocabulary = unitsWithVocabulary.map(item => ({
-    ...item,
-    unit: {
-      ...item.unit,
-      numberOfChildren: item.vocabulary.length,
-    },
-  }))
+  return result
 }
 
 export const splitVocabularyIntoDisciplines = (vocabulary: VocabularyItem[]): UnitWithVocabulary[] => {
-  unitsWithVocabulary = []
-  createUnits(vocabulary.length)
-  moveVocabularyToCorrectDiscipline(vocabulary)
-  adjustChildrenSizeOfDisciplines()
-  return unitsWithVocabulary
+  const groups = groupVocabulary(vocabulary)
+  return groups.map((vocabulary, index) => ({
+    unit: {
+      id: { index, type: 'user-vocabulary-unit' },
+      title: `${getLabels().userVocabulary.practice.part} ${index + 1}`,
+      description: '',
+      numberWords: vocabulary.length,
+      iconUrl: null,
+    },
+    vocabulary,
+  }))
 }
