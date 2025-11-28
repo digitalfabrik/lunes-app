@@ -51,7 +51,7 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
         feedbackTarget={
-          vocabularyItem.type !== 'user-created' ? { type: 'word', wordId: vocabularyItem.id } : undefined
+          vocabularyItem.id.type === 'lunes-standard' ? { type: 'word', wordId: vocabularyItem.id } : undefined
         }
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}

@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ExerciseKeys } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
 import SingleChoiceExercise from './components/SingleChoiceExercise'

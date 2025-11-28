@@ -2,13 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, ReactElement } from 'react'
 
 import { Favorite, Progress } from '../constants/data'
-import { UserVocabularyItem } from '../constants/endpoints'
 import useLoadAsync from '../hooks/useLoadAsync'
+import { UserVocabularyItem } from '../models/VocabularyItem'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
 
-export const STORAGE_VERSION = 2
+export const STORAGE_VERSION = 3
 
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.

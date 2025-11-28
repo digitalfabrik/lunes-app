@@ -5,8 +5,8 @@ import { CloseIconRed } from '../../../../assets/images'
 import Modal from '../../../components/Modal'
 import PressableOpacity from '../../../components/PressableOpacity'
 import VocabularyListItem from '../../../components/VocabularyListItem'
-import { VocabularyItem } from '../../../constants/endpoints'
 import theme from '../../../constants/theme'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
 
 const Button = styled(PressableOpacity)`

@@ -94,7 +94,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
           feedbackTarget={
-            current.vocabularyItem.type !== 'user-created'
+            current.vocabularyItem.id.type === 'lunes-standard'
               ? { type: 'word', wordId: current.vocabularyItem.id }
               : undefined
           }

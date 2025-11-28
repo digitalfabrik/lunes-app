@@ -26,7 +26,7 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         closeExerciseAction={goBack}
-        feedbackTarget={{ type: 'word', wordId: 1 }}
+        feedbackTarget={{ type: 'word', wordId: { type: 'lunes-standard', id: 1 } }}
         exerciseKey={ExerciseKeys.vocabularyList}
       />,
     )
