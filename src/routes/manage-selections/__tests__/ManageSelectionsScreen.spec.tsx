@@ -25,11 +25,11 @@ describe('ManageSelectionsScreen', () => {
 
   it('should show and delete selected jobs', async () => {
     await pushSelectedJob(storageCache, mockJobs()[0].id)
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
 
     const { getByText, getByTestId } = renderScreen()
-    await waitFor(() => expect(getByText(mockJobs()[0].title)).toBeDefined())
+    await waitFor(() => expect(getByText(mockJobs()[0].name)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)

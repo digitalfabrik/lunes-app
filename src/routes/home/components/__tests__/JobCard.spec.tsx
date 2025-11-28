@@ -19,42 +19,42 @@ jest.mock('../../../../components/FeedbackModal', () => {
   return () => <Text>FeedbackModal</Text>
 })
 
-const navigateToDiscipline = jest.fn()
+const navigateToJob = jest.fn()
 
-describe('DisciplineCard', () => {
-  const renderDisciplineCard = (): RenderAPI =>
-    render(<JobCard identifier={{ disciplineId: 1, apiKey: '1' }} navigateToDiscipline={navigateToDiscipline} />)
+describe('JobCard', () => {
+  const renderJobCard = (): RenderAPI =>
+    render(<JobCard identifier={{ apiKey: '1', type: 'load-protected' }} navigateToJob={navigateToJob} />)
 
-  it('should show discipline card', async () => {
+  it('should show job card', async () => {
     mockUseLoadAsyncWithData(mockJobs()[0])
-    const { getByText, findByText } = renderDisciplineCard()
-    expect(getByText(mockJobs()[0].title)).toBeDefined()
+    const { getByText, findByText } = renderJobCard()
+    expect(getByText(mockJobs()[0].name)).toBeDefined()
     const element = await findByText(labels.home.start)
     expect(element).toBeDefined()
   })
 
   it('should display loading', () => {
     mockUseLoadAsyncLoading()
-    const { getByTestId } = renderDisciplineCard()
+    const { getByTestId } = renderJobCard()
     expect(getByTestId('loading')).toBeDefined()
   })
 
   it('should display no internet error', () => {
     mockUseLoadAsyncWithError(NetworkError)
-    const { getByText } = renderDisciplineCard()
+    const { getByText } = renderJobCard()
     expect(getByText(`${labels.general.error.noWifi} (${NetworkError})`)).toBeDefined()
   })
 
   it('should show delete button on forbidden error', () => {
     mockUseLoadAsyncWithError(ForbiddenError)
-    const { getByText, getByTestId } = renderDisciplineCard()
+    const { getByText, getByTestId } = renderJobCard()
     expect(getByText(`${labels.home.errorLoadCustomDiscipline} 1`)).toBeDefined()
     expect(getByTestId('delete-button')).toBeDefined()
   })
 
   it('should show delete button on unknown error', () => {
     mockUseLoadAsyncWithError('UnknownError')
-    const { getByText, getByTestId } = renderDisciplineCard()
+    const { getByText, getByTestId } = renderJobCard()
     expect(getByText(labels.general.error.unknown)).toBeDefined()
     expect(getByTestId('delete-button')).toBeDefined()
   })

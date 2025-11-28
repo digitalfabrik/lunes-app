@@ -8,7 +8,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { EXERCISES, NextExerciseData } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
+import Job from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import HomeFooter from './components/HomeFooter'
@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
     navigation.navigate('JobSelection', { initialSelection: false })
   }
 
-  const navigateToJob = (job: Discipline): void => {
+  const navigateToJob = (job: Job): void => {
     navigation.navigate('UnitSelection', {
       job,
     })
@@ -68,7 +68,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
           <WelcomeHeading>{getLabels().home.welcome}</WelcomeHeading>
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           <SelectedJobs
-            navigateToDiscipline={navigateToJob}
+            navigateToJob={navigateToJob}
             navigateToNextExercise={navigateToNextExercise}
             navigateToManageSelection={navigateToManageSelection}
             navigateToJobSelection={navigateToJobSelection}

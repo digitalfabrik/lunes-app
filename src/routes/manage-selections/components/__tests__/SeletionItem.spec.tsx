@@ -15,12 +15,12 @@ import SelectionItem from '../SelectionItem'
 describe('SelectionItem', () => {
   const deleteItem = jest.fn()
   const renderSelectionItem = (): RenderAPI =>
-    render(<SelectionItem identifier={{ disciplineId: 1, apiKey: '1' }} deleteItem={deleteItem} />)
+    render(<SelectionItem identifier={{ apiKey: '1', type: 'load-protected' }} deleteItem={deleteItem} />)
 
   it('should display data', () => {
     mockUseLoadAsyncWithData(mockJobs()[0])
     const { getByText, getByTestId } = renderSelectionItem()
-    expect(getByText(mockJobs()[0].title)).toBeDefined()
+    expect(getByText(mockJobs()[0].name)).toBeDefined()
     expect(getByTestId('delete-icon')).toBeDefined()
   })
 

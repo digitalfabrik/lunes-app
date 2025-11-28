@@ -10,8 +10,8 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import { Discipline } from '../../constants/endpoints'
 import useStorage, { useStorageCache } from '../../hooks/useStorage'
+import { StandardJob } from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
@@ -56,11 +56,11 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
     })
   }
 
-  const selectJob = async (job: Discipline) => {
+  const selectJob = async (job: StandardJob) => {
     await pushSelectedJob(storageCache, job.id)
   }
 
-  const unselectJob = async (job: Discipline) => {
+  const unselectJob = async (job: StandardJob) => {
     await removeSelectedJob(storageCache, job.id)
   }
 

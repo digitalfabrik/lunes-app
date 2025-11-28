@@ -4,10 +4,10 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { EXERCISES } from '../constants/data'
-import { Discipline } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import theme from '../constants/theme'
 import useStorage from '../hooks/useStorage'
+import Job from '../models/Job'
 import Unit from '../models/Unit'
 import { getLabels, getNumberOfUnlockedExercises, pluralize } from '../services/helpers'
 import ListItem from './ListItem'
@@ -20,7 +20,7 @@ type UnitListItemProps = {
 }
 
 type JobListItemProps = {
-  job: Discipline
+  job: Job
   onPress: () => void
   rightChildren?: ReactElement
   disabled?: boolean
@@ -88,13 +88,13 @@ export const JobListItem = ({
   rightChildren,
   disabled = false,
 }: JobListItemProps): ReactElement | null => {
-  const badgeLabel = job.numberOfChildren.toString()
-  const description = pluralize(getLabels().general.unit, job.numberOfChildren)
+  const badgeLabel = job.numberOfUnits.toString()
+  const description = pluralize(getLabels().general.unit, job.numberOfUnits)
 
   return (
     <ListItem
-      title={job.title}
-      icon={iconWithProgress(job.icon, 0)}
+      title={job.name}
+      icon={iconWithProgress(job.icon ?? undefined, 0)}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}

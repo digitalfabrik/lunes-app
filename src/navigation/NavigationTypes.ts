@@ -1,7 +1,8 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, VocabularyItem } from '../constants/endpoints'
+import { VocabularyItem } from '../constants/endpoints'
+import Job from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 
 export type VocabularyItemResult = {
@@ -71,7 +72,7 @@ export type RoutesParams = {
   }
   AddCustomDiscipline: undefined
   UnitSelection: {
-    job: Discipline
+    job: Job
   }
   VocabularyDetailExercise: VocabularyDetailExerciseParams
   StandardExercises: StandardExercisesParams

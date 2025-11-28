@@ -1,18 +1,5 @@
 import { Article, VocabularyItemType } from './data'
 
-export type Discipline = {
-  id: number
-  title: string
-  description: string
-  icon?: string
-  numberOfChildren: number
-  isLeaf: boolean
-  parentTitle: string | null // if null then it is the root discipline
-  apiKey?: string
-  needsTrainingSetEndpoint: boolean // api endpoint requires different endpoint for leaf disciplines
-  leafDisciplines?: number[]
-}
-
 export type AlternativeWord = {
   word: string
   article: Article

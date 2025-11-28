@@ -13,7 +13,7 @@
     "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewDisciplines": "Module ansehen",
+    "viewUnits": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
@@ -55,8 +55,7 @@
     },
     "wordChoice": {
       "title": "Level 1",
-      "description": "Das richtige Wort auswählen",
-      "errorWrongDisciplineSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
+      "description": "Das richtige Wort auswählen"
     },
     "articleChoice": {
       "title": "Level 2",
@@ -104,7 +103,7 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedDiscipline": "Super, du hast das Modul abgeschlossen",
+    "finishedUnit": "Super, du hast das Modul abgeschlossen",
     "unlockExercise": {
       "part1": "Glückwunsch",
       "part2": "ist jetzt freigeschaltet."
@@ -159,10 +158,6 @@
       "retryButton": "Erneut versuchen",
       "somethingWentWrong": "Ups, da ist etwas schief gelaufen!",
       "deviceIsMuted": "Gerät ist stummgeschaltet"
-    },
-    "rootDiscipline": {
-      "singular": "Beruf",
-      "plural": "Berufe"
     },
     "unit": {
       "singular": "Modul",

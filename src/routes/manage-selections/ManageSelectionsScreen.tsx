@@ -42,9 +42,9 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
 
   const jobItems = selectedJobs?.map(id => {
     const unselectJobAndRefresh = () => {
-      removeSelectedJob(storageCache, id).catch(reportError)
+      removeSelectedJob(storageCache, { id, type: 'standard' }).catch(reportError)
     }
-    return <SelectionItem key={id} identifier={{ disciplineId: id }} deleteItem={unselectJobAndRefresh} />
+    return <SelectionItem key={id} identifier={{ id, type: 'standard' }} deleteItem={unselectJobAndRefresh} />
   })
 
   const navigateToScopeSelection = () => {

@@ -59,7 +59,7 @@ describe('storageUtils', () => {
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
         'selectedJobs',
-        selectedProfessions.map(item => item.id),
+        selectedProfessions.map(item => item.id.id),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
       await removeSelectedJob(storageCache, mockJobs()[0].id)
@@ -67,21 +67,21 @@ describe('storageUtils', () => {
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[1].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[1].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await removeSelectedJob(storageCache, mockJobs()[0].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await pushSelectedJob(storageCache, mockJobs()[1].id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
     describe('ExerciseProgress', () => {
-      it('should save progress for not yet done discipline', async () => {
+      it('should save progress for not yet done unit', async () => {
         const progressOneExercise: Progress = {
           1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
         }
@@ -89,7 +89,7 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
-      it('should save progress for done discipline but not yet done exercise', async () => {
+      it('should save progress for done unit but not yet done exercise', async () => {
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.writeExercise, 0.6)
         const progress = storageCache.getItem('progress')

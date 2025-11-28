@@ -1,37 +1,22 @@
-import { Discipline } from '../constants/endpoints'
+import { StandardJob } from '../models/Job'
 
-export const mockJobs = (needsTrainingSetEndpoint = false): Discipline[] => [
+export const mockJobs = (): StandardJob[] => [
   {
-    id: 1,
-    title: 'First Discipline',
-    description: 'Description1',
+    id: { type: 'standard', id: 1 },
+    name: 'First Job',
     icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint,
-    leafDisciplines: [10, 11],
+    numberOfUnits: 1,
   },
   {
-    id: 2,
-    title: 'Second Discipline',
-    description: 'Description2',
+    id: { type: 'standard', id: 2 },
+    name: 'Second Job',
     icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint,
-    leafDisciplines: [12, 13],
+    numberOfUnits: 1,
   },
   {
-    id: 3,
-    title: 'Third Discipline',
-    description: 'Description3',
+    id: { type: 'standard', id: 3 },
+    name: 'Third Job',
     icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: true,
-    parentTitle: null,
-    needsTrainingSetEndpoint,
-    leafDisciplines: [],
+    numberOfUnits: 1,
   },
 ]

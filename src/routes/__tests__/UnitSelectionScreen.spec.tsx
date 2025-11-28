@@ -3,6 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { StandardJob } from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getUnitsOfJob } from '../../services/CmsApi'
 import createNavigationMock from '../../testing/createNavigationPropMock'
@@ -13,26 +14,19 @@ import UnitSelectionScreen from '../UnitSelectionScreen'
 jest.mock('@react-navigation/native')
 jest.mock('../../services/CmsApi')
 
-describe('DisciplineSelectionScreen', () => {
+describe('UnitSelectionScreen', () => {
   const navigation = createNavigationMock<'UnitSelection'>()
-  const parentDiscipline = {
-    id: 0,
-    title: 'Parent Discipline',
-    description: 'Description0',
-    icon: 'none',
-    numberOfChildren: 1,
-    isLeaf: false,
-    parentTitle: null,
-    needsTrainingSetEndpoint: false,
-    leafDisciplines: [10, 11],
+  const job: StandardJob = {
+    id: { id: 0, type: 'standard' },
+    name: 'Job',
+    icon: null,
+    numberOfUnits: 1,
   }
 
   const route: RouteProp<RoutesParams, 'UnitSelection'> = {
     key: 'key-1',
     name: 'UnitSelection',
-    params: {
-      job: parentDiscipline,
-    },
+    params: { job },
   }
 
   it('should display the correct title', async () => {
@@ -43,26 +37,26 @@ describe('DisciplineSelectionScreen', () => {
     expect(title).toBeDefined()
   })
 
-  it('should display all disciplines', async () => {
+  it('should display all units', async () => {
     mocked(getUnitsOfJob).mockReturnValueOnce(Promise.resolve(mockUnits))
 
     const { getByText } = render(<UnitSelectionScreen route={route} navigation={navigation} />)
 
-    const firstDiscipline = await waitFor(() => getByText(mockUnits[0].title))
-    const secondDiscipline = getByText(mockUnits[1].title)
-    const thirdDiscipline = getByText(mockUnits[2].title)
-    expect(firstDiscipline).toBeDefined()
-    expect(secondDiscipline).toBeDefined()
-    expect(thirdDiscipline).toBeDefined()
+    const firstUnit = await waitFor(() => getByText(mockUnits[0].title))
+    const secondUnit = getByText(mockUnits[1].title)
+    const thirdUnit = getByText(mockUnits[2].title)
+    expect(firstUnit).toBeDefined()
+    expect(secondUnit).toBeDefined()
+    expect(thirdUnit).toBeDefined()
   })
 
   it('should navigate to exercises when list item pressed', async () => {
     mocked(getUnitsOfJob).mockReturnValueOnce(Promise.resolve(mockUnits))
 
     const { getByText } = render(<UnitSelectionScreen route={route} navigation={navigation} />)
-    const discipline = await waitFor(() => getByText(mockUnits[2].title))
-    expect(discipline).toBeDefined()
-    fireEvent.press(discipline)
+    const unit = await waitFor(() => getByText(mockUnits[2].title))
+    expect(unit).toBeDefined()
+    fireEvent.press(unit)
 
     expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', expect.anything())
   })
