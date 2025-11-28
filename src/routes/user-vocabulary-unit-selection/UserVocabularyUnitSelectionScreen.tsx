@@ -11,7 +11,7 @@ import useUserVocabulary from '../../hooks/useUserVocabulary'
 import { UserVocabularyUnit, UserVocabularyUnitId } from '../../models/Unit'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
-import { splitVocabularyIntoDisciplines } from './splitVocabularyToUnits'
+import { splitVocabularyIntoUnits } from './splitVocabularyToUnits'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
@@ -29,7 +29,7 @@ export type UnitWithVocabulary = {
 
 const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): ReactElement => {
   const userVocabulary = useUserVocabulary()
-  const unitsWithVocabulary = splitVocabularyIntoDisciplines(userVocabulary)
+  const unitsWithVocabulary = splitVocabularyIntoUnits(userVocabulary)
 
   const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {
     const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.index]

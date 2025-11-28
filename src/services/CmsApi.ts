@@ -1,7 +1,7 @@
 import { Article, ARTICLES } from '../constants/data'
-import { Discipline, NetworkError, VocabularyItem } from '../constants/endpoints'
-import { isTypeLoadProtected } from '../hooks/helpers'
+import { NetworkError, VocabularyItem } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
+import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
 import Sponsor from '../models/sponsor'
 import { getFromEndpoint, postToEndpoint } from './axios'
@@ -9,8 +9,8 @@ import { getFromEndpoint, postToEndpoint } from './axios'
 const Endpoints = {
   feedback: 'feedback',
   jobs: 'jobs',
-  job: (id: number) => `jobs/${id}`,
-  unitsOfJob: (jobId: number) => `jobs/${jobId}/units`,
+  job: (id: StandardJobId) => `jobs/${id.id}`,
+  unitsOfJob: (id: StandardJobId) => `jobs/${id.id}/units`,
   sponsors: 'sponsors',
   words: 'words',
   word: (id: number) => `words/${id}`,
@@ -27,7 +27,7 @@ type PostFeedback = {
 const transformFeedbackToPostFeedback = ({ comment, target }: Feedback): PostFeedback => {
   switch (target.type) {
     case 'job':
-      return { comment, content_type: target.type, object_id: target.jobId }
+      return { comment, content_type: target.type, object_id: target.jobId.id }
     case 'unit':
       return { comment, content_type: target.type, object_id: target.unitId.id }
     case 'word':
@@ -46,33 +46,21 @@ type JobResponse = {
   number_units: number
 }
 
-const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: JobResponse): Discipline => ({
-  id,
-  title: name,
-  description: '',
-  icon: icon ?? undefined,
-  numberOfChildren: numberUnits,
-  isLeaf: false,
-  parentTitle: null,
-  needsTrainingSetEndpoint: false,
+const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: JobResponse): StandardJob => ({
+  id: { type: 'standard', id },
+  name,
+  icon,
+  numberOfUnits: numberUnits,
 })
 
-export const getJobs = async (): Promise<Discipline[]> => {
+export const getJobs = async (): Promise<StandardJob[]> => {
   const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
   return response.map(transformJobsResponse)
 }
 
-export type JobId =
-  | {
-      apiKey: string
-    }
-  | {
-      disciplineId: number
-    }
-
-export const getJob = async (id: JobId): Promise<Discipline> =>
-  !isTypeLoadProtected(id)
-    ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id.disciplineId)))
+export const getJob = async (id: JobId): Promise<Job> =>
+  id.type === 'standard'
+    ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id)))
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
 
 type UnitResponse = {
@@ -97,7 +85,11 @@ const transformUnitsResponse = ({
   numberWords,
 })
 
-export const getUnitsOfJob = async (jobId: number): Promise<StandardUnit[]> => {
+export const getUnitsOfJob = async (jobId: JobId): Promise<StandardUnit[]> => {
+  if (jobId.type !== 'standard') {
+    // TODO: Add support back to the cms
+    return Promise.reject(new Error(NetworkError))
+  }
   const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId))
   return response.map(transformUnitsResponse)
 }

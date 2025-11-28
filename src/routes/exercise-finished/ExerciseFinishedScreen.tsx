@@ -96,7 +96,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     }
   }
 
-  const navigateToNextDiscipline = (): void => navigation.pop(2)
+  const navigateToNextUnit = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
@@ -128,10 +128,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         }
       }
       return {
-        message: getLabels().results.finishedDiscipline,
+        message: getLabels().results.finishedUnit,
         resultColor: theme.colors.correct,
         buttonText: getLabels().results.action.back,
-        navigationAction: navigateToNextDiscipline,
+        navigationAction: navigateToNextUnit,
         ResultIcon: PartyHornIcon,
       }
     }

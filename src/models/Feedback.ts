@@ -1,8 +1,9 @@
+import { StandardJobId } from './Job'
 import { StandardUnitId } from './Unit'
 
 export type JobFeedbackTarget = {
   type: 'job'
-  jobId: number
+  jobId: StandardJobId
 }
 
 export type UnitFeedbackTarget = {
