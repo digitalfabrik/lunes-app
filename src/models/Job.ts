@@ -14,7 +14,7 @@ type Job = {
   id: JobId
   name: string
   icon: string | null
-  numberUnits: number
+  numberOfUnits: number
 }
 
 export type StandardJob = Job & { id: StandardJobId }

@@ -22,7 +22,7 @@ type CustomDisciplineDetailsProps = {
 const CustomDisciplineDetails = ({ job, navigateToJob }: CustomDisciplineDetailsProps): JSX.Element => (
   <>
     <TextContainer>
-      <NumberText>{job.numberUnits}</NumberText>
+      <NumberText>{job.numberOfUnits}</NumberText>
       <UnitText>{childrenLabel(job)}</UnitText>
     </TextContainer>
     <Button

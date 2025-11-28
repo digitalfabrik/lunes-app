@@ -88,8 +88,8 @@ export const JobListItem = ({
   rightChildren,
   disabled = false,
 }: JobListItemProps): ReactElement | null => {
-  const badgeLabel = job.numberUnits.toString()
-  const description = pluralize(getLabels().general.unit, job.numberUnits)
+  const badgeLabel = job.numberOfUnits.toString()
+  const description = pluralize(getLabels().general.unit, job.numberOfUnits)
 
   return (
     <ListItem

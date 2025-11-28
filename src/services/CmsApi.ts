@@ -50,7 +50,7 @@ const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: Jo
   id: { type: 'standard', id },
   name,
   icon,
-  numberUnits,
+  numberOfUnits: numberUnits,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {

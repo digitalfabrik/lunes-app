@@ -31,7 +31,7 @@ const JobDetails = ({ job, navigateToJob, navigateToNextExercise }: JobDetailsPr
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(job)
 
   const jobAlreadyStarted = progress !== 0
-  const completedUnits = jobAlreadyStarted ? Math.floor((progress ?? 0) * job.numberUnits) : 0
+  const completedUnits = jobAlreadyStarted ? Math.floor((progress ?? 0) * job.numberOfUnits) : 0
 
   useFocusEffect(refreshNextExercise)
 
@@ -56,7 +56,7 @@ const JobDetails = ({ job, navigateToJob, navigateToNextExercise }: JobDetailsPr
         />
 
         <NumberText>
-          {completedUnits}/{job.numberUnits}
+          {completedUnits}/{job.numberOfUnits}
         </NumberText>
 
         <UnitText>{completedUnits > 0 ? getLabels().home.progressDescription : childrenLabel(job)}</UnitText>

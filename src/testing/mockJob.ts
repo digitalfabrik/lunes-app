@@ -5,18 +5,18 @@ export const mockJobs = (): StandardJob[] => [
     id: { type: 'standard', id: 1 },
     name: 'First Job',
     icon: 'none',
-    numberUnits: 1,
+    numberOfUnits: 1,
   },
   {
     id: { type: 'standard', id: 2 },
     name: 'Second Job',
     icon: 'none',
-    numberUnits: 1,
+    numberOfUnits: 1,
   },
   {
     id: { type: 'standard', id: 3 },
     name: 'Third Job',
     icon: 'none',
-    numberUnits: 1,
+    numberOfUnits: 1,
   },
 ]

@@ -33,9 +33,9 @@ export const pluralize = (labels: { singular: string; plural: string }, n: numbe
 export const wordsDescription = (numberOfWords: number): string =>
   `${numberOfWords} ${pluralize(getLabels().general.word, numberOfWords)}`
 
-export const childrenLabel = (job: Job): string => pluralize(getLabels().general.unit, job.numberUnits)
+export const childrenLabel = (job: Job): string => pluralize(getLabels().general.unit, job.numberOfUnits)
 
-export const childrenDescription = (job: Job): string => `${job.numberUnits} ${childrenLabel(job)}`
+export const childrenDescription = (job: Job): string => `${job.numberOfUnits} ${childrenLabel(job)}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {

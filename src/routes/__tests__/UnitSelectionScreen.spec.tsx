@@ -20,7 +20,7 @@ describe('UnitSelectionScreen', () => {
     id: { id: 0, type: 'standard' },
     name: 'Job',
     icon: null,
-    numberUnits: 1,
+    numberOfUnits: 1,
   }
 
   const route: RouteProp<RoutesParams, 'UnitSelection'> = {
