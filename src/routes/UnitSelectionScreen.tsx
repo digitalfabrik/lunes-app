@@ -42,7 +42,7 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): J
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
-          ListHeaderComponent={<Title title={job.title} description={childrenDescription(job)} />}
+          ListHeaderComponent={<Title title={job.name} description={childrenDescription(job)} />}
           data={units}
           renderItem={renderListItem}
           keyExtractor={({ id }) => JSON.stringify(id)}

@@ -8,11 +8,10 @@ import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
-import { Discipline, ForbiddenError, NetworkError } from '../../../constants/endpoints'
-import { isTypeLoadProtected } from '../../../hooks/helpers'
+import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import useLoadJob from '../../../hooks/useLoadJob'
 import { useStorageCache } from '../../../hooks/useStorage'
-import { JobId } from '../../../services/CmsApi'
+import Job, { JobId } from '../../../models/Job'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
@@ -46,14 +45,14 @@ export const ButtonContainer = styled.View`
 type JobCardProps = {
   identifier: JobId
   width?: number
-  navigateToDiscipline: (discipline: Discipline) => void
+  navigateToJob: (job: Job) => void
   navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
 }
 
 const JobCard = ({
   identifier,
   width: cardWidth,
-  navigateToDiscipline,
+  navigateToJob,
   navigateToNextExercise,
 }: JobCardProps): JSX.Element | null => {
   const storageCache = useStorageCache()
@@ -81,13 +80,14 @@ const JobCard = ({
 
     let deleteItem
     let errorMessage
-    if (error?.message === ForbiddenError && isTypeLoadProtected(identifier)) {
+    if (error?.message === ForbiddenError && identifier.type === 'load-protected') {
       deleteItem = () => removeCustomDiscipline(storageCache, identifier.apiKey)
       errorMessage = `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
     } else {
-      deleteItem = !isTypeLoadProtected(identifier)
-        ? () => removeSelectedJob(storageCache, identifier.disciplineId)
-        : () => setIsModalVisible(false)
+      deleteItem =
+        identifier.type === 'standard'
+          ? () => removeSelectedJob(storageCache, identifier)
+          : () => setIsModalVisible(false)
       errorMessage = getLabels().general.error.unknown
     }
 
@@ -112,16 +112,12 @@ const JobCard = ({
   }
 
   return (
-    <Card width={cardWidth} heading={job.title} icon={job.icon} onPress={() => navigateToDiscipline(job)}>
-      {isTypeLoadProtected(identifier) ? (
-        <CustomDisciplineDetails discipline={job} navigateToDiscipline={navigateToDiscipline} />
+    <Card width={cardWidth} heading={job.name} icon={job.icon ?? undefined} onPress={() => navigateToJob(job)}>
+      {identifier.type === 'load-protected' ? (
+        <CustomDisciplineDetails job={job} navigateToJob={navigateToJob} />
       ) : (
         navigateToNextExercise && (
-          <JobDetails
-            job={job}
-            navigateToDiscipline={navigateToDiscipline}
-            navigateToNextExercise={navigateToNextExercise}
-          />
+          <JobDetails job={job} navigateToJob={navigateToJob} navigateToNextExercise={navigateToNextExercise} />
         )
       )}
     </Card>

@@ -18,7 +18,7 @@ const MAX_ANSWERS = 4
 
 const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScreenProps): ReactElement | null => {
   const { vocabularyItems, contentType } = route.params
-  const disciplineId = contentType === 'standard' ? route.params.unitId : null
+  const unitId = contentType === 'standard' ? route.params.unitId : null
   const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
 
   const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
@@ -40,7 +40,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     <RouteWrapper>
       <SingleChoiceExercise
         vocabularyItems={vocabularyItems}
-        unitId={disciplineId}
+        unitId={unitId}
         vocabularyItemToAnswer={vocabularyItemToAnswer}
         navigation={navigation}
         route={route}

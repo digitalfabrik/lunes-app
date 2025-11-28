@@ -3,6 +3,7 @@ import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
+import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
@@ -12,34 +13,34 @@ import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const pushSelectedJob = async (storageCache: StorageCache, professionId: number): Promise<void> => {
+export const pushSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<void> => {
   let jobs = storageCache.getMutableItem('selectedJobs')
   if (jobs === null) {
-    jobs = [professionId]
+    jobs = [id]
   } else {
-    jobs.push(professionId)
+    jobs.push(id)
   }
   await storageCache.setItem('selectedJobs', jobs)
 }
 
-export const removeSelectedJob = async (storageCache: StorageCache, professionId: number): Promise<number[]> => {
+export const removeSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<number[]> => {
   const jobs = storageCache.getItem('selectedJobs')
   if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedJobs = jobs.filter(item => item !== professionId)
+  const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
   return updatedJobs
 }
 
 export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
-  const disciplines = storageCache.getMutableItem('customDisciplines')
-  const index = disciplines.indexOf(customDiscipline)
+  const customDisciplines = storageCache.getMutableItem('customDisciplines')
+  const index = customDisciplines.indexOf(customDiscipline)
   if (index === -1) {
     throw new Error('customDiscipline not available')
   }
-  disciplines.splice(index, 1)
-  await storageCache.setItem('customDisciplines', disciplines)
+  customDisciplines.splice(index, 1)
+  await storageCache.setItem('customDisciplines', customDisciplines)
 }
 
 export const setExerciseProgress = async (

@@ -13,7 +13,7 @@ import mockUnits from '../../../../testing/mockUnit'
 import render from '../../../../testing/render'
 import JobDetails from '../JobDetails'
 
-const navigateToDiscipline = jest.fn()
+const navigateToJob = jest.fn()
 const navigateToExercise = jest.fn()
 jest.mock('../../../../services/helpers', () => ({
   ...jest.requireActual('../../../../services/helpers'),
@@ -39,13 +39,7 @@ const nextExerciseData: NextExerciseData = {
 
 describe('JobDetails', () => {
   const renderJobDetails = (): RenderAPI =>
-    render(
-      <JobDetails
-        job={mockJobs()[0]}
-        navigateToDiscipline={navigateToDiscipline}
-        navigateToNextExercise={navigateToExercise}
-      />,
-    )
+    render(<JobDetails job={mockJobs()[0]} navigateToJob={navigateToJob} navigateToNextExercise={navigateToExercise} />)
 
   it('should show next exercise details on the card', () => {
     mocked(useReadProgress).mockReturnValue(getReturnOf(1))
