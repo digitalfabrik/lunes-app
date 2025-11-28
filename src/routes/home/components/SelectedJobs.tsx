@@ -7,9 +7,8 @@ import { AddCircleIcon, PenIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 import { NextExerciseData } from '../../../constants/data'
-import { Discipline } from '../../../constants/endpoints'
 import useStorage from '../../../hooks/useStorage'
-import { JobId } from '../../../services/CmsApi'
+import Job, { JobId } from '../../../models/Job'
 import { getLabels } from '../../../services/helpers'
 import JobCard from './JobCard'
 
@@ -45,7 +44,7 @@ const Title = styled(Heading)`
 `
 
 type SelectedJobsProps = {
-  navigateToDiscipline: (discipline: Discipline) => void
+  navigateToJob: (job: Job) => void
   navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
   navigateToManageSelection: () => void
   navigateToJobSelection: () => void
@@ -53,11 +52,11 @@ type SelectedJobsProps = {
 
 const useAllJobs = (): JobId[] => {
   const [selectedJobs] = useStorage('selectedJobs')
-  return selectedJobs?.map(id => ({ disciplineId: id })) ?? []
+  return selectedJobs?.map(id => ({ type: 'standard', id })) ?? []
 }
 
 const SelectedJobs = ({
-  navigateToDiscipline,
+  navigateToJob,
   navigateToNextExercise,
   navigateToManageSelection,
   navigateToJobSelection,
@@ -82,11 +81,7 @@ const SelectedJobs = ({
       </BoxHeading>
 
       {jobs.length === 1 ? (
-        <JobCard
-          identifier={jobs[0]}
-          navigateToDiscipline={navigateToDiscipline}
-          navigateToNextExercise={navigateToNextExercise}
-        />
+        <JobCard identifier={jobs[0]} navigateToJob={navigateToJob} navigateToNextExercise={navigateToNextExercise} />
       ) : (
         <FlatList
           horizontal
@@ -99,7 +94,7 @@ const SelectedJobs = ({
             <JobCard
               identifier={item}
               width={wp('75%')}
-              navigateToDiscipline={navigateToDiscipline}
+              navigateToJob={navigateToJob}
               navigateToNextExercise={navigateToNextExercise}
             />
           )}

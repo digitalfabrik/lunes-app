@@ -10,9 +10,10 @@ import {
   Progress,
   SCORE_THRESHOLD_UNLOCK,
 } from '../constants/data'
-import { AlternativeWord, Discipline, VocabularyItem } from '../constants/endpoints'
+import { AlternativeWord, VocabularyItem } from '../constants/endpoints'
 import labels from '../constants/labels.json'
 import { COLORS } from '../constants/theme/colors'
+import Job, { StandardJob } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
@@ -32,15 +33,9 @@ export const pluralize = (labels: { singular: string; plural: string }, n: numbe
 export const wordsDescription = (numberOfWords: number): string =>
   `${numberOfWords} ${pluralize(getLabels().general.word, numberOfWords)}`
 
-export const childrenLabel = (discipline: Discipline): string => {
-  if (discipline.isLeaf) {
-    return pluralize(labels.general.word, discipline.numberOfChildren)
-  }
-  return pluralize(getLabels().general.unit, discipline.numberOfChildren)
-}
+export const childrenLabel = (job: Job): string => pluralize(getLabels().general.unit, job.numberOfUnits)
 
-export const childrenDescription = (discipline: Discipline): string =>
-  `${discipline.numberOfChildren} ${childrenLabel(discipline)}`
+export const childrenDescription = (job: Job): string => `${job.numberOfUnits} ${childrenLabel(job)}`
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
@@ -99,15 +94,16 @@ export const getNumberOfUnlockedExercises = (progress: Progress, unitId: Standar
 
 export type GetNextExerciseParams = {
   progress: Progress
-  job: Discipline
+  job: Job
 }
+
 /*
   Calculates the next exercise that needs to be done for a profession
   */
 export const getNextExercise = async ({ progress, job }: GetNextExerciseParams): Promise<NextExercise> => {
   const units = await getUnitsOfJob(job.id)
   if (!units.length) {
-    throw new Error(`No units for id ${job.id}`)
+    throw new Error(`No units for id ${JSON.stringify(job.id)}`)
   }
   const firstUnfinishedUnit = units.find(
     unit => getNumberOfUnlockedExercisesByProgress(unit.id, progress) < EXERCISES.length,
@@ -119,8 +115,8 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
       exerciseKey: 0,
     } // TODO #965: show success that every exercise is done
   }
-  const disciplineProgress = progress[firstUnfinishedUnit.id.id]
-  if (!disciplineProgress) {
+  const unitProgress = progress[firstUnfinishedUnit.id.id]
+  if (!unitProgress) {
     return {
       unit: firstUnfinishedUnit,
       exerciseKey: 0,
@@ -133,7 +129,7 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
   }
 }
 
-export const getProgress = async (progress: Progress, job: Discipline | null): Promise<number> => {
+export const getProgress = async (progress: Progress, job: Job | null): Promise<number> => {
   if (!job) {
     return 0
   }
@@ -215,8 +211,8 @@ export const millisecondsToDays = (milliseconds: number): number => milliseconds
 /* eslint-disable-next-line no-magic-numbers */
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
 
-export const searchJobs = (jobs: Discipline[] | null, searchKey: string): Discipline[] | undefined =>
-  jobs?.filter(job => normalizeString(job.title).includes(normalizeString(searchKey)))
+export const searchJobs = (jobs: StandardJob[] | null, searchKey: string): StandardJob[] | undefined =>
+  jobs?.filter(job => normalizeString(job.name).includes(normalizeString(searchKey)))
 
 export const vocabularyItemToFavorite = (vocabularyItem: VocabularyItem): Favorite => ({
   id: vocabularyItem.id,

@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Discipline } from '../../../constants/endpoints'
+import Job from '../../../models/Job'
 import { getLabels, childrenLabel } from '../../../services/helpers'
 import { NumberText, UnitText } from './JobCard'
 
@@ -15,18 +15,18 @@ const TextContainer = styled.View`
 `
 
 type CustomDisciplineDetailsProps = {
-  discipline: Discipline
-  navigateToDiscipline: (discipline: Discipline) => void
+  job: Job
+  navigateToJob: (job: Job) => void
 }
 
-const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: CustomDisciplineDetailsProps): ReactElement => (
+const CustomDisciplineDetails = ({ job, navigateToJob }: CustomDisciplineDetailsProps): ReactElement => (
   <>
     <TextContainer>
-      <NumberText>{discipline.numberOfChildren}</NumberText>
-      <UnitText>{childrenLabel(discipline)}</UnitText>
+      <NumberText>{job.numberOfUnits}</NumberText>
+      <UnitText>{childrenLabel(job)}</UnitText>
     </TextContainer>
     <Button
-      onPress={() => navigateToDiscipline(discipline)}
+      onPress={() => navigateToJob(job)}
       label={getLabels().home.start}
       buttonTheme={BUTTONS_THEME.outlined}
       fitToContentWidth

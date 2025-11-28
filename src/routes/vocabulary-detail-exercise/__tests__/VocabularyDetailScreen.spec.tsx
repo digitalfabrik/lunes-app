@@ -30,7 +30,7 @@ describe('VocabularyDetailScreen', () => {
     params: {
       contentType: 'standard',
       unitId: { id: 1, type: 'standard' },
-      unitTitle: 'disciplineTitle',
+      unitTitle: 'unitTitle',
       vocabularyItems,
       closeExerciseAction: CommonActions.goBack(),
       vocabularyItemIndex,

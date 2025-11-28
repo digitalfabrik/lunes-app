@@ -6,11 +6,11 @@ import render from '../../../../testing/render'
 import SelectedJobs from '../SelectedJobs'
 
 describe('SelectedJobs', () => {
-  it('should render correctly with 0 disciplines', () => {
+  it('should render correctly with 0 jobs', () => {
     const navigateToJobSelection = jest.fn()
     const { getByText, getByTestId } = render(
       <SelectedJobs
-        navigateToDiscipline={jest.fn()}
+        navigateToJob={jest.fn()}
         navigateToNextExercise={jest.fn()}
         navigateToJobSelection={navigateToJobSelection}
         navigateToManageSelection={jest.fn()}
