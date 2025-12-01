@@ -7,7 +7,7 @@ import ModalSkeleton from '../../../components/ModalSkeleton'
 import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { getAllWords } from '../../../hooks/useGetAllWords'
+import { loadAllWords } from '../../../hooks/useLoadAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
@@ -79,7 +79,7 @@ const DebugModal = (props: DebugModalProps): JSX.Element => {
   const NUMBER_OF_TEST_VOCABULARY = 5
   const MAX_DAYS_IN_A_SECTION = 100
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
-    const allWords = await getAllWords(storageCache)
+    const allWords = await loadAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       word: vocabularyItem,
       section: sections[getRandomNumberBetween(0, sections.length - 1)],

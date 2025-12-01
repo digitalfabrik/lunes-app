@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import useGetAllWords from '../../../hooks/useGetAllWords'
+import useLoadAllWords from '../../../hooks/useLoadAllWords'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -20,7 +20,7 @@ jest.mock('../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
-jest.mock('../../../hooks/useGetAllWords')
+jest.mock('../../../hooks/useLoadAllWords')
 jest.mock('@react-navigation/native')
 
 describe('DictionaryScreen', () => {
@@ -28,7 +28,7 @@ describe('DictionaryScreen', () => {
   const navigation = createNavigationMock<'Dictionary'>()
 
   it('should render correctly', () => {
-    mocked(useGetAllWords).mockReturnValueOnce(getReturnOf(vocabularyItems))
+    mocked(useLoadAllWords).mockReturnValueOnce(getReturnOf(vocabularyItems))
     const { getByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     expect(getByText(getLabels().general.dictionary)).toBeDefined()
     expect(getByText(`4 ${getLabels().general.word.plural}`)).toBeDefined()
@@ -40,7 +40,7 @@ describe('DictionaryScreen', () => {
   })
 
   it('should filter by word', () => {
-    mocked(useGetAllWords).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadAllWords).mockReturnValue(getReturnOf(vocabularyItems))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     const searchBar = getByPlaceholderText(getLabels().search.enterWord)
     fireEvent.changeText(searchBar, vocabularyItems[0].word)
@@ -51,7 +51,7 @@ describe('DictionaryScreen', () => {
   })
 
   it('should filter by word and article', () => {
-    mocked(useGetAllWords).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadAllWords).mockReturnValue(getReturnOf(vocabularyItems))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     const searchBar = getByPlaceholderText(getLabels().search.enterWord)
     fireEvent.changeText(searchBar, `${vocabularyItems[0].article.value} ${vocabularyItems[0].word}`)
@@ -60,7 +60,7 @@ describe('DictionaryScreen', () => {
   })
 
   it('should navigate to DetailScreen', () => {
-    mocked(useGetAllWords).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadAllWords).mockReturnValue(getReturnOf(vocabularyItems))
     const { getByText } = render(<DictionaryScreen navigation={navigation} />)
     fireEvent.press(getByText(vocabularyItems[0].word))
     expect(navigation.navigate).toHaveBeenCalledWith('VocabularyDetail', { vocabularyItem: vocabularyItems[0] })

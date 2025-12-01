@@ -10,7 +10,7 @@ import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { VocabularyItem } from '../../constants/endpoints'
-import useGetAllWords from '../../hooks/useGetAllWords'
+import useLoadAllWords from '../../hooks/useLoadAllWords'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   getLabels,
@@ -33,7 +33,7 @@ type DictionaryScreenProps = {
 }
 
 const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement => {
-  const vocabularyItems = useGetAllWords()
+  const vocabularyItems = useLoadAllWords()
   const [searchString, setSearchString] = useState<string>('')
 
   useFocusEffect(vocabularyItems.refresh)
