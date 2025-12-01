@@ -2,9 +2,9 @@ import { VocabularyItem } from '../constants/endpoints'
 import { getUserVocabularyItems } from '../services/storageUtils'
 import useStorage from './useStorage'
 
-const useReadUserVocabulary = (): VocabularyItem[] => {
+const useUserVocabulary = (): VocabularyItem[] => {
   const [userVocabulary] = useStorage('userVocabulary')
   return getUserVocabularyItems(userVocabulary)
 }
 
-export default useReadUserVocabulary
+export default useUserVocabulary
