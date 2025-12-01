@@ -4,7 +4,7 @@ import React from 'react'
 
 import { useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
 import { useLoadDisciplines } from '../../../hooks/useLoadDisciplines'
-import useReadProgress from '../../../hooks/useReadProgress'
+import useProgress from '../../../hooks/useProgress'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -19,7 +19,7 @@ jest.mock('../../../services/helpers', () => ({
   childrenLabel: jest.fn(() => []),
 }))
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useReadProgress')
+jest.mock('../../../hooks/useProgress')
 jest.mock('../../../hooks/useLoadDisciplines')
 jest.mock('../../../hooks/useLoadDiscipline')
 jest.mock('../components/HomeScreenHeader', () => {
@@ -44,7 +44,7 @@ describe('HomeScreen', () => {
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[0]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[1]))
       .mockReturnValueOnce(getReturnOf(mockDisciplines()[2]))
-    mocked(useReadProgress).mockReturnValue(0)
+    mocked(useProgress).mockReturnValue(0)
     const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
     const firstDiscipline = await findByText('First Discipline')
     const secondDiscipline = await findByText('Second Discipline')
