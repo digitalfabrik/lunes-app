@@ -3,63 +3,66 @@ import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION, VOCABULARY_ITEM_TYPES } from '../constants/data'
 import { UserVocabularyItem, VocabularyItem } from '../constants/endpoints'
+import { StandardJobId } from '../models/Job'
+import { StandardUnitId } from '../models/Unit'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
+import { CMS_URLS } from './axios'
 import { calculateScore, vocabularyItemToFavorite } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const pushSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<void> => {
-  let professions = storageCache.getMutableItem('selectedProfessions')
-  if (professions === null) {
-    professions = [professionId]
+export const pushSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<void> => {
+  let jobs = storageCache.getMutableItem('selectedJobs')
+  if (jobs === null) {
+    jobs = [id]
   } else {
-    professions.push(professionId)
+    jobs.push(id)
   }
-  await storageCache.setItem('selectedProfessions', professions)
+  await storageCache.setItem('selectedJobs', jobs)
 }
 
-export const removeSelectedProfession = async (storageCache: StorageCache, professionId: number): Promise<number[]> => {
-  const professions = storageCache.getItem('selectedProfessions')
-  if (professions === null) {
+export const removeSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<number[]> => {
+  const jobs = storageCache.getItem('selectedJobs')
+  if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedProfessions = professions.filter(item => item !== professionId)
-  await storageCache.setItem('selectedProfessions', updatedProfessions)
-  return updatedProfessions
+  const updatedJobs = jobs.filter(item => item !== id)
+  await storageCache.setItem('selectedJobs', updatedJobs)
+  return updatedJobs
 }
 
 export const removeCustomDiscipline = async (storageCache: StorageCache, customDiscipline: string): Promise<void> => {
-  const disciplines = storageCache.getMutableItem('customDisciplines')
-  const index = disciplines.indexOf(customDiscipline)
+  const customDisciplines = storageCache.getMutableItem('customDisciplines')
+  const index = customDisciplines.indexOf(customDiscipline)
   if (index === -1) {
     throw new Error('customDiscipline not available')
   }
-  disciplines.splice(index, 1)
-  await storageCache.setItem('customDisciplines', disciplines)
+  customDisciplines.splice(index, 1)
+  await storageCache.setItem('customDisciplines', customDisciplines)
 }
 
 export const setExerciseProgress = async (
   storageCache: StorageCache,
-  disciplineId: number,
+  unitId: StandardUnitId,
   exerciseKey: ExerciseKey,
   score: number,
 ): Promise<void> => {
   const savedProgress = storageCache.getMutableItem('progress')
-  const newScore = Math.max(savedProgress[disciplineId]?.[exerciseKey] ?? score, score)
-  savedProgress[disciplineId] = { ...(savedProgress[disciplineId] ?? {}), [exerciseKey]: newScore }
+  const newScore = Math.max(savedProgress[unitId.id]?.[exerciseKey] ?? score, score)
+  savedProgress[unitId.id] = { ...(savedProgress[unitId.id] ?? {}), [exerciseKey]: newScore }
   await storageCache.setItem('progress', savedProgress)
 }
 
 export const saveExerciseProgress = async (
   storageCache: StorageCache,
-  disciplineId: number,
+  unitId: StandardUnitId,
   exerciseKey: ExerciseKey,
   vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
-  await setExerciseProgress(storageCache, disciplineId, exerciseKey, score)
+  await setExerciseProgress(storageCache, unitId, exerciseKey, score)
 
   if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && score > 0) {
     const repetitionService = RepetitionService.fromStorageCache(storageCache)
@@ -88,6 +91,34 @@ export const migrate0To1 = async (): Promise<void> => {
   await AsyncStorage.removeItem(FAVORITES_KEY_VERSION_0)
 }
 
+// Migrates the `images` field of `VocabularyItem` to a flat array of urls
+export const migrate1To2 = async (): Promise<void> => {
+  type Incomplete<T> = T & Record<string, unknown>
+  type OldVocabularyItem = Incomplete<{ images: { image: string }[] }>
+  type OldWordNodeCard = Incomplete<{ word: OldVocabularyItem }>
+
+  const updateVocabularyItem = (oldWord: OldVocabularyItem): Incomplete<{ images: string[] }> => ({
+    ...oldWord,
+    images: oldWord.images.map(image => image.image),
+  })
+
+  const oldUserVocabulary = await getStorageItemOr<OldVocabularyItem[]>('userVocabulary', [])
+  const newUserVocabulary = oldUserVocabulary.map(updateVocabularyItem)
+  await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
+
+  const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
+  const newWordNodeCards = oldWordNodeCards.map(card => ({ ...card, word: updateVocabularyItem(card.word) }))
+  await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newWordNodeCards))
+}
+
+// Removes the cms url overwrite value in case it has changed between versions
+export const migrateApiEndpointUrl = async (): Promise<void> => {
+  const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
+  if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(overwrite)) {
+    await AsyncStorage.removeItem(storageKeys.cmsUrlOverwrite)
+  }
+}
+
 export const migrateStorage = async (): Promise<void> => {
   const getStorageVersion = async (): Promise<number> => {
     const version = await getStorageItemOr<number | null>(storageKeys.version, null)
@@ -99,16 +130,23 @@ export const migrateStorage = async (): Promise<void> => {
     // this is either a new installation or an update from a version where this field did not exist yet.
     // In the former case, the storage version should be the latest version to avoid unnecessary startup work.
     // In the latter case, we should use 0 as the version number so that all migrations are run.
-    // To differentiate between the two cases, we can use the fact that `selectedProfessions` is null if and only if the startup screen was not completed yet.
-    const selectedProfessions = await getStorageItem('selectedProfessions')
-    return selectedProfessions === null ? STORAGE_VERSION : 0
+    // To differentiate between the two cases, we can use the fact that `selectedJobs` is null if and only if the startup screen was not completed yet.
+    const selectedJobs = await getStorageItem('selectedJobs')
+    return selectedJobs === null ? STORAGE_VERSION : 0
   }
 
   const lastVersion = await getStorageVersion()
   switch (lastVersion) {
     case 0:
       await migrate0To1()
+    // eslint-disable-next-line no-fallthrough
+    case 1:
+      await migrate1To2()
       break
+  }
+
+  if (__DEV__) {
+    await migrateApiEndpointUrl()
   }
 
   if (lastVersion !== STORAGE_VERSION) {
@@ -185,9 +223,8 @@ export const deleteUserVocabularyItem = async (
   const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary')).filter(
     item => JSON.stringify(item) !== JSON.stringify(userVocabularyItem),
   )
-  const images = userVocabularyItem.images.map(image => image.image)
   await Promise.all(
-    images.map(async image => {
+    userVocabularyItem.images.map(async image => {
       await unlink(image)
     }),
   )

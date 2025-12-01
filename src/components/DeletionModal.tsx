@@ -17,7 +17,7 @@ const Explanation = styled(ContentSecondary)`
 `
 
 const DeletionModal = ({ isVisible, onConfirm, onClose }: DeletionModalProps): JSX.Element => {
-  const { confirmationQuestion, confirm, explanation } = getLabels().manageSelection.deleteModal
+  const { confirmationQuestion, confirm, explanation } = getLabels().manageJobs.deleteModal
   return (
     <Modal
       visible={isVisible}

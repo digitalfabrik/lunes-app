@@ -57,8 +57,8 @@ describe('ArticleChoiceExerciseScreen', () => {
     params: {
       contentType: 'standard',
       vocabularyItems,
-      disciplineId: 1,
-      disciplineTitle: 'TestTitel',
+      unitId: { type: 'standard', id: 1 },
+      unitTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
     },
   }
@@ -116,9 +116,14 @@ describe('ArticleChoiceExerciseScreen', () => {
     await act(async () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
-    expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, ExerciseKeys.articleChoiceExercise, [
-      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-    ])
+    expect(saveExerciseProgress).toHaveBeenCalledWith(
+      storageCache,
+      { id: 1, type: 'standard' },
+      ExerciseKeys.articleChoiceExercise,
+      [
+        { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+        { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      ],
+    )
   })
 })

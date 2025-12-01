@@ -12,16 +12,7 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
 }))
 
 describe('ImageCarousel', () => {
-  const images = [
-    {
-      id: 0,
-      image: 'Arbeitshose',
-    },
-    {
-      id: 1,
-      image: 'Arbeitsschuhe',
-    },
-  ]
+  const images = ['Arbeitshose', 'Arbeitsschuhe']
 
   const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
 
