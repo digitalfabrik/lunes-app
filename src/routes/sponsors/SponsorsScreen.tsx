@@ -9,7 +9,7 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { Subheading } from '../../components/text/Subheading'
 import { Sponsor } from '../../constants/endpoints'
-import useGetAllSponsors from '../../hooks/useGetAllSponsors'
+import useLoadAllSponsors from '../../hooks/useLoadAllSponsors'
 import { getLabels } from '../../services/helpers'
 import { openExternalUrl } from '../../services/url'
 
@@ -53,7 +53,7 @@ const ItemContainer = styled.TouchableOpacity`
 `
 
 const SponsorsScreen = (): ReactElement => {
-  const { data, loading, error, refresh } = useGetAllSponsors()
+  const { data, loading, error, refresh } = useLoadAllSponsors()
   useMemo(() => (data ? data.sort((a, b) => a.name.localeCompare(b.name)) : undefined), [data])
 
   const renderListItem = ({ item }: { item: Sponsor }): ReactElement => (
