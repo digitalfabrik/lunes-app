@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect } from 'react'
+import React, { useEffect, type JSX } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'

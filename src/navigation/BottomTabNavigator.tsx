@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'

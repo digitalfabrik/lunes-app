@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { useTheme } from 'styled-components/native'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'

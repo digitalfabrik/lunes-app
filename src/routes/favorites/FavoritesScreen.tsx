@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, type JSX } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 

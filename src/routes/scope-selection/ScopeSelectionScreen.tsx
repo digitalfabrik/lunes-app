@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, type JSX } from 'react'
 import { ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 

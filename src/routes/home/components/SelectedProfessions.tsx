@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, type JSX } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
