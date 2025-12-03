@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -46,7 +46,7 @@ type ErrorMessageProps = {
   contained?: boolean
 }
 
-const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): JSX.Element | null => {
+const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): ReactElement | null => {
   if (!error) {
     return null
   }

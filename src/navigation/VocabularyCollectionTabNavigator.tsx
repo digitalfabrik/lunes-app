@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import theme from '../constants/theme'
@@ -10,7 +10,7 @@ import UserVocabularyStackNavigator from './UserVocabularyStackNavigator'
 
 const Tab = createMaterialTopTabNavigator<RoutesParams>()
 
-const VocabularyCollectionTabNavigator = (): JSX.Element | null => {
+const VocabularyCollectionTabNavigator = (): ReactElement | null => {
   const insets = useSafeAreaInsets()
 
   return (

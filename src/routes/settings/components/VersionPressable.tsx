@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from 'react'
+import React, { useState, ReactElement } from 'react'
 import { getVersion } from 'react-native-device-info'
 import styled from 'styled-components/native'
 
@@ -17,7 +17,7 @@ type VersionPressableProps = {
 
 export const CLICK_THRESHOLD = 5
 
-const VersionPressable = ({ onClickThresholdReached }: VersionPressableProps): JSX.Element => {
+const VersionPressable = ({ onClickThresholdReached }: VersionPressableProps): ReactElement => {
   const [counter, setCounter] = useState<number>(0)
 
   const onPress = () => {

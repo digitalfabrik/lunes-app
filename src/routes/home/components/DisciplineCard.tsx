@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from 'react'
+import React, { useState, ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -54,7 +54,7 @@ const DisciplineCard = ({
   width: cardWidth,
   navigateToDiscipline,
   navigateToNextExercise,
-}: DisciplineCardProps): JSX.Element | null => {
+}: DisciplineCardProps): ReactElement | null => {
   const storageCache = useStorageCache()
   const { data: discipline, loading, error, refresh } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState(false)

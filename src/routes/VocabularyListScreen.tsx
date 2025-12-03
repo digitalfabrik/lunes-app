@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, type JSX } from 'react'
+import React, { useEffect, ReactElement } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
@@ -17,7 +17,7 @@ type VocabularyListScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'VocabularyList'>
 }
 
-const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): JSX.Element => {
+const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): ReactElement => {
   const { contentType, closeExerciseAction } = route.params
   const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
   const storageCache = useStorageCache()

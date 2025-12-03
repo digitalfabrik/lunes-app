@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -17,8 +17,8 @@ type VocabularyListScreenProps = {
   title: string
 }
 
-const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListScreenProps): JSX.Element => {
-  const renderItem = ({ item, index }: { item: VocabularyItem; index: number }): JSX.Element => (
+const VocabularyList = ({ vocabularyItems, onItemPress, title }: VocabularyListScreenProps): ReactElement => {
+  const renderItem = ({ item, index }: { item: VocabularyItem; index: number }): ReactElement => (
     <VocabularyListItem vocabularyItem={item} onPress={() => onItemPress(index)} />
   )
 

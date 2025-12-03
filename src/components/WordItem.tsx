@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from 'react'
+import React, { useState, ReactElement } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { Answer, Article } from '../constants/data'
@@ -131,7 +131,7 @@ const WordItem = ({
   anyAnswerSelected = false,
   delayPassed = false,
   disabled = false,
-}: SingleChoiceListItemProps): JSX.Element => {
+}: SingleChoiceListItemProps): ReactElement => {
   const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
   const showCorrect = anyAnswerSelected && correct

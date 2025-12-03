@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -27,7 +27,7 @@ export type DisciplineWithVocabulary = {
   vocabulary: VocabularyItem[]
 }
 
-const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProps): JSX.Element => {
+const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProps): ReactElement => {
   const userVocabulary = useUserVocabulary()
   const disciplinesWithVocabulary = spiltVocabularyIntoDisciplines(userVocabulary)
 
@@ -42,7 +42,7 @@ const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProp
     })
   }
 
-  const renderListItem = ({ item }: { item: DisciplineWithVocabulary }): JSX.Element => (
+  const renderListItem = ({ item }: { item: DisciplineWithVocabulary }): ReactElement => (
     <DisciplineListItem item={item.discipline} onPress={() => handleNavigation(item.discipline.id)} hasBadge />
   )
 
