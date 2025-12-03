@@ -8,7 +8,7 @@ import DisciplineListItem from '../../components/DisciplineListItem'
 import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
 import { Discipline, VocabularyItem } from '../../constants/endpoints'
-import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
+import useUserVocabulary from '../../hooks/useUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
 import { spiltVocabularyIntoDisciplines } from './splitVocabularyToDiscipline'
@@ -28,7 +28,7 @@ export type DisciplineWithVocabulary = {
 }
 
 const DisciplineSelectionScreen = ({ navigation }: DisciplineSelectionScreenProps): JSX.Element => {
-  const userVocabulary = useReadUserVocabulary()
+  const userVocabulary = useUserVocabulary()
   const disciplinesWithVocabulary = spiltVocabularyIntoDisciplines(userVocabulary)
 
   const handleNavigation = (selectedDiscipline: number): void => {

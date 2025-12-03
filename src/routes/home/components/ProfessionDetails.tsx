@@ -8,7 +8,7 @@ import { BUTTONS_THEME, EXERCISES, NextExerciseData } from '../../../constants/d
 import { Discipline } from '../../../constants/endpoints'
 import theme from '../../../constants/theme'
 import useLoadNextExercise from '../../../hooks/useLoadNextExercise'
-import useReadProgress from '../../../hooks/useReadProgress'
+import useProgress from '../../../hooks/useProgress'
 import { childrenLabel, getLabels } from '../../../services/helpers'
 import { NumberText, UnitText } from './DisciplineCard'
 import NextExerciseCard from './NextExerciseCard'
@@ -31,7 +31,7 @@ const ProfessionDetails = ({
   navigateToDiscipline,
   navigateToNextExercise,
 }: ProfessionDetailsProps): ReactElement | null => {
-  const progress = useReadProgress(discipline)
+  const progress = useProgress(discipline)
   const { data: nextExerciseData, refresh: refreshNextExercise } = useLoadNextExercise(discipline)
 
   const disciplineAlreadyStarted = progress !== 0

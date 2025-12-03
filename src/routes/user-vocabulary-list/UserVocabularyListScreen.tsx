@@ -13,8 +13,8 @@ import { ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import { VocabularyItem } from '../../constants/endpoints'
 import useKeyboard from '../../hooks/useKeyboard'
-import useReadUserVocabulary from '../../hooks/useReadUserVocabulary'
 import { useStorageCache } from '../../hooks/useStorage'
+import useUserVocabulary from '../../hooks/useUserVocabulary'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getSortedAndFilteredVocabularyItems, wordsDescription } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
@@ -44,7 +44,7 @@ type UserVocabularyListScreenProps = {
 
 const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps): ReactElement => {
   const storageCache = useStorageCache()
-  const vocabularyItems = useReadUserVocabulary()
+  const vocabularyItems = useUserVocabulary()
   const [searchString, setSearchString] = useState<string>('')
   const [editModeEnabled, setEditModeEnabled] = useState<boolean>(false)
   const [vocabularyItemToDelete, setVocabularyItemToDelete] = useState<VocabularyItem | null>(null)
