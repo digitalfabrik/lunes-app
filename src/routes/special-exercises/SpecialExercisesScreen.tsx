@@ -1,6 +1,6 @@
 import { CommonActions, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -20,7 +20,7 @@ type ExercisesScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
 }
 
-const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
+const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElement => {
   const { disciplineTitle, vocabularyItems } = route.params
 
   const handleNavigation = (item: Exercise): void => {
@@ -38,7 +38,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Eleme
     }
   }
 
-  const renderListItem = ({ item }: { item: Exercise }): JSX.Element | null => (
+  const renderListItem = ({ item }: { item: Exercise }): ReactElement | null => (
     <Container>
       <ListItem title={item.title} description={item.description} onPress={() => handleNavigation(item)} />
     </Container>

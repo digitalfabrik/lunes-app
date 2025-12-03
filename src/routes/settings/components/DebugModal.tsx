@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from 'react'
+import React, { useState, ReactElement } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -32,7 +32,7 @@ type DebugModalProps = {
   onClose: () => void
 }
 
-const DebugModal = (props: DebugModalProps): JSX.Element => {
+const DebugModal = (props: DebugModalProps): ReactElement => {
   const storageCache = useStorageCache()
   const { isCodeRequired, visible, onClose } = props
   const [inputText, setInputText] = useState<string>('')

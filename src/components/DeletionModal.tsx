@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { getLabels } from '../services/helpers'
@@ -16,7 +16,7 @@ const Explanation = styled(ContentSecondary)`
   text-align: center;
 `
 
-const DeletionModal = ({ isVisible, onConfirm, onClose }: DeletionModalProps): JSX.Element => {
+const DeletionModal = ({ isVisible, onConfirm, onClose }: DeletionModalProps): ReactElement => {
   const { confirmationQuestion, confirm, explanation } = getLabels().manageSelection.deleteModal
   return (
     <Modal

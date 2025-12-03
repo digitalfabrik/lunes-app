@@ -1,6 +1,6 @@
 import { CommonActions, RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState, type JSX } from 'react'
+import React, { useEffect, useState, ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -38,7 +38,7 @@ type ExercisesScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'StandardExercises'>
 }
 
-const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): JSX.Element => {
+const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElement => {
   const { discipline, disciplineTitle, disciplineId } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
@@ -100,7 +100,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): J
     }
   }
 
-  const renderListItem = ({ item, index }: { item: Exercise; index: number }): JSX.Element | null => (
+  const renderListItem = ({ item, index }: { item: Exercise; index: number }): ReactElement | null => (
     <Container>
       <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
