@@ -67,14 +67,14 @@ describe('UserVocabularyListScreen', () => {
     const editButton = getByText(getLabels().userVocabulary.list.edit)
     expect(editButton).toBeDefined()
 
-    await act(() => fireEvent.press(editButton))
+    await act(async () => fireEvent.press(editButton))
 
     const trashIcons = getAllByTestId('trash-icon')
     expect(trashIcons).toHaveLength(2)
 
-    await act(() => fireEvent.press(trashIcons[0]))
+    await act(async () => fireEvent.press(trashIcons[0]))
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
-    await act(() => fireEvent.press(confirmButton))
+    await act(async () => fireEvent.press(confirmButton))
 
     expect(storageCache.getItem('userVocabulary')).toEqual([userVocabularyItems[0]])
   })

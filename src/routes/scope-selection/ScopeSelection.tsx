@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, type JSX } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import DisciplineListItem from '../../components/DisciplineListItem'

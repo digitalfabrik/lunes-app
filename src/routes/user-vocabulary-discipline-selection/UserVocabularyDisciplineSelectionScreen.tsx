@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 

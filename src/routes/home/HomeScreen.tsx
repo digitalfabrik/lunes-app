@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 

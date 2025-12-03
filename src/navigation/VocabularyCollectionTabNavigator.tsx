@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import React from 'react'
+import React, { type JSX } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import theme from '../constants/theme'

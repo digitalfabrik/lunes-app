@@ -1,3 +1,4 @@
+import { act } from '@testing-library/react-native'
 import React from 'react'
 import { ReactTestInstance } from 'react-test-renderer'
 
@@ -42,7 +43,7 @@ describe('ImageCarousel', () => {
     // images which were not yet loaded don't have a size and are therefore only rendered as an empty View
     // swiping to the next image triggers loadImage and goNext, but we only care about loadImage
     // as the image is then rendered and accessible by role, even without swiping
-    swipeable.instance.loadImage(1) // load the second image
+    await act(async () => swipeable.instance.loadImage(1)) // load the second image
 
     const swipedDisplayedImages = getAllByTestId('image')
     expect(swipedDisplayedImages).toHaveLength(2)

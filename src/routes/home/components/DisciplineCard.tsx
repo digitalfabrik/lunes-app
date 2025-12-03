@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'

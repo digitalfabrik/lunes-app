@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { type JSX } from 'react'
 import styled from 'styled-components/native'
 
 import { AddIconWhite, BookIconBlack } from '../../assets/images'
