@@ -11,8 +11,9 @@ We use [typescript-eslint](https://github.com/typescript-eslint/typescript-eslin
 
 ### Hints
 
-- Preferr arrow functions
+- Prefer arrow functions
 - Use functional components
+- Name react hooks `useValue` if they return some value and `useLoadValue` if the return some value asynchronously
 
 ## Folder structure
 
