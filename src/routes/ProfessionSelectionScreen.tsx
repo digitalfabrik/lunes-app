@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -42,7 +42,7 @@ type ProfessionSelectionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'ProfessionSelection'>
 }
 
-const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): JSX.Element => {
+const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScreenProps): ReactElement => {
   const storageCache = useStorageCache()
   const { discipline, initialSelection } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
@@ -60,7 +60,7 @@ const ProfessionSelectionScreen = ({ route, navigation }: ProfessionSelectionScr
     }
   }
 
-  const renderListItem = ({ item }: { item: Discipline }): JSX.Element => {
+  const renderListItem = ({ item }: { item: Discipline }): ReactElement => {
     const isSelected = selectedProfessions?.includes(item.id)
     return (
       <DisciplineListItem

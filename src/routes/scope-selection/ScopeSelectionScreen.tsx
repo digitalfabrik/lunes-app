@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, ReactElement } from 'react'
 import { ScrollView } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -34,7 +34,7 @@ type IntroScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'ScopeSelection'>
 }
 
-const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): JSX.Element => {
+const ScopeSelectionScreen = ({ navigation, route }: IntroScreenProps): ReactElement => {
   const { initialSelection } = route.params
   const [selectedProfessions, setSelectedProfessions] = useStorage('selectedProfessions')
   const [queryTerm, setQueryTerm] = useState<string>('')

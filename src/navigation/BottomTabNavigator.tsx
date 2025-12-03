@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { isTablet } from 'react-native-device-info'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -25,7 +25,7 @@ import VocabularyCollectionTabNavigator from './VocabularyCollectionTabNavigator
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 
-const BottomTabNavigator = (): JSX.Element | null => {
+const BottomTabNavigator = (): ReactElement | null => {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -29,7 +29,7 @@ type AlternativeWordsSectionProps = {
   vocabularyItem: VocabularyItem
 }
 
-const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): JSX.Element | null =>
+const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): ReactElement | null =>
   vocabularyItem.alternatives.length > 0 ? (
     <Root>
       <CrystalBallIcon width={hp('3.5%')} height={hp('3.5%')} />

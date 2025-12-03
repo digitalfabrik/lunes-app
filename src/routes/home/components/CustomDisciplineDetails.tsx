@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -19,7 +19,7 @@ type CustomDisciplineDetailsProps = {
   navigateToDiscipline: (discipline: Discipline) => void
 }
 
-const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: CustomDisciplineDetailsProps): JSX.Element => (
+const CustomDisciplineDetails = ({ discipline, navigateToDiscipline }: CustomDisciplineDetailsProps): ReactElement => (
   <>
     <TextContainer>
       <NumberText>{discipline.numberOfChildren}</NumberText>

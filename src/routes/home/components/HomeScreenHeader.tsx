@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -40,7 +40,7 @@ type HomeScreenHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
 }
 
-const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): JSX.Element => (
+const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): ReactElement => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>

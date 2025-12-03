@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -34,7 +34,7 @@ type HomeScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Home'>
 }
 
-const HomeScreen = ({ navigation }: HomeScreenProps): JSX.Element => {
+const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
   const theme = useTheme()
   const [customDisciplines] = useStorage('customDisciplines')
   const hasNoCustomDisciplines = customDisciplines.length === 0

@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -44,7 +44,7 @@ type AddCustomDisciplineScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'AddCustomDiscipline'>
 }
 
-const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): JSX.Element => {
+const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): ReactElement => {
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [showQRCodeOverlay, setShowQRCodeOverlay] = useState<boolean>(false)

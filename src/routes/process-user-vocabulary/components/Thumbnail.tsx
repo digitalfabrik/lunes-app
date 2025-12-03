@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Image as RNImage } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -26,7 +26,7 @@ type ThumbnailProps = {
   deleteImage: () => void
 }
 
-const Thumbnail = ({ image, deleteImage }: ThumbnailProps): JSX.Element => (
+const Thumbnail = ({ image, deleteImage }: ThumbnailProps): ReactElement => (
   <Container>
     <Image source={{ uri: image }} />
     <CloseIcon onPress={deleteImage}>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -66,7 +66,7 @@ const SelectedProfessions = ({
   navigateToNextExercise,
   navigateToManageSelection,
   navigateToProfessionSelection,
-}: SelectedProfessionsProps): JSX.Element | null => {
+}: SelectedProfessionsProps): ReactElement | null => {
   const professions = useAllProfessions()
   const { disciplines } = getLabels().home
   const listRef = useRef<FlatList>(null)

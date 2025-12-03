@@ -37,7 +37,7 @@ export type ModalProps = {
   icon?: string | ReactElement
 }
 
-const Modal = (props: ModalProps): JSX.Element => {
+const Modal = (props: ModalProps): ReactElement => {
   const {
     visible,
     text,

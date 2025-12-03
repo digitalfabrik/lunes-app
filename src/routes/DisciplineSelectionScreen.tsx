@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -23,7 +23,7 @@ type DisciplineSelectionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'DisciplineSelection'>
 }
 
-const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenProps): JSX.Element => {
+const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScreenProps): ReactElement => {
   const { discipline } = route.params
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: discipline })
 
@@ -43,7 +43,7 @@ const DisciplineSelectionScreen = ({ route, navigation }: DisciplineSelectionScr
     }
   }
 
-  const renderListItem = ({ item }: { item: Discipline }): JSX.Element => (
+  const renderListItem = ({ item }: { item: Discipline }): ReactElement => (
     <DisciplineListItem item={item} onPress={() => handleNavigation(item)} hasBadge showProgress />
   )
 
