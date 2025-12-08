@@ -1,6 +1,6 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ReactElement } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -59,7 +59,7 @@ const ExerciseHeader = ({
   labelOverride,
   isCloseButton = true,
   exerciseKey,
-}: ExerciseHeaderProps): JSX.Element => {
+}: ExerciseHeaderProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false)
   const theme = useTheme()

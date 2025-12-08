@@ -31,7 +31,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
-  const renderItem = ({ item }: { item: Favorite }): JSX.Element => (
+  const renderItem = ({ item }: { item: Favorite }): ReactElement => (
     <FavoriteItem favorite={item} onPress={navigateToDetail} />
   )
 

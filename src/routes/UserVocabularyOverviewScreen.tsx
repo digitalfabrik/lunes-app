@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { AddIconWhite, BookIconBlack } from '../../assets/images'
@@ -26,7 +26,7 @@ type UserVocabularyOverviewScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyOverview'>
 }
 
-const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScreenProps): JSX.Element => {
+const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScreenProps): ReactElement => {
   const { list, create, practice } = getLabels().userVocabulary.overview
   return (
     <RouteWrapper>

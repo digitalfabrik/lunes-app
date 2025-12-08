@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import DisciplineListItem from '../../components/DisciplineListItem'
@@ -43,7 +43,7 @@ const EmptyListIndicator = styled.Text`
   text-align: center;
 `
 
-const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): JSX.Element => (
+const highlightText = (textArray: [string] | [string, string, string], disabled: boolean): ReactElement => (
   <HighlightContainer disabled={disabled}>
     <ContentTextLight>{textArray[0]}</ContentTextLight>
     <ContentTextBold>{textArray[1]}</ContentTextBold>
@@ -55,7 +55,7 @@ type FilteredProfessionListProps = {
   queryTerm: string
 }
 
-const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): JSX.Element => {
+const FilteredProfessionList = ({ queryTerm }: FilteredProfessionListProps): ReactElement => {
   const storageCache = useStorageCache()
   const [selectedProfessions] = useStorage('selectedProfessions')
 
@@ -98,7 +98,7 @@ type ScopeSelectionProps = {
   navigateToDiscipline: (item: Discipline) => void
 }
 
-const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: ScopeSelectionProps): JSX.Element => {
+const ScopeSelection = ({ queryTerm, setQueryTerm, navigateToDiscipline }: ScopeSelectionProps): ReactElement => {
   const { data: disciplines, error, loading, refresh } = useLoadDisciplines({ parent: null })
   const theme = useTheme()
 

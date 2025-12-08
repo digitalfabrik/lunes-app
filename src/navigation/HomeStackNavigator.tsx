@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useTheme } from 'styled-components/native'
 
 import DisciplineSelectionScreen from '../routes/DisciplineSelectionScreen'
@@ -16,7 +16,7 @@ import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
-const HomeStackNavigator = (): JSX.Element | null => {
+const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(useTabletHeaderHeight())
   const { manageSelection, overview } = getLabels().general.header
   const theme = useTheme()

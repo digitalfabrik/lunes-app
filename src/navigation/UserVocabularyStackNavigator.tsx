@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components/native'
 
@@ -16,7 +16,7 @@ import screenOptions from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
-const UserVocabularyStackNavigator = (): JSX.Element | null => {
+const UserVocabularyStackNavigator = (): ReactElement | null => {
   const headerHeight = useTabletHeaderHeight(hp('7.5%'))
   const options = screenOptions(headerHeight)
   const back = getLabels().general.back

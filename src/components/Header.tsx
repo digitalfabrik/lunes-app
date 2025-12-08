@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -48,7 +48,7 @@ const SmileIconStyle = styled.Pressable`
   top: ${hp('7.5%')}px;
 `
 
-const Header = (): JSX.Element => (
+const Header = (): ReactElement => (
   <Wrapper testID='header'>
     <HeaderStyle>
       <SquareIconStyle>

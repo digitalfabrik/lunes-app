@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ReactElement } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -24,7 +24,7 @@ const LoadingContainer = styled(View)`
   height: 0px;
 `
 
-const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): JSX.Element => {
+const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): ReactElement => {
   const { data, loading, error } = useLoadDiscipline(identifier)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 

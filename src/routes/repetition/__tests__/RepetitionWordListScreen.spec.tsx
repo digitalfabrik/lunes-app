@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react-native'
+import { fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import React from 'react'
 
 import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
@@ -36,7 +36,7 @@ describe('RepetitionWordListScreen', () => {
 
   it('should correctly remove words', async () => {
     const storageCache = await dummyStorageCache()
-    const { getAllByTestId, getByText, queryByText } = renderWithStorageCache(
+    const { getAllByTestId, getByText } = renderWithStorageCache(
       storageCache,
       <RepetitionWordListScreen navigation={navigation} />,
     )
@@ -55,7 +55,7 @@ describe('RepetitionWordListScreen', () => {
     expect(confirmButton).toBeDefined()
     fireEvent.press(confirmButton)
 
-    await waitFor(() => expect(queryByText(wordNodeCards[0].word.word)).toBeNull())
+    await waitForElementToBeRemoved(() => getByText(wordNodeCards[0].word.word))
 
     const newDeleteButtons = getAllByTestId('delete-button')
     expect(newDeleteButtons).toHaveLength(1)
