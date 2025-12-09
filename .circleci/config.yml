@@ -522,8 +522,10 @@ jobs:
             - restore_yarn_tools_cache
             - run:
                 command: |
+                    echo "Creating release ${NEW_VERSION_NAME}..."
                     RELEASE='$(yarn app-toolbelt v0 release create all ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME})'
-                    echo "export RELEASE_ID=$(echo ${RELEASE} | jq .id)" >> ${BASH_ENV}
+                    echo "${RELEASE}"
+                    echo "export RELEASE_ID=$(echo "${RELEASE}" | jq .id)" >> ${BASH_ENV}
                 name: Create github release
                 working_directory: tools
             - run:
