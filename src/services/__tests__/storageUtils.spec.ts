@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
-import VocabularyItem, { UserVocabularyItem } from '../../models/VocabularyItem'
+import VocabularyItem, { UserVocabularyItem, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockJobs } from '../../testing/mockJob'
@@ -205,10 +205,10 @@ describe('storageUtils', () => {
       const storageCache = await loadStorageCache()
       await expect(AsyncStorage.getItem(FAVORITES_KEY_VERSION_0)).resolves.toBeNull()
       const expectedFavorites: Favorite[] = [
-        { id: 42, type: 'lunes-standard' },
+        { id: 42, type: VocabularyItemTypes.Standard },
         {
           id: 84,
-          type: 'lunes-standard',
+          type: VocabularyItemTypes.Standard,
         },
       ]
       expect(storageCache.getItem('favorites')).toEqual(expectedFavorites)
@@ -242,7 +242,7 @@ describe('storageUtils', () => {
         const storageCache = await loadStorageCache()
         const expectedUserVocabulary: UserVocabularyItem[] = [
           {
-            id: { index: 1, type: 'user-created' },
+            id: { index: 1, type: VocabularyItemTypes.UserCreated },
             word: 'Testwort',
             article: { id: 3, value: 'das' },
             images: ['image-1'],
@@ -250,7 +250,7 @@ describe('storageUtils', () => {
             alternatives: [],
           },
           {
-            id: { index: 2, type: 'user-created' },
+            id: { index: 2, type: VocabularyItemTypes.UserCreated },
             word: 'Hund',
             article: { id: 1, value: 'der' },
             images: ['image-2'],
@@ -274,7 +274,7 @@ describe('storageUtils', () => {
                 images: [{ id: 0, image: 'image-1' }],
                 audio: null,
                 alternatives: [],
-                type: 'user-created',
+                type: VocabularyItemTypes.UserCreated,
               },
               section: 0,
               inThisSectionSince: new Date('2025-10-13'),
@@ -287,7 +287,7 @@ describe('storageUtils', () => {
                 images: [{ id: 1, image: 'image-2' }],
                 audio: null,
                 alternatives: [],
-                type: 'lunes-standard',
+                type: VocabularyItemTypes.Standard,
               },
               section: 0,
               inThisSectionSince: new Date('2025-10-13'),
@@ -300,7 +300,7 @@ describe('storageUtils', () => {
                 images: [{ id: 2, image: 'image-3' }],
                 audio: null,
                 alternatives: [],
-                type: 'lunes-protected',
+                type: VocabularyItemTypes.Protected,
                 apiKey: 'abc123',
               },
               section: 0,
@@ -313,7 +313,7 @@ describe('storageUtils', () => {
         const expectedWordNodeCards: WordNodeCard[] = [
           {
             word: {
-              id: { type: 'user-created', index: 2 },
+              id: { type: VocabularyItemTypes.UserCreated, index: 2 },
               word: 'Hund',
               article: { id: 1, value: 'der' },
               images: ['image-1'],
@@ -325,7 +325,7 @@ describe('storageUtils', () => {
           },
           {
             word: {
-              id: { type: 'lunes-standard', id: 3 },
+              id: { type: VocabularyItemTypes.Standard, id: 3 },
               word: 'lunes standard',
               article: { id: 1, value: 'der' },
               images: ['image-2'],
@@ -337,7 +337,7 @@ describe('storageUtils', () => {
           },
           {
             word: {
-              id: { type: 'lunes-protected', protectedId: 4, apiKey: 'abc123' },
+              id: { type: VocabularyItemTypes.Protected, protectedId: 4, apiKey: 'abc123' },
               word: 'lunes protected',
               article: { id: 1, value: 'der' },
               images: ['image-3'],
@@ -360,18 +360,18 @@ describe('storageUtils', () => {
         await AsyncStorage.setItem(
           'favorites-2',
           JSON.stringify([
-            { id: 1, vocabularyItemType: 'lunes-standard' },
-            { id: 2, vocabularyItemType: 'user-created' },
-            { id: 3, vocabularyItemType: 'lunes-protected', apiKey: 'abc123' },
-            { id: 4, vocabularyItemType: 'lunes-protected' },
+            { id: 1, vocabularyItemType: VocabularyItemTypes.Standard },
+            { id: 2, vocabularyItemType: VocabularyItemTypes.UserCreated },
+            { id: 3, vocabularyItemType: VocabularyItemTypes.Protected, apiKey: 'abc123' },
+            { id: 4, vocabularyItemType: VocabularyItemTypes.Protected },
           ]),
         )
 
         const storageCache = await loadStorageCache()
         const expectedFavorites: Favorite[] = [
-          { id: 1, type: 'lunes-standard' },
-          { index: 2, type: 'user-created' },
-          { protectedId: 3, apiKey: 'abc123', type: 'lunes-protected' },
+          { id: 1, type: VocabularyItemTypes.Standard },
+          { index: 2, type: VocabularyItemTypes.UserCreated },
+          { protectedId: 3, apiKey: 'abc123', type: VocabularyItemTypes.Protected },
         ]
         expect(storageCache.getItem('favorites')).toEqual(expectedFavorites)
       })

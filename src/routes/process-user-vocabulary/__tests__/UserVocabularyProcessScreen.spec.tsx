@@ -4,7 +4,7 @@ import React from 'react'
 import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
 import { ARTICLES } from '../../../constants/data'
-import { UserVocabularyItem } from '../../../models/VocabularyItem'
+import { UserVocabularyItem, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -37,7 +37,7 @@ Date.now = jest.fn(() => 2000)
 
 describe('UserVocabularyProcessScreen', () => {
   const itemToEdit: UserVocabularyItem = {
-    id: { index: 2, type: 'user-created' },
+    id: { index: 2, type: VocabularyItemTypes.UserCreated },
     word: 'Auto',
     article: ARTICLES[3],
     images: [

@@ -6,6 +6,7 @@ import React from 'react'
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
 
 import { ExerciseKeys } from '../../constants/data'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
 import render from '../../testing/render'
@@ -26,7 +27,7 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         closeExerciseAction={goBack}
-        feedbackTarget={{ type: 'word', wordId: { type: 'lunes-standard', id: 1 } }}
+        feedbackTarget={{ type: 'word', wordId: { type: VocabularyItemTypes.Standard, id: 1 } }}
         exerciseKey={ExerciseKeys.vocabularyList}
       />,
     )

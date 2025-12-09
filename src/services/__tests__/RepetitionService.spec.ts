@@ -1,5 +1,5 @@
 import { ARTICLES } from '../../constants/data'
-import VocabularyItem from '../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import {
   daysToStayInASection,
@@ -416,7 +416,7 @@ describe('RepetitionService', () => {
     it('should not move to next section, if word is not in long term exercise data', async () => {
       await repetitionService.setWordNodeCards(testData)
       const notInLongTermExerciseWord: VocabularyItem = {
-        id: { id: 99, type: 'lunes-standard' },
+        id: { id: 99, type: VocabularyItemTypes.Standard },
         word: 'i am unknown',
         article: ARTICLES[1],
         audio: '',

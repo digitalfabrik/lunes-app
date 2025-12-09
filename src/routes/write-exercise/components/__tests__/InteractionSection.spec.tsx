@@ -2,7 +2,7 @@ import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { ARTICLES, SIMPLE_RESULTS } from '../../../../constants/data'
-import VocabularyItem from '../../../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemTypes } from '../../../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
@@ -33,7 +33,7 @@ describe('InteractionSection', () => {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
-    id: { id: 0, type: 'lunes-standard' },
+    id: { id: 0, type: VocabularyItemTypes.Standard },
     images: [],
     word: 'kontaktlose Spannungsprüfer',
   }

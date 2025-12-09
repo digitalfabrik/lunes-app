@@ -8,6 +8,7 @@ import VocabularyItem, {
   areVocabularyItemIdsEqual,
   UserVocabularyId,
   UserVocabularyItem,
+  VocabularyItemTypes,
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
@@ -87,7 +88,7 @@ export const migrate0To1 = async (): Promise<void> => {
     JSON.stringify(
       parsedFavorites.map((item: number) => ({
         id: item,
-        vocabularyItemType: 'lunes-standard',
+        vocabularyItemType: VocabularyItemTypes.Standard,
       })),
     ),
   )
@@ -280,7 +281,7 @@ export const isFavorite = (favorites: readonly Favorite[], favorite: Favorite): 
 export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<UserVocabularyId> => {
   const nextId = storageCache.getItem('nextUserVocabularyId')
   await storageCache.setItem('nextUserVocabularyId', nextId + 1)
-  return { type: 'user-created', index: nextId }
+  return { type: VocabularyItemTypes.UserCreated, index: nextId }
 }
 
 export const addUserVocabularyItem = async (

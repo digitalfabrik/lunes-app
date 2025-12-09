@@ -3,7 +3,12 @@ import { NetworkError } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
-import { ProtectedVocabularyId, StandardVocabularyId, StandardVocabularyItem } from '../models/VocabularyItem'
+import {
+  ProtectedVocabularyId,
+  StandardVocabularyId,
+  StandardVocabularyItem,
+  VocabularyItemTypes,
+} from '../models/VocabularyItem'
 import Sponsor from '../models/sponsor'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
@@ -132,7 +137,7 @@ type WordResponse = {
 }
 
 const transformWordResponse = ({ id, word, article, images, audio }: WordResponse): StandardVocabularyItem => ({
-  id: { type: 'lunes-standard', id },
+  id: { type: VocabularyItemTypes.Standard, id },
   word,
   article: CMSArticleToArticle[article],
   images,
@@ -148,7 +153,7 @@ export const getWords = async (): Promise<StandardVocabularyItem[]> => {
 export const getWordById = async (
   id: StandardVocabularyId | ProtectedVocabularyId,
 ): Promise<StandardVocabularyItem> => {
-  if (id.type === 'lunes-protected') {
+  if (id.type === VocabularyItemTypes.Protected) {
     // TODO: Add support for protected vocabulary back to the cms
     return Promise.reject(new Error(NetworkError))
   }

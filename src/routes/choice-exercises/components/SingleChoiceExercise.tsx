@@ -19,7 +19,7 @@ import {
 } from '../../../constants/data'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
-import VocabularyItem, { AlternativeWord } from '../../../models/VocabularyItem'
+import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
@@ -155,7 +155,9 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={count}
         feedbackTarget={
-          vocabularyItem.id.type === 'lunes-standard' ? { type: 'word', wordId: vocabularyItem.id } : undefined
+          vocabularyItem.id.type === VocabularyItemTypes.Standard
+            ? { type: 'word', wordId: vocabularyItem.id }
+            : undefined
         }
         exerciseKey={exerciseKey}
       />

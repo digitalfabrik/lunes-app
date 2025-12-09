@@ -1,5 +1,5 @@
 import { Favorite } from '../constants/data'
-import VocabularyItem, { areVocabularyItemIdsEqual } from '../models/VocabularyItem'
+import VocabularyItem, { areVocabularyItemIdsEqual, VocabularyItemTypes } from '../models/VocabularyItem'
 import { getWordById } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
 import { removeFavorite } from '../services/storageUtils'
@@ -8,7 +8,7 @@ import { useStorageCache } from './useStorage'
 
 type LoadFavoriteProps = { storageCache: StorageCache; favorite: Favorite }
 export const loadFavorite = async ({ storageCache, favorite }: LoadFavoriteProps): Promise<VocabularyItem | null> => {
-  if (favorite.type === 'user-created') {
+  if (favorite.type === VocabularyItemTypes.UserCreated) {
     const userVocabulary = storageCache.getItem('userVocabulary')
     const userCreatedFavorite = userVocabulary.find(item => areVocabularyItemIdsEqual(item.id, favorite))
     if (!userCreatedFavorite) {

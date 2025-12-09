@@ -1,22 +1,28 @@
 import { Article } from '../constants/data'
 
+export const VocabularyItemTypes = {
+  Standard: 'lunes-standard',
+  UserCreated: 'user-created',
+  Protected: 'lunes-protected',
+} as const
+
 export type AlternativeWord = {
   word: string
   article: Article
 }
 
 export type StandardVocabularyId = {
-  type: 'lunes-standard'
+  type: typeof VocabularyItemTypes.Standard
   id: number
 }
 
 export type UserVocabularyId = {
-  type: 'user-created'
+  type: typeof VocabularyItemTypes.UserCreated
   index: number
 }
 
 export type ProtectedVocabularyId = {
-  type: 'lunes-protected'
+  type: typeof VocabularyItemTypes.Protected
   protectedId: number
   apiKey: string
 }
@@ -41,7 +47,7 @@ export type UserVocabularyItem = {
 } & VocabularyItem
 
 export const isUserVocabularyItem = (vocabularyItem: VocabularyItem): vocabularyItem is UserVocabularyItem =>
-  vocabularyItem.id.type === 'user-created'
+  vocabularyItem.id.type === VocabularyItemTypes.UserCreated
 
 export const areVocabularyItemIdsEqual = (
   vocabularyItemId1: VocabularyItemId,

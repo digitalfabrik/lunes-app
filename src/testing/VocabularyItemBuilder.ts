@@ -1,9 +1,9 @@
 import { ARTICLES } from '../constants/data'
-import { StandardVocabularyItem, UserVocabularyItem } from '../models/VocabularyItem'
+import { StandardVocabularyItem, UserVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
 
 const vocabularyItems: StandardVocabularyItem[] = [
   {
-    id: { id: 1, type: 'lunes-standard' },
+    id: { id: 1, type: VocabularyItemTypes.Standard },
     word: 'Spachtel',
     article: ARTICLES[1],
     images: ['image'],
@@ -20,7 +20,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     ],
   },
   {
-    id: { id: 2, type: 'lunes-standard' },
+    id: { id: 2, type: VocabularyItemTypes.Standard },
     word: 'Auto',
     article: ARTICLES[3],
     images: ['image'],
@@ -28,7 +28,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     alternatives: [],
   },
   {
-    id: { id: 3, type: 'lunes-standard' },
+    id: { id: 3, type: VocabularyItemTypes.Standard },
     word: 'Hose',
     article: ARTICLES[2],
     audio: '',
@@ -36,7 +36,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     alternatives: [],
   },
   {
-    id: { id: 4, type: 'lunes-standard' },
+    id: { id: 4, type: VocabularyItemTypes.Standard },
     word: 'Helm',
     article: ARTICLES[1],
     audio: '',
@@ -44,7 +44,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     alternatives: [],
   },
   {
-    id: { id: 5, type: 'lunes-standard' },
+    id: { id: 5, type: VocabularyItemTypes.Standard },
     word: 'Abhänger',
     article: ARTICLES[3],
     audio: '',
@@ -57,7 +57,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     ],
   },
   {
-    id: { id: 6, type: 'lunes-standard' },
+    id: { id: 6, type: VocabularyItemTypes.Standard },
     word: 'Ölkanne',
     article: ARTICLES[1],
     audio: '',
@@ -70,7 +70,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     ],
   },
   {
-    id: { id: 7, type: 'lunes-standard' },
+    id: { id: 7, type: VocabularyItemTypes.Standard },
     word: 'Riffeldübel',
     article: ARTICLES[1],
     audio: '',
@@ -83,7 +83,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     ],
   },
   {
-    id: { id: 8, type: 'lunes-standard' },
+    id: { id: 8, type: VocabularyItemTypes.Standard },
     word: 'Akkuschrauber',
     article: ARTICLES[1],
     audio: '',
@@ -91,7 +91,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     alternatives: [],
   },
   {
-    id: { id: 9, type: 'lunes-standard' },
+    id: { id: 9, type: VocabularyItemTypes.Standard },
     word: 'Oberarm',
     article: ARTICLES[1],
     audio: '',
@@ -99,7 +99,7 @@ const vocabularyItems: StandardVocabularyItem[] = [
     alternatives: [],
   },
   {
-    id: { id: 10, type: 'lunes-standard' },
+    id: { id: 10, type: VocabularyItemTypes.Standard },
     word: 'Untergrund',
     article: ARTICLES[1],
     audio: '',
@@ -124,7 +124,7 @@ class VocabularyItemBuilder {
   }
 
   buildUserVocabulary(): Array<UserVocabularyItem> {
-    return this.build().map(item => ({ ...item, id: { index: item.id.id, type: 'user-created' } }))
+    return this.build().map(item => ({ ...item, id: { index: item.id.id, type: VocabularyItemTypes.UserCreated } }))
   }
 }
 

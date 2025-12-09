@@ -12,6 +12,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import { useStorageCache } from '../../hooks/useStorage'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
@@ -94,7 +95,7 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
           feedbackTarget={
-            current.vocabularyItem.id.type === 'lunes-standard'
+            current.vocabularyItem.id.type === VocabularyItemTypes.Standard
               ? { type: 'word', wordId: current.vocabularyItem.id }
               : undefined
           }
