@@ -57,7 +57,7 @@ const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps)
           }
           data={repetitionVocabulary}
           showsVerticalScrollIndicator={false}
-          keyExtractor={({ word }) => word.id.toString()}
+          keyExtractor={({ word }) => JSON.stringify(word.id)}
           renderItem={({ item }) => (
             <RepetitionListItem
               vocabularyItem={item.word}

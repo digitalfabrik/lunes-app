@@ -71,6 +71,7 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
                   navigateToDetail={navigateToDetail}
                 />
               )}
+              keyExtractor={({ id }) => JSON.stringify(id)}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={<ListEmpty label={getLabels().general.noResults} />}
             />
