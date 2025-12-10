@@ -107,6 +107,7 @@ const UserVocabularyListScreen = ({ navigation }: UserVocabularyListScreenProps)
             </>
           }
           data={sortedAndFilteredVocabularyItems}
+          keyExtractor={({ id }) => JSON.stringify(id)}
           renderItem={({ item }) => (
             <ListItem
               vocabularyItem={item}
