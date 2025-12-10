@@ -9,7 +9,7 @@ import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { Subheading } from '../../components/text/Subheading'
 import useLoadSponsors from '../../hooks/useLoadSponsors'
-import Sponsor from '../../models/sponsor'
+import Sponsor from '../../models/Sponsor'
 import { getLabels } from '../../services/helpers'
 import { openExternalUrl } from '../../services/url'
 

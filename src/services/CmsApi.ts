@@ -2,6 +2,7 @@ import { Article, ARTICLES } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
+import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
 import {
   ProtectedVocabularyId,
@@ -9,7 +10,6 @@ import {
   StandardVocabularyItem,
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
-import Sponsor from '../models/sponsor'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 const Endpoints = {

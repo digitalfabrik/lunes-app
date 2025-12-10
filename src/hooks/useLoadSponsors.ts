@@ -1,4 +1,4 @@
-import Sponsor from '../models/sponsor'
+import Sponsor from '../models/Sponsor'
 import { getSponsors } from '../services/CmsApi'
 import { Return, useLoadAsync } from './useLoadAsync'
 
