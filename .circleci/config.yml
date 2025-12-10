@@ -37,7 +37,7 @@ commands:
                 default: lunes-app-notifications
                 type: string
             failure_mentions:
-                default: '@david.venhoff @sascha.beele'
+                default: '@david.venhoff @leandra.hahn'
                 type: string
             only_for_branch:
                 default: main
