@@ -5,7 +5,7 @@ import React, { useEffect, ReactElement } from 'react'
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
-import { ExerciseKeys, FeedbackType } from '../constants/data'
+import { ExerciseKeys } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -19,12 +19,14 @@ type VocabularyListScreenProps = {
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): ReactElement => {
   const { contentType, closeExerciseAction } = route.params
-  const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
+  const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
   useEffect(() => {
-    setExerciseProgress(storageCache, disciplineId, ExerciseKeys.vocabularyList, 1).catch(reportError)
-  }, [disciplineId, storageCache])
+    if (unitId !== null) {
+      setExerciseProgress(storageCache, unitId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+    }
+  }, [unitId, storageCache])
 
   const onItemPress = (index: number) =>
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: index })
@@ -35,8 +37,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         navigation={navigation}
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
-        feedbackType={FeedbackType.leaf_discipline}
-        feedbackForId={disciplineId}
+        feedbackTarget={unitId !== null ? { type: 'unit', unitId } : undefined}
         exerciseKey={ExerciseKeys.vocabularyList}
       />
       <VocabularyList

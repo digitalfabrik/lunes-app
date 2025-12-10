@@ -10,10 +10,10 @@ describe('ListItem', () => {
   const onPress = jest.fn()
   const description = 'Wörter'
   const icon = 'https://example.com'
-  const title = 'Discipline Item title'
+  const title = 'Item title'
   const badge = '12'
 
-  const renderDisciplineItem = (disabled = false, arrowDisabled = false): RenderAPI =>
+  const renderListItem = (disabled = false, arrowDisabled = false): RenderAPI =>
     render(
       <ListItem
         onPress={onPress}
@@ -27,14 +27,14 @@ describe('ListItem', () => {
     )
 
   it('should render texts', () => {
-    const { getByText } = renderDisciplineItem()
+    const { getByText } = renderListItem()
     expect(getByText(title)).toBeDefined()
     expect(getByText(description)).toBeDefined()
     expect(getByText(badge)).toBeDefined()
   })
 
   it('should handle press', async () => {
-    const { getByTestId, getByText } = renderDisciplineItem()
+    const { getByTestId, getByText } = renderListItem()
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
@@ -54,14 +54,14 @@ describe('ListItem', () => {
   })
 
   it('should show arrow disabled', async () => {
-    const { getByTestId } = renderDisciplineItem(false, true)
+    const { getByTestId } = renderListItem(false, true)
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.disabled)
   })
 
   it('should handle long press', async () => {
-    const { getByTestId, getByText } = renderDisciplineItem()
+    const { getByTestId, getByText } = renderListItem()
     const arrowIcon = getByTestId('arrow')
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'longPress')
@@ -79,7 +79,7 @@ describe('ListItem', () => {
   })
 
   it('should not call on press callback if scrolling', async () => {
-    const { getByTestId } = renderDisciplineItem()
+    const { getByTestId } = renderListItem()
     const arrowIcon = getByTestId('arrow')
 
     expect(arrowIcon.props.fill).toBe(COLORS.primary)
@@ -92,12 +92,12 @@ describe('ListItem', () => {
   })
 
   it('should have correct background color', () => {
-    const { getByTestId } = renderDisciplineItem()
+    const { getByTestId } = renderListItem()
     expect(getByTestId('list-item')).toHaveStyle({ backgroundColor: COLORS.backgroundAccent })
   })
 
   it('should handle disable correctly', () => {
-    const { getByTestId, getByText } = renderDisciplineItem(true)
+    const { getByTestId, getByText } = renderListItem(true)
     expect(getByTestId('list-item')).toHaveStyle({ backgroundColor: COLORS.disabled })
     fireEvent.press(getByText(title))
     expect(onPress).not.toHaveBeenCalled()

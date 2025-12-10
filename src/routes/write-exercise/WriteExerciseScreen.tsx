@@ -9,16 +9,10 @@ import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
-import {
-  BUTTONS_THEME,
-  ExerciseKeys,
-  FeedbackType,
-  numberOfMaxRetries,
-  SIMPLE_RESULTS,
-  SimpleResult,
-} from '../../constants/data'
+import { BUTTONS_THEME, ExerciseKeys, numberOfMaxRetries, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import useKeyboard from '../../hooks/useKeyboard'
 import { useStorageCache } from '../../hooks/useStorage'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
 import InteractionSection from './components/InteractionSection'
@@ -100,8 +94,11 @@ const WriteExerciseScreen = ({ route, navigation }: WriteExerciseScreenProps): R
           currentWord={currentIndex}
           numberOfWords={vocabularyItems.length}
           closeExerciseAction={closeExerciseAction}
-          feedbackType={FeedbackType.vocabularyItem}
-          feedbackForId={vocabularyItems[currentIndex].id}
+          feedbackTarget={
+            current.vocabularyItem.id.type === VocabularyItemTypes.Standard
+              ? { type: 'word', wordId: current.vocabularyItem.id }
+              : undefined
+          }
           exerciseKey={ExerciseKeys.writeExercise}
         />
 

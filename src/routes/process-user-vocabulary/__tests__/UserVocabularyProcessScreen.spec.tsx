@@ -3,12 +3,11 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
-import { ARTICLES, VOCABULARY_ITEM_TYPES } from '../../../constants/data'
-import { VocabularyItem } from '../../../constants/endpoints'
+import { ARTICLES } from '../../../constants/data'
+import { UserVocabularyItem, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
-import { getUserVocabularyItems } from '../../../services/storageUtils'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render, { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
@@ -37,20 +36,19 @@ jest.mock('react-native-vision-camera', () => ({
 Date.now = jest.fn(() => 2000)
 
 describe('UserVocabularyProcessScreen', () => {
-  const itemToEdit = {
-    id: 2,
-    type: VOCABULARY_ITEM_TYPES.userCreated,
+  const itemToEdit: UserVocabularyItem = {
+    id: { index: 2, type: VocabularyItemTypes.UserCreated },
     word: 'Auto',
     article: ARTICLES[3],
     images: [
-      { id: 0, image: `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg` },
-      { id: 1, image: `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg` },
+      `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg`,
+      `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg`,
     ],
     audio: `file:///${DocumentDirectoryPath}/audio-2.m4a`,
     alternatives: [],
   }
   const navigation = createNavigationMock<'UserVocabularyProcess'>()
-  const getRoute = (itemToEdit?: VocabularyItem): RouteProp<RoutesParams, 'UserVocabularyProcess'> => ({
+  const getRoute = (itemToEdit?: UserVocabularyItem): RouteProp<RoutesParams, 'UserVocabularyProcess'> => ({
     key: 'key1',
     name: 'UserVocabularyProcess',
     params: {
@@ -129,7 +127,7 @@ describe('UserVocabularyProcessScreen', () => {
 
       const shouldBe = { ...itemToEdit, word: 'new-word' }
       await waitFor(async () => {
-        const userVocabulary = getUserVocabularyItems(storageCache.getItem('userVocabulary'))
+        const userVocabulary = storageCache.getItem('userVocabulary')
         expect(userVocabulary).toEqual([shouldBe])
       })
     })

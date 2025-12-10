@@ -1,8 +1,8 @@
 import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { ARTICLES, VOCABULARY_ITEM_TYPES, SIMPLE_RESULTS } from '../../../../constants/data'
-import { VocabularyItem } from '../../../../constants/endpoints'
+import { ARTICLES, SIMPLE_RESULTS } from '../../../../constants/data'
+import VocabularyItem, { VocabularyItemTypes } from '../../../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { getLabels } from '../../../../services/helpers'
 import VocabularyItemBuilder from '../../../../testing/VocabularyItemBuilder'
@@ -33,8 +33,7 @@ describe('InteractionSection', () => {
     alternatives: [],
     article: ARTICLES[1],
     audio: 'https://example.com/my-audio',
-    id: 0,
-    type: VOCABULARY_ITEM_TYPES.lunesStandard,
+    id: { id: 0, type: VocabularyItemTypes.Standard },
     images: [],
     word: 'kontaktlose Spannungsprüfer',
   }
