@@ -17,9 +17,9 @@ import {
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../../constants/data'
-import { AlternativeWord, VocabularyItem } from '../../../constants/endpoints'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
+import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
@@ -155,7 +155,9 @@ const ChoiceExerciseScreen = ({
         currentWord={currentWord}
         numberOfWords={count}
         feedbackTarget={
-          vocabularyItem.type === 'user-created' ? undefined : { type: 'word', wordId: vocabularyItem.id }
+          vocabularyItem.id.type === VocabularyItemTypes.Standard
+            ? { type: 'word', wordId: vocabularyItem.id }
+            : undefined
         }
         exerciseKey={exerciseKey}
       />

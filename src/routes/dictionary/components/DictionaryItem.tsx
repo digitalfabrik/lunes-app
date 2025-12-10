@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 
 import VocabularyListItem from '../../../components/VocabularyListItem'
 import { ContentSecondary } from '../../../components/text/Content'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
 
 const AlternativesContainer = styled.View`
@@ -22,7 +22,7 @@ type DictionaryItemProps = {
 
 const DictionaryItem = ({ vocabularyItem, navigateToDetail, showAlternatives }: DictionaryItemProps): ReactElement => (
   <VocabularyListItem
-    key={JSON.stringify({ id: vocabularyItem.id, type: vocabularyItem.type })}
+    key={JSON.stringify(vocabularyItem.id)}
     vocabularyItem={vocabularyItem}
     onPress={() => navigateToDetail(vocabularyItem)}>
     <>

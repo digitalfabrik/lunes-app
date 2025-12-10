@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { VocabularyItem } from '../constants/endpoints'
+import VocabularyItem from '../models/VocabularyItem'
 import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'

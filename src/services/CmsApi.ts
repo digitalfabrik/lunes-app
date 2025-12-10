@@ -1,9 +1,15 @@
 import { Article, ARTICLES } from '../constants/data'
-import { NetworkError, VocabularyItem } from '../constants/endpoints'
+import { NetworkError } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
+import {
+  ProtectedVocabularyId,
+  StandardVocabularyId,
+  StandardVocabularyItem,
+  VocabularyItemTypes,
+} from '../models/VocabularyItem'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 const Endpoints = {
@@ -13,7 +19,7 @@ const Endpoints = {
   unitsOfJob: (id: StandardJobId) => `jobs/${id.id}/units`,
   sponsors: 'sponsors',
   words: 'words',
-  word: (id: number) => `words/${id}`,
+  word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
 }
 
@@ -31,7 +37,7 @@ const transformFeedbackToPostFeedback = ({ comment, target }: Feedback): PostFee
     case 'unit':
       return { comment, content_type: target.type, object_id: target.unitId.id }
     case 'word':
-      return { comment, content_type: target.type, object_id: target.wordId }
+      return { comment, content_type: target.type, object_id: target.wordId.id }
   }
 }
 
@@ -130,27 +136,32 @@ type WordResponse = {
   audio: string
 }
 
-const transformWordResponse = ({ id, word, article, images, audio }: WordResponse): VocabularyItem => ({
-  id,
+const transformWordResponse = ({ id, word, article, images, audio }: WordResponse): StandardVocabularyItem => ({
+  id: { type: VocabularyItemTypes.Standard, id },
   word,
   article: CMSArticleToArticle[article],
   images,
   audio,
-  type: 'lunes-standard',
   alternatives: [],
 })
 
-export const getWords = async (): Promise<VocabularyItem[]> => {
+export const getWords = async (): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
   return response.map(transformWordResponse)
 }
 
-export const getWordById = async (id: number): Promise<VocabularyItem> => {
+export const getWordById = async (
+  id: StandardVocabularyId | ProtectedVocabularyId,
+): Promise<StandardVocabularyItem> => {
+  if (id.type === VocabularyItemTypes.Protected) {
+    // TODO: Add support for protected vocabulary back to the cms
+    return Promise.reject(new Error(NetworkError))
+  }
   const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
   return transformWordResponse(response)
 }
 
-export const getWordsByUnit = async (unitId: StandardUnitId): Promise<VocabularyItem[]> => {
+export const getWordsByUnit = async (unitId: StandardUnitId): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId))
   return response.map(transformWordResponse)
 }
