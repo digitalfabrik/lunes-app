@@ -1,5 +1,5 @@
 import { ExerciseKeys, SimpleResult } from '../../../constants/data'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import AbstractWriteExerciseService from './AbstractWriteExerciseService'

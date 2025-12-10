@@ -6,12 +6,11 @@ import styled from 'styled-components/native'
 import { UnitListItem } from '../../components/DisciplineListItem'
 import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
-import { VocabularyItem } from '../../constants/endpoints'
-import useUserVocabulary from '../../hooks/useUserVocabulary'
-import { UserVocabularyUnit, UserVocabularyUnitId } from '../../models/Unit'
+import useStorage from '../../hooks/useStorage'
+import { UserVocabularyUnitId } from '../../models/Unit'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
-import { splitVocabularyIntoUnits } from './splitVocabularyToUnits'
+import { splitVocabularyIntoUnits, UnitWithVocabulary } from './splitVocabularyToUnits'
 
 const List = styled.FlatList`
   margin: 0 ${props => props.theme.spacings.md};
@@ -22,13 +21,8 @@ type UnitSelectionScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'UserVocabularyUnitSelection'>
 }
 
-export type UnitWithVocabulary = {
-  unit: UserVocabularyUnit
-  vocabulary: VocabularyItem[]
-}
-
 const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): ReactElement => {
-  const userVocabulary = useUserVocabulary()
+  const [userVocabulary] = useStorage('userVocabulary')
   const unitsWithVocabulary = splitVocabularyIntoUnits(userVocabulary)
 
   const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {

@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { fireEvent, RenderAPI } from '@testing-library/react-native'
 import React from 'react'
 
-import { VocabularyItem } from '../../../constants/endpoints'
+import { UserVocabularyItem } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -21,7 +21,7 @@ describe('UserVocabularyUnitSelectionScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
-  const renderScreen = async (mockVocabulary: VocabularyItem[]): Promise<RenderAPI> => {
+  const renderScreen = async (mockVocabulary: UserVocabularyItem[]): Promise<RenderAPI> => {
     await storageCache.setItem('userVocabulary', mockVocabulary)
     navigation = createNavigationMock<'UserVocabularyUnitSelection'>()
     return renderWithStorageCache(storageCache, <UserVocabularyUnitSelectionScreen navigation={navigation} />)
@@ -35,19 +35,19 @@ describe('UserVocabularyUnitSelectionScreen', () => {
   })
 
   it('should render one unit for one word', async () => {
-    const { getByText } = await renderScreen(new VocabularyItemBuilder(1).build())
+    const { getByText } = await renderScreen(new VocabularyItemBuilder(1).buildUserVocabulary())
     expect(getByText(`1 ${getLabels().general.word.singular}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
   it('should render one unit for ten words', async () => {
-    const { getByText } = await renderScreen(new VocabularyItemBuilder(10).build())
+    const { getByText } = await renderScreen(new VocabularyItemBuilder(10).buildUserVocabulary())
     expect(getByText(`10 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
   })
 
   it('should render three units for twenty-five words', async () => {
-    const { getByText } = await renderScreen(new VocabularyItemBuilder(25).build())
+    const { getByText } = await renderScreen(new VocabularyItemBuilder(25).buildUserVocabulary())
     expect(getByText(`25 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 1`)).toBeDefined()
     expect(getByText(`${getLabels().userVocabulary.practice.part} 2`)).toBeDefined()
@@ -55,9 +55,7 @@ describe('UserVocabularyUnitSelectionScreen', () => {
   })
 
   it('should handle navigation correctly', async () => {
-    const vocabularyItems = new VocabularyItemBuilder(25)
-      .build()
-      .map(item => ({ ...item, type: 'user-created' }) as const)
+    const vocabularyItems = new VocabularyItemBuilder(25).buildUserVocabulary()
     const { getByText } = await renderScreen(vocabularyItems)
     const partTwo = getByText(`${getLabels().userVocabulary.practice.part} 2`)
     fireEvent.press(partTwo)

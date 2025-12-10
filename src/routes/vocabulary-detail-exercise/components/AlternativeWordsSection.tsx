@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 
 import { CrystalBallIcon } from '../../../../assets/images'
 import { ContentSecondary } from '../../../components/text/Content'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
 
 const Heading = styled(ContentSecondary)`
