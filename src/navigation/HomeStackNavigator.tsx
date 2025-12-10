@@ -9,6 +9,7 @@ import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
+import TrainingExerciseSelectionScreen from '../routes/training/TrainingExerciseSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions, { useTabletHeaderHeight } from './screenOptions'
@@ -26,6 +27,11 @@ const HomeStackNavigator = (): ReactElement | null => {
       <Stack.Screen
         name='UnitSelection'
         component={UnitSelectionScreen}
+        options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='TrainingExerciseSelection'
+        component={TrainingExerciseSelectionScreen}
         options={({ navigation }) => options(overview, navigation)}
       />
       <Stack.Screen

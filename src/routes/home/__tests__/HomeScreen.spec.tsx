@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import Job from '../../../models/Job'
+import { StandardJob } from '../../../models/Job'
 import { getJob, getUnitsOfJob, getWordsByUnit } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
@@ -37,7 +37,7 @@ describe('HomeScreen', () => {
     mocked(getJob).mockImplementation(id =>
       id.type === 'load-protected'
         ? Promise.reject()
-        : Promise.resolve(mockJobs().find(item => item.id.id === id.id) as Job),
+        : Promise.resolve(mockJobs().find(item => item.id.id === id.id) as StandardJob),
     )
     mocked(getUnitsOfJob).mockReturnValue(Promise.resolve([]))
     mocked(getWordsByUnit).mockReturnValue(Promise.resolve([]))

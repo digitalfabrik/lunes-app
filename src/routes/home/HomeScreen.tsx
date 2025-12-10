@@ -1,4 +1,3 @@
-import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
@@ -7,8 +6,7 @@ import styled, { useTheme } from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { EXERCISES, NextExerciseData } from '../../constants/data'
-import Job from '../../models/Job'
+import Job, { StandardJob } from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import HomeFooter from './components/HomeFooter'
@@ -49,15 +47,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
     })
   }
 
-  const navigateToNextExercise = (nextExerciseData: NextExerciseData) => {
-    const { exerciseKey, unit, vocabularyItems } = nextExerciseData
-    navigation.navigate(EXERCISES[exerciseKey].screen, {
-      contentType: 'standard',
-      unitId: unit.id,
-      unitTitle: nextExerciseData.jobTitle,
-      vocabularyItems,
-      closeExerciseAction: CommonActions.navigate('Home'),
-    })
+  const navigateToTrainingExerciseSelection = (job: StandardJob): void => {
+    navigation.navigate('TrainingExerciseSelection', { job })
   }
 
   return (
@@ -69,7 +60,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
           <WelcomeSubHeading>{getLabels().home.haveFun}</WelcomeSubHeading>
           <SelectedJobs
             navigateToJob={navigateToJob}
-            navigateToNextExercise={navigateToNextExercise}
+            navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             navigateToManageSelection={navigateToManageSelection}
             navigateToJobSelection={navigateToJobSelection}
           />
