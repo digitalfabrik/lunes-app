@@ -10,6 +10,7 @@ import ExerciseHeader from '../../components/ExerciseHeader'
 import HorizontalLine from '../../components/HorizontalLine'
 import VocabularyDetail from '../../components/VocabularyDetail'
 import { BUTTONS_THEME } from '../../constants/data'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import AlternativeWordsSection from './components/AlternativeWordsSection'
@@ -51,7 +52,9 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         confirmClose={false}
         closeExerciseAction={closeExerciseAction}
         feedbackTarget={
-          vocabularyItem.type !== 'user-created' ? { type: 'word', wordId: vocabularyItem.id } : undefined
+          vocabularyItem.id.type === VocabularyItemTypes.Standard
+            ? { type: 'word', wordId: vocabularyItem.id }
+            : undefined
         }
         labelOverride={labelOverrides?.closeExerciseHeaderLabel}
         isCloseButton={labelOverrides?.isCloseButton}
