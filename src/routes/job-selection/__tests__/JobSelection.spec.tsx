@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, waitFor } from '@testing-library/react-native'
+import { fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
@@ -91,7 +91,7 @@ describe('JobSelection', () => {
   it('should unselect job on initial selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
     await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
-    const { queryAllByTestId } = renderWithStorageCache(
+    const { queryAllByTestId, getAllByTestId } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(true)} />,
     )
@@ -101,8 +101,8 @@ describe('JobSelection', () => {
     const button = queryAllByTestId('check-icon')[0]
     fireEvent.press(button)
 
+    await waitForElementToBeRemoved(() => getAllByTestId('check-icon'))
     await waitFor(() => expect(storageCache.getItem('selectedJobs')).toEqual([]))
-    expect(queryAllByTestId('check-icon')).toHaveLength(0)
   })
 
   it('should disable button if not on initial selection', async () => {
