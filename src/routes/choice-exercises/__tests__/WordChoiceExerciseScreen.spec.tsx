@@ -44,8 +44,8 @@ describe('WordChoiceExerciseScreen', () => {
     params: {
       contentType: 'standard',
       vocabularyItems,
-      disciplineId: 1,
-      disciplineTitle: 'TestTitel',
+      unitId: { id: 1, type: 'standard' },
+      unitTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
     },
   }

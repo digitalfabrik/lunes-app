@@ -7,12 +7,12 @@ import DeletionModal from '../../../components/DeletionModal'
 import ListItem from '../../../components/ListItem'
 import Loading from '../../../components/Loading'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
-import { isTypeLoadProtected } from '../../../hooks/helpers'
-import { RequestParams, useLoadDiscipline } from '../../../hooks/useLoadDiscipline'
+import useLoadJob from '../../../hooks/useLoadJob'
+import { JobId } from '../../../models/Job'
 import { getLabels } from '../../../services/helpers'
 
 type SelectionItemProps = {
-  identifier: RequestParams
+  identifier: JobId
   deleteItem: () => void
 }
 
@@ -25,7 +25,7 @@ const LoadingContainer = styled(View)`
 `
 
 const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): ReactElement => {
-  const { data, loading, error } = useLoadDiscipline(identifier)
+  const { data, loading, error } = useLoadJob(identifier)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   if (loading) {
@@ -45,12 +45,12 @@ const SelectionItem = ({ identifier, deleteItem }: SelectionItemProps): ReactEle
       <DeletionModal isVisible={isModalVisible} onConfirm={deleteItem} onClose={() => setIsModalVisible(false)} />
       <ListItem
         title={
-          data?.title ??
-          (error?.message === ForbiddenError && isTypeLoadProtected(identifier)
+          data?.name ??
+          (error?.message === ForbiddenError && identifier.type === 'load-protected'
             ? `${getLabels().home.errorLoadCustomDiscipline} ${identifier.apiKey}`
             : getLabels().general.error.unknown)
         }
-        icon={data?.icon}
+        icon={data?.icon ?? undefined}
         rightChildren={
           <CloseIconContainer onPress={() => setIsModalVisible(true)} testID='delete-icon'>
             <CloseIconRed />
