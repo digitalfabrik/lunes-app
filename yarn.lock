@@ -4318,16 +4318,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios-cache-interceptor@npm:1.6.2":
-  version: 1.6.2
-  resolution: "axios-cache-interceptor@npm:1.6.2"
+"axios-cache-interceptor@npm:1.11.1":
+  version: 1.11.1
+  resolution: "axios-cache-interceptor@npm:1.11.1"
   dependencies:
-    cache-parser: 1.2.5
-    fast-defer: 1.1.8
-    object-code: 1.3.3
+    cache-parser: ^1.2.6
+    fast-defer: ^1.1.9
+    http-vary: ^1.0.3
+    object-code: ^2.0.0
+    try: ^1.0.3
   peerDependencies:
     axios: ^1
-  checksum: 24c3c7d2264d78d8af495c50b15ba52b42451615d43c76d220cbd4fe387dbb5709a6511c016991d5d9177823acb67fca086bdafe183efb133b9ace0295893172
+  checksum: fdb3f5e72bdacba2574f20c225501a4db40c2835bf7f69773df67c6e9cd19fc94e397b070ef2fe488cfa10162912cd9c9c70a890351174037787b31b4651fb70
   languageName: node
   linkType: hard
 
@@ -4664,10 +4666,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cache-parser@npm:1.2.5":
-  version: 1.2.5
-  resolution: "cache-parser@npm:1.2.5"
-  checksum: 08ef9b465a0af87565f12448a2c250934f4c02f1247a9c519759139a0e2db5584f45ffa8401ce721f7e5a8f8ba1faf3ddc1e99c29e5e93aba01f7e1f4ee8ef9a
+"cache-parser@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "cache-parser@npm:1.2.6"
+  checksum: a4842831936984782f6f55b7a543dea52be6c1bee5e780ff49d798ac5bed3e0ad6a6e7d48cb8f796d61a7b550d8552e96ac4ea17c4702239d7e9a4e11336f8e5
   languageName: node
   linkType: hard
 
@@ -6427,10 +6429,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-defer@npm:1.1.8":
-  version: 1.1.8
-  resolution: "fast-defer@npm:1.1.8"
-  checksum: 4537cf81ce3e1505adba01dfe232231271162c8365427b360e0e86c8e4bf65f08d9e6ced1bd063fbafb48376f2ff152d1cad3cb25237126492921a15ce203e88
+"fast-defer@npm:^1.1.9":
+  version: 1.1.9
+  resolution: "fast-defer@npm:1.1.9"
+  checksum: dd1109220810c4dcf362e685922164f2155e7ad42fee71e990d764c0728ae2e4082a7f81c7f3ed68e708b700c08af42f152f29bc559982690b9916e25208faca
   languageName: node
   linkType: hard
 
@@ -7090,6 +7092,13 @@ __metadata:
     agent-base: ^7.1.0
     debug: ^4.3.4
   checksum: 4207b06a4580fb85dd6dff521f0abf6db517489e70863dca1a0291daa7f2d3d2d6015a57bd702af068ea5cf9f1f6ff72314f5f5b4228d299c0904135d2aef921
+  languageName: node
+  linkType: hard
+
+"http-vary@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "http-vary@npm:1.0.3"
+  checksum: bc0b891ba795b65ce0acf4e14b021153c85e6500c430aa78fea9d7d3a5c0012c98aec0e72cc6afc8ccd8a8aada48cba433b4a5d319d22a6adc4a8b4b8fbb8607
   languageName: node
   linkType: hard
 
@@ -8678,7 +8687,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^8.48.1
     "@typescript-eslint/parser": ^8.48.1
     axios: ^1.12.0
-    axios-cache-interceptor: 1.6.2
+    axios-cache-interceptor: 1.11.1
     babel-jest: ^29.7.0
     babel-plugin-react-compiler: ^1.0.0
     eslint: ^8.57.1
@@ -9471,10 +9480,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-code@npm:1.3.3":
-  version: 1.3.3
-  resolution: "object-code@npm:1.3.3"
-  checksum: 804650eb9b7f23f612c5ba7afbfccc0406f622d701491a690d0492f6e01252096cfba85186fd39883fda6b0e04d623aa8d9485395830223af2395df32d55a75e
+"object-code@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "object-code@npm:2.0.0"
+  checksum: a24790af8dcc03507fefec12bc36c51d38e2fddba709202aa561cf003881223308a128aba65674e3b8b0f401ff867ac732ff28a95259ad49df8a518d5f9743c3
   languageName: node
   linkType: hard
 
@@ -11708,6 +11717,13 @@ __metadata:
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
   checksum: 047cb209a6b60c742f05c9d3ace8fa510bff609995c129a37ace03476a9b12db4dbf975e74600830ef0796e18882b2381fb5fb1f6b4f96b832c374de3ab91a11
+  languageName: node
+  linkType: hard
+
+"try@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "try@npm:1.0.3"
+  checksum: 96a6d10b01abd1e69e31e0a66862099caa777bdf2dce38ff183ee573baaf272d05677e4c900d85ebf26128201ffe0bfb3a1599fdf49849d49d9a061ab3ddf5c5
   languageName: node
   linkType: hard
 
