@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
+import { NurseImage } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Content } from '../../../components/text/Content'
 import { Heading } from '../../../components/text/Heading'
@@ -17,13 +18,32 @@ const Container = styled.View`
 `
 
 const LearningModeCardContainer = styled.View<{ backgroundColor: string }>`
+  flex-grow: 1;
+  background-color: ${props => props.backgroundColor};
+  border-radius: ${props => props.theme.spacings.xs};
+  overflow: hidden;
+`
+
+const LearningModeCardContentContainer = styled.View`
   display: flex;
   flex-grow: 1;
   align-items: center;
   gap: ${props => props.theme.spacings.xs};
   padding: ${props => props.theme.spacings.sm} 0;
-  background-color: ${props => props.backgroundColor};
   border-radius: ${props => props.theme.spacings.xs};
+`
+
+const LearnModeProgressBar = styled.View<{ progress: number }>`
+  background-color: #f1635f;
+  width: ${props => props.progress * 100}%;
+  height: ${props => props.theme.spacings.xs};
+`
+
+const TrainModeImage = styled.Image`
+  position: absolute;
+  top: 15px;
+  width: 100%;
+  height: 100%;
 `
 
 const Row = styled.View`
@@ -42,39 +62,47 @@ const ProgressContainer = styled.View`
 const LearningModeTitle = styled(Heading)`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   padding-right: ${props => props.theme.spacings.sm};
-  color: ${props => props.theme.colors.textLight};
 `
 
-const LearningModeText = styled(Content)`
-  color: ${props => props.theme.colors.textLight};
-`
+const LearningModeText = styled(Content)``
 
-type LearningModeCardProps = {
+type LearningCardProps = {
   title: string
   numberUnits: number
   unitsCompleted: number
   color: Color
   onPress: () => void
 }
-
-const LearningModeCard = ({
-  title,
-  numberUnits,
-  unitsCompleted,
-  color,
-  onPress,
-}: LearningModeCardProps): ReactElement => (
+const LearningCard = ({ title, numberUnits, unitsCompleted, color, onPress }: LearningCardProps): ReactElement => (
   <PressableOpacity onPress={onPress}>
     <LearningModeCardContainer backgroundColor={color}>
-      <LearningModeTitle>{title}</LearningModeTitle>
-      <Row>
-        <ProgressContainer>
-          <LearningModeText>
-            {unitsCompleted}/{numberUnits}
-          </LearningModeText>
-        </ProgressContainer>
-        <LearningModeText>{pluralize(getLabels().general.unit, numberUnits)}</LearningModeText>
-      </Row>
+      <LearningModeCardContentContainer>
+        <LearningModeTitle>{title}</LearningModeTitle>
+        <Row>
+          <ProgressContainer>
+            <LearningModeText>
+              {unitsCompleted}/{numberUnits}
+            </LearningModeText>
+          </ProgressContainer>
+          <LearningModeText>{pluralize(getLabels().general.unit, numberUnits)}</LearningModeText>
+        </Row>
+      </LearningModeCardContentContainer>
+      <LearnModeProgressBar progress={unitsCompleted / numberUnits} />
+    </LearningModeCardContainer>
+  </PressableOpacity>
+)
+
+type TrainingCardProps = {
+  onPress: () => void
+}
+const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => (
+  <PressableOpacity onPress={onPress}>
+    <LearningModeCardContainer backgroundColor={COLORS.backgroundTeal}>
+      <LearningModeCardContentContainer>
+        <LearningModeTitle>{getLabels().home.trainVocabulary}</LearningModeTitle>
+        <LearningModeText>{getLabels().home.testYourKnowledge}</LearningModeText>
+      </LearningModeCardContentContainer>
+      <TrainModeImage source={NurseImage} resizeMode='none' />
     </LearningModeCardContainer>
   </PressableOpacity>
 )
@@ -95,20 +123,14 @@ const ModeSelection = ({
 
   return (
     <Container>
-      <LearningModeCard
+      <LearningCard
         title={getLabels().home.learnVocabulary}
         numberUnits={job.numberOfUnits}
         unitsCompleted={completedUnits}
         color={COLORS.backgroundBlue}
         onPress={navigateToJob}
       />
-      <LearningModeCard
-        title={getLabels().home.trainVocabulary}
-        numberUnits={1}
-        unitsCompleted={0}
-        color={COLORS.backgroundTeal}
-        onPress={navigateToTrainingExerciseSelection}
-      />
+      <TrainingCard onPress={navigateToTrainingExerciseSelection} />
     </Container>
   )
 }

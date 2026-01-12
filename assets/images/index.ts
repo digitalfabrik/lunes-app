@@ -56,6 +56,7 @@ import MenuIcon from './menu-icon.svg'
 import MicrophoneCircleIcon from './microphone-circle-icon.svg'
 import MicrophoneIcon from './microphone-icon.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
+import NurseImage from './nurse.png'
 import OpenLockIcon from './open-lock-icon.svg'
 import PartyHornIcon from './party-horn-circle-icon-white.svg'
 import PenIcon from './pen-icon.svg'
@@ -137,6 +138,7 @@ export {
   MicrophoneCircleIcon,
   MicrophoneIcon,
   NoInternetConnectionIcon,
+  NurseImage,
   OpenLockIcon,
   QRCodeIcon,
   PartyHornIcon,

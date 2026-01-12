@@ -21,7 +21,8 @@
     "deleteJob": "Bereich löschen",
     "jobs": "Berufe",
     "learnVocabulary": "Vokabeln lernen",
-    "trainVocabulary": "Vokabeln trainieren"
+    "trainVocabulary": "Vokabeln trainieren",
+    "testYourKnowledge": "Teste dein Wissen"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -186,8 +187,8 @@
       "deviceIsMuted": "Gerät ist stummgeschaltet"
     },
     "unit": {
-      "singular": "Modul",
-      "plural": "Module"
+      "singular": "Einheit",
+      "plural": "Einheiten"
     },
     "word": {
       "singular": "Wort",
@@ -210,7 +211,8 @@
       "hold": "Aufnahmetaste halten",
       "talk": "Jetzt sprechen",
       "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
-    }
+    },
+    "new": "Neu"
   },
   "favorites": "Favoriten",
   "dictionary": {
