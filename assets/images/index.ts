@@ -74,6 +74,9 @@ import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
+import TrainingImages from './training-images.svg'
+import TrainingSentences from './training-sentences.svg'
+import TrainingSpeech from './training-speech.svg'
 import TrashIconWhite from './trash-bin-icon-white.svg'
 import TrashIcon from './trash-bin-icon.svg'
 import VolumeDisabled from './volume-disabled.svg'
@@ -154,6 +157,9 @@ export {
   StarIconGrey,
   StarIconGreyFilled,
   StarIconWhite,
+  TrainingImages,
+  TrainingSentences,
+  TrainingSpeech,
   TrashIcon,
   TrashIconWhite,
   VolumeUpCircleIcon,
