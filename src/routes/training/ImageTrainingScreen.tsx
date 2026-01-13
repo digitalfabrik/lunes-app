@@ -26,6 +26,7 @@ type State = {
   currentIndex: number
   choices: { src: string; key: VocabularyItemId }[]
   answer: { key: VocabularyItemId; isCorrect: boolean } | null
+  correctAnswersCount: number
   completed: boolean
 }
 
@@ -49,6 +50,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
     vocabularyItems: shuffled,
     currentIndex: 0,
     answer: null,
+    correctAnswersCount: 0,
     completed: vocabularyItems.length === 0,
   }
   return initializeChoices(stateWithoutChoices)
@@ -71,6 +73,8 @@ const stateReducer = (state: State, action: Action): State => {
       const isCorrect = action.key === state.vocabularyItems[state.currentIndex].id
       return {
         ...state,
+        correctAnswersCount:
+          isCorrect && state.answer === null ? state.correctAnswersCount + 1 : state.correctAnswersCount,
         answer: { key: action.key, isCorrect },
       }
     }
@@ -124,11 +128,11 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     if (state.completed) {
       navigation.replace('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: state.vocabularyItems.length, total: state.vocabularyItems.length },
+        results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [state.completed, state.vocabularyItems.length, job, navigation])
+  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
 
   if (state.vocabularyItems.length === 0) {
     return null
