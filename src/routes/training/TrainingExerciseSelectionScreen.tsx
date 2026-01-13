@@ -18,28 +18,28 @@ type TrainingExercise = {
   title: string
   description: string
   image: ReactElement
-  navigate?: (navigation: StackNavigationProp<RoutesParams, 'TrainingExerciseSelection'>, job: StandardJob) => void
+  navigate?: <T extends keyof RoutesParams>(navigation: StackNavigationProp<RoutesParams, T>, job: StandardJob) => void
 }
 
-const TRAINING_EXERCISES: Readonly<TrainingExercise[]> = [
-  {
-    title: getLabels().exercises.training.images.title,
-    description: getLabels().exercises.training.images.description,
+export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
+  image: {
+    title: getLabels().exercises.training.image.title,
+    description: getLabels().exercises.training.image.description,
     image: <TrainingImages />,
     navigate: (navigation, job) => navigation.navigate('ImageTraining', { job }),
   },
-  {
+  speech: {
     title: getLabels().exercises.training.voice.title,
     description: getLabels().exercises.training.voice.description,
     image: <TrainingSpeech />,
   },
-  {
+  sentence: {
     title: getLabels().exercises.training.sentence.title,
     description: getLabels().exercises.training.sentence.description,
     image: <TrainingSentences />,
     navigate: (navigation, job) => navigation.navigate('SentenceTraining', { job }),
   },
-]
+}
 
 const ListItem = styled(PressableOpacity)`
   flex: 1;
@@ -91,7 +91,11 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
   return (
     <RouteWrapper>
       <Title title={getLabels().exercises.training.train} subtitle={job.name} />
-      <FlatList data={TRAINING_EXERCISES} renderItem={renderListItem} showsVerticalScrollIndicator={false} />
+      <FlatList
+        data={Object.values(TRAINING_EXERCISES)}
+        renderItem={renderListItem}
+        showsVerticalScrollIndicator={false}
+      />
     </RouteWrapper>
   )
 }

@@ -109,6 +109,11 @@ export type RoutesParams = {
   SentenceTraining: {
     job: StandardJob
   }
+  TrainingFinished: {
+    results: { correct: number; total: number }
+    trainingType: 'image' | 'sentence'
+    job: StandardJob
+  }
 }
 
 export type Route = keyof RoutesParams

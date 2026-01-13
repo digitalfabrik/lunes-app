@@ -12,6 +12,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
@@ -94,11 +95,12 @@ const AudioPlayerContainer = styled.View`
 `
 
 type ImageTrainingProps = {
+  job: StandardJob
   vocabularyItems: VocabularyItem[]
   navigation: StackNavigationProp<RoutesParams, Route>
 }
 
-const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): ReactElement | null => {
+const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const word = state.vocabularyItems[state.currentIndex]
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
@@ -120,9 +122,13 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
 
   useEffect(() => {
     if (state.completed) {
-      navigation.goBack()
+      navigation.replace('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: state.vocabularyItems.length, total: state.vocabularyItems.length },
+        job,
+      })
     }
-  }, [state.completed, navigation])
+  }, [state.completed, state.vocabularyItems.length, job, navigation])
 
   if (state.vocabularyItems.length === 0) {
     return null
@@ -152,10 +158,10 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
         navigation={navigation}
       />
 
-      <TrainingExerciseContainer title={getLabels().exercises.training.images.selectImage} footer={nextWordButton}>
+      <TrainingExerciseContainer title={getLabels().exercises.training.image.selectImage} footer={nextWordButton}>
         <QuestionContainer>
           <ContentText>
-            {getLabels().exercises.training.images.whatIs} {word.article.value}{' '}
+            {getLabels().exercises.training.image.whatIs} {word.article.value}{' '}
           </ContentText>
           <ContentTextBold>{word.word}</ContentTextBold>
           <ContentText>?</ContentText>
@@ -182,7 +188,7 @@ const ImageTrainingScreen = ({ route, navigation }: ImageTrainingScreenProps): R
   return (
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {vocabularyItems && <ImageTraining vocabularyItems={vocabularyItems} navigation={navigation} />}
+        {vocabularyItems && <ImageTraining vocabularyItems={vocabularyItems} navigation={navigation} job={job} />}
       </ServerResponseHandler>
     </RouteWrapper>
   )

@@ -44,7 +44,7 @@ describe('ImageTrainingScreen', () => {
       <ImageTrainingScreen navigation={navigation} route={route} />,
     )
 
-    await waitFor(() => expect(getByText(getLabels().exercises.training.images.selectImage)).toBeVisible())
+    await waitFor(() => expect(getByText(getLabels().exercises.training.image.selectImage)).toBeVisible())
     expect(getAllByTestId('imageOption')).toHaveLength(4)
 
     const skipButton = getByTestId('button-skip')
