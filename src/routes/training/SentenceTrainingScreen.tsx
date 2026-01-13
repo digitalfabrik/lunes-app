@@ -11,7 +11,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { VocabularyItemId } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
@@ -70,7 +70,7 @@ type State = {
 const splitSentence = (sentence: string): string[] => sentence.split(' ')
 
 const initializeState = (sentences: Sentence[]): State => {
-  const shuffled = shuffleArray(sentences)
+  const shuffled = shuffleArray(sentences).splice(0, MAX_TRAINING_REPETITIONS)
   const currentSentenceIndex = 0
   const sentence = shuffled[currentSentenceIndex]
   return {

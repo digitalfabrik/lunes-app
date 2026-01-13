@@ -10,7 +10,7 @@ import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
@@ -43,7 +43,7 @@ const initializeChoices = (state: Omit<State, 'choices'>): State => {
 }
 
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
-  const shuffled = shuffleArray(vocabularyItems)
+  const shuffled = shuffleArray(vocabularyItems).splice(0, MAX_TRAINING_REPETITIONS)
   const stateWithoutChoices: Omit<State, 'choices'> = {
     vocabularyItems: shuffled,
     currentIndex: 0,
@@ -115,8 +115,8 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
 
   // Prefetch images initially, so users won't have to wait for them to load after each answer
   useEffect(() => {
-    Promise.all(vocabularyItems.map(item => Image.prefetch(item.images[0]))).catch(reportError)
-  }, [vocabularyItems])
+    Promise.all(state.vocabularyItems.map(item => Image.prefetch(item.images[0]))).catch(reportError)
+  }, [state.vocabularyItems])
 
   useEffect(() => {
     if (state.completed) {
@@ -148,7 +148,7 @@ const ImageTraining = ({ vocabularyItems, navigation }: ImageTrainingProps): Rea
     <>
       <TrainingExerciseHeader
         currentWord={state.currentIndex}
-        numberOfWords={vocabularyItems.length}
+        numberOfWords={state.vocabularyItems.length}
         navigation={navigation}
       />
 
