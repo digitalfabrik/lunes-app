@@ -114,7 +114,7 @@ export type RoutesParams = {
   }
   TrainingFinished: {
     results: { correct: number; total: number }
-    trainingType: 'image' | 'sentence'
+    trainingType: 'image' | 'sentence' | 'speech'
     job: StandardJob
   }
 }
