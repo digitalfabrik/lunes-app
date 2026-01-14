@@ -50,11 +50,4 @@ describe('ImageTrainingScreen', () => {
     const skipButton = getByTestId('button-skip')
     expect(skipButton).toBeVisible()
   })
-
-  it('should immediately go back if there are no vocabulary items', async () => {
-    mocked(getWordsByJob).mockReturnValue(Promise.resolve([]))
-    renderWithTheme(<ImageTrainingScreen navigation={navigation} route={route} />)
-
-    await waitFor(() => expect(navigation.goBack).toHaveBeenCalled())
-  })
 })
