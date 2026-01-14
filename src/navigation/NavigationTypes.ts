@@ -106,6 +106,9 @@ export type RoutesParams = {
   ImageTraining: {
     job: StandardJob
   }
+  SpeechTraining: {
+    job: StandardJob
+  }
   SentenceTraining: {
     job: StandardJob
   }
