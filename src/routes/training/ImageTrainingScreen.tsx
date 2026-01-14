@@ -81,8 +81,11 @@ const stateReducer = (state: State, action: Action): State => {
     case 'nextWord': {
       const completed = state.currentIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentIndex : state.currentIndex + 1
-      const nextState = { ...state, currentIndex: nextIndex, completed, answer: null }
-      return initializeChoices(nextState)
+      let nextState: State = { ...state, currentIndex: nextIndex, completed, answer: null }
+      if (!completed) {
+        nextState = initializeChoices(nextState)
+      }
+      return nextState
     }
   }
 }
