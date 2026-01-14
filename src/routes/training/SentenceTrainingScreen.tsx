@@ -49,7 +49,7 @@ const SelectedWordsArea = styled.View`
   min-height: ${props => props.theme.spacings.xxl};
 `
 
-type Sentence = {
+export type Sentence = {
   id: VocabularyItemId
   image: string
   sentence: string
@@ -59,7 +59,7 @@ type Sentence = {
 
 const MAX_ATTEMPTS_PER_SENTENCE = 5
 
-type State = {
+export type State = {
   sentences: Sentence[]
   currentSentenceIndex: number
   randomizedWordIndexes: number[]
@@ -71,7 +71,7 @@ type State = {
 
 const splitSentence = (sentence: string): string[] => sentence.split(' ')
 
-const initializeState = (sentences: Sentence[]): State => {
+export const initializeState = (sentences: Sentence[]): State => {
   const shuffled = shuffleArray(sentences).splice(0, MAX_TRAINING_REPETITIONS)
   const currentSentenceIndex = 0
   const sentence = shuffled[currentSentenceIndex]
@@ -93,7 +93,7 @@ type Action =
   | { type: 'repeat' }
 
 // eslint-disable-next-line consistent-return
-const stateReducer = (state: State, action: Action): State => {
+export const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'selectWord': {
       if (state.selectedWordIndexes.find(index => index === action.index) !== undefined) {
@@ -202,9 +202,9 @@ const BottomSheetWord = styled(ContentText)<{ markIncorrect: boolean }>`
   ${props =>
     props.markIncorrect &&
     css`
-    border-width: 1px;
-    border-radius: ${props.theme.spacings.xxs};
-  `}
+      border-width: 1px;
+      border-radius: ${props.theme.spacings.xxs};
+    `}
 `
 
 const ResultIndicator = ({
@@ -352,7 +352,6 @@ export type SentenceTrainingScreenProps = {
 const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenProps): ReactElement => {
   const { job } = route.params
   const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByJob(job.id)
-  // TODO: Go back if empty
   const sentences = vocabularyItems
     ?.filter(item => item.exampleSentence !== undefined)
     .map(({ exampleSentence, id, images }) => ({
@@ -362,6 +361,12 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       id,
       image: images[0],
     }))
+
+  useEffect(() => {
+    if (!sentences) {
+      navigation.pop()
+    }
+  }, [sentences, navigation])
 
   return (
     <RouteWrapper>
