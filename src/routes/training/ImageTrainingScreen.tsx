@@ -44,19 +44,19 @@ const initializeChoices = (state: Omit<State, 'choices'>): State => {
   return { ...state, choices: choices.map(choice => ({ src: choice.images[0], key: choice.id })) }
 }
 
-const initializeState = (vocabularyItems: VocabularyItem[]): State => {
+export const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const shuffled = shuffleArray(vocabularyItems).splice(0, MAX_TRAINING_REPETITIONS)
   const stateWithoutChoices: Omit<State, 'choices'> = {
     vocabularyItems: shuffled,
     currentIndex: 0,
     answer: null,
     correctAnswersCount: 0,
-    completed: vocabularyItems.length === 0,
+    completed: shuffled.length === 0,
   }
   return initializeChoices(stateWithoutChoices)
 }
 
-type Action =
+export type Action =
   | {
       type: 'selectAnswer'
       key: VocabularyItemId
@@ -64,7 +64,7 @@ type Action =
   | { type: 'nextWord' }
 
 // eslint-disable-next-line consistent-return
-const stateReducer = (state: State, action: Action): State => {
+export const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'selectAnswer': {
       if (state.answer?.isCorrect) {
