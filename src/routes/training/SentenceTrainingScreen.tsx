@@ -13,6 +13,7 @@ import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { StandardJob } from '../../models/Job'
 import { VocabularyItemId } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray, shuffleIndexes } from '../../services/helpers'
@@ -64,6 +65,8 @@ type State = {
   currentSentenceIndex: number
   randomizedWordIndexes: number[]
   selectedWordIndexes: number[]
+  attemptsForCurrentSentence: number
+  correctAnswersCount: number
   allSentencesFinished: boolean
 }
 
@@ -78,6 +81,8 @@ const initializeState = (sentences: Sentence[]): State => {
     currentSentenceIndex,
     randomizedWordIndexes: shuffleIndexes(sentence.words),
     selectedWordIndexes: [],
+    attemptsForCurrentSentence: 0,
+    correctAnswersCount: 0,
     allSentencesFinished: false,
   }
 }
@@ -85,7 +90,7 @@ const initializeState = (sentences: Sentence[]): State => {
 type Action =
   | { type: 'selectWord'; index: number }
   | { type: 'unselectWord'; index: number }
-  | { type: 'nextSentence' }
+  | { type: 'nextSentence'; wasAnswerCorrect: boolean }
   | { type: 'repeat' }
 
 // eslint-disable-next-line consistent-return
@@ -103,17 +108,25 @@ const stateReducer = (state: State, action: Action): State => {
     }
     case 'repeat': {
       const currentSentence = state.sentences[state.currentSentenceIndex]
-      return { ...state, selectedWordIndexes: [], randomizedWordIndexes: shuffleIndexes(currentSentence.words) }
+      return {
+        ...state,
+        selectedWordIndexes: [],
+        randomizedWordIndexes: shuffleIndexes(currentSentence.words),
+        attemptsForCurrentSentence: state.attemptsForCurrentSentence + 1,
+      }
     }
     case 'nextSentence': {
       const hasNextSentence = state.currentSentenceIndex + 1 < state.sentences.length
       const nextIndex = hasNextSentence ? state.currentSentenceIndex + 1 : state.currentSentenceIndex
       const sentence = state.sentences[nextIndex]
+      const correctAnswersCount = action.wasAnswerCorrect ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentSentenceIndex: nextIndex,
         selectedWordIndexes: [],
         randomizedWordIndexes: shuffleIndexes(sentence.words),
+        attemptsForCurrentSentence: 0,
+        correctAnswersCount,
         allSentencesFinished: !hasNextSentence,
       }
     }
@@ -159,11 +172,12 @@ const WordsSelector = ({
 )
 
 type ImageTrainingProps = {
+  job: StandardJob
   sentences: Sentence[]
   navigation: StackNavigationProp<RoutesParams, Route>
 }
 
-const SentenceTraining = ({ sentences, navigation }: ImageTrainingProps): ReactElement | null => {
+const SentenceTraining = ({ job, sentences, navigation }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
   const currentSentence = state.sentences[state.currentSentenceIndex]
   const selectedWords = state.selectedWordIndexes.map(index => ({
@@ -181,9 +195,13 @@ const SentenceTraining = ({ sentences, navigation }: ImageTrainingProps): ReactE
 
   useEffect(() => {
     if (state.allSentencesFinished) {
-      navigation.goBack()
+      navigation.replace('TrainingFinished', {
+        trainingType: 'sentence',
+        job,
+        results: { correct: state.correctAnswersCount, total: state.sentences.length },
+      })
     }
-  }, [state.allSentencesFinished, navigation])
+  }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length])
 
   return (
     <>
@@ -197,7 +215,7 @@ const SentenceTraining = ({ sentences, navigation }: ImageTrainingProps): ReactE
         title={getLabels().exercises.training.sentence.orderWords}
         footer={
           <Button
-            onPress={() => dispatch({ type: 'nextSentence' })}
+            onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: false })}
             label={getLabels().exercises.skip}
             buttonTheme={BUTTONS_THEME.text}
             iconRight={ChevronRight}
@@ -237,7 +255,9 @@ const SentenceTraining = ({ sentences, navigation }: ImageTrainingProps): ReactE
 
           {isCorrect ? (
             <Button
-              onPress={() => dispatch({ type: 'nextSentence' })}
+              onPress={() =>
+                dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })
+              }
               label={getLabels().exercises.continue}
               buttonTheme={BUTTONS_THEME.contained}
             />
@@ -277,7 +297,9 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
   return (
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {sentences && sentences.length > 0 && <SentenceTraining sentences={sentences} navigation={navigation} />}
+        {sentences && sentences.length > 0 && (
+          <SentenceTraining job={job} sentences={sentences} navigation={navigation} />
+        )}
       </ServerResponseHandler>
     </RouteWrapper>
   )
