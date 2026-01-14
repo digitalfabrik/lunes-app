@@ -1,0 +1,28 @@
+{
+  "name": "react-native-speech-to-text",
+  "version": "0.0.0",
+  "description": "Converts speech to text using platform apis",
+  "main": "src/index",
+  "codegenConfig": {
+    "name": "SpeechToTextSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.speechtotext"
+    }
+  },
+  "create-react-native-library": {
+    "type": "turbo-module",
+    "languages": "kotlin-objc",
+    "tools": [
+      "eslint",
+      "jest",
+      "lefthook",
+      "release-it"
+    ],
+    "version": "0.57.0"
+  },
+  "peerDependencies": {
+    "react-native": "*"
+  }
+}

@@ -29,6 +29,7 @@ module.exports = {
   rules: {
     // Overly strict rules (for now)
     'no-shadow': 'off',
+    'no-underscore-dangle': 'off',
     'react/display-name': 'off',
 
     // Unwanted
@@ -56,7 +57,7 @@ module.exports = {
     ],
     'prefer-destructuring': ['error', { array: false }],
     'prefer-object-spread': 'error',
-    'no-console': 'error',
+    'no-console': 'warn',
 
     'react/function-component-definition': [
       'error',

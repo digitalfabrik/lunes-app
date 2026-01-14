@@ -8726,6 +8726,7 @@ __metadata:
     react-native-safe-area-context: "^5.6.1 "
     react-native-screens: ^4.10.0
     react-native-sound-player: 0.14.5
+    react-native-speech-to-text: "link:./modules/speech-to-text"
     react-native-svg: 15.12.1
     react-native-svg-transformer: ^1.5.1
     react-native-tab-view: 3.5.2
@@ -10372,6 +10373,12 @@ __metadata:
   checksum: 9c1236c9725b5eaef839b9028f046bb59c7531bc0c4bacbb8d584a3197bb3ab5d35e3304f8c96591917914f0a6f04bacd3818cfaf687e5bc65242c23cf223bd0
   languageName: node
   linkType: hard
+
+"react-native-speech-to-text@link:./modules/speech-to-text::locator=lunes%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "react-native-speech-to-text@link:./modules/speech-to-text::locator=lunes%40workspace%3A."
+  languageName: node
+  linkType: soft
 
 "react-native-svg-transformer@npm:^1.5.1":
   version: 1.5.1
