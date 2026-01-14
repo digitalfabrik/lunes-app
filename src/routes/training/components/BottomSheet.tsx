@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
 import theme from '../../../constants/theme'
+import { Color } from '../../../constants/theme/colors'
 
 const ModalContainer = styled(Animated.View)`
   display: flex;
@@ -12,8 +13,8 @@ const ModalContainer = styled(Animated.View)`
   flex: 1;
 `
 
-const ModalBody = styled(Animated.View)<{ bottomPadding: number }>`
-  background-color: ${props => props.theme.colors.backgroundHigh};
+const ModalBody = styled(Animated.View)<{ bottomPadding: number; backgroundColor: Color }>`
+  background-color: ${props => props.backgroundColor};
   padding-bottom: ${props => props.bottomPadding}px;
   padding-top: ${props => props.theme.spacings.md};
   border-radius: ${props => props.theme.spacings.md};
@@ -21,10 +22,11 @@ const ModalBody = styled(Animated.View)<{ bottomPadding: number }>`
 
 export type BottomSheetProps = {
   visible: boolean
+  backgroundColor?: Color
   children: ReactElement | ReactElement[]
 }
 
-const BottomSheet = ({ visible, children }: BottomSheetProps): ReactElement => {
+const BottomSheet = ({ visible, children, backgroundColor }: BottomSheetProps): ReactElement => {
   const insets = useSafeAreaInsets()
   // Due to animations, this is visible for a bit longer than indicated by the `visible` prop.
   const [shouldBeVisible, setShouldBeVisible] = useState(true)
@@ -61,7 +63,10 @@ const BottomSheet = ({ visible, children }: BottomSheetProps): ReactElement => {
   return (
     <Modal visible={!shouldBeVisible} transparent animationType='none' statusBarTranslucent navigationBarTranslucent>
       <ModalContainer style={{ backgroundColor: trimColor }}>
-        <ModalBody bottomPadding={insets.bottom} style={{ transform: [{ translateY: offset }] }}>
+        <ModalBody
+          backgroundColor={backgroundColor ?? theme.colors.backgroundHigh}
+          bottomPadding={insets.bottom}
+          style={{ transform: [{ translateY: offset }] }}>
           {children}
         </ModalBody>
       </ModalContainer>

@@ -108,8 +108,8 @@
         "description": "Die Vokabel richtig anwenden",
         "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
         "listen": "Höre dir den Satz an!",
-        "correct": "\uD83D\uDC4F Super, das war richtig!",
-        "incorrect": "\uD83D\uDE41 Das war leider nicht richtig."
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig."
       }
     },
     "tryLater": "Später versuchen",

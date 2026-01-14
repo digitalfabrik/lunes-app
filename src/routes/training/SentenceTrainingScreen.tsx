@@ -1,9 +1,9 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useReducer } from 'react'
+import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { ChevronRight } from '../../../assets/images'
+import { ArrowRightIcon, ChevronRight, ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
 import PressableOpacity from '../../components/PressableOpacity'
@@ -12,6 +12,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import theme from '../../constants/theme'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { VocabularyItemId } from '../../models/VocabularyItem'
@@ -48,10 +49,6 @@ const SelectedWordsArea = styled.View`
   min-height: ${props => props.theme.spacings.xxl};
 `
 
-const BottomSheetRow = styled.View`
-  padding: ${props => props.theme.spacings.md};
-`
-
 type Sentence = {
   id: VocabularyItemId
   image: string
@@ -59,6 +56,8 @@ type Sentence = {
   words: string[]
   audio: string
 }
+
+const MAX_ATTEMPTS_PER_SENTENCE = 5
 
 type State = {
   sentences: Sentence[]
@@ -138,38 +137,134 @@ const WordsContainer = styled.View`
   flex-flow: row wrap;
   align-content: space-around;
   padding: ${props => props.theme.spacings.xs};
-  gap: ${props => props.theme.spacings.xs};
+  gap: ${props => props.theme.spacings.xxs};
 `
 
-const SingleWordContainer = styled(ContentText)<{ enabled: boolean }>`
+type WordContainerState = 'enabled' | 'disabled' | 'wrong'
+type SelectedWord = { word: string; index: number; state: WordContainerState }
+
+const SingleWordContainer = styled(ContentText)<{ state: WordContainerState }>`
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.xxs};
   ${props =>
-    props.enabled
-      ? css`
-          background-color: ${props.theme.colors.buttonBlue};
-        `
-      : css`
-          background-color: ${props.theme.colors.disabled};
-          text-decoration-line: line-through;
-        `}
+    props.state === 'enabled' &&
+    css`
+      background-color: ${props.theme.colors.buttonBlue};
+    `}
+  ${props =>
+    props.state === 'disabled' &&
+    css`
+      background-color: ${props.theme.colors.disabled};
+      text-decoration-line: line-through;
+    `}
+  ${props =>
+    props.state === 'wrong' &&
+    css`
+      background-color: ${props.theme.colors.trainingIncorrect};
+    `}
 `
 
 const WordsSelector = ({
   words,
   onPress,
 }: {
-  words: { word: string; index: number; enabled: boolean }[]
+  words: SelectedWord[]
   onPress: (index: number) => void
 }): ReactElement => (
   <WordsContainer>
-    {words.map(({ word, enabled, index }) => (
-      <PressableOpacity key={index} onPress={() => onPress(index)} disabled={!enabled}>
-        <SingleWordContainer enabled={enabled}>{word}</SingleWordContainer>
+    {words.map(({ word, state, index }) => (
+      <PressableOpacity key={index} onPress={() => onPress(index)} disabled={state === 'disabled'}>
+        <SingleWordContainer state={state}>{word}</SingleWordContainer>
       </PressableOpacity>
     ))}
   </WordsContainer>
 )
+
+const BottomSheetRow = styled.View`
+  padding: ${props => props.theme.spacings.md};
+  align-items: center;
+`
+
+const BottomSheetColumn = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${props => props.theme.spacings.sm};
+`
+
+const BottomSheetWordContainer = styled.View`
+  background-color: ${props => props.theme.colors.backgroundTransparent};
+  padding: ${props => props.theme.spacings.xs};
+  border-radius: ${props => props.theme.spacings.xxs};
+`
+
+const BottomSheetWord = styled(ContentText)<{ markIncorrect: boolean }>`
+  ${props =>
+    props.markIncorrect &&
+    css`
+    border-width: 1px;
+    border-radius: ${props.theme.spacings.xxs};
+  `}
+`
+
+const ResultIndicator = ({
+  state,
+  dispatch,
+  selectedWords,
+}: {
+  state: State
+  dispatch: ActionDispatch<[Action]>
+  selectedWords: SelectedWord[]
+}): ReactElement => {
+  const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
+  const isCorrect = isFinished && state.selectedWordIndexes.every((wordIndex, index) => wordIndex === index)
+
+  const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
+  const color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
+
+  return (
+    <BottomSheet visible={isFinished} backgroundColor={color}>
+      <BottomSheetRow>
+        <BottomSheetColumn>
+          <Icon width='32' height='32' />
+          <HeadingText>
+            {isCorrect
+              ? getLabels().exercises.training.sentence.correct
+              : getLabels().exercises.training.sentence.incorrect}
+          </HeadingText>
+        </BottomSheetColumn>
+
+        <BottomSheetRow>
+          <BottomSheetWordContainer>
+            <WordsContainer>
+              {selectedWords.map(({ word, state, index }) => (
+                <BottomSheetWord key={index} markIncorrect={state === 'wrong'}>
+                  {word}
+                </BottomSheetWord>
+              ))}
+            </WordsContainer>
+          </BottomSheetWordContainer>
+        </BottomSheetRow>
+
+        {isCorrect || state.attemptsForCurrentSentence >= MAX_ATTEMPTS_PER_SENTENCE ? (
+          <Button
+            onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
+            label={getLabels().exercises.continue}
+            iconRight={ArrowRightIcon}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        ) : (
+          <Button
+            onPress={() => dispatch({ type: 'repeat' })}
+            label={getLabels().exercises.tryAgain}
+            iconRight={ArrowRightIcon}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        )}
+      </BottomSheetRow>
+    </BottomSheet>
+  )
+}
 
 type ImageTrainingProps = {
   job: StandardJob
@@ -180,18 +275,26 @@ type ImageTrainingProps = {
 const SentenceTraining = ({ job, sentences, navigation }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
   const currentSentence = state.sentences[state.currentSentenceIndex]
-  const selectedWords = state.selectedWordIndexes.map(index => ({
-    index,
-    word: currentSentence.words[index],
-    enabled: true,
-  }))
-  const availableWords = state.randomizedWordIndexes.map(index => ({
-    index,
-    word: currentSentence.words[index],
-    enabled: state.selectedWordIndexes.find(selectedWordIndex => selectedWordIndex === index) === undefined,
-  }))
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
-  const isCorrect = state.selectedWordIndexes.every((wordIndex, index) => wordIndex === index)
+  const selectedWords = state.selectedWordIndexes.map(
+    (wordIndex, index) =>
+      ({
+        index: wordIndex,
+        word: currentSentence.words[wordIndex],
+        state: isFinished && index !== wordIndex ? 'wrong' : 'enabled',
+      }) as const,
+  )
+  const availableWords = state.randomizedWordIndexes.map(
+    index =>
+      ({
+        index,
+        word: currentSentence.words[index],
+        state:
+          state.selectedWordIndexes.find(selectedWordIndex => selectedWordIndex === index) === undefined
+            ? 'enabled'
+            : 'disabled',
+      }) as const,
+  )
 
   useEffect(() => {
     if (state.allSentencesFinished) {
@@ -236,41 +339,7 @@ const SentenceTraining = ({ job, sentences, navigation }: ImageTrainingProps): R
         </ExerciseContainer>
       </TrainingExerciseContainer>
 
-      <BottomSheet visible={isFinished}>
-        <BottomSheetRow>
-          <HeadingText>
-            {isCorrect
-              ? getLabels().exercises.training.sentence.correct
-              : getLabels().exercises.training.sentence.incorrect}
-          </HeadingText>
-
-          <BottomSheetRow>
-            <ExerciseInfoContainer>
-              <AudioPlayerContainer>
-                <AudioPlayer disabled={false} audio={currentSentence.audio} />
-              </AudioPlayerContainer>
-              <ContentText>{currentSentence.sentence}</ContentText>
-            </ExerciseInfoContainer>
-          </BottomSheetRow>
-
-          {isCorrect ? (
-            <Button
-              onPress={() =>
-                dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })
-              }
-              label={getLabels().exercises.continue}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          ) : (
-            <Button
-              onPress={() => dispatch({ type: 'repeat' })}
-              label={getLabels().exercises.tryAgain}
-              iconRight={ChevronRight}
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          )}
-        </BottomSheetRow>
-      </BottomSheet>
+      <ResultIndicator state={state} dispatch={dispatch} selectedWords={selectedWords} />
     </>
   )
 }
