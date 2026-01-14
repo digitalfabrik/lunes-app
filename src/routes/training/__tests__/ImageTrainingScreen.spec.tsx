@@ -3,6 +3,7 @@ import { waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
@@ -10,7 +11,6 @@ import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import renderWithTheme from '../../../testing/render'
 import ImageTrainingScreen, { initializeState, stateReducer } from '../ImageTrainingScreen'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),

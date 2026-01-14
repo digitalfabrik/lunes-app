@@ -1,19 +1,16 @@
-import { RouteProp } from '@react-navigation/native';
-import { mocked } from 'jest-mock';
-import React from 'react';
+import { RouteProp } from '@react-navigation/native'
+import { mocked } from 'jest-mock'
+import React from 'react'
 
-
-
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data';
-import { StandardVocabularyItem } from '../../../models/VocabularyItem';
-import { RoutesParams } from '../../../navigation/NavigationTypes';
-import { getWordsByJob } from '../../../services/CmsApi';
-import { getLabels } from '../../../services/helpers';
-import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder';
-import createNavigationMock from '../../../testing/createNavigationPropMock';
-import renderWithTheme from '../../../testing/render';
-import SentenceTrainingScreen, { initializeState, stateReducer } from '../SentenceTrainingScreen';
-
+import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { StandardVocabularyItem } from '../../../models/VocabularyItem'
+import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getWordsByJob } from '../../../services/CmsApi'
+import { getLabels } from '../../../services/helpers'
+import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
+import createNavigationMock from '../../../testing/createNavigationPropMock'
+import renderWithTheme from '../../../testing/render'
+import SentenceTrainingScreen, { initializeState, stateReducer } from '../SentenceTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
@@ -89,7 +86,7 @@ describe('SentenceTrainingScreen', () => {
     let state = initializeState(sentences.slice())
     expect(state.correctAnswersCount).toBe(0)
 
-    state = stateReducer(state, {type: 'nextSentence', wasAnswerCorrect: true})
+    state = stateReducer(state, { type: 'nextSentence', wasAnswerCorrect: true })
     expect(state.correctAnswersCount).toBe(1)
 
     state = stateReducer(state, { type: 'nextSentence', wasAnswerCorrect: false })
