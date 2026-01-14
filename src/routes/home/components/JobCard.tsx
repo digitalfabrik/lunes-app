@@ -7,16 +7,16 @@ import ErrorMessage, { ErrorText } from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
 import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
-import { BUTTONS_THEME, NextExerciseData } from '../../../constants/data'
+import { BUTTONS_THEME } from '../../../constants/data'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
 import useLoadJob from '../../../hooks/useLoadJob'
 import { useStorageCache } from '../../../hooks/useStorage'
-import Job, { JobId } from '../../../models/Job'
+import Job, { JobId, StandardJob } from '../../../models/Job'
 import { getLabels } from '../../../services/helpers'
 import { removeCustomDiscipline, removeSelectedJob } from '../../../services/storageUtils'
 import Card from './Card'
 import CustomDisciplineDetails from './CustomDisciplineDetails'
-import JobDetails from './JobDetails'
+import ModeSelection from './ModeSelection'
 
 const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
@@ -46,14 +46,14 @@ type JobCardProps = {
   identifier: JobId
   width?: number
   navigateToJob: (job: Job) => void
-  navigateToNextExercise?: (nextExerciseData: NextExerciseData) => void
+  navigateToTrainingExerciseSelection: (job: StandardJob) => void
 }
 
 const JobCard = ({
   identifier,
   width: cardWidth,
   navigateToJob,
-  navigateToNextExercise,
+  navigateToTrainingExerciseSelection,
 }: JobCardProps): ReactElement | null => {
   const storageCache = useStorageCache()
   const { data: job, loading, error, refresh } = useLoadJob(identifier)
@@ -112,13 +112,15 @@ const JobCard = ({
   }
 
   return (
-    <Card width={cardWidth} heading={job.name} icon={job.icon ?? undefined} onPress={() => navigateToJob(job)}>
+    <Card width={cardWidth} heading={job.name} icon={job.icon ?? undefined}>
       {identifier.type === 'load-protected' ? (
         <CustomDisciplineDetails job={job} navigateToJob={navigateToJob} />
       ) : (
-        navigateToNextExercise && (
-          <JobDetails job={job} navigateToJob={navigateToJob} navigateToNextExercise={navigateToNextExercise} />
-        )
+        <ModeSelection
+          job={job}
+          navigateToJob={() => navigateToJob(job)}
+          navigateToTrainingExerciseSelection={() => navigateToTrainingExerciseSelection(job)}
+        />
       )}
     </Card>
   )

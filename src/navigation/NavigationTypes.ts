@@ -1,7 +1,7 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import Job from '../models/Job'
+import Job, { StandardJob } from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
 
@@ -100,6 +100,20 @@ export type RoutesParams = {
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyUnitSelection: undefined
   SpecialExercises: SpecialExercisesParams
+  TrainingExerciseSelection: {
+    job: StandardJob
+  }
+  ImageTraining: {
+    job: StandardJob
+  }
+  SentenceTraining: {
+    job: StandardJob
+  }
+  TrainingFinished: {
+    results: { correct: number; total: number }
+    trainingType: 'image' | 'sentence'
+    job: StandardJob
+  }
 }
 
 export type Route = keyof RoutesParams

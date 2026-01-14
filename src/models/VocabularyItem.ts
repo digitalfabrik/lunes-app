@@ -36,6 +36,11 @@ type VocabularyItem = {
   images: string[]
   audio: string | null
   alternatives: AlternativeWord[]
+  // FIXME: Decide whether this really belongs here
+  exampleSentence?: {
+    sentence: string
+    audio: string
+  }
 }
 
 export type StandardVocabularyItem = {

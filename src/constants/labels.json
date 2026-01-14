@@ -19,7 +19,10 @@
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteJob": "Bereich löschen",
-    "jobs": "Berufe"
+    "jobs": "Berufe",
+    "learnVocabulary": "Vokabeln lernen",
+    "trainVocabulary": "Vokabeln trainieren",
+    "testYourKnowledge": "Teste dein Wissen"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -83,12 +86,41 @@
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
       }
     },
+    "training": {
+      "train": "Vokabeln trainieren",
+      "finished": {
+        "askContinue": "Möchtest du eine weitere {} Übung machen?",
+        "continueYes": "Ja, weiter",
+        "continueNo": "Nein, andere Übung auswählen"
+      },
+      "image": {
+        "title": "Bilderrätsel",
+        "description": "Die richtige Vokabel finden",
+        "selectImage": "Wähle das richtige Bild aus!",
+        "whatIs": "Was ist"
+      },
+      "voice": {
+        "title": "Sprechstudio",
+        "description": "Die Vokabel richtig aussprechen"
+      },
+      "sentence": {
+        "title": "Satzbausteine",
+        "description": "Die Vokabel richtig anwenden",
+        "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
+        "listen": "Höre dir den Satz an!",
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig."
+      }
+    },
     "tryLater": "Später versuchen",
+    "tryAgain": "Nochmal versuchen",
     "cheat": {
       "succeed": "Solve All",
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "skip": "Überspringen",
+    "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
@@ -160,8 +192,8 @@
       "deviceIsMuted": "Gerät ist stummgeschaltet"
     },
     "unit": {
-      "singular": "Modul",
-      "plural": "Module"
+      "singular": "Einheit",
+      "plural": "Einheiten"
     },
     "word": {
       "singular": "Wort",
@@ -184,7 +216,8 @@
       "hold": "Aufnahmetaste halten",
       "talk": "Jetzt sprechen",
       "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
-    }
+    },
+    "new": "Neu"
   },
   "favorites": "Favoriten",
   "dictionary": {

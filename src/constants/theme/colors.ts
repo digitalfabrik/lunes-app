@@ -2,9 +2,13 @@ export const COLORS = {
   primary: '#000e38',
   backgroundAccent: '#ffffff',
   background: '#f9fafb',
+  backgroundTransparent: 'rgba(249, 250, 251, 0.75)',
+  backgroundLow: '#F5F6F7',
+  backgroundHigh: '#E0E4ED',
   text: '#3a4049',
   textSecondary: '#5b616a',
   placeholder: '#777e91',
+  textLight: '#F9FAFB',
   disabled: '#e0e4ed',
   progressIndicator: '#425bee',
   containedButtonSelected: '#3d4662',
@@ -13,6 +17,8 @@ export const COLORS = {
   correct: '#0adb75',
   almostCorrect: '#ffbb4a',
   incorrect: '#ff5252',
+  trainingCorrect: '#72F399',
+  trainingIncorrect: '#F1635F',
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
@@ -28,6 +34,10 @@ export const COLORS = {
   chartColor2: '#EEEEEE',
   chartColor3: '#8CC8F3',
   chartColor4: '#D9D9D9',
+  backgroundBlue: '#6588F2',
+  backgroundTeal: '#04ACA7',
+  backgroundRed: '#FAA7A7',
+  buttonBlue: '#A6E0FF',
 }
 
-export type Color = (typeof COLORS)[keyof typeof COLORS]
+export type Color = string
