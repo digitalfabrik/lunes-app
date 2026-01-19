@@ -2123,12 +2123,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+  boost: 1dca942403ed9342f98334bf4c3621f011aa7946
+  DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: e053802577a711add20e45bbbf5dd1180b6ca62e
-  fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
-  glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
+  fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6
+  glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
   hermes-engine: b5c9cfbe6415f1b0b24759f2942c8f33e9af6347
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
@@ -2211,6 +2211,6 @@ SPEC CHECKSUMS:
   VisionCamera: 891edb31806dd3a239c8a9d6090d6ec78e11ee80
   Yoga: eca8dd841b7cd47d82d66be58af8e3aeb819012f
 
-PODFILE CHECKSUM: aa257266404ebb97c0c979255d8e98e54e541732
+PODFILE CHECKSUM: 2b512c56ec2e50807d609636c71b5baffe2a933f
 
 COCOAPODS: 1.16.2
