@@ -690,9 +690,6 @@ workflows:
         when:
             and:
                 - << pipeline.parameters.run_commit >>
-                - equal:
-                    - main
-                    - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - check:
