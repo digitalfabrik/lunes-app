@@ -38,7 +38,12 @@ The same applies for PR names. Branch names should also start with `<Issue key>`
 
 To merge a pull request, it has to match our Definition of Done. It includes among others:
 
-- All checks (linting, unit and e2e tests, ...) have to pass.
+- All checks have to pass
+  - [Release notes](https://github.com/digitalfabrik/lunes-app/blob/main/docs/conventions.md#release-notes) have been added for user visible changes
+  - Linting: `yarn lint`
+  - Typescript: `yarn ts:check`
+  - Prettier: `yarn prettier`
+  - Unit tests: `yarn test`
 - No changes are requested.
 - Two approvals are needed.
 - New and changed functionality should be tested sufficiently, both manual and by writing unit tests.
