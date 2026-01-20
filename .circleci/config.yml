@@ -293,7 +293,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 6
         macos:
-            xcode: 26.2.0
+            xcode: 16.4.0
         resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
@@ -472,7 +472,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 26.2.0
+            xcode: 16.4.0
         parameters:
             production_delivery:
                 default: false
@@ -591,7 +591,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 26.2.0
+            xcode: 16.4.0
         resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
