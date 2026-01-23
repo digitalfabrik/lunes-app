@@ -81,6 +81,7 @@ describe('SingleChoiceExercise', () => {
         navigation={navigation}
         route={route}
         exerciseKey={1}
+        isRepetitionExercise={false}
       />,
     )
 
@@ -108,6 +109,7 @@ describe('SingleChoiceExercise', () => {
         navigation={navigation}
         route={route}
         exerciseKey={1}
+        isRepetitionExercise={false}
       />,
     )
 
@@ -135,6 +137,7 @@ describe('SingleChoiceExercise', () => {
         navigation={navigation}
         route={route}
         exerciseKey={1}
+        isRepetitionExercise={false}
       />,
     )
 
@@ -162,6 +165,7 @@ describe('SingleChoiceExercise', () => {
         navigation={navigation}
         route={route}
         exerciseKey={1}
+        isRepetitionExercise={false}
       />,
     )
 

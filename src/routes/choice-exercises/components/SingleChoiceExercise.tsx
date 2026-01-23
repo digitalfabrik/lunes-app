@@ -13,7 +13,7 @@ import {
   Answer,
   BUTTONS_THEME,
   ExerciseKey,
-  numberOfMaxRetries,
+  NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
   FIRST_EXERCISE_FOR_REPETITION,
@@ -23,7 +23,7 @@ import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
-import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
+import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
 
@@ -38,9 +38,10 @@ type SingleChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   unitId: StandardUnitId | null
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
-  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
+  route: RouteProp<RoutesParams, 'WordChoiceExercise'>
   exerciseKey: ExerciseKey
+  isRepetitionExercise: boolean
 }
 
 const CORRECT_ANSWER_DELAY = 700
@@ -52,6 +53,7 @@ const ChoiceExerciseScreen = ({
   navigation,
   route,
   exerciseKey,
+  isRepetitionExercise,
 }: SingleChoiceExerciseProps): ReactElement => {
   const storageCache = useStorageCache()
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
@@ -62,12 +64,13 @@ const ChoiceExerciseScreen = ({
   )
   const { vocabularyItem, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
+  const repetitionService = RepetitionService.fromStorageCache(storageCache)
 
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
     ...vocabularyItem.alternatives,
   ]
-  const needsToBeRepeated = numberOfTries < numberOfMaxRetries && result === SIMPLE_RESULTS.incorrect
+  const needsToBeRepeated = numberOfTries < NUMBER_OF_MAX_RETRIES && result === SIMPLE_RESULTS.incorrect
 
   const initializeExercise = useCallback(
     (force = false) => {
@@ -90,42 +93,48 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    let unlockedNextExercise = true
     if (unitId !== null) {
-      const progress = storageCache.getItem('progress')
       await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
-      unlockedNextExercise = willNextExerciseUnlock(progress[unitId.id]?.[exerciseKey], calculateScore(results))
     }
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,
       results,
-      unlockedNextExercise,
     })
     initializeExercise(true)
   }
   const count = vocabularyItems.length
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
-    await onExerciseFinished(
-      results.map(it => ({ ...it, numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : numberOfMaxRetries, result })),
-    )
+    const cheatedResults = results.map(it => ({
+      ...it,
+      numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : NUMBER_OF_MAX_RETRIES,
+      result,
+    }))
+    await onExerciseFinished(cheatedResults)
+    if (isRepetitionExercise) {
+      await repetitionService.updateSeveralWordNodeCards(cheatedResults)
+    }
   }
 
   const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
     answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
 
-  const updateResult = (numberOfTries: number, result: SimpleResult): void => {
+  const updateResult = async (numberOfTries: number, isCorrect: boolean): Promise<void> => {
+    const result = isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
     const newResults = [...results]
     newResults[currentWord] = { ...newResults[currentWord], numberOfTries, result }
     setResults(newResults)
+    if (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES) {
+      await repetitionService.updateWordNodeCard(newResults[currentWord])
+    }
   }
 
   const onClickAnswer = async (clickedAnswer: Answer): Promise<void> => {
     setSelectedAnswer(clickedAnswer)
 
     const isCorrect = correctAnswers.some(it => isAnswerEqual(it, clickedAnswer))
-    updateResult(numberOfTries + 1, isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect)
+    await updateResult(numberOfTries + 1, isCorrect)
 
     if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && !isCorrect) {
       const repetitionService = RepetitionService.fromStorageCache(storageCache)

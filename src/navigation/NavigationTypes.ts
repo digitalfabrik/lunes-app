@@ -93,11 +93,7 @@ export type RoutesParams = {
   StandardExercises: StandardExercisesParams
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
-  ArticleChoiceExercise: ExerciseParams
-  WriteExercise: ExerciseParams
-  ExerciseFinished: ResultParams & {
-    unlockedNextExercise: boolean
-  }
+  ExerciseFinished: ResultParams
   labelOverrides?: ExerciseParams
   Result: ResultParams
   ResultDetail: ResultParams & {

@@ -173,4 +173,19 @@ export class RepetitionService {
 
   public updateWordNodeCard = async (wordWithResult: VocabularyItemResult): Promise<void> =>
     this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct')
+
+  public updateSeveralWordNodeCards = async (wordsWithResult: VocabularyItemResult[]): Promise<void> => {
+    const newWordCards = this.getWordNodeCards().slice()
+    wordsWithResult.forEach(word => {
+      const index = newWordCards.findIndex(wordCard =>
+        areVocabularyItemIdsEqual(wordCard.word.id, word.vocabularyItem.id),
+      )
+      if (index !== -1) {
+        const targetSection = newWordCards[index].section + (word.result === 'correct' ? 1 : -1)
+        newWordCards[index].section = RepetitionService.getSectionWithBoundCheck(targetSection)
+        newWordCards[index].inThisSectionSince = new Date()
+      }
+    })
+    return this.setWordNodeCards(newWordCards)
+  }
 }
