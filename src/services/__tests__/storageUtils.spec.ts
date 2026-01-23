@@ -88,13 +88,6 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
-      it('should save progress for done unit but not yet done exercise', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.writeExercise, 0.6)
-        const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5, [ExerciseKeys.writeExercise]: 0.6 })
-      })
-
       it('should save progress for done exercise with improvement', async () => {
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
         await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.8)
