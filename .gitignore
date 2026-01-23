@@ -83,3 +83,6 @@ tools/.yarn/*
 
 # Coverage
 src/coverage/
+
+# TS
+tsconfig.tsbuildinfo

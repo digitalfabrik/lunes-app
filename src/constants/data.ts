@@ -9,8 +9,6 @@ import labels from './labels.json'
 export const ExerciseKeys = {
   vocabularyList: 0,
   wordChoiceExercise: 1,
-  articleChoiceExercise: 2,
-  writeExercise: 3,
 } as const
 export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
 
@@ -21,7 +19,7 @@ export type Exercise = {
   title: string
   description: string
   level: number
-  screen: 'VocabularyList' | 'WordChoiceExercise' | 'ArticleChoiceExercise' | 'WriteExercise'
+  screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
 export const EXERCISES: Readonly<Exercise[]> = [
@@ -38,20 +36,6 @@ export const EXERCISES: Readonly<Exercise[]> = [
     description: labels.exercises.wordChoice.description,
     level: 1,
     screen: 'WordChoiceExercise',
-  },
-  {
-    key: ExerciseKeys.articleChoiceExercise,
-    title: labels.exercises.articleChoice.title,
-    description: labels.exercises.articleChoice.description,
-    level: 2,
-    screen: 'ArticleChoiceExercise',
-  },
-  {
-    key: ExerciseKeys.writeExercise,
-    title: labels.exercises.write.title,
-    description: labels.exercises.write.description,
-    level: 3,
-    screen: 'WriteExercise',
   },
 ] as const
 

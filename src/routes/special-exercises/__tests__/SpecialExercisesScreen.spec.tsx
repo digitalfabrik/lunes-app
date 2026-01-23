@@ -35,9 +35,6 @@ describe('SpecialExercisesScreen', () => {
     expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.title)).toBeDefined()
     expect(getByText(getLabels().exercises.wordChoice.title)).toBeDefined()
-    expect(getByText(getLabels().exercises.articleChoice.title)).toBeDefined()
-    expect(getByText(getLabels().exercises.write.title)).toBeDefined()
-    expect(getByText(getLabels().exercises.write.description)).toBeDefined()
   })
 
   it('should render correctly on click', () => {

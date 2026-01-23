@@ -60,29 +60,10 @@ describe('ExerciseFinishedScreen', () => {
     expect(queryByTestId('repetition-modal')).toBeTruthy()
   })
 
-  it('should render and handle button click for unlocked next exercise', () => {
-    const route = getRoute(1, true, true)
-    const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(
-      getByText(
-        `${getLabels().results.unlockExercise.part1}, ${EXERCISES[2].title} ${getLabels().results.unlockExercise.part2}`,
-      ),
-    ).toBeDefined()
-    expect(
-      getByText(`4 ${getLabels().results.of} 4 ${getLabels().general.word.plural} ${getLabels().results.correct}`),
-    ).toBeDefined()
-    const button = getByText(getLabels().results.action.nextExercise)
-    fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, expect.anything())
-  })
-
   it('should render and handle button click for good feedback', () => {
     const route = getRoute(1, true, false)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(getByText(getLabels().results.feedbackGood.replace('\n', ''))).toBeDefined()
-    const button = getByText(getLabels().results.action.continue)
-    fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[2].screen, expect.anything())
+    expect(getByText(getLabels().results.finishedUnit.replace('\n', ''))).toBeDefined()
   })
 
   it('should render and handle button click for bad feedback', () => {
@@ -95,7 +76,7 @@ describe('ExerciseFinishedScreen', () => {
   })
 
   it('should render and handle button click for completed unit', () => {
-    const route = getRoute(3, true, true)
+    const route = getRoute(1, true, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.finishedUnit)).toBeDefined()
     const button = getByText(getLabels().results.action.back)

@@ -51,28 +51,12 @@ describe('helpers', () => {
       expect(exerciseKey).toBe(0)
     })
 
-    it('should open third exercise of first unit, if two exercise were finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
-      await storageCache.setItem('progress', { '1': { '0': 10, '1': 10 } })
-      const { unit, exerciseKey } = await getNextExerciseWithCheck()
-      expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(2)
-    })
-
     it('should open first exercise, if only second exercise was finished yet', async () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
       await storageCache.setItem('progress', { '1': { '1': 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
       expect(exerciseKey).toBe(0)
-    })
-
-    it('should open third exercise of first unit, if three exercises were finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
-      await storageCache.setItem('progress', { '1': { '0': 10, '1': 10, '2': 10 } })
-      const { unit, exerciseKey } = await getNextExerciseWithCheck()
-      expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(3)
     })
 
     it('should open first exercise of second unit, if first unit was finished yet', async () => {
