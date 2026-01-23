@@ -6,7 +6,6 @@ import useStorage from '../hooks/useStorage'
 import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
-import ArticleChoiceExerciseScreen from '../routes/choice-exercises/ArticleChoiceExerciseScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
 import JobSelectionScreen from '../routes/job-selection/JobSelectionScreen'
@@ -14,7 +13,6 @@ import ImageTrainingScreen from '../routes/training/ImageTrainingScreen'
 import SentenceTrainingScreen from '../routes/training/SentenceTrainingScreen'
 import TrainingFinishedScreen from '../routes/training/TrainingFinishedScreen'
 import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise/VocabularyDetailExerciseScreen'
-import WriteExerciseScreen from '../routes/write-exercise/WriteExerciseScreen'
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
@@ -69,17 +67,6 @@ const HomeStackNavigator = (): ReactElement | null => {
         component={WriteExerciseScreen}
         options={({ navigation }) => options(cancelExercise, navigation, true)}
       />
-      <Stack.Screen
-        name='ImageTraining'
-        component={ImageTrainingScreen}
-        options={({ navigation }) => options(cancelExercise, navigation, true)}
-      />
-      <Stack.Screen
-        name='SentenceTraining'
-        component={SentenceTrainingScreen}
-        options={({ navigation }) => options(cancelExercise, navigation, true)}
-      />
-      <Stack.Screen name='TrainingFinished' component={TrainingFinishedScreen} options={{ headerShown: false }} />
       <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   )

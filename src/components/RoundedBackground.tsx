@@ -12,6 +12,7 @@ const RoundedBackgroundView = styled.View<{ color: string }>`
   border-bottom-right-radius: 50%;
   padding-bottom: ${props => props.theme.spacings.md};
   margin-bottom: ${props => props.theme.spacings.xxl};
+  padding-top: ${props => props.theme.spacings.xl};
   align-items: center;
 `
 
