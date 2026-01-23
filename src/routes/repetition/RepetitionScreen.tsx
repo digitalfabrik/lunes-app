@@ -1,4 +1,4 @@
-import { CommonActions } from '@react-navigation/native'
+// import { CommonActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -83,8 +83,9 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const repetitionService = useRepetitionService()
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
+  // TODO: Waiting for a decision on where this should link to.
   const navigate = async () => {
-    const closeExerciseAction = CommonActions.navigate('Repetition')
+    /*  const closeExerciseAction = CommonActions.navigate('Repetition')
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
     if (wordNodeCards.length > 0) {
       navigation.navigate('WriteExercise', {
@@ -93,7 +94,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         unitTitle: '',
         closeExerciseAction,
       })
-    }
+    } */
   }
 
   return (
