@@ -68,8 +68,8 @@ describe('WriteExerciseScreen', () => {
     params: {
       contentType: 'standard',
       vocabularyItems,
-      disciplineId: 1,
-      disciplineTitle: 'TestTitel',
+      unitId: { id: 1, type: 'standard' },
+      unitTitle: 'TestTitel',
       closeExerciseAction: CommonActions.goBack(),
     },
   }
@@ -169,10 +169,15 @@ describe('WriteExerciseScreen', () => {
       fireEvent.press(getByText(getLabels().exercises.showResults))
     })
 
-    expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, ExerciseKeys.writeExercise, [
-      { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-      { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
-    ])
+    expect(saveExerciseProgress).toHaveBeenCalledWith(
+      storageCache,
+      { id: 1, type: 'standard' },
+      ExerciseKeys.writeExercise,
+      [
+        { vocabularyItem: vocabularyItems[0], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+        { vocabularyItem: vocabularyItems[1], result: SIMPLE_RESULTS.correct, numberOfTries: 1 },
+      ],
+    )
   })
 
   const evaluate = (input: string, expectedFeedback: string) => {

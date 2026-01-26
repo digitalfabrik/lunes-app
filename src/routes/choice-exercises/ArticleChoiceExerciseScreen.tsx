@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { Answer, ARTICLES, ExerciseKeys } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import SingleChoiceExercise from './components/SingleChoiceExercise'
 
@@ -15,7 +15,7 @@ type ArticleChoiceExerciseScreenProps = {
 
 const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExerciseScreenProps): ReactElement | null => {
   const { vocabularyItems, contentType } = route.params
-  const disciplineId = contentType === 'standard' ? route.params.disciplineId : 0
+  const unitId = contentType === 'standard' ? route.params.unitId : null
 
   // Exclude articles 'keiner' and 'die (Plural)'
   const answerOptions = ARTICLES.filter(it => it.id !== 0 && it.id !== 4)
@@ -31,7 +31,7 @@ const ArticleChoiceExerciseScreen = ({ navigation, route }: ArticleChoiceExercis
     <RouteWrapper>
       <SingleChoiceExercise
         vocabularyItems={singularVocabularyItems}
-        disciplineId={disciplineId}
+        unitId={unitId}
         vocabularyItemToAnswer={vocabularyItemToAnswers}
         navigation={navigation}
         route={route}

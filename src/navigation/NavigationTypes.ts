@@ -1,7 +1,9 @@
 import { CommonNavigationAction } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import { Discipline, VocabularyItem } from '../constants/endpoints'
+import Job from '../models/Job'
+import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
+import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
 
 export type VocabularyItemResult = {
   vocabularyItem: VocabularyItem
@@ -13,7 +15,7 @@ export type ContentType = 'standard' | 'userVocabulary' | 'repetition'
 
 type StandardExercise = {
   contentType: 'standard'
-  disciplineId: number
+  unitId: StandardUnitId
 }
 
 type SpecialExercise = {
@@ -21,7 +23,7 @@ type SpecialExercise = {
 }
 
 type SharedExerciseParams = {
-  disciplineTitle: string
+  unitTitle: string
   vocabularyItems: VocabularyItem[]
   closeExerciseAction: CommonNavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
@@ -33,14 +35,15 @@ type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
 } & ExerciseParams
 
-type SharedExercisesParams = {
-  discipline: Discipline
-  vocabularyItems: VocabularyItem[] | null
-  closeExerciseAction?: CommonNavigationAction
-} & Omit<SharedExerciseParams, 'vocabularyItems' | 'closeExerciseAction'>
-
-export type StandardExercisesParams = StandardExercise & SharedExercisesParams
-export type SpecialExercisesParams = SpecialExercise & SharedExercisesParams
+export type StandardExercisesParams = {
+  unit: StandardUnit
+  jobTitle: string
+}
+export type SpecialExercisesParams = {
+  vocabularyItems: VocabularyItem[]
+  unit: UserVocabularyUnit
+  jobTitle: string
+}
 
 type ResultParams = ExerciseParams & {
   exercise: ExerciseKey
@@ -60,20 +63,16 @@ export type RoutesParams = {
   Home: undefined
   UserVocabularyOverview: undefined
   UserVocabularyProcess: {
-    itemToEdit?: VocabularyItem
+    itemToEdit?: UserVocabularyItem
   }
   UserVocabularyList: undefined
-  UserVocabularyDetail: { vocabularyItem: VocabularyItem }
-  ScopeSelection: {
+  UserVocabularyDetail: { vocabularyItem: UserVocabularyItem }
+  JobSelection: {
     initialSelection: boolean
   }
   AddCustomDiscipline: undefined
-  DisciplineSelection: {
-    discipline: Discipline
-  }
-  ProfessionSelection: {
-    discipline: Discipline
-    initialSelection: boolean
+  UnitSelection: {
+    job: Job
   }
   VocabularyDetailExercise: VocabularyDetailExerciseParams
   StandardExercises: StandardExercisesParams
@@ -99,7 +98,7 @@ export type RoutesParams = {
   Repetition: undefined
   RepetitionWordList: undefined
   VocabularyDetail: { vocabularyItem: VocabularyItem }
-  UserVocabularyDisciplineSelection: undefined
+  UserVocabularyUnitSelection: undefined
   SpecialExercises: SpecialExercisesParams
 }
 

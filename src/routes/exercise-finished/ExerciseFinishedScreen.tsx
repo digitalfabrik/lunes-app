@@ -76,7 +76,7 @@ type ExerciseFinishedScreenProps = {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, disciplineTitle, closeExerciseAction, unlockedNextExercise } = route.params
+  const { exercise, results, unitTitle, closeExerciseAction, unlockedNextExercise } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
@@ -96,7 +96,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     }
   }
 
-  const navigateToNextDiscipline = (): void => navigation.pop(2)
+  const navigateToNextUnit = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
@@ -128,10 +128,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         }
       }
       return {
-        message: getLabels().results.finishedDiscipline,
+        message: getLabels().results.finishedUnit,
         resultColor: theme.colors.correct,
         buttonText: getLabels().results.action.back,
-        navigationAction: navigateToNextDiscipline,
+        navigationAction: navigateToNextUnit,
         ResultIcon: PartyHornIcon,
       }
     }
@@ -198,7 +198,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           buttonTheme={BUTTONS_THEME.contained}
           onPress={() => navigationAction()}
         />
-        <ShareSection disciplineTitle={disciplineTitle} results={results} />
+        <ShareSection unitTitle={unitTitle} results={results} />
       </Root>
     </RouteWrapper>
   )

@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Favorite } from '../../constants/data'
-import { VocabularyItem } from '../../constants/endpoints'
 import useStorage from '../../hooks/useStorage'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { wordsDescription } from '../../services/helpers'
 import FavoriteItem from './components/FavoriteItem'
@@ -42,6 +42,7 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
           ListHeaderComponent={<ListHeader>{wordsDescription(data.length)}</ListHeader>}
           data={data}
           renderItem={renderItem}
+          keyExtractor={(item: Favorite) => JSON.stringify(item)}
         />
       </Root>
     </RouteWrapper>

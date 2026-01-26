@@ -53,7 +53,7 @@ const Subheading = styled(ContentTextLight)`
 `
 
 type NextExerciseCardProps = {
-  thumbnail: string
+  thumbnail?: string
   heading: string
   subheading: string
   buttonLabel: string
