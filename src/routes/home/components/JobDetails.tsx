@@ -62,7 +62,7 @@ const JobDetails = ({ job, navigateToJob, navigateToNextExercise }: JobDetailsPr
         <UnitText>{completedUnits > 0 ? getLabels().home.progressDescription : childrenLabel(job)}</UnitText>
       </ProgressContainer>
       <NextExerciseCard
-        thumbnail={vocabularyItems[0].images[0]}
+        thumbnail={vocabularyItems[0]?.images[0]}
         onPress={() => navigateToNextExercise(nextExerciseData)}
         heading={EXERCISES[exerciseKey].title}
         buttonLabel={nextExerciseData.exerciseKey === 0 ? getLabels().home.start : getLabels().home.continue}
