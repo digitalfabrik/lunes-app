@@ -2524,21 +2524,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-voice/voice@github:react-native-voice/voice":
-  version: 4.0.1
-  resolution: "@react-native-voice/voice@https://github.com/react-native-voice/voice.git#commit=05484b3cd2501addb0f3ab91782e82227375469b"
-  dependencies:
-    invariant: ^2.2.4
-  peerDependencies:
-    expo: ">=48.0.0"
-    react-native: ">=0.71.0"
-  peerDependenciesMeta:
-    expo:
-      optional: true
-  checksum: 87a6c3a89ec4176566f6ea443345335fec9eb5463ae14a9863e0ee4dde2540db62c18de55d306460397e3457a1021151d064e0a4771f7d1bdb3edd56650f7b8d
-  languageName: node
-  linkType: hard
-
 "@react-native/assets-registry@npm:0.78.3":
   version: 0.78.3
   resolution: "@react-native/assets-registry@npm:0.78.3"
@@ -8674,7 +8659,6 @@ __metadata:
     "@react-native-community/cli-platform-android": 20.0.2
     "@react-native-community/cli-platform-ios": 20.0.2
     "@react-native-picker/picker": ^2.9.0
-    "@react-native-voice/voice": "github:react-native-voice/voice"
     "@react-native/babel-preset": ^0.78.3
     "@react-native/metro-config": ^0.78.3
     "@react-navigation/bottom-tabs": ^6.6.1
@@ -8733,6 +8717,7 @@ __metadata:
     react-native-safe-area-context: "^5.6.1 "
     react-native-screens: ^4.10.0
     react-native-sound-player: 0.14.5
+    react-native-speech-to-text: "link:./modules/speech-to-text"
     react-native-svg: 15.12.1
     react-native-svg-transformer: ^1.5.1
     react-native-tab-view: 3.5.2
@@ -10379,6 +10364,12 @@ __metadata:
   checksum: 9c1236c9725b5eaef839b9028f046bb59c7531bc0c4bacbb8d584a3197bb3ab5d35e3304f8c96591917914f0a6f04bacd3818cfaf687e5bc65242c23cf223bd0
   languageName: node
   linkType: hard
+
+"react-native-speech-to-text@link:./modules/speech-to-text::locator=lunes%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "react-native-speech-to-text@link:./modules/speech-to-text::locator=lunes%40workspace%3A."
+  languageName: node
+  linkType: soft
 
 "react-native-svg-transformer@npm:^1.5.1":
   version: 1.5.1

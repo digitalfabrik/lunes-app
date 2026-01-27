@@ -66,7 +66,6 @@ const normalize = (word: string): string => word.toLowerCase().replace(/[.\-_ ]/
 const checkRecognitionResults = (expected: VocabularyItem, results: string[]): boolean => {
   const expectedOptions = [normalize(expected.word), normalize(`${expected.article.value} ${expected.word}`)]
   const normalizedResults = results.map(normalize)
-  console.log('checkRecognitionResults: ', expectedOptions, normalizedResults, results)
   return normalizedResults.find(result => expectedOptions.find(option => option === result) !== undefined) !== undefined
 }
 
@@ -113,6 +112,7 @@ const ResultIndicator = ({ state, dispatch }: { state: State; dispatch: Dispatch
 
   let content: null | ReactElement = null
   if (state.answerState === 'error') {
+    // todo
   } else {
     const isCorrect = state.answerState === 'correct'
     const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
