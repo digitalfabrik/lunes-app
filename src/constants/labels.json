@@ -102,7 +102,10 @@
       "speech": {
         "title": "Sprechstudio",
         "description": "Die Vokabel richtig aussprechen",
-        "sayWord": "Sprich aus, was hier gezeigt wird!"
+        "sayWord": "Sprich aus, was hier gezeigt wird!",
+        "error": "Wir konnten leider nicht verstehen, was du gesagt hast.",
+        "speakNow": "Jetzt Sprechen",
+        "pressToSpeak": "Tippe zum Sprechen auf den Button"
       },
       "sentence": {
         "title": "Satzbausteine",

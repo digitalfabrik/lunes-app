@@ -3,19 +3,22 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Dispatch, ReactElement, useEffect, useReducer } from 'react'
 import styled from 'styled-components/native'
 
-import { ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
+import { ArrowRightIcon, SadSmileyIcon, ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
+import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import theme from '../../constants/theme'
+import { Color } from '../../constants/theme/colors'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { getLabels, shuffleArray } from '../../services/helpers'
 import BottomSheet from './components/BottomSheet'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -41,16 +44,24 @@ const StatusText = styled(ContentText)`
 export type State = {
   vocabularyItems: VocabularyItem[]
   currentIndex: number
+  hasWrongAnswerForCurrentWord: boolean
   answerState: 'correct' | 'incorrect' | 'error' | null
   correctAnswersCount: number
+  isFinished: boolean
 }
 
-export const initializeState = (vocabularyItems: VocabularyItem[]): State => ({
-  vocabularyItems,
-  currentIndex: 0,
-  answerState: null,
-  correctAnswersCount: 0,
-})
+export const initializeState = (vocabularyItems: VocabularyItem[]): State => {
+  const shuffled = shuffleArray(vocabularyItems).splice(0, MAX_TRAINING_REPETITIONS)
+
+  return {
+    vocabularyItems: shuffled,
+    currentIndex: 0,
+    hasWrongAnswerForCurrentWord: false,
+    answerState: null,
+    correctAnswersCount: 0,
+    isFinished: shuffled.length === 0,
+  }
+}
 
 type Action =
   | {
@@ -58,7 +69,7 @@ type Action =
       results: string[]
     }
   | { type: 'speechError' }
-  | { type: 'continue' }
+  | { type: 'continue'; isSkipping: boolean }
   | { type: 'repeat' }
 
 const normalize = (word: string): string => word.toLowerCase().replace(/[.\-_ ]/g, '')
@@ -74,16 +85,26 @@ export const stateReducer = (state: State, action: Action): State => {
     case 'speechRecognized': {
       const wasCorrect = checkRecognitionResults(state.vocabularyItems[state.currentIndex], action.results)
       const answerState = wasCorrect ? 'correct' : 'incorrect'
-      return { ...state, answerState }
+      const hasWrongAnswerForCurrentWord = state.hasWrongAnswerForCurrentWord || !wasCorrect
+      return { ...state, answerState, hasWrongAnswerForCurrentWord }
     }
     case 'speechError':
       return { ...state, answerState: 'error' }
     case 'continue': {
-      const nextIndex =
-        state.currentIndex + 1 >= state.vocabularyItems.length ? state.currentIndex : state.currentIndex + 1
+      const isFinished = state.currentIndex + 1 >= state.vocabularyItems.length
+      const nextIndex = isFinished ? state.currentIndex : state.currentIndex + 1
       const correctAnswersCount =
-        state.answerState === 'correct' ? state.correctAnswersCount + 1 : state.correctAnswersCount
-      return { ...state, currentIndex: nextIndex, correctAnswersCount, answerState: null }
+        state.hasWrongAnswerForCurrentWord || action.isSkipping
+          ? state.correctAnswersCount
+          : state.correctAnswersCount + 1
+      return {
+        ...state,
+        currentIndex: nextIndex,
+        isFinished,
+        correctAnswersCount,
+        answerState: null,
+        hasWrongAnswerForCurrentWord: false,
+      }
     }
     case 'repeat': {
       return { ...state, answerState: null }
@@ -100,49 +121,93 @@ const BottomSheetRow = styled.View`
   align-items: center;
 `
 
-const BottomSheetColumn = styled.View`
+const BottomSheetButtonContainer = styled.View`
+  align-items: center;
+`
+
+const TextRow = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-align: center;
   gap: ${props => props.theme.spacings.sm};
 `
 
+const BottomSheetInfoContainer = styled.View`
+  background-color: ${props => props.theme.colors.backgroundTransparent};
+  padding: ${props => props.theme.spacings.sm};
+  margin-top: ${props => props.theme.spacings.md};
+  border-radius: ${props => props.theme.spacings.xxs};
+  width: 100%;
+`
+
+const BottomSheetErrorText = styled(HeadingText)`
+  text-align: center;
+`
 const ResultIndicator = ({ state, dispatch }: { state: State; dispatch: Dispatch<Action> }): ReactElement => {
   const tryAgain = state.answerState === 'incorrect' || state.answerState === 'error'
+  const word = state.vocabularyItems[state.currentIndex]
 
-  let content: null | ReactElement = null
+  let content: ReactElement
+  let color: Color
   if (state.answerState === 'error') {
-    // todo
+    color = theme.colors.trainingIncorrect
+    content = (
+      <>
+        <BottomSheetRow>
+          <SadSmileyIcon />
+        </BottomSheetRow>
+        <TextRow>
+          <BottomSheetErrorText>{getLabels().exercises.training.speech.error}</BottomSheetErrorText>
+        </TextRow>
+      </>
+    )
   } else {
     const isCorrect = state.answerState === 'correct'
     const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
-
+    color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
     content = (
-      <BottomSheetColumn>
-        <Icon width='32' height='32' />
-        <HeadingText>
-          {isCorrect
-            ? getLabels().exercises.training.sentence.correct
-            : getLabels().exercises.training.sentence.incorrect}
-        </HeadingText>
-      </BottomSheetColumn>
+      <>
+        <TextRow>
+          <Icon width='32' height='32' />
+          <HeadingText>
+            {isCorrect
+              ? getLabels().exercises.training.sentence.correct
+              : getLabels().exercises.training.sentence.incorrect}
+          </HeadingText>
+        </TextRow>
+        <BottomSheetInfoContainer>
+          <TextRow>
+            {word.audio !== null && <AudioPlayer audio={word.audio} disabled={false} />}
+            <ContentText>
+              {word.article.value} {word.word}
+            </ContentText>
+          </TextRow>
+        </BottomSheetInfoContainer>
+      </>
     )
   }
 
   return (
-    <BottomSheet visible={state.answerState !== null}>
+    <BottomSheet visible={state.answerState !== null} backgroundColor={color}>
       <BottomSheetRow>{content}</BottomSheetRow>
-      <BottomSheetRow>
+      <BottomSheetButtonContainer>
         {tryAgain ? (
           <Button
             onPress={() => dispatch({ type: 'repeat' })}
-            label='Nochmal versuchen'
+            label={getLabels().exercises.tryAgain}
             buttonTheme={BUTTONS_THEME.contained}
+            iconRight={ArrowRightIcon}
           />
         ) : (
-          <Button onPress={() => dispatch({ type: 'continue' })} label='Weiter' buttonTheme={BUTTONS_THEME.contained} />
+          <Button
+            onPress={() => dispatch({ type: 'continue', isSkipping: false })}
+            label={getLabels().exercises.continue}
+            buttonTheme={BUTTONS_THEME.contained}
+            iconRight={ArrowRightIcon}
+          />
         )}
-      </BottomSheetRow>
+      </BottomSheetButtonContainer>
     </BottomSheet>
   )
 }
@@ -160,16 +225,18 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const recognition = useVoiceRecognition()
 
   useEffect(() => {
-    if (state.currentIndex >= state.vocabularyItems.length) {
+    if (state.isFinished) {
       navigation.replace('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 0, total: state.vocabularyItems.length },
+        results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [job, navigation, state.currentIndex, state.vocabularyItems.length])
+  }, [job, navigation, state.isFinished, state.vocabularyItems.length, state.correctAnswersCount])
 
-  const statusText = recognition.active ? 'Zum Beenden loslassen' : 'Tippe zum Sprechen auf den Button'
+  const statusText = recognition.active
+    ? getLabels().exercises.training.speech.speakNow
+    : getLabels().exercises.training.speech.pressToSpeak
   return (
     <>
       <TrainingExerciseHeader
@@ -183,10 +250,11 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         footer={
           <Button
             onPress={() => {
-              dispatch({ type: 'continue' })
+              dispatch({ type: 'continue', isSkipping: true })
             }}
-            buttonTheme={BUTTONS_THEME.outlined}
+            buttonTheme={BUTTONS_THEME.text}
             label={getLabels().exercises.skip}
+            iconRight={ArrowRightIcon}
           />
         }>
         <Centered>
