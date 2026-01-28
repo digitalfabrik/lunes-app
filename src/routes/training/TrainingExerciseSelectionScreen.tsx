@@ -29,9 +29,10 @@ export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
     navigate: (navigation, job) => navigation.navigate('ImageTraining', { job }),
   },
   speech: {
-    title: getLabels().exercises.training.voice.title,
-    description: getLabels().exercises.training.voice.description,
+    title: getLabels().exercises.training.speech.title,
+    description: getLabels().exercises.training.speech.description,
     image: <TrainingSpeech />,
+    navigate: (navigation, job) => navigation.navigate('SpeechTraining', { job }),
   },
   sentence: {
     title: getLabels().exercises.training.sentence.title,
