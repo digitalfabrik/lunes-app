@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { MicrophoneIcon } from '../../../../assets/images'
@@ -12,27 +12,18 @@ const RecordingButtonContainer = styled.Pressable<{ pressed: boolean }>`
 `
 
 type RecordingButtonProps = {
-  onPressIn: () => void
-  onPressOut: () => void
+  onPress: () => void
+  isRecording: boolean
 }
 
-const RecordingButton = ({ onPressIn, onPressOut }: RecordingButtonProps): ReactElement => {
-  const [pressed, setPressed] = useState(false)
-
-  return (
-    <RecordingButtonContainer
-      onPressIn={() => {
-        setPressed(!pressed)
-        onPressIn()
-      }}
-      onPressOut={() => {
-        setPressed(!pressed)
-        onPressOut()
-      }}
-      pressed={pressed}>
-      <MicrophoneIcon width={32} height={32} />
-    </RecordingButtonContainer>
-  )
-}
+const RecordingButton = ({ onPress, isRecording }: RecordingButtonProps): ReactElement => (
+  <RecordingButtonContainer
+    onPress={() => {
+      onPress()
+    }}
+    pressed={isRecording}>
+    <MicrophoneIcon width={32} height={32} />
+  </RecordingButtonContainer>
+)
 
 export default RecordingButton

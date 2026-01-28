@@ -157,13 +157,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const currentWord = state.vocabularyItems[state.currentIndex]
 
-  const recognition = useVoiceRecognition(results => {
-    if (results !== null) {
-      dispatch({ type: 'speechRecognized', results })
-    } else {
-      dispatch({ type: 'speechError' })
-    }
-  })
+  const recognition = useVoiceRecognition()
 
   useEffect(() => {
     if (state.currentIndex >= state.vocabularyItems.length) {
@@ -200,11 +194,12 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
             <StyledImage src={currentWord.images[0]} />
           </ImageContainer>
           <RecordingButton
-            onPressIn={() => {
-              recognition.startRecording()
-            }}
-            onPressOut={() => {
-              recognition.stopRecording()
+            isRecording={recognition.active}
+            onPress={() => {
+              recognition
+                .startRecording({ hints: [currentWord.word] })
+                .then(results => dispatch({ type: 'speechRecognized', results }))
+                .catch(() => dispatch({ type: 'speechError' }))
             }}
           />
           <StatusText>{statusText}</StatusText>
