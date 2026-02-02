@@ -29,6 +29,8 @@ export type Storage = {
   favorites: Favorite[]
   // Jobs that were started before the CMS migration and may have lost progress
   notMigratedSelectedJobs: number[]
+  trackingConsentGiven: boolean
+  trackingConsentDate: Date | string | null
 }
 
 /**
@@ -49,6 +51,8 @@ export const newDefaultStorage = (): Storage => ({
   nextUserVocabularyId: 1,
   favorites: [],
   notMigratedSelectedJobs: [],
+  trackingConsentGiven: false,
+  trackingConsentDate: null,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -67,6 +71,8 @@ export const storageKeys: Record<StorageKey, string> = {
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
   notMigratedSelectedJobs: 'notMigratedSelectedJobs',
+  trackingConsentGiven: 'trackingConsentGiven',
+  trackingConsentDate: 'trackingConsentDate',
 }
 
 export type StorageValue = (typeof storageKeys)[keyof typeof storageKeys]
@@ -164,6 +170,8 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
     notMigratedSelectedJobs: getStorageItem('notMigratedSelectedJobs'),
+    trackingConsentGiven: getStorageItem('trackingConsentGiven'),
+    trackingConsentDate: getStorageItem('trackingConsentDate'),
   })
   return StorageCache.create(storage)
 }
