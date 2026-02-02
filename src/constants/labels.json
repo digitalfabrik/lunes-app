@@ -19,7 +19,10 @@
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
     "deleteJob": "Bereich löschen",
-    "jobs": "Berufe"
+    "jobs": "Berufe",
+    "learnVocabulary": "Vokabeln lernen",
+    "trainVocabulary": "Vokabeln trainieren",
+    "testYourKnowledge": "Teste dein Wissen"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -81,6 +84,21 @@
         "almostCorrect1": "Deine Eingabe",
         "almostCorrect2": "ist fast richtig.",
         "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
+      }
+    },
+    "training": {
+      "train": "Vokabeln trainieren",
+      "image": {
+        "title": "Bilderrätsel",
+        "description": "Die richtige Vokabel finden"
+      },
+      "voice": {
+        "title": "Sprechstudio",
+        "description": "Die Vokabel richtig aussprechen"
+      },
+      "sentence": {
+        "title": "Satzbausteine",
+        "description": "Die Vokabel richtig anwenden"
       }
     },
     "tryLater": "Später versuchen",
@@ -160,8 +178,8 @@
       "deviceIsMuted": "Gerät ist stummgeschaltet"
     },
     "unit": {
-      "singular": "Modul",
-      "plural": "Module"
+      "singular": "Einheit",
+      "plural": "Einheiten"
     },
     "word": {
       "singular": "Wort",
