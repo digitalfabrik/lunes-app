@@ -20,10 +20,17 @@ jest.mock('../../../../components/FeedbackModal', () => {
 })
 
 const navigateToJob = jest.fn()
+const navigateToTrainingExerciseSelection = jest.fn()
 
 describe('JobCard', () => {
   const renderJobCard = (): RenderAPI =>
-    render(<JobCard identifier={{ apiKey: '1', type: 'load-protected' }} navigateToJob={navigateToJob} />)
+    render(
+      <JobCard
+        identifier={{ apiKey: '1', type: 'load-protected' }}
+        navigateToJob={navigateToJob}
+        navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
+      />,
+    )
 
   it('should show job card', async () => {
     mockUseLoadAsyncWithData(mockJobs()[0])
