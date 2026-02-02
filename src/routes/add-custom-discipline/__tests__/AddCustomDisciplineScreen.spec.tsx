@@ -5,16 +5,16 @@ import React from 'react'
 import { View } from 'react-native'
 import { Code } from 'react-native-vision-camera'
 
-import { loadDiscipline } from '../../../hooks/useLoadDiscipline'
+import { getJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
 import render, { renderWithStorageCache } from '../../../testing/render'
 import AddCustomDisciplineScreen from '../AddCustomDisciplineScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadDiscipline')
+jest.mock('../../../services/CmsApi')
 
 type OnCodeScanned = (codes: Code[]) => Code[]
 jest.mock('react-native-vision-camera', () => ({
@@ -48,7 +48,7 @@ describe('AddCustomDisciplineScreen', () => {
   it('should navigate on successfully submit', async () => {
     await storageCache.setItem('customDisciplines', ['test'])
 
-    mocked(loadDiscipline).mockImplementationOnce(async () => mockDisciplines()[0])
+    mocked(getJob).mockImplementationOnce(async () => mockJobs()[0])
 
     const { findByText, findByPlaceholderText } = renderWithStorageCache(
       storageCache,
@@ -83,7 +83,7 @@ describe('AddCustomDisciplineScreen', () => {
     const { findByText, getByText, findByPlaceholderText } = render(
       <AddCustomDisciplineScreen navigation={navigation} />,
     )
-    mocked(loadDiscipline).mockRejectedValueOnce({ response: { status: 403 } })
+    mocked(getJob).mockRejectedValueOnce({ response: { status: 403 } })
     const textField = await findByPlaceholderText(getLabels().addCustomDiscipline.placeholder)
     fireEvent.changeText(textField, 'invalid-code')
     const submitButton = getByText(getLabels().addCustomDiscipline.submitLabel)

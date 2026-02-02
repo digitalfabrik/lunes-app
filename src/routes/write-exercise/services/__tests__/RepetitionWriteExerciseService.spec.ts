@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { SIMPLE_RESULTS } from '../../../../constants/data'
-import { VocabularyItem } from '../../../../constants/endpoints'
+import VocabularyItem from '../../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../../services/RepetitionService'
 import { StorageCache } from '../../../../services/Storage'
@@ -41,7 +41,7 @@ describe('RepetitionWriteExerciseService', () => {
       params: {
         contentType: 'repetition',
         vocabularyItems,
-        disciplineTitle: 'TestTitel',
+        unitTitle: 'TestTitel',
         closeExerciseAction: CommonActions.goBack(),
       },
     }

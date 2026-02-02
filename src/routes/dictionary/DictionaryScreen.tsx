@@ -9,8 +9,8 @@ import RouteWrapper from '../../components/RouteWrapper'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { VocabularyItem } from '../../constants/endpoints'
 import useLoadAllWords from '../../hooks/useLoadAllWords'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import {
   getLabels,
@@ -71,6 +71,7 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
                   navigateToDetail={navigateToDetail}
                 />
               )}
+              keyExtractor={({ id }) => JSON.stringify(id)}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={<ListEmpty label={getLabels().general.noResults} />}
             />

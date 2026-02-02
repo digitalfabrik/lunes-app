@@ -8,8 +8,8 @@ import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen
 import { EditableVocabularyDetailsScreen } from '../routes/VocabularyDetailScreen'
 import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
 import SpecialExercisesScreen from '../routes/special-exercises/SpecialExercisesScreen'
-import UserVocabularyDisciplineSelectionScreen from '../routes/user-vocabulary-discipline-selection/UserVocabularyDisciplineSelectionScreen'
 import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabularyListScreen'
+import UserVocabularyUnitSelectionScreen from '../routes/user-vocabulary-unit-selection/UserVocabularyUnitSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
 import screenOptions from './screenOptions'
@@ -46,8 +46,8 @@ const UserVocabularyStackNavigator = (): ReactElement | null => {
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen
-        name='UserVocabularyDisciplineSelection'
-        component={UserVocabularyDisciplineSelectionScreen}
+        name='UserVocabularyUnitSelection'
+        component={UserVocabularyUnitSelectionScreen}
         options={({ navigation }) => options(back, navigation)}
       />
       <Stack.Screen

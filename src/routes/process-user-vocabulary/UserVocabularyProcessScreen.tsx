@@ -14,14 +14,9 @@ import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
 import { ContentError } from '../../components/text/Content'
 import { HintText } from '../../components/text/Hint'
-import {
-  ARTICLES,
-  ArticleTypeExtended,
-  BUTTONS_THEME,
-  getArticleWithLabel,
-  VOCABULARY_ITEM_TYPES,
-} from '../../constants/data'
+import { ARTICLES, ArticleTypeExtended, BUTTONS_THEME, getArticleWithLabel } from '../../constants/data'
 import { useStorageCache } from '../../hooks/useStorage'
+import { UserVocabularyId } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
@@ -84,7 +79,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     if (itemToEdit) {
       setWord(itemToEdit.word)
       setArticle(getArticleWithLabel().find(item => item.id === itemToEdit.article.id) ?? null)
-      setImages(itemToEdit.images.map(image => image.image))
+      setImages(itemToEdit.images)
       setRecordingPath(itemToEdit.audio)
     }
   }, [itemToEdit])
@@ -122,10 +117,10 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
     }
 
     try {
-      let id: number
+      let id: UserVocabularyId
       if (itemToEdit) {
         id = itemToEdit.id
-        const originalImages = itemToEdit.images.map(image => image.image)
+        const originalImages = itemToEdit.images
         const imagesToBeDeletedInStorage = locallyDeletedImages.filter(image => originalImages.includes(image))
         await Promise.all(
           imagesToBeDeletedInStorage.map(async image => {
@@ -139,19 +134,19 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const imagePaths = await Promise.all(
         images.map(async (image, index) => {
           let path: string
-          const imageHasBeenSavedPreviously = itemToEdit?.images.map(image => image.image).includes(image)
+          const imageHasBeenSavedPreviously = itemToEdit?.images.includes(image)
           if (imageHasBeenSavedPreviously) {
             path = image
           } else {
             const timestamp = Date.now()
-            path = `file:///${DocumentDirectoryPath}/image-${id}-${index}-${timestamp}.jpg`
+            path = `file:///${DocumentDirectoryPath}/image-${id.index}-${index}-${timestamp}.jpg`
             await moveFile(image, path)
           }
-          return { id: index, image: path }
+          return path
         }),
       )
 
-      const audioPath = `file:///${DocumentDirectoryPath}/audio-${id}`
+      const audioPath = `file:///${DocumentDirectoryPath}/audio-${id.index}`
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
 
       if (recordingPath) {
@@ -165,11 +160,10 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         images: imagePaths,
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],
-        type: VOCABULARY_ITEM_TYPES.userCreated,
       }
 
       if (itemToEdit) {
-        await editUserVocabularyItem(storageCache, itemToEdit, itemToSave)
+        await editUserVocabularyItem(storageCache, itemToSave)
       } else {
         await addUserVocabularyItem(storageCache, itemToSave)
       }

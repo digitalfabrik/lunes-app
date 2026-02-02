@@ -11,7 +11,7 @@ import { loadAllWords } from '../../../hooks/useLoadAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
-import { getBaseURL, productionCMS, testCMS } from '../../../services/axios'
+import { CMS, getBaseURL, localhostCMS, productionCMS, testCMS } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
@@ -38,20 +38,13 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
-  const {
-    sentry,
-    currentCMS,
-    changeCMS,
-    disableDevMode,
-    enableDevMode,
-    fillRepetitionExerciseWithData,
-    clearProfessions,
-  } = getLabels().settings.debugModal
+  const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData, clearJobs } =
+    getLabels().settings.debugModal
   const repetitionService = useRepetitionService()
 
   const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
   const baseURL = getBaseURL(cmsUrlOverwrite)
-  const [_, setSelectedProfessions] = useStorage('selectedProfessions')
+  const [_, setSelectedJobs] = useStorage('selectedJobs')
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -64,7 +57,21 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   }
 
   const switchCMS = async (): Promise<void> => {
-    const updatedCMS = baseURL === productionCMS ? testCMS : productionCMS
+    let updatedCMS: CMS
+    switch (baseURL) {
+      case productionCMS: {
+        updatedCMS = localhostCMS
+        break
+      }
+      case localhostCMS: {
+        updatedCMS = testCMS
+        break
+      }
+      case testCMS: {
+        updatedCMS = productionCMS
+        break
+      }
+    }
     await setCmsUrlOverwrite(updatedCMS)
   }
 
@@ -72,8 +79,8 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
     await setIsDevModeEnabled(!isDevModeEnabled)
   }
 
-  const resetProfessions = async (): Promise<void> => {
-    await setSelectedProfessions(null)
+  const resetJobs = async (): Promise<void> => {
+    await setSelectedJobs(null)
   }
 
   const NUMBER_OF_TEST_VOCABULARY = 5
@@ -107,7 +114,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
             label={fillRepetitionExerciseWithData}
             buttonTheme={BUTTONS_THEME.contained}
           />
-          <Button onPress={resetProfessions} label={clearProfessions} buttonTheme={BUTTONS_THEME.contained} />
+          <Button onPress={resetJobs} label={clearJobs} buttonTheme={BUTTONS_THEME.contained} />
         </Container>
       )}
     </ModalSkeleton>

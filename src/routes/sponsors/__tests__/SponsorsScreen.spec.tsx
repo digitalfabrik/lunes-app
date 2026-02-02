@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
-import { Sponsor } from '../../../constants/endpoints'
+import Sponsor from '../../../models/Sponsor'
 import { openExternalUrl } from '../../../services/url'
 import { mockUseLoadAsyncWithData } from '../../../testing/mockUseLoadFromEndpoint'
 import renderWithTheme from '../../../testing/render'
@@ -20,6 +20,7 @@ describe('SponsorsScreen', () => {
     {
       name: 'Die Gebäudedienstleister',
       url: 'https://www.die-gebaeudedienstleister.de',
+      logo: null,
     },
   ]
 

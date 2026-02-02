@@ -27,12 +27,12 @@ describe('ShareButton', () => {
     },
   ]
 
-  const message = `${getLabels().results.share.message1} 'My Discipline' ${getLabels().results.share.message2} 1 ${
+  const message = `${getLabels().results.share.message1} 'My Unit' ${getLabels().results.share.message2} 1 ${
     getLabels().results.of
   } 2 ${getLabels().results.share.message3}`
 
   it('should call native share function', () => {
-    const { getByText } = render(<ShareButton disciplineTitle='My Discipline' results={results} />)
+    const { getByText } = render(<ShareButton unitTitle='My Unit' results={results} />)
     const button = getByText(getLabels().results.share.button)
     fireEvent.press(button)
     expect(Share.share).toHaveBeenCalledWith({ message })

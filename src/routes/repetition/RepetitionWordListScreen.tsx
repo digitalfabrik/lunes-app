@@ -7,8 +7,8 @@ import ListEmpty from '../../components/ListEmpty'
 import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
 import { SubheadingText } from '../../components/text/Subheading'
-import { VocabularyItem } from '../../constants/endpoints'
 import useRepetitionService from '../../hooks/useRepetitionService'
+import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
 import RepetitionListItem from './components/RepetitionListItem'
@@ -57,7 +57,7 @@ const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps)
           }
           data={repetitionVocabulary}
           showsVerticalScrollIndicator={false}
-          keyExtractor={({ word }) => word.id.toString()}
+          keyExtractor={({ word }) => JSON.stringify(word.id)}
           renderItem={({ item }) => (
             <RepetitionListItem
               vocabularyItem={item.word}

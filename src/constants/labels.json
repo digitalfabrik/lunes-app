@@ -1,11 +1,11 @@
 {
   "scopeSelection": {
     "welcome": "Willkommen bei Lunes!",
-    "selectProfession": "Wähle deinen Beruf!",
+    "selectJob": "Wähle deinen Beruf!",
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten",
-    "searchProfession": "Nach Beruf suchen",
-    "noProfessionsFound": "Keine Berufe gefunden"
+    "searchJob": "Nach Beruf suchen",
+    "noJobsFound": "Keine Berufe gefunden"
   },
   "home": {
     "welcome": "Willkommen bei Lunes!",
@@ -13,20 +13,20 @@
     "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewDisciplines": "Module ansehen",
+    "viewUnits": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
     "errorLoadCustomDiscipline": "Fehler: Bereich konnte nicht geladen werden. Ungültiger Schlüssel:",
-    "deleteProfession": "Bereich löschen",
-    "disciplines": "Berufe"
+    "deleteJob": "Bereich löschen",
+    "jobs": "Berufe"
   },
-  "manageSelection": {
+  "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
-    "yourProfessions": "Deine Berufsauswahl",
+    "yourJobs": "Deine Berufsauswahl",
     "yourCustomDisciplines": "Deine individuellen Bereiche",
     "yourSavedProgress": "Deine gespeicherten Lernbereiche",
-    "addProfession": "Beruf hinzufügen",
+    "addJob": "Beruf hinzufügen",
     "descriptionAddCustomDiscipline": "Hier kannst du eigene Lernbereiche mit deinem QR-Code hinzufügen.",
     "deleteModal": {
       "confirmationQuestion": "Willst du den Bereich wirklich löschen?",
@@ -55,8 +55,7 @@
     },
     "wordChoice": {
       "title": "Level 1",
-      "description": "Das richtige Wort auswählen",
-      "errorWrongDisciplineSize": "Die Übung ist für dieses Modul nicht möglich (zu wenig Wörter)"
+      "description": "Das richtige Wort auswählen"
     },
     "articleChoice": {
       "title": "Level 2",
@@ -104,7 +103,7 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedDiscipline": "Super, du hast das Modul abgeschlossen",
+    "finishedUnit": "Super, du hast das Modul abgeschlossen",
     "unlockExercise": {
       "part1": "Glückwunsch",
       "part2": "ist jetzt freigeschaltet."
@@ -144,7 +143,7 @@
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "impressum": "Impressum",
-      "manageSelection": "Lernbereiche verwalten",
+      "manageJobs": "Lernbereiche verwalten",
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",
@@ -160,11 +159,7 @@
       "somethingWentWrong": "Ups, da ist etwas schief gelaufen!",
       "deviceIsMuted": "Gerät ist stummgeschaltet"
     },
-    "rootDiscipline": {
-      "singular": "Beruf",
-      "plural": "Berufe"
-    },
-    "discipline": {
+    "unit": {
       "singular": "Modul",
       "plural": "Module"
     },
@@ -243,7 +238,7 @@
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode",
       "fillRepetitionExerciseWithData": "Fill repetition exercise with data",
-      "clearProfessions": "Clear selected professions"
+      "clearJobs": "Clear selected jobs"
     }
   },
   "sponsors": {

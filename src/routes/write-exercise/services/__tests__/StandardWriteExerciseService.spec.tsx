@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { SIMPLE_RESULTS } from '../../../../constants/data'
-import { VocabularyItem } from '../../../../constants/endpoints'
+import VocabularyItem from '../../../../models/VocabularyItem'
 import { ContentType, RoutesParams, VocabularyItemResult } from '../../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../../services/Storage'
 import { saveExerciseProgress } from '../../../../services/storageUtils'
@@ -38,8 +38,8 @@ describe('StandardWriteExerciseService', () => {
       params: {
         contentType,
         vocabularyItems,
-        disciplineId: 1,
-        disciplineTitle: 'TestTitel',
+        unitId: { id: 1, type: 'standard' },
+        unitTitle: 'TestTitel',
         closeExerciseAction: CommonActions.goBack(),
       },
     }
@@ -90,7 +90,12 @@ describe('StandardWriteExerciseService', () => {
 
     it('should finish exercise with saving, if all words are done', async () => {
       await service.continueExercise(3, false, vocabularyItemsWithResults, vocabularyItems, false)
-      expect(saveExerciseProgress).toHaveBeenCalledWith(storageCache, 1, 3, vocabularyItemsWithResults)
+      expect(saveExerciseProgress).toHaveBeenCalledWith(
+        storageCache,
+        { id: 1, type: 'standard' },
+        3,
+        vocabularyItemsWithResults,
+      )
       await waitFor(() => {
         expect(navigation.navigate).toHaveBeenCalled()
         expect(setCurrentIndex).toHaveBeenCalledWith(0)

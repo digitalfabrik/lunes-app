@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
@@ -8,8 +8,8 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { Subheading } from '../../components/text/Subheading'
-import { Sponsor } from '../../constants/endpoints'
-import useLoadAllSponsors from '../../hooks/useLoadAllSponsors'
+import useLoadSponsors from '../../hooks/useLoadSponsors'
+import Sponsor from '../../models/Sponsor'
 import { getLabels } from '../../services/helpers'
 import { openExternalUrl } from '../../services/url'
 
@@ -53,8 +53,7 @@ const ItemContainer = styled.TouchableOpacity`
 `
 
 const SponsorsScreen = (): ReactElement => {
-  const { data, loading, error, refresh } = useLoadAllSponsors()
-  useMemo(() => (data ? data.sort((a, b) => a.name.localeCompare(b.name)) : undefined), [data])
+  const { data, loading, error, refresh } = useLoadSponsors()
 
   const renderListItem = ({ item }: { item: Sponsor }): ReactElement => (
     <ItemContainer onPress={() => (item.url ? openExternalUrl(item.url) : null)}>

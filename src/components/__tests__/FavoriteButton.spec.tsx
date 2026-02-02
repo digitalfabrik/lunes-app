@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { VOCABULARY_ITEM_TYPES } from '../../constants/data'
+import { Favorite } from '../../constants/data'
 import { StorageCache } from '../../services/Storage'
 import { isFavorite } from '../../services/storageUtils'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -11,7 +11,7 @@ import FavoriteButton from '../FavoriteButton'
 
 describe('FavoriteButton', () => {
   const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
-  const favorite = { id: vocabularyItem.id, vocabularyItemType: VOCABULARY_ITEM_TYPES.lunesStandard }
+  const favorite: Favorite = vocabularyItem.id
 
   let storageCache: StorageCache
 

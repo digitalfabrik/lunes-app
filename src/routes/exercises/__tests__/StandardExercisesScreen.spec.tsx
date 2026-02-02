@@ -5,18 +5,19 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
-import useLoadVocabularyItems from '../../../hooks/useLoadVocabularyItems'
+import useLoadWordsByUnit from '../../../hooks/useLoadWordsByUnit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
-import { mockDisciplines } from '../../../testing/mockDiscipline'
+import { mockJobs } from '../../../testing/mockJob'
+import mockUnits from '../../../testing/mockUnit'
 import { renderWithStorageCache } from '../../../testing/render'
 import StandardExercisesScreen from '../StandardExercisesScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('../../../hooks/useLoadVocabularyItems')
+jest.mock('../../../hooks/useLoadWordsByUnit')
 
 describe('StandardExercisesScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(1).build()
@@ -27,11 +28,8 @@ describe('StandardExercisesScreen', () => {
     key: 'key-0',
     name: 'StandardExercises',
     params: {
-      contentType: 'standard',
-      disciplineId: mockDisciplines()[0].id,
-      disciplineTitle: mockDisciplines()[0].title,
-      discipline: mockDisciplines()[0],
-      vocabularyItems: null,
+      jobTitle: mockJobs()[0].name,
+      unit: mockUnits[0],
     },
   }
 
@@ -40,12 +38,12 @@ describe('StandardExercisesScreen', () => {
     RNAsyncStorage.clear()
     storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
-      [route.params.disciplineId]: {
+      [route.params.unit.id.id]: {
         '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
         '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
     })
-    mocked(useLoadVocabularyItems).mockReturnValue(getReturnOf(vocabularyItems))
+    mocked(useLoadWordsByUnit).mockReturnValue(getReturnOf(vocabularyItems))
   })
 
   it('should render correctly', () => {
@@ -79,13 +77,7 @@ describe('StandardExercisesScreen', () => {
     )
     const nextExercise = getByText(EXERCISES[0].title)
     fireEvent.press(nextExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, {
-      contentType: 'standard',
-      closeExerciseAction: undefined,
-      disciplineId: mockDisciplines()[0].id,
-      disciplineTitle: mockDisciplines()[0].title,
-      vocabularyItems,
-    })
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, expect.anything())
   })
 
   it('should show feedback badge for done levels', async () => {

@@ -3,19 +3,27 @@ import * as Progress from 'react-native-progress'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
-import { Discipline } from '../constants/endpoints'
+import { EXERCISES } from '../constants/data'
+import labels from '../constants/labels.json'
 import theme from '../constants/theme'
-import useProgress from '../hooks/useProgress'
-import { childrenDescription, childrenLabel } from '../services/helpers'
+import useStorage from '../hooks/useStorage'
+import Job from '../models/Job'
+import Unit from '../models/Unit'
+import { getLabels, getNumberOfUnlockedExercises, pluralize } from '../services/helpers'
 import ListItem from './ListItem'
 
-type DisciplineListItemProps = {
-  item: Discipline
+type UnitListItemProps = {
+  unit: Unit
   onPress: () => void
-  hasBadge: boolean
   rightChildren?: ReactElement
   disabled?: boolean
-  showProgress?: boolean
+}
+
+type JobListItemProps = {
+  job: Job
+  onPress: () => void
+  rightChildren?: ReactElement
+  disabled?: boolean
 }
 
 const Icon = styled.Image`
@@ -29,47 +37,42 @@ const IconContainer = styled.View`
   left: ${hp('1.75%')}px;
 `
 
-const DisciplineListItem = ({
-  item,
+const iconWithProgress = (iconUrl: string | undefined, progress: number): ReactElement => (
+  <>
+    <Progress.Circle
+      progress={progress}
+      size={Math.round(hp('7%'))}
+      indeterminate={false}
+      color={theme.colors.progressIndicator}
+      unfilledColor={theme.colors.disabled}
+      borderWidth={0}
+      thickness={3}
+      testID='progress-circle'
+    />
+    <IconContainer>
+      <Icon source={{ uri: iconUrl }} />
+    </IconContainer>
+  </>
+)
+
+export const UnitListItem = ({
+  unit,
   onPress,
-  hasBadge,
   rightChildren,
   disabled = false,
-  showProgress = false,
-}: DisciplineListItemProps): ReactElement | null => {
-  const { numberOfChildren, title, icon, apiKey } = item
-  const badgeLabel = hasBadge ? numberOfChildren.toString() : undefined
-  // Description either contains the number of children and the type of children or just the type of children if the number is shown as badge
-  const description = hasBadge ? childrenLabel(item) : childrenDescription(item)
+}: UnitListItemProps): ReactElement | null => {
+  const [progress] = useStorage('progress')
 
-  const actualProgress = useProgress(item)
-  const progress = showProgress ? actualProgress : 0
+  const badgeLabel = unit.numberWords.toString()
+  const description = pluralize(labels.general.word, unit.numberWords)
 
-  const iconWithProgress = (
-    <>
-      <Progress.Circle
-        progress={progress}
-        size={Math.round(hp('7%'))}
-        indeterminate={false}
-        color={theme.colors.progressIndicator}
-        unfilledColor={theme.colors.disabled}
-        borderWidth={0}
-        thickness={3}
-        testID='progress-circle'
-      />
-      <IconContainer>
-        <Icon source={{ uri: icon }} />
-      </IconContainer>
-    </>
-  )
+  const unlockedExercises = unit.id.type === 'standard' ? getNumberOfUnlockedExercises(progress, unit.id) : 0
+  const actualProgress = unlockedExercises / EXERCISES.length
 
-  if (numberOfChildren === 0 && !apiKey) {
-    return null
-  }
   return (
     <ListItem
-      title={title}
-      icon={showProgress ? iconWithProgress : icon}
+      title={unit.title}
+      icon={iconWithProgress(unit.iconUrl ?? undefined, actualProgress)}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}
@@ -79,4 +82,24 @@ const DisciplineListItem = ({
   )
 }
 
-export default DisciplineListItem
+export const JobListItem = ({
+  job,
+  onPress,
+  rightChildren,
+  disabled = false,
+}: JobListItemProps): ReactElement | null => {
+  const badgeLabel = job.numberOfUnits.toString()
+  const description = pluralize(getLabels().general.unit, job.numberOfUnits)
+
+  return (
+    <ListItem
+      title={job.name}
+      icon={iconWithProgress(job.icon ?? undefined, 0)}
+      description={description}
+      onPress={onPress}
+      badgeLabel={badgeLabel}
+      rightChildren={rightChildren}
+      disabled={disabled}
+    />
+  )
+}

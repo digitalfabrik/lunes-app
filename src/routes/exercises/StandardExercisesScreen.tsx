@@ -12,7 +12,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
-import useLoadVocabularyItems from '../../hooks/useLoadVocabularyItems'
+import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
@@ -39,27 +39,19 @@ type ExercisesScreenProps = {
 }
 
 const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElement => {
-  const { discipline, disciplineTitle, disciplineId } = route.params
+  const { unit } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
-  const nextExerciseNumber = getNumberOfUnlockedExercises(scores, disciplineId)
+  const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unit.id)
   const nextExercise = nextExerciseNumber < EXERCISES.length ? EXERCISES[nextExerciseNumber] : null
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
-  const {
-    data: vocabularyItems,
-    error,
-    loading,
-    refresh,
-  } = useLoadVocabularyItems({
-    disciplineId: discipline.id,
-    apiKey: discipline.apiKey,
-  })
+  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByUnit(unit.id)
 
   useEffect(() => {
     if (!isFeedbackSet) {
-      const exerciseScores = scores[disciplineId] ?? {}
+      const exerciseScores = scores[unit.id.id] ?? {}
       const updatedFeedback: EXERCISE_FEEDBACK[] = Object.values(exerciseScores).map(score => {
         if (!score) {
           return EXERCISE_FEEDBACK.NONE
@@ -70,7 +62,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       setFeedback(updatedFeedback)
       setIsFeedbackSet(true)
     }
-  }, [isFeedbackSet, disciplineId, scores])
+  }, [isFeedbackSet, unit, scores])
 
   useEffect(() => {
     if (isFocused) {
@@ -85,16 +77,13 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
     }
     if (vocabularyItems) {
       const closeExerciseAction = CommonActions.navigate('StandardExercises', {
-        vocabularyItems,
-        disciplineTitle,
-        disciplineId,
-        discipline,
+        unit,
       })
       navigation.navigate(EXERCISES[item.key].screen, {
-        vocabularyItems,
         contentType: 'standard',
-        disciplineId,
-        disciplineTitle,
+        vocabularyItems,
+        unitId: unit.id,
+        unitTitle: unit.title,
         closeExerciseAction,
       })
     }
@@ -142,7 +131,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {vocabularyItems && (
           <>
-            <Title title={disciplineTitle} description={wordsDescription(vocabularyItems.length)} />
+            <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
               data={EXERCISES}
               renderItem={renderListItem}

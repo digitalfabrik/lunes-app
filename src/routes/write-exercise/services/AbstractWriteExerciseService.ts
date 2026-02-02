@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { Keyboard } from 'react-native'
 
 import { SimpleResult } from '../../../constants/data'
-import { VocabularyItem } from '../../../constants/endpoints'
+import VocabularyItem from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import { moveToEnd, shuffleArray } from '../../../services/helpers'

@@ -3,9 +3,12 @@ import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
 
 import { getStorageItem } from './Storage'
 
-export const testCMS = 'https://lunes-test.tuerantuer.org/api'
-export const productionCMS = 'https://lunes.tuerantuer.org/api'
-export type CMS = typeof testCMS | typeof productionCMS
+// The emulator treats this special ip as the localhost of the host
+export const localhostCMS = 'http://10.0.2.2:8080/api/v2'
+export const testCMS = 'https://lunes-test.tuerantuer.org/api/v2'
+export const productionCMS = 'https://lunes.tuerantuer.org/api/v2'
+export const CMS_URLS = [localhostCMS, testCMS, productionCMS] as const
+export type CMS = (typeof CMS_URLS)[number]
 
 export const getBaseURL = (overwriteCMS: CMS | null): CMS => {
   if (overwriteCMS) {
