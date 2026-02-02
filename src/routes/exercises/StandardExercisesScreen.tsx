@@ -76,9 +76,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       return
     }
     if (vocabularyItems) {
-      const closeExerciseAction = CommonActions.navigate('StandardExercises', {
-        unit,
-      })
+      const closeExerciseAction = CommonActions.goBack()
       navigation.navigate(EXERCISES[item.key].screen, {
         contentType: 'standard',
         vocabularyItems,

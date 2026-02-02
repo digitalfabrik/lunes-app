@@ -36,6 +36,9 @@ describe('OverlayMenu', () => {
     const item = getByText(menuItem)
     expect(item).toBeTruthy()
     fireEvent.press(item)
-    expect(navigation.navigate).toHaveBeenCalledWith(route)
+    expect(navigation.navigate).toHaveBeenCalledWith('BottomTabNavigator', {
+      screen: 'HomeTab',
+      params: { screen: route },
+    })
   })
 })

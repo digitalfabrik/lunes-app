@@ -1,4 +1,4 @@
-import { CommonNavigationAction } from '@react-navigation/native'
+import { CommonNavigationAction, NavigatorScreenParams } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import Job, { StandardJob } from '../models/Job'
@@ -50,10 +50,25 @@ type ResultParams = ExerciseParams & {
   results: VocabularyItemResult[]
 }
 
+export type BottomTabParams = {
+  HomeTab: NavigatorScreenParams<HomeTabParams> | undefined
+  FavoritesTab: undefined
+  DictionaryTab: undefined
+  RepetitionTab: undefined
+  UserVocabularyTab: undefined
+}
+
+export type HomeTabParams = {
+  Home: undefined
+  Sponsors: undefined
+  Settings: undefined
+  Imprint: undefined
+}
+
 // https://github.com/Microsoft/Script/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
-  BottomTabNavigator: undefined
+  BottomTabNavigator: NavigatorScreenParams<BottomTabParams> | undefined
   HomeTab: undefined
   FavoritesTab: undefined
   DictionaryTab: undefined
