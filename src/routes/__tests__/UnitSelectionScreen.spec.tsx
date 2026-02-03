@@ -21,6 +21,7 @@ describe('UnitSelectionScreen', () => {
     name: 'Job',
     icon: null,
     numberOfUnits: 1,
+    migrated: true,
   }
 
   const route: RouteProp<RoutesParams, 'UnitSelection'> = {

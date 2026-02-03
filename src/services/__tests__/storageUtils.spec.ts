@@ -77,8 +77,20 @@ describe('storageUtils', () => {
     it('should push selectedProfession to array', async () => {
       await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockJobs()[1].id)
+      await pushSelectedJob(storageCache, mockJobs()[1].id, mockJobs()[1].migrated)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
+    })
+
+    it('should push selectedProfession to jobsWithPossiblyLostProgress', async () => {
+      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(1)
+    })
+
+    it('should delete selectedProfession from jobsWithPossiblyLostProgress', async () => {
+      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(1)
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
     })
 
     describe('ExerciseProgress', () => {

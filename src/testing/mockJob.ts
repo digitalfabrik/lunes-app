@@ -6,17 +6,20 @@ export const mockJobs = (): StandardJob[] => [
     name: 'First Job',
     icon: 'none',
     numberOfUnits: 1,
+    migrated: false,
   },
   {
     id: { type: 'standard', id: 2 },
     name: 'Second Job',
     icon: 'none',
     numberOfUnits: 1,
+    migrated: true,
   },
   {
     id: { type: 'standard', id: 3 },
     name: 'Third Job',
     icon: 'none',
     numberOfUnits: 1,
+    migrated: true,
   },
 ]

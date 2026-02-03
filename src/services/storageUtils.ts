@@ -18,7 +18,11 @@ import { calculateScore } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const pushSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<void> => {
+export const pushSelectedJob = async (
+  storageCache: StorageCache,
+  { id }: StandardJobId,
+  migrated: boolean,
+): Promise<void> => {
   let jobs = storageCache.getMutableItem('selectedJobs')
   if (jobs === null) {
     jobs = [id]
@@ -26,6 +30,14 @@ export const pushSelectedJob = async (storageCache: StorageCache, { id }: Standa
     jobs.push(id)
   }
   await storageCache.setItem('selectedJobs', jobs)
+
+  if (!migrated) {
+    const jobsWithPossiblyLostProgress = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
+    if (!jobsWithPossiblyLostProgress.includes(id)) {
+      jobsWithPossiblyLostProgress.push(id)
+      await storageCache.setItem('jobsWithPossiblyLostProgress', jobsWithPossiblyLostProgress)
+    }
+  }
 }
 
 export const removeSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<number[]> => {
@@ -35,6 +47,13 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   }
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
+
+  const jobsWithPossiblyLostProgress = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
+  if (jobsWithPossiblyLostProgress.includes(id)) {
+    const updatedJobsWithPossiblyLostProgress = jobsWithPossiblyLostProgress.filter(item => item !== id)
+    await storageCache.setItem('jobsWithPossiblyLostProgress', updatedJobsWithPossiblyLostProgress)
+  }
+
   return updatedJobs
 }
 
