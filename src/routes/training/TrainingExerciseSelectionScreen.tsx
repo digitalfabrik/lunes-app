@@ -52,7 +52,6 @@ const ListItem = styled(PressableOpacity)`
 
 const ListItemBody = styled.View`
   flex: 1;
-  flex-direction: column;
 `
 
 const Heading = styled(HeadingText)`

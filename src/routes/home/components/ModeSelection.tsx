@@ -10,8 +10,6 @@ import Job from '../../../models/Job'
 import { getLabels, pluralize } from '../../../services/helpers'
 
 const Container = styled.View`
-  display: flex;
-  flex-direction: column;
   gap: ${props => props.theme.spacings.sm};
   padding: ${props => props.theme.spacings.sm} 0;
 `
@@ -24,7 +22,6 @@ const LearningModeCardContainer = styled.View<{ backgroundColor: string }>`
 `
 
 const LearningModeCardContentContainer = styled.View`
-  display: flex;
   flex-grow: 1;
   align-items: center;
   gap: ${props => props.theme.spacings.xs};
@@ -39,7 +36,6 @@ const LearnModeProgressBar = styled.View<{ progress: number }>`
 `
 
 const Row = styled.View`
-  display: flex;
   flex-direction: row;
   gap: ${props => props.theme.spacings.xxs};
 `
@@ -56,8 +52,6 @@ const LearningModeTitle = styled(Heading)`
   padding-right: ${props => props.theme.spacings.sm};
 `
 
-const LearningModeText = styled(Content)``
-
 type LearningCardProps = {
   title: string
   numberUnits: number
@@ -72,11 +66,11 @@ const LearningCard = ({ title, numberUnits, unitsCompleted, color, onPress }: Le
         <LearningModeTitle>{title}</LearningModeTitle>
         <Row>
           <ProgressContainer>
-            <LearningModeText>
+            <Content>
               {unitsCompleted}/{numberUnits}
-            </LearningModeText>
+            </Content>
           </ProgressContainer>
-          <LearningModeText>{pluralize(getLabels().general.unit, numberUnits)}</LearningModeText>
+          <Content>{pluralize(getLabels().general.unit, numberUnits)}</Content>
         </Row>
       </LearningModeCardContentContainer>
       <LearnModeProgressBar progress={unitsCompleted / numberUnits} />
@@ -92,7 +86,7 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => (
     <LearningModeCardContainer backgroundColor={COLORS.backgroundTeal}>
       <LearningModeCardContentContainer>
         <LearningModeTitle>{getLabels().home.trainVocabulary}</LearningModeTitle>
-        <LearningModeText>{getLabels().home.testYourKnowledge}</LearningModeText>
+        <Content>{getLabels().home.testYourKnowledge}</Content>
       </LearningModeCardContentContainer>
     </LearningModeCardContainer>
   </PressableOpacity>
