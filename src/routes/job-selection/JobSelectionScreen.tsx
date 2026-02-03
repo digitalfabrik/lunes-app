@@ -17,6 +17,10 @@ import { getLabels } from '../../services/helpers'
 import { pushSelectedJob, removeSelectedJob } from '../../services/storageUtils'
 import JobSelection from './JobSelection'
 
+const StyledRouteWrapper = styled(RouteWrapper)`
+  flex: 1;
+`
+
 const TextContainer = styled.View`
   margin-top: ${props => props.theme.spacings.xxl};
   margin-bottom: ${props => props.theme.spacings.lg};
@@ -27,7 +31,10 @@ const StyledText = styled(ContentSecondary)`
 `
 
 const ButtonContainer = styled.View`
-  margin: ${props => props.theme.spacings.md} auto;
+  position: absolute;
+  bottom: ${props => props.theme.spacings.md};
+  width: 100%;
+  align-items: center;
 `
 
 type JobSelectionScreenProps = {
@@ -65,11 +72,11 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
   }
 
   return (
-    <RouteWrapper
+    <StyledRouteWrapper
       backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
       lightStatusBarContent={initialSelection}
       shouldSetBottomInset>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         {initialSelection && <Header />}
 
         <TextContainer>
@@ -86,21 +93,21 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
           onSelectJob={selectJob}
           onUnselectJob={initialSelection ? unselectJob : undefined}
         />
-        {initialSelection && (
-          <ButtonContainer>
-            <Button
-              onPress={navigateToHomeScreen}
-              label={
-                selectedJobs && selectedJobs.length > 0
-                  ? getLabels().scopeSelection.confirmSelection
-                  : getLabels().scopeSelection.skipSelection
-              }
-              buttonTheme={BUTTONS_THEME.contained}
-            />
-          </ButtonContainer>
-        )}
       </ScrollView>
-    </RouteWrapper>
+      {initialSelection && (
+        <ButtonContainer>
+          <Button
+            onPress={navigateToHomeScreen}
+            label={
+              selectedJobs && selectedJobs.length > 0
+                ? getLabels().scopeSelection.confirmSelection
+                : getLabels().scopeSelection.skipSelection
+            }
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        </ButtonContainer>
+      )}
+    </StyledRouteWrapper>
   )
 }
 
