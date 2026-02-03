@@ -1,15 +1,11 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ComponentType, ReactElement, useState } from 'react'
-import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
 import {
   BottomTabsIcon,
-  CloseIcon,
-  CloseIconWhite,
   HappySmileyIcon,
   LightBulbIconBlack,
   OpenLockIcon,
@@ -19,11 +15,7 @@ import {
 } from '../../../assets/images'
 import Button from '../../components/Button'
 import Modal from '../../components/Modal'
-import PressableOpacity from '../../components/PressableOpacity'
-import RoundedBackground from '../../components/RoundedBackground'
 import RouteWrapper from '../../components/RouteWrapper'
-import { Content } from '../../components/text/Content'
-import { HeadingBackground } from '../../components/text/Heading'
 import {
   BUTTONS_THEME,
   EXERCISES,
@@ -33,33 +25,10 @@ import {
 import theme from '../../constants/theme'
 import { Color } from '../../constants/theme/colors'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { calculateScore, getLabels, wordsDescription } from '../../services/helpers'
+import { calculateScore, getLabels } from '../../services/helpers'
+import ExerciseFinishedBase from './components/ExerciseFinishedBase'
 import ShareSection from './components/ShareSection'
 
-const Root = styled.View`
-  background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
-  align-items: center;
-`
-const MessageContainer = styled.View`
-  width: 60%;
-  margin-top: ${props => props.theme.spacings.sm};
-  align-items: center;
-`
-const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
-  color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.primary : prop.theme.colors.background)};
-  text-align: center;
-`
-const Icon = styled(PressableOpacity)`
-  position: absolute;
-  top: 25px;
-  right: 100px;
-`
-
-const Results = styled(Content)<{ color: Color }>`
-  color: ${props => props.color};
-  padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
-`
 const ContainerText = styled.Text`
   text-align: center;
   text-wrap: wrap;
@@ -79,7 +48,6 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const { exercise, results, unitTitle, closeExerciseAction, unlockedNextExercise } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
   const correctResults = results.filter(doc => doc.result === 'correct')
-  const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
 
   const {
@@ -145,7 +113,6 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   }
 
   const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
-
   return (
     <RouteWrapper
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
@@ -165,33 +132,13 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           <BottomTabsIcon style={{ marginBottom: 40 }} />
         </Modal>
       )}
-      <Root>
-        <RoundedBackground color={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}>
-          <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
-            {unlockedNextExercise ? (
-              <CloseIcon width={hp('3%')} height={hp('3%')} />
-            ) : (
-              <CloseIconWhite width={hp('3%')} height={hp('3%')} />
-            )}
-          </Icon>
-          <ResultIcon width={hp('5%')} height={hp('5%')} />
-          <MessageContainer>
-            <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
-            <Results color={resultColor}>
-              {correctResults.length} {getLabels().results.of} {wordsDescription(results.length)}{' '}
-              {getLabels().results.correct}
-            </Results>
-            <Progress.Bar
-              color={resultColor}
-              progress={percentageOfCorrectResults}
-              unfilledColor={theme.colors.background}
-              width={hp('22%')}
-              height={hp('1.1%')}
-              borderWidth={0}
-            />
-          </MessageContainer>
-        </RoundedBackground>
-
+      <ExerciseFinishedBase
+        results={{ correct: correctResults.length, total: results.length }}
+        feedbackColor={resultColor}
+        unlockedNewExercise={unlockedNextExercise}
+        FeedbackIcon={ResultIcon}
+        message={message}
+        onBack={() => navigation.dispatch(closeExerciseAction)}>
         <Button
           label={buttonText}
           iconLeft={buttonText === getLabels().results.action.repeat ? RepeatIcon : undefined}
@@ -199,7 +146,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           onPress={() => navigationAction()}
         />
         <ShareSection unitTitle={unitTitle} results={results} />
-      </Root>
+      </ExerciseFinishedBase>
     </RouteWrapper>
   )
 }

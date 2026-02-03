@@ -10,6 +10,7 @@ export const COLORS = {
   placeholder: '#777e91',
   disabled: '#e0e4ed',
   progressIndicator: '#425bee',
+  progressIndicatorTraining: '#03DAC5',
   progressIndicatorHome: '#F1635F',
   containedButtonSelected: '#3d4662',
   buttonSelectedSecondary: '#f57f7a',
