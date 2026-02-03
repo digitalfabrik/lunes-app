@@ -27,6 +27,8 @@ export type Storage = {
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
   favorites: Favorite[]
+  trackingConsentGiven: boolean
+  trackingConsentDate: Date | string | null
 }
 
 /**
@@ -46,6 +48,8 @@ export const newDefaultStorage = (): Storage => ({
   userVocabulary: [],
   nextUserVocabularyId: 1,
   favorites: [],
+  trackingConsentGiven: false,
+  trackingConsentDate: null,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -61,6 +65,8 @@ export const storageKeys: Record<keyof Storage, string> = {
   userVocabulary: 'userVocabulary',
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
+  trackingConsentGiven: 'trackingConsentGiven',
+  trackingConsentDate: 'trackingConsentDate',
 }
 
 export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
@@ -155,6 +161,8 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
+    trackingConsentGiven: getStorageItem('trackingConsentGiven'),
+    trackingConsentDate: getStorageItem('trackingConsentDate'),
   })
   return StorageCache.create(storage)
 }
