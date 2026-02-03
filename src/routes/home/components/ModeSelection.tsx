@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { NurseImage } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Content } from '../../../components/text/Content'
 import { Heading } from '../../../components/text/Heading'
@@ -37,13 +36,6 @@ const LearnModeProgressBar = styled.View<{ progress: number }>`
   background-color: ${props => props.theme.colors.progressIndicatorHome};
   width: ${props => props.progress * 100}%;
   height: ${props => props.theme.spacings.xs};
-`
-
-const TrainModeImage = styled.Image`
-  position: absolute;
-  top: 15px;
-  width: 100%;
-  height: 100%;
 `
 
 const Row = styled.View`
@@ -102,7 +94,6 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => (
         <LearningModeTitle>{getLabels().home.trainVocabulary}</LearningModeTitle>
         <LearningModeText>{getLabels().home.testYourKnowledge}</LearningModeText>
       </LearningModeCardContentContainer>
-      <TrainModeImage source={NurseImage} resizeMode='none' />
     </LearningModeCardContainer>
   </PressableOpacity>
 )
