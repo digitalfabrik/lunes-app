@@ -206,6 +206,12 @@ export const migrate2To3 = async (): Promise<void> => {
   await migrateFavorites()
 }
 
+// Adds the list of jobs with possibly lost progress because they were started before the CMS migration
+export const migrate3To4 = async (): Promise<void> => {
+  const selectedJobs = await getStorageItemOr<number[]>('selectedJobs', [])
+  await AsyncStorage.setItem('jobsWithPossiblyLostProgress', JSON.stringify(selectedJobs))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
@@ -240,6 +246,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough
     case 2:
       await migrate2To3()
+      break
+    case 3:
+      await migrate3To4()
       break
   }
 
@@ -323,4 +332,21 @@ export const deleteUserVocabularyItem = async (
   await removeFavorite(storageCache, userVocabularyItem.id)
   await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem)
   await storageCache.setItem('userVocabulary', userVocabulary)
+}
+
+export const addJobWithPossiblyLostProgress = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
+  if (!jobs.includes(jobId)) {
+    jobs.push(jobId)
+    await storageCache.setItem('jobsWithPossiblyLostProgress', jobs)
+  }
+}
+
+export const removeJobWithPossiblyLostProgress = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
+  const indexOfCurrentJob = jobs.indexOf(jobId)
+  if (indexOfCurrentJob !== -1) {
+    jobs.splice(indexOfCurrentJob, 1)
+    await storageCache.setItem('jobsWithPossiblyLostProgress', jobs)
+  }
 }

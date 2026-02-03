@@ -9,6 +9,7 @@ import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
+  addJobWithPossiblyLostProgress,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
@@ -16,6 +17,7 @@ import {
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
+  removeJobWithPossiblyLostProgress,
   removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
@@ -389,6 +391,17 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('favorites')).toEqual(expectedFavorites)
       })
     })
+
+    describe('should migrate from v3', () => {
+      it('should migrate jobsWithPossiblyLostProgress', async () => {
+        const selectedJobs = [1, 2, 3]
+        await AsyncStorage.setItem('version', '3')
+        await AsyncStorage.setItem('selectedJobs', JSON.stringify(selectedJobs))
+
+        const storageCache = await loadStorageCache()
+        expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toEqual(selectedJobs)
+      })
+    })
   })
 
   describe('userVocabulary', () => {
@@ -420,6 +433,21 @@ describe('storageUtils', () => {
       await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
+    })
+  })
+
+  describe('jobsWithPossiblyLostProgress', () => {
+    it('should add job to jobsWithPossiblyLostProgress', async () => {
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
+      await addJobWithPossiblyLostProgress(storageCache, 42)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toStrictEqual([42])
+    })
+
+    it('should remove job from jobsWithPossiblyLostProgress', async () => {
+      await addJobWithPossiblyLostProgress(storageCache, 42)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toStrictEqual([42])
+      await removeJobWithPossiblyLostProgress(storageCache, 42)
+      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
     })
   })
 })
