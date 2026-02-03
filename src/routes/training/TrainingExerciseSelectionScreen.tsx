@@ -39,6 +39,10 @@ export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
   },
 }
 
+const Root = styled.View`
+  padding: 0 ${props => props.theme.spacings.sm};
+`
+
 const ListItem = styled(PressableOpacity)`
   flex: 1;
   flex-direction: row;
@@ -46,7 +50,7 @@ const ListItem = styled(PressableOpacity)`
   gap: ${props => props.theme.spacings.xs};
   background-color: ${props => props.theme.colors.backgroundTeal};
   padding: ${props => props.theme.spacings.sm};
-  margin: ${props => props.theme.spacings.xs} ${props => props.theme.spacings.md};
+  margin: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.sm};
 `
 
@@ -87,12 +91,14 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
 
   return (
     <RouteWrapper>
-      <Title title={getLabels().exercises.training.train} subtitle={job.name} />
-      <FlatList
-        data={Object.values(TRAINING_EXERCISES)}
-        renderItem={renderListItem}
-        showsVerticalScrollIndicator={false}
-      />
+      <Root>
+        <Title title={getLabels().exercises.training.train} subtitle={job.name} />
+        <FlatList
+          data={Object.values(TRAINING_EXERCISES)}
+          renderItem={renderListItem}
+          showsVerticalScrollIndicator={false}
+        />
+      </Root>
     </RouteWrapper>
   )
 }
