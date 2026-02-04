@@ -5,10 +5,13 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import { UnitListItem } from '../components/DisciplineListItem'
+import ProgressHint from '../components/ProgressHint'
 import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import useLoadUnits from '../hooks/useLoadUnits'
+import { useStorageCache } from '../hooks/useStorage'
+import { StandardJobId } from '../models/Job'
 import { StandardUnit } from '../models/Unit'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { childrenDescription } from '../services/helpers'
@@ -38,11 +41,20 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): R
     <UnitListItem unit={item} onPress={() => handleNavigation(item)} />
   )
 
+  const storageCache = useStorageCache()
+  const notMigratedSelectedJobs = storageCache.getItem('notMigratedSelectedJobs')
+  const progressMayHaveBeenLost = notMigratedSelectedJobs.includes((job.id as StandardJobId).id) && job.migrated
+
   return (
     <RouteWrapper>
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         <List
-          ListHeaderComponent={<Title title={job.name} description={childrenDescription(job)} />}
+          ListHeaderComponent={
+            <>
+              <Title title={job.name} description={childrenDescription(job)} />
+              {progressMayHaveBeenLost && <ProgressHint jobId={job.id as StandardJobId} />}
+            </>
+          }
           data={units}
           renderItem={renderListItem}
           keyExtractor={({ id }) => JSON.stringify(id)}

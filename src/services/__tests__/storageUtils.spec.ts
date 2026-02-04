@@ -9,7 +9,7 @@ import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
-  addJobWithPossiblyLostProgress,
+  addNotMigratedSelectedJobs,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
@@ -17,7 +17,7 @@ import {
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
-  removeJobWithPossiblyLostProgress,
+  removeNotMigratedSelectedJobs,
   removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
@@ -81,16 +81,16 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
-    it('should push selectedProfession to jobsWithPossiblyLostProgress', async () => {
+    it('should push selectedProfession to notMigratedSelectedJobs', async () => {
       await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(1)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
     })
 
-    it('should delete selectedProfession from jobsWithPossiblyLostProgress', async () => {
+    it('should delete selectedProfession from notMigratedSelectedJobs', async () => {
       await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(1)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
       await removeSelectedJob(storageCache, mockJobs()[0].id)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([])
     })
 
     describe('ExerciseProgress', () => {
@@ -405,13 +405,13 @@ describe('storageUtils', () => {
     })
 
     describe('should migrate from v3', () => {
-      it('should migrate jobsWithPossiblyLostProgress', async () => {
+      it('should migrate notMigratedSelectedJobs', async () => {
         const selectedJobs = [1, 2, 3]
         await AsyncStorage.setItem('version', '3')
         await AsyncStorage.setItem('selectedJobs', JSON.stringify(selectedJobs))
 
         const storageCache = await loadStorageCache()
-        expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toEqual(selectedJobs)
+        expect(storageCache.getItem('notMigratedSelectedJobs')).toEqual(selectedJobs)
       })
     })
   })
@@ -448,18 +448,18 @@ describe('storageUtils', () => {
     })
   })
 
-  describe('jobsWithPossiblyLostProgress', () => {
-    it('should add job to jobsWithPossiblyLostProgress', async () => {
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
-      await addJobWithPossiblyLostProgress(storageCache, 42)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toStrictEqual([42])
+  describe('notMigratedSelectedJobs', () => {
+    it('should add job to notMigratedSelectedJobs', async () => {
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
+      await addNotMigratedSelectedJobs(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
     })
 
-    it('should remove job from jobsWithPossiblyLostProgress', async () => {
-      await addJobWithPossiblyLostProgress(storageCache, 42)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toStrictEqual([42])
-      await removeJobWithPossiblyLostProgress(storageCache, 42)
-      expect(storageCache.getItem('jobsWithPossiblyLostProgress')).toHaveLength(0)
+    it('should remove job from notMigratedSelectedJobs', async () => {
+      await addNotMigratedSelectedJobs(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
+      await removeNotMigratedSelectedJobs(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
     })
   })
 })

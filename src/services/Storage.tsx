@@ -28,7 +28,7 @@ export type Storage = {
   nextUserVocabularyId: number
   favorites: Favorite[]
   // Jobs that were started before the CMS migration and may have lost progress
-  jobsWithPossiblyLostProgress: number[]
+  notMigratedSelectedJobs: number[]
 }
 
 /**
@@ -48,7 +48,7 @@ export const newDefaultStorage = (): Storage => ({
   userVocabulary: [],
   nextUserVocabularyId: 1,
   favorites: [],
-  jobsWithPossiblyLostProgress: [],
+  notMigratedSelectedJobs: [],
 })
 const defaultStorage = newDefaultStorage()
 
@@ -64,7 +64,7 @@ export const storageKeys: Record<keyof Storage, string> = {
   userVocabulary: 'userVocabulary',
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
-  jobsWithPossiblyLostProgress: 'jobsWithPossiblyLostProgress',
+  notMigratedSelectedJobs: 'notMigratedSelectedJobs',
 }
 
 export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
@@ -159,7 +159,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
-    jobsWithPossiblyLostProgress: getStorageItem('jobsWithPossiblyLostProgress'),
+    notMigratedSelectedJobs: getStorageItem('notMigratedSelectedJobs'),
   })
   return StorageCache.create(storage)
 }

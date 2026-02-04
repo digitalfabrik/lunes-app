@@ -18,6 +18,23 @@ import { calculateScore } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
+export const addNotMigratedSelectedJobs = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
+  if (!jobs.includes(jobId)) {
+    jobs.push(jobId)
+    await storageCache.setItem('notMigratedSelectedJobs', jobs)
+  }
+}
+
+export const removeNotMigratedSelectedJobs = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
+  const indexOfCurrentJob = jobs.indexOf(jobId)
+  if (indexOfCurrentJob !== -1) {
+    jobs.splice(indexOfCurrentJob, 1)
+    await storageCache.setItem('notMigratedSelectedJobs', jobs)
+  }
+}
+
 export const pushSelectedJob = async (
   storageCache: StorageCache,
   { id }: StandardJobId,
@@ -32,11 +49,7 @@ export const pushSelectedJob = async (
   await storageCache.setItem('selectedJobs', jobs)
 
   if (!migrated) {
-    const jobsWithPossiblyLostProgress = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
-    if (!jobsWithPossiblyLostProgress.includes(id)) {
-      jobsWithPossiblyLostProgress.push(id)
-      await storageCache.setItem('jobsWithPossiblyLostProgress', jobsWithPossiblyLostProgress)
-    }
+    await addNotMigratedSelectedJobs(storageCache, id)
   }
 }
 
@@ -48,11 +61,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
 
-  const jobsWithPossiblyLostProgress = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
-  if (jobsWithPossiblyLostProgress.includes(id)) {
-    const updatedJobsWithPossiblyLostProgress = jobsWithPossiblyLostProgress.filter(item => item !== id)
-    await storageCache.setItem('jobsWithPossiblyLostProgress', updatedJobsWithPossiblyLostProgress)
-  }
+  await removeNotMigratedSelectedJobs(storageCache, id)
 
   return updatedJobs
 }
@@ -228,7 +237,7 @@ export const migrate2To3 = async (): Promise<void> => {
 // Adds the list of jobs with possibly lost progress because they were started before the CMS migration
 export const migrate3To4 = async (): Promise<void> => {
   const selectedJobs = await getStorageItemOr<number[]>('selectedJobs', [])
-  await AsyncStorage.setItem('jobsWithPossiblyLostProgress', JSON.stringify(selectedJobs))
+  await AsyncStorage.setItem('notMigratedSelectedJobs', JSON.stringify(selectedJobs))
 }
 
 // Removes the cms url overwrite value in case it has changed between versions
@@ -351,21 +360,4 @@ export const deleteUserVocabularyItem = async (
   await removeFavorite(storageCache, userVocabularyItem.id)
   await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem)
   await storageCache.setItem('userVocabulary', userVocabulary)
-}
-
-export const addJobWithPossiblyLostProgress = async (storageCache: StorageCache, jobId: number): Promise<void> => {
-  const jobs = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
-  if (!jobs.includes(jobId)) {
-    jobs.push(jobId)
-    await storageCache.setItem('jobsWithPossiblyLostProgress', jobs)
-  }
-}
-
-export const removeJobWithPossiblyLostProgress = async (storageCache: StorageCache, jobId: number): Promise<void> => {
-  const jobs = storageCache.getMutableItem('jobsWithPossiblyLostProgress')
-  const indexOfCurrentJob = jobs.indexOf(jobId)
-  if (indexOfCurrentJob !== -1) {
-    jobs.splice(indexOfCurrentJob, 1)
-    await storageCache.setItem('jobsWithPossiblyLostProgress', jobs)
-  }
 }
