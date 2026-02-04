@@ -117,6 +117,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     <RouteWrapper
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
+      shouldSetTopInset
       bottomBackgroundColor={theme.colors.background}>
       {exercise === FIRST_EXERCISE_FOR_REPETITION && (
         <Modal
