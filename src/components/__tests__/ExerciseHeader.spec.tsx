@@ -1,9 +1,7 @@
 import { CommonActions } from '@react-navigation/native'
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
-// @ts-expect-error no type declarations for BackHandler
-// eslint-disable-next-line jest/no-mocks-import
-import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler'
+import { BackHandler } from 'react-native'
 
 import { ExerciseKeys } from '../../constants/data'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -13,7 +11,22 @@ import render from '../../testing/render'
 import ExerciseHeader from '../ExerciseHeader'
 
 jest.useFakeTimers()
-jest.mock('react-native/Libraries/Utilities/BackHandler', () => BackHandler)
+
+const backHandlerListeners: { [key: string]: (() => boolean)[] } = {}
+
+jest.mock('react-native/Libraries/Utilities/BackHandler', () => ({
+  default: {
+    addEventListener: jest.fn((event: string, handler: () => boolean) => {
+      backHandlerListeners[event] = []
+      backHandlerListeners[event].push(handler)
+      return { remove: jest.fn() }
+    }),
+    mockPressBack: jest.fn(() => {
+      backHandlerListeners.hardwareBackPress.forEach(h => h())
+    }),
+  },
+}))
+
 jest.mock('../AudioPlayer', () => () => null)
 
 describe('ExerciseHeader', () => {
@@ -33,7 +46,7 @@ describe('ExerciseHeader', () => {
     )
     expect(queryByTestId('customModal')).toBeFalsy()
 
-    act(BackHandler.mockPressBack)
+    act((BackHandler as unknown as { mockPressBack: () => void }).mockPressBack)
 
     expect(getByTestId('customModal')).toBeTruthy()
     expect(getByTestId('customModal').props.visible).toBe(true)

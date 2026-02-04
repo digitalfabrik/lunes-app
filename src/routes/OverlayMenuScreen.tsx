@@ -51,7 +51,7 @@ export const OverlayTransition: StackNavigationOptions = {
 }
 
 type OverlayProps = {
-  navigation: StackNavigationProp<RoutesParams, keyof RoutesParams>
+  navigation: StackNavigationProp<RoutesParams>
 }
 
 const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
@@ -67,17 +67,23 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.sponsors}
-          onPress={() => navigation.navigate('Sponsors')}
+          onPress={() =>
+            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Sponsors' } })
+          }
         />
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.settings}
-          onPress={() => navigation.navigate('Settings')}
+          onPress={() =>
+            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Settings' } })
+          }
         />
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.impressum}
-          onPress={() => navigation.navigate('Imprint')}
+          onPress={() =>
+            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Imprint' } })
+          }
         />
       </Sidebar>
     </Container>
