@@ -1,7 +1,9 @@
 export const COLORS = {
   primary: '#000e38',
-  backgroundAccent: '#ffffff',
   background: '#f9fafb',
+  backgroundAccent: '#ffffff',
+  backgroundLightGrey: '#e0e4ed',
+  backgroundLightBlue: '#ebf8ff',
   text: '#3a4049',
   textSecondary: '#5b616a',
   placeholder: '#777e91',
@@ -22,7 +24,6 @@ export const COLORS = {
   articleFeminine: '#feb724',
   articleMasculine: '#8cc8f3',
   link: 'blue',
-  lightGreyBackground: '#e0e4ed',
   audioRecordingActive: '#97aef1',
   chartColor1: '#E0E4ED',
   chartColor2: '#EEEEEE',

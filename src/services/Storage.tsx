@@ -8,7 +8,7 @@ import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
 
-export const STORAGE_VERSION = 3
+export const STORAGE_VERSION = 4
 
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
@@ -27,6 +27,8 @@ export type Storage = {
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
   favorites: Favorite[]
+  // Jobs that were started before the CMS migration and may have lost progress
+  notMigratedSelectedJobs: number[]
 }
 
 /**
@@ -46,6 +48,7 @@ export const newDefaultStorage = (): Storage => ({
   userVocabulary: [],
   nextUserVocabularyId: 1,
   favorites: [],
+  notMigratedSelectedJobs: [],
 })
 const defaultStorage = newDefaultStorage()
 
@@ -61,6 +64,7 @@ export const storageKeys: Record<keyof Storage, string> = {
   userVocabulary: 'userVocabulary',
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
+  notMigratedSelectedJobs: 'notMigratedSelectedJobs',
 }
 
 export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
@@ -155,6 +159,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
+    notMigratedSelectedJobs: getStorageItem('notMigratedSelectedJobs'),
   })
   return StorageCache.create(storage)
 }

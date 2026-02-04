@@ -64,7 +64,7 @@ const ErrorMessage = ({ error, refresh, contained }: ErrorMessageProps): ReactEl
 
   return (
     <NetworkErrorWrapper>
-      <RoundedBackground color={theme.colors.lightGreyBackground}>
+      <RoundedBackground color={theme.colors.backgroundLightGrey}>
         <Container>
           {error.message === NetworkError && (
             <IconStyle>

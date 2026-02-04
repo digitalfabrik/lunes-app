@@ -24,7 +24,7 @@ describe('ManageSelectionsScreen', () => {
   })
 
   it('should show and delete selected jobs', async () => {
-    await pushSelectedJob(storageCache, mockJobs()[0].id)
+    await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
     await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
     mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
 
