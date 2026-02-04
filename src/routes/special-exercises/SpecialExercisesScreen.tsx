@@ -24,11 +24,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
   const { jobTitle, vocabularyItems, unit } = route.params
 
   const handleNavigation = (item: Exercise): void => {
-    const closeExerciseAction = CommonActions.navigate('SpecialExercises', {
-      vocabularyItems,
-      jobTitle,
-      unit,
-    })
+    const closeExerciseAction = CommonActions.goBack()
     navigation.navigate(EXERCISES[item.key].screen, {
       contentType: 'userVocabulary',
       vocabularyItems,
