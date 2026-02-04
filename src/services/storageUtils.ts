@@ -18,7 +18,7 @@ import { calculateScore } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const addNotMigratedSelectedJobs = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+export const addJobToNotMigrated = async (storageCache: StorageCache, jobId: number): Promise<void> => {
   const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
   if (!jobs.includes(jobId)) {
     jobs.push(jobId)
@@ -26,7 +26,7 @@ export const addNotMigratedSelectedJobs = async (storageCache: StorageCache, job
   }
 }
 
-export const removeNotMigratedSelectedJobs = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+export const removeJobFromNotMigrated = async (storageCache: StorageCache, jobId: number): Promise<void> => {
   const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
   const indexOfCurrentJob = jobs.indexOf(jobId)
   if (indexOfCurrentJob !== -1) {
@@ -49,7 +49,7 @@ export const pushSelectedJob = async (
   await storageCache.setItem('selectedJobs', jobs)
 
   if (!migrated) {
-    await addNotMigratedSelectedJobs(storageCache, id)
+    await addJobToNotMigrated(storageCache, id)
   }
 }
 
@@ -61,7 +61,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
 
-  await removeNotMigratedSelectedJobs(storageCache, id)
+  await removeJobFromNotMigrated(storageCache, id)
 
   return updatedJobs
 }
@@ -274,7 +274,7 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough
     case 2:
       await migrate2To3()
-      break
+    // eslint-disable-next-line no-fallthrough
     case 3:
       await migrate3To4()
       break

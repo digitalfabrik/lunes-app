@@ -9,7 +9,7 @@ import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
-  addNotMigratedSelectedJobs,
+  addJobToNotMigrated,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
@@ -17,7 +17,7 @@ import {
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
-  removeNotMigratedSelectedJobs,
+  removeJobFromNotMigrated,
   removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
@@ -451,14 +451,14 @@ describe('storageUtils', () => {
   describe('notMigratedSelectedJobs', () => {
     it('should add job to notMigratedSelectedJobs', async () => {
       expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
-      await addNotMigratedSelectedJobs(storageCache, 42)
+      await addJobToNotMigrated(storageCache, 42)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
     })
 
     it('should remove job from notMigratedSelectedJobs', async () => {
-      await addNotMigratedSelectedJobs(storageCache, 42)
+      await addJobToNotMigrated(storageCache, 42)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
-      await removeNotMigratedSelectedJobs(storageCache, 42)
+      await removeJobFromNotMigrated(storageCache, 42)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
     })
   })

@@ -43,7 +43,8 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): R
 
   const storageCache = useStorageCache()
   const notMigratedSelectedJobs = storageCache.getItem('notMigratedSelectedJobs')
-  const progressMayHaveBeenLost = notMigratedSelectedJobs.includes((job.id as StandardJobId).id) && job.migrated
+  const progressMayHaveBeenLost =
+    job.id.type === 'standard' && notMigratedSelectedJobs.includes(job.id.id) && job.migrated
 
   return (
     <RouteWrapper>

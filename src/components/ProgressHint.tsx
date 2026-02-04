@@ -43,7 +43,7 @@ const ProgressHint = ({ jobId }: ProgressHintProps): ReactElement => {
       <StyledText>
         {getLabels().exercises.progressLost.notShown}
         {'  '}
-        <StyledFakeButton onPress={() => setShowHint(!showHint)} accessibilityRole='button'>
+        <StyledFakeButton onPress={() => setShowHint(true)} accessibilityRole='button'>
           {getLabels().exercises.progressLost.moreInfo}
         </StyledFakeButton>
       </StyledText>
