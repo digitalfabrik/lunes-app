@@ -22,7 +22,7 @@ import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import WordsSelector, { SelectedWord, WordsContainer } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
 
-const MAX_ATTEMPTS_PER_SENTENCE = 5
+export const MAX_ATTEMPTS_PER_SENTENCE = 5
 
 const ExerciseInfoContainer = styled.View`
   flex-flow: row nowrap;
@@ -116,7 +116,7 @@ const ResultIndicator = ({
           </BottomSheetWordContainer>
         </BottomSheetRow>
 
-        {isCorrect || state.attemptsForCurrentSentence >= MAX_ATTEMPTS_PER_SENTENCE ? (
+        {isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
           <Button
             onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
             label={getLabels().exercises.continue}
@@ -205,9 +205,14 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
             <WordsSelector
               words={selectedAndHiddenWords}
               onPress={index => dispatch({ type: 'unselectWord', index })}
+              testID='selected-words'
             />
           </SelectedWordsArea>
-          <WordsSelector words={availableWords} onPress={index => dispatch({ type: 'selectWord', index })} />
+          <WordsSelector
+            words={availableWords}
+            onPress={index => dispatch({ type: 'selectWord', index })}
+            testID='available-words'
+          />
         </ExerciseContainer>
       </TrainingExerciseContainer>
 
