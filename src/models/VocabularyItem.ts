@@ -36,6 +36,10 @@ type VocabularyItem = {
   images: string[]
   audio: string | null
   alternatives: AlternativeWord[]
+  exampleSentence?: {
+    sentence: string
+    audio: string
+  }
 }
 
 export type StandardVocabularyItem = {
