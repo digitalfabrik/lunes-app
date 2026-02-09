@@ -40,14 +40,14 @@ const SingleWordContainer = styled(ContentText)<{ state: WordContainerState }>`
     `}
 `
 
-const WordsSelector = ({
-  words,
-  onPress,
-}: {
+type WordSelectorProps = {
   words: SelectedWord[]
   onPress: (index: number) => void
-}): ReactElement => (
-  <WordsContainer>
+  testID?: string
+}
+
+const WordsSelector = ({ words, onPress, testID }: WordSelectorProps): ReactElement => (
+  <WordsContainer testID={testID}>
     {words.map(({ word, state, index }) => (
       <PressableOpacity
         key={index}
