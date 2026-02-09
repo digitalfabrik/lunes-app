@@ -4,6 +4,9 @@ export const COLORS = {
   backgroundAccent: '#ffffff',
   backgroundLightGrey: '#e0e4ed',
   backgroundLightBlue: '#ebf8ff',
+  backgroundTransparent: 'rgba(249, 250, 251, 0.75)',
+  backgroundLow: '#F5F6F7',
+  backgroundHigh: '#E0E4ED',
   backgroundBlue: '#6588F2',
   backgroundTeal: '#04ACA7',
   backgroundRed: '#FAA7A7',
@@ -21,6 +24,8 @@ export const COLORS = {
   correct: '#0adb75',
   almostCorrect: '#ffbb4a',
   incorrect: '#ff5252',
+  trainingCorrect: '#72F399',
+  trainingIncorrect: '#F1635F',
   audioIconHighlight: '#F1635F',
   audioIconSelected: '#ffa3a3',
   shadow: 'rgba(0, 0, 0, 0.6)',
@@ -35,6 +40,7 @@ export const COLORS = {
   chartColor2: '#EEEEEE',
   chartColor3: '#8CC8F3',
   chartColor4: '#D9D9D9',
+  buttonBlue: '#A6E0FF',
 }
 
 export type Color = string
