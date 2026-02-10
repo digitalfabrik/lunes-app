@@ -24,7 +24,7 @@ jest.mock('../../../components/AudioPlayer', () => {
 })
 
 describe('ImageTrainingScreen', () => {
-  const vocabularyItems = new VocabularyItemBuilder(8).build()
+  const vocabularyItems = new VocabularyItemBuilder(MAX_TRAINING_REPETITIONS).build()
   const navigation = createNavigationMock<'ImageTraining'>()
   const route: RouteProp<RoutesParams, 'ImageTraining'> = {
     key: '',
@@ -54,7 +54,7 @@ describe('ImageTrainingScreen', () => {
 
   it('should correctly update the state', () => {
     let state = initializeState(vocabularyItems.slice())
-    expect(state.vocabularyItems).toEqual(vocabularyItems.slice(0, 5))
+    expect(state.vocabularyItems).toEqual(vocabularyItems.slice(0, MAX_TRAINING_REPETITIONS))
     expect(state.vocabularyItems).toHaveLength(MAX_TRAINING_REPETITIONS)
 
     for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {

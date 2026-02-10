@@ -174,4 +174,4 @@ export const enum EXERCISE_FEEDBACK {
   NEGATIVE,
 }
 
-export const MAX_TRAINING_REPETITIONS = 5
+export const MAX_TRAINING_REPETITIONS = 15
