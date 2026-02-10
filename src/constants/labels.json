@@ -105,10 +105,15 @@
       },
       "sentence": {
         "title": "Satzbausteine",
-        "description": "Die Vokabel richtig anwenden"
+        "description": "Die Vokabel richtig anwenden",
+        "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
+        "listen": "Höre dir den Satz an!",
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig."
       }
     },
     "tryLater": "Später versuchen",
+    "tryAgain": "Nochmal versuchen",
     "cheat": {
       "succeed": "Solve All",
       "fail": "Fail All"
