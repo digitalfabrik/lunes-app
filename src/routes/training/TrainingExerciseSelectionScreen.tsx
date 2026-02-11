@@ -65,14 +65,14 @@ const ComingSoonBadge = styled.View`
   position: absolute;
   top: -${props => props.theme.spacings.xs};
   right: -${props => props.theme.spacings.xs};
-  background-color: ${props => props.theme.colors.audioIconHighlight};
+  background-color: ${props => props.theme.colors.backgroundPopup};
   border-radius: ${props => props.theme.spacings.xs};
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.xs};
   z-index: 1;
 `
 
 const ComingSoonText = styled(ContentText)`
-  color: black;
+  color: white;
   font-weight: bold;
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
