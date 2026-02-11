@@ -1,4 +1,4 @@
-import { CommonNavigationAction } from '@react-navigation/native'
+import { NavigationAction } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { BackHandler } from 'react-native'
@@ -38,7 +38,7 @@ const StyledMenuIcon = styled(MenuIcon)`
 
 type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
-  closeExerciseAction: CommonNavigationAction
+  closeExerciseAction: NavigationAction
   exerciseKey?: ExerciseKey
   feedbackTarget?: FeedbackTarget
   currentWord?: number
