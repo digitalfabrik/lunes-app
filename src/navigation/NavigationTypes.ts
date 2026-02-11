@@ -1,4 +1,4 @@
-import { CommonNavigationAction, NavigatorScreenParams } from '@react-navigation/native'
+import { NavigationAction, NavigatorScreenParams } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
 import Job, { StandardJob } from '../models/Job'
@@ -25,7 +25,7 @@ type SpecialExercise = {
 type SharedExerciseParams = {
   unitTitle: string
   vocabularyItems: VocabularyItem[]
-  closeExerciseAction: CommonNavigationAction
+  closeExerciseAction: NavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
