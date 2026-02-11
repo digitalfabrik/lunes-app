@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
 import { TrainingImages, TrainingSentences, TrainingSpeech } from '../../../assets/images'
 import PressableOpacity from '../../components/PressableOpacity'
@@ -43,15 +43,38 @@ const Root = styled.View`
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
-const ListItem = styled(PressableOpacity)`
-  flex: 1;
+const ListItemWrapper = styled.View`
+  margin: ${props => props.theme.spacings.xs};
+`
+
+const ListItem = styled(PressableOpacity)<{ disabled: boolean }>`
   flex-direction: row;
   align-items: center;
   gap: ${props => props.theme.spacings.xs};
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+    `}
   background-color: ${props => props.theme.colors.backgroundTeal};
   padding: ${props => props.theme.spacings.sm};
-  margin: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.sm};
+`
+
+const ComingSoonBadge = styled.View`
+  position: absolute;
+  top: -${props => props.theme.spacings.xs};
+  right: -${props => props.theme.spacings.xs};
+  background-color: ${props => props.theme.colors.backgroundPopup};
+  border-radius: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.xs};
+  z-index: 1;
+`
+
+const ComingSoonText = styled(ContentText)`
+  color: white;
+  font-weight: bold;
+  font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
 const ListItemBody = styled.View`
@@ -73,21 +96,31 @@ export type TrainingExerciseSelectionScreenProps = {
 const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExerciseSelectionScreenProps): ReactElement => {
   const { job } = route.params
 
-  const renderListItem = ({ item }: { item: TrainingExercise }): ReactElement | null => (
-    <ListItem
-      onPress={() => {
-        if (item.navigate !== undefined) {
-          item.navigate(navigation, job)
-        }
-      }}
-      disabled={item.navigate === undefined}>
-      {item.image}
-      <ListItemBody>
-        <Heading>{item.title}</Heading>
-        <Description>{item.description}</Description>
-      </ListItemBody>
-    </ListItem>
-  )
+  const renderListItem = ({ item }: { item: TrainingExercise }): ReactElement | null => {
+    const isDisabled = item.navigate === undefined
+    return (
+      <ListItemWrapper>
+        {isDisabled && (
+          <ComingSoonBadge>
+            <ComingSoonText>{getLabels().exercises.training.comingSoon}</ComingSoonText>
+          </ComingSoonBadge>
+        )}
+        <ListItem
+          onPress={() => {
+            if (item.navigate !== undefined) {
+              item.navigate(navigation, job)
+            }
+          }}
+          disabled={isDisabled}>
+          {item.image}
+          <ListItemBody>
+            <Heading>{item.title}</Heading>
+            <Description>{item.description}</Description>
+          </ListItemBody>
+        </ListItem>
+      </ListItemWrapper>
+    )
+  }
 
   return (
     <RouteWrapper>

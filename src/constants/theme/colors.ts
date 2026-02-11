@@ -5,6 +5,7 @@ export const COLORS = {
   backgroundBlue: '#6588F2',
   backgroundTeal: '#04ACA7',
   backgroundRed: '#FAA7A7',
+  backgroundPopup: '#F1635F',
   text: '#3a4049',
   textSecondary: '#5b616a',
   placeholder: '#777e91',
