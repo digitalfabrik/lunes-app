@@ -21,7 +21,7 @@ import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
-import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
+import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
 
@@ -36,8 +36,8 @@ type SingleChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   unitId: StandardUnitId | null
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
-  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
-  route: RouteProp<RoutesParams, 'WordChoiceExercise' | 'ArticleChoiceExercise'>
+  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
+  route: RouteProp<RoutesParams, 'WordChoiceExercise'>
   exerciseKey: ExerciseKey
 }
 
@@ -88,17 +88,13 @@ const ChoiceExerciseScreen = ({
   }, [results, currentWord])
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
-    let unlockedNextExercise = true
     if (unitId !== null) {
-      const progress = storageCache.getItem('progress')
       await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
-      unlockedNextExercise = willNextExerciseUnlock(progress[unitId.id]?.[exerciseKey], calculateScore(results))
     }
     navigation.navigate('ExerciseFinished', {
       ...route.params,
       exercise: exerciseKey,
       results,
-      unlockedNextExercise,
     })
     initializeExercise(true)
   }

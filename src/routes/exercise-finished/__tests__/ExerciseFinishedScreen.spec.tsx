@@ -13,13 +13,8 @@ import ExerciseFinishedScreen from '../ExerciseFinishedScreen'
 
 describe('ExerciseFinishedScreen', () => {
   const unitId: StandardUnitId = { type: 'standard', id: 1 }
-  const setVisible = jest.fn()
   const navigation = createNavigationMock<'ExerciseFinished'>()
-  const getRoute = (
-    exerciseKey: ExerciseKey,
-    correct: boolean,
-    unlockedNextExercise: boolean,
-  ): RouteProp<RoutesParams, 'ExerciseFinished'> => ({
+  const getRoute = (exerciseKey: ExerciseKey, allCorrect: boolean): RouteProp<RoutesParams, 'ExerciseFinished'> => ({
     key: '',
     name: 'ExerciseFinished',
     params: {
@@ -31,43 +26,26 @@ describe('ExerciseFinishedScreen', () => {
       exercise: exerciseKey,
       results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
         vocabularyItem,
-        result: correct ? 'correct' : 'incorrect',
+        result: allCorrect ? 'correct' : 'incorrect',
         numberOfTries: 1,
       })),
-      unlockedNextExercise,
     },
   })
 
-  it('should render repetition modal if a module is finished', () => {
-    const route = getRoute(FIRST_EXERCISE_FOR_REPETITION, true, true)
-    const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(getByText(getLabels().repetition.hintModalHeaderText)).toBeDefined()
-    expect(getByText(getLabels().repetition.hintModalContentText)).toBeDefined()
-    const repeatLaterButton = getByText(getLabels().repetition.repeatLater)
-    fireEvent.press(repeatLaterButton)
-    expect(setVisible).toBeTruthy()
-  })
-
-  it('should not render repetition modal if it is on a first exercise', () => {
-    const route = getRoute(0, true, true)
-    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
-    expect(queryByTestId('repetition-modal')).toBeNull()
-  })
-
-  it('should render repetition modal if it is on a second exercise', () => {
-    const route = getRoute(1, false, false)
+  it('should render the repetition modal', () => {
+    const route = getRoute(1, false)
     const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(queryByTestId('repetition-modal')).toBeTruthy()
   })
 
   it('should render and handle button click for good feedback', () => {
-    const route = getRoute(1, true, false)
+    const route = getRoute(1, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.finishedUnit.replace('\n', ''))).toBeDefined()
   })
 
   it('should render and handle button click for bad feedback', () => {
-    const route = getRoute(1, false, false)
+    const route = getRoute(1, false)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.repeat)
@@ -76,7 +54,7 @@ describe('ExerciseFinishedScreen', () => {
   })
 
   it('should render and handle button click for completed unit', () => {
-    const route = getRoute(1, true, true)
+    const route = getRoute(1, true)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.finishedUnit)).toBeDefined()
     const button = getByText(getLabels().results.action.back)

@@ -8,13 +8,9 @@ import styled from 'styled-components/native'
 
 import {
   BottomTabsIcon,
-  CloseIcon,
   CloseIconWhite,
-  HappySmileyIcon,
   LightBulbIconBlack,
-  OpenLockIcon,
   PartyHornIcon,
-  RepeatIcon,
   SadSmileyCircleIcon,
 } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -41,18 +37,21 @@ const Root = styled.View`
   height: 100%;
   align-items: center;
 `
+
 const MessageContainer = styled.View`
   width: 60%;
   margin-top: ${props => props.theme.spacings.sm};
   align-items: center;
 `
-const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
-  color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.primary : prop.theme.colors.background)};
+
+const Message = styled(HeadingBackground)`
+  color: ${prop => prop.theme.colors.background};
   text-align: center;
 `
+
 const Icon = styled(PressableOpacity)`
   position: absolute;
-  top: 25px;
+  top: 8px;
   right: 100px;
 `
 
@@ -60,6 +59,7 @@ const Results = styled(Content)<{ color: Color }>`
   color: ${props => props.color};
   padding: ${props => props.theme.spacings.md} 0 ${props => props.theme.spacings.xs};
 `
+
 const ContainerText = styled.Text`
   text-align: center;
   text-wrap: wrap;
@@ -76,27 +76,18 @@ type ExerciseFinishedScreenProps = {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, unitTitle, closeExerciseAction, unlockedNextExercise } = route.params
+  const { exercise, results, unitTitle, closeExerciseAction } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const percentageOfCorrectResults = correctResults.length / results.length
   const score = calculateScore(results)
 
-  const {
-    exercise: notNeededForNavigation1,
-    results: notNeededForNavigation2,
-    unlockedNextExercise: notNeededForNavigation3,
-    ...navigationParams
-  } = route.params
+  const { exercise: notNeededForNavigation1, results: notNeededForNavigation2, ...navigationParams } = route.params
   const repeatExercise = (): void => navigation.navigate(EXERCISES[exercise].screen, { ...navigationParams })
 
-  const startNextExercise = (): void => {
-    if (exercise + 1 < EXERCISES.length) {
-      navigation.navigate(EXERCISES[exercise + 1].screen, { ...navigationParams })
-    }
-  }
+  const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
 
-  const navigateToNextUnit = (): void => navigation.pop(2)
+  const navigateBackToMenu = (): void => navigation.pop(2)
 
   const helper = (): {
     message: string
@@ -105,33 +96,12 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     ResultIcon: ComponentType<SvgProps>
     navigationAction: () => void
   } => {
-    const isLastExercise = exercise === EXERCISES.length - 1
-    if (unlockedNextExercise && !isLastExercise) {
-      return {
-        message: `${getLabels().results.unlockExercise.part1}, ${EXERCISES[exercise + 1].title} ${
-          getLabels().results.unlockExercise.part2
-        }`,
-        resultColor: theme.colors.primary,
-        buttonText: getLabels().results.action.nextExercise,
-        navigationAction: startNextExercise,
-        ResultIcon: OpenLockIcon,
-      }
-    }
-    if (score > SCORE_THRESHOLD_POSITIVE_FEEDBACK) {
-      if (!isLastExercise) {
-        return {
-          message: getLabels().results.feedbackGood,
-          resultColor: theme.colors.correct,
-          buttonText: getLabels().results.action.continue,
-          navigationAction: startNextExercise,
-          ResultIcon: HappySmileyIcon,
-        }
-      }
+    if (wasSuccessful) {
       return {
         message: getLabels().results.finishedUnit,
         resultColor: theme.colors.correct,
         buttonText: getLabels().results.action.back,
-        navigationAction: navigateToNextUnit,
+        navigationAction: navigateBackToMenu,
         ResultIcon: PartyHornIcon,
       }
     }
@@ -148,8 +118,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
 
   return (
     <RouteWrapper
-      backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
-      lightStatusBarContent={!unlockedNextExercise}
+      backgroundColor={theme.colors.primary}
+      lightStatusBarContent={!wasSuccessful}
       bottomBackgroundColor={theme.colors.background}>
       {exercise === FIRST_EXERCISE_FOR_REPETITION && (
         <Modal
@@ -169,17 +139,13 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         </Modal>
       )}
       <Root>
-        <RoundedBackground color={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}>
+        <RoundedBackground color={theme.colors.primary}>
           <Icon onPress={() => navigation.dispatch(closeExerciseAction)}>
-            {unlockedNextExercise ? (
-              <CloseIcon width={hp('3%')} height={hp('3%')} />
-            ) : (
-              <CloseIconWhite width={hp('3%')} height={hp('3%')} />
-            )}
+            <CloseIconWhite width={hp('3%')} height={hp('3%')} />
           </Icon>
           <ResultIcon width={hp('5%')} height={hp('5%')} />
           <MessageContainer>
-            <Message unlockedNextExercise={unlockedNextExercise}>{message}</Message>
+            <Message>{message}</Message>
             <Results color={resultColor}>
               {correctResults.length} {getLabels().results.of} {wordsDescription(results.length)}{' '}
               {getLabels().results.correct}
@@ -195,12 +161,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           </MessageContainer>
         </RoundedBackground>
 
-        <Button
-          label={buttonText}
-          iconLeft={buttonText === getLabels().results.action.repeat ? RepeatIcon : undefined}
-          buttonTheme={BUTTONS_THEME.contained}
-          onPress={() => navigationAction()}
-        />
+        <Button label={buttonText} buttonTheme={BUTTONS_THEME.contained} onPress={() => navigationAction()} />
         <ShareSection unitTitle={unitTitle} results={results} />
       </Root>
     </RouteWrapper>
