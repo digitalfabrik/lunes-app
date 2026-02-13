@@ -12,7 +12,7 @@ import VocabularyItem, {
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
+import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys, StorageValue } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -107,7 +107,7 @@ export const saveExerciseProgress = async (
 type Incomplete<T> = T & Record<string, unknown>
 
 export const migrate0To1 = async (): Promise<void> => {
-  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
+  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0 as StorageValue, [])
   if (parsedFavorites.length === 0) {
     return
   }
@@ -236,8 +236,8 @@ export const migrate2To3 = async (): Promise<void> => {
 
 // Adds the list of jobs with possibly lost progress because they were started before the CMS migration
 export const migrate3To4 = async (): Promise<void> => {
-  const selectedJobs = await getStorageItemOr<number[]>('selectedJobs', [])
-  await AsyncStorage.setItem('notMigratedSelectedJobs', JSON.stringify(selectedJobs))
+  const selectedJobs = await getStorageItemOr<number[]>(storageKeys.selectedJobs, [])
+  await AsyncStorage.setItem(storageKeys.notMigratedSelectedJobs, JSON.stringify(selectedJobs))
 }
 
 // Removes the cms url overwrite value in case it has changed between versions

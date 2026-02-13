@@ -52,7 +52,9 @@ export const newDefaultStorage = (): Storage => ({
 })
 const defaultStorage = newDefaultStorage()
 
-export const storageKeys: Record<keyof Storage, string> = {
+type StorageKey = keyof Storage
+
+export const storageKeys: Record<StorageKey, string> = {
   version: 'version',
   wordNodeCards: 'wordNodeCards',
   isTrackingEnabled: 'sentryTracking',
@@ -67,15 +69,17 @@ export const storageKeys: Record<keyof Storage, string> = {
   notMigratedSelectedJobs: 'notMigratedSelectedJobs',
 }
 
-export const getStorageItemOr = async <T,>(key: string, defaultValue: T): Promise<T> => {
+export type StorageValue = (typeof storageKeys)[keyof typeof storageKeys]
+
+export const getStorageItemOr = async <T,>(key: StorageValue, defaultValue: T): Promise<T> => {
   const value = await AsyncStorage.getItem(key)
   return value ? JSON.parse(value) : defaultValue
 }
 
-export const getStorageItem = async <T extends keyof Storage>(key: T): Promise<Storage[T]> =>
+export const getStorageItem = async <T extends StorageKey>(key: T): Promise<Storage[T]> =>
   getStorageItemOr(storageKeys[key], defaultStorage[key])
 
-const setStorageItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
+const setStorageItem = async <T extends StorageKey>(key: T, value: Storage[T]): Promise<void> => {
   await AsyncStorage.setItem(storageKeys[key], JSON.stringify(value))
 }
 
@@ -98,22 +102,22 @@ export class StorageCache {
    *
    * @param key The key of the storage item
    */
-  getItem = <T extends keyof Storage>(key: T): Readonly<Storage[T]> => this.storage[key]
+  getItem = <T extends StorageKey>(key: T): Readonly<Storage[T]> => this.storage[key]
 
   /**
    * Returns a storage item that may be modified
    *
    * @param key The key of the storage item
    */
-  getMutableItem = <T extends keyof Storage>(key: T): Storage[T] => JSON.parse(JSON.stringify(this.getItem(key)))
+  getMutableItem = <T extends StorageKey>(key: T): Storage[T] => JSON.parse(JSON.stringify(this.getItem(key)))
 
-  setItem = async <T extends keyof Storage>(key: T, value: Storage[T]): Promise<void> => {
+  setItem = async <T extends StorageKey>(key: T, value: Storage[T]): Promise<void> => {
     this.storage[key] = value
     await setStorageItem(key, value)
     this.notifyListeners(key)
   }
 
-  addListener = <T extends keyof Storage>(key: T, listener: () => void): (() => void) => {
+  addListener = <T extends StorageKey>(key: T, listener: () => void): (() => void) => {
     if (!this.listeners.has(key)) {
       this.listeners.set(key, new Set())
     }
@@ -124,7 +128,7 @@ export class StorageCache {
     }
   }
 
-  private notifyListeners = (key: keyof Storage) => {
+  private notifyListeners = (key: StorageKey) => {
     this.listeners.get(key)?.forEach(listener => {
       listener()
     })

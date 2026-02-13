@@ -10,7 +10,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import ServerResponseHandler from '../components/ServerResponseHandler'
 import Title from '../components/Title'
 import useLoadUnits from '../hooks/useLoadUnits'
-import { useStorageCache } from '../hooks/useStorage'
+import useStorage from '../hooks/useStorage'
 import { StandardJobId } from '../models/Job'
 import { StandardUnit } from '../models/Unit'
 import { RoutesParams } from '../navigation/NavigationTypes'
@@ -41,8 +41,7 @@ const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): R
     <UnitListItem unit={item} onPress={() => handleNavigation(item)} />
   )
 
-  const storageCache = useStorageCache()
-  const notMigratedSelectedJobs = storageCache.getItem('notMigratedSelectedJobs')
+  const [notMigratedSelectedJobs] = useStorage('notMigratedSelectedJobs')
   const progressMayHaveBeenLost =
     job.id.type === 'standard' && notMigratedSelectedJobs.includes(job.id.id) && job.migrated
 

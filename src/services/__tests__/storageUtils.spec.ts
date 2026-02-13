@@ -407,8 +407,8 @@ describe('storageUtils', () => {
     describe('should migrate from v3', () => {
       it('should migrate notMigratedSelectedJobs', async () => {
         const selectedJobs = [1, 2, 3]
-        await AsyncStorage.setItem('version', '3')
-        await AsyncStorage.setItem('selectedJobs', JSON.stringify(selectedJobs))
+        await AsyncStorage.setItem(storageKeys.version, '3')
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify(selectedJobs))
 
         const storageCache = await loadStorageCache()
         expect(storageCache.getItem('notMigratedSelectedJobs')).toEqual(selectedJobs)
