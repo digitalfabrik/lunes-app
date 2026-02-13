@@ -11,7 +11,7 @@ const BadgeContainer = styled.View`
   display: flex;
   flex-flow: row nowrap;
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};
-  background-color: ${props => props.theme.colors.lightGreyBackground};
+  background-color: ${props => props.theme.colors.backgroundLightGrey};
   width: 100%;
 `
 const BadgeText = styled(HintSecondary)`

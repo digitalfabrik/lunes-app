@@ -50,13 +50,15 @@ type JobResponse = {
   name: string
   icon: string | null
   number_units: number
+  migrated: boolean
 }
 
-const transformJobsResponse = ({ id, name, icon, number_units: numberUnits }: JobResponse): StandardJob => ({
+const transformJobsResponse = ({ id, name, icon, number_units: numberUnits, migrated }: JobResponse): StandardJob => ({
   id: { type: 'standard', id },
   name,
   icon,
   numberOfUnits: numberUnits,
+  migrated,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {
