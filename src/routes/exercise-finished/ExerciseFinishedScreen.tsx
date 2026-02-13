@@ -86,6 +86,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const repeatExercise = (): void => navigation.navigate(EXERCISES[exercise].screen, { ...navigationParams })
 
   const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
+  const isRepetition = route.params.contentType === 'repetition'
 
   const navigateBackToMenu = (): void => navigation.pop(2)
 
@@ -121,7 +122,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       backgroundColor={theme.colors.primary}
       lightStatusBarContent={!wasSuccessful}
       bottomBackgroundColor={theme.colors.background}>
-      {exercise === FIRST_EXERCISE_FOR_REPETITION && (
+      {exercise === FIRST_EXERCISE_FOR_REPETITION && !isRepetition && (
         <Modal
           visible={isModalVisible}
           confirmationAction={() => {
