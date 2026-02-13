@@ -154,7 +154,10 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       {exercise === FIRST_EXERCISE_FOR_REPETITION && (
         <Modal
           visible={isModalVisible}
-          confirmationAction={() => navigation.navigate('RepetitionTab')}
+          confirmationAction={() => {
+            setIsModalVisible(false)
+            navigation.navigate('BottomTabNavigator', { screen: 'RepetitionTab' })
+          }}
           cancelButtonText={getLabels().repetition.repeatLater}
           confirmationButtonText={getLabels().repetition.repeatNow}
           onClose={() => setIsModalVisible(false)}

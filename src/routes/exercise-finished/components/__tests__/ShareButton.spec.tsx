@@ -9,7 +9,7 @@ import render from '../../../../testing/render'
 import ShareButton from '../ShareButton'
 
 jest.mock('react-native/Libraries/Share/Share', () => ({
-  share: jest.fn(),
+  default: { share: jest.fn().mockResolvedValue(undefined) },
 }))
 
 describe('ShareButton', () => {

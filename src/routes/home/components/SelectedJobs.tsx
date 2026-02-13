@@ -6,9 +6,8 @@ import styled from 'styled-components/native'
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
-import { NextExerciseData } from '../../../constants/data'
 import useStorage from '../../../hooks/useStorage'
-import Job, { JobId } from '../../../models/Job'
+import Job, { JobId, StandardJob } from '../../../models/Job'
 import { getLabels } from '../../../services/helpers'
 import JobCard from './JobCard'
 
@@ -45,7 +44,7 @@ const Title = styled(Heading)`
 
 type SelectedJobsProps = {
   navigateToJob: (job: Job) => void
-  navigateToNextExercise: (nextExerciseData: NextExerciseData) => void
+  navigateToTrainingExerciseSelection: (job: StandardJob) => void
   navigateToManageSelection: () => void
   navigateToJobSelection: () => void
 }
@@ -57,7 +56,7 @@ const useAllJobs = (): JobId[] => {
 
 const SelectedJobs = ({
   navigateToJob,
-  navigateToNextExercise,
+  navigateToTrainingExerciseSelection,
   navigateToManageSelection,
   navigateToJobSelection,
 }: SelectedJobsProps): ReactElement | null => {
@@ -81,7 +80,11 @@ const SelectedJobs = ({
       </BoxHeading>
 
       {jobs.length === 1 ? (
-        <JobCard identifier={jobs[0]} navigateToJob={navigateToJob} navigateToNextExercise={navigateToNextExercise} />
+        <JobCard
+          identifier={jobs[0]}
+          navigateToJob={navigateToJob}
+          navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
+        />
       ) : (
         <FlatList
           horizontal
@@ -95,7 +98,7 @@ const SelectedJobs = ({
               identifier={item}
               width={wp('75%')}
               navigateToJob={navigateToJob}
-              navigateToNextExercise={navigateToNextExercise}
+              navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
             />
           )}
         />

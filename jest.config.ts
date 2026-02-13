@@ -1,6 +1,7 @@
 const transformNodeModules = [
   'react-native',
   '@react-native',
+  '@react-navigation',
   'react-navigation-header-buttons',
   'victory-(.+)',
   '@notifee',

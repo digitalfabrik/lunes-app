@@ -25,7 +25,7 @@ class RepetitionWriteExerciseService extends AbstractWriteExerciseService {
   }
 
   finishExercise = async (): Promise<void> => {
-    this.navigation.navigate('Repetition')
+    this.navigation.navigate('BottomTabNavigator', { screen: 'RepetitionTab' })
   }
 
   storeResult = async (

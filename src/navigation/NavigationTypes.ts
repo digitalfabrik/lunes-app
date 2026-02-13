@@ -1,7 +1,7 @@
-import { CommonNavigationAction } from '@react-navigation/native'
+import { NavigationAction, NavigatorScreenParams } from '@react-navigation/native'
 
 import { ExerciseKey, Result, SimpleResult } from '../constants/data'
-import Job from '../models/Job'
+import Job, { StandardJob } from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
 
@@ -25,7 +25,7 @@ type SpecialExercise = {
 type SharedExerciseParams = {
   unitTitle: string
   vocabularyItems: VocabularyItem[]
-  closeExerciseAction: CommonNavigationAction
+  closeExerciseAction: NavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
@@ -50,10 +50,25 @@ type ResultParams = ExerciseParams & {
   results: VocabularyItemResult[]
 }
 
+export type BottomTabParams = {
+  HomeTab: NavigatorScreenParams<HomeTabParams> | undefined
+  FavoritesTab: undefined
+  DictionaryTab: undefined
+  RepetitionTab: undefined
+  UserVocabularyTab: undefined
+}
+
+export type HomeTabParams = {
+  Home: undefined
+  Sponsors: undefined
+  Settings: undefined
+  Imprint: undefined
+}
+
 // https://github.com/Microsoft/Script/issues/15300
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
-  BottomTabNavigator: undefined
+  BottomTabNavigator: NavigatorScreenParams<BottomTabParams> | undefined
   HomeTab: undefined
   FavoritesTab: undefined
   DictionaryTab: undefined
@@ -100,6 +115,9 @@ export type RoutesParams = {
   VocabularyDetail: { vocabularyItem: VocabularyItem }
   UserVocabularyUnitSelection: undefined
   SpecialExercises: SpecialExercisesParams
+  TrainingExerciseSelection: {
+    job: StandardJob
+  }
 }
 
 export type Route = keyof RoutesParams

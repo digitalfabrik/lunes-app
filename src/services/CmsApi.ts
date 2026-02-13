@@ -1,7 +1,7 @@
 import { Article, ARTICLES } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
-import Job, { JobId, StandardJob, StandardJobId } from '../models/Job'
+import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
 import {
@@ -66,7 +66,7 @@ export const getJobs = async (): Promise<StandardJob[]> => {
   return response.map(transformJobsResponse)
 }
 
-export const getJob = async (id: JobId): Promise<Job> =>
+export const getJob = async (id: JobId): Promise<StandardJob> =>
   id.type === 'standard'
     ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id)))
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
