@@ -21,6 +21,7 @@ const Endpoints = {
   words: 'words',
   word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
+  wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
 }
 
 type PostFeedback = {
@@ -165,5 +166,10 @@ export const getWordById = async (
 
 export const getWordsByUnit = async (unitId: StandardUnitId): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId))
+  return response.map(transformWordResponse)
+}
+
+export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId))
   return response.map(transformWordResponse)
 }
