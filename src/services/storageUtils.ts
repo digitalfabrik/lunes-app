@@ -12,13 +12,34 @@ import VocabularyItem, {
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { RepetitionService } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys } from './Storage'
+import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys, StorageValue } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
 export const FAVORITES_KEY_VERSION_0 = 'favorites'
 
-export const pushSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<void> => {
+export const addJobToNotMigrated = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
+  if (!jobs.includes(jobId)) {
+    jobs.push(jobId)
+    await storageCache.setItem('notMigratedSelectedJobs', jobs)
+  }
+}
+
+export const removeJobFromNotMigrated = async (storageCache: StorageCache, jobId: number): Promise<void> => {
+  const jobs = storageCache.getMutableItem('notMigratedSelectedJobs')
+  const indexOfCurrentJob = jobs.indexOf(jobId)
+  if (indexOfCurrentJob !== -1) {
+    jobs.splice(indexOfCurrentJob, 1)
+    await storageCache.setItem('notMigratedSelectedJobs', jobs)
+  }
+}
+
+export const pushSelectedJob = async (
+  storageCache: StorageCache,
+  { id }: StandardJobId,
+  migrated: boolean,
+): Promise<void> => {
   let jobs = storageCache.getMutableItem('selectedJobs')
   if (jobs === null) {
     jobs = [id]
@@ -26,6 +47,10 @@ export const pushSelectedJob = async (storageCache: StorageCache, { id }: Standa
     jobs.push(id)
   }
   await storageCache.setItem('selectedJobs', jobs)
+
+  if (!migrated) {
+    await addJobToNotMigrated(storageCache, id)
+  }
 }
 
 export const removeSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<number[]> => {
@@ -35,6 +60,9 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   }
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
+
+  await removeJobFromNotMigrated(storageCache, id)
+
   return updatedJobs
 }
 
@@ -79,7 +107,7 @@ export const saveExerciseProgress = async (
 type Incomplete<T> = T & Record<string, unknown>
 
 export const migrate0To1 = async (): Promise<void> => {
-  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
+  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0 as StorageValue, [])
   if (parsedFavorites.length === 0) {
     return
   }
@@ -206,6 +234,12 @@ export const migrate2To3 = async (): Promise<void> => {
   await migrateFavorites()
 }
 
+// Adds the list of jobs with possibly lost progress because they were started before the CMS migration
+export const migrate3To4 = async (): Promise<void> => {
+  const selectedJobs = await getStorageItemOr<number[]>(storageKeys.selectedJobs, [])
+  await AsyncStorage.setItem(storageKeys.notMigratedSelectedJobs, JSON.stringify(selectedJobs))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
@@ -240,6 +274,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough
     case 2:
       await migrate2To3()
+    // eslint-disable-next-line no-fallthrough
+    case 3:
+      await migrate3To4()
       break
   }
 

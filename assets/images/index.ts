@@ -8,6 +8,7 @@ import ArrowRightIcon from './arrow-right-icon.svg'
 import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
+import BasicLightBulbIcon from './basic-light-bulb-icon.svg'
 import BookIconBlack from './book-icon-black.svg'
 import BottomTabsIcon from './bottom-tabs-icon.svg'
 import CheckCircleIconBlue from './check-circle-icon-blue.svg'
@@ -94,6 +95,7 @@ export {
   BannerGreen,
   BannerRed,
   BannerYellow,
+  BasicLightBulbIcon,
   BookIconBlack,
   CheckCircleIcon,
   CheckCircleIconBlue,

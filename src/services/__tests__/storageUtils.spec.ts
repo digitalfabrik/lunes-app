@@ -9,6 +9,7 @@ import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
+  addJobToNotMigrated,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
@@ -16,6 +17,7 @@ import {
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
+  removeJobFromNotMigrated,
   removeSelectedJob,
   saveExerciseProgress,
   setExerciseProgress,
@@ -75,8 +77,20 @@ describe('storageUtils', () => {
     it('should push selectedProfession to array', async () => {
       await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockJobs()[1].id)
+      await pushSelectedJob(storageCache, mockJobs()[1].id, mockJobs()[1].migrated)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
+    })
+
+    it('should push selectedProfession to notMigratedSelectedJobs', async () => {
+      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
+    })
+
+    it('should delete selectedProfession from notMigratedSelectedJobs', async () => {
+      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([])
     })
 
     describe('ExerciseProgress', () => {
@@ -389,6 +403,17 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('favorites')).toEqual(expectedFavorites)
       })
     })
+
+    describe('should migrate from v3', () => {
+      it('should migrate notMigratedSelectedJobs', async () => {
+        const selectedJobs = [1, 2, 3]
+        await AsyncStorage.setItem(storageKeys.version, '3')
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify(selectedJobs))
+
+        const storageCache = await loadStorageCache()
+        expect(storageCache.getItem('notMigratedSelectedJobs')).toEqual(selectedJobs)
+      })
+    })
   })
 
   describe('userVocabulary', () => {
@@ -420,6 +445,21 @@ describe('storageUtils', () => {
       await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
+    })
+  })
+
+  describe('notMigratedSelectedJobs', () => {
+    it('should add job to notMigratedSelectedJobs', async () => {
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
+      await addJobToNotMigrated(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
+    })
+
+    it('should remove job from notMigratedSelectedJobs', async () => {
+      await addJobToNotMigrated(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
+      await removeJobFromNotMigrated(storageCache, 42)
+      expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
     })
   })
 })
