@@ -21,7 +21,7 @@ const Container = styled.View`
 const StyledText = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  line-height: 24;
+  line-height: 24px;
 `
 
 const StyledFakeButton = styled.Text`
