@@ -1,20 +1,8 @@
 {
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["es6"],
-    "allowJs": true,
-    "jsx": "react",
-    "noEmit": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types", "./src/@types"],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "types": ["jest", "node", "react"],
-    "skipLibCheck": true
+    "types": ["jest", "node", "react"]
   },
   "include": [
     "src/**/*",
