@@ -89,7 +89,7 @@
     "training": {
       "train": "Vokabeln trainieren",
       "finished": {
-        "askContinue": "Möchtest du eine weitere {} Übung machen?",
+        "askContinue": "Möchtest du eine weitere {}-Übung machen?",
         "continueYes": "Ja, weiter",
         "continueNo": "Nein, andere Übung auswählen"
       },

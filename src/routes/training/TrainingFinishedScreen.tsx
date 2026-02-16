@@ -23,6 +23,7 @@ const Container = styled.View`
 
 const QuestionText = styled(HeadingText)`
   padding: ${props => props.theme.spacings.md} 0;
+  text-align: center;
 `
 
 type FeedbackDisplay = {

@@ -37,6 +37,7 @@ const StyledImage = styled.Image<{ width: number; padding: number; state: ImageG
   margin: ${props => props.padding}px;
   padding: 0;
   border-radius: ${props => props.theme.spacings.xxs};
+  border-width: ${props => props.theme.spacings.xxs};
   ${props =>
     props.state === ImageGridItemState.Correct &&
     css`
@@ -48,9 +49,9 @@ const StyledImage = styled.Image<{ width: number; padding: number; state: ImageG
       border-color: ${props.theme.colors.incorrect};
     `}
   ${props =>
-    props.state !== ImageGridItemState.Default &&
+    props.state === ImageGridItemState.Default &&
     css`
-      border-width: ${props.theme.spacings.xxs};
+      border-color: transparent;
     `}
 `
 

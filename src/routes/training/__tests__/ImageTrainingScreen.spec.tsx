@@ -59,11 +59,11 @@ describe('ImageTrainingScreen', () => {
 
     for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
       expect(state.completed).toBe(false)
-      expect(state.currentIndex).toEqual(i)
+      expect(state.currentVocabularyItemIndex).toEqual(i)
       expect(state.correctAnswersCount).toBe(0)
       expect(state.choices).toContainEqual({
-        src: state.vocabularyItems[state.currentIndex].images[0],
-        key: state.vocabularyItems[state.currentIndex].id,
+        src: state.vocabularyItems[state.currentVocabularyItemIndex].images[0],
+        key: state.vocabularyItems[state.currentVocabularyItemIndex].id,
       })
       state = stateReducer(state, { type: 'nextWord' })
     }

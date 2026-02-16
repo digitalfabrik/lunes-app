@@ -23,7 +23,7 @@ import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 
 type State = {
   vocabularyItems: VocabularyItem[]
-  currentIndex: number
+  currentVocabularyItemIndex: number
   choices: { src: string; key: VocabularyItemId }[]
   answer: { key: VocabularyItemId; isCorrect: boolean } | null
   correctAnswersCount: number
@@ -35,20 +35,21 @@ const initializeChoices = (state: Omit<State, 'choices'>): State => {
     return { ...state, choices: [] }
   }
 
-  const vocabularyWithoutCurrentItem = [...state.vocabularyItems]
-  vocabularyWithoutCurrentItem.splice(state.currentIndex, 1)
+  const vocabularyWithoutCurrentItem = state.vocabularyItems.filter(
+    (_, index) => index !== state.currentVocabularyItemIndex,
+  )
 
   const choices = shuffleArray(vocabularyWithoutCurrentItem).slice(0, 3)
   const insertIndex = Math.floor(Math.random() * (choices.length + 1))
-  choices.splice(insertIndex, 0, state.vocabularyItems[state.currentIndex])
+  choices.splice(insertIndex, 0, state.vocabularyItems[state.currentVocabularyItemIndex])
   return { ...state, choices: choices.map(choice => ({ src: choice.images[0], key: choice.id })) }
 }
 
 export const initializeState = (vocabularyItems: VocabularyItem[]): State => {
-  const shuffled = shuffleArray(vocabularyItems).splice(0, MAX_TRAINING_REPETITIONS)
+  const shuffled = shuffleArray(vocabularyItems).slice(0, MAX_TRAINING_REPETITIONS)
   const stateWithoutChoices: Omit<State, 'choices'> = {
     vocabularyItems: shuffled,
-    currentIndex: 0,
+    currentVocabularyItemIndex: 0,
     answer: null,
     correctAnswersCount: 0,
     completed: shuffled.length === 0,
@@ -70,7 +71,7 @@ export const stateReducer = (state: State, action: Action): State => {
       if (state.answer?.isCorrect) {
         return state
       }
-      const isCorrect = action.key === state.vocabularyItems[state.currentIndex].id
+      const isCorrect = action.key === state.vocabularyItems[state.currentVocabularyItemIndex].id
       return {
         ...state,
         correctAnswersCount:
@@ -79,9 +80,9 @@ export const stateReducer = (state: State, action: Action): State => {
       }
     }
     case 'nextWord': {
-      const completed = state.currentIndex + 1 >= state.vocabularyItems.length
-      const nextIndex = completed ? state.currentIndex : state.currentIndex + 1
-      let nextState: State = { ...state, currentIndex: nextIndex, completed, answer: null }
+      const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
+      const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
+      let nextState: State = { ...state, currentVocabularyItemIndex: nextIndex, completed, answer: null }
       if (!completed) {
         nextState = initializeChoices(nextState)
       }
@@ -108,7 +109,7 @@ type ImageTrainingProps = {
 
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
-  const word = state.vocabularyItems[state.currentIndex]
+  const word = state.vocabularyItems[state.currentVocabularyItemIndex]
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
     let imageState = ImageGridItemState.Default
     if (state.answer?.key === key) {
@@ -159,7 +160,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
   return (
     <>
       <TrainingExerciseHeader
-        currentWord={state.currentIndex}
+        currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
         navigation={navigation}
       />
