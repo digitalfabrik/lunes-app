@@ -71,8 +71,8 @@ const ImageGrid = ({ items, onPress }: ImageGridProps): ReactElement => {
   return (
     <Grid onLayout={onGridLayout}>
       {items.map(item => (
-        <PressableOpacity key={JSON.stringify(item.key)} onPress={() => onPress(item.key)}>
-          <StyledImage src={item.src} width={imageWidth} padding={paddingPx} state={item.state} testID='imageOption' />
+        <PressableOpacity key={JSON.stringify(item.key)} onPress={() => onPress(item.key)} testID='imageOption'>
+          <StyledImage src={item.src} width={imageWidth} padding={paddingPx} state={item.state} />
         </PressableOpacity>
       ))}
     </Grid>
