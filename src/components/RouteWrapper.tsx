@@ -42,7 +42,8 @@ const RouteWrapper = ({
         backgroundColor={backgroundColor}
         shouldTakeSpace
         bottomInset={shouldSetBottomInset ? insets.bottom : undefined}
-        topInset={shouldSetTopInset ? insets.top : undefined}>
+        topInset={shouldSetTopInset ? insets.top : undefined}
+      >
         <StatusBar
           backgroundColor={backgroundColor}
           barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'}

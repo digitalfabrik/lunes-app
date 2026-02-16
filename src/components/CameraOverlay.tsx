@@ -39,7 +39,8 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
           <Pressable
             onPress={() => setVisible(false)}
             onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}>
+            onPressOut={() => setIsPressed(false)}
+          >
             {isPressed ? (
               <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
             ) : (

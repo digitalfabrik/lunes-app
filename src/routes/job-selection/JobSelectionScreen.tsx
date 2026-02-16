@@ -75,7 +75,8 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
     <StyledRouteWrapper
       backgroundColor={initialSelection ? theme.colors.primary : theme.colors.background}
       lightStatusBarContent={initialSelection}
-      shouldSetBottomInset>
+      shouldSetBottomInset
+    >
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         {initialSelection && <Header />}
 

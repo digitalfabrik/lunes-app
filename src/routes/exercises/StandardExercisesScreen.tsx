@@ -118,7 +118,8 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
             handleNavigation(nextExercise)
             setIsModalVisible(false)
           }}
-          testID='locking-modal'>
+          testID='locking-modal'
+        >
           <SmallMessage>
             {getLabels().exercises.lockedExerciseModal.descriptionPart1}
             <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>

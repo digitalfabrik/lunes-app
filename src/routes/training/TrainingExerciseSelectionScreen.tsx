@@ -112,7 +112,8 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
               item.navigate(navigation, job)
             }
           }}
-          disabled={isDisabled}>
+          disabled={isDisabled}
+        >
           {item.image}
           <ListItemBody>
             <Heading>{item.title}</Heading>

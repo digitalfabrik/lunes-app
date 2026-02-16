@@ -19,7 +19,8 @@ const VocabularyCollectionTabNavigator = (): ReactElement | null => {
       screenOptions={{
         tabBarIndicatorStyle: { backgroundColor: theme.colors.primary, height: 4 },
         tabBarStyle: { paddingTop: insets.top },
-      }}>
+      }}
+    >
       <Tab.Screen
         name='UserVocabularyTab'
         component={UserVocabularyStackNavigator}
