@@ -46,6 +46,8 @@
     <string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Zur Auswahl von Bildern benötigt LUNES Zugriff auf deine Bildergalerie.</string>
+    <key>RCTNewArchEnabled</key>
+    <true/>
     <key>UIAppFonts</key>
     <array>
         <string>AntDesign.ttf</string>

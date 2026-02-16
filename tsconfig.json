@@ -1,6 +1,7 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "typeRoots": ["./node_modules/@types", "./src/@types"],
     "types": ["jest", "node", "react"]
   },

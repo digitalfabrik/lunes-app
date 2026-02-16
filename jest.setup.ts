@@ -11,6 +11,7 @@ jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-device-info', () => mockRNDeviceInfo)
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
+jest.mock('./src/hooks/useKeyboard', () => jest.fn(() => ({ isKeyboardVisible: false, keyboardHeight: 0 })))
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
 jest.mock('react-native-tts', () => ({
@@ -21,6 +22,14 @@ jest.mock('react-native-tts', () => ({
   speak: jest.fn(),
 }))
 jest.mock('react-native-sound-player')
+
+jest.mock('react-native-volume-manager', () => ({
+  VolumeManager: {
+    getVolume: jest.fn(async () => ({ volume: 1 })),
+    addVolumeListener: jest.fn(() => ({ remove: jest.fn() })),
+  },
+  useSilentSwitch: jest.fn(() => null),
+}))
 
 jest.mock('react-native/Libraries/Image/ImageBackground', () => {
   const { View } = require('react-native')
