@@ -49,7 +49,8 @@ const DictionaryScreen = ({ navigation }: DictionaryScreenProps): ReactElement =
       <ServerResponseHandler
         error={vocabularyItems.error}
         loading={vocabularyItems.loading}
-        refresh={vocabularyItems.refresh}>
+        refresh={vocabularyItems.refresh}
+      >
         <Root>
           {vocabularyItems.data && (
             <FlatList

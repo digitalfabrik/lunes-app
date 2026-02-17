@@ -70,7 +70,8 @@ const BottomTabNavigator = (): ReactElement | null => {
         },
         tabBarItemStyle: { height: hp('7%'), padding: theme.spacingsPlain.xs },
         tabBarLabelStyle: { fontSize: hp('1.5%'), paddingLeft: isTablet() ? hp('1%') : 0 },
-      }}>
+      }}
+    >
       <Navigator.Screen
         name='HomeTab'
         component={HomeStackNavigator}

@@ -68,7 +68,8 @@ const VocabularyListItem = ({
       description={word}
       onPress={onPress}
       icon={icon}
-      rightChildren={<RightChildrenContainer>{actions}</RightChildrenContainer>}>
+      rightChildren={<RightChildrenContainer>{actions}</RightChildrenContainer>}
+    >
       {children}
     </ListItem>
   )

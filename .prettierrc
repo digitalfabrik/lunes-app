@@ -4,7 +4,6 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "printWidth": 120,
-  "bracketSameLine": true,
   "jsxSingleQuote": true,
   "endOfLine": "auto",
   "importOrder": ["^(\\.)+(\\/)+"],

@@ -24,7 +24,8 @@ const DeletionModal = ({ isVisible, onConfirm, onClose }: DeletionModalProps): R
       onClose={onClose}
       text={confirmationQuestion}
       confirmationButtonText={confirm}
-      confirmationAction={onConfirm}>
+      confirmationAction={onConfirm}
+    >
       <Explanation>{explanation}</Explanation>
     </Modal>
   )

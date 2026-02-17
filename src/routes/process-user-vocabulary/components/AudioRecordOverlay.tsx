@@ -200,7 +200,8 @@ const AudioRecordOverlay = ({
                 onPressIn={onStartRecording}
                 onPressOut={onStopRecording}
                 isPressed={isPressed}
-                testID='record-audio-button'>
+                testID='record-audio-button'
+              >
                 <MicrophoneIcon width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />
               </RecordIcon>
             </Content>

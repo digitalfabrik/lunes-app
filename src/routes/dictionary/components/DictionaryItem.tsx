@@ -24,7 +24,8 @@ const DictionaryItem = ({ vocabularyItem, navigateToDetail, showAlternatives }: 
   <VocabularyListItem
     key={JSON.stringify(vocabularyItem.id)}
     vocabularyItem={vocabularyItem}
-    onPress={() => navigateToDetail(vocabularyItem)}>
+    onPress={() => navigateToDetail(vocabularyItem)}
+  >
     <>
       {showAlternatives && (
         <AlternativesContainer>

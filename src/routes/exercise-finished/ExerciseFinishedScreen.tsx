@@ -117,7 +117,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     <RouteWrapper
       backgroundColor={unlockedNextExercise ? theme.colors.correct : theme.colors.primary}
       lightStatusBarContent={!unlockedNextExercise}
-      bottomBackgroundColor={theme.colors.background}>
+      bottomBackgroundColor={theme.colors.background}
+    >
       {exercise === FIRST_EXERCISE_FOR_REPETITION && (
         <Modal
           visible={isModalVisible}
@@ -130,7 +131,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           onClose={() => setIsModalVisible(false)}
           testID='repetition-modal'
           icon={<LightBulbIconBlack width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />}
-          text={getLabels().repetition.hintModalHeaderText}>
+          text={getLabels().repetition.hintModalHeaderText}
+        >
           <ContainerText>{getLabels().repetition.hintModalContentText}</ContainerText>
           <BottomTabsIcon style={{ marginBottom: 40 }} />
         </Modal>
@@ -141,7 +143,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         unlockedNewExercise={unlockedNextExercise}
         FeedbackIcon={ResultIcon}
         message={message}
-        onBack={() => navigation.dispatch(closeExerciseAction)}>
+        onBack={() => navigation.dispatch(closeExerciseAction)}
+      >
         <Button
           label={buttonText}
           iconLeft={buttonText === getLabels().results.action.repeat ? RepeatIcon : undefined}

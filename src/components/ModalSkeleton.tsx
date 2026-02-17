@@ -55,7 +55,8 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
         <Overlay>
           <ModalContainer
             bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
-            height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}>
+            height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}
+          >
             <Icon onPress={onClose}>
               <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
             </Icon>

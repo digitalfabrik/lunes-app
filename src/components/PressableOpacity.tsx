@@ -32,7 +32,8 @@ const PressableOpacity = ({
       disabled={disabled}
       isPressed={isPressed}
       style={style}
-      testID={testID}>
+      testID={testID}
+    >
       {children}
     </PressableContainer>
   )

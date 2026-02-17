@@ -1,5 +1,4 @@
-import { CardStyleInterpolators, StackNavigationProp } from '@react-navigation/stack'
-import { StackNavigationOptions } from '@react-navigation/stack/lib/typescript/src/types'
+import { CardStyleInterpolators, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'

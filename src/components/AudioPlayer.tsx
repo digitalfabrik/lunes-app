@@ -111,7 +111,8 @@ const AudioPlayer = ({ audio, disabled, isTtsText = false }: AudioPlayerProps): 
       disabled={disabled || (!isTtsText && !soundPlayerInitialized) || isSilent}
       isActive={isActive}
       onPress={handleSpeakerClick}
-      testID='audio-player'>
+      testID='audio-player'
+    >
       <Icon />
     </VolumeIcon>
   )

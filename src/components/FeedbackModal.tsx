@@ -43,7 +43,8 @@ const FeedbackModal = ({ visible, onClose, feedbackTarget }: FeedbackModalProps)
       showCancelButton={false}
       confirmationButtonText={getLabels().feedback.sendFeedback}
       confirmationAction={onSubmit}
-      confirmationDisabled={message.length === 0}>
+      confirmationDisabled={message.length === 0}
+    >
       <TextInputContainer>
         <CustomTextInput
           value={message}

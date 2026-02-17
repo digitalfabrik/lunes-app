@@ -29,7 +29,8 @@ const EditButton = ({ navigation, vocabularyItem }: EditButtonProps) => (
       navigation.navigate('UserVocabularyProcess', {
         itemToEdit: vocabularyItem,
       })
-    }>
+    }
+  >
     <PenIcon />
   </PressableOpacity>
 )

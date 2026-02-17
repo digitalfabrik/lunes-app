@@ -50,7 +50,8 @@ const MissingArticlePopover = forwardRef(({ isVisible, setIsPopoverVisible }: Po
       popoverStyle={styles.popover}
       arrowShift={-0.85}
       verticalOffset={-10}
-      backgroundStyle={styles.overlay}>
+      backgroundStyle={styles.overlay}
+    >
       <StyledContainer>
         <InfoCircleIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
         <StyledMessage>{getLabels().exercises.write.feedback.articleMissing}</StyledMessage>

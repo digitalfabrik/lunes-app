@@ -194,7 +194,8 @@ const ListItem = ({
       pressed={pressed}
       delayLongPress={200}
       feedback={feedback}
-      testID='list-item'>
+      testID='list-item'
+    >
       <FeedbackBadge feedback={feedback} />
       <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}

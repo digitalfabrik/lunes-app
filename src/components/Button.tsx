@@ -114,7 +114,8 @@ const Button = (props: ButtonProps): ReactElement => {
       style={style}
       fitToContentWidth={!!fitToContentWidth}
       onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}>
+      onPressOut={() => setIsPressed(false)}
+    >
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (
         <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />

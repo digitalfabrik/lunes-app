@@ -87,7 +87,8 @@ const CustomTextInput = ({
         style={style}
         lines={lines}
         borderColor={customBorderColor ?? getBorderColor(!!(showErrorValidation && errorMessage.length > 0), isFocused)}
-        showErrorValidation={showErrorValidation}>
+        showErrorValidation={showErrorValidation}
+      >
         <StyledTextInput
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
