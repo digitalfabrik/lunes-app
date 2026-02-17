@@ -52,6 +52,7 @@ const SelectedWordsArea = styled.View`
 const BottomSheetRow = styled.View`
   padding: ${props => props.theme.spacings.md};
   align-items: center;
+  align-self: stretch;
 `
 
 const BottomSheetColumn = styled.View`
