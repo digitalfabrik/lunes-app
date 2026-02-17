@@ -143,7 +143,8 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         unlockedNewExercise={unlockedNextExercise}
         FeedbackIcon={ResultIcon}
         message={message}
-        onBack={() => navigation.dispatch(closeExerciseAction)}>
+        onBack={() => navigation.dispatch(closeExerciseAction)}
+      >
         <Button
           label={buttonText}
           iconLeft={buttonText === getLabels().results.action.repeat ? RepeatIcon : undefined}

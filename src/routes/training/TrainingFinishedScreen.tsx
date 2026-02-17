@@ -67,14 +67,16 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
     <RouteWrapper
       backgroundColor={theme.colors.primary}
       lightStatusBarContent
-      bottomBackgroundColor={theme.colors.background}>
+      bottomBackgroundColor={theme.colors.background}
+    >
       <ExerciseFinishedBase
         results={results}
         feedbackColor={feedbackColor}
         unlockedNewExercise={false}
         FeedbackIcon={FeedbackIcon}
         message={message}
-        onBack={() => navigation.pop()}>
+        onBack={() => navigation.pop()}
+      >
         <Container>
           <QuestionText>{question}</QuestionText>
           <Button
