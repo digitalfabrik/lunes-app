@@ -35,6 +35,7 @@ describe('ImageTrainingScreen', () => {
         name: 'Test job',
         icon: 'icon',
         numberOfUnits: vocabularyItems.length,
+        migrated: false,
       },
     },
   }
