@@ -40,8 +40,8 @@ const initializeChoices = (state: Omit<State, 'choices'>): State => {
   )
 
   const choices = shuffleArray(vocabularyWithoutCurrentItem).slice(0, 3)
-  const insertIndex = Math.floor(Math.random() * (choices.length + 1))
-  choices.splice(insertIndex, 0, state.vocabularyItems[state.currentVocabularyItemIndex])
+  const indexOfCorrectAnswer = Math.floor(Math.random() * (choices.length + 1))
+  choices.splice(indexOfCorrectAnswer, 0, state.vocabularyItems[state.currentVocabularyItemIndex])
   return { ...state, choices: choices.map(choice => ({ src: choice.images[0], key: choice.id })) }
 }
 
@@ -72,10 +72,10 @@ export const stateReducer = (state: State, action: Action): State => {
         return state
       }
       const isCorrect = action.key === state.vocabularyItems[state.currentVocabularyItemIndex].id
+      const isFirstAttempt = state.answer === null
       return {
         ...state,
-        correctAnswersCount:
-          isCorrect && state.answer === null ? state.correctAnswersCount + 1 : state.correctAnswersCount,
+        correctAnswersCount: isCorrect && isFirstAttempt ? state.correctAnswersCount + 1 : state.correctAnswersCount,
         answer: { key: action.key, isCorrect },
       }
     }
