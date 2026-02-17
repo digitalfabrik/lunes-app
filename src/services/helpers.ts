@@ -75,6 +75,8 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled
 }
 
+export const shuffleIndexes = <T>(array: T[]): number[] => shuffleArray([...array.keys()])
+
 const getNumberOfUnlockedExercisesByProgress = (unitId: StandardUnitId, progress: Progress): number => {
   const progressOfUnit = progress[unitId.id]
   return progressOfUnit
@@ -141,30 +143,30 @@ export const getProgress = async (progress: Progress, job: Job | null): Promise<
   return doneExercises / totalExercises
 }
 
-export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[]): number => {
-  const SCORE_FIRST_TRY = 10
-  const SCORE_SECOND_TRY = 4
-  const SCORE_THIRD_TRY = 2
-  return (
-    vocabularyItemsWithResults
-      .filter(doc => doc.result === 'correct')
-      .reduce((acc, vocabularyItemResult) => {
-        let score: number = acc
-        switch (vocabularyItemResult.numberOfTries) {
-          case 1:
-            score += SCORE_FIRST_TRY
-            break
-          case 2:
-            score += SCORE_SECOND_TRY
-            break
-          case 3:
-            score += SCORE_THIRD_TRY
-            break
-        }
-        return score
-      }, 0) / vocabularyItemsWithResults.length
-  )
-}
+const SCORE_FIRST_TRY = 10
+const SCORE_SECOND_TRY = 4
+const SCORE_THIRD_TRY = 2
+
+export const calculateScore = (vocabularyItemsWithResults: VocabularyItemResult[]): number =>
+  vocabularyItemsWithResults
+    .filter(doc => doc.result === 'correct')
+    .reduce((acc, vocabularyItemResult) => {
+      let score: number = acc
+      switch (vocabularyItemResult.numberOfTries) {
+        case 1:
+          score += SCORE_FIRST_TRY
+          break
+        case 2:
+          score += SCORE_SECOND_TRY
+          break
+        case 3:
+          score += SCORE_THIRD_TRY
+          break
+      }
+      return score
+    }, 0) / vocabularyItemsWithResults.length
+
+export const calculateTrainingScore = (correct: number, total: number): number => (correct * SCORE_FIRST_TRY) / total
 
 const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
 

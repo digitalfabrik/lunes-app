@@ -88,9 +88,16 @@
     },
     "training": {
       "train": "Vokabeln trainieren",
+      "finished": {
+        "askContinue": "Möchtest du eine weitere {}-Übung machen?",
+        "continueYes": "Ja, weiter",
+        "continueNo": "Nein, andere Übung auswählen"
+      },
       "image": {
         "title": "Bilderrätsel",
-        "description": "Die richtige Vokabel finden"
+        "description": "Die richtige Vokabel finden",
+        "selectImage": "Wähle das richtige Bild aus!",
+        "whatIs": "Was ist"
       },
       "voice": {
         "title": "Sprechstudio",
@@ -108,6 +115,8 @@
       "fail": "Fail All"
     },
     "next": "Nächstes Wort",
+    "skip": "Überspringen",
+    "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
     "cancelModal": {
