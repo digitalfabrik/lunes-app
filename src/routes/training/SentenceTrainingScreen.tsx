@@ -49,13 +49,13 @@ const SelectedWordsArea = styled.View`
   background-color: ${props => props.theme.colors.backgroundLow};
 `
 
-const BottomSheetRow = styled.View`
+const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};
   align-items: center;
   align-self: stretch;
 `
 
-const BottomSheetColumn = styled.View`
+const BottomSheetRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${props => props.theme.spacings.sm};
@@ -95,17 +95,17 @@ const ResultIndicator = ({
 
   return (
     <BottomSheet visible={isFinished} backgroundColor={color}>
-      <BottomSheetRow>
-        <BottomSheetColumn>
+      <BottomSheetColumn>
+        <BottomSheetRow>
           <Icon width='32' height='32' />
           <HeadingText>
             {isCorrect
               ? getLabels().exercises.training.sentence.correct
               : getLabels().exercises.training.sentence.incorrect}
           </HeadingText>
-        </BottomSheetColumn>
+        </BottomSheetRow>
 
-        <BottomSheetRow>
+        <BottomSheetColumn>
           <BottomSheetWordContainer>
             <WordsContainer>
               {selectedWords.map(({ word, state, index }) => (
@@ -115,7 +115,7 @@ const ResultIndicator = ({
               ))}
             </WordsContainer>
           </BottomSheetWordContainer>
-        </BottomSheetRow>
+        </BottomSheetColumn>
 
         {isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
           <Button
@@ -132,7 +132,7 @@ const ResultIndicator = ({
             buttonTheme={BUTTONS_THEME.contained}
           />
         )}
-      </BottomSheetRow>
+      </BottomSheetColumn>
     </BottomSheet>
   )
 }
@@ -155,10 +155,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
   const availableWords: SelectedWord[] = state.randomizedWordIndexes.map(index => ({
     index,
     word: currentSentence.words[index],
-    state:
-      state.selectedWordIndexes.find(selectedWordIndex => selectedWordIndex === index) === undefined
-        ? 'enabled'
-        : 'disabled',
+    state: state.selectedWordIndexes.includes(index) ? 'disabled' : 'enabled',
   }))
   // Append all unused words to the selected word component and mark them as hidden
   // The purpose is to avoid layout shifts by adding new words

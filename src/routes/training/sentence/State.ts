@@ -39,12 +39,12 @@ export const isSameWord = (state: State, firstIndex: number, secondIndex: number
  */
 export const splitSentence = (sentence: string): string[] =>
   sentence
-    .replace(/[.!]/g, '')
+    .replace(/[.!?,;]/g, '')
     .split(' ')
     .filter(word => word.trim().length > 0)
 
 export const initializeState = (sentences: Sentence[]): State => {
-  const shuffled = shuffleArray(sentences).splice(0, MAX_TRAINING_REPETITIONS)
+  const shuffled = shuffleArray(sentences).slice(0, MAX_TRAINING_REPETITIONS)
   const currentSentenceIndex = 0
   const sentence = shuffled[currentSentenceIndex]
   return {
@@ -68,7 +68,7 @@ export type Action =
 export const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'selectWord': {
-      if (state.selectedWordIndexes.find(index => index === action.index) !== undefined) {
+      if (state.selectedWordIndexes.includes(action.index)) {
         return state
       }
       return { ...state, selectedWordIndexes: [...state.selectedWordIndexes, action.index] }
