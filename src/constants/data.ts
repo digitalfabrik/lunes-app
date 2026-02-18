@@ -1,7 +1,7 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import { CheckCircleIcon, CheckCloseCircleIcon, CloseCircleIcon } from '../../assets/images'
+import { CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { StandardUnit } from '../models/Unit'
 import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
@@ -106,7 +106,6 @@ export type Article = (typeof ARTICLES)[number]
 export const SIMPLE_RESULTS = {
   correct: 'correct',
   incorrect: 'incorrect',
-  similar: 'similar',
 } as const
 export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]
 
@@ -132,12 +131,6 @@ export const RESULTS: Readonly<ResultType[]> = [
     order: 0,
   },
   {
-    key: 'similar',
-    Icon: CheckCloseCircleIcon,
-    title: 'Fast richtige',
-    order: 1,
-  },
-  {
     key: 'incorrect',
     Icon: CloseCircleIcon,
     title: 'Falsche',
@@ -147,7 +140,7 @@ export const RESULTS: Readonly<ResultType[]> = [
 
 export type Result = (typeof RESULTS)[number]
 
-export const numberOfMaxRetries = 3
+export const NUMBER_OF_MAX_RETRIES = 3
 
 export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
 export const SCORE_THRESHOLD_UNLOCK = 2

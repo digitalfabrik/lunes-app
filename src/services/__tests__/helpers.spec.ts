@@ -166,13 +166,6 @@ describe('helpers', () => {
       )
       expect(score).toBe(10)
     })
-
-    it('should calculate score correctly for bad result with similar results', () => {
-      const score = calculateScore(
-        getVocabularyItemWithResults([3, 3, 3, 3], ['similar', 'incorrect', 'incorrect', 'incorrect']),
-      )
-      expect(score).toBe(0)
-    })
   })
 
   describe('getSortedAndFilteredVocabularyItems', () => {
