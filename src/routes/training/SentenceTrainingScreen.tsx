@@ -190,7 +190,8 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
             buttonTheme={BUTTONS_THEME.text}
             iconRight={ChevronRight}
           />
-        }>
+        }
+      >
         <ExerciseInfoContainer>
           <StyledImage src={currentSentence.image} />
           <AudioPlayerContainer>

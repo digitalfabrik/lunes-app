@@ -82,7 +82,8 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
         <ModalBody
           backgroundColor={backgroundColor ?? theme.colors.backgroundHigh}
           bottomPadding={bottomPadding}
-          style={{ transform: [{ translateY: offset }, { perspective: 1000 }] }}>
+          style={{ transform: [{ translateY: offset }, { perspective: 1000 }] }}
+        >
           {children}
         </ModalBody>
       </ModalContainer>
