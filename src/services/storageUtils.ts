@@ -243,7 +243,7 @@ export const migrate3To4 = async (): Promise<void> => {
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
-  if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(overwrite)) {
+  if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(JSON.parse(overwrite))) {
     await AsyncStorage.removeItem(storageKeys.cmsUrlOverwrite)
   }
 }
