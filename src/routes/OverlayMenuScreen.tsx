@@ -66,23 +66,17 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.sponsors}
-          onPress={() =>
-            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Sponsors' } })
-          }
+          onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Sponsors' } })}
         />
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.settings}
-          onPress={() =>
-            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Settings' } })
-          }
+          onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Settings' } })}
         />
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.impressum}
-          onPress={() =>
-            navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Imprint' } })
-          }
+          onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Imprint' } })}
         />
       </Sidebar>
     </Container>
