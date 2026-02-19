@@ -1,0 +1,6 @@
+issue_key: 1276
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Nur Wörter, die falsch beantwortet wurden, werden jetzt zur Wiederholung bereitgestellt

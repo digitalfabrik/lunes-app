@@ -137,7 +137,13 @@ export class RepetitionService {
   public addWordsToFirstSection = async (words: VocabularyItem[]): Promise<void> => {
     const newWordCards = this.getWordNodeCards().slice()
     words.forEach(word => {
-      if (this.getWordNodeCards().filter(item => JSON.stringify(item.word) === JSON.stringify(word)).length === 0) {
+      const alreadyExistingCard = newWordCards.find(wordNodeCard =>
+        areVocabularyItemIdsEqual(wordNodeCard.word.id, word.id),
+      )
+      if (alreadyExistingCard) {
+        alreadyExistingCard.section = 0
+        alreadyExistingCard.inThisSectionSince = new Date()
+      } else {
         newWordCards.push({
           word,
           section: 0,

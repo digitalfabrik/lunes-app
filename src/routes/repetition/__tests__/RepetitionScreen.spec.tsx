@@ -29,7 +29,7 @@ describe('RepetitionScreen', () => {
     )
     await waitFor(() => expect(getByText(`2 ${getLabels().repetition.wordsToRepeat.plural}`)).toBeDefined())
     await waitFor(() => expect(getByTestId('repetition-button')).toBeEnabled())
-    expect(getByTestId('info-circle-black-icon')).toBeDefined()
+    expect(getByTestId('progress-info-icon')).toBeDefined()
     expect(getByText(getLabels().repetition.repeatNow)).toBeDefined()
     expect(getByText(getLabels().repetition.viewWords)).toBeDefined()
   })
@@ -41,14 +41,24 @@ describe('RepetitionScreen', () => {
     })
   })
 
-  it('should open modal on icon click', async () => {
+  it('should open the info modal on icon click', async () => {
     const { getByTestId, queryByTestId } = render(<RepetitionScreen navigation={navigation} />)
-    const isInfoIconPressed = getByTestId('info-circle-black-icon')
+    const isInfoIconPressed = getByTestId('repetition-info-icon')
     expect(isInfoIconPressed).toBeDefined()
     expect(queryByTestId('infoModal')).toBeFalsy()
     fireEvent.press(isInfoIconPressed)
     expect(getByTestId('infoModal')).toBeTruthy()
     expect(getByTestId('infoModal').props.visible).toBe(true)
+  })
+
+  it('should open the progress modal on icon click', async () => {
+    const { getByTestId, queryByTestId } = render(<RepetitionScreen navigation={navigation} />)
+    const isInfoIconPressed = getByTestId('progress-info-icon')
+    expect(isInfoIconPressed).toBeDefined()
+    expect(queryByTestId('progressModal')).toBeFalsy()
+    fireEvent.press(isInfoIconPressed)
+    expect(getByTestId('progressModal')).toBeTruthy()
+    expect(getByTestId('progressModal').props.visible).toBe(true)
   })
 
   it('should not display word list button if there are no words to repeat', async () => {

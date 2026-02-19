@@ -97,10 +97,14 @@ export const saveExerciseProgress = async (
   const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(storageCache, unitId, exerciseKey, score)
 
-  if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && score > 0) {
-    const repetitionService = RepetitionService.fromStorageCache(storageCache)
-    const words = vocabularyItemsWithResults.map(result => result.vocabularyItem)
-    await repetitionService.addWordsToFirstSection(words)
+  if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION) {
+    const wordsNeedingRepetition = vocabularyItemsWithResults
+      .filter(result => result.numberOfTries > 1)
+      .map(result => result.vocabularyItem)
+    if (wordsNeedingRepetition.length > 0) {
+      const repetitionService = RepetitionService.fromStorageCache(storageCache)
+      await repetitionService.addWordsToFirstSection(wordsNeedingRepetition)
+    }
   }
 }
 

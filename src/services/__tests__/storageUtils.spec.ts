@@ -147,6 +147,81 @@ describe('storageUtils', () => {
         expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
 
         const words = repetitionService.getWordNodeCards()
+        expect(words).toHaveLength(1)
+      })
+
+      it('should not add correctly answered words to the repetition service', async () => {
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
+          {
+            vocabularyItem: vocabularyItems[0],
+            result: SIMPLE_RESULTS.correct,
+            numberOfTries: 1,
+          },
+          {
+            vocabularyItem: vocabularyItems[1],
+            result: SIMPLE_RESULTS.correct,
+            numberOfTries: 1,
+          },
+        ]
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.wordChoiceExercise,
+          vocabularyItemResults,
+        )
+
+        const words = repetitionService.getWordNodeCards()
+        expect(words).toHaveLength(0)
+      })
+
+      it('should add words to the repetition service if correct but required multiple tries', async () => {
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
+          {
+            vocabularyItem: vocabularyItems[0],
+            result: SIMPLE_RESULTS.correct,
+            numberOfTries: 2,
+          },
+          {
+            vocabularyItem: vocabularyItems[1],
+            result: SIMPLE_RESULTS.correct,
+            numberOfTries: 1,
+          },
+        ]
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.wordChoiceExercise,
+          vocabularyItemResults,
+        )
+
+        const words = repetitionService.getWordNodeCards()
+        expect(words).toHaveLength(1)
+      })
+
+      it('should add incorrect words to the repetition service', async () => {
+        const vocabularyItems = new VocabularyItemBuilder(2).build()
+        const vocabularyItemResults: VocabularyItemResult[] = [
+          {
+            vocabularyItem: vocabularyItems[0],
+            result: SIMPLE_RESULTS.incorrect,
+            numberOfTries: 3,
+          },
+          {
+            vocabularyItem: vocabularyItems[1],
+            result: SIMPLE_RESULTS.incorrect,
+            numberOfTries: 3,
+          },
+        ]
+        await saveExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          ExerciseKeys.wordChoiceExercise,
+          vocabularyItemResults,
+        )
+
+        const words = repetitionService.getWordNodeCards()
         expect(words).toHaveLength(2)
       })
 
