@@ -379,10 +379,16 @@ describe('RepetitionService', () => {
       ])
     })
 
-    it('should not add a word to the first section, if it is already in the long term exercise data', async () => {
+    it('should reset an existing word into the first section', async () => {
       await repetitionService.setWordNodeCards(testData)
       await repetitionService.addWordToFirstSection(testData[0].word)
-      compareWordCardLists(testData)
+      const expected = testData.slice()
+      expected[0] = {
+        ...testData[0],
+        section: 0,
+        inThisSectionSince: new Date(),
+      }
+      compareWordCardLists(expected)
     })
 
     it('should add a new word to the first section', async () => {
@@ -399,18 +405,22 @@ describe('RepetitionService', () => {
       )
     })
 
-    it('should move one word to first section and second word not, if first word is new and second word already in data', async () => {
+    it('should reset existing word and add new word to first section', async () => {
       await repetitionService.setWordNodeCards(testData.slice(0, 3))
       await repetitionService.addWordsToFirstSection(testData.slice(2, 4).map(item => item.word))
-      compareWordCardLists(
-        testData.slice(0, 3).concat([
-          {
-            word: testData[3].word,
-            section: 0,
-            inThisSectionSince: new Date(),
-          },
-        ]),
-      )
+      const expected = testData.slice(0, 3).concat([
+        {
+          word: testData[3].word,
+          section: 0,
+          inThisSectionSince: new Date(),
+        },
+      ])
+      expected[2] = {
+        ...testData[2],
+        section: 0,
+        inThisSectionSince: new Date(),
+      }
+      compareWordCardLists(expected)
     })
 
     it('should not move to next section, if word is not in long term exercise data', async () => {

@@ -32,20 +32,43 @@ describe('ExerciseFinishedScreen', () => {
       results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
         vocabularyItem,
         result: correct ? 'correct' : 'incorrect',
-        numberOfTries: 1,
+        numberOfTries: correct ? 1 : 3,
       })),
       unlockedNextExercise,
     },
   })
 
-  it('should render repetition modal if a module is finished', () => {
-    const route = getRoute(FIRST_EXERCISE_FOR_REPETITION, true, true)
+  it('should render repetition modal if the exercise has incorrect results', () => {
+    const route = getRoute(FIRST_EXERCISE_FOR_REPETITION, false, false)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().repetition.hintModalHeaderText)).toBeDefined()
     expect(getByText(getLabels().repetition.hintModalContentText)).toBeDefined()
     const repeatLaterButton = getByText(getLabels().repetition.repeatLater)
     fireEvent.press(repeatLaterButton)
     expect(setVisible).toBeTruthy()
+  })
+
+  it('should not render repetition modal if all results are correct', () => {
+    const route = getRoute(FIRST_EXERCISE_FOR_REPETITION, true, true)
+    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(queryByTestId('repetition-modal')).toBeNull()
+  })
+
+  it('should render repetition modal if results are correct but required multiple tries', () => {
+    const route: RouteProp<RoutesParams, 'ExerciseFinished'> = {
+      key: '',
+      name: 'ExerciseFinished',
+      params: {
+        ...getRoute(FIRST_EXERCISE_FOR_REPETITION, true, true).params,
+        results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
+          vocabularyItem,
+          result: 'correct' as const,
+          numberOfTries: 2,
+        })),
+      },
+    }
+    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(queryByTestId('repetition-modal')).toBeTruthy()
   })
 
   it('should not render repetition modal if it is on a first exercise', () => {
