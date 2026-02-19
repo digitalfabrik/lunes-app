@@ -238,8 +238,8 @@
       "plural": "Wörter zum Wiederholen bereit"
     },
     "yourLearningProgress": "Dein Lernfortschritt",
-    "hintModalHeaderText": "Du kannst gelernte Wörter jetzt wiederholen",
-    "hintModalContentText": "Unter dem Kapitel „Vertiefen“ kannst du nun dein Langzeitgedächtnis trainieren.",
+    "hintModalHeaderText": "Einige Wörter waren schwer, keine Sorge!",
+    "hintModalContentText": "Unter „Vertiefen“ kannst du diese Vokabeln gezielt wiederholen.",
     "progressExplainerContent": "Jede Vokabel durchläuft 7 Phasen. Zu Beginn wiederholst du sie häufiger, später in größeren Abständen.",
     "infoModalContent": "Wiederhole hier Vokabeln, die dir beim Kennenlernen und Üben bisher schwer gefallen sind.",
     "repeatLater": "später",
