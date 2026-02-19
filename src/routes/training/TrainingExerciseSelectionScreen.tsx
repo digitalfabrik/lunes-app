@@ -37,6 +37,7 @@ export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
     title: getLabels().exercises.training.sentence.title,
     description: getLabels().exercises.training.sentence.description,
     image: <TrainingSentences />,
+    navigate: (navigation, job) => navigation.navigate('SentenceTraining', { job }),
   },
 }
 
