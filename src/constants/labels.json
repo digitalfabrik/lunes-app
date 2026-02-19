@@ -240,7 +240,8 @@
     "yourLearningProgress": "Dein Lernfortschritt",
     "hintModalHeaderText": "Du kannst gelernte Wörter jetzt wiederholen",
     "hintModalContentText": "Unter dem Kapitel „Vertiefen“ kannst du nun dein Langzeitgedächtnis trainieren.",
-    "infoModalContentText": "Die Wiederholungsübung hilft dir, Vokabeln nachhaltig zu lernen, indem es Wiederholungen optimal an deinen Wissensstand anpasst. Jede Karte durchläuft 7 Phasen: Anfangs wiederholst du häufiger, später in größeren Abständen. So speicherst du Wissen langfristig im Gedächtnis!",
+    "progressExplainerContent": "Jede Vokabel durchläuft 7 Phasen. Zu Beginn wiederholst du sie häufiger, später in größeren Abständen.",
+    "infoModalContent": "Wiederhole hier Vokabeln, die dir beim Kennenlernen und Üben bisher schwer gefallen sind.",
     "repeatLater": "später",
     "chart": {
       "untrained": "Neue",
