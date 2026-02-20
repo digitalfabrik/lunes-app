@@ -60,31 +60,12 @@
       "title": "Level 1",
       "description": "Das richtige Wort auswählen"
     },
-    "articleChoice": {
-      "title": "Level 2",
-      "description": "Den richtigen Artikel auswählen"
-    },
     "lockedExerciseModal": {
       "title": "Hoppla, dieses Level ist noch nicht freigeschalten.",
       "confirmButtonLabel": "Zu",
       "confirmButtonLabelDeclinated": "Zur",
       "descriptionPart1": "Du musst",
       "descriptionPart2": "abschließen, um das nächste Level freizuschalten."
-    },
-    "write": {
-      "title": "Level 3",
-      "description": "Das Wort mit Artikel schreiben",
-      "checkInput": "Eingabe überprüfen",
-      "showSolution": "Lösung anzeigen",
-      "insertAnswer": "Wort mit Artikel eingeben",
-      "feedback": {
-        "articleMissing": "Ups, deine Eingabe ist nicht vollständig. Füge einen Artikel ein.",
-        "solution": "Die richtige Antwort ist:",
-        "wrong": "Das war leider nicht richtig.",
-        "almostCorrect1": "Deine Eingabe",
-        "almostCorrect2": "ist fast richtig.",
-        "correct": "Toll, weiter so! \nDeine Eingabe ist richtig."
-      }
     },
     "training": {
       "train": "Vokabeln trainieren",
