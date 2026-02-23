@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
+import { Platform } from 'react-native'
+import DeviceInfo from 'react-native-device-info'
 
 import { getStorageItem } from './Storage'
 
@@ -29,6 +31,14 @@ setupCache(axios, {
   generateKey: keyGenerator,
 })
 
+const instance = axios.create({
+  headers: {
+    'X-os': Platform.OS,
+    'X-os-version': Platform.Version,
+    'X-app-version': DeviceInfo.getVersion(),
+  },
+})
+
 const getUrl = async (endpoint: string): Promise<string> => {
   const baseURL = getBaseURL(await getStorageItem('cmsUrlOverwrite'))
   return `${baseURL}/${endpoint}`
@@ -36,11 +46,11 @@ const getUrl = async (endpoint: string): Promise<string> => {
 
 export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  const response = await axios.get(await getUrl(endpoint), { headers })
+  const response = await instance.get(await getUrl(endpoint), { headers })
   return response.data
 }
 
 export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: string): Promise<AxiosResponse> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  return axios.post(await getUrl(endpoint), data, { headers })
+  return instance.post(await getUrl(endpoint), data, { headers })
 }
