@@ -3,10 +3,14 @@ import { mocked } from 'jest-mock'
 
 import { getFromEndpoint } from '../axios'
 
-jest.mock('axios', () => ({
-  ...jest.requireActual('axios'),
-  get: jest.fn(),
-}))
+jest.mock('axios', () => {
+  const mockGet = jest.fn()
+  return {
+    ...jest.requireActual('axios'),
+    create: jest.fn(() => ({ get: mockGet, post: jest.fn() })),
+    get: mockGet,
+  }
+})
 
 jest.mock('axios-cache-interceptor', () => ({ setupCache: jest.fn(), buildKeyGenerator: jest.fn() }))
 
