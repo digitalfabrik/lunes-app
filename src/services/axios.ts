@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
 import { buildKeyGenerator, setupCache } from 'axios-cache-interceptor'
-
 import { Platform } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
+
 import { getStorageItem } from './Storage'
 
 // The emulator treats this special ip as the localhost of the host
@@ -33,10 +33,10 @@ setupCache(axios, {
 
 const instance = axios.create({
   headers: {
-    "X-os": Platform.OS,
-    "X-os-version": Platform.Version,
-    "X-app-version": DeviceInfo.getVersion()
-  }
+    'X-os': Platform.OS,
+    'X-os-version': Platform.Version,
+    'X-app-version': DeviceInfo.getVersion(),
+  },
 })
 
 const getUrl = async (endpoint: string): Promise<string> => {
