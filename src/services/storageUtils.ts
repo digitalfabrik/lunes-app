@@ -96,16 +96,6 @@ export const saveExerciseProgress = async (
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
   await setExerciseProgress(storageCache, unitId, exerciseKey, score)
-
-  if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION) {
-    const wordsNeedingRepetition = vocabularyItemsWithResults
-      .filter(result => result.numberOfTries > 1)
-      .map(result => result.vocabularyItem)
-    if (wordsNeedingRepetition.length > 0) {
-      const repetitionService = RepetitionService.fromStorageCache(storageCache)
-      await repetitionService.addWordsToFirstSection(wordsNeedingRepetition)
-    }
-  }
 }
 
 type Incomplete<T> = T & Record<string, unknown>

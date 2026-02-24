@@ -16,11 +16,13 @@ import {
   numberOfMaxRetries,
   SIMPLE_RESULTS,
   SimpleResult,
+  FIRST_EXERCISE_FOR_REPETITION,
 } from '../../../constants/data'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
+import { RepetitionService } from '../../../services/RepetitionService'
 import { calculateScore, getLabels, moveToEnd, shuffleArray, willNextExerciseUnlock } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
@@ -119,11 +121,16 @@ const ChoiceExerciseScreen = ({
     setResults(newResults)
   }
 
-  const onClickAnswer = (clickedAnswer: Answer): void => {
+  const onClickAnswer = async (clickedAnswer: Answer): Promise<void> => {
     setSelectedAnswer(clickedAnswer)
 
     const isCorrect = correctAnswers.some(it => isAnswerEqual(it, clickedAnswer))
     updateResult(numberOfTries + 1, isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect)
+
+    if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && !isCorrect) {
+      const repetitionService = RepetitionService.fromStorageCache(storageCache)
+      await repetitionService.addWordToFirstSection(vocabularyItem)
+    }
 
     setTimeout(() => {
       setDelayPassed(true)
