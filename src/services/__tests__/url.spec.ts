@@ -4,6 +4,10 @@ import { Linking } from 'react-native'
 import { openExternalUrl } from '../url'
 
 jest.mock('react-native', () => ({
+  Platform: {
+    OS: 'android',
+    Version: '10',
+  },
   Linking: {
     canOpenURL: jest.fn(),
     openURL: jest.fn(),
