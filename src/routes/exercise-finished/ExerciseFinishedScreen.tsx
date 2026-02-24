@@ -119,7 +119,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       lightStatusBarContent={!unlockedNextExercise}
       bottomBackgroundColor={theme.colors.background}
     >
-      {exercise === FIRST_EXERCISE_FOR_REPETITION && (
+      {exercise === FIRST_EXERCISE_FOR_REPETITION && results.some(result => result.numberOfTries > 1) && (
         <Modal
           visible={isModalVisible}
           confirmationAction={() => {

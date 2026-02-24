@@ -55,7 +55,7 @@ describe('RepetitionWriteExerciseService', () => {
       storageCache,
     )
     repetitionService = service.repetitionService
-    repetitionService.moveWordToPreviousSection = jest.fn()
+    repetitionService.updateWordNodeCard = jest.fn()
     repetitionService.updateWordNodeCard = jest.fn()
   }
 
@@ -70,7 +70,7 @@ describe('RepetitionWriteExerciseService', () => {
         vocabularyItemsWithResults[3],
         vocabularyItemsWithResults[0],
       ])
-      expect(repetitionService.moveWordToPreviousSection).not.toHaveBeenCalled()
+      expect(repetitionService.updateWordNodeCard).not.toHaveBeenCalled()
     })
   })
 

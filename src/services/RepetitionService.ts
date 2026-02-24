@@ -137,7 +137,14 @@ export class RepetitionService {
   public addWordsToFirstSection = async (words: VocabularyItem[]): Promise<void> => {
     const newWordCards = this.getWordNodeCards().slice()
     words.forEach(word => {
-      if (this.getWordNodeCards().filter(item => JSON.stringify(item.word) === JSON.stringify(word)).length === 0) {
+      const alreadyExistingCard = newWordCards.find(wordNodeCard =>
+        areVocabularyItemIdsEqual(wordNodeCard.word.id, word.id),
+      )
+      if (alreadyExistingCard) {
+        const resetCard = { ...alreadyExistingCard, section: sections[0], inThisSectionSince: new Date() }
+        const index = newWordCards.indexOf(alreadyExistingCard)
+        newWordCards[index] = resetCard
+      } else {
         newWordCards.push({
           word,
           section: 0,
@@ -153,21 +160,17 @@ export class RepetitionService {
   private static getSectionWithBoundCheck = (section: number) =>
     sections[Math.min(Math.max(0, section), sections.length - 1)]
 
-  private moveWordToSection = async (word: VocabularyItem, offset: 1 | -1): Promise<void> => {
+  private moveWordToSection = async (word: VocabularyItem, isCorrect: boolean): Promise<void> => {
     const wordNodeCards = this.getWordNodeCards().slice()
     const wordNodeCard = wordNodeCards.find(wordNodeCard => JSON.stringify(wordNodeCard.word) === JSON.stringify(word))
     if (wordNodeCard) {
-      const targetSection = wordNodeCard.section + offset
+      const targetSection = isCorrect ? wordNodeCard.section + 1 : sections[0]
       wordNodeCard.section = RepetitionService.getSectionWithBoundCheck(targetSection)
       wordNodeCard.inThisSectionSince = new Date()
       await this.setWordNodeCards(wordNodeCards)
     }
   }
 
-  public moveWordToNextSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, 1)
-
-  public moveWordToPreviousSection = async (word: VocabularyItem): Promise<void> => this.moveWordToSection(word, -1)
-
   public updateWordNodeCard = async (wordWithResult: VocabularyItemResult): Promise<void> =>
-    this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct' ? 1 : -1)
+    this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct')
 }
