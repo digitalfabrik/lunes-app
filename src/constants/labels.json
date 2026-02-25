@@ -99,9 +99,14 @@
         "selectImage": "Wähle das richtige Bild aus!",
         "whatIs": "Was ist"
       },
-      "voice": {
+      "speech": {
         "title": "Sprechstudio",
-        "description": "Die Vokabel richtig aussprechen"
+        "description": "Die Vokabel richtig aussprechen",
+        "prompt": "Sprich aus, was hier gezeigt wird!",
+        "listening": "Ich höre zu ...",
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig.",
+        "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast."
       },
       "sentence": {
         "title": "Satzbausteine",

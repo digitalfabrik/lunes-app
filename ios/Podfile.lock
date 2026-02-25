@@ -1678,6 +1678,35 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - react-native-netinfo (12.0.1):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - react-native-pager-view (8.0.0):
     - boost
     - DoubleConversion
@@ -2275,6 +2304,8 @@ PODS:
     - React-perflogger (= 0.80.3)
     - React-utils (= 0.80.3)
     - SocketRocket
+  - RNAudioPcmStream (1.1.4):
+    - React
   - RNAudioRecorderPlayer (3.6.14):
     - React-Core
   - RNCAsyncStorage (2.2.0):
@@ -2556,6 +2587,35 @@ PODS:
     - Yoga
   - Sentry/HybridSDK (8.53.2)
   - SocketRocket (0.7.1)
+  - SpeechToText (0.0.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - SwiftUIIntrospect (1.3.0)
   - TextToSpeech (4.1.1):
     - React-Core
@@ -2610,6 +2670,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-volume-manager (from `../node_modules/react-native-volume-manager`)
@@ -2644,6 +2705,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAudioPcmStream (from `../node_modules/@fugood/react-native-audio-pcm-stream`)"
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -2657,6 +2719,7 @@ DEPENDENCIES:
   - RNSoundPlayer (from `../node_modules/react-native-sound-player`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SocketRocket (~> 0.7.1)
+  - SpeechToText (from `../node_modules/react-native-speech-to-text`)
   - TextToSpeech (from `../node_modules/react-native-tts`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -2752,6 +2815,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -2820,6 +2885,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAudioPcmStream:
+    :path: "../node_modules/@fugood/react-native-audio-pcm-stream"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCAsyncStorage:
@@ -2844,6 +2911,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-sound-player"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  SpeechToText:
+    :path: "../node_modules/react-native-speech-to-text"
   TextToSpeech:
     :path: "../node_modules/react-native-tts"
   VisionCamera:
@@ -2894,6 +2963,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 64e5ffbe054209715bf142812c681a31a401a138
   React-microtasksnativemodule: ea305a181932fc24e0490dae64f52df351fb3554
   react-native-image-picker: e9d833df19e87e25e38ddc0be3bad92f57307765
+  react-native-netinfo: c1a8da443295308b4a9243d33d5dcc81631e9f3b
   react-native-pager-view: 4a0aa5d5ce136364d706221642ff6d4a457bc073
   react-native-safe-area-context: 01f6d357d42395422eed7c3bfe715614728f2989
   react-native-volume-manager: cdd3c3857158c1df7b9fbea071a9946395cee06c
@@ -2928,6 +2998,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: bd4d54d31d1a9e2eddff7675bb7628731a42b98c
   ReactCodegen: 8e8c7dc0113d08d218f409fbb2cd3b966b982e11
   ReactCommon: 04362bc6625a80fa21b174f527352db70e5ad06a
+  RNAudioPcmStream: 7f54645cfad8a18daebdc45111ebc7be99b4c2a3
   RNAudioRecorderPlayer: b5ed41ccfe72a211a870bfe09ab36c046eb27d2a
   RNCAsyncStorage: 1f04c8d56558e533277beda29187f571cf7eecb2
   RNCPicker: 3e5561b277899597ccfc067cc4d5b49ef3be685d
@@ -2942,11 +3013,12 @@ SPEC CHECKSUMS:
   RNSVG: d407e5f2ede12bbcd92e4d23a405ad5a5f7294a3
   Sentry: 59993bffde4a1ac297ba6d268dc4bbce068d7c1b
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SpeechToText: ac466bc7670eba6eec9e7f5777013217b396a248
   SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
   TextToSpeech: 89b239221ec378d213af422d14789a729705360b
   VisionCamera: 891edb31806dd3a239c8a9d6090d6ec78e11ee80
   Yoga: fb21153542336c6e7c4855022f4a93a286865259
 
-PODFILE CHECKSUM: aa257266404ebb97c0c979255d8e98e54e541732
+PODFILE CHECKSUM: e589a7a31c48713edc188e23af1fc655547e185b
 
 COCOAPODS: 1.16.2

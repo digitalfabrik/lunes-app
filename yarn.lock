@@ -1800,6 +1800,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fugood/react-native-audio-pcm-stream@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@fugood/react-native-audio-pcm-stream@npm:1.1.4"
+  checksum: 765f229fb3944e9c5628ade64fd43e8672e7d396e07df3ea404f8c73331a9efe8bba74f22b9494f846a367c2a47461172d64a8324bb887b5df2289e3fdaed4a6
+  languageName: node
+  linkType: hard
+
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -2468,6 +2475,16 @@ __metadata:
   bin:
     rnc-cli: build/bin.js
   checksum: cf1670f0d97f618f05d35540fcc3b89ac98ef56ca1e510e2af2902f73a872b27565807fdf5206ec6d27d9a264b02b760e2cbda09076377a49c811e049485fad3
+  languageName: node
+  linkType: hard
+
+"@react-native-community/netinfo@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@react-native-community/netinfo@npm:12.0.1"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.59"
+  checksum: 66c5fab04ef3ffe9b1f2e3578e7d3052a8c3ae327d94fa41f7d95ec4db3de4dd4017bf486013f031cb1aa12909002492474f259ea6212471f730cca39239dd35
   languageName: node
   linkType: hard
 
@@ -8522,11 +8539,13 @@ __metadata:
     "@babel/preset-env": ^7.28.4
     "@babel/preset-typescript": ^7.28.4
     "@babel/runtime": ^7.28.4
+    "@fugood/react-native-audio-pcm-stream": ^1.1.4
     "@notifee/react-native": ^9.1.8
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/cli": 20.0.2
     "@react-native-community/cli-platform-android": 20.0.2
     "@react-native-community/cli-platform-ios": 20.0.2
+    "@react-native-community/netinfo": ^12.0.1
     "@react-native-picker/picker": ^2.9.0
     "@react-native/babel-preset": 0.80.3
     "@react-native/metro-config": 0.80.3
@@ -8587,6 +8606,7 @@ __metadata:
     react-native-safe-area-context: ^5.6.1
     react-native-screens: ">=4.14.0 <4.19.0"
     react-native-sound-player: 0.14.5
+    react-native-speech-to-text: "*"
     react-native-svg: 15.12.1
     react-native-svg-transformer: ^1.5.1
     react-native-tts: 4.1.1
@@ -10173,6 +10193,14 @@ __metadata:
   checksum: 9c1236c9725b5eaef839b9028f046bb59c7531bc0c4bacbb8d584a3197bb3ab5d35e3304f8c96591917914f0a6f04bacd3818cfaf687e5bc65242c23cf223bd0
   languageName: node
   linkType: hard
+
+"react-native-speech-to-text@*, react-native-speech-to-text@workspace:modules/speech-to-text":
+  version: 0.0.0-use.local
+  resolution: "react-native-speech-to-text@workspace:modules/speech-to-text"
+  peerDependencies:
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
 
 "react-native-svg-transformer@npm:^1.5.1":
   version: 1.5.1
