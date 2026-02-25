@@ -64,7 +64,7 @@ const ChoiceExerciseScreen = ({
   )
   const { vocabularyItem, numberOfTries, result } = results[currentWord]
   const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
-  const repetitionService = RepetitionService.fromStorageCache(storageCache)
+  const repetitionService = useRepetitionService()
 
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
