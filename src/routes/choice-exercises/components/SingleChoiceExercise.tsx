@@ -18,6 +18,7 @@ import {
   SimpleResult,
   FIRST_EXERCISE_FOR_REPETITION,
 } from '../../../constants/data'
+import useRepetitionService from '../../../hooks/useRepetitionService'
 import { useStorageCache } from '../../../hooks/useStorage'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
@@ -26,7 +27,6 @@ import { RepetitionService } from '../../../services/RepetitionService'
 import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
-import useRepetitionService from '../../../hooks/useRepetitionService'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -127,7 +127,7 @@ const ChoiceExerciseScreen = ({
     newResults[currentWord] = { ...newResults[currentWord], numberOfTries, result }
     setResults(newResults)
     if (isRepetitionExercise && (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES)) {
-      await repetitionService.updateWordNodeCard(newResults[currentWord])
+      await repetitionService.updateSeveralWordNodeCards([newResults[currentWord]])
     }
   }
 

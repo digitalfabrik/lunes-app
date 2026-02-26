@@ -160,19 +160,14 @@ export class RepetitionService {
   private static getSectionWithBoundCheck = (section: number) =>
     sections[Math.min(Math.max(0, section), sections.length - 1)]
 
-  private moveWordToSection = async (word: VocabularyItem, isCorrect: boolean): Promise<void> => {
-    const wordNodeCards = this.getWordNodeCards().slice()
-    const wordNodeCard = wordNodeCards.find(wordNodeCard => JSON.stringify(wordNodeCard.word) === JSON.stringify(word))
-    if (wordNodeCard) {
-      const targetSection = isCorrect ? wordNodeCard.section + 1 : sections[0]
-      wordNodeCard.section = RepetitionService.getSectionWithBoundCheck(targetSection)
-      wordNodeCard.inThisSectionSince = new Date()
-      await this.setWordNodeCards(wordNodeCards)
+  private static updateWord = (word: WordNodeCard, isCorrect: boolean): WordNodeCard => {
+    const targetSection = isCorrect ? word.section + 1 : sections[0]
+    return {
+      ...word,
+      section: RepetitionService.getSectionWithBoundCheck(targetSection),
+      inThisSectionSince: new Date(),
     }
   }
-
-  public updateWordNodeCard = async (wordWithResult: VocabularyItemResult): Promise<void> =>
-    this.moveWordToSection(wordWithResult.vocabularyItem, wordWithResult.result === 'correct')
 
   public updateSeveralWordNodeCards = async (wordsWithResult: VocabularyItemResult[]): Promise<void> => {
     const newWordCards = this.getWordNodeCards().slice()
@@ -181,9 +176,7 @@ export class RepetitionService {
         areVocabularyItemIdsEqual(wordCard.word.id, word.vocabularyItem.id),
       )
       if (index !== -1) {
-        const targetSection = newWordCards[index].section + (word.result === 'correct' ? 1 : -1)
-        newWordCards[index].section = RepetitionService.getSectionWithBoundCheck(targetSection)
-        newWordCards[index].inThisSectionSince = new Date()
+        newWordCards[index] = RepetitionService.updateWord(newWordCards[index], word.result === 'correct')
       }
     })
     return this.setWordNodeCards(newWordCards)
