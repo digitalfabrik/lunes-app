@@ -433,21 +433,25 @@ describe('RepetitionService', () => {
         images: [],
         alternatives: [],
       }
-      await repetitionService.updateWordNodeCard({
-        vocabularyItem: notInLongTermExerciseWord,
-        result: 'correct',
-        numberOfTries: 0,
-      })
+      await repetitionService.updateSeveralWordNodeCards([
+        {
+          vocabularyItem: notInLongTermExerciseWord,
+          result: 'correct',
+          numberOfTries: 0,
+        },
+      ])
       compareWordCardLists(testData)
     })
 
     it('should move second word to next section if not in last section', async () => {
       await repetitionService.setWordNodeCards(testData)
-      await repetitionService.updateWordNodeCard({
-        vocabularyItem: testData[2].word,
-        result: 'correct',
-        numberOfTries: 0,
-      })
+      await repetitionService.updateSeveralWordNodeCards([
+        {
+          vocabularyItem: testData[2].word,
+          result: 'correct',
+          numberOfTries: 0,
+        },
+      ])
       testData[2] = {
         ...testData[2],
         section: 3,
@@ -458,11 +462,13 @@ describe('RepetitionService', () => {
 
     it('should not move second word to next section if in last section', async () => {
       await repetitionService.setWordNodeCards(testData)
-      await repetitionService.updateWordNodeCard({
-        vocabularyItem: testData[7].word,
-        result: 'correct',
-        numberOfTries: 0,
-      })
+      await repetitionService.updateSeveralWordNodeCards([
+        {
+          vocabularyItem: testData[7].word,
+          result: 'correct',
+          numberOfTries: 0,
+        },
+      ])
       testData[7] = {
         ...testData[7],
         inThisSectionSince: new Date(),
@@ -472,11 +478,13 @@ describe('RepetitionService', () => {
 
     it('should move second word to first section if not in first section', async () => {
       await repetitionService.setWordNodeCards(testData)
-      await repetitionService.updateWordNodeCard({
-        vocabularyItem: testData[2].word,
-        result: 'incorrect',
-        numberOfTries: 0,
-      })
+      await repetitionService.updateSeveralWordNodeCards([
+        {
+          vocabularyItem: testData[2].word,
+          result: 'incorrect',
+          numberOfTries: 0,
+        },
+      ])
       testData[2] = {
         ...testData[2],
         section: 0,
@@ -487,11 +495,13 @@ describe('RepetitionService', () => {
 
     it('should move second word to first section if in first section', async () => {
       await repetitionService.setWordNodeCards(testData)
-      await repetitionService.updateWordNodeCard({
-        vocabularyItem: testData[5].word,
-        result: 'incorrect',
-        numberOfTries: 0,
-      })
+      await repetitionService.updateSeveralWordNodeCards([
+        {
+          vocabularyItem: testData[5].word,
+          result: 'incorrect',
+          numberOfTries: 0,
+        },
+      ])
       testData[5] = {
         ...testData[5],
         inThisSectionSince: new Date(),

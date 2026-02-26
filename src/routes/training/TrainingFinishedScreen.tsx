@@ -72,7 +72,6 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       <ExerciseFinishedBase
         results={results}
         feedbackColor={feedbackColor}
-        unlockedNewExercise={false}
         FeedbackIcon={FeedbackIcon}
         message={message}
         onBack={() => navigation.pop()}

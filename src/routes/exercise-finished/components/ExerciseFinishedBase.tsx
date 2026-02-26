@@ -24,8 +24,9 @@ const MessageContainer = styled.View`
   margin-top: ${props => props.theme.spacings.sm};
   align-items: center;
 `
-const Message = styled(HeadingBackground)<{ unlockedNextExercise: boolean }>`
-  color: ${prop => (prop.unlockedNextExercise ? prop.theme.colors.primary : prop.theme.colors.background)};
+
+const Message = styled(HeadingBackground)`
+  color: ${props => props.theme.colors.background};
   text-align: center;
 `
 
@@ -46,7 +47,6 @@ const Results = styled(Content)<{ color: Color }>`
 type ExerciseFinishedBaseProps = {
   results: { correct: number; total: number }
   feedbackColor: Color
-  unlockedNewExercise: boolean
   FeedbackIcon: ComponentType<SvgProps>
   message: string
   onBack: () => void
@@ -58,12 +58,11 @@ const ExerciseFinishedBase = ({
   feedbackColor,
   message,
   FeedbackIcon,
-  unlockedNewExercise,
   onBack,
   children,
 }: ExerciseFinishedBaseProps): ReactElement => (
   <Root>
-    <RoundedBackground color={unlockedNewExercise ? theme.colors.correct : theme.colors.primary}>
+    <RoundedBackground color={theme.colors.primary}>
       <AlignRight>
         <IconButton onPress={onBack}>
           <CloseIconWhite width={hp('3%')} height={hp('3%')} />
@@ -71,7 +70,7 @@ const ExerciseFinishedBase = ({
       </AlignRight>
       <FeedbackIcon width={hp('5%')} height={hp('5%')} />
       <MessageContainer>
-        <Message unlockedNextExercise={unlockedNewExercise}>{message}</Message>
+        <Message>{message}</Message>
         <Results color={feedbackColor}>
           {results.correct} {getLabels().results.of} {wordsDescription(results.total)} {getLabels().results.correct}
         </Results>

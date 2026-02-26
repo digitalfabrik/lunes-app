@@ -20,6 +20,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const { vocabularyItems, contentType } = route.params
   const unitId = contentType === 'standard' ? route.params.unitId : null
   const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
+  const isRepetitionExercise = contentType === 'repetition'
 
   const generateFalseAnswers = (correctVocabularyItem: VocabularyItem): Answer[] => {
     const shuffledWrongAnswers = shuffleArray(vocabularyItems.filter(it => it.id !== correctVocabularyItem.id))
@@ -45,6 +46,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
         navigation={navigation}
         route={route}
         exerciseKey={ExerciseKeys.wordChoiceExercise}
+        isRepetitionExercise={isRepetitionExercise}
       />
     </RouteWrapper>
   )
