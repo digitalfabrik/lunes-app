@@ -112,6 +112,11 @@ const ChoiceExerciseScreen = ({
       numberOfTries: result === SIMPLE_RESULTS.correct ? 1 : NUMBER_OF_MAX_RETRIES,
       result,
     }))
+    const incorrectResults = cheatedResults.filter(it => it.result === SIMPLE_RESULTS.incorrect)
+    if (!isRepetitionExercise && exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && incorrectResults.length > 0) {
+      const repetitionService = RepetitionService.fromStorageCache(storageCache)
+      await repetitionService.addWordsToFirstSection(incorrectResults.map(it => it.vocabularyItem))
+    }
     await onExerciseFinished(cheatedResults)
     if (isRepetitionExercise) {
       await repetitionService.updateSeveralWordNodeCards(cheatedResults)
@@ -137,7 +142,7 @@ const ChoiceExerciseScreen = ({
     const isCorrect = correctAnswers.some(it => isAnswerEqual(it, clickedAnswer))
     await updateResult(numberOfTries + 1, isCorrect)
 
-    if (exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && !isCorrect) {
+    if (!isRepetitionExercise && exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && !isCorrect) {
       const repetitionService = RepetitionService.fromStorageCache(storageCache)
       await repetitionService.addWordToFirstSection(vocabularyItem)
     }
