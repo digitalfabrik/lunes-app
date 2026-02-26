@@ -1,27 +1,31 @@
 import { RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
-import ListItem from '../../components/ListItem'
+import FeedbackBadge from '../../components/FeedbackBadge'
 import Modal from '../../components/Modal'
+import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
+import { Content, ContentTextBold, ContentTextLight } from '../../components/text/Content'
+import { Heading } from '../../components/text/Heading'
 import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
 import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
-import LockingLane from './components/LockingLane'
 
 const Container = styled.View`
-  display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
+`
+
+const BadgeWrapper = styled.View`
+  height: ${props => props.theme.spacingsPlain.sm};
 `
 
 const ListItemResizer = styled.View`
@@ -33,12 +37,20 @@ const SmallMessage = styled(ContentTextLight)`
   text-align: center;
 `
 
+const UnitItem = styled(PressableOpacity)`
+  background-color: ${props => props.theme.colors.backgroundBlue};
+  border-radius: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.md};
+  gap: ${props => props.theme.spacings.sm};
+`
+
 type ExercisesScreenProps = {
   route: RouteProp<RoutesParams, 'StandardExercises'>
   navigation: StackNavigationProp<RoutesParams, 'StandardExercises'>
 }
 
 const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElement => {
+  const theme = useTheme()
   const { unit } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
@@ -85,17 +97,19 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
     }
   }
 
-  const renderListItem = ({ item, index }: { item: Exercise; index: number }): ReactElement | null => (
+  const renderListItem = ({ item, index }: { item: Exercise; index: number }) => (
     <Container>
-      <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
-        <ListItem
-          title={item.title}
-          description={item.description}
-          onPress={() => handleNavigation(item)}
-          arrowDisabled={nextExercise === null || item.level > nextExercise.level}
-          feedback={feedback[item.level] ?? EXERCISE_FEEDBACK.NONE}
-        />
+        <BadgeWrapper>
+          <FeedbackBadge feedback={feedback[index]} />
+        </BadgeWrapper>
+        <UnitItem onPress={() => handleNavigation(item)}>
+          <item.icon />
+          <View>
+            <Heading>{item.title}</Heading>
+            <Content>{item.description}</Content>
+          </View>
+        </UnitItem>
       </ListItemResizer>
     </Container>
   )
@@ -125,6 +139,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
           </SmallMessage>
         </Modal>
       )}
+
       <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
         {vocabularyItems && (
           <>
@@ -134,6 +149,10 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
               renderItem={renderListItem}
               keyExtractor={({ key }) => key.toString()}
               showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: theme.spacingsPlain.xs,
+                paddingBottom: theme.spacingsPlain.sm,
+              }}
             />
           </>
         )}

@@ -5,7 +5,6 @@ import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
 import { EXERCISE_FEEDBACK } from '../constants/data'
-import FeedbackBadge from './FeedbackBadge'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
@@ -18,7 +17,6 @@ export const GenericListItemContainer = styled.Pressable`
 const Container = styled(GenericListItemContainer)<{
   pressed: boolean
   disabled: boolean
-  feedback: EXERCISE_FEEDBACK
 }>`
   min-height: ${hp('12%')}px;
   justify-content: center;
@@ -30,19 +28,13 @@ const Container = styled(GenericListItemContainer)<{
   border-bottom-width: 1px;
   border-bottom-color: ${prop => (prop.pressed ? prop.theme.colors.primary : prop.theme.colors.disabled)};
   border-left-color: ${props => {
-    if (props.feedback === EXERCISE_FEEDBACK.POSITIVE) {
-      return props.theme.colors.correct
-    }
-    if (props.feedback === EXERCISE_FEEDBACK.NEGATIVE) {
-      return props.theme.colors.incorrect
-    }
     if (props.pressed) {
       return props.theme.colors.primary
     }
     return props.theme.colors.disabled
   }};
   border-left-radius: 0;
-  border-left-width: ${props => (props.feedback !== EXERCISE_FEEDBACK.NONE ? '4px' : '1px')};
+  border-left-width: 1px;
   background-color: ${prop => {
     if (prop.disabled) {
       return prop.theme.colors.disabled
@@ -118,7 +110,6 @@ type ListItemProps = {
   hideRightChildren?: boolean
   arrowDisabled?: boolean
   disabled?: boolean
-  feedback?: EXERCISE_FEEDBACK
 }
 
 const ListItem = ({
@@ -132,7 +123,6 @@ const ListItem = ({
   hideRightChildren = false,
   arrowDisabled = false,
   disabled = false,
-  feedback = EXERCISE_FEEDBACK.NONE,
 }: ListItemProps): ReactElement => {
   const [pressInY, setPressInY] = useState<number | null>(null)
   const [pressed, setPressed] = useState<boolean>(false)
@@ -193,10 +183,8 @@ const ListItem = ({
       onLongPress={() => updatePressed(true)}
       pressed={pressed}
       delayLongPress={200}
-      feedback={feedback}
       testID='list-item'
     >
-      <FeedbackBadge feedback={feedback} />
       <ContentContainer pressed={pressed} disabled={disabled}>
         {iconToRender}
         <FlexContainer>
