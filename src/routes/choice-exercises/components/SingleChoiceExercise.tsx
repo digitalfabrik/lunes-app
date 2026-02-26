@@ -26,6 +26,7 @@ import { RepetitionService } from '../../../services/RepetitionService'
 import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
+import useRepetitionService from '../../../hooks/useRepetitionService'
 
 const ButtonContainer = styled.View`
   align-items: center;
@@ -125,7 +126,7 @@ const ChoiceExerciseScreen = ({
     const newResults = [...results]
     newResults[currentWord] = { ...newResults[currentWord], numberOfTries, result }
     setResults(newResults)
-    if (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES) {
+    if (isRepetitionExercise && (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES)) {
       await repetitionService.updateWordNodeCard(newResults[currentWord])
     }
   }
