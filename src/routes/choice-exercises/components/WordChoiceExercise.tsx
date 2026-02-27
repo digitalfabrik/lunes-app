@@ -34,7 +34,7 @@ const ButtonContainer = styled.View`
   flex: 1;
 `
 
-type SingleChoiceExerciseProps = {
+type WordChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   unitId: StandardUnitId | null
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
@@ -45,14 +45,14 @@ type SingleChoiceExerciseProps = {
 
 const CORRECT_ANSWER_DELAY = 700
 
-const ChoiceExerciseScreen = ({
+const WordChoiceExercise = ({
   vocabularyItems,
   unitId,
   vocabularyItemToAnswer,
   navigation,
   route,
   isRepetitionExercise,
-}: SingleChoiceExerciseProps): ReactElement => {
+}: WordChoiceExerciseProps): ReactElement => {
   const storageCache = useStorageCache()
   const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [currentWord, setCurrentWord] = useState<number>(0)
@@ -216,4 +216,4 @@ const ChoiceExerciseScreen = ({
   )
 }
 
-export default ChoiceExerciseScreen
+export default WordChoiceExercise

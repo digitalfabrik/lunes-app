@@ -3,11 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
-import { Answer, ExerciseKeys } from '../../constants/data'
+import { Answer } from '../../constants/data'
 import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { shuffleArray } from '../../services/helpers'
-import SingleChoiceExercise from './components/SingleChoiceExercise'
+import WordChoiceExercise from './components/WordChoiceExercise.tsx'
 
 type WordChoiceExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
@@ -39,13 +39,12 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
 
   return (
     <RouteWrapper>
-      <SingleChoiceExercise
+      <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={unitId}
         vocabularyItemToAnswer={vocabularyItemToAnswer}
         navigation={navigation}
         route={route}
-        exerciseKey={ExerciseKeys.wordChoiceExercise}
         isRepetitionExercise={isRepetitionExercise}
       />
     </RouteWrapper>

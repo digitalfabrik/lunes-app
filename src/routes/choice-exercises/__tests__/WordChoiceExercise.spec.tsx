@@ -9,7 +9,7 @@ import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { renderWithStorageCache } from '../../../testing/render'
-import ChoiceExerciseScreen from '../components/SingleChoiceExercise'
+import WordChoiceExercise from '../components/WordChoiceExercise.tsx'
 
 jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
@@ -74,13 +74,12 @@ describe('SingleChoiceExercise', () => {
 
     const { getByText } = renderWithStorageCache(
       storageCache,
-      <ChoiceExerciseScreen
+      <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={{ id: 1, type: 'standard' }}
         vocabularyItemToAnswer={vocabularyItemToAnswer}
         navigation={navigation}
         route={route}
-        exerciseKey={1}
         isRepetitionExercise={false}
       />,
     )
@@ -102,13 +101,12 @@ describe('SingleChoiceExercise', () => {
 
     const { getByText } = renderWithStorageCache(
       storageCache,
-      <ChoiceExerciseScreen
+      <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={{ id: 1, type: 'standard' }}
         vocabularyItemToAnswer={vocabularyItemToAnswerWrong}
         navigation={navigation}
         route={route}
-        exerciseKey={1}
         isRepetitionExercise={false}
       />,
     )
@@ -130,13 +128,12 @@ describe('SingleChoiceExercise', () => {
 
     const { getByText, unmount } = renderWithStorageCache(
       storageCache,
-      <ChoiceExerciseScreen
+      <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={{ id: 1, type: 'standard' }}
         vocabularyItemToAnswer={vocabularyItemToAnswerWrong}
         navigation={navigation}
         route={route}
-        exerciseKey={1}
         isRepetitionExercise={false}
       />,
     )
@@ -158,13 +155,12 @@ describe('SingleChoiceExercise', () => {
 
     const { getByText: getByText2 } = renderWithStorageCache(
       storageCache,
-      <ChoiceExerciseScreen
+      <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={{ id: 1, type: 'standard' }}
         vocabularyItemToAnswer={vocabularyItemToAnswerCorrect}
         navigation={navigation}
         route={route}
-        exerciseKey={1}
         isRepetitionExercise={false}
       />,
     )
