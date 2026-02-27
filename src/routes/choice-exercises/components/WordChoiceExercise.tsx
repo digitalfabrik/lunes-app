@@ -90,20 +90,6 @@ const WordChoiceExercise = ({
   ]
   const needsToBeRepeated = numberOfTries < NUMBER_OF_MAX_RETRIES && result === SIMPLE_RESULTS.incorrect
 
-  const initializeExercise = useCallback(
-    (force = false) => {
-      if (vocabularyItems.length !== results.length || force) {
-        setCurrentWord(0)
-        setResults(
-          shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
-        )
-      }
-    },
-    [vocabularyItems, results],
-  )
-
-  useEffect(initializeExercise, [initializeExercise])
-
   useEffect(
     () => setAnswers(vocabularyItemToAnswer(vocabularyItems, vocabularyItem)),
     [vocabularyItems, vocabularyItem],
@@ -122,7 +108,6 @@ const WordChoiceExercise = ({
       exercise: ExerciseKeys.wordChoiceExercise,
       results,
     })
-    initializeExercise(true)
   }
   const count = vocabularyItems.length
 
