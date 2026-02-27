@@ -68,7 +68,6 @@ export type RoutesParams = {
     itemToEdit?: UserVocabularyItem
   }
   UserVocabularyList: undefined
-  UserVocabularyDetail: { vocabularyItem: UserVocabularyItem }
   JobSelection: {
     initialSelection: boolean
   }
@@ -81,10 +80,6 @@ export type RoutesParams = {
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ExerciseFinished: ResultParams
-  Result: ResultParams
-  ResultDetail: ResultParams & {
-    resultType: Result
-  }
   Imprint: undefined
   ManageSelection: undefined
   Settings: undefined
