@@ -1,22 +1,27 @@
-import { RouteProp, StackActions, useIsFocused } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState, ReactElement } from 'react'
-import { FlatList } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import { RouteProp, StackActions, useIsFocused } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect, useState, ReactElement } from 'react';
+import { FlatList, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import styled from 'styled-components/native';
 
-import ListItem from '../../components/ListItem'
-import Modal from '../../components/Modal'
-import RouteWrapper from '../../components/RouteWrapper'
-import ServerResponseHandler from '../../components/ServerResponseHandler'
-import Title from '../../components/Title'
-import { ContentTextBold, ContentTextLight } from '../../components/text/Content'
-import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
-import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
-import useStorage from '../../hooks/useStorage'
-import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers'
-import LockingLane from './components/LockingLane'
+
+
+import { AddCircleIcon } from '../../../assets/images';
+import ListItem from '../../components/ListItem';
+import Modal from '../../components/Modal';
+import RouteWrapper from '../../components/RouteWrapper';
+import ServerResponseHandler from '../../components/ServerResponseHandler';
+import Title from '../../components/Title';
+import { Content, ContentTextBold, ContentTextLight } from '../../components/text/Content';
+import { Heading } from '../../components/text/Heading.tsx';
+import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data';
+import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit';
+import useStorage from '../../hooks/useStorage';
+import { RoutesParams } from '../../navigation/NavigationTypes';
+import { getLabels, getNumberOfUnlockedExercises, wordsDescription } from '../../services/helpers';
+import LockingLane from './components/LockingLane';
+
 
 const Container = styled.View`
   display: flex;
@@ -31,6 +36,19 @@ const ListItemResizer = styled.View`
 const SmallMessage = styled(ContentTextLight)`
   margin: 0 ${props => props.theme.spacings.md} ${props => props.theme.spacings.md};
   text-align: center;
+`
+
+const UnitItem = styled.View`
+  background-color: ${props => props.theme.colors.backgroundBlue};
+  border-radius: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.md};
+  margin: ${props => props.theme.spacings.xs} 0;
+`
+
+const FlexContainer = styled.View`
+  flex-direction: row;
+  gap: ${props => props.theme.spacings.sm};
+  align-items: center;
 `
 
 type ExercisesScreenProps = {
@@ -91,13 +109,17 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
     <Container>
       <LockingLane nextExercise={nextExercise} index={index} />
       <ListItemResizer>
-        <ListItem
-          title={item.title}
-          description={item.description}
-          onPress={() => handleNavigation(item)}
-          arrowDisabled={nextExercise === null || item.level > nextExercise.level}
-          feedback={feedback[item.level] ?? EXERCISE_FEEDBACK.NONE}
-        />
+        <UnitItem>
+          <FlexContainer>
+            <View>
+              <item.icon />
+            </View>
+            <View>
+              <Heading>Wortliste</Heading>
+              <Content>Alle Wörter kennenlernen</Content>
+            </View>
+          </FlexContainer>
+        </UnitItem>
       </ListItemResizer>
     </Container>
   )
