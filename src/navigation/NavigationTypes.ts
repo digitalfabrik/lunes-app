@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native'
 
-import { ExerciseKey, Result, SimpleResult } from '../constants/data'
+import { ExerciseKey, SimpleResult } from '../constants/data'
 import Job, { StandardJob } from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
