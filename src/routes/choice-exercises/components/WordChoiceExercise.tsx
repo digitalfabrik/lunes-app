@@ -27,6 +27,28 @@ import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
 
+const MAX_ANSWERS = 4
+
+const generateFalseAnswers = (
+  vocabularyItems: VocabularyItem[],
+  correctVocabularyItem: VocabularyItem,
+  answersCount: number,
+): Answer[] => {
+  const shuffledWrongAnswers = shuffleArray(vocabularyItems.filter(it => it.id !== correctVocabularyItem.id))
+  return shuffledWrongAnswers.slice(0, answersCount - 1)
+}
+
+const vocabularyItemToAnswer = (vocabularyItems: VocabularyItem[], vocabularyItem: VocabularyItem): Answer[] => {
+  const { word, article } = vocabularyItem
+  const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
+  const answers = generateFalseAnswers(vocabularyItems, vocabularyItem, answersCount)
+
+  // Insert the correct answer on a random position
+  const positionOfCorrectAnswer = Math.floor(Math.random() * answersCount)
+  answers.splice(positionOfCorrectAnswer, 0, { article, word })
+  return answers
+}
+
 const ButtonContainer = styled.View`
   align-items: center;
   justify-content: center;
@@ -37,7 +59,6 @@ const ButtonContainer = styled.View`
 type WordChoiceExerciseProps = {
   vocabularyItems: VocabularyItem[]
   unitId: StandardUnitId | null
-  vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
   isRepetitionExercise: boolean
@@ -48,7 +69,6 @@ const CORRECT_ANSWER_DELAY = 700
 const WordChoiceExercise = ({
   vocabularyItems,
   unitId,
-  vocabularyItemToAnswer,
   navigation,
   route,
   isRepetitionExercise,
@@ -61,7 +81,7 @@ const WordChoiceExercise = ({
     shuffleArray(vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 }))),
   )
   const { vocabularyItem, numberOfTries, result } = results[currentWord]
-  const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItem))
+  const [answers, setAnswers] = useState<Answer[]>(vocabularyItemToAnswer(vocabularyItems, vocabularyItem))
   const repetitionService = useRepetitionService()
 
   const correctAnswers = [
@@ -84,7 +104,10 @@ const WordChoiceExercise = ({
 
   useEffect(initializeExercise, [initializeExercise])
 
-  useEffect(() => setAnswers(vocabularyItemToAnswer(vocabularyItem)), [vocabularyItem, vocabularyItemToAnswer])
+  useEffect(
+    () => setAnswers(vocabularyItemToAnswer(vocabularyItems, vocabularyItem)),
+    [vocabularyItems, vocabularyItem],
+  )
 
   const tryLater = useCallback(() => {
     setResults(moveToEnd(results, currentWord))
