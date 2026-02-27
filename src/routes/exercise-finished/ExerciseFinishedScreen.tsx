@@ -37,18 +37,18 @@ type ExerciseFinishedScreenProps = {
 }
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
-  const { exercise, results, unitTitle, closeExerciseAction } = route.params
+  const { exercise, results, unitTitle } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const score = calculateScore(results)
 
   const { exercise: notNeededForNavigation1, results: notNeededForNavigation2, ...navigationParams } = route.params
-  const repeatExercise = (): void => navigation.navigate(EXERCISES[exercise].screen, { ...navigationParams })
+  const repeatExercise = (): void => navigation.popTo(EXERCISES[exercise].screen, { ...navigationParams })
 
   const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
   const isRepetition = route.params.contentType === 'repetition'
 
-  const navigateBackToMenu = (): void => navigation.pop(2)
+  const navigateBackToMenu = (): void => navigation.pop()
 
   const helper = (): {
     message: string
@@ -107,7 +107,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         feedbackColor={resultColor}
         FeedbackIcon={ResultIcon}
         message={message}
-        onBack={() => navigation.dispatch(closeExerciseAction)}
+        onBack={() => navigation.pop()}
       >
         <Button label={buttonText} buttonTheme={BUTTONS_THEME.contained} onPress={() => navigationAction()} />
         <ShareSection unitTitle={unitTitle} results={results} />

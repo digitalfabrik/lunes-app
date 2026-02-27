@@ -119,13 +119,6 @@ export class RepetitionService {
       .map(({ needsRepetitionScore, ...rest }) => rest)
   }
 
-  public getVocabularyItemsWithResultsForNextRepetition = (): VocabularyItemResult[] =>
-    this.getWordNodeCards().map(wordNodeCard => ({
-      vocabularyItem: wordNodeCard.word,
-      result: null,
-      numberOfTries: 0,
-    }))
-
   public getNumberOfWordsInEachSection = (): number[] => {
     const result = Array(sections.length).fill(0)
     this.getWordNodeCards().forEach(item => {

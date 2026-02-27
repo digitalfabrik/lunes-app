@@ -18,7 +18,7 @@ type VocabularyListScreenProps = {
 }
 
 const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps): ReactElement => {
-  const { contentType, closeExerciseAction } = route.params
+  const { contentType } = route.params
   const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
@@ -36,7 +36,6 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
       <ExerciseHeader
         navigation={navigation}
         confirmClose={false}
-        closeExerciseAction={closeExerciseAction}
         feedbackTarget={unitId !== null ? { type: 'unit', unitId } : undefined}
         exerciseKey={ExerciseKeys.vocabularyList}
       />
