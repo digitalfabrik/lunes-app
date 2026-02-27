@@ -32,7 +32,7 @@ type VocabularyDetailExerciseScreenProps = {
 }
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
-  const { vocabularyItems, vocabularyItemIndex, closeExerciseAction, labelOverrides } = route.params
+  const { vocabularyItems, vocabularyItemIndex, labelOverrides } = route.params
   const vocabularyItem = vocabularyItems[vocabularyItemIndex]
   const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const hasPreviousVocabularyItem = vocabularyItemIndex > 0
@@ -50,7 +50,6 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
         currentWord={vocabularyItemIndex}
         numberOfWords={vocabularyItems.length}
         confirmClose={false}
-        closeExerciseAction={closeExerciseAction}
         feedbackTarget={
           vocabularyItem.id.type === VocabularyItemTypes.Standard
             ? { type: 'word', wordId: vocabularyItem.id }

@@ -1,4 +1,3 @@
-import { StackActions } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -95,7 +94,6 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
-    const closeExerciseAction = StackActions.popTo('BottomTabNavigator')
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
     if (wordNodeCards.length > 0) {
       navigation.navigate('WordChoiceExercise', {
@@ -103,7 +101,6 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
         contentType: 'repetition',
         unitTitle: '',
-        closeExerciseAction,
       })
     }
   }

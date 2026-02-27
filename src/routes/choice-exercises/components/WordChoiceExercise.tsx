@@ -117,7 +117,7 @@ const WordChoiceExercise = ({
     if (unitId !== null) {
       await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
     }
-    navigation.navigate('ExerciseFinished', {
+    navigation.popTo('ExerciseFinished', {
       ...route.params,
       exercise: ExerciseKeys.wordChoiceExercise,
       results,
@@ -192,7 +192,6 @@ const WordChoiceExercise = ({
     <>
       <ExerciseHeader
         navigation={navigation}
-        closeExerciseAction={route.params.closeExerciseAction}
         currentWord={state.currentWord}
         numberOfWords={count}
         feedbackTarget={

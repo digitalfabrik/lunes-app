@@ -1,4 +1,3 @@
-import { NavigationAction } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { BackHandler } from 'react-native'
@@ -38,7 +37,6 @@ const StyledMenuIcon = styled(MenuIcon)`
 
 type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
-  closeExerciseAction: NavigationAction
   exerciseKey?: ExerciseKey
   feedbackTarget?: FeedbackTarget
   currentWord?: number
@@ -50,7 +48,6 @@ type ExerciseHeaderProps = {
 
 const ExerciseHeader = ({
   navigation,
-  closeExerciseAction,
   feedbackTarget,
   currentWord,
   numberOfWords,
@@ -70,7 +67,7 @@ const ExerciseHeader = ({
     const renderHeaderLeft = () => (
       <NavigationHeaderLeft
         title={getLabels().general.header.cancelExercise}
-        onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.dispatch(closeExerciseAction)}
+        onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.pop()}
         isCloseButton={isCloseButton}
       />
     )
@@ -109,7 +106,6 @@ const ExerciseHeader = ({
     currentWord,
     exerciseKey,
     numberOfWords,
-    closeExerciseAction,
     labelOverride,
     isCloseButton,
     theme.spacingsPlain.xs,
@@ -129,7 +125,7 @@ const ExerciseHeader = ({
 
   const goBack = (): void => {
     setIsModalVisible(false)
-    navigation.dispatch(closeExerciseAction)
+    navigation.pop()
   }
 
   return (

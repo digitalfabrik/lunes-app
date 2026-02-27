@@ -39,7 +39,6 @@ describe('ExerciseHeader', () => {
         navigation={navigation}
         currentWord={4}
         numberOfWords={10}
-        closeExerciseAction={goBack}
         feedbackTarget={{ type: 'word', wordId: { type: VocabularyItemTypes.Standard, id: 1 } }}
         exerciseKey={ExerciseKeys.vocabularyList}
       />,
@@ -56,6 +55,6 @@ describe('ExerciseHeader', () => {
 
     fireEvent.press(getByText(getLabels().exercises.cancelModal.cancel))
 
-    expect(navigation.dispatch).toHaveBeenCalledWith(goBack)
+    expect(navigation.pop).toHaveBeenCalled()
   })
 })
