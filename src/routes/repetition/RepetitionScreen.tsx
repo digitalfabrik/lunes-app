@@ -99,6 +99,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
     if (wordNodeCards.length > 0) {
       navigation.navigate('WordChoiceExercise', {
+        unitId: null,
         vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
         contentType: 'repetition',
         unitTitle: '',

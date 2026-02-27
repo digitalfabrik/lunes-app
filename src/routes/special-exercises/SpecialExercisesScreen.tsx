@@ -27,6 +27,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
     const closeExerciseAction = StackActions.popTo('BottomTabNavigator')
     navigation.navigate(EXERCISES[item.key].screen, {
       contentType: 'userVocabulary',
+      unitId: null,
       vocabularyItems,
       unitTitle: unit.title,
       closeExerciseAction,

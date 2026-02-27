@@ -11,23 +11,14 @@ export type VocabularyItemResult = {
   numberOfTries: number
 }
 
-type StandardExercise = {
-  contentType: 'standard'
-  unitId: StandardUnitId
-}
-
-type SpecialExercise = {
-  contentType: 'userVocabulary' | 'repetition'
-}
-
-type SharedExerciseParams = {
+type ExerciseParams = {
+  contentType: 'standard' | 'userVocabulary' | 'repetition'
+  unitId: StandardUnitId | null
   unitTitle: string
   vocabularyItems: VocabularyItem[]
   closeExerciseAction: NavigationAction
   labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
-
-type ExerciseParams = (StandardExercise | SpecialExercise) & SharedExerciseParams
 
 type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
