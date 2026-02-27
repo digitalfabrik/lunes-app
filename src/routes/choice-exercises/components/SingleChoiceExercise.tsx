@@ -12,11 +12,10 @@ import VocabularyItemImageSection from '../../../components/VocabularyItemImageS
 import {
   Answer,
   BUTTONS_THEME,
-  ExerciseKey,
+  ExerciseKeys,
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
-  FIRST_EXERCISE_FOR_REPETITION,
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { useStorageCache } from '../../../hooks/useStorage'
@@ -41,7 +40,6 @@ type SingleChoiceExerciseProps = {
   vocabularyItemToAnswer: (vocabularyItem: VocabularyItem) => Answer[]
   navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
-  exerciseKey: ExerciseKey
   isRepetitionExercise: boolean
 }
 
@@ -53,7 +51,6 @@ const ChoiceExerciseScreen = ({
   vocabularyItemToAnswer,
   navigation,
   route,
-  exerciseKey,
   isRepetitionExercise,
 }: SingleChoiceExerciseProps): ReactElement => {
   const storageCache = useStorageCache()
@@ -95,11 +92,11 @@ const ChoiceExerciseScreen = ({
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
     if (unitId !== null) {
-      await saveExerciseProgress(storageCache, unitId, exerciseKey, results)
+      await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
     }
     navigation.navigate('ExerciseFinished', {
       ...route.params,
-      exercise: exerciseKey,
+      exercise: ExerciseKeys.wordChoiceExercise,
       results,
     })
     initializeExercise(true)
@@ -113,7 +110,7 @@ const ChoiceExerciseScreen = ({
       result,
     }))
     const incorrectResults = cheatedResults.filter(it => it.result === SIMPLE_RESULTS.incorrect)
-    if (!isRepetitionExercise && exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && incorrectResults.length > 0) {
+    if (!isRepetitionExercise && incorrectResults.length > 0) {
       const repetitionService = RepetitionService.fromStorageCache(storageCache)
       await repetitionService.addWordsToFirstSection(incorrectResults.map(it => it.vocabularyItem))
     }
@@ -142,7 +139,7 @@ const ChoiceExerciseScreen = ({
     const isCorrect = correctAnswers.some(it => isAnswerEqual(it, clickedAnswer))
     await updateResult(numberOfTries + 1, isCorrect)
 
-    if (!isRepetitionExercise && exerciseKey >= FIRST_EXERCISE_FOR_REPETITION && !isCorrect) {
+    if (!isRepetitionExercise && !isCorrect) {
       const repetitionService = RepetitionService.fromStorageCache(storageCache)
       await repetitionService.addWordToFirstSection(vocabularyItem)
     }
@@ -181,7 +178,7 @@ const ChoiceExerciseScreen = ({
             ? { type: 'word', wordId: vocabularyItem.id }
             : undefined
         }
-        exerciseKey={exerciseKey}
+        exerciseKey={ExerciseKeys.wordChoiceExercise}
       />
 
       <ScrollView>
