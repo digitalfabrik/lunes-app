@@ -32,11 +32,11 @@ type VocabularyDetailExerciseScreenProps = {
 }
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
-  const { vocabularyItems, vocabularyItemIndex, labelOverrides } = route.params
+  const { vocabularyItems, vocabularyItemIndex } = route.params
   const vocabularyItem = vocabularyItems[vocabularyItemIndex]
   const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const hasPreviousVocabularyItem = vocabularyItemIndex > 0
-  const closeExerciseLabel = labelOverrides?.closeExerciseButtonLabel ?? getLabels().results.action.backToWordlist
+  const closeExerciseLabel = getLabels().results.action.backToWordlist
 
   const goToNextWord = () =>
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex + 1 })
@@ -55,8 +55,6 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
             ? { type: 'word', wordId: vocabularyItem.id }
             : undefined
         }
-        labelOverride={labelOverrides?.closeExerciseHeaderLabel}
-        isCloseButton={labelOverrides?.isCloseButton}
       />
       <ScrollView>
         <VocabularyDetail vocabularyItem={vocabularyItem} />

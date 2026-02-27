@@ -16,7 +16,6 @@ type ExerciseParams = {
   unitId: StandardUnitId | null
   unitTitle: string
   vocabularyItems: VocabularyItem[]
-  labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
 
 type VocabularyDetailExerciseParams = {

@@ -42,8 +42,6 @@ type ExerciseHeaderProps = {
   currentWord?: number
   numberOfWords?: number
   confirmClose?: boolean
-  labelOverride?: string
-  isCloseButton?: boolean
 }
 
 const ExerciseHeader = ({
@@ -52,8 +50,6 @@ const ExerciseHeader = ({
   currentWord,
   numberOfWords,
   confirmClose = true,
-  labelOverride,
-  isCloseButton = true,
   exerciseKey,
 }: ExerciseHeaderProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -68,7 +64,7 @@ const ExerciseHeader = ({
       <NavigationHeaderLeft
         title={getLabels().general.header.cancelExercise}
         onPress={confirmClose ? () => setIsModalVisible(true) : () => navigation.pop()}
-        isCloseButton={isCloseButton}
+        isCloseButton
       />
     )
 
@@ -106,8 +102,6 @@ const ExerciseHeader = ({
     currentWord,
     exerciseKey,
     numberOfWords,
-    labelOverride,
-    isCloseButton,
     theme.spacingsPlain.xs,
     theme.spacingsPlain.xl,
   ])
