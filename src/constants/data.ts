@@ -1,7 +1,15 @@
-import { ComponentType } from 'react'
+import { ComponentType, ReactElement } from 'react'
+import Icon from 'react-native-paper/src/components/Icon.tsx'
 import { SvgProps } from 'react-native-svg'
 
-import { CheckCircleIcon, CloseCircleIcon } from '../../assets/images'
+import {
+  AddCircleIcon,
+  CheckCircleIcon,
+  CloseCircleIcon,
+  CrystalBallIcon,
+  TrainingSentences,
+  TrainingSpeech,
+} from '../../assets/images'
 import { StandardUnit } from '../models/Unit'
 import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
@@ -19,6 +27,7 @@ export type Exercise = {
   title: string
   description: string
   level: number
+  icon: ComponentType<SvgProps>
   screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
@@ -28,6 +37,7 @@ export const EXERCISES: Readonly<Exercise[]> = [
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     level: 0,
+    icon: TrainingSentences,
     screen: 'VocabularyList',
   },
   {
@@ -35,6 +45,7 @@ export const EXERCISES: Readonly<Exercise[]> = [
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     level: 1,
+    icon: TrainingSpeech,
     screen: 'WordChoiceExercise',
   },
 ] as const
