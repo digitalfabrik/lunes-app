@@ -11,8 +11,6 @@ export type VocabularyItemResult = {
   numberOfTries: number
 }
 
-export type ContentType = 'standard' | 'userVocabulary' | 'repetition'
-
 type StandardExercise = {
   contentType: 'standard'
   unitId: StandardUnitId
@@ -94,7 +92,6 @@ export type RoutesParams = {
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ExerciseFinished: ResultParams
-  labelOverrides?: ExerciseParams
   Result: ResultParams
   ResultDetail: ResultParams & {
     resultType: Result
