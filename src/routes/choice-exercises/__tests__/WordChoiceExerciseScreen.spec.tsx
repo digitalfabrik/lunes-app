@@ -1,7 +1,9 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
+import { View } from 'react-native'
 
+import { BottomSheetProps } from '../../../components/BottomSheet'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { RepetitionService } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
@@ -32,6 +34,14 @@ jest.mock('react-native-image-zoom-viewer', () => {
   const Text = require('react-native').Text
   return () => <Text>ImageZoomViewer</Text>
 })
+
+// The bottom sheet is difficult to test due to its animations
+jest.mock(
+  '../../../components/BottomSheet',
+  () =>
+    ({ visible, children }: BottomSheetProps) =>
+      visible ? <View>{children}</View> : null,
+)
 
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 jest.mock('../../../services/storageUtils', () => ({
@@ -65,6 +75,11 @@ describe('WordChoiceExerciseScreen', () => {
   const renderScreen = () =>
     renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
+  const selectAnswerAndPressNext = (getByText: ReturnType<typeof renderScreen>['getByText'], word: string) => {
+    fireEvent(getByText(word), 'pressOut')
+    fireEvent.press(getByText(getLabels().exercises.next))
+  }
+
   it('should render initially with the first word and tryLater button', () => {
     const { getByText, queryByText } = renderScreen()
 
@@ -73,7 +88,7 @@ describe('WordChoiceExerciseScreen', () => {
     expect(queryByText(getLabels().exercises.next)).toBeNull()
   })
 
-  it('should show Next button and hide tryLater after selecting an answer', () => {
+  it('should show Next button in the bottom sheet and hide tryLater after selecting an answer', () => {
     const { getByText, queryByText } = renderScreen()
 
     fireEvent(getByText('Spachtel'), 'pressOut')
@@ -82,15 +97,20 @@ describe('WordChoiceExerciseScreen', () => {
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
 
+  it('should show solution in the bottom sheet when answer is incorrect', () => {
+    const { getByText } = renderScreen()
+
+    fireEvent(getByText('Auto'), 'pressOut')
+
+    expect(getByText(getLabels().exercises.solution)).toBeVisible()
+  })
+
   it('should not show tryLater button on last word', () => {
     const { getByText, queryByText } = renderScreen()
 
-    fireEvent(getByText('Spachtel'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Auto'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Hose'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
+    selectAnswerAndPressNext(getByText, 'Spachtel')
+    selectAnswerAndPressNext(getByText, 'Auto')
+    selectAnswerAndPressNext(getByText, 'Hose')
 
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
@@ -98,12 +118,9 @@ describe('WordChoiceExerciseScreen', () => {
   it('should navigate to ExerciseFinished after completing all words', async () => {
     const { getByText } = renderScreen()
 
-    fireEvent(getByText('Spachtel'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Auto'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Hose'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
+    selectAnswerAndPressNext(getByText, 'Spachtel')
+    selectAnswerAndPressNext(getByText, 'Auto')
+    selectAnswerAndPressNext(getByText, 'Hose')
     fireEvent(getByText('Helm'), 'pressOut')
 
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
@@ -115,17 +132,14 @@ describe('WordChoiceExerciseScreen', () => {
   it('should repeat a word after an incorrect answer', async () => {
     const { getByText } = renderScreen()
 
-    // Click a wrong answer for Spachtel
+    // Click a wrong answer for Spachtel, moving it to the end of the queue
     fireEvent(getByText('Auto'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly
-    fireEvent(getByText('Auto'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Hose'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Helm'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
+    selectAnswerAndPressNext(getByText, 'Auto')
+    selectAnswerAndPressNext(getByText, 'Hose')
+    selectAnswerAndPressNext(getByText, 'Helm')
 
     // Spachtel was answered incorrectly, so the exercise is not done yet
     expect(navigation.popTo).not.toHaveBeenCalled()
@@ -141,12 +155,9 @@ describe('WordChoiceExerciseScreen', () => {
     const { getByText, queryByText } = renderScreen()
 
     fireEvent.press(getByText(getLabels().exercises.tryLater))
-    fireEvent(getByText('Auto'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Hose'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
-    fireEvent(getByText('Helm'), 'pressOut')
-    fireEvent.press(getByText(getLabels().exercises.next))
+    selectAnswerAndPressNext(getByText, 'Auto')
+    selectAnswerAndPressNext(getByText, 'Hose')
+    selectAnswerAndPressNext(getByText, 'Helm')
 
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
     fireEvent(getByText('Spachtel'), 'pressOut')
@@ -177,8 +188,8 @@ describe('WordChoiceExerciseScreen', () => {
       name: 'WordChoiceExercise',
       params: {
         contentType: 'repetition',
+        unitId: null,
         vocabularyItems,
-        unitId: { id: 1, type: 'standard' },
         unitTitle: 'TestTitel',
       },
     }

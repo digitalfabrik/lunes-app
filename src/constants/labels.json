@@ -105,6 +105,7 @@
     "continue": "Weiter",
     "previous": "Vorheriges Wort",
     "showResults": "Ergebnisse anzeigen",
+    "solution": "Lösung: ",
     "cancelModal": {
       "cancelAsk": "Möchtest du diese Übung wirklich beenden?",
       "cancel": "Beenden"

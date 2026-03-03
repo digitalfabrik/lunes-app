@@ -3,16 +3,14 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { ArrowRightIcon, ChevronRight, ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
+import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
-import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
+import WordResultIndicator from '../../components/WordResultIndicator.tsx'
 import { ContentText } from '../../components/text/Content'
-import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import theme from '../../constants/theme'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
@@ -49,25 +47,6 @@ const SelectedWordsArea = styled.View`
   background-color: ${props => props.theme.colors.backgroundLow};
 `
 
-const BottomSheetColumn = styled.View`
-  padding: ${props => props.theme.spacings.md};
-  align-items: center;
-  align-self: stretch;
-`
-
-const BottomSheetRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${props => props.theme.spacings.sm};
-`
-
-const BottomSheetWordContainer = styled.View`
-  background-color: ${props => props.theme.colors.backgroundTransparent};
-  padding: ${props => props.theme.spacings.xs};
-  border-radius: ${props => props.theme.spacings.xxs};
-  width: 100%;
-`
-
 const BottomSheetWord = styled(ContentText)<{ markIncorrect: boolean }>`
   ${props =>
     props.markIncorrect &&
@@ -90,51 +69,34 @@ const ResultIndicator = ({
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
 
-  const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
-  const color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
-
-  return (
-    <BottomSheet visible={isFinished} backgroundColor={color}>
-      <BottomSheetColumn>
-        <BottomSheetRow>
-          <Icon width='32' height='32' />
-          <HeadingText>
-            {isCorrect
-              ? getLabels().exercises.training.sentence.correct
-              : getLabels().exercises.training.sentence.incorrect}
-          </HeadingText>
-        </BottomSheetRow>
-
-        <BottomSheetColumn>
-          <BottomSheetWordContainer>
-            <WordsContainer>
-              {selectedWords.map(({ word, state, index }) => (
-                <BottomSheetWord key={index} markIncorrect={state === 'wrong'}>
-                  {word}
-                </BottomSheetWord>
-              ))}
-            </WordsContainer>
-          </BottomSheetWordContainer>
-        </BottomSheetColumn>
-
-        {isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
-          <Button
-            onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
-            label={getLabels().exercises.continue}
-            iconRight={ArrowRightIcon}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        ) : (
-          <Button
-            onPress={() => dispatch({ type: 'repeat' })}
-            label={getLabels().exercises.tryAgain}
-            iconRight={ArrowRightIcon}
-            buttonTheme={BUTTONS_THEME.contained}
-          />
-        )}
-      </BottomSheetColumn>
-    </BottomSheet>
+  const content = (
+    <WordsContainer>
+      {selectedWords.map(({ word, state, index }) => (
+        <BottomSheetWord key={index} markIncorrect={state === 'wrong'}>
+          {word}
+        </BottomSheetWord>
+      ))}
+    </WordsContainer>
   )
+
+  const button =
+    isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
+      <Button
+        onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
+        label={getLabels().exercises.continue}
+        iconRight={ArrowRightIcon}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
+    ) : (
+      <Button
+        onPress={() => dispatch({ type: 'repeat' })}
+        label={getLabels().exercises.tryAgain}
+        iconRight={ArrowRightIcon}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
+    )
+
+  return <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={content} button={button} />
 }
 
 type SentenceTrainingProps = {

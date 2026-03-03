@@ -9,6 +9,8 @@ import Button from '../../../components/Button'
 import CheatMode from '../../../components/CheatMode'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
+import WordResultIndicator from '../../../components/WordResultIndicator.tsx'
+import { ContentText } from '../../../components/text/Content.tsx'
 import {
   Answer,
   BUTTONS_THEME,
@@ -71,6 +73,13 @@ const ButtonContainer = styled.View`
   justify-content: center;
   margin-bottom: ${props => props.theme.spacings.sm};
   flex: 1;
+`
+
+const SolutionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: ${props => props.theme.spacings.xs} 0;
 `
 
 type WordChoiceExerciseProps = {
@@ -213,26 +222,38 @@ const WordChoiceExercise = ({
           delayPassed={delayPassed}
         />
         <ButtonContainer>
-          {selectedAnswer !== null ? (
+          {selectedAnswer === null && !lastWord && (
             <Button
-              label={buttonLabel}
+              label={getLabels().exercises.tryLater}
               iconRight={ArrowRightIcon}
-              onPress={onFinishWord}
-              buttonTheme={BUTTONS_THEME.contained}
+              onPress={tryLater}
+              buttonTheme={BUTTONS_THEME.text}
             />
-          ) : (
-            !lastWord && (
-              <Button
-                label={getLabels().exercises.tryLater}
-                iconRight={ArrowRightIcon}
-                onPress={tryLater}
-                buttonTheme={BUTTONS_THEME.text}
-              />
-            )
           )}
           <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
       </ScrollView>
+
+      <WordResultIndicator
+        isVisible={selectedAnswer !== null}
+        isCorrect={!needsToBeRepeated}
+        content={
+          <SolutionRow>
+            {needsToBeRepeated && <ContentText>{getLabels().exercises.solution}</ContentText>}
+            <ContentText>
+              {vocabularyItem.article.value} {vocabularyItem.word}
+            </ContentText>
+          </SolutionRow>
+        }
+        button={
+          <Button
+            label={buttonLabel}
+            iconRight={ArrowRightIcon}
+            onPress={onFinishWord}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
+        }
+      />
     </>
   )
 }

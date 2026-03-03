@@ -127,7 +127,7 @@ const ExerciseHeader = ({
       {showProgress && (
         <ProgressBar
           animatedValue={numberOfWords > 0 ? currentWord / numberOfWords : 0}
-          color={theme.colors.progressIndicator}
+          color={theme.colors.progressIndicatorTraining}
           disabledColor={theme.colors.disabled}
         />
       )}
