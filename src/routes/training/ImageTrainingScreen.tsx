@@ -10,7 +10,7 @@ import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
@@ -157,6 +157,10 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     />
   )
 
+  const questionLabel = isArticlePlural(word.article)
+    ? getLabels().exercises.training.image.whatAre
+    : getLabels().exercises.training.image.whatIs
+
   return (
     <>
       <TrainingExerciseHeader
@@ -168,7 +172,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
       <TrainingExerciseContainer title={getLabels().exercises.training.image.selectImage} footer={nextWordButton}>
         <QuestionContainer>
           <ContentText>
-            {getLabels().exercises.training.image.whatIs} {word.article.value}{' '}
+            {questionLabel} {word.article.value}{' '}
           </ContentText>
           <ContentTextBold>{word.word}</ContentTextBold>
           <ContentText>?</ContentText>
