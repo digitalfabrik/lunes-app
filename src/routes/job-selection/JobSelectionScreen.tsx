@@ -1,7 +1,8 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useLayoutEffect, useState, ReactElement } from 'react'
+import React, { ReactElement, useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
 import Button from '../../components/Button'
@@ -30,7 +31,7 @@ const StyledText = styled(ContentSecondary)`
   text-align: center;
 `
 
-const ButtonContainer = styled.View`
+const ButtonContainer = styled(SafeAreaView)`
   position: absolute;
   bottom: ${props => props.theme.spacings.md};
   width: 100%;
@@ -77,7 +78,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
       lightStatusBarContent={initialSelection}
       shouldSetBottomInset
     >
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         {initialSelection && <Header />}
 
         <TextContainer>

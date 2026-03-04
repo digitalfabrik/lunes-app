@@ -1,6 +1,7 @@
 import React, { ReactElement, useRef } from 'react'
 import { Platform, Pressable } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Camera, useCameraDevice } from 'react-native-vision-camera'
 import styled from 'styled-components/native'
 
@@ -23,7 +24,7 @@ const TakeImageButtonContainer = styled.View`
   margin-right: ${GALLERY_ICON_SIZE}px;
 `
 
-const Container = styled.View`
+const Container = styled(SafeAreaView)`
   flex-direction: row;
   opacity: 0.5;
   position: absolute;

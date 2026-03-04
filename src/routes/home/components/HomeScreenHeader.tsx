@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.View`
   background-color: ${props => props.theme.colors.primary};
 `
 const HeaderStyle = styled.View`
