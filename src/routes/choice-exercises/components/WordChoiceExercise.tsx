@@ -40,7 +40,7 @@ const generateFalseAnswers = (
   return shuffledWrongAnswers.slice(0, answersCount - 1)
 }
 
-const vocabularyItemToAnswer = (vocabularyItems: VocabularyItem[], vocabularyItem: VocabularyItem): Answer[] => {
+const generateChoices = (vocabularyItems: VocabularyItem[], vocabularyItem: VocabularyItem): Answer[] => {
   const { word, article } = vocabularyItem
   const answersCount = Math.min(vocabularyItems.length, MAX_ANSWERS)
   const answers = generateFalseAnswers(vocabularyItems, vocabularyItem, answersCount)
@@ -64,7 +64,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     currentWord: 0,
     results,
-    answers: vocabularyItemToAnswer(vocabularyItems, results[0].vocabularyItem),
+    answers: generateChoices(vocabularyItems, results[0].vocabularyItem),
   }
 }
 
@@ -115,7 +115,7 @@ const WordChoiceExercise = ({
   const updateState = (newData: Partial<Omit<State, 'answers'>>) => {
     const newState = { ...state, ...newData }
     if (newState.results[newState.currentWord].vocabularyItem !== state.results[state.currentWord].vocabularyItem) {
-      newState.answers = vocabularyItemToAnswer(vocabularyItems, newState.results[newState.currentWord].vocabularyItem)
+      newState.answers = generateChoices(vocabularyItems, newState.results[newState.currentWord].vocabularyItem)
     }
     setState(newState)
   }
@@ -142,7 +142,6 @@ const WordChoiceExercise = ({
     }))
     const incorrectResults = cheatedResults.filter(it => it.result === SIMPLE_RESULTS.incorrect)
     if (!isRepetitionExercise && incorrectResults.length > 0) {
-      const repetitionService = RepetitionService.fromStorageCache(storageCache)
       await repetitionService.addWordsToFirstSection(incorrectResults.map(it => it.vocabularyItem))
     }
     await onExerciseFinished(cheatedResults)
@@ -171,7 +170,6 @@ const WordChoiceExercise = ({
     await updateResult(numberOfTries + 1, isCorrect)
 
     if (!isRepetitionExercise && !isCorrect) {
-      const repetitionService = RepetitionService.fromStorageCache(storageCache)
       await repetitionService.addWordToFirstSection(vocabularyItem)
     }
 
@@ -194,8 +192,8 @@ const WordChoiceExercise = ({
     setDelayPassed(false)
   }
 
-  const lastWord = state.currentWord + 1 >= count
-  const buttonLabel = lastWord && !needsToBeRepeated ? getLabels().exercises.showResults : getLabels().exercises.next
+  const isLastWord = state.currentWord + 1 >= count
+  const buttonLabel = isLastWord && !needsToBeRepeated ? getLabels().exercises.showResults : getLabels().exercises.next
 
   return (
     <>
@@ -222,7 +220,7 @@ const WordChoiceExercise = ({
           delayPassed={delayPassed}
         />
         <ButtonContainer>
-          {selectedAnswer === null && !lastWord && (
+          {selectedAnswer === null && !isLastWord && (
             <Button
               label={getLabels().exercises.tryLater}
               iconRight={ArrowRightIcon}

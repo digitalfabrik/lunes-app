@@ -109,7 +109,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
         message={message}
         onBack={() => navigation.pop()}
       >
-        <Button label={buttonText} buttonTheme={BUTTONS_THEME.contained} onPress={() => navigationAction()} />
+        <Button label={buttonText} buttonTheme={BUTTONS_THEME.contained} onPress={navigationAction} />
         <ShareSection unitTitle={unitTitle} results={results} />
       </ExerciseFinishedBase>
     </RouteWrapper>
