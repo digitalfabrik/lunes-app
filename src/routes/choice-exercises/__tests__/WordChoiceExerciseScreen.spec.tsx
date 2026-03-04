@@ -1,4 +1,4 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { View } from 'react-native'
@@ -61,7 +61,6 @@ describe('WordChoiceExerciseScreen', () => {
       vocabularyItems,
       unitId: { id: 1, type: 'standard' },
       unitTitle: 'TestTitel',
-      closeExerciseAction: CommonActions.goBack(),
     },
   }
 
@@ -127,7 +126,7 @@ describe('WordChoiceExerciseScreen', () => {
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
     fireEvent.press(getByText(getLabels().exercises.showResults))
 
-    await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
+    await waitFor(() => expect(navigation.popTo).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
   })
 
   it('should repeat a word after an incorrect answer', async () => {
@@ -149,7 +148,7 @@ describe('WordChoiceExerciseScreen', () => {
     fireEvent(getByText('Spachtel'), 'pressOut')
     fireEvent.press(getByText(getLabels().exercises.showResults))
 
-    await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
+    await waitFor(() => expect(navigation.popTo).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
   })
 
   it('should allow to skip an exercise and try it out later', () => {
@@ -189,9 +188,9 @@ describe('WordChoiceExerciseScreen', () => {
       name: 'WordChoiceExercise',
       params: {
         contentType: 'repetition',
+        unitId: null,
         vocabularyItems,
         unitTitle: 'TestTitel',
-        closeExerciseAction: CommonActions.goBack(),
       },
     }
 

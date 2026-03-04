@@ -1,4 +1,4 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import React from 'react'
 
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -37,7 +37,6 @@ describe('VocabularyListScreen', () => {
       vocabularyItems,
       unitId: { id: 1, type: 'standard' },
       unitTitle: 'My unit title',
-      closeExerciseAction: CommonActions.goBack(),
     },
   }
 

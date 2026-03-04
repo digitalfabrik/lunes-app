@@ -1,6 +1,6 @@
-import { NavigationAction, NavigatorScreenParams } from '@react-navigation/native'
+import { NavigatorScreenParams } from '@react-navigation/native'
 
-import { ExerciseKey, Result, SimpleResult } from '../constants/data'
+import { ExerciseKey, SimpleResult } from '../constants/data'
 import Job, { StandardJob } from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
@@ -11,25 +11,12 @@ export type VocabularyItemResult = {
   numberOfTries: number
 }
 
-export type ContentType = 'standard' | 'userVocabulary' | 'repetition'
-
-type StandardExercise = {
-  contentType: 'standard'
-  unitId: StandardUnitId
-}
-
-type SpecialExercise = {
-  contentType: 'userVocabulary' | 'repetition'
-}
-
-type SharedExerciseParams = {
+type ExerciseParams = {
+  contentType: 'standard' | 'userVocabulary' | 'repetition'
+  unitId: StandardUnitId | null
   unitTitle: string
   vocabularyItems: VocabularyItem[]
-  closeExerciseAction: NavigationAction
-  labelOverrides?: { closeExerciseButtonLabel: string; closeExerciseHeaderLabel: string; isCloseButton: boolean }
 }
-
-type ExerciseParams = (StandardExercise | SpecialExercise) & SharedExerciseParams
 
 type VocabularyDetailExerciseParams = {
   vocabularyItemIndex: number
@@ -81,7 +68,6 @@ export type RoutesParams = {
     itemToEdit?: UserVocabularyItem
   }
   UserVocabularyList: undefined
-  UserVocabularyDetail: { vocabularyItem: UserVocabularyItem }
   JobSelection: {
     initialSelection: boolean
   }
@@ -94,11 +80,6 @@ export type RoutesParams = {
   VocabularyList: ExerciseParams
   WordChoiceExercise: ExerciseParams
   ExerciseFinished: ResultParams
-  labelOverrides?: ExerciseParams
-  Result: ResultParams
-  ResultDetail: ResultParams & {
-    resultType: Result
-  }
   Imprint: undefined
   ManageSelection: undefined
   Settings: undefined

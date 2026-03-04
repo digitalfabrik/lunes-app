@@ -1,4 +1,4 @@
-import { RouteProp, StackActions, useIsFocused } from '@react-navigation/native'
+import { RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { FlatList } from 'react-native'
@@ -76,13 +76,11 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       return
     }
     if (vocabularyItems) {
-      const closeExerciseAction = StackActions.popTo('BottomTabNavigator')
       navigation.navigate(EXERCISES[item.key].screen, {
         contentType: 'standard',
         vocabularyItems,
         unitId: unit.id,
         unitTitle: unit.title,
-        closeExerciseAction,
       })
     }
   }

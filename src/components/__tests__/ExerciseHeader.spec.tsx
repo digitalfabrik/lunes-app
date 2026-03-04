@@ -1,4 +1,3 @@
-import { CommonActions } from '@react-navigation/native'
 import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { BackHandler } from 'react-native'
@@ -33,13 +32,11 @@ describe('ExerciseHeader', () => {
   const navigation = createNavigationMock<'WordChoiceExercise'>()
 
   it('should render header', () => {
-    const goBack = CommonActions.goBack()
     const { getByText, getByTestId, queryByTestId } = render(
       <ExerciseHeader
         navigation={navigation}
         currentWord={4}
         numberOfWords={10}
-        closeExerciseAction={goBack}
         feedbackTarget={{ type: 'word', wordId: { type: VocabularyItemTypes.Standard, id: 1 } }}
         exerciseKey={ExerciseKeys.vocabularyList}
       />,
@@ -56,6 +53,6 @@ describe('ExerciseHeader', () => {
 
     fireEvent.press(getByText(getLabels().exercises.cancelModal.cancel))
 
-    expect(navigation.dispatch).toHaveBeenCalledWith(goBack)
+    expect(navigation.pop).toHaveBeenCalled()
   })
 })

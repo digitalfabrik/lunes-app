@@ -1,4 +1,4 @@
-import { CommonActions, RouteProp } from '@react-navigation/native'
+import { RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
@@ -26,7 +26,6 @@ describe('ExerciseFinishedScreen', () => {
       unitId,
       unitTitle: 'unit',
       vocabularyItems: new VocabularyItemBuilder(4).build(),
-      closeExerciseAction: CommonActions.goBack(),
       exercise: exerciseKey,
       results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
         vocabularyItem,
@@ -60,7 +59,7 @@ describe('ExerciseFinishedScreen', () => {
     expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[1].screen, expect.anything())
+    expect(navigation.popTo).toHaveBeenCalledWith(EXERCISES[1].screen, expect.anything())
   })
 
   it('should render and handle button click for completed unit', () => {
@@ -69,6 +68,6 @@ describe('ExerciseFinishedScreen', () => {
     expect(getByText(getLabels().results.finishedUnit)).toBeDefined()
     const button = getByText(getLabels().results.action.back)
     fireEvent.press(button)
-    expect(navigation.pop).toHaveBeenCalledWith(2)
+    expect(navigation.pop).toHaveBeenCalled()
   })
 })
