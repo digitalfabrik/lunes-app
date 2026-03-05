@@ -13,7 +13,6 @@ import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 
@@ -21,7 +20,6 @@ type TrainingExercise = {
   title: string
   description: string
   image: ReactElement
-  hasContent?: (items: VocabularyItem[]) => boolean
   navigate?: <T extends keyof RoutesParams>(navigation: StackNavigationProp<RoutesParams, T>, job: StandardJob) => void
 }
 
@@ -41,7 +39,6 @@ export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
     title: getLabels().exercises.training.sentence.title,
     description: getLabels().exercises.training.sentence.description,
     image: <TrainingSentences />,
-    hasContent: items => items.some(item => item.exampleSentence !== undefined),
     navigate: (navigation, job) => navigation.navigate('SentenceTraining', { job }),
   },
 }
@@ -109,7 +106,9 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
     const isDisabled =
       item.navigate === undefined ||
       vocabularyItems?.length === 0 ||
-      (vocabularyItems !== null && item.hasContent !== undefined && !item.hasContent(vocabularyItems))
+      (item === TRAINING_EXERCISES.sentence &&
+        vocabularyItems !== null &&
+        !vocabularyItems.some(item => item.exampleSentence !== undefined))
     return (
       <ListItemWrapper>
         {isDisabled && (
