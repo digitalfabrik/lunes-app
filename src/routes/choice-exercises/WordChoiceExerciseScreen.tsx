@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import WordChoiceExercise from './components/WordChoiceExercise.tsx'
+import WordChoiceExercise from './components/WordChoiceExercise'
 
 type WordChoiceExerciseScreenProps = {
   route: RouteProp<RoutesParams, 'WordChoiceExercise'>
