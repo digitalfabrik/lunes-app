@@ -76,6 +76,7 @@ const ButtonContainer = styled.View`
 
 const SolutionRow = styled.View`
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: ${props => props.theme.spacings.xs} 0;
