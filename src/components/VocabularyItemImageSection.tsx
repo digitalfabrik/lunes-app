@@ -27,6 +27,7 @@ const Container = styled.View`
 type VocabularyItemSectionProps = {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
+  showAudioPlayer?: boolean
   minimized?: boolean
   submittedAlternative?: string | null
 }
@@ -34,19 +35,22 @@ type VocabularyItemSectionProps = {
 const VocabularyItemImageSection = ({
   vocabularyItem,
   audioDisabled = false,
+  showAudioPlayer = true,
   minimized = false,
   submittedAlternative,
 }: VocabularyItemSectionProps): ReactElement => (
   <Container>
     <ImageCarousel images={vocabularyItem.images} minimized={minimized} />
-    <AudioContainer>
-      <AudioPlayer
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- False positive, left hand side is possible null or undefined
-        audio={submittedAlternative ?? vocabularyItem.audio ?? stringifyVocabularyItem(vocabularyItem)}
-        isTtsText={!!submittedAlternative || !vocabularyItem.audio}
-        disabled={audioDisabled}
-      />
-    </AudioContainer>
+    {showAudioPlayer && (
+      <AudioContainer>
+        <AudioPlayer
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- False positive, left hand side is possible null or undefined
+          audio={submittedAlternative ?? vocabularyItem.audio ?? stringifyVocabularyItem(vocabularyItem)}
+          isTtsText={!!submittedAlternative || !vocabularyItem.audio}
+          disabled={audioDisabled}
+        />
+      </AudioContainer>
+    )}
     <FavoriteContainer>
       <FavoriteButton vocabularyItem={vocabularyItem} />
     </FavoriteContainer>
