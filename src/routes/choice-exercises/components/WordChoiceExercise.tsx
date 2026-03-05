@@ -9,8 +9,8 @@ import Button from '../../../components/Button'
 import CheatMode from '../../../components/CheatMode'
 import ExerciseHeader from '../../../components/ExerciseHeader'
 import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
-import WordResultIndicator from '../../../components/WordResultIndicator.tsx'
-import { ContentText } from '../../../components/text/Content.tsx'
+import WordResultIndicator from '../../../components/WordResultIndicator'
+import { ContentText } from '../../../components/text/Content'
 import {
   Answer,
   BUTTONS_THEME,

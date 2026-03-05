@@ -3,9 +3,9 @@ import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import theme from '../constants/theme'
-import { getLabels } from '../services/helpers.ts'
-import BottomSheet from './BottomSheet.tsx'
-import { HeadingText } from './text/Heading.tsx'
+import { getLabels } from '../services/helpers'
+import BottomSheet from './BottomSheet'
+import { HeadingText } from './text/Heading'
 
 const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};

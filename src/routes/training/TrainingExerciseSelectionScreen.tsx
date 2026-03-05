@@ -7,9 +7,11 @@ import styled, { css } from 'styled-components/native'
 import { TrainingImages, TrainingSentences, TrainingSpeech } from '../../../assets/images'
 import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
+import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
+import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
@@ -98,8 +100,15 @@ export type TrainingExerciseSelectionScreenProps = {
 const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExerciseSelectionScreenProps): ReactElement => {
   const { job } = route.params
 
+  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByJob(job.id)
+
   const renderListItem = ({ item }: { item: TrainingExercise }): ReactElement | null => {
-    const isDisabled = item.navigate === undefined
+    const isDisabled =
+      item.navigate === undefined ||
+      vocabularyItems?.length === 0 ||
+      (item === TRAINING_EXERCISES.sentence &&
+        vocabularyItems !== null &&
+        !vocabularyItems.some(item => item.exampleSentence !== undefined))
     return (
       <ListItemWrapper>
         {isDisabled && (
@@ -127,14 +136,16 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
 
   return (
     <RouteWrapper>
-      <Root>
-        <Title title={getLabels().exercises.training.train} subtitle={job.name} />
-        <FlatList
-          data={Object.values(TRAINING_EXERCISES)}
-          renderItem={renderListItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </Root>
+      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+        <Root>
+          <Title title={getLabels().exercises.training.train} subtitle={job.name} />
+          <FlatList
+            data={Object.values(TRAINING_EXERCISES)}
+            renderItem={renderListItem}
+            showsVerticalScrollIndicator={false}
+          />
+        </Root>
+      </ServerResponseHandler>
     </RouteWrapper>
   )
 }

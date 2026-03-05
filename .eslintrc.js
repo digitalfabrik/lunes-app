@@ -25,6 +25,7 @@ module.exports = {
     '.eslintrc.js',
     'babel.config.js',
     'metro.config.js',
+    'metro.config.ci.js',
   ],
   rules: {
     // Overly strict rules (for now)
@@ -33,7 +34,6 @@ module.exports = {
 
     // Unwanted
     'lines-between-class-members': 'off',
-    'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'react/require-default-props': 'off',
     'jest/expect-expect': 'off',
@@ -46,6 +46,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
 
     curly: ['error', 'all'],
+    'import/extensions': ['error', 'never', { json: 'always' }],
     'func-names': 'error',
     'no-magic-numbers': [
       'error',
@@ -98,6 +99,13 @@ module.exports = {
     'prefer-arrow/prefer-arrow-functions': 'error',
 
     'jsx-expressions/strict-logical-expressions': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
   parserOptions: {
     project: './tsconfig.json',
