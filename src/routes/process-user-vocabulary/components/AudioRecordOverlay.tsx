@@ -1,8 +1,9 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
-import AudioRecorderPlayer from 'react-native-audio-recorder-player'
+import { createSound } from 'react-native-nitro-sound'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon, MicrophoneIcon } from '../../../../assets/images'
@@ -12,7 +13,7 @@ import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
-const Container = styled.SafeAreaView`
+const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${props => props.theme.colors.backgroundAccent};
 `
@@ -97,8 +98,8 @@ const cleanUpMeteringResults = (meteringResults: number[]): number[] =>
 const getCurrentMetering = (metering = 0): number => (Platform.OS === 'android' ? metering * androidFactor : metering)
 
 const accuracy = 0.1
-const audioRecorderPlayer = new AudioRecorderPlayer()
-audioRecorderPlayer.setSubscriptionDuration(accuracy).catch(reportError)
+const audioRecorderPlayer = createSound()
+audioRecorderPlayer.setSubscriptionDuration(accuracy)
 
 const AudioRecordOverlay = ({
   onClose,
@@ -129,7 +130,7 @@ const AudioRecordOverlay = ({
     audioRecorderPlayer.removeRecordBackListener()
     if (recordingTime < minRecordingTime) {
       // If the button is just tapped and the recording is stopped to fast, an error is thrown from which it is not possible to recover
-      // https://github.com/hyochan/react-native-audio-recorder-player/issues/490
+      // https://github.com/hyochan/react-native-nitro-sound/issues/490
       setIsPressed(false)
       setTimeout(() => {
         audioRecorderPlayer.stopRecorder().catch(reportError)

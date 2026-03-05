@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
@@ -9,7 +10,7 @@ import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
 
-const Container = styled.SafeAreaView`
+const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${props => props.theme.colors.background};
 `
@@ -34,28 +35,30 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
-      <Container>
-        <Header>
-          <Pressable
-            onPress={() => setVisible(false)}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-          >
-            {isPressed ? (
-              <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
-            ) : (
-              <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
-            )}
-          </Pressable>
-        </Header>
-        {permissionGranted && children}
-        {permissionRequested && !permissionGranted && (
-          <NotAuthorisedView
-            description={getLabels().general.camera.noAuthorization.description}
-            setVisible={setVisible}
-          />
-        )}
-      </Container>
+      <SafeAreaProvider>
+        <Container>
+          <Header>
+            <Pressable
+              onPress={() => setVisible(false)}
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+            >
+              {isPressed ? (
+                <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
+              ) : (
+                <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
+              )}
+            </Pressable>
+          </Header>
+          {permissionGranted && children}
+          {permissionRequested && !permissionGranted && (
+            <NotAuthorisedView
+              description={getLabels().general.camera.noAuthorization.description}
+              setVisible={setVisible}
+            />
+          )}
+        </Container>
+      </SafeAreaProvider>
     </RNModal>
   )
 }

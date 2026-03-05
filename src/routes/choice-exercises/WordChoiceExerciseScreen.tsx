@@ -17,7 +17,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const isRepetitionExercise = contentType === 'repetition'
 
   return (
-    <RouteWrapper>
+    <RouteWrapper shouldSetBottomInset>
       <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={unitId}

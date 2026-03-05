@@ -15,7 +15,7 @@ type RouteWrapperProps = {
   shouldSetTopInset?: boolean
 }
 
-const Container = styled.SafeAreaView<{
+const Container = styled.View<{
   backgroundColor: string
   shouldTakeSpace: boolean
   bottomInset?: number

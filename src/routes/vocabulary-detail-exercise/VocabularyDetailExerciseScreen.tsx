@@ -1,13 +1,14 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { SafeAreaView, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import HorizontalLine from '../../components/HorizontalLine'
+import RouteWrapper from '../../components/RouteWrapper.tsx'
 import VocabularyDetail from '../../components/VocabularyDetail'
 import { BUTTONS_THEME } from '../../constants/data'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -44,7 +45,7 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex - 1 })
 
   return (
-    <SafeAreaView>
+    <RouteWrapper shouldSetBottomInset>
       <ExerciseHeader
         navigation={navigation}
         currentWord={vocabularyItemIndex}
@@ -85,7 +86,7 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
           </ButtonContainer>
         </Container>
       </ScrollView>
-    </SafeAreaView>
+    </RouteWrapper>
   )
 }
 

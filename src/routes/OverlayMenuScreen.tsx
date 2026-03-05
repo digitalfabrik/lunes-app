@@ -27,7 +27,7 @@ const DismissArea = styled.Pressable`
   flex: 1;
 `
 
-const Sidebar = styled.SafeAreaView<{ paddingTop: number }>`
+const Sidebar = styled.View<{ paddingTop: number }>`
   height: 100%;
   width: 80%;
   padding-top: ${props => props.paddingTop}px;
