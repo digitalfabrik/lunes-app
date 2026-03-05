@@ -3,7 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { ARTICLES, MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
 import { getLabels } from '../../../services/helpers'
@@ -53,7 +53,7 @@ describe('ImageTrainingScreen', () => {
   }
 
   it('should render initially', async () => {
-    const { getByText, getAllByTestId, getByTestId } = await renderScreenAndWaitForLoad()
+    const { getByText, queryByText, getAllByTestId, getByTestId } = await renderScreenAndWaitForLoad()
 
     expect(getByText(getLabels().exercises.training.image.selectImage)).toBeVisible()
     expect(getAllByTestId('imageOption')).toHaveLength(4)
@@ -61,6 +61,17 @@ describe('ImageTrainingScreen', () => {
 
     const skipButton = getByTestId('button-skip')
     expect(skipButton).toBeVisible()
+
+    expect(queryByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeNull()
+    expect(getByText(getLabels().exercises.training.image.whatIs, { exact: false })).toBeVisible()
+  })
+
+  it('should correctly use plural form', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[4] })))
+
+    const { getByText, queryByText } = await renderScreenAndWaitForLoad()
+    expect(getByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeVisible()
+    expect(queryByText(getLabels().exercises.training.image.whatIs, { exact: false })).toBeNull()
   })
 
   it('should keep Skip button after selecting incorrect image', async () => {

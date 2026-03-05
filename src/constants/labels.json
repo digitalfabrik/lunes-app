@@ -78,7 +78,8 @@
         "title": "Bilderrätsel",
         "description": "Die richtige Vokabel finden",
         "selectImage": "Wähle das richtige Bild aus!",
-        "whatIs": "Was ist"
+        "whatIs": "Was ist",
+        "whatAre": "Was sind"
       },
       "voice": {
         "title": "Sprechstudio",

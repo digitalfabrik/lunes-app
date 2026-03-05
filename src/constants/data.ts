@@ -93,9 +93,11 @@ export type ArticleTypeExtended = {
   readonly label: string
 } & ArticleType
 
+export const isArticlePlural = (article: ArticleType): boolean => article.id === 4
+
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
   ARTICLES.filter(article => article.id !== 0).map(article => {
-    if (article.id === 4) {
+    if (isArticlePlural(article)) {
       return { ...article, label: `${article.value} (Plural)` }
     }
     return { ...article, label: article.value }
