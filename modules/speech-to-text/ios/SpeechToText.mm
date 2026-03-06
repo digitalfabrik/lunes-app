@@ -19,9 +19,11 @@
 }
 
 - (void)record:(NSArray *)hints resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    NSLog(@"[SpeechToText] record called, hints: %@", hints);
     [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (status != SFSpeechRecognizerAuthorizationStatusAuthorized) {
+                NSLog(@"[SpeechToText] permission denied, status: %ld", (long)status);
                 reject(@"E_PERMISSION", @"Speech recognition not authorized", nil);
                 return;
             }
@@ -33,6 +35,7 @@
                 [self->_audioEngine stop];
                 [self->_audioEngine.inputNode removeTapOnBus:0];
             }
+            NSLog(@"[SpeechToText] starting recognition, hints: %@", hints);
 
             // Configure audio session for recording
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -76,6 +79,7 @@
 
                     if (error) {
                         settled = YES;
+                        NSLog(@"[SpeechToText] recognition error: %@", error.localizedDescription);
                         [self tearDown];
                         reject(@"E_RECOGNITION", error.localizedDescription, error);
                         return;
@@ -91,6 +95,7 @@
                         for (SFTranscription *transcription in result.transcriptions) {
                             [transcriptions addObject:transcription.formattedString];
                         }
+                        NSLog(@"[SpeechToText] results: %@", transcriptions);
                         resolve(transcriptions);
                     }
                 }];
@@ -110,14 +115,18 @@
             [self->_audioEngine startAndReturnError:&engineError];
             if (engineError) {
                 settled = YES;
+                NSLog(@"[SpeechToText] audio engine error: %@", engineError.localizedDescription);
                 [self tearDown];
                 reject(@"E_AUDIO_ENGINE", engineError.localizedDescription, engineError);
+            } else {
+                NSLog(@"[SpeechToText] audio engine started, listening");
             }
         });
     }];
 }
 
 - (void)stop:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    NSLog(@"[SpeechToText] stop called");
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->_recognitionRequest endAudio];
         resolve(nil);

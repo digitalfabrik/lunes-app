@@ -13,6 +13,7 @@ import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import useStorage from '../../hooks/useStorage'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem from '../../models/VocabularyItem'
@@ -127,6 +128,7 @@ type SpeechTrainingProps = {
 const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
+  const [isDevModeEnabled] = useStorage('isDevModeEnabled')
 
   const labels = getLabels().exercises.training.speech
   const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
@@ -156,8 +158,8 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   const statusText = isRecording ? labels.listening : labels.prompt
 
-  // incorrect and error allow retry; correct and similar advance to the next word
-  const canRetry = state.answerState === 'incorrect' || state.answerState === 'error'
+  // incorrect, similar, and error allow retry; only correct advances to the next word
+  const canRetry = state.answerState === 'incorrect' || state.answerState === 'similar' || state.answerState === 'error'
 
   const renderBottomSheetContent = (): ReactElement => {
     // answerState is always non-null here because BottomSheet is only visible when non-null.
@@ -215,11 +217,17 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
             label={getLabels().exercises.skip}
             iconRight={ArrowRightIcon}
           />
-        }>
+        }
+      >
         <Centered>
           <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
           <RecordingButton onPressIn={handlePressIn} onPressOut={handlePressOut} isRecording={isRecording} />
           <StatusText>{statusText}</StatusText>
+          {isDevModeEnabled && (
+            <StatusText>
+              {currentWord.article.value} {currentWord.word}
+            </StatusText>
+          )}
         </Centered>
       </TrainingExerciseContainer>
 

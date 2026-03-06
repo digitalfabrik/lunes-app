@@ -11,16 +11,13 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 
 import com.facebook.react.modules.i18nmanager.I18nUtil
-import com.speechtotext.SpeechToTextPackage
 
 class MainApplication : Application(), ReactApplication {
 
     override val reactNativeHost: ReactNativeHost =
         object : DefaultReactNativeHost(this) {
             override fun getPackages(): List<ReactPackage> =
-                PackageList(this).packages.apply {
-                    add(SpeechToTextPackage())
-                }
+                PackageList(this).packages
 
             override fun getJSMainModuleName(): String = "index"
 
