@@ -105,6 +105,13 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, "de-DE")
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
+                // Wait 2 s of silence before considering speech complete. This prevents the VAD
+                // from cutting off long compound words mid-syllable on emulators (e.g.
+                // "das zungenb" instead of "das Zungenbein"). Keep the minimum short so that
+                // brief single-word utterances like "die Zunge" are not rejected.
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 800L)
                 if (hintList.isNotEmpty() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     Log.i(TAG, "Using biasing hints: ${hintList.toList()}")
                     putExtra(RecognizerIntent.EXTRA_BIASING_STRINGS, hintList)

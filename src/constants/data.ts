@@ -107,6 +107,7 @@ export type Article = (typeof ARTICLES)[number]
 
 export const SIMPLE_RESULTS = {
   correct: 'correct',
+  similar: 'similar',
   incorrect: 'incorrect',
 } as const
 export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]

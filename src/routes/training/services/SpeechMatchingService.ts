@@ -2,13 +2,29 @@ import { SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 
 // 0.80 (vs 0.85) allows for suffix-dropping on long compound words, e.g.
 // "das Linsenknöchel" (similarity 0.818) for "das Linsenknöchelchen".
-const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.80
+const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
 // Slightly lower threshold for comparing the transcript against the word portion
 // only (when the article was dropped). Used for both single-word vocabulary
 // ("Kleinhinz" → "Kleinhirn", similarity ≈ 0.78) and multi-word vocabulary
 // ("äußere Umhündung" → "äußere Umhüllung", similarity ≈ 0.89).
 const WORD_ONLY_SIMILARITY_THRESHOLD = 0.75
 const WORD_SIMILARITY_THRESHOLD = 0.8
+// Minimum fraction of the expected phrase that a prefix transcript must cover.
+// iOS SFSpeechRecognizer reliably truncates at morpheme boundaries in German
+// compound words (e.g. "das Fingerglied" → "Das Finger", 66.7% coverage).
+// 0.65 accepts these morpheme-boundary truncations while still rejecting
+// transcripts that are too short to be unambiguous (e.g. "die rechte" at 50%
+// for "die rechte Vorkammer", where the noun is entirely missing).
+const PHRASE_PREFIX_THRESHOLD = 0.65
+// Minimum fraction of the expected last token that the transcript's last token
+// must cover for the token-level prefix check. Handles cases where iOS truncates
+// exactly at a morpheme boundary (e.g. "die Haarwurzel" → "Die Haar":
+// last token "har" covers 3/9 = 33% of "harwurzel").
+const LAST_TOKEN_PREFIX_THRESHOLD = 0.33
+// Minimum similarity between the transcript's last token and the corresponding
+// same-length prefix of the expected last token. A strict startsWith check misses
+// near-misses like "die Harz" for "die Haarwurzel" ("harz" vs "harw", similarity 0.75).
+const LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD = 0.75
 
 const normalizeText = (text: string): string =>
   text
@@ -19,6 +35,14 @@ const normalizeText = (text: string): string =>
     .replace(/ü/g, 'ue')
     .replace(/ß/g, 'ss')
     .replace(/[^a-z0-9 ]/g, '')
+    // "th" in German loanwords (Greek/Latin origin: "Stethoskop", "Thermometer") is
+    // pronounced as plain "t". Normalizing it prevents ASR from returning "steht" for
+    // "Stethoskop" being treated as a mismatch.
+    .replace(/th/g, 't')
+    // Silent vowel-lengthening "h" (e.g. "steht" → "stet", "Naht" → "nat").
+    // The 'h' is not pronounced; removing it makes the transcript "steht" align with
+    // the "stet" prefix of the normalized "Stethoskop" → "stetoskop".
+    .replace(/([aeiou])h(?=[^aeiou]|$)/g, '$1')
     // Whisper often drops geminate (doubled) consonants, e.g. "Kanne" → "Kana".
     // Collapsing runs on both sides makes the comparison robust to this.
     .replace(/(.)\1+/g, '$1')
@@ -82,7 +106,8 @@ const containsPhraseTokens = (transcript: string, phrase: string): boolean => {
 // Returns:
 //   'correct'   if the normalized full phrase similarity is ≥ FULL_PHRASE_SIMILARITY_THRESHOLD,
 //               or the expected phrase tokens appear verbatim inside the transcript,
-//               or the transcript closely approximates the word alone (≥ WORD_ONLY_SIMILARITY_THRESHOLD)
+//               or the transcript closely approximates the word alone (≥ WORD_ONLY_SIMILARITY_THRESHOLD),
+//               or the transcript is a prefix of the full phrase (VAD cut off mid-word)
 //   'similar'   if any transcript token matches the word with ≥ WORD_SIMILARITY_THRESHOLD (article wrong)
 //   'incorrect' otherwise
 const evaluateCandidate = (transcript: string, article: string, word: string): SimpleResult => {
@@ -92,6 +117,57 @@ const evaluateCandidate = (transcript: string, article: string, word: string): S
 
   if (stringSimilarity(normalizedTranscript, normalizedFull) >= FULL_PHRASE_SIMILARITY_THRESHOLD) {
     return SIMPLE_RESULTS.correct
+  }
+
+  // The VAD sometimes cuts off the last syllable(s) of a long compound word, producing a
+  // transcript that is a clean prefix of the expected phrase (e.g. "das zungenb" for
+  // "das Zungenbein"). Accept as correct when the transcript covers ≥ 70% of the phrase.
+  // The startsWith guard means a wrong word can never accidentally satisfy this check.
+  if (
+    normalizedFull.startsWith(normalizedTranscript) &&
+    normalizedTranscript.length >= normalizedFull.length * PHRASE_PREFIX_THRESHOLD
+  ) {
+    return SIMPLE_RESULTS.correct
+  }
+
+  // iOS SFSpeechRecognizer sometimes splits German compound words into their constituent
+  // parts with spaces (e.g. "Zwölffingerdarm" → "Zwölf Finger"). Joining the transcript
+  // tokens without spaces and re-applying geminate collapse handles the new adjacent
+  // doubles at word boundaries (e.g. "zwoelf"+"finger" → "zwoelffinger" → "zwoelfinger"),
+  // then the same prefix check is applied against the space-removed expected phrase.
+  const joinedTranscript = normalizedTranscript.replace(/ /g, '').replace(/(.)\1+/g, '$1')
+  const joinedFull = normalizedFull.replace(/ /g, '').replace(/(.)\1+/g, '$1')
+  if (
+    joinedFull.startsWith(joinedTranscript) &&
+    joinedTranscript.length >= joinedFull.length * PHRASE_PREFIX_THRESHOLD
+  ) {
+    return SIMPLE_RESULTS.correct
+  }
+
+  // iOS SFSpeechRecognizer sometimes truncates exactly at a morpheme boundary, returning
+  // only the first morpheme of the final compound token (e.g. "die Haarwurzel" →
+  // "Die Haar": last token "har" covers just 33% of "harwurzel"). The whole-phrase prefix
+  // check at 65% can't catch these cases, so we apply a per-token check instead.
+  // Requirements: same token count (prevents "die rechte" for "die rechte Vorkammer"
+  // where the noun is absent), all preceding tokens match exactly (prevents wrong-article
+  // answers), and the last transcript token is a prefix of the expected last token.
+  const transcriptTokens = normalizedTranscript.split(' ').filter(t => t.length > 0)
+  const fullTokens = normalizedFull.split(' ').filter(t => t.length > 0)
+  if (transcriptTokens.length === fullTokens.length && transcriptTokens.length > 1) {
+    const allPrecedingMatch = transcriptTokens.slice(0, -1).every((token, i) => token === fullTokens[i])
+    if (allPrecedingMatch) {
+      const lastTranscriptToken = transcriptTokens[transcriptTokens.length - 1]
+      const lastFullToken = fullTokens[fullTokens.length - 1]
+      if (
+        lastTranscriptToken.length >= lastFullToken.length * LAST_TOKEN_PREFIX_THRESHOLD &&
+        lastTranscriptToken.length <= lastFullToken.length
+      ) {
+        const expectedPrefix = lastFullToken.slice(0, lastTranscriptToken.length)
+        if (stringSimilarity(lastTranscriptToken, expectedPrefix) >= LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD) {
+          return SIMPLE_RESULTS.correct
+        }
+      }
+    }
   }
 
   // Whisper sometimes prefixes/appends extra words (e.g. "Und der Arm" for "der Arm").
