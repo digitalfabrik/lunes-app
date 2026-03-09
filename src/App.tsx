@@ -29,7 +29,7 @@ const App = (): ReactElement => {
             <VolumeServiceProvider>
               <TtsServiceProvider>
                 <NavigationContainer>
-                  <HeaderButtonsProvider stackType='native'>
+                  <HeaderButtonsProvider stackType='native' spaceAboveMenu={initialWindowMetrics?.insets.top ?? 0}>
                     <Navigator />
                   </HeaderButtonsProvider>
                 </NavigationContainer>
