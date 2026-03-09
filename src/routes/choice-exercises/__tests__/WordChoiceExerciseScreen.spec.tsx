@@ -182,6 +182,29 @@ describe('WordChoiceExerciseScreen', () => {
     })
   })
 
+  it('should show the answer as incorrect after answering wrong NUMBER_OF_MAX_RETRIES times', () => {
+    const { getByText } = renderScreen()
+
+    // Answer Spachtel wrong once - moves to end of queue (index 3)
+    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText(getLabels().exercises.next))
+
+    // Complete the remaining words correctly so Spachtel is reached again
+    selectAnswerAndPressNext(getByText, 'Auto')
+    selectAnswerAndPressNext(getByText, 'Hose')
+    selectAnswerAndPressNext(getByText, 'Helm')
+
+    // Answer Spachtel wrong a second time - still at end of queue, numberOfTries=2
+    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText(getLabels().exercises.next))
+
+    // Answer Spachtel wrong a third time, reaching NUMBER_OF_MAX_RETRIES
+    fireEvent(getByText('Auto'), 'pressOut')
+
+    // The result indicator must still show "incorrect", not "correct"
+    expect(getByText(getLabels().exercises.training.sentence.incorrect)).toBeVisible()
+  })
+
   describe('repetition exercise', () => {
     const repetitionRoute: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
       key: '',
