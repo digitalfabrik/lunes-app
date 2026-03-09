@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
+import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import CheatMode from '../../../components/CheatMode'
 import ExerciseHeader from '../../../components/ExerciseHeader'
@@ -76,9 +77,14 @@ const ButtonContainer = styled.View`
 
 const SolutionRow = styled.View`
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: ${props => props.theme.spacings.xs} 0;
+`
+
+const AudioPlayerContainer = styled.View`
+  padding-right: ${props => props.theme.spacings.xs};
 `
 
 type WordChoiceExerciseProps = {
@@ -209,7 +215,7 @@ const WordChoiceExercise = ({
       />
 
       <ScrollView>
-        <VocabularyItemImageSection vocabularyItem={vocabularyItem} audioDisabled={selectedAnswer === null} />
+        <VocabularyItemImageSection vocabularyItem={vocabularyItem} showAudioPlayer={false} />
         <SingleChoice
           answers={state.answers}
           isAnswerEqual={isAnswerEqual}
@@ -236,6 +242,10 @@ const WordChoiceExercise = ({
         isCorrect={!needsToBeRepeated}
         content={
           <SolutionRow>
+            <AudioPlayerContainer>
+              <AudioPlayer disabled={vocabularyItem.audio === null} audio={vocabularyItem.audio ?? ''} />
+            </AudioPlayerContainer>
+
             {needsToBeRepeated && <ContentText>{getLabels().exercises.solution}</ContentText>}
             <ContentText>
               {vocabularyItem.article.value} {vocabularyItem.word}
