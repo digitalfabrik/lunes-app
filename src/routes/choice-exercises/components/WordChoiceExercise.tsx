@@ -239,7 +239,7 @@ const WordChoiceExercise = ({
 
       <WordResultIndicator
         isVisible={selectedAnswer !== null}
-        isCorrect={!needsToBeRepeated}
+        isCorrect={result === SIMPLE_RESULTS.correct}
         content={
           <SolutionRow>
             <AudioPlayerContainer>
