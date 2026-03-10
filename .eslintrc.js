@@ -42,6 +42,8 @@ module.exports = {
     // Disabling since better @typescript-eslint rules available or they make no sense for ts projects
     'default-case': 'off',
     'no-use-before-define': 'off',
+    'no-useless-constructor': 'off',
+    'no-empty-function': 'off',
     'import/no-unresolved': 'off',
     'react/jsx-filename-extension': 'off',
 
@@ -71,11 +73,12 @@ module.exports = {
     'react/no-unused-prop-types': 'warn',
     'react-hooks/exhaustive-deps': 'error',
 
+    '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',
-    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-empty-function': ['error', { allow: ['constructors'] }],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
