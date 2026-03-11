@@ -10,6 +10,7 @@ import {
   StandardVocabularyItem,
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
+import { TrackingEvent } from './AnalyticsService'
 import { getFromEndpoint, postToEndpoint } from './axios'
 
 const Endpoints = {
@@ -22,6 +23,7 @@ const Endpoints = {
   word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
+  analytic_event: 'analytics/events',
 }
 
 type PostFeedback = {
@@ -181,4 +183,8 @@ export const getWordsByUnit = async (unitId: StandardUnitId): Promise<StandardVo
 export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId))
   return response.map(transformWordResponse)
+}
+
+export const postAnalyticEvent = async (event: TrackingEvent): Promise<void> => {
+  await postToEndpoint(Endpoints.analytic_event, event)
 }
