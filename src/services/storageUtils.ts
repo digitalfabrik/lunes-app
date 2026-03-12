@@ -48,7 +48,7 @@ export const pushSelectedJob = async (
     jobs.push(id)
   }
   await storageCache.setItem('selectedJobs', jobs)
-  trackEvent(storageCache, { type: 'job_selected', jobId: id, action: 'add' })
+  trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'add' })
 
   if (!migrated) {
     await addJobToNotMigrated(storageCache, id)
@@ -62,7 +62,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   }
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
-  trackEvent(storageCache, { type: 'job_selected', jobId: id, action: 'remove' })
+  trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'remove' })
 
   await removeJobFromNotMigrated(storageCache, id)
 

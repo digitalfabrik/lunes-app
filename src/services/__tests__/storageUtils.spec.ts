@@ -90,7 +90,7 @@ describe('storageUtils', () => {
       await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        jobId: mockJobs()[0].id.id,
+        job_id: mockJobs()[0].id.id,
         action: 'add',
       })
     })
@@ -100,7 +100,7 @@ describe('storageUtils', () => {
       await removeSelectedJob(storageCache, mockJobs()[0].id)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        jobId: mockJobs()[0].id.id,
+        job_id: mockJobs()[0].id.id,
         action: 'remove',
       })
     })

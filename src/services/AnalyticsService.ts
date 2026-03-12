@@ -9,14 +9,14 @@ export type TrackingConsent = {
 }
 
 export type TrackingEvent = {
-  installationId: string
+  installation_id: string
   timestamp: string
   payload: TrackingPayload
 }
 
-type TrackingPayload = {
+export type TrackingPayload = {
   type: 'job_selected'
-  jobId: number
+  job_id: number
   action: 'add' | 'remove'
 }
 
@@ -35,7 +35,7 @@ class AnalyticsService {
     }
 
     const event = {
-      installationId: await DeviceInfo.getInstanceId(),
+      installation_id: await DeviceInfo.getInstanceId(),
       timestamp: new Date().toISOString(),
       payload: data,
     }
