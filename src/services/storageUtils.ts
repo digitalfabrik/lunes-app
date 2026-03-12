@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { unlink } from 'react-native-fs'
 
-import { ExerciseKey, Favorite, FIRST_EXERCISE_FOR_REPETITION } from '../constants/data'
+import { ExerciseKey, Favorite } from '../constants/data'
 import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -11,6 +11,7 @@ import VocabularyItem, {
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
+import { trackEvent } from './AnalyticsService'
 import { RepetitionService } from './RepetitionService'
 import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys, StorageValue } from './Storage'
 import { CMS_URLS } from './axios'
@@ -47,6 +48,7 @@ export const pushSelectedJob = async (
     jobs.push(id)
   }
   await storageCache.setItem('selectedJobs', jobs)
+  trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'add' })
 
   if (!migrated) {
     await addJobToNotMigrated(storageCache, id)
@@ -60,6 +62,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, { id }: Stan
   }
   const updatedJobs = jobs.filter(item => item !== id)
   await storageCache.setItem('selectedJobs', updatedJobs)
+  trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'remove' })
 
   await removeJobFromNotMigrated(storageCache, id)
 

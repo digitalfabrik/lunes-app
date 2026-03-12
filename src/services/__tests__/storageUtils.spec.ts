@@ -5,6 +5,7 @@ import VocabularyItem, { UserVocabularyItem, VocabularyItemTypes } from '../../m
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockJobs } from '../../testing/mockJob'
+import { trackEvent } from '../AnalyticsService'
 import { RepetitionService, WordNodeCard } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
@@ -25,6 +26,10 @@ import {
 
 jest.mock('react-native-fs', () => ({
   unlink: jest.fn(),
+}))
+
+jest.mock('../AnalyticsService', () => ({
+  trackEvent: jest.fn(),
 }))
 
 describe('storageUtils', () => {
@@ -79,6 +84,25 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await pushSelectedJob(storageCache, mockJobs()[1].id, mockJobs()[1].migrated)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
+    })
+
+    it('should emit a job_selected add event when pushing a job', async () => {
+      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
+        type: 'job_selected',
+        job_id: mockJobs()[0].id.id,
+        action: 'add',
+      })
+    })
+
+    it('should emit a job_selected remove event when removing a job', async () => {
+      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
+      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
+        type: 'job_selected',
+        job_id: mockJobs()[0].id.id,
+        action: 'remove',
+      })
     })
 
     it('should push selectedProfession to notMigratedSelectedJobs', async () => {
