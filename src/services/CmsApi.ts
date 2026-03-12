@@ -10,8 +10,9 @@ import {
   StandardVocabularyItem,
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
-import { TrackingEvent } from './AnalyticsService'
+import { TrackingEvent, TrackingPayload } from './AnalyticsService'
 import { getFromEndpoint, postToEndpoint } from './axios'
+import { log, reportError } from './sentry'
 
 const Endpoints = {
   feedback: 'feedback',
@@ -185,6 +186,25 @@ export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocab
   return response.map(transformWordResponse)
 }
 
+type TrackingEventPostData = Omit<TrackingEvent, 'payload'> & {
+  event_type: TrackingPayload['type']
+  payload: Omit<TrackingPayload, 'type'>
+}
+// eslint-disable-next-line camelcase
+const transformTrackingEvent = ({ installation_id, timestamp, payload }: TrackingEvent): TrackingEventPostData => {
+  const { type, ...rest } = payload
+  return {
+    // eslint-disable-next-line camelcase
+    installation_id,
+    event_type: type,
+    timestamp,
+    payload: rest,
+  }
+}
+
 export const postAnalyticEvent = async (event: TrackingEvent): Promise<void> => {
-  await postToEndpoint(Endpoints.analytic_event, event)
+  await postToEndpoint(Endpoints.analytic_event, transformTrackingEvent(event)).catch(e => {
+    reportError(e)
+    log(JSON.stringify(e.response?.data), 'warning')
+  })
 }

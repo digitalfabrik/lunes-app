@@ -11,7 +11,7 @@ jest.mock('react-native-device-info', () => ({
   getInstanceId: jest.fn().mockResolvedValue('test-instance-id'),
 }))
 
-const payload = { type: 'job_selected', jobId: 1, action: 'add' } as const
+const payload = { type: 'job_selected', job_id: 1, action: 'add' } as const
 
 describe('AnalyticsService', () => {
   let storageCache: StorageCache
@@ -36,7 +36,7 @@ describe('AnalyticsService', () => {
 
     expect(postAnalyticEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        installationId: 'test-instance-id',
+        installation_id: 'test-instance-id',
         payload,
       }),
     )
