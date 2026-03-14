@@ -57,7 +57,7 @@
       "suggestAlternative": "Anderes Wort vorschlagen"
     },
     "wordChoice": {
-      "title": "Level 1",
+      "title": "Übung",
       "description": "Das richtige Wort auswählen"
     },
     "lockedExerciseModal": {
@@ -118,7 +118,7 @@
     "progressLost": {
       "notShown": "Dein Fortschritt wird nicht mehr angezeigt?",
       "moreInfo": "Mehr Infos hier",
-      "explanation": "Es kann sein, dass einige deiner Fortschritte nicht mehr angezeigt werden. Das tut uns leid, aber wir mussten ein paar Dinge in Lunes ändern, um die App noch besser zu machen.  Bei Fragen oder Wünschen schreib uns gerne.",
+      "explanation": "Es kann sein, dass einige deiner Fortschritte nicht mehr angezeigt werden. Das tut uns leid, aber wir mussten ein paar Dinge in Lunes ändern, um die App noch besser zu machen. Bei Fragen oder Wünschen schreib uns gerne.",
       "contactUs": "Kontaktiere uns"
     }
   },

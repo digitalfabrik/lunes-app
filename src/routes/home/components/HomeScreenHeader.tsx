@@ -17,9 +17,8 @@ const HeaderStyle = styled.View`
 
 const SmileIconStyle = styled.Pressable`
   position: absolute;
-  left: 50%;
-  margin-left: -${hp('3%')}px;
-  top: 50%;
+  align-self: center;
+  bottom: -${props => props.theme.spacings.xxl};
 `
 
 const HeaderButtonsContainer = styled.View`
@@ -44,7 +43,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): ReactElement =
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
-        <LunesIcon width={hp('8%')} height={hp('8%')} />
+        <LunesIcon width={hp('12%')} height={hp('12%')} />
       </SmileIconStyle>
       <HeaderButtonsContainer>
         <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>

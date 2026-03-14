@@ -7,13 +7,18 @@ import { EXERCISE_FEEDBACK } from '../constants/data'
 import { getLabels } from '../services/helpers'
 import { HintSecondary } from './text/Hint'
 
-const BadgeContainer = styled.View`
-  display: flex;
+const BadgeContainer = styled.View<{ feedback: EXERCISE_FEEDBACK }>`
   flex-flow: row nowrap;
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};
-  background-color: ${props => props.theme.colors.backgroundLightGrey};
+  background-color: ${({ theme, feedback }) =>
+    feedback === EXERCISE_FEEDBACK.POSITIVE ? theme.colors.correct : theme.colors.incorrect};
   width: 100%;
+  border-top-left-radius: ${props => props.theme.spacings.xs};
+  border-top-right-radius: ${props => props.theme.spacings.xs};
+  z-index: 1;
+  bottom: -${props => props.theme.spacingsPlain.xs}px;
 `
+
 const BadgeText = styled(HintSecondary)`
   font-style: italic;
   margin-left: ${props => props.theme.spacings.xs};
@@ -33,7 +38,7 @@ const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null =>
   const { positive, negative } = { ...getLabels().exercises.feedback }
   if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
-      <BadgeContainer testID='positive-badge'>
+      <BadgeContainer feedback={feedback} testID='positive-badge'>
         <BadgeIcon>
           <ThumbsUpIcon height='100%' />
         </BadgeIcon>
@@ -41,10 +46,9 @@ const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null =>
       </BadgeContainer>
     )
   }
-
   if (feedback === EXERCISE_FEEDBACK.NEGATIVE) {
     return (
-      <BadgeContainer testID='negative-badge'>
+      <BadgeContainer feedback={feedback} testID='negative-badge'>
         <BadgeIcon>
           <ThumbsDownIcon height='100%' />
         </BadgeIcon>
