@@ -25,7 +25,7 @@ const Container = styled.View`
 `
 
 const BadgeWrapper = styled.View`
-  height: ${props => props.theme.spacingsPlain.sm};
+  height: ${props => props.theme.spacings.sm};
 `
 
 const ListItemResizer = styled.View`
