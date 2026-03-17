@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
@@ -43,6 +43,7 @@ jest.mock(
       visible ? <View>{children}</View> : null,
 )
 
+jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn().mockResolvedValue(undefined),
