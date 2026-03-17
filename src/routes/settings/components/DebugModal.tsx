@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
@@ -57,7 +57,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   }
 
   const switchCMS = async (): Promise<void> => {
-    let updatedCMS: CMS
+    let updatedCMS: CMS | null = null
     switch (baseURL) {
       case productionCMS: {
         updatedCMS = localhostCMS
