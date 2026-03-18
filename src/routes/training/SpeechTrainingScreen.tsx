@@ -1,17 +1,21 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useReducer } from 'react'
+import { Platform } from 'react-native'
+import { PERMISSIONS } from 'react-native-permissions'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, SadSmileyIcon, ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
+import NotAuthorisedView from '../../components/NotAuthorisedView'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS } from '../../constants/data'
+import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useStorage from '../../hooks/useStorage'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
@@ -129,6 +133,9 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
+  const { permissionGranted } = useGrantPermissions(
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO,
+  )
 
   const labels = getLabels().exercises.training.speech
   const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
@@ -219,16 +226,23 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           />
         }
       >
-        <Centered>
-          <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
-          <RecordingButton onPressIn={handlePressIn} onPressOut={handlePressOut} isRecording={isRecording} />
-          <StatusText>{statusText}</StatusText>
-          {isDevModeEnabled && (
-            <StatusText>
-              {currentWord.article.value} {currentWord.word}
-            </StatusText>
-          )}
-        </Centered>
+        {permissionGranted ? (
+          <Centered>
+            <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
+            <RecordingButton onPressIn={handlePressIn} onPressOut={handlePressOut} isRecording={isRecording} />
+            <StatusText>{statusText}</StatusText>
+            {isDevModeEnabled && (
+              <StatusText>
+                {currentWord.article.value} {currentWord.word}
+              </StatusText>
+            )}
+          </Centered>
+        ) : (
+          <NotAuthorisedView
+            description={getLabels().general.audio.noAuthorization.description}
+            setVisible={() => navigation.goBack()}
+          />
+        )}
       </TrainingExerciseContainer>
 
       <BottomSheet visible={state.answerState !== null}>
