@@ -1,4 +1,4 @@
-import AnalyticsService from '../AnalyticsService'
+import { trackEventAsync } from '../AnalyticsService'
 import { postAnalyticEvent } from '../CmsApi'
 import { StorageCache } from '../Storage'
 
@@ -21,18 +21,14 @@ describe('AnalyticsService', () => {
   })
 
   it('should not send a tracking event if consent has not been given', async () => {
-    const service = new AnalyticsService(storageCache)
-
-    await service.trackEventAsync(payload)
+    await trackEventAsync(storageCache, payload)
 
     expect(postAnalyticEvent).not.toHaveBeenCalled()
   })
 
   it('should send a tracking event if consent has been given', async () => {
     await storageCache.setItem('trackingConsent', { consentDate: '2024-01-01' })
-    const service = new AnalyticsService(storageCache)
-
-    await service.trackEventAsync(payload)
+    await trackEventAsync(storageCache, payload)
 
     expect(postAnalyticEvent).toHaveBeenCalledWith(
       expect.objectContaining({

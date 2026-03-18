@@ -24,7 +24,7 @@ const Endpoints = {
   word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
-  analytic_event: 'analytics/events',
+  analyticsEvent: 'analytics/events',
 }
 
 type PostFeedback = {
@@ -203,7 +203,7 @@ const transformTrackingEvent = ({ installation_id, timestamp, payload }: Trackin
 }
 
 export const postAnalyticEvent = async (event: TrackingEvent): Promise<void> => {
-  await postToEndpoint(Endpoints.analytic_event, transformTrackingEvent(event)).catch(e => {
+  await postToEndpoint(Endpoints.analyticsEvent, transformTrackingEvent(event)).catch(e => {
     reportError(e)
     log(JSON.stringify(e.response?.data), 'warning')
   })

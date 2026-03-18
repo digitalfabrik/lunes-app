@@ -20,30 +20,21 @@ export type TrackingPayload = {
   action: 'add' | 'remove'
 }
 
-class AnalyticsService {
-  constructor(private readonly storageCache: StorageCache) {}
+export const isConsentGiven = (storageCache: StorageCache): boolean => storageCache.getItem('trackingConsent') !== null
 
-  public isConsentGiven = (): boolean => this.storageCache.getItem('trackingConsent') !== null
-
-  public trackEvent = (data: TrackingPayload): void => {
-    this.trackEventAsync(data).catch(reportError)
+export const trackEventAsync = async (storageCache: StorageCache, data: TrackingPayload): Promise<void> => {
+  if (!isConsentGiven(storageCache)) {
+    return
   }
 
-  public trackEventAsync = async (data: TrackingPayload): Promise<void> => {
-    if (!this.isConsentGiven()) {
-      return
-    }
-
-    const event = {
-      installation_id: await DeviceInfo.getInstanceId(),
-      timestamp: new Date().toISOString(),
-      payload: data,
-    }
-    await postAnalyticEvent(event)
+  const event = {
+    installation_id: await DeviceInfo.getInstanceId(),
+    timestamp: new Date().toISOString(),
+    payload: data,
   }
+  await postAnalyticEvent(event)
 }
 
-export const trackEvent = (storageCache: StorageCache, payload: TrackingPayload): void =>
-  new AnalyticsService(storageCache).trackEvent(payload)
-
-export default AnalyticsService
+export const trackEvent = (storageCache: StorageCache, payload: TrackingPayload): void => {
+  trackEventAsync(storageCache, payload).catch(reportError)
+}
