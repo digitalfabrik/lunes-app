@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
-import { ScrollView } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { Image, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -26,6 +26,7 @@ import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
 import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
+import { reportError } from '../../../services/sentry'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
 
@@ -116,6 +117,16 @@ const WordChoiceExercise = ({
     ...vocabularyItem.alternatives,
   ]
   const needsToBeRepeated = numberOfTries < NUMBER_OF_MAX_RETRIES && result === SIMPLE_RESULTS.incorrect
+
+  useEffect(() => {
+    const nextWord = state.currentWord + 1
+    if (nextWord < state.results.length) {
+      const images = state.results[nextWord].vocabularyItem.images
+      if (images.length > 0) {
+        Image.prefetch(images[0]).catch(reportError)
+      }
+    }
+  }, [state.currentWord, state.results])
 
   const updateState = (newData: Partial<Omit<State, 'answers'>>) => {
     const newState = { ...state, ...newData }
