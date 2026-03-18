@@ -16,7 +16,10 @@ export type Storage = {
   // 0 stands for the versions of the storage where no version number was stored yet.
   version: number
   wordNodeCards: WordNodeCard[]
+  // Whether basic tracking is enabled, like reporting errors.
+  // Will be removed in favor of `trackingConsent` in the future.
   isTrackingEnabled: boolean
+  // Whether consent to detailed tracking has been given.
   trackingConsent: TrackingConsent | null
   // Null means the selected jobs were never set before, which means that the intro should be shown
   selectedJobs: number[] | null
