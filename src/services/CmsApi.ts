@@ -190,6 +190,7 @@ type TrackingEventPostData = Omit<TrackingEvent, 'payload'> & {
   event_type: TrackingPayload['type']
   payload: Omit<TrackingPayload, 'type'>
 }
+
 // eslint-disable-next-line camelcase
 const transformTrackingEvent = ({ installation_id, timestamp, payload }: TrackingEvent): TrackingEventPostData => {
   const { type, ...rest } = payload
