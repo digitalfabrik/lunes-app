@@ -6,11 +6,6 @@ jest.mock('../CmsApi', () => ({
   postAnalyticEvent: jest.fn(),
 }))
 
-jest.mock('react-native-device-info', () => ({
-  ...jest.requireActual('react-native-device-info/jest/react-native-device-info-mock'),
-  getInstanceId: jest.fn().mockResolvedValue('test-instance-id'),
-}))
-
 const payload = { type: 'job_selected', job_id: 1, action: 'add' } as const
 
 describe('AnalyticsService', () => {
@@ -32,7 +27,7 @@ describe('AnalyticsService', () => {
 
     expect(postAnalyticEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        installation_id: 'test-instance-id',
+        installation_id: expect.any(String),
         payload,
       }),
     )

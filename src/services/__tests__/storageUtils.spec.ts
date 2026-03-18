@@ -15,6 +15,7 @@ import {
   deleteUserVocabularyItem,
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
+  getInstallationId,
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
@@ -458,6 +459,21 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([42])
       await removeJobFromNotMigrated(storageCache, 42)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toHaveLength(0)
+    })
+  })
+
+  describe('installationId', () => {
+    it('should create an installation id', async () => {
+      expect(storageCache.getItem('installationId')).toBeNull()
+      await getInstallationId(storageCache)
+      expect(storageCache.getItem('installationId')).not.toBeNull()
+    })
+
+    it('should not create an installation id if it already exists', async () => {
+      const installationId = 'random-uuid'
+      await storageCache.setItem('installationId', installationId)
+      await expect(getInstallationId(storageCache)).resolves.toEqual(installationId)
+      expect(storageCache.getItem('installationId')).toBe(installationId)
     })
   })
 })

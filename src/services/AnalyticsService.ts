@@ -1,8 +1,7 @@
-import DeviceInfo from 'react-native-device-info'
-
 import { postAnalyticEvent } from './CmsApi'
 import { StorageCache } from './Storage'
 import { reportError } from './sentry'
+import { getInstallationId } from './storageUtils'
 
 export type TrackingConsent = {
   consentDate: string
@@ -26,9 +25,8 @@ export const trackEventAsync = async (storageCache: StorageCache, data: Tracking
   if (!isConsentGiven(storageCache)) {
     return
   }
-
   const event = {
-    installation_id: await DeviceInfo.getInstanceId(),
+    installation_id: await getInstallationId(storageCache),
     timestamp: new Date().toISOString(),
     payload: data,
   }

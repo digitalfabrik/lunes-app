@@ -358,3 +358,14 @@ export const deleteUserVocabularyItem = async (
   await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem)
   await storageCache.setItem('userVocabulary', userVocabulary)
 }
+
+export const getInstallationId = async (storageCache: StorageCache): Promise<string> => {
+  const id = storageCache.getItem('installationId')
+  if (id !== null) {
+    return id
+  }
+
+  const newId = crypto.randomUUID()
+  await storageCache.setItem('installationId', newId)
+  return newId
+}
