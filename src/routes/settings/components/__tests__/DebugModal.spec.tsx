@@ -1,9 +1,10 @@
 import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
+import { StorageCache } from '../../../../services/Storage'
 import { localhostCMS, productionCMS, testCMS } from '../../../../services/axios'
 import { getLabels } from '../../../../services/helpers'
-import render from '../../../../testing/render'
+import render, { renderWithStorageCache } from '../../../../testing/render'
 import DebugModal from '../DebugModal'
 
 describe('DebugModal', () => {
@@ -38,6 +39,21 @@ describe('DebugModal', () => {
       fireEvent.press(switchCMSButton)
     })
     await waitFor(() => expect(getByText(testCMS)).toBeDefined())
+  })
+
+  it('should switch cms url also if the current setting is unknown', async () => {
+    const storageCache = StorageCache.createDummy()
+    // @ts-expect-error the url might have an invalid value due to version changes
+    await storageCache.setItem('cmsUrlOverwrite', 'InvalidUrl')
+    const { getByText } = renderWithStorageCache(
+      storageCache,
+      <DebugModal isCodeRequired={false} visible onClose={jest.fn()} />,
+    )
+    await waitFor(() => expect(getByText('InvalidUrl')).toBeVisible())
+    const switchCMSButton = getByText(getLabels().settings.debugModal.changeCMS)
+    expect(switchCMSButton).toBeVisible()
+    fireEvent.press(switchCMSButton)
+    await waitFor(() => expect(getByText(testCMS)).toBeVisible())
   })
 
   it('should show and toggle devmode status', async () => {
