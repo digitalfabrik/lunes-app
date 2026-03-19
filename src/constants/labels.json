@@ -88,7 +88,13 @@
         "listening": "Ich höre zu ...",
         "correct": "Super, das war richtig!",
         "incorrect": "Das war leider nicht richtig.",
-        "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast."
+        "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
+        "hints": {
+          "holdButton": "Halte die Taste gedrückt, während du sprichst.",
+          "speakClearly": "Sprich deutlich und nahe ans Mikrofon.",
+          "quietEnvironment": "Versuche es in einer ruhigeren Umgebung.",
+          "googleServices": "Stell sicher, dass die Google-Sprachdienste auf deinem Gerät verfügbar sind."
+        }
       },
       "sentence": {
         "title": "Satzbausteine",

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 import { record, stop, type SpeechToTextParams } from 'react-native-speech-to-text'
 
-// How long to wait after the user releases the button before ending the recording.
-// This prevents cutting off the last syllable when the user releases slightly early.
-const STOP_DELAY_MS = 500
+// Brief delay after button release before stopping recognition, so trailing syllables
+// are not cut off when the user releases slightly early.
+const TRAILING_SYLLABLE_GRACE_PERIOD_MS = 500
 
 type VoiceRecognition = {
   startRecording: (params: SpeechToTextParams) => Promise<string[]>
@@ -13,12 +13,10 @@ type VoiceRecognition = {
 
 const useVoiceRecognition = (): VoiceRecognition => {
   const [isRecording, setIsRecording] = useState<boolean>(false)
-  // Set to true by startRecording to cancel any in-flight delayed stop,
-  // preventing a quick re-press from being cut off by the previous stop timer.
-  const stopCancelledRef = useRef<boolean>(false)
+  const newRecordingStartedRef = useRef<boolean>(false)
 
   const startRecording = async (params: SpeechToTextParams): Promise<string[]> => {
-    stopCancelledRef.current = true
+    newRecordingStartedRef.current = true
     setIsRecording(true)
     try {
       return await record(params)
@@ -28,12 +26,12 @@ const useVoiceRecognition = (): VoiceRecognition => {
   }
 
   const stopRecording = async (): Promise<void> => {
-    stopCancelledRef.current = false
+    newRecordingStartedRef.current = false
     await new Promise<void>(resolve => {
-      setTimeout(resolve, STOP_DELAY_MS)
+      setTimeout(resolve, TRAILING_SYLLABLE_GRACE_PERIOD_MS)
     })
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- ref.current can be mutated by startRecording during the async delay
-    if (!stopCancelledRef.current) {
+    if (!newRecordingStartedRef.current) {
       await stop()
     }
   }

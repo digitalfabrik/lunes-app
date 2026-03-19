@@ -62,6 +62,11 @@ const AnswerContainer = styled.View`
   width: 100%;
 `
 
+const HintText = styled(ContentText)`
+  text-align: center;
+  color: ${props => props.theme.colors.placeholder};
+`
+
 type AnswerState = 'correct' | 'similar' | 'incorrect' | 'error' | null
 
 type State = {
@@ -150,29 +155,31 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
 
-  const handlePressIn = (): void => {
-    startRecording({ hints: [currentWord.word, `${currentWord.article.value} ${currentWord.word}`] })
-      .then(results => {
-        const result = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
-        dispatch({ type: 'speechResult', answerState: result })
+  const handlePressIn = async (): Promise<void> => {
+    try {
+      const results = await startRecording({
+        hints: [currentWord.word, `${currentWord.article.value} ${currentWord.word}`],
       })
-      .catch(() => dispatch({ type: 'speechError' }))
+      const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
+      dispatch({ type: 'speechResult', answerState })
+    } catch {
+      dispatch({ type: 'speechError' })
+    }
   }
 
-  const handlePressOut = (): void => {
-    stopRecording().catch(() => undefined)
+  const handlePressOut = async (): Promise<void> => {
+    try {
+      await stopRecording()
+    } catch {
+      // Stopping recognition is best-effort; nothing to recover from.
+    }
   }
 
   const statusText = isRecording ? labels.listening : labels.prompt
-
-  // incorrect, similar, and error allow retry; only correct advances to the next word
   const canRetry = state.answerState === 'incorrect' || state.answerState === 'similar' || state.answerState === 'error'
 
-  const renderBottomSheetContent = (): ReactElement => {
-    // answerState is always non-null here because BottomSheet is only visible when non-null.
-    // The View fallback is never rendered; it exists only to satisfy the type system.
+  const renderAnswerContent = (): ReactElement => {
     if (state.answerState === null) {
-      // BottomSheet is not visible in this state; this element is never rendered.
       return <BottomSheetColumn />
     }
 
@@ -181,6 +188,10 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         <BottomSheetColumn>
           <SadSmileyIcon />
           <HeadingText>{labels.notUnderstood}</HeadingText>
+          <HintText>{labels.hints.holdButton}</HintText>
+          <HintText>{labels.hints.speakClearly}</HintText>
+          <HintText>{labels.hints.quietEnvironment}</HintText>
+          {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
         </BottomSheetColumn>
       )
     }
@@ -246,7 +257,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       </TrainingExerciseContainer>
 
       <BottomSheet visible={state.answerState !== null}>
-        {renderBottomSheetContent()}
+        {renderAnswerContent()}
         <BottomSheetColumn>
           {canRetry ? (
             <Button

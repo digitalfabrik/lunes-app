@@ -26,6 +26,7 @@ module.exports = {
     'babel.config.js',
     'metro.config.js',
     'metro.config.ci.js',
+    '**/react-native.config.js',
   ],
   rules: {
     // Overly strict rules (for now)
