@@ -5,8 +5,9 @@ import DeviceInfo from 'react-native-device-info'
 
 import { getStorageItem } from './Storage'
 
-// Android emulator treats this special ip as the localhost of the host, iOS simulator uses localhost
-export const localhostCMS = `http://${Platform.OS === 'android' ? '10.0.2.2' : 'localhost'}:8080/api/v2`
+export const localhostCMSAndroid = 'http://10.0.2.2/api/v2'
+export const localhostCMSIOS = 'http://localhost/api/v2'
+export const localhostCMS = Platform.OS === 'android' ? localhostCMSAndroid : localhostCMSIOS
 export const testCMS = 'https://lunes-test.tuerantuer.org/api/v2'
 export const productionCMS = 'https://lunes.tuerantuer.org/api/v2'
 export const CMS_URLS = [localhostCMS, testCMS, productionCMS] as const

@@ -11,7 +11,15 @@ import { loadAllWords } from '../../../hooks/useLoadAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../../../hooks/useStorage'
 import { RepetitionService, sections } from '../../../services/RepetitionService'
-import { CMS, getBaseURL, localhostCMS, productionCMS, testCMS } from '../../../services/axios'
+import {
+  CMS,
+  getBaseURL,
+  localhostCMS,
+  localhostCMSAndroid,
+  localhostCMSIOS,
+  productionCMS,
+  testCMS,
+} from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 
@@ -63,7 +71,8 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
         updatedCMS = localhostCMS
         break
       }
-      case localhostCMS: {
+      case localhostCMSAndroid:
+      case localhostCMSIOS: {
         updatedCMS = testCMS
         break
       }
