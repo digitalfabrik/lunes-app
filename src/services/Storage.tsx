@@ -4,6 +4,7 @@ import React, { createContext, ReactElement } from 'react'
 import { Favorite, Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { UserVocabularyItem } from '../models/VocabularyItem'
+import { TrackingConsent } from './AnalyticsService'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
@@ -15,7 +16,11 @@ export type Storage = {
   // 0 stands for the versions of the storage where no version number was stored yet.
   version: number
   wordNodeCards: WordNodeCard[]
+  // Whether basic tracking is enabled, like reporting errors.
+  // Will be removed in favor of `trackingConsent` in the future.
   isTrackingEnabled: boolean
+  // Whether consent to detailed tracking has been given.
+  trackingConsent: TrackingConsent | null
   // Null means the selected jobs were never set before, which means that the intro should be shown
   selectedJobs: number[] | null
   isDevModeEnabled: boolean
@@ -29,6 +34,8 @@ export type Storage = {
   favorites: Favorite[]
   // Jobs that were started before the CMS migration and may have lost progress
   notMigratedSelectedJobs: number[]
+  // A unique identifier for the installation
+  installationId: string | null
 }
 
 /**
@@ -40,6 +47,7 @@ export const newDefaultStorage = (): Storage => ({
   version: STORAGE_VERSION,
   wordNodeCards: [],
   isTrackingEnabled: true,
+  trackingConsent: null,
   selectedJobs: null,
   isDevModeEnabled: false,
   progress: {},
@@ -49,6 +57,7 @@ export const newDefaultStorage = (): Storage => ({
   nextUserVocabularyId: 1,
   favorites: [],
   notMigratedSelectedJobs: [],
+  installationId: null,
 })
 const defaultStorage = newDefaultStorage()
 
@@ -58,6 +67,7 @@ export const storageKeys: Record<StorageKey, string> = {
   version: 'version',
   wordNodeCards: 'wordNodeCards',
   isTrackingEnabled: 'sentryTracking',
+  trackingConsent: 'trackingConsent',
   selectedJobs: 'selectedProfessions',
   isDevModeEnabled: 'devmode',
   progress: 'progress',
@@ -67,6 +77,7 @@ export const storageKeys: Record<StorageKey, string> = {
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
   notMigratedSelectedJobs: 'notMigratedSelectedJobs',
+  installationId: 'installationId',
 }
 
 export type StorageValue = (typeof storageKeys)[keyof typeof storageKeys]
@@ -155,6 +166,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     version: getStorageItem('version'),
     wordNodeCards: getStorageItem('wordNodeCards'),
     isTrackingEnabled: getStorageItem('isTrackingEnabled'),
+    trackingConsent: getStorageItem('trackingConsent'),
     selectedJobs: getStorageItem('selectedJobs'),
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
     progress: getStorageItem('progress'),
@@ -164,6 +176,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
     notMigratedSelectedJobs: getStorageItem('notMigratedSelectedJobs'),
+    installationId: getStorageItem('installationId'),
   })
   return StorageCache.create(storage)
 }
