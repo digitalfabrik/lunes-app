@@ -365,7 +365,8 @@ export const getInstallationId = async (storageCache: StorageCache): Promise<str
     return id
   }
 
-  const newId = crypto.randomUUID()
+  const base = 16
+  const newId = Array.from({ length: 32 }, () => Math.floor(Math.random() * base).toString(base)).join('')
   await storageCache.setItem('installationId', newId)
   return newId
 }
