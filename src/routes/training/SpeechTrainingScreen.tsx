@@ -5,7 +5,7 @@ import { Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import styled from 'styled-components/native'
 
-import { ArrowRightIcon, SadSmileyIcon, ThumbsDownIcon, ThumbsUpIcon } from '../../../assets/images'
+import { ArrowRightIcon, SadSmileyIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
@@ -14,7 +14,14 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS } from '../../constants/data'
+import WordResultIndicator from '../../components/WordResultIndicator'
+import {
+  AnswerState,
+  BUTTONS_THEME,
+  MAX_TRAINING_REPETITIONS,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../constants/data'
 import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useStorage from '../../hooks/useStorage'
@@ -28,12 +35,17 @@ import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import { evaluateSpeechMatch } from './services/SpeechMatchingService'
 
+const SPEECH_PERMISSIONS =
+  Platform.OS === 'ios'
+    ? [PERMISSIONS.IOS.MICROPHONE, PERMISSIONS.IOS.SPEECH_RECOGNITION]
+    : [PERMISSIONS.ANDROID.RECORD_AUDIO]
+
 const WordImage = styled.Image`
   width: 100%;
   height: 200px;
 `
 
-const Centered = styled.View`
+const ExerciseContent = styled.View`
   align-items: center;
   gap: ${props => props.theme.spacings.sm};
 `
@@ -55,32 +67,26 @@ const BottomSheetRow = styled.View`
   gap: ${props => props.theme.spacings.sm};
 `
 
-const AnswerContainer = styled.View`
-  background-color: ${props => props.theme.colors.backgroundTransparent};
-  padding: ${props => props.theme.spacings.xs};
-  border-radius: ${props => props.theme.spacings.xxs};
-  width: 100%;
-`
 
 const HintText = styled(ContentText)`
   text-align: center;
   color: ${props => props.theme.colors.placeholder};
 `
 
-type AnswerState = 'correct' | 'similar' | 'incorrect' | 'error' | null
-
 type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
-  hasWrongAnswerForCurrentWord: boolean
+  hasIncorrectAttempt: boolean
   answerState: AnswerState
   correctAnswersCount: number
   completed: boolean
+  isRecognitionUnavailable: boolean
 }
 
 type Action =
-  | { type: 'speechResult'; answerState: 'correct' | 'similar' | 'incorrect' }
+  | { type: 'speechResult'; answerState: SimpleResult }
   | { type: 'speechError' }
+  | { type: 'recognitionUnavailable' }
   | { type: 'retry' }
   | { type: 'nextWord'; isSkipping: boolean }
 
@@ -89,38 +95,38 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     vocabularyItems: selectedItems,
     currentVocabularyItemIndex: 0,
-    hasWrongAnswerForCurrentWord: false,
+    hasIncorrectAttempt: false,
     answerState: null,
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
+    isRecognitionUnavailable: false,
   }
 }
 
 const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'speechResult': {
-      const hasWrongAnswerForCurrentWord =
-        state.hasWrongAnswerForCurrentWord || action.answerState !== SIMPLE_RESULTS.correct
-      return { ...state, answerState: action.answerState, hasWrongAnswerForCurrentWord }
+      const hasIncorrectAttempt = state.hasIncorrectAttempt || action.answerState !== SIMPLE_RESULTS.correct
+      return { ...state, answerState: action.answerState, hasIncorrectAttempt }
     }
     case 'speechError':
       return { ...state, answerState: 'error' }
+    case 'recognitionUnavailable':
+      return { ...state, isRecognitionUnavailable: true }
     case 'retry':
       return { ...state, answerState: null }
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
       const correctAnswersCount =
-        !state.hasWrongAnswerForCurrentWord && !action.isSkipping
-          ? state.correctAnswersCount + 1
-          : state.correctAnswersCount
+        !state.hasIncorrectAttempt && !action.isSkipping ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentVocabularyItemIndex: nextIndex,
         completed,
         correctAnswersCount,
         answerState: null,
-        hasWrongAnswerForCurrentWord: false,
+        hasIncorrectAttempt: false,
       }
     }
     default:
@@ -138,9 +144,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
-  const { permissionGranted } = useGrantPermissions(
-    Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO,
-  )
+  const { permissionGranted } = useGrantPermissions(SPEECH_PERMISSIONS)
 
   const labels = getLabels().exercises.training.speech
   const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
@@ -162,8 +166,9 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       })
       const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
       dispatch({ type: 'speechResult', answerState })
-    } catch {
-      dispatch({ type: 'speechError' })
+    } catch (error) {
+      const errorCode = (error as { code?: string }).code
+      dispatch({ type: errorCode === 'E_RECOGNITION_UNAVAILABLE' ? 'recognitionUnavailable' : 'speechError' })
     }
   }
 
@@ -171,53 +176,38 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     try {
       await stopRecording()
     } catch {
-      // Stopping recognition is best-effort; nothing to recover from.
+      // Not much to do, really
     }
   }
 
-  const statusText = isRecording ? labels.listening : labels.prompt
-  const canRetry = state.answerState === 'incorrect' || state.answerState === 'similar' || state.answerState === 'error'
+  const statusText = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
+  const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
+  const isCorrect = state.answerState === SIMPLE_RESULTS.correct
 
-  const renderAnswerContent = (): ReactElement => {
-    if (state.answerState === null) {
-      return <BottomSheetColumn />
-    }
+  const wordContent = (
+    <BottomSheetRow>
+      {currentWord.audio !== null && <AudioPlayer audio={currentWord.audio} disabled={false} />}
+      <ContentText>
+        {currentWord.article.value} {currentWord.word}
+      </ContentText>
+    </BottomSheetRow>
+  )
 
-    if (state.answerState === 'error') {
-      return (
-        <BottomSheetColumn>
-          <SadSmileyIcon />
-          <HeadingText>{labels.notUnderstood}</HeadingText>
-          <HintText>{labels.hints.holdButton}</HintText>
-          <HintText>{labels.hints.speakClearly}</HintText>
-          <HintText>{labels.hints.quietEnvironment}</HintText>
-          {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
-        </BottomSheetColumn>
-      )
-    }
-
-    const isCorrect = state.answerState === 'correct'
-    const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
-
-    return (
-      <BottomSheetColumn>
-        <BottomSheetRow>
-          <Icon width={32} height={32} />
-          <HeadingText>{isCorrect ? labels.correct : labels.incorrect}</HeadingText>
-        </BottomSheetRow>
-        {!isCorrect && (
-          <AnswerContainer>
-            <BottomSheetRow>
-              {currentWord.audio !== null && <AudioPlayer audio={currentWord.audio} disabled={false} />}
-              <ContentText>
-                {currentWord.article.value} {currentWord.word}
-              </ContentText>
-            </BottomSheetRow>
-          </AnswerContainer>
-        )}
-      </BottomSheetColumn>
-    )
-  }
+  const resultButton = isCorrect ? (
+    <Button
+      onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
+      label={getLabels().exercises.continue}
+      buttonTheme={BUTTONS_THEME.contained}
+      iconRight={ArrowRightIcon}
+    />
+  ) : (
+    <Button
+      onPress={() => dispatch({ type: 'retry' })}
+      label={getLabels().exercises.tryAgain}
+      buttonTheme={BUTTONS_THEME.contained}
+      iconRight={ArrowRightIcon}
+    />
+  )
 
   return (
     <>
@@ -237,43 +227,58 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           />
         }
       >
-        {permissionGranted ? (
-          <Centered>
+        {permissionGranted && !state.isRecognitionUnavailable ? (
+          <ExerciseContent>
             <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
-            <RecordingButton onPressIn={handlePressIn} onPressOut={handlePressOut} isRecording={isRecording} />
+            <RecordingButton
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+              isRecording={isRecording}
+              disabled={isRecording}
+            />
             <StatusText>{statusText}</StatusText>
             {isDevModeEnabled && (
               <StatusText>
                 {currentWord.article.value} {currentWord.word}
               </StatusText>
             )}
-          </Centered>
+          </ExerciseContent>
         ) : (
           <NotAuthorisedView
-            description={getLabels().general.audio.noAuthorization.description}
+            description={
+              state.isRecognitionUnavailable
+                ? labels.notAvailable
+                : getLabels().general.audio.noAuthorization.description
+            }
             setVisible={() => navigation.goBack()}
           />
         )}
       </TrainingExerciseContainer>
 
-      <BottomSheet visible={state.answerState !== null}>
-        {renderAnswerContent()}
+      <WordResultIndicator
+        isVisible={isSimpleResult}
+        isCorrect={isCorrect}
+        label={isCorrect ? labels.correct : labels.incorrect}
+        content={wordContent}
+        button={resultButton}
+      />
+
+      <BottomSheet visible={state.answerState === 'error'}>
         <BottomSheetColumn>
-          {canRetry ? (
-            <Button
-              onPress={() => dispatch({ type: 'retry' })}
-              label={getLabels().exercises.tryAgain}
-              buttonTheme={BUTTONS_THEME.contained}
-              iconRight={ArrowRightIcon}
-            />
-          ) : (
-            <Button
-              onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
-              label={getLabels().exercises.continue}
-              buttonTheme={BUTTONS_THEME.contained}
-              iconRight={ArrowRightIcon}
-            />
-          )}
+          <SadSmileyIcon />
+          <HeadingText>{labels.notUnderstood}</HeadingText>
+          <HintText>{labels.hints.holdButton}</HintText>
+          <HintText>{labels.hints.speakClearly}</HintText>
+          <HintText>{labels.hints.quietEnvironment}</HintText>
+          {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
+        </BottomSheetColumn>
+        <BottomSheetColumn>
+          <Button
+            onPress={() => dispatch({ type: 'retry' })}
+            label={getLabels().exercises.tryAgain}
+            buttonTheme={BUTTONS_THEME.contained}
+            iconRight={ArrowRightIcon}
+          />
         </BottomSheetColumn>
       </BottomSheet>
     </>

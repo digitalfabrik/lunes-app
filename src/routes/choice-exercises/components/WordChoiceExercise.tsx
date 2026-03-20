@@ -251,6 +251,11 @@ const WordChoiceExercise = ({
       <WordResultIndicator
         isVisible={selectedAnswer !== null}
         isCorrect={result === SIMPLE_RESULTS.correct}
+        label={
+          result === SIMPLE_RESULTS.correct
+            ? getLabels().exercises.training.sentence.correct
+            : getLabels().exercises.training.sentence.incorrect
+        }
         content={
           <SolutionRow>
             <AudioPlayerContainer>

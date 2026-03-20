@@ -25,7 +25,6 @@
     "create-release-note": "bash ./release-notes/createReleaseNotes.sh"
   },
   "dependencies": {
-    "@fugood/react-native-audio-pcm-stream": "^1.1.4",
     "@notifee/react-native": "^9.1.8",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-picker/picker": "^2.9.0",

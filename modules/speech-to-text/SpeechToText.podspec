@@ -2,21 +2,21 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
-Pod::Spec.new do |s|
-  s.name         = "SpeechToText"
-  s.version      = package["version"]
-  s.summary      = package["description"]
-  s.homepage     = "https://github.com/digitalfabrik/lunes-app"
-  s.license      = "MIT"
-  s.authors      = "Tür an Tür – Digitalfabrik gGmbH"
-  s.source       = { :path => "." }
+Pod::Spec.new do |spec|
+  spec.name         = "SpeechToText"
+  spec.version      = package["version"]
+  spec.summary      = package["description"]
+  spec.homepage     = "https://github.com/digitalfabrik/lunes-app"
+  spec.license      = "MIT"
+  spec.authors      = "Tür an Tür – Digitalfabrik gGmbH"
+  spec.source       = { :path => "." }
 
-  s.platforms    = { :ios => min_ios_version_supported }
+  spec.platforms    = { :ios => min_ios_version_supported }
 
-  s.source_files = "ios/**/*.{h,m,mm,swift,cpp}"
-  s.private_header_files = "ios/**/*.h"
+  spec.source_files = "ios/**/*.{h,m,mm,swift,cpp}"
+  spec.private_header_files = "ios/**/*.h"
 
-  s.frameworks = "Speech", "AVFoundation"
+  spec.frameworks = "Speech", "AVFoundation"
 
-  install_modules_dependencies(s)
+  install_modules_dependencies(spec)
 end

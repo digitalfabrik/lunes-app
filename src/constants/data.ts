@@ -114,6 +114,7 @@ export const SIMPLE_RESULTS = {
   incorrect: 'incorrect',
 } as const
 export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]
+export type AnswerState = SimpleResult | 'error' | null
 
 type ResultType = {
   key: SimpleResult

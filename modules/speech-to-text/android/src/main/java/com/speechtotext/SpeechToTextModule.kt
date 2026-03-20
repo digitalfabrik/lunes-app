@@ -25,16 +25,13 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
         ) {
             return SpeechRecognizer.createOnDeviceSpeechRecognizer(reactContext)
         }
-        if (!SpeechRecognizer.isRecognitionAvailable(reactContext)) {
-            Log.e(TAG, "Speech recognition is not available on this device")
-        }
         return SpeechRecognizer.createSpeechRecognizer(reactContext)
     }
 
     private fun createRecognitionListener(): RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(params: Bundle?) {}
         override fun onBeginningOfSpeech() {}
-        override fun onRmsChanged(rmsdB: Float) {}
+        override fun onRmsChanged(_: Float) {}
         override fun onBufferReceived(buffer: ByteArray?) {}
         override fun onEndOfSpeech() {}
         override fun onPartialResults(partialResults: Bundle?) {}
@@ -84,7 +81,14 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
     }
 
     override fun record(hints: ReadableArray, promise: Promise?) {
-        val hintsArray = hints.toArrayList().map { it.toString() }.toTypedArray()
+        val isOnDeviceAvailable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            SpeechRecognizer.isOnDeviceSpeechRecognizerAvailable(reactContext)
+        if (!isOnDeviceAvailable && !SpeechRecognizer.isRecognitionAvailable(reactContext)) {
+            promise?.reject("E_RECOGNITION_UNAVAILABLE", "Speech recognition is not available on this device")
+            return
+        }
+
+        val hintsArray = hints.toArrayList().map { hint -> hint.toString() }.toTypedArray()
 
         Handler(reactContext.mainLooper).post {
             val speechRecognizer = initRecognizer()
@@ -94,8 +98,8 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, "de-DE")
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
-                // Wait 2 s of silence before considering speech complete, so the VAD does not
-                // cut off long compound words mid-syllable. The 800 ms minimum keeps brief
+                // Wait 2 s of silence before considering speech complete, so the Voice Activity Detection
+                // does not cut off long compound words mid-syllable. The 800 ms minimum keeps brief
                 // single-word utterances like "die Zunge" from being rejected too early.
                 putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
                 putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)

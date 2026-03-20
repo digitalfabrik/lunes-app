@@ -5,14 +5,12 @@ import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
-import java.util.HashMap
-
 class SpeechToTextPackage : BaseReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? =
         if (name == SpeechToTextModule.NAME) SpeechToTextModule(reactContext) else null
 
     override fun getReactModuleInfoProvider(): ReactModuleInfoProvider = ReactModuleInfoProvider {
-        val moduleInfos: MutableMap<String, ReactModuleInfo> = HashMap()
+        val moduleInfos = mutableMapOf<String, ReactModuleInfo>()
         moduleInfos[SpeechToTextModule.NAME] = ReactModuleInfo(
             SpeechToTextModule.NAME,
             SpeechToTextModule.NAME,

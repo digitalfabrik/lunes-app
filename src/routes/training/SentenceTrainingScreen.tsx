@@ -96,7 +96,12 @@ const ResultIndicator = ({
       />
     )
 
-  return <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={content} button={button} />
+  const resultLabel = isCorrect
+    ? getLabels().exercises.training.sentence.correct
+    : getLabels().exercises.training.sentence.incorrect
+  return (
+    <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} label={resultLabel} content={content} button={button} />
+  )
 }
 
 type SentenceTrainingProps = {

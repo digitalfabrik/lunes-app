@@ -55,13 +55,12 @@
             self->_recognitionRequest.shouldReportPartialResults = YES;
 
             // Prefer on-device recognition so the exercise works offline.
-            // Falls back to server recognition automatically if not available on this device/locale.
+            // Falls back to server recognition automatically if not available on this device.
             if (self->_recognizer.supportsOnDeviceRecognition) {
                 self->_recognitionRequest.requiresOnDeviceRecognition = YES;
             }
 
             // Vocabulary hints: steer the recognizer toward the expected word.
-            // On iOS this is called contextualStrings (equivalent of Android's EXTRA_BIASING_STRINGS).
             if (hints.count > 0) {
                 self->_recognitionRequest.contextualStrings = hints;
             }

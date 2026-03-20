@@ -85,10 +85,12 @@
         "title": "Sprechstudio",
         "description": "Die Vokabel richtig aussprechen",
         "prompt": "Sprich aus, was hier gezeigt wird!",
-        "listening": "Ich höre zu ...",
+        "holdAndSpeak": "Gedrückt halten und sprechen",
+        "releaseToFinish": "Zum Beenden loslassen",
         "correct": "Super, das war richtig!",
         "incorrect": "Das war leider nicht richtig.",
         "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
+        "notAvailable": "Spracherkennung ist auf diesem Gerät leider nicht verfügbar.",
         "hints": {
           "holdButton": "Halte die Taste gedrückt, während du sprichst.",
           "speakClearly": "Sprich deutlich und nahe ans Mikrofon.",

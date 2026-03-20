@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { record, stop, type SpeechToTextParams } from 'react-native-speech-to-text'
 
-// Brief delay after button release before stopping recognition, so trailing syllables
-// are not cut off when the user releases slightly early.
+// Brief delay after button release before stopping recognition, so trailing syllables are
+// not cut off when the user releases slightly early, like Leandra kept doing while testing.
 const TRAILING_SYLLABLE_GRACE_PERIOD_MS = 500
 
 type VoiceRecognition = {
@@ -13,10 +13,7 @@ type VoiceRecognition = {
 
 const useVoiceRecognition = (): VoiceRecognition => {
   const [isRecording, setIsRecording] = useState<boolean>(false)
-  const newRecordingStartedRef = useRef<boolean>(false)
-
   const startRecording = async (params: SpeechToTextParams): Promise<string[]> => {
-    newRecordingStartedRef.current = true
     setIsRecording(true)
     try {
       return await record(params)
@@ -26,14 +23,10 @@ const useVoiceRecognition = (): VoiceRecognition => {
   }
 
   const stopRecording = async (): Promise<void> => {
-    newRecordingStartedRef.current = false
     await new Promise<void>(resolve => {
       setTimeout(resolve, TRAILING_SYLLABLE_GRACE_PERIOD_MS)
     })
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- ref.current can be mutated by startRecording during the async delay
-    if (!newRecordingStartedRef.current) {
-      await stop()
-    }
+    await stop()
   }
 
   return { startRecording, stopRecording, isRecording }
