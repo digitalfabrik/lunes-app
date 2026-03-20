@@ -3,7 +3,6 @@ import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import theme from '../constants/theme'
-import { getLabels } from '../services/helpers'
 import BottomSheet from './BottomSheet'
 import { HeadingText } from './text/Heading'
 
@@ -29,10 +28,17 @@ const BottomSheetWordContainer = styled.View`
 type WordResultIndicatorProps = {
   isVisible: boolean
   isCorrect: boolean
+  label: string
   content: ReactElement
   button: ReactElement
 }
-const WordResultIndicator = ({ isVisible, isCorrect, content, button }: WordResultIndicatorProps): ReactElement => {
+const WordResultIndicator = ({
+  isVisible,
+  isCorrect,
+  label,
+  content,
+  button,
+}: WordResultIndicatorProps): ReactElement => {
   const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
   const color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
 
@@ -41,11 +47,7 @@ const WordResultIndicator = ({ isVisible, isCorrect, content, button }: WordResu
       <BottomSheetColumn>
         <BottomSheetRow>
           <Icon width='32' height='32' />
-          <HeadingText>
-            {isCorrect
-              ? getLabels().exercises.training.sentence.correct
-              : getLabels().exercises.training.sentence.incorrect}
-          </HeadingText>
+          <HeadingText>{label}</HeadingText>
         </BottomSheetRow>
 
         <BottomSheetColumn>

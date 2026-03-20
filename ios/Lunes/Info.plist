@@ -44,6 +44,8 @@
     <string>Zur Aufnahme von Bildern benötigt LUNES Zugriff auf deine Kamera.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Zur Aufnahme von Audios benötigt LUNES Zugriff auf dein Mikrofon.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Für das Sprechstudio benötigt LUNES Zugriff auf die Spracherkennung, um deine Aussprache zu prüfen.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Zur Auswahl von Bildern benötigt LUNES Zugriff auf deine Bildergalerie.</string>
     <key>RCTNewArchEnabled</key>
