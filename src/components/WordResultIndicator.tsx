@@ -32,7 +32,13 @@ type WordResultIndicatorProps = {
   content: ReactElement
   button: ReactElement
 }
-const WordResultIndicator = ({ isVisible, isCorrect, label, content, button }: WordResultIndicatorProps): ReactElement => {
+const WordResultIndicator = ({
+  isVisible,
+  isCorrect,
+  label,
+  content,
+  button,
+}: WordResultIndicatorProps): ReactElement => {
   const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
   const color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
 

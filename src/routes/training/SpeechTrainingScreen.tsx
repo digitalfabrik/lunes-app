@@ -97,6 +97,7 @@ type Action =
   | { type: 'recognitionUnavailable' }
   | { type: 'retry' }
   | { type: 'nextWord'; isSkipping: boolean }
+  | { type: 'cheatAll'; result: SimpleResult }
 
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const selectedItems = shuffleArray(vocabularyItems).slice(0, MAX_TRAINING_REPETITIONS)
@@ -136,6 +137,10 @@ const stateReducer = (state: State, action: Action): State => {
         answerState: null,
         hasIncorrectAttempt: false,
       }
+    }
+    case 'cheatAll': {
+      const correctAnswersCount = action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0
+      return { ...state, completed: true, correctAnswersCount }
     }
     default:
       return state
@@ -181,7 +186,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   }
 
   const handleCheat = (result: SimpleResult): void => {
-    dispatch({ type: 'speechResult', answerState: result })
+    dispatch({ type: 'cheatAll', result })
   }
 
   const handlePressOut = async (): Promise<void> => {

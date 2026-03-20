@@ -100,7 +100,13 @@ const ResultIndicator = ({
     ? getLabels().exercises.training.sentence.correct
     : getLabels().exercises.training.sentence.incorrect
   return (
-    <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} label={resultLabel} content={content} button={button} />
+    <WordResultIndicator
+      isVisible={isFinished}
+      isCorrect={isCorrect}
+      label={resultLabel}
+      content={content}
+      button={button}
+    />
   )
 }
 
