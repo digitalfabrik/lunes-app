@@ -92,6 +92,7 @@
         "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
         "notAvailable": "Spracherkennung ist auf diesem Gerät leider nicht verfügbar.",
         "hints": {
+          "title": "Tipps für die Spracherkennung:",
           "holdButton": "Halte die Taste gedrückt, während du sprichst.",
           "speakClearly": "Sprich deutlich und nahe ans Mikrofon.",
           "quietEnvironment": "Versuche es in einer ruhigeren Umgebung.",

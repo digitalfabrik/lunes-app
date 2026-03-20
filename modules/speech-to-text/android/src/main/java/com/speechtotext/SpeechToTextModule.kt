@@ -20,9 +20,7 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
     private var pendingPromise: Promise? = null
 
     private fun createRecognizer(): SpeechRecognizer {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            SpeechRecognizer.isOnDeviceSpeechRecognizerAvailable(reactContext)
-        ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return SpeechRecognizer.createOnDeviceSpeechRecognizer(reactContext)
         }
         return SpeechRecognizer.createSpeechRecognizer(reactContext)
@@ -31,7 +29,7 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
     private fun createRecognitionListener(): RecognitionListener = object : RecognitionListener {
         override fun onReadyForSpeech(params: Bundle?) {}
         override fun onBeginningOfSpeech() {}
-        override fun onRmsChanged(_: Float) {}
+        override fun onRmsChanged(rmsDb: Float) {}
         override fun onBufferReceived(buffer: ByteArray?) {}
         override fun onEndOfSpeech() {}
         override fun onPartialResults(partialResults: Bundle?) {}
@@ -81,9 +79,7 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
     }
 
     override fun record(hints: ReadableArray, promise: Promise?) {
-        val isOnDeviceAvailable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            SpeechRecognizer.isOnDeviceSpeechRecognizerAvailable(reactContext)
-        if (!isOnDeviceAvailable && !SpeechRecognizer.isRecognitionAvailable(reactContext)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !SpeechRecognizer.isRecognitionAvailable(reactContext)) {
             promise?.reject("E_RECOGNITION_UNAVAILABLE", "Speech recognition is not available on this device")
             return
         }

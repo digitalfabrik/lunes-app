@@ -43,6 +43,7 @@ target 'Lunes' do
     'Camera',
     'Microphone',
     'PhotoLibrary',
+    'SpeechRecognition',
   ])
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'

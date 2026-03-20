@@ -9,12 +9,13 @@ import { ArrowRightIcon, SadSmileyIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
 import NotAuthorisedView from '../../components/NotAuthorisedView'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
+import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import WordResultIndicator from '../../components/WordResultIndicator'
 import {
   AnswerState,
   BUTTONS_THEME,
@@ -50,9 +51,13 @@ const ExerciseContent = styled.View`
   gap: ${props => props.theme.spacings.sm};
 `
 
-const StatusText = styled(ContentText)`
+const InstructionText = styled(ContentText)`
   text-align: center;
   color: ${props => props.theme.colors.placeholder};
+`
+
+const CheatText = styled(ContentText)`
+  text-align: center;
 `
 
 const BottomSheetColumn = styled.View`
@@ -67,9 +72,12 @@ const BottomSheetRow = styled.View`
   gap: ${props => props.theme.spacings.sm};
 `
 
+const HintsContainer = styled.View`
+  align-self: stretch;
+  gap: ${props => props.theme.spacings.sm};
+`
 
 const HintText = styled(ContentText)`
-  text-align: center;
   color: ${props => props.theme.colors.placeholder};
 `
 
@@ -172,6 +180,10 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }
 
+  const handleCheat = (result: SimpleResult): void => {
+    dispatch({ type: 'speechResult', answerState: result })
+  }
+
   const handlePressOut = async (): Promise<void> => {
     try {
       await stopRecording()
@@ -180,7 +192,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }
 
-  const statusText = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
+  const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
 
@@ -219,12 +231,15 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       <TrainingExerciseContainer
         title={labels.prompt}
         footer={
-          <Button
-            onPress={() => dispatch({ type: 'nextWord', isSkipping: true })}
-            buttonTheme={BUTTONS_THEME.text}
-            label={getLabels().exercises.skip}
-            iconRight={ArrowRightIcon}
-          />
+          <>
+            <Button
+              onPress={() => dispatch({ type: 'nextWord', isSkipping: true })}
+              buttonTheme={BUTTONS_THEME.text}
+              label={getLabels().exercises.skip}
+              iconRight={ArrowRightIcon}
+            />
+            <CheatMode cheat={handleCheat} />
+          </>
         }
       >
         {permissionGranted && !state.isRecognitionUnavailable ? (
@@ -236,11 +251,11 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
               isRecording={isRecording}
               disabled={isRecording}
             />
-            <StatusText>{statusText}</StatusText>
+            <InstructionText>{instructions}</InstructionText>
             {isDevModeEnabled && (
-              <StatusText>
-                {currentWord.article.value} {currentWord.word}
-              </StatusText>
+              <CheatText>
+                Cheat: {currentWord.article.value} {currentWord.word}
+              </CheatText>
             )}
           </ExerciseContent>
         ) : (
@@ -267,10 +282,13 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         <BottomSheetColumn>
           <SadSmileyIcon />
           <HeadingText>{labels.notUnderstood}</HeadingText>
-          <HintText>{labels.hints.holdButton}</HintText>
-          <HintText>{labels.hints.speakClearly}</HintText>
-          <HintText>{labels.hints.quietEnvironment}</HintText>
-          {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
+          <HintsContainer>
+            <ContentText>{labels.hints.title}</ContentText>
+            <HintText>{labels.hints.holdButton}</HintText>
+            <HintText>{labels.hints.speakClearly}</HintText>
+            <HintText>{labels.hints.quietEnvironment}</HintText>
+            {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
+          </HintsContainer>
         </BottomSheetColumn>
         <BottomSheetColumn>
           <Button
