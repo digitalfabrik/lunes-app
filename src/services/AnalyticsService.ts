@@ -4,6 +4,7 @@ import { reportError } from './sentry'
 import { getInstallationId } from './storageUtils'
 
 export type TrackingConsent = {
+  consentGiven: boolean
   consentDate: string
 }
 
@@ -19,7 +20,10 @@ export type TrackingPayload = {
   action: 'add' | 'remove'
 }
 
-export const isConsentGiven = (storageCache: StorageCache): boolean => storageCache.getItem('trackingConsent') !== null
+export const isConsentGiven = (storageCache: StorageCache): boolean => {
+  const consent = storageCache.getItem('trackingConsent')
+  return consent !== null && consent.consentGiven
+}
 
 export const trackEventAsync = async (storageCache: StorageCache, data: TrackingPayload): Promise<void> => {
   if (!isConsentGiven(storageCache)) {

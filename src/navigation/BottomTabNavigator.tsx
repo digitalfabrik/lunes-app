@@ -15,7 +15,9 @@ import {
   RepeatIconGrey,
   RepeatIconWhite,
 } from '../../assets/images'
+import TrackingConsentModal from '../components/TrackingConsentModal'
 import useRepetitionService from '../hooks/useRepetitionService'
+import useStorage from '../hooks/useStorage'
 import { getLabels } from '../services/helpers'
 import DictionaryStackNavigator from './DictionaryStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
@@ -32,6 +34,15 @@ const BottomTabNavigator = (): ReactElement | null => {
   const iconSize = hp('3.5%')
 
   const repetitionService = useRepetitionService()
+  const [trackingConsent, setTrackingConsent] = useStorage('trackingConsent')
+
+  const handleAllow = async (): Promise<void> => {
+    await setTrackingConsent({ consentGiven: true, consentDate: new Date().toISOString() })
+  }
+
+  const handleDecline = async (): Promise<void> => {
+    await setTrackingConsent({ consentGiven: false, consentDate: new Date().toISOString() })
+  }
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
@@ -59,44 +70,47 @@ const BottomTabNavigator = (): ReactElement | null => {
     )
 
   return (
-    <Navigator.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: theme.colors.background,
-        tabBarStyle: {
-          backgroundColor: theme.colors.primary,
-          minHeight: hp('7%') + insets.bottom,
-          paddingBottom: insets.bottom,
-        },
-        tabBarItemStyle: { height: hp('7%'), padding: theme.spacingsPlain.xs },
-        tabBarLabelStyle: { fontSize: hp('1.5%'), paddingLeft: isTablet() ? hp('1%') : 0 },
-      }}
-    >
-      <Navigator.Screen
-        name='HomeTab'
-        component={HomeStackNavigator}
-        options={{ tabBarIcon: renderHomeTabIcon, title: getLabels().general.home }}
-      />
-      <Navigator.Screen
-        name='DictionaryTab'
-        component={DictionaryStackNavigator}
-        options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
-      />
-      <Navigator.Screen
-        name='RepetitionTab'
-        component={RepetitionStackNavigator}
-        options={{
-          tabBarIcon: renderRepetitionTabIcon,
-          tabBarBadge: numberOfWordsNeedingRepetition > 0 ? numberOfWordsNeedingRepetition : undefined,
-          title: getLabels().general.repetition,
+    <>
+      <TrackingConsentModal visible={trackingConsent === null} onAllow={handleAllow} onDecline={handleDecline} />
+      <Navigator.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: theme.colors.background,
+          tabBarStyle: {
+            backgroundColor: theme.colors.primary,
+            minHeight: hp('7%') + insets.bottom,
+            paddingBottom: insets.bottom,
+          },
+          tabBarItemStyle: { height: hp('7%'), padding: theme.spacingsPlain.xs },
+          tabBarLabelStyle: { fontSize: hp('1.5%'), paddingLeft: isTablet() ? hp('1%') : 0 },
         }}
-      />
-      <Navigator.Screen
-        name='VocabularyCollection'
-        component={VocabularyCollectionTabNavigator}
-        options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.collection }}
-      />
-    </Navigator.Navigator>
+      >
+        <Navigator.Screen
+          name='HomeTab'
+          component={HomeStackNavigator}
+          options={{ tabBarIcon: renderHomeTabIcon, title: getLabels().general.home }}
+        />
+        <Navigator.Screen
+          name='DictionaryTab'
+          component={DictionaryStackNavigator}
+          options={{ tabBarIcon: renderDictionaryTabIcon, title: getLabels().general.dictionary }}
+        />
+        <Navigator.Screen
+          name='RepetitionTab'
+          component={RepetitionStackNavigator}
+          options={{
+            tabBarIcon: renderRepetitionTabIcon,
+            tabBarBadge: numberOfWordsNeedingRepetition > 0 ? numberOfWordsNeedingRepetition : undefined,
+            title: getLabels().general.repetition,
+          }}
+        />
+        <Navigator.Screen
+          name='VocabularyCollection'
+          component={VocabularyCollectionTabNavigator}
+          options={{ tabBarIcon: renderUserVocabularyTabIcon, title: getLabels().userVocabulary.collection }}
+        />
+      </Navigator.Navigator>
+    </>
   )
 }
 

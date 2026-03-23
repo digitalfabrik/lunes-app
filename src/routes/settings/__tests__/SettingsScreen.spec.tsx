@@ -24,8 +24,8 @@ describe('SettingsScreen', () => {
   it('should render all elements', () => {
     const { getByText } = render(<SettingsScreen />)
     expect(getByText(getLabels().settings.settings)).toBeDefined()
-    expect(getByText(getLabels().settings.appStability)).toBeDefined()
-    expect(getByText(getLabels().settings.appStabilityExplanation)).toBeDefined()
+    expect(getByText(getLabels().settings.analyticsConsent)).toBeDefined()
+    expect(getByText(getLabels().settings.analyticsConsentExplanation)).toBeDefined()
     expect(getByText(`${getLabels().settings.version}: 2022.6.0`)).toBeDefined()
   })
 })

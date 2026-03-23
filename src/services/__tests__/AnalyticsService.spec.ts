@@ -1,4 +1,4 @@
-import { trackEventAsync } from '../AnalyticsService'
+import { isConsentGiven, trackEventAsync } from '../AnalyticsService'
 import { postAnalyticEvent } from '../CmsApi'
 import { StorageCache } from '../Storage'
 
@@ -22,7 +22,7 @@ describe('AnalyticsService', () => {
   })
 
   it('should send a tracking event if consent has been given', async () => {
-    await storageCache.setItem('trackingConsent', { consentDate: '2024-01-01' })
+    await storageCache.setItem('trackingConsent', { consentGiven: true, consentDate: '2024-01-01' })
     await trackEventAsync(storageCache, payload)
 
     expect(postAnalyticEvent).toHaveBeenCalledWith(
@@ -31,5 +31,21 @@ describe('AnalyticsService', () => {
         payload,
       }),
     )
+  })
+
+  describe('isConsentGiven', () => {
+    it('should return false if user has not been asked for consent yet', () => {
+      expect(isConsentGiven(storageCache)).toBe(false)
+    })
+
+    it('should return false if user has declined consent', async () => {
+      await storageCache.setItem('trackingConsent', { consentGiven: false, consentDate: '2024-01-01' })
+      expect(isConsentGiven(storageCache)).toBe(false)
+    })
+
+    it('should return true if user has given consent', async () => {
+      await storageCache.setItem('trackingConsent', { consentGiven: true, consentDate: '2024-01-01' })
+      expect(isConsentGiven(storageCache)).toBe(true)
+    })
   })
 })
