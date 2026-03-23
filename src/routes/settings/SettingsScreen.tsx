@@ -61,7 +61,11 @@ const SettingsScreen = (): ReactElement => {
           <Content>{analyticsConsentLabel}</Content>
           <ContentTextLight>{analyticsConsentExplanation}</ContentTextLight>
         </ItemTextContainer>
-        <Switch testID='analytics-consent-switch' value={isAnalyticsConsentGiven} onValueChange={onAnalyticsConsentToggle} />
+        <Switch
+          testID='analytics-consent-switch'
+          value={isAnalyticsConsentGiven}
+          onValueChange={onAnalyticsConsentToggle}
+        />
       </ItemContainer>
       {isDevModeEnabled && (
         <ItemContainer>
