@@ -5,7 +5,7 @@ import DeviceInfo from 'react-native-device-info'
 
 import { getStorageItem } from './Storage'
 
-export const localhostCMSAndroid = 'http://10.0.2.2/api/v2'
+export const localhostCMSAndroid = 'http://10.0.2.2:8080/api/v2'
 export const localhostCMSIOS = 'http://localhost:8080/api/v2'
 export const localhostCMS = Platform.OS === 'android' ? localhostCMSAndroid : localhostCMSIOS
 export const testCMS = 'https://lunes-test.tuerantuer.org/api/v2'
