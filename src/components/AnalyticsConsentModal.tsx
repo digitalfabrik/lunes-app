@@ -41,18 +41,18 @@ const LinkContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
-type TrackingConsentModalProps = {
+type AnalyticsConsentModalProps = {
   visible: boolean
   onAllow: () => Promise<void>
   onDecline: () => Promise<void>
 }
 
-const TrackingConsentModal = ({ visible, onAllow, onDecline }: TrackingConsentModalProps): ReactElement => {
+const AnalyticsConsentModal = ({ visible, onAllow, onDecline }: AnalyticsConsentModalProps): ReactElement => {
   const { consentDialog } = getLabels()
 
   return (
     <RNModal
-      testID='tracking-consent-modal'
+      testID='analytics-consent-modal'
       visible={visible}
       transparent
       animationType='fade'
@@ -73,4 +73,4 @@ const TrackingConsentModal = ({ visible, onAllow, onDecline }: TrackingConsentMo
   )
 }
 
-export default TrackingConsentModal
+export default AnalyticsConsentModal

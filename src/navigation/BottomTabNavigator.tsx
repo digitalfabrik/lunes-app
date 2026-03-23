@@ -15,7 +15,7 @@ import {
   RepeatIconGrey,
   RepeatIconWhite,
 } from '../../assets/images'
-import TrackingConsentModal from '../components/TrackingConsentModal'
+import AnalyticsConsentModal from '../components/AnalyticsConsentModal'
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage from '../hooks/useStorage'
 import { getLabels } from '../services/helpers'
@@ -34,14 +34,14 @@ const BottomTabNavigator = (): ReactElement | null => {
   const iconSize = hp('3.5%')
 
   const repetitionService = useRepetitionService()
-  const [trackingConsent, setTrackingConsent] = useStorage('trackingConsent')
+  const [analyticsConsent, setAnalyticsConsent] = useStorage('analyticsConsent')
 
   const handleAllow = async (): Promise<void> => {
-    await setTrackingConsent({ consentGiven: true, consentDate: new Date().toISOString() })
+    await setAnalyticsConsent({ consentGiven: true, consentDate: new Date().toISOString() })
   }
 
   const handleDecline = async (): Promise<void> => {
-    await setTrackingConsent({ consentGiven: false, consentDate: new Date().toISOString() })
+    await setAnalyticsConsent({ consentGiven: false, consentDate: new Date().toISOString() })
   }
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
@@ -71,7 +71,7 @@ const BottomTabNavigator = (): ReactElement | null => {
 
   return (
     <>
-      <TrackingConsentModal visible={trackingConsent === null} onAllow={handleAllow} onDecline={handleDecline} />
+      <AnalyticsConsentModal visible={analyticsConsent === null} onAllow={handleAllow} onDecline={handleDecline} />
       <Navigator.Navigator
         screenOptions={{
           headerShown: false,

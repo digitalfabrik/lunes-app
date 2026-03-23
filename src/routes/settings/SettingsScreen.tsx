@@ -32,15 +32,20 @@ const ItemTextContainer = styled.View`
 const SettingsScreen = (): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
-  const [trackingConsent, setTrackingConsent] = useStorage('trackingConsent')
+  const [analyticsConsent, setAnalyticsConsent] = useStorage('analyticsConsent')
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
 
-  const { settings, analyticsConsent, analyticsConsentExplanation, devSettings } = getLabels().settings
+  const {
+    settings,
+    analyticsConsent: analyticsConsentLabel,
+    analyticsConsentExplanation,
+    devSettings,
+  } = getLabels().settings
 
-  const isAnalyticsConsentGiven = trackingConsent?.consentGiven ?? false
+  const isAnalyticsConsentGiven = analyticsConsent?.consentGiven ?? false
 
-  const onTrackingConsentToggle = async (newConsentGiven: boolean): Promise<void> => {
-    await setTrackingConsent({ consentGiven: newConsentGiven, consentDate: new Date().toISOString() })
+  const onAnalyticsConsentToggle = async (newConsentGiven: boolean): Promise<void> => {
+    await setAnalyticsConsent({ consentGiven: newConsentGiven, consentDate: new Date().toISOString() })
   }
 
   return (
@@ -53,14 +58,10 @@ const SettingsScreen = (): ReactElement => {
       <SettingsHeading>{settings}</SettingsHeading>
       <ItemContainer>
         <ItemTextContainer>
-          <Content>{analyticsConsent}</Content>
+          <Content>{analyticsConsentLabel}</Content>
           <ContentTextLight>{analyticsConsentExplanation}</ContentTextLight>
         </ItemTextContainer>
-        <Switch
-          testID='tracking-switch'
-          value={isAnalyticsConsentGiven}
-          onValueChange={onTrackingConsentToggle}
-        />
+        <Switch testID='analytics-consent-switch' value={isAnalyticsConsentGiven} onValueChange={onAnalyticsConsentToggle} />
       </ItemContainer>
       {isDevModeEnabled && (
         <ItemContainer>

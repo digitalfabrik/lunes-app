@@ -3,29 +3,29 @@ import { StorageCache } from './Storage'
 import { reportError } from './sentry'
 import { getInstallationId } from './storageUtils'
 
-export type TrackingConsent = {
+export type AnalyticsConsent = {
   consentGiven: boolean
   consentDate: string
 }
 
-export type TrackingEvent = {
+export type AnalyticsEvent = {
   installation_id: string
   timestamp: string
-  payload: TrackingPayload
+  payload: AnalyticsPayload
 }
 
-export type TrackingPayload = {
+export type AnalyticsPayload = {
   type: 'job_selected'
   job_id: number
   action: 'add' | 'remove'
 }
 
 export const isConsentGiven = (storageCache: StorageCache): boolean => {
-  const consent = storageCache.getItem('trackingConsent')
+  const consent = storageCache.getItem('analyticsConsent')
   return consent !== null && consent.consentGiven
 }
 
-export const trackEventAsync = async (storageCache: StorageCache, data: TrackingPayload): Promise<void> => {
+export const trackEventAsync = async (storageCache: StorageCache, data: AnalyticsPayload): Promise<void> => {
   if (!isConsentGiven(storageCache)) {
     return
   }
@@ -37,6 +37,6 @@ export const trackEventAsync = async (storageCache: StorageCache, data: Tracking
   await postAnalyticEvent(event)
 }
 
-export const trackEvent = (storageCache: StorageCache, payload: TrackingPayload): void => {
+export const trackEvent = (storageCache: StorageCache, payload: AnalyticsPayload): void => {
   trackEventAsync(storageCache, payload).catch(reportError)
 }

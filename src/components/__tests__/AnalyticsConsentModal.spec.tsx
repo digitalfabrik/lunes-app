@@ -3,9 +3,9 @@ import React from 'react'
 
 import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
-import TrackingConsentModal from '../TrackingConsentModal'
+import AnalyticsConsentModal from '../AnalyticsConsentModal'
 
-describe('TrackingConsentModal', () => {
+describe('AnalyticsConsentModal', () => {
   const onAllow = jest.fn()
   const onDecline = jest.fn()
 
@@ -14,7 +14,7 @@ describe('TrackingConsentModal', () => {
   })
 
   it('should render all elements when visible', () => {
-    const { getByText } = render(<TrackingConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
+    const { getByText } = render(<AnalyticsConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
     const { consentDialog } = getLabels()
     expect(getByText(consentDialog.title)).toBeDefined()
     expect(getByText(consentDialog.body)).toBeDefined()
@@ -24,14 +24,14 @@ describe('TrackingConsentModal', () => {
   })
 
   it('should call onAllow when allow button is pressed', () => {
-    const { getByText } = render(<TrackingConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
+    const { getByText } = render(<AnalyticsConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
     fireEvent.press(getByText(getLabels().consentDialog.allow))
     expect(onAllow).toHaveBeenCalledTimes(1)
     expect(onDecline).not.toHaveBeenCalled()
   })
 
   it('should call onDecline when decline button is pressed', () => {
-    const { getByText } = render(<TrackingConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
+    const { getByText } = render(<AnalyticsConsentModal visible onAllow={onAllow} onDecline={onDecline} />)
     fireEvent.press(getByText(getLabels().consentDialog.decline))
     expect(onDecline).toHaveBeenCalledTimes(1)
     expect(onAllow).not.toHaveBeenCalled()
