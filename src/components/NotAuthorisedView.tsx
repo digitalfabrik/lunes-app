@@ -23,18 +23,17 @@ const Description = styled(ContentSecondary)`
 type NotAuthorizedViewProps = {
   setVisible: (visible: boolean) => void
   description: string
+  onOpenSettings?: () => void
 }
 
-const NotAuthorisedView = ({ setVisible, description }: NotAuthorizedViewProps): ReactElement => {
-  const safeOpenSettings = () => {
-    openSettings().catch(reportError)
-  }
+const NotAuthorisedView = ({ setVisible, description, onOpenSettings }: NotAuthorizedViewProps): ReactElement => {
+  const handleOpenSettings = onOpenSettings ?? (() => openSettings().catch(reportError))
 
   return (
     <Container testID='no-auth'>
       <Description>{description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
-      <Button onPress={safeOpenSettings} label={getLabels().settings.settings} buttonTheme={BUTTONS_THEME.contained} />
+      <Button onPress={handleOpenSettings} label={getLabels().settings.settings} buttonTheme={BUTTONS_THEME.contained} />
     </Container>
   )
 }

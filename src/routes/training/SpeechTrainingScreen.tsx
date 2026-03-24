@@ -3,6 +3,10 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useReducer } from 'react'
 import { Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
+import {
+  SPEECH_TO_TEXT_ERRORS,
+  openVoiceInputSettings as openVoiceInputSettingsNative,
+} from 'react-native-speech-to-text'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, SadSmileyIcon } from '../../../assets/images'
@@ -89,12 +93,14 @@ type State = {
   correctAnswersCount: number
   completed: boolean
   isRecognitionUnavailable: boolean
+  isLanguageUnavailable: boolean
 }
 
 type Action =
   | { type: 'speechResult'; answerState: SimpleResult }
   | { type: 'speechError' }
   | { type: 'recognitionUnavailable' }
+  | { type: 'languageUnavailable' }
   | { type: 'retry' }
   | { type: 'nextWord'; isSkipping: boolean }
   | { type: 'cheatAll'; result: SimpleResult }
@@ -109,6 +115,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
     isRecognitionUnavailable: false,
+    isLanguageUnavailable: false,
   }
 }
 
@@ -122,6 +129,8 @@ const stateReducer = (state: State, action: Action): State => {
       return { ...state, answerState: 'error' }
     case 'recognitionUnavailable':
       return { ...state, isRecognitionUnavailable: true }
+    case 'languageUnavailable':
+      return { ...state, isLanguageUnavailable: true }
     case 'retry':
       return { ...state, answerState: null }
     case 'nextWord': {
@@ -145,6 +154,16 @@ const stateReducer = (state: State, action: Action): State => {
     default:
       return state
   }
+}
+
+const notAuthorisedDescription = (state: State, labels: ReturnType<typeof getLabels>): string => {
+  if (state.isRecognitionUnavailable) {
+    return labels.exercises.training.speech.notAvailable
+  }
+  if (state.isLanguageUnavailable) {
+    return labels.exercises.training.speech.languageUnavailable
+  }
+  return labels.general.audio.noAuthorization.description
 }
 
 type SpeechTrainingProps = {
@@ -181,7 +200,13 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       dispatch({ type: 'speechResult', answerState })
     } catch (error) {
       const errorCode = (error as { code?: string }).code
-      dispatch({ type: errorCode === 'E_RECOGNITION_UNAVAILABLE' ? 'recognitionUnavailable' : 'speechError' })
+      if (errorCode === SPEECH_TO_TEXT_ERRORS.recognitionUnavailable) {
+        dispatch({ type: 'recognitionUnavailable' })
+      } else if (errorCode === SPEECH_TO_TEXT_ERRORS.languageUnavailable) {
+        dispatch({ type: 'languageUnavailable' })
+      } else {
+        dispatch({ type: 'speechError' })
+      }
     }
   }
 
@@ -197,6 +222,8 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }
 
+  const canRecord = permissionGranted && !state.isRecognitionUnavailable && !state.isLanguageUnavailable
+  const openVoiceInputSettings = Platform.OS === 'android' ? openVoiceInputSettingsNative : undefined
   const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
@@ -247,7 +274,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           </>
         }
       >
-        {permissionGranted && !state.isRecognitionUnavailable ? (
+        {canRecord ? (
           <ExerciseContent>
             <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
             <RecordingButton
@@ -265,12 +292,9 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           </ExerciseContent>
         ) : (
           <NotAuthorisedView
-            description={
-              state.isRecognitionUnavailable
-                ? labels.notAvailable
-                : getLabels().general.audio.noAuthorization.description
-            }
+            description={notAuthorisedDescription(state, getLabels())}
             setVisible={() => navigation.goBack()}
+            onOpenSettings={state.isLanguageUnavailable ? openVoiceInputSettings : undefined}
           />
         )}
       </TrainingExerciseContainer>
@@ -292,7 +316,6 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
             <HintText>{labels.hints.holdButton}</HintText>
             <HintText>{labels.hints.speakClearly}</HintText>
             <HintText>{labels.hints.quietEnvironment}</HintText>
-            {Platform.OS === 'android' && <HintText>{labels.hints.googleServices}</HintText>}
           </HintsContainer>
         </BottomSheetColumn>
         <BottomSheetColumn>

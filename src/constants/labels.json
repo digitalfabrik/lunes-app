@@ -91,12 +91,12 @@
         "incorrect": "Das war leider nicht richtig.",
         "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
         "notAvailable": "Spracherkennung ist auf diesem Gerät leider nicht verfügbar.",
+        "languageUnavailable": "Die deutsche Sprache ist auf diesem Gerät für die Spracherkennung nicht verfügbar. Bitte installiere sie in den Einstellungen deines Geräts.",
         "hints": {
           "title": "Tipps für die Spracherkennung:",
           "holdButton": "Halte die Taste gedrückt, während du sprichst.",
           "speakClearly": "Sprich deutlich und nahe ans Mikrofon.",
-          "quietEnvironment": "Versuche es in einer ruhigeren Umgebung.",
-          "googleServices": "Stell sicher, dass die Google-Sprachdienste auf deinem Gerät verfügbar sind."
+          "quietEnvironment": "Versuche es in einer ruhigeren Umgebung."
         }
       },
       "sentence": {

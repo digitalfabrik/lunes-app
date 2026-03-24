@@ -118,6 +118,10 @@
     }];
 }
 
+- (void)openVoiceInputSettings:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    resolve(nil);
+}
+
 - (void)stop:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->_recognitionRequest endAudio];

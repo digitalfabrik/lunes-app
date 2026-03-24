@@ -5,6 +5,7 @@ import { TurboModuleRegistry, type TurboModule } from 'react-native'
 export interface Spec extends TurboModule {
   record(hints: string[]): Promise<Array<string>>
   stop(): Promise<void>
+  openVoiceInputSettings(): Promise<void>
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('NativeSpeechToText')

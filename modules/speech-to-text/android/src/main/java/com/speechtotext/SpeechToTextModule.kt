@@ -1,9 +1,11 @@
 package com.speechtotext
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -36,25 +38,30 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
         override fun onEvent(eventType: Int, params: Bundle?) {}
 
         override fun onError(error: Int) {
-            val message = when (error) {
-                SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
-                SpeechRecognizer.ERROR_NETWORK -> "Network error"
-                SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
-                SpeechRecognizer.ERROR_SERVER -> "Error from server"
-                SpeechRecognizer.ERROR_CLIENT -> "Client side error"
-                SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input"
-                SpeechRecognizer.ERROR_NO_MATCH -> "No match"
-                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RecognitionService busy"
-                SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Insufficient permissions"
-                SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> "Too many requests"
-                SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> "Server disconnected"
-                SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> "Language not supported"
-                SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> "Language not available"
-                SpeechRecognizer.ERROR_CANNOT_CHECK_SUPPORT -> "Cannot check support"
-                else -> "Unknown error"
+            val isLanguageUnavailable = error == SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED ||
+                error == SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
+            if (isLanguageUnavailable) {
+                Log.w(TAG, "Recognition error $error: German language not available on device")
+                pendingPromise?.reject("E_LANGUAGE_UNAVAILABLE", "German language is not available for speech recognition on this device")
+            } else {
+                val message = when (error) {
+                    SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
+                    SpeechRecognizer.ERROR_NETWORK -> "Network error"
+                    SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
+                    SpeechRecognizer.ERROR_SERVER -> "Error from server"
+                    SpeechRecognizer.ERROR_CLIENT -> "Client side error"
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input"
+                    SpeechRecognizer.ERROR_NO_MATCH -> "No match"
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RecognitionService busy"
+                    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Insufficient permissions"
+                    SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> "Too many requests"
+                    SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> "Server disconnected"
+                    SpeechRecognizer.ERROR_CANNOT_CHECK_SUPPORT -> "Cannot check support"
+                    else -> "Unknown error"
+                }
+                Log.w(TAG, "Recognition error $error: $message")
+                pendingPromise?.reject("SpeechRecognizerError", message)
             }
-            Log.w(TAG, "Recognition error $error: $message")
-            pendingPromise?.reject("SpeechRecognizerError", message)
             pendingPromise = null
             recognizer?.destroy()
             recognizer = null
@@ -105,6 +112,27 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
                 }
             }
             speechRecognizer.startListening(intent)
+        }
+    }
+
+    override fun openVoiceInputSettings(promise: Promise?) {
+        try {
+            val intent = Intent(Settings.ACTION_VOICE_INPUT_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            reactContext.startActivity(intent)
+            promise?.resolve(null)
+        } catch (exception: ActivityNotFoundException) {
+            Log.w(TAG, "Could not open voice input settings, falling back to language settings", exception)
+            try {
+                val fallbackIntent = Intent(Settings.ACTION_LOCALE_SETTINGS).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                reactContext.startActivity(fallbackIntent)
+                promise?.resolve(null)
+            } catch (fallbackException: ActivityNotFoundException) {
+                promise?.reject("E_SETTINGS_UNAVAILABLE", "Could not open settings", fallbackException)
+            }
         }
     }
 
