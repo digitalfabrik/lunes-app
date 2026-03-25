@@ -14,11 +14,18 @@ export type AnalyticsEvent = {
   payload: AnalyticsPayload
 }
 
-export type AnalyticsPayload = {
-  type: 'job_selected'
-  job_id: number
-  action: 'add' | 'remove'
-}
+export type AnalyticsPayload =
+  | {
+      type: 'job_selected'
+      job_id: number
+      action: 'add' | 'remove'
+    }
+  | {
+      type: 'module_duration'
+      exercise_type: number
+      unit_id: number
+      duration_seconds: number
+    }
 
 export const isConsentGiven = (storageCache: StorageCache): boolean => {
   const consent = storageCache.getItem('analyticsConsent')

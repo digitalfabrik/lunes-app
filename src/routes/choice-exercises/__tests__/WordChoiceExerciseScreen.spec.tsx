@@ -4,7 +4,9 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
+import { ExerciseKeys } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { trackEvent } from '../../../services/AnalyticsService'
 import { RepetitionService } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -52,6 +54,10 @@ jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn().mockResolvedValue(undefined),
+}))
+
+jest.mock('../../../services/AnalyticsService', () => ({
+  trackEvent: jest.fn(),
 }))
 
 describe('WordChoiceExerciseScreen', () => {
@@ -234,6 +240,19 @@ describe('WordChoiceExerciseScreen', () => {
       fireEvent.press(getByText('Spachtel'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()[0].section).toBe(1))
+    })
+  })
+
+  it('should track module duration on unmount', () => {
+    const { unmount } = renderScreen()
+
+    expect(trackEvent).not.toHaveBeenCalled()
+    unmount()
+    expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+      type: 'module_duration',
+      duration_seconds: expect.any(Number),
+      unit_id: 1,
+      exercise_type: ExerciseKeys.wordChoiceExercise,
     })
   })
 })
