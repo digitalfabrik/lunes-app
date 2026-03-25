@@ -12,7 +12,7 @@ import VocabularyItem, {
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { trackEvent } from './AnalyticsService'
+import { generateUniqueId, trackEvent } from './AnalyticsService'
 import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
 import type { WordNodeCard } from './RepetitionService'
@@ -402,8 +402,7 @@ export const getInstallationId = async (storageCache: StorageCache): Promise<str
     return id
   }
 
-  const base = 16
-  const newId = Array.from({ length: 32 }, () => Math.floor(Math.random() * base).toString(base)).join('')
+  const newId = generateUniqueId()
   await storageCache.setItem('installationId', newId)
   return newId
 }
