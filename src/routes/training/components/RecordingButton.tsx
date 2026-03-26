@@ -4,10 +4,11 @@ import styled from 'styled-components/native'
 import { MicrophoneIcon } from '../../../../assets/images'
 
 const Button = styled.Pressable<{ isRecording: boolean }>`
-  border-radius: 50px;
+  border-radius: 50%;
   padding: ${props => props.theme.spacings.md};
   background-color: ${props =>
     props.isRecording ? props.theme.colors.primary : props.theme.colors.backgroundLightGrey};
+  color: ${props => (props.isRecording ? props.theme.colors.backgroundAccent : props.theme.colors.text)};
 `
 
 type RecordingButtonProps = {

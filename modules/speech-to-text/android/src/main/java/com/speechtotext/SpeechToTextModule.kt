@@ -15,14 +15,14 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
 
-class SpeechToTextModule(val reactContext: ReactApplicationContext) :
+class SpeechToTextModule(private val reactContext: ReactApplicationContext) :
     NativeSpeechToTextSpec(reactContext) {
 
     private var recognizer: SpeechRecognizer? = null
     private var pendingPromise: Promise? = null
 
     private fun createRecognizer(): SpeechRecognizer {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && SpeechRecognizer.isOnDeviceRecognitionAvailable(reactContext)) {
             return SpeechRecognizer.createOnDeviceSpeechRecognizer(reactContext)
         }
         return SpeechRecognizer.createSpeechRecognizer(reactContext)
@@ -86,7 +86,7 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
     }
 
     override fun record(hints: ReadableArray, promise: Promise?) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !SpeechRecognizer.isRecognitionAvailable(reactContext)) {
+        if (!SpeechRecognizer.isRecognitionAvailable(reactContext)) {
             promise?.reject("E_RECOGNITION_UNAVAILABLE", "Speech recognition is not available on this device")
             return
         }
@@ -117,22 +117,13 @@ class SpeechToTextModule(val reactContext: ReactApplicationContext) :
 
     override fun openVoiceInputSettings(promise: Promise?) {
         try {
-            val intent = Intent(Settings.ACTION_VOICE_INPUT_SETTINGS).apply {
+            val intent = Intent(Settings.ACTION_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             reactContext.startActivity(intent)
             promise?.resolve(null)
         } catch (exception: ActivityNotFoundException) {
-            Log.w(TAG, "Could not open voice input settings, falling back to language settings", exception)
-            try {
-                val fallbackIntent = Intent(Settings.ACTION_LOCALE_SETTINGS).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                reactContext.startActivity(fallbackIntent)
-                promise?.resolve(null)
-            } catch (fallbackException: ActivityNotFoundException) {
-                promise?.reject("E_SETTINGS_UNAVAILABLE", "Could not open settings", fallbackException)
-            }
+            promise?.reject("E_SETTINGS_UNAVAILABLE", "Could not open settings", exception)
         }
     }
 

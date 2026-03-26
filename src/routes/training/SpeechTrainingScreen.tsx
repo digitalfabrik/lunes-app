@@ -1,10 +1,11 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useReducer } from 'react'
-import { Platform } from 'react-native'
+import { AppState, Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import {
   SPEECH_TO_TEXT_ERRORS,
+  SpeechToTextErrorCode,
   openVoiceInputSettings as openVoiceInputSettingsNative,
 } from 'react-native-speech-to-text'
 import styled from 'styled-components/native'
@@ -20,13 +21,7 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import {
-  AnswerState,
-  BUTTONS_THEME,
-  MAX_TRAINING_REPETITIONS,
-  SIMPLE_RESULTS,
-  SimpleResult,
-} from '../../constants/data'
+import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
 import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useStorage from '../../hooks/useStorage'
@@ -45,9 +40,14 @@ const SPEECH_PERMISSIONS =
     ? [PERMISSIONS.IOS.MICROPHONE, PERMISSIONS.IOS.SPEECH_RECOGNITION]
     : [PERMISSIONS.ANDROID.RECORD_AUDIO]
 
+const WordImageContainer = styled.View`
+  padding: 0 ${props => props.theme.spacings.xxl};
+  width: 100%;
+`
+
 const WordImage = styled.Image`
   width: 100%;
-  height: 200px;
+  aspect-ratio: 1;
 `
 
 const ExerciseContent = styled.View`
@@ -89,7 +89,7 @@ type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
   hasIncorrectAttempt: boolean
-  answerState: AnswerState
+  answerState: SimpleResult | 'error' | null
   correctAnswersCount: number
   completed: boolean
   isRecognitionUnavailable: boolean
@@ -104,6 +104,7 @@ type Action =
   | { type: 'retry' }
   | { type: 'nextWord'; isSkipping: boolean }
   | { type: 'cheatAll'; result: SimpleResult }
+  | { type: 'appBecameActive' }
 
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const selectedItems = shuffleArray(vocabularyItems).slice(0, MAX_TRAINING_REPETITIONS)
@@ -151,8 +152,12 @@ const stateReducer = (state: State, action: Action): State => {
       const correctAnswersCount = action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0
       return { ...state, completed: true, correctAnswersCount }
     }
-    default:
-      return state
+    case 'appBecameActive':
+      return { ...state, isRecognitionUnavailable: false, isLanguageUnavailable: false }
+    default: {
+      const exhaustiveCheck: never = action
+      return exhaustiveCheck
+    }
   }
 }
 
@@ -176,7 +181,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
-  const { permissionGranted } = useGrantPermissions(SPEECH_PERMISSIONS)
+  const { permissionGranted, permissionRequested } = useGrantPermissions(SPEECH_PERMISSIONS)
 
   const labels = getLabels().exercises.training.speech
   const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
@@ -191,6 +196,15 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        dispatch({ type: 'appBecameActive' })
+      }
+    })
+    return subscription.remove
+  }, [])
+
   const handlePressIn = async (): Promise<void> => {
     try {
       const results = await startRecording({
@@ -199,7 +213,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
       dispatch({ type: 'speechResult', answerState })
     } catch (error) {
-      const errorCode = (error as { code?: string }).code
+      const errorCode = (error as { code?: SpeechToTextErrorCode }).code
       if (errorCode === SPEECH_TO_TEXT_ERRORS.recognitionUnavailable) {
         dispatch({ type: 'recognitionUnavailable' })
       } else if (errorCode === SPEECH_TO_TEXT_ERRORS.languageUnavailable) {
@@ -223,10 +237,46 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   }
 
   const canRecord = permissionGranted && !state.isRecognitionUnavailable && !state.isLanguageUnavailable
+  const isNotAuthorised =
+    (permissionRequested && !permissionGranted) || state.isRecognitionUnavailable || state.isLanguageUnavailable
   const openVoiceInputSettings = Platform.OS === 'android' ? openVoiceInputSettingsNative : undefined
   const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
+
+  const renderExerciseContent = (): ReactElement | null => {
+    if (canRecord) {
+      return (
+        <ExerciseContent>
+          <WordImageContainer>
+            <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
+          </WordImageContainer>
+          <RecordingButton
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            isRecording={isRecording}
+            disabled={isRecording}
+          />
+          <InstructionText>{instructions}</InstructionText>
+          {isDevModeEnabled && (
+            <CheatText>
+              Cheat: {currentWord.article.value} {currentWord.word}
+            </CheatText>
+          )}
+        </ExerciseContent>
+      )
+    }
+    if (isNotAuthorised) {
+      return (
+        <NotAuthorisedView
+          description={notAuthorisedDescription(state, getLabels())}
+          setVisible={() => navigation.goBack()}
+          onOpenSettings={state.isLanguageUnavailable ? openVoiceInputSettings : undefined}
+        />
+      )
+    }
+    return null
+  }
 
   const wordContent = (
     <BottomSheetRow>
@@ -274,29 +324,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           </>
         }
       >
-        {canRecord ? (
-          <ExerciseContent>
-            <WordImage source={{ uri: currentWord.images[0] }} resizeMode='contain' />
-            <RecordingButton
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
-              isRecording={isRecording}
-              disabled={isRecording}
-            />
-            <InstructionText>{instructions}</InstructionText>
-            {isDevModeEnabled && (
-              <CheatText>
-                Cheat: {currentWord.article.value} {currentWord.word}
-              </CheatText>
-            )}
-          </ExerciseContent>
-        ) : (
-          <NotAuthorisedView
-            description={notAuthorisedDescription(state, getLabels())}
-            setVisible={() => navigation.goBack()}
-            onOpenSettings={state.isLanguageUnavailable ? openVoiceInputSettings : undefined}
-          />
-        )}
+        {renderExerciseContent()}
       </TrainingExerciseContainer>
 
       <WordResultIndicator

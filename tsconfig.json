@@ -4,7 +4,6 @@
     "jsx": "react-jsx",
     "typeRoots": ["./node_modules/@types", "./src/@types"],
     "types": ["jest", "node", "react"],
-    "baseUrl": "."
   },
   "include": [
     "src/**/*",

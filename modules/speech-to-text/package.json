@@ -2,6 +2,9 @@
   "name": "react-native-speech-to-text",
   "version": "0.0.0",
   "description": "Converts speech to text using platform APIs",
+  "license": "Apache-2.0",
+  "author": "Tür an Tür - Digitalfabrik gGmbH",
+  "homepage": "https://github.com/digitalfabrik/lunes-app",
   "main": "src/index",
   "codegenConfig": {
     "name": "SpeechToTextSpec",

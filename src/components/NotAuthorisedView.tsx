@@ -33,7 +33,11 @@ const NotAuthorisedView = ({ setVisible, description, onOpenSettings }: NotAutho
     <Container testID='no-auth'>
       <Description>{description}</Description>
       <Button onPress={() => setVisible(false)} label={getLabels().general.back} buttonTheme={BUTTONS_THEME.outlined} />
-      <Button onPress={handleOpenSettings} label={getLabels().settings.settings} buttonTheme={BUTTONS_THEME.contained} />
+      <Button
+        onPress={handleOpenSettings}
+        label={getLabels().settings.settings}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
     </Container>
   )
 }

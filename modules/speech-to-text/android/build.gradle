@@ -12,20 +12,6 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
   }
 
-  buildFeatures {
-    buildConfig true
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-    }
-  }
-
-  lint {
-    disable "GradleCompatible"
-  }
-
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8

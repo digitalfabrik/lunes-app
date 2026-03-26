@@ -6,9 +6,9 @@ Pod::Spec.new do |spec|
   spec.name         = "SpeechToText"
   spec.version      = package["version"]
   spec.summary      = package["description"]
-  spec.homepage     = "https://github.com/digitalfabrik/lunes-app"
-  spec.license      = "MIT"
-  spec.authors      = "Tür an Tür – Digitalfabrik gGmbH"
+  spec.homepage     = package["homepage"]
+  spec.license      = package["license"]
+  spec.authors      = package["author"]
   spec.source       = { :path => "." }
 
   spec.platforms    = { :ios => min_ios_version_supported }

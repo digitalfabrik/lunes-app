@@ -1,5 +1,8 @@
 import { SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 
+// --- Matching thresholds ---
+// Change these as Automatic Speech Recognition (ASR) quality improves or new failure modes are discovered.
+
 // Slightly lower than 0.85 to allow suffix-dropping on long compounds
 // (e.g. "das Linsenknöchel" for "das Linsenknöchelchen", similarity 0.818)
 const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
@@ -8,17 +11,13 @@ const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
 // to be dropped or misheard by the Automatic Speech Recognition (ASR)
 const WORD_ONLY_SIMILARITY_THRESHOLD = 0.75
 
-// Minimum token similarity to flag as 'similar' (correct word, wrong article)
-const WORD_SIMILARITY_THRESHOLD = 0.8
-
-// Minimum fraction of the expected phrase that a prefix transcript must cover
-// 0.65 accepts iOS morpheme-boundary truncations ("Das Finger" for "das Fingerglied",
-// 66.7%) while rejecting transcripts where the noun is absent ("die rechte" for
-// "die rechte Vorkammer", 50%)
+// Minimum fraction of the space-collapsed expected phrase that the collapsed transcript must cover.
+// 0.65 accepts "Zwölf Finger" for "Zwölffingerdarm" (zwoelfinger/zwoelfingerdarm = 79%)
+// while rejecting "Zwölf" alone (zwoelf/zwoelfingerdarm = 43%)
 const PHRASE_PREFIX_THRESHOLD = 0.65
 
 // Minimum fraction of the expected last token that the transcript's last token must cover
-// 0.33 handles iOS truncating at a morpheme boundary ("Die Haar" for "die Haarwurzel":
+// 0.33 handles truncation at a morpheme boundary ("Die Haar" for "die Haarwurzel":
 // "har" covers 3/9 = 33% of "harwurzel")
 const LAST_TOKEN_PREFIX_THRESHOLD = 0.33
 
@@ -26,7 +25,7 @@ const LAST_TOKEN_PREFIX_THRESHOLD = 0.33
 // the expected last token. Handles near-misses like "harz" vs "harw" (similarity 0.75)
 const LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD = 0.75
 
-// Maximum number of extra tokens allowed in the transcript for the phrase-embedding check
+// Maximum number of extra tokens allowed in the transcript for the token-embedding check
 const MAX_EXTRA_TOKENS = 2
 
 const normalizeText = (text: string): string =>
@@ -84,72 +83,75 @@ const stringSimilarity = (first: string, second: string): number => {
   return 1 - levenshteinDistance(first, second) / Math.max(first.length, second.length)
 }
 
-// Returns true if the tokens of phrase appear as a contiguous sequence within the tokens
-// of transcript, allowing at most MAX_EXTRA_TOKENS extra tokens. Handles ASR prepending
-// filler words (e.g. "Und der Arm" → matches "der Arm") while rejecting transcripts
-// that merely contain the phrase as part of a longer utterance
-const containsPhraseTokens = (transcript: string, phrase: string): boolean => {
-  const transcriptTokens = transcript.split(' ')
-  const phraseTokens = phrase.split(' ')
-  if (transcriptTokens.length - phraseTokens.length > MAX_EXTRA_TOKENS) {
-    return false
-  }
-  return transcriptTokens.some((_, startIndex) =>
-    phraseTokens.every((token, phraseTokenIndex) => transcriptTokens[startIndex + phraseTokenIndex] === token),
-  )
-}
+const isSimilar = (transcript: string, expected: string, threshold: number): boolean =>
+  stringSimilarity(transcript, expected) >= threshold
 
-// Returns true when the transcript is a prefix of the full phrase covering at least
-// PHRASE_PREFIX_THRESHOLD of its length. Handles voice activity detection (VAD) cutting off the final syllables
-// of long compound words (e.g. "das zungenb" for "das Zungenbein", ~79% coverage)
-const isTruncatedPhrase = (normalizedTranscript: string, normalizedFull: string): boolean =>
-  normalizedFull.startsWith(normalizedTranscript) &&
-  normalizedTranscript.length >= normalizedFull.length * PHRASE_PREFIX_THRESHOLD
+// Returns true if transcript is a prefix of expected, covering at least the given fraction of it.
+const isPhrasePrefix = (transcript: string, expected: string, coverage: number): boolean =>
+  expected.startsWith(transcript) && transcript.length >= expected.length * coverage
 
-// Returns true when the transcript, with spaces and geminates removed, is a prefix of the
-// space-removed full phrase. Handles iOS splitting compound words into parts with spaces
-// (e.g. "Zwölffingerdarm" → "Zwölf Finger"): joining the tokens and re-collapsing the
-// new adjacent geminates at word boundaries gives "zwoelfinger", a prefix of "zwoelfingerdarm"
-const isTruncatedJoinedPhrase = (normalizedTranscript: string, normalizedFull: string): boolean => {
-  const withoutSpacesAndGeminates = (text: string): string => text.replace(/ /g, '').replace(/(.)\1+/g, '$1')
-  const joinedTranscript = withoutSpacesAndGeminates(normalizedTranscript)
-  const joinedFull = withoutSpacesAndGeminates(normalizedFull)
-  return (
-    joinedFull.startsWith(joinedTranscript) && joinedTranscript.length >= joinedFull.length * PHRASE_PREFIX_THRESHOLD
-  )
-}
+// Removes spaces and re-collapses geminates that appear at word boundaries after joining.
+// e.g. "Zwölf Finger" → "zwoelffinger" → "zwoelfinger"
+const joinTokens = (text: string): string => text.replace(/ /g, '').replace(/(.)\1+/g, '$1')
 
-// Returns true when iOS truncated the transcript exactly at a morpheme boundary within the
-// last token (e.g. "Die Haar" for "die Haarwurzel"). Requirements: same token count (rejects
-// cases where a noun is entirely absent), all preceding tokens match exactly (rejects wrong
-// articles), and the last transcript token is a fuzzy prefix of the expected last token
-const isMorphemeBoundaryTruncation = (normalizedTranscript: string, normalizedFull: string): boolean => {
-  const transcriptTokens = normalizedTranscript.split(' ').filter(token => token.length > 0)
-  const fullTokens = normalizedFull.split(' ').filter(token => token.length > 0)
+// Handles compound words split into separate tokens: the speech recognizer may transcribe a
+// compound as its constituent parts (e.g. "Zwölf Finger" for "Zwölffingerdarm"). Joining the
+// tokens and re-collapsing geminates at word boundaries then gives a clean prefix match.
+const isCollapsedPhrasePrefix = (transcript: string, expected: string, coverage: number): boolean =>
+  isPhrasePrefix(joinTokens(transcript), joinTokens(expected), coverage)
 
-  if (transcriptTokens.length !== fullTokens.length || transcriptTokens.length <= 1) {
+// Handles truncation at a morpheme boundary: the speech recognizer produces the article and the
+// start of the noun, but stops partway through the last token (e.g. "Die Haar" for "die Haarwurzel",
+// or near-miss "Die Harz" where "harz" ≈ "harw"). Requires at least 2 tokens so that article
+// matching is meaningful.
+const isLastTokenPartialMatch = (
+  transcript: string,
+  expected: string,
+  minCoverage: number,
+  similarity: number,
+): boolean => {
+  const transcriptTokens = transcript.split(' ').filter(token => token.length > 0)
+  const expectedTokens = expected.split(' ').filter(token => token.length > 0)
+
+  if (transcriptTokens.length !== expectedTokens.length || transcriptTokens.length <= 1) {
     return false
   }
 
-  const allPrecedingTokensMatch = transcriptTokens
-    .slice(0, -1)
-    .every((token, tokenIndex) => token === fullTokens[tokenIndex])
-  if (!allPrecedingTokensMatch) {
+  const precedingTokensMatch = transcriptTokens.slice(0, -1).every((token, index) => token === expectedTokens[index])
+  if (!precedingTokensMatch) {
     return false
   }
 
   const lastTranscriptToken = transcriptTokens[transcriptTokens.length - 1]
-  const lastFullToken = fullTokens[fullTokens.length - 1]
+  const lastExpectedToken = expectedTokens[expectedTokens.length - 1]
 
   if (
-    lastTranscriptToken.length < lastFullToken.length * LAST_TOKEN_PREFIX_THRESHOLD ||
-    lastTranscriptToken.length > lastFullToken.length
+    lastTranscriptToken.length < lastExpectedToken.length * minCoverage ||
+    lastTranscriptToken.length > lastExpectedToken.length
   ) {
     return false
   }
 
-  const expectedPrefix = lastFullToken.slice(0, lastTranscriptToken.length)
-  return stringSimilarity(lastTranscriptToken, expectedPrefix) >= LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD
+  const expectedPrefix = lastExpectedToken.slice(0, lastTranscriptToken.length)
+  return stringSimilarity(lastTranscriptToken, expectedPrefix) >= similarity
+}
+
+// Handles filler words prepended by the speech recognizer (e.g. "Und der Arm" for "der Arm").
+// The token-level check ensures the expected phrase appears as whole words, not as a substring
+// of a longer word (so "der Armband" does not match "der Arm").
+const containsAsTokens = (transcript: string, expected: string, maxExtra: number): boolean => {
+  const transcriptTokens = transcript.split(' ')
+  const expectedTokens = expected.split(' ')
+
+  if (transcriptTokens.length - expectedTokens.length > maxExtra) {
+    return false
+  }
+
+  const expectedPhrase = expectedTokens.join(' ')
+  return transcriptTokens.some((_, startIndex) => {
+    const candidatePhrase = transcriptTokens.slice(startIndex, startIndex + expectedTokens.length).join(' ')
+    return candidatePhrase === expectedPhrase
+  })
 }
 
 const evaluateCandidate = (transcript: string, article: string, word: string): SimpleResult => {
@@ -157,27 +159,22 @@ const evaluateCandidate = (transcript: string, article: string, word: string): S
   const normalizedWord = normalizeText(word)
   const normalizedTranscript = normalizeText(transcript)
 
-  if (
-    stringSimilarity(normalizedTranscript, normalizedFull) >= FULL_PHRASE_SIMILARITY_THRESHOLD ||
-    isTruncatedPhrase(normalizedTranscript, normalizedFull) ||
-    isTruncatedJoinedPhrase(normalizedTranscript, normalizedFull) ||
-    isMorphemeBoundaryTruncation(normalizedTranscript, normalizedFull) ||
-    containsPhraseTokens(normalizedTranscript, normalizedFull) ||
-    stringSimilarity(normalizedTranscript, normalizedWord) >= WORD_ONLY_SIMILARITY_THRESHOLD
-  ) {
-    return SIMPLE_RESULTS.correct
-  }
+  const isCorrect =
+    isSimilar(normalizedTranscript, normalizedFull, FULL_PHRASE_SIMILARITY_THRESHOLD) ||
+    isSimilar(normalizedTranscript, normalizedWord, WORD_ONLY_SIMILARITY_THRESHOLD) ||
+    isCollapsedPhrasePrefix(normalizedTranscript, normalizedFull, PHRASE_PREFIX_THRESHOLD) ||
+    isLastTokenPartialMatch(
+      normalizedTranscript,
+      normalizedFull,
+      LAST_TOKEN_PREFIX_THRESHOLD,
+      LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD,
+    ) ||
+    containsAsTokens(normalizedTranscript, normalizedFull, MAX_EXTRA_TOKENS)
 
-  const transcriptParts = normalizedTranscript.split(' ')
-  const bestWordSimilarity = Math.max(...transcriptParts.map(part => stringSimilarity(part, normalizedWord)))
-  if (bestWordSimilarity >= WORD_SIMILARITY_THRESHOLD) {
-    return SIMPLE_RESULTS.similar
-  }
-
-  return SIMPLE_RESULTS.incorrect
+  return isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
 }
 
-// Takes all transcript candidates and returns the best result (correct > similar > incorrect)
+// Takes all transcript candidates and returns the best result (correct > incorrect)
 export const evaluateSpeechMatch = (transcriptResults: string[], article: string, word: string): SimpleResult => {
   if (transcriptResults.length === 0) {
     return SIMPLE_RESULTS.incorrect
@@ -187,9 +184,6 @@ export const evaluateSpeechMatch = (transcriptResults: string[], article: string
 
   if (results.includes(SIMPLE_RESULTS.correct)) {
     return SIMPLE_RESULTS.correct
-  }
-  if (results.includes(SIMPLE_RESULTS.similar)) {
-    return SIMPLE_RESULTS.similar
   }
   return SIMPLE_RESULTS.incorrect
 }
