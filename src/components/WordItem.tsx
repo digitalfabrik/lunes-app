@@ -13,7 +13,7 @@ const Container = styled.View<StyledListElementProps>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   padding: ${props => props.theme.spacings.sm};
   border-radius: 2px;
-  border-width: ${props => (props.pressed ? '0px' : '1px')};
+  border-width: 1px;
   border-style: solid;
   display: flex;
   justify-content: flex-start;
@@ -53,23 +53,17 @@ export type SingleChoiceListItemProps = {
   answer: Answer
   anyAnswerSelected?: boolean
   onClick?: (answer: Answer) => void
-  disabled?: boolean
 }
 
 type StyledListElementProps = {
   pressed: boolean
 }
 
-const WordItem = ({
-  answer,
-  onClick,
-  anyAnswerSelected = false,
-  disabled = false,
-}: SingleChoiceListItemProps): ReactElement => {
+const WordItem = ({ answer, onClick, anyAnswerSelected = false }: SingleChoiceListItemProps): ReactElement => {
   const { word, article } = answer
 
   return (
-    <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected || disabled}>
+    <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected}>
       {({ pressed }) => (
         <Container pressed={pressed}>
           <ArticleBox article={article} pressed={pressed}>
