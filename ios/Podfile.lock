@@ -38,7 +38,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - NitroSound (0.2.10):
+  - NitroSound (0.2.12):
     - boost
     - DoubleConversion
     - fast_float
@@ -1865,7 +1865,7 @@ PODS:
     - SocketRocket
     - SwiftUIIntrospect (~> 1.0)
     - Yoga
-  - react-native-safe-area-context (5.6.2):
+  - react-native-safe-area-context (5.7.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -1883,8 +1883,8 @@ PODS:
     - React-graphics
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.6.2)
-    - react-native-safe-area-context/fabric (= 5.6.2)
+    - react-native-safe-area-context/common (= 5.7.0)
+    - react-native-safe-area-context/fabric (= 5.7.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1895,7 +1895,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/common (5.6.2):
+  - react-native-safe-area-context/common (5.7.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -1923,7 +1923,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/fabric (5.6.2):
+  - react-native-safe-area-context/fabric (5.7.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2488,7 +2488,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNCPicker (2.11.2):
+  - RNCPicker (2.11.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -2520,7 +2520,7 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.29.1):
+  - RNGestureHandler (2.30.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2553,7 +2553,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 9.1.8)
   - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
-  - RNPermissions (5.4.2):
+  - RNPermissions (5.5.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -2640,7 +2640,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (6.21.0):
+  - RNSentry (6.22.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2667,12 +2667,12 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.53.2)
+    - Sentry/HybridSDK (= 8.56.2)
     - SocketRocket
     - Yoga
   - RNSoundPlayer (0.14.5):
     - React-Core
-  - RNSVG (15.15.3):
+  - RNSVG (15.15.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -2698,10 +2698,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.15.3)
+    - RNSVG/common (= 15.15.4)
     - SocketRocket
     - Yoga
-  - RNSVG/common (15.15.3):
+  - RNSVG/common (15.15.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -2729,7 +2729,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - Sentry/HybridSDK (8.53.2)
+  - Sentry/HybridSDK (8.56.2)
   - SocketRocket (0.7.1)
   - SpeechToText (0.0.0):
     - boost
@@ -2762,11 +2762,11 @@ PODS:
   - SwiftUIIntrospect (1.3.0)
   - TextToSpeech (4.1.1):
     - React-Core
-  - VisionCamera (4.7.2):
-    - VisionCamera/Core (= 4.7.2)
-    - VisionCamera/React (= 4.7.2)
-  - VisionCamera/Core (4.7.2)
-  - VisionCamera/React (4.7.2):
+  - VisionCamera (4.7.3):
+    - VisionCamera/Core (= 4.7.3)
+    - VisionCamera/React (= 4.7.3)
+  - VisionCamera/Core (4.7.3)
+  - VisionCamera/React (4.7.3):
     - React-Core
   - Yoga (0.0.0)
 
@@ -3067,7 +3067,7 @@ SPEC CHECKSUMS:
   hermes-engine: 7219f6e751ad6ec7f3d7ec121830ee34dae40749
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   NitroModules: 0bd3b05de25fc3877046217760d3e83368cdbf5c
-  NitroSound: 3227c096023253d5a71e4145a19ea886808c1295
+  NitroSound: 50a649cf962b021093bdc0ce0828420de8f06b74
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: d4ef510f229cea15314176aee5e3ba10064a8496
   RCTRequired: 1e41b794629558f6626e2bc39c166ac0ec1c5878
@@ -3103,7 +3103,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 1e4d3178ba5d5000b351b902c603fb0c9d60649e
   react-native-image-picker: 0314366753615115fa55c3cc937ac44cb7e75702
   react-native-pager-view: d7d2aa47f54343bf55fdcee3973503dd27c2bd37
-  react-native-safe-area-context: c00143b4823773bba23f2f19f85663ae89ceb460
+  react-native-safe-area-context: befb5404eb8a16fdc07fa2bebab3568ecabcbb8a
   react-native-volume-manager: cdd3c3857158c1df7b9fbea071a9946395cee06c
   React-NativeModulesApple: 183f9bd5b20a51a8b016e90be78ed6c1538da4a7
   React-oscompat: d5e3366fbd6c7150e17c1bda85eab583a6fa9fce
@@ -3136,22 +3136,22 @@ SPEC CHECKSUMS:
   ReactCodegen: b4ff5f79e481567c6f14115f8314399b64e70268
   ReactCommon: 8fafefb37d562f9e4bbbc9081ca4501f178a97ec
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
-  RNCPicker: a7e5555ebf53e17e06c1fde62195cf07b685d26c
+  RNCPicker: bf95ec4b2483e2ab256047130bc536b437cd916c
   RNDeviceInfo: bcce8752b5043a623fe3c26789679b473f705d3c
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
-  RNGestureHandler: 29bbca60c881e5243e219e3fe0016060002ed389
+  RNGestureHandler: e37bdb684df1ac17c7e1d8f71a3311b2793c186b
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
-  RNPermissions: 895f6bcea2f7b57015501d781515350f1924f174
+  RNPermissions: a8880931d6058730b34fafa0d274736cdee2f3c8
   RNScreens: 7f643ee0fd1407dc5085c7795460bd93da113b8f
-  RNSentry: ab7ba8bd678713c94762d2d3f2087d47105b6cf3
+  RNSentry: a20c5194cc6d7902683276f399a6eb5206fb9f05
   RNSoundPlayer: 7961678d02c7339d9e9cfb78b9f3e8fde17f9df2
-  RNSVG: c4d5a438a1c96f7ed7dc66349a5b7e97616fd701
-  Sentry: 59993bffde4a1ac297ba6d268dc4bbce068d7c1b
+  RNSVG: 681be694d501c0af971615811d4f2ea9baf58966
+  Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SpeechToText: e1b9927a2d92134738b5973f2ca72f91b2027af0
+  SpeechToText: d2cc38aa19061c3f46815c37ebf36d27d802a344
   SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
   TextToSpeech: 89b239221ec378d213af422d14789a729705360b
-  VisionCamera: 891edb31806dd3a239c8a9d6090d6ec78e11ee80
+  VisionCamera: b51af005669c6642dd1b4fca434eda4c1778de87
   Yoga: 3196a843cc5f4bc433f1a41cf17cdf804a01a529
 
 PODFILE CHECKSUM: 16fd8ad9ed701d7f1481b73ff40e32225521c317

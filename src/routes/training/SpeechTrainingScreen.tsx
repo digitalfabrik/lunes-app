@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useReducer } from 'react'
-import { AppState, Platform } from 'react-native'
+import { AppState, Image, Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import {
   SPEECH_TO_TEXT_ERRORS,
@@ -30,6 +30,7 @@ import { StandardJob } from '../../models/Job'
 import VocabularyItem from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, shuffleArray } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
@@ -185,6 +186,14 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   const labels = getLabels().exercises.training.speech
   const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
+
+  useEffect(() => {
+    const nextWordIndex = state.currentVocabularyItemIndex + 1
+    if (nextWordIndex < state.vocabularyItems.length) {
+      const nextImage = state.vocabularyItems[nextWordIndex].images[0]
+      Image.prefetch(nextImage).catch(reportError)
+    }
+  }, [state.currentVocabularyItemIndex, state.vocabularyItems])
 
   useEffect(() => {
     if (state.completed) {
