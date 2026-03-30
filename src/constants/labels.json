@@ -10,10 +10,8 @@
   "home": {
     "welcome": "Willkommen bei Lunes!",
     "haveFun": "Viel Spaß beim Lernen",
-    "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewUnits": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
@@ -125,11 +123,7 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedUnit": "Super, du hast das Modul abgeschlossen",
-    "unlockExercise": {
-      "part1": "Glückwunsch",
-      "part2": "ist jetzt freigeschaltet."
-    },
+    "finishedUnit": "Super, du hast die Einheit abgeschlossen",
     "correct": "richtig",
     "entries": "Eingaben",
     "action": {
@@ -164,6 +158,7 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
+      "units": "Einheiten",
       "impressum": "Impressum",
       "privacyPolicy": "Datenschutz",
       "manageJobs": "Lernbereiche verwalten",
