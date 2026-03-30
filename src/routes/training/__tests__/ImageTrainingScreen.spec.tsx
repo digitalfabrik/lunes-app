@@ -49,6 +49,7 @@ describe('ImageTrainingScreen', () => {
   const renderScreenAndWaitForLoad = async () => {
     const result = renderWithTheme(<ImageTrainingScreen navigation={navigation} route={route} />)
     await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
+    fireEvent(result.getByTestId('image-grid'), 'layout', { nativeEvent: { layout: { width: 300 } } })
     return result
   }
 
