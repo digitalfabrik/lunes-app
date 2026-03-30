@@ -12,7 +12,7 @@ jest.mock('axios', () => {
   }
 })
 
-jest.mock('axios-cache-interceptor', () => ({ setupCache: jest.fn(), buildKeyGenerator: jest.fn() }))
+jest.mock('axios-cache-interceptor', () => ({ setupCache: jest.fn(() => axios), buildKeyGenerator: jest.fn() }))
 
 beforeEach(() => {
   jest.clearAllMocks()

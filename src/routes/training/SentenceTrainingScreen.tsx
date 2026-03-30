@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
+import { Image } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
@@ -15,6 +16,7 @@ import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import WordsSelector, { SelectedWord } from './components/WordSelector'
@@ -121,6 +123,14 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
       })
     }
   }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length])
+
+  useEffect(() => {
+    const nextSentenceIndex = state.currentSentenceIndex + 1
+    if (nextSentenceIndex < state.sentences.length) {
+      const image = state.sentences[nextSentenceIndex].image
+      Image.prefetch(image).catch(reportError)
+    }
+  }, [state.currentSentenceIndex, state.sentences])
 
   return (
     <>
