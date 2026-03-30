@@ -17,7 +17,7 @@ import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
-import WordsSelector, { SelectedWord, WordsContainer } from './components/WordSelector'
+import WordsSelector, { SelectedWord } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
 
 export const MAX_ATTEMPTS_PER_SENTENCE = 5
@@ -50,18 +50,19 @@ const SelectedWordsArea = styled.View`
 const ResultIndicator = ({
   state,
   dispatch,
-  selectedWords,
+  currentSentence,
 }: {
   state: State
   dispatch: ActionDispatch<[Action]>
-  selectedWords: SelectedWord[]
+  currentSentence: Sentence
 }): ReactElement => {
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
+  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE
 
   const button =
-    isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
+    isCorrect || hasReachedMaxAttempts ? (
       <Button
         onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
         label={getLabels().exercises.continue}
@@ -77,19 +78,12 @@ const ResultIndicator = ({
       />
     )
 
-  if (!isCorrect) {
-    return <WordResultIndicator isVisible={isFinished} isCorrect={false} content={null} button={button} />
-  }
+  const correctAnswerContent =
+    isCorrect || hasReachedMaxAttempts ? <ContentText>{currentSentence.sentence}</ContentText> : null
 
-  const content = (
-    <WordsContainer>
-      {selectedWords.map(({ word, index }) => (
-        <ContentText key={index}>{word}</ContentText>
-      ))}
-    </WordsContainer>
+  return (
+    <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={correctAnswerContent} button={button} />
   )
-
-  return <WordResultIndicator isVisible={isFinished} isCorrect content={content} button={button} />
 }
 
 type SentenceTrainingProps = {
@@ -170,7 +164,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
         </ExerciseContainer>
       </TrainingExerciseContainer>
 
-      <ResultIndicator state={state} dispatch={dispatch} selectedWords={selectedWords} />
+      <ResultIndicator state={state} dispatch={dispatch} currentSentence={currentSentence} />
     </>
   )
 }
