@@ -18,7 +18,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const { manageJobs, overview } = getLabels().general.header
+  const { manageJobs, overview, units } = getLabels().general.header
   const theme = useTheme()
 
   return (
@@ -42,7 +42,7 @@ const HomeStackNavigator = (): ReactElement | null => {
       <Stack.Screen
         name='StandardExercises'
         component={StandardExercisesScreen}
-        options={({ navigation, route }) => options(route.params.unit.title, navigation)}
+        options={({ navigation }) => options(units, navigation)}
       />
       <Stack.Screen
         name='Imprint'
