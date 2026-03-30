@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
-import { ScrollView } from 'react-native'
+import React, { ReactElement, useEffect } from 'react'
+import { Image, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/images'
@@ -14,6 +14,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import AlternativeWordsSection from './components/AlternativeWordsSection'
 
 const Container = styled.View`
@@ -38,6 +39,15 @@ const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailE
   const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const hasPreviousVocabularyItem = vocabularyItemIndex > 0
   const closeExerciseLabel = getLabels().results.action.backToWordlist
+
+  useEffect(() => {
+    if (hasNextVocabularyItem) {
+      const images = vocabularyItems[vocabularyItemIndex + 1].images
+      if (images.length > 0) {
+        Image.prefetch(images[0]).catch(reportError)
+      }
+    }
+  }, [vocabularyItemIndex, vocabularyItems, hasNextVocabularyItem])
 
   const goToNextWord = () =>
     navigation.navigate('VocabularyDetailExercise', { ...route.params, vocabularyItemIndex: vocabularyItemIndex + 1 })

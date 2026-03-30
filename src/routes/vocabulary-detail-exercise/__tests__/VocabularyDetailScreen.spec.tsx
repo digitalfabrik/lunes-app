@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
+import { Image } from 'react-native'
 
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
@@ -20,6 +21,7 @@ jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
+jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
 
 describe('VocabularyDetailScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
