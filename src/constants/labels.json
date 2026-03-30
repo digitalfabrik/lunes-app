@@ -165,6 +165,7 @@
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
       "impressum": "Impressum",
+      "privacyPolicy": "Datenschutz",
       "manageJobs": "Lernbereiche verwalten",
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
@@ -248,10 +249,17 @@
   "search": {
     "enterWord": "Wort eingeben"
   },
+  "consentDialog": {
+    "title": "Hilf uns, Lunes zu verbessern",
+    "body": "Wir nutzen anonyme Analysedaten, um zu verstehen, wie die App genutzt wird, und um die Stabilität zu verbessern. Diese Daten identifizieren dich nicht persönlich. Du kannst deine Wahl jederzeit in den Einstellungen ändern.",
+    "allow": "Anonyme Analyse erlauben",
+    "decline": "Nicht jetzt",
+    "privacyNotice": "Datenschutzhinweis"
+  },
   "settings": {
     "settings": "Einstellungen",
-    "appStability": "App Stabilität",
-    "appStabilityExplanation": "Durch das automatische Senden von Fehlerberichten die Lunes App verbessern",
+    "analyticsConsent": "Anonyme Analysedaten",
+    "analyticsConsentExplanation": "Anonyme Nutzungsdaten zur Verbesserung der App senden",
     "version": "Version",
     "devSettings": "Dev settings",
     "debugModal": {
