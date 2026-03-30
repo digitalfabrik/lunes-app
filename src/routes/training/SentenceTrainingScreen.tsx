@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
-import styled, { css } from 'styled-components/native'
+import styled from 'styled-components/native'
 
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
@@ -47,15 +47,6 @@ const SelectedWordsArea = styled.View`
   background-color: ${props => props.theme.colors.backgroundLow};
 `
 
-const BottomSheetWord = styled(ContentText)<{ markIncorrect: boolean }>`
-  ${props =>
-    props.markIncorrect &&
-    css`
-      border-width: 1px;
-      border-radius: ${props.theme.spacings.xxs};
-    `}
-`
-
 const ResultIndicator = ({
   state,
   dispatch,
@@ -68,16 +59,6 @@ const ResultIndicator = ({
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
-
-  const content = (
-    <WordsContainer>
-      {selectedWords.map(({ word, state, index }) => (
-        <BottomSheetWord key={index} markIncorrect={state === 'wrong'}>
-          {word}
-        </BottomSheetWord>
-      ))}
-    </WordsContainer>
-  )
 
   const button =
     isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
@@ -96,7 +77,19 @@ const ResultIndicator = ({
       />
     )
 
-  return <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={content} button={button} />
+  if (!isCorrect) {
+    return <WordResultIndicator isVisible={isFinished} isCorrect={false} content={null} button={button} />
+  }
+
+  const content = (
+    <WordsContainer>
+      {selectedWords.map(({ word, index }) => (
+        <ContentText key={index}>{word}</ContentText>
+      ))}
+    </WordsContainer>
+  )
+
+  return <WordResultIndicator isVisible={isFinished} isCorrect content={content} button={button} />
 }
 
 type SentenceTrainingProps = {

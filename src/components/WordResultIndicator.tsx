@@ -11,6 +11,7 @@ const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};
   align-items: center;
   align-self: stretch;
+  gap: ${props => props.theme.spacings.md};
 `
 
 const BottomSheetRow = styled.View`
@@ -23,13 +24,14 @@ const BottomSheetWordContainer = styled.View`
   background-color: ${props => props.theme.colors.backgroundTransparent};
   padding: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.xxs};
-  width: 100%;
+  align-self: stretch;
+  margin: 0 ${props => props.theme.spacings.md};
 `
 
 type WordResultIndicatorProps = {
   isVisible: boolean
   isCorrect: boolean
-  content: ReactElement
+  content: ReactElement | null
   button: ReactElement
 }
 const WordResultIndicator = ({ isVisible, isCorrect, content, button }: WordResultIndicatorProps): ReactElement => {
@@ -40,7 +42,7 @@ const WordResultIndicator = ({ isVisible, isCorrect, content, button }: WordResu
     <BottomSheet visible={isVisible} backgroundColor={color}>
       <BottomSheetColumn>
         <BottomSheetRow>
-          <Icon width='32' height='32' />
+          <Icon width='32' height='32' accessible={false} />
           <HeadingText>
             {isCorrect
               ? getLabels().exercises.training.sentence.correct
@@ -48,9 +50,7 @@ const WordResultIndicator = ({ isVisible, isCorrect, content, button }: WordResu
           </HeadingText>
         </BottomSheetRow>
 
-        <BottomSheetColumn>
-          <BottomSheetWordContainer>{content}</BottomSheetWordContainer>
-        </BottomSheetColumn>
+        {content && <BottomSheetWordContainer>{content}</BottomSheetWordContainer>}
 
         {button}
       </BottomSheetColumn>
