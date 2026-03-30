@@ -28,16 +28,16 @@ const keyGenerator = buildKeyGenerator(({ headers, baseURL = '', url = '', metho
   data,
 }))
 
-setupCache(axios, {
-  generateKey: keyGenerator,
-})
-
-const instance = axios.create({
+const rawInstance = axios.create({
   headers: {
     'X-os': Platform.OS,
     'X-os-version': Platform.Version,
     'X-app-version': DeviceInfo.getVersion(),
   },
+})
+
+const instance = setupCache(rawInstance, {
+  generateKey: keyGenerator,
 })
 
 const getUrl = async (endpoint: string): Promise<string> => {
