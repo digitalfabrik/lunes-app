@@ -4,7 +4,7 @@ import React, { createContext, ReactElement } from 'react'
 import { Favorite, Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { UserVocabularyItem } from '../models/VocabularyItem'
-import { TrackingConsent } from './AnalyticsService'
+import { AnalyticsConsent } from './AnalyticsService'
 import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
@@ -16,11 +16,7 @@ export type Storage = {
   // 0 stands for the versions of the storage where no version number was stored yet.
   version: number
   wordNodeCards: WordNodeCard[]
-  // Whether basic tracking is enabled, like reporting errors.
-  // Will be removed in favor of `trackingConsent` in the future.
-  isTrackingEnabled: boolean
-  // Whether consent to detailed tracking has been given.
-  trackingConsent: TrackingConsent | null
+  analyticsConsent: AnalyticsConsent | null
   // Null means the selected jobs were never set before, which means that the intro should be shown
   selectedJobs: number[] | null
   isDevModeEnabled: boolean
@@ -46,8 +42,7 @@ export type Storage = {
 export const newDefaultStorage = (): Storage => ({
   version: STORAGE_VERSION,
   wordNodeCards: [],
-  isTrackingEnabled: true,
-  trackingConsent: null,
+  analyticsConsent: null,
   selectedJobs: null,
   isDevModeEnabled: false,
   progress: {},
@@ -66,8 +61,7 @@ type StorageKey = keyof Storage
 export const storageKeys: Record<StorageKey, string> = {
   version: 'version',
   wordNodeCards: 'wordNodeCards',
-  isTrackingEnabled: 'sentryTracking',
-  trackingConsent: 'trackingConsent',
+  analyticsConsent: 'analyticsConsent',
   selectedJobs: 'selectedProfessions',
   isDevModeEnabled: 'devmode',
   progress: 'progress',
@@ -165,8 +159,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
   const storage: Storage = await resolveObject({
     version: getStorageItem('version'),
     wordNodeCards: getStorageItem('wordNodeCards'),
-    isTrackingEnabled: getStorageItem('isTrackingEnabled'),
-    trackingConsent: getStorageItem('trackingConsent'),
+    analyticsConsent: getStorageItem('analyticsConsent'),
     selectedJobs: getStorageItem('selectedJobs'),
     isDevModeEnabled: getStorageItem('isDevModeEnabled'),
     progress: getStorageItem('progress'),
