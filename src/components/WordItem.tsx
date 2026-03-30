@@ -1,59 +1,29 @@
-import React, { useState, ReactElement } from 'react'
-import styled, { css } from 'styled-components/native'
+import React, { ReactElement } from 'react'
+import { Pressable } from 'react-native'
+import styled from 'styled-components/native'
 
 import { Answer, Article } from '../constants/data'
 import { getLabels, getArticleColor } from '../services/helpers'
 import { ContentSecondary, ContentSecondaryLight } from './text/Content'
 
-const Container = styled.Pressable<StyledListElementProps>`
+const PRESSED_ELEVATION = 6
+const PRESSED_SHADOW_OPACITY = 0.5
+
+const Container = styled.View<StyledListElementProps>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   padding: ${props => props.theme.spacings.sm};
   border-radius: 2px;
-  border-width: ${props => {
-    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
-      return '0px'
-    }
-    return '1px'
-  }};
+  border-width: ${props => (props.pressed ? '0px' : '1px')};
   border-style: solid;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
   border-color: ${props => props.theme.colors.disabled};
-  background-color: ${props => {
-    if (props.pressed) {
-      return props.theme.colors.primary
-    }
-    if (props.correct && (props.selected || props.delayPassed)) {
-      return props.theme.colors.correct
-    }
-    if (props.selected) {
-      return props.theme.colors.incorrect
-    }
-    return props.theme.colors.backgroundAccent
-  }};
-  shadow-color: ${props => {
-    if (props.correct) {
-      return props.theme.colors.correct
-    }
-    if (props.selected) {
-      return props.theme.colors.incorrect
-    }
-    return props.theme.colors.shadow
-  }};
-  ${props => {
-    if (props.pressed || props.selected || (props.correct && props.delayPassed)) {
-      return css`
-        elevation: 6;
-        shadow-opacity: 0.5;
-      `
-    }
-    return css`
-      elevation: 0;
-      shadow-opacity: 0;
-    `
-  }};
+  background-color: ${props => (props.pressed ? props.theme.colors.primary : props.theme.colors.backgroundAccent)};
+  elevation: ${props => (props.pressed ? PRESSED_ELEVATION : 0)};
+  shadow-color: ${props => props.theme.colors.shadow};
+  shadow-opacity: ${props => (props.pressed ? PRESSED_SHADOW_OPACITY : 0)};
   shadow-radius: 5px;
   shadow-offset: 5px 5px;
 `
@@ -67,112 +37,51 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   align-items: center;
   margin-right: ${props => props.theme.spacings.sm};
   margin-left: ${props => props.theme.spacings.sm};
-  background-color: ${props => {
-    if (props.pressed) {
-      return props.theme.colors.background
-    }
-    if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.primary
-    }
-    return getArticleColor(props.article)
-  }};
+  background-color: ${props => (props.pressed ? props.theme.colors.background : getArticleColor(props.article))};
 `
 
 const ArticleText = styled(ContentSecondary)<StyledListElementProps>`
   text-align: center;
-  color: ${props => {
-    if (props.pressed) {
-      return props.theme.colors.primary
-    }
-    if ((props.correct && props.selected) || (props.correct && props.delayPassed)) {
-      return props.theme.colors.correct
-    }
-    if (props.selected) {
-      return props.theme.colors.incorrect
-    }
-    return props.theme.colors.text
-  }};
+  color: ${props => (props.pressed ? props.theme.colors.primary : props.theme.colors.text)};
 `
 
 const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
-  color: ${props => {
-    if (props.pressed) {
-      return props.theme.colors.background
-    }
-    if (props.selected || (props.correct && props.delayPassed)) {
-      return props.theme.colors.primary
-    }
-    return props.theme.colors.text
-  }};
+  color: ${props => (props.pressed ? props.theme.colors.background : props.theme.colors.text)};
 `
 
 export type SingleChoiceListItemProps = {
   answer: Answer
-  correct?: boolean
-  selected?: boolean
   anyAnswerSelected?: boolean
-  delayPassed?: boolean
   onClick?: (answer: Answer) => void
   disabled?: boolean
 }
 
 type StyledListElementProps = {
   pressed: boolean
-  selected: boolean
-  correct: boolean
-  delayPassed: boolean
 }
 
 const WordItem = ({
   answer,
   onClick,
-  correct = false,
-  selected = false,
   anyAnswerSelected = false,
-  delayPassed = false,
   disabled = false,
 }: SingleChoiceListItemProps): ReactElement => {
-  const [pressed, setPressed] = useState<boolean>(false)
   const { word, article } = answer
-  const showCorrect = anyAnswerSelected && correct
-
-  const onPressIn = (): void => {
-    setPressed(true)
-  }
-
-  const onPressOut = (): void => {
-    if (onClick) {
-      setPressed(false)
-      onClick(answer)
-    }
-  }
 
   return (
-    <Container
-      correct={showCorrect}
-      selected={selected}
-      onPressIn={onClick && onPressIn}
-      onPressOut={onPressOut}
-      pressed={pressed}
-      delayPassed={delayPassed}
-      disabled={anyAnswerSelected || disabled}
-    >
-      <ArticleBox
-        article={article}
-        selected={selected}
-        correct={showCorrect}
-        pressed={pressed}
-        delayPassed={delayPassed}
-      >
-        <ArticleText selected={selected} correct={showCorrect} pressed={pressed} delayPassed={delayPassed}>
-          {article.value}
-        </ArticleText>
-      </ArticleBox>
-      <Word selected={selected} pressed={pressed} correct={showCorrect} delayPassed={delayPassed}>
-        {word}
-        {article.id === 4 && ` (${getLabels().general.plurals})`}
-      </Word>
-    </Container>
+    <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected || disabled}>
+      {({ pressed }) => (
+        <Container pressed={pressed}>
+          <ArticleBox article={article} pressed={pressed}>
+            <ArticleText pressed={pressed}>{article.value}</ArticleText>
+          </ArticleBox>
+          <Word pressed={pressed}>
+            {word}
+            {article.id === 4 && ` (${getLabels().general.plurals})`}
+          </Word>
+        </Container>
+      )}
+    </Pressable>
   )
 }
 

@@ -58,6 +58,9 @@ type State = {
   answers: Answer[]
 }
 
+const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
+  answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
+
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const results = shuffleArray(
     vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })),
@@ -96,8 +99,6 @@ type WordChoiceExerciseProps = {
   isRepetitionExercise: boolean
 }
 
-const CORRECT_ANSWER_DELAY = 700
-
 const WordChoiceExercise = ({
   vocabularyItems,
   unitId,
@@ -106,7 +107,6 @@ const WordChoiceExercise = ({
   isRepetitionExercise,
 }: WordChoiceExerciseProps): ReactElement => {
   const storageCache = useStorageCache()
-  const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [state, setState] = useState<State>(initializeState(vocabularyItems))
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
   const { vocabularyItem, numberOfTries, result } = state.results[state.currentWord]
@@ -166,9 +166,6 @@ const WordChoiceExercise = ({
     }
   }
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
-    answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
-
   const updateResult = async (numberOfTries: number, isCorrect: boolean): Promise<void> => {
     const result = isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
     const newResults = [...state.results]
@@ -188,10 +185,6 @@ const WordChoiceExercise = ({
     if (!isRepetitionExercise && !isCorrect) {
       await repetitionService.addWordToFirstSection(vocabularyItem)
     }
-
-    setTimeout(() => {
-      setDelayPassed(true)
-    }, CORRECT_ANSWER_DELAY)
   }
 
   const onFinishWord = async (): Promise<void> => {
@@ -205,7 +198,6 @@ const WordChoiceExercise = ({
       updateState({ currentWord: state.currentWord + 1 })
     }
     setSelectedAnswer(null)
-    setDelayPassed(false)
   }
 
   const isLastWord = state.currentWord + 1 >= count
@@ -227,14 +219,7 @@ const WordChoiceExercise = ({
 
       <ScrollView>
         <VocabularyItemImageSection vocabularyItem={vocabularyItem} showAudioPlayer={false} />
-        <SingleChoice
-          answers={state.answers}
-          isAnswerEqual={isAnswerEqual}
-          onClick={onClickAnswer}
-          correctAnswers={correctAnswers}
-          selectedAnswer={selectedAnswer}
-          delayPassed={delayPassed}
-        />
+        <SingleChoice answers={state.answers} onClick={onClickAnswer} selectedAnswer={selectedAnswer} />
         <ButtonContainer>
           {selectedAnswer === null && !isLastWord && (
             <Button

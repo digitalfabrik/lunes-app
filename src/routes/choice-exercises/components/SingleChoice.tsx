@@ -14,31 +14,18 @@ export const StyledContainer = styled.View`
 
 export type SingleChoiceProps = {
   onClick: (answer: Answer) => void
-  isAnswerEqual: (answer1: Answer, answer2: Answer | null) => boolean
   answers: Answer[]
-  correctAnswers: Answer[]
   selectedAnswer: Answer | null
-  delayPassed: boolean
 }
 
-export const SingleChoice = ({
-  answers,
-  isAnswerEqual,
-  onClick,
-  correctAnswers,
-  selectedAnswer,
-  delayPassed,
-}: SingleChoiceProps): ReactElement => (
+export const SingleChoice = ({ answers, onClick, selectedAnswer }: SingleChoiceProps): ReactElement => (
   <StyledContainer>
     {answers.map(answer => (
       <WordItem
         key={`${answer.article.id}-${answer.word}`}
         answer={answer}
         onClick={onClick}
-        correct={correctAnswers.some(it => isAnswerEqual(answer, it))}
-        selected={isAnswerEqual(answer, selectedAnswer)}
         anyAnswerSelected={selectedAnswer !== null}
-        delayPassed={delayPassed}
       />
     ))}
   </StyledContainer>
