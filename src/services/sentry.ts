@@ -41,9 +41,9 @@ export const reportError = (err: unknown): void => {
   if (__DEV__) {
     console.error('Sentry reported error: ', err)
   } else {
-    getStorageItem('isTrackingEnabled')
-      .then(isTrackingEnabled => {
-        if (isTrackingEnabled) {
+    getStorageItem('analyticsConsent')
+      .then(analyticsConsent => {
+        if (analyticsConsent?.consentGiven) {
           Sentry.captureException(err)
         }
       })

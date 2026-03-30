@@ -1,5 +1,6 @@
 import { CardStyleInterpolators, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
+import { Linking } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
@@ -77,6 +78,11 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
           isSubItem
           title={getLabels().general.header.impressum}
           onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Imprint' } })}
+        />
+        <OverlayMenuItem
+          isSubItem
+          title={getLabels().general.header.privacyPolicy}
+          onPress={() => Linking.openURL('https://lunes.app/datenschutz-app/')}
         />
       </Sidebar>
     </Container>
