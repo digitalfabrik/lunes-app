@@ -11,8 +11,11 @@ import { ContentSecondary, ContentTextBold } from '../../components/text/Content
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import theme from '../../constants/theme'
+import { loadAllWords } from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { RepetitionService } from '../../services/RepetitionService'
 import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
 
@@ -91,14 +94,20 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
     viewWords,
   } = getLabels().repetition
   const repetitionService = useRepetitionService()
+  const storageCache = useStorageCache()
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
-    if (wordNodeCards.length > 0) {
+    if (wordNodeCards.length === 0) {
+      return
+    }
+    const allVocabulary = await loadAllWords(storageCache)
+    const cardsWithVocabulary = RepetitionService.attachVocabularyToCards(wordNodeCards, allVocabulary)
+    if (cardsWithVocabulary.length > 0) {
       navigation.navigate('WordChoiceExercise', {
         unitId: null,
-        vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
+        vocabularyItems: cardsWithVocabulary.map(item => item.word),
         contentType: 'repetition',
         unitTitle: '',
       })

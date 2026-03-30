@@ -6,7 +6,7 @@ import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockJobs } from '../../testing/mockJob'
 import { trackEvent } from '../AnalyticsService'
-import { RepetitionService, WordNodeCard } from '../RepetitionService'
+import { RepetitionService } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
@@ -182,13 +182,13 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 2))
       expect(repetitionService.getWordNodeCards()).toHaveLength(0)
       await addFavorite(storageCache, repetitionService, vocabularyItems[2])
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
         vocabularyItems[2].id,
       ])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 3))
       await addFavorite(storageCache, repetitionService, vocabularyItems[3])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
         vocabularyItems[2].id,
         vocabularyItems[3].id,
       ])
@@ -336,47 +336,23 @@ describe('storageUtils', () => {
         )
 
         const storageCache = await loadStorageCache()
-        const expectedWordNodeCards: WordNodeCard[] = [
+        expect(storageCache.getItem('wordNodeCards')).toEqual([
           {
-            word: {
-              id: { type: VocabularyItemTypes.UserCreated, index: 2 },
-              word: 'Hund',
-              article: { id: 1, value: 'der' },
-              images: ['image-1'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.UserCreated, index: 2 },
           },
           {
-            word: {
-              id: { type: VocabularyItemTypes.Standard, id: 3 },
-              word: 'lunes standard',
-              article: { id: 1, value: 'der' },
-              images: ['image-2'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Standard, id: 3 },
           },
           {
-            word: {
-              id: { type: VocabularyItemTypes.Protected, protectedId: 4, apiKey: 'abc123' },
-              word: 'lunes protected',
-              article: { id: 1, value: 'der' },
-              images: ['image-3'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Protected, protectedId: 4, apiKey: 'abc123' },
           },
-        ]
-        expect(JSON.stringify(storageCache.getItem('wordNodeCards'))).toStrictEqual(
-          JSON.stringify(expectedWordNodeCards),
-        )
+        ])
       })
     })
 
@@ -411,6 +387,55 @@ describe('storageUtils', () => {
 
         const storageCache = await loadStorageCache()
         expect(storageCache.getItem('notMigratedSelectedJobs')).toEqual(selectedJobs)
+      })
+    })
+
+    describe('should migrate from v4', () => {
+      it('should replace word with wordId in wordNodeCards', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '4')
+        await AsyncStorage.setItem(
+          'wordNodeCards',
+          JSON.stringify([
+            {
+              word: {
+                id: { type: VocabularyItemTypes.Standard, id: 1 },
+                word: 'Spachtel',
+                article: { id: 1, value: 'die' },
+                images: ['image-1'],
+                audio: null,
+                alternatives: [],
+              },
+              section: 2,
+              inThisSectionSince: new Date('2025-10-13'),
+            },
+            {
+              word: {
+                id: { type: VocabularyItemTypes.UserCreated, index: 5 },
+                word: 'Hund',
+                article: { id: 2, value: 'der' },
+                images: [],
+                audio: null,
+                alternatives: [],
+              },
+              section: 0,
+              inThisSectionSince: new Date('2025-11-01'),
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        expect(storageCache.getItem('wordNodeCards')).toEqual([
+          {
+            section: 2,
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Standard, id: 1 },
+          },
+          {
+            section: 0,
+            inThisSectionSince: new Date('2025-11-01').toISOString(),
+            wordId: { type: VocabularyItemTypes.UserCreated, index: 5 },
+          },
+        ])
       })
     })
   })
