@@ -17,10 +17,12 @@ jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
+
 jest.mock('../../../components/CheatMode', () => {
   const Text = require('react-native').Text
   return () => <Text>CheatMode</Text>
 })
+
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it),
@@ -30,6 +32,7 @@ jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
 })
+
 jest.mock('react-native-image-zoom-viewer', () => {
   const Text = require('react-native').Text
   return () => <Text>ImageZoomViewer</Text>
@@ -44,7 +47,9 @@ jest.mock(
 )
 
 jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
+
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
 jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn().mockResolvedValue(undefined),
 }))
@@ -77,7 +82,7 @@ describe('WordChoiceExerciseScreen', () => {
     renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
   const selectAnswerAndPressNext = (getByText: ReturnType<typeof renderScreen>['getByText'], word: string) => {
-    fireEvent(getByText(word), 'pressOut')
+    fireEvent.press(getByText(word))
     fireEvent.press(getByText(getLabels().exercises.next))
   }
 
@@ -92,7 +97,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should show Next button in the bottom sheet and hide tryLater after selecting an answer', () => {
     const { getByText, queryByText } = renderScreen()
 
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
 
     expect(getByText(getLabels().exercises.next)).toBeVisible()
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
@@ -101,7 +106,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should show solution in the bottom sheet when answer is incorrect', () => {
     const { getByText } = renderScreen()
 
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
 
     expect(getByText(getLabels().exercises.solution)).toBeVisible()
   })
@@ -122,7 +127,7 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Spachtel')
     selectAnswerAndPressNext(getByText, 'Auto')
     selectAnswerAndPressNext(getByText, 'Hose')
-    fireEvent(getByText('Helm'), 'pressOut')
+    fireEvent.press(getByText('Helm'))
 
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
     fireEvent.press(getByText(getLabels().exercises.showResults))
@@ -134,7 +139,7 @@ describe('WordChoiceExerciseScreen', () => {
     const { getByText } = renderScreen()
 
     // Click a wrong answer for Spachtel, moving it to the end of the queue
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly
@@ -146,7 +151,7 @@ describe('WordChoiceExerciseScreen', () => {
     expect(navigation.popTo).not.toHaveBeenCalled()
 
     // Answer the repeated Spachtel correctly to finish
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
     fireEvent.press(getByText(getLabels().exercises.showResults))
 
     await waitFor(() => expect(navigation.popTo).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
@@ -161,7 +166,7 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Helm')
 
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
   })
 
@@ -169,7 +174,7 @@ describe('WordChoiceExerciseScreen', () => {
     it('does not add a word to the repetition service when the answer was correct', async () => {
       const { getByText } = renderScreen()
 
-      fireEvent(getByText('Spachtel'), 'pressOut')
+      fireEvent.press(getByText('Spachtel'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()).toHaveLength(0))
     })
@@ -177,7 +182,7 @@ describe('WordChoiceExerciseScreen', () => {
     it('adds a word to the repetition service when the answer was incorrect', async () => {
       const { getByText } = renderScreen()
 
-      fireEvent(getByText('Auto'), 'pressOut')
+      fireEvent.press(getByText('Auto'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()).toHaveLength(1))
     })
@@ -187,7 +192,7 @@ describe('WordChoiceExerciseScreen', () => {
     const { getByText } = renderScreen()
 
     // Answer Spachtel wrong once - moves to end of queue (index 3)
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly so Spachtel is reached again
@@ -196,11 +201,11 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Helm')
 
     // Answer Spachtel wrong a second time - still at end of queue, numberOfTries=2
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Answer Spachtel wrong a third time, reaching NUMBER_OF_MAX_RETRIES
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
 
     // The result indicator must still show "incorrect", not "correct"
     expect(getByText(getLabels().exercises.training.sentence.incorrect)).toBeVisible()
@@ -226,7 +231,7 @@ describe('WordChoiceExerciseScreen', () => {
       expect(repetitionService.getWordNodeCards()[0].section).toBe(0)
 
       const { getByText } = renderRepetitionScreen()
-      fireEvent(getByText('Spachtel'), 'pressOut')
+      fireEvent.press(getByText('Spachtel'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()[0].section).toBe(1))
     })
