@@ -8,7 +8,6 @@ import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import { setExerciseProgress } from '../services/storageUtils'
 
@@ -42,7 +41,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
       <VocabularyList
         vocabularyItems={route.params.vocabularyItems}
         onItemPress={onItemPress}
-        title={getLabels().exercises.vocabularyList.title}
+        title={route.params.unitTitle}
       />
     </RouteWrapper>
   )
