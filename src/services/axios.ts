@@ -45,9 +45,9 @@ const getUrl = async (endpoint: string): Promise<string> => {
   return `${baseURL}/${endpoint}`
 }
 
-export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {
+export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string, noCache?: boolean): Promise<T> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  const response = await instance.get(await getUrl(endpoint), { headers })
+  const response = await instance.get(await getUrl(endpoint), { headers, cache: noCache ? false : undefined })
   return response.data
 }
 
@@ -55,3 +55,6 @@ export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: stri
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
   return instance.post(await getUrl(endpoint), data, { headers })
 }
+
+export const deleteFromEndpoint = async (endpoint: string): Promise<AxiosResponse> =>
+  instance.delete(await getUrl(endpoint))
