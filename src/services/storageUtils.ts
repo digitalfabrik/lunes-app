@@ -16,7 +16,7 @@ import { trackEvent } from './AnalyticsService'
 import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
 import type { WordNodeCard } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys, StorageValue } from './Storage'
+import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, StorageValue } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -119,7 +119,7 @@ export const migrate0To1 = async (): Promise<void> => {
     return
   }
   await AsyncStorage.setItem(
-    storageKeys.favorites,
+    'favorites-2',
     JSON.stringify(
       parsedFavorites.map((item: number) => ({
         id: item,
@@ -140,13 +140,13 @@ export const migrate1To2 = async (): Promise<void> => {
     images: oldWord.images.map(image => image.image),
   })
 
-  const oldUserVocabulary = await getStorageItemOr<OldVocabularyItem[]>(storageKeys.userVocabulary, [])
+  const oldUserVocabulary = await getStorageItemOr<OldVocabularyItem[]>('userVocabulary', [])
   const newUserVocabulary = oldUserVocabulary.map(updateVocabularyItem)
-  await AsyncStorage.setItem(storageKeys.userVocabulary, JSON.stringify(newUserVocabulary))
+  await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
 
-  const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>(storageKeys.wordNodeCards, [])
+  const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
   const newWordNodeCards = oldWordNodeCards.map(card => ({ ...card, word: updateVocabularyItem(card.word) }))
-  await AsyncStorage.setItem(storageKeys.wordNodeCards, JSON.stringify(newWordNodeCards))
+  await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newWordNodeCards))
 }
 
 // Migrates `VocabularyItem`s to use the new id system
@@ -165,9 +165,9 @@ export const migrate2To3 = async (): Promise<void> => {
       id: { index: oldItem.id, type: 'user-created' },
     })
 
-    const oldUserVocabulary = await getStorageItemOr<OldUserVocabularyItem[]>(storageKeys.userVocabulary, [])
+    const oldUserVocabulary = await getStorageItemOr<OldUserVocabularyItem[]>('userVocabulary', [])
     const newUserVocabulary: NewUserVocabularyItem[] = oldUserVocabulary.map(updateUserVocabularyItem)
-    await AsyncStorage.setItem(storageKeys.userVocabulary, JSON.stringify(newUserVocabulary))
+    await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
   }
 
   type OldVocabularyItemType = 'lunes-standard' | 'lunes-protected' | 'user-created'
@@ -217,9 +217,9 @@ export const migrate2To3 = async (): Promise<void> => {
       return { ...oldWordNodeCard, word: newWord }
     }
 
-    const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>(storageKeys.wordNodeCards, [])
+    const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
     const newWordNodeCards: NewWordNodeCard[] = oldWordNodeCards.map(updateWordNodeCard).filter(it => it !== null)
-    await AsyncStorage.setItem(storageKeys.wordNodeCards, JSON.stringify(newWordNodeCards))
+    await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newWordNodeCards))
   }
 
   const migrateFavorites = async (): Promise<void> => {
@@ -229,11 +229,11 @@ export const migrate2To3 = async (): Promise<void> => {
       apiKey?: string
     }
 
-    const oldFavorites = await getStorageItemOr<OldFavorite[]>(storageKeys.favorites, [])
+    const oldFavorites = await getStorageItemOr<OldFavorite[]>('favorites-2', [])
     const newFavorites: NewVocabularyId[] = oldFavorites
       .map(({ id, vocabularyItemType, apiKey }) => getNewId({ id, type: vocabularyItemType, apiKey }))
       .filter(it => it !== null)
-    await AsyncStorage.setItem(storageKeys.favorites, JSON.stringify(newFavorites))
+    await AsyncStorage.setItem('favorites-2', JSON.stringify(newFavorites))
   }
 
   await migrateUserVocabulary()
@@ -243,8 +243,8 @@ export const migrate2To3 = async (): Promise<void> => {
 
 // Adds the list of jobs with possibly lost progress because they were started before the CMS migration
 export const migrate3To4 = async (): Promise<void> => {
-  const selectedJobs = await getStorageItemOr<number[]>(storageKeys.selectedJobs, [])
-  await AsyncStorage.setItem(storageKeys.notMigratedSelectedJobs, JSON.stringify(selectedJobs))
+  const selectedJobs = await getStorageItemOr<number[]>('selectedProfessions', [])
+  await AsyncStorage.setItem('notMigratedSelectedJobs', JSON.stringify(selectedJobs))
 }
 
 // Replaces full VocabularyItem stored in WordNodeCards with only the VocabularyItemId
@@ -255,28 +255,34 @@ export const migrate4To5 = async (): Promise<void> => {
     inThisSectionSince: string
   }
 
-  const migrateCard = ({ word, section, inThisSectionSince }: OldWordNodeCard): WordNodeCard => ({
+  type NewWordNodeCard = {
+    wordId: VocabularyItemId
+    section: WordNodeCard['section']
+    inThisSectionSince: Date
+  }
+
+  const migrateCard = ({ word, section, inThisSectionSince }: OldWordNodeCard): NewWordNodeCard => ({
     wordId: word.id,
     section,
     inThisSectionSince: new Date(inThisSectionSince),
   })
 
-  const oldCards = await getStorageItemOr<OldWordNodeCard[]>(storageKeys.wordNodeCards, [])
+  const oldCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
   const newCards = oldCards.map(migrateCard)
-  await AsyncStorage.setItem(storageKeys.wordNodeCards, JSON.stringify(newCards))
+  await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newCards))
 }
 
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
-  const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
+  const overwrite = await AsyncStorage.getItem('cms')
   if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(JSON.parse(overwrite))) {
-    await AsyncStorage.removeItem(storageKeys.cmsUrlOverwrite)
+    await AsyncStorage.removeItem('cms')
   }
 }
 
 export const migrateStorage = async (): Promise<void> => {
   const getStorageVersion = async (): Promise<number> => {
-    const version = await getStorageItemOr<number | null>(storageKeys.version, null)
+    const version = await getStorageItemOr<number | null>('version', null)
     if (version !== null) {
       return version
     }
@@ -314,7 +320,7 @@ export const migrateStorage = async (): Promise<void> => {
   }
 
   if (lastVersion !== STORAGE_VERSION) {
-    await AsyncStorage.setItem(storageKeys.version, STORAGE_VERSION.toString())
+    await AsyncStorage.setItem('version', STORAGE_VERSION.toString())
   }
 }
 
