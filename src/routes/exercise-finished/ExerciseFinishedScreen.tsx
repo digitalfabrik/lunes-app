@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ComponentType, ReactElement, useState } from 'react'
+import React, { ComponentType, ReactElement, useEffect, useState } from 'react'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -38,7 +38,7 @@ type ExerciseFinishedScreenProps = {
 
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, unitTitle } = route.params
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(true)
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const correctResults = results.filter(doc => doc.result === 'correct')
   const score = calculateScore(results)
 
@@ -47,6 +47,21 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
 
   const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
   const isRepetition = route.params.contentType === 'repetition'
+  const shouldShowRepetitionModal =
+    exercise === FIRST_EXERCISE_FOR_REPETITION &&
+    !isRepetition &&
+    results.filter(result => result.numberOfTries > 1).length >= 3
+
+  useEffect(() => {
+    if (!shouldShowRepetitionModal) {
+      return undefined
+    }
+    return navigation.addListener('transitionEnd', ({ data: { closing } }) => {
+      if (!closing) {
+        setIsModalVisible(true)
+      }
+    })
+  }, [navigation, shouldShowRepetitionModal])
 
   const navigateBackToMenu = (): void => navigation.pop()
 
@@ -76,32 +91,31 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   }
 
   const { message, resultColor, buttonText, ResultIcon, navigationAction } = helper()
+
   return (
     <RouteWrapper
       bottomBackgroundColor={theme.colors.background}
       backgroundColor={theme.colors.primary}
       lightStatusBarContent
     >
-      {exercise === FIRST_EXERCISE_FOR_REPETITION &&
-        !isRepetition &&
-        results.some(result => result.numberOfTries > 1) && (
-          <Modal
-            visible={isModalVisible}
-            confirmationAction={() => {
-              setIsModalVisible(false)
-              navigation.navigate('BottomTabNavigator', { screen: 'RepetitionTab' })
-            }}
-            cancelButtonText={getLabels().repetition.repeatLater}
-            confirmationButtonText={getLabels().repetition.repeatNow}
-            onClose={() => setIsModalVisible(false)}
-            testID='repetition-modal'
-            icon={<LightBulbIconBlack width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />}
-            text={getLabels().repetition.hintModalHeaderText}
-          >
-            <ContainerText>{getLabels().repetition.hintModalContentText}</ContainerText>
-            <BottomTabsIcon style={{ marginBottom: 40 }} />
-          </Modal>
-        )}
+      {shouldShowRepetitionModal && (
+        <Modal
+          visible={isModalVisible}
+          confirmationAction={() => {
+            setIsModalVisible(false)
+            navigation.navigate('BottomTabNavigator', { screen: 'RepetitionTab' })
+          }}
+          cancelButtonText={getLabels().repetition.repeatLater}
+          confirmationButtonText={getLabels().repetition.repeatNow}
+          onClose={() => setIsModalVisible(false)}
+          testID='repetition-modal'
+          icon={<LightBulbIconBlack width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />}
+          text={getLabels().repetition.hintModalHeaderText}
+        >
+          <ContainerText>{getLabels().repetition.hintModalContentText}</ContainerText>
+          <BottomTabsIcon style={{ marginBottom: 40 }} />
+        </Modal>
+      )}
       <ExerciseFinishedBase
         results={{ correct: correctResults.length, total: results.length }}
         feedbackColor={resultColor}

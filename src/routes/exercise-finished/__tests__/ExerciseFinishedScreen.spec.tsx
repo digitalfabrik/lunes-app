@@ -18,31 +18,47 @@ describe('ExerciseFinishedScreen', () => {
     exerciseKey: ExerciseKey,
     allCorrect: boolean,
     isRepetition: boolean = false,
-  ): RouteProp<RoutesParams, 'ExerciseFinished'> => ({
-    key: '',
-    name: 'ExerciseFinished',
-    params: {
-      contentType: isRepetition ? 'repetition' : 'standard',
-      unitId,
-      unitTitle: 'unit',
-      vocabularyItems: new VocabularyItemBuilder(4).build(),
-      exercise: exerciseKey,
-      results: new VocabularyItemBuilder(4).build().map(vocabularyItem => ({
-        vocabularyItem,
-        result: allCorrect ? 'correct' : 'incorrect',
-        numberOfTries: allCorrect ? 1 : 3,
-      })),
-    },
-  })
+    numberOfDifficultWords: number = 0,
+  ): RouteProp<RoutesParams, 'ExerciseFinished'> => {
+    const vocabularyItems = new VocabularyItemBuilder(4).build()
+    return {
+      key: '',
+      name: 'ExerciseFinished',
+      params: {
+        contentType: isRepetition ? 'repetition' : 'standard',
+        unitId,
+        unitTitle: 'unit',
+        vocabularyItems,
+        exercise: exerciseKey,
+        results: vocabularyItems.map((vocabularyItem, index) => ({
+          vocabularyItem,
+          result: !allCorrect && index < numberOfDifficultWords ? 'incorrect' : 'correct',
+          numberOfTries: !allCorrect && index < numberOfDifficultWords ? 3 : 1,
+        })),
+      },
+    }
+  }
 
   it('should render the repetition modal outside of the repetition stack', () => {
-    const route = getRoute(1, false)
+    jest.mocked(navigation.addListener).mockImplementationOnce((event, callback) => {
+      if (event === 'transitionEnd') {
+        callback({ type: 'transitionEnd', data: { closing: false } })
+      }
+      return jest.fn()
+    })
+    const route = getRoute(1, false, false, 3)
     const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(queryByTestId('repetition-modal')).toBeTruthy()
   })
 
   it('should not render the repetition modal inside the repetition stack', () => {
     const route = getRoute(1, false, true)
+    const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+    expect(queryByTestId('repetition-modal')).toBeFalsy()
+  })
+
+  it('should not render the repetition modal when only 2 words were difficult', () => {
+    const route = getRoute(1, false, false, 2)
     const { queryByTestId } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(queryByTestId('repetition-modal')).toBeFalsy()
   })
@@ -54,7 +70,7 @@ describe('ExerciseFinishedScreen', () => {
   })
 
   it('should render and handle button click for bad feedback', () => {
-    const route = getRoute(1, false)
+    const route = getRoute(1, false, false, 4)
     const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
     expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.repeat)
