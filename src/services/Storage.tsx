@@ -9,7 +9,7 @@ import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
 
-export const STORAGE_VERSION = 4
+export const STORAGE_VERSION = 5
 
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.

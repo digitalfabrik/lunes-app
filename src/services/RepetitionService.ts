@@ -1,4 +1,4 @@
-import VocabularyItem, { areVocabularyItemIdsEqual } from '../models/VocabularyItem'
+import VocabularyItem, { areVocabularyItemIdsEqual, VocabularyItemId } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import NotificationService from './NotificationService'
 import { StorageCache } from './Storage'
@@ -13,10 +13,12 @@ export const daysToStayInASection: daysToStayInASection[] = [0, 1, 3, 7, 30, 90,
 /* eslint-enable no-magic-numbers */
 
 export type WordNodeCard = {
-  word: VocabularyItem
+  wordId: VocabularyItemId
   section: sections
   inThisSectionSince: Date
 }
+
+export type WordNodeCardWithVocabulary = WordNodeCard & { word: VocabularyItem }
 
 export const MAX_WORD_NODE_CARDS_FOR_ONE_EXERCISE = 15
 
@@ -32,12 +34,19 @@ export class RepetitionService {
       value => storageCache.setItem('wordNodeCards', value),
     )
 
-  public getWordNodeCard = (word: VocabularyItem): WordNodeCard | undefined =>
-    this.getWordNodeCards().find(wordNodeCard => wordNodeCard.word === word)
+  public getWordNodeCard = (wordId: VocabularyItemId): WordNodeCard | undefined =>
+    this.getWordNodeCards().find(wordNodeCard => areVocabularyItemIdsEqual(wordNodeCard.wordId, wordId))
 
-  public removeWordNodeCard = async (word: VocabularyItem): Promise<void> => {
+  public removeWordNodeCard = async (wordId: VocabularyItemId): Promise<void> => {
     const newWordNodeCards = this.getWordNodeCards().filter(
-      wordNodeCard => !areVocabularyItemIdsEqual(wordNodeCard.word.id, word.id),
+      wordNodeCard => !areVocabularyItemIdsEqual(wordNodeCard.wordId, wordId),
+    )
+    await this.setWordNodeCards(newWordNodeCards)
+  }
+
+  public removeWordNodeCards = async (wordIds: VocabularyItemId[]): Promise<void> => {
+    const newWordNodeCards = this.getWordNodeCards().filter(
+      wordNodeCard => !wordIds.some(wordId => areVocabularyItemIdsEqual(wordNodeCard.wordId, wordId)),
     )
     await this.setWordNodeCards(newWordNodeCards)
   }
@@ -125,7 +134,7 @@ export class RepetitionService {
     const newWordCards = this.getWordNodeCards().slice()
     words.forEach(word => {
       const alreadyExistingCard = newWordCards.find(wordNodeCard =>
-        areVocabularyItemIdsEqual(wordNodeCard.word.id, word.id),
+        areVocabularyItemIdsEqual(wordNodeCard.wordId, word.id),
       )
       if (alreadyExistingCard) {
         const resetCard = { ...alreadyExistingCard, section: sections[0], inThisSectionSince: new Date() }
@@ -133,7 +142,7 @@ export class RepetitionService {
         newWordCards[index] = resetCard
       } else {
         newWordCards.push({
-          word,
+          wordId: word.id,
           section: 0,
           inThisSectionSince: new Date(),
         })
@@ -160,7 +169,7 @@ export class RepetitionService {
     const newWordCards = this.getWordNodeCards().slice()
     wordsWithResult.forEach(word => {
       const index = newWordCards.findIndex(wordCard =>
-        areVocabularyItemIdsEqual(wordCard.word.id, word.vocabularyItem.id),
+        areVocabularyItemIdsEqual(wordCard.wordId, word.vocabularyItem.id),
       )
       if (index !== -1) {
         newWordCards[index] = RepetitionService.updateWord(newWordCards[index], word.result === 'correct')
@@ -168,4 +177,15 @@ export class RepetitionService {
     })
     return this.setWordNodeCards(newWordCards)
   }
+
+  public static attachVocabularyToCards = (
+    cards: readonly WordNodeCard[],
+    availableVocabulary: VocabularyItem[],
+  ): WordNodeCardWithVocabulary[] =>
+    cards
+      .map(card => {
+        const word = availableVocabulary.find(item => areVocabularyItemIdsEqual(item.id, card.wordId))
+        return word !== undefined ? { ...card, word } : null
+      })
+      .filter((card): card is WordNodeCardWithVocabulary => card !== null)
 }

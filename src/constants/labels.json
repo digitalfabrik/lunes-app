@@ -238,7 +238,8 @@
       "empty": "Es gibt momentan keine Wörter in deiner Wortliste.",
       "modalDeleteText": "Willst du das Wort wirklich aus der Wortliste löschen?",
       "confirm": "Löschen",
-      "abort": "Abbrechen"
+      "abort": "Abbrechen",
+      "deleteWordButton": "Wort aus Wortliste entfernen"
     }
   },
   "search": {
