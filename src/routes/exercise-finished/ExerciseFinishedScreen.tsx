@@ -61,7 +61,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
       return {
         message: getLabels().results.finishedUnit,
         resultColor: theme.colors.correct,
-        buttonText: getLabels().results.action.back,
+        buttonText: getLabels().results.action.finished,
         navigationAction: navigateBackToMenu,
         ResultIcon: PartyHornIcon,
       }
