@@ -16,7 +16,7 @@ const Button = styled(PressableOpacity)`
 type ListItemProps = {
   vocabularyItem: VocabularyItem
   navigateToDetailScreen: () => void
-  removeFromRepetition: (vocabularyItem: VocabularyItem) => void
+  removeFromRepetition: () => void
 }
 
 const RepetitionListItem = ({
@@ -25,7 +25,7 @@ const RepetitionListItem = ({
   removeFromRepetition,
 }: ListItemProps): ReactElement => {
   const [showModal, setShowModal] = useState(false)
-  const { modalDeleteText, confirm, abort } = getLabels().repetition.wordList
+  const { modalDeleteText, confirm, abort, deleteWordButton } = getLabels().repetition.wordList
 
   return (
     <>
@@ -36,14 +36,18 @@ const RepetitionListItem = ({
         text={modalDeleteText}
         confirmationButtonText={confirm}
         cancelButtonText={abort}
-        confirmationAction={() => removeFromRepetition(vocabularyItem)}
+        confirmationAction={removeFromRepetition}
       />
       <VocabularyListItem
         vocabularyItem={vocabularyItem}
         onPress={navigateToDetailScreen}
         customActions={
           <Button onPress={() => setShowModal(true)} testID='delete-button'>
-            <CloseIconRed width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+            <CloseIconRed
+              width={theme.spacingsPlain.lg}
+              height={theme.spacingsPlain.lg}
+              accessibilityLabel={deleteWordButton}
+            />
           </Button>
         }
       />

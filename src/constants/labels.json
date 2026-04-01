@@ -130,7 +130,7 @@
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "back": "Zurück",
+      "finished": "Fertig",
       "backToWordlist": "Zurück zur Wortliste"
     },
     "of": "von",
@@ -238,7 +238,8 @@
       "empty": "Es gibt momentan keine Wörter in deiner Wortliste.",
       "modalDeleteText": "Willst du das Wort wirklich aus der Wortliste löschen?",
       "confirm": "Löschen",
-      "abort": "Abbrechen"
+      "abort": "Abbrechen",
+      "deleteWordButton": "Wort aus Wortliste entfernen"
     }
   },
   "search": {
