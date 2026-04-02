@@ -4,7 +4,6 @@ import styled from 'styled-components/native'
 
 import { BookIcon, TargetIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
-import PressableOpacity from '../../../components/PressableOpacity'
 import { Content } from '../../../components/text/Content'
 import { Heading } from '../../../components/text/Heading'
 import { BUTTONS_THEME } from '../../../constants/data'
@@ -109,37 +108,35 @@ type LearningCardProps = {
 const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningCardProps): ReactElement => {
   const labels = getLabels()
   return (
-    <PressableOpacity onPress={onPress}>
-      <CardContainer backgroundColor={color}>
-        <TitleRow>
-          <IconBackground>
-            <BookIcon fill={COLORS.background} />
-          </IconBackground>
-          <View>
-            <CardTitle>{labels.home.learnVocabulary}</CardTitle>
-            <Subtitle>{labels.home.learnVocabularyDescription}</Subtitle>
-          </View>
-        </TitleRow>
-        <ContentBox>
-          <ProgressRow>
-            <SmallContent>{labels.home.progress}</SmallContent>
-            <SmallContent>
-              {unitsCompleted}/{numberUnits} {pluralize(labels.general.unit, numberUnits)}
-            </SmallContent>
-          </ProgressRow>
-          <ProgressBarTrack>
-            <ProgressBar progress={unitsCompleted / numberUnits} />
-          </ProgressBarTrack>
-          <Button
-            onPress={onPress}
-            label={labels.home.startExercise}
-            buttonTheme={BUTTONS_THEME.contained}
-            fitToContentWidth
-            style={{ backgroundColor: COLORS.backgroundBlue, alignSelf: 'flex-start' }}
-          />
-        </ContentBox>
-      </CardContainer>
-    </PressableOpacity>
+    <CardContainer backgroundColor={color}>
+      <TitleRow>
+        <IconBackground>
+          <BookIcon fill={COLORS.background} />
+        </IconBackground>
+        <View>
+          <CardTitle>{labels.home.learnVocabulary}</CardTitle>
+          <Subtitle>{labels.home.learnVocabularyDescription}</Subtitle>
+        </View>
+      </TitleRow>
+      <ContentBox>
+        <ProgressRow>
+          <SmallContent>{labels.home.progress}</SmallContent>
+          <SmallContent>
+            {unitsCompleted}/{numberUnits} {pluralize(labels.general.unit, numberUnits)}
+          </SmallContent>
+        </ProgressRow>
+        <ProgressBarTrack>
+          <ProgressBar progress={unitsCompleted / numberUnits} />
+        </ProgressBarTrack>
+        <Button
+          onPress={onPress}
+          label={labels.home.startExercise}
+          buttonTheme={BUTTONS_THEME.contained}
+          fitToContentWidth
+          style={{ backgroundColor: COLORS.backgroundBlue, alignSelf: 'flex-start' }}
+        />
+      </ContentBox>
+    </CardContainer>
   )
 }
 
@@ -150,39 +147,37 @@ type TrainingCardProps = {
 const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
   const labels = getLabels().home
   return (
-    <PressableOpacity onPress={onPress}>
-      <CardContainer backgroundColor={COLORS.backgroundTeal}>
-        <TitleRow>
-          <IconBackground>
-            <TargetIcon fill={COLORS.background} />
-          </IconBackground>
+    <CardContainer backgroundColor={COLORS.backgroundTeal}>
+      <TitleRow>
+        <IconBackground>
+          <TargetIcon fill={COLORS.background} />
+        </IconBackground>
+        <View>
+          <CardTitle>{labels.trainVocabulary}</CardTitle>
+          <Subtitle>{labels.testYourKnowledge}</Subtitle>
+        </View>
+      </TitleRow>
+      <ContentBox>
+        <BadgeRow>
           <View>
-            <CardTitle>{labels.trainVocabulary}</CardTitle>
-            <Subtitle>{labels.testYourKnowledge}</Subtitle>
+            <SmallContent>{labels.readyToPractice}</SmallContent>
+            <Content>{labels.newVocabulary}</Content>
           </View>
-        </TitleRow>
-        <ContentBox>
-          <BadgeRow>
-            <View>
-              <SmallContent>{labels.readyToPractice}</SmallContent>
-              <Content>{labels.newVocabulary}</Content>
-            </View>
-            {isNewBadgeVisible && (
-              <NewBadge>
-                <NewBadgeText>{labels.new}</NewBadgeText>
-              </NewBadge>
-            )}
-          </BadgeRow>
-          <Button
-            onPress={onPress}
-            label={labels.startExercise}
-            buttonTheme={BUTTONS_THEME.contained}
-            fitToContentWidth
-            style={{ alignSelf: 'flex-start', backgroundColor: COLORS.backgroundTeal }}
-          />
-        </ContentBox>
-      </CardContainer>
-    </PressableOpacity>
+          {isNewBadgeVisible && (
+            <NewBadge>
+              <NewBadgeText>{labels.new}</NewBadgeText>
+            </NewBadge>
+          )}
+        </BadgeRow>
+        <Button
+          onPress={onPress}
+          label={labels.startExercise}
+          buttonTheme={BUTTONS_THEME.contained}
+          fitToContentWidth
+          style={{ alignSelf: 'flex-start', backgroundColor: COLORS.backgroundTeal }}
+        />
+      </ContentBox>
+    </CardContainer>
   )
 }
 
