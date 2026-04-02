@@ -72,7 +72,7 @@ import StarCircleIconGrey from './star-circle-icon-grey.svg'
 import StarIconGreyFilled from './star-icon-grey-filled.svg'
 import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
-import Target from './target.svg'
+import TargetIcon from './target.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
 import TrainingImages from './training-images.svg'
@@ -158,7 +158,7 @@ export {
   StarIconGrey,
   StarIconGreyFilled,
   StarIconWhite,
-  Target,
+  TargetIcon,
   TrainingImages,
   TrainingSentences,
   TrainingSpeech,

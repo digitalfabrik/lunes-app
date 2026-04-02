@@ -19,14 +19,22 @@
     "deleteJob": "Bereich löschen",
     "jobs": "Berufe",
     "learnVocabulary": "Vokabeln lernen",
+    "learnVocabularyDescription": "Neue Wörter kennenlernen",
     "trainVocabulary": "Vokabeln trainieren",
     "testYourKnowledge": "Teste dein Wissen",
+    "progress": "Fortschritt",
+    "startExercise": "Übung starten",
+    "new": "Neu",
+    "readyToPractice": "Bereit zum Üben",
+    "newVocabulary": "Neue Vokabeln",
     "emptyState": {
       "title": "Dein Lernstart wartet!",
       "subtitle": "Füge deinen Ausbildungsberuf hinzu und lerne genau die Wörter, die du wirklich brauchst."
     },
     "editProfessions": "Berufe bearbeiten",
-    "addProfession": "Beruf hinzufügen"
+    "addProfession": "Beruf hinzufügen",
+    "previousJob": "Vorheriger Beruf",
+    "nextJob": "Nächster Beruf"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",

@@ -45,4 +45,28 @@ describe('SelectedJobs', () => {
     expect(getByTestId('edit-professions-button')).toBeDefined()
     expect(getByTestId('add-profession-button')).toBeDefined()
   })
+
+  it('should navigate between multiple jobs using arrow buttons', async () => {
+    const [firstJob, secondJob] = mockJobs()
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('selectedJobs', [firstJob.id.id, secondJob.id.id])
+    mocked(getJob).mockImplementation(async jobId =>
+      jobId.type === 'standard' && jobId.id === secondJob.id.id ? secondJob : firstJob,
+    )
+
+    const { getByText, getByTestId, queryByTestId } = renderWithStorageCache(
+      storageCache,
+      <SelectedJobs {...defaultProps} />,
+    )
+
+    await waitFor(() => expect(getByText(firstJob.name)).toBeDefined())
+    expect(queryByTestId('navigate-left')).toBeNull()
+    expect(getByTestId('navigate-right')).toBeDefined()
+
+    fireEvent.press(getByTestId('navigate-right'))
+
+    await waitFor(() => expect(getByText(secondJob.name)).toBeDefined())
+    expect(getByTestId('navigate-left')).toBeDefined()
+    expect(queryByTestId('navigate-right')).toBeNull()
+  })
 })
