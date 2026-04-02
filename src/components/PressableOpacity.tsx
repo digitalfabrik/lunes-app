@@ -8,6 +8,7 @@ type PressableOpacityProps = {
   style?: StyleProp<ViewStyle>
   testID?: string
   disabled?: boolean
+  accessibilityLabel?: string
 }
 
 const PressableContainer = styled.Pressable<{ isPressed: boolean }>`
@@ -21,6 +22,7 @@ const PressableOpacity = ({
   style,
   testID,
   disabled = false,
+  accessibilityLabel,
 }: PressableOpacityProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
 
@@ -33,6 +35,8 @@ const PressableOpacity = ({
       isPressed={isPressed}
       style={style}
       testID={testID}
+      accessibilityRole='button'
+      accessibilityLabel={accessibilityLabel}
     >
       {children}
     </PressableContainer>

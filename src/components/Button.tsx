@@ -115,6 +115,7 @@ const Button = (props: ButtonProps): ReactElement => {
       fitToContentWidth={!!fitToContentWidth}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
+      accessibilityRole='button'
     >
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (
