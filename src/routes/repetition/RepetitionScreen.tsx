@@ -49,6 +49,19 @@ const Container = styled.View`
   padding: ${props => props.theme.spacings.sm} 0;
 `
 
+const EmptyStateContent = styled.View`
+  padding: 0 ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm};
+  align-items: center;
+`
+
+const EmptyStateSubtitle = styled.Text`
+  color: ${props => props.theme.colors.primary};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-size: ${hp('1.8%')}px;
+  text-align: center;
+  padding-top: ${props => props.theme.spacings.xs};
+`
+
 const Subheading = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontBold};
@@ -92,6 +105,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
     yourLearningProgress,
     progressExplainerContent,
     viewWords,
+    emptyState,
   } = getLabels().repetition
   const repetitionService = useRepetitionService()
   const storageCache = useStorageCache()
@@ -127,7 +141,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           />
         </HeadingContainer>
         <Container>
-          <TextContainer>{`${numberOfWordsNeedingRepetition} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          {numberOfWordsNeedingRepetition === 0 ? (
+            <EmptyStateContent>
+              <Subheading>{emptyState.title}</Subheading>
+              <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
+            </EmptyStateContent>
+          ) : (
+            <TextContainer>{`${numberOfWordsNeedingRepetition} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          )}
           <Button
             testID='repetition-button'
             onPress={navigate}

@@ -20,7 +20,13 @@
     "jobs": "Berufe",
     "learnVocabulary": "Vokabeln lernen",
     "trainVocabulary": "Vokabeln trainieren",
-    "testYourKnowledge": "Teste dein Wissen"
+    "testYourKnowledge": "Teste dein Wissen",
+    "emptyState": {
+      "title": "Dein Lernstart wartet!",
+      "subtitle": "Füge deinen Ausbildungsberuf hinzu und lerne genau die Wörter, die du wirklich brauchst."
+    },
+    "editProfessions": "Berufe bearbeiten",
+    "addProfession": "Beruf hinzufügen"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -33,6 +39,10 @@
       "confirmationQuestion": "Willst du den Bereich wirklich löschen?",
       "explanation": "Deine Lernfortschritte werden gespeichert und du kannst den Beruf später wiederherstellen.",
       "confirm": "Ja, löschen!"
+    },
+    "emptyState": {
+      "title": "Beruf hinzufügen",
+      "subtitle": "Wähle den Beruf, der zu deiner Ausbildung passt, um zu starten."
     }
   },
   "addCustomDiscipline": {
@@ -204,7 +214,13 @@
       "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
     }
   },
-  "favorites": "Favoriten",
+  "favorites": {
+    "title": "Favoriten",
+    "emptyState": {
+      "title": "Noch keine Favoriten gespeichert.",
+      "subtitle": "Hier werden Vokabeln angezeigt, die du in den Übungen favorisiert hast, um sie dir für später zu merken."
+    }
+  },
   "dictionary": {
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
   },
@@ -231,6 +247,10 @@
       "untrained": "Neue",
       "learned": "Gelernte",
       "sectionOneToFive": "Lernstufen 1-5"
+    },
+    "emptyState": {
+      "title": "Keine Wörter zum Wiederholen bereit",
+      "subtitle": "Wörter, die du in den Übungen favorisiert hast oder nicht gewusst hast, erscheinen hier zum Wiederholen."
     },
     "wordList": {
       "title": "Wortliste",

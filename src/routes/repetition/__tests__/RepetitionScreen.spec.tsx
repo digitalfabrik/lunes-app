@@ -34,11 +34,13 @@ describe('RepetitionScreen', () => {
     expect(getByText(getLabels().repetition.viewWords)).toBeDefined()
   })
 
-  it('should disable button correctly', async () => {
-    const { getByTestId } = render(<RepetitionScreen navigation={navigation} />)
+  it('should show empty state and disable button when there are no words to repeat', async () => {
+    const { getByTestId, getByText } = render(<RepetitionScreen navigation={navigation} />)
     await waitFor(() => {
       expect(getByTestId('repetition-button')).toBeDisabled()
     })
+    expect(getByText(getLabels().repetition.emptyState.title)).toBeDefined()
+    expect(getByText(getLabels().repetition.emptyState.subtitle)).toBeDefined()
   })
 
   it('should open the info modal on icon click', async () => {
