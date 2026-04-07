@@ -83,11 +83,7 @@ const ResultIndicator = ({
 
   const correctAnswerContent =
     isCorrect || hasReachedMaxAttempts ? (
-      <ContentText>
-        {labels.solution}
-        {'\n'}
-        {currentSentence.sentence}
-      </ContentText>
+      <ContentText>{`${labels.solution}\n${currentSentence.sentence}`}</ContentText>
     ) : null
 
   return (
