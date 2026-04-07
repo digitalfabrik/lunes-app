@@ -31,6 +31,7 @@ jest.mock('react-native-fs', () => ({
 
 jest.mock('../AnalyticsService', () => ({
   trackEvent: jest.fn(),
+  generateUniqueId: jest.fn(() => 'mock-installation-id'),
 }))
 
 describe('storageUtils', () => {
