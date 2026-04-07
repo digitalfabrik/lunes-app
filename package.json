@@ -57,7 +57,6 @@
     "react-native-tts": "4.1.1",
     "react-native-vision-camera": "^4.7.2",
     "react-native-volume-manager": "^2.0.8",
-    "react-navigation-header-buttons": "^11.2.1",
     "styled-components": "^6.3.11",
     "victory-native": "^36.9.2"
   },
