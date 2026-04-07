@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { BookIcon, TargetIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
 import { Content } from '../../../components/text/Content'
 import { Heading } from '../../../components/text/Heading'
 import { BUTTONS_THEME } from '../../../constants/data'
-import { Color, COLORS } from '../../../constants/theme/colors'
+import { Color } from '../../../constants/theme/colors'
 import useLoadProgress from '../../../hooks/useLoadProgress'
 import Job from '../../../models/Job'
 import { getLabels, pluralize } from '../../../services/helpers'
@@ -67,7 +67,7 @@ const ProgressBarTrack = styled.View`
 `
 
 const ProgressBar = styled.View<{ progress: number }>`
-  background-color: ${COLORS.backgroundBlue};
+  background-color: ${props => props.theme.colors.backgroundBlue};
   width: ${props => (Number.isFinite(props.progress) ? props.progress * 100 : 0)}%;
   height: 100%;
   border-radius: ${props => props.theme.spacings.xs};
@@ -98,6 +98,11 @@ const BadgeRow = styled.View`
   align-items: center;
 `
 
+const StartButton = styled(Button)<{ backgroundColor: string }>`
+  align-self: flex-start;
+  background-color: ${props => props.backgroundColor};
+`
+
 type LearningCardProps = {
   numberUnits: number
   unitsCompleted: number
@@ -107,11 +112,12 @@ type LearningCardProps = {
 
 const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningCardProps): ReactElement => {
   const labels = getLabels()
+  const theme = useTheme()
   return (
     <CardContainer backgroundColor={color}>
       <TitleRow>
         <IconBackground>
-          <BookIcon fill={COLORS.background} />
+          <BookIcon fill={theme.colors.background} />
         </IconBackground>
         <View>
           <CardTitle>{labels.home.learnVocabulary}</CardTitle>
@@ -128,12 +134,12 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
         <ProgressBarTrack>
           <ProgressBar progress={unitsCompleted / numberUnits} />
         </ProgressBarTrack>
-        <Button
+        <StartButton
           onPress={onPress}
           label={labels.home.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          style={{ backgroundColor: COLORS.backgroundBlue, alignSelf: 'flex-start' }}
+          backgroundColor={theme.colors.backgroundBlue}
         />
       </ContentBox>
     </CardContainer>
@@ -146,11 +152,12 @@ type TrainingCardProps = {
 
 const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
   const labels = getLabels().home
+  const theme = useTheme()
   return (
-    <CardContainer backgroundColor={COLORS.backgroundTeal}>
+    <CardContainer backgroundColor={theme.colors.backgroundTeal}>
       <TitleRow>
         <IconBackground>
-          <TargetIcon fill={COLORS.background} />
+          <TargetIcon fill={theme.colors.background} />
         </IconBackground>
         <View>
           <CardTitle>{labels.trainVocabulary}</CardTitle>
@@ -169,12 +176,12 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
             </NewBadge>
           )}
         </BadgeRow>
-        <Button
+        <StartButton
           onPress={onPress}
           label={labels.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          style={{ alignSelf: 'flex-start', backgroundColor: COLORS.backgroundTeal }}
+          backgroundColor={theme.colors.backgroundTeal}
         />
       </ContentBox>
     </CardContainer>
@@ -193,6 +200,7 @@ const ModeSelection = ({
   navigateToTrainingExerciseSelection,
 }: ModeSelectionProps): ReactElement => {
   const { data: progress } = useLoadProgress(job)
+  const theme = useTheme()
   const completedUnits = Math.floor((progress ?? 0) * job.numberOfUnits)
 
   return (
@@ -200,7 +208,7 @@ const ModeSelection = ({
       <LearningCard
         numberUnits={job.numberOfUnits}
         unitsCompleted={completedUnits}
-        color={COLORS.backgroundBlue}
+        color={theme.colors.backgroundBlue}
         onPress={navigateToJob}
       />
       <TrainingCard onPress={navigateToTrainingExerciseSelection} />
