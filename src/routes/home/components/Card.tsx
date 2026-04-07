@@ -2,6 +2,8 @@ import React, { ReactElement, ReactNode } from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
+import { ArrowLeftIcon, ArrowRightIcon } from '../../../../assets/images'
+import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 
 const Icon = styled.Image`
@@ -21,39 +23,76 @@ const Box = styled.Pressable<{ width?: number }>`
 `
 
 const BoxHeading = styled.View`
-  border-bottom-color: ${props => props.theme.colors.disabled};
-  border-bottom-width: 1px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm} 0;
+  padding-top: ${props => props.theme.spacings.sm};
+  gap: ${props => props.theme.spacings.sm};
+`
+
+const HeadingContent = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: ${props => props.theme.spacings.sm};
 `
 
 const Title = styled(Heading)`
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  padding-right: ${props => props.theme.spacings.sm};
-`
-
-const IconContainer = styled.View`
-  padding-right: ${props => props.theme.spacings.sm};
+  text-align: center;
 `
 
 type CardProps = {
   heading?: string
   icon?: string | ReactElement
   onPress?: () => void
+  onPressLeft?: () => void
+  onPressLeftAccessibilityLabel?: string
+  onPressRight?: () => void
+  onPressRightAccessibilityLabel?: string
   width?: number
   children: ReactNode
 }
 
 const Card = (props: CardProps): ReactElement => {
-  const { heading, icon, onPress, width, children } = props
+  const {
+    heading,
+    icon,
+    onPress,
+    onPressLeft,
+    onPressLeftAccessibilityLabel,
+    onPressRight,
+    onPressRightAccessibilityLabel,
+    width,
+    children,
+  } = props
   return (
     <Box onPress={onPress} width={width}>
       {(!!icon || !!heading) && (
         <BoxHeading>
-          {!!icon && <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>}
-          {!!heading && <Title>{heading}</Title>}
+          {onPressLeft !== undefined && (
+            <PressableOpacity
+              onPress={onPressLeft}
+              testID='navigate-left'
+              accessibilityLabel={onPressLeftAccessibilityLabel}
+            >
+              <ArrowLeftIcon />
+            </PressableOpacity>
+          )}
+          <HeadingContent>
+            {!!icon && (typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon)}
+            {!!heading && <Title>{heading}</Title>}
+          </HeadingContent>
+          {onPressRight !== undefined && (
+            <PressableOpacity
+              onPress={onPressRight}
+              testID='navigate-right'
+              accessibilityLabel={onPressRightAccessibilityLabel}
+            >
+              <ArrowRightIcon />
+            </PressableOpacity>
+          )}
         </BoxHeading>
       )}
       {children}

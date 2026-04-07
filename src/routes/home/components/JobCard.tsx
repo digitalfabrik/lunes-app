@@ -47,6 +47,8 @@ type JobCardProps = {
   width?: number
   navigateToJob: (job: Job) => void
   navigateToTrainingExerciseSelection: (job: StandardJob) => void
+  onPressLeft?: () => void
+  onPressRight?: () => void
 }
 
 const JobCard = ({
@@ -54,6 +56,8 @@ const JobCard = ({
   width: cardWidth,
   navigateToJob,
   navigateToTrainingExerciseSelection,
+  onPressLeft,
+  onPressRight,
 }: JobCardProps): ReactElement | null => {
   const storageCache = useStorageCache()
   const { data: job, loading, error, refresh } = useLoadJob(identifier)
@@ -111,8 +115,17 @@ const JobCard = ({
     )
   }
 
+  const { previousJob, nextJob } = getLabels().home
   return (
-    <Card width={cardWidth} heading={job.name} icon={job.icon ?? undefined}>
+    <Card
+      width={cardWidth}
+      heading={job.name}
+      icon={job.icon ?? undefined}
+      onPressLeft={onPressLeft}
+      onPressLeftAccessibilityLabel={previousJob}
+      onPressRight={onPressRight}
+      onPressRightAccessibilityLabel={nextJob}
+    >
       {identifier.type === 'load-protected' ? (
         <CustomDisciplineDetails job={job} navigateToJob={navigateToJob} />
       ) : (
