@@ -31,6 +31,7 @@ import CloseIcon from './close-icon.svg'
 import CrystalBallIcon from './crystal-ball.svg'
 import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
 import DoubleCheckIcon from './double-check-icon.svg'
+import FeedbackIcon from './feedback-icon.svg'
 import HappySmileyIcon from './happy-smiley-circle-icon-white.svg'
 import HeaderCircleIcon from './header-cirlce-icon.svg'
 import HeaderLinesIcon from './header-lines-icon.svg'
@@ -118,6 +119,7 @@ export {
   DoubleCheckCircleIconWhite,
   DoubleCheckIcon,
   BottomTabsIcon,
+  FeedbackIcon,
   HappySmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,

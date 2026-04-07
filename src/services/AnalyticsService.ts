@@ -14,11 +14,26 @@ export type AnalyticsEvent = {
   payload: AnalyticsPayload
 }
 
-export type AnalyticsPayload = {
-  type: 'job_selected'
-  job_id: number
-  action: 'add' | 'remove'
-}
+export type AnalyticsPayload =
+  | {
+      type: 'job_selected'
+      job_id: number
+      action: 'add' | 'remove'
+    }
+  | {
+      type: 'module_duration'
+      exercise_type: number
+      unit_id: number
+      duration_seconds: number
+    }
+  | {
+      type: 'session_start'
+      session_id: string
+    }
+  | {
+      type: 'session_end'
+      session_id: string
+    }
 
 export const isConsentGiven = (storageCache: StorageCache): boolean => {
   const consent = storageCache.getItem('analyticsConsent')
@@ -39,4 +54,9 @@ export const trackEventAsync = async (storageCache: StorageCache, data: Analytic
 
 export const trackEvent = (storageCache: StorageCache, payload: AnalyticsPayload): void => {
   trackEventAsync(storageCache, payload).catch(reportError)
+}
+
+export const generateUniqueId = (): string => {
+  const base = 16
+  return Array.from({ length: 32 }, () => Math.floor(Math.random() * base).toString(base)).join('')
 }
