@@ -7,7 +7,7 @@ import { useStorageCache } from './useStorage'
 const useTrackSession = (): void => {
   const storageCache = useStorageCache()
   const appState = useRef<'active' | 'background'>('background')
-  const [sessionId, setSessionId] = useState(generateUniqueId)
+  const sessionIdRef = useRef(generateUniqueId())
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
@@ -17,10 +17,10 @@ const useTrackSession = (): void => {
       const previousState = appState.current
       appState.current = nextAppState
       if (nextAppState === 'active' && previousState === 'background') {
-        trackEvent(storageCache, { type: 'session_start', session_id: sessionId })
+        trackEvent(storageCache, { type: 'session_start', session_id: sessionIdRef.current })
       } else if (nextAppState === 'background' && previousState === 'active') {
-        trackEvent(storageCache, { type: 'session_end', session_id: sessionId })
-        setSessionId(generateUniqueId())
+        trackEvent(storageCache, { type: 'session_end', session_id: sessionIdRef.current })
+        sessionIdRef.current = generateUniqueId()
       }
     }
 
@@ -28,7 +28,7 @@ const useTrackSession = (): void => {
     handleAppStateChange(AppState.currentState)
 
     return () => subscription.remove()
-  }, [storageCache, sessionId, setSessionId])
+  }, [storageCache])
 }
 
 export default useTrackSession
