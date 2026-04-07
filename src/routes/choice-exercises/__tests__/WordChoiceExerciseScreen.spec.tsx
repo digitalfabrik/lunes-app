@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { Image, View } from 'react-native'
 
@@ -80,6 +80,7 @@ describe('WordChoiceExerciseScreen', () => {
   let repetitionService: RepetitionService
 
   beforeEach(() => {
+    jest.clearAllMocks()
     storageCache = StorageCache.createDummy()
     repetitionService = RepetitionService.fromStorageCache(storageCache)
   })
@@ -253,6 +254,55 @@ describe('WordChoiceExerciseScreen', () => {
       duration_seconds: expect.any(Number),
       unit_id: 1,
       exercise_type: ExerciseKeys.wordChoiceExercise,
+    })
+  })
+
+  describe('dropout tracking', () => {
+    // beforeRemove is fired by React Navigation when the screen is removed from the stack,
+    // either via the user manually leaving or by them completing the exercise
+    let beforeRemoveHandler: (() => void) | null = null
+
+    beforeEach(() => {
+      beforeRemoveHandler = null
+      jest.mocked(navigation.addListener).mockImplementation((event, callback) => {
+        if (event === 'beforeRemove') {
+          beforeRemoveHandler = callback as () => void
+        }
+        return jest.fn()
+      })
+    })
+
+    it('should track exercise_dropout when screen is removed before completion', () => {
+      renderScreen()
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+        type: 'exercise_dropout',
+        exercise_type: 'word_choice',
+        unit_id: 1,
+        position: 1,
+        total: 4,
+      })
+    })
+
+    it('should not track exercise_dropout when exercise is completed normally', async () => {
+      const { getByText } = renderScreen()
+
+      selectAnswerAndPressNext(getByText, 'Spachtel')
+      selectAnswerAndPressNext(getByText, 'Auto')
+      selectAnswerAndPressNext(getByText, 'Hose')
+      fireEvent.press(getByText('Helm'))
+      fireEvent.press(getByText(getLabels().exercises.showResults))
+
+      await waitFor(() => expect(navigation.popTo).toHaveBeenCalled())
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).not.toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ type: 'exercise_dropout' }),
+      )
     })
   })
 })
