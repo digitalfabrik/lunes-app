@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { AppState, AppStateStatus } from 'react-native'
 
 import { generateUniqueId, trackEvent } from '../services/AnalyticsService'
