@@ -1,6 +1,6 @@
 import React, { ComponentType, ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -65,10 +65,10 @@ const ExerciseFinishedBase = ({
     <RoundedBackground color={theme.colors.primary}>
       <AlignRight>
         <IconButton onPress={onBack}>
-          <CloseIconWhite width={hp('3%')} height={hp('3%')} />
+          <CloseIconWhite width={24} height={24} />
         </IconButton>
       </AlignRight>
-      <FeedbackIcon width={hp('5%')} height={hp('5%')} />
+      <FeedbackIcon width={40} height={40} />
       <MessageContainer>
         <Message>{message}</Message>
         <Results color={feedbackColor}>

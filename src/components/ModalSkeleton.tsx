@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Keyboard, Modal as RNModal, Platform, Pressable, ScrollView } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
@@ -8,7 +7,7 @@ import useKeyboard from '../hooks/useKeyboard'
 import useScreenHeight from '../hooks/useScreenHeight'
 import PressableOpacity from './PressableOpacity'
 
-const KEYBOARD_MARGIN = hp('2%')
+const KEYBOARD_MARGIN = 16
 const Overlay = styled.View`
   flex: 1;
   justify-content: center;
@@ -18,7 +17,7 @@ const Overlay = styled.View`
 const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>`
   background-color: ${props => props.theme.colors.backgroundAccent};
   align-items: center;
-  width: ${wp('85%')}px;
+  width: 85%;
   border-radius: 4px;
   padding: ${props => props.theme.spacings.sm} 0;
   position: relative;

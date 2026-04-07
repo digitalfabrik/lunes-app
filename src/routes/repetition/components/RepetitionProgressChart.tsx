@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
 import theme from '../../../constants/theme'
@@ -19,7 +19,7 @@ const RepetitionProgressChart: () => ReactElement = () => {
   const chartData = numberOfWordsInEachSection.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
 
   return (
-    <VictoryChart height={hp('35%')}>
+    <VictoryChart height={280}>
       <VictoryAxis
         crossAxis
         offsetY={40}

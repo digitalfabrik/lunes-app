@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { NoInternetConnectionIcon } from '../../assets/images'
@@ -12,7 +11,7 @@ import RoundedBackground from './RoundedBackground'
 import { Content } from './text/Content'
 
 const Container = styled.View`
-  width: ${wp('80%')}px;
+  width: 80%;
   margin: auto;
   margin-top: ${props => props.theme.spacings.md};
   text-align: center;

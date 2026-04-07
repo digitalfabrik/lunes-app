@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import VocabularyItem from '../models/VocabularyItem'
@@ -11,8 +10,8 @@ import { ContentTextLight } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
-  width: ${hp('7.5%')}px;
-  height: ${hp('7.5%')}px;
+  width: 60px;
+  height: 60px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
 const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
@@ -20,9 +19,9 @@ const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   margin-bottom: ${props => props.theme.spacings.xxs};
   background-color: ${props => props.articleColor};
   align-self: flex-start;
-  width: ${hp('5%')}px;
+  width: 40px;
   overflow: hidden;
-  height: ${hp('2.5%')}px;
+  height: 20px;
   text-align: center;
 `
 const RightChildrenContainer = styled.View`

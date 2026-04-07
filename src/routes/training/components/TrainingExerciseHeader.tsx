@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect } from 'react'
 import { ProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import NavigationHeaderLeft from '../../../components/NavigationHeaderLeft'
@@ -42,7 +42,7 @@ const TrainingExerciseHeader = ({
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
         paddingHorizontal: theme.spacingsPlain.xs,
-        maxWidth: wp('25%'),
+        maxWidth: '25%',
       },
     })
   }, [navigation, progressText])

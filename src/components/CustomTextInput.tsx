@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react'
 import { StyleProp, TextInputProps, ViewStyle } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
@@ -8,8 +7,8 @@ import theme from '../constants/theme'
 import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
-const LINE_HEIGHT = hp('4%')
-const MIN_HEIGHT = hp('7%')
+const LINE_HEIGHT = 32
+const MIN_HEIGHT = 56
 
 const StyledTextInput = styled.TextInput`
   font-size: ${props => props.theme.fonts.defaultFontSize};

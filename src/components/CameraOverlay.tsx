@@ -1,7 +1,6 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
@@ -44,9 +43,9 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
               onPressOut={() => setIsPressed(false)}
             >
               {isPressed ? (
-                <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
+                <CloseCircleIconBlue testID='close-circle-icon-blue' width={28} height={28} />
               ) : (
-                <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
+                <CloseCircleIconWhite testID='close-circle-icon-white' width={28} height={28} />
               )}
             </Pressable>
           </Header>

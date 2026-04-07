@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
@@ -45,7 +45,7 @@ const ItemContainer = styled.TouchableOpacity`
   flex: 1;
   justify-content: space-between;
   align-items: center;
-  min-height: ${hp('17%')}px;
+  min-height: 136px;
   background-color: ${props => props.theme.colors.backgroundAccent};
   border: 1px solid ${props => props.theme.colors.disabled};
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};

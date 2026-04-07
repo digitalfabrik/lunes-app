@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { View } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { BUTTONS_THEME } from '../constants/data'
@@ -10,7 +9,7 @@ import ModalSkeleton from './ModalSkeleton'
 import { HeadingText } from './text/Heading'
 
 const Message = styled(HeadingText)`
-  width: ${wp('80%')}px;
+  width: 80%;
   margin-bottom: ${props => props.theme.spacings.lg};
   padding: ${props => props.theme.spacings.xs} ${props => props.theme.spacings.sm};
   text-align: center;

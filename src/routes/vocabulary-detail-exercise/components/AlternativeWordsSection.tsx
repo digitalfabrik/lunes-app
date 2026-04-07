@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import { CrystalBallIcon } from '../../../../assets/images'
@@ -32,7 +32,7 @@ type AlternativeWordsSectionProps = {
 const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): ReactElement | null =>
   vocabularyItem.alternatives.length > 0 ? (
     <Root>
-      <CrystalBallIcon width={hp('3.5%')} height={hp('3.5%')} />
+      <CrystalBallIcon width={28} height={28} />
       <Content>
         <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
         <AlternativeWords>

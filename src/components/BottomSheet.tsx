@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Animated, Easing, Modal } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { Animated, Easing, Modal, useWindowDimensions } from 'react-native'
 import { initialWindowMetrics } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
@@ -42,6 +41,7 @@ export type BottomSheetProps = {
 const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
   // Make sure to not render the new state when displaying the exit animation
   const { children, backgroundColor } = useExitProps(props, visible)
+  const { height } = useWindowDimensions()
   // Due to animations, this is visible for a bit longer than indicated by the `visible` prop.
   const [shouldBeVisible, setShouldBeVisible] = useState(false)
   // For some reason, `useSafeAreaInsets()` always returns 0 here
@@ -73,7 +73,7 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
   })
   const offset = slideInAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: [hp('100%'), 0],
+    outputRange: [height, 0],
   })
 
   return (

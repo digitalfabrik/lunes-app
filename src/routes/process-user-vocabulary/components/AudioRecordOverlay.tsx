@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { createSound } from 'react-native-nitro-sound'
 import { PERMISSIONS } from 'react-native-permissions'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -24,8 +24,8 @@ const Icon = styled.Pressable`
 `
 
 const RecordIcon = styled(Pressable)<{ isPressed: boolean }>`
-  width: ${hp('12%')}px;
-  height: ${hp('12%')}px;
+  width: 96px;
+  height: 96px;
   align-self: center;
   align-items: center;
   justify-content: center;
@@ -35,8 +35,8 @@ const RecordIcon = styled(Pressable)<{ isPressed: boolean }>`
 `
 
 const Content = styled.View`
-  margin-top: ${hp('12%')}px;
-  margin-bottom: ${hp('6%')}px;
+  margin-top: 96px;
+  margin-bottom: 48px;
   flex: 1;
   justify-content: space-between;
 `
@@ -47,7 +47,7 @@ const Heading = styled(HeadingText)`
 `
 
 const HeadingContainer = styled.View`
-  min-height: ${hp('12%')}px;
+  min-height: 96px;
 `
 
 const RecordingInfo = styled.Text`
@@ -58,7 +58,7 @@ const RecordingInfo = styled.Text`
 const MeteringInfo = styled.View`
   flex-direction: row;
   align-self: center;
-  min-height: ${hp('12%')}px;
+  min-height: 96px;
 `
 
 const MeteringBar = styled.View<{ height: number }>`

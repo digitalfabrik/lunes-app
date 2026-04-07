@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { StyleProp, ViewStyle } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
@@ -9,7 +8,7 @@ import { HeadingText } from './text/Heading'
 import { SubheadingText } from './text/Subheading'
 
 const Container = styled.View`
-  min-height: ${hp('7%')}px;
+  min-height: 56px;
   align-items: center;
   margin-bottom: ${props => props.theme.spacings.lg};
   margin-top: ${props => props.theme.spacings.lg};

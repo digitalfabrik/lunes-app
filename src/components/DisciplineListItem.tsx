@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { EXERCISES } from '../constants/data'
@@ -27,21 +26,21 @@ type JobListItemProps = {
 }
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: 28px;
+  height: 28px;
 `
 
 const IconContainer = styled.View`
   position: absolute;
-  top: ${hp('1.75%')}px;
-  left: ${hp('1.75%')}px;
+  top: 14px;
+  left: 14px;
 `
 
 const iconWithProgress = (iconUrl: string | undefined, progress: number): ReactElement => (
   <>
     <Progress.Circle
       progress={progress}
-      size={Math.round(hp('7%'))}
+      size={56}
       indeterminate={false}
       color={theme.colors.progressIndicator}
       unfilledColor={theme.colors.disabled}

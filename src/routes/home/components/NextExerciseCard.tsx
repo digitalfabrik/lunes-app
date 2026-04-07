@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightCircleIconWhite } from '../../../../assets/images'
@@ -40,8 +40,8 @@ const Label = styled(SubheadingPrimary)`
 `
 
 const Thumbnail = styled.Image`
-  height: ${hp('10%')}px;
-  width: ${hp('9%')}px;
+  height: 80px;
+  width: 72px;
   align-self: center;
 `
 

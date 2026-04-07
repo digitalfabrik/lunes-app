@@ -1,9 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useTheme } from 'styled-components/native'
 
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import { EditableVocabularyDetailsScreen } from '../routes/VocabularyDetailScreen'
 import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
@@ -12,12 +10,12 @@ import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabul
 import UserVocabularyUnitSelectionScreen from '../routes/user-vocabulary-unit-selection/UserVocabularyUnitSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions from './screenOptions'
+import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const UserVocabularyStackNavigator = (): ReactElement | null => {
-  const headerHeight = useTabletHeaderHeight(hp('7.5%'))
+  const headerHeight = useTabletHeaderHeight()
   const options = screenOptions(headerHeight)
   const back = getLabels().general.back
   const theme = useTheme()

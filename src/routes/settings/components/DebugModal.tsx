@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -30,7 +30,7 @@ const Container = styled.View`
 
 const CodeInput = styled.TextInput`
   border: 1px solid ${props => props.theme.colors.overlay};
-  width: ${wp('70%')}px;
+  width: 70%;
   margin: ${props => props.theme.spacings.md};
 `
 

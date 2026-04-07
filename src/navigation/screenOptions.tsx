@@ -2,17 +2,18 @@ import { NavigationProp } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
 import React from 'react'
 import { StyleSheet, useWindowDimensions } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from './NavigationTypes'
 
+const MOBILE_MAX_WIDTH = 550
+export const TABLET_HEADER_HEIGHT = 56
+
 export const useTabletHeaderHeight = (): number | undefined => {
   const { width } = useWindowDimensions()
-  const MOBILE_MAX_WIDTH = 550
-  return width > MOBILE_MAX_WIDTH ? hp('7%') : undefined
+  return width > MOBILE_MAX_WIDTH ? TABLET_HEADER_HEIGHT : undefined
 }
 
 const headerStyles = (headerHeight?: number) =>

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
@@ -11,7 +11,7 @@ const Wrapper = styled.View`
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.primary};
-  height: ${hp('7%')}px;
+  height: 56px;
   width: 100%;
 `
 
@@ -43,7 +43,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): ReactElement =
   <Wrapper testID='header'>
     <HeaderStyle>
       <SmileIconStyle>
-        <LunesIcon width={hp('12%')} height={hp('12%')} />
+        <LunesIcon width={96} height={96} />
       </SmileIconStyle>
       <HeaderButtonsContainer>
         <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>

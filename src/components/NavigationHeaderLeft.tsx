@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import {
@@ -31,7 +30,7 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeade
 
   return (
     <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>
-      <Icon width={hp('3.5%')} height={hp('3.5%')} />
+      <Icon width={28} height={28} />
       <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
     </Container>
   )

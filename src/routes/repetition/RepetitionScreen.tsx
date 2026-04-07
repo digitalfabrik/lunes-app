@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
@@ -37,7 +37,7 @@ const TextContainer = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-size: ${hp('1.8%')}px;
+  font-size: 14px;
 `
 
 const Container = styled.View`
@@ -57,7 +57,7 @@ const EmptyStateContent = styled.View`
 const EmptyStateSubtitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${hp('1.8%')}px;
+  font-size: 14px;
   text-align: center;
   padding-top: ${props => props.theme.spacings.xs};
 `
@@ -78,7 +78,7 @@ const HeaderWrapper = styled.View`
 const ModalContainer = styled.View`
   justify-content: space-between;
   align-items: center;
-  height: ${hp('16%')}px;
+  height: 128px;
 `
 
 const ModalContent = styled(ContentSecondary)`

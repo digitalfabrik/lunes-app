@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 import styled from 'styled-components/native'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../../assets/images'
@@ -7,8 +7,8 @@ import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: 28px;
+  height: 28px;
 `
 
 const Box = styled.Pressable<{ width?: number }>`
@@ -18,7 +18,7 @@ const Box = styled.Pressable<{ width?: number }>`
   justify-content: space-between;
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
-  min-height: ${hp('28%')}px;
+  min-height: 224px;
   ${props => props.width && `width: ${props.width}px;`}
 `
 
