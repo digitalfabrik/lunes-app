@@ -7,6 +7,7 @@ import UnitSelectionScreen from '../routes/UnitSelectionScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
 import HomeScreen from '../routes/home/HomeScreen'
 import ManageSelectionsScreen from '../routes/manage-selections/ManageSelectionsScreen'
+import GdprExportScreen from '../routes/settings/GdprExportScreen'
 import SettingsScreen from '../routes/settings/SettingsScreen'
 import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import TrainingExerciseSelectionScreen from '../routes/training/TrainingExerciseSelectionScreen'
@@ -18,7 +19,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const { manageJobs, overview, units } = getLabels().general.header
+  const { manageJobs, overview, units, settings } = getLabels().general.header
   const theme = useTheme()
 
   return (
@@ -58,6 +59,11 @@ const HomeStackNavigator = (): ReactElement | null => {
         name='Settings'
         component={SettingsScreen}
         options={({ navigation }) => options(overview, navigation)}
+      />
+      <Stack.Screen
+        name='GdprExport'
+        component={GdprExportScreen}
+        options={({ navigation }) => options(settings, navigation)}
       />
     </Stack.Navigator>
   )

@@ -11,7 +11,7 @@ import {
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
 import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
-import { getFromEndpoint, postToEndpoint } from './axios'
+import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
 
 const Endpoints = {
@@ -25,6 +25,8 @@ const Endpoints = {
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
   analyticsEvent: 'analytics/events',
+  analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
+  analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
 }
 
 type PostFeedback = {
@@ -208,4 +210,11 @@ export const postAnalyticEvent = async (event: AnalyticsEvent): Promise<void> =>
     reportError(e)
     log(JSON.stringify(e.response?.data), 'warning')
   })
+}
+
+export const getAnalyticsExport = async (installationId: string): Promise<Record<string, unknown>> =>
+  getFromEndpoint(Endpoints.analyticsExport(installationId), undefined, true)
+
+export const deleteAnalyticsData = async (installationId: string): Promise<void> => {
+  await deleteFromEndpoint(Endpoints.analyticsDelete(installationId))
 }
