@@ -62,6 +62,7 @@ const ResultIndicator = ({
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
   const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE
+  const labels = getLabels().exercises.training.sentence
 
   const button =
     isCorrect || hasReachedMaxAttempts ? (
@@ -81,7 +82,13 @@ const ResultIndicator = ({
     )
 
   const correctAnswerContent =
-    isCorrect || hasReachedMaxAttempts ? <ContentText>{currentSentence.sentence}</ContentText> : null
+    isCorrect || hasReachedMaxAttempts ? (
+      <ContentText>
+        {labels.solution}
+        {'\n'}
+        {currentSentence.sentence}
+      </ContentText>
+    ) : null
 
   return (
     <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={correctAnswerContent} button={button} />
