@@ -212,7 +212,7 @@ export const postAnalyticEvent = async (event: AnalyticsEvent): Promise<void> =>
   })
 }
 
-export const getAnalyticsExport = async (installationId: string): Promise<unknown> =>
+export const getAnalyticsExport = async (installationId: string): Promise<Record<string, unknown>> =>
   getFromEndpoint(Endpoints.analyticsExport(installationId), undefined, true)
 
 export const deleteAnalyticsData = async (installationId: string): Promise<void> => {

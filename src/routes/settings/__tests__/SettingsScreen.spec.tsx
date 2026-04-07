@@ -43,25 +43,35 @@ describe('SettingsScreen', () => {
     expect(getByText(getLabels().settings.settings)).toBeVisible()
     expect(getByText(getLabels().settings.analyticsConsent)).toBeVisible()
     expect(getByText(getLabels().settings.analyticsConsentExplanation)).toBeVisible()
-    expect(queryByText(getLabels().settings.requestAnalyticsData)).not.toBeVisible()
-    expect(queryByText(getLabels().settings.deleteAnalyticsData)).not.toBeVisible()
+    expect(queryByText(getLabels().settings.requestAnalyticsData)).toBeNull()
+    expect(queryByText(getLabels().settings.deleteAnalyticsData)).toBeNull()
     expect(getByText(`${getLabels().settings.version}: 2022.6.0`)).toBeVisible()
   })
 
-  it('should show gdpr controls when analytics consent is given', async () => {
-    await storageCache.setItem('analyticsConsent', { consentGiven: true, consentDate: new Date().toISOString() })
+  it('should show gdpr controls when installation id exists', async () => {
+    await storageCache.setItem('installationId', 'test-installation-id')
     const { getByText } = renderWithStorageCache(storageCache, <SettingsScreen navigation={navigation} />)
     expect(getByText(getLabels().settings.requestAnalyticsData)).toBeVisible()
     expect(getByText(getLabels().settings.deleteAnalyticsData)).toBeVisible()
   })
 
-  it('should show success modal after deleting analytics data', async () => {
-    mocked(deleteAnalyticsData).mockResolvedValue(undefined)
-    await storageCache.setItem('analyticsConsent', { consentGiven: true, consentDate: new Date().toISOString() })
+  it('should show confirmation modal before deleting analytics data', async () => {
     await storageCache.setItem('installationId', 'test-installation-id')
     const { getByText } = renderWithStorageCache(storageCache, <SettingsScreen navigation={navigation} />)
 
     fireEvent.press(getByText(getLabels().settings.deleteAnalyticsData))
+
+    expect(getByText(getLabels().settings.deleteAnalyticsDataConfirmation)).toBeVisible()
+    expect(deleteAnalyticsData).not.toHaveBeenCalled()
+  })
+
+  it('should show success modal after deleting analytics data', async () => {
+    mocked(deleteAnalyticsData).mockResolvedValue(undefined)
+    await storageCache.setItem('installationId', 'test-installation-id')
+    const { getByText } = renderWithStorageCache(storageCache, <SettingsScreen navigation={navigation} />)
+
+    fireEvent.press(getByText(getLabels().settings.deleteAnalyticsData))
+    fireEvent.press(getByText(getLabels().settings.deleteAnalyticsDataConfirm))
 
     await waitFor(() => {
       expect(getByText(getLabels().settings.deleteAnalyticsDataSuccess)).toBeVisible()
@@ -71,11 +81,11 @@ describe('SettingsScreen', () => {
 
   it('should show error modal when deleting analytics data fails', async () => {
     mocked(deleteAnalyticsData).mockRejectedValue(new Error('Network error'))
-    await storageCache.setItem('analyticsConsent', { consentGiven: true, consentDate: new Date().toISOString() })
     await storageCache.setItem('installationId', 'test-installation-id')
     const { getByText } = renderWithStorageCache(storageCache, <SettingsScreen navigation={navigation} />)
 
     fireEvent.press(getByText(getLabels().settings.deleteAnalyticsData))
+    fireEvent.press(getByText(getLabels().settings.deleteAnalyticsDataConfirm))
 
     await waitFor(() => {
       expect(getByText(getLabels().settings.deleteAnalyticsDataError)).toBeVisible()
@@ -83,7 +93,7 @@ describe('SettingsScreen', () => {
   })
 
   it('should navigate to GdprExport when pressing export button', async () => {
-    await storageCache.setItem('analyticsConsent', { consentGiven: true, consentDate: new Date().toISOString() })
+    await storageCache.setItem('installationId', 'test-installation-id')
     const { getByText } = renderWithStorageCache(storageCache, <SettingsScreen navigation={navigation} />)
 
     fireEvent.press(getByText(getLabels().settings.requestAnalyticsData))

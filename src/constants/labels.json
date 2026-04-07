@@ -278,6 +278,8 @@
     "requestAnalyticsData": "Nutzungsdaten exportieren",
     "copyAnalyticsData": "Daten kopieren",
     "deleteAnalyticsData": "Nutzungsdaten löschen",
+    "deleteAnalyticsDataConfirmation": "Möchtest du wirklich alle deine Nutzungsdaten löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteAnalyticsDataConfirm": "Löschen",
     "deleteAnalyticsDataSuccess": "Nutzungsdaten wurden erfolgreich gelöscht.",
     "deleteAnalyticsDataError": "Beim Löschen der Nutzungsdaten ist ein Fehler aufgetreten. Versuche es später noch einmal.",
     "version": "Version",

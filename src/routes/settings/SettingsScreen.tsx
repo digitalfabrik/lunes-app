@@ -39,6 +39,11 @@ const ItemTextContainer = styled.View`
 
 const GdprControls = styled.View`
   padding-top: ${props => props.theme.spacings.sm};
+  gap: ${props => props.theme.spacings.xxs};
+`
+
+const DeleteText = styled(ContentText)`
+  color: ${props => props.theme.colors.incorrect};
 `
 
 type SettingsScreenProps = {
@@ -47,6 +52,7 @@ type SettingsScreenProps = {
 
 const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false)
   const [deletionModalText, setDeletionModalText] = useState<string | null>(null)
 
   const [analyticsConsent, setAnalyticsConsent] = useStorage('analyticsConsent')
@@ -60,6 +66,8 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
     devSettings,
     requestAnalyticsData,
     deleteAnalyticsData: deleteAnalyticsDataLabel,
+    deleteAnalyticsDataConfirmation,
+    deleteAnalyticsDataConfirm,
     deleteAnalyticsDataSuccess,
     deleteAnalyticsDataError,
   } = getLabels().settings
@@ -71,6 +79,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
   }
 
   const onDeleteAnalyticsData = async (): Promise<void> => {
+    setIsDeleteConfirmationVisible(false)
     try {
       await deleteAnalyticsData(installationId ?? '')
       setDeletionModalText(deleteAnalyticsDataSuccess)
@@ -89,6 +98,15 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
         isCodeRequired={!isDevModeEnabled}
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
+      />
+      <Modal
+        visible={isDeleteConfirmationVisible}
+        onClose={() => setIsDeleteConfirmationVisible(false)}
+        text={deleteAnalyticsDataConfirmation}
+        confirmationButtonText={deleteAnalyticsDataConfirm}
+        confirmationAction={onDeleteAnalyticsData}
+        showCancelButton
+        buttonLayout='horizontal'
       />
       <Modal
         visible={deletionModalText !== null}
@@ -111,13 +129,13 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
             onValueChange={onAnalyticsConsentToggle}
           />
         </ItemContainer>
-        {isAnalyticsConsentGiven && (
+        {installationId !== null && (
           <GdprControls>
             <PressableOpacity onPress={() => navigation.navigate('GdprExport')}>
               <ContentText>{requestAnalyticsData}</ContentText>
             </PressableOpacity>
-            <PressableOpacity onPress={onDeleteAnalyticsData}>
-              <ContentText>{deleteAnalyticsDataLabel}</ContentText>
+            <PressableOpacity onPress={() => setIsDeleteConfirmationVisible(true)}>
+              <DeleteText>{deleteAnalyticsDataLabel}</DeleteText>
             </PressableOpacity>
           </GdprControls>
         )}

@@ -20,7 +20,7 @@ const CodeText = styled.Text`
   color: ${props => props.theme.colors.text};
   background-color: ${props => props.theme.colors.backgroundLow};
   padding: ${props => props.theme.spacings.xs};
-  border-radius: 4px;
+  border-radius: ${props => props.theme.spacings.xxs};
   overflow: hidden;
 `
 
@@ -35,7 +35,7 @@ const GdprExportScreen = (): ReactElement => {
   const prettyData = JSON.stringify(data, undefined, 2)
 
   // React native does not provide a clipboard API, but the share API usually allows 'sharing' to the clipboard
-  const copyData = async () => {
+  const copyData = async (): Promise<void> => {
     await Share.share({ message: prettyData })
   }
 
