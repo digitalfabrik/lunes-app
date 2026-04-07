@@ -76,6 +76,17 @@ describe('WordChoiceExerciseScreen', () => {
     },
   }
 
+  const repetitionRoute: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
+    key: '',
+    name: 'WordChoiceExercise',
+    params: {
+      contentType: 'repetition',
+      unitId: null,
+      vocabularyItems,
+      unitTitle: 'TestTitel',
+    },
+  }
+
   let storageCache: StorageCache
   let repetitionService: RepetitionService
 
@@ -219,17 +230,6 @@ describe('WordChoiceExerciseScreen', () => {
   })
 
   describe('repetition exercise', () => {
-    const repetitionRoute: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
-      key: '',
-      name: 'WordChoiceExercise',
-      params: {
-        contentType: 'repetition',
-        unitId: null,
-        vocabularyItems,
-        unitTitle: 'TestTitel',
-      },
-    }
-
     const renderRepetitionScreen = () =>
       renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
 
@@ -281,6 +281,20 @@ describe('WordChoiceExerciseScreen', () => {
         type: 'exercise_dropout',
         exercise_type: 'word_choice',
         unit_id: 1,
+        position: 1,
+        total: 4,
+      })
+    })
+
+    it('should track exercise_dropout with null unit_id for repetition exercises', () => {
+      renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+        type: 'exercise_dropout',
+        exercise_type: 'word_choice',
+        unit_id: null,
         position: 1,
         total: 4,
       })
