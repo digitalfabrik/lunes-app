@@ -9,7 +9,7 @@ import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
 import BasicLightBulbIcon from './basic-light-bulb-icon.svg'
-import BookIconBlack from './book-icon-black.svg'
+import BookIcon from './book-icon.svg'
 import BottomTabsIcon from './bottom-tabs-icon.svg'
 import CheckCircleIconBlue from './check-circle-icon-blue.svg'
 import CheckCircleIconBold from './check-circle-icon-bold.svg'
@@ -73,6 +73,7 @@ import StarCircleIconGrey from './star-circle-icon-grey.svg'
 import StarIconGreyFilled from './star-icon-grey-filled.svg'
 import StarIconGrey from './star-icon-grey.svg'
 import StarIconWhite from './star-icon-white.svg'
+import TargetIcon from './target-icon.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
 import TrainingImages from './training-images.svg'
@@ -97,7 +98,7 @@ export {
   BannerRed,
   BannerYellow,
   BasicLightBulbIcon,
-  BookIconBlack,
+  BookIcon,
   CheckCircleIcon,
   CheckCircleIconBlue,
   CheckCircleIconBold,
@@ -159,6 +160,7 @@ export {
   StarIconGrey,
   StarIconGreyFilled,
   StarIconWhite,
+  TargetIcon,
   TrainingImages,
   TrainingSentences,
   TrainingSpeech,

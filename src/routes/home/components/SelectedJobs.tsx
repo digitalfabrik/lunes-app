@@ -1,6 +1,4 @@
-import React, { useRef, ReactElement } from 'react'
-import { FlatList } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import React, { useState, ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
@@ -45,6 +43,10 @@ const Title = styled(Heading)`
   padding-right: ${props => props.theme.spacings.sm};
 `
 
+const JobCardWrapper = styled.View<{ isVisible: boolean }>`
+  ${props => !props.isVisible && 'display: none;'}
+`
+
 const EmptyStateContainer = styled.View`
   align-items: center;
   padding: ${props => props.theme.spacings.lg} ${props => props.theme.spacings.sm};
@@ -82,9 +84,12 @@ const SelectedJobs = ({
   navigateToJobSelection,
 }: SelectedJobsProps): ReactElement | null => {
   const jobs = useAllJobs()
-  const listRef = useRef<FlatList>(null)
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
 
   const { emptyState } = getLabels().home
+
+  const navigateToPrevious = (): void => setCurrentIndex(index => Math.max(0, index - 1))
+  const navigateToNext = (): void => setCurrentIndex(index => Math.min(jobs.length - 1, index + 1))
 
   const jobsContent = (): ReactElement => {
     if (jobs.length === 0) {
@@ -100,32 +105,20 @@ const SelectedJobs = ({
         </EmptyStateContainer>
       )
     }
-    if (jobs.length === 1) {
-      return (
-        <JobCard
-          identifier={jobs[0]}
-          navigateToJob={navigateToJob}
-          navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
-        />
-      )
-    }
     return (
-      <FlatList
-        horizontal
-        ref={listRef}
-        // Workaround for https://github.com/facebook/react-native/issues/27504
-        onEndReached={() => listRef.current?.scrollToEnd()}
-        data={jobs}
-        keyExtractor={item => JSON.stringify(item)}
-        renderItem={({ item }) => (
-          <JobCard
-            identifier={item}
-            width={wp('75%')}
-            navigateToJob={navigateToJob}
-            navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
-          />
-        )}
-      />
+      <>
+        {jobs.map((job, index) => (
+          <JobCardWrapper key={JSON.stringify(job)} isVisible={index === currentIndex}>
+            <JobCard
+              identifier={job}
+              navigateToJob={navigateToJob}
+              navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection}
+              onPressLeft={jobs.length > 1 && index > 0 ? navigateToPrevious : undefined}
+              onPressRight={jobs.length > 1 && index < jobs.length - 1 ? navigateToNext : undefined}
+            />
+          </JobCardWrapper>
+        ))}
+      </>
     )
   }
 
