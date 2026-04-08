@@ -26,7 +26,6 @@ import VocabularyCollectionTabNavigator from './VocabularyCollectionTabNavigator
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
 const TAB_BAR_HEIGHT = 56
-const TAB_ICON_SIZE = 28
 const HOME_TAB_ICON_SIZE = 40
 const TAB_LABEL_FONT_SIZE = 12
 
@@ -55,23 +54,23 @@ const BottomTabNavigator = (): ReactElement | null => {
 
   const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
-      <MagnifierIconWhite width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <MagnifierIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     ) : (
-      <MagnifierIconGrey width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <MagnifierIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     )
 
   const renderRepetitionTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
-      <RepeatIconWhite width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <RepeatIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     ) : (
-      <RepeatIconGrey width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <RepeatIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     )
 
   const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
-      <HeartIconWhite width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <HeartIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     ) : (
-      <HeartIconGrey width={TAB_ICON_SIZE} height={TAB_ICON_SIZE} />
+      <HeartIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     )
 
   return (

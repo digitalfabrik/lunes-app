@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect } from 'react'
 import { ProgressBar } from 'react-native-paper'
-
 import styled from 'styled-components/native'
 
 import NavigationHeaderLeft from '../../../components/NavigationHeaderLeft'

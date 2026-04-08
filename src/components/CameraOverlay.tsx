@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
+import theme from '../constants/theme'
 import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
@@ -43,9 +44,17 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
               onPressOut={() => setIsPressed(false)}
             >
               {isPressed ? (
-                <CloseCircleIconBlue testID='close-circle-icon-blue' width={28} height={28} />
+                <CloseCircleIconBlue
+                  testID='close-circle-icon-blue'
+                  width={theme.sizes.defaultIcon}
+                  height={theme.sizes.defaultIcon}
+                />
               ) : (
-                <CloseCircleIconWhite testID='close-circle-icon-white' width={28} height={28} />
+                <CloseCircleIconWhite
+                  testID='close-circle-icon-white'
+                  width={theme.sizes.defaultIcon}
+                  height={theme.sizes.defaultIcon}
+                />
               )}
             </Pressable>
           </Header>

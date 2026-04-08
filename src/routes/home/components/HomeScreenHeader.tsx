@@ -1,6 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-
 import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'

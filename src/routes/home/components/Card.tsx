@@ -1,5 +1,4 @@
 import React, { ReactElement, ReactNode } from 'react'
-
 import styled from 'styled-components/native'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../../assets/images'
@@ -7,8 +6,8 @@ import PressableOpacity from '../../../components/PressableOpacity'
 import { Heading } from '../../../components/text/Heading'
 
 const Icon = styled.Image`
-  width: 28px;
-  height: 28px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const Box = styled.Pressable<{ width?: number }>`

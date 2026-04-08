@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from 'react'
-
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'

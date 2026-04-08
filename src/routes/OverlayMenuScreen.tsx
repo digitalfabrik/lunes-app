@@ -1,7 +1,6 @@
 import { CardStyleInterpolators, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { Linking } from 'react-native'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 

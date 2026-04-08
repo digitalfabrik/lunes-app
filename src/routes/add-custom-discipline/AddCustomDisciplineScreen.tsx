@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
-
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { QRCodeIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -45,6 +44,7 @@ type AddCustomDisciplineScreenProps = {
 }
 
 const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): ReactElement => {
+  const theme = useTheme()
   const [code, setCode] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [showQRCodeOverlay, setShowQRCodeOverlay] = useState<boolean>(false)
@@ -94,7 +94,11 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): Re
               onChangeText={setCode}
               rightContainer={
                 <PressableOpacity onPress={() => setShowQRCodeOverlay(true)}>
-                  <QRCodeIcon accessibilityLabel='qr-code-scanner' width={24} height={24} />
+                  <QRCodeIcon
+                    accessibilityLabel='qr-code-scanner'
+                    width={theme.sizes.defaultIcon}
+                    height={theme.sizes.defaultIcon}
+                  />
                 </PressableOpacity>
               }
             />

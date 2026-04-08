@@ -76,7 +76,7 @@ const ExerciseHeader = ({
             accessibilityLabel={getLabels().general.header.wordFeedback}
             accessibilityRole='button'
           >
-            <FeedbackIcon width={28} height={28} />
+            <FeedbackIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
           </FeedbackButton>
         )}
       </HeaderRightContainer>
@@ -102,6 +102,7 @@ const ExerciseHeader = ({
     numberOfWords,
     theme.spacingsPlain.xs,
     theme.spacingsPlain.xl,
+    theme.sizes.defaultIcon,
   ])
 
   useEffect(() => {

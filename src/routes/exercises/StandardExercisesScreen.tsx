@@ -2,7 +2,6 @@ import { RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { FlatList, View } from 'react-native'
-
 import styled, { useTheme } from 'styled-components/native'
 
 import FeedbackBadge from '../../components/FeedbackBadge'

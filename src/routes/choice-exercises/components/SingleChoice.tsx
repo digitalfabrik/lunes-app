@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-
 import styled from 'styled-components/native'
 
 import WordItem from '../../../components/WordItem'
@@ -7,7 +6,6 @@ import { Answer } from '../../../constants/data'
 
 export const StyledContainer = styled.View`
   margin-top: ${props => props.theme.spacings.md};
-  height: 264px;
   width: 85%;
   align-self: center;
 `

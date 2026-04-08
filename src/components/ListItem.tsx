@@ -59,8 +59,8 @@ const Title = styled.Text<{ pressed: boolean }>`
 `
 
 const Icon = styled.Image`
-  width: 28px;
-  height: 28px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const IconContainer = styled.View`

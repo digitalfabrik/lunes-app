@@ -9,7 +9,6 @@ import ModalSkeleton from './ModalSkeleton'
 import { HeadingText } from './text/Heading'
 
 const Message = styled(HeadingText)`
-  width: 80%;
   margin-bottom: ${props => props.theme.spacings.lg};
   padding: ${props => props.theme.spacings.xs} ${props => props.theme.spacings.sm};
   text-align: center;

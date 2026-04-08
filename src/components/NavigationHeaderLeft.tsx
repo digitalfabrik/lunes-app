@@ -7,6 +7,7 @@ import {
   CloseCircleIconBlue,
   CloseCircleIconWhite,
 } from '../../assets/images'
+import theme from '../constants/theme'
 import { NavigationTitle } from './NavigationTitle'
 
 const Container = styled.Pressable`
@@ -30,7 +31,7 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeade
 
   return (
     <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>
-      <Icon width={28} height={28} />
+      <Icon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
       <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
     </Container>
   )

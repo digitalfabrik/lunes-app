@@ -15,29 +15,29 @@ const SquareIconStyle = styled.View`
   position: absolute;
   top: 40px;
   left: 20px;
-  width: 28px;
-  height: 28px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 const StarIconStyle = styled.View`
   position: absolute;
   top: -5px;
   left: 96px;
-  width: 28px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
   height: 24px;
 `
 const CircleIconStyle = styled.View`
   position: absolute;
   top: 36px;
   right: 68px;
-  width: 28px;
-  height: 28px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 const VerticalLinesIcon = styled.View`
   position: absolute;
   top: 16px;
   right: 0px;
   width: 24px;
-  height: 28px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const SmileIconStyle = styled.Pressable`

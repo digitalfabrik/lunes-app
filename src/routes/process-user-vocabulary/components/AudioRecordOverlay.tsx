@@ -2,7 +2,6 @@ import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { createSound } from 'react-native-nitro-sound'
 import { PERMISSIONS } from 'react-native-permissions'
-
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
@@ -12,6 +11,8 @@ import { HeadingText } from '../../../components/text/Heading'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import { getLabels } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
+
+const RECORD_BUTTON_SIZE = 96
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -24,8 +25,8 @@ const Icon = styled.Pressable`
 `
 
 const RecordIcon = styled(Pressable)<{ isPressed: boolean }>`
-  width: 96px;
-  height: 96px;
+  width: ${RECORD_BUTTON_SIZE}px;
+  height: ${RECORD_BUTTON_SIZE}px;
   align-self: center;
   align-items: center;
   justify-content: center;
@@ -35,8 +36,8 @@ const RecordIcon = styled(Pressable)<{ isPressed: boolean }>`
 `
 
 const Content = styled.View`
-  margin-top: 96px;
-  margin-bottom: 48px;
+  margin-top: ${RECORD_BUTTON_SIZE}px;
+  margin-bottom: ${props => props.theme.spacings.xxl};
   flex: 1;
   justify-content: space-between;
 `
@@ -47,7 +48,7 @@ const Heading = styled(HeadingText)`
 `
 
 const HeadingContainer = styled.View`
-  min-height: 96px;
+  min-height: ${RECORD_BUTTON_SIZE}px;
 `
 
 const RecordingInfo = styled.Text`
@@ -58,7 +59,7 @@ const RecordingInfo = styled.Text`
 const MeteringInfo = styled.View`
   flex-direction: row;
   align-self: center;
-  min-height: 96px;
+  min-height: ${RECORD_BUTTON_SIZE}px;
 `
 
 const MeteringBar = styled.View<{ height: number }>`
@@ -177,9 +178,9 @@ const AudioRecordOverlay = ({
   }
 
   return (
-    <RNModal visible transparent animationType='fade' onRequestClose={onClose}>
+    <RNModal visible transparent animationType='fade' onRequestClose={onClose} accessibilityViewIsModal>
       <Container>
-        <Icon onPress={onClose}>
+        <Icon onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
           <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
         </Icon>
         <>

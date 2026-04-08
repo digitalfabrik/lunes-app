@@ -1,6 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
@@ -75,14 +74,8 @@ const HeaderWrapper = styled.View`
   gap: ${props => props.theme.spacings.xs};
 `
 
-const ModalContainer = styled.View`
-  justify-content: space-between;
-  align-items: center;
-  height: 128px;
-`
-
 const ModalContent = styled(ContentSecondary)`
-  padding: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.sm};
 `
 
 const PressableText = styled.Pressable`
@@ -176,18 +169,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           <RepetitionProgressChart />
         </Container>
         <ModalSkeleton visible={isInfoModalVisible} onClose={() => setIsInfoModalVisible(false)} testID='infoModal'>
-          <ModalContainer>
-            <ModalContent>{infoModalContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{infoModalContent}</ModalContent>
         </ModalSkeleton>
         <ModalSkeleton
           visible={isProgressExplainerVisible}
           onClose={() => setIsProgressExplainerVisible(false)}
           testID='progressModal'
         >
-          <ModalContainer>
-            <ModalContent>{progressExplainerContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{progressExplainerContent}</ModalContent>
         </ModalSkeleton>
       </Root>
     </RouteWrapper>

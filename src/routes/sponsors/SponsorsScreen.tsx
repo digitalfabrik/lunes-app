@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
-
 import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'

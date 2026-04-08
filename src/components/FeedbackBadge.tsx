@@ -25,7 +25,7 @@ const BadgeText = styled(HintSecondary)`
 `
 
 const BadgeIcon = styled.View`
-  height: 28px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
   max-height: 22px;
 `
 
