@@ -21,7 +21,7 @@ const BottomSheetRow = styled.View`
 `
 
 const BottomSheetWordContainer = styled.View`
-  background-color: ${props => props.theme.colors.backgroundTransparent};
+  background-color: ${props => props.theme.colors.background};
   padding: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.xxs};
   align-self: stretch;
