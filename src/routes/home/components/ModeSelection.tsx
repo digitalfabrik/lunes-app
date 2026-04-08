@@ -166,10 +166,7 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
       </TitleRow>
       <ContentBox>
         <BadgeRow>
-          <View>
-            <SmallContent>{labels.readyToPractice}</SmallContent>
-            <Content>{labels.newVocabulary}</Content>
-          </View>
+          <Content>{labels.readyToPractice}</Content>
           {isNewBadgeVisible && (
             <NewBadge>
               <NewBadgeText>{labels.new}</NewBadgeText>

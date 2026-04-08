@@ -8515,7 +8515,6 @@ __metadata:
     react-native-tts: 4.1.1
     react-native-vision-camera: ^4.7.2
     react-native-volume-manager: ^2.0.8
-    react-navigation-header-buttons: ^11.2.1
     react-test-renderer: 19.1.4
     styled-components: ^6.3.11
     ts-jest: ^29.2.5
@@ -10217,20 +10216,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-navigation-header-buttons@npm:^11.2.1":
-  version: 11.2.1
-  resolution: "react-navigation-header-buttons@npm:11.2.1"
-  dependencies:
-    react-to-imperative: ^0.2.0
-  peerDependencies:
-    "@react-navigation/elements": ">=1"
-    "@react-navigation/native": ">=6"
-    react: "*"
-    react-native: ">=0.72.0"
-  checksum: 91eddf0ae4b7e00d09d7b4f5bea8266094fa7698f96d66c364a2d169748d1ff21215118c6c76d9b7d48ca665fa59c1a2b811bbdb93507b6a6f47a3065ce1ac01
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.14.0":
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
@@ -10247,15 +10232,6 @@ __metadata:
   peerDependencies:
     react: ^19.1.4
   checksum: 3b2be2f631e0a022df5f59fe15240a99a4e8dfeba73c5239f588e4bc78135ff8eb4273273e6255b43f24b5b14f93a8cda801ba90c6c6b946d7f9fc0960280cac
-  languageName: node
-  linkType: hard
-
-"react-to-imperative@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "react-to-imperative@npm:0.2.0"
-  peerDependencies:
-    react: "*"
-  checksum: 561adbc15f97e2677ed14d85df3e9ef855567c691327ef2abcbeb34f27477a1cc63bbd5a6244d3f1070874171f3a92c5518dbb89b0e4f0802ee75217d460448c
   languageName: node
   linkType: hard
 
