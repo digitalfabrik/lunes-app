@@ -40,6 +40,7 @@ const HeadingContent = styled.View`
 
 const Title = styled(Heading)`
   font-size: ${props => props.theme.fonts.defaultFontSize};
+  flex-shrink: 1;
   text-align: center;
 `
 
