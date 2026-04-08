@@ -22,6 +22,7 @@ import {
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { useStorageCache } from '../../../hooks/useStorage'
+import useTrackDropout from '../../../hooks/useTrackDropout'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
@@ -112,6 +113,10 @@ const WordChoiceExercise = ({
   const { vocabularyItem, numberOfTries, result } = state.results[state.currentWord]
   const repetitionService = useRepetitionService()
 
+  const count = vocabularyItems.length
+
+  const { markCompleted } = useTrackDropout(navigation, unitId, state.currentWord, count)
+
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
     ...vocabularyItem.alternatives,
@@ -139,6 +144,7 @@ const WordChoiceExercise = ({
   const tryLater = () => updateState({ results: moveToEnd(state.results, state.currentWord) })
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
+    markCompleted()
     if (unitId !== null) {
       await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
     }
@@ -148,7 +154,6 @@ const WordChoiceExercise = ({
       results,
     })
   }
-  const count = vocabularyItems.length
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     const cheatedResults = state.results.map(it => ({

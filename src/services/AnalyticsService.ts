@@ -34,6 +34,13 @@ export type AnalyticsPayload =
       type: 'session_end'
       session_id: string
     }
+  | {
+      type: 'exercise_dropout'
+      exercise_type: 'word_choice'
+      unit_id: number | null
+      position: number
+      total: number
+    }
 
 export const isConsentGiven = (storageCache: StorageCache): boolean => {
   const consent = storageCache.getItem('analyticsConsent')
