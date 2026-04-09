@@ -69,7 +69,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     currentWord: 0,
     results,
-    answers: generateChoices(vocabularyItems, results[0].vocabularyItem),
+    answers: generateChoices(vocabularyItems, results[0]!.vocabularyItem),
   }
 }
 
@@ -110,7 +110,7 @@ const WordChoiceExercise = ({
   const storageCache = useStorageCache()
   const [state, setState] = useState<State>(initializeState(vocabularyItems))
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
-  const { vocabularyItem, numberOfTries, result } = state.results[state.currentWord]
+  const { vocabularyItem, numberOfTries, result } = state.results[state.currentWord]!
   const repetitionService = useRepetitionService()
 
   const count = vocabularyItems.length
@@ -126,17 +126,17 @@ const WordChoiceExercise = ({
   useEffect(() => {
     const nextWord = state.currentWord + 1
     if (nextWord < state.results.length) {
-      const images = state.results[nextWord].vocabularyItem.images
+      const images = state.results[nextWord]!.vocabularyItem.images
       if (images.length > 0) {
-        Image.prefetch(images[0]).catch(reportError)
+        Image.prefetch(images[0]!).catch(reportError)
       }
     }
   }, [state.currentWord, state.results])
 
   const updateState = (newData: Partial<Omit<State, 'answers'>>) => {
     const newState = { ...state, ...newData }
-    if (newState.results[newState.currentWord].vocabularyItem !== state.results[state.currentWord].vocabularyItem) {
-      newState.answers = generateChoices(vocabularyItems, newState.results[newState.currentWord].vocabularyItem)
+    if (newState.results[newState.currentWord]!.vocabularyItem !== state.results[state.currentWord]!.vocabularyItem) {
+      newState.answers = generateChoices(vocabularyItems, newState.results[newState.currentWord]!.vocabularyItem)
     }
     setState(newState)
   }
@@ -174,10 +174,10 @@ const WordChoiceExercise = ({
   const updateResult = async (numberOfTries: number, isCorrect: boolean): Promise<void> => {
     const result = isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
     const newResults = [...state.results]
-    newResults[state.currentWord] = { ...newResults[state.currentWord], numberOfTries, result }
+    newResults[state.currentWord] = { ...newResults[state.currentWord]!, numberOfTries, result }
     updateState({ results: newResults })
     if (isRepetitionExercise && (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES)) {
-      await repetitionService.updateSeveralWordNodeCards([newResults[state.currentWord]])
+      await repetitionService.updateSeveralWordNodeCards([newResults[state.currentWord]!])
     }
   }
 

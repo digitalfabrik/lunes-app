@@ -197,7 +197,7 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       audio: exampleSentence!.audio,
       words: splitSentence(exampleSentence!.sentence),
       id,
-      image: images[0],
+      image: images[0] ?? '',
     }))
 
   useEffect(() => {

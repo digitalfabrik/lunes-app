@@ -194,7 +194,7 @@ export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
 
   const getNouns = (word: string): string => {
     const words = word.split(' ')
-    return words.find((word: string) => word[0] === word[0].toUpperCase()) ?? words.toString()
+    return words.find((word: string) => word.charAt(0) === word.charAt(0).toUpperCase()) ?? words.toString()
   }
 
   const filteredVocabularyItems = vocabularyItems?.filter(

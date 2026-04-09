@@ -101,7 +101,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
     <Container>
       <ListItemResizer>
         <BadgeWrapper>
-          <FeedbackBadge feedback={feedback[index]} />
+          <FeedbackBadge feedback={feedback[index] ?? EXERCISE_FEEDBACK.NONE} />
         </BadgeWrapper>
         <UnitItem onPress={() => handleNavigation(item)}>
           <item.icon />
