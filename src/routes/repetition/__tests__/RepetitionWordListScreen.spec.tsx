@@ -58,21 +58,21 @@ describe('RepetitionWordListScreen', () => {
     const deleteButtons = getAllByTestId('delete-button')
     expect(deleteButtons).toHaveLength(2)
 
-    expect(getByText(vocabulary[0].word)).toBeDefined()
-    fireEvent.press(deleteButtons[0])
+    expect(getByText(vocabulary[0]!.word)).toBeDefined()
+    fireEvent.press(deleteButtons[0]!)
 
-    expect(getByText(vocabulary[1].word)).toBeDefined()
+    expect(getByText(vocabulary[1]!.word)).toBeDefined()
 
     const confirmButton = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton).toBeDefined()
     fireEvent.press(confirmButton)
 
-    await waitForElementToBeRemoved(() => getByText(vocabulary[0].word))
+    await waitForElementToBeRemoved(() => getByText(vocabulary[0]!.word))
 
     const newDeleteButtons = getAllByTestId('delete-button')
     expect(newDeleteButtons).toHaveLength(1)
 
-    fireEvent.press(newDeleteButtons[0])
+    fireEvent.press(newDeleteButtons[0]!)
     const confirmButton2 = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton2).toBeDefined()
     fireEvent.press(confirmButton2)

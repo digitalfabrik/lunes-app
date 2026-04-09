@@ -15,7 +15,7 @@ jest.mock('react-native/Libraries/Image/Image', () => ({
 describe('ImageCarousel', () => {
   const images = ['Arbeitshose', 'Arbeitsschuhe']
 
-  const getUri = (image: ReactTestInstance): string => image.props.source[0].uri
+  const getUri = (image: ReactTestInstance): string => image.props.source[0]!.uri
 
   it('should display the images', async () => {
     const { getByTestId, getAllByTestId } = render(<ImageCarousel images={images} />)
@@ -27,7 +27,7 @@ describe('ImageCarousel', () => {
     const displayedImages = getAllByTestId('image')
     expect(displayedImages).toHaveLength(1)
 
-    const firstImage = displayedImages[0]
+    const firstImage = displayedImages[0]!
     expect(getUri(firstImage)).toBe('Arbeitshose')
 
     // the react-native-image-zoom library renders the images in a row next to each other
@@ -39,10 +39,10 @@ describe('ImageCarousel', () => {
     const swipedDisplayedImages = getAllByTestId('image')
     expect(swipedDisplayedImages).toHaveLength(2)
 
-    const swipedFirstImage = swipedDisplayedImages[0]
+    const swipedFirstImage = swipedDisplayedImages[0]!
     expect(swipedFirstImage).toBe(firstImage)
 
-    const secondImage = swipedDisplayedImages[1]
+    const secondImage = swipedDisplayedImages[1]!
     expect(getUri(secondImage)).toBe('Arbeitsschuhe')
   })
 })

@@ -15,7 +15,7 @@ import TrainingExerciseSelectionScreen from '../TrainingExerciseSelectionScreen'
 jest.mock('../../../hooks/useLoadWordsByJob')
 
 describe('TrainingExerciseSelectionScreen', () => {
-  const job = mockJobs()[0]
+  const job = mockJobs()[0]!
   const navigation = createNavigationMock<'TrainingExerciseSelection'>()
   const route: RouteProp<RoutesParams, 'TrainingExerciseSelection'> = {
     key: '',

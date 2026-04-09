@@ -10,7 +10,7 @@ import { renderWithStorageCache } from '../../testing/render'
 import FavoriteButton from '../FavoriteButton'
 
 describe('FavoriteButton', () => {
-  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]
+  const vocabularyItem = new VocabularyItemBuilder(1).build()[0]!
   const favorite: Favorite = vocabularyItem.id
 
   let storageCache: StorageCache

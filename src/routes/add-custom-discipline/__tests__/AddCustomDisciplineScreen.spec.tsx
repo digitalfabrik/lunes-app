@@ -48,7 +48,7 @@ describe('AddCustomDisciplineScreen', () => {
   it('should navigate on successfully submit', async () => {
     await storageCache.setItem('customDisciplines', ['test'])
 
-    mocked(getJob).mockImplementationOnce(async () => mockJobs()[0])
+    mocked(getJob).mockImplementationOnce(async () => mockJobs()[0]!)
 
     const { findByText, findByPlaceholderText } = renderWithStorageCache(
       storageCache,

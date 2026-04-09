@@ -21,7 +21,7 @@ jest.mock('../CmsApi')
 jest.mock('../storageUtils')
 
 describe('helpers', () => {
-  const profession = mockJobs()[0]
+  const profession = mockJobs()[0]!
   const storageCache = StorageCache.createDummy()
 
   beforeEach(async () => {
@@ -37,14 +37,14 @@ describe('helpers', () => {
     })
 
     it('should open first exercise, if no exercise was finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
       expect(exerciseKey).toBe(0)
     })
 
     it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', { '11': { '0': 1, '1': 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
@@ -52,7 +52,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise, if only second exercise was finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', { '1': { '1': 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
@@ -60,7 +60,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of second unit, if first unit was finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', { '1': { '0': 10, '1': 10, '2': 10, '3': 10 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(2)
@@ -68,7 +68,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first unit, if second unit was partly finished yet', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', { '2': { '1': 1, '2': 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
@@ -76,7 +76,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first unit, if exercise progress is undefined', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', { '1': {} })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
@@ -84,7 +84,7 @@ describe('helpers', () => {
     })
 
     it('should open first exercise of first unit, if unit progress is undefined', async () => {
-      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+      mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       await storageCache.setItem('progress', {})
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
@@ -148,8 +148,8 @@ describe('helpers', () => {
       const vocabularyItems = new VocabularyItemBuilder(4).build()
       return vocabularyItems.map((vocabularyItem, index) => ({
         vocabularyItem,
-        result: results[index],
-        numberOfTries: numberOfTries[index],
+        result: results[index]!,
+        numberOfTries: numberOfTries[index]!,
       }))
     }
 
@@ -196,20 +196,20 @@ describe('helpers', () => {
         {
           id: { id: 5, type: VocabularyItemTypes.Standard },
           word: 'Abhänger',
-          article: ARTICLES[3],
+          article: ARTICLES[3]!,
           audio: '',
           images: ['image'],
           alternatives: [
             {
               word: 'Abhänger',
-              article: ARTICLES[2],
+              article: ARTICLES[2]!,
             },
           ],
         },
         {
           id: { id: 8, type: VocabularyItemTypes.Standard },
           word: 'Akkuschrauber',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [],
@@ -217,7 +217,7 @@ describe('helpers', () => {
         {
           id: { id: 2, type: VocabularyItemTypes.Standard },
           word: 'Auto',
-          article: ARTICLES[3],
+          article: ARTICLES[3]!,
           images: ['image'],
           audio: '',
           alternatives: [],
@@ -225,7 +225,7 @@ describe('helpers', () => {
         {
           id: { id: 4, type: VocabularyItemTypes.Standard },
           word: 'Helm',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [],
@@ -233,7 +233,7 @@ describe('helpers', () => {
         {
           id: { id: 3, type: VocabularyItemTypes.Standard },
           word: 'Hose',
-          article: ARTICLES[2],
+          article: ARTICLES[2]!,
           audio: '',
           images: ['image'],
           alternatives: [],
@@ -241,7 +241,7 @@ describe('helpers', () => {
         {
           id: { id: 9, type: VocabularyItemTypes.Standard },
           word: 'Oberarm',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [],
@@ -249,26 +249,26 @@ describe('helpers', () => {
         {
           id: { id: 6, type: VocabularyItemTypes.Standard },
           word: 'Ölkanne',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [
             {
               word: 'Ölkännchen',
-              article: ARTICLES[3],
+              article: ARTICLES[3]!,
             },
           ],
         },
         {
           id: { id: 7, type: VocabularyItemTypes.Standard },
           word: 'Riffeldübel',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [
             {
               word: 'Holzdübel',
-              article: ARTICLES[1],
+              article: ARTICLES[1]!,
             },
           ],
         },
@@ -276,24 +276,24 @@ describe('helpers', () => {
         {
           id: { id: 1, type: VocabularyItemTypes.Standard },
           word: 'Spachtel',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           images: ['image'],
           audio: 'https://example.com/my-audio',
           alternatives: [
             {
               word: 'Spachtel',
-              article: ARTICLES[2],
+              article: ARTICLES[2]!,
             },
             {
               word: 'Alternative',
-              article: ARTICLES[2],
+              article: ARTICLES[2]!,
             },
           ],
         },
         {
           id: { id: 10, type: VocabularyItemTypes.Standard },
           word: 'Untergrund',
-          article: ARTICLES[1],
+          article: ARTICLES[1]!,
           audio: '',
           images: ['image'],
           alternatives: [],
@@ -308,8 +308,8 @@ describe('helpers', () => {
     it('should find a profession', () => {
       const jobs = mockJobs()
       expect(searchJobs(jobs, 'jo')).toStrictEqual(jobs)
-      expect(searchJobs(jobs, 'SECOND')).toStrictEqual([jobs[1]])
-      expect(searchJobs(jobs, 'd job')).toStrictEqual([jobs[1], jobs[2]])
+      expect(searchJobs(jobs, 'SECOND')).toStrictEqual([jobs[1]!])
+      expect(searchJobs(jobs, 'd job')).toStrictEqual([jobs[1]!, jobs[2]!])
     })
 
     it('should not find a profession', () => {

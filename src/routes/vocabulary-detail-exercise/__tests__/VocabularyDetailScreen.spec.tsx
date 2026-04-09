@@ -42,7 +42,7 @@ describe('VocabularyDetailScreen', () => {
 
   it('should render and navigate to next word', () => {
     const { getByText } = render(<VocabularyDetailExerciseScreen route={getRoute(0)} navigation={navigation} />)
-    expect(getByText(vocabularyItems[0].word)).toBeDefined()
+    expect(getByText(vocabularyItems[0]!.word)).toBeDefined()
     expect('AudioPlayer').toBeDefined()
     expect('FavoriteButton').toBeDefined()
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()

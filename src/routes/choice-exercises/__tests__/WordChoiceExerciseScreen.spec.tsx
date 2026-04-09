@@ -234,13 +234,13 @@ describe('WordChoiceExerciseScreen', () => {
       renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
 
     it('moves word card to the next section after a correct answer', async () => {
-      await repetitionService.addWordToFirstSection(vocabularyItems[0])
-      expect(repetitionService.getWordNodeCards()[0].section).toBe(0)
+      await repetitionService.addWordToFirstSection(vocabularyItems[0]!)
+      expect(repetitionService.getWordNodeCards()[0]!.section).toBe(0)
 
       const { getByText } = renderRepetitionScreen()
       fireEvent.press(getByText('Spachtel'))
 
-      await waitFor(() => expect(repetitionService.getWordNodeCards()[0].section).toBe(1))
+      await waitFor(() => expect(repetitionService.getWordNodeCards()[0]!.section).toBe(1))
     })
   })
 

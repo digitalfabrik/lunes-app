@@ -10,7 +10,7 @@ jest.mock('../../services/CmsApi')
 
 describe('useLoadAllWords', () => {
   const lunesStandardVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(3).build()
-  const userVocabularyMock: UserVocabularyItem[] = [new VocabularyItemBuilder(4).buildUserVocabulary()[3]]
+  const userVocabularyMock: UserVocabularyItem[] = [new VocabularyItemBuilder(4).buildUserVocabulary()[3]!]
 
   let storageCache: StorageCache
 

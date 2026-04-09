@@ -27,51 +27,51 @@ describe('RepetitionService', () => {
 
     testData = [
       {
-        wordId: testVocabulary[0].id,
+        wordId: testVocabulary[0]!.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
       },
       {
-        wordId: testVocabulary[1].id,
+        wordId: testVocabulary[1]!.id,
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
+          -(daysToStayInASection[5]! + 2 * daysToStayInASection[5]!),
         ),
       },
       {
-        wordId: testVocabulary[2].id,
+        wordId: testVocabulary[2]!.id,
         section: 2,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[2] + daysToStayInASection[3] + 2),
+          -(daysToStayInASection[2]! + daysToStayInASection[3]! + 2),
         ),
       },
       {
-        wordId: testVocabulary[3].id,
+        wordId: testVocabulary[3]!.id,
         section: 1,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[1] + 2 * daysToStayInASection[4]),
+          -(daysToStayInASection[1]! + 2 * daysToStayInASection[4]!),
         ),
       },
       {
-        wordId: testVocabulary[4].id,
+        wordId: testVocabulary[4]!.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + 1)),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + 1)),
       },
       {
-        wordId: testVocabulary[5].id,
+        wordId: testVocabulary[5]!.id,
         section: 0,
         inThisSectionSince: new Date(),
       },
       {
-        wordId: testVocabulary[6].id,
+        wordId: testVocabulary[6]!.id,
         section: 0,
         inThisSectionSince: new Date(),
       },
       {
-        wordId: testVocabulary[7].id,
+        wordId: testVocabulary[7]!.id,
         section: 6,
         inThisSectionSince: new Date(),
       },
@@ -82,10 +82,10 @@ describe('RepetitionService', () => {
     const result: readonly WordNodeCard[] = repetitionService.getWordNodeCards()
     expect(result).toHaveLength(expected.length)
     result.forEach((wordNodeCard: WordNodeCard, index: number) => {
-      expect(wordNodeCard.wordId).toEqual(expected[index].wordId)
-      expect(wordNodeCard.section).toEqual(expected[index].section)
+      expect(wordNodeCard.wordId).toEqual(expected[index]!.wordId)
+      expect(wordNodeCard.section).toEqual(expected[index]!.section)
       expect(milliSecondsToHours(wordNodeCard.inThisSectionSince.valueOf())).toBeCloseTo(
-        milliSecondsToHours(expected[index].inThisSectionSince.valueOf()),
+        milliSecondsToHours(expected[index]!.inThisSectionSince.valueOf()),
       )
     })
   }
@@ -105,16 +105,16 @@ describe('RepetitionService', () => {
     it('should remove the correct word node card', async () => {
       await repetitionService.setWordNodeCards(testData)
       expect(repetitionService.getWordNodeCards()).toEqual(testData)
-      await repetitionService.removeWordNodeCard(JSON.parse(JSON.stringify(testData[0].wordId)))
+      await repetitionService.removeWordNodeCard(JSON.parse(JSON.stringify(testData[0]!.wordId)))
       expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1))
-      await repetitionService.removeWordNodeCard(testData[testData.length - 1].wordId)
+      await repetitionService.removeWordNodeCard(testData[testData.length - 1]!.wordId)
       expect(repetitionService.getWordNodeCards()).toEqual(testData.slice(1, -1))
     })
 
     it('should remove the word node card if the word is deleted from user vocabulary', async () => {
       await repetitionService.setWordNodeCards(testData)
       expect(repetitionService.getWordNodeCards()).toContain(testData[0])
-      await deleteUserVocabularyItem(storageCache, JSON.parse(JSON.stringify(testVocabulary[0])))
+      await deleteUserVocabularyItem(storageCache, JSON.parse(JSON.stringify(testVocabulary[0]!)))
       expect(repetitionService.getWordNodeCards()).not.toContain(testData[0])
     })
   })
@@ -174,7 +174,7 @@ describe('RepetitionService', () => {
           .map((item: WordNodeCard) => ({
             ...item,
             inThisSectionSince: [2, 5].includes(item.section)
-              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section])
+              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section]!)
               : new Date(),
           }))
           .filter(item => item.section !== 0),
@@ -188,7 +188,7 @@ describe('RepetitionService', () => {
           .map((item: WordNodeCard) => ({
             ...item,
             inThisSectionSince: [1, 2, 3, 4].includes(item.section)
-              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section] + 1)
+              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section]! + 1)
               : new Date(),
           }))
           .filter(item => item.section !== 0),
@@ -206,7 +206,7 @@ describe('RepetitionService', () => {
       it(`for a card in section 0`, () => {
         const date = new Date('2025-01-01')
         const card: WordNodeCard = {
-          wordId: testData[0].wordId,
+          wordId: testData[0]!.wordId,
           section: 0,
           inThisSectionSince: date,
         }
@@ -218,7 +218,7 @@ describe('RepetitionService', () => {
       it('for a card in section 1', () => {
         const date = new Date('2025-01-01')
         const card: WordNodeCard = {
-          wordId: testData[0].wordId,
+          wordId: testData[0]!.wordId,
           section: 1,
           inThisSectionSince: date,
         }
@@ -230,7 +230,7 @@ describe('RepetitionService', () => {
       it('for a card in section 5', () => {
         const date = new Date('2025-01-01')
         const card: WordNodeCard = {
-          wordId: testData[0].wordId,
+          wordId: testData[0]!.wordId,
           section: 5,
           inThisSectionSince: date,
         }
@@ -244,46 +244,46 @@ describe('RepetitionService', () => {
   describe('getNeedsRepetitionScore', () => {
     it('should return 0, if the word needs repetition since today', () => {
       const word1: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 0,
         inThisSectionSince: new Date(),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word1)).toBe(0)
 
       const word2: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 4,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -daysToStayInASection[4]),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -daysToStayInASection[4]!),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word2)).toBe(0)
     })
 
     it('should return 1, if 100% more days have passed, since the repetition was needed', () => {
       const wordWithSecondLowestScore: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
       }
       expect(RepetitionService.getNeedsRepetitionScore(wordWithSecondLowestScore)).toBe(1)
     })
 
     it('should return 2, if 200% more days have passed, since the repetition was needed', () => {
       const word1: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
+          -(daysToStayInASection[5]! + 2 * daysToStayInASection[5]!),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word1)).toBe(2)
 
       const word2: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 4,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[4] + 2 * daysToStayInASection[4]),
+          -(daysToStayInASection[4]! + 2 * daysToStayInASection[4]!),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word2)).toBe(2)
@@ -291,7 +291,7 @@ describe('RepetitionService', () => {
 
     it('should return negative number, if word needs no repetition yet', () => {
       const word: WordNodeCard = {
-        wordId: testData[0].wordId,
+        wordId: testData[0]!.wordId,
         section: 4,
         inThisSectionSince: new Date(),
       }
@@ -334,15 +334,15 @@ describe('RepetitionService', () => {
       const testData2: WordNodeCard[] = new VocabularyItemBuilder(15).build().map(item => ({
         wordId: item.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
       }))
-      expect(RepetitionService.getNeedsRepetitionScore(testData2[0])).toBe(1)
+      expect(RepetitionService.getNeedsRepetitionScore(testData2[0]!)).toBe(1)
 
-      expect(RepetitionService.getNeedsRepetitionScore(testData[0])).toBe(1)
-      expect(RepetitionService.getNeedsRepetitionScore(testData[1])).toBe(2)
-      expect(RepetitionService.getNeedsRepetitionScore(testData[2])).toBe(3)
-      expect(RepetitionService.getNeedsRepetitionScore(testData[3])).toBe(daysToStayInASection[4] * 2)
-      expect(RepetitionService.getNeedsRepetitionScore(testData[4])).toBe(0)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[0]!)).toBe(1)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[1]!)).toBe(2)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[2]!)).toBe(3)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[3]!)).toBe(daysToStayInASection[4]! * 2)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[4]!)).toBe(0)
       testData.push(...testData2)
 
       await repetitionService.setWordNodeCards(testData)
@@ -369,10 +369,10 @@ describe('RepetitionService', () => {
 
   describe('Update long term exercise data', () => {
     it('should add a new word to the first section, if nothing was saved yet', async () => {
-      await repetitionService.addWordToFirstSection(testVocabulary[0])
+      await repetitionService.addWordToFirstSection(testVocabulary[0]!)
       compareWordCardLists([
         {
-          wordId: testData[0].wordId,
+          wordId: testData[0]!.wordId,
           section: 0,
           inThisSectionSince: new Date(),
         },
@@ -381,10 +381,10 @@ describe('RepetitionService', () => {
 
     it('should reset an existing word into the first section', async () => {
       await repetitionService.setWordNodeCards(testData)
-      await repetitionService.addWordToFirstSection(testVocabulary[0])
+      await repetitionService.addWordToFirstSection(testVocabulary[0]!)
       const expected = testData.slice()
       expected[0] = {
-        ...testData[0],
+        ...testData[0]!,
         section: 0,
         inThisSectionSince: new Date(),
       }
@@ -393,11 +393,11 @@ describe('RepetitionService', () => {
 
     it('should add a new word to the first section', async () => {
       await repetitionService.setWordNodeCards(testData.slice(0, 2))
-      await repetitionService.addWordToFirstSection(testVocabulary[2])
+      await repetitionService.addWordToFirstSection(testVocabulary[2]!)
       compareWordCardLists(
         testData.slice(0, 2).concat([
           {
-            wordId: testData[2].wordId,
+            wordId: testData[2]!.wordId,
             section: 0,
             inThisSectionSince: new Date(),
           },
@@ -407,16 +407,16 @@ describe('RepetitionService', () => {
 
     it('should reset existing word and add new word to first section', async () => {
       await repetitionService.setWordNodeCards(testData.slice(0, 3))
-      await repetitionService.addWordsToFirstSection([testVocabulary[2], testVocabulary[3]])
+      await repetitionService.addWordsToFirstSection([testVocabulary[2]!, testVocabulary[3]!])
       const expected = testData.slice(0, 3).concat([
         {
-          wordId: testData[3].wordId,
+          wordId: testData[3]!.wordId,
           section: 0,
           inThisSectionSince: new Date(),
         },
       ])
       expected[2] = {
-        ...testData[2],
+        ...testData[2]!,
         section: 0,
         inThisSectionSince: new Date(),
       }
@@ -428,7 +428,7 @@ describe('RepetitionService', () => {
       const notInLongTermExerciseWord: VocabularyItem = {
         id: { id: 99, type: VocabularyItemTypes.Standard },
         word: 'i am unknown',
-        article: ARTICLES[1],
+        article: ARTICLES[1]!,
         audio: '',
         images: [],
         alternatives: [],
@@ -447,13 +447,13 @@ describe('RepetitionService', () => {
       await repetitionService.setWordNodeCards(testData)
       await repetitionService.updateSeveralWordNodeCards([
         {
-          vocabularyItem: testVocabulary[2],
+          vocabularyItem: testVocabulary[2]!,
           result: 'correct',
           numberOfTries: 0,
         },
       ])
       testData[2] = {
-        ...testData[2],
+        ...testData[2]!,
         section: 3,
         inThisSectionSince: new Date(),
       }
@@ -464,13 +464,13 @@ describe('RepetitionService', () => {
       await repetitionService.setWordNodeCards(testData)
       await repetitionService.updateSeveralWordNodeCards([
         {
-          vocabularyItem: testVocabulary[7],
+          vocabularyItem: testVocabulary[7]!,
           result: 'correct',
           numberOfTries: 0,
         },
       ])
       testData[7] = {
-        ...testData[7],
+        ...testData[7]!,
         inThisSectionSince: new Date(),
       }
       compareWordCardLists(testData)
@@ -480,13 +480,13 @@ describe('RepetitionService', () => {
       await repetitionService.setWordNodeCards(testData)
       await repetitionService.updateSeveralWordNodeCards([
         {
-          vocabularyItem: testVocabulary[2],
+          vocabularyItem: testVocabulary[2]!,
           result: 'incorrect',
           numberOfTries: 0,
         },
       ])
       testData[2] = {
-        ...testData[2],
+        ...testData[2]!,
         section: 0,
         inThisSectionSince: new Date(),
       }
@@ -497,13 +497,13 @@ describe('RepetitionService', () => {
       await repetitionService.setWordNodeCards(testData)
       await repetitionService.updateSeveralWordNodeCards([
         {
-          vocabularyItem: testVocabulary[5],
+          vocabularyItem: testVocabulary[5]!,
           result: 'incorrect',
           numberOfTries: 0,
         },
       ])
       testData[5] = {
-        ...testData[5],
+        ...testData[5]!,
         inThisSectionSince: new Date(),
       }
       compareWordCardLists(testData)

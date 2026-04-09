@@ -28,8 +28,8 @@ describe('StandardExercisesScreen', () => {
     key: 'key-0',
     name: 'StandardExercises',
     params: {
-      jobTitle: mockJobs()[0].name,
-      unit: mockUnits[0],
+      jobTitle: mockJobs()[0]!.name,
+      unit: mockUnits[0]!,
     },
   }
 
@@ -64,7 +64,7 @@ describe('StandardExercisesScreen', () => {
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
     expect(queryByTestId('locking-modal')).toBeFalsy()
-    const lockedExercise = getByText(EXERCISES[1].title)
+    const lockedExercise = getByText(EXERCISES[1]!.title)
     fireEvent.press(lockedExercise)
     await waitFor(() => expect(getByTestId('locking-modal')).toHaveProp('visible', true))
     expect(navigation.navigate).not.toHaveBeenCalled()
@@ -75,9 +75,9 @@ describe('StandardExercisesScreen', () => {
       storageCache,
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
-    const nextExercise = getByText(EXERCISES[0].title)
+    const nextExercise = getByText(EXERCISES[0]!.title)
     fireEvent.press(nextExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, expect.anything())
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0]!.screen, expect.anything())
   })
 
   it('should show feedback badge for done levels', async () => {
