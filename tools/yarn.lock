@@ -642,9 +642,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-toolbelt@github:digitalfabrik/app-toolbelt#3950a1c56760b394a6fad46c9e4de8f87db763f7":
+"app-toolbelt@github:digitalfabrik/app-toolbelt#e6d2b471ecc8c050feb177cf06cd34647c8d894b":
   version: 0.9.0
-  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=3950a1c56760b394a6fad46c9e4de8f87db763f7"
+  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=e6d2b471ecc8c050feb177cf06cd34647c8d894b"
   dependencies:
     "@expo/plist": ^0.3.5
     "@octokit/auth-app": ^7.1.5
@@ -663,7 +663,7 @@ __metadata:
     typescript: ^5.7.3
   bin:
     app-toolbelt: bin/app-toolbelt
-  checksum: b62dc79d7459d26e62b5f66b63d202c63845edee6080130ee1718c6c672fafa8aafced428155b6cb449c6fed64f5f06d0bd2ddd932c569d091d771ae485a2b08
+  checksum: 8fa6e3cb36f18603321566850463983219813b2224c86027dc37a44bb18d682beef1cacf3a59a0f0489767fa2542576fb271f0a309364fdcb32ca454a95ebcc4
   languageName: node
   linkType: hard
 
@@ -1607,7 +1607,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tools@workspace:."
   dependencies:
-    app-toolbelt: "github:digitalfabrik/app-toolbelt#3950a1c56760b394a6fad46c9e4de8f87db763f7"
+    app-toolbelt: "github:digitalfabrik/app-toolbelt#e6d2b471ecc8c050feb177cf06cd34647c8d894b"
   languageName: unknown
   linkType: soft
 
