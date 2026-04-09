@@ -29,7 +29,10 @@ describe('RepetitionService', () => {
       {
         wordId: testVocabulary[0]!.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
+        inThisSectionSince: RepetitionService.addDays(
+          new Date(),
+          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
+        ),
       },
       {
         wordId: testVocabulary[1]!.id,
@@ -262,7 +265,10 @@ describe('RepetitionService', () => {
       const wordWithSecondLowestScore: WordNodeCard = {
         wordId: testData[0]!.wordId,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
+        inThisSectionSince: RepetitionService.addDays(
+          new Date(),
+          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
+        ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(wordWithSecondLowestScore)).toBe(1)
     })
@@ -334,7 +340,10 @@ describe('RepetitionService', () => {
       const testData2: WordNodeCard[] = new VocabularyItemBuilder(15).build().map(item => ({
         wordId: item.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + daysToStayInASection[5]!)),
+        inThisSectionSince: RepetitionService.addDays(
+          new Date(),
+          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
+        ),
       }))
       expect(RepetitionService.getNeedsRepetitionScore(testData2[0]!)).toBe(1)
 
