@@ -56,7 +56,7 @@ export const getArticleColor = (article: Article): string => {
 }
 
 export const moveToEnd = <T>(array: T[], index: number): T[] => {
-  const currentItem = array[index]
+  const currentItem = array[index]!
   const newItems = array.filter(it => it !== currentItem)
   newItems.push(currentItem)
   return newItems
@@ -70,7 +70,7 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    ;[shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!]
   }
   return shuffled
 }
@@ -112,7 +112,7 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
 
   if (!firstUnfinishedUnit) {
     return {
-      unit: units[0],
+      unit: units[0]!,
       exerciseKey: 0,
     } // TODO #965: show success that every exercise is done
   }
@@ -172,7 +172,7 @@ const normalizeString = (str: string): string => normalizeStrings(str).toLowerCa
 
 const normalizeSearchString = (searchString: string): string => {
   const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
-    searchString.split(' ')[0].toLowerCase(),
+    searchString.split(' ')[0]!.toLowerCase(),
   )
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString

@@ -72,7 +72,7 @@ export class RepetitionService {
   }
 
   public static wordNodeCardDateOfNextRepetition = (card: WordNodeCard): Date =>
-    this.addDays(card.inThisSectionSince, daysToStayInASection[card.section])
+    this.addDays(card.inThisSectionSince, daysToStayInASection[card.section]!)
 
   public static getNextRepetitionDate = (cards: WordNodeCard[]): Date | null => {
     let nextDate: Date | null = null
@@ -101,9 +101,9 @@ export class RepetitionService {
   public static getNeedsRepetitionScore = (wordNodeCard: WordNodeCard): number => {
     const daysSinceRepetitionIsNeeded = millisecondsToDays(
       new Date().valueOf() -
-        this.addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]).valueOf(),
+        this.addDays(wordNodeCard.inThisSectionSince, daysToStayInASection[wordNodeCard.section]!).valueOf(),
     )
-    const daysToStayInThisSectionWithDivideByZeroProtection = Math.max(daysToStayInASection[wordNodeCard.section], 1)
+    const daysToStayInThisSectionWithDivideByZeroProtection = Math.max(daysToStayInASection[wordNodeCard.section]!, 1)
     return Math.round(daysSinceRepetitionIsNeeded / daysToStayInThisSectionWithDivideByZeroProtection)
   }
 
@@ -137,7 +137,7 @@ export class RepetitionService {
         areVocabularyItemIdsEqual(wordNodeCard.wordId, word.id),
       )
       if (alreadyExistingCard) {
-        const resetCard = { ...alreadyExistingCard, section: sections[0], inThisSectionSince: new Date() }
+        const resetCard = { ...alreadyExistingCard, section: sections[0]!, inThisSectionSince: new Date() }
         const index = newWordCards.indexOf(alreadyExistingCard)
         newWordCards[index] = resetCard
       } else {
@@ -154,10 +154,10 @@ export class RepetitionService {
   public addWordToFirstSection = async (word: VocabularyItem): Promise<void> => this.addWordsToFirstSection([word])
 
   private static getSectionWithBoundCheck = (section: number) =>
-    sections[Math.min(Math.max(0, section), sections.length - 1)]
+    sections[Math.min(Math.max(0, section), sections.length - 1)]!
 
   private static updateWord = (word: WordNodeCard, isCorrect: boolean): WordNodeCard => {
-    const targetSection = isCorrect ? word.section + 1 : sections[0]
+    const targetSection = isCorrect ? word.section + 1 : sections[0]!
     return {
       ...word,
       section: RepetitionService.getSectionWithBoundCheck(targetSection),
@@ -172,7 +172,7 @@ export class RepetitionService {
         areVocabularyItemIdsEqual(wordCard.wordId, word.vocabularyItem.id),
       )
       if (index !== -1) {
-        newWordCards[index] = RepetitionService.updateWord(newWordCards[index], word.result === 'correct')
+        newWordCards[index] = RepetitionService.updateWord(newWordCards[index]!, word.result === 'correct')
       }
     })
     return this.setWordNodeCards(newWordCards)

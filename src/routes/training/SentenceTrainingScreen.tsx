@@ -99,16 +99,16 @@ type SentenceTrainingProps = {
 
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
-  const currentSentence = state.sentences[state.currentSentenceIndex]
+  const currentSentence = state.sentences[state.currentSentenceIndex]!
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
-    word: currentSentence.words[wordIndex],
+    word: currentSentence.words[wordIndex]!,
     state: isFinished && !isSameWord(state, wordIndex, index) ? 'wrong' : 'enabled',
   }))
   const availableWords: SelectedWord[] = state.randomizedWordIndexes.map(index => ({
     index,
-    word: currentSentence.words[index],
+    word: currentSentence.words[index]!,
     state: state.selectedWordIndexes.includes(index) ? 'disabled' : 'enabled',
   }))
   // Append all unused words to the selected word component and mark them as hidden
@@ -130,7 +130,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
   useEffect(() => {
     const nextSentenceIndex = state.currentSentenceIndex + 1
     if (nextSentenceIndex < state.sentences.length) {
-      const image = state.sentences[nextSentenceIndex].image
+      const image = state.sentences[nextSentenceIndex]!.image
       Image.prefetch(image).catch(reportError)
     }
   }, [state.currentSentenceIndex, state.sentences])

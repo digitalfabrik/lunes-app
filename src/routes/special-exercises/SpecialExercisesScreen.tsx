@@ -24,7 +24,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
   const { jobTitle, vocabularyItems, unit } = route.params
 
   const handleNavigation = (item: Exercise): void => {
-    navigation.navigate(EXERCISES[item.key].screen, {
+    navigation.navigate(EXERCISES[item.key]!.screen, {
       contentType: 'userVocabulary',
       unitId: null,
       vocabularyItems,

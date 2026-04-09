@@ -26,7 +26,7 @@ const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): ReactEle
   const unitsWithVocabulary = splitVocabularyIntoUnits(userVocabulary)
 
   const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {
-    const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.index]
+    const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.index]!
     return navigation.navigate('SpecialExercises', {
       unit: selectedUnitWithVocabulary.unit,
       jobTitle: selectedUnitWithVocabulary.unit.title,

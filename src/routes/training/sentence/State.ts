@@ -26,8 +26,8 @@ export type State = {
 }
 
 export const isSameWord = (state: State, firstIndex: number, secondIndex: number): boolean => {
-  const currentSentence = state.sentences[state.currentSentenceIndex]
-  return currentSentence.words[firstIndex] === currentSentence.words[secondIndex]
+  const currentSentence = state.sentences[state.currentSentenceIndex]!
+  return currentSentence.words[firstIndex]! === currentSentence.words[secondIndex]!
 }
 
 /**
@@ -46,7 +46,7 @@ export const splitSentence = (sentence: string): string[] =>
 export const initializeState = (sentences: Sentence[]): State => {
   const shuffled = shuffleArray(sentences).slice(0, MAX_TRAINING_REPETITIONS)
   const currentSentenceIndex = 0
-  const sentence = shuffled[currentSentenceIndex]
+  const sentence = shuffled[currentSentenceIndex]!
   return {
     sentences: shuffled,
     currentSentenceIndex,
@@ -78,7 +78,7 @@ export const stateReducer = (state: State, action: Action): State => {
       return { ...state, selectedWordIndexes: withoutIndex }
     }
     case 'repeat': {
-      const currentSentence = state.sentences[state.currentSentenceIndex]
+      const currentSentence = state.sentences[state.currentSentenceIndex]!
       return {
         ...state,
         selectedWordIndexes: [],
@@ -89,7 +89,7 @@ export const stateReducer = (state: State, action: Action): State => {
     case 'nextSentence': {
       const hasNextSentence = state.currentSentenceIndex + 1 < state.sentences.length
       const nextIndex = hasNextSentence ? state.currentSentenceIndex + 1 : state.currentSentenceIndex
-      const sentence = state.sentences[nextIndex]
+      const sentence = state.sentences[nextIndex]!
       const correctAnswersCount = action.wasAnswerCorrect ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,

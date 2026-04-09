@@ -43,7 +43,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const score = calculateScore(results)
 
   const { exercise: notNeededForNavigation1, results: notNeededForNavigation2, ...navigationParams } = route.params
-  const repeatExercise = (): void => navigation.popTo(EXERCISES[exercise].screen, { ...navigationParams })
+  const repeatExercise = (): void => navigation.popTo(EXERCISES[exercise]!.screen, { ...navigationParams })
 
   const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
   const isRepetition = route.params.contentType === 'repetition'
