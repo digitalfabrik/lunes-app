@@ -8499,7 +8499,6 @@ __metadata:
     react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.28.0
     react-native-image-picker: ^8.2.1
-    react-native-image-zoom-viewer: ^3.0.1
     react-native-nitro-modules: ^0.34.1
     react-native-nitro-sound: ^0.2.10
     react-native-pager-view: ^8.0.0
@@ -9950,16 +9949,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-pan-zoom@npm:^2.1.12":
-  version: 2.1.12
-  resolution: "react-native-image-pan-zoom@npm:2.1.12"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: c1047da6b7eb0d8a80a810eba8dc0c74e11d0b476808c30d1bbc6285c3f8dc8140aba60fb1af35e2c8c114aa32eed64fb545214a6cf1c00d6b80dd3178bdf3f6
-  languageName: node
-  linkType: hard
-
 "react-native-image-picker@npm:^8.2.1":
   version: 8.2.1
   resolution: "react-native-image-picker@npm:8.2.1"
@@ -9967,18 +9956,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 82b6c51ece8d16806975aff7675d26280fdd2391c05ca9415620195cc6643ca0db4601d3b24e117d7f5331c2e55ba7c03090d276e55b3b5687a636245428a047
-  languageName: node
-  linkType: hard
-
-"react-native-image-zoom-viewer@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "react-native-image-zoom-viewer@npm:3.0.1"
-  dependencies:
-    react-native-image-pan-zoom: ^2.1.12
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: d7ee6ea947a10061b3b285622416dececda72be6907cfe5ab4a2680dcecb51f32adf1d250d1ce12c87178cb8c8a92d85cba89acde437ae4730e36f8e6152455b
   languageName: node
   linkType: hard
 

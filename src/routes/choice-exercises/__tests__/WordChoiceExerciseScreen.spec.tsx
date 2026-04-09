@@ -35,11 +35,6 @@ jest.mock('../../../components/AudioPlayer', () => {
   return () => <Text>AudioPlayer</Text>
 })
 
-jest.mock('react-native-image-zoom-viewer', () => {
-  const Text = require('react-native').Text
-  return () => <Text>ImageZoomViewer</Text>
-})
-
 // The bottom sheet is difficult to test due to its animations
 jest.mock(
   '../../../components/BottomSheet',
