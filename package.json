@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "yarn@3.2.2",
   "scripts": {
-    "android": "react-native run-android --no-packager --active-arch-only",
+    "android": "react-native run-android --no-packager --active-arch-only --appIdSuffix debug",
     "android:production": "react-native run-android --no-packager --mode=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
