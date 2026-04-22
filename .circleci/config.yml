@@ -688,7 +688,7 @@ workflows:
                     - check
                     - bump_version
         when:
-            or:
+            and:
                 - << pipeline.parameters.run_commit >>
                 - equal:
                     - main
