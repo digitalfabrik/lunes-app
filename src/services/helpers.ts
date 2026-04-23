@@ -181,10 +181,10 @@ export const calculateTrainingScore = (correct: number, total: number): number =
 const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
 
 const normalizeSearchString = (searchString: string): string => {
-  const [firstWord = ''] = searchString.split(' ')
-  const searchStringWithoutArticle = ARTICLES.some(article => article.value === firstWord.toLowerCase())
-    ? searchString.substring(searchString.indexOf(' ') + 1)
-    : searchString
+  const words = searchString.split(' ')
+  const firstWord = words[0]?.toLowerCase() ?? ''
+  const startsWithArticle = ARTICLES.some(article => article.value === firstWord)
+  const searchStringWithoutArticle = startsWithArticle ? words.slice(1).join(' ') : searchString
   return normalizeString(searchStringWithoutArticle)
 }
 
