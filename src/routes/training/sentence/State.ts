@@ -1,6 +1,6 @@
 import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 import { VocabularyItemId } from '../../../models/VocabularyItem'
-import { shuffleArray, shuffleIndexes } from '../../../services/helpers'
+import { getAtIndex, shuffleArray, shuffleIndexes } from '../../../services/helpers'
 
 export type Sentence = {
   id: VocabularyItemId
@@ -26,8 +26,8 @@ export type State = {
 }
 
 export const isSameWord = (state: State, firstIndex: number, secondIndex: number): boolean => {
-  const currentSentence = state.sentences[state.currentSentenceIndex]
-  return currentSentence.words[firstIndex] === currentSentence.words[secondIndex]
+  const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
+  return getAtIndex(currentSentence.words, firstIndex) === getAtIndex(currentSentence.words, secondIndex)
 }
 
 /**
@@ -46,7 +46,7 @@ export const splitSentence = (sentence: string): string[] =>
 export const initializeState = (sentences: Sentence[]): State => {
   const shuffled = shuffleArray(sentences).slice(0, MAX_TRAINING_REPETITIONS)
   const currentSentenceIndex = 0
-  const sentence = shuffled[currentSentenceIndex]
+  const sentence = getAtIndex(shuffled, currentSentenceIndex)
   return {
     sentences: shuffled,
     currentSentenceIndex,
@@ -78,7 +78,7 @@ export const stateReducer = (state: State, action: Action): State => {
       return { ...state, selectedWordIndexes: withoutIndex }
     }
     case 'repeat': {
-      const currentSentence = state.sentences[state.currentSentenceIndex]
+      const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
       return {
         ...state,
         selectedWordIndexes: [],
@@ -89,7 +89,7 @@ export const stateReducer = (state: State, action: Action): State => {
     case 'nextSentence': {
       const hasNextSentence = state.currentSentenceIndex + 1 < state.sentences.length
       const nextIndex = hasNextSentence ? state.currentSentenceIndex + 1 : state.currentSentenceIndex
-      const sentence = state.sentences[nextIndex]
+      const sentence = getAtIndex(state.sentences, nextIndex)
       const correctAnswersCount = action.wasAnswerCorrect ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,

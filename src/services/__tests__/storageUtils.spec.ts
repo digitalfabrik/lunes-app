@@ -70,52 +70,52 @@ describe('storageUtils', () => {
         selectedProfessions.map(item => item.id.id),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[1].id.id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[1]!.id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockJobs()[1].id, mockJobs()[1].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[1]!.id, mockJobs()[1]!.migrated)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
     it('should emit a job_selected add event when pushing a job', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        job_id: mockJobs()[0].id.id,
+        job_id: mockJobs()[0]!.id.id,
         action: 'add',
       })
     })
 
     it('should emit a job_selected remove event when removing a job', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        job_id: mockJobs()[0].id.id,
+        job_id: mockJobs()[0]!.id.id,
         action: 'remove',
       })
     })
 
     it('should push selectedProfession to notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
     })
 
     it('should delete selectedProfession from notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([])
     })
 
@@ -152,12 +152,12 @@ describe('storageUtils', () => {
         const vocabularyItems = new VocabularyItemBuilder(2).build()
         const vocabularyItemResults: VocabularyItemResult[] = [
           {
-            vocabularyItem: vocabularyItems[0],
+            vocabularyItem: vocabularyItems[0]!,
             result: SIMPLE_RESULTS.correct,
             numberOfTries: 1,
           },
           {
-            vocabularyItem: vocabularyItems[0],
+            vocabularyItem: vocabularyItems[0]!,
             result: SIMPLE_RESULTS.incorrect,
             numberOfTries: 3,
           },
@@ -182,26 +182,26 @@ describe('storageUtils', () => {
       await storageCache.setItem('favorites', favoriteItems.slice(0, 2))
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 2))
       expect(repetitionService.getWordNodeCards()).toHaveLength(0)
-      await addFavorite(storageCache, repetitionService, vocabularyItems[2])
+      await addFavorite(storageCache, repetitionService, vocabularyItems[2]!)
       expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
-        vocabularyItems[2].id,
+        vocabularyItems[2]!.id,
       ])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 3))
-      await addFavorite(storageCache, repetitionService, vocabularyItems[3])
+      await addFavorite(storageCache, repetitionService, vocabularyItems[3]!)
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
       expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
-        vocabularyItems[2].id,
-        vocabularyItems[3].id,
+        vocabularyItems[2]!.id,
+        vocabularyItems[3]!.id,
       ])
     })
 
     it('should remove favorites', async () => {
       await storageCache.setItem('favorites', favoriteItems)
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
-      await removeFavorite(storageCache, favoriteItems[2])
-      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0], favoriteItems[1], favoriteItems[3]])
-      await removeFavorite(storageCache, favoriteItems[0])
-      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1], favoriteItems[3]])
+      await removeFavorite(storageCache, favoriteItems[2]!)
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0]!, favoriteItems[1]!, favoriteItems[3]!])
+      await removeFavorite(storageCache, favoriteItems[0]!)
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1]!, favoriteItems[3]!])
     })
   })
 
@@ -447,27 +447,27 @@ describe('storageUtils', () => {
     it('should add userVocabularyItem', async () => {
       const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(0)
-      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
-      await addUserVocabularyItem(storageCache, userVocabularyItems[1])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[1]!)
       await editUserVocabularyItem(storageCache, {
-        ...userVocabularyItems[2],
-        id: userVocabularyItems[1].id,
+        ...userVocabularyItems[2]!,
+        id: userVocabularyItems[1]!.id,
       })
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
+      expect({ ...userVocabularyItems[2]!, id: userVocabularyItems[1]!.id }).toEqual(updatedUserVocabulary[0]!)
     })
 
     it('should delete userVocabularyItem', async () => {
-      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(1)
-      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
     })

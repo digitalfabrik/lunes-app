@@ -69,7 +69,7 @@ describe('UserVocabularyProcessScreen', () => {
     const { getByText, getByTestId, queryByTestId } = render(
       <UserVocabularyProcessScreen
         navigation={navigation}
-        route={getRoute({ ...itemToEdit, images: [itemToEdit.images[0]] })}
+        route={getRoute({ ...itemToEdit, images: [itemToEdit.images[0]!] })}
       />,
     )
     const deleteThumbnail = getByTestId('delete-on-thumbnail')
@@ -139,7 +139,7 @@ describe('UserVocabularyProcessScreen', () => {
         <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(2)
-      const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]
+      const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]!
       fireEvent.press(deleteThumbnail)
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(1)
       const saveButton = getByText(getLabels().userVocabulary.creation.saveButton)

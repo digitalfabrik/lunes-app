@@ -42,6 +42,6 @@ describe('HomeScreen', () => {
     mocked(getUnitsOfJob).mockReturnValue(Promise.resolve([]))
     mocked(getWordsByUnit).mockReturnValue(Promise.resolve([]))
     const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    await waitFor(() => expect(getByText(mockJobs()[0].name)).toBeDefined())
+    await waitFor(() => expect(getByText(mockJobs()[0]!.name)).toBeDefined())
   })
 })

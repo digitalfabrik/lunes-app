@@ -23,7 +23,9 @@ type TrainingExercise = {
   navigate?: <T extends keyof RoutesParams>(navigation: StackNavigationProp<RoutesParams, T>, job: StandardJob) => void
 }
 
-export const TRAINING_EXERCISES: Record<string, TrainingExercise> = {
+type TrainingType = 'image' | 'speech' | 'sentence'
+
+export const TRAINING_EXERCISES: Record<TrainingType, TrainingExercise> = {
   image: {
     title: getLabels().exercises.training.image.title,
     description: getLabels().exercises.training.image.description,

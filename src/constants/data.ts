@@ -23,7 +23,7 @@ export type Exercise = {
   screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
-export const EXERCISES: Readonly<Exercise[]> = [
+export const EXERCISES = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
@@ -69,7 +69,7 @@ export type ArticleType = {
   readonly value: string
 }
 
-export const ARTICLES: Readonly<ArticleType[]> = [
+export const ARTICLES = [
   {
     id: 0,
     value: 'keiner',
@@ -114,13 +114,6 @@ export const SIMPLE_RESULTS = {
 } as const
 export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]
 
-type ResultType = {
-  key: SimpleResult
-  title: string
-  Icon: ComponentType<SvgProps>
-  order: number
-}
-
 export type Favorite = VocabularyItemId
 
 export type Answer = {
@@ -128,7 +121,7 @@ export type Answer = {
   article: Article
 }
 
-export const RESULTS: Readonly<ResultType[]> = [
+export const RESULTS = [
   {
     key: 'correct',
     Icon: CheckCircleIcon,

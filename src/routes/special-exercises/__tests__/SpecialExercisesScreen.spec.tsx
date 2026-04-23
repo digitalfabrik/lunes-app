@@ -14,7 +14,7 @@ import SpecialExercisesScreen from '../SpecialExercisesScreen'
 describe('SpecialExercisesScreen', () => {
   let navigation: StackNavigationProp<RoutesParams, 'SpecialExercises'>
   const vocabularyItems = new VocabularyItemBuilder(2).build()
-  const unit = mockUserVocabularyUnits[0]
+  const unit = mockUserVocabularyUnits[0]!
   const renderScreen = (): RenderAPI => {
     const route: RouteProp<RoutesParams, 'SpecialExercises'> = {
       key: '',

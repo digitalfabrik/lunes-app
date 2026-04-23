@@ -35,16 +35,16 @@ type VocabularyDetailExerciseScreenProps = {
 
 const VocabularyDetailExerciseScreen = ({ route, navigation }: VocabularyDetailExerciseScreenProps): ReactElement => {
   const { vocabularyItems, vocabularyItemIndex } = route.params
-  const vocabularyItem = vocabularyItems[vocabularyItemIndex]
+  const vocabularyItem = vocabularyItems[vocabularyItemIndex]!
   const hasNextVocabularyItem = vocabularyItemIndex + 1 < vocabularyItems.length
   const hasPreviousVocabularyItem = vocabularyItemIndex > 0
   const closeExerciseLabel = getLabels().results.action.backToWordlist
 
   useEffect(() => {
     if (hasNextVocabularyItem) {
-      const images = vocabularyItems[vocabularyItemIndex + 1].images
+      const images = vocabularyItems[vocabularyItemIndex + 1]!.images
       if (images.length > 0) {
-        Image.prefetch(images[0]).catch(reportError)
+        Image.prefetch(images[0]!).catch(reportError)
       }
     }
   }, [vocabularyItemIndex, vocabularyItems, hasNextVocabularyItem])

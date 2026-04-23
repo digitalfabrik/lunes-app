@@ -43,8 +43,8 @@ describe('UserVocabularyListScreen', () => {
     expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByPlaceholderText(getLabels().search.enterWord)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.edit)).toBeDefined()
-    expect(getByText(userVocabularyItems[0].word)).toBeDefined()
-    expect(getByText(userVocabularyItems[1].word)).toBeDefined()
+    expect(getByText(userVocabularyItems[0]!.word)).toBeDefined()
+    expect(getByText(userVocabularyItems[1]!.word)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
@@ -63,7 +63,7 @@ describe('UserVocabularyListScreen', () => {
       <UserVocabularyListScreen navigation={navigation} />,
     )
 
-    expect(getByText(userVocabularyItems[0].word)).toBeDefined()
+    expect(getByText(userVocabularyItems[0]!.word)).toBeDefined()
     const editButton = getByText(getLabels().userVocabulary.list.edit)
     expect(editButton).toBeDefined()
 
@@ -72,10 +72,10 @@ describe('UserVocabularyListScreen', () => {
     const trashIcons = getAllByTestId('trash-icon')
     expect(trashIcons).toHaveLength(2)
 
-    await act(async () => fireEvent.press(trashIcons[0]))
+    await act(async () => fireEvent.press(trashIcons[0]!))
     const confirmButton = getByText(getLabels().userVocabulary.list.confirm)
     await act(async () => fireEvent.press(confirmButton))
 
-    expect(storageCache.getItem('userVocabulary')).toEqual([userVocabularyItems[0]])
+    expect(storageCache.getItem('userVocabulary')).toEqual([userVocabularyItems[0]!])
   })
 })

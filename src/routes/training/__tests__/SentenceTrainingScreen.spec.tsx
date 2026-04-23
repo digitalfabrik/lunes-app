@@ -49,7 +49,7 @@ describe('SentenceTrainingScreen', () => {
     audio: exampleSentence!.audio,
     words: ['Example', 'sentence', `${id.id}`],
     id,
-    image: images[0],
+    image: images[0]!,
   }))
   const navigation = createNavigationMock<'SentenceTraining'>()
   const route: RouteProp<RoutesParams, 'SentenceTraining'> = {

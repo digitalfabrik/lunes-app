@@ -16,12 +16,12 @@ describe('ShareButton', () => {
   const vocabularyItems = new VocabularyItemBuilder(1).build()
   const results: VocabularyItemResult[] = [
     {
-      vocabularyItem: vocabularyItems[0],
+      vocabularyItem: vocabularyItems[0]!,
       result: 'correct',
       numberOfTries: 1,
     },
     {
-      vocabularyItem: vocabularyItems[1],
+      vocabularyItem: vocabularyItems[1]!,
       result: 'incorrect',
       numberOfTries: 1,
     },

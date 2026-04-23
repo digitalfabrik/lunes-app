@@ -11,7 +11,7 @@ describe('ImageCarousel', () => {
 
     const displayedImages = getAllByTestId('image')
     expect(displayedImages).toHaveLength(2)
-    expect(displayedImages[0].props.src).toBe('Arbeitshose')
-    expect(displayedImages[1].props.src).toBe('Arbeitsschuhe')
+    expect(displayedImages[0]!.props.src).toBe('Arbeitshose')
+    expect(displayedImages[1]!.props.src).toBe('Arbeitsschuhe')
   })
 })
