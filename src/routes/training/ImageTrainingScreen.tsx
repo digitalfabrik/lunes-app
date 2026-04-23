@@ -15,7 +15,7 @@ import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -41,7 +41,7 @@ const initializeChoices = (state: Omit<State, 'choices'>): State => {
 
   const choices = shuffleArray(vocabularyWithoutCurrentItem).slice(0, 3)
   const indexOfCorrectAnswer = Math.floor(Math.random() * (choices.length + 1))
-  choices.splice(indexOfCorrectAnswer, 0, state.vocabularyItems[state.currentVocabularyItemIndex]!)
+  choices.splice(indexOfCorrectAnswer, 0, getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex))
   return { ...state, choices: choices.map(choice => ({ src: choice.images[0] ?? '', key: choice.id })) }
 }
 
@@ -71,7 +71,7 @@ export const stateReducer = (state: State, action: Action): State => {
       if (state.answer?.isCorrect) {
         return state
       }
-      const isCorrect = action.key === state.vocabularyItems[state.currentVocabularyItemIndex]!.id
+      const isCorrect = action.key === getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex).id
       const isFirstAttempt = state.answer === null
       return {
         ...state,
@@ -109,7 +109,7 @@ type ImageTrainingProps = {
 
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
-  const word = state.vocabularyItems[state.currentVocabularyItemIndex]!
+  const word = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
     let imageState = ImageGridItemState.Default
     if (state.answer?.key === key) {

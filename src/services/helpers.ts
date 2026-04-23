@@ -56,8 +56,15 @@ export const getArticleColor = (article: Article): string => {
   }
 }
 
+export const getAtIndex = <T>(array: T[], index: number): T => {
+  if (index < 0 || index >= array.length) {
+    throw new Error(`Index ${index} is out of bounds for an array with ${array.length} elements.`)
+  }
+  return array[index]!
+}
+
 export const moveToEnd = <T>(array: T[], index: number): T[] => {
-  const currentItem = array[index]!
+  const currentItem = getAtIndex(array, index)
   const newItems = array.filter(it => it !== currentItem)
   newItems.push(currentItem)
   return newItems
@@ -69,9 +76,11 @@ export const getRandomNumberBetween = (min: number, max: number): number =>
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!]
+  for (let currentIndex = shuffled.length - 1; currentIndex > 0; currentIndex -= 1) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1))
+    const currentItem = getAtIndex(shuffled, currentIndex)
+    shuffled[currentIndex] = getAtIndex(shuffled, randomIndex)
+    shuffled[randomIndex] = currentItem
   }
   return shuffled
 }
