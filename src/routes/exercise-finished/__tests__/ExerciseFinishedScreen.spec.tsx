@@ -75,7 +75,7 @@ describe('ExerciseFinishedScreen', () => {
     expect(getByText(getLabels().results.feedbackBad.replace('\n', ''))).toBeDefined()
     const button = getByText(getLabels().results.action.repeat)
     fireEvent.press(button)
-    expect(navigation.popTo).toHaveBeenCalledWith(EXERCISES[1]!.screen, expect.anything())
+    expect(navigation.popTo).toHaveBeenCalledWith(EXERCISES[1].screen, expect.anything())
   })
 
   it('should render and handle button click for completed unit', () => {

@@ -88,7 +88,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       return
     }
     if (vocabularyItems) {
-      navigation.navigate(EXERCISES[item.key]!.screen, {
+      navigation.navigate(EXERCISES[item.key].screen, {
         contentType: 'standard',
         vocabularyItems,
         unitId: unit.id,

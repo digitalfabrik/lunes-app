@@ -39,7 +39,7 @@ describe('UserVocabularyProcessScreen', () => {
   const itemToEdit: UserVocabularyItem = {
     id: { index: 2, type: VocabularyItemTypes.UserCreated },
     word: 'Auto',
-    article: ARTICLES[3]!,
+    article: ARTICLES[3],
     images: [
       `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg`,
       `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg`,

@@ -38,6 +38,7 @@ export const childrenDescription = (job: Job): string => `${job.numberOfUnits} $
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
+    case 0:
     case 1:
       return COLORS.articleMasculine
 
@@ -171,9 +172,8 @@ export const calculateTrainingScore = (correct: number, total: number): number =
 const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
 
 const normalizeSearchString = (searchString: string): string => {
-  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
-    searchString.split(' ')[0]!.toLowerCase(),
-  )
+  const [firstWord = ''] = searchString.split(' ')
+  const searchStringWithoutArticle = ARTICLES.some(article => article.value === firstWord.toLowerCase())
     ? searchString.substring(searchString.indexOf(' ') + 1)
     : searchString
   return normalizeString(searchStringWithoutArticle)

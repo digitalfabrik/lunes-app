@@ -68,7 +68,7 @@ describe('ImageTrainingScreen', () => {
   })
 
   it('should correctly use plural form', async () => {
-    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[4]! })))
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[4] })))
 
     const { getByText, queryByText } = await renderScreenAndWaitForLoad()
     expect(getByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeVisible()

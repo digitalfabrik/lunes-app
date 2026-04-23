@@ -98,7 +98,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
     const allWords = await loadAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       wordId: vocabularyItem.id,
-      section: sections[getRandomNumberBetween(0, sections.length - 1)]!,
+      section: getRandomNumberBetween(0, sections.length - 1) as sections,
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
     await repetitionService.setWordNodeCards(wordCards)

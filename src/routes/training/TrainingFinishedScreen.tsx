@@ -59,7 +59,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const { askContinue, continueNo, continueYes } = getLabels().exercises.training.finished
   const question = askContinue.replace('{}', getLabels().exercises.training[trainingType].title)
 
-  const repeat = TRAINING_EXERCISES[trainingType]!.navigate
+  const repeat = TRAINING_EXERCISES[trainingType].navigate
 
   const { feedbackColor, FeedbackIcon, message } = getFeedback(results)
 
