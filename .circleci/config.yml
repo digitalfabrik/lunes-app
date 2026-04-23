@@ -223,7 +223,7 @@ jobs:
         steps:
             - add_ssh_keys:
                 fingerprints:
-                    - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
+                    - aa:6c:35:24:8a:80:d8:6a:f3:d7:b1:b3:49:42:a2:b3
             - checkout
             - restore_ruby_cache:
                 directory: android
@@ -299,7 +299,7 @@ jobs:
         steps:
             - add_ssh_keys:
                 fingerprints:
-                    - 24:1d:3b:b7:b3:49:69:d7:54:c3:93:a5:a2:d1:71:db
+                    - aa:6c:35:24:8a:80:d8:6a:f3:d7:b1:b3:49:42:a2:b3
             - checkout
             - prepare_workspace
             - restore_environment_variables
