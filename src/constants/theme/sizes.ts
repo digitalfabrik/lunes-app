@@ -1,5 +1,5 @@
 const SIZES = {
-  smallImage: '32%',
+  smallImage: '128px',
   defaultIcon: 28,
 }
 

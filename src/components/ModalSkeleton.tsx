@@ -7,12 +7,14 @@ import useKeyboard from '../hooks/useKeyboard'
 import { getLabels } from '../services/helpers'
 
 const KEYBOARD_MARGIN = 16
+
 const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.colors.overlay};
 `
+
 const ModalContainer = styled.View<{ bottomPosition?: number }>`
   background-color: ${props => props.theme.colors.backgroundAccent};
   width: 85%;
@@ -65,7 +67,9 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
                 <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
               </Pressable>
             </IconRow>
-            <ScrollView persistentScrollbar>{children}</ScrollView>
+            <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
+              {children}
+            </ScrollView>
           </ModalContainer>
         </Overlay>
       </StyledPressable>

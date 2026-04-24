@@ -8,7 +8,6 @@ import { HeadingText } from './text/Heading'
 import { SubheadingText } from './text/Subheading'
 
 const Container = styled.View`
-  min-height: 56px;
   align-items: center;
   margin-bottom: ${props => props.theme.spacings.lg};
   margin-top: ${props => props.theme.spacings.lg};

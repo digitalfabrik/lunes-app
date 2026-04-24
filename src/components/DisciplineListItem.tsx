@@ -32,8 +32,7 @@ const Icon = styled.Image`
 
 const IconContainer = styled.View`
   position: absolute;
-  top: 14px;
-  left: 14px;
+  align-self: center;
 `
 
 const iconWithProgress = (iconUrl: string | undefined, progress: number): ReactElement => (

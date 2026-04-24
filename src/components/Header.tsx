@@ -42,8 +42,7 @@ const VerticalLinesIcon = styled.View`
 
 const SmileIconStyle = styled.Pressable`
   position: absolute;
-  left: 50%;
-  margin-left: -24px;
+  align-self: center;
   top: 60px;
 `
 

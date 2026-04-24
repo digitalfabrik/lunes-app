@@ -14,16 +14,16 @@ const StyledImage = styled.Image`
   height: 60px;
   border-radius: ${props => props.theme.spacings.xxl};
 `
+
 const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
   border-radius: ${props => props.theme.spacings.xs};
   margin-bottom: ${props => props.theme.spacings.xxs};
   background-color: ${props => props.articleColor};
   align-self: flex-start;
-  width: 40px;
   overflow: hidden;
-  height: 20px;
-  text-align: center;
+  padding: 0 ${props => props.theme.spacings.xs};
 `
+
 const RightChildrenContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;

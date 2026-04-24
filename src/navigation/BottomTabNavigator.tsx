@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { ReactElement } from 'react'
 import { isTablet } from 'react-native-device-info'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from 'styled-components/native'
 
 import {
@@ -25,14 +24,10 @@ import RepetitionStackNavigator from './RepetitionStackNavigator'
 import VocabularyCollectionTabNavigator from './VocabularyCollectionTabNavigator'
 
 const Navigator = createBottomTabNavigator<RoutesParams>()
-const TAB_BAR_HEIGHT = 56
-const HOME_TAB_ICON_SIZE = 40
 const TAB_LABEL_FONT_SIZE = 12
 
 const BottomTabNavigator = (): ReactElement | null => {
   const theme = useTheme()
-  const insets = useSafeAreaInsets()
-
   const repetitionService = useRepetitionService()
   const [analyticsConsent, setAnalyticsConsent] = useStorage('analyticsConsent')
 
@@ -47,9 +42,9 @@ const BottomTabNavigator = (): ReactElement | null => {
 
   const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
     focused ? (
-      <HomeIconWhite width={HOME_TAB_ICON_SIZE} height={HOME_TAB_ICON_SIZE} />
+      <HomeIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     ) : (
-      <HomeIconGrey width={HOME_TAB_ICON_SIZE} height={HOME_TAB_ICON_SIZE} />
+      <HomeIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
     )
 
   const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
@@ -82,10 +77,8 @@ const BottomTabNavigator = (): ReactElement | null => {
           tabBarActiveTintColor: theme.colors.background,
           tabBarStyle: {
             backgroundColor: theme.colors.primary,
-            minHeight: TAB_BAR_HEIGHT + insets.bottom,
-            paddingBottom: insets.bottom,
           },
-          tabBarItemStyle: { height: TAB_BAR_HEIGHT, padding: theme.spacingsPlain.xs },
+          tabBarItemStyle: { paddingTop: theme.spacingsPlain.xs },
           tabBarLabelStyle: { fontSize: TAB_LABEL_FONT_SIZE, paddingLeft: isTablet() ? theme.spacingsPlain.xs : 0 },
         }}
       >

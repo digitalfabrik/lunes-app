@@ -17,7 +17,6 @@ const Box = styled.Pressable<{ width?: number }>`
   justify-content: space-between;
   margin: ${props => props.theme.spacings.sm};
   padding: 0 ${props => props.theme.spacings.sm};
-  min-height: 224px;
   ${props => props.width && `width: ${props.width}px;`}
 `
 

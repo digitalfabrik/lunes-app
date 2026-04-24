@@ -9,10 +9,10 @@ import ImageCarousel from './ImageCarousel'
 
 const AudioContainer = styled.View`
   position: absolute;
-  bottom: -18px;
+  bottom: -16px;
   align-self: center;
-  align-items: center;
 `
+
 const FavoriteContainer = styled.View`
   position: absolute;
   top: ${props => props.theme.spacings.md};

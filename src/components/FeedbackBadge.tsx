@@ -8,7 +8,7 @@ import { HintSecondary } from './text/Hint'
 
 const BadgeContainer = styled.View<{ feedback: EXERCISE_FEEDBACK }>`
   flex-flow: row nowrap;
-  padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};
+  padding: 0 ${props => props.theme.spacings.sm};
   background-color: ${({ theme, feedback }) =>
     feedback === EXERCISE_FEEDBACK.POSITIVE ? theme.colors.correct : theme.colors.incorrect};
   width: 100%;
@@ -26,7 +26,6 @@ const BadgeText = styled(HintSecondary)`
 
 const BadgeIcon = styled.View`
   height: ${props => props.theme.sizes.defaultIcon}px;
-  max-height: 22px;
 `
 
 type FeedbackBadgeProps = {

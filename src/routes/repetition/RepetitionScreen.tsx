@@ -36,7 +36,7 @@ const TextContainer = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-size: 14px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 const Container = styled.View`
@@ -56,7 +56,7 @@ const EmptyStateContent = styled.View`
 const EmptyStateSubtitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: 14px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   text-align: center;
   padding-top: ${props => props.theme.spacings.xs};
 `

@@ -28,7 +28,8 @@ const BadgeWrapper = styled.View`
 `
 
 const ListItemResizer = styled.View`
-  width: 85%;
+  width: 100%;
+  padding: 0 ${props => props.theme.spacings.lg};
 `
 
 const SmallMessage = styled(ContentTextLight)`

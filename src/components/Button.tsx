@@ -14,6 +14,7 @@ type ThemedButtonProps = {
   backgroundColor: Color | 'transparent'
   disabled?: boolean
   isPressed: boolean
+  width: number | undefined
 }
 
 type ThemedLabelProps = {
@@ -35,6 +36,11 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
   justify-content: center;
   margin-bottom: ${props => props.theme.spacings.sm};
   background-color: ${props => props.backgroundColor};
+  ${props =>
+    props.width &&
+    css`
+      width: ${props.width}px;
+    `};
   ${props =>
     props.buttonTheme === BUTTONS_THEME.text &&
     css`
@@ -108,7 +114,8 @@ const Button = (props: ButtonProps): ReactElement => {
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
-      style={[{ width: buttonWidth }, style]}
+      width={buttonWidth}
+      style={style}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       accessibilityRole='button'
