@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CrystalBallIcon } from '../../../../assets/images'
 import { ContentSecondary } from '../../../components/text/Content'
@@ -29,10 +28,11 @@ type AlternativeWordsSectionProps = {
   vocabularyItem: VocabularyItem
 }
 
-const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): ReactElement | null =>
-  vocabularyItem.alternatives.length > 0 ? (
+const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProps): ReactElement | null => {
+  const theme = useTheme()
+  return vocabularyItem.alternatives.length > 0 ? (
     <Root>
-      <CrystalBallIcon width={hp('3.5%')} height={hp('3.5%')} />
+      <CrystalBallIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
       <Content>
         <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
         <AlternativeWords>
@@ -41,5 +41,6 @@ const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProp
       </Content>
     </Root>
   ) : null
+}
 
 export default AlternativeWordsSection

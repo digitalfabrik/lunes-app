@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -10,7 +9,6 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary, ContentTextBold } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import theme from '../../constants/theme'
 import { loadAllWords } from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
 import { useStorageCache } from '../../hooks/useStorage'
@@ -37,7 +35,7 @@ const TextContainer = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-size: ${hp('1.8%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 const Container = styled.View`
@@ -57,7 +55,7 @@ const EmptyStateContent = styled.View`
 const EmptyStateSubtitle = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-size: ${hp('1.8%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
   text-align: center;
   padding-top: ${props => props.theme.spacings.xs};
 `
@@ -75,14 +73,8 @@ const HeaderWrapper = styled.View`
   gap: ${props => props.theme.spacings.xs};
 `
 
-const ModalContainer = styled.View`
-  justify-content: space-between;
-  align-items: center;
-  height: ${hp('16%')}px;
-`
-
 const ModalContent = styled(ContentSecondary)`
-  padding: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.sm};
 `
 
 const PressableText = styled.Pressable`
@@ -95,6 +87,7 @@ type RepetitionScreenProps = {
 }
 
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
+  const theme = useTheme()
   const [isInfoModalVisible, setIsInfoModalVisible] = useState<boolean>(false)
   const [isProgressExplainerVisible, setIsProgressExplainerVisible] = useState<boolean>(false)
   const {
@@ -176,18 +169,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           <RepetitionProgressChart />
         </Container>
         <ModalSkeleton visible={isInfoModalVisible} onClose={() => setIsInfoModalVisible(false)} testID='infoModal'>
-          <ModalContainer>
-            <ModalContent>{infoModalContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{infoModalContent}</ModalContent>
         </ModalSkeleton>
         <ModalSkeleton
           visible={isProgressExplainerVisible}
           onClose={() => setIsProgressExplainerVisible(false)}
           testID='progressModal'
         >
-          <ModalContainer>
-            <ModalContent>{progressExplainerContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{progressExplainerContent}</ModalContent>
         </ModalSkeleton>
       </Root>
     </RouteWrapper>

@@ -1,12 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect } from 'react'
 import { ProgressBar } from 'react-native-paper'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import NavigationHeaderLeft from '../../../components/NavigationHeaderLeft'
 import { ContentSecondary } from '../../../components/text/Content'
-import theme from '../../../constants/theme'
 import { Route, RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 
@@ -24,6 +22,8 @@ const TrainingExerciseHeader = ({
   numberOfWords,
   navigation,
 }: TrainingExerciseHeaderProps): ReactElement => {
+  const theme = useTheme()
+  const { xs: paddingHorizontal } = theme.spacingsPlain
   const progressText = `${currentWord + 1} / ${numberOfWords}`
 
   useEffect(() => {
@@ -41,11 +41,11 @@ const TrainingExerciseHeader = ({
       headerLeft: renderHeaderLeft,
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
-        paddingHorizontal: theme.spacingsPlain.xs,
-        maxWidth: wp('25%'),
+        paddingHorizontal,
+        maxWidth: '25%',
       },
     })
-  }, [navigation, progressText])
+  }, [navigation, paddingHorizontal, progressText])
 
   return (
     <ProgressBar

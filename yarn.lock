@@ -8513,7 +8513,6 @@ __metadata:
     react-native-paper: 5.14.5
     react-native-permissions: ^5.4.2
     react-native-progress: ^5.0.1
-    react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^5.6.1
     react-native-screens: ^4.19.0
     react-native-sound-player: 0.14.5
@@ -10044,15 +10043,6 @@ __metadata:
   peerDependencies:
     react-native-svg: "*"
   checksum: a8c549609c18268ee8e0e95bfe3f4fad3eaeb7df5f2a4c69c72d5c229e56d19536055a6308b9aa501639702691b81ac0dd37794991aebe9793246eb3609dec38
-  languageName: node
-  linkType: hard
-
-"react-native-responsive-screen@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "react-native-responsive-screen@npm:1.4.2"
-  peerDependencies:
-    react-native: ">=0.35"
-  checksum: 7d0a3bb822713056771c8b660dd75fea97676b01dd995f1ae2680b8d10f3eea176b17c53fd6332242d0bb79e235ac86cd141d5289834b0f70f0054f337cbf220
   languageName: node
   linkType: hard
 

@@ -1,15 +1,13 @@
 import React, { ReactElement, useState } from 'react'
 import { StyleProp, TextInputProps, ViewStyle } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
-import theme from '../constants/theme'
 import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
-const LINE_HEIGHT = hp('4%')
-const MIN_HEIGHT = hp('7%')
+const LINE_HEIGHT = 32
+const MIN_HEIGHT = 56
 
 const StyledTextInput = styled.TextInput`
   font-size: ${props => props.theme.fonts.defaultFontSize};
@@ -55,13 +53,6 @@ type CustomTextInputProps = {
   style?: StyleProp<ViewStyle>
 } & TextInputProps
 
-const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
-  if (hasErrorMessage) {
-    return theme.colors.incorrect
-  }
-  return isFocused ? theme.colors.primary : theme.colors.textSecondary
-}
-
 const CustomTextInput = ({
   value,
   onChangeText,
@@ -81,12 +72,19 @@ const CustomTextInput = ({
   const showErrorValidation = errorMessage !== undefined
   const multiLine = lines > 1
 
+  const getBorderColor = (): string => {
+    if (showErrorValidation && errorMessage.length > 0) {
+      return theme.colors.incorrect
+    }
+    return isFocused ? theme.colors.primary : theme.colors.textSecondary
+  }
+
   return (
     <>
       <TextInputContainer
         style={style}
         lines={lines}
-        borderColor={customBorderColor ?? getBorderColor(!!(showErrorValidation && errorMessage.length > 0), isFocused)}
+        borderColor={customBorderColor ?? getBorderColor()}
         showErrorValidation={showErrorValidation}
       >
         <StyledTextInput

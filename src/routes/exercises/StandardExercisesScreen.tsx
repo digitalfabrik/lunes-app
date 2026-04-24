@@ -2,7 +2,6 @@ import { RouteProp, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { FlatList, View } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import FeedbackBadge from '../../components/FeedbackBadge'
@@ -29,7 +28,8 @@ const BadgeWrapper = styled.View`
 `
 
 const ListItemResizer = styled.View`
-  width: ${wp('85%')}px;
+  width: 100%;
+  padding: 0 ${props => props.theme.spacings.lg};
 `
 
 const SmallMessage = styled(ContentTextLight)`

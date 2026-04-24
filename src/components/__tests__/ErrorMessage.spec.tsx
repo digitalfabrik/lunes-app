@@ -1,4 +1,4 @@
-import { fireEvent, render as renderWithoutTheme } from '@testing-library/react-native'
+import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 
 import { getLabels } from '../../services/helpers'
@@ -33,9 +33,9 @@ describe('ErrorMessage', () => {
   })
 
   it('should show nothing if no error', () => {
-    const { root } = renderWithoutTheme(<ErrorMessage error={null} refresh={refresh} />)
+    const { toJSON } = render(<ErrorMessage error={null} refresh={refresh} />)
 
-    expect(root).toBeUndefined()
+    expect(toJSON()).toBeNull()
   })
 
   it('should show message if other error', () => {

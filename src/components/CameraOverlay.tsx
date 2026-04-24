@@ -1,9 +1,8 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
 import useGrantPermissions from '../hooks/useGrantPermissions'
@@ -30,6 +29,7 @@ type Props = {
 }
 
 const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
+  const theme = useTheme()
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionRequested, permissionGranted } = useGrantPermissions(CAMERA_PERMISSION)
 
@@ -44,9 +44,17 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
               onPressOut={() => setIsPressed(false)}
             >
               {isPressed ? (
-                <CloseCircleIconBlue testID='close-circle-icon-blue' width={hp('3.5%')} height={hp('3.5%')} />
+                <CloseCircleIconBlue
+                  testID='close-circle-icon-blue'
+                  width={theme.sizes.defaultIcon}
+                  height={theme.sizes.defaultIcon}
+                />
               ) : (
-                <CloseCircleIconWhite testID='close-circle-icon-white' width={hp('3.5%')} height={hp('3.5%')} />
+                <CloseCircleIconWhite
+                  testID='close-circle-icon-white'
+                  width={theme.sizes.defaultIcon}
+                  height={theme.sizes.defaultIcon}
+                />
               )}
             </Pressable>
           </Header>

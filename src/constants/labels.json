@@ -185,6 +185,7 @@
       "wordFeedback": "Feedback geben"
     },
     "back": "Zurück",
+    "close": "Schließen",
     "plurals": "Plural",
     "noResults": "Es wurden leider keine Ergebnisse gefunden.",
     "error": {
@@ -337,7 +338,7 @@
       "confirmDeletionPart1": "Willst du das Wort",
       "confirmDeletionPart2": "wirklich löschen?",
       "confirm": "Ja, löschen",
-      "cancel": "Schliessen"
+      "cancel": "Schließen"
     },
     "practice": {
       "part": "Teil"

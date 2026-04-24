@@ -1,34 +1,30 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { Keyboard, Modal as RNModal, Platform, Pressable, ScrollView } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
 import useKeyboard from '../hooks/useKeyboard'
-import useScreenHeight from '../hooks/useScreenHeight'
-import PressableOpacity from './PressableOpacity'
+import { getLabels } from '../services/helpers'
 
-const KEYBOARD_MARGIN = hp('2%')
+const KEYBOARD_MARGIN = 16
+
 const Overlay = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.colors.overlay};
 `
-const ModalContainer = styled.View<{ bottomPosition?: number; height?: number }>`
+
+const ModalContainer = styled.View<{ bottomPosition?: number }>`
   background-color: ${props => props.theme.colors.backgroundAccent};
-  align-items: center;
-  width: ${wp('85%')}px;
+  width: 85%;
   border-radius: 4px;
-  padding: ${props => props.theme.spacings.sm} 0;
-  position: relative;
+  padding: ${props => props.theme.spacings.sm};
   ${props => (props.bottomPosition ? `position: absolute;bottom: ${props.bottomPosition + KEYBOARD_MARGIN}px` : '')}
 `
 
-const Icon = styled(PressableOpacity)`
-  display: flex;
-  align-self: flex-end;
-  padding-right: ${props => props.theme.spacings.sm};
+const IconRow = styled.View`
+  align-items: flex-end;
 `
 
 const StyledPressable = styled(Pressable)`
@@ -44,22 +40,33 @@ type ModalSkeletonProps = {
 
 const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProps): ReactElement => {
   const { keyboardHeight, isKeyboardVisible } = useKeyboard()
-  const screenHeight = useScreenHeight()
   const theme = useTheme()
-  const onCloseKeyboard = () => isKeyboardVisible && Keyboard.dismiss()
+  const handleBackdropPress = (): void => {
+    if (isKeyboardVisible) {
+      Keyboard.dismiss()
+    } else {
+      onClose()
+    }
+  }
   const isKeyboardIosVisible = Platform.OS === 'ios' && isKeyboardVisible
 
   return (
-    <RNModal testID={testID} visible={visible} transparent animationType='fade' onRequestClose={onClose}>
-      <StyledPressable onPress={onCloseKeyboard}>
+    <RNModal
+      testID={testID}
+      visible={visible}
+      transparent
+      animationType='fade'
+      onRequestClose={onClose}
+      accessibilityViewIsModal
+    >
+      <StyledPressable onPress={handleBackdropPress}>
         <Overlay>
-          <ModalContainer
-            bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}
-            height={isKeyboardVisible ? screenHeight - keyboardHeight : undefined}
-          >
-            <Icon onPress={onClose}>
-              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
-            </Icon>
+          <ModalContainer bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}>
+            <IconRow>
+              <Pressable onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
+                <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+              </Pressable>
+            </IconRow>
             <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
               {children}
             </ScrollView>

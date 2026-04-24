@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { Modal as RNModal } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { BUTTONS_THEME } from '../constants/data'
@@ -22,7 +21,7 @@ const Overlay = styled.View`
 const ModalContainer = styled.View`
   background-color: ${props => props.theme.colors.backgroundAccent};
   align-items: center;
-  width: ${wp('85%')}px;
+  width: 85%;
   border-radius: 4px;
   padding: ${props => props.theme.spacings.lg};
 `

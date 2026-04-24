@@ -1,15 +1,13 @@
 import React, { ComponentType, ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SvgProps } from 'react-native-svg'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIconWhite } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import RoundedBackground from '../../../components/RoundedBackground'
 import { Content } from '../../../components/text/Content'
 import { HeadingBackground } from '../../../components/text/Heading'
-import theme from '../../../constants/theme'
 import { Color } from '../../../constants/theme/colors'
 import { getLabels, wordsDescription } from '../../../services/helpers'
 
@@ -60,31 +58,34 @@ const ExerciseFinishedBase = ({
   FeedbackIcon,
   onBack,
   children,
-}: ExerciseFinishedBaseProps): ReactElement => (
-  <Root>
-    <RoundedBackground color={theme.colors.primary}>
-      <AlignRight>
-        <IconButton onPress={onBack}>
-          <CloseIconWhite width={hp('3%')} height={hp('3%')} />
-        </IconButton>
-      </AlignRight>
-      <FeedbackIcon width={hp('5%')} height={hp('5%')} />
-      <MessageContainer>
-        <Message>{message}</Message>
-        <Results color={feedbackColor}>
-          {results.correct} {getLabels().results.of} {wordsDescription(results.total)} {getLabels().results.correct}
-        </Results>
-        <Progress.Bar
-          color={feedbackColor}
-          progress={results.correct / results.total}
-          unfilledColor={theme.colors.background}
-          borderWidth={0}
-        />
-      </MessageContainer>
-    </RoundedBackground>
+}: ExerciseFinishedBaseProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <Root>
+      <RoundedBackground color={theme.colors.primary}>
+        <AlignRight>
+          <IconButton onPress={onBack}>
+            <CloseIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+          </IconButton>
+        </AlignRight>
+        <FeedbackIcon width={40} height={40} />
+        <MessageContainer>
+          <Message>{message}</Message>
+          <Results color={feedbackColor}>
+            {results.correct} {getLabels().results.of} {wordsDescription(results.total)} {getLabels().results.correct}
+          </Results>
+          <Progress.Bar
+            color={feedbackColor}
+            progress={results.correct / results.total}
+            unfilledColor={theme.colors.background}
+            borderWidth={0}
+          />
+        </MessageContainer>
+      </RoundedBackground>
 
-    {children}
-  </Root>
-)
+      {children}
+    </Root>
+  )
+}
 
 export default ExerciseFinishedBase

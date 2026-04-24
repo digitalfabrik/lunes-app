@@ -2,7 +2,6 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState, ReactElement } from 'react'
 import { BackHandler } from 'react-native'
 import { ProgressBar as RNProgressBar } from 'react-native-paper'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { FeedbackIcon } from '../../assets/images'
@@ -77,7 +76,7 @@ const ExerciseHeader = ({
             accessibilityLabel={getLabels().general.header.wordFeedback}
             accessibilityRole='button'
           >
-            <FeedbackIcon width={hp('3.5%')} height={hp('3.5%')} />
+            <FeedbackIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
           </FeedbackButton>
         )}
       </HeaderRightContainer>
@@ -88,7 +87,7 @@ const ExerciseHeader = ({
       headerRight: renderHeaderRight,
       headerRightContainerStyle: {
         paddingHorizontal: theme.spacingsPlain.xs,
-        maxWidth: wp('25%'),
+        maxWidth: '25%',
       },
     })
   }, [
@@ -103,6 +102,7 @@ const ExerciseHeader = ({
     numberOfWords,
     theme.spacingsPlain.xs,
     theme.spacingsPlain.xl,
+    theme.sizes.defaultIcon,
   ])
 
   useEffect(() => {

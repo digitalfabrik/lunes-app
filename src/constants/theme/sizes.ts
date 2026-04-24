@@ -1,7 +1,6 @@
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-
 const SIZES = {
-  smallImage: `${wp('32%')}px`,
+  smallImage: '128px',
+  defaultIcon: 28,
 }
 
 export default SIZES
