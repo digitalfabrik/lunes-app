@@ -2,10 +2,9 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import { Modal as RNModal, Platform, Pressable } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
-import theme from '../constants/theme'
 import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
@@ -30,6 +29,7 @@ type Props = {
 }
 
 const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
+  const theme = useTheme()
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionRequested, permissionGranted } = useGrantPermissions(CAMERA_PERMISSION)
 

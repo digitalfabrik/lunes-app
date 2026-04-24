@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -9,7 +9,6 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary, ContentTextBold } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import theme from '../../constants/theme'
 import { loadAllWords } from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
 import { useStorageCache } from '../../hooks/useStorage'
@@ -88,6 +87,7 @@ type RepetitionScreenProps = {
 }
 
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
+  const theme = useTheme()
   const [isInfoModalVisible, setIsInfoModalVisible] = useState<boolean>(false)
   const [isProgressExplainerVisible, setIsProgressExplainerVisible] = useState<boolean>(false)
   const {

@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import {
   ArrowLeftCircleIconBlue,
@@ -7,7 +7,6 @@ import {
   CloseCircleIconBlue,
   CloseCircleIconWhite,
 } from '../../assets/images'
-import theme from '../constants/theme'
 import { NavigationTitle } from './NavigationTitle'
 
 const Container = styled.Pressable`
@@ -23,6 +22,7 @@ type NavigationHeaderLeftProps = {
 }
 
 const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeaderLeftProps): ReactElement => {
+  const theme = useTheme()
   const [pressed, setPressed] = useState<boolean>(false)
 
   const closeIcon = pressed ? CloseCircleIconBlue : CloseCircleIconWhite

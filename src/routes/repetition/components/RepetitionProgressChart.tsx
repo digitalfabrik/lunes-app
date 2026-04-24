@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react'
 import { useWindowDimensions } from 'react-native'
+import { useTheme } from 'styled-components/native'
 import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
-import theme from '../../../constants/theme'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { sections } from '../../../services/RepetitionService'
 import { getLabels } from '../../../services/helpers'
 
-const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
-const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
-
 const CHART_HEIGHT_RATIO = 0.35
 
 const RepetitionProgressChart: () => ReactElement = () => {
+  const theme = useTheme()
+  const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
+  const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
   const { height } = useWindowDimensions()
   const { untrained, learned, sectionOneToFive } = getLabels().repetition.chart
   const words = getLabels().general.word.plural

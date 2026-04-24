@@ -4,8 +4,8 @@ import React from 'react'
 import { StyleSheet, useWindowDimensions } from 'react-native'
 
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
-import theme from '../constants/theme'
 import { COLORS } from '../constants/theme/colors'
+import { SPACINGS_PLAIN } from '../constants/theme/spacings'
 import { RoutesParams } from './NavigationTypes'
 
 const MOBILE_MAX_WIDTH = 550
@@ -27,7 +27,7 @@ const headerStyles = (headerHeight?: number) =>
       height: headerHeight,
     },
     headerRightContainer: {
-      paddingHorizontal: theme.spacingsPlain.sm,
+      paddingHorizontal: SPACINGS_PLAIN.sm,
       maxWidth: 60,
     },
     headerLeftContainer: {

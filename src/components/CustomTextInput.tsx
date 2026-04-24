@@ -3,7 +3,6 @@ import { StyleProp, TextInputProps, ViewStyle } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import { CloseIcon } from '../../assets/images'
-import theme from '../constants/theme'
 import PressableOpacity from './PressableOpacity'
 import { ContentError } from './text/Content'
 
@@ -54,13 +53,6 @@ type CustomTextInputProps = {
   style?: StyleProp<ViewStyle>
 } & TextInputProps
 
-const getBorderColor = (hasErrorMessage: boolean, isFocused: boolean): string => {
-  if (hasErrorMessage) {
-    return theme.colors.incorrect
-  }
-  return isFocused ? theme.colors.primary : theme.colors.textSecondary
-}
-
 const CustomTextInput = ({
   value,
   onChangeText,
@@ -80,12 +72,19 @@ const CustomTextInput = ({
   const showErrorValidation = errorMessage !== undefined
   const multiLine = lines > 1
 
+  const getBorderColor = (): string => {
+    if (showErrorValidation && errorMessage.length > 0) {
+      return theme.colors.incorrect
+    }
+    return isFocused ? theme.colors.primary : theme.colors.textSecondary
+  }
+
   return (
     <>
       <TextInputContainer
         style={style}
         lines={lines}
-        borderColor={customBorderColor ?? getBorderColor(!!(showErrorValidation && errorMessage.length > 0), isFocused)}
+        borderColor={customBorderColor ?? getBorderColor()}
         showErrorValidation={showErrorValidation}
       >
         <StyledTextInput
