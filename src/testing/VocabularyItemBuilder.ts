@@ -1,5 +1,6 @@
 import { ARTICLES } from '../constants/data'
 import { StandardVocabularyItem, UserVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
+import { getAtIndex } from '../services/helpers'
 
 const vocabularyItems: StandardVocabularyItem[] = [
   {
@@ -115,7 +116,7 @@ class VocabularyItemBuilder {
     this.vocabularyItemCount = vocabularyItemCount
 
     while (this.vocabularyItemCount > vocabularyItems.length) {
-      vocabularyItems.push(vocabularyItems[0])
+      vocabularyItems.push(getAtIndex(vocabularyItems, 0))
     }
   }
 

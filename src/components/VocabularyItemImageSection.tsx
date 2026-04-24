@@ -27,7 +27,6 @@ type VocabularyItemSectionProps = {
   vocabularyItem: VocabularyItem
   audioDisabled?: boolean
   showAudioPlayer?: boolean
-  minimized?: boolean
   submittedAlternative?: string | null
 }
 
@@ -35,11 +34,10 @@ const VocabularyItemImageSection = ({
   vocabularyItem,
   audioDisabled = false,
   showAudioPlayer = true,
-  minimized = false,
   submittedAlternative,
 }: VocabularyItemSectionProps): ReactElement => (
   <Container>
-    <ImageCarousel images={vocabularyItem.images} minimized={minimized} />
+    <ImageCarousel images={vocabularyItem.images} />
     {showAudioPlayer && (
       <AudioContainer>
         <AudioPlayer

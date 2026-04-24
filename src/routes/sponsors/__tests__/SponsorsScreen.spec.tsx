@@ -29,10 +29,10 @@ describe('SponsorsScreen', () => {
 
     const { getByText } = renderWithTheme(<SponsorsScreen />)
 
-    expect(getByText(sponsors[0].name)).toBeTruthy()
-    expect(getByText(sponsors[1].name)).toBeTruthy()
+    expect(getByText(sponsors[0]!.name)).toBeTruthy()
+    expect(getByText(sponsors[1]!.name)).toBeTruthy()
 
-    fireEvent.press(getByText(sponsors[0].name))
-    expect(openExternalUrl).toHaveBeenCalledWith(sponsors[0].url)
+    fireEvent.press(getByText(sponsors[0]!.name))
+    expect(openExternalUrl).toHaveBeenCalledWith(sponsors[0]!.url)
   })
 })

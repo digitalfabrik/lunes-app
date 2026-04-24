@@ -36,12 +36,12 @@ describe('SelectedJobs', () => {
 
   it('should show a single job card with edit and add icons', async () => {
     const storageCache = StorageCache.createDummy()
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
-    mocked(getJob).mockResolvedValue(mockJobs()[0])
+    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    mocked(getJob).mockResolvedValue(mockJobs()[0]!)
 
     const { getByText, getByTestId } = renderWithStorageCache(storageCache, <SelectedJobs {...defaultProps} />)
 
-    await waitFor(() => expect(getByText(mockJobs()[0].name)).toBeDefined())
+    await waitFor(() => expect(getByText(mockJobs()[0]!.name)).toBeDefined())
     expect(getByTestId('edit-professions-button')).toBeDefined()
     expect(getByTestId('add-profession-button')).toBeDefined()
   })
@@ -49,9 +49,9 @@ describe('SelectedJobs', () => {
   it('should navigate between multiple jobs using arrow buttons', async () => {
     const [firstJob, secondJob] = mockJobs()
     const storageCache = StorageCache.createDummy()
-    await storageCache.setItem('selectedJobs', [firstJob.id.id, secondJob.id.id])
+    await storageCache.setItem('selectedJobs', [firstJob!.id.id, secondJob!.id.id])
     mocked(getJob).mockImplementation(async jobId =>
-      jobId.type === 'standard' && jobId.id === secondJob.id.id ? secondJob : firstJob,
+      jobId.type === 'standard' && jobId.id === secondJob!.id.id ? secondJob! : firstJob!,
     )
 
     const { getByText, getByTestId, queryByTestId } = renderWithStorageCache(
@@ -59,13 +59,13 @@ describe('SelectedJobs', () => {
       <SelectedJobs {...defaultProps} />,
     )
 
-    await waitFor(() => expect(getByText(firstJob.name)).toBeDefined())
+    await waitFor(() => expect(getByText(firstJob!.name)).toBeDefined())
     expect(queryByTestId('navigate-left')).toBeNull()
     expect(getByTestId('navigate-right')).toBeDefined()
 
     fireEvent.press(getByTestId('navigate-right'))
 
-    await waitFor(() => expect(getByText(secondJob.name)).toBeDefined())
+    await waitFor(() => expect(getByText(secondJob!.name)).toBeDefined())
     expect(getByTestId('navigate-left')).toBeDefined()
     expect(queryByTestId('navigate-right')).toBeNull()
   })

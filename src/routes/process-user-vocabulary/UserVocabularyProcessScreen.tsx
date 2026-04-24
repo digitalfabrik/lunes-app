@@ -156,7 +156,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const itemToSave = {
         id,
         word,
-        article: ARTICLES[article.id],
+        article: ARTICLES.find(articleType => articleType.id === article.id) ?? ARTICLES[0],
         images: imagePaths,
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],

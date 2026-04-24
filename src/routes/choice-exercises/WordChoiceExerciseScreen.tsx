@@ -32,6 +32,10 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
     }
   })
 
+  if (vocabularyItems.length === 0) {
+    return null
+  }
+
   return (
     <RouteWrapper shouldSetBottomInset>
       <WordChoiceExercise

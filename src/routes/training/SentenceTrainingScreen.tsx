@@ -15,7 +15,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { getAtIndex, getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
@@ -99,16 +99,16 @@ type SentenceTrainingProps = {
 
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
-  const currentSentence = state.sentences[state.currentSentenceIndex]
+  const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
-    word: currentSentence.words[wordIndex],
+    word: getAtIndex(currentSentence.words, wordIndex),
     state: isFinished && !isSameWord(state, wordIndex, index) ? 'wrong' : 'enabled',
   }))
   const availableWords: SelectedWord[] = state.randomizedWordIndexes.map(index => ({
     index,
-    word: currentSentence.words[index],
+    word: getAtIndex(currentSentence.words, index),
     state: state.selectedWordIndexes.includes(index) ? 'disabled' : 'enabled',
   }))
   // Append all unused words to the selected word component and mark them as hidden
@@ -130,7 +130,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
   useEffect(() => {
     const nextSentenceIndex = state.currentSentenceIndex + 1
     if (nextSentenceIndex < state.sentences.length) {
-      const image = state.sentences[nextSentenceIndex].image
+      const image = state.sentences[nextSentenceIndex]!.image
       Image.prefetch(image).catch(reportError)
     }
   }, [state.currentSentenceIndex, state.sentences])
@@ -197,7 +197,7 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       audio: exampleSentence!.audio,
       words: splitSentence(exampleSentence!.sentence),
       id,
-      image: images[0],
+      image: images[0] ?? '',
     }))
 
   useEffect(() => {

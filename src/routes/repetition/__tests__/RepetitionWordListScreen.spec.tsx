@@ -1,4 +1,4 @@
-import { act, fireEvent, waitFor } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { getWords } from '../../../services/CmsApi'
@@ -58,21 +58,18 @@ describe('RepetitionWordListScreen', () => {
     const deleteButtons = getAllByTestId('delete-button')
     expect(deleteButtons).toHaveLength(2)
 
-    expect(getByText(vocabulary[0].word)).toBeDefined()
-    fireEvent.press(deleteButtons[0])
+    expect(getByText(vocabulary[0]!.word)).toBeDefined()
+    fireEvent.press(deleteButtons[0]!)
 
-    expect(getByText(vocabulary[1].word)).toBeDefined()
+    expect(getByText(vocabulary[1]!.word)).toBeDefined()
 
     const confirmButton = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton).toBeDefined()
     fireEvent.press(confirmButton)
 
-    const newDeleteButtons = getAllByTestId('delete-button')
-    expect(newDeleteButtons).toHaveLength(1)
+    await waitFor(() => expect(getAllByTestId('delete-button')).toHaveLength(1))
 
-    await act(async () => {
-      fireEvent.press(newDeleteButtons[0])
-    })
+    fireEvent.press(getAllByTestId('delete-button')[0]!)
     const confirmButton2 = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton2).toBeDefined()
     fireEvent.press(confirmButton2)

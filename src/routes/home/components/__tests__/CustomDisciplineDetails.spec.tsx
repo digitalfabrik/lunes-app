@@ -10,7 +10,7 @@ const navigateToJob = jest.fn()
 
 describe('CustomDisciplineDetails', () => {
   it('should handle button click', () => {
-    const job = mockJobs()[0]
+    const job = mockJobs()[0]!
     const { getByText } = render(<CustomDisciplineDetails job={job} navigateToJob={navigateToJob} />)
     const button = getByText(getLabels().home.start)
     fireEvent.press(button)
