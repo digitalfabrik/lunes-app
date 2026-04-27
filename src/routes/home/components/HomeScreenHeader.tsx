@@ -15,16 +15,14 @@ const SmileIconStyle = styled.Pressable`
   bottom: -${props => props.theme.spacings.xxl};
 `
 
-const HeaderButtonsContainer = styled.View`
-  align-self: flex-end;
-`
-
 const MenuIconContainer = styled.TouchableOpacity`
+  align-self: flex-end;
   padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.xxs};
 `
 
 const MenuIconWhite = styled(MenuIcon)`
   padding: 0 ${props => props.theme.spacings.md};
+  color: ${props => props.theme.colors.backgroundAccent};
 `
 
 type HomeScreenHeaderProps = {
@@ -36,11 +34,9 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): ReactElement =
     <SmileIconStyle>
       <LunesIcon width={96} height={96} />
     </SmileIconStyle>
-    <HeaderButtonsContainer>
-      <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>
-        <MenuIconWhite testID='menu-icon-white' />
-      </MenuIconContainer>
-    </HeaderButtonsContainer>
+    <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>
+      <MenuIconWhite testID='menu-icon-white' />
+    </MenuIconContainer>
   </Wrapper>
 )
 
