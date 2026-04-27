@@ -50,7 +50,7 @@ const levenshteinDistance = (source: string, target: string): number => {
   const sourceLength = source.length
   const targetLength = target.length
   const distances: number[][] = Array.from({ length: sourceLength + 1 }, (_, row) =>
-    Array.from({ length: targetLength + 1 }, (__, column) => {
+    Array.from({ length: targetLength + 1 }, (_, column) => {
       if (row === 0) {
         return column
       }

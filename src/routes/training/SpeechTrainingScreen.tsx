@@ -264,7 +264,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             isRecording={isRecording}
-            disabled={isRecording}
+            accessibilityLabel={instructions}
           />
           <InstructionText>{instructions}</InstructionText>
           {isDevModeEnabled && (

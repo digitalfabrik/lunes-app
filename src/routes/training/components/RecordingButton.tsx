@@ -15,11 +15,23 @@ type RecordingButtonProps = {
   onPressIn: () => void
   onPressOut: () => void
   isRecording: boolean
-  disabled: boolean
+  accessibilityLabel: string
 }
 
-const RecordingButton = ({ onPressIn, onPressOut, isRecording, disabled }: RecordingButtonProps): ReactElement => (
-  <Button onPressIn={onPressIn} onPressOut={onPressOut} isRecording={isRecording} disabled={disabled}>
+const RecordingButton = ({
+  onPressIn,
+  onPressOut,
+  isRecording,
+  accessibilityLabel,
+}: RecordingButtonProps): ReactElement => (
+  <Button
+    onPressIn={onPressIn}
+    onPressOut={onPressOut}
+    isRecording={isRecording}
+    accessibilityRole='button'
+    accessibilityLabel={accessibilityLabel}
+    testID='recording-button'
+  >
     <MicrophoneIcon width={40} height={40} />
   </Button>
 )
