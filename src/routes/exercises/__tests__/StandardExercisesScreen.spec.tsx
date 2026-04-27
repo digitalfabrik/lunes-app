@@ -39,8 +39,8 @@ describe('StandardExercisesScreen', () => {
     storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
       [route.params.unit.id.id]: {
-        '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
-        '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
+        word_list: SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
+        word_choice: SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
     })
     mocked(useLoadWordsByUnit).mockReturnValue(getReturnOf(vocabularyItems))

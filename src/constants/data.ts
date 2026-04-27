@@ -7,8 +7,8 @@ import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
-  vocabularyList: 0,
-  wordChoiceExercise: 1,
+  vocabularyList: 'word_list',
+  wordChoiceExercise: 'word_choice',
 } as const
 export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
 
@@ -48,7 +48,7 @@ export type Progress = {
 
 export type NextExercise = {
   unit: StandardUnit
-  exerciseKey: number
+  exerciseKey: ExerciseKey
 }
 
 export type NextExerciseData = NextExercise & {

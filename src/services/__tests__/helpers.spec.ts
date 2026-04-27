@@ -1,4 +1,4 @@
-import { ARTICLES, NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
+import { ARTICLES, ExerciseKeys, NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
 import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -40,39 +40,39 @@ describe('helpers', () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
-      await storageCache.setItem('progress', { '11': { '0': 1, '1': 1 } })
+      await storageCache.setItem('progress', { '11': { word_list: 1, word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise, if only second exercise was finished yet', async () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
-      await storageCache.setItem('progress', { '1': { '1': 1 } })
+      await storageCache.setItem('progress', { '1': { word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of second unit, if first unit was finished yet', async () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
-      await storageCache.setItem('progress', { '1': { '0': 10, '1': 10, '2': 10, '3': 10 } })
+      await storageCache.setItem('progress', { '1': { word_list: 10, word_choice: 10 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(2)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if second unit was partly finished yet', async () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
-      await storageCache.setItem('progress', { '2': { '1': 1, '2': 1 } })
+      await storageCache.setItem('progress', { '2': { word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if exercise progress is undefined', async () => {
@@ -80,7 +80,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '1': {} })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if unit progress is undefined', async () => {
@@ -88,7 +88,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', {})
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(0)
+      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
     })
   })
 
@@ -104,19 +104,19 @@ describe('helpers', () => {
     })
 
     it('should round to zero if only one exercise was finished', async () => {
-      await storageCache.setItem('progress', { '1': { '1': 1 } })
+      await storageCache.setItem('progress', { '1': { word_choice: 1 } })
       const progress = await getProgress(storageCache.getItem('progress'), profession)
       expect(Math.round(progress)).toBe(0)
     })
 
     it('should show zero if only exercises of other units were finished', async () => {
-      await storageCache.setItem('progress', { '3': { '1': 1 } })
+      await storageCache.setItem('progress', { '3': { word_choice: 1 } })
       const progress = await getProgress(storageCache.getItem('progress'), profession)
       expect(progress).toBe(0)
     })
 
     it('should show 0.5 or lesser if one of two units are finished', async () => {
-      await storageCache.setItem('progress', { '10': { '0': 1, '1': 1, '2': 1, '3': 1 } })
+      await storageCache.setItem('progress', { '10': { word_list: 1, word_choice: 1 } })
       const progress = await getProgress(storageCache.getItem('progress'), profession)
       expect(progress).toBeLessThanOrEqual(0.5)
     })

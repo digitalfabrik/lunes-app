@@ -12,7 +12,13 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { Content, ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
+import {
+  Exercise,
+  EXERCISE_FEEDBACK,
+  EXERCISES,
+  ExerciseKeys,
+  SCORE_THRESHOLD_POSITIVE_FEEDBACK,
+} from '../../constants/data'
 import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -88,7 +94,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       return
     }
     if (vocabularyItems) {
-      navigation.navigate(EXERCISES[item.key].screen, {
+      navigation.navigate(item.screen, {
         contentType: 'standard',
         vocabularyItems,
         unitId: unit.id,
@@ -115,7 +121,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   )
 
   const nextExercisePreposition =
-    nextExercise?.key === 0
+    nextExercise?.key === ExerciseKeys.vocabularyList
       ? getLabels().exercises.lockedExerciseModal.confirmButtonLabelDeclinated
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
@@ -147,7 +153,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
             <FlatList
               data={EXERCISES}
               renderItem={renderListItem}
-              keyExtractor={({ key }) => key.toString()}
+              keyExtractor={({ key }) => key}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 gap: theme.spacingsPlain.xs,

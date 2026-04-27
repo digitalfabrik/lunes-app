@@ -1,3 +1,4 @@
+import { ExerciseKey } from '../constants/data'
 import { postAnalyticEvent } from './CmsApi'
 import { StorageCache } from './Storage'
 import { reportError } from './sentry'
@@ -22,7 +23,7 @@ export type AnalyticsPayload =
     }
   | {
       type: 'module_duration'
-      exercise_type: number
+      exercise_type: ExerciseKey
       unit_id: number
       duration_seconds: number
     }

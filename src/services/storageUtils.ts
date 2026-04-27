@@ -272,6 +272,23 @@ export const migrate4To5 = async (): Promise<void> => {
   await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newCards))
 }
 
+// Renames exercise progress keys from integer strings ('0', '1') to named strings ('word_list', 'word_choice')
+export const migrate5To6 = async (): Promise<void> => {
+  const KEY_MAP: Record<string, string> = { '0': 'word_list', '1': 'word_choice' }
+
+  const migrateUnitProgress = (unitProgress: Record<string, number>): Record<string, number> =>
+    Object.fromEntries(Object.entries(unitProgress).map(([key, value]) => [KEY_MAP[key] ?? key, value]))
+
+  const progress = await getStorageItemOr<Record<string, Record<string, number> | undefined>>('progress', {})
+  const migratedProgress = Object.fromEntries(
+    Object.entries(progress).map(([unitId, unitProgress]) => [
+      unitId,
+      unitProgress ? migrateUnitProgress(unitProgress) : unitProgress,
+    ]),
+  )
+  await AsyncStorage.setItem('progress', JSON.stringify(migratedProgress))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cms')
@@ -312,6 +329,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough
     case 4:
       await migrate4To5()
+    // eslint-disable-next-line no-fallthrough, no-magic-numbers
+    case 5:
+      await migrate5To6()
       break
   }
 
