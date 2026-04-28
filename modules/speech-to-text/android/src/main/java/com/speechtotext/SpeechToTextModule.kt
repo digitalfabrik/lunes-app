@@ -1,0 +1,146 @@
+package com.speechtotext
+
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.provider.Settings
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.util.Log
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableArray
+
+class SpeechToTextModule(private val reactContext: ReactApplicationContext) :
+    NativeSpeechToTextSpec(reactContext) {
+
+    private var recognizer: SpeechRecognizer? = null
+    private var pendingPromise: Promise? = null
+
+    private fun createRecognizer(): SpeechRecognizer {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && SpeechRecognizer.isOnDeviceRecognitionAvailable(reactContext)) {
+            return SpeechRecognizer.createOnDeviceSpeechRecognizer(reactContext)
+        }
+        return SpeechRecognizer.createSpeechRecognizer(reactContext)
+    }
+
+    private fun createRecognitionListener(): RecognitionListener = object : RecognitionListener {
+        override fun onReadyForSpeech(params: Bundle?) {}
+        override fun onBeginningOfSpeech() {}
+        override fun onRmsChanged(rmsDb: Float) {}
+        override fun onBufferReceived(buffer: ByteArray?) {}
+        override fun onEndOfSpeech() {}
+        override fun onPartialResults(partialResults: Bundle?) {}
+        override fun onEvent(eventType: Int, params: Bundle?) {}
+
+        override fun onError(error: Int) {
+            val isLanguageUnavailable = error == SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED ||
+                error == SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
+            if (isLanguageUnavailable) {
+                Log.w(TAG, "Recognition error $error: German language not available on device")
+                pendingPromise?.reject("E_LANGUAGE_UNAVAILABLE", "German language is not available for speech recognition on this device")
+            } else {
+                val message = when (error) {
+                    SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
+                    SpeechRecognizer.ERROR_NETWORK -> "Network error"
+                    SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
+                    SpeechRecognizer.ERROR_SERVER -> "Error from server"
+                    SpeechRecognizer.ERROR_CLIENT -> "Client side error"
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input"
+                    SpeechRecognizer.ERROR_NO_MATCH -> "No match"
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RecognitionService busy"
+                    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Insufficient permissions"
+                    SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> "Too many requests"
+                    SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> "Server disconnected"
+                    SpeechRecognizer.ERROR_CANNOT_CHECK_SUPPORT -> "Cannot check support"
+                    else -> "Unknown error"
+                }
+                Log.w(TAG, "Recognition error $error: $message")
+                pendingPromise?.reject("SpeechRecognizerError", message)
+            }
+            pendingPromise = null
+            recognizer?.destroy()
+            recognizer = null
+        }
+
+        override fun onResults(results: Bundle?) {
+            val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION) ?: emptyList<String>()
+            pendingPromise?.resolve(Arguments.fromList(matches))
+            pendingPromise = null
+            recognizer?.destroy()
+            recognizer = null
+        }
+    }
+
+    private fun initRecognizer(): SpeechRecognizer {
+        recognizer?.destroy()
+        recognizer = null
+        val newRecognizer = createRecognizer()
+        newRecognizer.setRecognitionListener(createRecognitionListener())
+        recognizer = newRecognizer
+        return newRecognizer
+    }
+
+    override fun record(hints: ReadableArray, promise: Promise?) {
+        if (!SpeechRecognizer.isRecognitionAvailable(reactContext)) {
+            promise?.reject("E_RECOGNITION_UNAVAILABLE", "Speech recognition is not available on this device")
+            return
+        }
+
+        val hintsArray = hints.toArrayList().map { hint -> hint.toString() }.toTypedArray()
+
+        Handler(reactContext.mainLooper).post {
+            val speechRecognizer = initRecognizer()
+            promise?.let { setPromise(it) }
+
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "de-DE")
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
+                // Wait 2 s of silence before considering speech complete, so the Voice Activity Detection
+                // does not cut off long compound words mid-syllable. The 800 ms minimum keeps brief
+                // single-word utterances like "die Zunge" from being rejected too early.
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 800L)
+                if (hintsArray.isNotEmpty() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    putExtra(RecognizerIntent.EXTRA_BIASING_STRINGS, hintsArray)
+                }
+            }
+            speechRecognizer.startListening(intent)
+        }
+    }
+
+    override fun openVoiceInputSettings(promise: Promise?) {
+        try {
+            val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            reactContext.startActivity(intent)
+            promise?.resolve(null)
+        } catch (exception: ActivityNotFoundException) {
+            promise?.reject("E_SETTINGS_UNAVAILABLE", "Could not open settings", exception)
+        }
+    }
+
+    override fun stop(promise: Promise?) {
+        Handler(reactContext.mainLooper).post {
+            recognizer?.stopListening()
+            promise?.resolve(null)
+        }
+    }
+
+    private fun setPromise(promise: Promise) {
+        pendingPromise?.reject("Outdated promise", "This promise was superseded by a newer recording")
+        pendingPromise = promise
+    }
+
+    companion object {
+        const val NAME = NativeSpeechToTextSpec.NAME
+        private const val TAG = "SpeechToTextModule"
+    }
+}
