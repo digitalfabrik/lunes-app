@@ -81,13 +81,22 @@ const ResultIndicator = ({
       />
     )
 
+  const resultLabel = isCorrect
+    ? getLabels().exercises.training.sentence.correct
+    : getLabels().exercises.training.sentence.incorrect
   const correctAnswerContent =
     isCorrect || hasReachedMaxAttempts ? (
       <ContentText>{`${labels.solution}\n${currentSentence.sentence}`}</ContentText>
     ) : null
 
   return (
-    <WordResultIndicator isVisible={isFinished} isCorrect={isCorrect} content={correctAnswerContent} button={button} />
+    <WordResultIndicator
+      isVisible={isFinished}
+      isCorrect={isCorrect}
+      label={resultLabel}
+      content={correctAnswerContent}
+      button={button}
+    />
   )
 }
 

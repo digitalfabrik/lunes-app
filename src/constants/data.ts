@@ -1,7 +1,7 @@
 import { ComponentType } from 'react'
 import { SvgProps } from 'react-native-svg'
 
-import { CheckCircleIcon, CloseCircleIcon, TrainingSentences, TrainingSpeech } from '../../assets/images'
+import { TrainingSentences, TrainingSpeech } from '../../assets/images'
 import { StandardUnit } from '../models/Unit'
 import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
@@ -120,23 +120,6 @@ export type Answer = {
   word: string
   article: Article
 }
-
-export const RESULTS = [
-  {
-    key: 'correct',
-    Icon: CheckCircleIcon,
-    title: 'Richtige',
-    order: 0,
-  },
-  {
-    key: 'incorrect',
-    Icon: CloseCircleIcon,
-    title: 'Falsche',
-    order: 2,
-  },
-] as const
-
-export type Result = (typeof RESULTS)[number]
 
 export const NUMBER_OF_MAX_RETRIES = 3
 

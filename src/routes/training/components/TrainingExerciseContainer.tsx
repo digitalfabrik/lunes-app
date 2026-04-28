@@ -27,7 +27,7 @@ const FooterContainer = styled.View`
 export type TrainingExerciseContainerProps = {
   title: string
   footer?: ReactElement
-  children: ReactElement[] | ReactElement
+  children: ReactElement[] | ReactElement | null
 }
 
 const TrainingExerciseContainer = ({ title, children, footer }: TrainingExerciseContainerProps): ReactElement => (

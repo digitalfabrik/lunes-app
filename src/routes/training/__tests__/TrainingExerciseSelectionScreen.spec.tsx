@@ -34,7 +34,7 @@ describe('TrainingExerciseSelectionScreen', () => {
     const { getByText } = renderWithTheme(<TrainingExerciseSelectionScreen navigation={navigation} route={route} />)
 
     expect(getByText(getLabels().exercises.training.image.title)).toBeVisible()
-    expect(getByText(getLabels().exercises.training.voice.title)).toBeVisible()
+    expect(getByText(getLabels().exercises.training.speech.title)).toBeVisible()
     expect(getByText(getLabels().exercises.training.sentence.title)).toBeVisible()
   })
 

@@ -96,9 +96,23 @@
         "whatIs": "Was ist",
         "whatAre": "Was sind"
       },
-      "voice": {
+      "speech": {
         "title": "Sprechstudio",
-        "description": "Die Vokabel richtig aussprechen"
+        "description": "Die Vokabel richtig aussprechen",
+        "prompt": "Sprich aus, was hier gezeigt wird!",
+        "holdAndSpeak": "Gedrückt halten und sprechen",
+        "releaseToFinish": "Zum Beenden loslassen",
+        "correct": "Super, das war richtig!",
+        "incorrect": "Das war leider nicht richtig.",
+        "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
+        "notAvailable": "Spracherkennung ist auf diesem Gerät leider nicht verfügbar.",
+        "languageUnavailable": "Die deutsche Sprache ist auf diesem Gerät für die Spracherkennung nicht verfügbar. Bitte installiere sie in den Einstellungen deines Geräts.",
+        "hints": {
+          "title": "Tipps für die Spracherkennung:",
+          "holdButton": "Halte die Taste gedrückt, während du sprichst.",
+          "speakClearly": "Sprich deutlich und nahe ans Mikrofon.",
+          "quietEnvironment": "Versuche es in einer ruhigeren Umgebung."
+        }
       },
       "sentence": {
         "title": "Satzbausteine",
