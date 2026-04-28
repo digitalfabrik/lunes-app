@@ -29,7 +29,7 @@ import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -185,13 +185,15 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const { permissionGranted, permissionRequested } = useGrantPermissions(SPEECH_PERMISSIONS)
 
   const labels = getLabels().exercises.training.speech
-  const currentWord = state.vocabularyItems[state.currentVocabularyItemIndex]
+  const currentWord = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
 
   useEffect(() => {
     const nextWordIndex = state.currentVocabularyItemIndex + 1
     if (nextWordIndex < state.vocabularyItems.length) {
-      const nextImage = state.vocabularyItems[nextWordIndex].images[0]
-      Image.prefetch(nextImage).catch(reportError)
+      const nextImage = state.vocabularyItems[nextWordIndex]!.images[0]
+      if (nextImage !== undefined) {
+        Image.prefetch(nextImage).catch(reportError)
+      }
     }
   }, [state.currentVocabularyItemIndex, state.vocabularyItems])
 

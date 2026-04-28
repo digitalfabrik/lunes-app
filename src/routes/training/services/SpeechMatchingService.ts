@@ -64,16 +64,16 @@ const levenshteinDistance = (source: string, target: string): number => {
   for (let sourceIndex = 1; sourceIndex <= sourceLength; sourceIndex += 1) {
     for (let targetIndex = 1; targetIndex <= targetLength; targetIndex += 1) {
       if (source[sourceIndex - 1] === target[targetIndex - 1]) {
-        distances[sourceIndex][targetIndex] = distances[sourceIndex - 1][targetIndex - 1]
+        distances[sourceIndex]![targetIndex] = distances[sourceIndex - 1]![targetIndex - 1]!
       } else {
-        const deletion = distances[sourceIndex - 1][targetIndex]
-        const insertion = distances[sourceIndex][targetIndex - 1]
-        const substitution = distances[sourceIndex - 1][targetIndex - 1]
-        distances[sourceIndex][targetIndex] = 1 + Math.min(deletion, insertion, substitution)
+        const deletion = distances[sourceIndex - 1]![targetIndex]!
+        const insertion = distances[sourceIndex]![targetIndex - 1]!
+        const substitution = distances[sourceIndex - 1]![targetIndex - 1]!
+        distances[sourceIndex]![targetIndex] = 1 + Math.min(deletion, insertion, substitution)
       }
     }
   }
-  return distances[sourceLength][targetLength]
+  return distances[sourceLength]![targetLength]!
 }
 
 const stringSimilarity = (first: string, second: string): number => {
@@ -122,8 +122,8 @@ const isLastTokenPartialMatch = (
     return false
   }
 
-  const lastTranscriptToken = transcriptTokens[transcriptTokens.length - 1]
-  const lastExpectedToken = expectedTokens[expectedTokens.length - 1]
+  const lastTranscriptToken = transcriptTokens[transcriptTokens.length - 1]!
+  const lastExpectedToken = expectedTokens[expectedTokens.length - 1]!
 
   if (
     lastTranscriptToken.length < lastExpectedToken.length * minCoverage ||
