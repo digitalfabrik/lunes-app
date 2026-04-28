@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { BasicLightBulbIcon } from '../../assets/images'
 import { StandardJobId } from '../models/Job'
@@ -34,12 +34,13 @@ type ProgressHintProps = {
 }
 
 const ProgressHint = ({ jobId }: ProgressHintProps): ReactElement => {
+  const theme = useTheme()
   const [showHint, setShowHint] = useState(false)
   const [showFeedbackModal, setShowFeedbackModal] = useState(false)
 
   return (
     <Container>
-      <BasicLightBulbIcon width={32} height={32} />
+      <BasicLightBulbIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
       <StyledText>
         {getLabels().exercises.progressLost.notShown}
         {'  '}

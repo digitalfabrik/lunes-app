@@ -10,10 +10,8 @@
   "home": {
     "welcome": "Willkommen bei Lunes!",
     "haveFun": "Viel Spaß beim Lernen",
-    "progressDescription": "Modulen erledigt",
     "start": "Starten",
     "continue": "Fortsetzen",
-    "viewUnits": "Module ansehen",
     "addCustomDiscipline": "Bereich hinzufügen",
     "customDisciplineSection": "Individueller Lernbereich",
     "customDisciplineExplanation": "Hier kannst du eigene Lernbereiche hinzufügen",
@@ -21,8 +19,21 @@
     "deleteJob": "Bereich löschen",
     "jobs": "Berufe",
     "learnVocabulary": "Vokabeln lernen",
+    "learnVocabularyDescription": "Neue Wörter kennenlernen",
     "trainVocabulary": "Vokabeln trainieren",
-    "testYourKnowledge": "Teste dein Wissen"
+    "testYourKnowledge": "Teste dein Wissen",
+    "progress": "Fortschritt",
+    "startExercise": "Übung starten",
+    "new": "Neu",
+    "readyToPractice": "Bereit zum Üben",
+    "emptyState": {
+      "title": "Dein Lernstart wartet!",
+      "subtitle": "Füge deinen Ausbildungsberuf hinzu und lerne genau die Wörter, die du wirklich brauchst."
+    },
+    "editProfessions": "Berufe bearbeiten",
+    "addProfession": "Beruf hinzufügen",
+    "previousJob": "Vorheriger Beruf",
+    "nextJob": "Nächster Beruf"
   },
   "manageJobs": {
     "heading": "Verwalte deine Lernbereiche",
@@ -35,6 +46,10 @@
       "confirmationQuestion": "Willst du den Bereich wirklich löschen?",
       "explanation": "Deine Lernfortschritte werden gespeichert und du kannst den Beruf später wiederherstellen.",
       "confirm": "Ja, löschen!"
+    },
+    "emptyState": {
+      "title": "Beruf hinzufügen",
+      "subtitle": "Wähle den Beruf, der zu deiner Ausbildung passt, um zu starten."
     }
   },
   "addCustomDiscipline": {
@@ -105,7 +120,8 @@
         "orderWords": "Bringe die Wörter in die richtige Reihenfolge!",
         "listen": "Höre dir den Satz an!",
         "correct": "Super, das war richtig!",
-        "incorrect": "Das war leider nicht richtig."
+        "incorrect": "Das war leider nicht richtig.",
+        "solution": "Lösungssatz:"
       },
       "comingSoon": "Kommt bald"
     },
@@ -139,18 +155,14 @@
   "results": {
     "feedbackGood": "Toll, weiter so! \nDu hast die Übung sehr gut gemacht.",
     "feedbackBad": "Nicht aufgeben! \nVersuche es noch einmal!",
-    "finishedUnit": "Super, du hast das Modul abgeschlossen",
-    "unlockExercise": {
-      "part1": "Glückwunsch",
-      "part2": "ist jetzt freigeschaltet."
-    },
+    "finishedUnit": "Super, du hast die Einheit abgeschlossen",
     "correct": "richtig",
     "entries": "Eingaben",
     "action": {
       "nextExercise": "Nächste Übung",
       "continue": "Weitermachen",
       "repeat": "Übung wiederholen",
-      "back": "Zurück",
+      "finished": "Fertig",
       "backToWordlist": "Zurück zur Wortliste"
     },
     "of": "von",
@@ -178,14 +190,16 @@
       "overview": "Übersicht",
       "overviewExercises": "Übersicht der Übungen",
       "cancelExercise": "Übung beenden",
+      "units": "Einheiten",
       "impressum": "Impressum",
+      "privacyPolicy": "Datenschutz",
       "manageJobs": "Lernbereiche verwalten",
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
-      "wordFeedback": "Feedback geben",
-      "overflowMenu": "Mehr Optionen"
+      "wordFeedback": "Feedback geben"
     },
     "back": "Zurück",
+    "close": "Schließen",
     "plurals": "Plural",
     "noResults": "Es wurden leider keine Ergebnisse gefunden.",
     "error": {
@@ -222,7 +236,13 @@
       "noTtsEngine": "Keine Text-to-Speech-Engine installiert"
     }
   },
-  "favorites": "Favoriten",
+  "favorites": {
+    "title": "Favoriten",
+    "emptyState": {
+      "title": "Noch keine Favoriten gespeichert.",
+      "subtitle": "Hier werden Vokabeln angezeigt, die du in den Übungen favorisiert hast, um sie dir für später zu merken."
+    }
+  },
   "dictionary": {
     "noResults": "Es wurden leider keine Ergebnisse gefunden."
   },
@@ -240,7 +260,7 @@
       "plural": "Wörter zum Wiederholen bereit"
     },
     "yourLearningProgress": "Dein Lernfortschritt",
-    "hintModalHeaderText": "Einige Wörter waren schwer, keine Sorge!",
+    "hintModalHeaderText": "Tipp: Einige Wörter kannst du noch vertiefen!",
     "hintModalContentText": "Unter „Vertiefen“ kannst du diese Vokabeln gezielt wiederholen.",
     "progressExplainerContent": "Jede Vokabel durchläuft 7 Phasen. Zu Beginn wiederholst du sie häufiger, später in größeren Abständen.",
     "infoModalContent": "Wiederhole hier Vokabeln, die dir beim Kennenlernen und Üben bisher schwer gefallen sind.",
@@ -250,22 +270,41 @@
       "learned": "Gelernte",
       "sectionOneToFive": "Lernstufen 1-5"
     },
+    "emptyState": {
+      "title": "Keine Wörter zum Wiederholen bereit",
+      "subtitle": "Wörter, die du in den Übungen favorisiert hast oder nicht gewusst hast, erscheinen hier zum Wiederholen."
+    },
     "wordList": {
       "title": "Wortliste",
       "subtitle": "Du kannst hier Wörter aus deiner Wortliste löschen",
       "empty": "Es gibt momentan keine Wörter in deiner Wortliste.",
       "modalDeleteText": "Willst du das Wort wirklich aus der Wortliste löschen?",
       "confirm": "Löschen",
-      "abort": "Abbrechen"
+      "abort": "Abbrechen",
+      "deleteWordButton": "Wort aus Wortliste entfernen"
     }
   },
   "search": {
     "enterWord": "Wort eingeben"
   },
+  "consentDialog": {
+    "title": "Hilf uns, Lunes zu verbessern",
+    "body": "Wir nutzen anonyme Analysedaten, um zu verstehen, wie die App genutzt wird, und um die Stabilität zu verbessern. Diese Daten identifizieren dich nicht persönlich. Du kannst deine Wahl jederzeit in den Einstellungen ändern.",
+    "allow": "Anonyme Analyse erlauben",
+    "decline": "Nicht jetzt",
+    "privacyNotice": "Datenschutzhinweis"
+  },
   "settings": {
     "settings": "Einstellungen",
-    "appStability": "App Stabilität",
-    "appStabilityExplanation": "Durch das automatische Senden von Fehlerberichten die Lunes App verbessern",
+    "analyticsConsent": "Anonyme Analysedaten",
+    "analyticsConsentExplanation": "Anonyme Nutzungsdaten zur Verbesserung der App senden",
+    "requestAnalyticsData": "Nutzungsdaten exportieren",
+    "copyAnalyticsData": "Daten kopieren",
+    "deleteAnalyticsData": "Nutzungsdaten löschen",
+    "deleteAnalyticsDataConfirmation": "Möchtest du wirklich alle deine Nutzungsdaten löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteAnalyticsDataConfirm": "Löschen",
+    "deleteAnalyticsDataSuccess": "Nutzungsdaten wurden erfolgreich gelöscht.",
+    "deleteAnalyticsDataError": "Beim Löschen der Nutzungsdaten ist ein Fehler aufgetreten. Versuche es später noch einmal.",
     "version": "Version",
     "devSettings": "Dev settings",
     "debugModal": {
@@ -313,7 +352,7 @@
       "confirmDeletionPart1": "Willst du das Wort",
       "confirmDeletionPart2": "wirklich löschen?",
       "confirm": "Ja, löschen",
-      "cancel": "Schliessen"
+      "cancel": "Schließen"
     },
     "practice": {
       "part": "Teil"

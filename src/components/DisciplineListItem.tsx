@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react'
 import * as Progress from 'react-native-progress'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { EXERCISES } from '../constants/data'
 import labels from '../constants/labels.json'
-import theme from '../constants/theme'
 import useStorage from '../hooks/useStorage'
 import Job from '../models/Job'
 import Unit from '../models/Unit'
@@ -27,24 +25,28 @@ type JobListItemProps = {
 }
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const IconContainer = styled.View`
   position: absolute;
-  top: ${hp('1.75%')}px;
-  left: ${hp('1.75%')}px;
+  align-self: center;
 `
 
-const iconWithProgress = (iconUrl: string | undefined, progress: number): ReactElement => (
+const iconWithProgress = (
+  iconUrl: string | undefined,
+  progress: number,
+  progressColor: string,
+  unfilledColor: string,
+): ReactElement => (
   <>
     <Progress.Circle
       progress={progress}
-      size={Math.round(hp('7%'))}
+      size={56}
       indeterminate={false}
-      color={theme.colors.progressIndicator}
-      unfilledColor={theme.colors.disabled}
+      color={progressColor}
+      unfilledColor={unfilledColor}
       borderWidth={0}
       thickness={3}
       testID='progress-circle'
@@ -61,6 +63,7 @@ export const UnitListItem = ({
   rightChildren,
   disabled = false,
 }: UnitListItemProps): ReactElement | null => {
+  const theme = useTheme()
   const [progress] = useStorage('progress')
 
   const badgeLabel = unit.numberWords.toString()
@@ -72,7 +75,12 @@ export const UnitListItem = ({
   return (
     <ListItem
       title={unit.title}
-      icon={iconWithProgress(unit.iconUrl ?? undefined, actualProgress)}
+      icon={iconWithProgress(
+        unit.iconUrl ?? undefined,
+        actualProgress,
+        theme.colors.progressIndicator,
+        theme.colors.disabled,
+      )}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}
@@ -88,13 +96,14 @@ export const JobListItem = ({
   rightChildren,
   disabled = false,
 }: JobListItemProps): ReactElement | null => {
+  const theme = useTheme()
   const badgeLabel = job.numberOfUnits.toString()
   const description = pluralize(getLabels().general.unit, job.numberOfUnits)
 
   return (
     <ListItem
       title={job.name}
-      icon={iconWithProgress(job.icon ?? undefined, 0)}
+      icon={iconWithProgress(job.icon ?? undefined, 0, theme.colors.progressIndicator, theme.colors.disabled)}
       description={description}
       onPress={onPress}
       badgeLabel={badgeLabel}

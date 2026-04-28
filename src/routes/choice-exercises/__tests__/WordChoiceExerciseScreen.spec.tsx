@@ -1,10 +1,12 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
+import { ExerciseKeys } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { trackEvent } from '../../../services/AnalyticsService'
 import { RepetitionService } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -17,10 +19,12 @@ jest.mock('../../../components/FavoriteButton', () => {
   const Text = require('react-native').Text
   return () => <Text>FavoriteButton</Text>
 })
+
 jest.mock('../../../components/CheatMode', () => {
   const Text = require('react-native').Text
   return () => <Text>CheatMode</Text>
 })
+
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
   shuffleArray: jest.fn(it => it),
@@ -29,10 +33,6 @@ jest.mock('../../../services/helpers', () => ({
 jest.mock('../../../components/AudioPlayer', () => {
   const Text = require('react-native').Text
   return () => <Text>AudioPlayer</Text>
-})
-jest.mock('react-native-image-zoom-viewer', () => {
-  const Text = require('react-native').Text
-  return () => <Text>ImageZoomViewer</Text>
 })
 
 // The bottom sheet is difficult to test due to its animations
@@ -44,9 +44,15 @@ jest.mock(
 )
 
 jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
+
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
+
 jest.mock('../../../services/storageUtils', () => ({
   saveExerciseProgress: jest.fn().mockResolvedValue(undefined),
+}))
+
+jest.mock('../../../services/AnalyticsService', () => ({
+  trackEvent: jest.fn(),
 }))
 
 describe('WordChoiceExerciseScreen', () => {
@@ -65,10 +71,22 @@ describe('WordChoiceExerciseScreen', () => {
     },
   }
 
+  const repetitionRoute: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
+    key: '',
+    name: 'WordChoiceExercise',
+    params: {
+      contentType: 'repetition',
+      unitId: null,
+      vocabularyItems,
+      unitTitle: 'TestTitel',
+    },
+  }
+
   let storageCache: StorageCache
   let repetitionService: RepetitionService
 
   beforeEach(() => {
+    jest.clearAllMocks()
     storageCache = StorageCache.createDummy()
     repetitionService = RepetitionService.fromStorageCache(storageCache)
   })
@@ -77,7 +95,7 @@ describe('WordChoiceExerciseScreen', () => {
     renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={route} navigation={navigation} />)
 
   const selectAnswerAndPressNext = (getByText: ReturnType<typeof renderScreen>['getByText'], word: string) => {
-    fireEvent(getByText(word), 'pressOut')
+    fireEvent.press(getByText(word))
     fireEvent.press(getByText(getLabels().exercises.next))
   }
 
@@ -92,7 +110,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should show Next button in the bottom sheet and hide tryLater after selecting an answer', () => {
     const { getByText, queryByText } = renderScreen()
 
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
 
     expect(getByText(getLabels().exercises.next)).toBeVisible()
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
@@ -101,7 +119,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should show solution in the bottom sheet when answer is incorrect', () => {
     const { getByText } = renderScreen()
 
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
 
     expect(getByText(getLabels().exercises.solution)).toBeVisible()
   })
@@ -122,7 +140,7 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Spachtel')
     selectAnswerAndPressNext(getByText, 'Auto')
     selectAnswerAndPressNext(getByText, 'Hose')
-    fireEvent(getByText('Helm'), 'pressOut')
+    fireEvent.press(getByText('Helm'))
 
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
     fireEvent.press(getByText(getLabels().exercises.showResults))
@@ -134,7 +152,7 @@ describe('WordChoiceExerciseScreen', () => {
     const { getByText } = renderScreen()
 
     // Click a wrong answer for Spachtel, moving it to the end of the queue
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly
@@ -146,7 +164,7 @@ describe('WordChoiceExerciseScreen', () => {
     expect(navigation.popTo).not.toHaveBeenCalled()
 
     // Answer the repeated Spachtel correctly to finish
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
     fireEvent.press(getByText(getLabels().exercises.showResults))
 
     await waitFor(() => expect(navigation.popTo).toHaveBeenCalledWith('ExerciseFinished', expect.anything()))
@@ -161,7 +179,7 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Helm')
 
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
-    fireEvent(getByText('Spachtel'), 'pressOut')
+    fireEvent.press(getByText('Spachtel'))
     expect(getByText(getLabels().exercises.showResults)).toBeVisible()
   })
 
@@ -169,7 +187,7 @@ describe('WordChoiceExerciseScreen', () => {
     it('does not add a word to the repetition service when the answer was correct', async () => {
       const { getByText } = renderScreen()
 
-      fireEvent(getByText('Spachtel'), 'pressOut')
+      fireEvent.press(getByText('Spachtel'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()).toHaveLength(0))
     })
@@ -177,7 +195,7 @@ describe('WordChoiceExerciseScreen', () => {
     it('adds a word to the repetition service when the answer was incorrect', async () => {
       const { getByText } = renderScreen()
 
-      fireEvent(getByText('Auto'), 'pressOut')
+      fireEvent.press(getByText('Auto'))
 
       await waitFor(() => expect(repetitionService.getWordNodeCards()).toHaveLength(1))
     })
@@ -187,7 +205,7 @@ describe('WordChoiceExerciseScreen', () => {
     const { getByText } = renderScreen()
 
     // Answer Spachtel wrong once - moves to end of queue (index 3)
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly so Spachtel is reached again
@@ -196,39 +214,104 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Helm')
 
     // Answer Spachtel wrong a second time - still at end of queue, numberOfTries=2
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Answer Spachtel wrong a third time, reaching NUMBER_OF_MAX_RETRIES
-    fireEvent(getByText('Auto'), 'pressOut')
+    fireEvent.press(getByText('Auto'))
 
     // The result indicator must still show "incorrect", not "correct"
     expect(getByText(getLabels().exercises.training.sentence.incorrect)).toBeVisible()
   })
 
   describe('repetition exercise', () => {
-    const repetitionRoute: RouteProp<RoutesParams, 'WordChoiceExercise'> = {
-      key: '',
-      name: 'WordChoiceExercise',
-      params: {
-        contentType: 'repetition',
-        unitId: null,
-        vocabularyItems,
-        unitTitle: 'TestTitel',
-      },
-    }
-
     const renderRepetitionScreen = () =>
       renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
 
     it('moves word card to the next section after a correct answer', async () => {
-      await repetitionService.addWordToFirstSection(vocabularyItems[0])
-      expect(repetitionService.getWordNodeCards()[0].section).toBe(0)
+      await repetitionService.addWordToFirstSection(vocabularyItems[0]!)
+      expect(repetitionService.getWordNodeCards()[0]!.section).toBe(0)
 
       const { getByText } = renderRepetitionScreen()
-      fireEvent(getByText('Spachtel'), 'pressOut')
+      fireEvent.press(getByText('Spachtel'))
 
-      await waitFor(() => expect(repetitionService.getWordNodeCards()[0].section).toBe(1))
+      await waitFor(() => expect(repetitionService.getWordNodeCards()[0]!.section).toBe(1))
+    })
+  })
+
+  it('should track module duration on unmount', () => {
+    const { unmount } = renderScreen()
+
+    expect(trackEvent).not.toHaveBeenCalled()
+    unmount()
+    expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+      type: 'module_duration',
+      duration_seconds: expect.any(Number),
+      unit_id: 1,
+      exercise_type: ExerciseKeys.wordChoiceExercise,
+    })
+  })
+
+  describe('dropout tracking', () => {
+    // beforeRemove is fired by React Navigation when the screen is removed from the stack,
+    // either via the user manually leaving or by them completing the exercise
+    let beforeRemoveHandler: (() => void) | null = null
+
+    beforeEach(() => {
+      beforeRemoveHandler = null
+      jest.mocked(navigation.addListener).mockImplementation((event, callback) => {
+        if (event === 'beforeRemove') {
+          beforeRemoveHandler = callback as () => void
+        }
+        return jest.fn()
+      })
+    })
+
+    it('should track exercise_dropout when screen is removed before completion', () => {
+      renderScreen()
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+        type: 'exercise_dropout',
+        exercise_type: 'word_choice',
+        unit_id: 1,
+        position: 1,
+        total: 4,
+      })
+    })
+
+    it('should track exercise_dropout with null unit_id for repetition exercises', () => {
+      renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+        type: 'exercise_dropout',
+        exercise_type: 'word_choice',
+        unit_id: null,
+        position: 1,
+        total: 4,
+      })
+    })
+
+    it('should not track exercise_dropout when exercise is completed normally', async () => {
+      const { getByText } = renderScreen()
+
+      selectAnswerAndPressNext(getByText, 'Spachtel')
+      selectAnswerAndPressNext(getByText, 'Auto')
+      selectAnswerAndPressNext(getByText, 'Hose')
+      fireEvent.press(getByText('Helm'))
+      fireEvent.press(getByText(getLabels().exercises.showResults))
+
+      await waitFor(() => expect(navigation.popTo).toHaveBeenCalled())
+
+      act(() => beforeRemoveHandler!())
+
+      expect(trackEvent).not.toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ type: 'exercise_dropout' }),
+      )
     })
   })
 })

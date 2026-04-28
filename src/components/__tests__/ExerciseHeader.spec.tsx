@@ -21,7 +21,7 @@ jest.mock('react-native/Libraries/Utilities/BackHandler', () => ({
       return { remove: jest.fn() }
     }),
     mockPressBack: jest.fn(() => {
-      backHandlerListeners.hardwareBackPress.forEach(h => h())
+      backHandlerListeners.hardwareBackPress!.forEach(h => h())
     }),
   },
 }))

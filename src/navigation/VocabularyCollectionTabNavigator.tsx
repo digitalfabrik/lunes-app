@@ -29,7 +29,7 @@ const VocabularyCollectionTabNavigator = (): ReactElement | null => {
       <Tab.Screen
         name='FavoritesTab'
         component={FavoritesStackNavigator}
-        options={{ tabBarLabel: getLabels().favorites }}
+        options={{ tabBarLabel: getLabels().favorites.title }}
       />
     </Tab.Navigator>
   )

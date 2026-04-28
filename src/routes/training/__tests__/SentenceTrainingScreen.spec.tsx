@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { fireEvent, within } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
 import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
@@ -35,6 +35,7 @@ jest.mock(
     ({ visible, children }: BottomSheetProps) =>
       visible ? <View>{children}</View> : null,
 )
+jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
 
 describe('SentenceTrainingScreen', () => {
   const vocabularyItems: StandardVocabularyItem[] = new VocabularyItemBuilder(MAX_TRAINING_REPETITIONS)
@@ -48,7 +49,7 @@ describe('SentenceTrainingScreen', () => {
     audio: exampleSentence!.audio,
     words: ['Example', 'sentence', `${id.id}`],
     id,
-    image: images[0],
+    image: images[0]!,
   }))
   const navigation = createNavigationMock<'SentenceTraining'>()
   const route: RouteProp<RoutesParams, 'SentenceTraining'> = {

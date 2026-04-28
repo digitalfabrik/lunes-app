@@ -5,8 +5,8 @@ import DeviceInfo from 'react-native-device-info'
 
 import { getStorageItem } from './Storage'
 
-export const localhostCMSAndroid = 'http://10.0.2.2/api/v2'
-export const localhostCMSIOS = 'http://localhost/api/v2'
+export const localhostCMSAndroid = 'http://10.0.2.2:8080/api/v2'
+export const localhostCMSIOS = 'http://localhost:8080/api/v2'
 export const localhostCMS = Platform.OS === 'android' ? localhostCMSAndroid : localhostCMSIOS
 export const testCMS = 'https://lunes-test.tuerantuer.org/api/v2'
 export const productionCMS = 'https://lunes.tuerantuer.org/api/v2'
@@ -28,11 +28,7 @@ const keyGenerator = buildKeyGenerator(({ headers, baseURL = '', url = '', metho
   data,
 }))
 
-setupCache(axios, {
-  generateKey: keyGenerator,
-})
-
-const instance = axios.create({
+const rawInstance = axios.create({
   headers: {
     'X-os': Platform.OS,
     'X-os-version': Platform.Version,
@@ -40,14 +36,18 @@ const instance = axios.create({
   },
 })
 
+const instance = setupCache(rawInstance, {
+  generateKey: keyGenerator,
+})
+
 const getUrl = async (endpoint: string): Promise<string> => {
   const baseURL = getBaseURL(await getStorageItem('cmsUrlOverwrite'))
   return `${baseURL}/${endpoint}`
 }
 
-export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string): Promise<T> => {
+export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string, noCache?: boolean): Promise<T> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
-  const response = await instance.get(await getUrl(endpoint), { headers })
+  const response = await instance.get(await getUrl(endpoint), { headers, cache: noCache ? false : undefined })
   return response.data
 }
 
@@ -55,3 +55,6 @@ export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: stri
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
   return instance.post(await getUrl(endpoint), data, { headers })
 }
+
+export const deleteFromEndpoint = async (endpoint: string): Promise<AxiosResponse> =>
+  instance.delete(await getUrl(endpoint))

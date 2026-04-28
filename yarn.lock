@@ -4000,14 +4000,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.13.5":
-  version: 1.13.6
-  resolution: "axios@npm:1.13.6"
+"axios@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "axios@npm:1.15.2"
   dependencies:
     follow-redirects: ^1.15.11
     form-data: ^4.0.5
-    proxy-from-env: ^1.1.0
-  checksum: 51fb5af055c3b85662fa97df17d986ae2c37d13bf86d50b6bb36b6b3a2dec6966a1d3a14ab3774b71707b155ae3597ed9b7babdf1a1a863d1a31840cb8e7ec71
+    proxy-from-env: ^2.1.0
+  checksum: 4eeae0feeaa7fdc1ef24f81f8b378fdadedf4aebdd6bf224484675160f8744cf17b9b0d1c215279979940f7e8ce463beffa2f713099612e428eac238515c81d5
   languageName: node
   linkType: hard
 
@@ -8076,7 +8076,7 @@ __metadata:
     "@types/react-test-renderer": ^19.1.0
     "@typescript-eslint/eslint-plugin": ^8.48.1
     "@typescript-eslint/parser": ^8.48.1
-    axios: ^1.13.5
+    axios: ^1.15.0
     axios-cache-interceptor: 1.11.1
     babel-jest: ^29.7.0
     babel-plugin-react-compiler: ^1.0.0
@@ -8102,14 +8102,12 @@ __metadata:
     react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.28.0
     react-native-image-picker: ^8.2.1
-    react-native-image-zoom-viewer: ^3.0.1
-    react-native-nitro-modules: ^0.34.1
+    react-native-nitro-modules: ^0.35.0
     react-native-nitro-sound: ^0.2.10
     react-native-pager-view: ^8.0.0
     react-native-paper: 5.14.5
     react-native-permissions: ^5.4.2
     react-native-progress: ^5.0.1
-    react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^5.6.1
     react-native-screens: ^4.19.0
     react-native-sound-player: 0.14.5
@@ -8119,7 +8117,6 @@ __metadata:
     react-native-tts: 4.1.1
     react-native-vision-camera: ^4.7.2
     react-native-volume-manager: ^2.0.8
-    react-navigation-header-buttons: ^11.2.1
     react-test-renderer: 19.1.4
     styled-components: ^6.3.11
     ts-jest: ^29.2.5
@@ -9369,6 +9366,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "proxy-from-env@npm:2.1.0"
+  checksum: ed01729fd4d094eab619cd7e17ce3698b3413b31eb102c4904f9875e677cd207392795d5b4adee9cec359dfd31c44d5ad7595a3a3ad51c40250e141512281c58
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^2.1.0":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
@@ -9537,16 +9541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-pan-zoom@npm:^2.1.12":
-  version: 2.1.12
-  resolution: "react-native-image-pan-zoom@npm:2.1.12"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: c1047da6b7eb0d8a80a810eba8dc0c74e11d0b476808c30d1bbc6285c3f8dc8140aba60fb1af35e2c8c114aa32eed64fb545214a6cf1c00d6b80dd3178bdf3f6
-  languageName: node
-  linkType: hard
-
 "react-native-image-picker@npm:^8.2.1":
   version: 8.2.1
   resolution: "react-native-image-picker@npm:8.2.1"
@@ -9557,25 +9551,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-zoom-viewer@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "react-native-image-zoom-viewer@npm:3.0.1"
-  dependencies:
-    react-native-image-pan-zoom: ^2.1.12
+"react-native-nitro-modules@npm:^0.35.0":
+  version: 0.35.5
+  resolution: "react-native-nitro-modules@npm:0.35.5"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: d7ee6ea947a10061b3b285622416dececda72be6907cfe5ab4a2680dcecb51f32adf1d250d1ce12c87178cb8c8a92d85cba89acde437ae4730e36f8e6152455b
-  languageName: node
-  linkType: hard
-
-"react-native-nitro-modules@npm:^0.34.1":
-  version: 0.34.1
-  resolution: "react-native-nitro-modules@npm:0.34.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 1fbbf49cfd884fa9034f368ea3c989e16a3a6d56fd8001c8afe9839f83b772bc392a477cae962880b9728054a10247a93b1658dc3a8028bcf18032dfaac95a29
+  checksum: fa6869f50345a33597b9c15aee4fa5a1c65794166946d470fad6d02d77bf467cc414934890e4e44644f2338303a4ec7b5127bf21824473e86e347aef83d20101
   languageName: node
   linkType: hard
 
@@ -9639,15 +9621,6 @@ __metadata:
   peerDependencies:
     react-native-svg: "*"
   checksum: a8c549609c18268ee8e0e95bfe3f4fad3eaeb7df5f2a4c69c72d5c229e56d19536055a6308b9aa501639702691b81ac0dd37794991aebe9793246eb3609dec38
-  languageName: node
-  linkType: hard
-
-"react-native-responsive-screen@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "react-native-responsive-screen@npm:1.4.2"
-  peerDependencies:
-    react-native: ">=0.35"
-  checksum: 7d0a3bb822713056771c8b660dd75fea97676b01dd995f1ae2680b8d10f3eea176b17c53fd6332242d0bb79e235ac86cd141d5289834b0f70f0054f337cbf220
   languageName: node
   linkType: hard
 
@@ -9818,20 +9791,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-navigation-header-buttons@npm:^11.2.1":
-  version: 11.2.1
-  resolution: "react-navigation-header-buttons@npm:11.2.1"
-  dependencies:
-    react-to-imperative: ^0.2.0
-  peerDependencies:
-    "@react-navigation/elements": ">=1"
-    "@react-navigation/native": ">=6"
-    react: "*"
-    react-native: ">=0.72.0"
-  checksum: 91eddf0ae4b7e00d09d7b4f5bea8266094fa7698f96d66c364a2d169748d1ff21215118c6c76d9b7d48ca665fa59c1a2b811bbdb93507b6a6f47a3065ce1ac01
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.14.0":
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
@@ -9848,15 +9807,6 @@ __metadata:
   peerDependencies:
     react: ^19.1.4
   checksum: 3b2be2f631e0a022df5f59fe15240a99a4e8dfeba73c5239f588e4bc78135ff8eb4273273e6255b43f24b5b14f93a8cda801ba90c6c6b946d7f9fc0960280cac
-  languageName: node
-  linkType: hard
-
-"react-to-imperative@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "react-to-imperative@npm:0.2.0"
-  peerDependencies:
-    react: "*"
-  checksum: 561adbc15f97e2677ed14d85df3e9ef855567c691327ef2abcbeb34f27477a1cc63bbd5a6244d3f1070874171f3a92c5518dbb89b0e4f0802ee75217d460448c
   languageName: node
   linkType: hard
 

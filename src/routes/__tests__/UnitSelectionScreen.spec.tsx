@@ -43,16 +43,16 @@ describe('UnitSelectionScreen', () => {
 
   it('should display the correct title', async () => {
     const { getByText } = renderScreen()
-    const title = await waitFor(() => getByText(mockUnits[0].title))
+    const title = await waitFor(() => getByText(mockUnits[0]!.title))
     expect(title).toBeDefined()
   })
 
   it('should display all units', async () => {
     const { getByText } = renderScreen()
 
-    const firstUnit = await waitFor(() => getByText(mockUnits[0].title))
-    const secondUnit = getByText(mockUnits[1].title)
-    const thirdUnit = getByText(mockUnits[2].title)
+    const firstUnit = await waitFor(() => getByText(mockUnits[0]!.title))
+    const secondUnit = getByText(mockUnits[1]!.title)
+    const thirdUnit = getByText(mockUnits[2]!.title)
     expect(firstUnit).toBeDefined()
     expect(secondUnit).toBeDefined()
     expect(thirdUnit).toBeDefined()
@@ -60,7 +60,7 @@ describe('UnitSelectionScreen', () => {
 
   it('should navigate to exercises when list item pressed', async () => {
     const { getByText } = renderScreen()
-    const unit = await waitFor(() => getByText(mockUnits[2].title))
+    const unit = await waitFor(() => getByText(mockUnits[2]!.title))
     fireEvent.press(unit)
 
     expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', expect.anything())

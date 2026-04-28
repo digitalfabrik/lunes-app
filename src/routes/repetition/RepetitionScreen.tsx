@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
 import Button from '../../components/Button'
@@ -10,9 +9,11 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary, ContentTextBold } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
-import theme from '../../constants/theme'
+import { loadAllWords } from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
+import { useStorageCache } from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { RepetitionService } from '../../services/RepetitionService'
 import { getLabels, pluralize } from '../../services/helpers'
 import RepetitionProgressChart from './components/RepetitionProgressChart'
 
@@ -34,7 +35,7 @@ const TextContainer = styled.Text`
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-size: ${hp('1.8%')}px;
+  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 const Container = styled.View`
@@ -44,6 +45,19 @@ const Container = styled.View`
   align-items: center;
   margin: ${props => props.theme.spacings.sm} 0;
   padding: ${props => props.theme.spacings.sm} 0;
+`
+
+const EmptyStateContent = styled.View`
+  padding: 0 ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm};
+  align-items: center;
+`
+
+const EmptyStateSubtitle = styled.Text`
+  color: ${props => props.theme.colors.primary};
+  font-family: ${props => props.theme.fonts.contentFontRegular};
+  font-size: ${props => props.theme.fonts.defaultFontSize};
+  text-align: center;
+  padding-top: ${props => props.theme.spacings.xs};
 `
 
 const Subheading = styled.Text`
@@ -59,14 +73,8 @@ const HeaderWrapper = styled.View`
   gap: ${props => props.theme.spacings.xs};
 `
 
-const ModalContainer = styled.View`
-  justify-content: space-between;
-  align-items: center;
-  height: ${hp('16%')}px;
-`
-
 const ModalContent = styled(ContentSecondary)`
-  padding: ${props => props.theme.spacings.xs};
+  padding: ${props => props.theme.spacings.sm};
 `
 
 const PressableText = styled.Pressable`
@@ -79,6 +87,7 @@ type RepetitionScreenProps = {
 }
 
 const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement => {
+  const theme = useTheme()
   const [isInfoModalVisible, setIsInfoModalVisible] = useState<boolean>(false)
   const [isProgressExplainerVisible, setIsProgressExplainerVisible] = useState<boolean>(false)
   const {
@@ -89,16 +98,23 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
     yourLearningProgress,
     progressExplainerContent,
     viewWords,
+    emptyState,
   } = getLabels().repetition
   const repetitionService = useRepetitionService()
+  const storageCache = useStorageCache()
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
   const navigate = async () => {
     const wordNodeCards = repetitionService.getWordNodeCardsForNextRepetition()
-    if (wordNodeCards.length > 0) {
+    if (wordNodeCards.length === 0) {
+      return
+    }
+    const allVocabulary = await loadAllWords(storageCache)
+    const cardsWithVocabulary = RepetitionService.attachVocabularyToCards(wordNodeCards, allVocabulary)
+    if (cardsWithVocabulary.length > 0) {
       navigation.navigate('WordChoiceExercise', {
         unitId: null,
-        vocabularyItems: wordNodeCards.map(item => ({ ...item.word })),
+        vocabularyItems: cardsWithVocabulary.map(item => item.word),
         contentType: 'repetition',
         unitTitle: '',
       })
@@ -118,7 +134,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           />
         </HeadingContainer>
         <Container>
-          <TextContainer>{`${numberOfWordsNeedingRepetition} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          {numberOfWordsNeedingRepetition === 0 ? (
+            <EmptyStateContent>
+              <Subheading>{emptyState.title}</Subheading>
+              <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
+            </EmptyStateContent>
+          ) : (
+            <TextContainer>{`${numberOfWordsNeedingRepetition} ${pluralize(wordsToRepeat, numberOfWordsNeedingRepetition)}`}</TextContainer>
+          )}
           <Button
             testID='repetition-button'
             onPress={navigate}
@@ -146,18 +169,14 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
           <RepetitionProgressChart />
         </Container>
         <ModalSkeleton visible={isInfoModalVisible} onClose={() => setIsInfoModalVisible(false)} testID='infoModal'>
-          <ModalContainer>
-            <ModalContent>{infoModalContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{infoModalContent}</ModalContent>
         </ModalSkeleton>
         <ModalSkeleton
           visible={isProgressExplainerVisible}
           onClose={() => setIsProgressExplainerVisible(false)}
           testID='progressModal'
         >
-          <ModalContainer>
-            <ModalContent>{progressExplainerContent}</ModalContent>
-          </ModalContainer>
+          <ModalContent>{progressExplainerContent}</ModalContent>
         </ModalSkeleton>
       </Root>
     </RouteWrapper>

@@ -10,6 +10,7 @@ const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};
   align-items: center;
   align-self: stretch;
+  gap: ${props => props.theme.spacings.md};
 `
 
 const BottomSheetRow = styled.View`
@@ -19,17 +20,18 @@ const BottomSheetRow = styled.View`
 `
 
 const BottomSheetWordContainer = styled.View`
-  background-color: ${props => props.theme.colors.backgroundTransparent};
+  background-color: ${props => props.theme.colors.background};
   padding: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.xxs};
-  width: 100%;
+  align-self: stretch;
+  margin: 0 ${props => props.theme.spacings.md};
 `
 
 type WordResultIndicatorProps = {
   isVisible: boolean
   isCorrect: boolean
   label: string
-  content: ReactElement
+  content: ReactElement | null
   button: ReactElement
 }
 const WordResultIndicator = ({
@@ -46,13 +48,11 @@ const WordResultIndicator = ({
     <BottomSheet visible={isVisible} backgroundColor={color}>
       <BottomSheetColumn>
         <BottomSheetRow>
-          <Icon width='32' height='32' />
+          <Icon width='32' height='32' accessible={false} />
           <HeadingText>{label}</HeadingText>
         </BottomSheetRow>
 
-        <BottomSheetColumn>
-          <BottomSheetWordContainer>{content}</BottomSheetWordContainer>
-        </BottomSheetColumn>
+        {content && <BottomSheetWordContainer>{content}</BottomSheetWordContainer>}
 
         {button}
       </BottomSheetColumn>

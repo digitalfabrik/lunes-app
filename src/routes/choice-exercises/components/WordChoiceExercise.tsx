@@ -22,10 +22,11 @@ import {
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { useStorageCache } from '../../../hooks/useStorage'
+import useTrackDropout from '../../../hooks/useTrackDropout'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
-import { getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
 import { reportError } from '../../../services/sentry'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
@@ -58,6 +59,9 @@ type State = {
   answers: Answer[]
 }
 
+const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
+  answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
+
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const results = shuffleArray(
     vocabularyItems.map(vocabularyItem => ({ vocabularyItem, result: null, numberOfTries: 0 })),
@@ -65,7 +69,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     currentWord: 0,
     results,
-    answers: generateChoices(vocabularyItems, results[0].vocabularyItem),
+    answers: generateChoices(vocabularyItems, getAtIndex(results, 0).vocabularyItem),
   }
 }
 
@@ -96,8 +100,6 @@ type WordChoiceExerciseProps = {
   isRepetitionExercise: boolean
 }
 
-const CORRECT_ANSWER_DELAY = 700
-
 const WordChoiceExercise = ({
   vocabularyItems,
   unitId,
@@ -106,11 +108,14 @@ const WordChoiceExercise = ({
   isRepetitionExercise,
 }: WordChoiceExerciseProps): ReactElement => {
   const storageCache = useStorageCache()
-  const [delayPassed, setDelayPassed] = useState<boolean>(false)
   const [state, setState] = useState<State>(initializeState(vocabularyItems))
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null)
-  const { vocabularyItem, numberOfTries, result } = state.results[state.currentWord]
+  const { vocabularyItem, numberOfTries, result } = getAtIndex(state.results, state.currentWord)
   const repetitionService = useRepetitionService()
+
+  const count = vocabularyItems.length
+
+  const { markCompleted } = useTrackDropout(navigation, unitId, state.currentWord, count)
 
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
@@ -121,17 +126,23 @@ const WordChoiceExercise = ({
   useEffect(() => {
     const nextWord = state.currentWord + 1
     if (nextWord < state.results.length) {
-      const images = state.results[nextWord].vocabularyItem.images
+      const images = getAtIndex(state.results, nextWord).vocabularyItem.images
       if (images.length > 0) {
-        Image.prefetch(images[0]).catch(reportError)
+        Image.prefetch(images[0]!).catch(reportError)
       }
     }
   }, [state.currentWord, state.results])
 
   const updateState = (newData: Partial<Omit<State, 'answers'>>) => {
     const newState = { ...state, ...newData }
-    if (newState.results[newState.currentWord].vocabularyItem !== state.results[state.currentWord].vocabularyItem) {
-      newState.answers = generateChoices(vocabularyItems, newState.results[newState.currentWord].vocabularyItem)
+    if (
+      getAtIndex(newState.results, newState.currentWord).vocabularyItem !==
+      getAtIndex(state.results, state.currentWord).vocabularyItem
+    ) {
+      newState.answers = generateChoices(
+        vocabularyItems,
+        getAtIndex(newState.results, newState.currentWord).vocabularyItem,
+      )
     }
     setState(newState)
   }
@@ -139,6 +150,7 @@ const WordChoiceExercise = ({
   const tryLater = () => updateState({ results: moveToEnd(state.results, state.currentWord) })
 
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
+    markCompleted()
     if (unitId !== null) {
       await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
     }
@@ -148,7 +160,6 @@ const WordChoiceExercise = ({
       results,
     })
   }
-  const count = vocabularyItems.length
 
   const onExerciseCheated = async (result: SimpleResult): Promise<void> => {
     const cheatedResults = state.results.map(it => ({
@@ -166,16 +177,13 @@ const WordChoiceExercise = ({
     }
   }
 
-  const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
-    answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
-
   const updateResult = async (numberOfTries: number, isCorrect: boolean): Promise<void> => {
     const result = isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
     const newResults = [...state.results]
-    newResults[state.currentWord] = { ...newResults[state.currentWord], numberOfTries, result }
+    newResults[state.currentWord] = { ...getAtIndex(newResults, state.currentWord), numberOfTries, result }
     updateState({ results: newResults })
     if (isRepetitionExercise && (isCorrect || numberOfTries >= NUMBER_OF_MAX_RETRIES)) {
-      await repetitionService.updateSeveralWordNodeCards([newResults[state.currentWord]])
+      await repetitionService.updateSeveralWordNodeCards([getAtIndex(newResults, state.currentWord)])
     }
   }
 
@@ -188,10 +196,6 @@ const WordChoiceExercise = ({
     if (!isRepetitionExercise && !isCorrect) {
       await repetitionService.addWordToFirstSection(vocabularyItem)
     }
-
-    setTimeout(() => {
-      setDelayPassed(true)
-    }, CORRECT_ANSWER_DELAY)
   }
 
   const onFinishWord = async (): Promise<void> => {
@@ -205,7 +209,6 @@ const WordChoiceExercise = ({
       updateState({ currentWord: state.currentWord + 1 })
     }
     setSelectedAnswer(null)
-    setDelayPassed(false)
   }
 
   const isLastWord = state.currentWord + 1 >= count
@@ -227,14 +230,7 @@ const WordChoiceExercise = ({
 
       <ScrollView>
         <VocabularyItemImageSection vocabularyItem={vocabularyItem} showAudioPlayer={false} />
-        <SingleChoice
-          answers={state.answers}
-          isAnswerEqual={isAnswerEqual}
-          onClick={onClickAnswer}
-          correctAnswers={correctAnswers}
-          selectedAnswer={selectedAnswer}
-          delayPassed={delayPassed}
-        />
+        <SingleChoice answers={state.answers} onClick={onClickAnswer} selectedAnswer={selectedAnswer} />
         <ButtonContainer>
           {selectedAnswer === null && !isLastWord && (
             <Button

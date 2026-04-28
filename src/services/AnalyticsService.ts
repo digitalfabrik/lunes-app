@@ -3,25 +3,51 @@ import { StorageCache } from './Storage'
 import { reportError } from './sentry'
 import { getInstallationId } from './storageUtils'
 
-export type TrackingConsent = {
+export type AnalyticsConsent = {
+  consentGiven: boolean
   consentDate: string
 }
 
-export type TrackingEvent = {
+export type AnalyticsEvent = {
   installation_id: string
   timestamp: string
-  payload: TrackingPayload
+  payload: AnalyticsPayload
 }
 
-export type TrackingPayload = {
-  type: 'job_selected'
-  job_id: number
-  action: 'add' | 'remove'
+export type AnalyticsPayload =
+  | {
+      type: 'job_selected'
+      job_id: number
+      action: 'add' | 'remove'
+    }
+  | {
+      type: 'module_duration'
+      exercise_type: number
+      unit_id: number
+      duration_seconds: number
+    }
+  | {
+      type: 'session_start'
+      session_id: string
+    }
+  | {
+      type: 'session_end'
+      session_id: string
+    }
+  | {
+      type: 'exercise_dropout'
+      exercise_type: 'word_choice'
+      unit_id: number | null
+      position: number
+      total: number
+    }
+
+export const isConsentGiven = (storageCache: StorageCache): boolean => {
+  const consent = storageCache.getItem('analyticsConsent')
+  return consent !== null && consent.consentGiven
 }
 
-export const isConsentGiven = (storageCache: StorageCache): boolean => storageCache.getItem('trackingConsent') !== null
-
-export const trackEventAsync = async (storageCache: StorageCache, data: TrackingPayload): Promise<void> => {
+export const trackEventAsync = async (storageCache: StorageCache, data: AnalyticsPayload): Promise<void> => {
   if (!isConsentGiven(storageCache)) {
     return
   }
@@ -33,6 +59,11 @@ export const trackEventAsync = async (storageCache: StorageCache, data: Tracking
   await postAnalyticEvent(event)
 }
 
-export const trackEvent = (storageCache: StorageCache, payload: TrackingPayload): void => {
+export const trackEvent = (storageCache: StorageCache, payload: AnalyticsPayload): void => {
   trackEventAsync(storageCache, payload).catch(reportError)
+}
+
+export const generateUniqueId = (): string => {
+  const base = 16
+  return Array.from({ length: 32 }, () => Math.floor(Math.random() * base).toString(base)).join('')
 }

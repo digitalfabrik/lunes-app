@@ -1,0 +1,6 @@
+issue_key: 1256
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Einmaliges Pop-up für die Einwilligung in anonymisiertes Tracking hinzugefügt

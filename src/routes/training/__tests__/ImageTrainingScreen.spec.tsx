@@ -49,6 +49,7 @@ describe('ImageTrainingScreen', () => {
   const renderScreenAndWaitForLoad = async () => {
     const result = renderWithTheme(<ImageTrainingScreen navigation={navigation} route={route} />)
     await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
+    fireEvent(result.getByTestId('image-grid'), 'layout', { nativeEvent: { layout: { width: 300 } } })
     return result
   }
 
@@ -78,7 +79,7 @@ describe('ImageTrainingScreen', () => {
     const { getAllByTestId, getByTestId, queryByText } = await renderScreenAndWaitForLoad()
 
     const images = getAllByTestId('imageOption')
-    fireEvent.press(images[1])
+    fireEvent.press(images[1]!)
 
     expect(getByTestId('button-skip')).toBeVisible()
     expect(queryByText(getLabels().exercises.continue)).toBeNull()
@@ -88,7 +89,7 @@ describe('ImageTrainingScreen', () => {
     const { getAllByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
 
     const images = getAllByTestId('imageOption')
-    fireEvent.press(images[0])
+    fireEvent.press(images[0]!)
     fireEvent.press(getByText(getLabels().exercises.continue))
 
     expect(queryByText('Spachtel')).toBeNull()
@@ -125,7 +126,7 @@ describe('ImageTrainingScreen', () => {
 
     for (let i = 0; i < 3; i += 1) {
       const images = getAllByTestId('imageOption')
-      fireEvent.press(images[0])
+      fireEvent.press(images[0]!)
       fireEvent.press(getByText(getLabels().exercises.continue))
     }
 
@@ -146,8 +147,8 @@ describe('ImageTrainingScreen', () => {
     const { getAllByTestId, getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
     const images = getAllByTestId('imageOption')
-    fireEvent.press(images[1])
-    fireEvent.press(images[0])
+    fireEvent.press(images[1]!)
+    fireEvent.press(images[0]!)
     fireEvent.press(getByText(getLabels().exercises.continue))
 
     for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
@@ -173,8 +174,8 @@ describe('ImageTrainingScreen', () => {
       expect(state.currentVocabularyItemIndex).toEqual(i)
       expect(state.correctAnswersCount).toBe(0)
       expect(state.choices).toContainEqual({
-        src: state.vocabularyItems[state.currentVocabularyItemIndex].images[0],
-        key: state.vocabularyItems[state.currentVocabularyItemIndex].id,
+        src: state.vocabularyItems[state.currentVocabularyItemIndex]!.images[0]!,
+        key: state.vocabularyItems[state.currentVocabularyItemIndex]!.id,
       })
       state = stateReducer(state, { type: 'nextWord' })
     }
@@ -186,15 +187,15 @@ describe('ImageTrainingScreen', () => {
     let state = initializeState(vocabularyItems.slice())
     expect(state.correctAnswersCount).toBe(0)
 
-    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[0].id })
+    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[0]!.id })
     state = stateReducer(state, { type: 'nextWord' })
     expect(state.correctAnswersCount).toBe(1)
 
-    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[0].id })
+    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[0]!.id })
     state = stateReducer(state, { type: 'nextWord' })
     expect(state.correctAnswersCount).toBe(1)
 
-    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[2].id })
+    state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[2]!.id })
     state = stateReducer(state, { type: 'nextWord' })
     expect(state.correctAnswersCount).toBe(2)
   })

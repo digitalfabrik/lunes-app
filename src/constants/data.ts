@@ -23,7 +23,7 @@ export type Exercise = {
   screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
-export const EXERCISES: Readonly<Exercise[]> = [
+export const EXERCISES = [
   {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
@@ -69,7 +69,7 @@ export type ArticleType = {
   readonly value: string
 }
 
-export const ARTICLES: Readonly<ArticleType[]> = [
+export const ARTICLES = [
   {
     id: 0,
     value: 'keiner',

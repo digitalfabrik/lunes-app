@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Image as RNImage } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { CloseCircleIconBlue } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
@@ -17,8 +16,8 @@ const CloseIcon = styled(PressableOpacity)`
 `
 
 const Image = styled(RNImage)`
-  width: ${hp('12%')}px;
-  height: ${hp('12%')}px;
+  width: 96px;
+  height: 96px;
 `
 
 type ThumbnailProps = {
@@ -26,13 +25,20 @@ type ThumbnailProps = {
   deleteImage: () => void
 }
 
-const Thumbnail = ({ image, deleteImage }: ThumbnailProps): ReactElement => (
-  <Container>
-    <Image source={{ uri: image }} />
-    <CloseIcon onPress={deleteImage}>
-      <CloseCircleIconBlue testID='delete-on-thumbnail' width={hp('4%')} height={hp('4%')} />
-    </CloseIcon>
-  </Container>
-)
+const Thumbnail = ({ image, deleteImage }: ThumbnailProps): ReactElement => {
+  const theme = useTheme()
+  return (
+    <Container>
+      <Image source={{ uri: image }} />
+      <CloseIcon onPress={deleteImage}>
+        <CloseCircleIconBlue
+          testID='delete-on-thumbnail'
+          width={theme.sizes.defaultIcon}
+          height={theme.sizes.defaultIcon}
+        />
+      </CloseIcon>
+    </Container>
+  )
+}
 
 export default Thumbnail

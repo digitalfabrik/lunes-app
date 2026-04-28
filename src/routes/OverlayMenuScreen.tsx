@@ -1,6 +1,6 @@
 import { CardStyleInterpolators, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { Linking } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 
@@ -37,8 +37,8 @@ const Sidebar = styled.View<{ paddingTop: number }>`
 const Icon = styled.Pressable`
   align-self: flex-end;
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
-  width: ${hp('5%')}px;
-  height: ${hp('5%')}px;
+  width: 40px;
+  height: 40px;
 `
 
 export const OverlayTransition: StackNavigationOptions = {
@@ -77,6 +77,11 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
           isSubItem
           title={getLabels().general.header.impressum}
           onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Imprint' } })}
+        />
+        <OverlayMenuItem
+          isSubItem
+          title={getLabels().general.header.privacyPolicy}
+          onPress={() => Linking.openURL('https://lunes.app/datenschutz-app/')}
         />
       </Sidebar>
     </Container>

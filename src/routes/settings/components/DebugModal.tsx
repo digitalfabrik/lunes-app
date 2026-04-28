@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from 'react'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import Button from '../../../components/Button'
@@ -30,7 +29,7 @@ const Container = styled.View`
 
 const CodeInput = styled.TextInput`
   border: 1px solid ${props => props.theme.colors.overlay};
-  width: ${wp('70%')}px;
+  width: 70%;
   margin: ${props => props.theme.spacings.md};
 `
 
@@ -97,8 +96,8 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   const createTestDataForRepetitionExercise = async (): Promise<void> => {
     const allWords = await loadAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
-      word: vocabularyItem,
-      section: sections[getRandomNumberBetween(0, sections.length - 1)],
+      wordId: vocabularyItem.id,
+      section: getRandomNumberBetween(0, sections.length - 1) as sections,
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
     await repetitionService.setWordNodeCards(wordCards)

@@ -6,7 +6,7 @@ import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { mockJobs } from '../../testing/mockJob'
 import { trackEvent } from '../AnalyticsService'
-import { RepetitionService, WordNodeCard } from '../RepetitionService'
+import { RepetitionService } from '../RepetitionService'
 import { loadStorageCache, STORAGE_VERSION, StorageCache, storageKeys } from '../Storage'
 import {
   addFavorite,
@@ -31,6 +31,7 @@ jest.mock('react-native-fs', () => ({
 
 jest.mock('../AnalyticsService', () => ({
   trackEvent: jest.fn(),
+  generateUniqueId: jest.fn(() => 'mock-installation-id'),
 }))
 
 describe('storageUtils', () => {
@@ -69,52 +70,52 @@ describe('storageUtils', () => {
         selectedProfessions.map(item => item.id.id),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length - 1)
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[1].id.id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[1]!.id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
+      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockJobs()[1].id, mockJobs()[1].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[1]!.id, mockJobs()[1]!.migrated)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
     it('should emit a job_selected add event when pushing a job', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        job_id: mockJobs()[0].id.id,
+        job_id: mockJobs()[0]!.id.id,
         action: 'add',
       })
     })
 
     it('should emit a job_selected remove event when removing a job', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
-        job_id: mockJobs()[0].id.id,
+        job_id: mockJobs()[0]!.id.id,
         action: 'remove',
       })
     })
 
     it('should push selectedProfession to notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
     })
 
     it('should delete selectedProfession from notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
-      await removeSelectedJob(storageCache, mockJobs()[0].id)
+      await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([])
     })
 
@@ -151,12 +152,12 @@ describe('storageUtils', () => {
         const vocabularyItems = new VocabularyItemBuilder(2).build()
         const vocabularyItemResults: VocabularyItemResult[] = [
           {
-            vocabularyItem: vocabularyItems[0],
+            vocabularyItem: vocabularyItems[0]!,
             result: SIMPLE_RESULTS.correct,
             numberOfTries: 1,
           },
           {
-            vocabularyItem: vocabularyItems[0],
+            vocabularyItem: vocabularyItems[0]!,
             result: SIMPLE_RESULTS.incorrect,
             numberOfTries: 3,
           },
@@ -181,26 +182,26 @@ describe('storageUtils', () => {
       await storageCache.setItem('favorites', favoriteItems.slice(0, 2))
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 2))
       expect(repetitionService.getWordNodeCards()).toHaveLength(0)
-      await addFavorite(storageCache, repetitionService, vocabularyItems[2])
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
-        vocabularyItems[2].id,
+      await addFavorite(storageCache, repetitionService, vocabularyItems[2]!)
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
+        vocabularyItems[2]!.id,
       ])
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems.slice(0, 3))
-      await addFavorite(storageCache, repetitionService, vocabularyItems[3])
+      await addFavorite(storageCache, repetitionService, vocabularyItems[3]!)
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
-      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.word.id)).toStrictEqual([
-        vocabularyItems[2].id,
-        vocabularyItems[3].id,
+      expect(repetitionService.getWordNodeCards().map(wordNodeCard => wordNodeCard.wordId)).toStrictEqual([
+        vocabularyItems[2]!.id,
+        vocabularyItems[3]!.id,
       ])
     })
 
     it('should remove favorites', async () => {
       await storageCache.setItem('favorites', favoriteItems)
       expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
-      await removeFavorite(storageCache, favoriteItems[2])
-      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0], favoriteItems[1], favoriteItems[3]])
-      await removeFavorite(storageCache, favoriteItems[0])
-      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1], favoriteItems[3]])
+      await removeFavorite(storageCache, favoriteItems[2]!)
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0]!, favoriteItems[1]!, favoriteItems[3]!])
+      await removeFavorite(storageCache, favoriteItems[0]!)
+      expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1]!, favoriteItems[3]!])
     })
   })
 
@@ -336,47 +337,23 @@ describe('storageUtils', () => {
         )
 
         const storageCache = await loadStorageCache()
-        const expectedWordNodeCards: WordNodeCard[] = [
+        expect(storageCache.getItem('wordNodeCards')).toEqual([
           {
-            word: {
-              id: { type: VocabularyItemTypes.UserCreated, index: 2 },
-              word: 'Hund',
-              article: { id: 1, value: 'der' },
-              images: ['image-1'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.UserCreated, index: 2 },
           },
           {
-            word: {
-              id: { type: VocabularyItemTypes.Standard, id: 3 },
-              word: 'lunes standard',
-              article: { id: 1, value: 'der' },
-              images: ['image-2'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Standard, id: 3 },
           },
           {
-            word: {
-              id: { type: VocabularyItemTypes.Protected, protectedId: 4, apiKey: 'abc123' },
-              word: 'lunes protected',
-              article: { id: 1, value: 'der' },
-              images: ['image-3'],
-              audio: null,
-              alternatives: [],
-            },
             section: 0,
-            inThisSectionSince: new Date('2025-10-13'),
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Protected, protectedId: 4, apiKey: 'abc123' },
           },
-        ]
-        expect(JSON.stringify(storageCache.getItem('wordNodeCards'))).toStrictEqual(
-          JSON.stringify(expectedWordNodeCards),
-        )
+        ])
       })
     })
 
@@ -413,6 +390,55 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('notMigratedSelectedJobs')).toEqual(selectedJobs)
       })
     })
+
+    describe('should migrate from v4', () => {
+      it('should replace word with wordId in wordNodeCards', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '4')
+        await AsyncStorage.setItem(
+          'wordNodeCards',
+          JSON.stringify([
+            {
+              word: {
+                id: { type: VocabularyItemTypes.Standard, id: 1 },
+                word: 'Spachtel',
+                article: { id: 1, value: 'die' },
+                images: ['image-1'],
+                audio: null,
+                alternatives: [],
+              },
+              section: 2,
+              inThisSectionSince: new Date('2025-10-13'),
+            },
+            {
+              word: {
+                id: { type: VocabularyItemTypes.UserCreated, index: 5 },
+                word: 'Hund',
+                article: { id: 2, value: 'der' },
+                images: [],
+                audio: null,
+                alternatives: [],
+              },
+              section: 0,
+              inThisSectionSince: new Date('2025-11-01'),
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+        expect(storageCache.getItem('wordNodeCards')).toEqual([
+          {
+            section: 2,
+            inThisSectionSince: new Date('2025-10-13').toISOString(),
+            wordId: { type: VocabularyItemTypes.Standard, id: 1 },
+          },
+          {
+            section: 0,
+            inThisSectionSince: new Date('2025-11-01').toISOString(),
+            wordId: { type: VocabularyItemTypes.UserCreated, index: 5 },
+          },
+        ])
+      })
+    })
   })
 
   describe('userVocabulary', () => {
@@ -421,27 +447,27 @@ describe('storageUtils', () => {
     it('should add userVocabularyItem', async () => {
       const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(0)
-      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
     })
 
     it('should edit userVocabularyItem', async () => {
-      await addUserVocabularyItem(storageCache, userVocabularyItems[1])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[1]!)
       await editUserVocabularyItem(storageCache, {
-        ...userVocabularyItems[2],
-        id: userVocabularyItems[1].id,
+        ...userVocabularyItems[2]!,
+        id: userVocabularyItems[1]!.id,
       })
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(1)
-      expect({ ...userVocabularyItems[2], id: userVocabularyItems[1].id }).toEqual(updatedUserVocabulary[0])
+      expect({ ...userVocabularyItems[2]!, id: userVocabularyItems[1]!.id }).toEqual(updatedUserVocabulary[0]!)
     })
 
     it('should delete userVocabularyItem', async () => {
-      await addUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const userVocabulary = storageCache.getItem('userVocabulary')
       expect(userVocabulary).toHaveLength(1)
-      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0])
+      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
     })

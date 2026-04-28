@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
@@ -9,7 +8,7 @@ import { HintSecondary } from './text/Hint'
 
 const BadgeContainer = styled.View<{ feedback: EXERCISE_FEEDBACK }>`
   flex-flow: row nowrap;
-  padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.sm};
+  padding: 0 ${props => props.theme.spacings.sm};
   background-color: ${({ theme, feedback }) =>
     feedback === EXERCISE_FEEDBACK.POSITIVE ? theme.colors.correct : theme.colors.incorrect};
   width: 100%;
@@ -26,8 +25,7 @@ const BadgeText = styled(HintSecondary)`
 `
 
 const BadgeIcon = styled.View`
-  height: ${hp('3.5%')}px;
-  max-height: ${hp('2.75%')}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 type FeedbackBadgeProps = {

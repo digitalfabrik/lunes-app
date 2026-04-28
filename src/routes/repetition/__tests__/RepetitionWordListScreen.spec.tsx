@@ -1,6 +1,7 @@
-import { fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
+import { getWords } from '../../../services/CmsApi'
 import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
@@ -9,10 +10,17 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { renderWithStorageCache } from '../../../testing/render'
 import RepetitionWordListScreen from '../RepetitionWordListScreen'
 
+import mocked = jest.mocked
+
+jest.mock('../../../services/CmsApi')
+jest.mock('@react-navigation/native')
+
+const vocabulary = new VocabularyItemBuilder(2).build()
+
 const dummyStorageCache = async (): Promise<StorageCache> => {
   const storageCache = StorageCache.createDummy()
-  const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
-    word: item,
+  const wordNodeCards: WordNodeCard[] = vocabulary.map(item => ({
+    wordId: item.id,
     section: 1,
     inThisSectionSince: RepetitionService.addDays(new Date(), -1),
   }))
@@ -23,6 +31,10 @@ const dummyStorageCache = async (): Promise<StorageCache> => {
 describe('RepetitionWordListScreen', () => {
   const navigation = createNavigationMock<'RepetitionWordList'>()
 
+  beforeEach(() => {
+    mocked(getWords).mockResolvedValue(vocabulary)
+  })
+
   it('should render correctly', async () => {
     const storageCache = await dummyStorageCache()
     const { getAllByTestId, getByText } = renderWithStorageCache(
@@ -30,7 +42,7 @@ describe('RepetitionWordListScreen', () => {
       <RepetitionWordListScreen navigation={navigation} />,
     )
 
-    expect(getAllByTestId('list-item')).toHaveLength(2)
+    await waitFor(() => expect(getAllByTestId('list-item')).toHaveLength(2))
     expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeDefined()
   })
 
@@ -41,26 +53,23 @@ describe('RepetitionWordListScreen', () => {
       <RepetitionWordListScreen navigation={navigation} />,
     )
 
-    const wordNodeCards = storageCache.getItem('wordNodeCards')
+    await waitFor(() => expect(getAllByTestId('list-item')).toHaveLength(2))
 
     const deleteButtons = getAllByTestId('delete-button')
     expect(deleteButtons).toHaveLength(2)
 
-    expect(getByText(wordNodeCards[0].word.word)).toBeDefined()
-    fireEvent.press(deleteButtons[0])
+    expect(getByText(vocabulary[0]!.word)).toBeDefined()
+    fireEvent.press(deleteButtons[0]!)
 
-    expect(getByText(wordNodeCards[1].word.word)).toBeDefined()
+    expect(getByText(vocabulary[1]!.word)).toBeDefined()
 
     const confirmButton = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton).toBeDefined()
     fireEvent.press(confirmButton)
 
-    await waitForElementToBeRemoved(() => getByText(wordNodeCards[0].word.word))
+    await waitFor(() => expect(getAllByTestId('delete-button')).toHaveLength(1))
 
-    const newDeleteButtons = getAllByTestId('delete-button')
-    expect(newDeleteButtons).toHaveLength(1)
-
-    fireEvent.press(newDeleteButtons[0])
+    fireEvent.press(getAllByTestId('delete-button')[0]!)
     const confirmButton2 = getByText(getLabels().repetition.wordList.confirm)
     expect(confirmButton2).toBeDefined()
     fireEvent.press(confirmButton2)

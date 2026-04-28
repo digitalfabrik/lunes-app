@@ -10,8 +10,8 @@ import {
   StandardVocabularyItem,
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
-import { TrackingEvent, TrackingPayload } from './AnalyticsService'
-import { getFromEndpoint, postToEndpoint } from './axios'
+import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
+import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
 
 const Endpoints = {
@@ -25,6 +25,8 @@ const Endpoints = {
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
   analyticsEvent: 'analytics/events',
+  analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
+  analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
 }
 
 type PostFeedback = {
@@ -186,13 +188,13 @@ export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocab
   return response.map(transformWordResponse)
 }
 
-type TrackingEventPostData = Omit<TrackingEvent, 'payload'> & {
-  event_type: TrackingPayload['type']
-  payload: Omit<TrackingPayload, 'type'>
+type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {
+  event_type: AnalyticsPayload['type']
+  payload: Omit<AnalyticsPayload, 'type'>
 }
 
 // eslint-disable-next-line camelcase
-const transformTrackingEvent = ({ installation_id, timestamp, payload }: TrackingEvent): TrackingEventPostData => {
+const transformAnalyticsEvent = ({ installation_id, timestamp, payload }: AnalyticsEvent): AnalyticsEventPostData => {
   const { type, ...rest } = payload
   return {
     // eslint-disable-next-line camelcase
@@ -203,9 +205,16 @@ const transformTrackingEvent = ({ installation_id, timestamp, payload }: Trackin
   }
 }
 
-export const postAnalyticEvent = async (event: TrackingEvent): Promise<void> => {
-  await postToEndpoint(Endpoints.analyticsEvent, transformTrackingEvent(event)).catch(e => {
+export const postAnalyticEvent = async (event: AnalyticsEvent): Promise<void> => {
+  await postToEndpoint(Endpoints.analyticsEvent, transformAnalyticsEvent(event)).catch(e => {
     reportError(e)
     log(JSON.stringify(e.response?.data), 'warning')
   })
+}
+
+export const getAnalyticsExport = async (installationId: string): Promise<Record<string, unknown>> =>
+  getFromEndpoint(Endpoints.analyticsExport(installationId), undefined, true)
+
+export const deleteAnalyticsData = async (installationId: string): Promise<void> => {
+  await deleteFromEndpoint(Endpoints.analyticsDelete(installationId))
 }

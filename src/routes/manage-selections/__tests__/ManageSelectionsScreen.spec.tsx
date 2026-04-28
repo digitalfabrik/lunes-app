@@ -23,13 +23,20 @@ describe('ManageSelectionsScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
+  it('should show empty state when no jobs are selected', () => {
+    const { getAllByText, getByText } = renderScreen()
+    // title text is also on the button, so it appears twice
+    expect(getAllByText(getLabels().manageJobs.emptyState.title).length).toBeGreaterThan(0)
+    expect(getByText(getLabels().manageJobs.emptyState.subtitle)).toBeDefined()
+  })
+
   it('should show and delete selected jobs', async () => {
-    await pushSelectedJob(storageCache, mockJobs()[0].id, mockJobs()[0].migrated)
-    await storageCache.setItem('selectedJobs', [mockJobs()[0].id.id])
-    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]))
+    await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
+    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
 
     const { getByText, getByTestId } = renderScreen()
-    await waitFor(() => expect(getByText(mockJobs()[0].name)).toBeDefined())
+    await waitFor(() => expect(getByText(mockJobs()[0]!.name)).toBeDefined())
     const deleteIcon = getByTestId('delete-icon')
     fireEvent.press(deleteIcon)
     const confirmButton = getByText(getLabels().manageJobs.deleteModal.confirm)
@@ -40,10 +47,9 @@ describe('ManageSelectionsScreen', () => {
     })
   })
 
-  it('should navigate to select another job', () => {
-    const { getByText } = renderScreen()
-    const addJobText = getByText(getLabels().manageJobs.addJob)
-    fireEvent.press(addJobText)
+  it('should navigate to select another job from the empty state', () => {
+    const { getByTestId } = renderScreen()
+    fireEvent.press(getByTestId('add-job-button'))
     expect(navigation.navigate).toHaveBeenCalledWith('JobSelection', { initialSelection: false })
   })
 })

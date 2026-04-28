@@ -1,6 +1,5 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import { GestureResponderEvent } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
@@ -18,7 +17,7 @@ const Container = styled(GenericListItemContainer)<{
   pressed: boolean
   disabled: boolean
 }>`
-  min-height: ${hp('12%')}px;
+  min-height: 96px;
   justify-content: center;
   flex-direction: column;
   border-top-width: 1px;
@@ -60,8 +59,8 @@ const Title = styled.Text<{ pressed: boolean }>`
 `
 
 const Icon = styled.Image`
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const IconContainer = styled.View`

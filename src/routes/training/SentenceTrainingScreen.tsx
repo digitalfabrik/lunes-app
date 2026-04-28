@@ -1,7 +1,8 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
-import styled, { css } from 'styled-components/native'
+import { Image } from 'react-native'
+import styled from 'styled-components/native'
 
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
@@ -14,10 +15,11 @@ import { BUTTONS_THEME } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels } from '../../services/helpers'
+import { getAtIndex, getLabels } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import TrainingExerciseHeader from './components/TrainingExerciseHeader'
-import WordsSelector, { SelectedWord, WordsContainer } from './components/WordSelector'
+import WordsSelector, { SelectedWord } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
 
 export const MAX_ATTEMPTS_PER_SENTENCE = 5
@@ -47,40 +49,23 @@ const SelectedWordsArea = styled.View`
   background-color: ${props => props.theme.colors.backgroundLow};
 `
 
-const BottomSheetWord = styled(ContentText)<{ markIncorrect: boolean }>`
-  ${props =>
-    props.markIncorrect &&
-    css`
-      border-width: 1px;
-      border-radius: ${props.theme.spacings.xxs};
-    `}
-`
-
 const ResultIndicator = ({
   state,
   dispatch,
-  selectedWords,
+  currentSentence,
 }: {
   state: State
   dispatch: ActionDispatch<[Action]>
-  selectedWords: SelectedWord[]
+  currentSentence: Sentence
 }): ReactElement => {
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
-
-  const content = (
-    <WordsContainer>
-      {selectedWords.map(({ word, state, index }) => (
-        <BottomSheetWord key={index} markIncorrect={state === 'wrong'}>
-          {word}
-        </BottomSheetWord>
-      ))}
-    </WordsContainer>
-  )
+  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE
+  const labels = getLabels().exercises.training.sentence
 
   const button =
-    isCorrect || state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE ? (
+    isCorrect || hasReachedMaxAttempts ? (
       <Button
         onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: state.attemptsForCurrentSentence === 0 })}
         label={getLabels().exercises.continue}
@@ -99,12 +84,17 @@ const ResultIndicator = ({
   const resultLabel = isCorrect
     ? getLabels().exercises.training.sentence.correct
     : getLabels().exercises.training.sentence.incorrect
+  const correctAnswerContent =
+    isCorrect || hasReachedMaxAttempts ? (
+      <ContentText>{`${labels.solution}\n${currentSentence.sentence}`}</ContentText>
+    ) : null
+
   return (
     <WordResultIndicator
       isVisible={isFinished}
       isCorrect={isCorrect}
       label={resultLabel}
-      content={content}
+      content={correctAnswerContent}
       button={button}
     />
   )
@@ -118,16 +108,16 @@ type SentenceTrainingProps = {
 
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
-  const currentSentence = state.sentences[state.currentSentenceIndex]
+  const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
-    word: currentSentence.words[wordIndex],
+    word: getAtIndex(currentSentence.words, wordIndex),
     state: isFinished && !isSameWord(state, wordIndex, index) ? 'wrong' : 'enabled',
   }))
   const availableWords: SelectedWord[] = state.randomizedWordIndexes.map(index => ({
     index,
-    word: currentSentence.words[index],
+    word: getAtIndex(currentSentence.words, index),
     state: state.selectedWordIndexes.includes(index) ? 'disabled' : 'enabled',
   }))
   // Append all unused words to the selected word component and mark them as hidden
@@ -145,6 +135,14 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
       })
     }
   }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length])
+
+  useEffect(() => {
+    const nextSentenceIndex = state.currentSentenceIndex + 1
+    if (nextSentenceIndex < state.sentences.length) {
+      const image = state.sentences[nextSentenceIndex]!.image
+      Image.prefetch(image).catch(reportError)
+    }
+  }, [state.currentSentenceIndex, state.sentences])
 
   return (
     <>
@@ -188,7 +186,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
         </ExerciseContainer>
       </TrainingExerciseContainer>
 
-      <ResultIndicator state={state} dispatch={dispatch} selectedWords={selectedWords} />
+      <ResultIndicator state={state} dispatch={dispatch} currentSentence={currentSentence} />
     </>
   )
 }
@@ -208,7 +206,7 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       audio: exampleSentence!.audio,
       words: splitSentence(exampleSentence!.sentence),
       id,
-      image: images[0],
+      image: images[0] ?? '',
     }))
 
   useEffect(() => {

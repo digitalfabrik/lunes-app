@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styled from 'styled-components/native'
 
 import { HeaderSquareIcon, HeaderStarIcon, HeaderCircleIcon, HeaderLinesIcon, LunesIcon } from '../../assets/images'
@@ -9,43 +8,42 @@ const Wrapper = styled.View`
 `
 const HeaderStyle = styled.View`
   background-color: ${props => props.theme.colors.primary};
-  height: ${hp('11.5%')}px;
+  height: 92px;
   width: 100%;
 `
 const SquareIconStyle = styled.View`
   position: absolute;
-  top: ${hp('5%')}px;
-  left: ${hp('2.5%')}px;
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  top: 40px;
+  left: 20px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 const StarIconStyle = styled.View`
   position: absolute;
   top: -5px;
-  left: ${hp('12%')}px;
-  width: ${hp('3.5%')}px;
-  height: ${hp('3%')}px;
+  left: 96px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: 24px;
 `
 const CircleIconStyle = styled.View`
   position: absolute;
-  top: ${hp('4.5%')}px;
-  right: ${hp('8.5%')}px;
-  width: ${hp('3.5%')}px;
-  height: ${hp('3.5%')}px;
+  top: 36px;
+  right: 68px;
+  width: ${props => props.theme.sizes.defaultIcon}px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 const VerticalLinesIcon = styled.View`
   position: absolute;
-  top: ${hp('2%')}px;
+  top: 16px;
   right: 0px;
-  width: ${hp('3%')}px;
-  height: ${hp('3.5%')}px;
+  width: 24px;
+  height: ${props => props.theme.sizes.defaultIcon}px;
 `
 
 const SmileIconStyle = styled.Pressable`
   position: absolute;
-  left: 50%;
-  margin-left: -${hp('3%')}px;
-  top: ${hp('7.5%')}px;
+  align-self: center;
+  top: 60px;
 `
 
 const Header = (): ReactElement => (
@@ -64,7 +62,7 @@ const Header = (): ReactElement => (
         <HeaderLinesIcon />
       </VerticalLinesIcon>
       <SmileIconStyle>
-        <LunesIcon width={hp('8%')} height={hp('8%')} />
+        <LunesIcon width={64} height={64} />
       </SmileIconStyle>
     </HeaderStyle>
   </Wrapper>

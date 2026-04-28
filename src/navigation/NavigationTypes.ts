@@ -83,6 +83,7 @@ export type RoutesParams = {
   Imprint: undefined
   ManageSelection: undefined
   Settings: undefined
+  GdprExport: undefined
   OverlayMenu: undefined
   Sponsors: undefined
   Favorites: undefined

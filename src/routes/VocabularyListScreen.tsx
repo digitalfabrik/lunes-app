@@ -1,14 +1,15 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
+import useTrackMountDuration from '../hooks/useTrackMountDuration'
 import { RoutesParams } from '../navigation/NavigationTypes'
-import { getLabels } from '../services/helpers'
+import { trackEvent } from '../services/AnalyticsService'
 import { reportError } from '../services/sentry'
 import { setExerciseProgress } from '../services/storageUtils'
 
@@ -22,6 +23,16 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
+  useTrackMountDuration(durationSeconds => {
+    if (unitId !== null) {
+      trackEvent(storageCache, {
+        type: 'module_duration',
+        duration_seconds: durationSeconds,
+        unit_id: unitId.id,
+        exercise_type: ExerciseKeys.vocabularyList,
+      })
+    }
+  })
   useEffect(() => {
     if (unitId !== null) {
       setExerciseProgress(storageCache, unitId, ExerciseKeys.vocabularyList, 1).catch(reportError)
@@ -42,7 +53,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
       <VocabularyList
         vocabularyItems={route.params.vocabularyItems}
         onItemPress={onItemPress}
-        title={getLabels().exercises.vocabularyList.title}
+        title={route.params.unitTitle}
       />
     </RouteWrapper>
   )

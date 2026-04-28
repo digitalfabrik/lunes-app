@@ -1,9 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import useStorage from '../hooks/useStorage'
-import { useTabletHeaderHeight } from '../hooks/useTabletHeaderHeight'
+import useTrackSession from '../hooks/useTrackSession'
 import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
@@ -17,14 +16,15 @@ import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions from './screenOptions'
+import screenOptions, { useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
+  useTrackSession()
   const [jobs] = useStorage('selectedJobs')
 
-  const headerHeight = useTabletHeaderHeight(hp('7.5%'))
+  const headerHeight = useTabletHeaderHeight()
   const options = screenOptions(headerHeight)
 
   const { manageJobs, overviewExercises, cancelExercise } = getLabels().general.header

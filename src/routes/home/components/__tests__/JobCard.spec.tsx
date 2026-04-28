@@ -33,9 +33,9 @@ describe('JobCard', () => {
     )
 
   it('should show job card', async () => {
-    mockUseLoadAsyncWithData(mockJobs()[0])
+    mockUseLoadAsyncWithData(mockJobs()[0]!)
     const { getByText, findByText } = renderJobCard()
-    expect(getByText(mockJobs()[0].name)).toBeDefined()
+    expect(getByText(mockJobs()[0]!.name)).toBeDefined()
     const element = await findByText(labels.home.start)
     expect(element).toBeDefined()
   })

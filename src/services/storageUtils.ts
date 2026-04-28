@@ -8,12 +8,15 @@ import VocabularyItem, {
   areVocabularyItemIdsEqual,
   UserVocabularyId,
   UserVocabularyItem,
+  VocabularyItemId,
   VocabularyItemTypes,
 } from '../models/VocabularyItem'
 import { VocabularyItemResult } from '../navigation/NavigationTypes'
-import { trackEvent } from './AnalyticsService'
+import { generateUniqueId, trackEvent } from './AnalyticsService'
+import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, storageKeys, StorageValue } from './Storage'
+import type { WordNodeCard } from './RepetitionService'
+import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, StorageValue } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -55,16 +58,23 @@ export const pushSelectedJob = async (
   }
 }
 
-export const removeSelectedJob = async (storageCache: StorageCache, { id }: StandardJobId): Promise<number[]> => {
+export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<number[]> => {
   const jobs = storageCache.getItem('selectedJobs')
   if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedJobs = jobs.filter(item => item !== id)
+  const updatedJobs = jobs.filter(item => item !== jobId.id)
   await storageCache.setItem('selectedJobs', updatedJobs)
-  trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'remove' })
+  trackEvent(storageCache, { type: 'job_selected', job_id: jobId.id, action: 'remove' })
 
-  await removeJobFromNotMigrated(storageCache, id)
+  await removeJobFromNotMigrated(storageCache, jobId.id)
+
+  try {
+    const jobWords = await getWordsByJob(jobId)
+    await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
+  } catch {
+    // If the cleanup fails, the words from this job remain in the repetition list
+  }
 
   return updatedJobs
 }
@@ -233,21 +243,46 @@ export const migrate2To3 = async (): Promise<void> => {
 
 // Adds the list of jobs with possibly lost progress because they were started before the CMS migration
 export const migrate3To4 = async (): Promise<void> => {
-  const selectedJobs = await getStorageItemOr<number[]>(storageKeys.selectedJobs, [])
-  await AsyncStorage.setItem(storageKeys.notMigratedSelectedJobs, JSON.stringify(selectedJobs))
+  const selectedJobs = await getStorageItemOr<number[]>('selectedProfessions', [])
+  await AsyncStorage.setItem('notMigratedSelectedJobs', JSON.stringify(selectedJobs))
+}
+
+// Replaces full VocabularyItem stored in WordNodeCards with only the VocabularyItemId
+export const migrate4To5 = async (): Promise<void> => {
+  type OldWordNodeCard = {
+    word: { id: VocabularyItemId }
+    section: WordNodeCard['section']
+    inThisSectionSince: string
+  }
+
+  type NewWordNodeCard = {
+    wordId: VocabularyItemId
+    section: WordNodeCard['section']
+    inThisSectionSince: Date
+  }
+
+  const migrateCard = ({ word, section, inThisSectionSince }: OldWordNodeCard): NewWordNodeCard => ({
+    wordId: word.id,
+    section,
+    inThisSectionSince: new Date(inThisSectionSince),
+  })
+
+  const oldCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
+  const newCards = oldCards.map(migrateCard)
+  await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newCards))
 }
 
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
-  const overwrite = await AsyncStorage.getItem(storageKeys.cmsUrlOverwrite)
+  const overwrite = await AsyncStorage.getItem('cms')
   if (overwrite !== null && !(CMS_URLS as readonly string[]).includes(JSON.parse(overwrite))) {
-    await AsyncStorage.removeItem(storageKeys.cmsUrlOverwrite)
+    await AsyncStorage.removeItem('cms')
   }
 }
 
 export const migrateStorage = async (): Promise<void> => {
   const getStorageVersion = async (): Promise<number> => {
-    const version = await getStorageItemOr<number | null>(storageKeys.version, null)
+    const version = await getStorageItemOr<number | null>('version', null)
     if (version !== null) {
       return version
     }
@@ -274,6 +309,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough
     case 3:
       await migrate3To4()
+    // eslint-disable-next-line no-fallthrough
+    case 4:
+      await migrate4To5()
       break
   }
 
@@ -282,9 +320,12 @@ export const migrateStorage = async (): Promise<void> => {
   }
 
   if (lastVersion !== STORAGE_VERSION) {
-    await AsyncStorage.setItem(storageKeys.version, STORAGE_VERSION.toString())
+    await AsyncStorage.setItem('version', STORAGE_VERSION.toString())
   }
 }
+
+export const isFavorite = (favorites: readonly Favorite[], favorite: Favorite): boolean =>
+  favorites.some(it => areVocabularyItemIdsEqual(it, favorite))
 
 export const addFavorite = async (
   storageCache: StorageCache,
@@ -293,8 +334,7 @@ export const addFavorite = async (
 ): Promise<void> => {
   const favorite = vocabularyItem.id
   const favorites = storageCache.getItem('favorites')
-  // TODO: This check seems incorrect, since it compares by identity
-  if (favorites.includes(favorite)) {
+  if (isFavorite(favorites, favorite)) {
     return
   }
 
@@ -308,9 +348,6 @@ export const removeFavorite = async (storageCache: StorageCache, favorite: Favor
   const newFavorites = favorites.filter(it => !areVocabularyItemIdsEqual(it, favorite))
   await storageCache.setItem('favorites', newFavorites)
 }
-
-export const isFavorite = (favorites: readonly Favorite[], favorite: Favorite): boolean =>
-  favorites.some(it => areVocabularyItemIdsEqual(it, favorite))
 
 export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<UserVocabularyId> => {
   const nextId = storageCache.getItem('nextUserVocabularyId')
@@ -355,7 +392,7 @@ export const deleteUserVocabularyItem = async (
     }),
   )
   await removeFavorite(storageCache, userVocabularyItem.id)
-  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem)
+  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem.id)
   await storageCache.setItem('userVocabulary', userVocabulary)
 }
 
@@ -365,8 +402,7 @@ export const getInstallationId = async (storageCache: StorageCache): Promise<str
     return id
   }
 
-  const base = 16
-  const newId = Array.from({ length: 32 }, () => Math.floor(Math.random() * base).toString(base)).join('')
+  const newId = generateUniqueId()
   await storageCache.setItem('installationId', newId)
   return newId
 }

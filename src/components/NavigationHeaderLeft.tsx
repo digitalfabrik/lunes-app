@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import {
   ArrowLeftCircleIconBlue,
@@ -23,6 +22,7 @@ type NavigationHeaderLeftProps = {
 }
 
 const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeaderLeftProps): ReactElement => {
+  const theme = useTheme()
   const [pressed, setPressed] = useState<boolean>(false)
 
   const closeIcon = pressed ? CloseCircleIconBlue : CloseCircleIconWhite
@@ -31,7 +31,7 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeade
 
   return (
     <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>
-      <Icon width={hp('3.5%')} height={hp('3.5%')} />
+      <Icon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
       <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
     </Container>
   )

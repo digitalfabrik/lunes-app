@@ -18,9 +18,9 @@ describe('SelectionItem', () => {
     render(<SelectionItem identifier={{ apiKey: '1', type: 'load-protected' }} deleteItem={deleteItem} />)
 
   it('should display data', () => {
-    mockUseLoadAsyncWithData(mockJobs()[0])
+    mockUseLoadAsyncWithData(mockJobs()[0]!)
     const { getByText, getByTestId } = renderSelectionItem()
-    expect(getByText(mockJobs()[0].name)).toBeDefined()
+    expect(getByText(mockJobs()[0]!.name)).toBeDefined()
     expect(getByTestId('delete-icon')).toBeDefined()
   })
 

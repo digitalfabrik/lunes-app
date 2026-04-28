@@ -9,7 +9,7 @@ import Title from '../../components/Title'
 import useStorage from '../../hooks/useStorage'
 import { UserVocabularyUnitId } from '../../models/Unit'
 import { RoutesParams } from '../../navigation/NavigationTypes'
-import { getLabels, wordsDescription } from '../../services/helpers'
+import { getAtIndex, getLabels, wordsDescription } from '../../services/helpers'
 import { splitVocabularyIntoUnits, UnitWithVocabulary } from './splitVocabularyToUnits'
 
 const List = styled.FlatList`
@@ -26,7 +26,7 @@ const UnitSelectionScreen = ({ navigation }: UnitSelectionScreenProps): ReactEle
   const unitsWithVocabulary = splitVocabularyIntoUnits(userVocabulary)
 
   const handleNavigation = (selectedUnit: UserVocabularyUnitId): void => {
-    const selectedUnitWithVocabulary = unitsWithVocabulary[selectedUnit.index]
+    const selectedUnitWithVocabulary = getAtIndex(unitsWithVocabulary, selectedUnit.index)
     return navigation.navigate('SpecialExercises', {
       unit: selectedUnitWithVocabulary.unit,
       jobTitle: selectedUnitWithVocabulary.unit.title,

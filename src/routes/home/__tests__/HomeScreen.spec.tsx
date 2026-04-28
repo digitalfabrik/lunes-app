@@ -29,7 +29,7 @@ describe('HomeScreen', () => {
     storageCache = StorageCache.createDummy()
   })
 
-  it('should render jobs', async () => {
+  it('should render the first job by default', async () => {
     await storageCache.setItem(
       'selectedJobs',
       mockJobs().map(item => item.id.id),
@@ -41,12 +41,7 @@ describe('HomeScreen', () => {
     )
     mocked(getUnitsOfJob).mockReturnValue(Promise.resolve([]))
     mocked(getWordsByUnit).mockReturnValue(Promise.resolve([]))
-    const { findByText, getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
-    const firstJob = await waitFor(() => getByText('First Job'))
-    const secondJob = await findByText('Second Job')
-    const thirdJob = getByText('Third Job')
-    expect(firstJob).toBeDefined()
-    expect(secondJob).toBeDefined()
-    expect(thirdJob).toBeDefined()
+    const { getByText } = renderWithStorageCache(storageCache, <HomeScreen navigation={navigation} />)
+    await waitFor(() => expect(getByText(mockJobs()[0]!.name)).toBeDefined())
   })
 })

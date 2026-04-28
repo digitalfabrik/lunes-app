@@ -1,6 +1,5 @@
 import React, { ComponentType, ReactElement, useState } from 'react'
-import { StyleProp, ViewStyle } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { StyleProp, ViewStyle, useWindowDimensions } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 import styled, { css, useTheme } from 'styled-components/native'
 
@@ -8,12 +7,14 @@ import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
 import { Subheading } from './text/Subheading'
 
+const BUTTON_WIDTH_RATIO = 0.7
+
 type ThemedButtonProps = {
   buttonTheme: ButtonTheme
   backgroundColor: Color | 'transparent'
   disabled?: boolean
-  fitToContentWidth: boolean
   isPressed: boolean
+  width: number | undefined
 }
 
 type ThemedLabelProps = {
@@ -29,17 +30,17 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
       border-width: 1px;
     `};
   flex-direction: row;
-  padding: ${props => `${hp('1.5%')}px ${props.theme.spacings.sm}`};
-  ${props =>
-    !props.fitToContentWidth &&
-    css`
-      width: ${wp('70%')}px;
-    `};
+  padding: 12px ${props => props.theme.spacings.sm};
   align-items: center;
-  border-radius: ${hp('7%')}px;
+  border-radius: 56px;
   justify-content: center;
   margin-bottom: ${props => props.theme.spacings.sm};
   background-color: ${props => props.backgroundColor};
+  ${props =>
+    props.width &&
+    css`
+      width: ${props.width}px;
+    `};
   ${props =>
     props.buttonTheme === BUTTONS_THEME.text &&
     css`
@@ -71,6 +72,7 @@ type ButtonProps = {
 const Button = (props: ButtonProps): ReactElement => {
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const theme = useTheme()
+  const { width: screenWidth } = useWindowDimensions()
   const {
     label,
     onPress,
@@ -81,6 +83,7 @@ const Button = (props: ButtonProps): ReactElement => {
     fitToContentWidth,
     testID = 'button',
   } = props
+  const buttonWidth = fitToContentWidth ? undefined : screenWidth * BUTTON_WIDTH_RATIO
 
   const getTextColor = (): Color => {
     const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? theme.colors.background : theme.colors.primary
@@ -111,10 +114,11 @@ const Button = (props: ButtonProps): ReactElement => {
       backgroundColor={getBackgroundColor()}
       onPress={onPress}
       disabled={disabled}
+      width={buttonWidth}
       style={style}
-      fitToContentWidth={!!fitToContentWidth}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
+      accessibilityRole='button'
     >
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (

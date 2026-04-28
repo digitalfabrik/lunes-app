@@ -4,7 +4,6 @@ import { LogBox } from 'react-native'
 import 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
-import { HeaderButtonsProvider } from 'react-navigation-header-buttons'
 import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
@@ -29,9 +28,7 @@ const App = (): ReactElement => {
             <VolumeServiceProvider>
               <TtsServiceProvider>
                 <NavigationContainer>
-                  <HeaderButtonsProvider stackType='native' spaceAboveMenu={initialWindowMetrics?.insets.top ?? 0}>
-                    <Navigator />
-                  </HeaderButtonsProvider>
+                  <Navigator />
                 </NavigationContainer>
               </TtsServiceProvider>
             </VolumeServiceProvider>

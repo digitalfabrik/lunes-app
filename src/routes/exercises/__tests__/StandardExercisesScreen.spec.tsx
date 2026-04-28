@@ -28,8 +28,8 @@ describe('StandardExercisesScreen', () => {
     key: 'key-0',
     name: 'StandardExercises',
     params: {
-      jobTitle: mockJobs()[0].name,
-      unit: mockUnits[0],
+      jobTitle: mockJobs()[0]!.name,
+      unit: mockUnits[0]!,
     },
   }
 

@@ -1,0 +1,15 @@
+# Create a commit which moves the release notes from the unreleased directory to the current release directory
+docker:
+  - image: cimg/node:20.18.3
+resource_class: small
+steps:
+  - checkout
+  - restore_yarn_tools_cache
+  - run:
+      name: Calculate version name
+      command: echo "export VERSION_NAME=$(cat version.json | jq -r .versionName)" >> ${BASH_ENV}
+  - run:
+      name: Move release notes
+      command: yarn app-toolbelt v0 release-notes move-to ${VERSION_NAME} --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH}
+      working_directory: tools
+  - notify

@@ -1,7 +1,9 @@
 import { RouteProp } from '@react-navigation/native'
 import React from 'react'
 
+import { ExerciseKeys } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { StorageCache } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { setExerciseProgress } from '../../services/storageUtils'
@@ -26,6 +28,10 @@ jest.mock('../../components/AudioPlayer', () => {
 })
 
 jest.mock('../../components/FeedbackBadge', () => () => null)
+
+jest.mock('../../services/AnalyticsService', () => ({
+  trackEvent: jest.fn(),
+}))
 
 describe('VocabularyListScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
@@ -56,7 +62,7 @@ describe('VocabularyListScreen', () => {
       <VocabularyListScreen route={route} navigation={navigation} />,
     )
 
-    expect(getByText(getLabels().exercises.vocabularyList.title)).toBeTruthy()
+    expect(getByText('My unit title')).toBeTruthy()
     expect(getByText(`2 ${getLabels().general.word.plural}`)).toBeTruthy()
     expect(getByText('der')).toBeTruthy()
     expect(getByText('Spachtel')).toBeTruthy()
@@ -64,5 +70,21 @@ describe('VocabularyListScreen', () => {
     expect(getByText('Auto')).toBeTruthy()
     expect(getAllByText('AudioPlayer')).toHaveLength(2)
     expect(getAllByTestId('image')).toHaveLength(2)
+  })
+
+  it('should track module duration on unmount', () => {
+    const { unmount } = renderWithStorageCache(
+      storageCache,
+      <VocabularyListScreen route={route} navigation={navigation} />,
+    )
+
+    expect(trackEvent).not.toHaveBeenCalled()
+    unmount()
+    expect(trackEvent).toHaveBeenCalledWith(storageCache, {
+      type: 'module_duration',
+      duration_seconds: expect.any(Number),
+      unit_id: 1,
+      exercise_type: ExerciseKeys.vocabularyList,
+    })
   })
 })

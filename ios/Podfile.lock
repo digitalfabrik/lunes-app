@@ -9,7 +9,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.81.6)
   - hermes-engine/Pre-built (0.81.6)
   - Mute (0.6.1)
-  - NitroModules (0.34.1):
+  - NitroModules (0.35.5):
     - boost
     - DoubleConversion
     - fast_float
@@ -3066,7 +3066,7 @@ SPEC CHECKSUMS:
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 7219f6e751ad6ec7f3d7ec121830ee34dae40749
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
-  NitroModules: 0bd3b05de25fc3877046217760d3e83368cdbf5c
+  NitroModules: ea5dc6c43666f4a75e71e372eaca6d3605856e51
   NitroSound: 50a649cf962b021093bdc0ce0828420de8f06b74
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: d4ef510f229cea15314176aee5e3ba10064a8496
@@ -3154,6 +3154,6 @@ SPEC CHECKSUMS:
   VisionCamera: b51af005669c6642dd1b4fca434eda4c1778de87
   Yoga: 3196a843cc5f4bc433f1a41cf17cdf804a01a529
 
-PODFILE CHECKSUM: 16fd8ad9ed701d7f1481b73ff40e32225521c317
+PODFILE CHECKSUM: cecf1e60f53fb90b89259b43850d3c3277cc7ca4
 
 COCOAPODS: 1.16.2

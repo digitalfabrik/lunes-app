@@ -1,24 +1,19 @@
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
-
-// These pixels are calculated for a 800px height mobile screen 1px => 0.1275% (100/800px)
-// Suitable testing devices: Pixel 4 & iPhone 13 pro
-
 export const SPACINGS_PLAIN = {
-  xxs: hp('0.5%'), // 4
-  xs: hp('1%'), // 8
-  sm: hp('2%'), // 16
-  md: hp('3%'), // 24
-  lg: hp('4%'), // 32
-  xl: hp('5%'), // 40
-  xxl: hp('6%'), // 48
+  xxs: 4,
+  xs: 8,
+  sm: 16,
+  md: 24,
+  lg: 32,
+  xl: 40,
+  xxl: 48,
 }
 
 export const SPACINGS = {
-  xxs: `${SPACINGS_PLAIN.xxs}px`, // 4px
-  xs: `${SPACINGS_PLAIN.xs}px`, // 8px
-  sm: `${SPACINGS_PLAIN.sm}px`, // 16px
-  md: `${SPACINGS_PLAIN.md}px`, // 24px
-  lg: `${SPACINGS_PLAIN.lg}px`, // 32px
-  xl: `${SPACINGS_PLAIN.xl}px`, // 40px
-  xxl: `${SPACINGS_PLAIN.xxl}px`, // 48px
+  xxs: '4px',
+  xs: '8px',
+  sm: '16px',
+  md: '24px',
+  lg: '32px',
+  xl: '40px',
+  xxl: '48px',
 }

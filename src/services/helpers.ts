@@ -38,6 +38,7 @@ export const childrenDescription = (job: Job): string => `${job.numberOfUnits} $
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
+    case 0:
     case 1:
       return COLORS.articleMasculine
 
@@ -55,8 +56,15 @@ export const getArticleColor = (article: Article): string => {
   }
 }
 
+export const getAtIndex = <T>(array: T[], index: number): T => {
+  if (index < 0 || index >= array.length) {
+    throw new Error(`Index ${index} is out of bounds for an array with ${array.length} elements.`)
+  }
+  return array[index]!
+}
+
 export const moveToEnd = <T>(array: T[], index: number): T[] => {
-  const currentItem = array[index]
+  const currentItem = getAtIndex(array, index)
   const newItems = array.filter(it => it !== currentItem)
   newItems.push(currentItem)
   return newItems
@@ -68,9 +76,11 @@ export const getRandomNumberBetween = (min: number, max: number): number =>
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  for (let currentIndex = shuffled.length - 1; currentIndex > 0; currentIndex -= 1) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1))
+    const currentItem = getAtIndex(shuffled, currentIndex)
+    shuffled[currentIndex] = getAtIndex(shuffled, randomIndex)
+    shuffled[randomIndex] = currentItem
   }
   return shuffled
 }
@@ -112,7 +122,7 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
 
   if (!firstUnfinishedUnit) {
     return {
-      unit: units[0],
+      unit: units[0]!,
       exerciseKey: 0,
     } // TODO #965: show success that every exercise is done
   }
@@ -171,11 +181,10 @@ export const calculateTrainingScore = (correct: number, total: number): number =
 const normalizeString = (str: string): string => normalizeStrings(str).toLowerCase().trim()
 
 const normalizeSearchString = (searchString: string): string => {
-  const searchStringWithoutArticle = ARTICLES.map(article => article.value).includes(
-    searchString.split(' ')[0].toLowerCase(),
-  )
-    ? searchString.substring(searchString.indexOf(' ') + 1)
-    : searchString
+  const words = searchString.split(' ')
+  const firstWord = words[0]?.toLowerCase() ?? ''
+  const startsWithArticle = ARTICLES.some(article => article.value === firstWord)
+  const searchStringWithoutArticle = startsWithArticle ? words.slice(1).join(' ') : searchString
   return normalizeString(searchStringWithoutArticle)
 }
 
@@ -194,7 +203,7 @@ export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
 
   const getNouns = (word: string): string => {
     const words = word.split(' ')
-    return words.find((word: string) => word[0] === word[0].toUpperCase()) ?? words.toString()
+    return words.find((word: string) => word.charAt(0) === word.charAt(0).toUpperCase()) ?? words.toString()
   }
 
   const filteredVocabularyItems = vocabularyItems?.filter(
