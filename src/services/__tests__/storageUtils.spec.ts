@@ -439,6 +439,19 @@ describe('storageUtils', () => {
         ])
       })
     })
+
+    describe('should migrate from v5', () => {
+      it('should rename exercise progress keys from integers to strings', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '5')
+        await AsyncStorage.setItem('progress', JSON.stringify({ '1': { '0': 3, '1': 7 }, '2': { '0': 5 } }))
+
+        const storageCache = await loadStorageCache()
+        expect(storageCache.getItem('progress')).toEqual({
+          '1': { [ExerciseKeys.vocabularyList]: 3, [ExerciseKeys.wordChoiceExercise]: 7 },
+          '2': { [ExerciseKeys.vocabularyList]: 5 },
+        })
+      })
+    })
   })
 
   describe('userVocabulary', () => {

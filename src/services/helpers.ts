@@ -3,6 +3,7 @@ import normalizeStrings from 'normalize-strings'
 import {
   Article,
   ARTICLES,
+  ExerciseKey,
   ExerciseKeys,
   EXERCISES,
   NextExercise,
@@ -87,17 +88,16 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 
 export const shuffleIndexes = <T>(array: T[]): number[] => shuffleArray([...array.keys()])
 
+// word list exercise counts as successfully completed after just opening it
+const isExerciseDone = (exerciseKey: ExerciseKey, score: number | undefined): boolean =>
+  exerciseKey === ExerciseKeys.vocabularyList
+    ? score !== undefined
+    : score !== undefined && score > SCORE_THRESHOLD_UNLOCK
+
 const getNumberOfUnlockedExercisesByProgress = (unitId: StandardUnitId, progress: Progress): number => {
   const progressOfUnit = progress[unitId.id]
-  return progressOfUnit
-    ? Object.keys(progressOfUnit).filter(item => {
-        const score = progressOfUnit[item]
-        // FIXME: This calculation looks incorrect
-        return (
-          ExerciseKeys.vocabularyList.toString() === item || (score !== undefined && score > SCORE_THRESHOLD_UNLOCK)
-        )
-      }).length
-    : 0
+  return Object.values(EXERCISES).filter(exercise => isExerciseDone(exercise.key, progressOfUnit?.[exercise.key]))
+    .length
 }
 
 export const getNumberOfUnlockedExercises = (progress: Progress, unitId: StandardUnitId): number =>
@@ -117,26 +117,22 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
     throw new Error(`No units for id ${JSON.stringify(job.id)}`)
   }
   const firstUnfinishedUnit = units.find(
-    unit => getNumberOfUnlockedExercisesByProgress(unit.id, progress) < EXERCISES.length,
+    unit => getNumberOfUnlockedExercisesByProgress(unit.id, progress) < Object.keys(EXERCISES).length,
   )
 
   if (!firstUnfinishedUnit) {
     return {
       unit: units[0]!,
-      exerciseKey: 0,
-    } // TODO #965: show success that every exercise is done
-  }
-  const unitProgress = progress[firstUnfinishedUnit.id.id]
-  if (!unitProgress) {
-    return {
-      unit: firstUnfinishedUnit,
-      exerciseKey: 0,
+      exerciseKey: ExerciseKeys.vocabularyList,
     }
   }
-  const nextExerciseKey = getNumberOfUnlockedExercisesByProgress(firstUnfinishedUnit.id, progress)
+  const unitProgress = progress[firstUnfinishedUnit.id.id]
+  const nextExercise = Object.values(EXERCISES).find(
+    exercise => !isExerciseDone(exercise.key, unitProgress?.[exercise.key]),
+  )
   return {
     unit: firstUnfinishedUnit,
-    exerciseKey: nextExerciseKey,
+    exerciseKey: nextExercise?.key ?? ExerciseKeys.vocabularyList,
   }
 }
 
@@ -149,7 +145,7 @@ export const getProgress = async (progress: Progress, job: Job | null): Promise<
     return 0
   }
   const doneExercises = units.reduce((acc, unit) => acc + getNumberOfUnlockedExercisesByProgress(unit.id, progress), 0)
-  const totalExercises = units.length * EXERCISES.length
+  const totalExercises = units.length * Object.keys(EXERCISES).length
   return doneExercises / totalExercises
 }
 

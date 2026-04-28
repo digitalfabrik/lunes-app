@@ -274,7 +274,7 @@ describe('WordChoiceExerciseScreen', () => {
 
       expect(trackEvent).toHaveBeenCalledWith(storageCache, {
         type: 'exercise_dropout',
-        exercise_type: 'word_choice',
+        exercise_type: ExerciseKeys.wordChoiceExercise,
         unit_id: 1,
         position: 1,
         total: 4,
@@ -288,7 +288,7 @@ describe('WordChoiceExerciseScreen', () => {
 
       expect(trackEvent).toHaveBeenCalledWith(storageCache, {
         type: 'exercise_dropout',
-        exercise_type: 'word_choice',
+        exercise_type: ExerciseKeys.wordChoiceExercise,
         unit_id: null,
         position: 1,
         total: 4,

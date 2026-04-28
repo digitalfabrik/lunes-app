@@ -4,7 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
+import { EXERCISES, ExerciseKeys, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
 import useLoadWordsByUnit from '../../../hooks/useLoadWordsByUnit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
@@ -39,8 +39,8 @@ describe('StandardExercisesScreen', () => {
     storageCache = StorageCache.createDummy()
     storageCache.setItem('progress', {
       [route.params.unit.id.id]: {
-        '0': SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
-        '1': SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
+        word_list: SCORE_THRESHOLD_POSITIVE_FEEDBACK - 1,
+        word_choice: SCORE_THRESHOLD_POSITIVE_FEEDBACK + 1,
       },
     })
     mocked(useLoadWordsByUnit).mockReturnValue(getReturnOf(vocabularyItems))
@@ -51,7 +51,7 @@ describe('StandardExercisesScreen', () => {
       storageCache,
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
-    EXERCISES.forEach(exercise => {
+    Object.values(EXERCISES).forEach(exercise => {
       expect(getAllByText(exercise.title)).toBeDefined()
       expect(getAllByText(exercise.description)).toBeDefined()
     })
@@ -64,7 +64,7 @@ describe('StandardExercisesScreen', () => {
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
     expect(queryByTestId('locking-modal')).toBeFalsy()
-    const lockedExercise = getByText(EXERCISES[1].title)
+    const lockedExercise = getByText(EXERCISES[ExerciseKeys.wordChoiceExercise].title)
     fireEvent.press(lockedExercise)
     await waitFor(() => expect(getByTestId('locking-modal')).toHaveProp('visible', true))
     expect(navigation.navigate).not.toHaveBeenCalled()
@@ -75,9 +75,9 @@ describe('StandardExercisesScreen', () => {
       storageCache,
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
-    const nextExercise = getByText(EXERCISES[0].title)
+    const nextExercise = getByText(EXERCISES[ExerciseKeys.vocabularyList].title)
     fireEvent.press(nextExercise)
-    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[0].screen, expect.anything())
+    expect(navigation.navigate).toHaveBeenCalledWith(EXERCISES[ExerciseKeys.vocabularyList].screen, expect.anything())
   })
 
   it('should show feedback badge for done levels', async () => {

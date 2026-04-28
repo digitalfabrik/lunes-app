@@ -7,12 +7,12 @@ import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
 
 export const ExerciseKeys = {
-  vocabularyList: 0,
-  wordChoiceExercise: 1,
+  vocabularyList: 'word_list',
+  wordChoiceExercise: 'word_choice',
 } as const
 export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
 
-export const FIRST_EXERCISE_FOR_REPETITION = ExerciseKeys.wordChoiceExercise
+export const EXERCISE_FOR_REPETITION = ExerciseKeys.wordChoiceExercise
 
 export type Exercise = {
   key: ExerciseKey
@@ -23,8 +23,8 @@ export type Exercise = {
   screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
-export const EXERCISES = [
-  {
+export const EXERCISES: Record<ExerciseKey, Exercise> = {
+  [ExerciseKeys.vocabularyList]: {
     key: ExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
@@ -32,7 +32,7 @@ export const EXERCISES = [
     icon: TrainingSentences,
     screen: 'VocabularyList',
   },
-  {
+  [ExerciseKeys.wordChoiceExercise]: {
     key: ExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
@@ -40,7 +40,7 @@ export const EXERCISES = [
     icon: TrainingSpeech,
     screen: 'WordChoiceExercise',
   },
-] as const
+}
 
 export type Progress = {
   [unitId: string]: { [exerciseKey: string]: number | undefined } | undefined
@@ -48,7 +48,7 @@ export type Progress = {
 
 export type NextExercise = {
   unit: StandardUnit
-  exerciseKey: number
+  exerciseKey: ExerciseKey
 }
 
 export type NextExerciseData = NextExercise & {

@@ -51,7 +51,12 @@ describe('VocabularyListScreen', () => {
 
   it('should save progress', () => {
     renderWithStorageCache(storageCache, <VocabularyListScreen route={route} navigation={navigation} />)
-    expect(setExerciseProgress).toHaveBeenCalledWith(storageCache, { id: 1, type: 'standard' }, 0, 1)
+    expect(setExerciseProgress).toHaveBeenCalledWith(
+      storageCache,
+      { id: 1, type: 'standard' },
+      ExerciseKeys.vocabularyList,
+      1,
+    )
   })
 
   it('should display vocabulary list', () => {

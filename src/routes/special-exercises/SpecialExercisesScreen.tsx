@@ -24,7 +24,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
   const { jobTitle, vocabularyItems, unit } = route.params
 
   const handleNavigation = (item: Exercise): void => {
-    navigation.navigate(EXERCISES[item.key].screen, {
+    navigation.navigate(item.screen, {
       contentType: 'userVocabulary',
       unitId: null,
       vocabularyItems,
@@ -42,9 +42,9 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
     <RouteWrapper>
       <Title title={jobTitle} description={wordsDescription(vocabularyItems.length)} />
       <FlatList
-        data={EXERCISES}
+        data={Object.values(EXERCISES)}
         renderItem={renderListItem}
-        keyExtractor={({ key }) => key.toString()}
+        keyExtractor={({ key }) => key}
         showsVerticalScrollIndicator={false}
       />
     </RouteWrapper>

@@ -12,7 +12,13 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
 import { Content, ContentTextBold, ContentTextLight } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import { Exercise, EXERCISE_FEEDBACK, EXERCISES, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../constants/data'
+import {
+  Exercise,
+  EXERCISE_FEEDBACK,
+  EXERCISES,
+  ExerciseKeys,
+  SCORE_THRESHOLD_POSITIVE_FEEDBACK,
+} from '../../constants/data'
 import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
 import useStorage from '../../hooks/useStorage'
 import { RoutesParams } from '../../navigation/NavigationTypes'
@@ -55,7 +61,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
   const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unit.id)
-  const nextExercise = nextExerciseNumber < EXERCISES.length ? EXERCISES[nextExerciseNumber] : null
+  const nextExercise = Object.values(EXERCISES).find(exercise => exercise.level === nextExerciseNumber) ?? null
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
@@ -88,7 +94,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       return
     }
     if (vocabularyItems) {
-      navigation.navigate(EXERCISES[item.key].screen, {
+      navigation.navigate(item.screen, {
         contentType: 'standard',
         vocabularyItems,
         unitId: unit.id,
@@ -115,7 +121,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   )
 
   const nextExercisePreposition =
-    nextExercise?.key === 0
+    nextExercise?.key === ExerciseKeys.vocabularyList
       ? getLabels().exercises.lockedExerciseModal.confirmButtonLabelDeclinated
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
@@ -145,9 +151,9 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
           <>
             <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
-              data={EXERCISES}
+              data={Object.values(EXERCISES)}
               renderItem={renderListItem}
-              keyExtractor={({ key }) => key.toString()}
+              keyExtractor={({ key }) => key}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 gap: theme.spacingsPlain.xs,

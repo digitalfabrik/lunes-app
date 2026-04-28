@@ -11,7 +11,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import {
   BUTTONS_THEME,
   EXERCISES,
-  FIRST_EXERCISE_FOR_REPETITION,
+  EXERCISE_FOR_REPETITION,
   SCORE_THRESHOLD_POSITIVE_FEEDBACK,
 } from '../../constants/data'
 import theme from '../../constants/theme'
@@ -48,7 +48,7 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
   const wasSuccessful = score > SCORE_THRESHOLD_POSITIVE_FEEDBACK
   const isRepetition = route.params.contentType === 'repetition'
   const shouldShowRepetitionModal =
-    exercise === FIRST_EXERCISE_FOR_REPETITION &&
+    exercise === EXERCISE_FOR_REPETITION &&
     !isRepetition &&
     results.filter(result => result.numberOfTries > 1).length >= 3
 
