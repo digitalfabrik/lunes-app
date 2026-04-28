@@ -7,6 +7,7 @@ import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
 import { ExerciseKeys } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
+import useTrackExerciseRepetition from '../hooks/useTrackExerciseRepetition'
 import useTrackMountDuration from '../hooks/useTrackMountDuration'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { trackEvent } from '../services/AnalyticsService'
@@ -23,6 +24,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
+  useTrackExerciseRepetition(ExerciseKeys.vocabularyList, unitId)
   useTrackMountDuration(durationSeconds => {
     if (unitId !== null) {
       trackEvent(storageCache, {
