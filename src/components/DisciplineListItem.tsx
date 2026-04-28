@@ -70,7 +70,7 @@ export const UnitListItem = ({
   const description = pluralize(labels.general.word, unit.numberWords)
 
   const unlockedExercises = unit.id.type === 'standard' ? getNumberOfUnlockedExercises(progress, unit.id) : 0
-  const actualProgress = unlockedExercises / EXERCISES.length
+  const actualProgress = unlockedExercises / Object.keys(EXERCISES).length
 
   return (
     <ListItem

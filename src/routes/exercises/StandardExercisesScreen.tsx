@@ -61,7 +61,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [scores] = useStorage('progress')
   const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unit.id)
-  const nextExercise = nextExerciseNumber < EXERCISES.length ? EXERCISES[nextExerciseNumber] : null
+  const nextExercise = Object.values(EXERCISES).find(exercise => exercise.level === nextExerciseNumber) ?? null
   const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
@@ -151,7 +151,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
           <>
             <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
             <FlatList
-              data={EXERCISES}
+              data={Object.values(EXERCISES)}
               renderItem={renderListItem}
               keyExtractor={({ key }) => key}
               showsVerticalScrollIndicator={false}

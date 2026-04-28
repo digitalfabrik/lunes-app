@@ -42,7 +42,7 @@ const ExercisesScreen = ({ route, navigation }: ExercisesScreenProps): ReactElem
     <RouteWrapper>
       <Title title={jobTitle} description={wordsDescription(vocabularyItems.length)} />
       <FlatList
-        data={EXERCISES}
+        data={Object.values(EXERCISES)}
         renderItem={renderListItem}
         keyExtractor={({ key }) => key}
         showsVerticalScrollIndicator={false}
