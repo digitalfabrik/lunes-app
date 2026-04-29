@@ -137,6 +137,24 @@ platform :ios do
     )
   end
 
+  desc "Upload screenshots from fastlane/screenshots/<locale> to App Store Connect. Run after `yarn screenshots:ios`."
+  lane :upload_screenshots do
+    apple_auth()
+
+    deliver(
+      app_identifier: "app.lunes",
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: false,
+      screenshots_path: "./fastlane/screenshots",
+      overwrite_screenshots: true,
+      submit_for_review: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: { add_id_info_uses_idfa: false }
+    )
+  end
+
   desc "Promote the app from testflight to production in App Store Connect."
   lane :appstoreconnect_promote do |options|
     apple_auth()

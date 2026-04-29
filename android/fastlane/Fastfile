@@ -148,6 +148,26 @@ platform :android do
         )
     end
 
+  desc "Upload screenshots from fastlane/metadata/<locale>/images to the Play Store production track. Run after `yarn screenshots:android`."
+  lane :upload_screenshots do
+    ensure_env_vars(
+      env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+
+    upload_to_play_store(
+      package_name: "app.lunes",
+      metadata_path: "./fastlane/metadata",
+      track: "production",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+  end
+
   desc "Promote the most recent version in the beta track to the production track in the Play Store."
   lane :playstore_promote do |options|
     ensure_env_vars(

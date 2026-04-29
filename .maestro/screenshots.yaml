@@ -1,0 +1,117 @@
+appId: ${APP_ID}
+name: Lunes store screenshots
+---
+- clearState
+- launchApp:
+    permissions:
+      all: allow
+
+# 00 — Onboarding scope screen ("Willkommen bei Lunes!" + jobs list).
+- runFlow:
+    when:
+      visible: 'Willkommen bei Lunes!'
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'loading'
+          timeout: 15000
+      - waitForAnimationToEnd
+      - takeScreenshot: ${OUTPUT_DIR}/00_onboarding
+      - tapOn: 'Überspringen'
+
+# Dismiss analytics-consent modal if it appears.
+- runFlow:
+    when:
+      visible: 'Hilf uns, Lunes zu verbessern'
+    commands:
+      - tapOn: 'Nicht jetzt'
+
+# Open settings → unlock debug → seed deterministic screenshot data.
+- tapOn: 'Menü'
+- tapOn: 'Einstellungen'
+- tapOn:
+    text: 'Version: .*'
+    repeat: 6
+- tapOn: 'Development Code'
+- inputText: 'wirschaffendas'
+# First tap dismisses the keyboard, second tap actually taps the button.
+- tapOn:
+    id: 'debug-seed-screenshot-data'
+- tapOn:
+    id: 'debug-seed-screenshot-data'
+- tapOn: 'Schließen'
+
+# 01 — Home tab with seeded selected jobs.
+- tapOn: 'Start'
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/01_home
+
+# 02 — UnitSelection (modules list for the first selected job).
+# Tap the first "Übung starten" button on the home screen — that is the
+# LearningCard's CTA, which navigates into UnitSelection.
+- tapOn:
+    text: 'Übung starten'
+    index: 0
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/02_modules
+
+# 03 — Wortliste exercise (vocabulary list with images).
+- tapOn:
+    id: 'list-item'
+    index: 0
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- tapOn: 'Wortliste'
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/03_wortliste
+
+# 04 — WordChoice exercise (article + word selection).
+- back
+- waitForAnimationToEnd
+- tapOn: 'Das richtige Wort auswählen'
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/04_word_choice
+
+# Exit out of the exercise back to the home stack root.
+- back
+- tapOn: "Beenden"
+- back
+- back
+
+# 05 — Dictionary tab.
+- tapOn: 'Suche'
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/05_dictionary
+
+# 06 — Repetition tab.
+- tapOn: 'Vertiefen'
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/06_repetition
+
+# 07 — Collection tab.
+- tapOn: 'Sammlung'
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/07_collection
