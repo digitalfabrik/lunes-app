@@ -33,6 +33,10 @@ jest.mock('../../services/AnalyticsService', () => ({
   trackEvent: jest.fn(),
 }))
 
+jest.mock('../../services/SessionService', () => ({
+  getCurrentSessionId: jest.fn(() => 'test-session-id'),
+}))
+
 describe('VocabularyListScreen', () => {
   const vocabularyItems = new VocabularyItemBuilder(2).build()
   const route: RouteProp<RoutesParams, 'VocabularyList'> = {
@@ -83,7 +87,7 @@ describe('VocabularyListScreen', () => {
       <VocabularyListScreen route={route} navigation={navigation} />,
     )
 
-    expect(trackEvent).not.toHaveBeenCalled()
+    expect(trackEvent).not.toHaveBeenCalledWith(storageCache, expect.objectContaining({ type: 'module_duration' }))
     unmount()
     expect(trackEvent).toHaveBeenCalledWith(storageCache, {
       type: 'module_duration',

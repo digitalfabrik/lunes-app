@@ -42,6 +42,12 @@ export type AnalyticsPayload =
       position: number
       total: number
     }
+  | {
+      type: 'exercise_repetition'
+      exercise_type: ExerciseKey
+      unit_id: number
+      session_id: string
+    }
 
 export const isConsentGiven = (storageCache: StorageCache): boolean => {
   const consent = storageCache.getItem('analyticsConsent')

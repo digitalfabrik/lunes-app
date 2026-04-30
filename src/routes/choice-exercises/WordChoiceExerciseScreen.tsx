@@ -5,6 +5,7 @@ import React, { ReactElement } from 'react'
 import RouteWrapper from '../../components/RouteWrapper'
 import { ExerciseKeys } from '../../constants/data'
 import { useStorageCache } from '../../hooks/useStorage'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
 import useTrackMountDuration from '../../hooks/useTrackMountDuration'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
@@ -21,6 +22,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const isRepetitionExercise = contentType === 'repetition'
 
   const storageCache = useStorageCache()
+  useTrackExerciseRepetition(ExerciseKeys.wordChoiceExercise, unitId)
   useTrackMountDuration(durationSeconds => {
     if (unitId !== null) {
       trackEvent(storageCache, {

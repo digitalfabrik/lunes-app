@@ -2,12 +2,17 @@ import { act, renderHook } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import { AppState, AppStateStatus } from 'react-native'
 
-import { generateUniqueId, trackEvent } from '../../services/AnalyticsService'
+import { trackEvent } from '../../services/AnalyticsService'
+import { getCurrentSessionId, rotateSessionId } from '../../services/SessionService'
 import useTrackSession from '../useTrackSession'
 
 jest.mock('../../services/AnalyticsService', () => ({
   trackEvent: jest.fn(),
-  generateUniqueId: jest.fn(() => 'session-1'),
+}))
+
+jest.mock('../../services/SessionService', () => ({
+  getCurrentSessionId: jest.fn(() => 'session-1'),
+  rotateSessionId: jest.fn(),
 }))
 
 jest.mock('../useStorage', () => ({
@@ -55,8 +60,12 @@ describe('useTrackSession', () => {
     })
   })
 
-  it('should track session_end and generate new session ID when transitioning to background', () => {
-    mocked(generateUniqueId).mockReturnValueOnce('session-1').mockReturnValueOnce('session-2')
+  it('should track session_end and rotate session ID when transitioning to background', () => {
+    mocked(getCurrentSessionId)
+      .mockReturnValueOnce('session-1')
+      .mockReturnValueOnce('session-1')
+      .mockReturnValueOnce('session-2')
+      .mockReturnValueOnce('session-2')
     AppState.currentState = 'active'
     renderHook(useTrackSession)
 
@@ -69,6 +78,7 @@ describe('useTrackSession', () => {
       type: 'session_end',
       session_id: 'session-1',
     })
+    expect(rotateSessionId).toHaveBeenCalledTimes(1)
     act(() => changeHandler!('active'))
     expect(trackEvent).toHaveBeenCalledWith('mockStorageCache', {
       type: 'session_start',
@@ -79,6 +89,7 @@ describe('useTrackSession', () => {
       type: 'session_end',
       session_id: 'session-2',
     })
+    expect(rotateSessionId).toHaveBeenCalledTimes(2)
   })
 
   it('should ignore inactive state changes', () => {

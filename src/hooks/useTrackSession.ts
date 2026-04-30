@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { AppState, AppStateStatus } from 'react-native'
 
-import { generateUniqueId, trackEvent } from '../services/AnalyticsService'
+import { trackEvent } from '../services/AnalyticsService'
+import { getCurrentSessionId, rotateSessionId } from '../services/SessionService'
 import { useStorageCache } from './useStorage'
 
 const useTrackSession = (): void => {
   const storageCache = useStorageCache()
   const appState = useRef<'active' | 'background'>('background')
-  const sessionIdRef = useRef(generateUniqueId())
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
@@ -17,10 +17,10 @@ const useTrackSession = (): void => {
       const previousState = appState.current
       appState.current = nextAppState
       if (nextAppState === 'active' && previousState === 'background') {
-        trackEvent(storageCache, { type: 'session_start', session_id: sessionIdRef.current })
+        trackEvent(storageCache, { type: 'session_start', session_id: getCurrentSessionId() })
       } else if (nextAppState === 'background' && previousState === 'active') {
-        trackEvent(storageCache, { type: 'session_end', session_id: sessionIdRef.current })
-        sessionIdRef.current = generateUniqueId()
+        trackEvent(storageCache, { type: 'session_end', session_id: getCurrentSessionId() })
+        rotateSessionId()
       }
     }
 

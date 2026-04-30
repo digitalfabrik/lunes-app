@@ -55,6 +55,10 @@ jest.mock('../../../services/AnalyticsService', () => ({
   trackEvent: jest.fn(),
 }))
 
+jest.mock('../../../services/SessionService', () => ({
+  getCurrentSessionId: jest.fn(() => 'test-session-id'),
+}))
+
 describe('WordChoiceExerciseScreen', () => {
   // at least 4 vocabularyItems are needed to generate sufficient false answers
   const vocabularyItems = new VocabularyItemBuilder(4).build()
@@ -242,7 +246,7 @@ describe('WordChoiceExerciseScreen', () => {
   it('should track module duration on unmount', () => {
     const { unmount } = renderScreen()
 
-    expect(trackEvent).not.toHaveBeenCalled()
+    expect(trackEvent).not.toHaveBeenCalledWith(storageCache, expect.objectContaining({ type: 'module_duration' }))
     unmount()
     expect(trackEvent).toHaveBeenCalledWith(storageCache, {
       type: 'module_duration',
