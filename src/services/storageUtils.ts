@@ -166,10 +166,13 @@ export const migrate2To3 = async (): Promise<void> => {
       }
     }>
 
-    const updateUserVocabularyItem = (oldItem: OldUserVocabularyItem): NewUserVocabularyItem => ({
-      ...oldItem,
-      id: { index: oldItem.id, type: 'user-created' },
-    })
+    const updateUserVocabularyItem = (oldItem: OldUserVocabularyItem): NewUserVocabularyItem => {
+      if (typeof oldItem.id !== 'number') {
+        // Item is already in the new format (was migrated in a previous app launch)
+        return oldItem as unknown as NewUserVocabularyItem
+      }
+      return { ...oldItem, id: { index: oldItem.id, type: 'user-created' } }
+    }
 
     const oldUserVocabulary = await getStorageItemOr<OldUserVocabularyItem[]>('userVocabulary', [])
     const newUserVocabulary: NewUserVocabularyItem[] = oldUserVocabulary.map(updateUserVocabularyItem)

@@ -452,6 +452,54 @@ describe('storageUtils', () => {
         })
       })
     })
+
+    describe('when version is unset and data is already fully migrated', () => {
+      const alreadyMigratedWordNodeCard = {
+        wordId: { type: VocabularyItemTypes.Standard, id: 1 },
+        section: 2,
+        inThisSectionSince: new Date('2025-10-13').toISOString(),
+      }
+
+      const alreadyMigratedUserVocabularyItem = {
+        id: { index: 1, type: VocabularyItemTypes.UserCreated },
+        word: 'Hund',
+        article: { id: 1, value: 'der' },
+        images: ['image-1'],
+        audio: null,
+        alternatives: [],
+      }
+
+      const alreadyMigratedFavorite: Favorite = { id: 1, type: VocabularyItemTypes.Standard }
+
+      beforeEach(async () => {
+        // No version key — simulates fresh installs that never wrote the version.
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify([1]))
+      })
+
+      it('should pass through wordNodeCards unchanged', async () => {
+        await AsyncStorage.setItem('wordNodeCards', JSON.stringify([alreadyMigratedWordNodeCard]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('wordNodeCards')).toEqual([alreadyMigratedWordNodeCard])
+      })
+
+      it('should pass through userVocabulary unchanged', async () => {
+        await AsyncStorage.setItem('userVocabulary', JSON.stringify([alreadyMigratedUserVocabularyItem]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('userVocabulary')).toEqual([alreadyMigratedUserVocabularyItem])
+      })
+
+      it('should pass through favorites unchanged', async () => {
+        await AsyncStorage.setItem('favorites-2', JSON.stringify([alreadyMigratedFavorite]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('favorites')).toEqual([alreadyMigratedFavorite])
+      })
+    })
   })
 
   describe('userVocabulary', () => {
