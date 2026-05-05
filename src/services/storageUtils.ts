@@ -250,7 +250,7 @@ export const migrate3To4 = async (): Promise<void> => {
 // Replaces full VocabularyItem stored in WordNodeCards with only the VocabularyItemId
 export const migrate4To5 = async (): Promise<void> => {
   type OldWordNodeCard = {
-    word: { id: VocabularyItemId }
+    word?: { id: VocabularyItemId }
     section: WordNodeCard['section']
     inThisSectionSince: string
   }
@@ -261,11 +261,13 @@ export const migrate4To5 = async (): Promise<void> => {
     inThisSectionSince: Date
   }
 
-  const migrateCard = ({ word, section, inThisSectionSince }: OldWordNodeCard): NewWordNodeCard => ({
-    wordId: word.id,
-    section,
-    inThisSectionSince: new Date(inThisSectionSince),
-  })
+  const migrateCard = (card: OldWordNodeCard): NewWordNodeCard => {
+    if (card.word === undefined) {
+      // Card is already in the new format (was migrated in a previous app launch)
+      return card as unknown as NewWordNodeCard
+    }
+    return { wordId: card.word.id, section: card.section, inThisSectionSince: new Date(card.inThisSectionSince) }
+  }
 
   const oldCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
   const newCards = oldCards.map(migrateCard)
@@ -339,9 +341,7 @@ export const migrateStorage = async (): Promise<void> => {
     await migrateApiEndpointUrl()
   }
 
-  if (lastVersion !== STORAGE_VERSION) {
-    await AsyncStorage.setItem('version', STORAGE_VERSION.toString())
-  }
+  await AsyncStorage.setItem('version', STORAGE_VERSION.toString())
 }
 
 export const isFavorite = (favorites: readonly Favorite[], favorite: Favorite): boolean =>
