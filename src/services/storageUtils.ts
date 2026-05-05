@@ -133,19 +133,25 @@ export const migrate0To1 = async (): Promise<void> => {
 // Migrates the `images` field of `VocabularyItem` to a flat array of urls
 export const migrate1To2 = async (): Promise<void> => {
   type OldVocabularyItem = Incomplete<{ images: { image: string }[] }>
-  type OldWordNodeCard = Incomplete<{ word: OldVocabularyItem }>
+  type OldWordNodeCard = Incomplete<{ word?: OldVocabularyItem }>
 
-  const updateVocabularyItem = (oldWord: OldVocabularyItem): Incomplete<{ images: string[] }> => ({
-    ...oldWord,
-    images: oldWord.images.map(image => image.image),
-  })
+  const updateVocabularyItem = (oldWord: OldVocabularyItem): Incomplete<{ images: string[] }> => {
+    const firstImage = oldWord.images[0]
+    if (firstImage === undefined || typeof firstImage === 'string') {
+      // Images are already a flat string array (migrated in a previous app launch)
+      return oldWord as unknown as Incomplete<{ images: string[] }>
+    }
+    return { ...oldWord, images: oldWord.images.map(image => image.image) }
+  }
 
   const oldUserVocabulary = await getStorageItemOr<OldVocabularyItem[]>('userVocabulary', [])
   const newUserVocabulary = oldUserVocabulary.map(updateVocabularyItem)
   await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
 
   const oldWordNodeCards = await getStorageItemOr<OldWordNodeCard[]>('wordNodeCards', [])
-  const newWordNodeCards = oldWordNodeCards.map(card => ({ ...card, word: updateVocabularyItem(card.word) }))
+  const newWordNodeCards = oldWordNodeCards.map(card =>
+    card.word === undefined ? card : { ...card, word: updateVocabularyItem(card.word) },
+  )
   await AsyncStorage.setItem('wordNodeCards', JSON.stringify(newWordNodeCards))
 }
 
@@ -201,11 +207,15 @@ export const migrate2To3 = async (): Promise<void> => {
 
   const migrateWordNodeCards = async (): Promise<void> => {
     type OldWordNodeCard = Incomplete<{
-      word: OldVocabularyItem
+      word?: OldVocabularyItem
     }>
     type NewWordNodeCard = Incomplete<{ word: Incomplete<{ id: NewVocabularyId }> }>
 
     const updateWordNodeCard = (oldWordNodeCard: OldWordNodeCard): NewWordNodeCard | null => {
+      if (oldWordNodeCard.word === undefined) {
+        // Card is already in the newer format (was migrated in a previous app launch)
+        return oldWordNodeCard as unknown as NewWordNodeCard
+      }
       const newId = getNewId(oldWordNodeCard.word)
       if (newId === null) {
         return null
@@ -225,13 +235,19 @@ export const migrate2To3 = async (): Promise<void> => {
   const migrateFavorites = async (): Promise<void> => {
     type OldFavorite = {
       id: number
-      vocabularyItemType: OldVocabularyItemType
+      vocabularyItemType?: OldVocabularyItemType
       apiKey?: string
     }
 
     const oldFavorites = await getStorageItemOr<OldFavorite[]>('favorites-2', [])
     const newFavorites: NewVocabularyId[] = oldFavorites
-      .map(({ id, vocabularyItemType, apiKey }) => getNewId({ id, type: vocabularyItemType, apiKey }))
+      .map(favorite => {
+        if (favorite.vocabularyItemType === undefined) {
+          // Favorite is already in the new format (was migrated in a previous app launch)
+          return favorite as unknown as NewVocabularyId
+        }
+        return getNewId({ id: favorite.id, type: favorite.vocabularyItemType, apiKey: favorite.apiKey })
+      })
       .filter(it => it !== null)
     await AsyncStorage.setItem('favorites-2', JSON.stringify(newFavorites))
   }
