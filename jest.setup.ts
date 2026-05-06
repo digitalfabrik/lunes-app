@@ -43,6 +43,12 @@ jest.mock('@react-navigation/elements', () => ({
   useHeaderHeight: jest.fn().mockImplementation(() => 200),
 }))
 
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useIsFocused: () => true,
+  useFocusEffect: jest.fn(),
+}))
+
 beforeEach(() => {
   jest.clearAllMocks()
   mockAsyncStorage.clear()

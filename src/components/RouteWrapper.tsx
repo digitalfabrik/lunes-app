@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native'
 import React, { ReactElement, ReactNode } from 'react'
 import { Platform, StatusBar } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -36,6 +37,7 @@ const RouteWrapper = ({
   shouldSetTopInset = false,
 }: RouteWrapperProps): ReactElement => {
   const insets = useSafeAreaInsets()
+  const isFocused = useIsFocused()
   return (
     <>
       <Container
@@ -44,10 +46,12 @@ const RouteWrapper = ({
         bottomInset={shouldSetBottomInset ? insets.bottom : undefined}
         topInset={shouldSetTopInset ? insets.top : undefined}
       >
-        <StatusBar
-          backgroundColor={backgroundColor}
-          barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'}
-        />
+        {isFocused && (
+          <StatusBar
+            backgroundColor={backgroundColor}
+            barStyle={lightStatusBarContent ? 'light-content' : 'dark-content'}
+          />
+        )}
         {children}
       </Container>
       {/* For iOS a separate container is needed to overwrite the color of the bottom notch */}
