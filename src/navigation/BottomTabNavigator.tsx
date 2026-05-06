@@ -78,7 +78,6 @@ const BottomTabNavigator = (): ReactElement | null => {
           tabBarStyle: {
             backgroundColor: theme.colors.primary,
           },
-          tabBarItemStyle: { paddingTop: theme.spacingsPlain.xs },
           tabBarLabelStyle: { fontSize: TAB_LABEL_FONT_SIZE, paddingLeft: isTablet() ? theme.spacingsPlain.xs : 0 },
         }}
       >
