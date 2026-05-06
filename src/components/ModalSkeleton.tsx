@@ -59,7 +59,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
       onRequestClose={onClose}
       accessibilityViewIsModal
     >
-      <StyledPressable onPress={handleBackdropPress}>
+      <StyledPressable onPress={handleBackdropPress} accessible={Platform.OS !== 'ios'}>
         <Overlay>
           <ModalContainer bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}>
             <IconRow>

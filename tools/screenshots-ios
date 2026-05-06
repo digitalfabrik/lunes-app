@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUTPUT_DIR="ios/fastlane/screenshots/de-DE"
+mkdir -p "$OUTPUT_DIR"
+
+# Pin the simulator's status bar so screenshots are reproducible
+trap 'xcrun simctl status_bar booted clear' EXIT
+xcrun simctl status_bar booted override \
+  --time "9:41" \
+  --dataNetwork wifi \
+  --wifiMode active \
+  --wifiBars 3 \
+  --cellularMode notSupported \
+  --batteryState charged \
+  --batteryLevel 100
+
+maestro --platform ios test \
+  --env OUTPUT_DIR="$OUTPUT_DIR" \
+  .maestro/screenshots.yaml
