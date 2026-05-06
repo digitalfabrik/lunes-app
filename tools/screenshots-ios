@@ -2,7 +2,6 @@
 set -euo pipefail
 
 OUTPUT_DIR="ios/fastlane/screenshots/de-DE"
-mkdir -p "$OUTPUT_DIR"
 
 # Pin the simulator's status bar so screenshots are reproducible
 trap 'xcrun simctl status_bar booted clear' EXIT

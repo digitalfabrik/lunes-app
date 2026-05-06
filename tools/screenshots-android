@@ -2,7 +2,6 @@
 set -euo pipefail
 
 OUTPUT_DIR="android/fastlane/metadata/de-DE/images/phoneScreenshots"
-mkdir -p "$OUTPUT_DIR"
 
 # Put SystemUI into demo mode so the status bar matches the iOS simulator's
 # pinned status bar. Mirrors AOSP's "Show demo mode" toggle (DemoModeFragment).
