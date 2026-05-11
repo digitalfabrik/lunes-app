@@ -9,10 +9,6 @@ import { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyListScreen from '../UserVocabularyListScreen'
 
 jest.mock('@react-navigation/native')
-jest.mock('react-native-fs', () => ({
-  unlink: jest.fn(),
-}))
-
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
   return <Text>FavoriteButton</Text>

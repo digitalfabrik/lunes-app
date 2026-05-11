@@ -1,4 +1,11 @@
-const transformNodeModules = ['react-native', '@react-native', '@react-navigation', 'victory-(.+)', '@notifee']
+const transformNodeModules = [
+  'react-native',
+  '@react-native',
+  '@react-navigation',
+  'victory-(.+)',
+  '@notifee',
+  '@dr.pogodin/react-native-fs',
+]
 export default {
   rootDir: '.',
   roots: ['src'],
