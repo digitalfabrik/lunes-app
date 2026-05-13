@@ -63,7 +63,7 @@ const WordItem = ({ answer, onClick, anyAnswerSelected = false }: SingleChoiceLi
   const { word, article } = answer
 
   return (
-    <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected}>
+    <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected} testID='word-item'>
       {({ pressed }) => (
         <Container pressed={pressed}>
           <ArticleBox article={article} pressed={pressed}>

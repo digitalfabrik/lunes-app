@@ -6,6 +6,7 @@ import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { sections } from '../../../services/RepetitionService'
 import { getLabels } from '../../../services/helpers'
+import { isScreenshotModeEnabled } from '../../../services/screenshotData'
 
 const CHART_HEIGHT_RATIO = 0.35
 
@@ -40,9 +41,7 @@ const RepetitionProgressChart: () => ReactElement = () => {
         }
       />
       <VictoryBar
-        animate={{
-          animationWhitelist: ['data', 'style'],
-        }}
+        animate={isScreenshotModeEnabled() ? false : { animationWhitelist: ['data', 'style'] }}
         labels={({ datum }) => String(Math.round(datum.y))} // Round is needed to avoid floats during animation
         labelComponent={<VictoryLabel />}
         data={chartData}

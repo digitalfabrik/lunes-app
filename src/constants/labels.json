@@ -196,7 +196,8 @@
       "manageJobs": "Lernbereiche verwalten",
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
-      "wordFeedback": "Feedback geben"
+      "wordFeedback": "Feedback geben",
+      "menu": "Menü"
     },
     "back": "Zurück",
     "close": "Schließen",
@@ -314,7 +315,8 @@
       "enableDevMode": "Enable DevMode",
       "disableDevMode": "Disable DevMode",
       "fillRepetitionExerciseWithData": "Fill repetition exercise with data",
-      "clearJobs": "Clear selected jobs"
+      "clearJobs": "Clear selected jobs",
+      "seedScreenshotData": "Load screenshot data"
     }
   },
   "sponsors": {

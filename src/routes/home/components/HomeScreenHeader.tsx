@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { getLabels } from '../../../services/helpers'
 
 const Wrapper = styled.View`
   background-color: ${props => props.theme.colors.primary};
@@ -35,7 +36,7 @@ const HomeScreenHeader = ({ navigation }: HomeScreenHeaderProps): ReactElement =
       <LunesIcon width={96} height={96} />
     </SmileIconStyle>
     <MenuIconContainer onPress={() => navigation.navigate('OverlayMenu')}>
-      <MenuIconWhite testID='menu-icon-white' />
+      <MenuIconWhite testID='menu-icon-white' accessibilityLabel={getLabels().general.header.menu} />
     </MenuIconContainer>
   </Wrapper>
 )

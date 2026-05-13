@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUTPUT_DIR="android/fastlane/metadata/de-DE/images/phoneScreenshots"
+
+# Put SystemUI into demo mode so the status bar matches the iOS simulator's
+# pinned status bar. Mirrors AOSP's "Show demo mode" toggle (DemoModeFragment).
+DEMO="am broadcast -a com.android.systemui.demo"
+adb shell settings put global sysui_demo_allowed 1
+trap 'adb shell $DEMO -e command exit' EXIT
+adb shell $DEMO -e command enter
+adb shell $DEMO -e command clock -e hhmm 0941
+adb shell $DEMO -e command network -e wifi show -e level 4 -e mobile hide -e fully true
+adb shell $DEMO -e command battery -e level 100 -e plugged false
+adb shell $DEMO -e command notifications -e visible false
+
+# Suppress the one-time stylus handwriting tutorial that pops up on fresh
+# emulators when a text field is first focused — it would block inputText.
+adb shell settings put secure stylus_handwriting_enabled 0
+
+maestro --platform android test --env OUTPUT_DIR="$OUTPUT_DIR" .maestro/screenshots.yaml
