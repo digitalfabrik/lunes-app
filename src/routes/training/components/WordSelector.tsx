@@ -53,6 +53,7 @@ const WordsSelector = ({ words, onPress, testID }: WordSelectorProps): ReactElem
         key={index}
         onPress={() => onPress(index)}
         disabled={state === 'disabled' || state === 'hidden'}
+        testID='wordOption'
       >
         <SingleWordContainer state={state}>{word}</SingleWordContainer>
       </PressableOpacity>

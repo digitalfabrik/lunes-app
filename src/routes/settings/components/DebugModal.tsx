@@ -20,6 +20,7 @@ import {
   testCMS,
 } from '../../../services/axios'
 import { getLabels, getRandomNumberBetween } from '../../../services/helpers'
+import { seedScreenshotData } from '../../../services/screenshotData'
 import { reportError } from '../../../services/sentry'
 
 const Container = styled.View`
@@ -45,8 +46,16 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
   const [inputText, setInputText] = useState<string>('')
   const UNLOCKING_TEXT = 'wirschaffendas'
   const [isDevModeEnabled, setIsDevModeEnabled] = useStorage('isDevModeEnabled')
-  const { sentry, currentCMS, changeCMS, disableDevMode, enableDevMode, fillRepetitionExerciseWithData, clearJobs } =
-    getLabels().settings.debugModal
+  const {
+    sentry,
+    currentCMS,
+    changeCMS,
+    disableDevMode,
+    enableDevMode,
+    fillRepetitionExerciseWithData,
+    clearJobs,
+    seedScreenshotData: seedScreenshotDataLabel,
+  } = getLabels().settings.debugModal
   const repetitionService = useRepetitionService()
 
   const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
@@ -105,7 +114,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
 
   return (
     <ModalSkeleton testID='debug-modal' visible={visible} onClose={resetTextAndClose}>
-      <CodeInput placeholder='Development Code' onChangeText={setInputText} />
+      <CodeInput placeholder='Development Code' onChangeText={setInputText} accessibilityLabel='development-code' />
       {(!isCodeRequired || inputText.toLowerCase() === UNLOCKING_TEXT) && (
         <Container>
           <Button label={sentry} onPress={throwSentryError} buttonTheme={BUTTONS_THEME.contained} />
@@ -123,6 +132,12 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
             buttonTheme={BUTTONS_THEME.contained}
           />
           <Button onPress={resetJobs} label={clearJobs} buttonTheme={BUTTONS_THEME.contained} />
+          <Button
+            testID='debug-seed-screenshot-data'
+            onPress={() => seedScreenshotData(storageCache)}
+            label={seedScreenshotDataLabel}
+            buttonTheme={BUTTONS_THEME.contained}
+          />
         </Container>
       )}
     </ModalSkeleton>

@@ -50,6 +50,12 @@ jest.mock('@dr.pogodin/react-native-fs', () => ({
   unlink: jest.fn(),
 }))
 
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useIsFocused: () => true,
+  useFocusEffect: jest.fn(),
+}))
+
 beforeEach(() => {
   jest.clearAllMocks()
   mockAsyncStorage.clear()

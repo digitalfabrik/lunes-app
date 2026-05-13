@@ -140,7 +140,7 @@ platform :android do
             track: track,
             skip_upload_changelogs: false,
             skip_upload_images: true,
-            skip_upload_screenshots: true,
+            skip_upload_screenshots: false,
             skip_upload_metadata: true,
             release_status: "completed",
             aab: "#{ENV['HOME']}/attached_workspace/app-release.aab",
