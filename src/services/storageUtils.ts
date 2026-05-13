@@ -1,5 +1,5 @@
+import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { unlink } from 'react-native-fs'
 
 import { ExerciseKey, Favorite } from '../constants/data'
 import { StandardJobId } from '../models/Job'

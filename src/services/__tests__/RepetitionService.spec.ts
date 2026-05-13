@@ -11,10 +11,6 @@ import { StorageCache } from '../Storage'
 import { milliSecondsToHours } from '../helpers'
 import { deleteUserVocabularyItem } from '../storageUtils'
 
-jest.mock('react-native-fs', () => ({
-  unlink: jest.fn(),
-}))
-
 describe('RepetitionService', () => {
   const testVocabulary = new VocabularyItemBuilder(8).build()
   let testData: WordNodeCard[] = []

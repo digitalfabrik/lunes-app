@@ -25,10 +25,6 @@ import {
   setExerciseProgress,
 } from '../storageUtils'
 
-jest.mock('react-native-fs', () => ({
-  unlink: jest.fn(),
-}))
-
 jest.mock('../AnalyticsService', () => ({
   trackEvent: jest.fn(),
   generateUniqueId: jest.fn(() => 'mock-installation-id'),

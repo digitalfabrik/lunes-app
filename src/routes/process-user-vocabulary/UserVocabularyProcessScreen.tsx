@@ -1,8 +1,8 @@
+import { DocumentDirectoryPath, moveFile, unlink } from '@dr.pogodin/react-native-fs'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { DocumentDirectoryPath, moveFile, unlink } from 'react-native-fs'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ImageCircleIcon } from '../../../assets/images'

@@ -43,6 +43,13 @@ jest.mock('@react-navigation/elements', () => ({
   useHeaderHeight: jest.fn().mockImplementation(() => 200),
 }))
 
+jest.mock('@dr.pogodin/react-native-fs', () => ({
+  DocumentDirectoryPath: 'mock-document-directory-path',
+  moveFile: jest.fn(),
+  readFile: jest.fn(() => Promise.resolve('image')),
+  unlink: jest.fn(),
+}))
+
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useIsFocused: () => true,

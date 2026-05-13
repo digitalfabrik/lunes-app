@@ -1,7 +1,7 @@
+import * as ReactNativeFS from '@dr.pogodin/react-native-fs'
 import { RouteProp } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import ReactNativeFS, { DocumentDirectoryPath } from 'react-native-fs'
 
 import { ARTICLES } from '../../../constants/data'
 import { UserVocabularyItem, VocabularyItemTypes } from '../../../models/VocabularyItem'
@@ -13,7 +13,8 @@ import render, { renderWithStorageCache } from '../../../testing/render'
 import UserVocabularyProcessScreen from '../UserVocabularyProcessScreen'
 
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
-jest.mock('react-native-fs', () => ({
+jest.mock('@dr.pogodin/react-native-fs', () => ({
+  DocumentDirectoryPath: 'mock-document-directory-path',
   moveFile: jest.fn(),
   unlink: jest.fn(),
 }))
@@ -41,10 +42,10 @@ describe('UserVocabularyProcessScreen', () => {
     word: 'Auto',
     article: ARTICLES[3],
     images: [
-      `file:///${DocumentDirectoryPath}/image-2-0-2000.jpg`,
-      `file:///${DocumentDirectoryPath}/image-2-1-2000.jpg`,
+      `file:///${ReactNativeFS.DocumentDirectoryPath}/image-2-0-2000.jpg`,
+      `file:///${ReactNativeFS.DocumentDirectoryPath}/image-2-1-2000.jpg`,
     ],
-    audio: `file:///${DocumentDirectoryPath}/audio-2.m4a`,
+    audio: `file:///${ReactNativeFS.DocumentDirectoryPath}/audio-2.m4a`,
     alternatives: [],
   }
   const navigation = createNavigationMock<'UserVocabularyProcess'>()

@@ -46,7 +46,7 @@ target 'Lunes' do
     'SpeechRecognition',
   ])
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
+  pod 'ReactNativeFs', :path => '../node_modules/@dr.pogodin/react-native-fs'
 
   target 'LunesTests' do
     inherit! :complete
