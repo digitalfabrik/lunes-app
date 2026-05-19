@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useReducer } from 'react'
+import React, { ReactElement, useEffect, useMemo, useReducer } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -10,11 +10,16 @@ import Button from '../../components/Button'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS, TrainingExerciseKeys } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackMountDuration from '../../hooks/useTrackMountDuration'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemId, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
@@ -110,6 +115,29 @@ type ImageTrainingProps = {
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const word = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+  const storageCache = useStorageCache()
+
+  const exerciseKey = useMemo(
+    () => ({ type: 'training' as const, exercise_type: TrainingExerciseKeys.image, job_id: job.id.id }),
+    [job.id.id],
+  )
+  const vocabularyItemId = word.id.type === VocabularyItemTypes.Standard ? word.id.id : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackMountDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentVocabularyItemIndex,
+    state.vocabularyItems.length,
+    vocabularyItemId,
+  )
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
     let imageState = ImageGridItemState.Default
     if (state.answer?.key === key) {
@@ -131,13 +159,14 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
 
   useEffect(() => {
     if (state.completed) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'image',
         results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
+  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation, markCompleted])
 
   if (state.vocabularyItems.length === 0) {
     return null

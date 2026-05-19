@@ -1,4 +1,10 @@
-import { ARTICLES, ExerciseKeys, NextExercise, SCORE_THRESHOLD_UNLOCK, SimpleResult } from '../../constants/data'
+import {
+  ARTICLES,
+  StandardExerciseKeys,
+  NextExercise,
+  SCORE_THRESHOLD_UNLOCK,
+  SimpleResult,
+} from '../../constants/data'
 import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -40,7 +46,7 @@ describe('helpers', () => {
       mocked(getJob).mockReturnValueOnce(Promise.resolve(mockJobs()[0]!))
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open second exercise, if first one was done well enough, but second was not done well enough.', async () => {
@@ -48,7 +54,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '11': { word_list: 1, word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise, if only second exercise was finished yet', async () => {
@@ -56,7 +62,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '1': { word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of second unit, if first unit was finished yet', async () => {
@@ -64,7 +70,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '1': { word_list: 10, word_choice: 10 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(2)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if second unit was partly finished yet', async () => {
@@ -72,7 +78,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '2': { word_choice: 1 } })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if exercise progress is undefined', async () => {
@@ -80,7 +86,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', { '1': {} })
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
 
     it('should open first exercise of first unit, if unit progress is undefined', async () => {
@@ -88,7 +94,7 @@ describe('helpers', () => {
       await storageCache.setItem('progress', {})
       const { unit, exerciseKey } = await getNextExerciseWithCheck()
       expect(unit.id.id).toBe(1)
-      expect(exerciseKey).toBe(ExerciseKeys.vocabularyList)
+      expect(exerciseKey).toBe(StandardExerciseKeys.vocabularyList)
     })
   })
 

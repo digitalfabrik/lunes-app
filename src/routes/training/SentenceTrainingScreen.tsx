@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
+import React, { ActionDispatch, ReactElement, useEffect, useMemo, useReducer } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -11,10 +11,16 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, TrainingExerciseKeys } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackMountDuration from '../../hooks/useTrackMountDuration'
 import { StandardJob } from '../../models/Job'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -109,6 +115,29 @@ type SentenceTrainingProps = {
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
   const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
+  const storageCache = useStorageCache()
+
+  const exerciseKey = useMemo(
+    () => ({ type: 'training' as const, exercise_type: TrainingExerciseKeys.sentence, job_id: job.id.id }),
+    [job.id.id],
+  )
+  const vocabularyItemId = currentSentence.id.type === VocabularyItemTypes.Standard ? currentSentence.id.id : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackMountDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentSentenceIndex,
+    state.sentences.length,
+    vocabularyItemId,
+  )
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
@@ -128,13 +157,14 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
 
   useEffect(() => {
     if (state.allSentencesFinished) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'sentence',
         job,
         results: { correct: state.correctAnswersCount, total: state.sentences.length },
       })
     }
-  }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length])
+  }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length, markCompleted])
 
   useEffect(() => {
     const nextSentenceIndex = state.currentSentenceIndex + 1

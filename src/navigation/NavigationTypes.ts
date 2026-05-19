@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native'
 
-import { ExerciseKey, SimpleResult } from '../constants/data'
+import { StandardExerciseKey, SimpleResult } from '../constants/data'
 import Job, { StandardJob } from '../models/Job'
 import { StandardUnit, StandardUnitId, UserVocabularyUnit } from '../models/Unit'
 import VocabularyItem, { UserVocabularyItem } from '../models/VocabularyItem'
@@ -33,7 +33,7 @@ export type SpecialExercisesParams = {
 }
 
 type ResultParams = ExerciseParams & {
-  exercise: ExerciseKey
+  exercise: StandardExerciseKey
   results: VocabularyItemResult[]
 }
 

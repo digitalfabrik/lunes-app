@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { StandardExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import VocabularyItem, { UserVocabularyItem, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -118,30 +118,60 @@ describe('storageUtils', () => {
     describe('ExerciseProgress', () => {
       it('should save progress for not yet done unit', async () => {
         const progressOneExercise: Progress = {
-          1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
+          1: { [StandardExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done unit but not yet done exercise', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.8)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.8,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.4)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.4,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
       it('should calculate and save exercise progress correctly', async () => {
@@ -161,11 +191,11 @@ describe('storageUtils', () => {
         await saveExerciseProgress(
           storageCache,
           { id: 1, type: 'standard' },
-          ExerciseKeys.wordChoiceExercise,
+          StandardExerciseKeys.wordChoiceExercise,
           vocabularyItemResults,
         )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 5 })
       })
     })
   })
@@ -443,8 +473,8 @@ describe('storageUtils', () => {
 
         const storageCache = await loadStorageCache()
         expect(storageCache.getItem('progress')).toEqual({
-          '1': { [ExerciseKeys.vocabularyList]: 3, [ExerciseKeys.wordChoiceExercise]: 7 },
-          '2': { [ExerciseKeys.vocabularyList]: 5 },
+          '1': { [StandardExerciseKeys.vocabularyList]: 3, [StandardExerciseKeys.wordChoiceExercise]: 7 },
+          '2': { [StandardExerciseKeys.vocabularyList]: 5 },
         })
       })
     })

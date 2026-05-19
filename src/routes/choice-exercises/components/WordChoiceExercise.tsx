@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -15,10 +15,11 @@ import { ContentText } from '../../../components/text/Content'
 import {
   Answer,
   BUTTONS_THEME,
-  ExerciseKeys,
+  StandardExerciseKeys,
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
+  StandardExerciseKeyPayload,
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import { useStorageCache } from '../../../hooks/useStorage'
@@ -115,7 +116,15 @@ const WordChoiceExercise = ({
 
   const count = vocabularyItems.length
 
-  const { markCompleted } = useTrackDropout(navigation, unitId, state.currentWord, count)
+  const exerciseKey: StandardExerciseKeyPayload | null = useMemo(
+    () =>
+      unitId !== null
+        ? { type: 'exercise', exercise_type: StandardExerciseKeys.wordChoiceExercise, unit_id: unitId.id }
+        : null,
+    [unitId],
+  )
+
+  const { markCompleted } = useTrackDropout(navigation, exerciseKey, state.currentWord, count)
 
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
@@ -152,11 +161,11 @@ const WordChoiceExercise = ({
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
     markCompleted()
     if (unitId !== null) {
-      await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
+      await saveExerciseProgress(storageCache, unitId, StandardExerciseKeys.wordChoiceExercise, results)
     }
     navigation.popTo('ExerciseFinished', {
       ...route.params,
-      exercise: ExerciseKeys.wordChoiceExercise,
+      exercise: StandardExerciseKeys.wordChoiceExercise,
       results,
     })
   }
@@ -225,7 +234,7 @@ const WordChoiceExercise = ({
             ? { type: 'word', wordId: vocabularyItem.id }
             : undefined
         }
-        exerciseKey={ExerciseKeys.wordChoiceExercise}
+        exerciseKey={StandardExerciseKeys.wordChoiceExercise}
       />
 
       <ScrollView>

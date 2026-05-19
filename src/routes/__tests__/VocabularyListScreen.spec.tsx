@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import React from 'react'
 
-import { ExerciseKeys } from '../../constants/data'
+import { StandardExerciseKeys } from '../../constants/data'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import { StorageCache } from '../../services/Storage'
@@ -58,7 +58,7 @@ describe('VocabularyListScreen', () => {
     expect(setExerciseProgress).toHaveBeenCalledWith(
       storageCache,
       { id: 1, type: 'standard' },
-      ExerciseKeys.vocabularyList,
+      StandardExerciseKeys.vocabularyList,
       1,
     )
   })
@@ -92,8 +92,7 @@ describe('VocabularyListScreen', () => {
     expect(trackEvent).toHaveBeenCalledWith(storageCache, {
       type: 'module_duration',
       duration_seconds: expect.any(Number),
-      unit_id: 1,
-      exercise_type: ExerciseKeys.vocabularyList,
+      exercise_key: { type: 'exercise', exercise_type: StandardExerciseKeys.vocabularyList, unit_id: 1 },
     })
   })
 })

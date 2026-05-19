@@ -1,39 +1,42 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
-import { StandardUnitId } from '../models/Unit'
-import { RoutesParams } from '../navigation/NavigationTypes'
+import { ExerciseKeyPayload } from '../constants/data'
+import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { trackEvent } from '../services/AnalyticsService'
 import { useStorageCache } from './useStorage'
 
 const useTrackDropout = (
-  navigation: StackNavigationProp<RoutesParams, 'WordChoiceExercise'>,
-  unitId: StandardUnitId | null,
-  currentWord: number,
+  navigation: StackNavigationProp<RoutesParams, Route>,
+  exerciseKey: ExerciseKeyPayload | null,
+  currentIndex: number,
   totalWords: number,
+  vocabularyItemId?: number,
 ): { markCompleted: () => void } => {
   const storageCache = useStorageCache()
   const isCompletedRef = useRef(false)
 
-  const markCompleted = (): void => {
+  const markCompleted = useCallback((): void => {
     isCompletedRef.current = true
-  }
+  }, [])
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
+    if (exerciseKey === null) {
+      return undefined
+    }
+    return navigation.addListener('beforeRemove', () => {
       if (isCompletedRef.current) {
         return
       }
       trackEvent(storageCache, {
         type: 'exercise_dropout',
-        exercise_type: 'word_choice',
-        unit_id: unitId?.id ?? null,
-        position: currentWord + 1,
+        exercise_key: exerciseKey,
+        position: currentIndex + 1,
         total: totalWords,
+        vocabulary_item_id: vocabularyItemId ?? null,
       })
     })
-    return unsubscribe
-  }, [navigation, storageCache, unitId, currentWord, totalWords])
+  }, [navigation, storageCache, exerciseKey, currentIndex, totalWords, vocabularyItemId])
 
   return { markCompleted }
 }

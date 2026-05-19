@@ -1,11 +1,11 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useMemo } from 'react'
 
 import ExerciseHeader from '../components/ExerciseHeader'
 import RouteWrapper from '../components/RouteWrapper'
 import VocabularyList from '../components/VocabularyList'
-import { ExerciseKeys } from '../constants/data'
+import { StandardExerciseKeys, StandardExerciseKeyPayload } from '../constants/data'
 import { useStorageCache } from '../hooks/useStorage'
 import useTrackExerciseRepetition from '../hooks/useTrackExerciseRepetition'
 import useTrackMountDuration from '../hooks/useTrackMountDuration'
@@ -24,20 +24,27 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
   const unitId = contentType === 'standard' ? route.params.unitId : null
   const storageCache = useStorageCache()
 
-  useTrackExerciseRepetition(ExerciseKeys.vocabularyList, unitId)
+  const exerciseKey: StandardExerciseKeyPayload | null = useMemo(
+    () =>
+      unitId !== null
+        ? { type: 'exercise', exercise_type: StandardExerciseKeys.vocabularyList, unit_id: unitId.id }
+        : null,
+    [unitId],
+  )
+
+  useTrackExerciseRepetition(exerciseKey)
   useTrackMountDuration(durationSeconds => {
-    if (unitId !== null) {
+    if (exerciseKey !== null) {
       trackEvent(storageCache, {
         type: 'module_duration',
+        exercise_key: exerciseKey,
         duration_seconds: durationSeconds,
-        unit_id: unitId.id,
-        exercise_type: ExerciseKeys.vocabularyList,
       })
     }
   })
   useEffect(() => {
     if (unitId !== null) {
-      setExerciseProgress(storageCache, unitId, ExerciseKeys.vocabularyList, 1).catch(reportError)
+      setExerciseProgress(storageCache, unitId, StandardExerciseKeys.vocabularyList, 1).catch(reportError)
     }
   }, [unitId, storageCache])
 
@@ -50,7 +57,7 @@ const VocabularyListScreen = ({ route, navigation }: VocabularyListScreenProps):
         navigation={navigation}
         confirmClose={false}
         feedbackTarget={unitId !== null ? { type: 'unit', unitId } : undefined}
-        exerciseKey={ExerciseKeys.vocabularyList}
+        exerciseKey={StandardExerciseKeys.vocabularyList}
       />
       <VocabularyList
         vocabularyItems={route.params.vocabularyItems}

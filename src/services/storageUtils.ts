@@ -1,7 +1,7 @@
 import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKey, Favorite } from '../constants/data'
+import { StandardExerciseKey, Favorite } from '../constants/data'
 import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -92,7 +92,7 @@ export const removeCustomDiscipline = async (storageCache: StorageCache, customD
 export const setExerciseProgress = async (
   storageCache: StorageCache,
   unitId: StandardUnitId,
-  exerciseKey: ExerciseKey,
+  exerciseKey: StandardExerciseKey,
   score: number,
 ): Promise<void> => {
   const savedProgress = storageCache.getMutableItem('progress')
@@ -104,7 +104,7 @@ export const setExerciseProgress = async (
 export const saveExerciseProgress = async (
   storageCache: StorageCache,
   unitId: StandardUnitId,
-  exerciseKey: ExerciseKey,
+  exerciseKey: StandardExerciseKey,
   vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)

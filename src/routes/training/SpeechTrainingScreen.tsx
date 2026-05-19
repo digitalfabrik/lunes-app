@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useReducer } from 'react'
+import React, { ReactElement, useEffect, useMemo, useReducer } from 'react'
 import { AppState, Image, Platform } from 'react-native'
 import { PERMISSIONS } from 'react-native-permissions'
 import {
@@ -21,14 +21,24 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
+import {
+  BUTTONS_THEME,
+  MAX_TRAINING_REPETITIONS,
+  SIMPLE_RESULTS,
+  SimpleResult,
+  TrainingExerciseKeys,
+} from '../../constants/data'
 import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
-import useStorage from '../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackMountDuration from '../../hooks/useTrackMountDuration'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem from '../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
@@ -183,9 +193,32 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
   const { permissionGranted, permissionRequested } = useGrantPermissions(SPEECH_PERMISSIONS)
+  const storageCache = useStorageCache()
 
   const labels = getLabels().exercises.training.speech
   const currentWord = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+
+  const exerciseKey = useMemo(
+    () => ({ type: 'training' as const, exercise_type: TrainingExerciseKeys.speech, job_id: job.id.id }),
+    [job.id.id],
+  )
+  const vocabularyItemId = currentWord.id.type === VocabularyItemTypes.Standard ? currentWord.id.id : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackMountDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentVocabularyItemIndex,
+    state.vocabularyItems.length,
+    vocabularyItemId,
+  )
 
   useEffect(() => {
     const nextWordIndex = state.currentVocabularyItemIndex + 1
@@ -199,13 +232,14 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   useEffect(() => {
     if (state.completed) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'speech',
         results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
+  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation, markCompleted])
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
