@@ -44,6 +44,11 @@ steps:
         printf -- "- [iOS](%s)\n" "$(cat ios/fastlane/browserstack_live_url)" >> message
   - run:
       name: Post pull request comment with a link to the browserstack live apps
-      command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+      command: |
+        if [ -z "${PR_NUMBER}" ]; then
+          echo "No PR number set, not creating a comment"
+        else
+          yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+        fi
       working_directory: tools
   - notify

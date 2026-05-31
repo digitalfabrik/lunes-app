@@ -464,7 +464,12 @@ jobs:
                 command: "printf \"## App uploaded to Browserstack\\n\" >> message \nprintf \"This pull request can now be tested online:\\n\" >> message\nprintf -- \"- [Android](%s)\\n\" \"$(cat android/fastlane/browserstack_live_url)\" >> message\nprintf -- \"- [iOS](%s)\\n\" \"$(cat ios/fastlane/browserstack_live_url)\" >> message\n"
                 name: Build message
             - run:
-                command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                command: |
+                    if [ -z "${PR_NUMBER}" ]; then
+                      echo "No PR number set, not creating a comment"
+                    else
+                      yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                    fi
                 name: Post pull request comment with a link to the browserstack live apps
                 working_directory: tools
             - notify
