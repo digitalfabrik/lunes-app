@@ -15,6 +15,7 @@ import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import NotAuthorisedView from '../../components/NotAuthorisedView'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -27,13 +28,12 @@ import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useStorage from '../../hooks/useStorage'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem from '../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import { evaluateSpeechMatch } from './services/SpeechMatchingService'
 
 const SPEECH_PERMISSIONS =
@@ -316,10 +316,13 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
-        navigation={navigation}
+        feedbackTarget={
+          currentWord.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: currentWord.id } : undefined
+        }
       />
       <TrainingExerciseContainer
         title={labels.prompt}

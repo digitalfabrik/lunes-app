@@ -48,7 +48,7 @@ describe('SentenceTrainingScreen', () => {
     sentence: exampleSentence!.sentence,
     audio: exampleSentence!.audio,
     words: ['Example', 'sentence', `${id.id}`],
-    id,
+    vocabularyItemId: id,
     image: images[0]!,
   }))
   const navigation = createNavigationMock<'SentenceTraining'>()
@@ -228,7 +228,7 @@ describe('SentenceTrainingScreen', () => {
         sentence: 'a a b',
         audio: '',
         words: ['a', 'a', 'b'],
-        id: { type: 'lunes-standard', id: 0 },
+        vocabularyItemId: { type: 'lunes-standard', id: 0 },
         image: '',
       },
     ]

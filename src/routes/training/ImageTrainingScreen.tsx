@@ -7,19 +7,19 @@ import styled from 'styled-components/native'
 import { ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
 import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
+import VocabularyItem, { VocabularyItemId, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 
 type State = {
   vocabularyItems: VocabularyItem[]
@@ -165,10 +165,11 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
-        navigation={navigation}
+        feedbackTarget={word.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: word.id } : undefined}
       />
 
       <TrainingExerciseContainer title={getLabels().exercises.training.image.selectImage} footer={nextWordButton}>

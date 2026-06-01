@@ -3,7 +3,8 @@ import { VocabularyItemId } from '../../../models/VocabularyItem'
 import { getAtIndex, shuffleArray, shuffleIndexes } from '../../../services/helpers'
 
 export type Sentence = {
-  id: VocabularyItemId
+  // The id of the vocabulary item this example sentence belongs to
+  vocabularyItemId: VocabularyItemId
   image: string
   sentence: string
   words: string[]

@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
@@ -14,11 +15,11 @@ import { ContentText } from '../../components/text/Content'
 import { BUTTONS_THEME } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
+import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getAtIndex, getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import WordsSelector, { SelectedWord } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
 
@@ -146,10 +147,15 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentSentenceIndex}
         numberOfWords={state.sentences.length}
-        navigation={navigation}
+        feedbackTarget={
+          currentSentence.vocabularyItemId.type === VocabularyItemTypes.Standard
+            ? { type: 'word', wordId: currentSentence.vocabularyItemId }
+            : undefined
+        }
       />
 
       <TrainingExerciseContainer
@@ -205,7 +211,7 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       sentence: exampleSentence!.sentence,
       audio: exampleSentence!.audio,
       words: splitSentence(exampleSentence!.sentence),
-      id,
+      vocabularyItemId: id,
       image: images[0] ?? '',
     }))
 
