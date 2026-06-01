@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -161,12 +162,15 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
       <TrainingExerciseContainer
         title={getLabels().exercises.training.sentence.orderWords}
         footer={
-          <Button
-            onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: false })}
-            label={getLabels().exercises.skip}
-            buttonTheme={BUTTONS_THEME.text}
-            iconRight={ChevronRight}
-          />
+          <>
+            <Button
+              onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: false })}
+              label={getLabels().exercises.skip}
+              buttonTheme={BUTTONS_THEME.text}
+              iconRight={ChevronRight}
+            />
+            <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
+          </>
         }
       >
         <ExerciseInfoContainer>

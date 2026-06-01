@@ -6,10 +6,11 @@ import React from 'react'
 import { ARTICLES, MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import ImageTrainingScreen, { initializeState, stateReducer } from '../ImageTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -50,6 +51,14 @@ describe('ImageTrainingScreen', () => {
     const result = renderWithTheme(<ImageTrainingScreen navigation={navigation} route={route} />)
     await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
     fireEvent(result.getByTestId('image-grid'), 'layout', { nativeEvent: { layout: { width: 300 } } })
+    return result
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const result = renderWithStorageCache(storageCache, <ImageTrainingScreen navigation={navigation} route={route} />)
+    await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
     return result
   }
 
@@ -198,5 +207,33 @@ describe('ImageTrainingScreen', () => {
     state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[2]!.id })
     state = stateReducer(state, { type: 'nextWord' })
     expect(state.correctAnswersCount).toBe(2)
+  })
+
+  it('should finish with all words correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with no words correct when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
   })
 })

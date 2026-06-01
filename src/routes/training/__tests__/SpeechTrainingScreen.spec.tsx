@@ -10,10 +10,11 @@ import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import useVoiceRecognition from '../../../hooks/useVoiceRecognition'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import SpeechTrainingScreen from '../SpeechTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -77,6 +78,14 @@ describe('SpeechTrainingScreen', () => {
 
   const renderScreenAndWaitForLoad = async () => {
     const result = renderWithTheme(<SpeechTrainingScreen navigation={navigation} route={route} />)
+    await result.findByTestId('recording-button')
+    return result
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const result = renderWithStorageCache(storageCache, <SpeechTrainingScreen navigation={navigation} route={route} />)
     await result.findByTestId('recording-button')
     return result
   }
@@ -155,6 +164,34 @@ describe('SpeechTrainingScreen', () => {
     for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
       fireEvent.press(getByText(getLabels().exercises.skip))
     }
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'speech',
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with all words correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'speech',
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with no words correct when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {

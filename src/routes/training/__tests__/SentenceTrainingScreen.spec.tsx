@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, within } from '@testing-library/react-native'
+import { fireEvent, waitFor, within } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { Image, View } from 'react-native'
@@ -9,10 +9,11 @@ import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
 import { StandardVocabularyItem } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import SentenceTrainingScreen, { MAX_ATTEMPTS_PER_SENTENCE } from '../SentenceTrainingScreen'
 import { initializeState, isSameWord, Sentence, stateReducer } from '../sentence/State'
 
@@ -78,6 +79,17 @@ describe('SentenceTrainingScreen', () => {
     const availableWords = within(await renderApi.findByTestId('available-words'))
     const selectedWords = within(renderApi.getByTestId('selected-words'))
     return { ...renderApi, availableWords, selectedWords }
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const renderApi = renderWithStorageCache(
+      storageCache,
+      <SentenceTrainingScreen navigation={navigation} route={route} />,
+    )
+    await renderApi.findByTestId('available-words')
+    return renderApi
   }
 
   it('should render initially', async () => {
@@ -220,6 +232,34 @@ describe('SentenceTrainingScreen', () => {
 
     state = stateReducer(state, { type: 'nextSentence', wasAnswerCorrect: false })
     expect(state.correctAnswersCount).toBe(1)
+  })
+
+  it('should finish with all answers correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+      }),
+    )
+  })
+
+  it('should finish with no correct answers when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+      }),
+    )
   })
 
   it('should compare by words, not indexes', () => {

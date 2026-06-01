@@ -7,11 +7,18 @@ import styled from 'styled-components/native'
 import { ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import {
+  BUTTONS_THEME,
+  isArticlePlural,
+  MAX_TRAINING_REPETITIONS,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemId, VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -63,6 +70,7 @@ export type Action =
       key: VocabularyItemId
     }
   | { type: 'nextWord' }
+  | { type: 'cheatAll'; result: SimpleResult }
 
 // eslint-disable-next-line consistent-return
 export const stateReducer = (state: State, action: Action): State => {
@@ -87,6 +95,13 @@ export const stateReducer = (state: State, action: Action): State => {
         nextState = initializeChoices(nextState)
       }
       return nextState
+    }
+    case 'cheatAll': {
+      return {
+        ...state,
+        completed: true,
+        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0,
+      }
     }
   }
 }
@@ -172,7 +187,15 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
         feedbackTarget={word.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: word.id } : undefined}
       />
 
-      <TrainingExerciseContainer title={getLabels().exercises.training.image.selectImage} footer={nextWordButton}>
+      <TrainingExerciseContainer
+        title={getLabels().exercises.training.image.selectImage}
+        footer={
+          <>
+            {nextWordButton}
+            <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
+          </>
+        }
+      >
         <QuestionContainer>
           <ContentText>
             {questionLabel} {word.article.value}{' '}

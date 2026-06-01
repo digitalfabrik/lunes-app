@@ -1,4 +1,4 @@
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import { VocabularyItemId } from '../../../models/VocabularyItem'
 import { getAtIndex, shuffleArray, shuffleIndexes } from '../../../services/helpers'
 
@@ -64,6 +64,7 @@ export type Action =
   | { type: 'unselectWord'; index: number }
   | { type: 'nextSentence'; wasAnswerCorrect: boolean }
   | { type: 'repeat' }
+  | { type: 'cheatAll'; result: SimpleResult }
 
 // eslint-disable-next-line consistent-return
 export const stateReducer = (state: State, action: Action): State => {
@@ -100,6 +101,13 @@ export const stateReducer = (state: State, action: Action): State => {
         attemptsForCurrentSentence: 0,
         correctAnswersCount,
         allSentencesFinished: !hasNextSentence,
+      }
+    }
+    case 'cheatAll': {
+      return {
+        ...state,
+        allSentencesFinished: true,
+        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.sentences.length : 0,
       }
     }
   }
