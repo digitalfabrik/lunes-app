@@ -5,7 +5,7 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import { StandardVocabularyItem } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
@@ -14,7 +14,7 @@ import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
-import SentenceTrainingScreen, { MAX_ATTEMPTS_PER_SENTENCE } from '../SentenceTrainingScreen'
+import SentenceTrainingScreen from '../SentenceTrainingScreen'
 import { initializeState, isSameWord, Sentence, stateReducer } from '../sentence/State'
 
 jest.mock('../../../services/helpers', () => ({
@@ -188,7 +188,7 @@ describe('SentenceTrainingScreen', () => {
     const { availableWords, getByText, queryByText } = await renderScreenAndWaitForLoad()
 
     // Make incorrect attempts until max is reached
-    for (let attempt = 1; attempt < MAX_ATTEMPTS_PER_SENTENCE; attempt += 1) {
+    for (let attempt = 1; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
       fireEvent.press(availableWords.getByText('sentence'))
       fireEvent.press(availableWords.getByText('Example'))
       fireEvent.press(availableWords.getByText('0'))

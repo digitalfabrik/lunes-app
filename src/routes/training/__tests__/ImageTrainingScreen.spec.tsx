@@ -3,7 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { ARTICLES, MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { ARTICLES, MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
@@ -158,6 +158,41 @@ describe('ImageTrainingScreen', () => {
     const images = getAllByTestId('imageOption')
     fireEvent.press(images[1]!)
     fireEvent.press(images[0]!)
+    fireEvent.press(getByText(getLabels().exercises.continue))
+
+    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
+      fireEvent.press(getByTestId('button-skip'))
+    }
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should show continue instead of skip after the max number of incorrect attempts', async () => {
+    const { getAllByTestId, getByText, queryByTestId } = await renderScreenAndWaitForLoad()
+
+    // images[0] is the correct option (Math.random is mocked to 0), so repeatedly pick a wrong one
+    const images = getAllByTestId('imageOption')
+    for (let attempt = 0; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
+      fireEvent.press(images[1]!)
+    }
+
+    expect(getByText(getLabels().exercises.continue)).toBeVisible()
+    expect(queryByTestId('button-skip')).toBeNull()
+  })
+
+  it('should not count a word as correct once the max number of attempts is reached', async () => {
+    const { getAllByTestId, getByText, getByTestId } = await renderScreenAndWaitForLoad()
+
+    const images = getAllByTestId('imageOption')
+    for (let attempt = 0; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
+      fireEvent.press(images[1]!)
+    }
     fireEvent.press(getByText(getLabels().exercises.continue))
 
     for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {

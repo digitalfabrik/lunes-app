@@ -22,7 +22,13 @@ import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
+import {
+  BUTTONS_THEME,
+  MAX_TRAINING_REPETITIONS,
+  NUMBER_OF_MAX_RETRIES,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../constants/data'
 import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import useStorage from '../../hooks/useStorage'
@@ -89,7 +95,7 @@ const HintText = styled(ContentText)`
 type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
-  hasIncorrectAttempt: boolean
+  incorrectAttemptsForCurrentWord: number
   answerState: SimpleResult | 'error' | null
   correctAnswersCount: number
   completed: boolean
@@ -112,7 +118,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     vocabularyItems: selectedItems,
     currentVocabularyItemIndex: 0,
-    hasIncorrectAttempt: false,
+    incorrectAttemptsForCurrentWord: 0,
     answerState: null,
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
@@ -124,8 +130,11 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
 const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'speechResult': {
-      const hasIncorrectAttempt = state.hasIncorrectAttempt || action.answerState !== SIMPLE_RESULTS.correct
-      return { ...state, answerState: action.answerState, hasIncorrectAttempt }
+      const isCorrect = action.answerState === SIMPLE_RESULTS.correct
+      const incorrectAttemptsForCurrentWord = isCorrect
+        ? state.incorrectAttemptsForCurrentWord
+        : state.incorrectAttemptsForCurrentWord + 1
+      return { ...state, answerState: action.answerState, incorrectAttemptsForCurrentWord }
     }
     case 'speechError':
       return { ...state, answerState: 'error' }
@@ -138,15 +147,15 @@ const stateReducer = (state: State, action: Action): State => {
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      const correctAnswersCount =
-        !state.hasIncorrectAttempt && !action.isSkipping ? state.correctAnswersCount + 1 : state.correctAnswersCount
+      const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0 && !action.isSkipping
+      const correctAnswersCount = answeredCorrectlyFirstTry ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentVocabularyItemIndex: nextIndex,
         completed,
         correctAnswersCount,
         answerState: null,
-        hasIncorrectAttempt: false,
+        incorrectAttemptsForCurrentWord: 0,
       }
     }
     case 'cheatAll': {
@@ -254,6 +263,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
+  const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
 
   const renderExerciseContent = (): ReactElement | null => {
     if (canRecord) {
@@ -298,21 +308,22 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     </BottomSheetRow>
   )
 
-  const resultButton = isCorrect ? (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
-      label={getLabels().exercises.continue}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  ) : (
-    <Button
-      onPress={() => dispatch({ type: 'retry' })}
-      label={getLabels().exercises.tryAgain}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  )
+  const resultButton =
+    isCorrect || hasReachedMaxAttempts ? (
+      <Button
+        onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
+        label={getLabels().exercises.continue}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    ) : (
+      <Button
+        onPress={() => dispatch({ type: 'retry' })}
+        label={getLabels().exercises.tryAgain}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    )
 
   return (
     <>

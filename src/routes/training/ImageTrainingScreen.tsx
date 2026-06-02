@@ -16,12 +16,17 @@ import {
   BUTTONS_THEME,
   isArticlePlural,
   MAX_TRAINING_REPETITIONS,
+  NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem, { VocabularyItemId, VocabularyItemTypes } from '../../models/VocabularyItem'
+import VocabularyItem, {
+  areVocabularyItemIdsEqual,
+  VocabularyItemId,
+  VocabularyItemTypes,
+} from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
@@ -33,6 +38,7 @@ type State = {
   currentVocabularyItemIndex: number
   choices: { src: string; key: VocabularyItemId }[]
   answer: { key: VocabularyItemId; isCorrect: boolean } | null
+  incorrectAttemptsForCurrentWord: number
   correctAnswersCount: number
   completed: boolean
 }
@@ -58,6 +64,7 @@ export const initializeState = (vocabularyItems: VocabularyItem[]): State => {
     vocabularyItems: shuffled,
     currentVocabularyItemIndex: 0,
     answer: null,
+    incorrectAttemptsForCurrentWord: 0,
     correctAnswersCount: 0,
     completed: shuffled.length === 0,
   }
@@ -76,21 +83,34 @@ export type Action =
 export const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'selectAnswer': {
-      if (state.answer?.isCorrect) {
+      const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+      if (state.answer?.isCorrect || hasReachedMaxAttempts) {
         return state
       }
-      const isCorrect = action.key === getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex).id
+      const isCorrect = areVocabularyItemIdsEqual(
+        action.key,
+        getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex).id,
+      )
       const isFirstAttempt = state.answer === null
       return {
         ...state,
         correctAnswersCount: isCorrect && isFirstAttempt ? state.correctAnswersCount + 1 : state.correctAnswersCount,
+        incorrectAttemptsForCurrentWord: isCorrect
+          ? state.incorrectAttemptsForCurrentWord
+          : state.incorrectAttemptsForCurrentWord + 1,
         answer: { key: action.key, isCorrect },
       }
     }
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      let nextState: State = { ...state, currentVocabularyItemIndex: nextIndex, completed, answer: null }
+      let nextState: State = {
+        ...state,
+        currentVocabularyItemIndex: nextIndex,
+        completed,
+        answer: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
       if (!completed) {
         nextState = initializeChoices(nextState)
       }
@@ -125,9 +145,15 @@ type ImageTrainingProps = {
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const word = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+  const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+  const isResolved = Boolean(state.answer?.isCorrect) || hasReachedMaxAttempts
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
+    const isCorrectChoice = areVocabularyItemIdsEqual(key, word.id)
     let imageState = ImageGridItemState.Default
-    if (state.answer?.key === key) {
+    if (isResolved && isCorrectChoice) {
+      // Once the word is resolved (answered correctly or out of attempts), reveal the correct image
+      imageState = ImageGridItemState.Correct
+    } else if (state.answer && areVocabularyItemIdsEqual(state.answer.key, key)) {
       imageState = state.answer.isCorrect ? ImageGridItemState.Correct : ImageGridItemState.Incorrect
     }
     return {
@@ -158,7 +184,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     return null
   }
 
-  const nextWordButton = state.answer?.isCorrect ? (
+  const nextWordButton = isResolved ? (
     <Button
       onPress={() => dispatch({ type: 'nextWord' })}
       label={getLabels().exercises.continue}

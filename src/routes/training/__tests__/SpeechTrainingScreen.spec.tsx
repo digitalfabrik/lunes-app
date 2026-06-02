@@ -5,7 +5,7 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import useVoiceRecognition from '../../../hooks/useVoiceRecognition'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
@@ -247,6 +247,17 @@ describe('SpeechTrainingScreen', () => {
         job: route.params.job,
       }),
     )
+  })
+
+  it('should show continue instead of try again after reaching the max number of attempts', async () => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    // Speak incorrectly until the attempt limit is reached
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+
+    await waitFor(() => expect(getByText(getLabels().exercises.continue)).toBeVisible())
+    expect(queryByText(getLabels().exercises.tryAgain)).toBeNull()
   })
 
   it('should show not authorized view when permissions are denied', async () => {

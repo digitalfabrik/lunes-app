@@ -13,7 +13,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { BUTTONS_THEME } from '../../constants/data'
+import { BUTTONS_THEME, NUMBER_OF_MAX_RETRIES } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -23,8 +23,6 @@ import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import WordsSelector, { SelectedWord } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
-
-export const MAX_ATTEMPTS_PER_SENTENCE = 5
 
 const ExerciseInfoContainer = styled.View`
   flex-flow: row nowrap;
@@ -63,7 +61,7 @@ const ResultIndicator = ({
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
-  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE
+  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= NUMBER_OF_MAX_RETRIES
   const labels = getLabels().exercises.training.sentence
 
   const button =
