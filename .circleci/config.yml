@@ -39,7 +39,7 @@ commands:
             failure_mentions:
                 default: '@david.venhoff @leandra.hahn @johannes.stock'
                 type: string
-            only_for_branch:
+            on_failure_only_for_branch:
                 default: main
                 type: string
             success_mentions:
@@ -51,10 +51,12 @@ commands:
         steps:
             - run:
                 command: |
-                    if [ -n "<< parameters.failure_mentions >>" ]; then
-                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:\n<< parameters.failure_mentions >>"' >> $BASH_ENV
-                    else
-                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:"' >> $BASH_ENV
+                    if [ "<< parameters.on_failure_only_for_branch >>" = "${CIRCLE_BRANCH}" ]; then
+                        if [ -n "<< parameters.failure_mentions >>" ]; then
+                            echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:\n<< parameters.failure_mentions >>"' >> $BASH_ENV
+                        else
+                            echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:"' >> $BASH_ENV
+                        fi
                     fi
                 name: Mattermost - Prepare failure message
                 when: on_fail
@@ -74,11 +76,6 @@ commands:
                     #!/bin/bash
 
                     Send_notification() {
-                        if [ "<< parameters.only_for_branch >>" != "${CIRCLE_BRANCH}" ]; then
-                            echo "Not on << parameters.only_for_branch >> branch. Skipping."
-                            exit 0
-                        fi
-
                         if [ -z "${MM_MESSAGE}" ]; then
                             echo "No message set. Skipping."
                             exit 0
@@ -461,13 +458,30 @@ jobs:
                 command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
                 name: Undo rename ipa
             - run:
-                command: "printf \"## App uploaded to Browserstack\\n\" >> message \nprintf \"This pull request can now be tested online:\\n\" >> message\nprintf -- \"- [Android](%s)\\n\" \"$(cat android/fastlane/browserstack_live_url)\" >> message\nprintf -- \"- [iOS](%s)\\n\" \"$(cat ios/fastlane/browserstack_live_url)\" >> message\n"
+                command: |
+                    printf "## App uploaded to Browserstack\n" >> message
+                    if [ -z "${PR_NUMBER}" ]; then
+                        printf "The %s branch can now be tested online:\n" "${CIRCLE_BRANCH}" >> message
+                    else
+                        printf "This pull request can now be tested online:\n" >> message
+                    fi
+                    printf -- "- [Android](%s)\n" "$(cat android/fastlane/browserstack_live_url)" >> message
+                    printf -- "- [iOS](%s)\n" "$(cat ios/fastlane/browserstack_live_url)" >> message
                 name: Build message
             - run:
-                command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                command: |
+                    # ensure browserstack_message exists so the notify step's cat never errors
+                    touch ../browserstack_message
+                    if [ -z "${PR_NUMBER}" ]; then
+                      # populate browserstack_message so that the notify will post the message in mattermost
+                      mv ../message ../browserstack_message
+                    else
+                      yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                    fi
                 name: Post pull request comment with a link to the browserstack live apps
                 working_directory: tools
-            - notify
+            - notify:
+                success_message: $(cat browserstack_message)
     deliver_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -580,7 +594,6 @@ jobs:
                 working_directory: tools
             - notify:
                 channel: releases
-                only_for_branch: ${CIRCLE_BRANCH}
                 success_message: Lunes - ${PROMOTION_MESSAGE}
     promote_android:
         docker:

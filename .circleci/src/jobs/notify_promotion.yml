@@ -16,4 +16,3 @@ steps:
   - notify:
       success_message: 'Lunes - ${PROMOTION_MESSAGE}'
       channel: releases
-      only_for_branch: ${CIRCLE_BRANCH}
