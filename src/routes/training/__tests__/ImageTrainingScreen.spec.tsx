@@ -43,6 +43,7 @@ describe('ImageTrainingScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    // With Math.random fixed at 0, initializeChoices always places the correct image first
     jest.spyOn(Math, 'random').mockReturnValue(0)
     mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice())
   })
@@ -60,6 +61,26 @@ describe('ImageTrainingScreen', () => {
     const result = renderWithStorageCache(storageCache, <ImageTrainingScreen navigation={navigation} route={route} />)
     await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
     return result
+  }
+
+  type RenderApi = Awaited<ReturnType<typeof renderScreenAndWaitForLoad>>
+
+  const answerCurrentWordCorrectly = ({ getAllByTestId, getByText }: RenderApi): void => {
+    fireEvent.press(getAllByTestId('imageOption')[0]!)
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
+  const failCurrentWordToMax = ({ getAllByTestId, getByText }: RenderApi): void => {
+    const images = getAllByTestId('imageOption')
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent.press(images[1]!))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
+  const shortVocabularyList = vocabularyItems.slice(0, 3)
+
+  const renderShortExerciseAndWaitForLoad = async () => {
+    mocked(getWordsByJob).mockResolvedValue(shortVocabularyList)
+    return renderScreenAndWaitForLoad()
   }
 
   it('should render initially', async () => {
@@ -114,60 +135,65 @@ describe('ImageTrainingScreen', () => {
     expect(getByText('Auto')).toBeVisible()
   })
 
-  it('should navigate to TrainingFinished after completing all words', async () => {
-    const { getByTestId } = await renderScreenAndWaitForLoad()
+  it('should move a skipped word to the end of the stack to be tested again', async () => {
+    const renderApi = await renderShortExerciseAndWaitForLoad()
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    fireEvent.press(renderApi.getByTestId('button-skip'))
+    Array.from({ length: shortVocabularyList.length - 1 }).forEach(() => answerCurrentWordCorrectly(renderApi))
+
+    // Skipped "Spachtel" resurfaces as the final word, which can no longer be skipped
+    expect(renderApi.getByText('Spachtel')).toBeVisible()
+    expect(renderApi.queryByTestId('button-skip')).toBeNull()
+  })
+
+  it('should navigate to TrainingFinished after answering all words', async () => {
+    const renderApi = await renderScreenAndWaitForLoad()
+
+    Array.from({ length: MAX_TRAINING_REPETITIONS }).forEach(() => answerCurrentWordCorrectly(renderApi))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
         job: route.params.job,
       }),
     )
   })
 
   it('should pass correct answer count to TrainingFinished', async () => {
-    const { getAllByTestId, getByText, getByTestId } = await renderScreenAndWaitForLoad()
+    const renderApi = await renderShortExerciseAndWaitForLoad()
 
-    for (let i = 0; i < 3; i += 1) {
-      const images = getAllByTestId('imageOption')
-      fireEvent.press(images[0]!)
-      fireEvent.press(getByText(getLabels().exercises.continue))
-    }
-
-    for (let i = 3; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    answerCurrentWordCorrectly(renderApi)
+    failCurrentWordToMax(renderApi)
+    failCurrentWordToMax(renderApi)
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 3, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: shortVocabularyList.length },
         job: route.params.job,
       }),
     )
   })
 
   it('should not count answer as correct on second attempt', async () => {
-    const { getAllByTestId, getByTestId, getByText } = await renderScreenAndWaitForLoad()
+    const renderApi = await renderShortExerciseAndWaitForLoad()
+    const { getAllByTestId, getByText } = renderApi
 
+    answerCurrentWordCorrectly(renderApi)
+
+    // Answer the next word correctly only on the second try, so it doesn't get counted
     const images = getAllByTestId('imageOption')
     fireEvent.press(images[1]!)
     fireEvent.press(images[0]!)
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    failCurrentWordToMax(renderApi)
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: shortVocabularyList.length },
         job: route.params.job,
       }),
     )
@@ -187,22 +213,14 @@ describe('ImageTrainingScreen', () => {
   })
 
   it('should not count a word as correct once the max number of attempts is reached', async () => {
-    const { getAllByTestId, getByText, getByTestId } = await renderScreenAndWaitForLoad()
+    const renderApi = await renderShortExerciseAndWaitForLoad()
 
-    const images = getAllByTestId('imageOption')
-    for (let attempt = 0; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
-      fireEvent.press(images[1]!)
-    }
-    fireEvent.press(getByText(getLabels().exercises.continue))
-
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    Array.from({ length: shortVocabularyList.length }).forEach(() => failCurrentWordToMax(renderApi))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 0, total: shortVocabularyList.length },
         job: route.params.job,
       }),
     )

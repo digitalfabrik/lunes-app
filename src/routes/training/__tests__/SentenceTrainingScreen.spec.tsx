@@ -173,15 +173,39 @@ describe('SentenceTrainingScreen', () => {
     expect(availableWords.getByText('1')).toBeEnabled()
   })
 
-  it('should navigate to TrainingFinished after last sentence', async () => {
-    const { getByText } = await renderScreenAndWaitForLoad()
+  it('should navigate to TrainingFinished after the last sentence is answered', async () => {
+    mocked(getWordsByJob).mockReturnValue(Promise.resolve(vocabularyItems.slice(0, 1)))
+    const { availableWords, getByText } = await renderScreenAndWaitForLoad()
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      expect(navigation.replace).not.toHaveBeenCalled()
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
+    // Answer the sentence correctly
+    fireEvent.press(availableWords.getByText('Example'))
+    fireEvent.press(availableWords.getByText('sentence'))
+    fireEvent.press(availableWords.getByText('0'))
+    fireEvent.press(getByText(getLabels().exercises.continue))
 
-    expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', expect.any(Object))
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: 1, total: 1 },
+      }),
+    )
+  })
+
+  it('should move a skipped sentence to the end of the stack to be tested again', async () => {
+    // Two sentences so the skipped one has somewhere to go
+    mocked(getWordsByJob).mockReturnValue(Promise.resolve(vocabularyItems.slice(0, 2)))
+    const { availableWords, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.skip))
+
+    fireEvent.press(availableWords.getByText('Example'))
+    fireEvent.press(availableWords.getByText('sentence'))
+    fireEvent.press(availableWords.getByText('1'))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+
+    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(availableWords.getByText('0')).toBeEnabled()
   })
 
   it('should show continue instead of try again after max attempts', async () => {

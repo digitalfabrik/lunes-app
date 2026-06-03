@@ -109,6 +109,7 @@ type SentenceTrainingProps = {
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
   const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
+  const isLastSentence = state.currentSentenceIndex + 1 >= state.sentences.length
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
@@ -161,12 +162,15 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
         title={getLabels().exercises.training.sentence.orderWords}
         footer={
           <>
-            <Button
-              onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: false })}
-              label={getLabels().exercises.skip}
-              buttonTheme={BUTTONS_THEME.text}
-              iconRight={ChevronRight}
-            />
+            {/* The last sentence can't be skipped */}
+            {!isLastSentence && (
+              <Button
+                onPress={() => dispatch({ type: 'skip' })}
+                label={getLabels().exercises.skip}
+                buttonTheme={BUTTONS_THEME.text}
+                iconRight={ChevronRight}
+              />
+            )}
             <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
           </>
         }

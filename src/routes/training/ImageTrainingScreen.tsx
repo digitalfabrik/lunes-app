@@ -28,7 +28,7 @@ import VocabularyItem, {
   VocabularyItemTypes,
 } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -77,6 +77,7 @@ export type Action =
       key: VocabularyItemId
     }
   | { type: 'nextWord' }
+  | { type: 'skip' }
   | { type: 'cheatAll'; result: SimpleResult }
 
 // eslint-disable-next-line consistent-return
@@ -116,6 +117,16 @@ export const stateReducer = (state: State, action: Action): State => {
       }
       return nextState
     }
+    case 'skip': {
+      const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+      const nextState: State = {
+        ...state,
+        vocabularyItems: reorderedVocabularyItems,
+        answer: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
+      return initializeChoices(nextState)
+    }
     case 'cheatAll': {
       return {
         ...state,
@@ -151,7 +162,6 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     const isCorrectChoice = areVocabularyItemIdsEqual(key, word.id)
     let imageState = ImageGridItemState.Default
     if (isResolved && isCorrectChoice) {
-      // Once the word is resolved (answered correctly or out of attempts), reveal the correct image
       imageState = ImageGridItemState.Correct
     } else if (state.answer && areVocabularyItemIdsEqual(state.answer.key, key)) {
       imageState = state.answer.isCorrect ? ImageGridItemState.Correct : ImageGridItemState.Incorrect
@@ -184,21 +194,29 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     return null
   }
 
-  const nextWordButton = isResolved ? (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord' })}
-      label={getLabels().exercises.continue}
-      buttonTheme={BUTTONS_THEME.contained}
-    />
-  ) : (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord' })}
-      label={getLabels().exercises.skip}
-      iconRight={ChevronRight}
-      buttonTheme={BUTTONS_THEME.text}
-      testID='button-skip'
-    />
-  )
+  const isLastWord = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
+
+  let footerButton: ReactElement | null = null
+  if (isResolved) {
+    footerButton = (
+      <Button
+        onPress={() => dispatch({ type: 'nextWord' })}
+        label={getLabels().exercises.continue}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
+    )
+  } else if (!isLastWord) {
+    // The last word can't be skipped
+    footerButton = (
+      <Button
+        onPress={() => dispatch({ type: 'skip' })}
+        label={getLabels().exercises.skip}
+        iconRight={ChevronRight}
+        buttonTheme={BUTTONS_THEME.text}
+        testID='button-skip'
+      />
+    )
+  }
 
   const questionLabel = isArticlePlural(word.article)
     ? getLabels().exercises.training.image.whatAre
@@ -217,7 +235,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
         title={getLabels().exercises.training.image.selectImage}
         footer={
           <>
-            {nextWordButton}
+            {footerButton}
             <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
           </>
         }

@@ -90,6 +90,15 @@ describe('SpeechTrainingScreen', () => {
     return result
   }
 
+  type RenderApi = Awaited<ReturnType<typeof renderScreenAndWaitForLoad>>
+
+  const failCurrentWordToMax = async ({ getByTestId, getByText }: RenderApi): Promise<void> => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+    await waitFor(() => getByText(getLabels().exercises.continue))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
   it('should render the recording button with instruction text', async () => {
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -158,20 +167,18 @@ describe('SpeechTrainingScreen', () => {
     expect(getByTestId('recording-button')).toBeVisible()
   })
 
-  it('should navigate to TrainingFinished after skipping all words', async () => {
-    const { getByText } = await renderScreenAndWaitForLoad()
+  it('should move a skipped word to the end of the stack to be tested again', async () => {
+    // Two words so the skipped one has somewhere to go
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 2))
+    const renderApi = await renderScreenAndWaitForLoad()
+    const { getByText, queryByText } = renderApi
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
+    fireEvent.press(getByText(getLabels().exercises.skip))
 
-    await waitFor(() =>
-      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
-        trainingType: 'speech',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
-        job: route.params.job,
-      }),
-    )
+    await failCurrentWordToMax(renderApi)
+
+    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(queryByText(getLabels().exercises.skip)).toBeNull()
   })
 
   it('should finish with all words correct when cheating to succeed', async () => {
@@ -202,7 +209,8 @@ describe('SpeechTrainingScreen', () => {
     )
   })
 
-  it('should count a word as correct only when answered correctly on first try', async () => {
+  it('should count a word as correct only when answered correctly on the first try', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValue(['der Spachtel'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -210,20 +218,17 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 1, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: 1 },
         job: route.params.job,
       }),
     )
   })
 
   it('should not count a word as correct when it needed a retry', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValueOnce(['etwas anderes'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -236,14 +241,10 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 0, total: 1 },
         job: route.params.job,
       }),
     )

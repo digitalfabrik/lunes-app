@@ -36,7 +36,7 @@ import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -109,7 +109,8 @@ type Action =
   | { type: 'recognitionUnavailable' }
   | { type: 'languageUnavailable' }
   | { type: 'retry' }
-  | { type: 'nextWord'; isSkipping: boolean }
+  | { type: 'nextWord' }
+  | { type: 'skip' }
   | { type: 'cheatAll'; result: SimpleResult }
   | { type: 'appBecameActive' }
 
@@ -147,13 +148,22 @@ const stateReducer = (state: State, action: Action): State => {
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0 && !action.isSkipping
+      const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0
       const correctAnswersCount = answeredCorrectlyFirstTry ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentVocabularyItemIndex: nextIndex,
         completed,
         correctAnswersCount,
+        answerState: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
+    }
+    case 'skip': {
+      const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+      return {
+        ...state,
+        vocabularyItems: reorderedVocabularyItems,
         answerState: null,
         incorrectAttemptsForCurrentWord: 0,
       }
@@ -264,6 +274,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
   const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+  const isLastWord = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
 
   const renderExerciseContent = (): ReactElement | null => {
     if (canRecord) {
@@ -311,7 +322,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const resultButton =
     isCorrect || hasReachedMaxAttempts ? (
       <Button
-        onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
+        onPress={() => dispatch({ type: 'nextWord' })}
         label={getLabels().exercises.continue}
         buttonTheme={BUTTONS_THEME.contained}
         iconRight={ArrowRightIcon}
@@ -339,12 +350,15 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         title={labels.prompt}
         footer={
           <>
-            <Button
-              onPress={() => dispatch({ type: 'nextWord', isSkipping: true })}
-              buttonTheme={BUTTONS_THEME.text}
-              label={getLabels().exercises.skip}
-              iconRight={ArrowRightIcon}
-            />
+            {/* The last word can't be skipped */}
+            {!isLastWord && (
+              <Button
+                onPress={() => dispatch({ type: 'skip' })}
+                buttonTheme={BUTTONS_THEME.text}
+                label={getLabels().exercises.skip}
+                iconRight={ArrowRightIcon}
+              />
+            )}
             <CheatMode cheat={handleCheat} />
           </>
         }
