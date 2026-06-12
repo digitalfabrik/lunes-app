@@ -121,6 +121,7 @@ export type Answer = {
   article: Article
 }
 
+// Should not be more than 3 because we use it in the ImageTraining where we show four images
 export const NUMBER_OF_MAX_RETRIES = 3
 
 export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4

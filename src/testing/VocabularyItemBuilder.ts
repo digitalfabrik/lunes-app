@@ -2,7 +2,7 @@ import { ARTICLES } from '../constants/data'
 import { StandardVocabularyItem, UserVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
 import { getAtIndex } from '../services/helpers'
 
-const vocabularyItems: StandardVocabularyItem[] = [
+const baseVocabularyItems: StandardVocabularyItem[] = [
   {
     id: { id: 1, type: VocabularyItemTypes.Standard },
     word: 'Spachtel',
@@ -114,14 +114,18 @@ class VocabularyItemBuilder {
 
   constructor(vocabularyItemCount: number) {
     this.vocabularyItemCount = vocabularyItemCount
-
-    while (this.vocabularyItemCount > vocabularyItems.length) {
-      vocabularyItems.push(getAtIndex(vocabularyItems, 0))
-    }
   }
 
   build(): Array<StandardVocabularyItem> {
-    return vocabularyItems.slice(0, this.vocabularyItemCount)
+    return Array.from({ length: this.vocabularyItemCount }, (_, index) => {
+      if (index < baseVocabularyItems.length) {
+        return getAtIndex(baseVocabularyItems, index)
+      }
+      // For counts beyond the curated items, reuse their content but with a fresh unique
+      // id so no two generated items share an id or object reference.
+      const template = getAtIndex(baseVocabularyItems, index % baseVocabularyItems.length)
+      return { ...template, id: { type: VocabularyItemTypes.Standard, id: index + 1 } }
+    })
   }
 
   buildUserVocabulary(): Array<UserVocabularyItem> {

@@ -3,13 +3,14 @@ import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
-import { ARTICLES, MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { ARTICLES, MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import ImageTrainingScreen, { initializeState, stateReducer } from '../ImageTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -42,6 +43,7 @@ describe('ImageTrainingScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    // With Math.random fixed at 0, initializeChoices always places the correct image first
     jest.spyOn(Math, 'random').mockReturnValue(0)
     mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice())
   })
@@ -51,6 +53,34 @@ describe('ImageTrainingScreen', () => {
     await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
     fireEvent(result.getByTestId('image-grid'), 'layout', { nativeEvent: { layout: { width: 300 } } })
     return result
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const result = renderWithStorageCache(storageCache, <ImageTrainingScreen navigation={navigation} route={route} />)
+    await expect(result.findByText(getLabels().exercises.training.image.selectImage)).resolves.toBeVisible()
+    return result
+  }
+
+  type RenderApi = Awaited<ReturnType<typeof renderScreenAndWaitForLoad>>
+
+  const answerCurrentWordCorrectly = ({ getAllByTestId, getByText }: RenderApi): void => {
+    fireEvent.press(getAllByTestId('imageOption')[0]!)
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
+  const failCurrentWordToMax = ({ getAllByTestId, getByText }: RenderApi): void => {
+    const images = getAllByTestId('imageOption')
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent.press(images[1]!))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
+  const shortVocabularyList = vocabularyItems.slice(0, 3)
+
+  const renderShortExerciseAndWaitForLoad = async () => {
+    mocked(getWordsByJob).mockResolvedValue(shortVocabularyList)
+    return renderScreenAndWaitForLoad()
   }
 
   it('should render initially', async () => {
@@ -105,60 +135,92 @@ describe('ImageTrainingScreen', () => {
     expect(getByText('Auto')).toBeVisible()
   })
 
-  it('should navigate to TrainingFinished after completing all words', async () => {
-    const { getByTestId } = await renderScreenAndWaitForLoad()
+  it('should move a skipped word to the end of the stack to be tested again', async () => {
+    const renderApi = await renderShortExerciseAndWaitForLoad()
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    fireEvent.press(renderApi.getByTestId('button-skip'))
+    Array.from({ length: shortVocabularyList.length - 1 }).forEach(() => answerCurrentWordCorrectly(renderApi))
+
+    // Skipped "Spachtel" resurfaces as the final word, which can no longer be skipped
+    expect(renderApi.getByText('Spachtel')).toBeVisible()
+    expect(renderApi.queryByTestId('button-skip')).toBeNull()
+  })
+
+  it('should navigate to TrainingFinished after answering all words', async () => {
+    const renderApi = await renderScreenAndWaitForLoad()
+
+    Array.from({ length: MAX_TRAINING_REPETITIONS }).forEach(() => answerCurrentWordCorrectly(renderApi))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
         job: route.params.job,
       }),
     )
   })
 
   it('should pass correct answer count to TrainingFinished', async () => {
-    const { getAllByTestId, getByText, getByTestId } = await renderScreenAndWaitForLoad()
+    const renderApi = await renderShortExerciseAndWaitForLoad()
 
-    for (let i = 0; i < 3; i += 1) {
-      const images = getAllByTestId('imageOption')
-      fireEvent.press(images[0]!)
-      fireEvent.press(getByText(getLabels().exercises.continue))
-    }
-
-    for (let i = 3; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    answerCurrentWordCorrectly(renderApi)
+    failCurrentWordToMax(renderApi)
+    failCurrentWordToMax(renderApi)
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 3, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: shortVocabularyList.length },
         job: route.params.job,
       }),
     )
   })
 
   it('should not count answer as correct on second attempt', async () => {
-    const { getAllByTestId, getByTestId, getByText } = await renderScreenAndWaitForLoad()
+    const renderApi = await renderShortExerciseAndWaitForLoad()
+    const { getAllByTestId, getByText } = renderApi
 
+    answerCurrentWordCorrectly(renderApi)
+
+    // Answer the next word correctly only on the second try, so it doesn't get counted
     const images = getAllByTestId('imageOption')
     fireEvent.press(images[1]!)
     fireEvent.press(images[0]!)
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByTestId('button-skip'))
-    }
+    failCurrentWordToMax(renderApi)
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'image',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: shortVocabularyList.length },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should show continue instead of skip after the max number of incorrect attempts', async () => {
+    const { getAllByTestId, getByText, queryByTestId } = await renderScreenAndWaitForLoad()
+
+    // images[0] is the correct option (Math.random is mocked to 0), so repeatedly pick a wrong one
+    const images = getAllByTestId('imageOption')
+    for (let attempt = 0; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
+      fireEvent.press(images[1]!)
+    }
+
+    expect(getByText(getLabels().exercises.continue)).toBeVisible()
+    expect(queryByTestId('button-skip')).toBeNull()
+  })
+
+  it('should not count a word as correct once the max number of attempts is reached', async () => {
+    const renderApi = await renderShortExerciseAndWaitForLoad()
+
+    Array.from({ length: shortVocabularyList.length }).forEach(() => failCurrentWordToMax(renderApi))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: 0, total: shortVocabularyList.length },
         job: route.params.job,
       }),
     )
@@ -198,5 +260,33 @@ describe('ImageTrainingScreen', () => {
     state = stateReducer(state, { type: 'selectAnswer', key: state.vocabularyItems[2]!.id })
     state = stateReducer(state, { type: 'nextWord' })
     expect(state.correctAnswersCount).toBe(2)
+  })
+
+  it('should finish with all words correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with no words correct when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'image',
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
   })
 })

@@ -1,19 +1,20 @@
 import { RouteProp } from '@react-navigation/native'
-import { fireEvent, within } from '@testing-library/react-native'
+import { fireEvent, waitFor, within } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import { StandardVocabularyItem } from '../../../models/VocabularyItem'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
-import SentenceTrainingScreen, { MAX_ATTEMPTS_PER_SENTENCE } from '../SentenceTrainingScreen'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
+import SentenceTrainingScreen from '../SentenceTrainingScreen'
 import { initializeState, isSameWord, Sentence, stateReducer } from '../sentence/State'
 
 jest.mock('../../../services/helpers', () => ({
@@ -48,7 +49,7 @@ describe('SentenceTrainingScreen', () => {
     sentence: exampleSentence!.sentence,
     audio: exampleSentence!.audio,
     words: ['Example', 'sentence', `${id.id}`],
-    id,
+    vocabularyItemId: id,
     image: images[0]!,
   }))
   const navigation = createNavigationMock<'SentenceTraining'>()
@@ -78,6 +79,17 @@ describe('SentenceTrainingScreen', () => {
     const availableWords = within(await renderApi.findByTestId('available-words'))
     const selectedWords = within(renderApi.getByTestId('selected-words'))
     return { ...renderApi, availableWords, selectedWords }
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const renderApi = renderWithStorageCache(
+      storageCache,
+      <SentenceTrainingScreen navigation={navigation} route={route} />,
+    )
+    await renderApi.findByTestId('available-words')
+    return renderApi
   }
 
   it('should render initially', async () => {
@@ -161,22 +173,46 @@ describe('SentenceTrainingScreen', () => {
     expect(availableWords.getByText('1')).toBeEnabled()
   })
 
-  it('should navigate to TrainingFinished after last sentence', async () => {
-    const { getByText } = await renderScreenAndWaitForLoad()
+  it('should navigate to TrainingFinished after the last sentence is answered', async () => {
+    mocked(getWordsByJob).mockReturnValue(Promise.resolve(vocabularyItems.slice(0, 1)))
+    const { availableWords, getByText } = await renderScreenAndWaitForLoad()
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      expect(navigation.replace).not.toHaveBeenCalled()
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
+    // Answer the sentence correctly
+    fireEvent.press(availableWords.getByText('Example'))
+    fireEvent.press(availableWords.getByText('sentence'))
+    fireEvent.press(availableWords.getByText('0'))
+    fireEvent.press(getByText(getLabels().exercises.continue))
 
-    expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', expect.any(Object))
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: 1, total: 1 },
+      }),
+    )
+  })
+
+  it('should move a skipped sentence to the end of the stack to be tested again', async () => {
+    // Two sentences so the skipped one has somewhere to go
+    mocked(getWordsByJob).mockReturnValue(Promise.resolve(vocabularyItems.slice(0, 2)))
+    const { availableWords, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.skip))
+
+    fireEvent.press(availableWords.getByText('Example'))
+    fireEvent.press(availableWords.getByText('sentence'))
+    fireEvent.press(availableWords.getByText('1'))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+
+    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(availableWords.getByText('0')).toBeEnabled()
   })
 
   it('should show continue instead of try again after max attempts', async () => {
     const { availableWords, getByText, queryByText } = await renderScreenAndWaitForLoad()
 
     // Make incorrect attempts until max is reached
-    for (let attempt = 1; attempt < MAX_ATTEMPTS_PER_SENTENCE; attempt += 1) {
+    for (let attempt = 1; attempt < NUMBER_OF_MAX_RETRIES; attempt += 1) {
       fireEvent.press(availableWords.getByText('sentence'))
       fireEvent.press(availableWords.getByText('Example'))
       fireEvent.press(availableWords.getByText('0'))
@@ -222,13 +258,41 @@ describe('SentenceTrainingScreen', () => {
     expect(state.correctAnswersCount).toBe(1)
   })
 
+  it('should finish with all answers correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+      }),
+    )
+  })
+
+  it('should finish with no correct answers when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'sentence',
+        job: route.params.job,
+        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+      }),
+    )
+  })
+
   it('should compare by words, not indexes', () => {
     const sentence: Sentence[] = [
       {
         sentence: 'a a b',
         audio: '',
         words: ['a', 'a', 'b'],
-        id: { type: 'lunes-standard', id: 0 },
+        vocabularyItemId: { type: 'lunes-standard', id: 0 },
         image: '',
       },
     ]

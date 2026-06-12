@@ -7,25 +7,38 @@ import styled from 'styled-components/native'
 import { ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
-import { BUTTONS_THEME, isArticlePlural, MAX_TRAINING_REPETITIONS } from '../../constants/data'
+import {
+  BUTTONS_THEME,
+  isArticlePlural,
+  MAX_TRAINING_REPETITIONS,
+  NUMBER_OF_MAX_RETRIES,
+  SIMPLE_RESULTS,
+  SimpleResult,
+} from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
+import VocabularyItem, {
+  areVocabularyItemIdsEqual,
+  VocabularyItemId,
+  VocabularyItemTypes,
+} from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 
 type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
   choices: { src: string; key: VocabularyItemId }[]
   answer: { key: VocabularyItemId; isCorrect: boolean } | null
+  incorrectAttemptsForCurrentWord: number
   correctAnswersCount: number
   completed: boolean
 }
@@ -51,6 +64,7 @@ export const initializeState = (vocabularyItems: VocabularyItem[]): State => {
     vocabularyItems: shuffled,
     currentVocabularyItemIndex: 0,
     answer: null,
+    incorrectAttemptsForCurrentWord: 0,
     correctAnswersCount: 0,
     completed: shuffled.length === 0,
   }
@@ -63,30 +77,62 @@ export type Action =
       key: VocabularyItemId
     }
   | { type: 'nextWord' }
+  | { type: 'skip' }
+  | { type: 'cheatAll'; result: SimpleResult }
 
 // eslint-disable-next-line consistent-return
 export const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'selectAnswer': {
-      if (state.answer?.isCorrect) {
+      const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+      if (state.answer?.isCorrect || hasReachedMaxAttempts) {
         return state
       }
-      const isCorrect = action.key === getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex).id
+      const isCorrect = areVocabularyItemIdsEqual(
+        action.key,
+        getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex).id,
+      )
       const isFirstAttempt = state.answer === null
       return {
         ...state,
         correctAnswersCount: isCorrect && isFirstAttempt ? state.correctAnswersCount + 1 : state.correctAnswersCount,
+        incorrectAttemptsForCurrentWord: isCorrect
+          ? state.incorrectAttemptsForCurrentWord
+          : state.incorrectAttemptsForCurrentWord + 1,
         answer: { key: action.key, isCorrect },
       }
     }
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      let nextState: State = { ...state, currentVocabularyItemIndex: nextIndex, completed, answer: null }
+      let nextState: State = {
+        ...state,
+        currentVocabularyItemIndex: nextIndex,
+        completed,
+        answer: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
       if (!completed) {
         nextState = initializeChoices(nextState)
       }
       return nextState
+    }
+    case 'skip': {
+      const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+      const nextState: State = {
+        ...state,
+        vocabularyItems: reorderedVocabularyItems,
+        answer: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
+      return initializeChoices(nextState)
+    }
+    case 'cheatAll': {
+      return {
+        ...state,
+        completed: true,
+        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0,
+      }
     }
   }
 }
@@ -110,9 +156,14 @@ type ImageTrainingProps = {
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const word = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+  const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+  const isResolved = Boolean(state.answer?.isCorrect) || hasReachedMaxAttempts
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
+    const isCorrectChoice = areVocabularyItemIdsEqual(key, word.id)
     let imageState = ImageGridItemState.Default
-    if (state.answer?.key === key) {
+    if (isResolved && isCorrectChoice) {
+      imageState = ImageGridItemState.Correct
+    } else if (state.answer && areVocabularyItemIdsEqual(state.answer.key, key)) {
       imageState = state.answer.isCorrect ? ImageGridItemState.Correct : ImageGridItemState.Incorrect
     }
     return {
@@ -143,21 +194,29 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     return null
   }
 
-  const nextWordButton = state.answer?.isCorrect ? (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord' })}
-      label={getLabels().exercises.continue}
-      buttonTheme={BUTTONS_THEME.contained}
-    />
-  ) : (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord' })}
-      label={getLabels().exercises.skip}
-      iconRight={ChevronRight}
-      buttonTheme={BUTTONS_THEME.text}
-      testID='button-skip'
-    />
-  )
+  const isLastWord = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
+
+  let footerButton: ReactElement | null = null
+  if (isResolved) {
+    footerButton = (
+      <Button
+        onPress={() => dispatch({ type: 'nextWord' })}
+        label={getLabels().exercises.continue}
+        buttonTheme={BUTTONS_THEME.contained}
+      />
+    )
+  } else if (!isLastWord) {
+    // The last word can't be skipped
+    footerButton = (
+      <Button
+        onPress={() => dispatch({ type: 'skip' })}
+        label={getLabels().exercises.skip}
+        iconRight={ChevronRight}
+        buttonTheme={BUTTONS_THEME.text}
+        testID='button-skip'
+      />
+    )
+  }
 
   const questionLabel = isArticlePlural(word.article)
     ? getLabels().exercises.training.image.whatAre
@@ -165,13 +224,22 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
-        navigation={navigation}
+        feedbackTarget={word.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: word.id } : undefined}
       />
 
-      <TrainingExerciseContainer title={getLabels().exercises.training.image.selectImage} footer={nextWordButton}>
+      <TrainingExerciseContainer
+        title={getLabels().exercises.training.image.selectImage}
+        footer={
+          <>
+            {footerButton}
+            <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
+          </>
+        }
+      >
         <QuestionContainer>
           <ContentText>
             {questionLabel} {word.article.value}{' '}

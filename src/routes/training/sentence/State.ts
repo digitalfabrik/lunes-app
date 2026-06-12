@@ -1,9 +1,10 @@
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 import { VocabularyItemId } from '../../../models/VocabularyItem'
-import { getAtIndex, shuffleArray, shuffleIndexes } from '../../../services/helpers'
+import { getAtIndex, moveToEnd, shuffleArray, shuffleIndexes } from '../../../services/helpers'
 
 export type Sentence = {
-  id: VocabularyItemId
+  // The id of the vocabulary item this example sentence belongs to
+  vocabularyItemId: VocabularyItemId
   image: string
   sentence: string
   words: string[]
@@ -63,6 +64,8 @@ export type Action =
   | { type: 'unselectWord'; index: number }
   | { type: 'nextSentence'; wasAnswerCorrect: boolean }
   | { type: 'repeat' }
+  | { type: 'skip' }
+  | { type: 'cheatAll'; result: SimpleResult }
 
 // eslint-disable-next-line consistent-return
 export const stateReducer = (state: State, action: Action): State => {
@@ -99,6 +102,24 @@ export const stateReducer = (state: State, action: Action): State => {
         attemptsForCurrentSentence: 0,
         correctAnswersCount,
         allSentencesFinished: !hasNextSentence,
+      }
+    }
+    case 'skip': {
+      const reorderedSentences = moveToEnd(state.sentences, state.currentSentenceIndex)
+      const currentSentence = getAtIndex(reorderedSentences, state.currentSentenceIndex)
+      return {
+        ...state,
+        sentences: reorderedSentences,
+        selectedWordIndexes: [],
+        randomizedWordIndexes: shuffleIndexes(currentSentence.words),
+        attemptsForCurrentSentence: 0,
+      }
+    }
+    case 'cheatAll': {
+      return {
+        ...state,
+        allSentencesFinished: true,
+        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.sentences.length : 0,
       }
     }
   }
