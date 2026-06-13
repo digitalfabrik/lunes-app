@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { ExerciseKeyPayload } from '../constants/data'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
@@ -16,9 +16,9 @@ const useTrackDropout = (
   const storageCache = useStorageCache()
   const isCompletedRef = useRef(false)
 
-  const markCompleted = useCallback((): void => {
+  const markCompleted = (): void => {
     isCompletedRef.current = true
-  }, [])
+  }
 
   useEffect(() => {
     if (exerciseKey === null) {

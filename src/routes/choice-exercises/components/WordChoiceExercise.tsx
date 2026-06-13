@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useEffect, useMemo, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Image, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -19,9 +19,9 @@ import {
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
-  StandardExerciseKeyPayload,
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
+import useStandardExerciseKey from '../../../hooks/useStandardExerciseKey'
 import { useStorageCache } from '../../../hooks/useStorage'
 import useTrackDropout from '../../../hooks/useTrackDropout'
 import { StandardUnitId } from '../../../models/Unit'
@@ -116,13 +116,7 @@ const WordChoiceExercise = ({
 
   const count = vocabularyItems.length
 
-  const exerciseKey: StandardExerciseKeyPayload | null = useMemo(
-    () =>
-      unitId !== null
-        ? { type: 'exercise', exercise_type: StandardExerciseKeys.wordChoiceExercise, unit_id: unitId.id }
-        : null,
-    [unitId],
-  )
+  const exerciseKey = useStandardExerciseKey(StandardExerciseKeys.wordChoiceExercise, unitId)
 
   const { markCompleted } = useTrackDropout(navigation, exerciseKey, state.currentWord, count)
 

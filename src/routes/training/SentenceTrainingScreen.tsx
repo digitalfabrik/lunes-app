@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ActionDispatch, ReactElement, useEffect, useMemo, useReducer } from 'react'
+import React, { ActionDispatch, ReactElement, useEffect, useReducer } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -17,6 +17,7 @@ import { useStorageCache } from '../../hooks/useStorage'
 import useTrackDropout from '../../hooks/useTrackDropout'
 import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
 import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import { StandardJob } from '../../models/Job'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
@@ -117,10 +118,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
   const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
   const storageCache = useStorageCache()
 
-  const exerciseKey = useMemo(
-    () => ({ type: 'training' as const, exercise_type: TrainingExerciseKeys.sentence, job_id: job.id.id }),
-    [job.id.id],
-  )
+  const exerciseKey = useTrainingExerciseKey(TrainingExerciseKeys.sentence, job.id.id)
   const vocabularyItemId = currentSentence.id.type === VocabularyItemTypes.Standard ? currentSentence.id.id : undefined
 
   useTrackExerciseRepetition(exerciseKey)
