@@ -4,7 +4,7 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { ExerciseKeys } from '../../../constants/data'
+import { StandardExerciseKeys } from '../../../constants/data'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { trackEvent } from '../../../services/AnalyticsService'
 import { RepetitionService } from '../../../services/RepetitionService'
@@ -251,8 +251,7 @@ describe('WordChoiceExerciseScreen', () => {
     expect(trackEvent).toHaveBeenCalledWith(storageCache, {
       type: 'module_duration',
       duration_seconds: expect.any(Number),
-      unit_id: 1,
-      exercise_type: ExerciseKeys.wordChoiceExercise,
+      exercise_key: { type: 'exercise', exercise_type: StandardExerciseKeys.wordChoiceExercise, unit_id: 1 },
     })
   })
 
@@ -278,25 +277,17 @@ describe('WordChoiceExerciseScreen', () => {
 
       expect(trackEvent).toHaveBeenCalledWith(storageCache, {
         type: 'exercise_dropout',
-        exercise_type: ExerciseKeys.wordChoiceExercise,
-        unit_id: 1,
+        exercise_key: { type: 'exercise', exercise_type: StandardExerciseKeys.wordChoiceExercise, unit_id: 1 },
         position: 1,
         total: 4,
+        vocabulary_item_id: null,
       })
     })
 
-    it('should track exercise_dropout with null unit_id for repetition exercises', () => {
+    it('should not listen for navigation events for repetition exercises without a unit_id', () => {
       renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)
 
-      act(() => beforeRemoveHandler!())
-
-      expect(trackEvent).toHaveBeenCalledWith(storageCache, {
-        type: 'exercise_dropout',
-        exercise_type: ExerciseKeys.wordChoiceExercise,
-        unit_id: null,
-        position: 1,
-        total: 4,
-      })
+      expect(navigation.addListener).not.toHaveBeenCalledWith('beforeRemove', expect.anything())
     })
 
     it('should not track exercise_dropout when exercise is completed normally', async () => {

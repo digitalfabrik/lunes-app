@@ -1,4 +1,4 @@
-import { ExerciseKeys, Progress } from '../constants/data'
+import { StandardExerciseKeys, Progress } from '../constants/data'
 import { loadAllWords } from '../hooks/useLoadAllWords'
 import { getUnitsOfJob } from './CmsApi'
 import { RepetitionService, sections, WordNodeCard } from './RepetitionService'
@@ -26,7 +26,7 @@ const getWordNodeCards = async (storageCache: StorageCache): Promise<WordNodeCar
 
 const getProgress = async (): Promise<Progress> => {
   const units = await getUnitsOfJob({ type: 'standard', id: jobId })
-  const unitProgress = { [ExerciseKeys.wordChoiceExercise]: 1, [ExerciseKeys.vocabularyList]: 1 }
+  const unitProgress = { [StandardExerciseKeys.wordChoiceExercise]: 1, [StandardExerciseKeys.vocabularyList]: 1 }
   return Object.fromEntries(units.map(unit => [unit.id.id, unitProgress]))
 }
 

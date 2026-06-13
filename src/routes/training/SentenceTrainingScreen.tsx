@@ -13,11 +13,17 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { BUTTONS_THEME, NUMBER_OF_MAX_RETRIES } from '../../constants/data'
+import { BUTTONS_THEME, NUMBER_OF_MAX_RETRIES, TrainingExerciseKeys } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import { StandardJob } from '../../models/Job'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -109,6 +115,29 @@ type SentenceTrainingProps = {
 const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps): ReactElement => {
   const [state, dispatch] = useReducer(stateReducer, sentences, initializeState)
   const currentSentence = getAtIndex(state.sentences, state.currentSentenceIndex)
+  const storageCache = useStorageCache()
+
+  const exerciseKey = useTrainingExerciseKey(TrainingExerciseKeys.sentence, job.id.id)
+  const vocabularyItemId =
+    currentSentence.vocabularyItemId.type === VocabularyItemTypes.Standard
+      ? currentSentence.vocabularyItemId.id
+      : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackMountDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentSentenceIndex,
+    state.sentences.length,
+    vocabularyItemId,
+  )
   const isLastSentence = state.currentSentenceIndex + 1 >= state.sentences.length
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
@@ -129,13 +158,14 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
 
   useEffect(() => {
     if (state.allSentencesFinished) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'sentence',
         job,
         results: { correct: state.correctAnswersCount, total: state.sentences.length },
       })
     }
-  }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length])
+  }, [state.allSentencesFinished, job, navigation, state.correctAnswersCount, state.sentences.length, markCompleted])
 
   useEffect(() => {
     const nextSentenceIndex = state.currentSentenceIndex + 1

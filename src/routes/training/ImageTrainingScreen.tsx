@@ -19,8 +19,14 @@ import {
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
+  TrainingExerciseKeys,
 } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
+import { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, {
   areVocabularyItemIdsEqual,
@@ -28,6 +34,7 @@ import VocabularyItem, {
   VocabularyItemTypes,
 } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
+import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
@@ -156,6 +163,26 @@ type ImageTrainingProps = {
 const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const word = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+  const storageCache = useStorageCache()
+
+  const exerciseKey = useTrainingExerciseKey(TrainingExerciseKeys.image, job.id.id)
+  const vocabularyItemId = word.id.type === VocabularyItemTypes.Standard ? word.id.id : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackMountDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentVocabularyItemIndex,
+    state.vocabularyItems.length,
+    vocabularyItemId,
+  )
   const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
   const isResolved = Boolean(state.answer?.isCorrect) || hasReachedMaxAttempts
   const imageGridItems: ImageGridItem[] = state.choices.map(({ src, key }) => {
@@ -182,13 +209,14 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
 
   useEffect(() => {
     if (state.completed) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'image',
         results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
+  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation, markCompleted])
 
   if (state.vocabularyItems.length === 0) {
     return null

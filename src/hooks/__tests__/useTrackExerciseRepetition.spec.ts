@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react-native'
 
-import { ExerciseKeys } from '../../constants/data'
-import { StandardUnitId } from '../../models/Unit'
+import { StandardExerciseKeyPayload } from '../../constants/data'
 import { trackEvent } from '../../services/AnalyticsService'
 import useTrackExerciseRepetition from '../useTrackExerciseRepetition'
 
@@ -17,7 +16,7 @@ jest.mock('../useStorage', () => ({
   useStorageCache: jest.fn(() => 'mockStorageCache'),
 }))
 
-const unitId: StandardUnitId = { type: 'standard', id: 42 }
+const exerciseKey: StandardExerciseKeyPayload = { type: 'exercise', exercise_type: 'word_choice', unit_id: 42 }
 
 describe('useTrackExerciseRepetition', () => {
   beforeEach(() => {
@@ -25,26 +24,25 @@ describe('useTrackExerciseRepetition', () => {
   })
 
   it('should track exercise_repetition event on mount', () => {
-    renderHook(() => useTrackExerciseRepetition(ExerciseKeys.wordChoiceExercise, unitId))
+    renderHook(() => useTrackExerciseRepetition(exerciseKey))
 
     expect(trackEvent).toHaveBeenCalledWith('mockStorageCache', {
       type: 'exercise_repetition',
-      exercise_type: ExerciseKeys.wordChoiceExercise,
-      unit_id: 42,
+      exercise_key: exerciseKey,
       session_id: 'test-session-id',
     })
     expect(trackEvent).toHaveBeenCalledTimes(1)
   })
 
   it('should count each exercise screen entry once', () => {
-    const { rerender } = renderHook(() => useTrackExerciseRepetition(ExerciseKeys.wordChoiceExercise, unitId))
+    const { rerender } = renderHook(() => useTrackExerciseRepetition(exerciseKey))
     rerender({})
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
   })
 
-  it('should not track an event without a unit id', () => {
-    renderHook(() => useTrackExerciseRepetition(ExerciseKeys.wordChoiceExercise, null))
+  it('should not track an event without an exercise key', () => {
+    renderHook(() => useTrackExerciseRepetition(null))
 
     expect(trackEvent).not.toHaveBeenCalled()
   })

@@ -16,7 +16,7 @@ import {
   Exercise,
   EXERCISE_FEEDBACK,
   EXERCISES,
-  ExerciseKeys,
+  StandardExerciseKeys,
   SCORE_THRESHOLD_POSITIVE_FEEDBACK,
 } from '../../constants/data'
 import useLoadWordsByUnit from '../../hooks/useLoadWordsByUnit'
@@ -121,7 +121,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   )
 
   const nextExercisePreposition =
-    nextExercise?.key === ExerciseKeys.vocabularyList
+    nextExercise?.key === StandardExerciseKeys.vocabularyList
       ? getLabels().exercises.lockedExerciseModal.confirmButtonLabelDeclinated
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
