@@ -7,11 +7,13 @@ import styled from 'styled-components/native'
 import { ArrowRightIcon, ChevronRight } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import Button from '../../components/Button'
+import CheatMode from '../../components/CheatMode'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { BUTTONS_THEME, TrainingExerciseKeys } from '../../constants/data'
+import { BUTTONS_THEME, NUMBER_OF_MAX_RETRIES, TrainingExerciseKeys } from '../../constants/data'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { useStorageCache } from '../../hooks/useStorage'
 import useTrackDropout from '../../hooks/useTrackDropout'
@@ -25,11 +27,8 @@ import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import WordsSelector, { SelectedWord } from './components/WordSelector'
 import { Action, initializeState, isSameWord, Sentence, splitSentence, State, stateReducer } from './sentence/State'
-
-export const MAX_ATTEMPTS_PER_SENTENCE = 5
 
 const ExerciseInfoContainer = styled.View`
   flex-flow: row nowrap;
@@ -68,7 +67,7 @@ const ResultIndicator = ({
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const isCorrect =
     isFinished && state.selectedWordIndexes.every((wordIndex, index) => isSameWord(state, wordIndex, index))
-  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= MAX_ATTEMPTS_PER_SENTENCE
+  const hasReachedMaxAttempts = state.attemptsForCurrentSentence + 1 >= NUMBER_OF_MAX_RETRIES
   const labels = getLabels().exercises.training.sentence
 
   const button =
@@ -119,7 +118,10 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
   const storageCache = useStorageCache()
 
   const exerciseKey = useTrainingExerciseKey(TrainingExerciseKeys.sentence, job.id.id)
-  const vocabularyItemId = currentSentence.id.type === VocabularyItemTypes.Standard ? currentSentence.id.id : undefined
+  const vocabularyItemId =
+    currentSentence.vocabularyItemId.type === VocabularyItemTypes.Standard
+      ? currentSentence.vocabularyItemId.id
+      : undefined
 
   useTrackExerciseRepetition(exerciseKey)
   useTrackMountDuration(durationSeconds => {
@@ -136,6 +138,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
     state.sentences.length,
     vocabularyItemId,
   )
+  const isLastSentence = state.currentSentenceIndex + 1 >= state.sentences.length
   const isFinished = state.selectedWordIndexes.length === state.randomizedWordIndexes.length
   const selectedWords: SelectedWord[] = state.selectedWordIndexes.map((wordIndex, index) => ({
     index: wordIndex,
@@ -174,21 +177,32 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentSentenceIndex}
         numberOfWords={state.sentences.length}
-        navigation={navigation}
+        feedbackTarget={
+          currentSentence.vocabularyItemId.type === VocabularyItemTypes.Standard
+            ? { type: 'word', wordId: currentSentence.vocabularyItemId }
+            : undefined
+        }
       />
 
       <TrainingExerciseContainer
         title={getLabels().exercises.training.sentence.orderWords}
         footer={
-          <Button
-            onPress={() => dispatch({ type: 'nextSentence', wasAnswerCorrect: false })}
-            label={getLabels().exercises.skip}
-            buttonTheme={BUTTONS_THEME.text}
-            iconRight={ChevronRight}
-          />
+          <>
+            {/* The last sentence can't be skipped */}
+            {!isLastSentence && (
+              <Button
+                onPress={() => dispatch({ type: 'skip' })}
+                label={getLabels().exercises.skip}
+                buttonTheme={BUTTONS_THEME.text}
+                iconRight={ChevronRight}
+              />
+            )}
+            <CheatMode cheat={result => dispatch({ type: 'cheatAll', result })} />
+          </>
         }
       >
         <ExerciseInfoContainer>
@@ -233,7 +247,7 @@ const SentenceTrainingScreen = ({ route, navigation }: SentenceTrainingScreenPro
       sentence: exampleSentence!.sentence,
       audio: exampleSentence!.audio,
       words: splitSentence(exampleSentence!.sentence),
-      id,
+      vocabularyItemId: id,
       image: images[0] ?? '',
     }))
 

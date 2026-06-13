@@ -38,12 +38,25 @@ steps:
   - run:
       name: Build message
       command: |
-        printf "## App uploaded to Browserstack\n" >> message 
-        printf "This pull request can now be tested online:\n" >> message
+        printf "## App uploaded to Browserstack\n" >> message
+        if [ -z "${PR_NUMBER}" ]; then
+            printf "The %s branch can now be tested online:\n" "${CIRCLE_BRANCH}" >> message
+        else
+            printf "This pull request can now be tested online:\n" >> message
+        fi
         printf -- "- [Android](%s)\n" "$(cat android/fastlane/browserstack_live_url)" >> message
         printf -- "- [iOS](%s)\n" "$(cat ios/fastlane/browserstack_live_url)" >> message
   - run:
       name: Post pull request comment with a link to the browserstack live apps
-      command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+      command: |
+        # ensure browserstack_message exists so the notify step's cat never errors
+        touch ../browserstack_message
+        if [ -z "${PR_NUMBER}" ]; then
+          # populate browserstack_message so that the notify will post the message in mattermost
+          mv ../message ../browserstack_message
+        else
+          yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+        fi
       working_directory: tools
-  - notify
+  - notify:
+      success_message: '$(cat browserstack_message)'

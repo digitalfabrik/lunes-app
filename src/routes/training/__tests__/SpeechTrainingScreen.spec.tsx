@@ -5,15 +5,16 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import useVoiceRecognition from '../../../hooks/useVoiceRecognition'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import SpeechTrainingScreen from '../SpeechTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -79,6 +80,23 @@ describe('SpeechTrainingScreen', () => {
     const result = renderWithTheme(<SpeechTrainingScreen navigation={navigation} route={route} />)
     await result.findByTestId('recording-button')
     return result
+  }
+
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const result = renderWithStorageCache(storageCache, <SpeechTrainingScreen navigation={navigation} route={route} />)
+    await result.findByTestId('recording-button')
+    return result
+  }
+
+  type RenderApi = Awaited<ReturnType<typeof renderScreenAndWaitForLoad>>
+
+  const failCurrentWordToMax = async ({ getByTestId, getByText }: RenderApi): Promise<void> => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+    await waitFor(() => getByText(getLabels().exercises.continue))
+    fireEvent.press(getByText(getLabels().exercises.continue))
   }
 
   it('should render the recording button with instruction text', async () => {
@@ -149,12 +167,38 @@ describe('SpeechTrainingScreen', () => {
     expect(getByTestId('recording-button')).toBeVisible()
   })
 
-  it('should navigate to TrainingFinished after skipping all words', async () => {
-    const { getByText } = await renderScreenAndWaitForLoad()
+  it('should move a skipped word to the end of the stack to be tested again', async () => {
+    // Two words so the skipped one has somewhere to go
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 2))
+    const renderApi = await renderScreenAndWaitForLoad()
+    const { getByText, queryByText } = renderApi
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
+    fireEvent.press(getByText(getLabels().exercises.skip))
+
+    await failCurrentWordToMax(renderApi)
+
+    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(queryByText(getLabels().exercises.skip)).toBeNull()
+  })
+
+  it('should finish with all words correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'speech',
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with no words correct when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
@@ -165,7 +209,8 @@ describe('SpeechTrainingScreen', () => {
     )
   })
 
-  it('should count a word as correct only when answered correctly on first try', async () => {
+  it('should count a word as correct only when answered correctly on the first try', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValue(['der Spachtel'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -173,20 +218,17 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 1, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: 1 },
         job: route.params.job,
       }),
     )
   })
 
   it('should not count a word as correct when it needed a retry', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValueOnce(['etwas anderes'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -199,17 +241,24 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 0, total: 1 },
         job: route.params.job,
       }),
     )
+  })
+
+  it('should show continue instead of try again after reaching the max number of attempts', async () => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    // Speak incorrectly until the attempt limit is reached
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+
+    await waitFor(() => expect(getByText(getLabels().exercises.continue)).toBeVisible())
+    expect(queryByText(getLabels().exercises.tryAgain)).toBeNull()
   })
 
   it('should show not authorized view when permissions are denied', async () => {

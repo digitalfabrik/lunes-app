@@ -15,6 +15,7 @@ import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import NotAuthorisedView from '../../components/NotAuthorisedView'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -24,6 +25,7 @@ import { HeadingText } from '../../components/text/Heading'
 import {
   BUTTONS_THEME,
   MAX_TRAINING_REPETITIONS,
+  NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
   TrainingExerciseKeys,
@@ -40,11 +42,10 @@ import { StandardJob } from '../../models/Job'
 import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
-import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
 import { evaluateSpeechMatch } from './services/SpeechMatchingService'
 
 const SPEECH_PERMISSIONS =
@@ -100,7 +101,7 @@ const HintText = styled(ContentText)`
 type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
-  hasIncorrectAttempt: boolean
+  incorrectAttemptsForCurrentWord: number
   answerState: SimpleResult | 'error' | null
   correctAnswersCount: number
   completed: boolean
@@ -114,7 +115,8 @@ type Action =
   | { type: 'recognitionUnavailable' }
   | { type: 'languageUnavailable' }
   | { type: 'retry' }
-  | { type: 'nextWord'; isSkipping: boolean }
+  | { type: 'nextWord' }
+  | { type: 'skip' }
   | { type: 'cheatAll'; result: SimpleResult }
   | { type: 'appBecameActive' }
 
@@ -123,7 +125,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     vocabularyItems: selectedItems,
     currentVocabularyItemIndex: 0,
-    hasIncorrectAttempt: false,
+    incorrectAttemptsForCurrentWord: 0,
     answerState: null,
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
@@ -135,8 +137,11 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
 const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'speechResult': {
-      const hasIncorrectAttempt = state.hasIncorrectAttempt || action.answerState !== SIMPLE_RESULTS.correct
-      return { ...state, answerState: action.answerState, hasIncorrectAttempt }
+      const isCorrect = action.answerState === SIMPLE_RESULTS.correct
+      const incorrectAttemptsForCurrentWord = isCorrect
+        ? state.incorrectAttemptsForCurrentWord
+        : state.incorrectAttemptsForCurrentWord + 1
+      return { ...state, answerState: action.answerState, incorrectAttemptsForCurrentWord }
     }
     case 'speechError':
       return { ...state, answerState: 'error' }
@@ -149,15 +154,24 @@ const stateReducer = (state: State, action: Action): State => {
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      const correctAnswersCount =
-        !state.hasIncorrectAttempt && !action.isSkipping ? state.correctAnswersCount + 1 : state.correctAnswersCount
+      const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0
+      const correctAnswersCount = answeredCorrectlyFirstTry ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentVocabularyItemIndex: nextIndex,
         completed,
         correctAnswersCount,
         answerState: null,
-        hasIncorrectAttempt: false,
+        incorrectAttemptsForCurrentWord: 0,
+      }
+    }
+    case 'skip': {
+      const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+      return {
+        ...state,
+        vocabularyItems: reorderedVocabularyItems,
+        answerState: null,
+        incorrectAttemptsForCurrentWord: 0,
       }
     }
     case 'cheatAll': {
@@ -286,6 +300,8 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
+  const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+  const isLastWord = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
 
   const renderExerciseContent = (): ReactElement | null => {
     if (canRecord) {
@@ -330,39 +346,46 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     </BottomSheetRow>
   )
 
-  const resultButton = isCorrect ? (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
-      label={getLabels().exercises.continue}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  ) : (
-    <Button
-      onPress={() => dispatch({ type: 'retry' })}
-      label={getLabels().exercises.tryAgain}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  )
+  const resultButton =
+    isCorrect || hasReachedMaxAttempts ? (
+      <Button
+        onPress={() => dispatch({ type: 'nextWord' })}
+        label={getLabels().exercises.continue}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    ) : (
+      <Button
+        onPress={() => dispatch({ type: 'retry' })}
+        label={getLabels().exercises.tryAgain}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    )
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
-        navigation={navigation}
+        feedbackTarget={
+          currentWord.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: currentWord.id } : undefined
+        }
       />
       <TrainingExerciseContainer
         title={labels.prompt}
         footer={
           <>
-            <Button
-              onPress={() => dispatch({ type: 'nextWord', isSkipping: true })}
-              buttonTheme={BUTTONS_THEME.text}
-              label={getLabels().exercises.skip}
-              iconRight={ArrowRightIcon}
-            />
+            {/* The last word can't be skipped */}
+            {!isLastWord && (
+              <Button
+                onPress={() => dispatch({ type: 'skip' })}
+                buttonTheme={BUTTONS_THEME.text}
+                label={getLabels().exercises.skip}
+                iconRight={ArrowRightIcon}
+              />
+            )}
             <CheatMode cheat={handleCheat} />
           </>
         }
