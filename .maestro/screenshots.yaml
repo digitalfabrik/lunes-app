@@ -50,7 +50,7 @@ name: Lunes store screenshots
 - waitForAnimationToEnd
 - takeScreenshot: ${OUTPUT_DIR}/01_home
 
-# 02 — UnitSelection (module list for the first selected job).
+# Open the unit list (UnitSelection) for the first job.
 - tapOn:
     text: 'Übung starten'
     index: 0
@@ -59,9 +59,8 @@ name: Lunes store screenshots
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/02_modules
 
-# 03 — Wortliste exercise (vocabulary list with images).
+# Select the first unit, then start the WordChoice exercise (unlocked by the seeded screenshot data).
 - tapOn:
     id: 'list-item'
     index: 0
@@ -70,17 +69,8 @@ name: Lunes store screenshots
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- tapOn: 'Wortliste.*'
-- extendedWaitUntil:
-    notVisible:
-      id: 'loading'
-    timeout: 15000
-- waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/03_wortliste
 
-# 04 — WordChoice exercise (article + word selection).
-- tapOn: 'Übung beenden'
-- waitForAnimationToEnd
+# 02 — WordChoice exercise (article + word selection).
 - tapOn: 'Übung.*'
 - extendedWaitUntil:
     notVisible:
@@ -89,7 +79,7 @@ name: Lunes store screenshots
 - tapOn:
     id: 'word-item'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/04_word_choice
+- takeScreenshot: ${OUTPUT_DIR}/02_word_choice
 - tapOn: 'Nächstes Wort'
 
 # Exit out of the exercise back to the home stack root.
@@ -98,21 +88,21 @@ name: Lunes store screenshots
 - back
 - back
 
-# 05 — Dictionary tab.
+# 03 — Dictionary tab.
 - tapOn: 'Suche(,.*)?'
 - extendedWaitUntil:
     notVisible:
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/05_dictionary
+- takeScreenshot: ${OUTPUT_DIR}/03_dictionary
 
-# 06 — Repetition tab.
+# 04 — Repetition tab.
 - tapOn: 'Vertiefen(,.*)?'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/06_repetition
+- takeScreenshot: ${OUTPUT_DIR}/04_repetition
 
-# 07 — Image training exercise.
+# 05 — Image training exercise.
 # Two taps to reset to the home screen, one tap only goes back to the units screen
 - tapOn:
     text: 'Start.*'
@@ -128,18 +118,22 @@ name: Lunes store screenshots
 - tapOn:
     id: 'imageOption'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/07_image_training
+- takeScreenshot: ${OUTPUT_DIR}/05_image_training
 
 - tapOn: 'Übung beenden'
+- tapOn: 'Beenden'
+- waitForAnimationToEnd
 
-# 08 - Speech training
+# 06 — Speech training
 - tapOn: 'Sprechstudio.*'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/08_speech_training
+- takeScreenshot: ${OUTPUT_DIR}/06_speech_training
 
 - tapOn: 'Übung beenden'
+- tapOn: 'Beenden'
+- waitForAnimationToEnd
 
-# 09 - Sentence training
+# 07 — Sentence training
 - tapOn: 'Satzbausteine.*'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/09_sentence_training
+- takeScreenshot: ${OUTPUT_DIR}/07_sentence_training
