@@ -8,6 +8,8 @@ Usually it should be good enough to just update the expected texts.
 If the maestro still cannot find an element, a good debugging tool is the `maestro studio`, which opens
 an interactive debugger.
 
+One important note, Android only allows eight screenshots per language.
+
 ## Updating screenshots
 
 > [!WARNING]
