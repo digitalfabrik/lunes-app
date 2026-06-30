@@ -1,4 +1,4 @@
-when: << pipeline.parameters.run_screenshots >>
+when: << pipeline.parameters.run_update_screenshots >>
 jobs:
   - screenshot_android:
       context:

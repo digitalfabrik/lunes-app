@@ -17,6 +17,6 @@ parameters:
     default: false
     type: boolean
 
-  run_screenshots:
+  run_update_screenshots:
     default: false
     type: boolean

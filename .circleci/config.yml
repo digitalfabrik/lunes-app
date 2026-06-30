@@ -778,7 +778,7 @@ parameters:
     run_promote:
         default: false
         type: boolean
-    run_screenshots:
+    run_update_screenshots:
         default: false
         type: boolean
 version: 2.1
@@ -930,7 +930,7 @@ workflows:
                 requires:
                     - move_release_notes
         when: << pipeline.parameters.run_promote >>
-    screenshots:
+    update_screenshots:
         jobs:
             - screenshot_android:
                 context:
@@ -945,6 +945,6 @@ workflows:
                 requires:
                     - screenshot_android
                     - screenshot_ios
-        when: << pipeline.parameters.run_screenshots >>
+        when: << pipeline.parameters.run_update_screenshots >>
     version: 2
 
