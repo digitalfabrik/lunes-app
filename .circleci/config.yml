@@ -720,7 +720,7 @@ jobs:
                     adb shell input keyevent 82 || true
                 name: Create and boot emulator
             - run:
-                command: yarn android:production
+                command: yarn react-native run-android --no-packager --mode=release --active-arch-only
                 name: Build and install release app on emulator
             - run:
                 command: yarn screenshots:android

@@ -39,7 +39,7 @@ steps:
         adb shell input keyevent 82 || true
   - run:
       name: Build and install release app on emulator
-      command: yarn android:production
+      command: yarn react-native run-android --no-packager --mode=release --active-arch-only
   - run:
       name: Capture screenshots
       command: yarn screenshots:android
