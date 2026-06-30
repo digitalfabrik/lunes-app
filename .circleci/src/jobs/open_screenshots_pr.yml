@@ -1,0 +1,30 @@
+# Opens (or reuses) a single PR on the update-screenshots branch with both platforms' screenshots
+docker:
+  - image: cimg/node:20.18.3
+resource_class: small
+shell: /bin/bash -eo pipefail
+steps:
+  - checkout
+  - attach_workspace:
+      at: . # at repo root so the PNG paths stay repo-relative
+  - restore_yarn_tools_cache
+  - run:
+      name: Open screenshots PR
+      command: |
+        FILES=$(ls android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png ios/fastlane/screenshots/de-DE/*.png 2>/dev/null)
+        count=$(echo "$FILES" | wc -w)
+        if [ "$count" -eq 0 ]; then
+          echo "No screenshots produced, nothing to commit"
+          exit 1
+        fi
+        # app-toolbelt commits files at the exact paths passed, so run from repo root (don't cd into tools)
+        "$(yarn --cwd tools bin app-toolbelt)" v0 pr open-pr $FILES \
+          --private-key "${DELIVERINO_PRIVATE_KEY}" \
+          --owner "${CIRCLE_PROJECT_USERNAME}" \
+          --repo "${CIRCLE_PROJECT_REPONAME}" \
+          --head update-screenshots \
+          --base main \
+          --message "Regenerate store screenshots" \
+          --title "Regenerate store screenshots" \
+          --body "### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release."
+  - notify

@@ -30,6 +30,14 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    install_maestro:
+        description: Install the Maestro CLI and add it to the PATH for subsequent steps.
+        steps:
+            - run:
+                command: |
+                    curl -fsSL "https://get.maestro.mobile.dev" | bash
+                    echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> "$BASH_ENV"
+                name: Install Maestro
     notify:
         description: Send a notification (to Mattermost) at the end of a job, based on success or failure. Must be the last step in a job.
         parameters:
@@ -208,6 +216,20 @@ commands:
                 name: Save Yarn Tools Package Cache
                 paths:
                     - tools/.yarn/cache
+    verify_screenshots:
+        description: Fails unless the full set of eight screenshots was produced in the given directory
+        parameters:
+            directory:
+                type: string
+        steps:
+            - run:
+                command: |
+                    count=$(ls << parameters.directory >>/*.png 2>/dev/null | wc -l)
+                    if [ "$count" -ne 8 ]; then
+                      echo "Expected 8 screenshots in << parameters.directory >>, found $count."
+                      exit 1
+                    fi
+                name: Verify screenshots
 jobs:
     build_android:
         docker:
@@ -595,6 +617,36 @@ jobs:
             - notify:
                 channel: releases
                 success_message: Lunes - ${PROMOTION_MESSAGE}
+    open_screenshots_pr:
+        docker:
+            - image: cimg/node:20.18.3
+        resource_class: small
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - attach_workspace:
+                at: .
+            - restore_yarn_tools_cache
+            - run:
+                command: |
+                    FILES=$(ls android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png ios/fastlane/screenshots/de-DE/*.png 2>/dev/null)
+                    count=$(echo "$FILES" | wc -w)
+                    if [ "$count" -eq 0 ]; then
+                      echo "No screenshots produced, nothing to commit"
+                      exit 1
+                    fi
+                    # app-toolbelt commits files at the exact paths passed, so run from repo root (don't cd into tools)
+                    "$(yarn --cwd tools bin app-toolbelt)" v0 pr open-pr $FILES \
+                      --private-key "${DELIVERINO_PRIVATE_KEY}" \
+                      --owner "${CIRCLE_PROJECT_USERNAME}" \
+                      --repo "${CIRCLE_PROJECT_REPONAME}" \
+                      --head update-screenshots \
+                      --base main \
+                      --message "Regenerate store screenshots" \
+                      --title "Regenerate store screenshots" \
+                      --body "### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release."
+                name: Open screenshots PR
+            - notify
     promote_android:
         docker:
             - image: cimg/android:2024.08.1-node
@@ -629,6 +681,90 @@ jobs:
                 name: '[FL] App Store Connect Promotion'
                 working_directory: ios
             - notify
+    screenshot_android:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+            TOTAL_CPUS: 4
+        machine:
+            image: android:2024.11.1
+        resource_class: large
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - run:
+                command: |
+                    nvm install 20.18.3
+                    nvm alias default 20.18.3
+                    corepack enable
+                name: Set up Node
+            - restore_yarn_cache
+            - run:
+                command: sudo apt-get update && sudo apt-get install -y ninja-build
+                name: Install Ninja
+            - run:
+                command: |
+                    wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+                    tar -xzvf cmake-3.22.1-Linux-x86_64.tar.gz -C $HOME
+                    echo 'export PATH=$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH' >> "$BASH_ENV"
+                name: Install CMake
+            - install_maestro
+            - run:
+                command: |
+                    sdkmanager "system-images;android-34;google_apis;x86_64"
+                    echo "no" | avdmanager create avd -n screenshot_avd -d "medium_phone" \
+                      -k "system-images;android-34;google_apis;x86_64"
+                    emulator -avd screenshot_avd -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect &
+                    adb wait-for-device
+                    timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 3; done' \
+                      || { echo "Emulator failed to boot within 5 minutes."; exit 1; }
+                    adb shell input keyevent 82 || true
+                name: Create and boot emulator
+            - run:
+                command: yarn android:production
+                name: Build and install release app on emulator
+            - run:
+                command: yarn screenshots:android
+                name: Capture screenshots
+            - verify_screenshots:
+                directory: android/fastlane/metadata/de-DE/images/phoneScreenshots
+            - persist_to_workspace:
+                paths:
+                    - android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png
+                root: .
+            - notify
+    screenshot_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+            TOTAL_CPUS: 6
+        macos:
+            xcode: 26.3.0
+        resource_class: m4pro.medium
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - restore_yarn_cache
+            - restore_ruby_cache:
+                directory: ios
+            - restore_cocoa_pods_cache
+            - install_maestro
+            - run:
+                command: |
+                    xcrun simctl boot "iPhone 16 Pro" || true
+                    xcrun simctl bootstatus "iPhone 16 Pro" -b
+                name: Boot simulator
+            - run:
+                command: yarn ios:production --simulator "iPhone 16 Pro"
+                name: Build and install release app on simulator
+            - run:
+                command: yarn screenshots:ios
+                name: Capture screenshots
+            - verify_screenshots:
+                directory: ios/fastlane/screenshots/de-DE
+            - persist_to_workspace:
+                paths:
+                    - ios/fastlane/screenshots/de-DE/*.png
+                root: .
+            - notify
 parameters:
     run_browserstack_delivery:
         default: false
@@ -640,6 +776,9 @@ parameters:
         default: false
         type: boolean
     run_promote:
+        default: false
+        type: boolean
+    run_screenshots:
         default: false
         type: boolean
 version: 2.1
@@ -791,5 +930,21 @@ workflows:
                 requires:
                     - move_release_notes
         when: << pipeline.parameters.run_promote >>
+    screenshots:
+        jobs:
+            - screenshot_android:
+                context:
+                    - mattermost
+            - screenshot_ios:
+                context:
+                    - mattermost
+            - open_screenshots_pr:
+                context:
+                    - mattermost
+                    - deliverino
+                requires:
+                    - screenshot_android
+                    - screenshot_ios
+        when: << pipeline.parameters.run_screenshots >>
     version: 2
 

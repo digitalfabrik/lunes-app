@@ -1,0 +1,15 @@
+when: << pipeline.parameters.run_screenshots >>
+jobs:
+  - screenshot_android:
+      context:
+        - mattermost
+  - screenshot_ios:
+      context:
+        - mattermost
+  - open_screenshots_pr:
+      context:
+        - mattermost
+        - deliverino
+      requires:
+        - screenshot_android
+        - screenshot_ios

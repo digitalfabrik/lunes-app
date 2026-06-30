@@ -1,0 +1,13 @@
+description: Fails unless the full set of eight screenshots was produced in the given directory
+parameters:
+  directory:
+    type: string
+steps:
+  - run:
+      name: Verify screenshots
+      command: |
+        count=$(ls << parameters.directory >>/*.png 2>/dev/null | wc -l)
+        if [ "$count" -ne 8 ]; then
+          echo "Expected 8 screenshots in << parameters.directory >>, found $count."
+          exit 1
+        fi
