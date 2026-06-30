@@ -18,7 +18,7 @@ import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { useStorageCache } from '../../hooks/useStorage'
 import useTrackDropout from '../../hooks/useTrackDropout'
 import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
-import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
 import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import { StandardJob } from '../../models/Job'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -124,7 +124,7 @@ const SentenceTraining = ({ job, sentences, navigation }: SentenceTrainingProps)
       : undefined
 
   useTrackExerciseRepetition(exerciseKey)
-  useTrackMountDuration(durationSeconds => {
+  useTrackForegroundDuration(durationSeconds => {
     trackEvent(storageCache, {
       type: 'module_duration',
       exercise_key: exerciseKey,

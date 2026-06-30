@@ -6,7 +6,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import { StandardExerciseKeys, StandardExerciseKeyPayload } from '../../constants/data'
 import { useStorageCache } from '../../hooks/useStorage'
 import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
-import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import WordChoiceExercise from './components/WordChoiceExercise'
@@ -32,7 +32,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   )
 
   useTrackExerciseRepetition(exerciseKey)
-  useTrackMountDuration(durationSeconds => {
+  useTrackForegroundDuration(durationSeconds => {
     if (exerciseKey !== null) {
       trackEvent(storageCache, {
         type: 'module_duration',
