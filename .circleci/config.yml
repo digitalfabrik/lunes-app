@@ -733,6 +733,17 @@ jobs:
                 paths:
                     - android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png
                 root: .
+            - run:
+                command: |
+                    mkdir -p /tmp/android-debug
+                    adb logcat -d > /tmp/android-debug/logcat.txt 2>&1 || true
+                    adb exec-out screencap -p > /tmp/android-debug/screen.png || true
+                    cp -r ~/.maestro/tests /tmp/android-debug/maestro 2>/dev/null || true
+                name: Collect debug output on failure
+                when: on_fail
+            - store_artifacts:
+                path: /tmp/android-debug
+                when: on_fail
             - notify
     screenshot_ios:
         environment:
