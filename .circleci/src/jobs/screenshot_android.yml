@@ -32,7 +32,9 @@ steps:
         sdkmanager "system-images;android-34;google_apis;x86_64"
         echo "no" | avdmanager create avd -n screenshot_avd -d "medium_phone" \
           -k "system-images;android-34;google_apis;x86_64"
-        emulator -avd screenshot_avd -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect &
+        # Without a camera, rn-vision-camera leaves the app on a blank screen at startup
+        emulator -avd screenshot_avd -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect \
+          -camera-back virtualscene -camera-front emulated &
         adb wait-for-device
         timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 3; done' \
           || { echo "Emulator failed to boot within 5 minutes."; exit 1; }
