@@ -25,7 +25,7 @@ import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
 import { useStorageCache } from '../../hooks/useStorage'
 import useTrackDropout from '../../hooks/useTrackDropout'
 import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
-import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
 import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import { StandardJob } from '../../models/Job'
 import VocabularyItem, {
@@ -169,7 +169,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
   const vocabularyItemId = word.id.type === VocabularyItemTypes.Standard ? word.id.id : undefined
 
   useTrackExerciseRepetition(exerciseKey)
-  useTrackMountDuration(durationSeconds => {
+  useTrackForegroundDuration(durationSeconds => {
     trackEvent(storageCache, {
       type: 'module_duration',
       exercise_key: exerciseKey,
