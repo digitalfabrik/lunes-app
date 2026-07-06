@@ -644,7 +644,7 @@ jobs:
                       --base main \
                       --message "Regenerate store screenshots" \
                       --title "Regenerate store screenshots" \
-                      --body "### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release."
+                      --body $'### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release.'
                 name: Open screenshots PR
             - notify
     promote_android:
@@ -684,10 +684,10 @@ jobs:
     screenshot_android:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
-            TOTAL_CPUS: 4
+            TOTAL_CPUS: 8
         machine:
             image: android:2024.11.1
-        resource_class: large
+        resource_class: xlarge
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
@@ -740,17 +740,6 @@ jobs:
                 paths:
                     - android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png
                 root: .
-            - run:
-                command: |
-                    mkdir -p /tmp/android-debug
-                    adb logcat -d > /tmp/android-debug/logcat.txt 2>&1 || true
-                    adb exec-out screencap -p > /tmp/android-debug/screen.png || true
-                    cp -r ~/.maestro/tests /tmp/android-debug/maestro 2>/dev/null || true
-                name: Collect debug output on failure
-                when: on_fail
-            - store_artifacts:
-                path: /tmp/android-debug
-                when: on_fail
             - notify
     screenshot_ios:
         environment:
