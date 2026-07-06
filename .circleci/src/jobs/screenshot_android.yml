@@ -38,6 +38,9 @@ steps:
         adb wait-for-device
         timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 3; done' \
           || { echo "Emulator failed to boot within 5 minutes."; exit 1; }
+        # Software rendering makes SystemUI miss its watchdog, popping a "not responding"
+        # dialog over the app; suppress error dialogs and drop animations so it stays hidden.
+        adb shell settings put global hide_error_dialogs 1
         adb shell settings put global window_animation_scale 0
         adb shell settings put global transition_animation_scale 0
         adb shell settings put global animator_duration_scale 0
