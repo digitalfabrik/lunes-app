@@ -629,9 +629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-toolbelt@github:digitalfabrik/app-toolbelt#c0936dd0fcb20868dac2e135a6dfcbac3854d595":
-  version: 0.10.0
-  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=c0936dd0fcb20868dac2e135a6dfcbac3854d595"
+"app-toolbelt@github:digitalfabrik/app-toolbelt#27978737d4300e31110b68365f17342c84c16749":
+  version: 1.2.0
+  resolution: "app-toolbelt@https://github.com/digitalfabrik/app-toolbelt.git#commit=27978737d4300e31110b68365f17342c84c16749"
   dependencies:
     "@expo/plist": ^0.5.2
     "@octokit/auth-app": ^8.2.0
@@ -644,14 +644,14 @@ __metadata:
     commander: ^14.0.3
     decamelize: ^6.0.1
     flat: ^6.0.1
-    js-yaml: ^4.1.1
+    js-yaml: ^4.2.0
     node-fetch: ^3.3.2
     oauth: ^0.10.2
     tsx: ^4.22.4
     typescript: ^6.0.3
   bin:
     app-toolbelt: bin/app-toolbelt
-  checksum: 5ed876651a85a138b7a91d8e39c99bdcf9012e62b5db7c108909fc340b3857c0a0c208b7d0f95e51030871ec0c6654107bde0871755b840c942e120e191300de
+  checksum: 250eb930c24e210ca8b2325344fdb30a90bba16978afb0e6a80cea5f99f9ea77063f78874dfb9845bcbf67c2a67f3005696658785ab76b0729cc69f43df362f7
   languageName: node
   linkType: hard
 
@@ -1121,7 +1121,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.1":
+"js-yaml@npm:^4.2.0":
   version: 4.3.0
   resolution: "js-yaml@npm:4.3.0"
   dependencies:
@@ -1569,7 +1569,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tools@workspace:."
   dependencies:
-    app-toolbelt: "github:digitalfabrik/app-toolbelt#c0936dd0fcb20868dac2e135a6dfcbac3854d595"
+    app-toolbelt: "github:digitalfabrik/app-toolbelt#27978737d4300e31110b68365f17342c84c16749"
   languageName: unknown
   linkType: soft
 

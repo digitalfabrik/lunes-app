@@ -26,5 +26,6 @@ steps:
           --base main \
           --message "Regenerate store screenshots" \
           --title "Regenerate store screenshots" \
+          --label maintenance \
           --body $'### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release.'
   - notify
