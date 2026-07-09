@@ -23,8 +23,6 @@ type ImageGridProps = {
   onPress: (key: VocabularyItemId) => void
 }
 
-const NUM_COLUMNS = 2
-
 const Grid = styled(View)`
   flex-direction: row;
   flex-wrap: wrap;
@@ -58,14 +56,19 @@ const StyledImage = styled.Image<{ width: number; padding: number; state: ImageG
 // Looks like there is no built-in way to create a responsive grid in React native, so let's do some manual layout...
 const ImageGrid = ({ items, onPress }: ImageGridProps): ReactElement => {
   const [availableWidth, setAvailableWidth] = useState(0)
+  const [isLandscape, setIsLandscape] = useState(false)
+  // If the screen is wide, we should fit all images into a single row instead of two rows.
+  // Otherwise, the images appear way too large
+  const numColumns = isLandscape ? 4 : 2
   const paddingPx = theme.spacingsPlain.xs
   // let's be a bit defensive here so that there are no unwanted overflows in the flow layout
-  const imageWidth = Math.floor((availableWidth - 2 * NUM_COLUMNS * paddingPx) / NUM_COLUMNS - 1)
+  const imageWidth = Math.floor((availableWidth - 2 * numColumns * paddingPx) / numColumns - 1)
 
   const onGridLayout = (event: LayoutChangeEvent): void => {
     if (availableWidth !== event.nativeEvent.layout.width) {
       setAvailableWidth(event.nativeEvent.layout.width)
     }
+    setIsLandscape(event.nativeEvent.layout.width > event.nativeEvent.layout.height)
   }
 
   return (
