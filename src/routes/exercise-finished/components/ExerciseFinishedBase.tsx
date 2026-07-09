@@ -11,9 +11,13 @@ import { HeadingBackground } from '../../../components/text/Heading'
 import { Color } from '../../../constants/theme/colors'
 import { getLabels, wordsDescription } from '../../../services/helpers'
 
+const ScrollContainer = styled.ScrollView`
+  flex: 1;
+`
+
 const Root = styled.View`
   background-color: ${prop => prop.theme.colors.background};
-  height: 100%;
+  flex: 1;
   align-items: center;
 `
 
@@ -61,30 +65,32 @@ const ExerciseFinishedBase = ({
 }: ExerciseFinishedBaseProps): ReactElement => {
   const theme = useTheme()
   return (
-    <Root>
-      <RoundedBackground color={theme.colors.primary}>
-        <AlignRight>
-          <IconButton onPress={onBack}>
-            <CloseIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-          </IconButton>
-        </AlignRight>
-        <FeedbackIcon width={40} height={40} />
-        <MessageContainer>
-          <Message>{message}</Message>
-          <Results color={feedbackColor}>
-            {results.correct} {getLabels().results.of} {wordsDescription(results.total)} {getLabels().results.correct}
-          </Results>
-          <Progress.Bar
-            color={feedbackColor}
-            progress={results.correct / results.total}
-            unfilledColor={theme.colors.background}
-            borderWidth={0}
-          />
-        </MessageContainer>
-      </RoundedBackground>
+    <ScrollContainer contentContainerStyle={{ flexGrow: 1 }}>
+      <Root>
+        <RoundedBackground color={theme.colors.primary}>
+          <AlignRight>
+            <IconButton onPress={onBack}>
+              <CloseIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+            </IconButton>
+          </AlignRight>
+          <FeedbackIcon width={40} height={40} />
+          <MessageContainer>
+            <Message>{message}</Message>
+            <Results color={feedbackColor}>
+              {results.correct} {getLabels().results.of} {wordsDescription(results.total)} {getLabels().results.correct}
+            </Results>
+            <Progress.Bar
+              color={feedbackColor}
+              progress={results.correct / results.total}
+              unfilledColor={theme.colors.background}
+              borderWidth={0}
+            />
+          </MessageContainer>
+        </RoundedBackground>
 
-      {children}
-    </Root>
+        {children}
+      </Root>
+    </ScrollContainer>
   )
 }
 

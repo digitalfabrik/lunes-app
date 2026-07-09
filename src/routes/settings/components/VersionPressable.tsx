@@ -6,8 +6,6 @@ import { ContentSecondary } from '../../../components/text/Content'
 import { getLabels } from '../../../services/helpers'
 
 const Version = styled.Pressable`
-  position: absolute;
-  bottom: 0;
   padding: ${props => props.theme.spacings.xl} ${props => props.theme.spacings.md};
 `
 
