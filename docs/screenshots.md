@@ -43,3 +43,11 @@ To take the screenshots:
 1. Start the simulator
 2. Build the app with `yarn ios:production`
 3. Take the screenshots with `yarn screenshots:ios`
+
+## In CI
+
+The screenshots can also be captured in CircleCI by triggering a pipeline with the
+`run_update_screenshots` parameter set to `true` (CircleCI UI → Trigger Pipeline, or via the API).
+This runs the `screenshot_android` and `screenshot_ios` jobs (on a Linux emulator and a macOS
+simulator respectively) and then opens or updates a single pull request on the `update-screenshots`
+branch with the regenerated images for review.

@@ -1,0 +1,7 @@
+description: Install the Maestro CLI and add it to the PATH for subsequent steps.
+steps:
+  - run:
+      name: Install Maestro
+      command: |
+        curl -fsSL "https://get.maestro.mobile.dev" | bash
+        echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> "$BASH_ENV"
