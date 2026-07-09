@@ -56,6 +56,7 @@ const SPEECH_PERMISSIONS =
 const WordImageContainer = styled.View`
   padding: 0 ${props => props.theme.spacings.xxl};
   width: 100%;
+  max-width: ${props => props.theme.sizes.maximumImage};
 `
 
 const WordImage = styled.Image`
