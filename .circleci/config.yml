@@ -544,6 +544,24 @@ jobs:
                 command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
             - notify
+    llm-pr-review:
+        docker:
+            - image: cimg/python:3.11
+        resource_class: small
+        steps:
+            - checkout
+            - run:
+                command: pip install --user "PyJWT[crypto]" requests
+                name: Install python dependencies
+            - run:
+                command: |
+                    TOKEN=$(./.circleci/scripts/get_access_token.py)
+                    echo "export DELIVERINO_ACCESS_TOKEN=$TOKEN" >> $BASH_ENV
+                name: Request Deliverino installation access token
+            - run:
+                command: ./.circleci/scripts/llm-pr-review.py
+                name: Run LLM PR review
+            - notify
     move_release_notes:
         docker:
             - image: cimg/node:20.18.3
@@ -827,6 +845,11 @@ workflows:
             - check:
                 context:
                     - mattermost
+            - llm-pr-review:
+                context:
+                    - mattermost
+                    - deliverino
+                    - digitalfabrik-llm-api
         when:
             and:
                 - << pipeline.parameters.run_commit >>
