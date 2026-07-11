@@ -1,0 +1,61 @@
+# Captures the store screenshots on Android
+machine:
+  image: android:2024.11.1
+resource_class: xlarge
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+  TOTAL_CPUS: 8
+shell: /bin/bash --login -o pipefail
+steps:
+  - checkout
+  - run:
+      name: Set up Node
+      command: |
+        nvm install 20.18.3
+        nvm alias default 20.18.3
+        corepack enable
+  - restore_yarn_cache
+  # react-native-reanimated needs Ninja and CMake to build (see build_android).
+  - run:
+      name: Install Ninja
+      command: sudo apt-get update && sudo apt-get install -y ninja-build
+  - run:
+      name: Install CMake
+      command: |
+        wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+        tar -xzvf cmake-3.22.1-Linux-x86_64.tar.gz -C $HOME
+        echo 'export PATH=$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH' >> "$BASH_ENV"
+  - install_maestro
+  - run:
+      name: Create and boot emulator
+      command: |
+        sdkmanager "system-images;android-34;google_apis;x86_64"
+        echo "no" | avdmanager create avd -n screenshot_avd -d "medium_phone" \
+          -k "system-images;android-34;google_apis;x86_64"
+        # Without a camera, rn-vision-camera leaves the app on a blank screen at startup
+        emulator -avd screenshot_avd -no-window -no-audio -no-boot-anim -no-snapshot -no-metrics -gpu swiftshader_indirect \
+          -memory 4096 -cores 4 -camera-back virtualscene -camera-front emulated &
+        adb wait-for-device
+        timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 3; done' \
+          || { echo "Emulator failed to boot within 5 minutes."; exit 1; }
+        # Software rendering makes SystemUI miss its watchdog, popping a "not responding"
+        # dialog over the app; suppress error dialogs and drop animations so it stays hidden.
+        adb shell settings put global hide_error_dialogs 1
+        adb shell settings put global window_animation_scale 0
+        adb shell settings put global transition_animation_scale 0
+        adb shell settings put global animator_duration_scale 0
+        sleep 30
+        adb shell input keyevent 82 || true
+  - run:
+      name: Build and install release app on emulator
+      command: yarn react-native run-android --no-packager --mode=release --active-arch-only
+  - run:
+      name: Capture screenshots
+      command: yarn screenshots:android
+  - verify_screenshots:
+      directory: android/fastlane/metadata/de-DE/images/phoneScreenshots
+  - persist_to_workspace:
+      root: .
+      paths:
+        - android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png
+  - notify

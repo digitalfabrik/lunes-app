@@ -16,3 +16,7 @@ parameters:
   run_browserstack_delivery:
     default: false
     type: boolean
+
+  run_update_screenshots:
+    default: false
+    type: boolean

@@ -7,17 +7,16 @@ name: Lunes store screenshots
       all: allow
 
 # 00 — Onboarding scope screen ("Willkommen bei Lunes!" + jobs list).
-- runFlow:
-    when:
-      visible: 'Willkommen bei Lunes!'
-    commands:
-      - extendedWaitUntil:
-          notVisible:
-            id: 'loading'
-          timeout: 15000
-      - waitForAnimationToEnd
-      - takeScreenshot: ${OUTPUT_DIR}/00_onboarding
-      - tapOn: 'Überspringen'
+- extendedWaitUntil:
+    visible: 'Willkommen bei Lunes!'
+    timeout: 30000
+- extendedWaitUntil:
+    notVisible:
+      id: 'loading'
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/00_onboarding
+- tapOn: 'Überspringen'
 
 # Dismiss analytics-consent modal if it appears.
 - runFlow:
