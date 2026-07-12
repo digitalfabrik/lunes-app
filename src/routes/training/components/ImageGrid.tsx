@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { LayoutChangeEvent, View } from 'react-native'
+import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import PressableOpacity from '../../../components/PressableOpacity'
@@ -56,7 +56,8 @@ const StyledImage = styled.Image<{ width: number; padding: number; state: ImageG
 // Looks like there is no built-in way to create a responsive grid in React native, so let's do some manual layout...
 const ImageGrid = ({ items, onPress }: ImageGridProps): ReactElement => {
   const [availableWidth, setAvailableWidth] = useState(0)
-  const [isLandscape, setIsLandscape] = useState(false)
+  const windowDimensions = useWindowDimensions()
+  const isLandscape = windowDimensions.width > windowDimensions.height
   // If the screen is wide, we should fit all images into a single row instead of two rows.
   // Otherwise, the images appear way too large
   const numColumns = isLandscape ? 4 : 2
@@ -68,7 +69,6 @@ const ImageGrid = ({ items, onPress }: ImageGridProps): ReactElement => {
     if (availableWidth !== event.nativeEvent.layout.width) {
       setAvailableWidth(event.nativeEvent.layout.width)
     }
-    setIsLandscape(event.nativeEvent.layout.width > event.nativeEvent.layout.height)
   }
 
   return (
