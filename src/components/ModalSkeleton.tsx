@@ -58,6 +58,7 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
       animationType='fade'
       onRequestClose={onClose}
       accessibilityViewIsModal
+      supportedOrientations={['landscape', 'portrait']}
     >
       <StyledPressable onPress={handleBackdropPress} accessible={Platform.OS !== 'ios'}>
         <Overlay>
