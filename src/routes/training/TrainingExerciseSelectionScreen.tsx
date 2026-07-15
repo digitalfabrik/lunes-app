@@ -46,7 +46,7 @@ export const TRAINING_EXERCISES: Record<TrainingType, TrainingExercise> = {
   },
 }
 
-const Root = styled.View`
+const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
@@ -146,6 +146,7 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
             data={Object.values(TRAINING_EXERCISES)}
             renderItem={renderListItem}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
           />
         </Root>
       </ServerResponseHandler>

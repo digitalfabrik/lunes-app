@@ -56,6 +56,7 @@ const AnalyticsConsentModal = ({ visible, onAllow, onDecline }: AnalyticsConsent
       transparent
       animationType='fade'
       onRequestClose={onDecline}
+      supportedOrientations={['landscape', 'portrait']}
     >
       <Overlay>
         <ModalContainer accessibilityViewIsModal>
