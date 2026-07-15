@@ -39,7 +39,7 @@ type ExerciseFinishedScreenProps = {
 const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenProps): ReactElement => {
   const { exercise, results, unitTitle } = route.params
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const correctResults = results.filter(doc => doc.result === 'correct')
+  const correctResults = results.filter(doc => doc.numberOfTries === 1)
   const score = calculateScore(results)
 
   const { exercise: notNeededForNavigation1, results: notNeededForNavigation2, ...navigationParams } = route.params
