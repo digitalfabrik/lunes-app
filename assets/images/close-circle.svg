@@ -1,0 +1,6 @@
+<svg width="31" height="31" viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="15.5" cy="15.5" r="15" stroke-width="1" />
+    <path fill="currentColor"
+        d="M15.5 6.207L14.459 5.167 10.333 9.293 6.207 5.167 5.167 6.207 9.293 10.333 5.167 14.459 6.207 15.5 10.333 11.374 14.459 15.5 15.5 14.459 11.374 10.333z"
+        transform="translate(5.167 5.167)" />
+</svg>

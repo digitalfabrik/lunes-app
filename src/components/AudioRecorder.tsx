@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconBlue, MicrophoneCircleIcon } from '../../assets/images'
+import { CloseCircleIcon, MicrophoneCircleIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import AudioRecordOverlay from '../routes/process-user-vocabulary/components/AudioRecordOverlay'
 import { getLabels } from '../services/helpers'
@@ -65,8 +65,12 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
         <AudioContainer>
           <>
             <AudioText>{recordingPath.substring(recordingPath.lastIndexOf('/') + 1).toUpperCase()}</AudioText>
-            <DeleteContainer onPress={() => setRecordingPath(null)} testID='delete-audio-recording'>
-              <CloseCircleIconBlue width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+            <DeleteContainer
+              onPress={() => setRecordingPath(null)}
+              testID='delete-audio-recording'
+              accessibilityLabel={getLabels().userVocabulary.creation.deleteAudio}
+            >
+              <CloseCircleIcon fill={theme.colors.containedButtonSelected} color={theme.colors.background} />
             </DeleteContainer>
             <AudioPlayer audio={recordingPath} disabled={!recordingPath} />
           </>

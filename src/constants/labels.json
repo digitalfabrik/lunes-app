@@ -265,6 +265,8 @@
     "hintModalContentText": "Unter „Vertiefen“ kannst du diese Vokabeln gezielt wiederholen.",
     "progressExplainerContent": "Jede Vokabel durchläuft 7 Phasen. Zu Beginn wiederholst du sie häufiger, später in größeren Abständen.",
     "infoModalContent": "Wiederhole hier Vokabeln, die dir beim Kennenlernen und Üben bisher schwer gefallen sind.",
+    "infoButton": "Weitere Informationen zur Wiederholung",
+    "progressInfoButton": "Weitere Informationen zum Lernfortschritt",
     "repeatLater": "später",
     "chart": {
       "untrained": "Neue",
@@ -338,6 +340,8 @@
       "saveButton": "Speichern",
       "addImage": "Bild hinzufügen*",
       "addAudio": "Audio aufnehmen",
+      "deleteImage": "Bild löschen",
+      "deleteAudio": "Audio löschen",
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hinzufügen",
       "requiredFields": "*Pflichtfelder",
       "errorMessage": "Dies ist ein Pflichtfeld.",
@@ -348,6 +352,7 @@
     },
     "list": {
       "edit": "Bearbeiten",
+      "delete": "Wort löschen",
       "finished": "Fertig",
       "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
       "create": "Eigenes Wort erstellen",

@@ -1,173 +1,111 @@
-import AddCircleIcon from './add-circle-icon.svg'
+import AddCircleIcon from './add-circle.svg'
 import AddIconWhite from './add-icon-white.svg'
-import ArrowLeftCircleIconBlue from './arrow-left-circle-icon-blue.svg'
-import ArrowLeftCircleIconWhite from './arrow-left-circle-icon-white.svg'
-import ArrowLeftIcon from './arrow-left-icon.svg'
-import ArrowRightCircleIconWhite from './arrow-right-circle-icon-white.svg'
-import ArrowRightIcon from './arrow-right-icon.svg'
+import ArrowLeftCircleIcon from './arrow-left-circle.svg'
+import ArrowLeftIcon from './arrow-left.svg'
+import ArrowRightIcon from './arrow-right.svg'
 import BannerGreen from './banner-green.png'
 import BannerRed from './banner-red.png'
 import BannerYellow from './banner-yellow.png'
-import BasicLightBulbIcon from './basic-light-bulb-icon.svg'
-import BookIcon from './book-icon.svg'
-import BottomTabsIcon from './bottom-tabs-icon.svg'
-import CheckCircleIconBlue from './check-circle-icon-blue.svg'
-import CheckCircleIconBold from './check-circle-icon-bold.svg'
-import CheckCircleIconGreen from './check-circle-icon-green.svg'
-import CheckCircleIconWhite from './check-circle-icon-white.svg'
-import CheckCircleIcon from './check-circle-icon.svg'
-import CheckCloseCircleIconBold from './check-close-circle-icon-bold.svg'
-import CheckCloseCircleIcon from './check-close-circle-icon.svg'
+import BasicLightBulbIcon from './basic-light-bulb.svg'
+import BookIcon from './book.svg'
+import BottomTabsIcon from './bottom-tabs.svg'
+import CheckCircleIcon from './check-circle.svg'
 import ChevronRight from './chevron-right.svg'
-import CircleIconBlue from './circle-icon-blue.svg'
-import CircleIconWhite from './circle-icon-white.svg'
-import CloseCircleIconBlue from './close-circle-icon-blue.svg'
-import CloseCircleIconBold from './close-circle-icon-bold.svg'
-import CloseCircleIconWhite from './close-circle-icon-white.svg'
-import CloseCircleIcon from './close-circle-icon.svg'
-import CloseIconRed from './close-icon-red.svg'
-import CloseIconWhite from './close-icon-white.svg'
-import CloseIcon from './close-icon.svg'
+import CircleIcon from './circle.svg'
+import CloseCircleIcon from './close-circle.svg'
+import CloseIconRed from './close-ring-red.svg'
+import CloseIcon from './close.svg'
 import CrystalBallIcon from './crystal-ball.svg'
-import DoubleCheckCircleIconWhite from './double-check-circle-icon-white.svg'
-import DoubleCheckIcon from './double-check-icon.svg'
-import FeedbackIcon from './feedback-icon.svg'
-import HappySmileyIcon from './happy-smiley-circle-icon-white.svg'
-import HeaderCircleIcon from './header-cirlce-icon.svg'
-import HeaderLinesIcon from './header-lines-icon.svg'
-import HeaderSquareIcon from './header-square-icon.svg'
-import HeaderStarIcon from './header-star-icon.svg'
-import HeartIconGrey from './heart-icon-grey.svg'
-import HeartIconWhite from './heart-icon-white.svg'
-import HomeCircleIconBlue from './home-circle-icon-blue.svg'
-import HomeCircleIconWhite from './home-circle-icon-white.svg'
-import HomeIconGrey from './home-icon-grey.svg'
-import HomeIconWhite from './home-icon-white.svg'
-import ImageCircleIcon from './image-circle-icon.svg'
-import ImageIcon from './image-icon.svg'
-import InfoCircleBlackIcon from './info-circle-icon-black.svg'
-import InfoCircleIcon from './info-circle-icon.svg'
-import LightBulbIconBlack from './lightbulb-black.svg'
-import ListIcon from './list-icon.svg'
-import LockIcon from './lock-icon.svg'
-import LunesIcon from './lunes-icon.svg'
-import MagnifierIconGrey from './magnifier-icon-grey.svg'
-import MagnifierIconWhite from './magnifier-icon-white.svg'
-import MagnifierIcon from './magnifier-icon.svg'
-import MenuIcon from './menu-icon.svg'
-import MicrophoneCircleIcon from './microphone-circle-icon.svg'
-import MicrophoneIcon from './microphone-icon.svg'
+import FeedbackIcon from './feedback.svg'
+import HappySmileyIcon from './happy-smiley-circle-white.svg'
+import HeaderCircleIcon from './header-circle.svg'
+import HeaderLinesIcon from './header-lines.svg'
+import HeaderSquareIcon from './header-square.svg'
+import HeaderStarIcon from './header-star.svg'
+import HeartIcon from './heart.svg'
+import HomeIcon from './home.svg'
+import ImageCircleIcon from './image-circle.svg'
+import ImageIcon from './image.svg'
+import InfoCircleIcon from './info-circle.svg'
+import LightBulbIcon from './lightbulb.svg'
+import LunesIcon from './lunes.svg'
+import MagnifierIcon from './magnifier.svg'
+import MenuIcon from './menu.svg'
+import MicrophoneCircleIcon from './microphone-circle.svg'
+import MicrophoneIcon from './microphone.svg'
 import NoInternetConnectionIcon from './no-internet-connection.svg'
-import OpenLockIcon from './open-lock-icon.svg'
-import PartyHornIcon from './party-horn-circle-icon-white.svg'
-import PenIcon from './pen-icon.svg'
-import QRCodeIcon from './qr-code-icon.svg'
-import RepeatIconGrey from './repeat-icon-grey.svg'
-import RepeatIconWhite from './repeat-icon-white.svg'
-import RepeatIcon from './repeat-icon.svg'
-import SadSmileyCircleIcon from './sad-smiley-circle-icon-white.svg'
-import SadSmileyIcon from './sad-smiley-icon.svg'
-import ShareIcon from './share-icon.svg'
-import StarCircleIconGreyFilled from './star-circle-icon-grey-filled.svg'
-import StarCircleIconGrey from './star-circle-icon-grey.svg'
-import StarIconGreyFilled from './star-icon-grey-filled.svg'
-import StarIconGrey from './star-icon-grey.svg'
-import StarIconWhite from './star-icon-white.svg'
-import TargetIcon from './target-icon.svg'
+import PartyHornIcon from './party-horn-circle.svg'
+import PenIcon from './pen.svg'
+import QRCodeIcon from './qr-code.svg'
+import RepeatIcon from './repeat.svg'
+import SadSmileyCircleIcon from './sad-smiley-circle-white.svg'
+import SadSmileyIcon from './sad-smiley.svg'
+import ShareIcon from './share.svg'
+import StarCircleIconGreyFilled from './star-circle-grey-filled.svg'
+import StarCircleIconGrey from './star-circle-grey.svg'
+import TargetIcon from './target.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
 import TrainingImages from './training-images.svg'
 import TrainingSentences from './training-sentences.svg'
 import TrainingSpeech from './training-speech.svg'
-import TrashIconWhite from './trash-bin-icon-white.svg'
-import TrashIcon from './trash-bin-icon.svg'
+import TrashIcon from './trash-bin.svg'
 import VolumeDisabled from './volume-disabled.svg'
-import VolumeUpCircleIcon from './volume-up-circle-icon.svg'
+import VolumeUpCircleIcon from './volume-up-circle.svg'
 
 export {
   AddCircleIcon,
-  CircleIconWhite,
-  ImageIcon,
   AddIconWhite,
+  ArrowLeftCircleIcon,
   ArrowLeftIcon,
-  ArrowLeftCircleIconBlue,
-  ArrowLeftCircleIconWhite,
   ArrowRightIcon,
-  ArrowRightCircleIconWhite,
   BannerGreen,
   BannerRed,
   BannerYellow,
   BasicLightBulbIcon,
   BookIcon,
+  BottomTabsIcon,
   CheckCircleIcon,
-  CheckCircleIconBlue,
-  CheckCircleIconBold,
-  CheckCircleIconWhite,
-  CheckCircleIconGreen,
-  CheckCloseCircleIcon,
-  CheckCloseCircleIconBold,
   ChevronRight,
-  CircleIconBlue,
+  CircleIcon,
   CloseCircleIcon,
-  CloseCircleIconBold,
-  CloseCircleIconWhite,
-  CloseCircleIconBlue,
   CloseIcon,
-  CloseIconWhite,
   CloseIconRed,
   CrystalBallIcon,
-  DoubleCheckCircleIconWhite,
-  DoubleCheckIcon,
-  BottomTabsIcon,
   FeedbackIcon,
   HappySmileyIcon,
   HeaderCircleIcon,
   HeaderLinesIcon,
   HeaderSquareIcon,
   HeaderStarIcon,
-  HeartIconGrey,
-  HeartIconWhite,
-  HomeCircleIconBlue,
-  HomeCircleIconWhite,
-  HomeIconGrey,
-  HomeIconWhite,
+  HeartIcon,
+  HomeIcon,
   ImageCircleIcon,
+  ImageIcon,
   InfoCircleIcon,
-  InfoCircleBlackIcon,
-  LightBulbIconBlack,
-  ListIcon,
-  LockIcon,
+  LightBulbIcon,
   LunesIcon,
-  MagnifierIconGrey,
-  MagnifierIconWhite,
   MagnifierIcon,
   MenuIcon,
   MicrophoneCircleIcon,
   MicrophoneIcon,
   NoInternetConnectionIcon,
-  OpenLockIcon,
-  QRCodeIcon,
   PartyHornIcon,
   PenIcon,
+  QRCodeIcon,
   RepeatIcon,
-  RepeatIconGrey,
-  RepeatIconWhite,
-  SadSmileyIcon,
   SadSmileyCircleIcon,
+  SadSmileyIcon,
   ShareIcon,
   StarCircleIconGrey,
   StarCircleIconGreyFilled,
-  StarIconGrey,
-  StarIconGreyFilled,
-  StarIconWhite,
   TargetIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
   TrainingImages,
   TrainingSentences,
   TrainingSpeech,
   TrashIcon,
-  TrashIconWhite,
-  VolumeUpCircleIcon,
   VolumeDisabled,
-  ThumbsUpIcon,
-  ThumbsDownIcon,
+  VolumeUpCircleIcon,
 }

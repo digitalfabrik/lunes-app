@@ -4,7 +4,7 @@ import { PERMISSIONS } from 'react-native-permissions'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
+import { CloseCircleIcon } from '../../assets/images'
 import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
@@ -42,20 +42,17 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
               onPress={() => setVisible(false)}
               onPressIn={() => setIsPressed(true)}
               onPressOut={() => setIsPressed(false)}
+              accessibilityRole='button'
+              accessibilityLabel={getLabels().general.close}
             >
-              {isPressed ? (
-                <CloseCircleIconBlue
-                  testID='close-circle-icon-blue'
-                  width={theme.sizes.defaultIcon}
-                  height={theme.sizes.defaultIcon}
-                />
-              ) : (
-                <CloseCircleIconWhite
-                  testID='close-circle-icon-white'
-                  width={theme.sizes.defaultIcon}
-                  height={theme.sizes.defaultIcon}
-                />
-              )}
+              <CloseCircleIcon
+                testID='close-icon'
+                width={theme.sizes.defaultIcon}
+                height={theme.sizes.defaultIcon}
+                fill={isPressed ? theme.colors.containedButtonSelected : theme.colors.backgroundAccent}
+                stroke={isPressed ? theme.colors.containedButtonSelected : theme.colors.backgroundLightGrey}
+                color={isPressed ? theme.colors.background : theme.colors.primary}
+              />
             </Pressable>
           </Header>
           {permissionGranted && children}

@@ -2,9 +2,9 @@ import { CardStyleInterpolators, StackNavigationOptions, StackNavigationProp } f
 import React, { ReactElement } from 'react'
 import { Linking } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
-import { CloseIconWhite } from '../../assets/images'
+import { CloseIcon } from '../../assets/images'
 import OverlayMenuItem from '../components/OverlayMenuItem'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -39,6 +39,7 @@ const Icon = styled.Pressable`
   margin: ${props => `${props.theme.spacings.xs} ${props.theme.spacings.sm}`};
   width: 40px;
   height: 40px;
+  color: ${props => props.theme.colors.backgroundAccent};
 `
 
 export const OverlayTransition: StackNavigationOptions = {
@@ -55,13 +56,14 @@ type OverlayProps = {
 
 const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
   const insets = useSafeAreaInsets()
+  const theme = useTheme()
 
   return (
     <Container>
       <DismissArea onPress={navigation.goBack} style={{ height: '100%', flex: 1 }} />
       <Sidebar paddingTop={insets.top}>
         <Icon onPress={navigation.goBack}>
-          <CloseIconWhite testID='close-icon-white' />
+          <CloseIcon testID='close-icon-white' color={theme.colors.backgroundAccent} />
         </Icon>
         <OverlayMenuItem
           isSubItem

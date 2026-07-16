@@ -34,7 +34,7 @@ export const COLORS = {
   articlePlural: '#eee12d',
   articleFeminine: '#feb724',
   articleMasculine: '#8cc8f3',
-  link: 'blue',
+  link: '#0000EE',
   audioRecordingActive: '#97aef1',
   chartColor1: '#E0E4ED',
   chartColor2: '#EEEEEE',

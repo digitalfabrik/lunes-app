@@ -1,12 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import {
-  ArrowLeftCircleIconBlue,
-  ArrowLeftCircleIconWhite,
-  CloseCircleIconBlue,
-  CloseCircleIconWhite,
-} from '../../assets/images'
+import { ArrowLeftCircleIcon, CloseCircleIcon } from '../../assets/images'
 import { NavigationTitle } from './NavigationTitle'
 
 const Container = styled.Pressable`
@@ -25,13 +20,17 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeade
   const theme = useTheme()
   const [pressed, setPressed] = useState<boolean>(false)
 
-  const closeIcon = pressed ? CloseCircleIconBlue : CloseCircleIconWhite
-  const backIcon = pressed ? ArrowLeftCircleIconBlue : ArrowLeftCircleIconWhite
-  const Icon = isCloseButton ? closeIcon : backIcon
+  const Icon = isCloseButton ? CloseCircleIcon : ArrowLeftCircleIcon
 
   return (
     <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>
-      <Icon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+      <Icon
+        width={theme.sizes.defaultIcon}
+        height={theme.sizes.defaultIcon}
+        fill={pressed ? theme.colors.containedButtonSelected : theme.colors.backgroundAccent}
+        stroke={pressed ? theme.colors.containedButtonSelected : theme.colors.backgroundLightGrey}
+        color={pressed ? theme.colors.background : theme.colors.primary}
+      />
       <NavigationTitle numberOfLines={2}>{title}</NavigationTitle>
     </Container>
   )

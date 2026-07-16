@@ -2,8 +2,9 @@ import React, { ReactElement } from 'react'
 import { Image as RNImage } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconBlue } from '../../../../assets/images'
+import { CloseCircleIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
+import { getLabels } from '../../../services/helpers'
 
 const Container = styled.View`
   margin: ${props => props.theme.spacings.xs};
@@ -30,11 +31,13 @@ const Thumbnail = ({ image, deleteImage }: ThumbnailProps): ReactElement => {
   return (
     <Container>
       <Image source={{ uri: image }} />
-      <CloseIcon onPress={deleteImage}>
-        <CloseCircleIconBlue
+      <CloseIcon onPress={deleteImage} accessibilityLabel={getLabels().userVocabulary.creation.deleteImage}>
+        <CloseCircleIcon
           testID='delete-on-thumbnail'
           width={theme.sizes.defaultIcon}
           height={theme.sizes.defaultIcon}
+          fill={theme.colors.containedButtonSelected}
+          color={theme.colors.background}
         />
       </CloseIcon>
     </Container>

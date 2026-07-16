@@ -1,7 +1,7 @@
 import React, { useMemo, ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CheckCircleIconGreen } from '../../../assets/images'
+import { CheckCircleIcon } from '../../../assets/images'
 import { JobListItem } from '../../components/DisciplineListItem'
 import SearchBar from '../../components/SearchBar'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -60,7 +60,11 @@ const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: J
           }
         }}
         disabled={isSelected && !onUnselectJob}
-        rightChildren={<IconContainer>{isSelected && <CheckCircleIconGreen testID='check-icon' />}</IconContainer>}
+        rightChildren={
+          <IconContainer>
+            {isSelected && <CheckCircleIcon testID='check-icon' color={theme.colors.correct} />}
+          </IconContainer>
+        }
       />
     )
   })

@@ -98,6 +98,7 @@ const AddCustomDiscipline = ({ navigation }: AddCustomDisciplineScreenProps): Re
                     accessibilityLabel='qr-code-scanner'
                     width={theme.sizes.defaultIcon}
                     height={theme.sizes.defaultIcon}
+                    color={theme.colors.primary}
                   />
                 </PressableOpacity>
               }

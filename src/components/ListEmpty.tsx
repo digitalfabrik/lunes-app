@@ -11,6 +11,7 @@ const ListEmptyContainer = styled.View`
 
 const StyledSadSmileyIcon = styled(SadSmileyIcon)`
   padding: ${props => props.theme.spacings.md} 0;
+  color: ${props => props.theme.colors.text};
 `
 
 type ListEmptyProps = {

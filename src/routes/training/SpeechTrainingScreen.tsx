@@ -8,7 +8,7 @@ import {
   SpeechToTextErrorCode,
   openVoiceInputSettings as openVoiceInputSettingsNative,
 } from 'react-native-speech-to-text'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightIcon, SadSmileyIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
@@ -207,6 +207,7 @@ type SpeechTrainingProps = {
 const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
+  const theme = useTheme()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
   const { permissionGranted, permissionRequested } = useGrantPermissions(SPEECH_PERMISSIONS)
   const storageCache = useStorageCache()
@@ -404,7 +405,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
       <BottomSheet visible={state.answerState === 'error'}>
         <BottomSheetColumn>
-          <SadSmileyIcon />
+          <SadSmileyIcon color={theme.colors.text} />
           <HeadingText>{labels.notUnderstood}</HeadingText>
           <HintsContainer>
             <ContentText>{labels.hints.title}</ContentText>
