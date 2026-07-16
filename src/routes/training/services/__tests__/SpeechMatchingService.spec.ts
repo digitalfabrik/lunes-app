@@ -1,5 +1,5 @@
 import { SIMPLE_RESULTS } from '../../../../constants/data'
-import { evaluateSpeechMatch } from '../SpeechMatchingService'
+import { evaluateSpeechMatch, evaluateSpeechMatchAgainstReference } from '../SpeechMatchingService'
 
 describe('evaluateSpeechMatch', () => {
   describe('when transcript list is empty', () => {
@@ -190,6 +190,70 @@ describe('evaluateSpeechMatch', () => {
     it('should return incorrect if all candidates are incorrect', () => {
       expect(evaluateSpeechMatch(['Hund', 'die Arzt'], 'der', 'Arzt')).toBe(SIMPLE_RESULTS.incorrect)
       expect(evaluateSpeechMatch(['Hund', 'Katze'], 'der', 'Arzt')).toBe(SIMPLE_RESULTS.incorrect)
+    })
+  })
+})
+
+describe('evaluateSpeechMatchAgainstReference', () => {
+  describe('when the user transcript matches the reference transcript', () => {
+    it('should return correct when both are identical', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Baiser'], ['der Baiser'])).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct when the recognizer mishears the word the same way on both sides', () => {
+      // The written word is "Baiser", but the recognizer transcribes the audio as "der Bäsee".
+      // The user pronounces it the same way, so both transcripts agree even though neither is the
+      // written spelling. This is the core benefit of comparing against the reference audio.
+      expect(evaluateSpeechMatchAgainstReference(['der Bäsee'], ['der Bäsee'])).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct regardless of casing and German special characters', () => {
+      expect(evaluateSpeechMatchAgainstReference(['Die Aerztin'], ['die Ärztin'])).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct for a near-miss between the two transcripts', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Artzt'], ['der Arzt'])).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct when one side truncates a long compound', () => {
+      expect(evaluateSpeechMatchAgainstReference(['das Zungenb'], ['das Zungenbein'])).toBe(SIMPLE_RESULTS.correct)
+    })
+  })
+
+  describe('when the transcripts do not match', () => {
+    it('should return incorrect when a completely different word is said', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Hund'], ['der Baiser'])).toBe(SIMPLE_RESULTS.incorrect)
+    })
+
+    it('should return incorrect when the user only utters a token shared with the reference', () => {
+      // Regression: the recognizer failed to hear the word and returned only fillers/the article.
+      // Merely sharing a token (e.g. the article) with the reference must not count as correct.
+      expect(evaluateSpeechMatchAgainstReference(['das'], ['das Baiser'])).toBe(SIMPLE_RESULTS.incorrect)
+      expect(evaluateSpeechMatchAgainstReference(['Das wir', 'Sie', 'Das'], ['das Baiser'])).toBe(
+        SIMPLE_RESULTS.incorrect,
+      )
+    })
+
+    it('should return incorrect when the user transcript list is empty', () => {
+      expect(evaluateSpeechMatchAgainstReference([], ['der Baiser'])).toBe(SIMPLE_RESULTS.incorrect)
+    })
+
+    it('should return incorrect when the reference transcript list is empty', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Baiser'], [])).toBe(SIMPLE_RESULTS.incorrect)
+    })
+  })
+
+  describe('when multiple candidates are given on either side', () => {
+    it('should return correct if any user candidate matches any reference candidate', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Hund', 'der Baiser'], ['das Baiser', 'der Baiser'])).toBe(
+        SIMPLE_RESULTS.correct,
+      )
+    })
+
+    it('should return incorrect if no user candidate matches any reference candidate', () => {
+      expect(evaluateSpeechMatchAgainstReference(['der Hund', 'die Katze'], ['der Baiser', 'das Baiser'])).toBe(
+        SIMPLE_RESULTS.incorrect,
+      )
     })
   })
 })

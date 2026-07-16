@@ -187,3 +187,37 @@ export const evaluateSpeechMatch = (transcriptResults: string[], article: string
   }
   return SIMPLE_RESULTS.incorrect
 }
+
+// Both the user's speech and the reference audio are transcribed by the same recognizer on the same
+// word, so their transcripts should agree closely. We deliberately do NOT reuse the lenient
+// token-containment check from the written-word path: it would let the user pass by uttering only a
+// shared token (e.g. just the article "das" matching the reference "das Baiser").
+const REFERENCE_MATCH_SIMILARITY_THRESHOLD = 0.8
+// High enough that a bare article/token cannot count as a prefix, but low enough to tolerate one
+// side dropping the final syllables of a long compound.
+const REFERENCE_MATCH_PREFIX_THRESHOLD = 0.75
+
+const matchesReferenceCandidate = (userTranscript: string, referenceTranscript: string): boolean => {
+  const normalizedUser = normalizeText(userTranscript)
+  const normalizedReference = normalizeText(referenceTranscript)
+
+  return (
+    normalizedUser === normalizedReference ||
+    isSimilar(normalizedUser, normalizedReference, REFERENCE_MATCH_SIMILARITY_THRESHOLD) ||
+    // Either side may truncate a long compound before the recognizer finishes it
+    isCollapsedPhrasePrefix(normalizedUser, normalizedReference, REFERENCE_MATCH_PREFIX_THRESHOLD) ||
+    isCollapsedPhrasePrefix(normalizedReference, normalizedUser, REFERENCE_MATCH_PREFIX_THRESHOLD)
+  )
+}
+
+// Compares the user's transcript candidates against the reference audio's transcript candidates.
+// Correct if any user candidate matches any reference candidate. Empty on either side is incorrect.
+export const evaluateSpeechMatchAgainstReference = (
+  userTranscripts: string[],
+  referenceTranscripts: string[],
+): SimpleResult => {
+  const isCorrect = userTranscripts.some(userTranscript =>
+    referenceTranscripts.some(referenceTranscript => matchesReferenceCandidate(userTranscript, referenceTranscript)),
+  )
+  return isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
+}

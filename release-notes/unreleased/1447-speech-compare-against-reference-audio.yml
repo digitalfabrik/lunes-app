@@ -1,0 +1,6 @@
+issue_key: 1447
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Die Sprechübung vergleicht deine Aussprache jetzt mit der hinterlegten Audiodatei, sodass auch Wörter mit ungewöhnlicher Aussprache besser erkannt werden.

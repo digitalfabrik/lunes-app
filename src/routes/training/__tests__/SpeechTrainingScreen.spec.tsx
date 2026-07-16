@@ -16,6 +16,7 @@ import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import SpeechTrainingScreen from '../SpeechTrainingScreen'
+import { getReferenceTranscripts } from '../services/ReferenceTranscriptionService'
 
 jest.mock('../../../services/helpers', () => ({
   ...jest.requireActual('../../../services/helpers'),
@@ -29,9 +30,13 @@ jest.mock('react-native-speech-to-text', () => ({
   SPEECH_TO_TEXT_ERRORS: {
     recognitionUnavailable: 'E_RECOGNITION_UNAVAILABLE',
     languageUnavailable: 'E_LANGUAGE_UNAVAILABLE',
+    fileTranscriptionUnavailable: 'E_FILE_TRANSCRIPTION_UNAVAILABLE',
+    fileTranscriptionFailed: 'E_FILE_TRANSCRIPTION_FAILED',
   },
+  transcribeAudioFile: jest.fn(),
   openVoiceInputSettings: jest.fn(),
 }))
+jest.mock('../services/ReferenceTranscriptionService')
 
 jest.mock('../../../components/AudioPlayer', () => {
   const { Text } = require('react-native')
@@ -74,6 +79,8 @@ describe('SpeechTrainingScreen', () => {
       stopRecording: mockStopRecording,
       isRecording: false,
     })
+    // By default no reference transcript is available, so the screen compares against the written word.
+    mocked(getReferenceTranscripts).mockResolvedValue(null)
   })
 
   const renderScreenAndWaitForLoad = async () => {
@@ -118,6 +125,44 @@ describe('SpeechTrainingScreen', () => {
       expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible()
     })
     expect(getByText(getLabels().exercises.continue)).toBeVisible()
+  })
+
+  it('should mark correct when the spoken word matches the reference audio transcript but not the written word', async () => {
+    // The recognizer transcribes both the reference audio and the user's speech as "der Besen",
+    // which does not match the written word "Spachtel" — only the reference comparison accepts it.
+    mocked(getReferenceTranscripts).mockResolvedValue(['der Besen'])
+    mockStartRecording.mockResolvedValue(['der Besen'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible()
+    })
+  })
+
+  it('should mark incorrect when the spoken word does not match the reference audio transcript', async () => {
+    mocked(getReferenceTranscripts).mockResolvedValue(['der Spachtel'])
+    mockStartRecording.mockResolvedValue(['der Besen'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible()
+    })
+  })
+
+  it('should fall back to the written word when no reference transcript is available', async () => {
+    mocked(getReferenceTranscripts).mockResolvedValue(null)
+    mockStartRecording.mockResolvedValue(['der Spachtel'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible()
+    })
   })
 
   it('should show incorrect feedback when word is not recognized', async () => {

@@ -43,10 +43,11 @@ import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
-import { reportError } from '../../services/sentry'
+import { log, reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import { evaluateSpeechMatch } from './services/SpeechMatchingService'
+import { getReferenceTranscripts } from './services/ReferenceTranscriptionService'
+import { evaluateSpeechMatch, evaluateSpeechMatchAgainstReference } from './services/SpeechMatchingService'
 
 const SPEECH_PERMISSIONS =
   Platform.OS === 'ios'
@@ -121,7 +122,14 @@ type Action =
   | { type: 'appBecameActive' }
 
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
-  const selectedItems = shuffleArray(vocabularyItems).slice(0, MAX_TRAINING_REPETITIONS)
+  // TEMPORARY (issue 1447 testing): put "Baiser" and "Schnecke" first so the Android real-device
+  // round can test them directly. REMOVE before merging (restore plain shuffleArray + slice).
+  const prioritizedWords = ['baiser', 'schnecke']
+  const prioritizedItems = prioritizedWords.flatMap(prioritizedWord =>
+    vocabularyItems.filter(item => item.word.toLowerCase().includes(prioritizedWord)),
+  )
+  const otherItems = shuffleArray(vocabularyItems.filter(item => !prioritizedItems.includes(item)))
+  const selectedItems = [...prioritizedItems, ...otherItems].slice(0, MAX_TRAINING_REPETITIONS)
   return {
     vocabularyItems: selectedItems,
     currentVocabularyItemIndex: 0,
@@ -242,6 +250,12 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     }
   }, [state.currentVocabularyItemIndex, state.vocabularyItems])
 
+  // Transcribe the current word's reference audio ahead of time so the first recording attempt
+  // does not have to wait for the download and transcription.
+  useEffect(() => {
+    getReferenceTranscripts(currentWord.audio).catch(reportError)
+  }, [currentWord.audio])
+
   useEffect(() => {
     if (state.completed) {
       markCompleted()
@@ -264,12 +278,29 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   const handlePressIn = async (): Promise<void> => {
     try {
-      const results = await startRecording({
-        hints: [currentWord.word, `${currentWord.article.value} ${currentWord.word}`],
-      })
-      const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
+      // Words with reference audio are compared against its transcription: both sides then go
+      // through the same recognizer, so words whose pronunciation differs from their spelling
+      // (e.g. "Baiser") are graded by how they sound. Recognition is unbiased for those words —
+      // biasing toward the written word would make mispronunciations snap to it. The recording must
+      // start immediately on press, so the reference transcription is only awaited afterwards.
+      const hasReferenceAudio = !!currentWord.audio
+      const hints = hasReferenceAudio ? [] : [currentWord.word, `${currentWord.article.value} ${currentWord.word}`]
+      const results = await startRecording({ hints })
+      const referenceTranscripts = hasReferenceAudio ? await getReferenceTranscripts(currentWord.audio) : null
+      const useReferenceComparison = referenceTranscripts !== null && referenceTranscripts.length > 0
+      const answerState = useReferenceComparison
+        ? evaluateSpeechMatchAgainstReference(results, referenceTranscripts)
+        : evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
+      // TEMPORARY (issue 1447 testing): log transcripts for the Android real-device round. REMOVE before merging.
+      log(
+        `[1447] ref: ${referenceTranscripts?.join(' | ') ?? 'unavailable → written-word comparison'}\n` +
+          `[1447] you: ${results.join(' | ')}\n[1447] → ${answerState}`,
+        'log',
+      )
       dispatch({ type: 'speechResult', answerState })
     } catch (error) {
+      // TEMPORARY (issue 1447 testing): surface why recording failed. REMOVE before merging.
+      log(`[1447] recording failed: ${(error as { code?: string }).code ?? ''} ${String(error)}`, 'log')
       const errorCode = (error as { code?: SpeechToTextErrorCode }).code
       if (errorCode === SPEECH_TO_TEXT_ERRORS.recognitionUnavailable) {
         dispatch({ type: 'recognitionUnavailable' })

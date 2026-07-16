@@ -45,9 +45,11 @@ jest.mock('@react-navigation/elements', () => ({
 
 jest.mock('@dr.pogodin/react-native-fs', () => ({
   DocumentDirectoryPath: 'mock-document-directory-path',
+  CachesDirectoryPath: 'mock-caches-directory-path',
   moveFile: jest.fn(),
   readFile: jest.fn(() => Promise.resolve('image')),
-  unlink: jest.fn(),
+  downloadFile: jest.fn(() => ({ promise: Promise.resolve({ statusCode: 200 }) })),
+  unlink: jest.fn(() => Promise.resolve()),
 }))
 
 jest.mock('@react-navigation/native', () => ({

@@ -8,6 +8,9 @@
     AVAudioEngine *_audioEngine;
     SFSpeechAudioBufferRecognitionRequest *_recognitionRequest;
     SFSpeechRecognitionTask *_recognitionTask;
+    // Kept separate from the microphone task so transcribing a reference file cannot cancel an
+    // in-flight live recording (and vice versa).
+    SFSpeechRecognitionTask *_fileRecognitionTask;
 }
 
 - (instancetype)init {
@@ -114,6 +117,65 @@
                 [self tearDown];
                 reject(@"E_AUDIO_ENGINE", engineError.localizedDescription, engineError);
             }
+        });
+    }];
+}
+
+- (void)transcribeAudioFile:(NSString *)fileUri hints:(NSArray *)hints
+                    resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (status != SFSpeechRecognizerAuthorizationStatusAuthorized) {
+                reject(@"E_PERMISSION", @"Speech recognition not authorized", nil);
+                return;
+            }
+
+            // Accept both plain paths and file:// URLs.
+            NSURL *fileURL = [fileUri hasPrefix:@"file://"] ? [NSURL URLWithString:fileUri]
+                                                            : [NSURL fileURLWithPath:fileUri];
+
+            [self->_fileRecognitionTask cancel];
+            self->_fileRecognitionTask = nil;
+
+            SFSpeechURLRecognitionRequest *request =
+                [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
+            request.shouldReportPartialResults = NO;
+
+            // Use the same on-device recognizer as the live recording so the reference audio is
+            // transcribed with identical phonetic quirks.
+            if (self->_recognizer.supportsOnDeviceRecognition) {
+                request.requiresOnDeviceRecognition = YES;
+            }
+            if (hints.count > 0) {
+                request.contextualStrings = hints;
+            }
+
+            __block BOOL settled = NO;
+            self->_fileRecognitionTask = [self->_recognizer
+                recognitionTaskWithRequest:request
+                resultHandler:^(SFSpeechRecognitionResult *result, NSError *error) {
+                    if (settled) {
+                        return;
+                    }
+
+                    if (error) {
+                        settled = YES;
+                        self->_fileRecognitionTask = nil;
+                        reject(@"E_FILE_TRANSCRIPTION_FAILED", error.localizedDescription, error);
+                        return;
+                    }
+
+                    if (result != nil && result.isFinal) {
+                        settled = YES;
+                        self->_fileRecognitionTask = nil;
+
+                        NSMutableArray<NSString *> *transcriptions = [NSMutableArray array];
+                        for (SFTranscription *transcription in result.transcriptions) {
+                            [transcriptions addObject:transcription.formattedString];
+                        }
+                        resolve(transcriptions);
+                    }
+                }];
         });
     }];
 }
