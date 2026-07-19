@@ -8,6 +8,8 @@
         <string>mailto</string>
         <string>tel</string>
     </array>
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
     <key>CFBundleDevelopmentRegion</key>
     <string>de</string>
     <key>CFBundleDisplayName</key>

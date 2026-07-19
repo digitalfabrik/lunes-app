@@ -75,7 +75,6 @@ target 'Lunes' do
       end
     end
 
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
