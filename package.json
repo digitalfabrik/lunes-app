@@ -38,7 +38,7 @@
     "@react-navigation/native": "7.1.28",
     "@react-navigation/stack": "7.6.16",
     "@sentry/react-native": "^6.10.0",
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "axios-cache-interceptor": "1.11.1",
     "normalize-strings": "^1.1.1",
     "react": "19.1.4",
@@ -66,7 +66,7 @@
     "victory-native": "^36.9.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
+    "@babel/core": "^8.0.0",
     "@babel/plugin-proposal-unicode-property-regex": "^7.18.6",
     "@babel/preset-env": "^7.28.4",
     "@babel/preset-typescript": "^7.28.4",
