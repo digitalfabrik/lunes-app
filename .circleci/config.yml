@@ -233,7 +233,7 @@ commands:
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 8
@@ -355,7 +355,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         parameters:
             prepare_delivery:
                 default: false
@@ -384,7 +384,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         resource_class: small
         steps:
             - checkout
@@ -406,7 +406,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -443,7 +443,7 @@ jobs:
             - notify
     deliver_browser_stack:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
@@ -546,7 +546,7 @@ jobs:
             - notify
     move_release_notes:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         resource_class: small
         steps:
             - checkout
@@ -561,7 +561,7 @@ jobs:
             - notify
     notify_github:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -600,7 +600,7 @@ jobs:
                 success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME})\n${ANDROID_ARTIFACT_URLS} ${IOS_ARTIFACT_URLS}'
     notify_promotion:
         docker:
-            - image: cimg/node:20.17.0
+            - image: cimg/node:24.18.0
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -619,7 +619,7 @@ jobs:
                 success_message: Lunes - ${PROMOTION_MESSAGE}
     open_screenshots_pr:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         resource_class: small
         shell: /bin/bash -eo pipefail
         steps:
@@ -650,7 +650,7 @@ jobs:
             - notify
     promote_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -694,8 +694,8 @@ jobs:
             - checkout
             - run:
                 command: |
-                    nvm install 20.18.3
-                    nvm alias default 20.18.3
+                    nvm install 24.18.0
+                    nvm alias default 24.18.0
                     corepack enable
                 name: Set up Node
             - restore_yarn_cache
