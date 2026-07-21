@@ -15,7 +15,6 @@ import CircleIcon from './circle.svg'
 import CloseCircleIcon from './close-circle.svg'
 import CloseIconRed from './close-ring-red.svg'
 import CloseIcon from './close.svg'
-import CrystalBallIcon from './crystal-ball.svg'
 import FeedbackIcon from './feedback.svg'
 import HappySmileyIcon from './happy-smiley-circle-white.svg'
 import HeaderCircleIcon from './header-circle.svg'
@@ -71,7 +70,6 @@ export {
   CloseCircleIcon,
   CloseIcon,
   CloseIconRed,
-  CrystalBallIcon,
   FeedbackIcon,
   HappySmileyIcon,
   HeaderCircleIcon,
