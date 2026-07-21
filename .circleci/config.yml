@@ -782,6 +782,13 @@ parameters:
     run_commit:
         default: true
         type: boolean
+    run_commit_main:
+        default: run_if_on_main
+        enum:
+            - run_if_on_main
+            - run
+            - skip
+        type: enum
     run_dev_delivery:
         default: false
         type: boolean
@@ -861,11 +868,17 @@ workflows:
                     - check
                     - bump_version
         when:
-            and:
-                - << pipeline.parameters.run_commit >>
+            or:
                 - equal:
-                    - main
-                    - << pipeline.git.branch >>
+                    - << pipeline.parameters.run_commit_main >>
+                    - run
+                - and:
+                    - equal:
+                        - << pipeline.parameters.run_commit_main >>
+                        - run_if_on_main
+                    - equal:
+                        - main
+                        - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - check:
