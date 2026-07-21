@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Image as RNImage } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIcon } from '../../../../assets/images'
+import { CloseCircleFilledIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import { getLabels } from '../../../services/helpers'
 
@@ -32,12 +32,10 @@ const Thumbnail = ({ image, deleteImage }: ThumbnailProps): ReactElement => {
     <Container>
       <Image source={{ uri: image }} />
       <CloseIcon onPress={deleteImage} accessibilityLabel={getLabels().userVocabulary.creation.deleteImage}>
-        <CloseCircleIcon
+        <CloseCircleFilledIcon
           testID='delete-on-thumbnail'
           width={theme.sizes.defaultIcon}
           height={theme.sizes.defaultIcon}
-          fill={theme.colors.containedButtonSelected}
-          color={theme.colors.background}
         />
       </CloseIcon>
     </Container>

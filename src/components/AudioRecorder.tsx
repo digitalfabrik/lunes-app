@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIcon, MicrophoneCircleIcon } from '../../assets/images'
+import { CloseCircleFilledIcon, MicrophoneCircleIcon } from '../../assets/images'
 import { BUTTONS_THEME } from '../constants/data'
 import AudioRecordOverlay from '../routes/process-user-vocabulary/components/AudioRecordOverlay'
 import { getLabels } from '../services/helpers'
@@ -70,7 +70,7 @@ const AudioRecorder = ({ recordingPath, setRecordingPath }: AudioRecorderProps):
               testID='delete-audio-recording'
               accessibilityLabel={getLabels().userVocabulary.creation.deleteAudio}
             >
-              <CloseCircleIcon fill={theme.colors.containedButtonSelected} color={theme.colors.background} />
+              <CloseCircleFilledIcon />
             </DeleteContainer>
             <AudioPlayer audio={recordingPath} disabled={!recordingPath} />
           </>

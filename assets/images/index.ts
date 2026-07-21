@@ -1,6 +1,7 @@
 import AddCircleIcon from './add-circle.svg'
 import AddIconWhite from './add-icon-white.svg'
-import ArrowLeftCircleIcon from './arrow-left-circle.svg'
+import ArrowLeftCircleFilledIcon from './arrow-left-circle-filled.svg'
+import ArrowLeftCircleOutlineIcon from './arrow-left-circle-outline.svg'
 import ArrowLeftIcon from './arrow-left.svg'
 import ArrowRightIcon from './arrow-right.svg'
 import BannerGreen from './banner-green.png'
@@ -12,7 +13,8 @@ import BottomTabsIcon from './bottom-tabs.svg'
 import CheckCircleIcon from './check-circle.svg'
 import ChevronRight from './chevron-right.svg'
 import CircleIcon from './circle.svg'
-import CloseCircleIcon from './close-circle.svg'
+import CloseCircleFilledIcon from './close-circle-filled.svg'
+import CloseCircleOutlineIcon from './close-circle-outline.svg'
 import CloseIconRed from './close-ring-red.svg'
 import CloseIcon from './close.svg'
 import FeedbackIcon from './feedback.svg'
@@ -55,7 +57,8 @@ import VolumeUpCircleIcon from './volume-up-circle.svg'
 export {
   AddCircleIcon,
   AddIconWhite,
-  ArrowLeftCircleIcon,
+  ArrowLeftCircleFilledIcon,
+  ArrowLeftCircleOutlineIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
   BannerGreen,
@@ -67,7 +70,8 @@ export {
   CheckCircleIcon,
   ChevronRight,
   CircleIcon,
-  CloseCircleIcon,
+  CloseCircleFilledIcon,
+  CloseCircleOutlineIcon,
   CloseIcon,
   CloseIconRed,
   FeedbackIcon,
