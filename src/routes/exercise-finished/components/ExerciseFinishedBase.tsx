@@ -3,7 +3,7 @@ import * as Progress from 'react-native-progress'
 import { SvgProps } from 'react-native-svg'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseIconWhite } from '../../../../assets/images'
+import { CloseIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
 import RoundedBackground from '../../../components/RoundedBackground'
 import { Content } from '../../../components/text/Content'
@@ -70,7 +70,11 @@ const ExerciseFinishedBase = ({
         <RoundedBackground color={theme.colors.primary}>
           <AlignRight>
             <IconButton onPress={onBack}>
-              <CloseIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+              <CloseIcon
+                width={theme.sizes.defaultIcon}
+                height={theme.sizes.defaultIcon}
+                color={theme.colors.backgroundAccent}
+              />
             </IconButton>
           </AlignRight>
           <FeedbackIcon width={40} height={40} />

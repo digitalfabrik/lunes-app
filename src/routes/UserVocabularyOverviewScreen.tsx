@@ -1,13 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { AddIconWhite, BookIcon } from '../../assets/images'
 import Button from '../components/Button'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
 import { BUTTONS_THEME } from '../constants/data'
-import { COLORS } from '../constants/theme/colors'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
 
@@ -29,16 +28,18 @@ type UserVocabularyOverviewScreenProps = {
 
 const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScreenProps): ReactElement => {
   const { list, create, practice } = getLabels().userVocabulary.overview
+  const theme = useTheme()
+
   return (
     <RouteWrapper>
       <Root>
         <ListItem
-          icon={<BookIcon fill={COLORS.black} />}
+          icon={<BookIcon color={theme.colors.black} />}
           title={list}
           onPress={() => navigation.navigate('UserVocabularyList')}
         />
         <ListItem
-          icon={<BookIcon fill={COLORS.black} />}
+          icon={<BookIcon color={theme.colors.black} />}
           title={practice}
           onPress={() => navigation.navigate('UserVocabularyUnitSelection')}
         />

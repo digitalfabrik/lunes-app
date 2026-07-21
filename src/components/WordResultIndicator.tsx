@@ -48,7 +48,7 @@ const WordResultIndicator = ({
     <BottomSheet visible={isVisible} backgroundColor={color}>
       <BottomSheetColumn>
         <BottomSheetRow>
-          <Icon width='32' height='32' accessible={false} />
+          <Icon width='32' height='32' color={theme.colors.text} accessible={false} />
           <HeadingText>{label}</HeadingText>
         </BottomSheetRow>
 

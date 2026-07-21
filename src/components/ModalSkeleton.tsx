@@ -65,7 +65,11 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
           <ModalContainer bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}>
             <IconRow>
               <Pressable onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
-                <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+                <CloseIcon
+                  width={theme.spacingsPlain.md}
+                  height={theme.spacingsPlain.md}
+                  color={theme.colors.primary}
+                />
               </Pressable>
             </IconRow>
             <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
