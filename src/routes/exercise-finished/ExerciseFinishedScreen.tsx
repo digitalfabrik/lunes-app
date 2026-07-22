@@ -4,7 +4,7 @@ import React, { ComponentType, ReactElement, useEffect, useState } from 'react'
 import { SvgProps } from 'react-native-svg'
 import styled from 'styled-components/native'
 
-import { BottomTabsIcon, LightBulbIconBlack, PartyHornIcon, SadSmileyCircleIcon } from '../../../assets/images'
+import { BottomTabsIcon, LightBulbIcon, PartyHornIcon, SadSmileyCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import Modal from '../../components/Modal'
 import RouteWrapper from '../../components/RouteWrapper'
@@ -109,7 +109,13 @@ const ExerciseFinishedScreen = ({ navigation, route }: ExerciseFinishedScreenPro
           confirmationButtonText={getLabels().repetition.repeatNow}
           onClose={() => setIsModalVisible(false)}
           testID='repetition-modal'
-          icon={<LightBulbIconBlack width={theme.spacingsPlain.xxl} height={theme.spacingsPlain.xxl} />}
+          icon={
+            <LightBulbIcon
+              width={theme.spacingsPlain.xxl}
+              height={theme.spacingsPlain.xxl}
+              color={theme.colors.black}
+            />
+          }
           text={getLabels().repetition.hintModalHeaderText}
         >
           <ContainerText>{getLabels().repetition.hintModalContentText}</ContainerText>

@@ -167,7 +167,7 @@ const ListItem = ({
     rightChildren ??
     (!hideRightChildren && (
       <ChevronRight
-        fill={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
+        color={pressed ? theme.colors.buttonSelectedSecondary : arrowColor}
         testID='arrow'
         width={theme.spacingsPlain.md}
         height={theme.spacingsPlain.md}

@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { ArrowRightIcon, InfoCircleBlackIcon } from '../../../assets/images'
+import { ArrowRightIcon, InfoCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ModalSkeleton from '../../components/ModalSkeleton'
 import RouteWrapper from '../../components/RouteWrapper'
@@ -126,10 +126,13 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
       <Root>
         <HeadingContainer>
           <HeadingText>{repeatWords}</HeadingText>
-          <InfoCircleBlackIcon
+          <InfoCircleIcon
             testID='repetition-info-icon'
             width={theme.spacingsPlain.sm}
             height={theme.spacingsPlain.sm}
+            color={theme.colors.text}
+            accessibilityRole='button'
+            accessibilityLabel={getLabels().repetition.infoButton}
             onPress={() => setIsInfoModalVisible(true)}
           />
         </HeadingContainer>
@@ -159,10 +162,13 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         <Container>
           <HeaderWrapper>
             <Subheading>{yourLearningProgress}</Subheading>
-            <InfoCircleBlackIcon
+            <InfoCircleIcon
               testID='progress-info-icon'
               width={theme.spacingsPlain.sm}
               height={theme.spacingsPlain.sm}
+              color={theme.colors.text}
+              accessibilityRole='button'
+              accessibilityLabel={getLabels().repetition.progressInfoButton}
               onPress={() => setIsProgressExplainerVisible(true)}
             />
           </HeaderWrapper>
