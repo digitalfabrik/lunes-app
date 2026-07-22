@@ -1,6 +1,6 @@
 # Opens (or reuses) a single PR on the update-screenshots branch with both platforms' screenshots
 docker:
-  - image: cimg/node:20.18.3
+  - image: cimg/node:24.18.0
 resource_class: small
 shell: /bin/bash -eo pipefail
 steps:

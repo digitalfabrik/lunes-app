@@ -1,6 +1,6 @@
 # Create a pre-release (with release notes) on github and send a mattermost notification.
 docker:
-  - image: cimg/node:20.18.3
+  - image: cimg/node:24.18.0
 resource_class: small
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true

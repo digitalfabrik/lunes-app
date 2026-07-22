@@ -1,6 +1,6 @@
 # Create a commit which moves the release notes from the unreleased directory to the current release directory
 docker:
-  - image: cimg/node:20.18.3
+  - image: cimg/node:24.18.0
 resource_class: small
 steps:
   - checkout

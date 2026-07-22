@@ -11,8 +11,8 @@ steps:
   - run:
       name: Set up Node
       command: |
-        nvm install 20.18.3
-        nvm alias default 20.18.3
+        nvm install 24.18.0
+        nvm alias default 24.18.0
         corepack enable
   - restore_yarn_cache
   # react-native-reanimated needs Ninja and CMake to build (see build_android).
