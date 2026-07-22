@@ -46,6 +46,11 @@ COMMENT_MARKER = "<!-- llm-pr-review -->"
 # Maximum diff size to send to the LLM (200 KB). Larger diffs are truncated.
 MAX_DIFF_BYTES = 200_000
 
+# Maximum diff size for a single file (20 KB). Larger per-file diffs (e.g.
+# regenerated fixtures or lock files) are replaced by a placeholder so they
+# can't push the interesting files of the PR past MAX_DIFF_BYTES.
+MAX_FILE_DIFF_BYTES = 20_000
+
 SYSTEM_PROMPT = """
 You are a senior React Native/TypeScript engineer reviewing a pull request
 for lunes-app, the mobile vocabulary trainer app (iOS & Android, built with
@@ -122,6 +127,15 @@ Analyse the diff and the commit messages and report on:
  `.circleci/src/{commands,jobs,workflows}/*.yml` via
  `yarn circleci:update-config`.
 
+The message starts with the complete list of files changed in this PR.
+The diff itself may be incomplete: oversized per-file diffs are replaced
+by an "[omitted]" placeholder and the overall diff may be truncated.
+Whether a file is part of the PR must therefore only ever be judged by
+the file list, never by the (possibly incomplete) diff. Never claim that
+a file, migration, translation or test is missing from the PR when the
+file list contains it — if its diff was omitted or truncated, say that
+you could not review its content instead.
+
 Be specific and reference file paths and line numbers where possible.
 Be concise. Do not approve or reject — provide comments only.
 """
@@ -147,6 +161,66 @@ def pr_number_from_url(pull_request_url):
     "https://github.com/org/repo/pull/123" -> "123".
     """
     return pull_request_url.rstrip("/").rsplit("/", 1)[-1]
+
+
+def path_from_diff_header(header_line):
+    """
+    Extracts the file path from a "diff --git a/... b/..." header line,
+    e.g. 'diff --git a/setup.py b/setup.py' -> "setup.py".
+    """
+    return header_line.split(" b/", 1)[-1]
+
+
+def split_diff_by_file(diff_text):
+    """
+    Splits a unified diff into a list of per-file chunks, each starting
+    with its "diff --git" header line.
+    """
+    chunks = []
+    for chunk in ("\n" + diff_text).split("\ndiff --git "):
+        if chunk.strip():
+            chunks.append("diff --git " + chunk.rstrip("\n"))
+    return chunks
+
+
+def compress_diff(diff_text):
+    """
+    Prepares a diff for the LLM without losing track of the changed files:
+
+    - Per-file diffs larger than MAX_FILE_DIFF_BYTES (e.g. regenerated
+      fixtures) are replaced by a placeholder, so a single bulky file
+      can't push the rest of the PR past the overall size limit.
+    - If the result still exceeds MAX_DIFF_BYTES, it is truncated.
+
+    Returns a tuple (changed_files, compressed_diff, truncated).
+    """
+    changed_files = []
+    parts = []
+    for chunk in split_diff_by_file(diff_text):
+        header_line = chunk.split("\n", 1)[0]
+        changed_files.append(path_from_diff_header(header_line))
+        chunk_size = len(chunk.encode())
+        if chunk_size > MAX_FILE_DIFF_BYTES:
+            line_count = chunk.count("\n")
+            parts.append(
+                f"{header_line}\n"
+                f"[diff omitted: {line_count} lines / {chunk_size} bytes — "
+                f"too large for review]"
+            )
+            print(
+                f"Omitting diff of {changed_files[-1]} "
+                f"({chunk_size} bytes > {MAX_FILE_DIFF_BYTES})."
+            )
+        else:
+            parts.append(chunk)
+
+    compressed = "\n\n".join(parts)
+    truncated = False
+    if len(compressed.encode()) > MAX_DIFF_BYTES:
+        compressed = compressed.encode()[:MAX_DIFF_BYTES].decode(errors="replace")
+        truncated = True
+        print(f"Diff truncated to {MAX_DIFF_BYTES} bytes for LLM input.")
+    return changed_files, compressed, truncated
 
 
 def main():
@@ -210,11 +284,7 @@ def main():
 
     print(f"Diff fetched ({len(diff_text)} chars).")
 
-    truncated = False
-    if len(diff_text.encode()) > MAX_DIFF_BYTES:
-        diff_text = diff_text.encode()[:MAX_DIFF_BYTES].decode(errors="replace")
-        truncated = True
-        print(f"Diff truncated to {MAX_DIFF_BYTES} bytes for LLM input.")
+    changed_files, diff_text, truncated = compress_diff(diff_text)
 
     # -------------------------------------------------------------------------
     # Step 2b: Fetch the PR commit messages from GitHub
@@ -254,7 +324,10 @@ def main():
     chat_url = f"{LITELLM_BASE_URL}/v1/chat/completions"
     print(f"Sending diff to LiteLLM ({LITELLM_MODEL}) ...")
 
-    user_content_parts = []
+    user_content_parts = [
+        "Complete list of files changed in this PR:\n\n"
+        + "\n".join(f"- {path}" for path in changed_files)
+    ]
     if commit_messages_block:
         user_content_parts.append(
             "Commit messages in this PR:\n\n" + commit_messages_block
