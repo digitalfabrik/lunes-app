@@ -78,7 +78,14 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
   })
 
   return (
-    <Modal visible={shouldBeVisible} transparent animationType='none' statusBarTranslucent navigationBarTranslucent>
+    <Modal
+      visible={shouldBeVisible}
+      transparent
+      animationType='none'
+      statusBarTranslucent
+      navigationBarTranslucent
+      supportedOrientations={['landscape', 'portrait']}
+    >
       <ModalContainer style={{ backgroundColor: trimColor }}>
         <ModalBody
           backgroundColor={backgroundColor ?? theme.colors.backgroundHigh}

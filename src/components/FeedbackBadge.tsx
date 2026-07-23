@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import { EXERCISE_FEEDBACK } from '../constants/data'
@@ -33,12 +33,13 @@ type FeedbackBadgeProps = {
 }
 
 const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null => {
+  const theme = useTheme()
   const { positive, negative } = { ...getLabels().exercises.feedback }
   if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
     return (
       <BadgeContainer feedback={feedback} testID='positive-badge'>
         <BadgeIcon>
-          <ThumbsUpIcon height='100%' />
+          <ThumbsUpIcon height='100%' color={theme.colors.text} />
         </BadgeIcon>
         <BadgeText>{positive}</BadgeText>
       </BadgeContainer>
@@ -48,7 +49,7 @@ const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null =>
     return (
       <BadgeContainer feedback={feedback} testID='negative-badge'>
         <BadgeIcon>
-          <ThumbsDownIcon height='100%' />
+          <ThumbsDownIcon height='100%' color={theme.colors.text} />
         </BadgeIcon>
         <BadgeText>{negative}</BadgeText>
       </BadgeContainer>

@@ -103,7 +103,7 @@ const CustomTextInput = ({
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
-              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.primary} />
             </ClearContainer>
           ) : (
             rightContainer

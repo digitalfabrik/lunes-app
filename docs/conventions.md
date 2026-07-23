@@ -25,6 +25,12 @@ Tests should always be positioned in a `__tests__` directory on the same level a
 └── Caption.js
 ```
 
+## SVG icons
+
+Icons in `assets/images` are imported as React components (via `react-native-svg-transformer`) and recolored at runtime through a single `color` prop, that is passed to `fill="currentColor"`.
+
+Important: Pass **only one** color per icon. For multi-color icons, use one SVG per variant with the colors baked in and switch between them in the component.
+
 ## Git commit messages and Pull request names
 
 See [this guide](https://github.com/erlang/otp/wiki/Writing-good-commit-messages) for a general reference on how to write

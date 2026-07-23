@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CrystalBallIcon } from '../../../../assets/images'
+import { LightBulbIcon } from '../../../../assets/images'
 import { ContentSecondary } from '../../../components/text/Content'
 import VocabularyItem from '../../../models/VocabularyItem'
 import { getLabels } from '../../../services/helpers'
@@ -32,7 +32,7 @@ const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProp
   const theme = useTheme()
   return vocabularyItem.alternatives.length > 0 ? (
     <Root>
-      <CrystalBallIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+      <LightBulbIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={theme.colors.black} />
       <Content>
         <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
         <AlternativeWords>

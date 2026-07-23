@@ -5,7 +5,7 @@ import React from 'react'
 import { StandardExerciseKey, EXERCISES, StandardExerciseKeys } from '../../../constants/data'
 import { StandardUnitId } from '../../../models/Unit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
-import { getLabels } from '../../../services/helpers'
+import { getLabels, wordsDescription } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render from '../../../testing/render'
@@ -33,7 +33,7 @@ describe('ExerciseFinishedScreen', () => {
         results: vocabularyItems.map((vocabularyItem, index) => ({
           vocabularyItem,
           result: !allCorrect && index < numberOfDifficultWords ? 'incorrect' : 'correct',
-          numberOfTries: !allCorrect && index < numberOfDifficultWords ? 3 : 1,
+          numberOfTries: index < numberOfDifficultWords ? 3 : 1,
         })),
       },
     }
@@ -88,5 +88,16 @@ describe('ExerciseFinishedScreen', () => {
     const button = getByText(getLabels().results.action.finished)
     fireEvent.press(button)
     expect(navigation.pop).toHaveBeenCalled()
+  })
+
+  it('should count words as incorrect even if they have only initially been answered incorrectly', () => {
+    const route = getRoute(StandardExerciseKeys.wordChoiceExercise, true, false, 4)
+    const { getByText } = render(<ExerciseFinishedScreen route={route} navigation={navigation} />)
+
+    const correctWords = 0
+    const totalWords = 4
+    const summaryMessage = `${correctWords} ${getLabels().results.of} ${wordsDescription(totalWords)} ${getLabels().results.correct}`
+    expect(getByText(summaryMessage)).toBeVisible()
+    expect(getByText(getLabels().results.action.repeat)).toBeVisible()
   })
 })
