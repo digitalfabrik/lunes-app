@@ -8,16 +8,10 @@ jobs:
       context:
         - mattermost
         - tuerantuer-apple
-  - move_release_notes:
+  - notify_promotion:
       context:
         - mattermost
         - deliverino
       requires:
         - promote_android
         - promote_ios
-  - notify_promotion:
-      context:
-        - mattermost
-        - deliverino
-      requires:
-        - move_release_notes
