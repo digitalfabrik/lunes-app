@@ -8,3 +8,8 @@ jobs:
   - check:
       context:
         - mattermost
+  - llm-pr-review:
+      context:
+        - mattermost
+        - deliverino
+        - digitalfabrik-llm-api
