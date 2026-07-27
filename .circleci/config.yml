@@ -634,7 +634,7 @@ jobs:
                 working_directory: tools
             - notify:
                 channel: releases
-                success_message: 'Lunes - ${GITHUB_RELEASE} - has been promoted successfully :tada:'
+                success_message: 'Lunes App - ${GITHUB_RELEASE} - has been promoted successfully :tada:'
     open_screenshots_pr:
         docker:
             - image: cimg/node:24.18.0
