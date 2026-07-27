@@ -36,7 +36,7 @@ Important: Pass **only one** color per icon. For multi-color icons, use one SVG 
 See [this guide](https://github.com/erlang/otp/wiki/Writing-good-commit-messages) for a general reference on how to write
 good commit messages.
 Commit messages should have the following schema:
-**`<Issue key>: Your commit message`**, e.g. `LUN-612: Add commit message documentation`
+**`<Issue key>: Your commit message`**, e.g. `612: Add commit message documentation`
 
 The same applies for PR names. Branch names should also start with `<Issue key>`-Prefix
 
