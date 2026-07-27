@@ -14,5 +14,5 @@ steps:
         echo "export GITHUB_RELEASE='${GITHUB_RELEASE}'" >> $BASH_ENV
       working_directory: tools
   - notify:
-      success_message: 'Lunes - ${GITHUB_RELEASE} - has been promoted successfully :tada:'
+      success_message: 'Lunes App - ${GITHUB_RELEASE} - has been promoted successfully :tada:'
       channel: releases
