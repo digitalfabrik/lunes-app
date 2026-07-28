@@ -9,7 +9,6 @@ import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render, { renderWithStorageCache } from '../../../testing/render'
 import RepetitionScreen from '../RepetitionScreen'
 
-jest.mock('victory-native')
 jest.mock('@react-navigation/native')
 
 describe('RepetitionScreen', () => {

@@ -1,56 +1,94 @@
 import React, { ReactElement } from 'react'
 import { useWindowDimensions } from 'react-native'
+import Svg, { Line, Rect, Text } from 'react-native-svg'
 import { useTheme } from 'styled-components/native'
-import { LineSegment, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from 'victory-native'
 
 import useRepetitionService from '../../../hooks/useRepetitionService'
-import { sections } from '../../../services/RepetitionService'
 import { getLabels } from '../../../services/helpers'
-import { isScreenshotModeEnabled } from '../../../services/screenshotData'
 
 const CHART_HEIGHT_RATIO = 0.35
+const VALUE_LABEL_HEIGHT = 24
+const AXIS_LABEL_HEIGHT = 44
+const BAR_WIDTH_RATIO = 0.6
+const BAR_BASELINE_GAP = 8
+const VALUE_LABEL_FONT_SIZE = 16
+const AXIS_LABEL_FONT_SIZE = 14
+const AXIS_LABEL_LINE_HEIGHT = 16
+const SECTION_KEYS = ['untrained', 'section1', 'section2', 'section3', 'section4', 'section5', 'learned']
 
 const RepetitionProgressChart: () => ReactElement = () => {
   const theme = useTheme()
-  const { chartColor1, chartColor2, chartColor3, chartColor4 } = theme.colors
+  const { chartColor1, chartColor2, chartColor3, chartColor4, text: textColor } = theme.colors
   const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
-  const { height } = useWindowDimensions()
-  const { untrained, learned, sectionOneToFive } = getLabels().repetition.chart
-  const words = getLabels().general.word.plural
+
+  const labels = getLabels()
+  const { untrained, learned, sectionOneToFive } = labels.repetition.chart
+  const words = labels.general.word.plural
+  // two-word labels wrap onto a second line
+  const axisLabelsBySection: Record<number, string[]> = {
+    0: [untrained, words],
+    3: [sectionOneToFive],
+    6: [learned, words],
+  }
+
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const chartWidth = windowWidth - 2 * theme.spacingsPlain.md
+  const chartHeight = windowHeight * CHART_HEIGHT_RATIO
+  const plotHeight = chartHeight - VALUE_LABEL_HEIGHT - AXIS_LABEL_HEIGHT
+  const baselineY = VALUE_LABEL_HEIGHT + plotHeight
 
   const repetitionService = useRepetitionService()
   const numberOfWordsInEachSection = repetitionService.getNumberOfWordsInEachSection()
-  const chartData = numberOfWordsInEachSection.map((item, index) => ({ y: item, x: index, fill: barColors[index] }))
+  const highestSectionCount = Math.max(...numberOfWordsInEachSection, 1) // avoid dividing by zero when empty
+  const slotWidth = chartWidth / numberOfWordsInEachSection.length
+  const barWidth = slotWidth * BAR_WIDTH_RATIO
+  const barBaselineY = baselineY - BAR_BASELINE_GAP
+  const barAreaHeight = plotHeight - BAR_BASELINE_GAP
 
   return (
-    <VictoryChart height={height * CHART_HEIGHT_RATIO}>
-      <VictoryAxis
-        crossAxis
-        offsetY={40}
-        tickValues={sections}
-        tickFormat={[[untrained, words], '', '', sectionOneToFive, '', '', [learned, words]]}
-        axisComponent={
-          <LineSegment
-            style={{
-              stroke: chartColor4,
-              strokeWidth: 3,
-              strokeDasharray: [0, '12%', '90%'],
-              transform: 'scale(0.9 1)',
-            }}
-          />
-        }
+    <Svg width={chartWidth} height={chartHeight}>
+      <Line
+        x1={slotWidth}
+        y1={baselineY}
+        x2={chartWidth - slotWidth}
+        y2={baselineY}
+        stroke={chartColor4}
+        strokeWidth={3}
       />
-      <VictoryBar
-        animate={isScreenshotModeEnabled() ? false : { animationWhitelist: ['data', 'style'] }}
-        labels={({ datum }) => String(Math.round(datum.y))} // Round is needed to avoid floats during animation
-        labelComponent={<VictoryLabel />}
-        data={chartData}
-        barRatio={1}
-        style={{
-          data: { fill: ({ datum }) => datum.fill },
-        }}
-      />
-    </VictoryChart>
+      {numberOfWordsInEachSection.map((count, section) => {
+        const barHeight = (count / highestSectionCount) * barAreaHeight
+        const centerX = slotWidth * section + slotWidth / 2
+        const barTop = barBaselineY - barHeight
+        return (
+          <React.Fragment key={SECTION_KEYS[section]}>
+            <Rect x={centerX - barWidth / 2} y={barTop} width={barWidth} height={barHeight} fill={barColors[section]} />
+            <Text
+              x={centerX}
+              y={barTop - VALUE_LABEL_FONT_SIZE / 2}
+              fill={textColor}
+              fontSize={VALUE_LABEL_FONT_SIZE}
+              fontFamily={theme.fonts.contentFontRegular}
+              textAnchor='middle'
+            >
+              {count}
+            </Text>
+            {axisLabelsBySection[section]?.map((labelLine, lineIndex) => (
+              <Text
+                key={labelLine}
+                x={centerX}
+                y={baselineY + AXIS_LABEL_LINE_HEIGHT * (lineIndex + 1)}
+                fill={textColor}
+                fontSize={AXIS_LABEL_FONT_SIZE}
+                fontFamily={theme.fonts.contentFontRegular}
+                textAnchor='middle'
+              >
+                {labelLine}
+              </Text>
+            ))}
+          </React.Fragment>
+        )
+      })}
+    </Svg>
   )
 }
 
