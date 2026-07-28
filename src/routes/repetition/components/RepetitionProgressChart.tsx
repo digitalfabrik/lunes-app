@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useWindowDimensions, View } from 'react-native'
 import Svg, { Line, Rect, Text } from 'react-native-svg'
 import { useTheme } from 'styled-components/native'
 
 import useRepetitionService from '../../../hooks/useRepetitionService'
-import { getLabels } from '../../../services/helpers'
+import { getLabels, wordsDescription } from '../../../services/helpers'
 
 const CHART_HEIGHT_RATIO = 0.35
 const VALUE_LABEL_HEIGHT = 24
@@ -22,7 +22,7 @@ const RepetitionProgressChart: () => ReactElement = () => {
   const barColors = [chartColor1, chartColor2, chartColor2, chartColor2, chartColor2, chartColor2, chartColor3]
 
   const labels = getLabels()
-  const { untrained, learned, sectionOneToFive } = labels.repetition.chart
+  const { untrained, learned, sectionOneToFive, section: sectionLabel } = labels.repetition.chart
   const words = labels.general.word.plural
   // two-word labels wrap onto a second line
   const axisLabelsBySection: Record<number, string[]> = {
@@ -45,50 +45,73 @@ const RepetitionProgressChart: () => ReactElement = () => {
   const barBaselineY = baselineY - BAR_BASELINE_GAP
   const barAreaHeight = plotHeight - BAR_BASELINE_GAP
 
+  const lastSection = numberOfWordsInEachSection.length - 1
+  const sectionName = (index: number): string => {
+    if (index === 0) {
+      return untrained
+    }
+    if (index === lastSection) {
+      return learned
+    }
+    return `${sectionLabel} ${index}`
+  }
+
+  const accessibilityLabel = numberOfWordsInEachSection
+    .map((count, index) => `${sectionName(index)}: ${wordsDescription(count)}`)
+    .join(', ')
+
   return (
-    <Svg width={chartWidth} height={chartHeight}>
-      <Line
-        x1={slotWidth}
-        y1={baselineY}
-        x2={chartWidth - slotWidth}
-        y2={baselineY}
-        stroke={chartColor4}
-        strokeWidth={3}
-      />
-      {numberOfWordsInEachSection.map((count, section) => {
-        const barHeight = (count / highestSectionCount) * barAreaHeight
-        const centerX = slotWidth * section + slotWidth / 2
-        const barTop = barBaselineY - barHeight
-        return (
-          <React.Fragment key={SECTION_KEYS[section]}>
-            <Rect x={centerX - barWidth / 2} y={barTop} width={barWidth} height={barHeight} fill={barColors[section]} />
-            <Text
-              x={centerX}
-              y={barTop - VALUE_LABEL_FONT_SIZE / 2}
-              fill={textColor}
-              fontSize={VALUE_LABEL_FONT_SIZE}
-              fontFamily={theme.fonts.contentFontRegular}
-              textAnchor='middle'
-            >
-              {count}
-            </Text>
-            {axisLabelsBySection[section]?.map((labelLine, lineIndex) => (
+    <View accessible accessibilityRole='image' accessibilityLabel={accessibilityLabel}>
+      <Svg width={chartWidth} height={chartHeight}>
+        <Line
+          x1={slotWidth}
+          y1={baselineY}
+          x2={chartWidth - slotWidth}
+          y2={baselineY}
+          stroke={chartColor4}
+          strokeWidth={3}
+        />
+        {numberOfWordsInEachSection.map((count, section) => {
+          const barHeight = (count / highestSectionCount) * barAreaHeight
+          const centerX = slotWidth * section + slotWidth / 2
+          const barTop = barBaselineY - barHeight
+          return (
+            <React.Fragment key={SECTION_KEYS[section]}>
+              <Rect
+                x={centerX - barWidth / 2}
+                y={barTop}
+                width={barWidth}
+                height={barHeight}
+                fill={barColors[section]}
+              />
               <Text
-                key={labelLine}
                 x={centerX}
-                y={baselineY + AXIS_LABEL_LINE_HEIGHT * (lineIndex + 1)}
+                y={barTop - VALUE_LABEL_FONT_SIZE / 2}
                 fill={textColor}
-                fontSize={AXIS_LABEL_FONT_SIZE}
+                fontSize={VALUE_LABEL_FONT_SIZE}
                 fontFamily={theme.fonts.contentFontRegular}
                 textAnchor='middle'
               >
-                {labelLine}
+                {count}
               </Text>
-            ))}
-          </React.Fragment>
-        )
-      })}
-    </Svg>
+              {axisLabelsBySection[section]?.map((labelLine, lineIndex) => (
+                <Text
+                  key={labelLine}
+                  x={centerX}
+                  y={baselineY + AXIS_LABEL_LINE_HEIGHT * (lineIndex + 1)}
+                  fill={textColor}
+                  fontSize={AXIS_LABEL_FONT_SIZE}
+                  fontFamily={theme.fonts.contentFontRegular}
+                  textAnchor='middle'
+                >
+                  {labelLine}
+                </Text>
+              ))}
+            </React.Fragment>
+          )
+        })}
+      </Svg>
+    </View>
   )
 }
 

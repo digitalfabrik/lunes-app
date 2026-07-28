@@ -3,7 +3,7 @@ import React from 'react'
 
 import { RepetitionService, WordNodeCard } from '../../../services/RepetitionService'
 import { StorageCache } from '../../../services/Storage'
-import { getLabels } from '../../../services/helpers'
+import { getLabels, wordsDescription } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import render, { renderWithStorageCache } from '../../../testing/render'
@@ -31,6 +31,29 @@ describe('RepetitionScreen', () => {
     expect(getByTestId('progress-info-icon')).toBeDefined()
     expect(getByText(getLabels().repetition.repeatNow)).toBeDefined()
     expect(getByText(getLabels().repetition.viewWords)).toBeDefined()
+  })
+
+  it('should describe every section of the progress chart in a single accessibility label', async () => {
+    const storageCache = StorageCache.createDummy()
+    const wordNodeCards: WordNodeCard[] = new VocabularyItemBuilder(2).build().map(item => ({
+      wordId: item.id,
+      section: 1,
+      inThisSectionSince: RepetitionService.addDays(new Date(), -1),
+    }))
+    await storageCache.setItem('wordNodeCards', wordNodeCards)
+    const { getByLabelText } = renderWithStorageCache(storageCache, <RepetitionScreen navigation={navigation} />)
+
+    const { untrained, learned, section } = getLabels().repetition.chart
+    const expectedLabel = [
+      `${untrained}: ${wordsDescription(0)}`,
+      `${section} 1: ${wordsDescription(2)}`,
+      `${section} 2: ${wordsDescription(0)}`,
+      `${section} 3: ${wordsDescription(0)}`,
+      `${section} 4: ${wordsDescription(0)}`,
+      `${section} 5: ${wordsDescription(0)}`,
+      `${learned}: ${wordsDescription(0)}`,
+    ].join(', ')
+    await waitFor(() => expect(getByLabelText(expectedLabel)).toBeDefined())
   })
 
   it('should show empty state and disable button when there are no words to repeat', async () => {
