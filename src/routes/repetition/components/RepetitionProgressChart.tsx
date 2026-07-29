@@ -12,7 +12,7 @@ const AXIS_LABEL_HEIGHT = 44
 const BAR_WIDTH_RATIO = 0.6
 const BAR_BASELINE_GAP = 8
 const VALUE_LABEL_FONT_SIZE = 16
-const AXIS_LABEL_FONT_SIZE = 14
+const AXIS_LABEL_FONT_SIZE = 12
 const AXIS_LABEL_LINE_HEIGHT = 16
 const SECTION_KEYS = ['untrained', 'section1', 'section2', 'section3', 'section4', 'section5', 'learned']
 
