@@ -271,7 +271,8 @@
     "chart": {
       "untrained": "Neue",
       "learned": "Gelernte",
-      "sectionOneToFive": "Lernstufen 1-5"
+      "sectionOneToFive": "Lernstufen 1-5",
+      "section": "Lernstufe"
     },
     "emptyState": {
       "title": "Keine Wörter zum Wiederholen bereit",
