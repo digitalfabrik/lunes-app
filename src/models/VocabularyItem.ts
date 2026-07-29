@@ -36,6 +36,8 @@ type VocabularyItem = {
   images: string[]
   audio: string | null
   alternatives: AlternativeWord[]
+  // German respelling for loanwords, e.g. "Besee" for "Baiser". Only ever set by the CMS.
+  pronunciation?: string
   exampleSentence?: {
     sentence: string
     audio: string
@@ -49,6 +51,8 @@ export type StandardVocabularyItem = {
 export type UserVocabularyItem = {
   id: UserVocabularyId
 } & VocabularyItem
+
+export const pronunciationOrWord = ({ word, pronunciation }: VocabularyItem): string => pronunciation ?? word
 
 export const isUserVocabularyItem = (vocabularyItem: VocabularyItem): vocabularyItem is UserVocabularyItem =>
   vocabularyItem.id.type === VocabularyItemTypes.UserCreated

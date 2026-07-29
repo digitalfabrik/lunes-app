@@ -39,7 +39,7 @@ import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
 import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem, { VocabularyItemTypes } from '../../models/VocabularyItem'
+import VocabularyItem, { pronunciationOrWord, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
@@ -266,10 +266,11 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   const handlePressIn = async (): Promise<void> => {
     try {
+      const spokenWord = pronunciationOrWord(currentWord)
       const results = await startRecording({
-        hints: [currentWord.word, `${currentWord.article.value} ${currentWord.word}`],
+        hints: [spokenWord, `${currentWord.article.value} ${spokenWord}`],
       })
-      const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
+      const answerState = evaluateSpeechMatch(results, currentWord.article.value, spokenWord)
       dispatch({ type: 'speechResult', answerState })
     } catch (error) {
       const errorCode = (error as { code?: SpeechToTextErrorCode }).code
@@ -322,6 +323,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           {isDevModeEnabled && (
             <CheatText>
               Cheat: {currentWord.article.value} {currentWord.word}
+              {currentWord.pronunciation !== undefined && ` (${currentWord.pronunciation})`}
             </CheatText>
           )}
         </ExerciseContent>

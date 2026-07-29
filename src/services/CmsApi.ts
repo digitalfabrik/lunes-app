@@ -144,10 +144,11 @@ type WordResponse = {
   audio: string
   example_sentence: string | null
   example_sentence_audio: string | null
+  pronunciation: string
 }
 
 const transformWordResponse = (response: WordResponse): StandardVocabularyItem => {
-  const { id, word, article, images, audio } = response
+  const { id, word, article, images, audio, pronunciation } = response
   return {
     id: { type: VocabularyItemTypes.Standard, id },
     word,
@@ -155,6 +156,8 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
     images,
     audio,
     alternatives: [],
+    // The CMS sends an empty string for words that need no special pronunciation
+    pronunciation: pronunciation || undefined,
     exampleSentence:
       response.example_sentence !== null && response.example_sentence_audio !== null
         ? { sentence: response.example_sentence, audio: response.example_sentence_audio }
