@@ -5,7 +5,7 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
+import { ARTICLES, MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import useVoiceRecognition from '../../../hooks/useVoiceRecognition'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
@@ -130,6 +130,57 @@ describe('SpeechTrainingScreen', () => {
       expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible()
     })
     expect(getByText(getLabels().exercises.tryAgain)).toBeVisible()
+  })
+
+  it('should bias the recognizer towards the word and the full phrase', async () => {
+    mockStartRecording.mockResolvedValue([])
+    const { getByTestId } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Spachtel', 'der Spachtel'] }))
+  })
+
+  describe('loanwords with a pronunciation from the CMS', () => {
+    // "Baiser" is spoken "Besee"
+    const loanword = { ...vocabularyItems[0]!, word: 'Baiser', article: ARTICLES[3], pronunciation: 'Besee' }
+
+    beforeEach(() => {
+      mocked(getWordsByJob).mockResolvedValue([loanword])
+    })
+
+    it('should bias the recognizer towards the pronunciation instead of the spelling', async () => {
+      mockStartRecording.mockResolvedValue([])
+      const { getByTestId } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Besee', 'das Besee'] }))
+    })
+
+    it('should show correct feedback when the pronunciation is recognized', async () => {
+      mockStartRecording.mockResolvedValue(['das Besee'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    })
+
+    it('should show incorrect feedback when the word is read out as it is written', async () => {
+      mockStartRecording.mockResolvedValue(['das Baiser'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible())
+    })
+
+    it('should cheat with the pronunciation so that it matches what is graded', async () => {
+      const { getByText } = await renderInDevModeAndWaitForLoad()
+
+      expect(getByText('Cheat: das Baiser (Besee)')).toBeVisible()
+    })
   })
 
   it('should show error bottom sheet when speech recognition fails', async () => {

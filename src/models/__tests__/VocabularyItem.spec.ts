@@ -1,6 +1,20 @@
-import { areVocabularyItemIdsEqual } from '../VocabularyItem'
+import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
+import { areVocabularyItemIdsEqual, pronunciationOrWord } from '../VocabularyItem'
 
 describe('VocabularyItem', () => {
+  describe('pronunciationOrWord', () => {
+    // Item 0 of the builder is 'Spachtel', which needs no special pronunciation
+    const vocabularyItem = new VocabularyItemBuilder(1).build()[0]!
+
+    it('should use the pronunciation of a loanword', () => {
+      expect(pronunciationOrWord({ ...vocabularyItem, word: 'Baiser', pronunciation: 'Besee' })).toBe('Besee')
+    })
+
+    it('should use the word itself when there is no pronunciation', () => {
+      expect(pronunciationOrWord(vocabularyItem)).toBe('Spachtel')
+    })
+  })
+
   it('should compare two items correctly', () => {
     expect(
       areVocabularyItemIdsEqual({ type: 'user-created', index: 1 }, { index: 1, type: 'user-created' }),
