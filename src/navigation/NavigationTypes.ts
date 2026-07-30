@@ -53,7 +53,6 @@ export type HomeTabParams = {
 }
 
 // https://github.com/Microsoft/Script/issues/15300
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RoutesParams = {
   BottomTabNavigator: NavigatorScreenParams<BottomTabParams> | undefined
   HomeTab: undefined
