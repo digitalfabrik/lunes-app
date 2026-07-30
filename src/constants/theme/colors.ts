@@ -36,10 +36,10 @@ export const COLORS = {
   articleMasculine: '#8cc8f3',
   link: '#0000EE',
   audioRecordingActive: '#97aef1',
-  chartColor1: '#E0E4ED',
-  chartColor2: '#EEEEEE',
-  chartColor3: '#8CC8F3',
-  chartColor4: '#D9D9D9',
+  chartColor1: '#7D879C',
+  chartColor2: '#2B7CB8',
+  chartColor3: '#0F4C75',
+  chartColor4: '#8F8F8F',
   buttonBlue: '#A6E0FF',
 }
 
