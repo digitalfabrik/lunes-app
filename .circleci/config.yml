@@ -993,4 +993,3 @@ workflows:
                     - screenshot_ios
         when: << pipeline.parameters.run_update_screenshots >>
     version: 2
-
