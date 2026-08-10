@@ -1,9 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
+import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import useStorage from '../hooks/useStorage'
 import useTrackSession from '../hooks/useTrackSession'
-import OverlayMenu, { OverlayTransition } from '../routes/OverlayMenuScreen'
+import OverlayMenu, { overlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
 import ExerciseFinishedScreen from '../routes/exercise-finished/ExerciseFinishedScreen'
@@ -16,7 +17,7 @@ import VocabularyDetailExerciseScreen from '../routes/vocabulary-detail-exercise
 import { getLabels } from '../services/helpers'
 import BottomTabNavigator from './BottomTabNavigator'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { reducedMotionScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
@@ -26,11 +27,15 @@ const HomeStackNavigator = (): ReactElement | null => {
 
   const headerHeight = useTabletHeaderHeight()
   const options = screenOptions(headerHeight)
+  const isReducedMotionEnabled = useIsReducedMotionEnabled()
 
   const { manageJobs, overviewExercises, cancelExercise } = getLabels().general.header
 
   return (
-    <Stack.Navigator initialRouteName={jobs === null ? 'JobSelection' : 'BottomTabNavigator'}>
+    <Stack.Navigator
+      initialRouteName={jobs === null ? 'JobSelection' : 'BottomTabNavigator'}
+      screenOptions={reducedMotionScreenOptions(isReducedMotionEnabled)}
+    >
       <Stack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
         name='JobSelection'
@@ -41,7 +46,11 @@ const HomeStackNavigator = (): ReactElement | null => {
       <Stack.Screen
         name='OverlayMenu'
         component={OverlayMenu}
-        options={{ presentation: 'transparentModal', headerShown: false, ...OverlayTransition }}
+        options={{
+          presentation: 'transparentModal',
+          headerShown: false,
+          ...overlayTransition(isReducedMotionEnabled),
+        }}
       />
       <Stack.Screen
         name='VocabularyList'

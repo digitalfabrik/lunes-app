@@ -39,6 +39,9 @@ const headerStyles = (headerHeight?: number) =>
     },
   })
 
+export const reducedMotionScreenOptions = (isReducedMotionEnabled: boolean): StackNavigationOptions =>
+  isReducedMotionEnabled ? { animation: 'none' } : {}
+
 const screenOptions =
   (headerHeight?: number) =>
   (title: string, navigation: NavigationProp<RoutesParams>, isCloseButton = false): StackNavigationOptions => {

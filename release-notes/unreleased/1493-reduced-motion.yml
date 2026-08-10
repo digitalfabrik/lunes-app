@@ -1,0 +1,6 @@
+issue_key: 1493
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wer im Betriebssystem Bewegungen reduziert hat, sieht Übergänge jetzt als sanftes Ein- und Ausblenden statt als Bewegung.
