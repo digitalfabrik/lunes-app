@@ -4,7 +4,8 @@ import styled from 'styled-components/native'
 
 import { Answer, Article } from '../constants/data'
 import { getLabels, getArticleColor } from '../services/helpers'
-import { ContentSecondary, ContentSecondaryLight } from './text/Content'
+import { Content, ContentSecondary } from './text/Content'
+import { VocabularyWord } from './text/Heading'
 
 const PRESSED_ELEVATION = 6
 const PRESSED_SHADOW_OPACITY = 0.5
@@ -45,7 +46,11 @@ const ArticleText = styled(ContentSecondary)<StyledListElementProps>`
   color: ${props => (props.pressed ? props.theme.colors.primary : props.theme.colors.text)};
 `
 
-const Word = styled(ContentSecondaryLight)<StyledListElementProps>`
+const Word = styled(Content)<StyledListElementProps>`
+  color: ${props => (props.pressed ? props.theme.colors.background : props.theme.colors.text)};
+`
+
+const PrimaryWord = styled(VocabularyWord)<StyledListElementProps>`
   color: ${props => (props.pressed ? props.theme.colors.background : props.theme.colors.text)};
 `
 
@@ -53,14 +58,21 @@ export type SingleChoiceListItemProps = {
   answer: Answer
   anyAnswerSelected?: boolean
   onClick?: (answer: Answer) => void
+  isPrimaryContent?: boolean
 }
 
 type StyledListElementProps = {
   pressed: boolean
 }
 
-const WordItem = ({ answer, onClick, anyAnswerSelected = false }: SingleChoiceListItemProps): ReactElement => {
+const WordItem = ({
+  answer,
+  onClick,
+  anyAnswerSelected = false,
+  isPrimaryContent = false,
+}: SingleChoiceListItemProps): ReactElement => {
   const { word, article } = answer
+  const WordText = isPrimaryContent ? PrimaryWord : Word
 
   return (
     <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected} testID='word-item'>
@@ -69,10 +81,10 @@ const WordItem = ({ answer, onClick, anyAnswerSelected = false }: SingleChoiceLi
           <ArticleBox article={article} pressed={pressed}>
             <ArticleText pressed={pressed}>{article.value}</ArticleText>
           </ArticleBox>
-          <Word pressed={pressed}>
+          <WordText pressed={pressed}>
             {word}
             {article.id === 4 && ` (${getLabels().general.plurals})`}
-          </Word>
+          </WordText>
         </Container>
       )}
     </Pressable>

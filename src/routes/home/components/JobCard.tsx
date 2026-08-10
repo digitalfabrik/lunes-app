@@ -5,7 +5,7 @@ import Button from '../../../components/Button'
 import DeletionModal from '../../../components/DeletionModal'
 import ErrorMessage, { ErrorText } from '../../../components/ErrorMessage'
 import Loading from '../../../components/Loading'
-import { ContentSecondary, ContentSecondaryLight } from '../../../components/text/Content'
+import { ContentSecondary } from '../../../components/text/Content'
 import { Subheading } from '../../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { ForbiddenError, NetworkError } from '../../../constants/endpoints'
@@ -22,7 +22,7 @@ const LoadingContainer = styled.View`
   padding-top: ${props => props.theme.spacings.xxl};
 `
 
-const ErrorMessageModified = styled(ContentSecondaryLight)`
+const ErrorMessageModified = styled(ContentSecondary)`
   padding: ${props => props.theme.spacings.md};
   text-align: center;
   display: flex;

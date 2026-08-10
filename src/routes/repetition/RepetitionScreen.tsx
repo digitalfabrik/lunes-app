@@ -6,8 +6,9 @@ import { ArrowRightIcon, InfoCircleIcon } from '../../../assets/images'
 import Button from '../../components/Button'
 import ModalSkeleton from '../../components/ModalSkeleton'
 import RouteWrapper from '../../components/RouteWrapper'
-import { ContentSecondary, ContentTextBold } from '../../components/text/Content'
+import { Content, ContentSecondary, ContentTextBold } from '../../components/text/Content'
 import { HeadingText } from '../../components/text/Heading'
+import { SubheadingPrimary } from '../../components/text/Subheading'
 import { BUTTONS_THEME } from '../../constants/data'
 import { loadAllWords } from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
@@ -31,11 +32,8 @@ const HeadingContainer = styled.View`
   gap: ${props => props.theme.spacings.xs};
 `
 
-const TextContainer = styled.Text`
+const TextContainer = styled(Content)`
   color: ${props => props.theme.colors.primary};
-  font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 const Container = styled.View`
@@ -58,13 +56,6 @@ const EmptyStateSubtitle = styled.Text`
   font-size: ${props => props.theme.fonts.defaultFontSize};
   text-align: center;
   padding-top: ${props => props.theme.spacings.xs};
-`
-
-const Subheading = styled.Text`
-  color: ${props => props.theme.colors.primary};
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  font-size: ${props => props.theme.fonts.defaultFontSize};
 `
 
 const HeaderWrapper = styled.View`
@@ -139,7 +130,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         <Container>
           {numberOfWordsNeedingRepetition === 0 ? (
             <EmptyStateContent>
-              <Subheading>{emptyState.title}</Subheading>
+              <SubheadingPrimary>{emptyState.title}</SubheadingPrimary>
               <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
             </EmptyStateContent>
           ) : (
@@ -161,7 +152,7 @@ const RepetitionScreen = ({ navigation }: RepetitionScreenProps): ReactElement =
         </Container>
         <Container>
           <HeaderWrapper>
-            <Subheading>{yourLearningProgress}</Subheading>
+            <SubheadingPrimary>{yourLearningProgress}</SubheadingPrimary>
             <InfoCircleIcon
               testID='progress-info-icon'
               width={theme.spacingsPlain.sm}

@@ -80,7 +80,7 @@ const ComingSoonBadge = styled.View`
 
 const ComingSoonText = styled(ContentText)`
   color: white;
-  font-weight: bold;
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 

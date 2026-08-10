@@ -3,6 +3,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Image } from 'react-native'
 
+import { FONT_SIZES } from '../../../constants/theme/fonts'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
@@ -49,5 +50,11 @@ describe('VocabularyDetailScreen', () => {
     const button = getByText(getLabels().exercises.next)
     fireEvent.press(button)
     expect(navigation.navigate).toHaveBeenCalledWith('VocabularyDetailExercise', { ...getRoute(1).params })
+  })
+
+  it('should render the word more prominently than the surrounding text', () => {
+    const { getByText } = render(<VocabularyDetailExerciseScreen route={getRoute(0)} navigation={navigation} />)
+
+    expect(getByText(vocabularyItems[0]!.word)).toHaveStyle({ fontSize: FONT_SIZES.heading })
   })
 })
