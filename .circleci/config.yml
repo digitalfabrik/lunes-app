@@ -606,6 +606,18 @@ jobs:
                 name: Upload ipas to github release
                 working_directory: tools
             - run:
+                command: |
+                    APP_TOOLBELT_BIN="$(cd tools && yarn bin app-toolbelt)"
+                    "${APP_TOOLBELT_BIN}" v0 generate sbom \
+                      --version-name ${NEW_VERSION_NAME} \
+                      --release-id ${RELEASE_ID} \
+                      --path _manifest/spdx_2.2/manifest.spdx.json \
+                      --branch ${CIRCLE_BRANCH} \
+                      --private-key ${DELIVERINO_PRIVATE_KEY} \
+                      --owner ${CIRCLE_PROJECT_USERNAME} \
+                      --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Generate SBOM
+            - run:
                 command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
                 name: Prepare android artifact urls
                 working_directory: ~/attached_workspace
