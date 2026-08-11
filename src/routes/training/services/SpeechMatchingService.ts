@@ -1,32 +1,34 @@
-import { SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
+import { Article, ARTICLES, hasNoArticle, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 
 // --- Matching thresholds ---
 // Change these as Automatic Speech Recognition (ASR) quality improves or new failure modes are discovered.
 
-// Slightly lower than 0.85 to allow suffix-dropping on long compounds
-// (e.g. "das Linsenknöchel" for "das Linsenknöchelchen", similarity 0.818)
+// A single misheard letter in a short word ("das Kleinhinz" for "das Kleinhirn") already costs 0.846.
 const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
-
-// Slightly lower than the full-phrase threshold since the article is more likely
-// to be dropped or misheard by the Automatic Speech Recognition (ASR)
-const WORD_ONLY_SIMILARITY_THRESHOLD = 0.75
-
-// Minimum fraction of the space-collapsed expected phrase that the collapsed transcript must cover.
-// 0.65 accepts "Zwölf Finger" for "Zwölffingerdarm" (zwoelfinger/zwoelfingerdarm = 79%)
-// while rejecting "Zwölf" alone (zwoelf/zwoelfingerdarm = 43%)
-const PHRASE_PREFIX_THRESHOLD = 0.65
-
-// Minimum fraction of the expected last token that the transcript's last token must cover
-// 0.33 handles truncation at a morpheme boundary ("Die Haar" for "die Haarwurzel":
-// "har" covers 3/9 = 33% of "harwurzel")
-const LAST_TOKEN_PREFIX_THRESHOLD = 0.33
-
-// Minimum similarity between the transcript's last token and the same-length prefix of
-// the expected last token. Handles near-misses like "harz" vs "harw" (similarity 0.75)
-const LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD = 0.75
 
 // Maximum number of extra tokens allowed in the transcript for the token-embedding check
 const MAX_EXTRA_TOKENS = 2
+
+// A German syllable has exactly one vowel nucleus, so counting maximal vowel runs counts syllables.
+// Accented vowels belong to the class because the ASR spells loanwords both ways ("das Café" and
+// "das Cafe" must both count as three syllables).
+const VOWEL_NUCLEUS_PATTERN = /[aeiouyäöüáàâéèêíìîóòôúùû]+/g
+
+const SPOKEN_ARTICLES: readonly string[] = ARTICLES.filter(article => !hasNoArticle(article)).map(
+  article => article.value,
+)
+
+export const SPEECH_FEEDBACK_REASONS = {
+  missingArticle: 'missingArticle',
+  wrongArticle: 'wrongArticle',
+  incompleteWord: 'incompleteWord',
+} as const
+export type SpeechFeedbackReason = (typeof SPEECH_FEEDBACK_REASONS)[keyof typeof SPEECH_FEEDBACK_REASONS]
+
+export type SpeechMatch = {
+  result: SimpleResult
+  reason?: SpeechFeedbackReason
+}
 
 const normalizeText = (text: string): string =>
   text
@@ -44,6 +46,10 @@ const normalizeText = (text: string): string =>
     // Automatic Speech Recognition models often drop geminate consonants (e.g. "Kanne" → "Kana")
     // collapsing runs on both sides makes the comparison robust to this
     .replace(/(.)\1+/g, '$1')
+
+// Counted on the raw text so that the count does not depend on the order of steps in normalizeText,
+// which expands umlauts and drops silent letters.
+const countSyllableNuclei = (text: string): number => (text.toLowerCase().match(VOWEL_NUCLEUS_PATTERN) ?? []).length
 
 // https://en.wikipedia.org/wiki/Levenshtein_distance
 const levenshteinDistance = (source: string, target: string): number => {
@@ -83,62 +89,17 @@ const stringSimilarity = (first: string, second: string): number => {
   return 1 - levenshteinDistance(first, second) / Math.max(first.length, second.length)
 }
 
-const isSimilar = (transcript: string, expected: string, threshold: number): boolean =>
-  stringSimilarity(transcript, expected) >= threshold
-
-// Returns true if transcript is a prefix of expected, covering at least the given fraction of it.
-const isPhrasePrefix = (transcript: string, expected: string, coverage: number): boolean =>
-  expected.startsWith(transcript) && transcript.length >= expected.length * coverage
-
-// Removes spaces and re-collapses geminates that appear at word boundaries after joining.
-// e.g. "Zwölf Finger" → "zwoelffinger" → "zwoelfinger"
+// Removes spaces and re-collapses geminates that appear at word boundaries after joining, so that a
+// compound the recognizer split into separate tokens still matches ("Zwölffinger Darm" → "zwoelfingerdarm").
 const joinTokens = (text: string): string => text.replace(/ /g, '').replace(/(.)\1+/g, '$1')
 
-// Handles compound words split into separate tokens: the speech recognizer may transcribe a
-// compound as its constituent parts (e.g. "Zwölf Finger" for "Zwölffingerdarm"). Joining the
-// tokens and re-collapsing geminates at word boundaries then gives a clean prefix match.
-const isCollapsedPhrasePrefix = (transcript: string, expected: string, coverage: number): boolean =>
-  isPhrasePrefix(joinTokens(transcript), joinTokens(expected), coverage)
-
-// Handles truncation at a morpheme boundary: the speech recognizer produces the article and the
-// start of the noun, but stops partway through the last token (e.g. "Die Haar" for "die Haarwurzel",
-// or near-miss "Die Harz" where "harz" ≈ "harw"). Requires at least 2 tokens so that article
-// matching is meaningful.
-const isLastTokenPartialMatch = (
-  transcript: string,
-  expected: string,
-  minCoverage: number,
-  similarity: number,
-): boolean => {
-  const transcriptTokens = transcript.split(' ').filter(token => token.length > 0)
-  const expectedTokens = expected.split(' ').filter(token => token.length > 0)
-
-  if (transcriptTokens.length !== expectedTokens.length || transcriptTokens.length <= 1) {
-    return false
-  }
-
-  const precedingTokensMatch = transcriptTokens.slice(0, -1).every((token, index) => token === expectedTokens[index])
-  if (!precedingTokensMatch) {
-    return false
-  }
-
-  const lastTranscriptToken = transcriptTokens[transcriptTokens.length - 1]!
-  const lastExpectedToken = expectedTokens[expectedTokens.length - 1]!
-
-  if (
-    lastTranscriptToken.length < lastExpectedToken.length * minCoverage ||
-    lastTranscriptToken.length > lastExpectedToken.length
-  ) {
-    return false
-  }
-
-  const expectedPrefix = lastExpectedToken.slice(0, lastTranscriptToken.length)
-  return stringSimilarity(lastTranscriptToken, expectedPrefix) >= similarity
-}
+const isSimilar = (transcript: string, expected: string): boolean =>
+  stringSimilarity(joinTokens(transcript), joinTokens(expected)) >= FULL_PHRASE_SIMILARITY_THRESHOLD
 
 // Handles filler words prepended by the speech recognizer (e.g. "Und der Arm" for "der Arm").
 // The token-level check ensures the expected phrase appears as whole words, not as a substring
-// of a longer word (so "der Armband" does not match "der Arm").
+// of a longer word (so "der Armband" does not match "der Arm"). It demands an exact match, so unlike
+// the similarity path it can never absorb a dropped syllable and needs no syllable check.
 const containsAsTokens = (transcript: string, expected: string, maxExtra: number): boolean => {
   const transcriptTokens = transcript.split(' ')
   const expectedTokens = expected.split(' ')
@@ -154,36 +115,71 @@ const containsAsTokens = (transcript: string, expected: string, maxExtra: number
   })
 }
 
-const evaluateCandidate = (transcript: string, article: string, word: string): SimpleResult => {
-  const normalizedFull = normalizeText(`${article} ${word}`)
-  const normalizedWord = normalizeText(word)
-  const normalizedTranscript = normalizeText(transcript)
+const tokensOf = (text: string): string[] => text.split(' ').filter(token => token.length > 0)
 
-  const isCorrect =
-    isSimilar(normalizedTranscript, normalizedFull, FULL_PHRASE_SIMILARITY_THRESHOLD) ||
-    isSimilar(normalizedTranscript, normalizedWord, WORD_ONLY_SIMILARITY_THRESHOLD) ||
-    isCollapsedPhrasePrefix(normalizedTranscript, normalizedFull, PHRASE_PREFIX_THRESHOLD) ||
-    isLastTokenPartialMatch(
-      normalizedTranscript,
-      normalizedFull,
-      LAST_TOKEN_PREFIX_THRESHOLD,
-      LAST_TOKEN_PREFIX_SIMILARITY_THRESHOLD,
-    ) ||
-    containsAsTokens(normalizedTranscript, normalizedFull, MAX_EXTRA_TOKENS)
-
-  return isCorrect ? SIMPLE_RESULTS.correct : SIMPLE_RESULTS.incorrect
+const spokenArticleOf = (transcript: string): string | null => {
+  const [firstToken] = tokensOf(transcript)
+  return firstToken !== undefined && SPOKEN_ARTICLES.includes(firstToken) ? firstToken : null
 }
 
-// Takes all transcript candidates and returns the best result (correct > incorrect)
-export const evaluateSpeechMatch = (transcriptResults: string[], article: string, word: string): SimpleResult => {
-  if (transcriptResults.length === 0) {
-    return SIMPLE_RESULTS.incorrect
+const withoutSpokenArticle = (transcript: string): string =>
+  spokenArticleOf(transcript) === null ? transcript : tokensOf(transcript).slice(1).join(' ')
+
+const incorrect = (reason?: SpeechFeedbackReason): SpeechMatch => ({ result: SIMPLE_RESULTS.incorrect, reason })
+
+const evaluateCandidate = (transcript: string, article: Article, word: string): SpeechMatch => {
+  const expectedPhrase = hasNoArticle(article) ? word : `${article.value} ${word}`
+  const normalizedTranscript = normalizeText(transcript)
+  const normalizedExpected = normalizeText(expectedPhrase)
+
+  if (containsAsTokens(normalizedTranscript, normalizedExpected, MAX_EXTRA_TOKENS)) {
+    return { result: SIMPLE_RESULTS.correct }
   }
 
-  const results = transcriptResults.map(transcript => evaluateCandidate(transcript, article, word))
+  // Only used to decide whether an article hint would be helpful: saying something entirely different
+  // should not be reported as a missing article.
+  const spokenWord = withoutSpokenArticle(normalizedTranscript)
+  const isWordItself =
+    countSyllableNuclei(spokenWord) === countSyllableNuclei(word) && isSimilar(spokenWord, normalizeText(word))
 
-  if (results.includes(SIMPLE_RESULTS.correct)) {
-    return SIMPLE_RESULTS.correct
+  const spokenArticle = spokenArticleOf(normalizedTranscript)
+  if (!hasNoArticle(article)) {
+    if (spokenArticle === null) {
+      return incorrect(isWordItself ? SPEECH_FEEDBACK_REASONS.missingArticle : undefined)
+    }
+    if (spokenArticle !== normalizeText(article.value)) {
+      return incorrect(isWordItself ? SPEECH_FEEDBACK_REASONS.wrongArticle : undefined)
+    }
   }
-  return SIMPLE_RESULTS.incorrect
+
+  // Items without an article are graded on the word alone, so an article the recognizer added by
+  // itself is ignored instead of being counted against the answer.
+  const comparableTranscript = hasNoArticle(article) ? spokenWord : normalizedTranscript
+
+  // A dropped syllable barely moves the length-normalized similarity of a long compound
+  // ("die Bodenheizung" for "die Fußbodenheizung" still scores 0.842), but it always changes the
+  // syllable count. Comparing the counts is the only way to tell an omitted syllable apart from a
+  // misheard consonant, which costs the same number of edits.
+  const spokenSyllables = countSyllableNuclei(comparableTranscript)
+  const expectedSyllables = countSyllableNuclei(expectedPhrase)
+  if (spokenSyllables < expectedSyllables) {
+    return incorrect(SPEECH_FEEDBACK_REASONS.incompleteWord)
+  }
+  if (spokenSyllables > expectedSyllables) {
+    return incorrect()
+  }
+
+  return isSimilar(comparableTranscript, normalizedExpected) ? { result: SIMPLE_RESULTS.correct } : incorrect()
+}
+
+// Takes all transcript candidates and returns the best result. The candidates are alternates of one
+// utterance, so a single matching hypothesis is enough. Otherwise the first reason wins, since both
+// platforms return their hypotheses ordered by confidence.
+export const evaluateSpeechMatch = (transcriptResults: string[], article: Article, word: string): SpeechMatch => {
+  const matches = transcriptResults.map(transcript => evaluateCandidate(transcript, article, word))
+
+  if (matches.some(match => match.result === SIMPLE_RESULTS.correct)) {
+    return { result: SIMPLE_RESULTS.correct }
+  }
+  return incorrect(matches.find(match => match.reason !== undefined)?.reason)
 }

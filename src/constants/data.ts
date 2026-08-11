@@ -119,6 +119,8 @@ export type ArticleTypeExtended = {
 
 export const isArticlePlural = (article: ArticleType): boolean => article.id === 4
 
+export const hasNoArticle = (article: ArticleType): boolean => article.id === 0
+
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
   ARTICLES.filter(article => article.id !== 0).map(article => {
     if (isArticlePlural(article)) {
