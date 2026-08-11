@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { useTheme } from 'styled-components/native'
 
-import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import ImprintScreen from '../routes/ImprintScreen'
 import UnitSelectionScreen from '../routes/UnitSelectionScreen'
 import StandardExercisesScreen from '../routes/exercises/StandardExercisesScreen'
@@ -14,23 +13,17 @@ import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import TrainingExerciseSelectionScreen from '../routes/training/TrainingExerciseSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { reducedMotionScreenOptions, useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { useStackScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(useTabletHeaderHeight())
-  const isReducedMotionEnabled = useIsReducedMotionEnabled()
   const { manageJobs, overview, units, settings } = getLabels().general.header
   const theme = useTheme()
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        cardStyle: { backgroundColor: theme.colors.background },
-        ...reducedMotionScreenOptions(isReducedMotionEnabled),
-      }}
-    >
+    <Stack.Navigator screenOptions={useStackScreenOptions({ cardStyle: { backgroundColor: theme.colors.background } })}>
       <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name='UnitSelection'

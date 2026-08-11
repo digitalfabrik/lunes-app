@@ -1,11 +1,13 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native'
+import React, { ReactElement } from 'react'
 import { AccessibilityInfo, EmitterSubscription } from 'react-native'
 
-import useIsReducedMotionEnabled from '../useIsReducedMotionEnabled'
+import useIsReducedMotionEnabled from '../../hooks/useIsReducedMotionEnabled'
+import ReducedMotionServiceProvider from '../ReducedMotionService'
 
 type ReduceMotionHandler = (isReduceMotionEnabled: boolean) => void
 
-describe('useIsReducedMotionEnabled', () => {
+describe('ReducedMotionService', () => {
   const removeListener = jest.fn()
   let notifyReduceMotionChanged: ReduceMotionHandler
 
@@ -18,11 +20,17 @@ describe('useIsReducedMotionEnabled', () => {
     })
   }
 
+  const wrapper = ({ children }: { children: ReactElement }): ReactElement => (
+    <ReducedMotionServiceProvider>{children}</ReducedMotionServiceProvider>
+  )
+
+  const renderReducedMotionHook = () => renderHook(() => useIsReducedMotionEnabled(), { wrapper })
+
   describe('when the setting is disabled', () => {
     it('should report that motion is not reduced', async () => {
       mockAccessibilityInfo(false)
 
-      const { result } = renderHook(() => useIsReducedMotionEnabled())
+      const { result } = renderReducedMotionHook()
 
       await waitFor(() => expect(result.current).toBe(false))
     })
@@ -32,7 +40,7 @@ describe('useIsReducedMotionEnabled', () => {
     it('should report that motion is reduced', async () => {
       mockAccessibilityInfo(true)
 
-      const { result } = renderHook(() => useIsReducedMotionEnabled())
+      const { result } = renderReducedMotionHook()
 
       await waitFor(() => expect(result.current).toBe(true))
     })
@@ -42,7 +50,7 @@ describe('useIsReducedMotionEnabled', () => {
     it('should report the new value without a restart', async () => {
       mockAccessibilityInfo(false)
 
-      const { result } = renderHook(() => useIsReducedMotionEnabled())
+      const { result } = renderReducedMotionHook()
       await waitFor(() => expect(result.current).toBe(false))
 
       act(() => notifyReduceMotionChanged(true))
@@ -51,10 +59,21 @@ describe('useIsReducedMotionEnabled', () => {
     })
   })
 
+  describe('when several components read the setting', () => {
+    it('should subscribe to the accessibility info only once', async () => {
+      mockAccessibilityInfo(true)
+
+      const { result } = renderHook(() => [useIsReducedMotionEnabled(), useIsReducedMotionEnabled()], { wrapper })
+
+      await waitFor(() => expect(result.current).toEqual([true, true]))
+      expect(AccessibilityInfo.addEventListener).toHaveBeenCalledTimes(1)
+    })
+  })
+
   it('should stop listening when unmounted', async () => {
     mockAccessibilityInfo(false)
 
-    const { unmount } = renderHook(() => useIsReducedMotionEnabled())
+    const { unmount } = renderReducedMotionHook()
     await waitFor(() => expect(AccessibilityInfo.addEventListener).toHaveBeenCalled())
 
     unmount()

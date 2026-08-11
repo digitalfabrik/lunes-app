@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { useTheme } from 'styled-components/native'
 
-import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import UserVocabularyOverviewScreen from '../routes/UserVocabularyOverviewScreen'
 import { EditableVocabularyDetailsScreen } from '../routes/VocabularyDetailScreen'
 import UserVocabularyProcessScreen from '../routes/process-user-vocabulary/UserVocabularyProcessScreen'
@@ -11,24 +10,22 @@ import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabul
 import UserVocabularyUnitSelectionScreen from '../routes/user-vocabulary-unit-selection/UserVocabularyUnitSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { reducedMotionScreenOptions, useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { useStackScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
 const UserVocabularyStackNavigator = (): ReactElement | null => {
   const headerHeight = useTabletHeaderHeight()
   const options = screenOptions(headerHeight)
-  const isReducedMotionEnabled = useIsReducedMotionEnabled()
   const back = getLabels().general.back
   const theme = useTheme()
 
   return (
     <Stack.Navigator
-      screenOptions={{
+      screenOptions={useStackScreenOptions({
         cardStyle: { backgroundColor: theme.colors.background },
         headerStatusBarHeight: 0,
-        ...reducedMotionScreenOptions(isReducedMotionEnabled),
-      }}
+      })}
     >
       <Stack.Screen
         name='UserVocabularyOverview'

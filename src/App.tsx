@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
 import Navigator from './navigation/Navigator'
+import ReducedMotionServiceProvider from './services/ReducedMotionService'
 import StorageProvider from './services/Storage'
 import TtsServiceProvider from './services/TtsService'
 import VolumeServiceProvider from './services/VolumeService'
@@ -27,9 +28,11 @@ const App = (): ReactElement => {
           <StorageProvider>
             <VolumeServiceProvider>
               <TtsServiceProvider>
-                <NavigationContainer>
-                  <Navigator />
-                </NavigationContainer>
+                <ReducedMotionServiceProvider>
+                  <NavigationContainer>
+                    <Navigator />
+                  </NavigationContainer>
+                </ReducedMotionServiceProvider>
               </TtsServiceProvider>
             </VolumeServiceProvider>
           </StorageProvider>
