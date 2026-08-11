@@ -17,8 +17,6 @@ const lineHeightInPx = (fontSize: number, ratio: number): string => `${Math.roun
 export const FONTS = {
   contentFontBold: 'SourceSansPro-SemiBold',
   contentFontRegular: 'SourceSansPro-Regular',
-  weightSemibold: 600,
-  weightRegular: 400,
   capsLetterSpacing: '0.4px',
   listTitleLetterSpacing: '0.11px',
   smallFontSize: `${FONT_SIZES.caption}px`,
