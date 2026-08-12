@@ -5,7 +5,7 @@ import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import theme from '../constants/theme'
 import BottomSheet from './BottomSheet'
 import { HeadingText } from './text/Heading'
-import { HintText } from './text/Hint'
+import { Hint } from './text/Hint'
 
 const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};
@@ -28,8 +28,9 @@ const BottomSheetWordContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.md};
 `
 
-const FeedbackText = styled(HintText)`
+const FeedbackText = styled(Hint)`
   text-align: center;
+  color: ${props => props.theme.colors.primary};
 `
 
 type WordResultIndicatorProps = {

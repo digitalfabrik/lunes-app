@@ -75,8 +75,7 @@ describe('evaluateSpeechMatch', () => {
     })
 
     it('should return incorrect when an inner syllable is swallowed', () => {
-      // Only two edits away from the expected phrase, the same distance as the legitimate
-      // near-miss "das Kleinhinz" for "das Kleinhirn"
+      // Two edits from the expected phrase, the same distance as the legitimate "das Kleinhinz"
       const match = evaluateSpeechMatch(['das Waschmachienventil'], DAS, 'Waschmaschinenventil')
 
       expect(match.result).toBe(SIMPLE_RESULTS.incorrect)
@@ -97,9 +96,8 @@ describe('evaluateSpeechMatch', () => {
   })
 
   describe('when the word is cut off before the end', () => {
-    // The recognizer's voice activity detection can stop before the final syllables of a long
-    // compound, but a truncated word is exactly what the exercise must not accept, so these count as
-    // incomplete just like a swallowed syllable (issue 1456).
+    // Voice activity detection can stop before the final syllables of a long compound, but a truncated
+    // word is what the exercise must not accept, so these count as incomplete too (issue 1456).
     it('should return incorrect when the last syllables are missing', () => {
       const match = evaluateSpeechMatch(['das zungenb'], DAS, 'Zungenbein')
 
@@ -130,8 +128,7 @@ describe('evaluateSpeechMatch', () => {
 
   describe('when a compound word is recognized as separate words', () => {
     it('should return correct when the recognizer splits the compound into tokens', () => {
-      // iOS transcribes "Zwölffingerdarm" as separate words: joining the tokens gives
-      // "zwoelffingerdarm" → geminate collapse → "zwoelfingerdarm"
+      // iOS transcribes "Zwölffingerdarm" as separate words; joining the tokens recovers it
       expect(evaluateSpeechMatch(['der Zwölffinger Darm'], DER, 'Zwölffingerdarm').result).toBe(SIMPLE_RESULTS.correct)
     })
 
@@ -175,6 +172,28 @@ describe('evaluateSpeechMatch', () => {
     })
   })
 
+  describe('when a loanword is spelled with an accent', () => {
+    it('should return correct whichever side carries the accent', () => {
+      // The recognizer spells loanwords both ways, so the accent must fold to its base letter rather
+      // than being dropped, which would cost the word a syllable
+      expect(evaluateSpeechMatch(['das Cafe'], DAS, 'Café').result).toBe(SIMPLE_RESULTS.correct)
+      expect(evaluateSpeechMatch(['das Café'], DAS, 'Cafe').result).toBe(SIMPLE_RESULTS.correct)
+      expect(evaluateSpeechMatch(['das Soufflee'], DAS, 'Soufflé').result).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct for an accented near-miss', () => {
+      expect(evaluateSpeechMatch(['das Kafé'], DAS, 'Café').result).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should return correct without an article for an item that has none', () => {
+      expect(evaluateSpeechMatch(['Cafe'], NO_ARTICLE, 'Café').result).toBe(SIMPLE_RESULTS.correct)
+    })
+
+    it('should still return incorrect when a syllable is missing', () => {
+      expect(evaluateSpeechMatch(['das Caf'], DAS, 'Café').reason).toBe(SPEECH_FEEDBACK_REASONS.incompleteWord)
+    })
+  })
+
   describe('when the vocabulary item has no article', () => {
     it('should return correct for the word alone', () => {
       expect(evaluateSpeechMatch(['Deutschland'], NO_ARTICLE, 'Deutschland').result).toBe(SIMPLE_RESULTS.correct)
@@ -186,7 +205,6 @@ describe('evaluateSpeechMatch', () => {
 
     it('should not expect the literal article value "keiner" to be spoken', () => {
       // Grading against "keiner Deutschland" would make the item unpassable, so the word alone counts
-      // and an article the recognizer added on its own is tolerated like any other filler word
       expect(evaluateSpeechMatch(['Deutschland'], NO_ARTICLE, 'Deutschland').reason).toBeUndefined()
       expect(evaluateSpeechMatch(['die Deutschland'], NO_ARTICLE, 'Deutschland').result).toBe(SIMPLE_RESULTS.correct)
     })
@@ -257,8 +275,14 @@ describe('evaluateSpeechMatch', () => {
       expect(evaluateSpeechMatch(['Hund', 'Katze'], DER, 'Arzt').result).toBe(SIMPLE_RESULTS.incorrect)
     })
 
-    it('should report the reason of the most confident candidate that has one', () => {
-      expect(evaluateSpeechMatch(['Katze', 'Arzt'], DER, 'Arzt').reason).toBe(SPEECH_FEEDBACK_REASONS.missingArticle)
+    it('should take the hint from the most confident candidate', () => {
+      expect(evaluateSpeechMatch(['Arzt', 'Katze'], DER, 'Arzt').reason).toBe(SPEECH_FEEDBACK_REASONS.missingArticle)
+    })
+
+    it('should not take a hint from a less confident candidate', () => {
+      // "der Alarm" shows the article was spoken, so a missingArticle hint from the alternate would
+      // coach the learner to fix something they got right
+      expect(evaluateSpeechMatch(['der Alarm', 'Arm'], DER, 'Arm').reason).toBeUndefined()
     })
   })
 })

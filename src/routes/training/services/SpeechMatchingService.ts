@@ -1,22 +1,15 @@
+import normalizeStrings from 'normalize-strings'
+
 import { Article, ARTICLES, hasNoArticle, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 
-// --- Matching thresholds ---
-// Change these as Automatic Speech Recognition (ASR) quality improves or new failure modes are discovered.
-
-// A single misheard letter in a short word ("das Kleinhinz" for "das Kleinhirn") already costs 0.846.
+// Not higher: a single misheard letter in a short word ("das Kleinhinz" for "das Kleinhirn") costs 0.846
 const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
 
-// Maximum number of extra tokens allowed in the transcript for the token-embedding check
 const MAX_EXTRA_TOKENS = 2
 
-// A German syllable has exactly one vowel nucleus, so counting maximal vowel runs counts syllables.
-// Accented vowels belong to the class because the ASR spells loanwords both ways ("das Café" and
-// "das Cafe" must both count as three syllables).
-const VOWEL_NUCLEUS_PATTERN = /[aeiouyäöüáàâéèêíìîóòôúùû]+/g
-
-const SPOKEN_ARTICLES: readonly string[] = ARTICLES.filter(article => !hasNoArticle(article)).map(
-  article => article.value,
-)
+// A German syllable has exactly one vowel nucleus, so counting vowel runs counts syllables. Only plain
+// vowels are listed because normalizeText has already folded every accent by the time this is used.
+const VOWEL_NUCLEUS_PATTERN = /[aeiouy]+/g
 
 export const SPEECH_FEEDBACK_REASONS = {
   missingArticle: 'missingArticle',
@@ -30,14 +23,13 @@ export type SpeechMatch = {
   reason?: SpeechFeedbackReason
 }
 
+// Has to run before normalizeStrings, which would fold "ä" to a plain "a" and lose the pronounced "e"
+const expandGermanCharacters = (text: string): string =>
+  text.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+
 const normalizeText = (text: string): string =>
-  text
-    .toLowerCase()
-    .trim()
-    .replace(/ä/g, 'ae')
-    .replace(/ö/g, 'oe')
-    .replace(/ü/g, 'ue')
-    .replace(/ß/g, 'ss')
+  normalizeStrings(expandGermanCharacters(text.toLowerCase().trim()))
+    // Accents are folded above rather than dropped here, so that "Café" keeps its final syllable
     .replace(/[^a-z0-9 ]/g, '')
     // "th" in German loanwords (Greek/Latin origin: "Stethoskop") is pronounced as plain "t"
     .replace(/th/g, 't')
@@ -47,9 +39,9 @@ const normalizeText = (text: string): string =>
     // collapsing runs on both sides makes the comparison robust to this
     .replace(/(.)\1+/g, '$1')
 
-// Counted on the raw text so that the count does not depend on the order of steps in normalizeText,
-// which expands umlauts and drops silent letters.
-const countSyllableNuclei = (text: string): number => (text.toLowerCase().match(VOWEL_NUCLEUS_PATTERN) ?? []).length
+const SPOKEN_ARTICLES: readonly string[] = ARTICLES.filter(article => !hasNoArticle(article)).map(article =>
+  normalizeText(article.value),
+)
 
 // https://en.wikipedia.org/wiki/Levenshtein_distance
 const levenshteinDistance = (source: string, target: string): number => {
@@ -89,17 +81,20 @@ const stringSimilarity = (first: string, second: string): number => {
   return 1 - levenshteinDistance(first, second) / Math.max(first.length, second.length)
 }
 
-// Removes spaces and re-collapses geminates that appear at word boundaries after joining, so that a
-// compound the recognizer split into separate tokens still matches ("Zwölffinger Darm" → "zwoelfingerdarm").
+// Lets a compound that the recognizer split into separate tokens still match ("Zwölffinger Darm")
 const joinTokens = (text: string): string => text.replace(/ /g, '').replace(/(.)\1+/g, '$1')
 
 const isSimilar = (transcript: string, expected: string): boolean =>
   stringSimilarity(joinTokens(transcript), joinTokens(expected)) >= FULL_PHRASE_SIMILARITY_THRESHOLD
 
-// Handles filler words prepended by the speech recognizer (e.g. "Und der Arm" for "der Arm").
-// The token-level check ensures the expected phrase appears as whole words, not as a substring
-// of a longer word (so "der Armband" does not match "der Arm"). It demands an exact match, so unlike
-// the similarity path it can never absorb a dropped syllable and needs no syllable check.
+// Expects normalized text, so that both sides of a comparison are always counted in the same shape.
+// Spaces are kept: joining tokens first would merge the vowel runs either side of a boundary and hide a
+// dropped syllable ("Die kalkungs Anlage" would pass for "die Entkalkungsanlage").
+const countSyllables = (normalizedText: string): number => (normalizedText.match(VOWEL_NUCLEUS_PATTERN) ?? []).length
+
+// Handles filler words prepended by the speech recognizer (e.g. "Und der Arm" for "der Arm"). Matching
+// whole tokens keeps "der Armband" from matching "der Arm", and demanding an exact match means this path
+// can never absorb a dropped syllable, so it needs no syllable check of its own.
 const containsAsTokens = (transcript: string, expected: string, maxExtra: number): boolean => {
   const transcriptTokens = transcript.split(' ')
   const expectedTokens = expected.split(' ')
@@ -117,13 +112,10 @@ const containsAsTokens = (transcript: string, expected: string, maxExtra: number
 
 const tokensOf = (text: string): string[] => text.split(' ').filter(token => token.length > 0)
 
-const spokenArticleOf = (transcript: string): string | null => {
-  const [firstToken] = tokensOf(transcript)
-  return firstToken !== undefined && SPOKEN_ARTICLES.includes(firstToken) ? firstToken : null
-}
-
-const withoutSpokenArticle = (transcript: string): string =>
-  spokenArticleOf(transcript) === null ? transcript : tokensOf(transcript).slice(1).join(' ')
+// Only decides whether an article hint would be helpful: saying something entirely different should not
+// be reported as a missing article. Both arguments are normalized.
+const looksLikeExpectedWord = (transcriptWord: string, expectedWord: string): boolean =>
+  countSyllables(transcriptWord) === countSyllables(expectedWord) && isSimilar(transcriptWord, expectedWord)
 
 const incorrect = (reason?: SpeechFeedbackReason): SpeechMatch => ({ result: SIMPLE_RESULTS.incorrect, reason })
 
@@ -136,32 +128,26 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
     return { result: SIMPLE_RESULTS.correct }
   }
 
-  // Only used to decide whether an article hint would be helpful: saying something entirely different
-  // should not be reported as a missing article.
-  const spokenWord = withoutSpokenArticle(normalizedTranscript)
-  const isWordItself =
-    countSyllableNuclei(spokenWord) === countSyllableNuclei(word) && isSimilar(spokenWord, normalizeText(word))
+  const tokens = tokensOf(normalizedTranscript)
+  const [firstToken] = tokens
+  const spokenArticle = firstToken !== undefined && SPOKEN_ARTICLES.includes(firstToken) ? firstToken : null
+  const spokenWord = spokenArticle === null ? normalizedTranscript : tokens.slice(1).join(' ')
 
-  const spokenArticle = spokenArticleOf(normalizedTranscript)
-  if (!hasNoArticle(article)) {
-    if (spokenArticle === null) {
-      return incorrect(isWordItself ? SPEECH_FEEDBACK_REASONS.missingArticle : undefined)
-    }
-    if (spokenArticle !== normalizeText(article.value)) {
-      return incorrect(isWordItself ? SPEECH_FEEDBACK_REASONS.wrongArticle : undefined)
-    }
+  if (!hasNoArticle(article) && spokenArticle !== normalizeText(article.value)) {
+    const reason =
+      spokenArticle === null ? SPEECH_FEEDBACK_REASONS.missingArticle : SPEECH_FEEDBACK_REASONS.wrongArticle
+    return incorrect(looksLikeExpectedWord(spokenWord, normalizeText(word)) ? reason : undefined)
   }
 
-  // Items without an article are graded on the word alone, so an article the recognizer added by
-  // itself is ignored instead of being counted against the answer.
+  // Items without an article are graded on the word alone, so an article the recognizer added by itself
+  // is ignored rather than counted against the answer.
   const comparableTranscript = hasNoArticle(article) ? spokenWord : normalizedTranscript
 
-  // A dropped syllable barely moves the length-normalized similarity of a long compound
-  // ("die Bodenheizung" for "die Fußbodenheizung" still scores 0.842), but it always changes the
-  // syllable count. Comparing the counts is the only way to tell an omitted syllable apart from a
-  // misheard consonant, which costs the same number of edits.
-  const spokenSyllables = countSyllableNuclei(comparableTranscript)
-  const expectedSyllables = countSyllableNuclei(expectedPhrase)
+  // A dropped syllable barely moves a long compound's similarity ("die Bodenheizung" for
+  // "die Fußbodenheizung" still scores 0.842) but always changes the syllable count, which is the only
+  // signal that separates it from a misheard consonant costing the same number of edits.
+  const spokenSyllables = countSyllables(comparableTranscript)
+  const expectedSyllables = countSyllables(normalizedExpected)
   if (spokenSyllables < expectedSyllables) {
     return incorrect(SPEECH_FEEDBACK_REASONS.incompleteWord)
   }
@@ -172,14 +158,14 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
   return isSimilar(comparableTranscript, normalizedExpected) ? { result: SIMPLE_RESULTS.correct } : incorrect()
 }
 
-// Takes all transcript candidates and returns the best result. The candidates are alternates of one
-// utterance, so a single matching hypothesis is enough. Otherwise the first reason wins, since both
-// platforms return their hypotheses ordered by confidence.
+// The candidates are alternates of one utterance, so a single matching hypothesis is enough. Otherwise the
+// hint comes from the most confident candidate only — both platforms order their hypotheses by confidence,
+// and a hint taken from a lower-ranked alternate can contradict what the top one shows.
 export const evaluateSpeechMatch = (transcriptResults: string[], article: Article, word: string): SpeechMatch => {
   const matches = transcriptResults.map(transcript => evaluateCandidate(transcript, article, word))
 
   if (matches.some(match => match.result === SIMPLE_RESULTS.correct)) {
     return { result: SIMPLE_RESULTS.correct }
   }
-  return incorrect(matches.find(match => match.reason !== undefined)?.reason)
+  return incorrect(matches[0]?.reason)
 }
