@@ -6,7 +6,7 @@ import RepetitionScreen from '../routes/repetition/RepetitionScreen'
 import RepetitionWordListScreen from '../routes/repetition/RepetitionWordListScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { useStackScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
@@ -15,7 +15,7 @@ const RepetitionStackNavigator = (): ReactElement | null => {
   const { back } = getLabels().general
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={useStackScreenOptions()}>
       <Stack.Screen
         name='Repetition'
         component={RepetitionScreen}

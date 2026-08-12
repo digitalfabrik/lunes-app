@@ -4,6 +4,9 @@ import { initialWindowMetrics } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
 import { Color } from '../constants/theme/colors'
+import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
+
+const EASING = Easing.out(Easing.ease)
 
 const ModalContainer = styled(Animated.View)`
   display: flex;
@@ -48,6 +51,7 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
   const bottomPadding = initialWindowMetrics?.insets.bottom ?? 0
 
   const { durationMs } = theme.animations
+  const isReducedMotionEnabled = useIsReducedMotionEnabled()
   const slideInAnimation = useRef(new Animated.Value(0)).current
   useEffect(() => {
     if (visible) {
@@ -55,14 +59,14 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
       Animated.timing(slideInAnimation, {
         toValue: 1,
         duration: durationMs,
-        easing: Easing.out(Easing.ease),
+        easing: EASING,
         useNativeDriver: true,
       }).start()
     } else {
       Animated.timing(slideInAnimation, {
         toValue: 0,
         duration: durationMs,
-        easing: Easing.out(Easing.ease),
+        easing: EASING,
         useNativeDriver: true,
       }).start(() => setShouldBeVisible(false))
     }
@@ -76,6 +80,9 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
     inputRange: [0, 1],
     outputRange: [height, 0],
   })
+  const bodyAnimation = isReducedMotionEnabled
+    ? { opacity: slideInAnimation }
+    : { transform: [{ translateY: offset }, { perspective: 1000 }] }
 
   return (
     <Modal
@@ -90,7 +97,7 @@ const BottomSheet = ({ visible, ...props }: BottomSheetProps): ReactElement => {
         <ModalBody
           backgroundColor={backgroundColor ?? theme.colors.backgroundHigh}
           bottomPadding={bottomPadding}
-          style={{ transform: [{ translateY: offset }, { perspective: 1000 }] }}
+          style={bodyAnimation}
         >
           {children}
         </ModalBody>
