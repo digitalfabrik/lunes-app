@@ -78,8 +78,6 @@ export default defineConfig([
       'import-x/no-rename-default': 'off',
       // Enforces a consistent choice between index signatures and Record<K, V>
       '@typescript-eslint/consistent-indexed-object-style': 'off',
-      // Forbids type assertions that do not change the type
-      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
       // Requires destructuring instead of repeated member access
       '@typescript-eslint/prefer-destructuring': 'off',
 
