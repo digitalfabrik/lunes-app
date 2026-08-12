@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
 type DropdownProps = {
   placeholder: string
-  data: Array<ArticleTypeExtended>
+  data: ArticleTypeExtended[]
   setValue: Dispatch<SetStateAction<ArticleTypeExtended | null>>
   value: ArticleTypeExtended | null
   errorMessage?: string
