@@ -80,54 +80,16 @@ export default defineConfig([
       '@typescript-eslint/consistent-indexed-object-style': 'off',
       // Requires destructuring instead of repeated member access
       '@typescript-eslint/prefer-destructuring': 'off',
-
-      // React Compiler rules added by eslint-plugin-react-hooks v7. Only rules-of-hooks and
-      // exhaustive-deps were enforced before, so these are switched off to be enabled separately.
-      // Forbids factory functions that create components or hooks
-      'react-hooks/component-hook-factories': 'off',
-      // Validates the React Compiler configuration itself
-      'react-hooks/config': 'off',
-      // Flags misuse of error boundaries, e.g. try/catch around rendering
-      'react-hooks/error-boundaries': 'off',
-      // Validates feature-flag gating of compiled components
-      'react-hooks/gating': 'off',
-      // Forbids mutating globals during render
-      'react-hooks/globals': 'off',
-      // Forbids mutating values that React treats as immutable, e.g. props and state
-      'react-hooks/immutability': 'off',
-      // Flags libraries that are incompatible with the React Compiler
-      'react-hooks/incompatible-library': 'off',
-      // Forbids changes that would break existing useMemo/useCallback memoization
-      'react-hooks/preserve-manual-memoization': 'off',
-      // Requires render functions to be pure and side-effect free
-      'react-hooks/purity': 'off',
       // Forbids reading or writing refs during render
       'react-hooks/refs': 'off',
-      // Forbids setting state directly inside an effect
-      'react-hooks/set-state-in-effect': 'off',
-      // Forbids setting state during render
-      'react-hooks/set-state-in-render': 'off',
-      // Requires component identities to be stable, i.e. not redefined per render
-      'react-hooks/static-components': 'off',
-      // Flags syntax the React Compiler cannot process
-      'react-hooks/unsupported-syntax': 'off',
-      // Flags incorrect useMemo usage, e.g. missing return values
-      'react-hooks/use-memo': 'off',
-
-      // Disabling since better @typescript-eslint rules available or they make no sense for ts projects
       // Requires a default case in every switch statement (covered by switch-exhaustiveness-check)
       'default-case': 'off',
-      // Forbids using a variable before its declaration (base rule mishandles types)
-      'no-use-before-define': 'off',
-      // Forbids constructors that only call super (base rule mishandles parameter properties)
-      'no-useless-constructor': 'off',
-      // Forbids empty function bodies (base rule cannot allow TS constructors)
-      'no-empty-function': 'off',
-      // Requires every import path to resolve (TypeScript already checks this)
-      'import-x/no-unresolved': 'off',
-      // Restricts JSX to .jsx files
-      'react/jsx-filename-extension': 'off',
 
+      // --- new hooks that we should eventually enable
+      // Forbids setting state directly inside an effect
+      'react-hooks/set-state-in-effect': 'off',
+
+      // --- Lints with customized settings
       // Requires braces around all control-statement bodies
       curly: ['error', 'all'],
       // Forbids file extensions in import paths, except for .json
