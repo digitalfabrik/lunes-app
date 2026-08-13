@@ -1842,7 +1842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.5, @eslint/js@npm:^9.39.5":
+"@eslint/js@npm:9.39.5":
   version: 9.39.5
   resolution: "@eslint/js@npm:9.39.5"
   checksum: 49894e98ba313a7d3bfb1b20d55c0f9826be45a7db876fd84e533ac7f101b1d95b51cd22c6a6db3a45066b9c0d068c31b4a22fa0db8a6cc8744a25540efdb824
@@ -8427,7 +8427,6 @@ __metadata:
     "@babel/preset-typescript": ^7.28.4
     "@babel/runtime": ^7.28.4
     "@dr.pogodin/react-native-fs": ^2.38.2
-    "@eslint/js": ^9.39.5
     "@notifee/react-native": ^9.1.8
     "@react-native-async-storage/async-storage": ^2.2.0
     "@react-native-community/cli": ^20.1.0
