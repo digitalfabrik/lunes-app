@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react-native'
 import React from 'react'
 
-import { SCORE_THRESHOLD_POSITIVE_FEEDBACK, EXERCISE_FEEDBACK } from '../../constants/data'
+import { ExerciseFeedback } from '../../constants/data'
 import { getLabels } from '../../services/helpers'
 import render from '../../testing/render'
 import FeedbackBadge from '../FeedbackBadge'
@@ -11,17 +11,17 @@ describe('FeedbackBadge', () => {
     jest.clearAllMocks()
   })
 
-  const renderFeedbackBadge = (feedback: EXERCISE_FEEDBACK) => render(<FeedbackBadge feedback={feedback} />)
+  const renderFeedbackBadge = (feedback: ExerciseFeedback) => render(<FeedbackBadge feedback={feedback} />)
 
   it('should not show badge for no feedback', async () => {
-    const { queryByTestId } = renderFeedbackBadge(EXERCISE_FEEDBACK.NONE)
+    const { queryByTestId } = renderFeedbackBadge(ExerciseFeedback.NONE)
 
     await waitFor(() => expect(queryByTestId('positive-badge')).toBeNull())
     await waitFor(() => expect(queryByTestId('negative-badge')).toBeNull())
   })
 
   it('should show badge for positive feedback', async () => {
-    const { queryByText, queryByTestId } = renderFeedbackBadge(EXERCISE_FEEDBACK.POSITIVE)
+    const { queryByText, queryByTestId } = renderFeedbackBadge(ExerciseFeedback.POSITIVE)
 
     await waitFor(() => expect(queryByTestId('negative-badge')).toBeNull())
     await waitFor(() => expect(queryByTestId('positive-badge')).not.toBeNull())
@@ -29,7 +29,7 @@ describe('FeedbackBadge', () => {
   })
 
   it('should show badge for negative feedback', async () => {
-    const { queryByText, queryByTestId } = renderFeedbackBadge(EXERCISE_FEEDBACK.NEGATIVE)
+    const { queryByText, queryByTestId } = renderFeedbackBadge(ExerciseFeedback.NEGATIVE)
 
     await waitFor(() => expect(queryByTestId('positive-badge')).toBeNull())
     await waitFor(() => expect(queryByTestId('negative-badge')).not.toBeNull())

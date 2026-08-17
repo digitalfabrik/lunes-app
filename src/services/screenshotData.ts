@@ -1,7 +1,7 @@
 import { StandardExerciseKeys, Progress } from '../constants/data'
 import { loadAllWords } from '../hooks/useLoadAllWords'
 import { getUnitsOfJob } from './CmsApi'
-import { RepetitionService, sections, WordNodeCard } from './RepetitionService'
+import { RepetitionService, Sections, sections, WordNodeCard } from './RepetitionService'
 import { StorageCache } from './Storage'
 
 // On the production server, this is the job id for
@@ -19,7 +19,7 @@ const getWordNodeCards = async (storageCache: StorageCache): Promise<WordNodeCar
     wordId: vocabularyItem.id,
     // Just distributes the words among the sections in a way that looks roughly random
     // eslint-disable-next-line no-magic-numbers, no-bitwise
-    section: (((index * 2654435761) | 0) % (sections.length - 1)) as sections,
+    section: (((index * 2654435761) | 0) % (sections.length - 1)) as Sections,
     inThisSectionSince: RepetitionService.addDays(new Date(), -maxDaysPerSection),
   }))
 }

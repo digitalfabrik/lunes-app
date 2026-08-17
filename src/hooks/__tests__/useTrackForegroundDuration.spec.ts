@@ -10,8 +10,8 @@ describe('useTrackForegroundDuration', () => {
   beforeEach(() => {
     changeHandler = null
     jest.spyOn(AppState, 'addEventListener').mockImplementation((_type, handler) => {
-      changeHandler = handler as (state: AppStateStatus) => void
-      return { remove: mockRemove } as ReturnType<typeof AppState.addEventListener>
+      changeHandler = handler
+      return { remove: mockRemove }
     })
     AppState.currentState = 'active'
     jest.clearAllMocks()

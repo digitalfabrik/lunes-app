@@ -9,9 +9,13 @@ const useTrackForegroundDuration = (onUnmount: (durationSeconds: number) => void
 
   const accumulatedMs = useRef(0)
   // Only count time while the app is in foreground
-  const foregroundStart = useRef<number | null>(AppState.currentState === 'active' ? Date.now() : null)
+  const foregroundStart = useRef<number | null>(null)
 
   useEffect(() => {
+    if (AppState.currentState === 'active') {
+      foregroundStart.current = Date.now()
+    }
+
     const handleAppStateChange = (nextState: AppStateStatus) => {
       if (nextState === 'active' && foregroundStart.current === null) {
         foregroundStart.current = Date.now()

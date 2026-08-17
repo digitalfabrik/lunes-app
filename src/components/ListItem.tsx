@@ -3,7 +3,6 @@ import { GestureResponderEvent } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
-import { EXERCISE_FEEDBACK } from '../constants/data'
 import { ContentSecondaryLight } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`

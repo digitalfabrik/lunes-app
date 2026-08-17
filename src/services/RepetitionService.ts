@@ -5,11 +5,11 @@ import { StorageCache } from './Storage'
 import { millisecondsToDays } from './helpers'
 
 /* eslint-disable no-magic-numbers */
-export type sections = 0 | 1 | 2 | 3 | 4 | 5 | 6
-export const sections: sections[] = [0, 1, 2, 3, 4, 5, 6]
+export type Sections = 0 | 1 | 2 | 3 | 4 | 5 | 6
+export const sections: Sections[] = [0, 1, 2, 3, 4, 5, 6]
 
-type daysToStayInASection = 0 | 1 | 3 | 7 | 30 | 90 | 1000
-export const daysToStayInASection: Record<sections, daysToStayInASection> = {
+type DaysToStayInASection = 0 | 1 | 3 | 7 | 30 | 90 | 1000
+export const daysToStayInASection: Record<Sections, DaysToStayInASection> = {
   0: 0,
   1: 1,
   2: 3,
@@ -22,7 +22,7 @@ export const daysToStayInASection: Record<sections, daysToStayInASection> = {
 
 export type WordNodeCard = {
   wordId: VocabularyItemId
-  section: sections
+  section: Sections
   inThisSectionSince: Date
 }
 
@@ -161,8 +161,8 @@ export class RepetitionService {
 
   public addWordToFirstSection = async (word: VocabularyItem): Promise<void> => this.addWordsToFirstSection([word])
 
-  private static getSectionWithBoundCheck = (section: number): sections =>
-    Math.min(Math.max(0, section), sections.length - 1) as sections
+  private static getSectionWithBoundCheck = (section: number): Sections =>
+    Math.min(Math.max(0, section), sections.length - 1) as Sections
 
   private static updateWord = (word: WordNodeCard, isCorrect: boolean): WordNodeCard => {
     const targetSection = isCorrect ? word.section + 1 : 0

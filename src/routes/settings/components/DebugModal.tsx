@@ -9,7 +9,7 @@ import { BUTTONS_THEME } from '../../../constants/data'
 import { loadAllWords } from '../../../hooks/useLoadAllWords'
 import useRepetitionService from '../../../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../../../hooks/useStorage'
-import { RepetitionService, sections } from '../../../services/RepetitionService'
+import { RepetitionService, Sections, sections } from '../../../services/RepetitionService'
 import {
   CMS,
   getBaseURL,
@@ -60,7 +60,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
 
   const [cmsUrlOverwrite, setCmsUrlOverwrite] = useStorage('cmsUrlOverwrite')
   const baseURL = getBaseURL(cmsUrlOverwrite)
-  const [_, setSelectedJobs] = useStorage('selectedJobs')
+  const [, setSelectedJobs] = useStorage('selectedJobs')
 
   const throwSentryError = (): void => {
     reportError('Error for testing Sentry')
@@ -106,7 +106,7 @@ const DebugModal = (props: DebugModalProps): ReactElement => {
     const allWords = await loadAllWords(storageCache)
     const wordCards = allWords.slice(0, NUMBER_OF_TEST_VOCABULARY).map(vocabularyItem => ({
       wordId: vocabularyItem.id,
-      section: getRandomNumberBetween(0, sections.length - 1) as sections,
+      section: getRandomNumberBetween(0, sections.length - 1) as Sections,
       inThisSectionSince: RepetitionService.addDays(new Date(), -getRandomNumberBetween(0, MAX_DAYS_IN_A_SECTION)),
     }))
     await repetitionService.setWordNodeCards(wordCards)

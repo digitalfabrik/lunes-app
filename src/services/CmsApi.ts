@@ -196,11 +196,9 @@ type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {
   payload: Omit<AnalyticsPayload, 'type'>
 }
 
-// eslint-disable-next-line camelcase
 const transformAnalyticsEvent = ({ installation_id, timestamp, payload }: AnalyticsEvent): AnalyticsEventPostData => {
   const { type, ...rest } = payload
   return {
-    // eslint-disable-next-line camelcase
     installation_id,
     event_type: type,
     timestamp,
