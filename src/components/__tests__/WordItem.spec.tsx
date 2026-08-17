@@ -8,7 +8,7 @@ import render from '../../testing/render'
 import WordItem from '../WordItem'
 
 describe('WordItem', () => {
-  const answer = { word: 'Arbeitsjacke', article: ARTICLES[2]! }
+  const answer = { word: 'Arbeitsjacke', article: ARTICLES[2] }
 
   describe('when the word is the primary content of the screen', () => {
     it('should render the word prominently', () => {
