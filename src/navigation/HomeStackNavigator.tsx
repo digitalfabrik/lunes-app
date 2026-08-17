@@ -13,7 +13,7 @@ import SponsorsScreen from '../routes/sponsors/SponsorsScreen'
 import TrainingExerciseSelectionScreen from '../routes/training/TrainingExerciseSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { useStackScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
@@ -23,7 +23,7 @@ const HomeStackNavigator = (): ReactElement | null => {
   const theme = useTheme()
 
   return (
-    <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: theme.colors.background } }}>
+    <Stack.Navigator screenOptions={useStackScreenOptions({ cardStyle: { backgroundColor: theme.colors.background } })}>
       <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name='UnitSelection'

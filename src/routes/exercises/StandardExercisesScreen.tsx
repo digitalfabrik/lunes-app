@@ -14,7 +14,7 @@ import { Content, ContentTextBold } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import {
   Exercise,
-  EXERCISE_FEEDBACK,
+  ExerciseFeedback,
   EXERCISES,
   StandardExerciseKeys,
   SCORE_THRESHOLD_POSITIVE_FEEDBACK,
@@ -62,7 +62,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   const [scores] = useStorage('progress')
   const nextExerciseNumber = getNumberOfUnlockedExercises(scores, unit.id)
   const nextExercise = Object.values(EXERCISES).find(exercise => exercise.level === nextExerciseNumber) ?? null
-  const [feedback, setFeedback] = useState<EXERCISE_FEEDBACK[]>([])
+  const [feedback, setFeedback] = useState<ExerciseFeedback[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
   const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByUnit(unit.id)
@@ -70,13 +70,13 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   useEffect(() => {
     if (!isFeedbackSet) {
       const exerciseScores = scores[unit.id.id] ?? {}
-      const updatedFeedback: EXERCISE_FEEDBACK[] = Object.values(exerciseScores).map(score => {
+      const updatedFeedback: ExerciseFeedback[] = Object.values(exerciseScores).map(score => {
         if (!score) {
-          return EXERCISE_FEEDBACK.NONE
+          return ExerciseFeedback.NONE
         }
-        return score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? EXERCISE_FEEDBACK.POSITIVE : EXERCISE_FEEDBACK.NEGATIVE
+        return score > SCORE_THRESHOLD_POSITIVE_FEEDBACK ? ExerciseFeedback.POSITIVE : ExerciseFeedback.NEGATIVE
       })
-      updatedFeedback[0] = EXERCISE_FEEDBACK.NONE
+      updatedFeedback[0] = ExerciseFeedback.NONE
       setFeedback(updatedFeedback)
       setIsFeedbackSet(true)
     }
@@ -107,7 +107,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
     <Container>
       <ListItemResizer>
         <BadgeWrapper>
-          <FeedbackBadge feedback={feedback[index] ?? EXERCISE_FEEDBACK.NONE} />
+          <FeedbackBadge feedback={feedback[index] ?? ExerciseFeedback.NONE} />
         </BadgeWrapper>
         <UnitItem onPress={() => handleNavigation(item)}>
           <item.icon />

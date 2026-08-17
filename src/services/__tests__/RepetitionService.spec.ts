@@ -25,17 +25,14 @@ describe('RepetitionService', () => {
       {
         wordId: testVocabulary[0]!.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(
-          new Date(),
-          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
-        ),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       },
       {
         wordId: testVocabulary[1]!.id,
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5]! + 2 * daysToStayInASection[5]!),
+          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
         ),
       },
       {
@@ -43,7 +40,7 @@ describe('RepetitionService', () => {
         section: 2,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[2]! + daysToStayInASection[3]! + 2),
+          -(daysToStayInASection[2] + daysToStayInASection[3] + 2),
         ),
       },
       {
@@ -51,13 +48,13 @@ describe('RepetitionService', () => {
         section: 1,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[1]! + 2 * daysToStayInASection[4]!),
+          -(daysToStayInASection[1] + 2 * daysToStayInASection[4]),
         ),
       },
       {
         wordId: testVocabulary[4]!.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5]! + 1)),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + 1)),
       },
       {
         wordId: testVocabulary[5]!.id,
@@ -173,7 +170,7 @@ describe('RepetitionService', () => {
           .map((item: WordNodeCard) => ({
             ...item,
             inThisSectionSince: [2, 5].includes(item.section)
-              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section]!)
+              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section])
               : new Date(),
           }))
           .filter(item => item.section !== 0),
@@ -187,7 +184,7 @@ describe('RepetitionService', () => {
           .map((item: WordNodeCard) => ({
             ...item,
             inThisSectionSince: [1, 2, 3, 4].includes(item.section)
-              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section]! + 1)
+              ? RepetitionService.addDays(new Date(), -daysToStayInASection[item.section] + 1)
               : new Date(),
           }))
           .filter(item => item.section !== 0),
@@ -252,7 +249,7 @@ describe('RepetitionService', () => {
       const word2: WordNodeCard = {
         wordId: testData[0]!.wordId,
         section: 4,
-        inThisSectionSince: RepetitionService.addDays(new Date(), -daysToStayInASection[4]!),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -daysToStayInASection[4]),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word2)).toBe(0)
     })
@@ -261,10 +258,7 @@ describe('RepetitionService', () => {
       const wordWithSecondLowestScore: WordNodeCard = {
         wordId: testData[0]!.wordId,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(
-          new Date(),
-          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
-        ),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       }
       expect(RepetitionService.getNeedsRepetitionScore(wordWithSecondLowestScore)).toBe(1)
     })
@@ -275,7 +269,7 @@ describe('RepetitionService', () => {
         section: 5,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[5]! + 2 * daysToStayInASection[5]!),
+          -(daysToStayInASection[5] + 2 * daysToStayInASection[5]),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word1)).toBe(2)
@@ -285,7 +279,7 @@ describe('RepetitionService', () => {
         section: 4,
         inThisSectionSince: RepetitionService.addDays(
           new Date(),
-          -(daysToStayInASection[4]! + 2 * daysToStayInASection[4]!),
+          -(daysToStayInASection[4] + 2 * daysToStayInASection[4]),
         ),
       }
       expect(RepetitionService.getNeedsRepetitionScore(word2)).toBe(2)
@@ -336,17 +330,14 @@ describe('RepetitionService', () => {
       const testData2: WordNodeCard[] = new VocabularyItemBuilder(15).build().map(item => ({
         wordId: item.id,
         section: 5,
-        inThisSectionSince: RepetitionService.addDays(
-          new Date(),
-          -(daysToStayInASection[5]! + daysToStayInASection[5]!),
-        ),
+        inThisSectionSince: RepetitionService.addDays(new Date(), -(daysToStayInASection[5] + daysToStayInASection[5])),
       }))
       expect(RepetitionService.getNeedsRepetitionScore(testData2[0]!)).toBe(1)
 
       expect(RepetitionService.getNeedsRepetitionScore(testData[0]!)).toBe(1)
       expect(RepetitionService.getNeedsRepetitionScore(testData[1]!)).toBe(2)
       expect(RepetitionService.getNeedsRepetitionScore(testData[2]!)).toBe(3)
-      expect(RepetitionService.getNeedsRepetitionScore(testData[3]!)).toBe(daysToStayInASection[4]! * 2)
+      expect(RepetitionService.getNeedsRepetitionScore(testData[3]!)).toBe(daysToStayInASection[4] * 2)
       expect(RepetitionService.getNeedsRepetitionScore(testData[4]!)).toBe(0)
       testData.push(...testData2)
 

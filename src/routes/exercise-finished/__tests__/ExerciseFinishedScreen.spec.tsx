@@ -17,8 +17,8 @@ describe('ExerciseFinishedScreen', () => {
   const getRoute = (
     exerciseKey: StandardExerciseKey,
     allCorrect: boolean,
-    isRepetition: boolean = false,
-    numberOfDifficultWords: number = 0,
+    isRepetition = false,
+    numberOfDifficultWords = 0,
   ): RouteProp<RoutesParams, 'ExerciseFinished'> => {
     const vocabularyItems = new VocabularyItemBuilder(4).build()
     return {

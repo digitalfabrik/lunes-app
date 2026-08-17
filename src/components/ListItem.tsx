@@ -94,7 +94,6 @@ const BadgeLabel = styled.Text<{ pressed: boolean }>`
   margin-right: ${props => props.theme.spacings.xxs};
 `
 
-const PRESS_ANIMATION_DURATION = 300
 const PRESS_MAX_DRAG_Y = 5
 
 type ListItemProps = {
@@ -142,13 +141,13 @@ const ListItem = ({
         if (onPress) {
           onPress()
         }
-        setTimeout(() => updatePressed(false), PRESS_ANIMATION_DURATION)
+        setTimeout(() => updatePressed(false), theme.animations.durationMs)
       } else {
         updatePressed(false)
       }
       setPressInY(null)
     },
-    [pressInY, updatePressed, onPress],
+    [pressInY, updatePressed, onPress, theme.animations.durationMs],
   )
 
   const titleText =
