@@ -21,7 +21,7 @@ import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { HeadingText } from '../../components/text/Heading'
+import { HeadingText, VocabularyWord } from '../../components/text/Heading'
 import {
   BUTTONS_THEME,
   MAX_TRAINING_REPETITIONS,
@@ -344,9 +344,9 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const wordContent = (
     <BottomSheetRow>
       {currentWord.audio !== null && <AudioPlayer audio={currentWord.audio} disabled={false} />}
-      <ContentText>
+      <VocabularyWord>
         {currentWord.article.value} {currentWord.word}
-      </ContentText>
+      </VocabularyWord>
     </BottomSheetRow>
   )
 

@@ -7,7 +7,7 @@ import Button from '../../components/Button'
 import Modal from '../../components/Modal'
 import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
-import { Content, ContentText, ContentTextLight } from '../../components/text/Content'
+import { Content, ContentText } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import useStorage from '../../hooks/useStorage'
@@ -124,7 +124,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
           <ItemContainer>
             <ItemTextContainer>
               <Content>{analyticsConsentLabel}</Content>
-              <ContentTextLight>{analyticsConsentExplanation}</ContentTextLight>
+              <Content>{analyticsConsentExplanation}</Content>
             </ItemTextContainer>
             <Switch
               testID='analytics-consent-switch'

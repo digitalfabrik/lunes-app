@@ -2,8 +2,8 @@ import styled from 'styled-components/native'
 
 export const Hint = styled.Text`
   font-size: ${props => props.theme.fonts.smallFontSize};
+  line-height: ${props => props.theme.fonts.lineHeightCaption};
   font-family: ${props => props.theme.fonts.contentFontRegular};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
 export const HintText = styled(Hint)`

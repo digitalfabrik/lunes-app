@@ -12,6 +12,7 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import WordResultIndicator from '../../../components/WordResultIndicator'
 import { ContentText } from '../../../components/text/Content'
+import { VocabularyWord } from '../../../components/text/Heading'
 import {
   Answer,
   BUTTONS_THEME,
@@ -262,9 +263,9 @@ const WordChoiceExercise = ({
             </AudioPlayerContainer>
 
             {needsToBeRepeated && <ContentText>{getLabels().exercises.solution}</ContentText>}
-            <ContentText>
+            <VocabularyWord>
               {vocabularyItem.article.value} {vocabularyItem.word}
-            </ContentText>
+            </VocabularyWord>
           </SolutionRow>
         }
         button={

@@ -3,7 +3,7 @@ import { GestureResponderEvent } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
-import { ContentSecondaryLight } from './text/Content'
+import { ContentSecondary } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
   margin-bottom: ${props => props.theme.spacings.xxs};
@@ -51,6 +51,7 @@ const ContentContainer = styled.View<{ pressed: boolean; disabled: boolean }>`
 
 const Title = styled.Text<{ pressed: boolean }>`
   font-size: ${props => props.theme.fonts.largeFontSize};
+  line-height: ${props => props.theme.fonts.lineHeightListTitle};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   margin-bottom: 2px;
   font-family: ${props => props.theme.fonts.contentFontBold};
@@ -71,18 +72,17 @@ const FlexContainer = styled.View`
   flex: 1;
 `
 
-const DescriptionContainer = styled.View`
+const Row = styled.View`
   flex-direction: row;
   align-items: center;
 `
 
-const Description = styled(ContentSecondaryLight)<{ pressed: boolean }>`
+const Description = styled(ContentSecondary)<{ pressed: boolean }>`
   color: ${props => (props.pressed ? props.theme.colors.backgroundAccent : props.theme.colors.textSecondary)};
 `
 
 const BadgeLabel = styled.Text<{ pressed: boolean }>`
   font-family: ${props => props.theme.fonts.contentFontBold};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
   min-width: ${props => props.theme.spacings.md};
   height: ${props => props.theme.spacings.sm};
   border-radius: 8px;
@@ -99,6 +99,7 @@ const PRESS_MAX_DRAG_Y = 5
 type ListItemProps = {
   title: string | ReactElement
   icon?: string | ReactElement
+  beforeTitle?: ReactElement
   description?: string
   badgeLabel?: string
   children?: ReactElement
@@ -113,6 +114,7 @@ const ListItem = ({
   onPress,
   icon,
   title,
+  beforeTitle,
   description,
   badgeLabel,
   children,
@@ -148,7 +150,7 @@ const ListItem = ({
     [pressInY, updatePressed, onPress, theme.animations.durationMs],
   )
 
-  const titleToRender =
+  const titleText =
     typeof title === 'string' ? (
       <Title pressed={pressed} numberOfLines={3}>
         {title}
@@ -156,6 +158,15 @@ const ListItem = ({
     ) : (
       title
     )
+
+  const titleToRender = beforeTitle ? (
+    <Row>
+      {beforeTitle}
+      <FlexContainer>{titleText}</FlexContainer>
+    </Row>
+  ) : (
+    titleText
+  )
 
   const iconToRender = icon && (
     <IconContainer>{typeof icon === 'string' ? <Icon source={{ uri: icon }} /> : icon}</IconContainer>
@@ -186,10 +197,12 @@ const ListItem = ({
         {iconToRender}
         <FlexContainer>
           {titleToRender}
-          <DescriptionContainer>
-            {!!badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
-            {!!description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
-          </DescriptionContainer>
+          {(!!badgeLabel || !!description) && (
+            <Row>
+              {!!badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
+              {!!description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
+            </Row>
+          )}
           {children}
         </FlexContainer>
         {rightChildrenToRender}

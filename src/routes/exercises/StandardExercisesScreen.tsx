@@ -10,7 +10,7 @@ import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import Title from '../../components/Title'
-import { Content, ContentTextBold, ContentTextLight } from '../../components/text/Content'
+import { Content, ContentTextBold } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import {
   Exercise,
@@ -38,7 +38,7 @@ const ListItemResizer = styled.View`
   padding: 0 ${props => props.theme.spacings.lg};
 `
 
-const SmallMessage = styled(ContentTextLight)`
+const SmallMessage = styled(Content)`
   margin: 0 ${props => props.theme.spacings.md} ${props => props.theme.spacings.md};
   text-align: center;
 `
