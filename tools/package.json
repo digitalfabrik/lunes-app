@@ -6,6 +6,7 @@
     "app-toolbelt": "$(yarn bin app-toolbelt)"
   },
   "devDependencies": {
+    "@sentry/cli": "^3.4.0",
     "app-toolbelt": "github:digitalfabrik/app-toolbelt#semver:1.2.1"
   }
 }
