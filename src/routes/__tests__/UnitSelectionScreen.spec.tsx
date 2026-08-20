@@ -42,63 +42,75 @@ describe('UnitSelectionScreen', () => {
   })
 
   it('should display the correct title', async () => {
-    const { getByText } = renderScreen()
-    const title = await waitFor(() => getByText(mockUnits[0]!.title))
-    expect(title).toBeDefined()
+  const { getByText } = renderScreen()
+
+  const title = await waitFor(() => getByText(mockUnits[0]!.title))
+
+  expect(title).toBeDefined()
+})
+
+it('should display all units', async () => {
+  const { getByText } = renderScreen()
+
+  await waitFor(() => {
+    expect(getByText(mockUnits[0]!.title)).toBeDefined()
+    expect(getByText(mockUnits[1]!.title)).toBeDefined()
+    expect(getByText(mockUnits[2]!.title)).toBeDefined()
   })
+})
 
-  it('should display all units', async () => {
+it('should navigate to exercises when list item pressed', async () => {
+  const { getByText } = renderScreen()
+
+  const unit = await waitFor(() => getByText(mockUnits[2]!.title))
+
+  fireEvent.press(unit)
+
+  expect(navigation.navigate).toHaveBeenCalledWith(
+    'StandardExercises',
+    expect.anything()
+  )
+})
+
+describe('ProgressHint', () => {
+  it('should show ProgressHint if the job was started before migration and is now migrated', async () => {
+    await storageCache.setItem('notMigratedSelectedJobs', [42])
+
     const { getByText } = renderScreen()
 
-    const firstUnit = await waitFor(() => getByText(mockUnits[0]!.title))
-    const secondUnit = getByText(mockUnits[1]!.title)
-    const thirdUnit = getByText(mockUnits[2]!.title)
-    expect(firstUnit).toBeDefined()
-    expect(secondUnit).toBeDefined()
-    expect(thirdUnit).toBeDefined()
-  })
-
-  it('should navigate to exercises when list item pressed', async () => {
-    const { getByText } = renderScreen()
-    const unit = await waitFor(() => getByText(mockUnits[2]!.title))
-    fireEvent.press(unit)
-
-    expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', expect.anything())
-  })
-
-  describe('ProgressHint', () => {
-    it('should show ProgressHint if the job was started before migration and is now migrated', async () => {
-      await storageCache.setItem('notMigratedSelectedJobs', [42])
-
-      const { getByText } = renderScreen()
-
-      await waitFor(() => {
-        expect(getByText('Mehr Infos hier')).toBeDefined()
-      })
+    await waitFor(() => {
+      expect(getByText('Mehr Infos hier')).toBeDefined()
     })
+  })
 
-    it('should not show ProgressHint if the job is not in notMigratedSelectedJobs', async () => {
-      await storageCache.setItem('notMigratedSelectedJobs', [99])
+  it('should not show ProgressHint if the job is not in notMigratedSelectedJobs', async () => {
+    await storageCache.setItem('notMigratedSelectedJobs', [99])
 
-      const { queryByText } = renderScreen()
+    const { queryByText } = renderScreen()
 
+    await waitFor(() => {
       expect(queryByText('Mehr Infos hier')).toBeNull()
     })
+  })
 
-    it('should not show ProgressHint if the job is in notMigratedSelectedJobs but not yet migrated', async () => {
-      await storageCache.setItem('notMigratedSelectedJobs', [42])
+  it('should not show ProgressHint if the job is in notMigratedSelectedJobs but not yet migrated', async () => {
+    await storageCache.setItem('notMigratedSelectedJobs', [42])
 
-      const { queryByText } = renderScreen({ migrated: false })
+    const { queryByText } = renderScreen({ migrated: false })
 
+    await waitFor(() => {
       expect(queryByText('Mehr Infos hier')).toBeNull()
     })
+  })
 
-    it('should not show ProgressHint if notMigratedSelectedJobs is empty', async () => {
-      await storageCache.setItem('notMigratedSelectedJobs', [])
+  it('should not show ProgressHint if notMigratedSelectedJobs is empty', async () => {
+    await storageCache.setItem('notMigratedSelectedJobs', [])
 
-      const { queryByText } = renderScreen()
+    const { queryByText } = renderScreen()
 
+    await waitFor(() => {
       expect(queryByText('Mehr Infos hier')).toBeNull()
     })
   })
 })
+}) 
