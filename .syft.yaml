@@ -1,0 +1,12 @@
+# Config for `syft`, picked up automatically from the repo root by the
+# "Generate SBOM" CI step (.circleci/src/jobs/notify_github.yml), which runs
+# `syft scan .` via app-toolbelt without passing any flags of its own.
+#
+# tools/ holds release/CI tooling (app-toolbelt and its own dependencies,
+# e.g. the @octokit/* clients) that is never part of a released app build.
+# Without this exclude, its already-installed node_modules (restored by the
+# restore_yarn_tools_cache CircleCI command earlier in the same job) would
+# be scanned right along with the app's own dependencies and end up in the
+# SBOM we ship — see the "Generate SBOM" step for context.
+exclude:
+  - ./tools/**

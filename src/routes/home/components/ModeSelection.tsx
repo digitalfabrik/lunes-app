@@ -48,7 +48,6 @@ const CardTitle = styled(Heading)`
 
 const Subtitle = styled(Content)`
   color: ${props => props.theme.colors.background};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
 const ProgressRow = styled.View`

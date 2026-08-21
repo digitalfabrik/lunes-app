@@ -116,7 +116,7 @@ class VocabularyItemBuilder {
     this.vocabularyItemCount = vocabularyItemCount
   }
 
-  build(): Array<StandardVocabularyItem> {
+  build(): StandardVocabularyItem[] {
     return Array.from({ length: this.vocabularyItemCount }, (_, index) => {
       if (index < baseVocabularyItems.length) {
         return getAtIndex(baseVocabularyItems, index)
@@ -128,7 +128,7 @@ class VocabularyItemBuilder {
     })
   }
 
-  buildUserVocabulary(): Array<UserVocabularyItem> {
+  buildUserVocabulary(): UserVocabularyItem[] {
     return this.build().map(item => ({ ...item, id: { index: item.id.id, type: VocabularyItemTypes.UserCreated } }))
   }
 }

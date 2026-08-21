@@ -118,10 +118,7 @@ assign_positional_args 1 "${_positionals[@]}"
 set -e
 shopt -s nullglob
 
-if ! command -v sentry-cli &> /dev/null
-then
-  curl -sL https://sentry.io/get-cli/ | bash
-fi
+script_directory="$(dirname "$0")"
 
 package_name=$_arg_package_name
 version_name=$_arg_version_name
@@ -131,9 +128,21 @@ sourcemap_directory=$_arg_sourcemap_directory
 
 if [ -z "$SENTRY_AUTH_TOKEN" ]
 then
-  echo "SENTRY_AUTH_TOKEN is not set"
-  exit 1
+  echo "WARNING: SENTRY_AUTH_TOKEN is not set, skipping the sentry release"
+  exit 0
 fi
+
+sentry_cli="$(yarn --cwd "$script_directory" bin sentry-cli)" || true
+
+if [ ! -x "$sentry_cli" ]
+then
+  echo "WARNING: could not find sentry-cli in the tools dependencies, skipping the sentry release"
+  exit 0
+fi
+
+# sentry-cli only honours the url from .sentryclirc if the auth token comes from that same file. In CI
+# the token is an environment variable, so the url has to be passed as one as well.
+export SENTRY_URL="$(sed -n 's/^url=//p' "$script_directory/../.sentryclirc")"
 
 version="${package_name}@${version_name}"
 
@@ -144,8 +153,9 @@ then
 fi
 
 
-sentry-cli releases new "$version" --finalize
+"$sentry_cli" releases new "$version" --finalize || echo "WARNING: could not create the sentry release $version"
 
-sentry-cli sourcemaps upload --release="$version" --dist "$version_code" "$sourcemap_directory"
+"$sentry_cli" sourcemaps upload --release="$version" --dist "$version_code" "$sourcemap_directory" ||
+  echo "WARNING: could not upload sourcemaps, stack traces for $version will not be readable"
 
 # ] <-- needed because of Argbash

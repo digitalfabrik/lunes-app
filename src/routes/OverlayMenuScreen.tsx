@@ -42,13 +42,15 @@ const Icon = styled.Pressable`
   color: ${props => props.theme.colors.backgroundAccent};
 `
 
-export const OverlayTransition: StackNavigationOptions = {
+export const overlayTransition = (isReducedMotionEnabled: boolean): StackNavigationOptions => ({
   gestureEnabled: true,
   gestureDirection: 'horizontal',
-  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+  cardStyleInterpolator: isReducedMotionEnabled
+    ? CardStyleInterpolators.forFadeFromCenter
+    : CardStyleInterpolators.forHorizontalIOS,
   cardOverlayEnabled: true,
   cardOverlay: () => <OverlayContainer />,
-}
+})
 
 type OverlayProps = {
   navigation: StackNavigationProp<RoutesParams>

@@ -10,7 +10,7 @@ import UserVocabularyListScreen from '../routes/user-vocabulary-list/UserVocabul
 import UserVocabularyUnitSelectionScreen from '../routes/user-vocabulary-unit-selection/UserVocabularyUnitSelectionScreen'
 import { getLabels } from '../services/helpers'
 import { RoutesParams } from './NavigationTypes'
-import screenOptions, { useTabletHeaderHeight } from './screenOptions'
+import screenOptions, { useStackScreenOptions, useTabletHeaderHeight } from './screenOptions'
 
 const Stack = createStackNavigator<RoutesParams>()
 
@@ -22,7 +22,10 @@ const UserVocabularyStackNavigator = (): ReactElement | null => {
 
   return (
     <Stack.Navigator
-      screenOptions={{ cardStyle: { backgroundColor: theme.colors.background }, headerStatusBarHeight: 0 }}
+      screenOptions={useStackScreenOptions({
+        cardStyle: { backgroundColor: theme.colors.background },
+        headerStatusBarHeight: 0,
+      })}
     >
       <Stack.Screen
         name='UserVocabularyOverview'

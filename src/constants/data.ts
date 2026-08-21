@@ -150,7 +150,7 @@ export const NUMBER_OF_MAX_RETRIES = 3
 export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
 export const SCORE_THRESHOLD_UNLOCK = 2
 
-export const enum EXERCISE_FEEDBACK {
+export const enum ExerciseFeedback {
   POSITIVE,
   NONE,
   NEGATIVE,

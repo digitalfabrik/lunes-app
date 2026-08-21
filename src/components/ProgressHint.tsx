@@ -6,6 +6,7 @@ import { StandardJobId } from '../models/Job'
 import { getLabels } from '../services/helpers'
 import FeedbackModal from './FeedbackModal'
 import Modal from './Modal'
+import { Subheading } from './text/Subheading'
 
 const Container = styled.View`
   border-radius: 2px;
@@ -16,12 +17,6 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${props => props.theme.spacings.sm};
-`
-
-const StyledText = styled.Text`
-  font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.defaultFontWeight};
-  line-height: 24px;
 `
 
 const StyledFakeButton = styled.Text`
@@ -41,13 +36,13 @@ const ProgressHint = ({ jobId }: ProgressHintProps): ReactElement => {
   return (
     <Container>
       <BasicLightBulbIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-      <StyledText>
+      <Subheading>
         {getLabels().exercises.progressLost.notShown}
         {'  '}
         <StyledFakeButton onPress={() => setShowHint(true)} accessibilityRole='button'>
           {getLabels().exercises.progressLost.moreInfo}
         </StyledFakeButton>
-      </StyledText>
+      </Subheading>
       <Modal
         text={getLabels().exercises.progressLost.explanation}
         visible={showHint}

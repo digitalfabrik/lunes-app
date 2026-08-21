@@ -1,0 +1,6 @@
+issue_key: 1493
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wer im Betriebssystem Bewegungen reduziert hat, sieht in der App keine gleitenden Übergänge mehr.

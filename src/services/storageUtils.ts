@@ -16,7 +16,7 @@ import { generateUniqueId, trackEvent } from './AnalyticsService'
 import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
 import type { WordNodeCard } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, StorageValue } from './Storage'
+import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -114,7 +114,7 @@ export const saveExerciseProgress = async (
 type Incomplete<T> = T & Record<string, unknown>
 
 export const migrate0To1 = async (): Promise<void> => {
-  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0 as StorageValue, [])
+  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
   if (parsedFavorites.length === 0) {
     return
   }

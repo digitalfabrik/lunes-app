@@ -142,20 +142,27 @@ type WordResponse = {
   article: CMSArticle
   images: string[]
   audio: string
+  alternative_words: {
+    alt_word: string
+    article: CMSArticle
+  }[]
   example_sentence: string | null
   example_sentence_audio: string | null
   pronunciation: string
 }
 
 const transformWordResponse = (response: WordResponse): StandardVocabularyItem => {
-  const { id, word, article, images, audio, pronunciation } = response
+  const { id, word, article, images, audio, pronunciation, alternative_words: alternativeWords } = response
   return {
     id: { type: VocabularyItemTypes.Standard, id },
     word,
     article: CMSArticleToArticle[article],
     images,
     audio,
-    alternatives: [],
+    alternatives: alternativeWords.map(({ alt_word: altWord, article: altArticle }) => ({
+      word: altWord,
+      article: CMSArticleToArticle[altArticle],
+    })),
     // The CMS sends an empty string for words that need no special pronunciation
     pronunciation: pronunciation || undefined,
     exampleSentence:
@@ -196,11 +203,9 @@ type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {
   payload: Omit<AnalyticsPayload, 'type'>
 }
 
-// eslint-disable-next-line camelcase
 const transformAnalyticsEvent = ({ installation_id, timestamp, payload }: AnalyticsEvent): AnalyticsEventPostData => {
   const { type, ...rest } = payload
   return {
-    // eslint-disable-next-line camelcase
     installation_id,
     event_type: type,
     timestamp,
