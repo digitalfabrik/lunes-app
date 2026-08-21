@@ -159,7 +159,7 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
     article: CMSArticleToArticle[article],
     images,
     audio,
-    alternatives: alternativeWords.map(({ alt_word: altWord, article: altArticle }) => ({
+    alternatives: alternativeWords?.map(({ alt_word: altWord, article: altArticle }) => ({
       word: altWord,
       article: CMSArticleToArticle[altArticle],
     })),
