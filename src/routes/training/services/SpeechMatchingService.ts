@@ -120,11 +120,10 @@ const looksLikeExpectedWord = (transcriptWord: string, expectedWord: string): bo
 const incorrect = (reason?: SpeechFeedbackReason): SpeechMatch => ({ result: SIMPLE_RESULTS.incorrect, reason })
 
 const evaluateCandidate = (transcript: string, article: Article, word: string): SpeechMatch => {
-  const expectedPhrase = hasNoArticle(article) ? word : `${article.value} ${word}`
   const normalizedTranscript = normalizeText(transcript)
-  const normalizedExpected = normalizeText(expectedPhrase)
+  const expectedPhrase = normalizeText(hasNoArticle(article) ? word : `${article.value} ${word}`)
 
-  if (containsAsTokens(normalizedTranscript, normalizedExpected, MAX_EXTRA_TOKENS)) {
+  if (containsAsTokens(normalizedTranscript, expectedPhrase, MAX_EXTRA_TOKENS)) {
     return { result: SIMPLE_RESULTS.correct }
   }
 
@@ -141,13 +140,13 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
 
   // Items without an article are graded on the word alone, so an article the recognizer added by itself
   // is ignored rather than counted against the answer.
-  const comparableTranscript = hasNoArticle(article) ? spokenWord : normalizedTranscript
+  const spokenPhrase = hasNoArticle(article) ? spokenWord : normalizedTranscript
 
   // A dropped syllable barely moves a long compound's similarity ("die Bodenheizung" for
   // "die Fußbodenheizung" still scores 0.842) but always changes the syllable count, which is the only
   // signal that separates it from a misheard consonant costing the same number of edits.
-  const spokenSyllables = countSyllables(comparableTranscript)
-  const expectedSyllables = countSyllables(normalizedExpected)
+  const spokenSyllables = countSyllables(spokenPhrase)
+  const expectedSyllables = countSyllables(expectedPhrase)
   if (spokenSyllables < expectedSyllables) {
     return incorrect(SPEECH_FEEDBACK_REASONS.incompleteWord)
   }
@@ -155,7 +154,7 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
     return incorrect()
   }
 
-  return isSimilar(comparableTranscript, normalizedExpected) ? { result: SIMPLE_RESULTS.correct } : incorrect()
+  return isSimilar(spokenPhrase, expectedPhrase) ? { result: SIMPLE_RESULTS.correct } : incorrect()
 }
 
 // The candidates are alternates of one utterance, so a single matching hypothesis is enough. Otherwise the
