@@ -132,6 +132,50 @@ describe('SpeechTrainingScreen', () => {
     expect(getByText(getLabels().exercises.tryAgain)).toBeVisible()
   })
 
+  it('should tell the user that syllables are missing when the word is incomplete', async () => {
+    mockStartRecording.mockResolvedValue(['der Spacht'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible()
+    })
+    expect(getByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeVisible()
+  })
+
+  it('should tell the user when only the article is missing', async () => {
+    mockStartRecording.mockResolvedValue(['Spachtel'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.feedback.missingArticle)).toBeVisible()
+    })
+  })
+
+  it('should not show a feedback hint after a correct answer', async () => {
+    mockStartRecording.mockResolvedValue(['der Spachtel'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    expect(queryByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeNull()
+  })
+
+  it('should clear the feedback hint when retrying', async () => {
+    mockStartRecording.mockResolvedValue(['der Spacht'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+    await waitFor(() => getByText(getLabels().exercises.tryAgain))
+    fireEvent.press(getByText(getLabels().exercises.tryAgain))
+
+    expect(queryByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeNull()
+  })
+
   it('should bias the recognizer towards the word and the full phrase', async () => {
     mockStartRecording.mockResolvedValue([])
     const { getByTestId } = await renderScreenAndWaitForLoad()
@@ -139,6 +183,32 @@ describe('SpeechTrainingScreen', () => {
     fireEvent(getByTestId('recording-button'), 'pressIn')
 
     await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Spachtel', 'der Spachtel'] }))
+  })
+
+  describe('words without an article', () => {
+    const articleLessWord = { ...vocabularyItems[0]!, article: ARTICLES[0] }
+
+    beforeEach(() => {
+      mocked(getWordsByJob).mockResolvedValue([articleLessWord])
+    })
+
+    it('should not bias the recognizer towards the literal article value', async () => {
+      mockStartRecording.mockResolvedValue([])
+      const { getByTestId } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Spachtel'] }))
+    })
+
+    it('should accept the word without an article', async () => {
+      mockStartRecording.mockResolvedValue(['Spachtel'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    })
   })
 
   describe('loanwords with a pronunciation from the CMS', () => {

@@ -1,0 +1,6 @@
+issue_key: 1456
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Im Sprechstudio zählt eine Vokabel nur noch als richtig, wenn du alle Silben und den Artikel sprichst.

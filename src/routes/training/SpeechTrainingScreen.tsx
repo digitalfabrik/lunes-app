@@ -24,6 +24,7 @@ import { ContentText } from '../../components/text/Content'
 import { HeadingText, VocabularyWord } from '../../components/text/Heading'
 import {
   BUTTONS_THEME,
+  hasNoArticle,
   MAX_TRAINING_REPETITIONS,
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
@@ -46,7 +47,7 @@ import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/h
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import { evaluateSpeechMatch } from './services/SpeechMatchingService'
+import { evaluateSpeechMatch, SpeechFeedbackReason, SpeechMatch } from './services/SpeechMatchingService'
 
 const SPEECH_PERMISSIONS =
   Platform.OS === 'ios'
@@ -104,6 +105,7 @@ type State = {
   currentVocabularyItemIndex: number
   incorrectAttemptsForCurrentWord: number
   answerState: SimpleResult | 'error' | null
+  feedbackReason: SpeechFeedbackReason | null
   correctAnswersCount: number
   completed: boolean
   isRecognitionUnavailable: boolean
@@ -111,7 +113,7 @@ type State = {
 }
 
 type Action =
-  | { type: 'speechResult'; answerState: SimpleResult }
+  | { type: 'speechResult'; match: SpeechMatch }
   | { type: 'speechError' }
   | { type: 'recognitionUnavailable' }
   | { type: 'languageUnavailable' }
@@ -128,6 +130,7 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
     currentVocabularyItemIndex: 0,
     incorrectAttemptsForCurrentWord: 0,
     answerState: null,
+    feedbackReason: null,
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
     isRecognitionUnavailable: false,
@@ -138,20 +141,25 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
 const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'speechResult': {
-      const isCorrect = action.answerState === SIMPLE_RESULTS.correct
+      const isCorrect = action.match.result === SIMPLE_RESULTS.correct
       const incorrectAttemptsForCurrentWord = isCorrect
         ? state.incorrectAttemptsForCurrentWord
         : state.incorrectAttemptsForCurrentWord + 1
-      return { ...state, answerState: action.answerState, incorrectAttemptsForCurrentWord }
+      return {
+        ...state,
+        answerState: action.match.result,
+        feedbackReason: action.match.reason ?? null,
+        incorrectAttemptsForCurrentWord,
+      }
     }
     case 'speechError':
-      return { ...state, answerState: 'error' }
+      return { ...state, answerState: 'error', feedbackReason: null }
     case 'recognitionUnavailable':
       return { ...state, isRecognitionUnavailable: true }
     case 'languageUnavailable':
       return { ...state, isLanguageUnavailable: true }
     case 'retry':
-      return { ...state, answerState: null }
+      return { ...state, answerState: null, feedbackReason: null }
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
@@ -163,6 +171,7 @@ const stateReducer = (state: State, action: Action): State => {
         completed,
         correctAnswersCount,
         answerState: null,
+        feedbackReason: null,
         incorrectAttemptsForCurrentWord: 0,
       }
     }
@@ -172,6 +181,7 @@ const stateReducer = (state: State, action: Action): State => {
         ...state,
         vocabularyItems: reorderedVocabularyItems,
         answerState: null,
+        feedbackReason: null,
         incorrectAttemptsForCurrentWord: 0,
       }
     }
@@ -267,11 +277,11 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const handlePressIn = async (): Promise<void> => {
     try {
       const spokenWord = pronunciationOrWord(currentWord)
-      const results = await startRecording({
-        hints: [spokenWord, `${currentWord.article.value} ${spokenWord}`],
-      })
-      const answerState = evaluateSpeechMatch(results, currentWord.article.value, spokenWord)
-      dispatch({ type: 'speechResult', answerState })
+      const { article } = currentWord
+      // "keiner" is not a word anybody says, so it must not be used to bias the recognizer
+      const hints = hasNoArticle(article) ? [spokenWord] : [spokenWord, `${article.value} ${spokenWord}`]
+      const results = await startRecording({ hints })
+      dispatch({ type: 'speechResult', match: evaluateSpeechMatch(results, article, spokenWord) })
     } catch (error) {
       const errorCode = (error as { code?: SpeechToTextErrorCode }).code
       if (errorCode === SPEECH_TO_TEXT_ERRORS.recognitionUnavailable) {
@@ -403,6 +413,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         label={isCorrect ? labels.correct : labels.incorrect}
         content={wordContent}
         button={resultButton}
+        hint={state.feedbackReason !== null ? labels.feedback[state.feedbackReason] : undefined}
       />
 
       <BottomSheet visible={state.answerState === 'error'}>
