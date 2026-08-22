@@ -1,8 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 import { FlatList } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
+import { HeartCircleIconGrey } from '../../../assets/images'
 import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { SubheadingPrimary } from '../../components/text/Subheading'
@@ -29,6 +30,10 @@ const EmptyStateContainer = styled.View`
   padding: ${props => props.theme.spacings.lg} ${props => props.theme.spacings.sm};
 `
 
+const EmptyStateIcon = styled.View`
+  margin-bottom: ${props => props.theme.spacings.sm};
+`
+
 const EmptyStateTitle = styled(SubheadingPrimary)`
   text-align: center;
   margin-bottom: ${props => props.theme.spacings.xs};
@@ -43,6 +48,7 @@ const EmptyStateSubtitle = styled.Text`
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const [favorites] = useStorage('favorites')
+  const theme = useTheme()
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
@@ -61,6 +67,9 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
           ListHeaderComponent={<ListHeader>{wordsDescription(favorites.length)}</ListHeader>}
           ListEmptyComponent={
             <EmptyStateContainer>
+              <EmptyStateIcon>
+                <HeartCircleIconGrey width={theme.spacingsPlain.xl} height={theme.spacingsPlain.xl} />
+              </EmptyStateIcon>
               <EmptyStateTitle>{emptyState.title}</EmptyStateTitle>
               <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
             </EmptyStateContainer>

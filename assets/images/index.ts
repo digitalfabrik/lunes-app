@@ -23,6 +23,8 @@ import HeaderCircleIcon from './header-circle.svg'
 import HeaderLinesIcon from './header-lines.svg'
 import HeaderSquareIcon from './header-square.svg'
 import HeaderStarIcon from './header-star.svg'
+import HeartCircleIconGreyFilled from './heart-circle-grey-filled.svg'
+import HeartCircleIconGrey from './heart-circle-grey.svg'
 import HeartIcon from './heart.svg'
 import HomeIcon from './home.svg'
 import ImageCircleIcon from './image-circle.svg'
@@ -42,8 +44,6 @@ import RepeatIcon from './repeat.svg'
 import SadSmileyCircleIcon from './sad-smiley-circle-white.svg'
 import SadSmileyIcon from './sad-smiley.svg'
 import ShareIcon from './share.svg'
-import StarCircleIconGreyFilled from './star-circle-grey-filled.svg'
-import StarCircleIconGrey from './star-circle-grey.svg'
 import TargetIcon from './target.svg'
 import ThumbsDownIcon from './thumbs-down.svg'
 import ThumbsUpIcon from './thumbs-up.svg'
@@ -80,6 +80,8 @@ export {
   HeaderLinesIcon,
   HeaderSquareIcon,
   HeaderStarIcon,
+  HeartCircleIconGrey,
+  HeartCircleIconGreyFilled,
   HeartIcon,
   HomeIcon,
   ImageCircleIcon,
@@ -99,8 +101,6 @@ export {
   SadSmileyCircleIcon,
   SadSmileyIcon,
   ShareIcon,
-  StarCircleIconGrey,
-  StarCircleIconGreyFilled,
   TargetIcon,
   ThumbsDownIcon,
   ThumbsUpIcon,
