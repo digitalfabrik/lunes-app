@@ -1,3 +1,4 @@
+import { DocumentDirectoryPath } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, ReactElement } from 'react'
 
@@ -9,7 +10,7 @@ import { WordNodeCard } from './RepetitionService'
 import { CMS } from './axios'
 import { migrateStorage } from './storageUtils'
 
-export const STORAGE_VERSION = 6
+export const STORAGE_VERSION = 7
 
 export type Storage = {
   // Goes from 1 to STORAGE_VERSION and is incremented for each new required migration.
@@ -76,16 +77,52 @@ export const storageKeys: Record<StorageKey, string> = {
 
 export type StorageValue = (typeof storageKeys)[keyof typeof storageKeys]
 
+export const getFileName = (path: string): string => path.substring(path.lastIndexOf('/') + 1)
+
+// Images and audio recordings of user vocabulary items are stored in the document directory of the app.
+// Its absolute path may change between app updates (e.g. on iOS), therefore only the file names are persisted
+// and resolved to absolute uris when loading the storage.
+// See https://github.com/digitalfabrik/lunes-app/issues/1099
+export const getUserVocabularyFileUri = (fileName: string): string => `file://${DocumentDirectoryPath}/${fileName}`
+
+const mapUserVocabularyFiles = (
+  userVocabulary: UserVocabularyItem[],
+  mapFile: (file: string) => string,
+): UserVocabularyItem[] =>
+  userVocabulary.map(item => ({
+    ...item,
+    images: item.images.map(mapFile),
+    audio: item.audio ? mapFile(item.audio) : null,
+  }))
+
+type StorageSerializer<T extends StorageKey> = {
+  // Converts the value of the storage cache to the persisted value
+  serialize: (value: Storage[T]) => Storage[T]
+  // Converts the persisted value to the value of the storage cache
+  deserialize: (value: Storage[T]) => Storage[T]
+}
+
+const storageSerializers: { [T in StorageKey]?: StorageSerializer<T> } = {
+  userVocabulary: {
+    serialize: userVocabulary => mapUserVocabularyFiles(userVocabulary, getFileName),
+    deserialize: userVocabulary => mapUserVocabularyFiles(userVocabulary, getUserVocabularyFileUri),
+  },
+}
+
 export const getStorageItemOr = async <T,>(key: StorageValue, defaultValue: T): Promise<T> => {
   const value = await AsyncStorage.getItem(key)
   return value ? JSON.parse(value) : defaultValue
 }
 
-export const getStorageItem = async <T extends StorageKey>(key: T): Promise<Storage[T]> =>
-  getStorageItemOr(storageKeys[key], defaultStorage[key])
+export const getStorageItem = async <T extends StorageKey>(key: T): Promise<Storage[T]> => {
+  const value = await getStorageItemOr(storageKeys[key], defaultStorage[key])
+  const serializer = storageSerializers[key]
+  return serializer ? serializer.deserialize(value) : value
+}
 
 const setStorageItem = async <T extends StorageKey>(key: T, value: Storage[T]): Promise<void> => {
-  await AsyncStorage.setItem(storageKeys[key], JSON.stringify(value))
+  const serializer = storageSerializers[key]
+  await AsyncStorage.setItem(storageKeys[key], JSON.stringify(serializer ? serializer.serialize(value) : value))
 }
 
 // https://github.com/react-native-async-storage/async-storage/issues/401#issuecomment-2508924008

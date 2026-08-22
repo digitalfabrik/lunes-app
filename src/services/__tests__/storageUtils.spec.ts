@@ -285,7 +285,7 @@ describe('storageUtils', () => {
             id: { index: 1, type: VocabularyItemTypes.UserCreated },
             word: 'Testwort',
             article: { id: 3, value: 'das' },
-            images: ['image-1'],
+            images: ['file://mock-document-directory-path/image-1'],
             audio: null,
             alternatives: [],
           },
@@ -293,7 +293,7 @@ describe('storageUtils', () => {
             id: { index: 2, type: VocabularyItemTypes.UserCreated },
             word: 'Hund',
             article: { id: 1, value: 'der' },
-            images: ['image-2'],
+            images: ['file://mock-document-directory-path/image-2'],
             audio: null,
             alternatives: [],
           },
@@ -479,6 +479,60 @@ describe('storageUtils', () => {
       })
     })
 
+    describe('should migrate from v6', () => {
+      it('should replace absolute paths of user vocabulary images and audio with file names', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '6')
+        const oldDocumentDirectoryPath = 'file:///var/mobile/Containers/Data/Application/old-uuid/Documents'
+        const hund = {
+          id: { index: 1, type: VocabularyItemTypes.UserCreated },
+          word: 'Hund',
+          article: { id: 1, value: 'der' },
+          alternatives: [],
+        }
+        const katze = { ...hund, id: { index: 2, type: VocabularyItemTypes.UserCreated }, word: 'Katze' }
+        await AsyncStorage.setItem(
+          'userVocabulary',
+          JSON.stringify([
+            {
+              ...hund,
+              images: [`${oldDocumentDirectoryPath}/image-1-0-2000.jpg`],
+              audio: `${oldDocumentDirectoryPath}/audio-1.m4a`,
+            },
+            {
+              ...katze,
+              images: [
+                `${oldDocumentDirectoryPath}/image-2-0-2000.jpg`,
+                `${oldDocumentDirectoryPath}/image-2-1-2000.jpg`,
+              ],
+              audio: null,
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+
+        expect(JSON.parse((await AsyncStorage.getItem('userVocabulary'))!)).toEqual([
+          { ...hund, images: ['image-1-0-2000.jpg'], audio: 'audio-1.m4a' },
+          { ...katze, images: ['image-2-0-2000.jpg', 'image-2-1-2000.jpg'], audio: null },
+        ])
+        expect(storageCache.getItem('userVocabulary')).toEqual([
+          {
+            ...hund,
+            images: ['file://mock-document-directory-path/image-1-0-2000.jpg'],
+            audio: 'file://mock-document-directory-path/audio-1.m4a',
+          },
+          {
+            ...katze,
+            images: [
+              'file://mock-document-directory-path/image-2-0-2000.jpg',
+              'file://mock-document-directory-path/image-2-1-2000.jpg',
+            ],
+            audio: null,
+          },
+        ])
+      })
+    })
+
     describe('when version is unset and data is already fully migrated', () => {
       const alreadyMigratedWordNodeCard = {
         wordId: { type: VocabularyItemTypes.Standard, id: 1 },
@@ -515,7 +569,12 @@ describe('storageUtils', () => {
 
         const storageCache = await loadStorageCache()
 
-        expect(storageCache.getItem('userVocabulary')).toEqual([alreadyMigratedUserVocabularyItem])
+        await expect(AsyncStorage.getItem('userVocabulary')).resolves.toEqual(
+          JSON.stringify([alreadyMigratedUserVocabularyItem]),
+        )
+        expect(storageCache.getItem('userVocabulary')).toEqual([
+          { ...alreadyMigratedUserVocabularyItem, images: ['file://mock-document-directory-path/image-1'] },
+        ])
       })
 
       it('should pass through favorites unchanged', async () => {

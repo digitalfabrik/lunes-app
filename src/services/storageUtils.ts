@@ -16,7 +16,7 @@ import { generateUniqueId, trackEvent } from './AnalyticsService'
 import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
 import type { WordNodeCard } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache } from './Storage'
+import { getFileName, getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -310,6 +310,20 @@ export const migrate5To6 = async (): Promise<void> => {
   await AsyncStorage.setItem('progress', JSON.stringify(migratedProgress))
 }
 
+// Replaces the absolute paths of user vocabulary images and audio recordings with their file names,
+// since the absolute path of the document directory may change between app updates
+export const migrate6To7 = async (): Promise<void> => {
+  type OldUserVocabularyItem = Incomplete<{ images: string[]; audio?: string | null }>
+
+  const oldUserVocabulary = await getStorageItemOr<OldUserVocabularyItem[]>('userVocabulary', [])
+  const newUserVocabulary = oldUserVocabulary.map(item => ({
+    ...item,
+    images: item.images.map(getFileName),
+    audio: item.audio ? getFileName(item.audio) : null,
+  }))
+  await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cms')
@@ -353,6 +367,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough, no-magic-numbers
     case 5:
       await migrate5To6()
+    // eslint-disable-next-line no-fallthrough, no-magic-numbers
+    case 6:
+      await migrate6To7()
       break
   }
 
