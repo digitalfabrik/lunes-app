@@ -244,9 +244,11 @@
   },
   "favorites": {
     "title": "Favoriten",
+    "add": "Zu Favoriten hinzufügen",
+    "remove": "Aus Favoriten entfernen",
     "emptyState": {
       "title": "Noch keine Favoriten gespeichert.",
-      "subtitle": "Hier werden Vokabeln angezeigt, die du in den Übungen favorisiert hast, um sie dir für später zu merken."
+      "subtitle": "Tippe bei einer Vokabel auf das Herz – zum Beispiel in der Wortliste, in der Suche oder in den Übungen. So merkst du sie dir hier für später und kannst sie unter „Vertiefen“ wiederholen."
     }
   },
   "dictionary": {
@@ -335,9 +337,13 @@
     "collection": "Sammlung",
     "create": "Eigenes Wort erstellen",
     "overview": {
+      "title": "Deine eigenen Wörter",
+      "description": "Lege hier Wörter an, die du zusätzlich lernen möchtest – mit eigenem Bild und Audio. Du kannst sie jederzeit ansehen, bearbeiten und üben.",
       "list": "Vokabelliste",
+      "listDescription": "Alle eigenen Wörter ansehen und bearbeiten",
       "create": "Vokabeln erstellen",
-      "practice": "Vokabeln üben"
+      "practice": "Vokabeln üben",
+      "practiceDescription": "Eigene Wörter in Übungen trainieren"
     },
     "creation": {
       "headline": "Vokabel erstellen",
@@ -361,6 +367,7 @@
       "delete": "Wort löschen",
       "finished": "Fertig",
       "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
+      "noWordsYetHint": "Tippe auf „Eigenes Wort erstellen“, um ein Wort mit Bild und Audio hinzuzufügen.",
       "create": "Eigenes Wort erstellen",
       "confirmDeletionPart1": "Willst du das Wort",
       "confirmDeletionPart2": "wirklich löschen?",
