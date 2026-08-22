@@ -6,6 +6,7 @@ import { AddIconWhite, BookIcon } from '../../assets/images'
 import Button from '../components/Button'
 import ListItem from '../components/ListItem'
 import RouteWrapper from '../components/RouteWrapper'
+import Title from '../components/Title'
 import { BUTTONS_THEME } from '../constants/data'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -27,20 +28,24 @@ type UserVocabularyOverviewScreenProps = {
 }
 
 const UserVocabularyOverviewScreen = ({ navigation }: UserVocabularyOverviewScreenProps): ReactElement => {
-  const { list, create, practice } = getLabels().userVocabulary.overview
+  const { title, description, list, listDescription, create, practice, practiceDescription } =
+    getLabels().userVocabulary.overview
   const theme = useTheme()
 
   return (
     <RouteWrapper>
       <Root>
+        <Title title={title} description={description} />
         <ListItem
           icon={<BookIcon color={theme.colors.black} />}
           title={list}
+          description={listDescription}
           onPress={() => navigation.navigate('UserVocabularyList')}
         />
         <ListItem
           icon={<BookIcon color={theme.colors.black} />}
           title={practice}
+          description={practiceDescription}
           onPress={() => navigation.navigate('UserVocabularyUnitSelection')}
         />
         <ButtonContainer>
