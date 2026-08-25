@@ -120,14 +120,15 @@ describe('WordChoiceExerciseScreen', () => {
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
   })
 
-  it('should show solution in the bottom sheet when answer is incorrect', () => {
+  it('should show solution in the bottom sheet when answer is incorrect', async () => {
     const { getByText } = renderScreen()
 
     fireEvent.press(getByText('Auto'))
 
-    expect(getByText(getLabels().exercises.solution)).toBeVisible()
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.solution)).toBeVisible()
+    })
   })
-
   it('should not show tryLater button on last word', () => {
     const { getByText, queryByText } = renderScreen()
 
@@ -205,11 +206,13 @@ describe('WordChoiceExerciseScreen', () => {
     })
   })
 
-  it('should show the answer as incorrect after answering wrong NUMBER_OF_MAX_RETRIES times', () => {
+  it('should show the answer as incorrect after answering wrong NUMBER_OF_MAX_RETRIES times', async () => {
     const { getByText } = renderScreen()
 
     // Answer Spachtel wrong once - moves to end of queue (index 3)
-    fireEvent.press(getByText('Auto'))
+    await act(async () => {
+      fireEvent.press(getByText('Auto'))
+    })
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Complete the remaining words correctly so Spachtel is reached again
@@ -218,16 +221,19 @@ describe('WordChoiceExerciseScreen', () => {
     selectAnswerAndPressNext(getByText, 'Helm')
 
     // Answer Spachtel wrong a second time - still at end of queue, numberOfTries=2
-    fireEvent.press(getByText('Auto'))
+    await act(async () => {
+      fireEvent.press(getByText('Auto'))
+    })
     fireEvent.press(getByText(getLabels().exercises.next))
 
     // Answer Spachtel wrong a third time, reaching NUMBER_OF_MAX_RETRIES
-    fireEvent.press(getByText('Auto'))
+    await act(async () => {
+      fireEvent.press(getByText('Auto'))
+    })
 
     // The result indicator must still show "incorrect", not "correct"
     expect(getByText(getLabels().exercises.training.sentence.incorrect)).toBeVisible()
   })
-
   describe('repetition exercise', () => {
     const renderRepetitionScreen = () =>
       renderWithStorageCache(storageCache, <WordChoiceExerciseScreen route={repetitionRoute} navigation={navigation} />)

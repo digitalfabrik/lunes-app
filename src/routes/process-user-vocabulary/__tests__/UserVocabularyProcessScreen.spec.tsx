@@ -132,19 +132,26 @@ describe('UserVocabularyProcessScreen', () => {
         expect(userVocabulary).toEqual([shouldBe])
       })
     })
-
-    it('should delete a photo', () => {
+    it('should delete a photo', async () => {
       jest.spyOn(ReactNativeFS, 'unlink')
 
-      const { getByText, getAllByTestId } = render(
+      const { getByText, getAllByTestId, queryAllByTestId } = render(
         <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
       )
+
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(2)
+
       const deleteThumbnail = getAllByTestId('delete-on-thumbnail')[0]!
       fireEvent.press(deleteThumbnail)
+
       expect(getAllByTestId('delete-on-thumbnail')).toHaveLength(1)
+
       const saveButton = getByText(getLabels().userVocabulary.creation.saveButton)
       fireEvent.press(saveButton)
+
+      await waitFor(() => {
+        expect(queryAllByTestId('delete-on-thumbnail')).toHaveLength(0)
+      })
 
       expect(ReactNativeFS.unlink).toHaveBeenCalled()
     })

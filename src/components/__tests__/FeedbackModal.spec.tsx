@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
@@ -43,7 +43,7 @@ describe('FeedbackModal', () => {
     expect(feedbackInputField.props.value).toBe('')
   })
 
-  it('should send feedback', () => {
+  it('should send feedback', async () => {
     const { getByText, getByPlaceholderText } = render(
       <FeedbackModal
         visible
@@ -51,16 +51,28 @@ describe('FeedbackModal', () => {
         feedbackTarget={{ type: 'word', wordId: { id: 1, type: VocabularyItemTypes.Standard } }}
       />,
     )
+
     const feedbackInputField = getByPlaceholderText(getLabels().feedback.feedbackPlaceholder)
     const emailInputField = getByPlaceholderText(getLabels().feedback.mailPlaceholder)
+
     fireEvent.changeText(feedbackInputField, 'Mein Feedback')
     fireEvent.changeText(emailInputField, 'app-team@lunes.de')
+
     expect(getByText(getLabels().feedback.sendFeedback)).toBeEnabled()
+
     const submitButton = getByText(getLabels().feedback.sendFeedback)
     fireEvent.press(submitButton)
-    expect(postFeedback).toHaveBeenCalledWith({
-      comment: 'Mein Feedback app-team@lunes.de',
-      target: { type: 'word', wordId: { id: 1, type: VocabularyItemTypes.Standard } },
+
+    await waitFor(() => {
+      expect(postFeedback).toHaveBeenCalledWith({
+        comment: 'Mein Feedback app-team@lunes.de',
+        target: { type: 'word', wordId: { id: 1, type: VocabularyItemTypes.Standard } },
+      })
+    })
+
+    await waitFor(() => {
+      expect(feedbackInputField.props.value).toBe('')
+      expect(emailInputField.props.value).toBe('')
     })
   })
 })

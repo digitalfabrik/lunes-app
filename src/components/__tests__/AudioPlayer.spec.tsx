@@ -50,12 +50,13 @@ describe('AudioPlayer', () => {
   it('should initialize tts', async () => {
     await renderAudioPlayer({ isTtsText: true })
 
-    expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
-    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
+    await waitFor(() => {
+      expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
+    })
 
+    expect(Tts.addListener).toHaveBeenCalledWith('tts-finish', expect.any(Function))
     expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
     expect(SoundPlayer.addEventListener).not.toHaveBeenCalled()
-    expect(Tts.requestInstallEngine).not.toHaveBeenCalled()
   })
 
   it('should request to install tts engine', async () => {
@@ -77,6 +78,11 @@ describe('AudioPlayer', () => {
 
   it('should initialize sound player', async () => {
     await renderAudioPlayer({})
+
+    await waitFor(() => {
+      expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
+    })
+
     expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
@@ -84,6 +90,11 @@ describe('AudioPlayer', () => {
 
   it('should be disabled', async () => {
     const { getByTestId } = await renderAudioPlayer({ disabled: true })
+
+    await waitFor(() => {
+      expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
+    })
+
     expect(getByTestId('audio-player')).toBeDisabled()
 
     fireEvent.press(getByTestId('audio-player'))
