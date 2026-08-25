@@ -1,4 +1,4 @@
-import { DocumentDirectoryPath, moveFile, unlink } from '@dr.pogodin/react-native-fs'
+import { moveFile, unlink } from '@dr.pogodin/react-native-fs'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -18,6 +18,7 @@ import { ARTICLES, ArticleTypeExtended, BUTTONS_THEME, getArticleWithLabel } fro
 import { useStorageCache } from '../../hooks/useStorage'
 import { UserVocabularyId } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
+import { getUserVocabularyFileUri } from '../../services/Storage'
 import { getLabels } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import {
@@ -139,14 +140,14 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
             path = image
           } else {
             const timestamp = Date.now()
-            path = `file:///${DocumentDirectoryPath}/image-${id.index}-${index}-${timestamp}.jpg`
+            path = getUserVocabularyFileUri(`image-${id.index}-${index}-${timestamp}.jpg`)
             await moveFile(image, path)
           }
           return path
         }),
       )
 
-      const audioPath = `file:///${DocumentDirectoryPath}/audio-${id.index}`
+      const audioPath = getUserVocabularyFileUri(`audio-${id.index}`)
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
 
       if (recordingPath) {
