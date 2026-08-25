@@ -37,18 +37,18 @@ describe('ListItem', () => {
     const { getByTestId, getByText } = renderListItem()
     const arrowIcon = getByTestId('arrow')
 
-    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(arrowIcon.props.color).toBe(COLORS.primary)
     expect(getByText(title)).toHaveStyle({ color: COLORS.text })
 
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
 
     expect(onPress).toHaveBeenCalled()
-    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(arrowIcon.props.color).toBe(COLORS.buttonSelectedSecondary)
     expect(getByText(title)).toHaveStyle({ color: COLORS.backgroundAccent })
 
     await waitFor(() => {
-      expect(arrowIcon.props.fill).toBe(COLORS.primary)
+      expect(arrowIcon.props.color).toBe(COLORS.primary)
       expect(getByText(title)).toHaveStyle({ color: COLORS.text })
     })
   })
@@ -57,7 +57,7 @@ describe('ListItem', () => {
     const { getByTestId } = renderListItem(false, true)
     const arrowIcon = getByTestId('arrow')
 
-    expect(arrowIcon.props.fill).toBe(COLORS.disabled)
+    expect(arrowIcon.props.color).toBe(COLORS.disabled)
   })
 
   it('should handle long press', async () => {
@@ -66,14 +66,14 @@ describe('ListItem', () => {
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'longPress')
 
-    expect(arrowIcon.props.fill).toBe(COLORS.buttonSelectedSecondary)
+    expect(arrowIcon.props.color).toBe(COLORS.buttonSelectedSecondary)
     expect(getByText(title)).toHaveStyle({ color: COLORS.backgroundAccent })
 
     fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 123 } })
     expect(onPress).toHaveBeenCalled()
 
     await waitFor(() => {
-      expect(arrowIcon.props.fill).toBe(COLORS.primary)
+      expect(arrowIcon.props.color).toBe(COLORS.primary)
       expect(getByText(title)).toHaveStyle({ color: COLORS.text })
     })
   })
@@ -82,13 +82,13 @@ describe('ListItem', () => {
     const { getByTestId } = renderListItem()
     const arrowIcon = getByTestId('arrow')
 
-    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(arrowIcon.props.color).toBe(COLORS.primary)
 
     fireEvent(arrowIcon, 'pressIn', { nativeEvent: { pageY: 123 } })
     fireEvent(arrowIcon, 'pressOut', { nativeEvent: { pageY: 130 } })
 
     expect(onPress).not.toHaveBeenCalled()
-    expect(arrowIcon.props.fill).toBe(COLORS.primary)
+    expect(arrowIcon.props.color).toBe(COLORS.primary)
   })
 
   it('should have correct background color', () => {

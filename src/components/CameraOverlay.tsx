@@ -4,7 +4,7 @@ import { PERMISSIONS } from 'react-native-permissions'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
 
-import { CloseCircleIconBlue, CloseCircleIconWhite } from '../../assets/images'
+import { CloseCircleFilledIcon, CloseCircleOutlineIcon } from '../../assets/images'
 import useGrantPermissions from '../hooks/useGrantPermissions'
 import { getLabels } from '../services/helpers'
 import NotAuthorisedView from './NotAuthorisedView'
@@ -32,6 +32,7 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
   const theme = useTheme()
   const [isPressed, setIsPressed] = useState<boolean>(false)
   const { permissionRequested, permissionGranted } = useGrantPermissions(CAMERA_PERMISSION)
+  const CloseIcon = isPressed ? CloseCircleFilledIcon : CloseCircleOutlineIcon
 
   return (
     <RNModal visible transparent animationType='fade' onRequestClose={() => setVisible(false)}>
@@ -42,20 +43,10 @@ const CameraOverlay = ({ setVisible, children }: Props): ReactElement => {
               onPress={() => setVisible(false)}
               onPressIn={() => setIsPressed(true)}
               onPressOut={() => setIsPressed(false)}
+              accessibilityRole='button'
+              accessibilityLabel={getLabels().general.close}
             >
-              {isPressed ? (
-                <CloseCircleIconBlue
-                  testID='close-circle-icon-blue'
-                  width={theme.sizes.defaultIcon}
-                  height={theme.sizes.defaultIcon}
-                />
-              ) : (
-                <CloseCircleIconWhite
-                  testID='close-circle-icon-white'
-                  width={theme.sizes.defaultIcon}
-                  height={theme.sizes.defaultIcon}
-                />
-              )}
+              <CloseIcon testID='close-icon' width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
             </Pressable>
           </Header>
           {permissionGranted && children}

@@ -1,7 +1,7 @@
 import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKey, Favorite } from '../constants/data'
+import { StandardExerciseKey, Favorite } from '../constants/data'
 import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -16,7 +16,7 @@ import { generateUniqueId, trackEvent } from './AnalyticsService'
 import { getWordsByJob } from './CmsApi'
 import { RepetitionService } from './RepetitionService'
 import type { WordNodeCard } from './RepetitionService'
-import { getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache, StorageValue } from './Storage'
+import { getFileName, getStorageItem, getStorageItemOr, STORAGE_VERSION, StorageCache } from './Storage'
 import { CMS_URLS } from './axios'
 import { calculateScore } from './helpers'
 
@@ -92,7 +92,7 @@ export const removeCustomDiscipline = async (storageCache: StorageCache, customD
 export const setExerciseProgress = async (
   storageCache: StorageCache,
   unitId: StandardUnitId,
-  exerciseKey: ExerciseKey,
+  exerciseKey: StandardExerciseKey,
   score: number,
 ): Promise<void> => {
   const savedProgress = storageCache.getMutableItem('progress')
@@ -104,7 +104,7 @@ export const setExerciseProgress = async (
 export const saveExerciseProgress = async (
   storageCache: StorageCache,
   unitId: StandardUnitId,
-  exerciseKey: ExerciseKey,
+  exerciseKey: StandardExerciseKey,
   vocabularyItemsWithResults: VocabularyItemResult[],
 ): Promise<void> => {
   const score = calculateScore(vocabularyItemsWithResults)
@@ -114,7 +114,7 @@ export const saveExerciseProgress = async (
 type Incomplete<T> = T & Record<string, unknown>
 
 export const migrate0To1 = async (): Promise<void> => {
-  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0 as StorageValue, [])
+  const parsedFavorites = await getStorageItemOr<number[]>(FAVORITES_KEY_VERSION_0, [])
   if (parsedFavorites.length === 0) {
     return
   }
@@ -310,6 +310,20 @@ export const migrate5To6 = async (): Promise<void> => {
   await AsyncStorage.setItem('progress', JSON.stringify(migratedProgress))
 }
 
+// Replaces the absolute paths of user vocabulary images and audio recordings with their file names,
+// since the absolute path of the document directory may change between app updates
+export const migrate6To7 = async (): Promise<void> => {
+  type OldUserVocabularyItem = Incomplete<{ images: string[]; audio?: string | null }>
+
+  const oldUserVocabulary = await getStorageItemOr<OldUserVocabularyItem[]>('userVocabulary', [])
+  const newUserVocabulary = oldUserVocabulary.map(item => ({
+    ...item,
+    images: item.images.map(getFileName),
+    audio: item.audio ? getFileName(item.audio) : null,
+  }))
+  await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cms')
@@ -353,6 +367,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough, no-magic-numbers
     case 5:
       await migrate5To6()
+    // eslint-disable-next-line no-fallthrough, no-magic-numbers
+    case 6:
+      await migrate6To7()
       break
   }
 

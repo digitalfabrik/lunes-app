@@ -46,7 +46,7 @@ export const TRAINING_EXERCISES: Record<TrainingType, TrainingExercise> = {
   },
 }
 
-const Root = styled.View`
+const Root = styled.ScrollView`
   padding: 0 ${props => props.theme.spacings.sm};
 `
 
@@ -80,7 +80,7 @@ const ComingSoonBadge = styled.View`
 
 const ComingSoonText = styled(ContentText)`
   color: white;
-  font-weight: bold;
+  font-family: ${props => props.theme.fonts.contentFontBold};
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
@@ -146,6 +146,7 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
             data={Object.values(TRAINING_EXERCISES)}
             renderItem={renderListItem}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
           />
         </Root>
       </ServerResponseHandler>

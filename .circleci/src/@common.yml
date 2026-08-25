@@ -5,6 +5,11 @@ parameters:
     default: true
     type: boolean
 
+  run_commit_main:
+    default: 'run_if_on_main'
+    type: enum
+    enum: ['run_if_on_main', 'run', 'skip']
+
   run_dev_delivery:
     default: false
     type: boolean
@@ -14,5 +19,9 @@ parameters:
     type: boolean
 
   run_browserstack_delivery:
+    default: false
+    type: boolean
+
+  run_update_screenshots:
     default: false
     type: boolean

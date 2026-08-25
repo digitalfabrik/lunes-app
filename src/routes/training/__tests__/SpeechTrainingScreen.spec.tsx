@@ -5,15 +5,16 @@ import React from 'react'
 import { Image, View } from 'react-native'
 
 import { BottomSheetProps } from '../../../components/BottomSheet'
-import { MAX_TRAINING_REPETITIONS } from '../../../constants/data'
+import { ARTICLES, MAX_TRAINING_REPETITIONS, NUMBER_OF_MAX_RETRIES } from '../../../constants/data'
 import useGrantPermissions from '../../../hooks/useGrantPermissions'
 import useVoiceRecognition from '../../../hooks/useVoiceRecognition'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getWordsByJob } from '../../../services/CmsApi'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import SpeechTrainingScreen from '../SpeechTrainingScreen'
 
 jest.mock('../../../services/helpers', () => ({
@@ -81,6 +82,23 @@ describe('SpeechTrainingScreen', () => {
     return result
   }
 
+  const renderInDevModeAndWaitForLoad = async () => {
+    const storageCache = StorageCache.createDummy()
+    await storageCache.setItem('isDevModeEnabled', true)
+    const result = renderWithStorageCache(storageCache, <SpeechTrainingScreen navigation={navigation} route={route} />)
+    await result.findByTestId('recording-button')
+    return result
+  }
+
+  type RenderApi = Awaited<ReturnType<typeof renderScreenAndWaitForLoad>>
+
+  const failCurrentWordToMax = async ({ getByTestId, getByText }: RenderApi): Promise<void> => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+    await waitFor(() => getByText(getLabels().exercises.continue))
+    fireEvent.press(getByText(getLabels().exercises.continue))
+  }
+
   it('should render the recording button with instruction text', async () => {
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -112,6 +130,127 @@ describe('SpeechTrainingScreen', () => {
       expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible()
     })
     expect(getByText(getLabels().exercises.tryAgain)).toBeVisible()
+  })
+
+  it('should tell the user that syllables are missing when the word is incomplete', async () => {
+    mockStartRecording.mockResolvedValue(['der Spacht'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible()
+    })
+    expect(getByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeVisible()
+  })
+
+  it('should tell the user when only the article is missing', async () => {
+    mockStartRecording.mockResolvedValue(['Spachtel'])
+    const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.training.speech.feedback.missingArticle)).toBeVisible()
+    })
+  })
+
+  it('should not show a feedback hint after a correct answer', async () => {
+    mockStartRecording.mockResolvedValue(['der Spachtel'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    expect(queryByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeNull()
+  })
+
+  it('should clear the feedback hint when retrying', async () => {
+    mockStartRecording.mockResolvedValue(['der Spacht'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+    await waitFor(() => getByText(getLabels().exercises.tryAgain))
+    fireEvent.press(getByText(getLabels().exercises.tryAgain))
+
+    expect(queryByText(getLabels().exercises.training.speech.feedback.incompleteWord)).toBeNull()
+  })
+
+  it('should bias the recognizer towards the word and the full phrase', async () => {
+    mockStartRecording.mockResolvedValue([])
+    const { getByTestId } = await renderScreenAndWaitForLoad()
+
+    fireEvent(getByTestId('recording-button'), 'pressIn')
+
+    await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Spachtel', 'der Spachtel'] }))
+  })
+
+  describe('words without an article', () => {
+    const articleLessWord = { ...vocabularyItems[0]!, article: ARTICLES[0] }
+
+    beforeEach(() => {
+      mocked(getWordsByJob).mockResolvedValue([articleLessWord])
+    })
+
+    it('should not bias the recognizer towards the literal article value', async () => {
+      mockStartRecording.mockResolvedValue([])
+      const { getByTestId } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Spachtel'] }))
+    })
+
+    it('should accept the word without an article', async () => {
+      mockStartRecording.mockResolvedValue(['Spachtel'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    })
+  })
+
+  describe('loanwords with a pronunciation from the CMS', () => {
+    // "Baiser" is spoken "Besee"
+    const loanword = { ...vocabularyItems[0]!, word: 'Baiser', article: ARTICLES[3], pronunciation: 'Besee' }
+
+    beforeEach(() => {
+      mocked(getWordsByJob).mockResolvedValue([loanword])
+    })
+
+    it('should bias the recognizer towards the pronunciation instead of the spelling', async () => {
+      mockStartRecording.mockResolvedValue([])
+      const { getByTestId } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(mockStartRecording).toHaveBeenCalledWith({ hints: ['Besee', 'das Besee'] }))
+    })
+
+    it('should show correct feedback when the pronunciation is recognized', async () => {
+      mockStartRecording.mockResolvedValue(['das Besee'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.correct)).toBeVisible())
+    })
+
+    it('should show incorrect feedback when the word is read out as it is written', async () => {
+      mockStartRecording.mockResolvedValue(['das Baiser'])
+      const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
+
+      fireEvent(getByTestId('recording-button'), 'pressIn')
+
+      await waitFor(() => expect(getByText(getLabels().exercises.training.speech.incorrect)).toBeVisible())
+    })
+
+    it('should cheat with the pronunciation so that it matches what is graded', async () => {
+      const { getByText } = await renderInDevModeAndWaitForLoad()
+
+      expect(getByText('Cheat: das Baiser (Besee)')).toBeVisible()
+    })
   })
 
   it('should show error bottom sheet when speech recognition fails', async () => {
@@ -149,12 +288,38 @@ describe('SpeechTrainingScreen', () => {
     expect(getByTestId('recording-button')).toBeVisible()
   })
 
-  it('should navigate to TrainingFinished after skipping all words', async () => {
-    const { getByText } = await renderScreenAndWaitForLoad()
+  it('should move a skipped word to the end of the stack to be tested again', async () => {
+    // Two words so the skipped one has somewhere to go
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 2))
+    const renderApi = await renderScreenAndWaitForLoad()
+    const { getByText, queryByText } = renderApi
 
-    for (let i = 0; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
+    fireEvent.press(getByText(getLabels().exercises.skip))
+
+    await failCurrentWordToMax(renderApi)
+
+    expect(navigation.replace).not.toHaveBeenCalled()
+    expect(queryByText(getLabels().exercises.skip)).toBeNull()
+  })
+
+  it('should finish with all words correct when cheating to succeed', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.succeed))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
+        trainingType: 'speech',
+        results: { correct: MAX_TRAINING_REPETITIONS, total: MAX_TRAINING_REPETITIONS },
+        job: route.params.job,
+      }),
+    )
+  })
+
+  it('should finish with no words correct when cheating to fail', async () => {
+    const { getByText } = await renderInDevModeAndWaitForLoad()
+
+    fireEvent.press(getByText(getLabels().exercises.cheat.fail))
 
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
@@ -165,7 +330,8 @@ describe('SpeechTrainingScreen', () => {
     )
   })
 
-  it('should count a word as correct only when answered correctly on first try', async () => {
+  it('should count a word as correct only when answered correctly on the first try', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValue(['der Spachtel'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -173,20 +339,17 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 1, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 1, total: 1 },
         job: route.params.job,
       }),
     )
   })
 
   it('should not count a word as correct when it needed a retry', async () => {
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.slice(0, 1))
     mockStartRecording.mockResolvedValueOnce(['etwas anderes'])
     const { getByTestId, getByText } = await renderScreenAndWaitForLoad()
 
@@ -199,17 +362,24 @@ describe('SpeechTrainingScreen', () => {
     await waitFor(() => getByText(getLabels().exercises.continue))
     fireEvent.press(getByText(getLabels().exercises.continue))
 
-    for (let i = 1; i < MAX_TRAINING_REPETITIONS; i += 1) {
-      fireEvent.press(getByText(getLabels().exercises.skip))
-    }
-
     await waitFor(() =>
       expect(navigation.replace).toHaveBeenCalledWith('TrainingFinished', {
         trainingType: 'speech',
-        results: { correct: 0, total: MAX_TRAINING_REPETITIONS },
+        results: { correct: 0, total: 1 },
         job: route.params.job,
       }),
     )
+  })
+
+  it('should show continue instead of try again after reaching the max number of attempts', async () => {
+    mockStartRecording.mockResolvedValue(['etwas ganz anderes'])
+    const { getByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+
+    // Speak incorrectly until the attempt limit is reached
+    Array.from({ length: NUMBER_OF_MAX_RETRIES }).forEach(() => fireEvent(getByTestId('recording-button'), 'pressIn'))
+
+    await waitFor(() => expect(getByText(getLabels().exercises.continue)).toBeVisible())
+    expect(queryByText(getLabels().exercises.tryAgain)).toBeNull()
   })
 
   it('should show not authorized view when permissions are denied', async () => {

@@ -1,0 +1,6 @@
+issue_key: 1424
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Vokabeln werden jetzt größer und deutlicher dargestellt und gehen nicht mehr im umliegenden Text unter.

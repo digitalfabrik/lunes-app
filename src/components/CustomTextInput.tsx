@@ -11,7 +11,6 @@ const MIN_HEIGHT = 56
 
 const StyledTextInput = styled.TextInput`
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
   letter-spacing: ${props => props.theme.fonts.listTitleLetterSpacing};
   font-family: ${props => props.theme.fonts.contentFontRegular};
   color: ${prop => prop.theme.colors.primary};
@@ -103,7 +102,7 @@ const CustomTextInput = ({
         <IconContainer multiLine={multiLine}>
           {clearable && value.length > 0 ? (
             <ClearContainer onPress={() => onChangeText('')} testID='clearInput'>
-              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.primary} />
             </ClearContainer>
           ) : (
             rightContainer

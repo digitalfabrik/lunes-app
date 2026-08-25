@@ -21,11 +21,15 @@ const Container = styled.View<{
   shouldTakeSpace: boolean
   bottomInset?: number
   topInset?: number
+  leftInset?: number
+  rightInset?: number
 }>`
   background-color: ${props => props.backgroundColor};
   flex: ${props => (props.shouldTakeSpace ? '1' : '0')};
   ${props => (props.topInset ? `padding-top: ${props.topInset}px` : undefined)};
   ${props => (props.bottomInset ? `padding-bottom: ${props.bottomInset}px` : undefined)};
+  ${props => (props.leftInset ? `padding-left: ${props.leftInset}px` : undefined)};
+  ${props => (props.rightInset ? `padding-right: ${props.rightInset}px` : undefined)};
 `
 
 const RouteWrapper = ({
@@ -45,6 +49,8 @@ const RouteWrapper = ({
         shouldTakeSpace
         bottomInset={shouldSetBottomInset ? insets.bottom : undefined}
         topInset={shouldSetTopInset ? insets.top : undefined}
+        leftInset={insets.left}
+        rightInset={insets.right}
       >
         {isFocused && (
           <StatusBar

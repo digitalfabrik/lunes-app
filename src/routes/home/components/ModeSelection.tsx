@@ -48,7 +48,6 @@ const CardTitle = styled(Heading)`
 
 const Subtitle = styled(Content)`
   color: ${props => props.theme.colors.background};
-  font-weight: ${props => props.theme.fonts.lightFontWeight};
 `
 
 const ProgressRow = styled.View`
@@ -117,7 +116,7 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
     <CardContainer backgroundColor={color}>
       <TitleRow>
         <IconBackground>
-          <BookIcon fill={theme.colors.background} />
+          <BookIcon color={theme.colors.background} />
         </IconBackground>
         <View>
           <CardTitle>{labels.home.learnVocabulary}</CardTitle>
@@ -157,7 +156,7 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
     <CardContainer backgroundColor={theme.colors.backgroundTeal}>
       <TitleRow>
         <IconBackground>
-          <TargetIcon fill={theme.colors.background} />
+          <TargetIcon color={theme.colors.background} />
         </IconBackground>
         <View>
           <CardTitle>{labels.trainVocabulary}</CardTitle>

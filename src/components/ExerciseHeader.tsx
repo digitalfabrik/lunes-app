@@ -5,7 +5,7 @@ import { ProgressBar as RNProgressBar } from 'react-native-paper'
 import styled, { useTheme } from 'styled-components/native'
 
 import { FeedbackIcon } from '../../assets/images'
-import { ExerciseKey } from '../constants/data'
+import { StandardExerciseKey } from '../constants/data'
 import { FeedbackTarget } from '../models/Feedback'
 import { Route, RoutesParams } from '../navigation/NavigationTypes'
 import { getLabels } from '../services/helpers'
@@ -36,7 +36,7 @@ const FeedbackButton = styled.Pressable`
 
 type ExerciseHeaderProps = {
   navigation: StackNavigationProp<RoutesParams, Route>
-  exerciseKey?: ExerciseKey
+  exerciseKey?: StandardExerciseKey
   feedbackTarget?: FeedbackTarget
   currentWord?: number
   numberOfWords?: number
@@ -76,7 +76,11 @@ const ExerciseHeader = ({
             accessibilityLabel={getLabels().general.header.wordFeedback}
             accessibilityRole='button'
           >
-            <FeedbackIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
+            <FeedbackIcon
+              width={theme.sizes.defaultIcon}
+              height={theme.sizes.defaultIcon}
+              color={theme.colors.primary}
+            />
           </FeedbackButton>
         )}
       </HeaderRightContainer>
@@ -103,6 +107,7 @@ const ExerciseHeader = ({
     theme.spacingsPlain.xs,
     theme.spacingsPlain.xl,
     theme.sizes.defaultIcon,
+    theme.colors.primary,
   ])
 
   useEffect(() => {

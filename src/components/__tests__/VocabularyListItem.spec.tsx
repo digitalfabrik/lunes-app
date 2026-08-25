@@ -2,6 +2,8 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
+import { COLORS } from '../../constants/theme/colors'
+import { FONT_SIZES } from '../../constants/theme/fonts'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import render from '../../testing/render'
 import VocabularyListItem from '../VocabularyListItem'
@@ -34,5 +36,24 @@ describe('VocabularyListItem', () => {
     expect(onPress).toHaveBeenCalledTimes(0)
     fireEvent.press(getByText(vocabularyItem.word))
     expect(onPress).toHaveBeenCalledTimes(1)
+  })
+
+  it('should render the word as prominently as the titles of other list items', () => {
+    const { getByText } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
+
+    expect(getByText(vocabularyItem.word)).toHaveStyle({
+      fontSize: FONT_SIZES.listTitle,
+      color: COLORS.text,
+    })
+  })
+
+  it('should keep the word readable while the item is pressed', () => {
+    const { getByTestId, getByText } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
+    const listItem = getByTestId('list-item')
+
+    fireEvent(listItem, 'pressIn', { nativeEvent: { pageY: 123 } })
+    fireEvent(listItem, 'longPress')
+
+    expect(getByText(vocabularyItem.word)).toHaveStyle({ color: COLORS.backgroundAccent })
   })
 })

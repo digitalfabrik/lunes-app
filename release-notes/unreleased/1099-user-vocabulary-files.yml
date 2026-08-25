@@ -1,0 +1,6 @@
+issue_key: 1099
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Bilder und Audioaufnahmen eigener Vokabeln gehen nach einem App-Update nicht mehr verloren.

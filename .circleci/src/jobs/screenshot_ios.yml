@@ -1,0 +1,33 @@
+# Captures the store screenshots on iOS
+macos:
+  xcode: 26.3.0
+resource_class: m4pro.medium
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+  TOTAL_CPUS: 6
+shell: /bin/bash --login -o pipefail
+steps:
+  - checkout
+  - restore_yarn_cache
+  - restore_ruby_cache:
+      directory: ios
+  - restore_cocoa_pods_cache
+  - install_maestro
+  - run:
+      name: Boot simulator
+      command: |
+        xcrun simctl boot "iPhone 16 Pro" || true
+        xcrun simctl bootstatus "iPhone 16 Pro" -b
+  - run:
+      name: Build and install release app on simulator
+      command: yarn ios:production --simulator "iPhone 16 Pro"
+  - run:
+      name: Capture screenshots
+      command: yarn screenshots:ios
+  - verify_screenshots:
+      directory: ios/fastlane/screenshots/de-DE
+  - persist_to_workspace:
+      root: .
+      paths:
+        - ios/fastlane/screenshots/de-DE/*.png
+  - notify

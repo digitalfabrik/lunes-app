@@ -122,12 +122,12 @@ const Button = (props: ButtonProps): ReactElement => {
     >
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (
-        <props.iconLeft fill={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />
+        <props.iconLeft color={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />
       )}
       <Label color={getTextColor()}>{label}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconRight && (
-        <props.iconRight fill={getTextColor()} testID='button-icon-right' width={iconSize} height={iconSize} />
+        <props.iconRight color={getTextColor()} testID='button-icon-right' width={iconSize} height={iconSize} />
       )}
     </ThemedButton>
   )

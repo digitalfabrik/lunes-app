@@ -3,16 +3,7 @@ import React, { ReactElement } from 'react'
 import { isTablet } from 'react-native-device-info'
 import { useTheme } from 'styled-components/native'
 
-import {
-  HeartIconGrey,
-  HeartIconWhite,
-  HomeIconGrey,
-  HomeIconWhite,
-  MagnifierIconGrey,
-  MagnifierIconWhite,
-  RepeatIconGrey,
-  RepeatIconWhite,
-} from '../../assets/images'
+import { HeartIcon, HomeIcon, MagnifierIcon, RepeatIcon } from '../../assets/images'
 import AnalyticsConsentModal from '../components/AnalyticsConsentModal'
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage from '../hooks/useStorage'
@@ -40,33 +31,23 @@ const BottomTabNavigator = (): ReactElement | null => {
   }
   const numberOfWordsNeedingRepetition = repetitionService.getNumberOfWordsNeedingRepetition()
 
-  const renderHomeTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? (
-      <HomeIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    ) : (
-      <HomeIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    )
+  const tabIconColor = (focused: boolean): string => (focused ? theme.colors.background : theme.colors.placeholder)
 
-  const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? (
-      <MagnifierIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    ) : (
-      <MagnifierIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    )
+  const renderHomeTabIcon = ({ focused }: { focused: boolean }) => (
+    <HomeIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={tabIconColor(focused)} />
+  )
 
-  const renderRepetitionTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? (
-      <RepeatIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    ) : (
-      <RepeatIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    )
+  const renderDictionaryTabIcon = ({ focused }: { focused: boolean }) => (
+    <MagnifierIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={tabIconColor(focused)} />
+  )
 
-  const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) =>
-    focused ? (
-      <HeartIconWhite width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    ) : (
-      <HeartIconGrey width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} />
-    )
+  const renderRepetitionTabIcon = ({ focused }: { focused: boolean }) => (
+    <RepeatIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={tabIconColor(focused)} />
+  )
+
+  const renderUserVocabularyTabIcon = ({ focused }: { focused: boolean }) => (
+    <HeartIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={tabIconColor(focused)} />
+  )
 
   return (
     <>

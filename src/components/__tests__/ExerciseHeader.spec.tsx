@@ -2,7 +2,7 @@ import { act, fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { BackHandler } from 'react-native'
 
-import { ExerciseKeys } from '../../constants/data'
+import { StandardExerciseKeys } from '../../constants/data'
 import { VocabularyItemTypes } from '../../models/VocabularyItem'
 import { getLabels } from '../../services/helpers'
 import createNavigationMock from '../../testing/createNavigationPropMock'
@@ -38,7 +38,7 @@ describe('ExerciseHeader', () => {
         currentWord={4}
         numberOfWords={10}
         feedbackTarget={{ type: 'word', wordId: { type: VocabularyItemTypes.Standard, id: 1 } }}
-        exerciseKey={ExerciseKeys.vocabularyList}
+        exerciseKey={StandardExerciseKeys.vocabularyList}
       />,
     )
     expect(queryByTestId('customModal')).toBeFalsy()

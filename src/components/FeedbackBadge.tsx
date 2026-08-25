@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
-import { EXERCISE_FEEDBACK } from '../constants/data'
+import { ExerciseFeedback } from '../constants/data'
 import { getLabels } from '../services/helpers'
 import { HintSecondary } from './text/Hint'
 
-const BadgeContainer = styled.View<{ feedback: EXERCISE_FEEDBACK }>`
+const BadgeContainer = styled.View<{ feedback: ExerciseFeedback }>`
   flex-flow: row nowrap;
   padding: 0 ${props => props.theme.spacings.sm};
   background-color: ${({ theme, feedback }) =>
-    feedback === EXERCISE_FEEDBACK.POSITIVE ? theme.colors.correct : theme.colors.incorrect};
+    feedback === ExerciseFeedback.POSITIVE ? theme.colors.correct : theme.colors.incorrect};
   width: 100%;
   border-top-left-radius: ${props => props.theme.spacings.xs};
   border-top-right-radius: ${props => props.theme.spacings.xs};
@@ -29,26 +29,27 @@ const BadgeIcon = styled.View`
 `
 
 type FeedbackBadgeProps = {
-  feedback: EXERCISE_FEEDBACK
+  feedback: ExerciseFeedback
 }
 
 const FeedbackBadge = ({ feedback }: FeedbackBadgeProps): ReactElement | null => {
+  const theme = useTheme()
   const { positive, negative } = { ...getLabels().exercises.feedback }
-  if (feedback === EXERCISE_FEEDBACK.POSITIVE) {
+  if (feedback === ExerciseFeedback.POSITIVE) {
     return (
       <BadgeContainer feedback={feedback} testID='positive-badge'>
         <BadgeIcon>
-          <ThumbsUpIcon height='100%' />
+          <ThumbsUpIcon height='100%' color={theme.colors.text} />
         </BadgeIcon>
         <BadgeText>{positive}</BadgeText>
       </BadgeContainer>
     )
   }
-  if (feedback === EXERCISE_FEEDBACK.NEGATIVE) {
+  if (feedback === ExerciseFeedback.NEGATIVE) {
     return (
       <BadgeContainer feedback={feedback} testID='negative-badge'>
         <BadgeIcon>
-          <ThumbsDownIcon height='100%' />
+          <ThumbsDownIcon height='100%' color={theme.colors.text} />
         </BadgeIcon>
         <BadgeText>{negative}</BadgeText>
       </BadgeContainer>

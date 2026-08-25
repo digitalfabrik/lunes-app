@@ -104,6 +104,11 @@
         "releaseToFinish": "Zum Beenden loslassen",
         "correct": "Super, das war richtig!",
         "incorrect": "Das war leider nicht richtig.",
+        "feedback": {
+          "missingArticle": "Der Artikel fehlt. Sprich den Artikel mit.",
+          "wrongArticle": "Der Artikel war nicht richtig.",
+          "incompleteWord": "Ein Teil des Wortes fehlt. Sprich alle Silben deutlich aus."
+        },
         "notUnderstood": "Wir konnten leider nicht verstehen, was du gesagt hast.",
         "notAvailable": "Spracherkennung ist auf diesem Gerät leider nicht verfügbar.",
         "languageUnavailable": "Die deutsche Sprache ist auf diesem Gerät für die Spracherkennung nicht verfügbar. Bitte installiere sie in den Einstellungen deines Geräts.",
@@ -265,11 +270,14 @@
     "hintModalContentText": "Unter „Vertiefen“ kannst du diese Vokabeln gezielt wiederholen.",
     "progressExplainerContent": "Jede Vokabel durchläuft 7 Phasen. Zu Beginn wiederholst du sie häufiger, später in größeren Abständen.",
     "infoModalContent": "Wiederhole hier Vokabeln, die dir beim Kennenlernen und Üben bisher schwer gefallen sind.",
+    "infoButton": "Weitere Informationen zur Wiederholung",
+    "progressInfoButton": "Weitere Informationen zum Lernfortschritt",
     "repeatLater": "später",
     "chart": {
       "untrained": "Neue",
       "learned": "Gelernte",
-      "sectionOneToFive": "Lernstufen 1-5"
+      "sectionOneToFive": "Lernstufen 1-5",
+      "section": "Lernstufe"
     },
     "emptyState": {
       "title": "Keine Wörter zum Wiederholen bereit",
@@ -338,6 +346,8 @@
       "saveButton": "Speichern",
       "addImage": "Bild hinzufügen*",
       "addAudio": "Audio aufnehmen",
+      "deleteImage": "Bild löschen",
+      "deleteAudio": "Audio löschen",
       "maxPictureUpload": "Du kannst bis zu 3 Bilder hinzufügen",
       "requiredFields": "*Pflichtfelder",
       "errorMessage": "Dies ist ein Pflichtfeld.",
@@ -348,6 +358,7 @@
     },
     "list": {
       "edit": "Bearbeiten",
+      "delete": "Wort löschen",
       "finished": "Fertig",
       "noWordsYet": "Du hast noch keine eigenen Wörter erstellt.",
       "create": "Eigenes Wort erstellen",

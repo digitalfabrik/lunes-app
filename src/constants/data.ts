@@ -6,16 +6,37 @@ import { StandardUnit } from '../models/Unit'
 import VocabularyItem, { VocabularyItemId } from '../models/VocabularyItem'
 import labels from './labels.json'
 
-export const ExerciseKeys = {
+export const StandardExerciseKeys = {
   vocabularyList: 'word_list',
   wordChoiceExercise: 'word_choice',
 } as const
-export type ExerciseKey = (typeof ExerciseKeys)[keyof typeof ExerciseKeys]
+export type StandardExerciseKey = (typeof StandardExerciseKeys)[keyof typeof StandardExerciseKeys]
 
-export const EXERCISE_FOR_REPETITION = ExerciseKeys.wordChoiceExercise
+export const TrainingExerciseKeys = {
+  image: 'image',
+  sentence: 'sentence',
+  speech: 'speech',
+} as const
+export type TrainingExerciseKey = (typeof TrainingExerciseKeys)[keyof typeof TrainingExerciseKeys]
+
+export type StandardExerciseKeyPayload = {
+  type: 'exercise'
+  exercise_type: StandardExerciseKey
+  unit_id: number
+}
+
+export type TrainingExerciseKeyPayload = {
+  type: 'training'
+  exercise_type: TrainingExerciseKey
+  job_id: number
+}
+
+export type ExerciseKeyPayload = StandardExerciseKeyPayload | TrainingExerciseKeyPayload
+
+export const EXERCISE_FOR_REPETITION = StandardExerciseKeys.wordChoiceExercise
 
 export type Exercise = {
-  key: ExerciseKey
+  key: StandardExerciseKey
   title: string
   description: string
   level: number
@@ -23,17 +44,17 @@ export type Exercise = {
   screen: 'VocabularyList' | 'WordChoiceExercise'
 }
 
-export const EXERCISES: Record<ExerciseKey, Exercise> = {
-  [ExerciseKeys.vocabularyList]: {
-    key: ExerciseKeys.vocabularyList,
+export const EXERCISES: Record<StandardExerciseKey, Exercise> = {
+  [StandardExerciseKeys.vocabularyList]: {
+    key: StandardExerciseKeys.vocabularyList,
     title: labels.exercises.vocabularyList.title,
     description: labels.exercises.vocabularyList.description,
     level: 0,
     icon: TrainingSentences,
     screen: 'VocabularyList',
   },
-  [ExerciseKeys.wordChoiceExercise]: {
-    key: ExerciseKeys.wordChoiceExercise,
+  [StandardExerciseKeys.wordChoiceExercise]: {
+    key: StandardExerciseKeys.wordChoiceExercise,
     title: labels.exercises.wordChoice.title,
     description: labels.exercises.wordChoice.description,
     level: 1,
@@ -48,7 +69,7 @@ export type Progress = {
 
 export type NextExercise = {
   unit: StandardUnit
-  exerciseKey: ExerciseKey
+  exerciseKey: StandardExerciseKey
 }
 
 export type NextExerciseData = NextExercise & {
@@ -98,6 +119,8 @@ export type ArticleTypeExtended = {
 
 export const isArticlePlural = (article: ArticleType): boolean => article.id === 4
 
+export const hasNoArticle = (article: ArticleType): boolean => article.id === 0
+
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
   ARTICLES.filter(article => article.id !== 0).map(article => {
     if (isArticlePlural(article)) {
@@ -121,12 +144,13 @@ export type Answer = {
   article: Article
 }
 
+// Should not be more than 3 because we use it in the ImageTraining where we show four images
 export const NUMBER_OF_MAX_RETRIES = 3
 
 export const SCORE_THRESHOLD_POSITIVE_FEEDBACK = 4
 export const SCORE_THRESHOLD_UNLOCK = 2
 
-export const enum EXERCISE_FEEDBACK {
+export const enum ExerciseFeedback {
   POSITIVE,
   NONE,
   NEGATIVE,

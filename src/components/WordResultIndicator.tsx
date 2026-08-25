@@ -5,6 +5,7 @@ import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import theme from '../constants/theme'
 import BottomSheet from './BottomSheet'
 import { HeadingText } from './text/Heading'
+import { Hint } from './text/Hint'
 
 const BottomSheetColumn = styled.View`
   padding: ${props => props.theme.spacings.md};
@@ -27,12 +28,18 @@ const BottomSheetWordContainer = styled.View`
   margin: 0 ${props => props.theme.spacings.md};
 `
 
+const FeedbackText = styled(Hint)`
+  text-align: center;
+  color: ${props => props.theme.colors.primary};
+`
+
 type WordResultIndicatorProps = {
   isVisible: boolean
   isCorrect: boolean
   label: string
   content: ReactElement | null
   button: ReactElement
+  hint?: string
 }
 const WordResultIndicator = ({
   isVisible,
@@ -40,6 +47,7 @@ const WordResultIndicator = ({
   label,
   content,
   button,
+  hint,
 }: WordResultIndicatorProps): ReactElement => {
   const Icon = isCorrect ? ThumbsUpIcon : ThumbsDownIcon
   const color = isCorrect ? theme.colors.trainingCorrect : theme.colors.trainingIncorrect
@@ -48,11 +56,13 @@ const WordResultIndicator = ({
     <BottomSheet visible={isVisible} backgroundColor={color}>
       <BottomSheetColumn>
         <BottomSheetRow>
-          <Icon width='32' height='32' accessible={false} />
+          <Icon width='32' height='32' color={theme.colors.text} accessible={false} />
           <HeadingText>{label}</HeadingText>
         </BottomSheetRow>
 
         {content && <BottomSheetWordContainer>{content}</BottomSheetWordContainer>}
+
+        {hint !== undefined && <FeedbackText>{hint}</FeedbackText>}
 
         {button}
       </BottomSheetColumn>

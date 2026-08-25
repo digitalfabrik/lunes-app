@@ -1,5 +1,5 @@
 import React, { useState, ReactElement } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
 import Button from '../../../components/Button'
@@ -85,6 +85,7 @@ const SelectedJobs = ({
 }: SelectedJobsProps): ReactElement | null => {
   const jobs = useAllJobs()
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const theme = useTheme()
 
   const { emptyState } = getLabels().home
 
@@ -135,7 +136,7 @@ const SelectedJobs = ({
               testID='edit-professions-button'
               accessibilityLabel={getLabels().home.editProfessions}
             >
-              <PenIcon />
+              <PenIcon color={theme.colors.text} />
             </PressableOpacity>
             <PressableOpacity
               onPress={navigateToJobSelection}

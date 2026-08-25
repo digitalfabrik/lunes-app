@@ -26,7 +26,9 @@ const SearchBar = ({
       clearable
       onChangeText={setQuery}
       placeholder={placeholder}
-      rightContainer={<MagnifierIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />}
+      rightContainer={
+        <MagnifierIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.text} />
+      }
       style={style}
     />
   )

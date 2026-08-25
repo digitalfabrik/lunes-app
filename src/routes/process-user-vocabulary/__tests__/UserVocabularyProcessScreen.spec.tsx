@@ -42,10 +42,10 @@ describe('UserVocabularyProcessScreen', () => {
     word: 'Auto',
     article: ARTICLES[3],
     images: [
-      `file:///${ReactNativeFS.DocumentDirectoryPath}/image-2-0-2000.jpg`,
-      `file:///${ReactNativeFS.DocumentDirectoryPath}/image-2-1-2000.jpg`,
+      `file://${ReactNativeFS.DocumentDirectoryPath}/image-2-0-2000.jpg`,
+      `file://${ReactNativeFS.DocumentDirectoryPath}/image-2-1-2000.jpg`,
     ],
-    audio: `file:///${ReactNativeFS.DocumentDirectoryPath}/audio-2.m4a`,
+    audio: `file://${ReactNativeFS.DocumentDirectoryPath}/audio-2.m4a`,
     alternatives: [],
   }
   const navigation = createNavigationMock<'UserVocabularyProcess'>()

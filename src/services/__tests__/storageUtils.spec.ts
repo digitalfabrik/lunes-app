@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { ExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
+import { StandardExerciseKeys, Favorite, Progress, SIMPLE_RESULTS } from '../../constants/data'
 import VocabularyItem, { UserVocabularyItem, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { VocabularyItemResult } from '../../navigation/NavigationTypes'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -118,30 +118,60 @@ describe('storageUtils', () => {
     describe('ExerciseProgress', () => {
       it('should save progress for not yet done unit', async () => {
         const progressOneExercise: Progress = {
-          1: { [ExerciseKeys.wordChoiceExercise]: 0.5 },
+          1: { [StandardExerciseKeys.wordChoiceExercise]: 0.5 },
         }
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
         expect(storageCache.getItem('progress')).toStrictEqual(progressOneExercise)
       })
 
       it('should save progress for done unit but not yet done exercise', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
       it('should save progress for done exercise with improvement', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.8)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.8,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.8 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.8 })
       })
 
       it('should not save progress for done exercise without improvement', async () => {
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.5)
-        await setExerciseProgress(storageCache, { id: 1, type: 'standard' }, ExerciseKeys.wordChoiceExercise, 0.4)
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.5,
+        )
+        await setExerciseProgress(
+          storageCache,
+          { id: 1, type: 'standard' },
+          StandardExerciseKeys.wordChoiceExercise,
+          0.4,
+        )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 0.5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 0.5 })
       })
 
       it('should calculate and save exercise progress correctly', async () => {
@@ -161,11 +191,11 @@ describe('storageUtils', () => {
         await saveExerciseProgress(
           storageCache,
           { id: 1, type: 'standard' },
-          ExerciseKeys.wordChoiceExercise,
+          StandardExerciseKeys.wordChoiceExercise,
           vocabularyItemResults,
         )
         const progress = storageCache.getItem('progress')
-        expect(progress[1]).toStrictEqual({ [ExerciseKeys.wordChoiceExercise]: 5 })
+        expect(progress[1]).toStrictEqual({ [StandardExerciseKeys.wordChoiceExercise]: 5 })
       })
     })
   })
@@ -255,7 +285,7 @@ describe('storageUtils', () => {
             id: { index: 1, type: VocabularyItemTypes.UserCreated },
             word: 'Testwort',
             article: { id: 3, value: 'das' },
-            images: ['image-1'],
+            images: ['file://mock-document-directory-path/image-1'],
             audio: null,
             alternatives: [],
           },
@@ -263,7 +293,7 @@ describe('storageUtils', () => {
             id: { index: 2, type: VocabularyItemTypes.UserCreated },
             word: 'Hund',
             article: { id: 1, value: 'der' },
-            images: ['image-2'],
+            images: ['file://mock-document-directory-path/image-2'],
             audio: null,
             alternatives: [],
           },
@@ -443,9 +473,63 @@ describe('storageUtils', () => {
 
         const storageCache = await loadStorageCache()
         expect(storageCache.getItem('progress')).toEqual({
-          '1': { [ExerciseKeys.vocabularyList]: 3, [ExerciseKeys.wordChoiceExercise]: 7 },
-          '2': { [ExerciseKeys.vocabularyList]: 5 },
+          '1': { [StandardExerciseKeys.vocabularyList]: 3, [StandardExerciseKeys.wordChoiceExercise]: 7 },
+          '2': { [StandardExerciseKeys.vocabularyList]: 5 },
         })
+      })
+    })
+
+    describe('should migrate from v6', () => {
+      it('should replace absolute paths of user vocabulary images and audio with file names', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '6')
+        const oldDocumentDirectoryPath = 'file:///var/mobile/Containers/Data/Application/old-uuid/Documents'
+        const hund = {
+          id: { index: 1, type: VocabularyItemTypes.UserCreated },
+          word: 'Hund',
+          article: { id: 1, value: 'der' },
+          alternatives: [],
+        }
+        const katze = { ...hund, id: { index: 2, type: VocabularyItemTypes.UserCreated }, word: 'Katze' }
+        await AsyncStorage.setItem(
+          'userVocabulary',
+          JSON.stringify([
+            {
+              ...hund,
+              images: [`${oldDocumentDirectoryPath}/image-1-0-2000.jpg`],
+              audio: `${oldDocumentDirectoryPath}/audio-1.m4a`,
+            },
+            {
+              ...katze,
+              images: [
+                `${oldDocumentDirectoryPath}/image-2-0-2000.jpg`,
+                `${oldDocumentDirectoryPath}/image-2-1-2000.jpg`,
+              ],
+              audio: null,
+            },
+          ]),
+        )
+
+        const storageCache = await loadStorageCache()
+
+        expect(JSON.parse((await AsyncStorage.getItem('userVocabulary'))!)).toEqual([
+          { ...hund, images: ['image-1-0-2000.jpg'], audio: 'audio-1.m4a' },
+          { ...katze, images: ['image-2-0-2000.jpg', 'image-2-1-2000.jpg'], audio: null },
+        ])
+        expect(storageCache.getItem('userVocabulary')).toEqual([
+          {
+            ...hund,
+            images: ['file://mock-document-directory-path/image-1-0-2000.jpg'],
+            audio: 'file://mock-document-directory-path/audio-1.m4a',
+          },
+          {
+            ...katze,
+            images: [
+              'file://mock-document-directory-path/image-2-0-2000.jpg',
+              'file://mock-document-directory-path/image-2-1-2000.jpg',
+            ],
+            audio: null,
+          },
+        ])
       })
     })
 
@@ -485,7 +569,12 @@ describe('storageUtils', () => {
 
         const storageCache = await loadStorageCache()
 
-        expect(storageCache.getItem('userVocabulary')).toEqual([alreadyMigratedUserVocabularyItem])
+        await expect(AsyncStorage.getItem('userVocabulary')).resolves.toEqual(
+          JSON.stringify([alreadyMigratedUserVocabularyItem]),
+        )
+        expect(storageCache.getItem('userVocabulary')).toEqual([
+          { ...alreadyMigratedUserVocabularyItem, images: ['file://mock-document-directory-path/image-1'] },
+        ])
       })
 
       it('should pass through favorites unchanged', async () => {

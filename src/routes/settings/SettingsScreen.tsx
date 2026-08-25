@@ -7,7 +7,7 @@ import Button from '../../components/Button'
 import Modal from '../../components/Modal'
 import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
-import { Content, ContentText, ContentTextLight } from '../../components/text/Content'
+import { Content, ContentText } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
 import { BUTTONS_THEME } from '../../constants/data'
 import useStorage from '../../hooks/useStorage'
@@ -16,6 +16,8 @@ import { deleteAnalyticsData } from '../../services/CmsApi'
 import { getLabels } from '../../services/helpers'
 import DebugModal from './components/DebugModal'
 import VersionPressable from './components/VersionPressable'
+
+const Root = styled.ScrollView``
 
 const SettingsHeading = styled(Heading)`
   padding: ${props => props.theme.spacings.xl};
@@ -116,38 +118,44 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps): ReactElement => {
         confirmationAction={closeDeletionModal}
         showCancelButton={false}
       />
-      <SettingsHeading>{settings}</SettingsHeading>
-      <SettingsOutline>
-        <ItemContainer>
-          <ItemTextContainer>
-            <Content>{analyticsConsentLabel}</Content>
-            <ContentTextLight>{analyticsConsentExplanation}</ContentTextLight>
-          </ItemTextContainer>
-          <Switch
-            testID='analytics-consent-switch'
-            value={isAnalyticsConsentGiven}
-            onValueChange={onAnalyticsConsentToggle}
-          />
-        </ItemContainer>
-        {installationId !== null && (
-          <GdprControls>
-            <PressableOpacity onPress={() => navigation.navigate('GdprExport')}>
-              <ContentText>{requestAnalyticsData}</ContentText>
-            </PressableOpacity>
-            <PressableOpacity onPress={() => setIsDeleteConfirmationVisible(true)}>
-              <DeleteText>{deleteAnalyticsDataLabel}</DeleteText>
-            </PressableOpacity>
-          </GdprControls>
-        )}
-      </SettingsOutline>
-      {isDevModeEnabled && (
+      <Root>
+        <SettingsHeading>{settings}</SettingsHeading>
         <SettingsOutline>
           <ItemContainer>
-            <Button onPress={() => setIsModalVisible(true)} label={devSettings} buttonTheme={BUTTONS_THEME.contained} />
+            <ItemTextContainer>
+              <Content>{analyticsConsentLabel}</Content>
+              <Content>{analyticsConsentExplanation}</Content>
+            </ItemTextContainer>
+            <Switch
+              testID='analytics-consent-switch'
+              value={isAnalyticsConsentGiven}
+              onValueChange={onAnalyticsConsentToggle}
+            />
           </ItemContainer>
+          {installationId !== null && (
+            <GdprControls>
+              <PressableOpacity onPress={() => navigation.navigate('GdprExport')}>
+                <ContentText>{requestAnalyticsData}</ContentText>
+              </PressableOpacity>
+              <PressableOpacity onPress={() => setIsDeleteConfirmationVisible(true)}>
+                <DeleteText>{deleteAnalyticsDataLabel}</DeleteText>
+              </PressableOpacity>
+            </GdprControls>
+          )}
         </SettingsOutline>
-      )}
-      <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
+        {isDevModeEnabled && (
+          <SettingsOutline>
+            <ItemContainer>
+              <Button
+                onPress={() => setIsModalVisible(true)}
+                label={devSettings}
+                buttonTheme={BUTTONS_THEME.contained}
+              />
+            </ItemContainer>
+          </SettingsOutline>
+        )}
+        <VersionPressable onClickThresholdReached={() => setIsModalVisible(true)} />
+      </Root>
     </RouteWrapper>
   )
 }

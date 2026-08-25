@@ -78,7 +78,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
       lightStatusBarContent={initialSelection}
       shouldSetBottomInset
     >
-      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 120 }} keyboardShouldPersistTaps='handled'>
         {initialSelection && <Header />}
 
         <TextContainer>

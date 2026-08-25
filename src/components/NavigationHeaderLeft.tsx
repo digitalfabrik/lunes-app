@@ -2,10 +2,10 @@ import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import {
-  ArrowLeftCircleIconBlue,
-  ArrowLeftCircleIconWhite,
-  CloseCircleIconBlue,
-  CloseCircleIconWhite,
+  ArrowLeftCircleFilledIcon,
+  ArrowLeftCircleOutlineIcon,
+  CloseCircleFilledIcon,
+  CloseCircleOutlineIcon,
 } from '../../assets/images'
 import { NavigationTitle } from './NavigationTitle'
 
@@ -25,9 +25,9 @@ const NavigationHeaderLeft = ({ onPress, title, isCloseButton }: NavigationHeade
   const theme = useTheme()
   const [pressed, setPressed] = useState<boolean>(false)
 
-  const closeIcon = pressed ? CloseCircleIconBlue : CloseCircleIconWhite
-  const backIcon = pressed ? ArrowLeftCircleIconBlue : ArrowLeftCircleIconWhite
-  const Icon = isCloseButton ? closeIcon : backIcon
+  const outlineIcon = isCloseButton ? CloseCircleOutlineIcon : ArrowLeftCircleOutlineIcon
+  const filledIcon = isCloseButton ? CloseCircleFilledIcon : ArrowLeftCircleFilledIcon
+  const Icon = pressed ? filledIcon : outlineIcon
 
   return (
     <Container onPress={onPress} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}>

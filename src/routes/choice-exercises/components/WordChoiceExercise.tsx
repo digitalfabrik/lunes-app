@@ -12,15 +12,17 @@ import ExerciseHeader from '../../../components/ExerciseHeader'
 import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import WordResultIndicator from '../../../components/WordResultIndicator'
 import { ContentText } from '../../../components/text/Content'
+import { VocabularyWord } from '../../../components/text/Heading'
 import {
   Answer,
   BUTTONS_THEME,
-  ExerciseKeys,
+  StandardExerciseKeys,
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
   SimpleResult,
 } from '../../../constants/data'
 import useRepetitionService from '../../../hooks/useRepetitionService'
+import useStandardExerciseKey from '../../../hooks/useStandardExerciseKey'
 import { useStorageCache } from '../../../hooks/useStorage'
 import useTrackDropout from '../../../hooks/useTrackDropout'
 import { StandardUnitId } from '../../../models/Unit'
@@ -115,7 +117,9 @@ const WordChoiceExercise = ({
 
   const count = vocabularyItems.length
 
-  const { markCompleted } = useTrackDropout(navigation, unitId, state.currentWord, count)
+  const exerciseKey = useStandardExerciseKey(StandardExerciseKeys.wordChoiceExercise, unitId)
+
+  const { markCompleted } = useTrackDropout(navigation, exerciseKey, state.currentWord, count)
 
   const correctAnswers = [
     { word: vocabularyItem.word, article: vocabularyItem.article },
@@ -152,11 +156,11 @@ const WordChoiceExercise = ({
   const onExerciseFinished = async (results: VocabularyItemResult[]): Promise<void> => {
     markCompleted()
     if (unitId !== null) {
-      await saveExerciseProgress(storageCache, unitId, ExerciseKeys.wordChoiceExercise, results)
+      await saveExerciseProgress(storageCache, unitId, StandardExerciseKeys.wordChoiceExercise, results)
     }
     navigation.popTo('ExerciseFinished', {
       ...route.params,
-      exercise: ExerciseKeys.wordChoiceExercise,
+      exercise: StandardExerciseKeys.wordChoiceExercise,
       results,
     })
   }
@@ -225,7 +229,7 @@ const WordChoiceExercise = ({
             ? { type: 'word', wordId: vocabularyItem.id }
             : undefined
         }
-        exerciseKey={ExerciseKeys.wordChoiceExercise}
+        exerciseKey={StandardExerciseKeys.wordChoiceExercise}
       />
 
       <ScrollView>
@@ -259,9 +263,9 @@ const WordChoiceExercise = ({
             </AudioPlayerContainer>
 
             {needsToBeRepeated && <ContentText>{getLabels().exercises.solution}</ContentText>}
-            <ContentText>
+            <VocabularyWord>
               {vocabularyItem.article.value} {vocabularyItem.word}
-            </ContentText>
+            </VocabularyWord>
           </SolutionRow>
         }
         button={

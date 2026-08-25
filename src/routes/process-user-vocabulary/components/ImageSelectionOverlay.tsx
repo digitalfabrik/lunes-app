@@ -3,9 +3,9 @@ import { Platform, Pressable } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Camera, useCameraDevice } from 'react-native-vision-camera'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
-import { CircleIconWhite, ImageIcon } from '../../../../assets/images'
+import { CircleIcon, ImageIcon } from '../../../../assets/images'
 import CameraOverlay from '../../../components/CameraOverlay'
 import PressableOpacity from '../../../components/PressableOpacity'
 import useAppState from '../../../hooks/useAppState'
@@ -45,6 +45,7 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
   const device = useCameraDevice('back')
   const camera = useRef<Camera>(null)
   const { inForeground } = useAppState()
+  const theme = useTheme()
 
   const takePhoto = async () => {
     try {
@@ -86,11 +87,21 @@ const ImageSelectionOverlay = ({ setVisible, pushImage }: ImageSelectionOverlayP
       )}
       <Container>
         <PressableOpacity onPress={openGallery}>
-          <ImageIcon width={GALLERY_ICON_SIZE} height={GALLERY_ICON_SIZE} testID='gallery-icon' />
+          <ImageIcon
+            width={GALLERY_ICON_SIZE}
+            height={GALLERY_ICON_SIZE}
+            color={theme.colors.backgroundAccent}
+            testID='gallery-icon'
+          />
         </PressableOpacity>
         <TakeImageButtonContainer>
           <Pressable onPress={takePhoto}>
-            <CircleIconWhite width={TAKE_IMAGE_ICON_SIZE} height={TAKE_IMAGE_ICON_SIZE} testID='take-image-icon' />
+            <CircleIcon
+              width={TAKE_IMAGE_ICON_SIZE}
+              height={TAKE_IMAGE_ICON_SIZE}
+              color={theme.colors.backgroundAccent}
+              testID='take-image-icon'
+            />
           </Pressable>
         </TakeImageButtonContainer>
       </Container>

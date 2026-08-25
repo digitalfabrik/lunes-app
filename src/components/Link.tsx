@@ -3,9 +3,9 @@ import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 
 import { openExternalUrl } from '../services/url'
-import { ContentTextLight } from './text/Content'
+import { Content } from './text/Content'
 
-const LinkText = styled(ContentTextLight)`
+const LinkText = styled(Content)`
   text-decoration: underline;
   color: ${props => props.theme.colors.link};
 `

@@ -4,7 +4,7 @@ parameters:
     type: boolean
     default: false
 docker:
-  - image: cimg/node:20.18.3
+  - image: cimg/node:24.18.0
 resource_class: small
 steps:
   - checkout

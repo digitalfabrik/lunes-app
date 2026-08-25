@@ -6,7 +6,7 @@ import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
 import FavoriteButton from './FavoriteButton'
 import ListItem from './ListItem'
-import { ContentTextLight } from './text/Content'
+import { Content } from './text/Content'
 
 const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
@@ -15,11 +15,10 @@ const StyledImage = styled.Image`
   border-radius: ${props => props.theme.spacings.xxl};
 `
 
-const StyledTitle = styled(ContentTextLight)<{ articleColor: string }>`
+const StyledArticle = styled(Content)<{ articleColor: string }>`
   border-radius: ${props => props.theme.spacings.xs};
-  margin-bottom: ${props => props.theme.spacings.xxs};
+  margin-right: ${props => props.theme.spacings.xs};
   background-color: ${props => props.articleColor};
-  align-self: flex-start;
   overflow: hidden;
   padding: 0 ${props => props.theme.spacings.xs};
 `
@@ -49,7 +48,7 @@ const VocabularyListItem = ({
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
 
-  const title = <StyledTitle articleColor={getArticleColor(article)}>{article.value}</StyledTitle>
+  const articleLabel = <StyledArticle articleColor={getArticleColor(article)}>{article.value}</StyledArticle>
   const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0] }} /> : undefined
 
   const actions = customActions ?? (
@@ -63,8 +62,8 @@ const VocabularyListItem = ({
 
   return (
     <ListItem
-      title={title}
-      description={word}
+      title={word}
+      beforeTitle={articleLabel}
       onPress={onPress}
       icon={icon}
       rightChildren={<RightChildrenContainer>{actions}</RightChildrenContainer>}

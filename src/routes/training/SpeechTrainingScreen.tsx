@@ -8,33 +8,46 @@ import {
   SpeechToTextErrorCode,
   openVoiceInputSettings as openVoiceInputSettingsNative,
 } from 'react-native-speech-to-text'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowRightIcon, SadSmileyIcon } from '../../../assets/images'
 import AudioPlayer from '../../components/AudioPlayer'
 import BottomSheet from '../../components/BottomSheet'
 import Button from '../../components/Button'
 import CheatMode from '../../components/CheatMode'
+import ExerciseHeader from '../../components/ExerciseHeader'
 import NotAuthorisedView from '../../components/NotAuthorisedView'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
 import WordResultIndicator from '../../components/WordResultIndicator'
 import { ContentText } from '../../components/text/Content'
-import { HeadingText } from '../../components/text/Heading'
-import { BUTTONS_THEME, MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../constants/data'
+import { HeadingText, VocabularyWord } from '../../components/text/Heading'
+import {
+  BUTTONS_THEME,
+  hasNoArticle,
+  MAX_TRAINING_REPETITIONS,
+  NUMBER_OF_MAX_RETRIES,
+  SIMPLE_RESULTS,
+  SimpleResult,
+  TrainingExerciseKeys,
+} from '../../constants/data'
 import useGrantPermissions from '../../hooks/useGrantPermissions'
 import useLoadWordsByJob from '../../hooks/useLoadWordsByJob'
-import useStorage from '../../hooks/useStorage'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
+import useTrackDropout from '../../hooks/useTrackDropout'
+import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
+import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
+import useTrainingExerciseKey from '../../hooks/useTrainingExerciseKey'
 import useVoiceRecognition from '../../hooks/useVoiceRecognition'
 import { StandardJob } from '../../models/Job'
-import VocabularyItem from '../../models/VocabularyItem'
+import VocabularyItem, { pronunciationOrWord, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
-import { getAtIndex, getLabels, shuffleArray } from '../../services/helpers'
+import { trackEvent } from '../../services/AnalyticsService'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
-import TrainingExerciseHeader from './components/TrainingExerciseHeader'
-import { evaluateSpeechMatch } from './services/SpeechMatchingService'
+import { evaluateSpeechMatch, SpeechFeedbackReason, SpeechMatch } from './services/SpeechMatchingService'
 
 const SPEECH_PERMISSIONS =
   Platform.OS === 'ios'
@@ -44,6 +57,7 @@ const SPEECH_PERMISSIONS =
 const WordImageContainer = styled.View`
   padding: 0 ${props => props.theme.spacings.xxl};
   width: 100%;
+  max-width: ${props => props.theme.sizes.maximumImage};
 `
 
 const WordImage = styled.Image`
@@ -89,8 +103,9 @@ const HintText = styled(ContentText)`
 type State = {
   vocabularyItems: VocabularyItem[]
   currentVocabularyItemIndex: number
-  hasIncorrectAttempt: boolean
+  incorrectAttemptsForCurrentWord: number
   answerState: SimpleResult | 'error' | null
+  feedbackReason: SpeechFeedbackReason | null
   correctAnswersCount: number
   completed: boolean
   isRecognitionUnavailable: boolean
@@ -98,12 +113,13 @@ type State = {
 }
 
 type Action =
-  | { type: 'speechResult'; answerState: SimpleResult }
+  | { type: 'speechResult'; match: SpeechMatch }
   | { type: 'speechError' }
   | { type: 'recognitionUnavailable' }
   | { type: 'languageUnavailable' }
   | { type: 'retry' }
-  | { type: 'nextWord'; isSkipping: boolean }
+  | { type: 'nextWord' }
+  | { type: 'skip' }
   | { type: 'cheatAll'; result: SimpleResult }
   | { type: 'appBecameActive' }
 
@@ -112,8 +128,9 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   return {
     vocabularyItems: selectedItems,
     currentVocabularyItemIndex: 0,
-    hasIncorrectAttempt: false,
+    incorrectAttemptsForCurrentWord: 0,
     answerState: null,
+    feedbackReason: null,
     correctAnswersCount: 0,
     completed: selectedItems.length === 0,
     isRecognitionUnavailable: false,
@@ -124,29 +141,48 @@ const initializeState = (vocabularyItems: VocabularyItem[]): State => {
 const stateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'speechResult': {
-      const hasIncorrectAttempt = state.hasIncorrectAttempt || action.answerState !== SIMPLE_RESULTS.correct
-      return { ...state, answerState: action.answerState, hasIncorrectAttempt }
+      const isCorrect = action.match.result === SIMPLE_RESULTS.correct
+      const incorrectAttemptsForCurrentWord = isCorrect
+        ? state.incorrectAttemptsForCurrentWord
+        : state.incorrectAttemptsForCurrentWord + 1
+      return {
+        ...state,
+        answerState: action.match.result,
+        feedbackReason: action.match.reason ?? null,
+        incorrectAttemptsForCurrentWord,
+      }
     }
     case 'speechError':
-      return { ...state, answerState: 'error' }
+      return { ...state, answerState: 'error', feedbackReason: null }
     case 'recognitionUnavailable':
       return { ...state, isRecognitionUnavailable: true }
     case 'languageUnavailable':
       return { ...state, isLanguageUnavailable: true }
     case 'retry':
-      return { ...state, answerState: null }
+      return { ...state, answerState: null, feedbackReason: null }
     case 'nextWord': {
       const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
       const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
-      const correctAnswersCount =
-        !state.hasIncorrectAttempt && !action.isSkipping ? state.correctAnswersCount + 1 : state.correctAnswersCount
+      const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0
+      const correctAnswersCount = answeredCorrectlyFirstTry ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
         ...state,
         currentVocabularyItemIndex: nextIndex,
         completed,
         correctAnswersCount,
         answerState: null,
-        hasIncorrectAttempt: false,
+        feedbackReason: null,
+        incorrectAttemptsForCurrentWord: 0,
+      }
+    }
+    case 'skip': {
+      const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+      return {
+        ...state,
+        vocabularyItems: reorderedVocabularyItems,
+        answerState: null,
+        feedbackReason: null,
+        incorrectAttemptsForCurrentWord: 0,
       }
     }
     case 'cheatAll': {
@@ -181,11 +217,32 @@ type SpeechTrainingProps = {
 const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProps): ReactElement | null => {
   const [state, dispatch] = useReducer(stateReducer, vocabularyItems, initializeState)
   const { startRecording, stopRecording, isRecording } = useVoiceRecognition()
+  const theme = useTheme()
   const [isDevModeEnabled] = useStorage('isDevModeEnabled')
   const { permissionGranted, permissionRequested } = useGrantPermissions(SPEECH_PERMISSIONS)
+  const storageCache = useStorageCache()
 
   const labels = getLabels().exercises.training.speech
   const currentWord = getAtIndex(state.vocabularyItems, state.currentVocabularyItemIndex)
+
+  const exerciseKey = useTrainingExerciseKey(TrainingExerciseKeys.speech, job.id.id)
+  const vocabularyItemId = currentWord.id.type === VocabularyItemTypes.Standard ? currentWord.id.id : undefined
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackForegroundDuration(durationSeconds => {
+    trackEvent(storageCache, {
+      type: 'module_duration',
+      exercise_key: exerciseKey,
+      duration_seconds: durationSeconds,
+    })
+  })
+  const { markCompleted } = useTrackDropout(
+    navigation,
+    exerciseKey,
+    state.currentVocabularyItemIndex,
+    state.vocabularyItems.length,
+    vocabularyItemId,
+  )
 
   useEffect(() => {
     const nextWordIndex = state.currentVocabularyItemIndex + 1
@@ -199,13 +256,14 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   useEffect(() => {
     if (state.completed) {
+      markCompleted()
       navigation.replace('TrainingFinished', {
         trainingType: 'speech',
         results: { correct: state.correctAnswersCount, total: state.vocabularyItems.length },
         job,
       })
     }
-  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation])
+  }, [state.completed, state.vocabularyItems.length, state.correctAnswersCount, job, navigation, markCompleted])
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -218,11 +276,12 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
 
   const handlePressIn = async (): Promise<void> => {
     try {
-      const results = await startRecording({
-        hints: [currentWord.word, `${currentWord.article.value} ${currentWord.word}`],
-      })
-      const answerState = evaluateSpeechMatch(results, currentWord.article.value, currentWord.word)
-      dispatch({ type: 'speechResult', answerState })
+      const spokenWord = pronunciationOrWord(currentWord)
+      const { article } = currentWord
+      // "keiner" is not a word anybody says, so it must not be used to bias the recognizer
+      const hints = hasNoArticle(article) ? [spokenWord] : [spokenWord, `${article.value} ${spokenWord}`]
+      const results = await startRecording({ hints })
+      dispatch({ type: 'speechResult', match: evaluateSpeechMatch(results, article, spokenWord) })
     } catch (error) {
       const errorCode = (error as { code?: SpeechToTextErrorCode }).code
       if (errorCode === SPEECH_TO_TEXT_ERRORS.recognitionUnavailable) {
@@ -254,6 +313,8 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const instructions = isRecording ? labels.releaseToFinish : labels.holdAndSpeak
   const isSimpleResult = state.answerState !== null && state.answerState !== 'error'
   const isCorrect = state.answerState === SIMPLE_RESULTS.correct
+  const hasReachedMaxAttempts = state.incorrectAttemptsForCurrentWord >= NUMBER_OF_MAX_RETRIES
+  const isLastWord = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
 
   const renderExerciseContent = (): ReactElement | null => {
     if (canRecord) {
@@ -272,6 +333,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           {isDevModeEnabled && (
             <CheatText>
               Cheat: {currentWord.article.value} {currentWord.word}
+              {currentWord.pronunciation !== undefined && ` (${currentWord.pronunciation})`}
             </CheatText>
           )}
         </ExerciseContent>
@@ -292,45 +354,52 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const wordContent = (
     <BottomSheetRow>
       {currentWord.audio !== null && <AudioPlayer audio={currentWord.audio} disabled={false} />}
-      <ContentText>
+      <VocabularyWord>
         {currentWord.article.value} {currentWord.word}
-      </ContentText>
+      </VocabularyWord>
     </BottomSheetRow>
   )
 
-  const resultButton = isCorrect ? (
-    <Button
-      onPress={() => dispatch({ type: 'nextWord', isSkipping: false })}
-      label={getLabels().exercises.continue}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  ) : (
-    <Button
-      onPress={() => dispatch({ type: 'retry' })}
-      label={getLabels().exercises.tryAgain}
-      buttonTheme={BUTTONS_THEME.contained}
-      iconRight={ArrowRightIcon}
-    />
-  )
+  const resultButton =
+    isCorrect || hasReachedMaxAttempts ? (
+      <Button
+        onPress={() => dispatch({ type: 'nextWord' })}
+        label={getLabels().exercises.continue}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    ) : (
+      <Button
+        onPress={() => dispatch({ type: 'retry' })}
+        label={getLabels().exercises.tryAgain}
+        buttonTheme={BUTTONS_THEME.contained}
+        iconRight={ArrowRightIcon}
+      />
+    )
 
   return (
     <>
-      <TrainingExerciseHeader
+      <ExerciseHeader
+        navigation={navigation}
         currentWord={state.currentVocabularyItemIndex}
         numberOfWords={state.vocabularyItems.length}
-        navigation={navigation}
+        feedbackTarget={
+          currentWord.id.type === VocabularyItemTypes.Standard ? { type: 'word', wordId: currentWord.id } : undefined
+        }
       />
       <TrainingExerciseContainer
         title={labels.prompt}
         footer={
           <>
-            <Button
-              onPress={() => dispatch({ type: 'nextWord', isSkipping: true })}
-              buttonTheme={BUTTONS_THEME.text}
-              label={getLabels().exercises.skip}
-              iconRight={ArrowRightIcon}
-            />
+            {/* The last word can't be skipped */}
+            {!isLastWord && (
+              <Button
+                onPress={() => dispatch({ type: 'skip' })}
+                buttonTheme={BUTTONS_THEME.text}
+                label={getLabels().exercises.skip}
+                iconRight={ArrowRightIcon}
+              />
+            )}
             <CheatMode cheat={handleCheat} />
           </>
         }
@@ -344,11 +413,12 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
         label={isCorrect ? labels.correct : labels.incorrect}
         content={wordContent}
         button={resultButton}
+        hint={state.feedbackReason !== null ? labels.feedback[state.feedbackReason] : undefined}
       />
 
       <BottomSheet visible={state.answerState === 'error'}>
         <BottomSheetColumn>
-          <SadSmileyIcon />
+          <SadSmileyIcon color={theme.colors.text} />
           <HeadingText>{labels.notUnderstood}</HeadingText>
           <HintsContainer>
             <ContentText>{labels.hints.title}</ContentText>

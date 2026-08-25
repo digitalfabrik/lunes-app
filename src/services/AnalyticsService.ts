@@ -1,4 +1,4 @@
-import { ExerciseKey } from '../constants/data'
+import { ExerciseKeyPayload } from '../constants/data'
 import { postAnalyticEvent } from './CmsApi'
 import { StorageCache } from './Storage'
 import { reportError } from './sentry'
@@ -23,8 +23,7 @@ export type AnalyticsPayload =
     }
   | {
       type: 'module_duration'
-      exercise_type: ExerciseKey
-      unit_id: number
+      exercise_key: ExerciseKeyPayload
       duration_seconds: number
     }
   | {
@@ -37,15 +36,14 @@ export type AnalyticsPayload =
     }
   | {
       type: 'exercise_dropout'
-      exercise_type: 'word_choice'
-      unit_id: number | null
+      exercise_key: ExerciseKeyPayload
       position: number
       total: number
+      vocabulary_item_id: number | null
     }
   | {
       type: 'exercise_repetition'
-      exercise_type: ExerciseKey
-      unit_id: number
+      exercise_key: ExerciseKeyPayload
       session_id: string
     }
 

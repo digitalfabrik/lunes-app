@@ -30,6 +30,14 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    install_maestro:
+        description: Install the Maestro CLI and add it to the PATH for subsequent steps.
+        steps:
+            - run:
+                command: |
+                    curl -fsSL "https://get.maestro.mobile.dev" | bash
+                    echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> "$BASH_ENV"
+                name: Install Maestro
     notify:
         description: Send a notification (to Mattermost) at the end of a job, based on success or failure. Must be the last step in a job.
         parameters:
@@ -39,7 +47,7 @@ commands:
             failure_mentions:
                 default: '@david.venhoff @leandra.hahn @johannes.stock'
                 type: string
-            only_for_branch:
+            on_failure_only_for_branch:
                 default: main
                 type: string
             success_mentions:
@@ -51,10 +59,12 @@ commands:
         steps:
             - run:
                 command: |
-                    if [ -n "<< parameters.failure_mentions >>" ]; then
-                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:\n<< parameters.failure_mentions >>"' >> $BASH_ENV
-                    else
-                        echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:"' >> $BASH_ENV
+                    if [ "<< parameters.on_failure_only_for_branch >>" = "${CIRCLE_BRANCH}" ]; then
+                        if [ -n "<< parameters.failure_mentions >>" ]; then
+                            echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:\n<< parameters.failure_mentions >>"' >> $BASH_ENV
+                        else
+                            echo 'export MM_MESSAGE=":fire: The [${CIRCLE_JOB}](${CIRCLE_BUILD_URL}) job has failed on the main branch! :fire:"' >> $BASH_ENV
+                        fi
                     fi
                 name: Mattermost - Prepare failure message
                 when: on_fail
@@ -74,11 +84,6 @@ commands:
                     #!/bin/bash
 
                     Send_notification() {
-                        if [ "<< parameters.only_for_branch >>" != "${CIRCLE_BRANCH}" ]; then
-                            echo "Not on << parameters.only_for_branch >> branch. Skipping."
-                            exit 0
-                        fi
-
                         if [ -z "${MM_MESSAGE}" ]; then
                             echo "No message set. Skipping."
                             exit 0
@@ -211,10 +216,24 @@ commands:
                 name: Save Yarn Tools Package Cache
                 paths:
                     - tools/.yarn/cache
+    verify_screenshots:
+        description: Fails unless the full set of eight screenshots was produced in the given directory
+        parameters:
+            directory:
+                type: string
+        steps:
+            - run:
+                command: |
+                    count=$(ls << parameters.directory >>/*.png 2>/dev/null | wc -l)
+                    if [ "$count" -ne 8 ]; then
+                      echo "Expected 8 screenshots in << parameters.directory >>, found $count."
+                      exit 1
+                    fi
+                name: Verify screenshots
 jobs:
     build_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
             TOTAL_CPUS: 8
@@ -256,7 +275,7 @@ jobs:
                 command: |
                     mkdir -p sourcemaps/
                     cp android/app/build/generated/sourcemaps/react/release/index.android.bundle.map sourcemaps/
-                    cp android/app/build/generated/assets/createBundleReleaseJsAndAssets/index.android.bundle sourcemaps/
+                    cp android/app/build/generated/assets/react/release/index.android.bundle sourcemaps/
                 name: Prepare Sourcemaps
             - persist_to_workspace:
                 paths:
@@ -336,7 +355,7 @@ jobs:
             - notify
     bump_version:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         parameters:
             prepare_delivery:
                 default: false
@@ -365,7 +384,7 @@ jobs:
             - notify
     check:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         resource_class: small
         steps:
             - checkout
@@ -387,7 +406,7 @@ jobs:
             - notify
     deliver_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         parameters:
@@ -424,7 +443,7 @@ jobs:
             - notify
     deliver_browser_stack:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         shell: /bin/bash -eo pipefail
@@ -461,13 +480,30 @@ jobs:
                 command: mv ~/attached_workspace/${CIRCLE_BRANCH////-}.ipa ~/attached_workspace/app-release.ipa
                 name: Undo rename ipa
             - run:
-                command: "printf \"## App uploaded to Browserstack\\n\" >> message \nprintf \"This pull request can now be tested online:\\n\" >> message\nprintf -- \"- [Android](%s)\\n\" \"$(cat android/fastlane/browserstack_live_url)\" >> message\nprintf -- \"- [iOS](%s)\\n\" \"$(cat ios/fastlane/browserstack_live_url)\" >> message\n"
+                command: |
+                    printf "## App uploaded to Browserstack\n" >> message
+                    if [ -z "${PR_NUMBER}" ]; then
+                        printf "The %s branch can now be tested online:\n" "${CIRCLE_BRANCH}" >> message
+                    else
+                        printf "This pull request can now be tested online:\n" >> message
+                    fi
+                    printf -- "- [Android](%s)\n" "$(cat android/fastlane/browserstack_live_url)" >> message
+                    printf -- "- [iOS](%s)\n" "$(cat ios/fastlane/browserstack_live_url)" >> message
                 name: Build message
             - run:
-                command: yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                command: |
+                    # ensure browserstack_message exists so the notify step's cat never errors
+                    touch ../browserstack_message
+                    if [ -z "${PR_NUMBER}" ]; then
+                      # populate browserstack_message so that the notify will post the message in mattermost
+                      mv ../message ../browserstack_message
+                    else
+                      yarn app-toolbelt v0 notify github-pr ${PR_NUMBER} "$(cat ../message)" --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                    fi
                 name: Post pull request comment with a link to the browserstack live apps
                 working_directory: tools
-            - notify
+            - notify:
+                success_message: $(cat browserstack_message)
     deliver_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
@@ -508,9 +544,27 @@ jobs:
                 command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
             - notify
+    llm-pr-review:
+        docker:
+            - image: cimg/python:3.11
+        resource_class: small
+        steps:
+            - checkout
+            - run:
+                command: pip install --user "PyJWT[crypto]" requests
+                name: Install python dependencies
+            - run:
+                command: |
+                    TOKEN=$(./.circleci/scripts/get_access_token.py)
+                    echo "export DELIVERINO_ACCESS_TOKEN=$TOKEN" >> $BASH_ENV
+                name: Request Deliverino installation access token
+            - run:
+                command: ./.circleci/scripts/llm-pr-review.py
+                name: Run LLM PR review
+            - notify
     move_release_notes:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         resource_class: small
         steps:
             - checkout
@@ -525,7 +579,7 @@ jobs:
             - notify
     notify_github:
         docker:
-            - image: cimg/node:20.18.3
+            - image: cimg/node:24.18.0
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -552,6 +606,18 @@ jobs:
                 name: Upload ipas to github release
                 working_directory: tools
             - run:
+                command: |
+                    APP_TOOLBELT_BIN="$(cd tools && yarn bin app-toolbelt)"
+                    "${APP_TOOLBELT_BIN}" v0 generate sbom \
+                      --version-name ${NEW_VERSION_NAME} \
+                      --release-id ${RELEASE_ID} \
+                      --path _manifest/spdx_2.2/manifest.spdx.json \
+                      --branch ${CIRCLE_BRANCH} \
+                      --private-key ${DELIVERINO_PRIVATE_KEY} \
+                      --owner ${CIRCLE_PROJECT_USERNAME} \
+                      --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Generate SBOM
+            - run:
                 command: echo "export ANDROID_ARTIFACT_URLS='$(echo $(cat $(ls | grep apk-url)))'" >> ${BASH_ENV}
                 name: Prepare android artifact urls
                 working_directory: ~/attached_workspace
@@ -564,7 +630,7 @@ jobs:
                 success_message: '[Development] Lunes ${NEW_VERSION_NAME} has been released successfully!\n[Release notes](https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases/tag/${NEW_VERSION_NAME})\n${ANDROID_ARTIFACT_URLS} ${IOS_ARTIFACT_URLS}'
     notify_promotion:
         docker:
-            - image: cimg/node:20.17.0
+            - image: cimg/node:24.18.0
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -574,17 +640,47 @@ jobs:
             - restore_yarn_tools_cache
             - run:
                 command: |
-                    PROMOTION_MESSAGE=$(yarn run --silent app-toolbelt v0 release promote --platform all --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME})
-                    echo "export PROMOTION_MESSAGE='${PROMOTION_MESSAGE}'" >> $BASH_ENV
+                    GITHUB_RELEASE=$(yarn run --silent app-toolbelt v0 release promote --platform all --private-key ${DELIVERINO_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME})
+                    echo "export GITHUB_RELEASE='${GITHUB_RELEASE}'" >> $BASH_ENV
                 name: Remove prerelease flag from github release
                 working_directory: tools
             - notify:
                 channel: releases
-                only_for_branch: ${CIRCLE_BRANCH}
-                success_message: Lunes - ${PROMOTION_MESSAGE}
+                success_message: 'Lunes App - ${GITHUB_RELEASE} - has been promoted successfully :tada:'
+    open_screenshots_pr:
+        docker:
+            - image: cimg/node:24.18.0
+        resource_class: small
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - attach_workspace:
+                at: .
+            - restore_yarn_tools_cache
+            - run:
+                command: |
+                    FILES=$(ls android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png ios/fastlane/screenshots/de-DE/*.png 2>/dev/null)
+                    count=$(echo "$FILES" | wc -w)
+                    if [ "$count" -eq 0 ]; then
+                      echo "No screenshots produced, nothing to commit"
+                      exit 1
+                    fi
+                    # app-toolbelt commits files at the exact paths passed, so run from repo root (don't cd into tools)
+                    "$(yarn --cwd tools bin app-toolbelt)" v0 pr open-pr $FILES \
+                      --private-key "${DELIVERINO_PRIVATE_KEY}" \
+                      --owner "${CIRCLE_PROJECT_USERNAME}" \
+                      --repo "${CIRCLE_PROJECT_REPONAME}" \
+                      --head update-screenshots \
+                      --base main \
+                      --message "Regenerate store screenshots" \
+                      --title "Regenerate store screenshots" \
+                      --label maintenance \
+                      --body $'### Short Description\n\nThese screenshots were captured automatically in CircleCI. They will be uploaded to the stores with the next release.'
+                name: Open screenshots PR
+            - notify
     promote_android:
         docker:
-            - image: cimg/android:2024.08.1-node
+            - image: cimg/android:2026.07.1-node
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         resource_class: small
@@ -616,6 +712,99 @@ jobs:
                 name: '[FL] App Store Connect Promotion'
                 working_directory: ios
             - notify
+    screenshot_android:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+            TOTAL_CPUS: 8
+        machine:
+            image: android:2024.11.1
+        resource_class: xlarge
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - run:
+                command: |
+                    nvm install 24.18.0
+                    nvm alias default 24.18.0
+                    corepack enable
+                name: Set up Node
+            - restore_yarn_cache
+            - run:
+                command: sudo apt-get update && sudo apt-get install -y ninja-build
+                name: Install Ninja
+            - run:
+                command: |
+                    wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+                    tar -xzvf cmake-3.22.1-Linux-x86_64.tar.gz -C $HOME
+                    echo 'export PATH=$HOME/cmake-3.22.1-Linux-x86_64/bin:$PATH' >> "$BASH_ENV"
+                name: Install CMake
+            - install_maestro
+            - run:
+                command: |
+                    sdkmanager "system-images;android-34;google_apis;x86_64"
+                    echo "no" | avdmanager create avd -n screenshot_avd -d "medium_phone" \
+                      -k "system-images;android-34;google_apis;x86_64"
+                    # Without a camera, rn-vision-camera leaves the app on a blank screen at startup
+                    emulator -avd screenshot_avd -no-window -no-audio -no-boot-anim -no-snapshot -no-metrics -gpu swiftshader_indirect \
+                      -memory 4096 -cores 4 -camera-back virtualscene -camera-front emulated &
+                    adb wait-for-device
+                    timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 3; done' \
+                      || { echo "Emulator failed to boot within 5 minutes."; exit 1; }
+                    # Software rendering makes SystemUI miss its watchdog, popping a "not responding"
+                    # dialog over the app; suppress error dialogs and drop animations so it stays hidden.
+                    adb shell settings put global hide_error_dialogs 1
+                    adb shell settings put global window_animation_scale 0
+                    adb shell settings put global transition_animation_scale 0
+                    adb shell settings put global animator_duration_scale 0
+                    sleep 30
+                    adb shell input keyevent 82 || true
+                name: Create and boot emulator
+            - run:
+                command: yarn react-native run-android --no-packager --mode=release --active-arch-only
+                name: Build and install release app on emulator
+            - run:
+                command: yarn screenshots:android
+                name: Capture screenshots
+            - verify_screenshots:
+                directory: android/fastlane/metadata/de-DE/images/phoneScreenshots
+            - persist_to_workspace:
+                paths:
+                    - android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png
+                root: .
+            - notify
+    screenshot_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+            TOTAL_CPUS: 6
+        macos:
+            xcode: 26.3.0
+        resource_class: m4pro.medium
+        shell: /bin/bash --login -o pipefail
+        steps:
+            - checkout
+            - restore_yarn_cache
+            - restore_ruby_cache:
+                directory: ios
+            - restore_cocoa_pods_cache
+            - install_maestro
+            - run:
+                command: |
+                    xcrun simctl boot "iPhone 16 Pro" || true
+                    xcrun simctl bootstatus "iPhone 16 Pro" -b
+                name: Boot simulator
+            - run:
+                command: yarn ios:production --simulator "iPhone 16 Pro"
+                name: Build and install release app on simulator
+            - run:
+                command: yarn screenshots:ios
+                name: Capture screenshots
+            - verify_screenshots:
+                directory: ios/fastlane/screenshots/de-DE
+            - persist_to_workspace:
+                paths:
+                    - ios/fastlane/screenshots/de-DE/*.png
+                root: .
+            - notify
 parameters:
     run_browserstack_delivery:
         default: false
@@ -623,10 +812,20 @@ parameters:
     run_commit:
         default: true
         type: boolean
+    run_commit_main:
+        default: run_if_on_main
+        enum:
+            - run_if_on_main
+            - run
+            - skip
+        type: enum
     run_dev_delivery:
         default: false
         type: boolean
     run_promote:
+        default: false
+        type: boolean
+    run_update_screenshots:
         default: false
         type: boolean
 version: 2.1
@@ -665,6 +864,11 @@ workflows:
             - check:
                 context:
                     - mattermost
+            - llm-pr-review:
+                context:
+                    - mattermost
+                    - deliverino
+                    - digitalfabrik-llm-api
         when:
             and:
                 - << pipeline.parameters.run_commit >>
@@ -699,11 +903,17 @@ workflows:
                     - check
                     - bump_version
         when:
-            and:
-                - << pipeline.parameters.run_commit >>
+            or:
                 - equal:
-                    - main
-                    - << pipeline.git.branch >>
+                    - << pipeline.parameters.run_commit_main >>
+                    - run
+                - and:
+                    - equal:
+                        - << pipeline.parameters.run_commit_main >>
+                        - run_if_on_main
+                    - equal:
+                        - main
+                        - << pipeline.git.branch >>
     dev_delivery:
         jobs:
             - check:
@@ -778,5 +988,20 @@ workflows:
                 requires:
                     - move_release_notes
         when: << pipeline.parameters.run_promote >>
+    update_screenshots:
+        jobs:
+            - screenshot_android:
+                context:
+                    - mattermost
+            - screenshot_ios:
+                context:
+                    - mattermost
+            - open_screenshots_pr:
+                context:
+                    - mattermost
+                    - deliverino
+                requires:
+                    - screenshot_android
+                    - screenshot_ios
+        when: << pipeline.parameters.run_update_screenshots >>
     version: 2
-

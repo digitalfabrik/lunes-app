@@ -3,8 +3,8 @@ import normalizeStrings from 'normalize-strings'
 import {
   Article,
   ARTICLES,
-  ExerciseKey,
-  ExerciseKeys,
+  StandardExerciseKey,
+  StandardExerciseKeys,
   EXERCISES,
   NextExercise,
   Progress,
@@ -89,8 +89,8 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 export const shuffleIndexes = <T>(array: T[]): number[] => shuffleArray([...array.keys()])
 
 // word list exercise counts as successfully completed after just opening it
-const isExerciseDone = (exerciseKey: ExerciseKey, score: number | undefined): boolean =>
-  exerciseKey === ExerciseKeys.vocabularyList
+const isExerciseDone = (exerciseKey: StandardExerciseKey, score: number | undefined): boolean =>
+  exerciseKey === StandardExerciseKeys.vocabularyList
     ? score !== undefined
     : score !== undefined && score > SCORE_THRESHOLD_UNLOCK
 
@@ -123,7 +123,7 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
   if (!firstUnfinishedUnit) {
     return {
       unit: units[0]!,
-      exerciseKey: ExerciseKeys.vocabularyList,
+      exerciseKey: StandardExerciseKeys.vocabularyList,
     }
   }
   const unitProgress = progress[firstUnfinishedUnit.id.id]
@@ -132,7 +132,7 @@ export const getNextExercise = async ({ progress, job }: GetNextExerciseParams):
   )
   return {
     unit: firstUnfinishedUnit,
-    exerciseKey: nextExercise?.key ?? ExerciseKeys.vocabularyList,
+    exerciseKey: nextExercise?.key ?? StandardExerciseKeys.vocabularyList,
   }
 }
 

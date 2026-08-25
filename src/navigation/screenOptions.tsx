@@ -6,6 +6,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native'
 import NavigationHeaderLeft from '../components/NavigationHeaderLeft'
 import { COLORS } from '../constants/theme/colors'
 import { SPACINGS_PLAIN } from '../constants/theme/spacings'
+import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import { RoutesParams } from './NavigationTypes'
 
 const MOBILE_MAX_WIDTH = 550
@@ -38,6 +39,16 @@ const headerStyles = (headerHeight?: number) =>
       marginHorizontal: 0,
     },
   })
+
+export const useStackScreenOptions = (options?: StackNavigationOptions): StackNavigationOptions => {
+  const isReducedMotionEnabled = useIsReducedMotionEnabled()
+
+  if (!isReducedMotionEnabled) {
+    return options ?? {}
+  }
+
+  return { ...options, animation: 'none' }
+}
 
 const screenOptions =
   (headerHeight?: number) =>

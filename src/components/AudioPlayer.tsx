@@ -40,12 +40,18 @@ const Icon = (): ReactElement => {
   if (isSilent) {
     return (
       <Tooltip enterTouchDelay={0} title={getLabels().general.error.deviceIsMuted} leaveTouchDelay={2600}>
-        <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} />
+        <VolumeDisabled width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.black} />
       </Tooltip>
     )
   }
 
-  return <VolumeUpCircleIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+  return (
+    <VolumeUpCircleIcon
+      width={theme.spacingsPlain.md}
+      height={theme.spacingsPlain.md}
+      color={theme.colors.background}
+    />
+  )
 }
 
 type AudioPlayerProps = {

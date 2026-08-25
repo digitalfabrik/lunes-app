@@ -181,7 +181,7 @@ const AudioRecordOverlay = ({
     <RNModal visible transparent animationType='fade' onRequestClose={onClose} accessibilityViewIsModal>
       <Container>
         <Icon onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
-          <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+          <CloseIcon width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} color={theme.colors.primary} />
         </Icon>
         <>
           {permissionGranted && (

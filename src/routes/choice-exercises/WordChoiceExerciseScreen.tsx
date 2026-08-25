@@ -1,12 +1,12 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 
 import RouteWrapper from '../../components/RouteWrapper'
-import { ExerciseKeys } from '../../constants/data'
+import { StandardExerciseKeys, StandardExerciseKeyPayload } from '../../constants/data'
 import { useStorageCache } from '../../hooks/useStorage'
 import useTrackExerciseRepetition from '../../hooks/useTrackExerciseRepetition'
-import useTrackMountDuration from '../../hooks/useTrackMountDuration'
+import useTrackForegroundDuration from '../../hooks/useTrackForegroundDuration'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import WordChoiceExercise from './components/WordChoiceExercise'
@@ -22,14 +22,22 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   const isRepetitionExercise = contentType === 'repetition'
 
   const storageCache = useStorageCache()
-  useTrackExerciseRepetition(ExerciseKeys.wordChoiceExercise, unitId)
-  useTrackMountDuration(durationSeconds => {
-    if (unitId !== null) {
+
+  const exerciseKey: StandardExerciseKeyPayload | null = useMemo(
+    () =>
+      unitId !== null
+        ? { type: 'exercise', exercise_type: StandardExerciseKeys.wordChoiceExercise, unit_id: unitId.id }
+        : null,
+    [unitId],
+  )
+
+  useTrackExerciseRepetition(exerciseKey)
+  useTrackForegroundDuration(durationSeconds => {
+    if (exerciseKey !== null) {
       trackEvent(storageCache, {
         type: 'module_duration',
+        exercise_key: exerciseKey,
         duration_seconds: durationSeconds,
-        unit_id: unitId.id,
-        exercise_type: ExerciseKeys.wordChoiceExercise,
       })
     }
   })
