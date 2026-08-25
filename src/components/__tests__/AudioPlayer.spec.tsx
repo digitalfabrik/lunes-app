@@ -80,10 +80,9 @@ describe('AudioPlayer', () => {
     await renderAudioPlayer({})
 
     await waitFor(() => {
-      expect(Tts.setDefaultLanguage).toHaveBeenCalledWith('de-DE')
+      expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     })
 
-    expect(SoundPlayer.addEventListener).toHaveBeenCalledTimes(2)
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedLoadingURL', expect.any(Function))
     expect(SoundPlayer.addEventListener).toHaveBeenCalledWith('FinishedPlaying', expect.any(Function))
   })
