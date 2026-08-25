@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import { ARTICLES } from '../../constants/data'
+import { UserVocabularyItem, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { getStorageItem, loadStorageCache, storageKeys } from '../Storage'
 
 describe('Storage', () => {
@@ -39,5 +41,40 @@ describe('Storage', () => {
     removeListener()
     await storageCache.setItem('analyticsConsent', { consentGiven: true, consentDate: '2024-01-01' })
     expect(listenerCalls).toBe(2)
+  })
+
+  describe('userVocabulary', () => {
+    const persistedItem = {
+      id: { index: 1, type: VocabularyItemTypes.UserCreated },
+      word: 'Hund',
+      article: ARTICLES[1],
+      images: ['image-1-0-2000.jpg', 'image-1-1-2000.jpg'],
+      audio: 'audio-1.m4a',
+      alternatives: [],
+    }
+    const loadedItem: UserVocabularyItem = {
+      ...persistedItem,
+      images: [
+        'file://mock-document-directory-path/image-1-0-2000.jpg',
+        'file://mock-document-directory-path/image-1-1-2000.jpg',
+      ],
+      audio: 'file://mock-document-directory-path/audio-1.m4a',
+    }
+
+    it('Should resolve file names of images and audio to uris when loading', async () => {
+      await AsyncStorage.setItem(storageKeys.userVocabulary, JSON.stringify([persistedItem]))
+      const storageCache = await loadStorageCache()
+      expect(storageCache.getItem('userVocabulary')).toEqual([loadedItem])
+    })
+
+    it('Should persist only the file names of images and audio', async () => {
+      const storageCache = await loadStorageCache()
+      await storageCache.setItem('userVocabulary', [loadedItem])
+      expect(storageCache.getItem('userVocabulary')).toEqual([loadedItem])
+      await expect(AsyncStorage.getItem(storageKeys.userVocabulary)).resolves.toEqual(JSON.stringify([persistedItem]))
+
+      const newStorageCache = await loadStorageCache()
+      expect(newStorageCache.getItem('userVocabulary')).toEqual([loadedItem])
+    })
   })
 })
