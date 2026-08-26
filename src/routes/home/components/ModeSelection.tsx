@@ -134,6 +134,7 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
           <ProgressBar progress={unitsCompleted / numberUnits} />
         </ProgressBarTrack>
         <StartButton
+          testID='start-learning-button'
           onPress={onPress}
           label={labels.home.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
@@ -173,6 +174,7 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
           )}
         </BadgeRow>
         <StartButton
+          testID='start-training-button'
           onPress={onPress}
           label={labels.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
