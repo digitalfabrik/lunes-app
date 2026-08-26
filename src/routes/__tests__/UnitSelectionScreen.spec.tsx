@@ -43,24 +43,27 @@ describe('UnitSelectionScreen', () => {
 
   it('should display the correct title', async () => {
     const { getByText } = renderScreen()
+
     const title = await waitFor(() => getByText(mockUnits[0]!.title))
+
     expect(title).toBeDefined()
   })
 
   it('should display all units', async () => {
     const { getByText } = renderScreen()
 
-    const firstUnit = await waitFor(() => getByText(mockUnits[0]!.title))
-    const secondUnit = getByText(mockUnits[1]!.title)
-    const thirdUnit = getByText(mockUnits[2]!.title)
-    expect(firstUnit).toBeDefined()
-    expect(secondUnit).toBeDefined()
-    expect(thirdUnit).toBeDefined()
+    await waitFor(() => {
+      expect(getByText(mockUnits[0]!.title)).toBeDefined()
+      expect(getByText(mockUnits[1]!.title)).toBeDefined()
+      expect(getByText(mockUnits[2]!.title)).toBeDefined()
+    })
   })
 
   it('should navigate to exercises when list item pressed', async () => {
     const { getByText } = renderScreen()
+
     const unit = await waitFor(() => getByText(mockUnits[2]!.title))
+
     fireEvent.press(unit)
 
     expect(navigation.navigate).toHaveBeenCalledWith('StandardExercises', expect.anything())
@@ -82,7 +85,9 @@ describe('UnitSelectionScreen', () => {
 
       const { queryByText } = renderScreen()
 
-      expect(queryByText('Mehr Infos hier')).toBeNull()
+      await waitFor(() => {
+        expect(queryByText('Mehr Infos hier')).toBeNull()
+      })
     })
 
     it('should not show ProgressHint if the job is in notMigratedSelectedJobs but not yet migrated', async () => {
@@ -90,7 +95,9 @@ describe('UnitSelectionScreen', () => {
 
       const { queryByText } = renderScreen({ migrated: false })
 
-      expect(queryByText('Mehr Infos hier')).toBeNull()
+      await waitFor(() => {
+        expect(queryByText('Mehr Infos hier')).toBeNull()
+      })
     })
 
     it('should not show ProgressHint if notMigratedSelectedJobs is empty', async () => {
@@ -98,7 +105,9 @@ describe('UnitSelectionScreen', () => {
 
       const { queryByText } = renderScreen()
 
-      expect(queryByText('Mehr Infos hier')).toBeNull()
+      await waitFor(() => {
+        expect(queryByText('Mehr Infos hier')).toBeNull()
+      })
     })
   })
 })
