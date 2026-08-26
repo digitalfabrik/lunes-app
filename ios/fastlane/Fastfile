@@ -165,7 +165,9 @@ platform :ios do
       automatic_release: true,
       force: true,
       skip_metadata: false,
-      skip_screenshots: true,
+      skip_screenshots: false,
+      # App Store Connect copies the previous version's screenshots into the new one, so they have to be replaced
+      overwrite_screenshots: true,
       skip_binary_upload: true,
       metadata_path: "./fastlane/metadata",
       precheck_include_in_app_purchases: false, # We do not have inapp purchases
