@@ -46,28 +46,42 @@ describe('JobSelection', () => {
       })
     })
   })
-
   it('should confirm selection', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
     await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute()} />,
     )
+
+    await waitFor(() => {
+      expect(getByText(mockJobs()[0]!.name)).toBeDefined()
+    })
+
     const button = getByText(getLabels().scopeSelection.confirmSelection)
     fireEvent.press(button)
 
-    expect(navigation.reset).toHaveBeenCalledWith({
-      index: 0,
-      routes: [{ name: 'BottomTabNavigator' }],
+    await waitFor(() => {
+      expect(navigation.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'BottomTabNavigator' }],
+      })
     })
   })
-
   it('should hide welcome message and buttons for non initial view', async () => {
+    mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
     await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
-    const { queryByText } = renderWithStorageCache(
+
+    const { queryByText, getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,
     )
+
+    await waitFor(() => {
+      expect(getByText(mockJobs()[0]!.name)).toBeDefined()
+    })
+
     expect(queryByText(getLabels().scopeSelection.welcome)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.skipSelection)).toBeNull()
     expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
@@ -85,7 +99,9 @@ describe('JobSelection', () => {
     const button = await waitFor(() => getByText(mockJobs()[0]!.name))
     fireEvent.press(button)
 
-    expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0]!.id.id])
+    await waitFor(() => {
+      expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0]!.id.id])
+    })
   })
 
   it('should unselect job on initial selection', async () => {
