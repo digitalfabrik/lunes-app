@@ -37,7 +37,7 @@ Then to take the screenshots:
 
 ### iOS
 
-All screenshots are taken on an iPhone 16 Pro.
+All screenshots are taken on an iPhone 17 Pro Max, because the App Store requires the 6.9" display size.
 To take the screenshots:
 
 1. Start the simulator

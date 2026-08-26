@@ -16,11 +16,11 @@ steps:
   - run:
       name: Boot simulator
       command: |
-        xcrun simctl boot "iPhone 16 Pro" || true
-        xcrun simctl bootstatus "iPhone 16 Pro" -b
+        xcrun simctl boot "iPhone 17 Pro Max" || true
+        xcrun simctl bootstatus "iPhone 17 Pro Max" -b
   - run:
       name: Build and install release app on simulator
-      command: yarn ios:production --simulator "iPhone 16 Pro"
+      command: yarn ios:production --simulator "iPhone 17 Pro Max"
   - run:
       name: Capture screenshots
       command: yarn screenshots:ios
