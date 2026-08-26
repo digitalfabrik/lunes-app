@@ -11,10 +11,6 @@ steps:
   - restore_ruby_cache:
       directory: ios
   - run:
-      name: Parse german ios release notes
-      command: yarn app-toolbelt v0 release-notes prepare-metadata lunes appstore ../ios/fastlane/metadata/
-      working_directory: tools
-  - run:
       name: '[FL] TestFlight Upload'
       command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
       working_directory: ios

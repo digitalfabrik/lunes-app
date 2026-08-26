@@ -518,10 +518,6 @@ jobs:
             - restore_ruby_cache:
                 directory: ios
             - run:
-                command: yarn app-toolbelt v0 release-notes prepare-metadata lunes appstore ../ios/fastlane/metadata/
-                name: Parse german ios release notes
-                working_directory: tools
-            - run:
                 command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
                 name: '[FL] TestFlight Upload'
                 working_directory: ios
@@ -760,6 +756,7 @@ jobs:
     screenshot_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
+            SIMULATOR_DEVICE: iPhone 17 Pro Max
             TOTAL_CPUS: 6
         macos:
             xcode: 26.3.0
@@ -774,11 +771,11 @@ jobs:
             - install_maestro
             - run:
                 command: |
-                    xcrun simctl boot "iPhone 17 Pro Max" || true
-                    xcrun simctl bootstatus "iPhone 17 Pro Max" -b
+                    xcrun simctl boot "$SIMULATOR_DEVICE" || true
+                    xcrun simctl bootstatus "$SIMULATOR_DEVICE" -b
                 name: Boot simulator
             - run:
-                command: yarn ios:production --simulator "iPhone 17 Pro Max"
+                command: yarn ios:production --simulator "$SIMULATOR_DEVICE"
                 name: Build and install release app on simulator
             - run:
                 command: yarn screenshots:ios

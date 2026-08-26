@@ -5,6 +5,7 @@ resource_class: m4pro.medium
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
   TOTAL_CPUS: 6
+  SIMULATOR_DEVICE: iPhone 17 Pro Max
 shell: /bin/bash --login -o pipefail
 steps:
   - checkout
@@ -16,11 +17,11 @@ steps:
   - run:
       name: Boot simulator
       command: |
-        xcrun simctl boot "iPhone 17 Pro Max" || true
-        xcrun simctl bootstatus "iPhone 17 Pro Max" -b
+        xcrun simctl boot "$SIMULATOR_DEVICE" || true
+        xcrun simctl bootstatus "$SIMULATOR_DEVICE" -b
   - run:
       name: Build and install release app on simulator
-      command: yarn ios:production --simulator "iPhone 17 Pro Max"
+      command: yarn ios:production --simulator "$SIMULATOR_DEVICE"
   - run:
       name: Capture screenshots
       command: yarn screenshots:ios
