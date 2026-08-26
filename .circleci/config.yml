@@ -509,11 +509,6 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 26.3.0
-        parameters:
-            production_delivery:
-                default: false
-                description: Whether to deliver the build to production.
-                type: boolean
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
@@ -526,20 +521,10 @@ jobs:
                 command: yarn app-toolbelt v0 release-notes prepare-metadata lunes appstore ../ios/fastlane/metadata/
                 name: Parse german ios release notes
                 working_directory: tools
-            - when:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane ios upload_to_appstoreconnect ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-                        name: '[FL] App Store Connect Upload'
-                        working_directory: ios
-            - unless:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
-                        name: '[FL] TestFlight Upload'
-                        working_directory: ios
+            - run:
+                command: bundle exec fastlane upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
+                name: '[FL] TestFlight Upload'
+                working_directory: ios
             - run:
                 command: tools/sentry-release "app.lunes" "${NEW_VERSION_NAME}" ~/attached_workspace/sourcemaps/ --version-code "${NEW_VERSION_CODE}"
                 name: Sentry Upload
@@ -789,11 +774,11 @@ jobs:
             - install_maestro
             - run:
                 command: |
-                    xcrun simctl boot "iPhone 16 Pro" || true
-                    xcrun simctl bootstatus "iPhone 16 Pro" -b
+                    xcrun simctl boot "iPhone 17 Pro Max" || true
+                    xcrun simctl bootstatus "iPhone 17 Pro Max" -b
                 name: Boot simulator
             - run:
-                command: yarn ios:production --simulator "iPhone 16 Pro"
+                command: yarn ios:production --simulator "iPhone 17 Pro Max"
                 name: Build and install release app on simulator
             - run:
                 command: yarn screenshots:ios
@@ -953,7 +938,6 @@ workflows:
                     - mattermost
                     - tuerantuer-apple
                     - sentry
-                production_delivery: false
                 requires:
                     - build_ios
             - notify_github:
