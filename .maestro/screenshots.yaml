@@ -51,8 +51,7 @@ name: Lunes store screenshots
 
 # Open the unit list (UnitSelection) for the first job.
 - tapOn:
-    text: 'Übung starten'
-    index: 0
+    id: 'start-learning-button'
 - extendedWaitUntil:
     notVisible:
       id: 'loading'
@@ -106,9 +105,9 @@ name: Lunes store screenshots
 - tapOn:
     text: 'Start.*'
     repeat: 2
+- scroll
 - tapOn:
-    text: 'Übung starten'
-    index: 1
+    id: 'start-training-button'
 - extendedWaitUntil:
     notVisible:
       id: 'loading'
