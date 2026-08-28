@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+shopt -s nullglob
+
+PLATFORM="$1"
+OUTPUT_DIR="$2"
+
+# Maestro rejects takeScreenshot paths that point outside the run's own artifact bundle,
+# so the flow only names the files and we collect them from the bundle afterwards
+ARTIFACTS_DIR="$(mktemp -d)"
+trap 'rm -rf "$ARTIFACTS_DIR"' EXIT
+
+maestro --platform "$PLATFORM" test \
+  --debug-output "$ARTIFACTS_DIR" \
+  --flatten-debug-output \
+  .maestro/screenshots.yaml
+
+captured=("$ARTIFACTS_DIR"/*/takeScreenshot/*.png)
+expected=$(grep -c '^- takeScreenshot:' .maestro/screenshots.yaml)
+
+# Copying a partial capture over the previous set would still look complete to everyone downstream
+if [ "${#captured[@]}" -ne "$expected" ]; then
+  echo "Expected $expected screenshots, captured ${#captured[@]}."
+  exit 1
+fi
+
+rm -f "$OUTPUT_DIR"/*.png
+cp "${captured[@]}" "$OUTPUT_DIR"/
