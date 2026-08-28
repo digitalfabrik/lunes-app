@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { HeartCircleIconGrey, HeartCircleIconGreyFilled } from '../../assets/images'
+import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/images'
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../hooks/useStorage'
 import VocabularyItem from '../models/VocabularyItem'
@@ -46,9 +46,9 @@ const FavoriteButton = ({ vocabularyItem }: FavoriteButtonProps): ReactElement |
   return (
     <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress} accessibilityLabel={isFavorite ? remove : add}>
       {isFavorite ? (
-        <HeartCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+        <StarCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
       ) : (
-        <HeartCircleIconGrey width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
+        <StarCircleIconGrey width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
       )}
     </Button>
   )

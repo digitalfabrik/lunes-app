@@ -8,15 +8,9 @@ import UserVocabularyOverviewScreen from '../UserVocabularyOverviewScreen'
 describe('UserVocabularyOverviewScreen', () => {
   const navigation = createNavigationMock<'UserVocabularyOverview'>()
   it('should show content', () => {
-    const { title, description, list, listDescription, create, practice, practiceDescription } =
-      getLabels().userVocabulary.overview
     const { getByText } = render(<UserVocabularyOverviewScreen navigation={navigation} />)
-    expect(getByText(title)).toBeDefined()
-    expect(getByText(description)).toBeDefined()
-    expect(getByText(list)).toBeDefined()
-    expect(getByText(listDescription)).toBeDefined()
-    expect(getByText(create)).toBeDefined()
-    expect(getByText(practice)).toBeDefined()
-    expect(getByText(practiceDescription)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.list)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.create)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.overview.practice)).toBeDefined()
   })
 })

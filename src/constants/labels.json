@@ -248,7 +248,7 @@
     "remove": "Aus Favoriten entfernen",
     "emptyState": {
       "title": "Noch keine Favoriten gespeichert.",
-      "subtitle": "Tippe bei einer Vokabel auf das Herz – zum Beispiel in der Wortliste, in der Suche oder in den Übungen. So merkst du sie dir hier für später und kannst sie unter „Vertiefen“ wiederholen."
+      "subtitle": "Tippe bei einer Vokabel auf den Stern – zum Beispiel in der Wortliste, in der Suche oder in den Übungen. So merkst du sie dir hier für später und kannst sie unter „Vertiefen“ wiederholen."
     }
   },
   "dictionary": {
@@ -337,13 +337,9 @@
     "collection": "Sammlung",
     "create": "Eigenes Wort erstellen",
     "overview": {
-      "title": "Deine eigenen Wörter",
-      "description": "Lege hier Wörter an, die du zusätzlich lernen möchtest – mit eigenem Bild und Audio. Du kannst sie jederzeit ansehen, bearbeiten und üben.",
       "list": "Vokabelliste",
-      "listDescription": "Alle eigenen Wörter ansehen und bearbeiten",
       "create": "Vokabeln erstellen",
-      "practice": "Vokabeln üben",
-      "practiceDescription": "Eigene Wörter in Übungen trainieren"
+      "practice": "Vokabeln üben"
     },
     "creation": {
       "headline": "Vokabel erstellen",
