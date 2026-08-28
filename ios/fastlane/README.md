@@ -31,14 +31,6 @@ Create a release build
 
 Upload iOS App to BrowserStack
 
-### ios upload_to_appstoreconnect
-
-```sh
-[bundle exec] fastlane ios upload_to_appstoreconnect
-```
-
-Deliver the app to App Store Connect. The app is submitted for review and released automatically.
-
 ### ios upload_to_test_flight
 
 ```sh

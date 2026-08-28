@@ -37,11 +37,11 @@ Then to take the screenshots:
 
 ### iOS
 
-All screenshots are taken on an iPhone 16 Pro.
+All screenshots are taken on an iPhone 17 Pro Max, because the App Store requires the 6.9" display size.
 To take the screenshots:
 
 1. Start the simulator
-2. Build the app with `yarn ios:production`
+2. Build the app with `yarn ios:production --simulator "iPhone 17 Pro Max"`
 3. Take the screenshots with `yarn screenshots:ios`
 
 ## In CI

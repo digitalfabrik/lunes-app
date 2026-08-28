@@ -37,7 +37,6 @@ jobs:
         - mattermost
         - tuerantuer-apple
         - sentry
-      production_delivery: false
       requires:
         - build_ios
   - notify_github:
