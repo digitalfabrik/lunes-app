@@ -5,6 +5,7 @@ import { StarCircleIconGrey, StarCircleIconGreyFilled } from '../../assets/image
 import useRepetitionService from '../hooks/useRepetitionService'
 import useStorage, { useStorageCache } from '../hooks/useStorage'
 import VocabularyItem from '../models/VocabularyItem'
+import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
 import { addFavorite, isFavorite as getIsFavorite, removeFavorite } from '../services/storageUtils'
 import PressableOpacity from './PressableOpacity'
@@ -40,8 +41,10 @@ const FavoriteButton = ({ vocabularyItem }: FavoriteButtonProps): ReactElement |
     }
   }
 
+  const { add, remove } = getLabels().favorites
+
   return (
-    <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress}>
+    <Button testID={isFavorite ? 'remove' : 'add'} onPress={onPress} accessibilityLabel={isFavorite ? remove : add}>
       {isFavorite ? (
         <StarCircleIconGreyFilled width={theme.spacingsPlain.lg} height={theme.spacingsPlain.lg} />
       ) : (
