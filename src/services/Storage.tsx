@@ -2,7 +2,7 @@ import { DocumentDirectoryPath } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, ReactElement } from 'react'
 
-import { Favorite, Progress } from '../constants/data'
+import { Favorite, Progress, VocabularyNote } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
 import { UserVocabularyItem } from '../models/VocabularyItem'
 import { AnalyticsConsent } from './AnalyticsService'
@@ -29,6 +29,8 @@ export type Storage = {
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
   favorites: Favorite[]
+  // Personal notes on vocabulary items, only ever stored on the device
+  vocabularyNotes: VocabularyNote[]
   // Jobs that were started before the CMS migration and may have lost progress
   notMigratedSelectedJobs: number[]
   // A unique identifier for the installation
@@ -52,6 +54,7 @@ export const newDefaultStorage = (): Storage => ({
   userVocabulary: [],
   nextUserVocabularyId: 1,
   favorites: [],
+  vocabularyNotes: [],
   notMigratedSelectedJobs: [],
   installationId: null,
 })
@@ -71,6 +74,7 @@ export const storageKeys: Record<StorageKey, string> = {
   userVocabulary: 'userVocabulary',
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
+  vocabularyNotes: 'vocabularyNotes',
   notMigratedSelectedJobs: 'notMigratedSelectedJobs',
   installationId: 'installationId',
 }
@@ -205,6 +209,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
+    vocabularyNotes: getStorageItem('vocabularyNotes'),
     notMigratedSelectedJobs: getStorageItem('notMigratedSelectedJobs'),
     installationId: getStorageItem('installationId'),
   })
