@@ -528,6 +528,8 @@ jobs:
     llm-pr-review:
         docker:
             - image: cimg/python:3.11
+        environment:
+            LLM_REVIEW_PR_NUMBER: << pipeline.parameters.llm_review_pr_number >>
         resource_class: small
         steps:
             - checkout
@@ -788,6 +790,9 @@ jobs:
                 root: .
             - notify
 parameters:
+    llm_review_pr_number:
+        default: ""
+        type: string
     run_browserstack_delivery:
         default: false
         type: boolean
@@ -802,6 +807,9 @@ parameters:
             - skip
         type: enum
     run_dev_delivery:
+        default: false
+        type: boolean
+    run_llm_review:
         default: false
         type: boolean
     run_promote:
@@ -846,11 +854,6 @@ workflows:
             - check:
                 context:
                     - mattermost
-            - llm-pr-review:
-                context:
-                    - mattermost
-                    - deliverino
-                    - digitalfabrik-llm-api
         when:
             and:
                 - << pipeline.parameters.run_commit >>
@@ -945,6 +948,14 @@ workflows:
                     - deliver_android
                     - deliver_ios
         when: << pipeline.parameters.run_dev_delivery >>
+    llm_review:
+        jobs:
+            - llm-pr-review:
+                context:
+                    - mattermost
+                    - deliverino
+                    - digitalfabrik-llm-api
+        when: << pipeline.parameters.run_llm_review >>
     promote:
         jobs:
             - promote_android:
