@@ -64,17 +64,13 @@ const CharacterCount = styled(HintSecondary)<{ isAtLimit: boolean }>`
   ${props => props.isAtLimit && `color: ${props.theme.colors.incorrect};`}
 `
 
-// Native maxLength counts UTF-16 code units, so the limit is enforced here to count an emoji once
-const countCharacters = (text: string): number => [...text].length
+// Enforced here rather than through native maxLength, which counts code units and so an emoji twice
+const countCodePoints = (text: string): number => [...text].length
 
-const truncateToCharacterLimit = (text: string, limit: number): string => [...text].slice(0, limit).join('')
+const truncateToCodePointLimit = (text: string, limit: number): string => [...text].slice(0, limit).join('')
 
-const characterCountDescription = (text: string, limit: number): string =>
-  getLabels()
-    .general.characterCount.replace('{{count}}', countCharacters(text).toString())
-    .replace('{{limit}}', limit.toString())
-
-const characterCountText = (text: string, limit: number): string => `${countCharacters(text)} / ${limit}`
+const characterCountDescription = (count: number, limit: number): string =>
+  getLabels().general.characterCount.replace('{{count}}', count.toString()).replace('{{limit}}', limit.toString())
 
 type CustomTextInputProps = {
   value: string
@@ -110,14 +106,16 @@ const CustomTextInput = ({
   const showErrorValidation = errorMessage !== undefined
   const hasCharacterLimit = characterLimit !== undefined
   const multiLine = lines > 1
+  const characterCount = hasCharacterLimit ? countCodePoints(value) : 0
   const errorText = showErrorValidation && errorMessage.length > 0 ? errorMessage : undefined
 
   const changeText = (text: string): void => {
-    if (!hasCharacterLimit) {
+    if (characterLimit === undefined) {
       onChangeText(text)
       return
     }
-    onChangeText(truncateToCharacterLimit(text, characterLimit))
+    const isWithinLimit = text.length <= characterLimit
+    onChangeText(isWithinLimit ? text : truncateToCodePointLimit(text, characterLimit))
   }
 
   const getBorderColor = (): string => {
@@ -165,10 +163,10 @@ const CustomTextInput = ({
           {hint !== undefined && <HintText>{hint}</HintText>}
           {hasCharacterLimit && (
             <CharacterCount
-              isAtLimit={countCharacters(value) >= characterLimit}
-              accessibilityLabel={characterCountDescription(value, characterLimit)}
+              isAtLimit={characterCount >= characterLimit}
+              accessibilityLabel={characterCountDescription(characterCount, characterLimit)}
             >
-              {characterCountText(value, characterLimit)}
+              {`${characterCount} / ${characterLimit}`}
             </CharacterCount>
           )}
         </FooterContainer>

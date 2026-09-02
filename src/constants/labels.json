@@ -329,7 +329,7 @@
     }
   },
   "notes": {
-    "sectionTitle": "Meine Notiz",
+    "heading": "Meine Notiz",
     "newNote": "Neue Notiz",
     "add": "Notiz hinzufügen",
     "edit": "Notiz bearbeiten",
@@ -337,9 +337,10 @@
     "languageHint": "Schreibe in jeder Sprache.",
     "placeholder": "Schreibe deine Notiz - Beispiel, Merksatz oder Übersetzung …",
     "emptyError": "Notiz kann nicht leer sein.",
-    "confirmDeletionTitle": "Notiz löschen?",
-    "confirmDeletion": "Möchtest du diese Notiz wirklich löschen? Das kann nicht rückgängig gemacht werden.",
-    "confirm": "Löschen",
+    "showMore": "Mehr anzeigen",
+    "deletionTitle": "Notiz löschen?",
+    "deletionWarning": "Möchtest du diese Notiz wirklich löschen? Das kann nicht rückgängig gemacht werden.",
+    "confirmDeletion": "Löschen",
     "cancel": "Abbrechen",
     "save": "Notiz speichern"
   },

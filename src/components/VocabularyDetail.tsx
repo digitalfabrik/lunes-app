@@ -21,7 +21,7 @@ const VocabularyDetail = ({ vocabularyItem }: VocabularyDetailProps): ReactEleme
     <VocabularyItemImageSection vocabularyItem={vocabularyItem} />
     <ItemContainer>
       <WordItem answer={{ word: vocabularyItem.word, article: vocabularyItem.article }} isPrimaryContent />
-      <VocabularyNoteSection vocabularyItem={vocabularyItem} />
+      <VocabularyNoteSection wordId={vocabularyItem.id} />
     </ItemContainer>
   </>
 )

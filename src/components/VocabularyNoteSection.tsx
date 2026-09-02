@@ -1,35 +1,23 @@
 import React, { ReactElement, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
-import { AddCircleIcon, PenIcon, TrashIcon } from '../../assets/images'
-import useStorage, { useStorageCache } from '../hooks/useStorage'
-import VocabularyItem from '../models/VocabularyItem'
+import { PenIcon, TrashIcon } from '../../assets/images'
+import { useStorageCache } from '../hooks/useStorage'
+import useVocabularyNote from '../hooks/useVocabularyNote'
+import { VocabularyItemId } from '../models/VocabularyItem'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
-import { deleteVocabularyNote, getVocabularyNote, saveVocabularyNote } from '../services/storageUtils'
+import { deleteVocabularyNote } from '../services/storageUtils'
+import AddVocabularyNoteButton from './AddVocabularyNoteButton'
 import CircularIconButton from './CircularIconButton'
-import CustomTextInput from './CustomTextInput'
 import Modal from './Modal'
-import PressableOpacity from './PressableOpacity'
+import VocabularyNoteCard from './VocabularyNoteCard'
+import VocabularyNoteEditor from './VocabularyNoteEditor'
 import { ContentSecondary, ContentText } from './text/Content'
-import { SubheadingText } from './text/Subheading'
-
-const MAX_NOTE_CHARACTERS = 500
-const NOTE_INPUT_LINES = 8
+import { uppercase } from './text/uppercase'
 
 const Root = styled.View`
   padding-top: ${props => props.theme.spacings.sm};
-`
-
-const AddNoteRow = styled(PressableOpacity)`
-  align-items: center;
-  gap: ${props => props.theme.spacings.xs};
-  padding: ${props => props.theme.spacings.sm} 0;
-`
-
-const AddNoteLabel = styled(SubheadingText)`
-  font-size: ${props => props.theme.fonts.largeFontSize};
-  color: ${props => props.theme.colors.primary};
 `
 
 const HeadingRow = styled.View`
@@ -40,20 +28,11 @@ const HeadingRow = styled.View`
 `
 
 const Heading = styled(ContentSecondary)`
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
+  ${uppercase};
 `
 
-const NoteCard = styled(PressableOpacity)`
-  background-color: ${props => props.theme.colors.backgroundAccent};
+const BorderedVocabularyNoteCard = styled(VocabularyNoteCard)`
   border: 1px solid ${props => props.theme.colors.backgroundHigh};
-  border-radius: ${props => props.theme.spacings.xs};
-  padding: ${props => props.theme.spacings.sm};
-`
-
-// The card is a row, so the note has to shrink to wrap instead of overflowing
-const NoteText = styled(ContentText)`
-  flex: 1;
 `
 
 const ActionContainer = styled.View`
@@ -70,84 +49,42 @@ const DeletionExplanation = styled(ContentSecondary)`
   text-align: center;
 `
 
-const TextInputContainer = styled.View`
-  width: 85%;
-  margin-bottom: ${props => props.theme.spacings.lg};
-`
-
-// Text and flag in one state, so that closing the editor cannot leave the flag behind and flash
-// the empty-note error while the modal fades out
-type NoteDraft = {
-  text: string
-  hasBeenEdited: boolean
-}
-
 type VocabularyNoteSectionProps = {
-  vocabularyItem: VocabularyItem
+  wordId: VocabularyItemId
 }
 
-const VocabularyNoteSection = ({ vocabularyItem }: VocabularyNoteSectionProps): ReactElement => {
+const VocabularyNoteSection = ({ wordId }: VocabularyNoteSectionProps): ReactElement => {
   const theme = useTheme()
   const storageCache = useStorageCache()
-  const [vocabularyNotes] = useStorage('vocabularyNotes')
-  const [noteDraft, setNoteDraft] = useState<NoteDraft | null>(null)
+  const { note, isEditorOpen, openEditor, closeEditor } = useVocabularyNote(wordId)
   const [isDeletionConfirmationVisible, setIsDeletionConfirmationVisible] = useState<boolean>(false)
 
   const {
-    sectionTitle,
-    newNote,
-    add,
+    heading,
     edit,
     delete: deleteLabel,
-    languageHint,
-    placeholder,
-    emptyError,
-    confirmDeletionTitle,
+    deletionTitle,
+    deletionWarning,
     confirmDeletion,
-    confirm,
     cancel,
-    save,
   } = getLabels().notes
 
-  const note = getVocabularyNote(vocabularyNotes, vocabularyItem.id)
-  const isEditorVisible = noteDraft !== null
-  const noteDraftText = noteDraft?.text ?? ''
-  const isNoteDraftBlank = noteDraftText.trim().length === 0
-  const shouldShowEmptyError = (noteDraft?.hasBeenEdited ?? false) && isNoteDraftBlank
-
-  const openEditor = (initialText: string): void =>
-    setNoteDraft({ text: initialText, hasBeenEdited: initialText.length > 0 })
-
-  const changeNoteDraft = (text: string): void => setNoteDraft({ text, hasBeenEdited: true })
-
-  const closeEditor = (): void => setNoteDraft(null)
-
-  const submitNote = (): void => {
-    saveVocabularyNote(storageCache, vocabularyItem.id, noteDraftText).catch(reportError)
-    closeEditor()
-  }
-
   const deleteNote = (): void => {
-    deleteVocabularyNote(storageCache, vocabularyItem.id).catch(reportError)
+    deleteVocabularyNote(storageCache, wordId).catch(reportError)
     setIsDeletionConfirmationVisible(false)
   }
 
   const noteContent = (): ReactElement => {
     if (note === undefined) {
-      return (
-        <AddNoteRow onPress={() => openEditor('')} accessibilityLabel={add}>
-          <AddCircleIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.primary} />
-          <AddNoteLabel>{add}</AddNoteLabel>
-        </AddNoteRow>
-      )
+      return <AddVocabularyNoteButton onPress={openEditor} />
     }
 
     return (
       <>
         <HeadingRow>
-          <Heading>{sectionTitle}</Heading>
+          <Heading>{heading}</Heading>
           <ActionContainer>
-            <NoteIconButton onPress={() => openEditor(note.text)} accessibilityLabel={edit} hasBorder>
+            <NoteIconButton onPress={openEditor} accessibilityLabel={edit} hasBorder>
               <PenIcon testID='edit-note-icon' color={theme.colors.text} />
             </NoteIconButton>
             <NoteIconButton
@@ -159,9 +96,9 @@ const VocabularyNoteSection = ({ vocabularyItem }: VocabularyNoteSectionProps): 
             </NoteIconButton>
           </ActionContainer>
         </HeadingRow>
-        <NoteCard onPress={() => openEditor(note.text)}>
-          <NoteText>{note.text}</NoteText>
-        </NoteCard>
+        <BorderedVocabularyNoteCard onPress={openEditor}>
+          <ContentText>{note.text}</ContentText>
+        </BorderedVocabularyNoteCard>
       </>
     )
   }
@@ -169,38 +106,16 @@ const VocabularyNoteSection = ({ vocabularyItem }: VocabularyNoteSectionProps): 
   return (
     <>
       <Root>{noteContent()}</Root>
-      <Modal
-        testID='noteEditorModal'
-        visible={isEditorVisible}
-        onClose={closeEditor}
-        text={note ? edit : newNote}
-        confirmationButtonText={save}
-        cancelButtonText={cancel}
-        confirmationAction={submitNote}
-        confirmationDisabled={isNoteDraftBlank}
-      >
-        <TextInputContainer>
-          <CustomTextInput
-            value={noteDraftText}
-            onChangeText={changeNoteDraft}
-            placeholder={placeholder}
-            lines={NOTE_INPUT_LINES}
-            characterLimit={MAX_NOTE_CHARACTERS}
-            hint={languageHint}
-            errorMessage={shouldShowEmptyError ? emptyError : ''}
-            clearable
-          />
-        </TextInputContainer>
-      </Modal>
+      {isEditorOpen && <VocabularyNoteEditor wordId={wordId} existingText={note?.text ?? null} onClose={closeEditor} />}
       <Modal
         visible={isDeletionConfirmationVisible}
         onClose={() => setIsDeletionConfirmationVisible(false)}
-        text={confirmDeletionTitle}
-        confirmationButtonText={confirm}
+        text={deletionTitle}
+        confirmationButtonText={confirmDeletion}
         cancelButtonText={cancel}
         confirmationAction={deleteNote}
       >
-        <DeletionExplanation>{confirmDeletion}</DeletionExplanation>
+        <DeletionExplanation>{deletionWarning}</DeletionExplanation>
       </Modal>
     </>
   )
