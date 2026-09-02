@@ -119,10 +119,10 @@ Lanes for Android live in [../android/fastlane](../android/fastlane) and for iOS
 
 ## Environment Variables and Dependencies
 
-| Variable               | Description                    | Where do I get it from? | Reference                                                                                  |                                                  |
-| ---------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| DELIVERINO_PRIVATE_KEY | Base64 encoded PEM private key | Password Manager        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
-| CIRCLECI_API_TOKEN     | CircleCI Personal API Token, stored as a **GitHub** repository secret. Used by the GitHub Actions workflow to trigger the [llm_review](#llm-pull-request-review) workflow. | [CircleCI user settings](https://app.circleci.com/settings/user/tokens) | [Managing API tokens](https://circleci.com/docs/managing-api-tokens/) | |
+| Variable               | Description                                                                                                                                                                | Where do I get it from?                                                 | Reference                                                                                  |                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| DELIVERINO_PRIVATE_KEY | Base64 encoded PEM private key                                                                                                                                             | Password Manager                                                        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
+| CIRCLECI_API_TOKEN     | CircleCI Personal API Token, stored as a **GitHub** repository secret. Used by the GitHub Actions workflow to trigger the [llm_review](#llm-pull-request-review) workflow. | [CircleCI user settings](https://app.circleci.com/settings/user/tokens) | [Managing API tokens](https://circleci.com/docs/managing-api-tokens/)                      |                                                  |
 
 ### Android Variables
 
