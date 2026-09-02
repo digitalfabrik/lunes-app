@@ -2,6 +2,7 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
 
+import useKeyboard from '../../hooks/useKeyboard'
 import render from '../../testing/render'
 import Modal, { ModalProps } from '../Modal'
 
@@ -44,5 +45,15 @@ describe('Modal', () => {
   it('should check for children if available', () => {
     const { getByText } = render(<Modal {...defaultProps} />)
     expect(getByText(childText)).toBeTruthy()
+  })
+
+  it('should trigger action on confirm while the keyboard is open', () => {
+    jest.mocked(useKeyboard).mockReturnValueOnce({ isKeyboardVisible: true, keyboardHeight: 300 })
+    const { getByText } = render(<Modal {...defaultProps} />)
+
+    fireEvent.press(getByText('confirm'))
+
+    expect(confirmationAction).toHaveBeenCalled()
+    expect(onClose).not.toHaveBeenCalled()
   })
 })

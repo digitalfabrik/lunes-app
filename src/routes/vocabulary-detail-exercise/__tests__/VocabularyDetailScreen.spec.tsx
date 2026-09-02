@@ -57,4 +57,10 @@ describe('VocabularyDetailScreen', () => {
 
     expect(getByText(vocabularyItems[0]!.word)).toHaveStyle({ fontSize: FONT_SIZES.heading })
   })
+
+  it('should offer to add a note', () => {
+    const { getByText } = render(<VocabularyDetailExerciseScreen route={getRoute(0)} navigation={navigation} />)
+
+    expect(getByText(getLabels().notes.add)).toBeDefined()
+  })
 })

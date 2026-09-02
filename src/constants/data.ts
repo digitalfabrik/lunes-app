@@ -139,6 +139,11 @@ export type SimpleResult = (typeof SIMPLE_RESULTS)[keyof typeof SIMPLE_RESULTS]
 
 export type Favorite = VocabularyItemId
 
+export type VocabularyNote = {
+  wordId: VocabularyItemId
+  text: string
+}
+
 export type Answer = {
   word: string
   article: Article

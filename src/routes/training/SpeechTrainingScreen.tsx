@@ -410,6 +410,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
       <WordResultIndicator
         isVisible={isSimpleResult}
         isCorrect={isCorrect}
+        wordId={currentWord.id}
         label={isCorrect ? labels.correct : labels.incorrect}
         content={wordContent}
         button={resultButton}

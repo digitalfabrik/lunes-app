@@ -1,0 +1,6 @@
+issue_key: 1209
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Zu jeder Vokabel kann jetzt eine persönliche Notiz gespeichert werden.
