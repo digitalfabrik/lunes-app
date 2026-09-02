@@ -11,6 +11,7 @@ import CheatMode from '../../components/CheatMode'
 import ExerciseHeader from '../../components/ExerciseHeader'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
+import VocabularyNotePreview from '../../components/VocabularyNotePreview'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
 import {
   BUTTONS_THEME,
@@ -143,6 +144,10 @@ export const stateReducer = (state: State, action: Action): State => {
     }
   }
 }
+
+const NoteContainer = styled.View`
+  padding: ${props => props.theme.spacings.sm} ${props => props.theme.spacings.sm} 0;
+`
 
 const QuestionContainer = styled.View`
   flex-flow: row wrap;
@@ -280,6 +285,12 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
         </QuestionContainer>
 
         <ImageGrid items={imageGridItems} onPress={item => dispatch({ type: 'selectAnswer', key: item })} />
+
+        {isResolved && (
+          <NoteContainer>
+            <VocabularyNotePreview wordId={word.id} hasBorder />
+          </NoteContainer>
+        )}
       </TrainingExerciseContainer>
     </>
   )
