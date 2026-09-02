@@ -41,12 +41,12 @@ const VocabularyNotePreview = ({ wordId, hasBorder = false }: VocabularyNotePrev
   const { note, isEditorOpen, openEditor, closeEditor } = useVocabularyNote(wordId)
   const [isNoteTruncated, setIsNoteTruncated] = useState<boolean>(false)
 
-  const { heading, edit, showMore } = getLabels().notes
+  const { heading, showMore } = getLabels().notes
 
   return (
     <>
       {note ? (
-        <PreviewCard onPress={openEditor} accessibilityLabel={edit} hasBorder={hasBorder}>
+        <PreviewCard onPress={openEditor} hasBorder={hasBorder}>
           <Heading>{heading}</Heading>
           <ContentText
             numberOfLines={MAX_PREVIEW_LINES}

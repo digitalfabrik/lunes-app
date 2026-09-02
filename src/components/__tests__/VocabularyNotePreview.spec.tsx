@@ -10,7 +10,7 @@ import VocabularyNotePreview from '../VocabularyNotePreview'
 
 describe('VocabularyNotePreview', () => {
   const wordId = new VocabularyItemBuilder(1).build()[0]!.id
-  const { add, edit, heading, showMore, placeholder } = getLabels().notes
+  const { add, heading, showMore, placeholder } = getLabels().notes
   const noteText = 'Auf der Baustelle gelernt'
 
   let storageCache: StorageCache
@@ -66,7 +66,7 @@ describe('VocabularyNotePreview', () => {
     it('should open the editor pre-filled when tapped', async () => {
       const result = renderResult()
 
-      await act(async () => fireEvent.press(result.getByLabelText(edit)))
+      await act(async () => fireEvent.press(result.getByText(noteText)))
 
       expect(result.getByPlaceholderText(placeholder).props.value).toBe(noteText)
     })
