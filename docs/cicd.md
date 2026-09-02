@@ -4,6 +4,7 @@
 
 - [Deliver a new release by triggering the CI](#triggering-a-delivery-using-the-ci)
 - [Workflows](#workflows)
+- [LLM Pull Request Review](#llm-pull-request-review)
 - [Services](#services)
 - [Fastlane](#fastlane)
 
@@ -51,12 +52,31 @@ Several workflows exist for different purposes:
 - **dev_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which delivers builds to development/beta.
 - **promote**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow which promotes latest beta to production.
 - **browserstack_delivery**: [Manually triggerable](#triggering-a-delivery-using-the-ci) workflow to build the ios and android app and upload it to browserstack.
+- **llm_review**: Runs the LLM-based pull request review. [Triggered from GitHub Actions](#llm-pull-request-review), not by a push.
 
 ## UI/UX workflow
 
 To simplify the testing process for the UI/UX team, we use the **browserstack_delivery** workflow.
 Start the **browserstack_delivery** workflow on any PR that should be tested on browserstack.
 After completion, the deliverino bot will post a comment with links to the browserstack builds.
+
+## LLM Pull Request Review
+
+The **llm_review** workflow posts an automated review comment on pull requests.
+CircleCI cannot subscribe to GitHub's `pull_request` event, so the GitHub Actions
+workflow [`.github/workflows/llm-pr-review.yml`](../.github/workflows/llm-pr-review.yml)
+reacts to that event and triggers the workflow through the CircleCI API.
+
+It runs when a pull request is opened, reopened, marked ready for review, or receives a
+push. Pull requests from forks are skipped, because they get no secrets. The trigger
+passes three pipeline parameters:
+
+- `run_llm_review`: `true`, which selects the workflow.
+- `llm_review_pr_number`: the number of the pull request to review.
+- `run_commit`: `false`, so the **commit** workflow does not run a second time (its default is `true`).
+
+The review only comments — it never approves, rejects or changes labels — and the script
+always exits successfully, so an LLM or network failure can never block a merge.
 
 ## Services
 
@@ -102,6 +122,7 @@ Lanes for Android live in [../android/fastlane](../android/fastlane) and for iOS
 | Variable               | Description                    | Where do I get it from? | Reference                                                                                  |                                                  |
 | ---------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------ |
 | DELIVERINO_PRIVATE_KEY | Base64 encoded PEM private key | Password Manager        | [Deliverino Settings](https://github.com/organizations/Integreat/settings/apps/deliverino) | [Deliverino](https://github.com/apps/deliverino) |
+| CIRCLECI_API_TOKEN     | CircleCI Personal API Token, stored as a **GitHub** repository secret. Used by the GitHub Actions workflow to trigger the [llm_review](#llm-pull-request-review) workflow. | [CircleCI user settings](https://app.circleci.com/settings/user/tokens) | [Managing API tokens](https://circleci.com/docs/managing-api-tokens/) | |
 
 ### Android Variables
 
