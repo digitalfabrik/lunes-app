@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 
 import { Answer, Article } from '../constants/data'
 import { getLabels, getArticleColor } from '../services/helpers'
+import { hyphenated } from '../services/hyphenation'
 import { Content, ContentSecondary } from './text/Content'
 import { VocabularyWord } from './text/Heading'
 
@@ -73,6 +74,8 @@ const WordItem = ({
 }: SingleChoiceListItemProps): ReactElement => {
   const { word, article } = answer
   const WordText = isPrimaryContent ? PrimaryWord : Word
+  const isPlural = article.id === 4
+  const displayedWord = isPlural ? `${word} (${getLabels().general.plurals})` : word
 
   return (
     <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected} testID='word-item'>
@@ -81,10 +84,7 @@ const WordItem = ({
           <ArticleBox article={article} pressed={pressed}>
             <ArticleText pressed={pressed}>{article.value}</ArticleText>
           </ArticleBox>
-          <WordText pressed={pressed}>
-            {word}
-            {article.id === 4 && ` (${getLabels().general.plurals})`}
-          </WordText>
+          <WordText pressed={pressed} {...hyphenated(displayedWord)} />
         </Container>
       )}
     </Pressable>

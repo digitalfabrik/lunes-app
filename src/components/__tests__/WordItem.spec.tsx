@@ -4,6 +4,7 @@ import 'react-native'
 
 import { ARTICLES } from '../../constants/data'
 import { FONT_SIZES } from '../../constants/theme/fonts'
+import { hyphenate } from '../../services/hyphenation'
 import render from '../../testing/render'
 import WordItem from '../WordItem'
 
@@ -23,6 +24,16 @@ describe('WordItem', () => {
       const { getByText } = render(<WordItem answer={answer} onClick={jest.fn()} />)
 
       expect(getByText(answer.word)).toHaveStyle({ fontSize: FONT_SIZES.body })
+    })
+  })
+
+  describe('when the word is a long compound word', () => {
+    const longWord = 'Schutzleiteranschluss'
+
+    it('should render it with soft hyphens while keeping the plain word accessible', () => {
+      const { getByLabelText } = render(<WordItem answer={{ word: longWord, article: ARTICLES[1] }} />)
+
+      expect(getByLabelText(longWord)).toHaveTextContent(hyphenate(longWord))
     })
   })
 
