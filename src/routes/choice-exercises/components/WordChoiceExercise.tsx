@@ -28,7 +28,8 @@ import useTrackDropout from '../../../hooks/useTrackDropout'
 import { StandardUnitId } from '../../../models/Unit'
 import VocabularyItem, { AlternativeWord, VocabularyItemTypes } from '../../../models/VocabularyItem'
 import { RoutesParams, VocabularyItemResult } from '../../../navigation/NavigationTypes'
-import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray, stringifyVocabularyItem } from '../../../services/helpers'
+import { hyphenated } from '../../../services/hyphenation'
 import { reportError } from '../../../services/sentry'
 import { saveExerciseProgress } from '../../../services/storageUtils'
 import { SingleChoice } from './SingleChoice'
@@ -263,9 +264,7 @@ const WordChoiceExercise = ({
             </AudioPlayerContainer>
 
             {needsToBeRepeated && <ContentText>{getLabels().exercises.solution}</ContentText>}
-            <VocabularyWord>
-              {vocabularyItem.article.value} {vocabularyItem.word}
-            </VocabularyWord>
+            <VocabularyWord {...hyphenated(stringifyVocabularyItem(vocabularyItem))} />
           </SolutionRow>
         }
         button={
