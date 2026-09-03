@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 
-import { Answer, Article } from '../constants/data'
+import { Answer, Article, isArticlePlural } from '../constants/data'
 import { getLabels, getArticleColor } from '../services/helpers'
 import { hyphenated } from '../services/hyphenation'
 import { Content, ContentSecondary } from './text/Content'
@@ -74,8 +74,7 @@ const WordItem = ({
 }: SingleChoiceListItemProps): ReactElement => {
   const { word, article } = answer
   const WordText = isPrimaryContent ? PrimaryWord : Word
-  const isPlural = article.id === 4
-  const displayedWord = isPlural ? `${word} (${getLabels().general.plurals})` : word
+  const displayedWord = isArticlePlural(article) ? `${word} (${getLabels().general.plurals})` : word
 
   return (
     <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected} testID='word-item'>
