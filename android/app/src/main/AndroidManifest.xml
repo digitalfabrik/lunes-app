@@ -29,6 +29,25 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <!-- Custom scheme deeplink, e.g. lunes://lunes.app/activation/<code> -->
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="lunes" android:host="lunes.app" />
+        </intent-filter>
+        <!--
+          Universal link, e.g. https://lunes.tuerantuer.org/activation/<code>.
+          android:autoVerify requires an assetlinks.json to be hosted at
+          https://lunes.tuerantuer.org/.well-known/assetlinks.json to be verified as an Android App Link;
+          until then the intent filter still matches but Android may show a disambiguation dialog.
+        -->
+        <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" android:host="lunes.tuerantuer.org" android:pathPrefix="/activation" />
+        </intent-filter>
       </activity>
     </application>
       <queries>
