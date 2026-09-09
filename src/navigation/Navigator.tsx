@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react'
 import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import useStorage from '../hooks/useStorage'
 import useTrackSession from '../hooks/useTrackSession'
+import ActivationScreen from '../routes/ActivationScreen'
 import OverlayMenu, { overlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
 import WordChoiceExerciseScreen from '../routes/choice-exercises/WordChoiceExerciseScreen'
@@ -84,6 +85,7 @@ const HomeStackNavigator = (): ReactElement | null => {
       />
       <Stack.Screen name='TrainingFinished' component={TrainingFinishedScreen} options={{ headerShown: false }} />
       <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
+      <Stack.Screen name='Activation' component={ActivationScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
