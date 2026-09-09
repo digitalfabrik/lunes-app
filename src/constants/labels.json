@@ -303,6 +303,12 @@
     "decline": "Nicht jetzt",
     "privacyNotice": "Datenschutzhinweis"
   },
+  "activation": {
+    "title": "Wollen Sie den Inhalt hinzufügen?",
+    "code": "Code",
+    "add": "Hinzufügen",
+    "cancel": "Abbrechen"
+  },
   "settings": {
     "settings": "Einstellungen",
     "analyticsConsent": "Anonyme Analysedaten",
